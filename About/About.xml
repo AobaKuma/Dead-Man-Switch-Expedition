@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>The Dead Man's Switch - Expedition</name>
+	<modIconPath IgnoreIfNoMatchingField="True">UI/NaraLogo</modIconPath>
+	<author>AobaKuma</author>
+	<supportedVersions>
+		<li>1.6</li>
+	</supportedVersions>
+	<packageId>Aoba.DeadManSwitch.Expedition</packageId>
+	<modDependencies>
+		<li>
+			<packageId>Ludeon.RimWorld.Odyssey</packageId>
+			<displayName>Odyssey</displayName>
+		</li>
+		<li>
+			<packageId>Aoba.DeadManSwitch.Core</packageId>
+			<steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=3121742525</steamWorkshopUrl>
+			<displayName>Dead Man Switch</displayName>
+		</li>
+	</modDependencies>
+	<loadAfter>
+		<li>Aoba.DeadManSwitch.Core</li>
+	</loadAfter>
+	<description>失能機關奧德賽內容拓展</description>
+</ModMetaData>

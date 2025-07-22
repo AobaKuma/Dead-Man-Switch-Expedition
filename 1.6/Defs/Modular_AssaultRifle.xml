@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<ThingCategoryDef>
+		<defName>DMSE_AerospaceWeapon</defName>
+		<label>aerospace weapon</label>
+		<parent>WeaponsRanged</parent>
+	</ThingCategoryDef>
+
+	<ThingDef Name="DMS_BaseHumanMakeableGun" ParentName="DMS_AutomatroidGun" Abstract="True">
+		<soundInteract>DMS_EquipGear</soundInteract>
+		<thingCategories Inherit="False">
+			<li>DMSE_AerospaceWeapon</li>
+		</thingCategories>
+		<recipeMaker>
+			<workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+			<workSkill>Crafting</workSkill>
+			<effectWorking>Smith</effectWorking>
+			<soundWorking>Recipe_Smith</soundWorking>
+			<recipeUsers Inherit="False">
+				<li>DMS_TableMachinePrinter</li>
+			</recipeUsers>
+			<unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
+		</recipeMaker>
+		<graphicData>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<statBases>
+			<MaxHitPoints>150</MaxHitPoints>
+			<WorkToMake>60000</WorkToMake>
+		</statBases>
+		<tradeTags>
+			<li>DMS_WeaponRanged</li>
+		</tradeTags>
+	</ThingDef>
+
+	<ThingDef ParentName="DMS_BaseHumanMakeableGun">
+		<defName>DMS_Modular_AR</defName>
+		<label>caseless assault rifle</label>
+		<description>一種使用無殼彈藥與複合材料槍身的突擊步槍，具有較平衡的爆發射速與載彈量並可根據任務選裝配件。/n/n追溯至人類於地球上的冷戰時期，由柏林機械製造局所生產的軍團機兵迫切的需要一種高度通用武裝來維持其龐大機兵集團軍的需求。而隨之而生的便是G93MCR為首的MCR槍系與其對應的5x50通用無殼彈藥。這類無殼彈藥具有較穩定的彈道性能並且能通用於所有MCR槍系的裝備。</description>
+		<graphicData>
+			<texPath>Things/Weapons/DMS_G93Caseless</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<statBases>
+			<WorkToMake>40000</WorkToMake>
+			<Mass>3.1</Mass>
+			<AccuracyTouch>0.60</AccuracyTouch>
+			<AccuracyShort>0.70</AccuracyShort>
+			<AccuracyMedium>0.65</AccuracyMedium>
+			<AccuracyLong>0.55</AccuracyLong>
+			<RangedWeapon_Cooldown>1.70</RangedWeapon_Cooldown>
+		</statBases>
+		<costList>
+			<Steel>60</Steel>
+			<ComponentIndustrial>7</ComponentIndustrial>
+		</costList>
+		<weaponTags>
+			<li>IndustrialGunAdvanced</li>
+			<li>AssaultRifle</li>
+		</weaponTags>
+		<verbs>
+			<li>
+				<verbClass>Verb_Shoot</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_AssaultRifle</defaultProjectile>
+				<warmupTime>1.0</warmupTime>
+				<range>30.9</range>
+				<ticksBetweenBurstShots>10</ticksBetweenBurstShots>
+				<soundCast>Shot_AssaultRifle</soundCast>
+				<soundCastTail>GunTail_Medium</soundCastTail>
+				<muzzleFlashScale>9</muzzleFlashScale>
+			</li>
+		</verbs>
+		<tools>
+			<li>
+				<label>stock</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>9</power>
+				<cooldownTime>2</cooldownTime>
+			</li>
+			<li>
+				<label>barrel</label>
+				<capacities>
+					<li>Blunt</li>
+					<li>Poke</li>
+				</capacities>
+				<power>9</power>
+				<cooldownTime>2</cooldownTime>
+			</li>
+		</tools>
+	</ThingDef>
+</Defs>

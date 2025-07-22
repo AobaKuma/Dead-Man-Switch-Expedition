@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="DMS_BaseHumanMakeableGun">
+        <defName>DMS_Modular_LMG</defName>
+        <label>Caseless light machinegun</label>
+        <description>A lightweight machine gun utilizing composite materials for reduced weight and employing caseless ammunition. Its high ammunition capacity, combined with well-controlled weight and compact dimensions, ensures exceptional sustained combat performance.</description>
+        <graphicData>
+            <texPath>Things/Weapons/DMS_MG93Caseless</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+        </graphicData>
+        <statBases>
+            <WorkToMake>46000</WorkToMake>
+            <Mass>6</Mass>
+            <RangedWeapon_Cooldown>0.78</RangedWeapon_Cooldown>
+        </statBases>
+        <costList>
+            <Tungsteel>85</Tungsteel>
+            <ComponentStamped>9</ComponentStamped>
+        </costList>
+        <weaponClasses>
+            <li>LongShots</li>
+            <li>RangedHeavy</li>
+            <li>Ranged</li>
+        </weaponClasses>
+        <weaponTags>
+            <li>IndustrialGunAdvanced</li>
+            <li>DMS_MechWeaponLongRifle</li>
+            <li>A_SuppressWeapon</li>
+        </weaponTags>
+        <verbs>
+            <li>
+				<verbClass>Verb_Shoot</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_AssaultRifle</defaultProjectile>
+				<range>30.9</range>
+                <burstShotCount>25</burstShotCount>
+                <ticksBetweenBurstShots>5</ticksBetweenBurstShots>
+                <warmupTime>1.2</warmupTime>
+				<soundCast>Shot_AssaultRifle</soundCast>
+				<soundCastTail>GunTail_Medium</soundCastTail>
+				<muzzleFlashScale>9</muzzleFlashScale>
+			</li>
+        </verbs>
+        <modExtensions>
+            <li Class="MuzzleFlash.MuzzleFlashProps" MayRequire="IssacZhuang.MuzzleFlash">
+                <def>MF_StandardMuzzleFalsh</def>
+                <drawSize>(0.9,0.9)</drawSize>
+                <offsets>
+                    <li>(0.29,-0.05)</li>
+                </offsets>
+                <isAlternately>true</isAlternately>
+            </li>
+        </modExtensions>
+    </ThingDef>
+</Defs>

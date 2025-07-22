@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <ResearchProjectDef ParentName="DMS_BaseTech">
+    <defName>DMSE_VacuumMaterial</defName>
+    <label>vacuumize process</label>
+    <description>在真空環境的材料生產能夠有效的避免材料在化學反應中受到氮氣與氧氣等常見氣體的影響，透過在大氣層外的材料學研究，這對於應用像鉭鎢合金這樣會在大氣內環境的加工過程中受氧化影響的特殊材料而言具有非常大的價值。\n\n透過該研究能夠在真空環境下的箱型爐與燒結爐中生產鉭鎢合金。</description>
+    <baseCost>1000</baseCost>
+    <requiredResearchBuilding Inherit="False"/>
+    <teachConcept>DMSE_SpecialProduction</teachConcept>
+    <prerequisites>
+      <li>DMS_Material</li>
+    </prerequisites> 
+    <researchViewX>2.00</researchViewX>
+    <researchViewY>2.50</researchViewY>
+    <generalRules/>
+  </ResearchProjectDef>
+  
+  <ResearchProjectDef ParentName="DMS_BaseTech">
+    <defName>DMSE_OrbitalDynamics</defName>
+    <label>orbital dynamics</label>
+    <description>透過對基本軌道運行規律與太空環境特性的深入研究，研製專門適用於真空微重力環境的裝備與精密設備，\n\n製造這些裝備所使用的關鍵材料與零件依賴於殖民艦隊的交易往來，但也可以透過更深入的研究來實現完全的自主生產。</description>
+    <baseCost>1000</baseCost>
+    <requiredResearchBuilding Inherit="False"/>
+    <prerequisites>
+      <li>DMS_MechBasis</li>
+    </prerequisites> 
+    <researchViewX>3.00</researchViewX>
+    <researchViewY>3.00</researchViewY>
+    <generalRules/>
+  </ResearchProjectDef>
+  
+  <ResearchProjectDef ParentName="DMS_BaseTech">
+    <defName>DMSE_Carbohydrate</defName>
+    <label>Carbon synthesis</label>
+    <description>透過工業規模的有機反應來將二氧化碳與水轉換為有機生物質，這樣相當於把空氣變成糧食的技術早在第三次世界大戰前便已經達到商業化運行的水平，其能量轉換效率相當於傳統農業的八到三十倍。\n\n透過該研究解鎖建造生物反應器，能夠透過消耗電能與石墨烯來合成澱粉與醣類等有機物質組成的碳水化合物。</description>
+    <baseCost>3000</baseCost>
+    <requiredResearchBuilding Inherit="False"/>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>DMS_Autofacturer</li>
+      <li>DMS_Plasfiber</li>
+    </prerequisites>
+    <researchViewX>3.00</researchViewX>
+    <researchViewY>1.60</researchViewY>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef ParentName="DMS_BaseTech">
+    <defName>DMSE_Microgravity</defName>
+    <label>Microgravity Manufacturing</label>
+    <description>在微重力環境下的增材打印能夠做到遠比重力環境下所能做的還要複雜與精確。脫離了重力這個人類習以為常的影響因素，人類對於各類材料學與加工製造業的許多基本認知也受到了極大的影響。\n\n透過該研究解鎖建造一種在微重力環境下加工生產物品的大型組裝機。</description>
+    <baseCost>1000</baseCost>
+    <requiredResearchBuilding Inherit="False"/>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>DMS_MechBasis</li>
+      <li>DMSE_VacuumMaterial</li>
+    </prerequisites>
+    <researchViewX>3.00</researchViewX>
+    <researchViewY>2.20</researchViewY>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef ParentName="DMS_BaseTech">
+    <defName>DMSE_Aerospace</defName>
+    <label>Aerospace Applications</label>
+    <description>透過規模化的生產鉭鎢合金與石墨烯並發掘這些特種材料在航空航天領與微電子等領域中的關鍵應用。\n\n透過該研究解鎖使用這些材料生產與設計的無殼彈槍械，應用於重力船與軌道星艦上的大型火箭推進引擎與先進的軌道電子戰隱蔽設備。</description>
+    <baseCost>1500</baseCost>
+    <requiredResearchBuilding Inherit="False"/>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>DMSE_Microgravity</li>
+    </prerequisites>
+    <researchViewX>4.00</researchViewX>
+    <researchViewY>2.20</researchViewY>
+  </ResearchProjectDef>
+</Defs>

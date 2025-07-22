@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+	<DMS_Modular_AR.label>G93突击步枪</DMS_Modular_AR.label>
+	<DMS_Modular_AR.description>一种使用无壳弹药与复合材料枪身的突击步枪，具有较平衡的爆发射速与载弹量，并可根据任务选装配件。/n/n追溯至人类于地球上的冷战时期，由柏林机械制造局所生产的军团机兵迫切需要一种高度通用武装来维持其庞大机兵集团军的需求。随之而生的便是以G93MCR为首的MCR枪系及其对应的5×50通用无壳弹药。这类无壳弹药具有较稳定的弹道性能，并能通用于所有MCR枪系的装备。</DMS_Modular_AR.description>
+	
+	<DMS_Modular_PDW.label>C90个人防卫武器</DMS_Modular_PDW.label>
+	<DMS_Modular_PDW.description>一种紧凑轻便的个人防卫武器，专为载具乘员设计，可在自卫时提供充足火力。采用快速更换弹匣设计，并可根据个人需求加装配件。</DMS_Modular_PDW.description>
+
+	<DMS_Modular_LMG.label>MG93轻机枪</DMS_Modular_LMG.label>
+	<DMS_Modular_LMG.description>一款使用复合材料减重并使用无壳弹的轻机枪，它的高额备弹量、控制在合理范围内的重量与体积保证了良好的持续作战性能。</DMS_Modular_LMG.description>
+
+	<DMS_Modular_C95_Pistol.label>C95半自动手枪</DMS_Modular_C95_Pistol.label>
+	<DMS_Modular_C95_Pistol.description>一款使用无壳弹的半自动手枪，常用于个人防卫。</DMS_Modular_C95_Pistol.description>
+
+	<DMS_Modular_C95BP_Pistol.label>C95BP自动手枪</DMS_Modular_C95BP_Pistol.label>
+	<DMS_Modular_C95BP_Pistol.description>一款使用无壳弹的自动手枪，常用于个人防卫。</DMS_Modular_C95BP_Pistol.description>
+
+
+</LanguageData>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <ConceptDef ParentName="NotedOpportunisticBase">
+    <defName>DMSE_SpecialProduction</defName>
+    <label>特殊生產環境</label>
+    <helpText>有些配方需求生產建築處於真空或低重力環境中才能夠使用，這使得你必須在如軌道平台或小行星這樣的環境中才能夠使用這些製作配方。</helpText>
+  </ConceptDef>
+</Defs>

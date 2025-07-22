@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<ThingDef ParentName="DMS_BaseHumanMakeableGun">
+		<defName>DMS_Modular_PDW</defName>
+		<label>caseless defense firearm</label>
+		<description>一種緊湊輕便的個人防衛武器，設計上是提供載具乘員自保時能提供足夠的火力。具有快速更換彈夾的設計並能根據個人需要安裝配件。</description>
+		<graphicData>
+			<texPath>Things/Weapons/DMS_C90Caseless</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<statBases>
+			<WorkToMake>11000</WorkToMake>
+			<Mass>2.5</Mass>
+			<AccuracyTouch>0.90</AccuracyTouch>
+			<AccuracyShort>0.71</AccuracyShort>
+			<AccuracyMedium>0.35</AccuracyMedium>
+			<AccuracyLong>0.15</AccuracyLong>
+			<RangedWeapon_Cooldown>0.9</RangedWeapon_Cooldown>
+		</statBases>
+		<costList>
+			<Steel>60</Steel>
+			<ComponentIndustrial>3</ComponentIndustrial>
+		</costList>
+		<weaponTags>
+			<li>IndustrialGunAdvanced</li>
+		</weaponTags>
+		<verbs>
+			<li>
+				<verbClass>Verb_Shoot</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_MachinePistol</defaultProjectile>
+				<warmupTime>0.5</warmupTime>
+				<range>19.9</range>
+				<burstShotCount>3</burstShotCount>
+				<ticksBetweenBurstShots>7</ticksBetweenBurstShots>
+				<soundCast>Shot_MachinePistol</soundCast>
+				<soundCastTail>GunTail_Light</soundCastTail>
+				<muzzleFlashScale>9</muzzleFlashScale>
+			</li>
+		</verbs>
+		<tools>
+			<li>
+				<label>grip</label>
+				<capacities>
+				<li>Blunt</li>
+				</capacities>
+				<power>9</power>
+				<cooldownTime>2</cooldownTime>
+			</li>
+			<li>
+				<label>barrel</label>
+				<capacities>
+				<li>Blunt</li>
+				<li>Poke</li>
+				</capacities>
+				<power>9</power>
+				<cooldownTime>2</cooldownTime>
+			</li>
+		</tools>
+	</ThingDef>
+</Defs>
