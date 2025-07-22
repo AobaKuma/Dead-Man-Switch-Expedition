@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <ResearchProjectDef ParentName="DMS_BaseTech">
+    <defName>DMSE_VacuumMaterial</defName>
+    <label>Vacuum Material</label>
+    <description></description>
+    <baseCost>1000</baseCost>
+    <requiredResearchBuilding Inherit="False"/>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>DMS_Material</li>
+    </prerequisites>
+    <researchViewX>2.00</researchViewX>
+    <researchViewY>2.00</researchViewY>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef ParentName="DMS_BaseTech">
+    <defName>DMSE_OrbitalDynamics</defName>
+    <label>Orbital Dynamics</label>
+    <description></description>
+    <baseCost>1000</baseCost>
+    <requiredResearchBuilding Inherit="False"/>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>DMS_Automatroid</li>
+    </prerequisites>
+    <researchViewX>2.15</researchViewX>
+    <researchViewY>2.00</researchViewY>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef ParentName="DMS_BaseTech">
+    <defName>DMSE_Microgravity</defName>
+    <label>Microgravity Production</label>
+    <description></description>
+    <baseCost>1000</baseCost>
+    <requiredResearchBuilding Inherit="False"/>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>DMS_Automatroid</li>
+      <li>DMSE_VacuumMaterial</li>
+    </prerequisites>
+    <researchViewX>2.15</researchViewX>
+    <researchViewY>2.15</researchViewY>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef ParentName="DMS_BaseTech">
+    <defName>DMSE_Aerospace</defName>
+    <label>Aerospace Applications</label>
+    <description></description>
+    <baseCost>1500</baseCost>
+    <requiredResearchBuilding Inherit="False"/>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>DMSE_VacuumMaterial</li>
+      <li>DMSE_Microgravity</li>
+    </prerequisites>
+    <researchViewX>2.3</researchViewX>
+    <researchViewY>2.15</researchViewY>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef ParentName="DMS_BaseTech">
+    <defName>DMSE_Carbohydrate</defName>
+    <label>Carbohydrate</label>
+    <description></description>
+    <baseCost>3000</baseCost>
+    <requiredResearchBuilding Inherit="False"/>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>DMS_Autofacturer</li>
+      <li>DMS_Plasfiber</li>
+    </prerequisites>
+    <researchViewX>2.45</researchViewX>
+    <researchViewY>2.15</researchViewY>
+  </ResearchProjectDef>
+
+</Defs>

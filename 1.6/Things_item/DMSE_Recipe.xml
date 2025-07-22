@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Defs>
+
+  <!-- 低重力生產設施 -->
+  <RecipeDef>
+    <defName>DMS_Make_Graphene_Chemfuel</defName>
+    <label>Make Graphene x5</label>
+    <description>Producing a small amount of graphene materials using Chemfuel and wood.</description>
+    <jobString>Producing.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
+    <recipeUsers>
+      <li>DMSE_MicrogravityFacility</li>
+    </recipeUsers>
+    <skillRequirements>
+      <Crafting>8</Crafting>
+    </skillRequirements>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>DMSE_Microgravity</researchPrerequisite>
+    <workAmount>15000</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Chemfuel</li>
+          </thingDefs>
+        </filter>
+        <count>25</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>Chemfuel</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <DMSE_Graphene>5</DMSE_Graphene>
+    </products>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>DMS_Make_GrapheneMass_Chemfuel</defName>
+    <label>Make Graphene x20</label>
+    <description>Producing a large amount of graphene materials using Chemfuel and wood.</description>
+    <jobString>Producing.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
+    <recipeUsers>
+      <li>DMSE_MicrogravityFacility</li>
+    </recipeUsers>
+    <skillRequirements>
+      <Crafting>8</Crafting>
+    </skillRequirements>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>DMSE_Microgravity</researchPrerequisite>
+    <workAmount>22000</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Chemfuel</li>
+          </thingDefs>
+        </filter>
+        <count>100</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>Chemfuel</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <DMSE_Graphene>20</DMSE_Graphene>
+    </products>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>DMS_Make_Graphene_WoodLog</defName>
+    <label>Make Graphene x5</label>
+    <description>Producing a small amount of graphene materials using Chemfuel and wood.</description>
+    <jobString>Producing.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
+    <recipeUsers>
+      <li>DMSE_MicrogravityFacility</li>
+    </recipeUsers>
+    <skillRequirements>
+      <Crafting>8</Crafting>
+    </skillRequirements>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>DMSE_Microgravity</researchPrerequisite>
+    <workAmount>15000</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>WoodLog</li>
+          </thingDefs>
+        </filter>
+        <count>75</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>WoodLog</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <DMSE_Graphene>5</DMSE_Graphene>
+    </products>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>DMS_Make_GrapheneMass_WoordLog</defName>
+    <label>Make Graphene x20</label>
+    <description>Producing a large amount of graphene materials using Chemfuel and wood.</description>
+    <jobString>Producing.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
+    <recipeUsers>
+      <li>DMSE_MicrogravityFacility</li>
+    </recipeUsers>
+    <skillRequirements>
+      <Crafting>8</Crafting>
+    </skillRequirements>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>DMSE_Microgravity</researchPrerequisite>
+    <workAmount>22000</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>WoodLog</li>
+          </thingDefs>
+        </filter>
+        <count>300</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>WoodLog</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <DMSE_Graphene>20</DMSE_Graphene>
+    </products>
+  </RecipeDef>
+
+
+  <!-- 燒結爐 -->
+ <RecipeDef>
+    <defName>DMS_Make_TantastenAlloy</defName>
+    <label>Make TantastenAlloy X20</label>
+    <description>Sinter a small amount of tantastenAlloy.</description>
+    <jobString>Sintering.</jobString>
+    <workSpeedStat>SmeltingSpeed</workSpeedStat>
+    <effectWorking>ConstructMetal</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
+    <recipeUsers>
+      <li>DMS_Furnace</li>
+	    <li>DMS_LabFurnace</li>
+    </recipeUsers>
+    <skillRequirements>
+      <Crafting>3</Crafting>
+    </skillRequirements>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>DMSE_VacuumMaterial</researchPrerequisite>
+    <workAmount>15000</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Tungsteel</li>
+          </thingDefs>
+        </filter>
+        <count>50</count>
+      </li>
+      <li>
+        <filter>
+          <categories>
+            <li>BlocksVacstone</li>
+          </categories>
+        </filter>
+        <count>120</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>Tungsteel</li>
+        <li>BlocksVacstone</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <DMSE_TantastenAlloy>20</DMSE_TantastenAlloy>
+    </products>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>DMS_Make_TantastenAlloyMass</defName>
+    <label>Make TantastenAlloy X80</label>
+    <description>Sinter a large amount of tantastenAlloy.</description>
+    <jobString>Sintering.</jobString>
+    <workSpeedStat>SmeltingSpeed</workSpeedStat>
+    <effectWorking>ConstructMetal</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
+    <recipeUsers>
+      <li>DMS_Furnace</li>
+	    <li>DMS_LabFurnace</li>
+    </recipeUsers>
+    <skillRequirements>
+      <Crafting>3</Crafting>
+    </skillRequirements>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>DMSE_VacuumMaterial</researchPrerequisite>
+    <workAmount>22000</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Tungsteel</li>
+          </thingDefs>
+        </filter>
+        <count>200</count>
+      </li>
+      <li>
+        <filter>
+          <categories>
+            <li>BlocksVacstone</li>
+          </categories>
+        </filter>
+        <count>480</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>Tungsteel</li>
+        <li>BlocksVacstone</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <DMSE_TantastenAlloy>80</DMSE_TantastenAlloy>
+    </products>
+  </RecipeDef>
+
+</Defs>	

@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- 碳水化合物 -->  
+  <ThingDef ParentName="ResourceBase">
+    <defName>DMSE_Carbohydrate</defName>
+    <label>Carbohydrate</label>
+    <description>A white, solid powder that remains highly stable at room temperature, this substance is artificially synthesized from starch, lactose, and other compounds using industrial equipment. Composed of basic elements such as carbon, hydrogen, and oxygen, it does not spoil even when stored in a dry, ambient environment, making it an extremely space-efficient nutritional source for interstellar travel. However, consuming it untreated may cause short-term symptoms such as abdominal pain. \n\nDue to its highly flammable chemical nature and rapid decomposition when exposed to open air, it is typically compressed into dense blocks and vacuum-sealed immediately after synthesis for long-term storage and distribution.</description>
+    <descriptionHyperlinks>
+      <ThingDef>DMS_TableArtifuscle</ThingDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Things/Resource/Carbohydrate</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    
+    <socialPropernessMatters>false</socialPropernessMatters>
+
+    <statBases>
+      <MaxHitPoints>25</MaxHitPoints>
+      <Flammability>6.0</Flammability>
+      <DeteriorationRate>100</DeteriorationRate>
+      <Mass>0.1</Mass>
+      <Nutrition>0.5</Nutrition>
+      <FoodPoisonChanceFixedHuman>0</FoodPoisonChanceFixedHuman>
+    </statBases>
+
+    <ingestible>
+      <foodType>Processed</foodType>
+      <preferability>MealAwful</preferability>
+      <ateEvent>AteRawFood</ateEvent>
+      <ingestEffect>EatVegetarian</ingestEffect>
+      <ingestSound>Meal_Eat</ingestSound>
+      <canAutoSelectAsFoodForCaravan>false</canAutoSelectAsFoodForCaravan>
+      <optimalityOffsetFeedingAnimals>-25</optimalityOffsetFeedingAnimals>
+      <tableDesired>false</tableDesired>
+    </ingestible>
+
+    <burnableByRecipe>true</burnableByRecipe>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <minRewardCount>30</minRewardCount>
+    <thingCategories>
+      <li>FoodRaw</li>
+    </thingCategories>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+    <thingSetMakerTags>
+      <li>RewardStandardCore</li>
+    </thingSetMakerTags>
+  </ThingDef>
+  
+  <!-- 鉭鎢合金 強度高於鎢鋼的材料 -->  
+  <ThingDef ParentName="ResourceBase">
+    <defName>DMSE_TantastenAlloy</defName>
+    <label>TantastenAlloy</label>
+    <description>A special alloy material composed of tantalum and tungsten. It is hard, wear-resistant, corrosion-resistant, and has an extremely high melting point of up to 3080°C, making it widely used in rocket engine De Laval nozzles and high-performance military mecha pulse thrusters. \n\nTantalum is found in trace amounts in asteroids and can be extracted through vacuum rock mining. Its processing and production must be carried out in a vacuum environment to avoid contamination by gases such as nitrogen and oxygen. Therefore, worlds capable of large-scale production and application typically have substantial industrial platforms orbiting near-Earth space dedicated to manufacturing and processing these materials.</description>
+    <descriptionHyperlinks>
+      <ThingDef>DMS_Furnace</ThingDef>
+      <ThingDef>DMS_LabFurnace</ThingDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Things/Resource/Tantasten</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Metal_Drop</soundDrop>
+    <useHitPoints>false</useHitPoints>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MarketValue>10</MarketValue>
+      <Mass>3</Mass>
+      <StuffPower_Armor_Sharp>1.2</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>0.8</StuffPower_Armor_Blunt>
+      <StuffPower_Armor_Heat>1.2</StuffPower_Armor_Heat>
+      <StuffPower_Insulation_Cold>0</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>0</StuffPower_Insulation_Heat>
+      <SharpDamageMultiplier>1.2</SharpDamageMultiplier>
+      <BluntDamageMultiplier>1.1</BluntDamageMultiplier>
+    </statBases>
+    <generateCommonality>0.2</generateCommonality>
+
+    <thingCategories inherit="false">
+    </thingCategories>
+
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+    <burnableByRecipe>false</burnableByRecipe>
+    <smeltable>true</smeltable>
+    <stuffProps>
+      <categories>
+        <li>Metallic</li>
+      </categories>
+      <appearance>Metal</appearance>
+      <commonality>0</commonality>
+      <constructEffect>ConstructMetal</constructEffect>
+      <color>(80,80,80)</color>
+      <soundImpactBullet>BulletImpact_Ground</soundImpactBullet>
+      <soundMeleeHitSharp>MeleeHit_Metal_Sharp</soundMeleeHitSharp>
+      <soundMeleeHitBlunt>MeleeHit_Metal_Blunt</soundMeleeHitBlunt>
+      <statFactors>
+        <MaxHitPoints>2</MaxHitPoints>
+        <Beauty>1</Beauty>
+        <Flammability>0</Flammability>
+        <WorkToMake>3.1</WorkToMake>
+        <WorkToBuild>3.1</WorkToBuild>
+        <MeleeWeapon_CooldownMultiplier>1</MeleeWeapon_CooldownMultiplier>
+      </statFactors>
+    </stuffProps>
+    <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+  </ThingDef>
+
+  <!-- 石墨烯，T/R组件、石墨烯电容、集群控制芯片等高级複雜技术物品都會需要用到 -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>DMSE_Graphene</defName>
+    <label>Graphene</label>
+    <description>A single-layer carbon material produced by exfoliating graphite, it is the most widely used non-metallic material in the Midsphere World. Thanks to its excellent thermal conductivity and electrical properties, it is commonly employed in electronic components, beam emitters, and supercapacitors. \n\nGraphene itself demands extremely stringent production conditions and is often further processed into materials like carbon nanotubes or fullerenes. As a result, worlds capable of large-scale production and application typically possess massive industrial platforms in near-Earth orbit dedicated to manufacturing and processing these materials.</description>
+    <descriptionHyperlinks>
+      <ThingDef>DMSE_MicrogravityFacility</ThingDef>
+    </descriptionHyperlinks>
+    <possessionCount>2</possessionCount>
+    <graphicData>
+      <texPath>Things/Resource/Graphene</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>25</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <RoyalFavorValue>0.2</RoyalFavorValue>
+      <MaxHitPoints>50</MaxHitPoints>
+      <MarketValue>75</MarketValue>
+      <Mass>1</Mass>
+      <Flammability>1</Flammability>
+      <DeteriorationRate>3.0</DeteriorationRate>
+    </statBases>
+    <intricate>true</intricate>
+
+    <thingSetMakerTags inherit="false">
+    </thingSetMakerTags>
+    
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+  </ThingDef>
+
+</Defs>
