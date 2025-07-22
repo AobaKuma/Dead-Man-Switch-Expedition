@@ -13,11 +13,11 @@
 		<statBases>
 			<WorkToMake>7500</WorkToMake>
 			<Mass>2.3</Mass>
-			<Bulk>2.5</Bulk>
+			<AccuracyTouch>0.90</AccuracyTouch>
+			<AccuracyShort>0.71</AccuracyShort>
+			<AccuracyMedium>0.35</AccuracyMedium>
+			<AccuracyLong>0.15</AccuracyLong>
 			<RangedWeapon_Cooldown>0.4</RangedWeapon_Cooldown>
-			<SightsEfficiency>1.1</SightsEfficiency>
-			<ShotSpread>0.04</ShotSpread>
-			<SwayFactor>0.7</SwayFactor>
 		</statBases>
 		<costList>
 			<Tungsteel>30</Tungsteel>
