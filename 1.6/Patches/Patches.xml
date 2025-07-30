@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+
+	<Operation Class="PatchOperationAdd">
+		<xpath>/Defs/ThingDef[defName="GravEngine"]/comps/li[@Class="CompProperties_AffectedByFacilities"]/linkableFacilities</xpath>
+		<value>
+			<li>AAAAAAAAAA</li>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/PlanetLayerDef[@Name="OrbitLayer"]/worldDrawLayers</xpath>
+		<value>
+			<li>PawnReplace.WorldDrawLayer_SpaceTiles</li>
+			<li>WorldDrawLayer_SelectedTile</li>
+			<li>WorldDrawLayer_MouseTile</li>
+		</value>
+	</Operation>
+
+</Patch>

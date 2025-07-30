@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <GravshipComponentTypeDef>
+    <defName>AAA</defName>
+    <label>AAAAAnk</label>
+  </GravshipComponentTypeDef>
+  
+  <ThingDef ParentName="GravshipComponentBase">
+    <defName>AAAAAAAAAA</defName>
+    <label>AAAAAAAAAAAAAAAAAAAA</label>
+    <description>An interface that allows launching and piloting a gravship. It draws power directly from the grav engine.</description>
+    <graphicData>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <texPath>Things/Building/PilotConsole/PilotConsole</texPath>
+      <drawSize>(3.7, 2.6)</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Mass>50</Mass>
+      <Flammability>0</Flammability>
+      <Beauty>0</Beauty>
+      <WorkToBuild>2500</WorkToBuild>
+    </statBases>
+    <size>(3, 2)</size>
+    <rotatable>true</rotatable>
+    <fillPercent>0.4</fillPercent>
+    <passability>PassThroughOnly</passability>
+    <pathCost>14</pathCost>
+    <canOverlapZones>false</canOverlapZones>
+    <costList>
+      <Steel>140</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+    </costList>
+    <resourcesFractionWhenDeconstructed>1</resourcesFractionWhenDeconstructed>
+    <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+    <designationCategory>Odyssey</designationCategory>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0, 0,-1)</interactionCellOffset>
+    <researchPrerequisites>
+      <li>BasicGravtech</li>
+    </researchPrerequisites>
+    <terrainAffordanceNeeded>Substructure</terrainAffordanceNeeded>
+    <comps>
+      <li Class="CompProperties_Breakdownable" />
+    </comps>
+    <uiOrder>2100</uiOrder>
+  </ThingDef>
+
+  <ThingDef ParentName="ThrusterBase">
+    <defName>DMSE_NuclearThruster</defName>
+    <label>Nuclear thermal thruster</label>
+    <description>一種重型核熱火箭推进器，透過核裂變加熱液態氫來產生推力，其比沖是傳統化學火箭推進器的兩倍以上，這類大推力的推進器經常會被用於星際拖船使其能夠為質量龐大的軌道平台進行較大幅度的軌道轉移。由於其起飛時所製造的大量放射性汙染，這類引擎被設計為無法在大氣環境內使用。\n\n在田中-約翰遜引擎問世以前，人類透過這樣的推進器將第一艘前往半人馬座星系的亞光速飛船加速到光速的20%。並在10年後傳回了人類在太陽系外的第一張自拍照。</description>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Building/NuclearThruster/building</texPath>
+      <drawSize>(4.8,8)</drawSize>
+      <shadowData>
+        <volume>(1.8, 0.75, 1.8)</volume>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>1000</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>-10</Beauty>
+      <WorkToBuild>23500</WorkToBuild>
+      <Mass>200</Mass>
+    </statBases>
+    <size>(3,5)</size>
+    <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
+    <costList>
+      <Steel>220</Steel>
+      <BlocksVacstone>50</BlocksVacstone>
+      <ComponentIndustrial>6</ComponentIndustrial>
+    </costList>
+    <researchPrerequisites>
+      <li>StandardGravtech</li>
+    </researchPrerequisites>
+    <comps>
+      <li Class="CompProperties_GravshipFacility">
+        <componentTypeDef>AAA</componentTypeDef>
+        <requiresLOS>false</requiresLOS>
+        <showMaxSimultaneous>false</showMaxSimultaneous>
+        <maxSimultaneous>4</maxSimultaneous>
+        <maxDistance>200</maxDistance>
+      </li>
+      <li Class="CompProperties_GravshipThruster">
+        <statOffsets>
+          <GravshipRange>30</GravshipRange>
+        </statOffsets>
+        <componentTypeDef>Thruster</componentTypeDef>
+        <exclusionAreaSize>(5, 0, 11)</exclusionAreaSize>
+        <exclusionAreaOffset>(-2, 0, -13)</exclusionAreaOffset>
+        <directionInfluence>90</directionInfluence>
+        <flameSize>10.0</flameSize>
+        <flameOffsetsPerDirection>
+          <li>(0, 0, 1.0)</li>
+          <li>(0, 0, 0.5)</li>
+          <li>(0, 0, 0.5)</li>
+          <li>(0, 0, 0.5)</li>
+        </flameOffsetsPerDirection>
+        <flameShaderType>MoteGlow</flameShaderType>
+        <flameShaderParameters>
+          <_MainTex>/Things/Mote/LargeThruster_Burn</_MainTex>
+        </flameShaderParameters>
+        <requiresLOS>false</requiresLOS>
+        <maxSimultaneous>4</maxSimultaneous>
+        <maxDistance>500</maxDistance>
+        <exhaustSettings>
+          <exhaustFleckDef>GravshipThrusterExhaust</exhaustFleckDef>
+          <emissionsPerSecond>40.0</emissionsPerSecond>
+          <spawnRadiusRange>0.0~0.5</spawnRadiusRange>
+          <velocity>(0.0,0.0,-30.0)</velocity>
+          <velocityRotationRange>-10.0~10.0</velocityRotationRange>
+          <velocityMultiplierRange>0.8~1.2</velocityMultiplierRange>
+          <rotationOverTimeRange>-180.0~180.0</rotationOverTimeRange>
+          <scaleRange>5.0~8.0</scaleRange>
+        </exhaustSettings>
+      </li>
+      <li Class="CompProperties_Breakdownable" />
+    </comps>
+    <uiOrder>2206</uiOrder>
+  </ThingDef>
+  
+</Defs>

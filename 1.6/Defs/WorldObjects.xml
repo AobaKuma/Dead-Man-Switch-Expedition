@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <WorldObjectDef>
+    <defName>Ship</defName>
+    <label>gravship</label>
+    <description>A gravship in flight.</description>
+    <worldObjectClass>PawnReplace.WorldObject_Transfer</worldObjectClass>
+    <texture>World/WorldObjects/Caravan</texture>
+    <useDynamicDrawer>true</useDynamicDrawer>
+    <expandingIcon>true</expandingIcon>
+    <expandingIconTexture>World/WorldObjects/Expanding/Gravship</expandingIconTexture>
+    <expandingIconPriority>60</expandingIconPriority>
+    <expandingIconDrawSize>1.35</expandingIconDrawSize>
+    <fullyExpandedInSpace>true</fullyExpandedInSpace>
+    <validLaunchTarget>false</validLaunchTarget>
+  </WorldObjectDef>
+
+</Defs>
