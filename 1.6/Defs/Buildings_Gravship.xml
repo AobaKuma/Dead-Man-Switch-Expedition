@@ -77,13 +77,6 @@
       <li>StandardGravtech</li>
     </researchPrerequisites>
     <comps>
-      <li Class="CompProperties_GravshipFacility">
-        <componentTypeDef>AAA</componentTypeDef>
-        <requiresLOS>false</requiresLOS>
-        <showMaxSimultaneous>false</showMaxSimultaneous>
-        <maxSimultaneous>4</maxSimultaneous>
-        <maxDistance>200</maxDistance>
-      </li>
       <li Class="CompProperties_GravshipThruster">
         <statOffsets>
           <GravshipRange>30</GravshipRange>
@@ -92,16 +85,16 @@
         <exclusionAreaSize>(5, 0, 11)</exclusionAreaSize>
         <exclusionAreaOffset>(-2, 0, -13)</exclusionAreaOffset>
         <directionInfluence>90</directionInfluence>
-        <flameSize>10.0</flameSize>
+        <flameSize>15.0</flameSize>
         <flameOffsetsPerDirection>
-          <li>(0, 0, 1.0)</li>
+          <li>(0, 0, 1)</li>
           <li>(0, 0, 0.5)</li>
           <li>(0, 0, 0.5)</li>
           <li>(0, 0, 0.5)</li>
         </flameOffsetsPerDirection>
         <flameShaderType>MoteGlow</flameShaderType>
         <flameShaderParameters>
-          <_MainTex>/Things/Mote/LargeThruster_Burn</_MainTex>
+          <_MainTex>/Visual/NuclearThruster_Burn</_MainTex>
         </flameShaderParameters>
         <requiresLOS>false</requiresLOS>
         <maxSimultaneous>4</maxSimultaneous>
@@ -109,17 +102,16 @@
         <exhaustSettings>
           <exhaustFleckDef>GravshipThrusterExhaust</exhaustFleckDef>
           <emissionsPerSecond>40.0</emissionsPerSecond>
-          <spawnRadiusRange>0.0~0.5</spawnRadiusRange>
+          <spawnRadiusRange>-1.5~1.5</spawnRadiusRange>
           <velocity>(0.0,0.0,-30.0)</velocity>
-          <velocityRotationRange>-10.0~10.0</velocityRotationRange>
+          <velocityRotationRange>-5.0~5.0</velocityRotationRange>
           <velocityMultiplierRange>0.8~1.2</velocityMultiplierRange>
           <rotationOverTimeRange>-180.0~180.0</rotationOverTimeRange>
-          <scaleRange>5.0~8.0</scaleRange>
+          <scaleRange>2.0~8.0</scaleRange>
         </exhaustSettings>
       </li>
       <li Class="CompProperties_Breakdownable" />
     </comps>
     <uiOrder>2206</uiOrder>
   </ThingDef>
-  
 </Defs>
