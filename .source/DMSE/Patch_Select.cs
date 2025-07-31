@@ -20,6 +20,7 @@ namespace DMSE
     [HarmonyPatch(typeof(CompPilotConsole), nameof(CompPilotConsole.StartChoosingDestination))]
     public class Patch_Select
     {
+        public static float FuelConsumePerTile => 3f;
         [HarmonyPrefix]
         public static bool prefix(CompPilotConsole __instance)
         {
@@ -61,10 +62,10 @@ namespace DMSE
             int count = comp.engine.GetComp<CompAffectedByFacilities>().LinkedFacilitiesListForReading
                 .FindAll(a =>
             a.TryGetComp<CompGravshipFacility>() is CompGravshipFacility comp0
-            && comp0.parent.def == PRDefOf.DMSE_NuclearThruster).Count;
+            && comp0.Props.componentTypeDef == PRDefOf.AAA).Count;
             if (count < 2)
             {
-                Log.Error("建筑不够");
+                Log.Error("建筑不够" + count);
                 return;
             }
             //这里Defname需要改
@@ -74,7 +75,7 @@ namespace DMSE
             PlanetLayer curLayer = comp.parent.Map.Tile.Layer;
             PlanetTile cachedClosestLayerTile = PlanetTile.Invalid;
             float radius = count * GravshipUtility.MaxDistForFuel(comp.engine.TotalFuel,
-                curLayer, PlanetLayer.Selected, 10f, comp.engine.FuelUseageFactor) / 4f;
+                curLayer, PlanetLayer.Selected, FuelConsumePerTile, comp.engine.FuelUseageFactor) / 4f;
             Find.TilePicker.StartTargeting(t =>
             {
                 if (!GravshipUtility.TryGetPathFuelCost(curTile, t,
@@ -106,7 +107,7 @@ namespace DMSE
                 SettlementProximityGoodwillUtility.CheckConfirmSettle(t, delegate
                 {
                     Find.World.renderer.wantedMode = WorldRenderMode.None;
-                    comp.engine.ConsumeFuel(t);
+                    ConsumeFuel(comp.engine, t);
                     SoundDefOf.Gravship_Launch.PlayOneShotOnCamera(null);
                     WorldObject_Transfer wo = (WorldObject_Transfer)WorldObjectMaker.
                     MakeWorldObject(PRDefOf.Ship);
@@ -120,13 +121,40 @@ namespace DMSE
                     mc.Init(comp.engine.GetComp<CompAffectedByFacilities>()
                         .LinkedFacilitiesListForReading.FindAll(
                         thing => thing.TryGetComp<CompGravshipFacility>() is CompGravshipFacility comp0
-            && comp0.Props.componentTypeDef == PRDefOf.Thruster), wo);
+            && comp0.Props.componentTypeDef == PRDefOf.AAA), wo);
                 }, () => Start(comp), comp.engine);
             }
             , null, delegate
             {
                 GenDraw.DrawWorldRadiusRing(curTile, (int)radius, CompPilotConsole.GetThrusterRadiusMat(curTile));
             }, true, () => CameraJumper.TryJump(comp.parent.Position, comp.parent.Map), null, false, true, true, true, null);
+        }
+
+        public static void ConsumeFuel(Building_GravEngine engine,PlanetTile tile)
+        {
+            float num;
+            int num2;
+            if (!GravshipUtility.TryGetPathFuelCost(engine.Map.Tile, tile, out num, out num2,
+                FuelConsumePerTile, 1f))
+            {
+                Log.Error(string.Format("Failed to get the fuel cost from tile ({0}) to {1}.", engine.Map.Tile, tile));
+                return;
+            }
+            float num3 = num / engine.TotalFuel;
+            foreach (CompGravshipFacility compGravshipFacility in engine.GravshipComponents)
+            {
+                if (compGravshipFacility.CanBeActive && compGravshipFacility.Props.providesFuel)
+                {
+                    CompRefuelable comp = compGravshipFacility.parent.GetComp<CompRefuelable>();
+                    if (comp != null)
+                    {
+                        comp.ConsumeFuel(comp.Fuel * num3);
+                    }
+                }
+            }
+            int ticksGame = GenTicks.TicksGame;
+            LaunchInfo launchInfo = engine.launchInfo;
+            engine.cooldownCompleteTick = ticksGame + (int)GravshipUtility.LaunchCooldownFromQuality((launchInfo != null) ? launchInfo.quality : 1f);
         }
 
         public static bool Run = false;

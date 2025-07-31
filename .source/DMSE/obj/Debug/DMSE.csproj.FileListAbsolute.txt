@@ -6,3 +6,9 @@ D:\Steam\steamapps\common\RimWorld\Mods\_Dead-Man-Switch-Expedition\1.6\Assembli
 D:\Steam\steamapps\common\RimWorld\Mods\_Dead-Man-Switch-Expedition\1.6\Assemblies\DMSE.pdb
 D:\Steam\steamapps\common\RimWorld\Mods\_Dead-Man-Switch-Expedition\.source\DMSE\obj\Debug\DMSE.dll
 D:\Steam\steamapps\common\RimWorld\Mods\_Dead-Man-Switch-Expedition\.source\DMSE\obj\Debug\DMSE.pdb
+D:\Game\Steam\steamapps\common\RimWorld\Mods\Dead-Man-Switch-Expedition\1.6\Assemblies\DMSE.dll
+D:\Game\Steam\steamapps\common\RimWorld\Mods\Dead-Man-Switch-Expedition\1.6\Assemblies\DMSE.pdb
+D:\Game\Steam\steamapps\common\RimWorld\Mods\Dead-Man-Switch-Expedition\.source\DMSE\obj\Debug\DMSE.csproj.AssemblyReference.cache
+D:\Game\Steam\steamapps\common\RimWorld\Mods\Dead-Man-Switch-Expedition\.source\DMSE\obj\Debug\DMSE.csproj.CoreCompileInputs.cache
+D:\Game\Steam\steamapps\common\RimWorld\Mods\Dead-Man-Switch-Expedition\.source\DMSE\obj\Debug\DMSE.dll
+D:\Game\Steam\steamapps\common\RimWorld\Mods\Dead-Man-Switch-Expedition\.source\DMSE\obj\Debug\DMSE.pdb

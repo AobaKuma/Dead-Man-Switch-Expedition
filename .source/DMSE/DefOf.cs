@@ -13,6 +13,6 @@ namespace DMSE
     {
         public static ThingDef DMSE_NuclearThruster;
         public static WorldObjectDef Ship;
-        public static GravshipComponentTypeDef Thruster;
+        public static GravshipComponentTypeDef AAA;
     }
 }

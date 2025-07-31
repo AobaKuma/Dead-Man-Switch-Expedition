@@ -82,7 +82,7 @@
           <GravshipRange>30</GravshipRange>
         </statOffsets>
         <fuelSavingsPercent>-0.5</fuelSavingsPercent>
-        <componentTypeDef>Thruster</componentTypeDef>
+        <componentTypeDef>AAA</componentTypeDef>
         <exclusionAreaSize>(5, 0, 11)</exclusionAreaSize>
         <exclusionAreaOffset>(-2, 0, -13)</exclusionAreaOffset>
         <directionInfluence>90</directionInfluence>

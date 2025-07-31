@@ -36,6 +36,7 @@
     <Compile Include="ModExtension_ReplacePawn.cs" />
     <Compile Include="PatchMain.cs" />
     <Compile Include="Patch_Replace.cs" />
+    <Compile Include="Patch_Background.cs" />
     <Compile Include="Patch_Visible.cs" />
     <Compile Include="Patch_Select.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

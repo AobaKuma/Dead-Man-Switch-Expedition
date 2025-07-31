@@ -71,11 +71,11 @@ namespace DMSE
         {
             base.FinalizeInit();
             if (status is OrbitalTransferState.Working)
-            {
-                Log.Message(map.listerThings.AllThings.Count);
+            { 
                 this.Init(((ThingWithComps)map.listerThings.ThingsOfDef(ThingDefOf.GravEngine).First()).GetComp<CompAffectedByFacilities>()
                         .LinkedFacilitiesListForReading.FindAll(
-                        thing => thing.TryGetComp<CompGravshipFacility>() is CompGravshipFacility comp0 && comp0.Props.componentTypeDef == PRDefOf.Thruster), this.wo);
+                        thing => thing.TryGetComp<CompGravshipFacility>() is CompGravshipFacility comp0 &&
+                        comp0.Props.componentTypeDef == PRDefOf.AAA), this.wo);
             }
         }
         public void Init(List<Thing> things, WorldObject_Transfer wo)
@@ -144,8 +144,7 @@ namespace DMSE
                 }
             }
             if (status is OrbitalTransferState.Working)
-            {
-                Log.Message(wo.DrawPos);
+            { 
                 Find.WorldCameraDriver.JumpTo(wo.DrawPos);
             } 
             this.EndUpdate();
