@@ -40,7 +40,7 @@
 			<bodyPartGroups>
 				<li>UpperHead</li>
 			</bodyPartGroups>
-			<wornGraphicPath>Things/Apparel/PASGT/Apparel</wornGraphicPath>
+			<wornGraphicPath>Things/Apparel/RangerHelmet/Apparel</wornGraphicPath>
 			<layers>
 				<li>Overhead</li>
 			</layers>
@@ -107,8 +107,9 @@
 			<li>DMS_Armor</li>
 		</tradeTags>
 		<graphicData>
-			<texPath>Things/Apparel/HeavyPowerSkeleton/exosuit_btm_south</texPath>
+			<texPath>Things/Apparel/HeavyPowerSkeleton/exosuit_icon</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
+			<drawSize>2</drawSize>
 		</graphicData>
 		<thingCategories>
 			<li>ApparelArmor</li>
@@ -142,7 +143,7 @@
 					<workerClass>PawnRenderNodeWorker_Apparel_Body</workerClass>
 					<parentTagDef>ApparelBody</parentTagDef>
 					<baseLayer>60</baseLayer>
-					<drawSize>1.75</drawSize>
+					<drawSize>1.5</drawSize>
 					<pawnType>Any</pawnType>
 					<useGraphic>true</useGraphic>
 					<texPath>Things/Apparel/HeavyPowerSkeleton/exosuit_top</texPath>
@@ -151,6 +152,15 @@
 							<layer>60</layer>
 							<offset>(0,0,0)</offset>
 						</defaultData>
+						<dataNorth>
+							<layer>80</layer>
+						</dataNorth>
+						<dataEast>
+							<offset>(-0.25,0,0.15)</offset>
+						</dataEast>
+						<dataWest>
+							<offset>(0.25,0,0.15)</offset>
+						</dataWest>
 					</drawData>
 				</li>
 				<li>
@@ -159,7 +169,7 @@
 					<workerClass>PawnRenderNodeWorker_Apparel_Body</workerClass>
 					<parentTagDef>ApparelBody</parentTagDef>
 					<baseLayer>-5</baseLayer>
-					<drawSize>1.75</drawSize>
+					<drawSize>1.5</drawSize>
 					<pawnType>Any</pawnType>
 					<useGraphic>true</useGraphic>
 					<texPath>Things/Apparel/HeavyPowerSkeleton/exosuit_btm</texPath>
@@ -168,6 +178,9 @@
 							<layer>-5</layer>
 							<offset>(0,0,0)</offset>
 						</defaultData>
+						<dataSouth>
+							<offset>(0,0,0.25)</offset>
+						</dataSouth>
 					</drawData>
 				</li>
 			</renderNodeProperties>

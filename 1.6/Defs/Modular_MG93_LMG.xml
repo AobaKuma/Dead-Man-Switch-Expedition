@@ -7,6 +7,7 @@
         <graphicData>
             <texPath>Things/Weapons/DMS_MG93Caseless</texPath>
             <graphicClass>Graphic_Single</graphicClass>
+			<drawSize>1.2</drawSize>
         </graphicData>
         <statBases>
             	<WorkToMake>46000</WorkToMake>
