@@ -5,7 +5,7 @@
     <defName>Ship</defName>
     <label>gravship</label>
     <description>A gravship in flight.</description>
-    <worldObjectClass>PawnReplace.WorldObject_Transfer</worldObjectClass>
+    <worldObjectClass>DMSE.WorldObject_Transfer</worldObjectClass>
     <texture>World/WorldObjects/Caravan</texture>
     <useDynamicDrawer>true</useDynamicDrawer>
     <expandingIcon>true</expandingIcon>

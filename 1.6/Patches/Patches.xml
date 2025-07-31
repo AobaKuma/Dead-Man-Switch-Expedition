@@ -11,7 +11,7 @@
 	<Operation Class="PatchOperationAdd">
 		<xpath>Defs/PlanetLayerDef[@Name="OrbitLayer"]/worldDrawLayers</xpath>
 		<value>
-			<li>PawnReplace.WorldDrawLayer_SpaceTiles</li>
+			<li>DMSE.WorldDrawLayer_SpaceTiles</li>
 			<li>WorldDrawLayer_SelectedTile</li>
 			<li>WorldDrawLayer_MouseTile</li>
 		</value>
