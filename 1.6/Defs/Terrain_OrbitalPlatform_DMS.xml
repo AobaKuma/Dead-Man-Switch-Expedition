@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <TerrainAffordanceDef>
+    <defName>VoidSpace</defName>
+    <label>Space</label>
+    <order>2400</order>
+  </TerrainAffordanceDef>
+
+  <TerrainDef Name="PlatformBase" Abstract="True">
+    <renderPrecedence>240</renderPrecedence>
+    <preventCraters>true</preventCraters>
+    <layerable>false</layerable>
+    <fertility>0</fertility>
+    <designationCategory />
+    <canEverTerraform>false</canEverTerraform>
+    <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionSoil</pollutionOverlayTexturePath>
+    <pollutionColor>(1, 1, 1, 0.43)</pollutionColor>
+    <pollutionOverlayScale>(0.66, 0.66)</pollutionOverlayScale>
+    <natural>true</natural>
+    <statBases>
+      <Beauty>-3</Beauty>
+    </statBases>
+    <filthAcceptanceMask>
+      <li>Unnatural</li>
+    </filthAcceptanceMask>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+      <li>Walkable</li>
+    </affordances>
+
+  <!--Adicional tags-->
+  <designationCategory>Odyssey</designationCategory>
+
+  </TerrainDef>
+  
+  <TerrainDef ParentName="PlatformBase">
+    <defName>DMS_OrbitalPlatform</defName>
+    <label>orbital platform</label>
+    <texturePath>terrain/DMS_Orbitalplatform/OrbitalPlatform</texturePath>
+    <spaceEdgeGraphicData Inherit="False">
+      <OShapeTexPath>terrain/DMS_Orbitalplatform/borderinside/OrbitalPlatformBorderInside_OShape</OShapeTexPath>
+      <UShapeTexPath>terrain/DMS_Orbitalplatform/borderinside/OrbitalPlatformBorderInside_UShape</UShapeTexPath>
+      <CornerInnerTexPath>terrain/DMS_Orbitalplatform/borderinside/OrbitalPlatformBorderInside_CornerInner</CornerInnerTexPath>
+      <CornerOuterTexPath>terrain/DMS_Orbitalplatform/borderinside/OrbitalPlatformBorderInside_CornerOuter</CornerOuterTexPath>
+      <FlatTexPath>terrain/DMS_Orbitalplatform/borderinside/OrbitalPlatformBorderInside_Flat</FlatTexPath>
+
+      <LoopLeftTexPath>terrain/DMS_Orbitalplatform/OrbitalPlatformEdge_Left</LoopLeftTexPath>
+      <LoopRightTexPath>terrain/DMS_Orbitalplatform/OrbitalPlatformEdge_Right</LoopRightTexPath>
+      <LoopSingleTexPath>terrain/DMS_Orbitalplatform/OrbitalPlatformEdge_Single</LoopSingleTexPath>
+
+      <LoopTexPaths>
+        <li>terrain/DMS_Orbitalplatform/loop/OrbitalPlatformEdge_Loop1</li>
+        <li>terrain/DMS_Orbitalplatform/loop/OrbitalPlatformEdge_Loop2</li>
+        <li>terrain/DMS_Orbitalplatform/loop/OrbitalPlatformEdge_Loop3</li>
+        <li>terrain/DMS_Orbitalplatform/loop/OrbitalPlatformEdge_Loop4</li>
+        <li>terrain/DMS_Orbitalplatform/loop/OrbitalPlatformEdge_Loop5</li>
+      </LoopTexPaths>
+    </spaceEdgeGraphicData>
+	
+	<description>A solid orbital surface that allows walking in outer space. You can build all kinds of structures on it.</description>
+    
+    <researchPrerequisites>
+      <li>BasicGravtech</li>
+    </researchPrerequisites>
+
+    <costList>
+      <Steel>25</Steel>
+    </costList>
+
+    <statBases>
+      <WorkToBuild>8000</WorkToBuild>
+	  <MarketValue>0</MarketValue>
+    </statBases>
+
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+      <li>Walkable</li>
+      <li>VoidSpace</li>
+      <li>Platform</li>
+    </affordances>
+
+    <terrainAffordanceNeeded>VoidSpace</terrainAffordanceNeeded>
+  </TerrainDef>
+
+</Defs>
