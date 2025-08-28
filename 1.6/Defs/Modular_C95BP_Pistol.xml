@@ -20,8 +20,9 @@
 			<RangedWeapon_Cooldown>0.4</RangedWeapon_Cooldown>
 		</statBases>
 		<costList>
-			<Tungsteel>30</Tungsteel>
-			<ComponentStamped>2</ComponentStamped>
+			<DMSE_TantastenAlloy>15</DMSE_TantastenAlloy>
+			<DMSE_Graphene>15</DMSE_Graphene>
+			<ComponentStamped>3</ComponentStamped>
 		</costList>
 		<weaponClasses>
 			<li>RangedLight</li>

@@ -47,7 +47,7 @@
     <modExtensions>
       <li Class="VEF.Buildings.RecipeInheritanceExtension" MayRequire="oskarpotocki.vanillafactionsexpanded.core">
         <inheritRecipesFrom>
-          <li>ElectricSmithy</li>
+          <!--<li>ElectricSmithy</li>-->
 		  <!--<li>DMS_TableMachinePrinter</li>-->
         </inheritRecipesFrom>
       </li>

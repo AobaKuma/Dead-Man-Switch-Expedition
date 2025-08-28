@@ -300,6 +300,7 @@
       <ShuttleEngine>1</ShuttleEngine>
     </products>
   </RecipeDef>
+  
   <!-- T/R組件 (T/R) -->
   <RecipeDef>
     <defName>DMS_Make_ComponentTransmitter</defName>
@@ -347,6 +348,7 @@
       <ComponentTransmitter>1</ComponentTransmitter>
     </products>
   </RecipeDef>
+  
   <!-- 火控系統 (FCS) -->
   <RecipeDef>
     <defName>DMS_Make_ComponentFireControl</defName>
@@ -403,6 +405,7 @@
       <ComponentFireControl>1</ComponentFireControl>
     </products>
   </RecipeDef>
+  
   <!-- 集群控制晶片 (Cluster Control chip) -->
   <RecipeDef>
     <defName>DMS_Make_ComponentControlChip</defName>
@@ -459,6 +462,7 @@
       <ComponentControlChip>1</ComponentControlChip>
     </products>
   </RecipeDef>
+  
   <!-- 高級零件 (ComponentSpacer)-->
   <RecipeDef>
     <defName>DMS_Make_ComponentSpacer</defName>
@@ -597,6 +601,7 @@
     <workSkill>Crafting</workSkill>
     <displayPriority>10</displayPriority>
   </RecipeDef>
+  
   <!-- 石墨烯電容 (Grapene Capacitor)-->
 
 </Defs>	

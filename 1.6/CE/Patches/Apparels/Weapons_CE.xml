@@ -30,7 +30,7 @@
                 <AmmoUser>
 					<magazineSize>45</magazineSize>
 					<reloadTime>3</reloadTime>
-					<ammoSet>AmmoSet_5x50mmCaseless_HV</ammoSet>
+					<ammoSet>Cinder_AmmoSet_5x50mmCaseless_HV</ammoSet>
                 </AmmoUser>
                 <FireModes>
                     <aiUseBurstMode>true</aiUseBurstMode>
@@ -70,7 +70,7 @@
                 <AmmoUser>
 					<magazineSize>300</magazineSize>
 					<reloadTime>7.8</reloadTime>
-					<ammoSet>AmmoSet_5x50mmCaseless_HV</ammoSet>
+					<ammoSet>Cinder_AmmoSet_5x50mmCaseless_HV</ammoSet>
                 </AmmoUser>
                 <FireModes>
 					<aiUseBurstMode>true</aiUseBurstMode>

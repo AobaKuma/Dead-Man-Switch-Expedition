@@ -52,8 +52,9 @@
 			<RangedWeapon_Cooldown>1.70</RangedWeapon_Cooldown>
 		</statBases>
 		<costList>
-			<Steel>60</Steel>
-			<ComponentIndustrial>7</ComponentIndustrial>
+			<DMSE_TantastenAlloy>45</DMSE_TantastenAlloy>
+			<DMSE_Graphene>15</DMSE_Graphene>
+			<ComponentStamped>4</ComponentStamped>
 		</costList>
 		<weaponTags>
 			<li>IndustrialGunAdvanced</li>

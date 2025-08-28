@@ -1,0 +1,523 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs MayNotRequire="breadmo.cinders">
+
+	<!-- ==================== AmmoSet ========================== -->
+
+	<CombatExtended.AmmoSetDef>
+		<defName>Cinder_AmmoSet_5x50mmCaseless_HV</defName>
+		<label>5x50mm Caseless(Special)</label>
+		<ammoTypes>
+			<Ammo_5x50mmCaseless_FMJ>Bullet_5x50mmCaseless_FMJ_HV</Ammo_5x50mmCaseless_FMJ>
+			<Ammo_5x50mmCaseless_AP>Bullet_5x50mmCaseless_AP_HV</Ammo_5x50mmCaseless_AP>
+			<Ammo_5x50mmCaseless_HP>Bullet_5x50mmCaseless_HP_HV</Ammo_5x50mmCaseless_HP>
+			<Ammo_5x50mmCaseless_Incendiary>Bullet_5x50mmCaseless_Incendiary_HV</Ammo_5x50mmCaseless_Incendiary>
+			<Ammo_5x50mmCaseless_HE>Bullet_5x50mmCaseless_HE_HV</Ammo_5x50mmCaseless_HE>
+			<Ammo_5x50mmCaseless_Sabot>Bullet_5x50mmCaseless_Sabot_HV</Ammo_5x50mmCaseless_Sabot>
+		</ammoTypes>
+		<similarTo>AmmoSet_Rifle</similarTo>
+	</CombatExtended.AmmoSetDef>
+
+	<!-- ==================== Ammo ========================== -->
+
+	<ThingDef Class="CombatExtended.AmmoDef" ParentName="5x50mmCaselessBase">
+		<defName>Ammo_5x50mmCaseless_FMJ</defName>
+		<label>5x50mm Caseless (FMJ)</label>
+		<graphicData>
+			<texPath>Things/Ammo/Caseless/FMJ</texPath>
+			<graphicClass>Graphic_StackCount</graphicClass>
+		</graphicData>
+		<statBases>
+			<Mass>0.016</Mass>
+			<MarketValue>0.05</MarketValue>
+		</statBases>
+		<ammoClass>FullMetalJacket</ammoClass>
+		<cookOffProjectile>Bullet_5x50mmCaseless_FMJ</cookOffProjectile>
+		<generateAllowChance>0</generateAllowChance>
+	</ThingDef>
+
+	<ThingDef Class="CombatExtended.AmmoDef" ParentName="5x50mmCaselessBase">
+		<defName>Ammo_5x50mmCaseless_AP</defName>
+		<label>5x50mm Caseless (AP)</label>
+		<graphicData>
+			<texPath>Things/Ammo/Caseless/AP</texPath>
+			<graphicClass>Graphic_StackCount</graphicClass>
+		</graphicData>
+		<statBases>
+			<Mass>0.016</Mass>
+			<MarketValue>0.05</MarketValue>
+		</statBases>
+		<ammoClass>ArmorPiercing</ammoClass>
+		<cookOffProjectile>Bullet_5x50mmCaseless_AP</cookOffProjectile>
+		<generateAllowChance>0</generateAllowChance>
+	</ThingDef>
+
+	<ThingDef Class="CombatExtended.AmmoDef" ParentName="5x50mmCaselessBase">
+		<defName>Ammo_5x50mmCaseless_HP</defName>
+		<label>5x50mm Caseless (HP)</label>
+		<graphicData>
+			<texPath>Things/Ammo/Caseless/HP</texPath>
+			<graphicClass>Graphic_StackCount</graphicClass>
+		</graphicData>
+		<statBases>
+			<Mass>0.014</Mass>
+			<MarketValue>0.05</MarketValue>
+		</statBases>
+		<ammoClass>HollowPoint</ammoClass>
+		<cookOffProjectile>Bullet_5x50mmCaseless_HP</cookOffProjectile>
+		<generateAllowChance>0</generateAllowChance>
+	</ThingDef>
+
+	<ThingDef Class="CombatExtended.AmmoDef" ParentName="5x50mmCaselessBase">
+		<defName>Ammo_5x50mmCaseless_Incendiary</defName>
+		<label>5x50mm Caseless (AP-I)</label>
+		<graphicData>
+			<texPath>Things/Ammo/Caseless/Incendiary</texPath>
+			<graphicClass>Graphic_StackCount</graphicClass>
+		</graphicData>
+		<statBases>
+			<Mass>0.016</Mass>
+			<MarketValue>0.07</MarketValue>
+		</statBases>
+		<ammoClass>IncendiaryAP</ammoClass>
+		<cookOffProjectile>Bullet_5x50mmCaseless_Incendiary</cookOffProjectile>
+		<generateAllowChance>0</generateAllowChance>
+	</ThingDef>
+
+	<ThingDef Class="CombatExtended.AmmoDef" ParentName="5x50mmCaselessBase">
+		<defName>Ammo_5x50mmCaseless_HE</defName>
+		<label>5x50mm Caseless (AP-HE)</label>
+		<graphicData>
+			<texPath>Things/Ammo/Caseless/HE</texPath>
+			<graphicClass>Graphic_StackCount</graphicClass>
+		</graphicData>
+		<statBases>
+			<Mass>0.016</Mass>
+			<MarketValue>0.09</MarketValue>
+		</statBases>
+		<ammoClass>ExplosiveAP</ammoClass>
+		<cookOffProjectile>Bullet_5x50mmCaseless_HE</cookOffProjectile>
+		<generateAllowChance>0</generateAllowChance>
+	</ThingDef>
+
+	<!-- ================== Projectiles ================== -->
+
+	<ThingDef Name="Base5x50mmCaselessBullet" ParentName="BaseBulletCE" Abstract="true">
+		<graphicData>
+			<texPath>Things/Projectile/Bullet_Small</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageDef>Bullet</damageDef>
+			<speed>184</speed>
+		</projectile>
+	</ThingDef>
+
+
+	<ThingDef ParentName="Base5x50mmCaselessBullet">
+		<defName>Bullet_5x50mmCaseless_FMJ</defName>
+		<label>5x50mm Caseless bullet (FMJ)</label>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageAmountBase>21.06</damageAmountBase>
+			<armorPenetrationSharp>7.5</armorPenetrationSharp>
+			<armorPenetrationBlunt>60.2</armorPenetrationBlunt>
+		</projectile>
+	</ThingDef>
+	
+	<ThingDef ParentName="Base5x50mmCaselessBullet">
+		<defName>Bullet_5x50mmCaseless_FMJ_LV</defName>
+		<label>5x50mm Caseless bullet (FMJ)</label>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageAmountBase>16.85</damageAmountBase>
+			<armorPenetrationSharp>6</armorPenetrationSharp>
+			<armorPenetrationBlunt>48.16</armorPenetrationBlunt>
+			<speed>147</speed>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base5x50mmCaselessBullet">
+		<defName>Bullet_5x50mmCaseless_FMJ_HV</defName>
+		<label>5x50mm Caseless bullet (FMJ)</label>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageAmountBase>23.17</damageAmountBase>
+			<armorPenetrationSharp>8.5</armorPenetrationSharp>
+			<armorPenetrationBlunt>72.24</armorPenetrationBlunt>
+			<speed>216</speed>
+		</projectile>
+	</ThingDef>
+
+
+	<ThingDef ParentName="Base5x50mmCaselessBullet">
+		<defName>Bullet_5x50mmCaseless_AP</defName>
+		<label>5x50mm Caseless bullet (AP)</label>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageAmountBase>13.33</damageAmountBase>
+			<armorPenetrationSharp>15</armorPenetrationSharp>
+			<armorPenetrationBlunt>60.2</armorPenetrationBlunt>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base5x50mmCaselessBullet">
+		<defName>Bullet_5x50mmCaseless_AP_LV</defName>
+		<label>5x50mm Caseless bullet (AP)</label>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageAmountBase>9.33</damageAmountBase>
+			<armorPenetrationSharp>12</armorPenetrationSharp>
+			<armorPenetrationBlunt>48.16</armorPenetrationBlunt>
+			<speed>147</speed>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base5x50mmCaselessBullet">
+		<defName>Bullet_5x50mmCaseless_AP_HV</defName>
+		<label>5x50mm Caseless bullet (AP)</label>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageAmountBase>14.66</damageAmountBase>
+			<armorPenetrationSharp>16.8</armorPenetrationSharp>
+			<armorPenetrationBlunt>70.43</armorPenetrationBlunt>
+			<speed>216</speed>
+		</projectile>
+	</ThingDef>
+
+
+	<ThingDef ParentName="Base5x50mmCaselessBullet">
+		<defName>Bullet_5x50mmCaseless_HP</defName>
+		<label>5x50mm Caseless bullet (HP)</label>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageAmountBase>26.67</damageAmountBase>
+			<armorPenetrationSharp>3.75</armorPenetrationSharp>
+			<armorPenetrationBlunt>60.2</armorPenetrationBlunt>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base5x50mmCaselessBullet">
+		<defName>Bullet_5x50mmCaseless_HP_LV</defName>
+		<label>5x50mm Caseless bullet (HP)</label>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageAmountBase>24</damageAmountBase>
+			<armorPenetrationSharp>3</armorPenetrationSharp>
+			<armorPenetrationBlunt>48.16</armorPenetrationBlunt>
+			<speed>147</speed>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base5x50mmCaselessBullet">
+		<defName>Bullet_5x50mmCaseless_HP_HV</defName>
+		<label>5x50mm Caseless bullet (HP)</label>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageAmountBase>31.2</damageAmountBase>
+			<armorPenetrationSharp>4.13</armorPenetrationSharp>
+			<armorPenetrationBlunt>70.43</armorPenetrationBlunt>
+			<speed>216</speed>
+		</projectile>
+	</ThingDef>
+
+
+	<ThingDef ParentName="Base5x50mmCaselessBullet">
+		<defName>Bullet_5x50mmCaseless_Incendiary</defName>
+		<label>5x50mm Caseless bullet (AP-I)</label>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageAmountBase>13.33</damageAmountBase>
+			<armorPenetrationSharp>15</armorPenetrationSharp>
+			<armorPenetrationBlunt>60.2</armorPenetrationBlunt>
+			<secondaryDamage>
+				<li>
+					<def>Flame_Secondary</def>
+					<amount>3</amount>
+				</li>
+			</secondaryDamage>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base5x50mmCaselessBullet">
+		<defName>Bullet_5x50mmCaseless_Incendiary_LV</defName>
+		<label>5x50mm Caseless bullet (AP-I)</label>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageAmountBase>9.33</damageAmountBase>
+			<armorPenetrationSharp>12</armorPenetrationSharp>
+			<armorPenetrationBlunt>48.16</armorPenetrationBlunt>
+			<speed>147</speed>
+			<secondaryDamage>
+				<li>
+					<def>Flame_Secondary</def>
+					<amount>2.8</amount>
+				</li>
+			</secondaryDamage>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base5x50mmCaselessBullet">
+		<defName>Bullet_5x50mmCaseless_Incendiary_HV</defName>
+		<label>5x50mm Caseless bullet (AP-I)</label>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageAmountBase>14.66</damageAmountBase>
+			<armorPenetrationSharp>16.8</armorPenetrationSharp>
+			<armorPenetrationBlunt>70.43</armorPenetrationBlunt>
+			<speed>216</speed>
+			<secondaryDamage>
+				<li>
+					<def>Flame_Secondary</def>
+					<amount>3.2</amount>
+				</li>
+			</secondaryDamage>
+		</projectile>
+	</ThingDef>
+
+
+	<ThingDef ParentName="Base5x50mmCaselessBullet">
+		<defName>Bullet_5x50mmCaseless_HE</defName>
+		<label>5x50mm Caseless bullet (AP-HE)</label>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageAmountBase>20</damageAmountBase>
+			<armorPenetrationSharp>7.5</armorPenetrationSharp>
+			<armorPenetrationBlunt>60.2</armorPenetrationBlunt>
+			<secondaryDamage>
+				<li>
+					<def>Bomb_Secondary</def>
+					<amount>4</amount>
+				</li>
+			</secondaryDamage>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base5x50mmCaselessBullet">
+		<defName>Bullet_5x50mmCaseless_HE_LV</defName>
+		<label>5x50mm Caseless bullet (AP-HE)</label>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageAmountBase>16</damageAmountBase>
+			<armorPenetrationSharp>6</armorPenetrationSharp>
+			<armorPenetrationBlunt>48.16</armorPenetrationBlunt>
+			<speed>147</speed>
+			<secondaryDamage>
+				<li>
+					<def>Bomb_Secondary</def>
+					<amount>3.8</amount>
+				</li>
+			</secondaryDamage>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base5x50mmCaselessBullet">
+		<defName>Bullet_5x50mmCaseless_HE_HV</defName>
+		<label>5x50mm Caseless bullet (AP-HE)</label>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageAmountBase>23.4</damageAmountBase>
+			<armorPenetrationSharp>8.5</armorPenetrationSharp>
+			<armorPenetrationBlunt>70.43</armorPenetrationBlunt>
+			<speed>216</speed>
+			<secondaryDamage>
+				<li>
+					<def>Bomb_Secondary</def>
+					<amount>4.2</amount>
+				</li>
+			</secondaryDamage>
+		</projectile>
+	</ThingDef>
+
+<!-- 5x50mm Caseless Projectile From Combat Extended(including LV and HV)
+
+	<ThingDef ParentName="Base5x50mmCaselessBullet">
+		<defName>Bullet_5x50mmCaseless_Sabot</defName>
+		<label>5x50mm Caseless bullet (Sabot)</label>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageDef>Bullet</damageDef>
+			<damageAmountBase>10</damageAmountBase>
+			<armorPenetrationSharp>21</armorPenetrationSharp>
+			<armorPenetrationBlunt>73.2</armorPenetrationBlunt>
+			<speed>206</speed>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base5x50mmCaselessBullet">
+		<defName>Bullet_5x50mmCaseless_Sabot_LV</defName>
+		<label>5x50mm Caseless bullet (Sabot)</label>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageDef>Bullet</damageDef>
+			<damageAmountBase>7</damageAmountBase>
+			<armorPenetrationSharp>16</armorPenetrationSharp>
+			<armorPenetrationBlunt>40.5</armorPenetrationBlunt>
+			<speed>165</speed>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base5x50mmCaselessBullet">
+		<defName>Bullet_5x50mmCaseless_Sabot_HV</defName>
+		<label>5x50mm Caseless bullet (Sabot)</label>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageDef>Bullet</damageDef>
+			<damageAmountBase>11</damageAmountBase>
+			<armorPenetrationSharp>26</armorPenetrationSharp>
+			<armorPenetrationBlunt>112.5</armorPenetrationBlunt>
+			<speed>242</speed>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base5x50mmCaselessBullet" MayRequire="Ludeon.RimWorld.Biotech">
+		<defName>Bullet_5x50mmCaseless_Toxic</defName>
+		<label>5x50mm Caseless bullet (Toxic)</label>
+		<graphicData>
+			<texPath>Things/Projectile/ToxicNeedleShot</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageDef>BulletToxic</damageDef>
+			<damageAmountBase>11</damageAmountBase>
+			<armorPenetrationSharp>26</armorPenetrationSharp>
+			<armorPenetrationBlunt>112.5</armorPenetrationBlunt>
+			<speed>242</speed>
+		</projectile>
+	</ThingDef>
+
+-->
+
+
+	<!-- ==================== Recipes ========================== -->
+
+	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
+		<defName>MakeAmmo_5x50mmCaseless_FMJ</defName>
+		<label>make 5x50mm Caseless (FMJ) cartridge x500</label>
+		<description>Craft 500 5x50mm Caseless (FMJ) cartridges.</description>
+		<jobString>Making 5x50mm Caseless (FMJ) cartridges.</jobString>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Steel</li>
+					</thingDefs>
+				</filter>
+				<count>16</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Steel</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<Ammo_5x50mmCaseless_FMJ>500</Ammo_5x50mmCaseless_FMJ>
+		</products>
+		<workAmount>3080</workAmount>
+	</RecipeDef>
+
+	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
+		<defName>MakeAmmo_5x50mmCaseless_AP</defName>
+		<label>make 5x50mm Caseless (AP) cartridge x500</label>
+		<description>Craft 500 5x50mm Caseless (AP) cartridges.</description>
+		<jobString>Making 5x50mm Caseless (AP) cartridges.</jobString>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Steel</li>
+					</thingDefs>
+				</filter>
+				<count>16</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Steel</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<Ammo_5x50mmCaseless_AP>500</Ammo_5x50mmCaseless_AP>
+		</products>
+		<workAmount>3080</workAmount>
+	</RecipeDef>
+
+	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
+		<defName>MakeAmmo_5x50mmCaseless_HP</defName>
+		<label>make 5x50mm Caseless (HP) cartridge x500</label>
+		<description>Craft 500 5x50mm Caseless (HP) cartridges.</description>
+		<jobString>Making 5x50mm Caseless (HP) cartridges.</jobString>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Steel</li>
+					</thingDefs>
+				</filter>
+				<count>16</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Steel</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<Ammo_5x50mmCaseless_HP>500</Ammo_5x50mmCaseless_HP>
+		</products>
+		<workAmount>3080</workAmount>
+	</RecipeDef>
+
+	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
+		<defName>MakeAmmo_5x50mmCaseless_Incendiary</defName>
+		<label>make 5x50mm Caseless (AP-I) cartridge x500</label>
+		<description>Craft 500 5x50mm Caseless (AP-I) cartridges.</description>
+		<jobString>Making 5x50mm Caseless (AP-I) cartridges.</jobString>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Steel</li>
+					</thingDefs>
+				</filter>
+				<count>16</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Prometheum</li>
+					</thingDefs>
+				</filter>
+				<count>3</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Steel</li>
+				<li>Prometheum</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<Ammo_5x50mmCaseless_Incendiary>500</Ammo_5x50mmCaseless_Incendiary>
+		</products>
+		<workAmount>3080</workAmount>
+	</RecipeDef>
+
+	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
+		<defName>MakeAmmo_5x50mmCaseless_HE</defName>
+		<label>make 5x50mm Caseless (AP-HE) cartridge x500</label>
+		<description>Craft 500 5x50mm Caseless (AP-HE) cartridges.</description>
+		<jobString>Making 5x50mm Caseless (AP-HE) cartridges.</jobString>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Steel</li>
+					</thingDefs>
+				</filter>
+				<count>16</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>FSX</li>
+					</thingDefs>
+				</filter>
+				<count>3</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Steel</li>
+				<li>FSX</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<Ammo_5x50mmCaseless_HE>500</Ammo_5x50mmCaseless_HE>
+		</products>
+		<workAmount>3080</workAmount>
+	</RecipeDef>
+
+</Defs>
