@@ -20,6 +20,8 @@
         </statBases>
         <costList>
             <Tungsteel>85</Tungsteel>
+			<!--<DMSE_Graphene>25</DMSE_Graphene> -->
+			<!--<DMSE_TantastenAlloy>60</DMSE_TantastenAlloy>-->
             <ComponentStamped>9</ComponentStamped>
         </costList>
         <weaponClasses>

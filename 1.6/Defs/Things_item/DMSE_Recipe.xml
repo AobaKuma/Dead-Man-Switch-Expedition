@@ -168,7 +168,7 @@
     <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
     <recipeUsers>
       <li>DMS_Furnace</li>
-	    <li>DMS_LabFurnace</li>
+	  <li>DMS_LabFurnace</li>
     </recipeUsers>
     <skillRequirements>
       <Crafting>3</Crafting>
@@ -187,9 +187,9 @@
       </li>
       <li>
         <filter>
-          <categories>
+          <thingDefs>
             <li>BlocksVacstone</li>
-          </categories>
+          </thingDefs>
         </filter>
         <count>120</count>
       </li>
@@ -216,7 +216,7 @@
     <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
     <recipeUsers>
       <li>DMS_Furnace</li>
-	    <li>DMS_LabFurnace</li>
+	  <li>DMS_LabFurnace</li>
     </recipeUsers>
     <skillRequirements>
       <Crafting>3</Crafting>
@@ -235,9 +235,9 @@
       </li>
       <li>
         <filter>
-          <categories>
+          <thingDefs>
             <li>BlocksVacstone</li>
-          </categories>
+          </thingDefs>
         </filter>
         <count>480</count>
       </li>
@@ -252,5 +252,351 @@
       <DMSE_TantastenAlloy>80</DMSE_TantastenAlloy>
     </products>
   </RecipeDef>
+  
+  <!-- 穿梭機引擎 (shuttle engine) -->
+  <RecipeDef>
+    <defName>DMS_Make_ShuttleEngine</defName>
+    <label>Make Shuttle Engine</label>
+    <description>Producing a shuttle engine.</description>
+    <jobString>Producing.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
+    <recipeUsers>
+      <li>DMSE_MicrogravityFacility</li>
+    </recipeUsers>
+    <skillRequirements>
+      <Crafting>10</Crafting>
+    </skillRequirements>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>DMSE_Aerospace</researchPrerequisite>
+    <workAmount>60000</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>DMSE_TantastenAlloy</li>
+          </thingDefs>
+        </filter>
+        <count>75</count>
+      </li>
+	  <li>
+        <filter>
+          <thingDefs>
+            <li>ComponentSpacer</li>
+          </thingDefs>
+        </filter>
+        <count>3</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>DMSE_TantastenAlloy</li>
+		<li>ComponentSpacer</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <ShuttleEngine>1</ShuttleEngine>
+    </products>
+  </RecipeDef>
+  <!-- T/R組件 (T/R) -->
+  <RecipeDef>
+    <defName>DMS_Make_ComponentTransmitter</defName>
+    <label>Make T/R Component</label>
+    <description>Producing a T/R Component.</description>
+    <jobString>Producing.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
+    <recipeUsers>
+      <li>DMSE_MicrogravityFacility</li>
+    </recipeUsers>
+    <skillRequirements>
+      <Crafting>10</Crafting>
+    </skillRequirements>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>DMSE_Aerospace</researchPrerequisite>
+    <workAmount>30000</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>DMSE_Graphene</li>
+          </thingDefs>
+        </filter>
+        <count>50</count>
+      </li>
+	  <li>
+        <filter>
+          <thingDefs>
+            <li>Gold</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>DMSE_Graphene</li>
+		<li>Gold</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <ComponentTransmitter>1</ComponentTransmitter>
+    </products>
+  </RecipeDef>
+  <!-- 火控系統 (FCS) -->
+  <RecipeDef>
+    <defName>DMS_Make_ComponentFireControl</defName>
+    <label>Make Fire Control System</label>
+    <description>Producing a Fire Control System.</description>
+    <jobString>Producing.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
+    <recipeUsers>
+      <li>DMSE_MicrogravityFacility</li>
+    </recipeUsers>
+    <skillRequirements>
+      <Crafting>10</Crafting>
+    </skillRequirements>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>DMSE_Aerospace</researchPrerequisite>
+    <workAmount>50000</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>DMSE_TantastenAlloy</li>
+          </thingDefs>
+        </filter>
+        <count>25</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>ComponentIndustrial</li>
+          </thingDefs>
+        </filter>
+        <count>5</count>
+      </li>
+	  <li>
+        <filter>
+          <thingDefs>
+            <li>ComponentTransmitter</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+	    <li>DMSE_TantastenAlloy</li>
+        <li>ComponentIndustrial</li>
+		<li>ComponentTransmitter</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <ComponentFireControl>1</ComponentFireControl>
+    </products>
+  </RecipeDef>
+  <!-- 集群控制晶片 (Cluster Control chip) -->
+  <RecipeDef>
+    <defName>DMS_Make_ComponentControlChip</defName>
+    <label>Make Cluster Control Chipsets</label>
+    <description>Producing a Cluster Control Chipsets.</description>
+    <jobString>Producing.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
+    <recipeUsers>
+      <li>DMSE_MicrogravityFacility</li>
+    </recipeUsers>
+    <skillRequirements>
+      <Crafting>12</Crafting>
+    </skillRequirements>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>DMSE_Aerospace</researchPrerequisite>
+    <workAmount>50000</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>DMSE_TantastenAlloy</li>
+          </thingDefs>
+        </filter>
+        <count>25</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>ComponentIndustrial</li>
+          </thingDefs>
+        </filter>
+        <count>5</count>
+      </li>
+	  <li>
+        <filter>
+          <thingDefs>
+            <li>ComponentTransmitter</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+	    <li>DMSE_TantastenAlloy</li>
+        <li>ComponentIndustrial</li>
+		<li>ComponentTransmitter</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <ComponentControlChip>1</ComponentControlChip>
+    </products>
+  </RecipeDef>
+  <!-- 高級零件 (ComponentSpacer)-->
+  <RecipeDef>
+    <defName>DMS_Make_ComponentSpacer</defName>
+    <label>make advanced component with graphene</label>
+    <description>Make an advanced component.</description>
+    <jobString>Making advanced component.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workAmount>10000</workAmount>
+    <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
+	<skillRequirements>
+      <Crafting>8</Crafting>
+    </skillRequirements>
+	<recipeUsers>
+      <li>DMSE_MicrogravityFacility</li>
+    </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>ComponentIndustrial</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Steel</li>
+          </thingDefs>
+        </filter>
+        <count>20</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Plasteel</li>
+          </thingDefs>
+        </filter>
+        <count>10</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>DMSE_Graphene</li>
+          </thingDefs>
+        </filter>
+        <count>3</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>ComponentIndustrial</li>
+        <li>Steel</li>
+        <li>Plasteel</li>
+        <li>DMSE_Graphene</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <ComponentSpacer>1</ComponentSpacer>
+    </products>
+	<researchPrerequisites>
+      <li>DMSE_Microgravity</li>
+	  <li>AdvancedFabrication</li>
+    </researchPrerequisites>
+    <workSkill>Crafting</workSkill>
+    <displayPriority>10</displayPriority>
+  </RecipeDef>
+  
+  <RecipeDef>
+    <defName>DMS_Make_ComponentSpacerBulk</defName>
+    <label>make advanced component with graphene x4</label>
+    <description>Make advanced component x4</description>
+    <jobString>Making advanced component.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workAmount>12500</workAmount>
+    <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
+	<skillRequirements>
+      <Crafting>8</Crafting>
+    </skillRequirements>
+	<recipeUsers>
+      <li>DMSE_MicrogravityFacility</li>
+    </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>ComponentIndustrial</li>
+          </thingDefs>
+        </filter>
+        <count>4</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Steel</li>
+          </thingDefs>
+        </filter>
+        <count>80</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Plasteel</li>
+          </thingDefs>
+        </filter>
+        <count>40</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>DMSE_Graphene</li>
+          </thingDefs>
+        </filter>
+        <count>12</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>ComponentIndustrial</li>
+        <li>Steel</li>
+        <li>Plasteel</li>
+        <li>DMSE_Graphene</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <ComponentSpacer>4</ComponentSpacer>
+    </products>
+	<researchPrerequisites>
+      <li>DMSE_Microgravity</li>
+	  <li>AdvancedFabrication</li>
+    </researchPrerequisites>
+    <workSkill>Crafting</workSkill>
+    <displayPriority>10</displayPriority>
+  </RecipeDef>
+  <!-- 石墨烯電容 (Grapene Capacitor)-->
 
 </Defs>	

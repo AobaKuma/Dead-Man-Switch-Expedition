@@ -48,6 +48,7 @@
       <li Class="VEF.Buildings.RecipeInheritanceExtension" MayRequire="oskarpotocki.vanillafactionsexpanded.core">
         <inheritRecipesFrom>
           <li>ElectricSmithy</li>
+		  <!--<li>DMS_TableMachinePrinter</li>-->
         </inheritRecipesFrom>
       </li>
       <li Class="Fortified.ModExtension_AutoWorkTable">
