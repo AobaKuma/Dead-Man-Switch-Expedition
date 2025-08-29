@@ -1,10 +1,38 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Defs MayNotRequire="breadmo.cinders">
+<Defs>
 
 	<!-- ==================== AmmoSet ========================== -->
 
 	<CombatExtended.AmmoSetDef>
-		<defName>Cinder_AmmoSet_5x50mmCaseless_HV</defName>
+		<defName>DMSE_AmmoSet_5x50mmCaseless_LV</defName>
+		<label>5x50mm Caseless(Special)</label>
+		<ammoTypes>
+			<Ammo_5x50mmCaseless_FMJ>Bullet_5x50mmCaseless_FMJ_LV</Ammo_5x50mmCaseless_FMJ>
+			<Ammo_5x50mmCaseless_AP>Bullet_5x50mmCaseless_AP_LV</Ammo_5x50mmCaseless_AP>
+			<Ammo_5x50mmCaseless_HP>Bullet_5x50mmCaseless_HP_LV</Ammo_5x50mmCaseless_HP>
+			<Ammo_5x50mmCaseless_Incendiary>Bullet_5x50mmCaseless_Incendiary_LV</Ammo_5x50mmCaseless_Incendiary>
+			<Ammo_5x50mmCaseless_HE>Bullet_5x50mmCaseless_HE_LV</Ammo_5x50mmCaseless_HE>
+			<Ammo_5x50mmCaseless_Sabot>Bullet_5x50mmCaseless_Sabot_LV</Ammo_5x50mmCaseless_Sabot>
+		</ammoTypes>
+		<similarTo>AmmoSet_Rifle</similarTo>
+	</CombatExtended.AmmoSetDef>
+
+	<CombatExtended.AmmoSetDef>
+		<defName>DMSE_AmmoSet_5x50mmCaseless</defName>
+		<label>5x50mm Caseless(Special)</label>
+		<ammoTypes>
+			<Ammo_5x50mmCaseless_FMJ>Bullet_5x50mmCaseless_FMJ</Ammo_5x50mmCaseless_FMJ>
+			<Ammo_5x50mmCaseless_AP>Bullet_5x50mmCaseless_AP</Ammo_5x50mmCaseless_AP>
+			<Ammo_5x50mmCaseless_HP>Bullet_5x50mmCaseless_HP</Ammo_5x50mmCaseless_HP>
+			<Ammo_5x50mmCaseless_Incendiary>Bullet_5x50mmCaseless_Incendiary</Ammo_5x50mmCaseless_Incendiary>
+			<Ammo_5x50mmCaseless_HE>Bullet_5x50mmCaseless_HE</Ammo_5x50mmCaseless_HE>
+			<Ammo_5x50mmCaseless_Sabot>Bullet_5x50mmCaseless_Sabot</Ammo_5x50mmCaseless_Sabot>
+		</ammoTypes>
+		<similarTo>AmmoSet_Rifle</similarTo>
+	</CombatExtended.AmmoSetDef>
+
+	<CombatExtended.AmmoSetDef>
+		<defName>DMSE_AmmoSet_5x50mmCaseless_HV</defName>
 		<label>5x50mm Caseless(Special)</label>
 		<ammoTypes>
 			<Ammo_5x50mmCaseless_FMJ>Bullet_5x50mmCaseless_FMJ_HV</Ammo_5x50mmCaseless_FMJ>
@@ -27,12 +55,11 @@
 			<graphicClass>Graphic_StackCount</graphicClass>
 		</graphicData>
 		<statBases>
-			<Mass>0.016</Mass>
+			<Mass>0.022</Mass>
 			<MarketValue>0.05</MarketValue>
 		</statBases>
 		<ammoClass>FullMetalJacket</ammoClass>
-		<cookOffProjectile>Bullet_5x50mmCaseless_FMJ</cookOffProjectile>
-		<generateAllowChance>0</generateAllowChance>
+		<cookOffProjectile>DMSE_Bullet_5x50mmCaseless_Safe</cookOffProjectile>
 	</ThingDef>
 
 	<ThingDef Class="CombatExtended.AmmoDef" ParentName="5x50mmCaselessBase">
@@ -43,12 +70,11 @@
 			<graphicClass>Graphic_StackCount</graphicClass>
 		</graphicData>
 		<statBases>
-			<Mass>0.016</Mass>
+			<Mass>0.022</Mass>
 			<MarketValue>0.05</MarketValue>
 		</statBases>
 		<ammoClass>ArmorPiercing</ammoClass>
-		<cookOffProjectile>Bullet_5x50mmCaseless_AP</cookOffProjectile>
-		<generateAllowChance>0</generateAllowChance>
+		<cookOffProjectile>DMSE_Bullet_5x50mmCaseless_Safe</cookOffProjectile>
 	</ThingDef>
 
 	<ThingDef Class="CombatExtended.AmmoDef" ParentName="5x50mmCaselessBase">
@@ -59,12 +85,11 @@
 			<graphicClass>Graphic_StackCount</graphicClass>
 		</graphicData>
 		<statBases>
-			<Mass>0.014</Mass>
+			<Mass>0.022</Mass>
 			<MarketValue>0.05</MarketValue>
 		</statBases>
 		<ammoClass>HollowPoint</ammoClass>
-		<cookOffProjectile>Bullet_5x50mmCaseless_HP</cookOffProjectile>
-		<generateAllowChance>0</generateAllowChance>
+		<cookOffProjectile>DMSE_Bullet_5x50mmCaseless_Safe</cookOffProjectile>
 	</ThingDef>
 
 	<ThingDef Class="CombatExtended.AmmoDef" ParentName="5x50mmCaselessBase">
@@ -75,12 +100,12 @@
 			<graphicClass>Graphic_StackCount</graphicClass>
 		</graphicData>
 		<statBases>
-			<Mass>0.016</Mass>
+			<Mass>0.022</Mass>
 			<MarketValue>0.07</MarketValue>
 		</statBases>
 		<ammoClass>IncendiaryAP</ammoClass>
-		<cookOffProjectile>Bullet_5x50mmCaseless_Incendiary</cookOffProjectile>
-		<generateAllowChance>0</generateAllowChance>
+		<cookOffProjectile>DMSE_Bullet_5x50mmCaseless_Safe</cookOffProjectile>
+		<generateAllowChance>0.65</generateAllowChance>
 	</ThingDef>
 
 	<ThingDef Class="CombatExtended.AmmoDef" ParentName="5x50mmCaselessBase">
@@ -91,12 +116,12 @@
 			<graphicClass>Graphic_StackCount</graphicClass>
 		</graphicData>
 		<statBases>
-			<Mass>0.016</Mass>
+			<Mass>0.022</Mass>
 			<MarketValue>0.09</MarketValue>
 		</statBases>
 		<ammoClass>ExplosiveAP</ammoClass>
-		<cookOffProjectile>Bullet_5x50mmCaseless_HE</cookOffProjectile>
-		<generateAllowChance>0</generateAllowChance>
+		<cookOffProjectile>DMSE_Bullet_5x50mmCaseless_Safe</cookOffProjectile>
+		<generateAllowChance>0.65</generateAllowChance>
 	</ThingDef>
 
 	<!-- ================== Projectiles ================== -->
@@ -112,6 +137,16 @@
 		</projectile>
 	</ThingDef>
 
+	<ThingDef ParentName="Base5x50mmCaselessBullet">
+		<defName>DMSE_Bullet_5x50mmCaseless_Safe</defName>
+		<label>5x50mm Caseless bullet(cook-off)</label>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageAmountBase>0.01</damageAmountBase>
+			<armorPenetrationSharp>0</armorPenetrationSharp>
+			<armorPenetrationBlunt>0.10</armorPenetrationBlunt>
+			<speed>60</speed>
+		</projectile>
+	</ThingDef>
 
 	<ThingDef ParentName="Base5x50mmCaselessBullet">
 		<defName>Bullet_5x50mmCaseless_FMJ</defName>
