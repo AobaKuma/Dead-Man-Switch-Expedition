@@ -2,23 +2,23 @@
 <Patch MayRequire = "CETeam.CombatExtended">
 
     <Operation Class="PatchOperationAdd">           
-        <xpath>Defs/ThingDef[defName="AmmoSet_5x50mmCaseless"]/ammoTypes</xpath>
+        <xpath>Defs/ThingDef[defName="DMSE_AmmoSet_5x50mmCaseless"]/ammoTypes</xpath>
             <value>
-            <Ammo_5x50mmCaseless_Erosion>Bullet_5x50mmCaseless_Erosion</Ammo_5x50mmCaseless_Erosion>
+                <Ammo_5x50mmCaseless_Erosion>Bullet_5x50mmCaseless_Erosion</Ammo_5x50mmCaseless_Erosion>
             </value>           
     </Operation>
 
     <Operation Class="PatchOperationAdd">           
-        <xpath>Defs/ThingDef[defName="AmmoSet_5x50mmCaseless_LV"]/ammoTypes</xpath>
+        <xpath>Defs/ThingDef[defName="DMSE_AmmoSet_5x50mmCaseless_LV"]/ammoTypes</xpath>
             <value>
-            <Ammo_5x50mmCaseless_Erosion>Bullet_5x50mmCaseless_Erosion_LV</Ammo_5x50mmCaseless_Erosion>
+                <Ammo_5x50mmCaseless_Erosion>Bullet_5x50mmCaseless_Erosion_LV</Ammo_5x50mmCaseless_Erosion>
             </value>           
     </Operation>
 
     <Operation Class="PatchOperationAdd">           
-        <xpath>Defs/ThingDef[defName="AmmoSet_5x50mmCaseless_HV"]/ammoTypes</xpath>
+        <xpath>Defs/ThingDef[defName="DMSE_AmmoSet_5x50mmCaseless_HV"]/ammoTypes</xpath>
             <value>
-            <Ammo_5x50mmCaseless_Erosion>Bullet_5x50mmCaseless_Erosion_HV</Ammo_5x50mmCaseless_Erosion>
+                <Ammo_5x50mmCaseless_Erosion>Bullet_5x50mmCaseless_Erosion_HV</Ammo_5x50mmCaseless_Erosion>
             </value>           
     </Operation>
 </Patch>
