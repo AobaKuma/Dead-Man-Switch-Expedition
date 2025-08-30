@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <Defs>
+	<RecipeDef Name="DMS_VacuumRecipe" Abstract="True">
+		<workerClass>Fortified.RecipeWorker_Vacuum</workerClass>
+	</RecipeDef>
+	
+	<RecipeDef Name="DMS_MicroGrav_Recipe" Abstract="True">
+		<workerClass>Fortified.RecipeWorker_MicroGravity</workerClass>
+	</RecipeDef>
 
   <!-- 低重力生產設施 -->
   <RecipeDef>
     <defName>DMS_Make_Graphene_Chemfuel</defName>
     <label>Make Graphene x5</label>
+	<workerClass>Fortified.RecipeWorker_MicroGravity</workerClass>
     <description>Producing a small amount of graphene materials using Chemfuel and wood.</description>
     <jobString>Producing.</jobString>
     <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -44,6 +52,7 @@
   <RecipeDef>
     <defName>DMS_Make_GrapheneMass_Chemfuel</defName>
     <label>Make Graphene x20</label>
+	<workerClass>Fortified.RecipeWorker_MicroGravity</workerClass>
     <description>Producing a large amount of graphene materials using Chemfuel and wood.</description>
     <jobString>Producing.</jobString>
     <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -82,6 +91,7 @@
   <RecipeDef>
     <defName>DMS_Make_Graphene_WoodLog</defName>
     <label>Make Graphene x5</label>
+	<workerClass>Fortified.RecipeWorker_MicroGravity</workerClass>
     <description>Producing a small amount of graphene materials using Chemfuel and wood.</description>
     <jobString>Producing.</jobString>
     <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -120,6 +130,7 @@
   <RecipeDef>
     <defName>DMS_Make_GrapheneMass_WoordLog</defName>
     <label>Make Graphene x20</label>
+	<workerClass>Fortified.RecipeWorker_MicroGravity</workerClass>
     <description>Producing a large amount of graphene materials using Chemfuel and wood.</description>
     <jobString>Producing.</jobString>
     <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -160,6 +171,7 @@
  <RecipeDef>
     <defName>DMS_Make_TantastenAlloy</defName>
     <label>Make TantastenAlloy X20</label>
+	<workerClass>Fortified.RecipeWorker_Vacuum</workerClass>
     <description>Sinter a small amount of tantastenAlloy.</description>
     <jobString>Sintering.</jobString>
     <workSpeedStat>SmeltingSpeed</workSpeedStat>
@@ -208,6 +220,7 @@
   <RecipeDef>
     <defName>DMS_Make_TantastenAlloyMass</defName>
     <label>Make TantastenAlloy X80</label>
+	<workerClass>Fortified.RecipeWorker_Vacuum</workerClass>
     <description>Sinter a large amount of tantastenAlloy.</description>
     <jobString>Sintering.</jobString>
     <workSpeedStat>SmeltingSpeed</workSpeedStat>
@@ -257,6 +270,7 @@
   <RecipeDef>
     <defName>DMS_Make_ShuttleEngine</defName>
     <label>Make Shuttle Engine</label>
+	<workerClass>Fortified.RecipeWorker_MicroGravity</workerClass>
     <description>Producing a shuttle engine.</description>
     <jobString>Producing.</jobString>
     <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -305,6 +319,7 @@
   <RecipeDef>
     <defName>DMS_Make_ComponentTransmitter</defName>
     <label>Make T/R Component</label>
+	<workerClass>Fortified.RecipeWorker_MicroGravity</workerClass>
     <description>Producing a T/R Component.</description>
     <jobString>Producing.</jobString>
     <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -353,6 +368,7 @@
   <RecipeDef>
     <defName>DMS_Make_ComponentFireControl</defName>
     <label>Make Fire Control System</label>
+	<workerClass>Fortified.RecipeWorker_MicroGravity</workerClass>
     <description>Producing a Fire Control System.</description>
     <jobString>Producing.</jobString>
     <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -410,6 +426,7 @@
   <RecipeDef>
     <defName>DMS_Make_ComponentControlChip</defName>
     <label>Make Cluster Control Chipsets</label>
+	<workerClass>Fortified.RecipeWorker_MicroGravity</workerClass>
     <description>Producing a Cluster Control Chipsets.</description>
     <jobString>Producing.</jobString>
     <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -467,6 +484,7 @@
   <RecipeDef>
     <defName>DMS_Make_ComponentSpacer</defName>
     <label>make advanced component with graphene</label>
+	<workerClass>Fortified.RecipeWorker_MicroGravity</workerClass>
     <description>Make an advanced component.</description>
     <jobString>Making advanced component.</jobString>
     <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -527,7 +545,7 @@
     </products>
 	<researchPrerequisites>
       <li>DMSE_Microgravity</li>
-	  <li>AdvancedFabrication</li>
+	  <!--<li>AdvancedFabrication</li>-->
     </researchPrerequisites>
     <workSkill>Crafting</workSkill>
     <displayPriority>10</displayPriority>
@@ -536,6 +554,7 @@
   <RecipeDef>
     <defName>DMS_Make_ComponentSpacerBulk</defName>
     <label>make advanced component with graphene x4</label>
+	<workerClass>Fortified.RecipeWorker_MicroGravity</workerClass>
     <description>Make advanced component x4</description>
     <jobString>Making advanced component.</jobString>
     <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -596,7 +615,7 @@
     </products>
 	<researchPrerequisites>
       <li>DMSE_Microgravity</li>
-	  <li>AdvancedFabrication</li>
+	  <!--<li>AdvancedFabrication</li>-->
     </researchPrerequisites>
     <workSkill>Crafting</workSkill>
     <displayPriority>10</displayPriority>
