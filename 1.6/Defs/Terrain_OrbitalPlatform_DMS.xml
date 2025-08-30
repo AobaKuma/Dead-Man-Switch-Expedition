@@ -59,7 +59,7 @@
       </LoopTexPaths>
     </spaceEdgeGraphicData>
 	
-	<description>A solid orbital surface that allows walking in outer space. You can build all kinds of structures on it.</description>
+	  <description>A solid orbital surface that allows walking in outer space. You can build all kinds of structures on it.</description>
     
     <researchPrerequisites>
       <li>BasicGravtech</li>
@@ -71,7 +71,7 @@
 
     <statBases>
       <WorkToBuild>8000</WorkToBuild>
-	  <MarketValue>0</MarketValue>
+	    <MarketValue>0</MarketValue>
     </statBases>
 
     <affordances>
@@ -82,7 +82,6 @@
       <li>VoidSpace</li>
       <li>Platform</li>
     </affordances>
-
     <terrainAffordanceNeeded>VoidSpace</terrainAffordanceNeeded>
   </TerrainDef>
 

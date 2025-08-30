@@ -13,9 +13,7 @@
       <texPath>Things/Resource/Carbohydrate</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
-    
     <socialPropernessMatters>true</socialPropernessMatters>
-
     <statBases>
       <MaxHitPoints>25</MaxHitPoints>
       <Flammability>6.0</Flammability>
@@ -24,7 +22,6 @@
       <Nutrition>0.5</Nutrition>
       <FoodPoisonChanceFixedHuman>0</FoodPoisonChanceFixedHuman>
     </statBases>
-
     <ingestible>
       <foodType>Processed</foodType>
       <preferability>RawBad</preferability>
@@ -35,7 +32,6 @@
       <optimalityOffsetFeedingAnimals>-25</optimalityOffsetFeedingAnimals>
       <tableDesired>false</tableDesired>
     </ingestible>
-
     <burnableByRecipe>true</burnableByRecipe>
     <healthAffectsPrice>false</healthAffectsPrice>
     <minRewardCount>30</minRewardCount>
@@ -147,5 +143,4 @@
       <li>Manufactured</li>
     </thingCategories>
   </ThingDef>
-
 </Defs>

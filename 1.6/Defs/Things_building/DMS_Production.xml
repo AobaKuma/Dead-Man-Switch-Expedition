@@ -45,12 +45,6 @@
       <li>DMSE_Microgravity</li>
     </researchPrerequisites>
     <modExtensions>
-      <li Class="VEF.Buildings.RecipeInheritanceExtension" MayRequire="oskarpotocki.vanillafactionsexpanded.core">
-        <inheritRecipesFrom>
-          <!--<li>ElectricSmithy</li>-->
-		  <!--<li>DMS_TableMachinePrinter</li>-->
-        </inheritRecipesFrom>
-      </li>
       <li Class="Fortified.ModExtension_AutoWorkTable">
         <workAmountPerStage>10000</workAmountPerStage>
         <phaseEffecter_east>DMS_Effect_Printer_East</phaseEffecter_east>
