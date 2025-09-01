@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+	<Operation Class="PatchOperationSequence">
+		<operations>
+
+
+			<!-- All Patch-->
+
+			<li Class="PatchOperationRemove">
+				<xpath>Defs/ThingDef[
+					defName="DMSE_Turret_Vulcan_WingBack" or
+					defName="DMSE_Turret_Dawnblade_Striker" 
+					]/comps/li[@Class="CompProperties_Refuelable"]</xpath>
+			</li>
+			
+			<li Class="PatchOperationRemove">
+				<xpath>Defs/ThingDef[
+	                defName="DMSE_Turret_Vulcan_WingBack" or
+					defName="DMSE_Turret_Dawnblade_Striker"
+                    ]/comps/li[@Class="CompProperties_Explosive"]</xpath>
+			</li>
+			
+			<li Class="PatchOperationAdd">
+				<xpath>Defs/ThingDef[defName="DMSE_Turret_Vulcan_WingBack"]</xpath>
+				<value>
+					<thingClass MayRequire="CETeam.CombatExtended">CombatExtended.Building_CIWS_CE</thingClass>
+				</value>
+			</li>
+
+			
+			<!-- Vulcan "WingBack" -->
+
+			<li Class="PatchOperationAdd">
+				<xpath>Defs/ThingDef[defName="DMSE_Turret_Vulcan_WingBack"]</xpath>
+				<value>
+					<fillPercent>0.79</fillPercent>
+				</value>
+			</li>
+			
+			<li Class="PatchOperationReplace">
+				<xpath>Defs/ThingDef[defName="DMSE_Turret_Vulcan_WingBack"]/statBases/ShootingAccuracyTurret</xpath>
+				<value>
+					<ShootingAccuracyTurret>2</ShootingAccuracyTurret>
+				</value>
+			</li>
+			
+			<li Class="PatchOperationReplace">
+				<xpath>Defs/ThingDef[defName="DMSE_Turret_Vulcan_WingBack"]/building/turretBurstCooldownTime</xpath>
+				<value>
+					<turretBurstCooldownTime>0.02</turretBurstCooldownTime>
+				</value>
+			</li>
+			
+			<li Class="CombatExtended.PatchOperationMakeGunCECompatible">
+				<defName>DMSE_Gun_Vulcan_WingBack</defName>
+				<statBases>
+					<RangedWeapon_Cooldown>0.02</RangedWeapon_Cooldown>
+					<SightsEfficiency>4</SightsEfficiency>
+					<ShotSpread>0.06</ShotSpread>
+					<SwayFactor>1.2</SwayFactor>
+					<Bulk>128</Bulk>
+				</statBases>
+				<Properties>
+					<recoilAmount>1.01</recoilAmount>
+					<verbClass>CombatExtended.Verb_ShootCE</verbClass>
+					<hasStandardCommand>true</hasStandardCommand>
+					<defaultProjectile>Bullet_20x102mmNATO_AP</defaultProjectile>
+					<warmupTime>0.8</warmupTime>
+					<range>82</range>
+					<minRange>4.5</minRange>
+					<ticksBetweenBurstShots>1</ticksBetweenBurstShots>
+					<burstShotCount>40</burstShotCount>
+					<soundCast>DMS_Shot_GAU</soundCast>
+					<soundCastTail>GunTail_Heavy</soundCastTail>
+					<targetParams>
+						<canTargetLocations>true</canTargetLocations>
+					</targetParams>
+					<muzzleFlashScale>15</muzzleFlashScale>
+					<recoilPattern>Mounted</recoilPattern>
+				</Properties>
+				<AmmoUser>
+					<magazineSize>1000</magazineSize>
+					<reloadTime>20</reloadTime>
+					<ammoSet>AmmoSet_20x102mmNATO</ammoSet>
+				</AmmoUser>
+				<FireModes>
+					<noSingleShot>true</noSingleShot>
+					<aiUseBurstMode>FALSE</aiUseBurstMode>
+					<aiAimMode>SuppressFire</aiAimMode>
+					<aimedBurstShotCount>20</aimedBurstShotCount>
+				</FireModes>
+			</li>
+			
+			<li Class="PatchOperationAdd">
+				<xpath>Defs/ThingDef[defName="DMSE_Gun_Vulcan_WingBack"]/verbs</xpath>
+				<value>
+					<li Class="CombatExtended.VerbProperties_CIWSSkyfaller">
+						<verbClass>CombatExtended.VerbCIWSSkyfaller</verbClass>
+						<recoilAmount>0.88</recoilAmount>
+						<hasStandardCommand>true</hasStandardCommand>
+						<defaultProjectile>Bullet_20x102mmNATO_AP</defaultProjectile>
+						<warmupTime>0.01</warmupTime>
+						<range>2500</range>
+						<ticksBetweenBurstShots>1</ticksBetweenBurstShots>
+						<burstShotCount>50</burstShotCount>
+						<soundCast>DMS_Shot_GAU</soundCast>
+						<soundCastTail>GunTail_Heavy</soundCastTail>
+						<muzzleFlashScale>15</muzzleFlashScale>
+						<recoilPattern>Mounted</recoilPattern>
+					</li>
+					<li Class="CombatExtended.VerbProperties_CIWSProjectile">
+						<verbClass>CombatExtended.VerbCIWSProjectile</verbClass>
+						<recoilAmount>0.88</recoilAmount>
+						<hasStandardCommand>true</hasStandardCommand>
+						<defaultProjectile>Bullet_20x102mmNATO_AP</defaultProjectile>
+						<warmupTime>0.01</warmupTime>
+						<range>100</range>
+						<ticksBetweenBurstShots>1</ticksBetweenBurstShots>
+						<burstShotCount>50</burstShotCount>
+						<soundCast>DMS_Shot_GAU</soundCast>
+						<soundCastTail>GunTail_Heavy</soundCastTail>
+						<muzzleFlashScale>15</muzzleFlashScale>
+						<recoilPattern>Mounted</recoilPattern>
+					</li>
+				</value>
+			</li>
+
+			<!--===== Dawnblade "Striker" =====-->
+			
+			<li Class="CombatExtended.PatchOperationMakeGunCECompatible">
+				<defName>DMSE_Gun_Dawnblade_Striker</defName>
+				<statBases>
+				    <Mass>1245</Mass>
+				    <Bulk>225</Bulk>
+				    <SwayFactor>2.05</SwayFactor>
+				    <ShotSpread>0.03</ShotSpread>
+				    <SightsEfficiency>7</SightsEfficiency>
+				    <RangedWeapon_Cooldown>0.7</RangedWeapon_Cooldown>
+				</statBases>
+				<Properties>
+                    <recoilAmount>2.00</recoilAmount>
+                    <verbClass>CombatExtended.Verb_ShootCE</verbClass>
+                    <hasStandardCommand>true</hasStandardCommand>
+                    <defaultProjectile>Bullet_762x385mmRCannonShell_HEAT</defaultProjectile>
+                    <ticksBetweenBurstShots>30</ticksBetweenBurstShots>
+                    <burstShotCount>4</burstShotCount>
+                    <warmupTime>2</warmupTime>
+                    <range>110</range>
+                    <minRange>5.2</minRange>
+                    <soundCast>Explosion_Bomb</soundCast>
+                    <soundCastTail>GunTail_Heavy</soundCastTail>
+                    <muzzleFlashScale>24</muzzleFlashScale>
+                    <targetParams>
+                        <canTargetLocations>true</canTargetLocations>
+                    </targetParams>
+				</Properties>
+				<AmmoUser>
+					<magazineSize>16</magazineSize>
+					<reloadOneAtATime>false</reloadOneAtATime>
+					<reloadTime>24</reloadTime>
+					<ammoSet>AmmoSet_762x385mmRCannonShell</ammoSet>
+				</AmmoUser>
+				<FireModes>
+					<aiUseBurstMode>true</aiUseBurstMode>
+					<aiAimMode>AimedShot</aiAimMode>
+					<aimedBurstShotCount>2</aimedBurstShotCount>
+				</FireModes>
+				<weaponTags>
+				</weaponTags>
+			</li>
+
+			<li Class="PatchOperationReplace">
+				<xpath>Defs/ThingDef[defName="DMSE_Turret_Dawnblade_Striker"]/statBases/ShootingAccuracyTurret</xpath>
+				<value>
+					<ShootingAccuracyTurret>5.5</ShootingAccuracyTurret>
+				</value>
+			</li>
+
+		</operations>
+	</Operation>
+</Patch>
