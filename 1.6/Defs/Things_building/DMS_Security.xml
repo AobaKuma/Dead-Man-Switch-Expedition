@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--GAU-4 Wing-Back-->
+  <ThingDef ParentName="DMS_BaseCannonBuilding">
+    <defName>DMSE_Turret_Vulcan_WingBack</defName>
+    <label>GAU-4 “Wing-Back”</label>
+    <description>This is a gravship-based variant of the GAU-4 rotary cannon, also utilizing 20x102mm NATO ammunition. The ship-mounted turret features a longer barrel to increase effective range, but it also introduces a larger blind spot for close-range engagements.</description>
+    <techLevel>Industrial</techLevel>
+    <graphicData>
+      <texPath>Things/Turrets/DMS_M161</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>2.8</drawSize>
+      <drawOffset>(0,0,0)</drawOffset>
+    </graphicData>
+    <size>(2,2)</size>
+    <rotatable>true</rotatable>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <fillPercent>0.7</fillPercent>
+    <statBases>
+      <MaxHitPoints>800</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+      <WorkToBuild>6600</WorkToBuild>
+      <Beauty>-1</Beauty>
+      <ShootingAccuracyTurret>1</ShootingAccuracyTurret>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Explosive">
+        <wickTicks>360</wickTicks>
+        <explosiveRadius>2.4</explosiveRadius>
+        <explosiveDamageType>Bomb</explosiveDamageType>
+        <startWickHitPointsPercent>0.1</startWickHitPointsPercent>
+      </li>
+      <li Class="CompProperties_Refuelable">
+        <fuelLabel>Shots until barrel change</fuelLabel>
+        <fuelGizmoLabel>Barrel durability</fuelGizmoLabel>
+        <outOfFuelMessage>Cannot shoot: Needs new reinforced barrel.</outOfFuelMessage>
+        <fuelFilter>
+          <thingDefs>
+            <li>ReinforcedBarrel</li>
+          </thingDefs>
+        </fuelFilter>
+        <fuelIsMortarBarrel>true</fuelIsMortarBarrel>
+        <fuelCapacity>1500</fuelCapacity>    <!-- 20 burst -->
+        <fuelMultiplier>150</fuelMultiplier><!-- 1 Barrel=100 ammo -->
+        <initialFuelPercent>0.1</initialFuelPercent>
+        <showFuelGizmo>true</showFuelGizmo>
+        <minimumFueledThreshold>0.9</minimumFueledThreshold>
+        <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+        <initialAllowAutoRefuel>true</initialAllowAutoRefuel>
+        <targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>              <!--重裝填設定-->
+        <initialConfigurableTargetFuelLevel>1000</initialConfigurableTargetFuelLevel>
+        <autoRefuelPercent>0.8</autoRefuelPercent>
+        <fuelIconPath>Things/Item/Resource/ReinforcedBarrel/ReinforcedBarrel</fuelIconPath>
+      </li>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>500</basePowerConsumption>
+      </li>
+    </comps>
+    <building>
+      <turretGunDef>DMSE_Gun_Vulcan_WingBack</turretGunDef>
+      <turretTopDrawSize>5</turretTopDrawSize>
+      <turretBurstWarmupTime>2</turretBurstWarmupTime>   <!--================冷卻與瞄準時間================-->
+      <turretBurstCooldownTime>2.5</turretBurstCooldownTime>
+    </building>
+    <constructionSkillPrerequisite>9</constructionSkillPrerequisite>
+    <costList>
+      <Steel>180</Steel>
+      <Tungsteel>280</Tungsteel>
+      <ComponentStamped>7</ComponentStamped>
+      <ComponentIndustrial>8</ComponentIndustrial>
+    </costList>
+    <researchPrerequisites>
+      <li>DMS_EquipmentElite</li>
+    </researchPrerequisites>
+    <uiIconPath>Things/Turrets/DMS_GateKeeper</uiIconPath>
+    <uiIconScale>1.2</uiIconScale>
+    <placeWorkers>
+      <li>PlaceWorker_BandNode</li>
+    </placeWorkers>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseWeaponTurret">
+    <defName>DMSE_Gun_Vulcan_WingBack</defName>
+    <label>GAU-4 “Wing-Back”</label>
+    <description>This is a gravship-based variant of the GAU-4 rotary cannon, also utilizing 20x102mm NATO ammunition. The ship-mounted turret features a longer barrel to increase effective range, but it also introduces a larger blind spot for close-range engagements.</description>
+    <graphicData>
+      <texPath>Things/Turrets/DMS_Gun_Vulcan_WingBack</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>5</drawSize>
+    </graphicData>
+    <statBases>
+      <AccuracyTouch>0.95</AccuracyTouch>
+      <AccuracyShort>0.90</AccuracyShort>
+      <AccuracyMedium>0.82</AccuracyMedium>
+      <AccuracyLong>0.75</AccuracyLong>
+      <RangedWeapon_Cooldown>2.5</RangedWeapon_Cooldown>
+    </statBases>
+    <verbs>
+      <li>
+        <verbClass>Verb_Shoot</verbClass>
+        <defaultProjectile>DMSE_Bullet_Vulcan_WingBack</defaultProjectile>
+        <requireLineOfSight>true</requireLineOfSight>
+        <warmupTime>2.0</warmupTime>
+        <minRange>2.9</minRange>
+        <range>44</range>
+        <ai_AvoidFriendlyFireRadius>4.9</ai_AvoidFriendlyFireRadius>
+        <ticksBetweenBurstShots>1</ticksBetweenBurstShots>
+        <burstShotCount>50</burstShotCount>
+        <soundCast>DMS_Shot_GAU</soundCast>
+        <soundCastTail>GunTail_Heavy</soundCastTail>
+        <muzzleFlashScale>15</muzzleFlashScale>
+        <consumeFuelPerShot>1</consumeFuelPerShot>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+        <forcedMissRadius>1.6</forcedMissRadius>
+      </li>
+    </verbs>
+
+    <modExtensions>
+      <li Class="MuzzleFlash.MuzzleFlashProps" MayRequire="IssacZhuang.MuzzleFlash">
+        <def>MF_StandardMuzzleFalsh</def>
+        <drawSize>(1.5,1.5)</drawSize>
+        <offsets>
+          <li>(1.3,0)</li>
+        </offsets>
+        <isAlternately>true</isAlternately>
+      </li>
+    </modExtensions>
+
+  </ThingDef>	
+
+  <ThingDef ParentName="BaseBullet">
+    <defName>DMSE_Bullet_Vulcan_WingBack</defName>
+    <label>APT shell</label>
+    <graphicData>
+      <texPath>Things/Projectile/Bullet_Big</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <projectile>
+      <damageDef>Bullet</damageDef>
+      <damageAmountBase>30</damageAmountBase>
+      <armorPenetrationBase>0.44</armorPenetrationBase>
+      <stoppingPower>6</stoppingPower>
+      <speed>102</speed>
+    </projectile>
+  </ThingDef>
+
+  <!--Dawnblade Striker-->
+  <ThingDef ParentName="DMS_BaseCannonBuilding">
+    <defName>DMSE_Turret_Dawnblade_Striker</defName>
+    <label>Dawnblade "Striker"</label>
+    <description>MPQFS-85 "Dawnblade" is an onboard multirole quick-firing cannon system. It uses drum magazines and an automatic revolver loader to permit a high rate of sustained fire.\n\nThe armor plating has been removed to allow emplacement to be redeployed as needed for heavy fire support.</description>
+    <techLevel>Industrial</techLevel>
+    <graphicData>
+      <texPath>Things/Turrets/DMS_Base_Tunguska_GateKeeper</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>4</drawSize>
+      <drawOffset>(0,0,0)</drawOffset>
+    </graphicData>
+    <size>(3,3)</size>
+    <rotatable>true</rotatable>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <statBases>   <!--================血量與重量工作量================-->
+      <MaxHitPoints>2250</MaxHitPoints>
+      <Flammability>0.4</Flammability>
+      <WorkToBuild>8500</WorkToBuild>
+      <Beauty>-1</Beauty>
+      <ShootingAccuracyTurret>1.00</ShootingAccuracyTurret>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Explosive">
+        <wickTicks>360</wickTicks>
+        <explosiveRadius>2</explosiveRadius>
+        <explosiveDamageType>Bomb</explosiveDamageType>
+        <startWickHitPointsPercent>0.08</startWickHitPointsPercent>
+      </li>
+      <li Class="CompProperties_Refuelable">
+        <fuelLabel>Shots until barrel change</fuelLabel>
+        <fuelGizmoLabel>Barrel durability</fuelGizmoLabel>
+        <outOfFuelMessage>Cannot fire: Needs new reinforced barrel.</outOfFuelMessage>
+        <fuelFilter>
+          <thingDefs>
+            <li>ReinforcedBarrel</li>
+          </thingDefs>
+        </fuelFilter>
+        <fuelIsMortarBarrel>true</fuelIsMortarBarrel>
+        <fuelCapacity>160</fuelCapacity>    <!-- 20 burst -->
+        <fuelMultiplier>8</fuelMultiplier><!-- 1 Barrel=8 ammo -->
+        <initialFuelPercent>0.1</initialFuelPercent>
+        <showFuelGizmo>true</showFuelGizmo>
+        <minimumFueledThreshold>0.1</minimumFueledThreshold>
+        <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+        <initialAllowAutoRefuel>true</initialAllowAutoRefuel>
+        <targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>              <!--重裝填設定-->
+        <initialConfigurableTargetFuelLevel>80</initialConfigurableTargetFuelLevel>
+        <fuelIconPath>Things/Item/Resource/ReinforcedBarrel/ReinforcedBarrel</fuelIconPath>
+      </li>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>1200</basePowerConsumption>
+      </li>
+    </comps>
+    <building>
+      <turretGunDef>DMSE_Gun_Dawnblade_Striker</turretGunDef>
+      <turretTopDrawSize>5</turretTopDrawSize>
+      <turretBurstWarmupTime>2.0</turretBurstWarmupTime>   <!--================冷卻與瞄準時間================-->
+      <turretBurstCooldownTime>2.8</turretBurstCooldownTime>
+      <turretTopOffset>(0,0.4)</turretTopOffset>
+    </building>
+    <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
+    <costList>
+      <Steel>450</Steel>
+      <Tungsteel>500</Tungsteel>
+      <ComponentStamped>18</ComponentStamped>
+      <ComponentIndustrial>12</ComponentIndustrial>
+      <ComponentFireControl>2</ComponentFireControl>
+    </costList>
+    <researchPrerequisites>
+      <li>DMS_Synthroid</li>
+      <li>DMS_EquipmentHeavy</li>
+    </researchPrerequisites>
+    <uiIconPath>Things/Turrets/DMS_DawnBlade</uiIconPath>
+    <uiIconScale>1.2</uiIconScale>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseWeaponTurret">
+    <defName>DMSE_Gun_Dawnblade_Striker</defName>
+    <label>Type 85 Multi-Purpose-Quick-Firing System</label>
+    <description>An automated artillery system widely used on small to medium-sized frigates and corvettes in colonial fleets.</description>
+    <graphicData>
+      <texPath>Things/Turrets/DMS_Gun_DawnBlade_Striker</texPath>
+      <drawSize>5</drawSize>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <AccuracyTouch>0.75</AccuracyTouch>
+      <AccuracyShort>0.8</AccuracyShort>
+      <AccuracyMedium>0.85</AccuracyMedium>
+      <AccuracyLong>0.95</AccuracyLong>
+      <RangedWeapon_Cooldown>2.8</RangedWeapon_Cooldown>
+    </statBases>
+    <verbs>
+      <li>
+        <verbClass>Verb_Shoot</verbClass>
+        <defaultProjectile>DMSE_Bullet_Dawnblade_Striker</defaultProjectile>
+        <requireLineOfSight>true</requireLineOfSight>
+        <warmupTime>2.0</warmupTime>
+        <minRange>3.9</minRange>
+        <range>71.9</range>
+        <ai_AvoidFriendlyFireRadius>2.9</ai_AvoidFriendlyFireRadius>
+        <ticksBetweenBurstShots>40</ticksBetweenBurstShots>
+        <burstShotCount>4</burstShotCount>
+        <soundCast>DMS_Shot_Dawnblade</soundCast>
+        <soundCastTail>GunTail_Heavy</soundCastTail>
+        <muzzleFlashScale>15</muzzleFlashScale>
+        <consumeFuelPerShot>1</consumeFuelPerShot>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+        <forcedMissRadius>0.1</forcedMissRadius>
+      </li>
+    </verbs>
+    <modExtensions>
+      <li Class="MuzzleFlash.MuzzleFlashProps" MayRequire="IssacZhuang.MuzzleFlash">
+        <def>MF_StandardMuzzleFalsh</def>
+        <drawSize>(2.75,2.75)</drawSize>
+        <offsets>
+          <li>(3,0)</li>
+        </offsets>
+        <isAlternately>true</isAlternately>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseBullet">
+    <defName>DMSE_Bullet_Dawnblade_Striker</defName>
+    <label>armor piercing shell</label>
+    <thingClass>Fortified.Projectile_ConeExplosive</thingClass>
+    <tickerType>Normal</tickerType>
+    <graphicData>
+      <texPath>Things/Projectile/Bullet_Big</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>2</drawSize>
+    </graphicData>
+    <projectile>
+      <explosionDelay>1</explosionDelay>
+      <soundExplode>Explosion_Rocket</soundExplode>
+      <damageDef>Bullet</damageDef>
+      <damageAmountBase>70</damageAmountBase>
+      <armorPenetrationBase>0.91</armorPenetrationBase>
+      <stoppingPower>12</stoppingPower>
+      <speed>121</speed>
+      <arcHeightFactor>0.2</arcHeightFactor>
+      <shadowSize>0.6</shadowSize>
+    </projectile>
+    <modExtensions>
+      <li Class="Fortified.ExplosiveExtension">
+        <damage>Bullet</damage>
+        <damageAmount>30</damageAmount>
+        <armorPen>0.37</armorPen>
+        <preExplosionOffset>4</preExplosionOffset>
+        <range>15</range>
+        <swayAngle>12</swayAngle>
+        <doVisualEffects>false</doVisualEffects>
+        <effecterDef>DMS_ConeExplosion</effecterDef>
+      </li>
+    </modExtensions>
+    <comps>
+      <li Class="CompProperties_Explosive">
+        <explosiveRadius>1.1</explosiveRadius>
+        <explosiveDamageType>Bullet</explosiveDamageType>
+        <armorPenetrationBase>0.47</armorPenetrationBase>
+        <damageAmountBase>55</damageAmountBase>
+        <explodeOnDestroyed>true</explodeOnDestroyed>
+        <explodeOnKilled>true</explodeOnKilled>
+        <doSoundEffects>false</doSoundEffects>
+        <applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+      </li>
+      <li Class="CompProperties_ProjectileEffecter">
+        <effecterDef>DMS_LaunchDust</effecterDef>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>	
