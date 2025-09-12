@@ -65,7 +65,7 @@
     <defName>DMSE_GrapheneBioreactor</defName>
     <label>Graphene bio-reactor</label>
     <!-- 一種固定式碳電生物反應器，能夠以二氧化碳等為碳源借助電力與恆溫環境合成作為生物營養來源的各類碳水化合物，需消耗石墨烯作為電極與催化載體提升反應效率，其人工合成澱粉與葡萄糖的能量效率約為農業種植的八倍，面積效率則高達三千倍。 -->
-    <description>A stationary carbon-electric bioreactor uses carbon dioxide and other carbon sources to synthesize various carbohydrates as biological nutrition sources with the help of electricity and a constant temperature environment. It requires graphene as an electrode and catalytic carrier to improve reaction efficiency.</description>
+    <description>A stationary carbon-electric bioreactor. It uses carbon dioxide to synthesize various carbohydrates, a biological nutrient source. Requires graphene as a catalytic carrier during the reaction, operating in an environment of constant temperature and electricity to improve reaction efficiency.</description>
     <graphicData>
       <texPath>Things/Building/GrapheneBioreactor/building</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
