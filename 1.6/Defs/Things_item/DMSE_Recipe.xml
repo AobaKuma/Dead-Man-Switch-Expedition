@@ -20,7 +20,7 @@
   <!-- 低重力生產設施 -->
   <RecipeDef ParentName="DMSE_MicroGrav_Recipe">
     <defName>DMS_Make_Graphene_Chemfuel</defName>
-    <label>Make Graphene with Chemfuel x5</label>
+    <label>Make Graphene with Chemfuel</label>
     <description>Producing a small amount of graphene materials using Chemfuel and wood.</description>
     <jobString>Producing.</jobString>
     <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -43,7 +43,7 @@
             <li>Chemfuel</li>
           </thingDefs>
         </filter>
-        <count>25</count>
+        <count>35</count>
       </li>
     </ingredients>
     <fixedIngredientFilter>
@@ -58,7 +58,7 @@
 
   <RecipeDef ParentName="DMSE_MicroGrav_Recipe">
     <defName>DMS_Make_GrapheneMass_Chemfuel</defName>
-    <label>Make Graphene with Chemfuel x20</label>
+    <label>Make Graphene with Chemfuel x4</label>
     <description>Producing a large amount of graphene materials using Chemfuel and wood.</description>
     <jobString>Producing.</jobString>
     <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -81,7 +81,7 @@
             <li>Chemfuel</li>
           </thingDefs>
         </filter>
-        <count>100</count>
+        <count>140</count>
       </li>
     </ingredients>
     <fixedIngredientFilter>
@@ -96,7 +96,7 @@
 
   <RecipeDef ParentName="DMSE_MicroGrav_Recipe">
     <defName>DMS_Make_Graphene_WoodLog</defName>
-    <label>Make graphene with wood x5</label>
+    <label>Make graphene with wood</label>
     <description>Producing a small amount of graphene materials using Chemfuel and wood.</description>
     <jobString>Producing.</jobString>
     <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -134,7 +134,7 @@
 
   <RecipeDef ParentName="DMSE_MicroGrav_Recipe">
     <defName>DMS_Make_GrapheneMass_WoodLog</defName>
-    <label>Make graphene with wood x20</label>
+    <label>Make graphene with wood x4</label>
     <description>Producing a large amount of graphene materials using Chemfuel and wood.</description>
     <jobString>Producing.</jobString>
     <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -559,7 +559,6 @@
     </products>
     <researchPrerequisites>
       <li>DMSE_Microgravity</li>
-      <!--<li>AdvancedFabrication</li>-->
     </researchPrerequisites>
     <workSkill>Crafting</workSkill>
     <displayPriority>10</displayPriority>

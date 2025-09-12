@@ -60,4 +60,110 @@
       </li>
     </modExtensions>
   </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_GrapheneBioreactor</defName>
+    <label>Graphene bio-reactor</label>
+    <!-- 一種固定式碳電生物反應器，能夠以二氧化碳等為碳源借助電力與恆溫環境合成作為生物營養來源的各類碳水化合物，需消耗石墨烯作為電極與催化載體提升反應效率，其人工合成澱粉與葡萄糖的能量效率約為農業種植的八倍，面積效率則高達三千倍。 -->
+    <description>A stationary carbon-electric bioreactor uses carbon dioxide and other carbon sources to synthesize various carbohydrates as biological nutrition sources with the help of electricity and a constant temperature environment. It requires graphene as an electrode and catalytic carrier to improve reaction efficiency.</description>
+    <graphicData>
+      <texPath>Things/Building/GrapheneBioreactor/building</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(5,5)</drawSize>
+      <drawOffset>(0,0,0.105)</drawOffset>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.9</staticSunShadowHeight>
+    <fillPercent>0.9</fillPercent>
+    <canOverlapZones>false</canOverlapZones>
+    <pathCost>42</pathCost>
+    <tickerType>Normal</tickerType>
+    <statBases>
+      <MaxHitPoints>750</MaxHitPoints>
+      <WorkToBuild>40000</WorkToBuild>
+      <Mass>300</Mass>
+      <Flammability>0.25</Flammability>
+    </statBases>
+    <size>(3,3)</size>
+    <costList>
+      <Steel>200</Steel>
+      <Tungsteel>125</Tungsteel>
+      <DMSE_Graphene>75</DMSE_Graphene>
+      <ComponentStamped>10</ComponentStamped>
+      <ComponentSpacer>1</ComponentSpacer>
+    </costList>
+    <building>
+      <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+    </building>
+    <researchPrerequisites>
+      <li>DMSE_Carbohydrate</li>
+    </researchPrerequisites>
+    <designationCategory>DMS_Category</designationCategory>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
+    <comps>
+      <!-- <li Class="Fortified.CompProperties_Effector">
+        <effecter>DMSE_Effect_Bioreactor</effecter>
+        <offset>(0,0,0)</offset>
+      </li> -->
+      <li Class="Fortified.CompProperties_FueledSpawner">
+        <thingToSpawn>DMSE_Carbohydrate</thingToSpawn>
+        <spawnCount>20</spawnCount>
+        <spawnIntervalRange>120000~144000</spawnIntervalRange>
+        <spawnForbidden>false</spawnForbidden>
+        <writeTimeLeftToSpawn>true</writeTimeLeftToSpawn>
+      </li>
+      <li Class="CompProperties_Refuelable">
+        <fuelConsumptionRate>10.0</fuelConsumptionRate>
+        <fuelCapacity>50.0</fuelCapacity>
+        <fuelFilter>
+          <thingDefs>
+            <li>DMSE_Graphene</li>
+          </thingDefs>
+        </fuelFilter>
+        <initialFuelPercent>1</initialFuelPercent>
+        <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+        <functionsInVacuum>false</functionsInVacuum>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>500</basePowerConsumption>
+        <transmitsPower>true</transmitsPower>
+        <soundAmbientProducingPower>ScannerLongRangeMineral_Ambience</soundAmbientProducingPower>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>PlaceWorker_BandNode</li>
+    </placeWorkers>
+  </ThingDef>
+
+  <EffecterDef>
+    <defName>DMSE_Effect_Bioreactor</defName>
+    <children>
+      <li>
+        <subEffecterClass>SubEffecter_SprayerContinuous</subEffecterClass>
+        <fleckDef>Smoke</fleckDef>
+        <chancePerTick>0.05</chancePerTick>
+        <maxMoteCount>20</maxMoteCount>
+        <burstCount>2~5</burstCount>
+        <spawnLocType>OnSource</spawnLocType>
+        <scale>0.1~1.5</scale>
+        <positionRadius>2</positionRadius>
+        <rotationRate>-5~5</rotationRate>
+        <speed>.05~.1</speed>
+      </li>
+    </children>
+  </EffecterDef>
 </Defs>

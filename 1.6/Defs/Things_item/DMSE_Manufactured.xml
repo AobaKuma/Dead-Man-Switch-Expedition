@@ -7,7 +7,7 @@
     <label>Carbohydrate</label>
     <description>A white, solid powder that remains highly stable at room temperature, this substance is artificially synthesized from starch, lactose, and other compounds using industrial equipment. Composed of basic elements such as carbon, hydrogen, and oxygen, it does not spoil even when stored in a dry, ambient environment, making it an extremely space-efficient nutritional source for interstellar travel. However, consuming it untreated may cause short-term symptoms such as abdominal pain. \n\nDue to its highly flammable chemical nature and rapid decomposition when exposed to open air, it is typically compressed into dense blocks and vacuum-sealed immediately after synthesis for long-term storage and distribution.</description>
     <descriptionHyperlinks>
-      <ThingDef>DMS_TableArtifuscle</ThingDef>
+      <ThingDef>DMSE_GrapheneBioreactor</ThingDef>
     </descriptionHyperlinks>
     <graphicData>
       <texPath>Things/Resource/Carbohydrate</texPath>
@@ -21,6 +21,7 @@
       <Mass>0.1</Mass>
       <Nutrition>0.5</Nutrition>
       <FoodPoisonChanceFixedHuman>0</FoodPoisonChanceFixedHuman>
+      <MarketValue>10</MarketValue>
     </statBases>
     <ingestible>
       <foodType>Processed</foodType>
@@ -64,7 +65,7 @@
     <useHitPoints>false</useHitPoints>
     <healthAffectsPrice>false</healthAffectsPrice>
     <statBases>
-      <MarketValue>10</MarketValue>
+      <MarketValue>30</MarketValue>
       <Mass>3</Mass>
       <StuffPower_Armor_Sharp>1.2</StuffPower_Armor_Sharp>
       <StuffPower_Armor_Blunt>0.8</StuffPower_Armor_Blunt>
@@ -75,10 +76,8 @@
       <BluntDamageMultiplier>1.1</BluntDamageMultiplier>
     </statBases>
     <generateCommonality>0.2</generateCommonality>
-
     <thingCategories inherit="false">
     </thingCategories>
-
     <tradeTags>
       <li>ExoticMisc</li>
     </tradeTags>
