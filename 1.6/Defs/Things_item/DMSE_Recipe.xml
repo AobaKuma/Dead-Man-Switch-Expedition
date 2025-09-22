@@ -627,7 +627,6 @@
     </products>
     <researchPrerequisites>
       <li>DMSE_Microgravity</li>
-      <!--<li>AdvancedFabrication</li>-->
     </researchPrerequisites>
     <workSkill>Crafting</workSkill>
     <displayPriority>10</displayPriority>
