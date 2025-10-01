@@ -166,4 +166,146 @@
       </li>
     </children>
   </EffecterDef>
+  
+  <ThingDef ParentName="DMS_AutofacturerBenchBase">
+        <defName>DMSE_TableLathe</defName>
+        <label>barrel Lathe</label>
+        <description>A machine that rotates a workpiece about an axis of rotation to perform various operations.</description>
+        <graphicData>
+            <texPath>Lathe/Lathe</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>(8,5)</drawSize>
+            <damageData>
+                <cornerTL>Damage/Corner</cornerTL>
+                <cornerTR>Damage/Corner</cornerTR>
+                <cornerBL>Damage/Corner</cornerBL>
+                <cornerBR>Damage/Corner</cornerBR>
+            </damageData>
+        </graphicData>
+		<designationCategory>DMS_Category</designationCategory>
+        <costList>
+            <Steel>150</Steel>
+            <ComponentIndustrial>2</ComponentIndustrial>
+            <ComponentSpacer>1</ComponentSpacer>
+        </costList>
+        <statBases>
+            <WorkToBuild>3000</WorkToBuild>
+            <MaxHitPoints>180</MaxHitPoints>
+            <Flammability>0</Flammability>
+            <Cleanliness>-2</Cleanliness>
+			<WorkTableWorkSpeedFactor>2.0</WorkTableWorkSpeedFactor>
+        </statBases>
+        <size>(5,2)</size>
+        <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+        <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+        <recipes>
+            <!--<li>FT_Make_ComponentIndustrial</li>-->
+            <li>DMSE_Make_ReinforcedBarrel</li>
+        </recipes>
+        <comps>
+            <li Class="CompProperties_Power">
+                <compClass>CompPowerTrader</compClass>
+                <shortCircuitInRain>true</shortCircuitInRain>
+                <basePowerConsumption>800</basePowerConsumption>
+				<idlePowerDraw>50</idlePowerDraw>
+            </li>
+        </comps>
+        <researchPrerequisites>
+            <li>DMSE_Microgravity</li>
+        </researchPrerequisites>
+        <placeWorkers>
+            <li>PlaceWorker_ShowFacilitiesConnections</li>
+            <li>PlaceWorker_PreventInteractionSpotOverlap</li>
+        </placeWorkers>
+		<modExtensions>
+			<li Class="Fortified.ModExtension_AutoWorkTable">
+				<workAmountPerStage>30000</workAmountPerStage>
+				<!-- <phaseEffecter_east>FTC_Producting</phaseEffecter_east>
+			<phaseEffecter_west>FTC_Producting</phaseEffecter_west>
+			<phaseEffecter_north>FTC_Producting</phaseEffecter_north>
+			<phaseEffecter_south>FTC_Producting</phaseEffecter_south>
+			<doneEffecter_east>FTC_ProductionDone</doneEffecter_east>
+			<doneEffecter_west>FTC_ProductionDone</doneEffecter_west>
+			<doneEffecter_north>FTC_ProductionDone</doneEffecter_north>
+			<doneEffecter_south>FTC_ProductionDone</doneEffecter_south> -->
+				<skills>
+					<li>
+						<key>Crafting</key>
+						<value>15</value>
+					</li>
+				</skills>
+			</li>
+		</modExtensions>
+    </ThingDef>
+	
+	<ThingDef ParentName="DMS_AutofacturerBenchBase">
+        <defName>DMSE_TableArtifuscle</defName>
+        <label>organic assembler</label>
+        <description>A massive piece of industrial equipment used to assemble Artifuscle and Neutroamine.</description>
+        <graphicData>
+            <texPath>Things/Building/SynthBulider/building</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>(6,6)</drawSize>
+            <damageData>
+                <cornerTL>Damage/Corner</cornerTL>
+                <cornerTR>Damage/Corner</cornerTR>
+                <cornerBL>Damage/Corner</cornerBL>
+                <cornerBR>Damage/Corner</cornerBR>
+            </damageData>
+        </graphicData>
+		<designationCategory>DMS_Category</designationCategory>
+        <costList>
+            <Steel>150</Steel>
+            <ComponentIndustrial>2</ComponentIndustrial>
+            <ComponentSpacer>1</ComponentSpacer>
+        </costList>
+        <statBases>
+            <WorkToBuild>3000</WorkToBuild>
+            <MaxHitPoints>180</MaxHitPoints>
+            <Flammability>0</Flammability>
+            <Cleanliness>-2</Cleanliness>
+			<WorkTableWorkSpeedFactor>2.0</WorkTableWorkSpeedFactor>
+        </statBases>
+        <size>(3,3)</size>
+        <interactionCellOffset>(0,0,-2)</interactionCellOffset>
+        <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+        <recipes>
+			<li>DMSE_Make_Neutroamine</li>
+			<li>DMS_Make_ArtifuscleMass</li>
+        </recipes>
+        <comps>
+            <li Class="CompProperties_Power">
+                <compClass>CompPowerTrader</compClass>
+                <shortCircuitInRain>true</shortCircuitInRain>
+                <basePowerConsumption>800</basePowerConsumption>
+				<idlePowerDraw>50</idlePowerDraw>
+            </li>
+        </comps>
+        <researchPrerequisites>
+            <li>DMSE_Microgravity</li>
+        </researchPrerequisites>
+        <placeWorkers>
+            <li>PlaceWorker_ShowFacilitiesConnections</li>
+            <li>PlaceWorker_PreventInteractionSpotOverlap</li>
+        </placeWorkers>
+		<modExtensions>
+			<li Class="Fortified.ModExtension_AutoWorkTable">
+				<workAmountPerStage>30000</workAmountPerStage>
+				<!-- <phaseEffecter_east>FTC_Producting</phaseEffecter_east>
+			<phaseEffecter_west>FTC_Producting</phaseEffecter_west>
+			<phaseEffecter_north>FTC_Producting</phaseEffecter_north>
+			<phaseEffecter_south>FTC_Producting</phaseEffecter_south>
+			<doneEffecter_east>FTC_ProductionDone</doneEffecter_east>
+			<doneEffecter_west>FTC_ProductionDone</doneEffecter_west>
+			<doneEffecter_north>FTC_ProductionDone</doneEffecter_north>
+			<doneEffecter_south>FTC_ProductionDone</doneEffecter_south> -->
+				<skills>
+					<li>
+						<key>Medicine</key>
+						<value>15</value>
+					</li>
+				</skills>
+			</li>
+		</modExtensions>
+    </ThingDef>
 </Defs>
