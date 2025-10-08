@@ -701,8 +701,7 @@
             </thingDefs>
         </fixedIngredientFilter>
         <products>
-            <ReinforcedBarrel>1</ReinforcedBarrel>
-            <ChunkSlagSteel>3</ChunkSlagSteel>
+            <ReinforcedBarrel>2</ReinforcedBarrel>
         </products>
         <skillRequirements>
             <Crafting>15</Crafting>

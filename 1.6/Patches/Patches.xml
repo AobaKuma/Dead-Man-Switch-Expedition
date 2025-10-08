@@ -5,6 +5,8 @@
 		<xpath>/Defs/WorkGiverDef[defName="DMS_Operate"]/fixedBillGiverDefs</xpath>
 		<value>
 			<li>DMSE_MicrogravityFacility</li>
+			<li>DMSE_TableLathe</li>
+			<li>DMSE_TableArtifuscle</li>
 		</value>
 	</Operation>
 
