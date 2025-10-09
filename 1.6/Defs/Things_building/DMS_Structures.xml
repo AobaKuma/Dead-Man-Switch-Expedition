@@ -140,7 +140,7 @@
           <li MayRequire="fxz.ratkinanomaly.update">RA_MetalBeanAppear</li>    <!-- RA_MetalBeanAppear--><!--金属蚕豆-->
           <li MayRequire="fxz.ratkinanomaly.update">RA_Curse</li>    <!-- RA_MetalBeanAppear--><!--诅咒--> 
         </incidentsWhitelist>
-        <coolDownTicks>60000</coolDownTicks>
+        <coolDownPerRaidPoint>24</coolDownPerRaidPoint>
         <powerCostPerColonist>1000</powerCostPerColonist>
         <activeEffecter>DMSE_Device_Active</activeEffecter>
         <triggerEffecter>DMSE_Device_Trigger</triggerEffecter>
