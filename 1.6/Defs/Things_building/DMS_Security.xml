@@ -118,7 +118,6 @@
         <forcedMissRadius>1.6</forcedMissRadius>
       </li>
     </verbs>
-
     <modExtensions>
       <li Class="MuzzleFlash.MuzzleFlashProps" MayRequire="IssacZhuang.MuzzleFlash">
         <def>MF_StandardMuzzleFalsh</def>
@@ -129,7 +128,6 @@
         <isAlternately>true</isAlternately>
       </li>
     </modExtensions>
-
   </ThingDef>	
 
   <ThingDef ParentName="BaseBullet">
@@ -325,4 +323,4 @@
     </comps>
   </ThingDef>
 
-</Defs>	
+</Defs>
