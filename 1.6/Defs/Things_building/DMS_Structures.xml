@@ -57,7 +57,7 @@
       <li Class="CompProperties_Flickable" />
       <li Class="CompProperties_Power">
         <compClass>CompPowerTrader</compClass>
-        <basePowerConsumption>-500</basePowerConsumption>
+        <basePowerConsumption>1000</basePowerConsumption>
         <transmitsPower>true</transmitsPower>
       </li>
       <li Class="Fortified.CompProperties_ShieldingDevice">
@@ -141,7 +141,7 @@
           <li MayRequire="fxz.ratkinanomaly.update">RA_Curse</li>    <!-- RA_MetalBeanAppear--><!--诅咒--> 
         </incidentsWhitelist>
         <coolDownTicks>60000</coolDownTicks>
-        <powerCostPerColonist>500</powerCostPerColonist>
+        <powerCostPerColonist>1000</powerCostPerColonist>
         <activeEffecter>DMSE_Device_Active</activeEffecter>
         <triggerEffecter>DMSE_Device_Trigger</triggerEffecter>
         <cooldownEffecter>DMSE_Device_Cooling</cooldownEffecter>
