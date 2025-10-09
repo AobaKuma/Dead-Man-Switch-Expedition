@@ -3,8 +3,8 @@
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_StealthDevice</defName>
     <label>signal stealth device</label>
-    <!-- 一種巨大的等離子場護盾發生器，能夠有效的屏蔽訊號的產生，另雷達無法搜索到發生器所在的小行星基地，但要注意內部的活體訊號越多會使得使用該設備所消耗的電力越多，並且在成功阻止一次雷達搜索後需要一天的時間來冷卻並重新充能。 -->
-    <description>A stationary carbon-electric bioreactor. It uses carbon dioxide to synthesize various carbohydrates, a biological nutrient source. Requires graphene as a catalytic carrier during the reaction, operating in an environment of constant temperature and electricity to improve reaction efficiency.</description>
+    <!--一種巨大的等離子場護盾發生器，能夠有效的屏蔽訊號的產生，另雷達無法搜索到發生器所在的小行星基地，但要注意內部的活體訊號越多會使得使用該設備所消耗的電力越多，並且在成功阻止一次雷達搜索後需要一天的時間來冷卻並重新充能。 -->
+    <description>A stationary</description>
     <graphicData>
       <texPath>Things/Building/GrapheneBioreactor/building</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
@@ -57,6 +57,92 @@
         <compClass>CompPowerTrader</compClass>
         <basePowerConsumption>500</basePowerConsumption>
         <transmitsPower>true</transmitsPower>
+      </li>
+      <li Class="Fortified.CompProperties_ShieldingDevice">
+        <incidentsWhitelist>
+          <li>Infestation</li>
+          <li>DeepDrillInfestation</li>
+          <li>ManhunterPack</li>
+          <li>AnimalInsanityMass</li>
+          <!-- Anomaly -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">ShamblerSwarm</li>    <!-- ShamblerSwarm --><!--蹒跚猎群-->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">ShamblerSwarmAnimals</li>    <!-- ShamblerSwarmAnimals --><!--蹒跚猎群-->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">SmallShamblerSwarm</li>    <!-- SmallShamblerSwarm --><!--隐形魔猎群-->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">SightstealerSwarm</li>    <!-- SightstealerSwarm --><!--蹒跚猎群-->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">ShamblerAssault</li>    <!-- ShamblerAssault --><!--蹒跚怪袭击-->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">GhoulAttack</li>    <!-- GhoulAttack --><!--食尸鬼袭击-->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">Revenant</li>    <!-- Revenant--><!--幽魂-->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">SightstealerArrival</li>    <!-- SightstealerArrival--><!--隐形魔出现-->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">FleshbeastAttack</li>    <!-- FleshbeastAttack--><!--血肉兽袭击-->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">FrenziedAnimals</li>    <!-- FrenziedAnimals--><!--发狂的动物-->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">GorehulkAssault</li>    <!-- GorehulkAssault--><!--血棘巨人袭击-->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">DevourerAssault</li>    <!-- DevourerAssault--><!--吞噬兽袭击-->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">DevourerWaterAssault</li><!-- DevourerWaterAssault--><!--吞噬兽袭击-->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">ChimeraAssault</li>    <!-- ChimeraAssault--><!--嵌合兽袭击-->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">Nociosphere</li>    <!-- Nociosphere--><!--苦痛之球 -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">PitGate</li>    <!-- PitGate--><!--巨坑 -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">FleshmassHeart</li>    <!-- FleshmassHeart--><!--血肉心脏 -->
+          <!-- Alpha Animals -->
+          <li MayRequire="sarg.alphaanimals">AA_IncidentStalkingArcticLion</li>
+          <li MayRequire="sarg.alphaanimals">AA_IncidentBlizzariskClutchMother</li>
+          <li MayRequire="sarg.alphaanimals">AA_IncidentDunealiskClutchMother</li>
+          <li MayRequire="sarg.alphaanimals">AA_IncidentFeraliskClutchMother</li>
+          <li MayRequire="sarg.alphaanimals">AA_IncidentSummitCrab</li>
+          <li MayRequire="sarg.alphaanimals">AA_CactipineDropPod</li>
+          <li MayRequire="sarg.alphaanimals">AA_Incident_BlackHive</li>
+          <li MayRequire="sarg.alphaanimals">AA_IncidentFungalHusk</li>
+          <!--fxz.ratkinanomaly.update-->
+          <li MayRequire="fxz.ratkinanomaly.update">RA_ObsessionArrival</li>    <!-- RA_ObsessionArrival--><!--幽怨执念 -->
+          <li MayRequire="fxz.ratkinanomaly.update">RA_FruiterCome</li>    <!-- RA_ObsessionArrival--><!--华丽果树 -->
+          <!-- Vanilla Genetics Expanded -->          
+          <li MayRequire="VanillaExpanded.VGeneticsE">GR_ManhunterMonstrosities</li>  <!-- roaming monstrosities -->
+          <!-- Vanilla Events Expanded -->          
+          <li MayRequire="VanillaExpanded.VEE">ManhunterPackPurple</li>  <!-- manhunter pack -->
+          <li MayRequire="VanillaExpanded.VEE">AnimalInsanityMassPurple</li>  <!-- mass animal insanity -->
+
+          <!-- Royalty -->
+          <li MayRequire="Ludeon.RimWorld.Royalty">ProblemCauser</li>    <!-- problem causer -->
+          <!-- Anomaly -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">PsychicRitualSiege</li>    <!-- PsychicRitualSiege--><!--心灵仪式围攻-->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">HateChanters</li>    <!-- HateChanters--><!--恶咒吟诵者-->
+          <!-- [SR]Raid Extension -->
+          <li MayRequire="SR.ModRimworld.RaidExtension">SrPoaching</li>    <!-- Poaching -->
+          <li MayRequire="SR.ModRimworld.RaidExtension">SrLogging</li>    <!-- Logging -->
+          <li MayRequire="SR.ModRimworld.RaidExtension">SrHositleCaravanPassing</li>    <!-- Hositle Caravan Passing By -->
+          <li MayRequire="SR.ModRimworld.RaidExtension">SrHositleTraveler</li>    <!-- Lost Raider -->
+          <!-- [SR]Factional War -->
+          <li MayRequire="SR.ModRimworld.FactionalWar">SrFactionWar</li>    <!-- Faction Assault -->
+          <li MayRequire="SR.ModRimworld.FactionalWar">SrFactionWarShellingSiteGenerate</li>    <!-- Faction Bombardment -->
+          <li MayRequire="SR.ModRimworld.FactionalWar">SrFactionWarContentionSiteGenerate</li>    <!-- Faction Contention -->
+          <li MayRequire="SR.ModRimworld.FactionalWar">SrFactionWarTempCampSiteGenerate</li>    <!-- Faction Defense -->
+          <!-- Vanilla Factions Expanded - Vikings -->
+          <li MayRequire="OskarPotocki.VFE.Vikings">VFEV_SlaverRaid</li>    <!-- raid (slavers) -->
+          <li MayRequire="OskarPotocki.VFE.Vikings">VFEV_PillageRaid</li>    <!-- raid (pillage) -->
+          <!-- Vanilla Events Expanded -->
+          <li MayRequire="VanillaExpanded.VEE">RaidEnemyPurple</li>  <!-- enemy raid ice age -->
+
+          <!-- Vanilla -->
+          <li>RaidEnemy</li>
+		      <li>PsychicEmanatorShipPartCrash</li>
+		      <li>DefoliatorShipPartCrash</li>
+          <!-- Anomaly -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">WarpedObelisk_Duplicator</li>    <!-- WarpedObelisk_Duplicator--><!--腐化方尖碑-->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">WarpedObelisk_Abductor</li>    <!-- WarpedObelisk_Abductor--><!--扭曲方尖碑-->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">WarpedObelisk_Mutator</li>    <!-- WarpedObelisk_Mutator--><!--畸变方尖碑 -->
+          <!--fxz.ratkinanomaly.update-->
+          <li MayRequire="fxz.ratkinanomaly.update">RA_PokerSoldierArrival</li>    <!-- RA_PokerSoldierArrival--><!--扑克兵 -->
+          <li MayRequire="fxz.ratkinanomaly.update">RA_DarkKnightArrivalPre</li>    <!-- RA_DarkKnightArrivalPre--><!--赎罪骑士-->
+          <li MayRequire="fxz.ratkinanomaly.update">RA_DarkKnightArrivalPre_Commander</li>    <!-- RA_DarkKnightArrivalPre_Commander--><!--附带骑士长-->
+          <li MayRequire="fxz.ratkinanomaly.update">RA_DarkKnightArrival</li>    <!-- RA_DarkKnightArrival--><!--黑暗骑士-->
+          <li MayRequire="fxz.ratkinanomaly.update">RA_FleshbeastAttack</li>    <!-- RA_FleshbeastAttack--><!--血肉兽袭击-->
+          <li MayRequire="fxz.ratkinanomaly.update">RA_MetalBeanAppear</li>    <!-- RA_MetalBeanAppear--><!--金属蚕豆-->
+          <li MayRequire="fxz.ratkinanomaly.update">RA_Curse</li>    <!-- RA_MetalBeanAppear--><!--诅咒--> 
+        </incidentsWhitelist>
+        <coolDownTicks>60000</coolDownTicks>
+        <powerCostPerColonist>500</powerCostPerColonist>
+        <activeEffecter />
+        <cooldownEffecter />
+        <triggerEffecter />
       </li>
     </comps>
     <placeWorkers>
