@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
   <ThingDef ParentName="BuildingBase">
-    <defName>DMSE_GrapheneBioreactor</defName>
-    <label>Graphene bio-reactor</label>
-    <!-- 一種固定式碳電生物反應器，能夠以二氧化碳等為碳源借助電力與恆溫環境合成作為生物營養來源的各類碳水化合物，需消耗石墨烯作為電極與催化載體提升反應效率，其人工合成澱粉與葡萄糖的能量效率約為農業種植的八倍，面積效率則高達三千倍。 -->
+    <defName>DMSE_StealthDevice</defName>
+    <label>signal stealth device</label>
+    <!-- 一種巨大的等離子場護盾發生器，能夠有效的屏蔽訊號的產生，另雷達無法搜索到發生器所在的小行星基地，但要注意內部的活體訊號越多會使得使用該設備所消耗的電力越多，並且在成功阻止一次雷達搜索後需要一天的時間來冷卻並重新充能。 -->
     <description>A stationary carbon-electric bioreactor. It uses carbon dioxide to synthesize various carbohydrates, a biological nutrient source. Requires graphene as a catalytic carrier during the reaction, operating in an environment of constant temperature and electricity to improve reaction efficiency.</description>
     <graphicData>
       <texPath>Things/Building/GrapheneBioreactor/building</texPath>
@@ -57,7 +57,6 @@
         <compClass>CompPowerTrader</compClass>
         <basePowerConsumption>500</basePowerConsumption>
         <transmitsPower>true</transmitsPower>
-        <!-- <soundAmbientProducingPower>ScannerLongRangeMineral_Ambience</soundAmbientProducingPower> -->
       </li>
     </comps>
     <placeWorkers>
