@@ -169,12 +169,13 @@
   
   <ThingDef ParentName="DMS_AutofacturerBenchBase">
         <defName>DMSE_TableLathe</defName>
-        <label>barrel Lathe</label>
+        <label>auto barrel Lathe</label>
         <description>A machine that rotates a workpiece about an axis of rotation to perform various operations.</description>
         <graphicData>
-            <texPath>Lathe/Lathe</texPath>
+            <texPath>Things/Building/Lathe/autoLathe</texPath>
             <graphicClass>Graphic_Multi</graphicClass>
-            <drawSize>(8,5)</drawSize>
+            <drawSize>(7,4)</drawSize>
+			<drawOffset>(0,0,0.135)</drawOffset>
             <damageData>
                 <cornerTL>Damage/Corner</cornerTL>
                 <cornerTR>Damage/Corner</cornerTR>
@@ -190,13 +191,13 @@
         </costList>
         <statBases>
             <WorkToBuild>3000</WorkToBuild>
-            <MaxHitPoints>180</MaxHitPoints>
+            <MaxHitPoints>450</MaxHitPoints>
             <Flammability>0</Flammability>
             <Cleanliness>-2</Cleanliness>
 			<WorkTableWorkSpeedFactor>2.0</WorkTableWorkSpeedFactor>
         </statBases>
         <size>(5,2)</size>
-        <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+        <interactionCellOffset>(-1,0,-1)</interactionCellOffset>
         <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
         <recipes>
             <!--<li>FT_Make_ComponentIndustrial</li>-->
