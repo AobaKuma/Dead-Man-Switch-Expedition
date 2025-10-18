@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-  <!-- 微重力生產設施 -->
+  <!-- 精密生產設施 -->
   <ThingDef ParentName="DMS_AutofacturerBenchBase">
     <defName>DMSE_MicrogravityFacility</defName>
-    <label>Microgravity Facility</label>
-    <description>An additive manufacturing facility that must operate in a microgravity environment.</description>
+    <label>Precise fabrication center</label>
+    <description>A precise-additive manufacturing facility that designed for special production environment such as microgravity and vacuum.</description>
     <graphicData>
-      <texPath>Things/Building/StampTable</texPath>
+      <texPath>Things/Building/PreciseFabricationCenter/building</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
       <drawSize>(5,3)</drawSize>
       <damageData>

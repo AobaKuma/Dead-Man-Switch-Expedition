@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
-	<MakeDMS_Modular_AR.label>制作G93突击步枪</MakeDMS_Modular_AR.label>
-	<MakeDMS_Modular_AR.description>制作G93突击步枪</MakeDMS_Modular_AR.description>
-	<MakeDMS_Modular_AR.jobString>正在制作G93突击步枪</MakeDMS_Modular_AR.jobString>
+	<MakeDMSE_Modular_AR.label>制作G93突击步枪</MakeDMSE_Modular_AR.label>
+	<MakeDMSE_Modular_AR.description>制作G93突击步枪</MakeDMSE_Modular_AR.description>
+	<MakeDMSE_Modular_AR.jobString>正在制作G93突击步枪</MakeDMSE_Modular_AR.jobString>
 
-	<MakeDMS_Modular_LMG.label>制作MG93轻机枪</MakeDMS_Modular_LMG.label>
-	<MakeDMS_Modular_LMG.description>制作MG93轻机枪</MakeDMS_Modular_LMG.description>
-	<MakeDMS_Modular_LMG.jobString>正在制作MG93轻机枪</MakeDMS_Modular_LMG.jobString>
+	<MakeDMSE_Modular_LMG.label>制作MG93轻机枪</MakeDMSE_Modular_LMG.label>
+	<MakeDMSE_Modular_LMG.description>制作MG93轻机枪</MakeDMSE_Modular_LMG.description>
+	<MakeDMSE_Modular_LMG.jobString>正在制作MG93轻机枪</MakeDMSE_Modular_LMG.jobString>
 
 	<MakeDMS_Modular_PDW.label>制作C90个人防卫武器</MakeDMS_Modular_PDW.label>
 	<MakeDMS_Modular_PDW.description>制作C90个人防卫武器</MakeDMS_Modular_PDW.description>

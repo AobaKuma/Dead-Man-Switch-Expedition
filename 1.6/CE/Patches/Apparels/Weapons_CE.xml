@@ -41,7 +41,6 @@
                     <li>CE_AI_AR</li>
                 </weaponTags>
             </li>
-
 			<!-- LMG -->
             <li Class="CombatExtended.PatchOperationMakeGunCECompatible">
                 <defName>DMSE_Modular_LMG</defName>

@@ -71,6 +71,7 @@
     <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
     <recipeUsers>
       <li>DMS_TableArtifuscle</li>
+      <li>DMSE_TableArtifuscle</li>
     </recipeUsers>
     <skillRequirements />
     <workSkill>Crafting</workSkill>
@@ -116,6 +117,7 @@
     <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
     <recipeUsers>
       <li>DMS_TableArtifuscle</li>
+      <li>DMSE_TableArtifuscle</li>
     </recipeUsers>
     <skillRequirements />
     <workSkill>Crafting</workSkill>

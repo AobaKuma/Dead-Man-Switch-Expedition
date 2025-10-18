@@ -47,7 +47,7 @@
       <DMSE_Graphene>5</DMSE_Graphene>
     </products>
   </RecipeDef>
-  
+
   <!-- 化合燃料產石墨稀(批量) -->
   <RecipeDef ParentName="DMSE_MicroGrav_Recipe">
     <defName>DMSE_Make_GrapheneMass_Chemfuel</defName>
@@ -165,7 +165,8 @@
     </products>
   </RecipeDef>
 
-<!-- 微重力生產設施 -->
+<!-- 精密生產設施 -->
+
   <!-- 高級零件 (ComponentSpacer)-->
   <RecipeDef ParentName="DMSE_MicroGrav_Recipe">
     <defName>DMSE_Make_ComponentSpacer</defName>
@@ -175,6 +176,10 @@
     <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
     <effectWorking>Cook</effectWorking>
     <soundWorking>Recipe_Machining</soundWorking>
+    <researchPrerequisites>
+      <li>DMSE_Microgravity</li>
+      <li>MicroelectronicsBasics</li>
+    </researchPrerequisites>
     <workAmount>10000</workAmount>
     <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
     <skillRequirements>
@@ -228,9 +233,6 @@
     <products>
       <ComponentSpacer>1</ComponentSpacer>
     </products>
-    <researchPrerequisites>
-      <li>DMSE_Microgravity</li>
-    </researchPrerequisites>
     <workSkill>Crafting</workSkill>
     <displayPriority>10</displayPriority>
   </RecipeDef>
@@ -244,6 +246,10 @@
     <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
     <effectWorking>Cook</effectWorking>
     <soundWorking>Recipe_Machining</soundWorking>
+    <researchPrerequisites>
+      <li>DMSE_Microgravity</li>
+      <li>MicroelectronicsBasics</li>
+    </researchPrerequisites>
     <workAmount>12500</workAmount>
     <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
     <skillRequirements>
@@ -297,9 +303,6 @@
     <products>
       <ComponentSpacer>4</ComponentSpacer>
     </products>
-    <researchPrerequisites>
-      <li>DMSE_Microgravity</li>
-    </researchPrerequisites>
     <workSkill>Crafting</workSkill>
     <displayPriority>10</displayPriority>
     <modExtensions>
