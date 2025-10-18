@@ -69,11 +69,12 @@
     <size>(3,5)</size>
     <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
     <costList>
-      <Steel>220</Steel>
-      <BlocksVacstone>50</BlocksVacstone>
-      <ComponentIndustrial>6</ComponentIndustrial>
+      <Steel>400</Steel>
+      <DMSE_TantastenAlloy>120</DMSE_TantastenAlloy>
+      <ComponentStamped>6</ComponentStamped>
     </costList>
     <researchPrerequisites>
+      <li>DMSE_Aerospace</li>
       <li>StandardGravtech</li>
     </researchPrerequisites>
     <comps>

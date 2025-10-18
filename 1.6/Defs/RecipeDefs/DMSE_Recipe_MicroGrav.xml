@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <RecipeDef Name="DMSE_MicroGrav_Recipe" Abstract="True">
+    <modExtensions>
+      <li Class="Fortified.ModExt_EnvironmentalBill">
+        <OnlyInMicroGravity>true</OnlyInMicroGravity>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+<!-- 反應釜 -->
+  <!-- 化合燃料產石墨稀 -->
+  <RecipeDef ParentName="DMSE_MicroGrav_Recipe">
+    <defName>DMSE_Make_Graphene_Chemfuel</defName>
+    <label>Make Graphene with Chemfuel</label>
+    <description>Producing a small amount of graphene materials using Chemfuel and wood.</description>
+    <jobString>Producing.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
+    <recipeUsers>
+      <li>DMSE_MicrogravityFacility</li>
+    </recipeUsers>
+    <skillRequirements>
+      <Crafting>8</Crafting>
+    </skillRequirements>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>DMSE_Microgravity</researchPrerequisite>
+    <workAmount>20000</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Chemfuel</li>
+          </thingDefs>
+        </filter>
+        <count>35</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>Chemfuel</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <DMSE_Graphene>5</DMSE_Graphene>
+    </products>
+  </RecipeDef>
+  
+  <!-- 化合燃料產石墨稀(批量) -->
+  <RecipeDef ParentName="DMSE_MicroGrav_Recipe">
+    <defName>DMSE_Make_GrapheneMass_Chemfuel</defName>
+    <label>Make Graphene with Chemfuel x4</label>
+    <description>Producing a large amount of graphene materials using Chemfuel and wood.</description>
+    <jobString>Producing.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
+    <recipeUsers>
+      <li>DMSE_MicrogravityFacility</li>
+    </recipeUsers>
+    <skillRequirements>
+      <Crafting>8</Crafting>
+    </skillRequirements>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>DMSE_Microgravity</researchPrerequisite>
+    <workAmount>40000</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Chemfuel</li>
+          </thingDefs>
+        </filter>
+        <count>140</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>Chemfuel</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <DMSE_Graphene>20</DMSE_Graphene>
+    </products>
+  </RecipeDef>
+
+  <!-- 木頭產石墨稀 -->
+  <RecipeDef ParentName="DMSE_MicroGrav_Recipe">
+    <defName>DMSE_Make_Graphene_WoodLog</defName>
+    <label>Make graphene with wood</label>
+    <description>Producing a small amount of graphene materials using Chemfuel and wood.</description>
+    <jobString>Producing.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
+    <recipeUsers>
+      <li>DMSE_MicrogravityFacility</li>
+    </recipeUsers>
+    <skillRequirements>
+      <Crafting>8</Crafting>
+    </skillRequirements>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>DMSE_Microgravity</researchPrerequisite>
+    <workAmount>20000</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>WoodLog</li>
+          </thingDefs>
+        </filter>
+        <count>75</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>WoodLog</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <DMSE_Graphene>5</DMSE_Graphene>
+    </products>
+  </RecipeDef>
+
+  <!-- 木頭產石墨稀(批量) -->
+  <RecipeDef ParentName="DMSE_MicroGrav_Recipe">
+    <defName>DMSE_Make_GrapheneMass_WoodLog</defName>
+    <label>Make graphene with wood x4</label>
+    <description>Producing a large amount of graphene materials using Chemfuel and wood.</description>
+    <jobString>Producing.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
+    <recipeUsers>
+      <li>DMSE_MicrogravityFacility</li>
+    </recipeUsers>
+    <skillRequirements>
+      <Crafting>8</Crafting>
+    </skillRequirements>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>DMSE_Microgravity</researchPrerequisite>
+    <workAmount>40000</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>WoodLog</li>
+          </thingDefs>
+        </filter>
+        <count>300</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>WoodLog</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <DMSE_Graphene>20</DMSE_Graphene>
+    </products>
+  </RecipeDef>
+
+<!-- 微重力生產設施 -->
+  <!-- 高級零件 (ComponentSpacer)-->
+  <RecipeDef ParentName="DMSE_MicroGrav_Recipe">
+    <defName>DMSE_Make_ComponentSpacer</defName>
+    <label>make advanced component with graphene</label>
+    <description>Make an advanced component.</description>
+    <jobString>Making advanced component.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workAmount>10000</workAmount>
+    <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
+    <skillRequirements>
+      <Crafting>8</Crafting>
+    </skillRequirements>
+    <recipeUsers>
+      <li>DMSE_MicrogravityFacility</li>
+    </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>ComponentIndustrial</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Steel</li>
+          </thingDefs>
+        </filter>
+        <count>20</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Plasteel</li>
+          </thingDefs>
+        </filter>
+        <count>10</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>DMSE_Graphene</li>
+          </thingDefs>
+        </filter>
+        <count>3</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>ComponentIndustrial</li>
+        <li>Steel</li>
+        <li>Plasteel</li>
+        <li>DMSE_Graphene</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <ComponentSpacer>1</ComponentSpacer>
+    </products>
+    <researchPrerequisites>
+      <li>DMSE_Microgravity</li>
+    </researchPrerequisites>
+    <workSkill>Crafting</workSkill>
+    <displayPriority>10</displayPriority>
+  </RecipeDef>
+
+  <!-- 高級零件(批量) (ComponentSpacer)-->
+  <RecipeDef ParentName="DMSE_MicroGrav_Recipe">
+    <defName>DMSE_Make_ComponentSpacerBulk</defName>
+    <label>make advanced component with graphene x4</label>
+    <description>Make advanced component x4</description>
+    <jobString>Making advanced component.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workAmount>12500</workAmount>
+    <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
+    <skillRequirements>
+      <Crafting>8</Crafting>
+    </skillRequirements>
+    <recipeUsers>
+      <li>DMSE_MicrogravityFacility</li>
+    </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>ComponentIndustrial</li>
+          </thingDefs>
+        </filter>
+        <count>4</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Steel</li>
+          </thingDefs>
+        </filter>
+        <count>80</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Plasteel</li>
+          </thingDefs>
+        </filter>
+        <count>40</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>DMSE_Graphene</li>
+          </thingDefs>
+        </filter>
+        <count>12</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>ComponentIndustrial</li>
+        <li>Steel</li>
+        <li>Plasteel</li>
+        <li>DMSE_Graphene</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <ComponentSpacer>4</ComponentSpacer>
+    </products>
+    <researchPrerequisites>
+      <li>DMSE_Microgravity</li>
+    </researchPrerequisites>
+    <workSkill>Crafting</workSkill>
+    <displayPriority>10</displayPriority>
+    <modExtensions>
+      <li Class="Fortified.ModExt_EnvironmentalBill">
+        <OnlyInCleanliness>true</OnlyInCleanliness>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+</Defs>	

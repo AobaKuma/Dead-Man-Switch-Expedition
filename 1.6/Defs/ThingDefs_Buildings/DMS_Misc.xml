@@ -38,7 +38,7 @@
       <destroySound>BuildingDestroyed_Metal_Small</destroySound>
     </building>
     <researchPrerequisites>
-      <li>DMSE_Microgravity</li>
+      <li>DMS_Autofacturer</li>
     </researchPrerequisites>
     <designationCategory>DMS_Category</designationCategory>
     <minifiedDef>MinifiedThing</minifiedDef>

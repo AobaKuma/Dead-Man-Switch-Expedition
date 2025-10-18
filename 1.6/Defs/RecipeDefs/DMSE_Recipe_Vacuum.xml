@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Defs>
+  <RecipeDef Name="DMSE_Vacuum_Recipe" Abstract="True">
+    <modExtensions>
+      <li Class="Fortified.ModExt_EnvironmentalBill">
+        <OnlyInVacuum>true</OnlyInVacuum>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+<!-- 燒結爐 -->
+  <!-- 鉭鎢合金 -->
+  <RecipeDef ParentName="DMSE_Vacuum_Recipe">
+    <defName>DMSE_Make_TantastenAlloy</defName>
+    <label>Make tantasten alloy x25</label>
+    <description>Sinter a small amount of tantasten alloy.</description>
+    <jobString>Sintering.</jobString>
+    <workSpeedStat>SmeltingSpeed</workSpeedStat>
+    <effectWorking>ConstructMetal</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
+    <recipeUsers>
+      <li>DMS_Furnace</li>
+      <li>DMS_LabFurnace</li>
+    </recipeUsers>
+    <skillRequirements>
+      <Crafting>3</Crafting>
+    </skillRequirements>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>DMSE_VacuumMaterial</researchPrerequisite>
+    <workAmount>15000</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Tungsteel</li>
+          </thingDefs>
+        </filter>
+        <count>50</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>BlocksVacstone</li>
+          </thingDefs>
+        </filter>
+        <count>120</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>Tungsteel</li>
+        <li>BlocksVacstone</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <DMSE_TantastenAlloy>25</DMSE_TantastenAlloy>
+    </products>
+  </RecipeDef>
+
+  <!-- 鉭鎢合金(批量) -->
+  <RecipeDef ParentName="DMSE_Vacuum_Recipe">
+    <defName>DMSE_Make_TantastenAlloyMass</defName>
+    <label>Make tantasten alloy x100</label>
+    <description>Sinter a large amount of tantasten alloy.</description>
+    <jobString>Sintering.</jobString>
+    <workSpeedStat>SmeltingSpeed</workSpeedStat>
+    <effectWorking>ConstructMetal</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
+    <recipeUsers>
+      <li>DMS_Furnace</li>
+      <li>DMS_LabFurnace</li>
+    </recipeUsers>
+    <skillRequirements>
+      <Crafting>3</Crafting>
+    </skillRequirements>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>DMSE_VacuumMaterial</researchPrerequisite>
+    <workAmount>22000</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Tungsteel</li>
+          </thingDefs>
+        </filter>
+        <count>200</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>BlocksVacstone</li>
+          </thingDefs>
+        </filter>
+        <count>480</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>Tungsteel</li>
+        <li>BlocksVacstone</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <DMSE_TantastenAlloy>100</DMSE_TantastenAlloy>
+    </products>
+  </RecipeDef>
+</Defs>	

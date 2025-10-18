@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
-	<ThingDef ParentName="DMS_BaseHumanMakeableGun">
-		<defName>DMS_Modular_PDW</defName>
+	<ThingDef ParentName="DMSE_BaseHumanMakeableGun">
+		<defName>DMSE_Modular_PDW</defName>
 		<label>caseless defense firearm</label>
 		<description>一種緊湊輕便的個人防衛武器，設計上是提供載具乘員自保時能提供足夠的火力。具有快速更換彈夾的設計並能根據個人需要安裝配件。</description>
 		<graphicData>

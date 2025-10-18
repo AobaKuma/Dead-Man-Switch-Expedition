@@ -19,14 +19,14 @@
   <ResearchProjectDef ParentName="DMS_BaseTech">
     <defName>DMSE_OrbitalDynamics</defName>
     <label>orbital dynamics</label>
-    <description>透過對基本軌道運行規律與太空環境特性的深入研究，研製專門適用於真空微重力環境的裝備與精密設備，\n\n製造這些裝備所使用的關鍵材料與零件依賴於殖民艦隊的交易往來，但也可以透過更深入的研究來實現完全的自主生產。</description>
+    <description>透過對基本軌道運行規律與太空環境特性的深入研究，研製專門適用於真空微重力環境的裝備與精密設備，以及由先進材料生產並特化設計的無殼彈槍械家族，\n\n製造這些裝備所使用的關鍵材料與零件依賴於殖民艦隊的交易往來，但也可以透過更深入的研究來實現完全的自主生產。</description>
     <baseCost>1000</baseCost>
     <requiredResearchBuilding Inherit="False"/>
     <prerequisites>
       <li>DMS_MechBasis</li>
     </prerequisites> 
     <researchViewX>3.00</researchViewX>
-    <researchViewY>3.00</researchViewY>
+    <researchViewY>2.80</researchViewY>
     <generalRules/>
   </ResearchProjectDef>
   
@@ -63,7 +63,7 @@
   <ResearchProjectDef ParentName="DMS_BaseTech">
     <defName>DMSE_Aerospace</defName>
     <label>Aerospace Applications</label>
-    <description>透過規模化的生產鉭鎢合金與石墨烯並發掘這些特種材料在航空航天領與微電子等領域中的關鍵應用。\n\n透過該研究解鎖使用這些材料生產與設計的無殼彈槍械，應用於重力船與軌道星艦上的大型火箭推進引擎與先進的軌道電子戰隱蔽設備。</description>
+    <description>透過規模化的生產鉭鎢合金與石墨烯並發掘這些特種材料在航空航天領與微電子等領域中的關鍵應用。\n\n透過該研究解鎖應用於重力船與軌道星艦上的熱核推進引擎與軌道電子戰隱蔽設備。</description>
     <baseCost>1500</baseCost>
     <requiredResearchBuilding Inherit="False"/>
     <techLevel>Industrial</techLevel>

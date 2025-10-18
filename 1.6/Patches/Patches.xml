@@ -1,5 +1,59 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Patch>
+	
+	<Operation Class="PatchOperationConditional">
+		<xpath>/Defs/ThingDef[defName="ComponentControlChip"]/descriptionHyperlinks</xpath>
+			<match Class="PatchOperationAdd">
+				<xpath>/Defs/ThingDef[defName="ComponentControlChip"]/descriptionHyperlinks</xpath>
+				<value>
+					<recipeDef>DMSE_Make_ComponentControlChip</recipeDef>
+				</value>
+			</match>
+			<nomatch Class="PatchOperationAdd">
+				<xpath>/Defs/ThingDef[defName="ComponentControlChip"]</xpath>
+				<value>
+					<descriptionHyperlinks>
+						<recipeDef>DMSE_Make_ComponentControlChip</recipeDef>
+					</descriptionHyperlinks>
+				</value>
+			</nomatch>
+	</Operation>
+	
+	<Operation Class="PatchOperationConditional">
+		<xpath>/Defs/ThingDef[defName="ComponentTransmitter"]/descriptionHyperlinks</xpath>
+			<match Class="PatchOperationAdd">
+				<xpath>/Defs/ThingDef[defName="ComponentTransmitter"]/descriptionHyperlinks</xpath>
+				<value>
+					<recipeDef>DMSE_Make_ComponentTransmitter</recipeDef>
+				</value>
+			</match>
+			<nomatch Class="PatchOperationAdd">
+				<xpath>/Defs/ThingDef[defName="ComponentTransmitter"]</xpath>
+				<value>
+					<descriptionHyperlinks>
+						<recipeDef>DMSE_Make_ComponentTransmitter</recipeDef>
+					</descriptionHyperlinks>
+				</value>
+			</nomatch>
+	</Operation>
+
+	<Operation Class="PatchOperationConditional">
+		<xpath>/Defs/ThingDef[defName="ComponentFireControl"]/descriptionHyperlinks</xpath>
+			<match Class="PatchOperationAdd">
+				<xpath>/Defs/ThingDef[defName="ComponentFireControl"]/descriptionHyperlinks</xpath>
+				<value>
+					<recipeDef>DMSE_Make_ComponentFireControl</recipeDef>
+				</value>
+			</match>
+			<nomatch Class="PatchOperationAdd">
+				<xpath>/Defs/ThingDef[defName="ComponentFireControl"]</xpath>
+				<value>
+					<descriptionHyperlinks>
+						<recipeDef>DMSE_Make_ComponentFireControl</recipeDef>
+					</descriptionHyperlinks>
+				</value>
+			</nomatch>
+	</Operation>
 
 	<Operation Class="PatchOperationAdd">
 		<xpath>/Defs/WorkGiverDef[defName="DMS_Operate"]/fixedBillGiverDefs</xpath>

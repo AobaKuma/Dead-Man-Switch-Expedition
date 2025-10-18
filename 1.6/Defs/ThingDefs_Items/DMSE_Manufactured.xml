@@ -8,6 +8,7 @@
     <description>A white, solid powder that remains highly stable at room temperature, this substance is artificially synthesized from starch, lactose, and other compounds using industrial equipment. Composed of basic elements such as carbon, hydrogen, and oxygen, it does not spoil even when stored in a dry, ambient environment, making it an extremely space-efficient nutritional source for interstellar travel. However, consuming it untreated may cause short-term symptoms such as abdominal pain. \n\nDue to its highly flammable chemical nature and rapid decomposition when exposed to open air, it is typically compressed into dense blocks and vacuum-sealed immediately after synthesis for long-term storage and distribution.</description>
     <descriptionHyperlinks>
       <ThingDef>DMSE_GrapheneBioreactor</ThingDef>
+      <recipeDef>DMSE_Make_Carbohydrate</recipeDef>
     </descriptionHyperlinks>
     <graphicData>
       <texPath>Things/Resource/Carbohydrate</texPath>
@@ -51,10 +52,11 @@
   <ThingDef ParentName="ResourceBase">
     <defName>DMSE_TantastenAlloy</defName>
     <label>TantastenAlloy</label>
-    <description>A special alloy material composed of tantalum and tungsten. It is hard, wear-resistant, corrosion-resistant, and has an extremely high melting point of up to 3080°C, making it widely used in rocket engine De Laval nozzles and high-performance military mecha pulse thrusters. \n\nTantalum is found in trace amounts in asteroids and can be extracted through vacuum rock mining. Its processing and production must be carried out in a vacuum environment to avoid contamination by gases such as nitrogen and oxygen. Therefore, worlds capable of large-scale production and application typically have substantial industrial platforms orbiting near-Earth space dedicated to manufacturing and processing these materials.</description>
+    <description>A special alloy material composed of tantalum and tungsten. It is hard, wear-resistant, corrosion-resistant, and has an extremely high melting point of up to 3080°C, making it widely used in rocket engine De Laval nozzles and high-performance military mecha pulse thrusters. \n\nTantalum is found in trace amounts in asteroids and can be extracted through vacstone mining. Its processing and production must be carried out in a vacuum environment to avoid contamination by gases such as nitrogen and oxygen. Therefore, worlds capable of large-scale production and application typically have substantial industrial platforms orbiting dedicated to manufacturing and processing these materials.</description>
     <descriptionHyperlinks>
       <ThingDef>DMS_Furnace</ThingDef>
       <ThingDef>DMS_LabFurnace</ThingDef>
+      <recipeDef>DMSE_Make_TantastenAlloy</recipeDef>
     </descriptionHyperlinks>
     <graphicData>
       <texPath>Things/Resource/Tantasten</texPath>
@@ -75,7 +77,7 @@
       <SharpDamageMultiplier>1.2</SharpDamageMultiplier>
       <BluntDamageMultiplier>1.1</BluntDamageMultiplier>
     </statBases>
-    <generateCommonality>0.2</generateCommonality>
+    <generateCommonality>0</generateCommonality>
     <thingCategories inherit="false">
     </thingCategories>
     <tradeTags>
@@ -90,7 +92,7 @@
       <appearance>Metal</appearance>
       <commonality>0</commonality>
       <constructEffect>ConstructMetal</constructEffect>
-	  <isAirtight>true</isAirtight>
+	    <isAirtight>true</isAirtight>
       <color>(80,80,80)</color>
       <soundImpactBullet>BulletImpact_Ground</soundImpactBullet>
       <soundMeleeHitSharp>MeleeHit_Metal_Sharp</soundMeleeHitSharp>
@@ -114,6 +116,8 @@
     <description>A single-layer carbon material produced by exfoliating graphite, it is the most widely used non-metallic material in the Midsphere World. Thanks to its excellent thermal conductivity and electrical properties, it is commonly employed in electronic components, beam emitters, and supercapacitors. \n\nGraphene itself demands extremely stringent production conditions and is often further processed into materials like carbon nanotubes or fullerenes. As a result, worlds capable of large-scale production and application typically possess massive industrial platforms in near-Earth orbit dedicated to manufacturing and processing these materials.</description>
     <descriptionHyperlinks>
       <ThingDef>DMSE_MicrogravityFacility</ThingDef>
+      <recipeDef>DMSE_Make_Graphene_Chemfuel</recipeDef>
+      <recipeDef>DMSE_Make_Graphene_WoodLog</recipeDef>
     </descriptionHyperlinks>
     <possessionCount>2</possessionCount>
     <graphicData>

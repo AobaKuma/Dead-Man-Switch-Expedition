@@ -3,7 +3,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_StealthDevice</defName>
     <label>signal stealth device</label>
-    <!--一種巨大的等離子場護盾發生器，能夠有效的屏蔽訊號的產生，另雷達無法搜索到發生器所在的小行星基地，但要注意內部的活體訊號越多會使得使用該設備所消耗的電力越多，並且在成功阻止一次雷達搜索後需要一天的時間來冷卻並重新充能。 -->
+    <!--一種巨大的等離子場護盾發生器，能夠有效的屏蔽訊號的產生，並透過定向抵銷雷達波來使外部無法搜索到發生器所在的小行星基地，但要注意內部的活體訊號越多會使得使用該設備所消耗的電力越多，並且在成功阻止一次雷達搜索後需要一天的時間來冷卻並重新充能。 -->
     <description>A massive plasma field generator, widely used by the colonial fleet in automated orbital facilities, effectively shielding against internal life signals, effectively cloaking the device in space and rendering it invisible to active radar.\n\nInternal life signals increase the device's power consumption, requiring a day to cool and recharge after successful shielding.</description>
     <graphicData>
       <texPath>Things/Building/StealthDevice/building</texPath>
@@ -34,17 +34,17 @@
     </statBases>
     <size>(5,5)</size>
     <costList>
-      <Steel>200</Steel>
       <Tungsteel>400</Tungsteel>
       <DMSE_Graphene>75</DMSE_Graphene>
-      <ComponentStamped>10</ComponentStamped>
-      <ComponentSpacer>2</ComponentSpacer>
+      <ComponentStamped>12</ComponentStamped>
+      <ComponentSpacer>6</ComponentSpacer>
+      <ComponentTransmitter>4</ComponentTransmitter>
     </costList>
     <building>
       <destroySound>BuildingDestroyed_Metal_Small</destroySound>
     </building>
     <researchPrerequisites>
-      <li>DMSE_OrbitalDynamics</li>
+      <li>DMSE_Aerospace</li>
     </researchPrerequisites>
     <designationCategory>DMS_Category</designationCategory>
     <minifiedDef>MinifiedThing</minifiedDef>

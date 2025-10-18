@@ -32,7 +32,6 @@
 
   <!--Adicional tags-->
   <designationCategory>Odyssey</designationCategory>
-
   </TerrainDef>
   
   <TerrainDef ParentName="PlatformBase">
@@ -58,22 +57,17 @@
         <li>terrain/DMS_Orbitalplatform/loop/OrbitalPlatformEdge_Loop5</li>
       </LoopTexPaths>
     </spaceEdgeGraphicData>
-	
 	  <description>A solid orbital surface that allows walking in outer space. You can build all kinds of structures on it.</description>
-    
     <researchPrerequisites>
       <li>BasicGravtech</li>
     </researchPrerequisites>
-
     <costList>
       <Steel>25</Steel>
     </costList>
-
     <statBases>
       <WorkToBuild>8000</WorkToBuild>
 	    <MarketValue>0</MarketValue>
     </statBases>
-
     <affordances>
       <li>Light</li>
       <li>Medium</li>
@@ -84,5 +78,4 @@
     </affordances>
     <terrainAffordanceNeeded>VoidSpace</terrainAffordanceNeeded>
   </TerrainDef>
-
 </Defs>

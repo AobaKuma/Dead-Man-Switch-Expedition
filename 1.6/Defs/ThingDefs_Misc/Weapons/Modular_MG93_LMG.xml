@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef ParentName="DMS_BaseHumanMakeableGun">
-        <defName>DMS_Modular_LMG</defName>
+    <ThingDef ParentName="DMSE_BaseHumanMakeableGun">
+        <defName>DMSE_Modular_LMG</defName>
         <label>Caseless light machinegun</label>
         <description>A lightweight machine gun utilizing composite materials for reduced weight and employing caseless ammunition. Its high ammunition capacity, combined with well-controlled weight and compact dimensions, ensures exceptional sustained combat performance.</description>
         <graphicData>

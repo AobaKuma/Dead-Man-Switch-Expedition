@@ -5,7 +5,7 @@
 		<operations>
 			<!-- AR -->
             <li Class="CombatExtended.PatchOperationMakeGunCECompatible">
-                <defName>DMS_Modular_AR</defName>
+                <defName>DMSE_Modular_AR</defName>
                 <statBases>
                     <Mass>4.3</Mass>
                     <Bulk>5</Bulk>
@@ -44,7 +44,7 @@
 
 			<!-- LMG -->
             <li Class="CombatExtended.PatchOperationMakeGunCECompatible">
-                <defName>DMS_Modular_LMG</defName>
+                <defName>DMSE_Modular_LMG</defName>
                 <statBases>
 					<WorkToMake>46000</WorkToMake>
 					<Mass>6</Mass>

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-	<ThingDef ParentName="DMS_BaseHumanMakeableGun">
-		<defName>DMS_Modular_C95_Pistol</defName>
-		<label>Caseless pistol</label>
-		<description>A semi-automatic pistol utilizing caseless ammunition, commonly employed for personal defense.</description>
+	<ThingDef ParentName="DMSE_BaseHumanMakeableGun">
+		<defName>DMSE_Modular_C95BP_Pistol</defName>
+		<label>Caseless auto pistol</label>
+		<description>An automatic pistol employing caseless ammunition, typically used for personal defense.</description>
 		<graphicData>
-			<texPath>Things/Weapons/DMS_C95Caseless</texPath>
+			<texPath>Things/Weapons/DMS_C95BPCaseless</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 			<drawSize>1.2</drawSize>
 		</graphicData>
 		<soundInteract>Interact_Autopistol</soundInteract>
 		<statBases>
-			<WorkToMake>6300</WorkToMake>
-			<Mass>1.9</Mass>
+			<WorkToMake>7500</WorkToMake>
+			<Mass>2.3</Mass>
 			<AccuracyTouch>0.90</AccuracyTouch>
 			<AccuracyShort>0.71</AccuracyShort>
 			<AccuracyMedium>0.35</AccuracyMedium>
@@ -21,8 +21,8 @@
 		</statBases>
 		<costList>
 			<DMSE_TantastenAlloy>15</DMSE_TantastenAlloy>
-			<DMSE_Graphene>10</DMSE_Graphene>
-			<ComponentStamped>2</ComponentStamped>
+			<DMSE_Graphene>15</DMSE_Graphene>
+			<ComponentStamped>3</ComponentStamped>
 		</costList>
 		<weaponClasses>
 			<li>RangedLight</li>
@@ -30,20 +30,22 @@
 		</weaponClasses>
 		<weaponTags>
 			<li>IndustrialGunAdvanced</li>
+			<li>CE_OneHandedWeapon</li>
+			<li>CE_Sidearm</li>
+			<li>CE_AI_BROOM</li>
 		</weaponTags>
 		<verbs>
 			<li>
 				<verbClass>Verb_Shoot</verbClass>
 				<hasStandardCommand>true</hasStandardCommand>
-				<defaultProjectile>Bullet_MachinePistol</defaultProjectile>
+				<defaultProjectile>Bullet_Autopistol</defaultProjectile>
 				<warmupTime>0.3</warmupTime>
-				<range>14.9</range>
-				<soundCast>Shot_Revolver</soundCast>
+				<range>25.9</range>
+				<soundCast>Shot_Autopistol</soundCast>
 				<soundCastTail>GunTail_Light</soundCastTail>
 				<muzzleFlashScale>9</muzzleFlashScale>
 			</li>
 		</verbs>
-		<comps />
 		<tools>
 			<li>
 				<label>grip</label>
@@ -55,14 +57,11 @@
 			</li>
 		</tools>
 		<modExtensions>
-			<li MayRequire="ceteam.combatextended" Class="CombatExtended.GunDrawExtension">
-				<DrawOffset>0,0.05</DrawOffset>
-			</li>
 			<li Class="MuzzleFlash.MuzzleFlashProps" MayRequire="IssacZhuang.MuzzleFlash">
 				<def>MF_StandardMuzzleFalsh</def>
 				<drawSize>(0.9,0.9)</drawSize>
 				<offsets>
-					<li>(0.15,0.05)</li>
+					<li>(0.1,0.05)</li>
 				</offsets>
 				<isAlternately>true</isAlternately>
 			</li>

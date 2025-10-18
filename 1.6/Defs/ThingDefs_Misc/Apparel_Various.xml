@@ -2,7 +2,7 @@
 <Defs>
 	<!-- 軌道游騎兵頭盔 -->
 	<ThingDef ParentName="DMS_ArmorHelmetMakeableBase">
-		<defName>DMS_Apparel_RangerHelmet</defName>
+		<defName>DMSE_Apparel_RangerHelmet</defName>
 		<label>Orbital ranger Helmet</label>
 		<!-- 一種由殖民艦隊軌道游騎兵普遍配備的全覆式真空密封防彈頭盔，具有完整的保護與內部集成的電子系統輔助，是殖民艦隊海軍陸戰隊與軌道龍騎兵在真空微重力環境下作戰的標準裝備。 -->
 		<description>A full-covering vacuum-sealed helmet used by the Orbital Rangers,With complete protection and internal integrated electronic system assistance, it is the standard equipment for Colonial Fleet Marines and Orbital Dragoons operating in microgravity environments.</description>
@@ -13,7 +13,7 @@
 			</skillRequirements>
 		</recipeMaker>
 		<graphicData>
-			<texPath>Things/Apparel/RangerHelmet/Icon</texPath>
+			<texPath>Things/Apparel/RangerHelmet/icon</texPath>
 		</graphicData>
 		<uiIconScale>1</uiIconScale>
 		<equippedStatOffsets>
@@ -40,7 +40,7 @@
 			<bodyPartGroups>
 				<li>UpperHead</li>
 			</bodyPartGroups>
-			<wornGraphicPath>Things/Apparel/RangerHelmet/Apparel</wornGraphicPath>
+			<wornGraphicPath>Things/Apparel/RangerHelmet/apparel</wornGraphicPath>
 			<layers>
 				<li>Overhead</li>
 			</layers>
@@ -80,7 +80,7 @@
 
 		<!-- 重型外骨骼 -->
 	<ThingDef ParentName="ApparelBase">
-		<defName>DMS_Apparel_HeavyPowerSkeleton</defName>
+		<defName>DMSE_Apparel_HeavyPowerSkeleton</defName>
 		<label>Heavy Powered Exoskeletal Unit</label>
 		<description>A heavy powered exoskeletal suit which mimics the human form and can be worn by an untrained operator. It significantly increases the wearer's strength. \n\nCompared to the exoskeleton on BigSister, this model has removed the jump system and shield system to reduce costs. When using it, don't assume you've gained the protective level of heavy mechanical units.</description>
 		<techLevel>Industrial</techLevel>
