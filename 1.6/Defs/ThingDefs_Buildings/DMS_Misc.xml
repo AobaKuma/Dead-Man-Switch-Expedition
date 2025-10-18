@@ -8,7 +8,6 @@
       <texPath>Things/Building/Lathe/latheDeco</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
       <drawSize>(7,4)</drawSize>
-      <drawOffset>(0,0,0.135)</drawOffset>
       <damageData>
         <cornerTL>Damage/Corner</cornerTL>
         <cornerTR>Damage/Corner</cornerTR>
