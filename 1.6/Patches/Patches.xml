@@ -54,6 +54,15 @@
 				</value>
 			</nomatch>
 	</Operation>
+	
+	<Operation Class="PatchOperationAdd">
+		<xpath>/Defs/WorkGiverDef[defName="DMS_Operate"]/fixedBillGiverDefs</xpath>
+		<value>
+			<li>DMSE_MicrogravityFacility</li>
+			<li>DMSE_TableLathe</li>
+			<li>DMSE_TableArtifuscle</li>
+		</value>
+	</Operation>
 
 	<Operation Class="PatchOperationAdd">
 		<xpath>/Defs/WorkGiverDef[defName="DMS_Operate"]/fixedBillGiverDefs</xpath>
@@ -78,6 +87,24 @@
 			<li>DMSE.WorldDrawLayer_SpaceTiles</li>
 			<li>WorldDrawLayer_SelectedTile</li>
 			<li>WorldDrawLayer_MouseTile</li>
+		</value>
+	</Operation>
+	
+	<!-- ==== DMS shuttle === -->
+	
+	<Operation Class="PatchOperationAdd">
+		<xpath>/Defs/ThingDef[defName="DMS_Shuttle_Player"]</xpath>
+		<value>
+			<designationCategory>DMS_Category</designationCategory>
+		</value>
+	</Operation>
+	
+	<Operation Class="PatchOperationAdd">
+		<xpath>/Defs/ThingDef[defName="DMS_Shuttle_Player"]</xpath>
+		<value>
+			<researchPrerequisites>
+				<li>Shuttles</li>
+			</researchPrerequisites>
 		</value>
 	</Operation>
 
