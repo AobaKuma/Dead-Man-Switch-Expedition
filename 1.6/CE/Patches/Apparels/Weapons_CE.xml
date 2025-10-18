@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Patch>
 
-	<Operation Class="PatchOperationSequence">
-		<operations>
-			<!-- AR -->
+    <Operation Class="PatchOperationSequence">
+        <operations>
+            <!-- AR -->
             <li Class="CombatExtended.PatchOperationMakeGunCECompatible">
                 <defName>DMSE_Modular_AR</defName>
                 <statBases>
@@ -15,22 +15,22 @@
                     <RangedWeapon_Cooldown>0.41</RangedWeapon_Cooldown>
                 </statBases>
                 <Properties>
-					<verbClass>CombatExtended.Verb_ShootCE</verbClass>
-					<hasStandardCommand>true</hasStandardCommand>
-					<defaultProjectile>Bullet_5x50mmCaseless_FMJ</defaultProjectile>
-					<warmupTime>1.2</warmupTime>
-					<range>75</range>
-					<burstShotCount>3</burstShotCount>
-					<ticksBetweenBurstShots>3</ticksBetweenBurstShots>
-					<soundCast>Shot_AssaultRifle</soundCast>
-					<soundCastTail>GunTail_Medium</soundCastTail>
-					<muzzleFlashScale>10</muzzleFlashScale>
-					<recoilAmount>0.48</recoilAmount>
+                    <verbClass>CombatExtended.Verb_ShootCE</verbClass>
+                    <hasStandardCommand>true</hasStandardCommand>
+                    <defaultProjectile>Bullet_5x50mmCaseless_FMJ</defaultProjectile>
+                    <warmupTime>1.2</warmupTime>
+                    <range>75</range>
+                    <burstShotCount>3</burstShotCount>
+                    <ticksBetweenBurstShots>3</ticksBetweenBurstShots>
+                    <soundCast>Shot_AssaultRifle</soundCast>
+                    <soundCastTail>GunTail_Medium</soundCastTail>
+                    <muzzleFlashScale>10</muzzleFlashScale>
+                    <recoilAmount>0.48</recoilAmount>
                 </Properties>
                 <AmmoUser>
-					<magazineSize>45</magazineSize>
-					<reloadTime>3</reloadTime>
-					<ammoSet>DMSE_AmmoSet_5x50mmCaseless</ammoSet>
+                    <magazineSize>45</magazineSize>
+                    <reloadTime>3</reloadTime>
+                    <ammoSet>DMSE_AmmoSet_5x50mmCaseless</ammoSet>
                 </AmmoUser>
                 <FireModes>
                     <aiUseBurstMode>true</aiUseBurstMode>
@@ -41,48 +41,48 @@
                     <li>CE_AI_AR</li>
                 </weaponTags>
             </li>
-			<!-- LMG -->
+            <!-- LMG -->
             <li Class="CombatExtended.PatchOperationMakeGunCECompatible">
                 <defName>DMSE_Modular_LMG</defName>
                 <statBases>
-					<WorkToMake>46000</WorkToMake>
-					<Mass>6</Mass>
-					<Bulk>8.8</Bulk>
-					<RangedWeapon_Cooldown>0.78</RangedWeapon_Cooldown>
-					<SightsEfficiency>1.4</SightsEfficiency>
-					<ShotSpread>0.02</ShotSpread>
-					<SwayFactor>1.12</SwayFactor>
+                    <WorkToMake>46000</WorkToMake>
+                    <Mass>6</Mass>
+                    <Bulk>8.8</Bulk>
+                    <RangedWeapon_Cooldown>0.78</RangedWeapon_Cooldown>
+                    <SightsEfficiency>1.4</SightsEfficiency>
+                    <ShotSpread>0.02</ShotSpread>
+                    <SwayFactor>1.12</SwayFactor>
                 </statBases>
                 <Properties>
-					<recoilAmount>0.48</recoilAmount>
-					<verbClass>CombatExtended.Verb_ShootCE</verbClass>
-					<hasStandardCommand>true</hasStandardCommand>
-					<defaultProjectile>Bullet_5x50mmCaseless_FMJ</defaultProjectile>
-					<burstShotCount>25</burstShotCount>
-					<ticksBetweenBurstShots>5</ticksBetweenBurstShots>
-					<warmupTime>1.2</warmupTime>
-					<range>75</range>
-					<soundCast>Shot_AssaultRifle</soundCast>
-					<soundCastTail>GunTail_Medium</soundCastTail>
-					<muzzleFlashScale>10</muzzleFlashScale>
+                    <recoilAmount>0.48</recoilAmount>
+                    <verbClass>CombatExtended.Verb_ShootCE</verbClass>
+                    <hasStandardCommand>true</hasStandardCommand>
+                    <defaultProjectile>Bullet_5x50mmCaseless_FMJ</defaultProjectile>
+                    <burstShotCount>25</burstShotCount>
+                    <ticksBetweenBurstShots>5</ticksBetweenBurstShots>
+                    <warmupTime>1.2</warmupTime>
+                    <range>75</range>
+                    <soundCast>Shot_AssaultRifle</soundCast>
+                    <soundCastTail>GunTail_Medium</soundCastTail>
+                    <muzzleFlashScale>10</muzzleFlashScale>
                 </Properties>
                 <AmmoUser>
-					<magazineSize>300</magazineSize>
-					<reloadTime>7.8</reloadTime>
-					<ammoSet>DMSE_AmmoSet_5x50mmCaseless_HV</ammoSet>
+                    <magazineSize>300</magazineSize>
+                    <reloadTime>7.8</reloadTime>
+                    <ammoSet>DMSE_AmmoSet_5x50mmCaseless_HV</ammoSet>
                 </AmmoUser>
                 <FireModes>
-					<aiUseBurstMode>true</aiUseBurstMode>
-					<aiAimMode>AimedShot</aiAimMode>
-					<aimedBurstShotCount>15</aimedBurstShotCount>
+                    <aiUseBurstMode>true</aiUseBurstMode>
+                    <aiAimMode>AimedShot</aiAimMode>
+                    <aimedBurstShotCount>15</aimedBurstShotCount>
                 </FireModes>
                 <weaponTags>
-					<li>A_MG_Light</li>
-					<li>CE_AI_LMG</li>
+                    <li>A_MG_Light</li>
+                    <li>CE_AI_LMG</li>
                 </weaponTags>
             </li>
-			<!-- PDW -->
-			<li Class="CombatExtended.PatchOperationMakeGunCECompatible">
+            <!-- PDW -->
+            <li Class="CombatExtended.PatchOperationMakeGunCECompatible">
                 <defName>DMSE_Modular_PDW</defName>
                 <statBases>
                     <Mass>2.5</Mass>
@@ -93,22 +93,22 @@
                     <RangedWeapon_Cooldown>0.3</RangedWeapon_Cooldown>
                 </statBases>
                 <Properties>
-					<verbClass>CombatExtended.Verb_ShootCE</verbClass>
-					<hasStandardCommand>true</hasStandardCommand>
-					<defaultProjectile>Bullet_5x50mmCaseless_FMJ_LV</defaultProjectile>
-					<warmupTime>0.6</warmupTime>
-					<range>28</range>
-					<burstShotCount>10</burstShotCount>
-					<ticksBetweenBurstShots></ticksBetweenBurstShots>
-					<soundCast>Shot_MachinePistol</soundCast>
-					<soundCastTail>GunTail_Medium</soundCastTail>
-					<muzzleFlashScale>10</muzzleFlashScale>
-					<recoilAmount>0.33</recoilAmount>
+                    <verbClass>CombatExtended.Verb_ShootCE</verbClass>
+                    <hasStandardCommand>true</hasStandardCommand>
+                    <defaultProjectile>Bullet_5x50mmCaseless_FMJ_LV</defaultProjectile>
+                    <warmupTime>0.6</warmupTime>
+                    <range>28</range>
+                    <burstShotCount>10</burstShotCount>
+                    <ticksBetweenBurstShots />
+                    <soundCast>Shot_MachinePistol</soundCast>
+                    <soundCastTail>GunTail_Medium</soundCastTail>
+                    <muzzleFlashScale>10</muzzleFlashScale>
+                    <recoilAmount>0.33</recoilAmount>
                 </Properties>
                 <AmmoUser>
-					<magazineSize>50</magazineSize>
-					<reloadTime>3</reloadTime>
-					<ammoSet>DMSE_AmmoSet_5x50mmCaseless_LV</ammoSet>
+                    <magazineSize>50</magazineSize>
+                    <reloadTime>3</reloadTime>
+                    <ammoSet>DMSE_AmmoSet_5x50mmCaseless_LV</ammoSet>
                 </AmmoUser>
                 <FireModes>
                     <aiUseBurstMode>true</aiUseBurstMode>
@@ -119,9 +119,9 @@
                     <li>CE_AI_SMG</li>
                 </weaponTags>
             </li>
-			<!-- Pistol -->
-			
-			<li Class="CombatExtended.PatchOperationMakeGunCECompatible">
+            <!-- Pistol -->
+
+            <li Class="CombatExtended.PatchOperationMakeGunCECompatible">
                 <defName>DMSE_Modular_C95_Pistol</defName>
                 <statBases>
                     <Mass>1.9</Mass>
@@ -132,31 +132,31 @@
                     <RangedWeapon_Cooldown>0.3</RangedWeapon_Cooldown>
                 </statBases>
                 <Properties>
-					<verbClass>CombatExtended.Verb_ShootCE</verbClass>
-					<hasStandardCommand>true</hasStandardCommand>
-					<defaultProjectile>Bullet_5x50mmCaseless_FMJ_LV</defaultProjectile>
-					<warmupTime>0.6</warmupTime>
-					<range>22</range>
-					<soundCast>Shot_Revolver</soundCast>
-					<soundCastTail>GunTail_Medium</soundCastTail>
-					<muzzleFlashScale>10</muzzleFlashScale>
-					<recoilAmount>0.23</recoilAmount>
+                    <verbClass>CombatExtended.Verb_ShootCE</verbClass>
+                    <hasStandardCommand>true</hasStandardCommand>
+                    <defaultProjectile>Bullet_5x50mmCaseless_FMJ_LV</defaultProjectile>
+                    <warmupTime>0.6</warmupTime>
+                    <range>22</range>
+                    <soundCast>Shot_Revolver</soundCast>
+                    <soundCastTail>GunTail_Medium</soundCastTail>
+                    <muzzleFlashScale>10</muzzleFlashScale>
+                    <recoilAmount>0.23</recoilAmount>
                 </Properties>
                 <AmmoUser>
-					<magazineSize>15</magazineSize>
-					<reloadTime>3</reloadTime>
-					<ammoSet>DMSE_AmmoSet_5x50mmCaseless_LV</ammoSet>
+                    <magazineSize>15</magazineSize>
+                    <reloadTime>3</reloadTime>
+                    <ammoSet>DMSE_AmmoSet_5x50mmCaseless_LV</ammoSet>
                 </AmmoUser>
                 <FireModes>
-					<aiUseBurstMode>FALSE</aiUseBurstMode>
-					<aiAimMode>Snapshot</aiAimMode>
+                    <aiUseBurstMode>FALSE</aiUseBurstMode>
+                    <aiAimMode>Snapshot</aiAimMode>
                 </FireModes>
                 <weaponTags>
                     <li>CE_OneHandedWeapon</li>
                 </weaponTags>
             </li>
-			
-			<li Class="CombatExtended.PatchOperationMakeGunCECompatible">
+
+            <li Class="CombatExtended.PatchOperationMakeGunCECompatible">
                 <defName>DMSE_Modular_C95BP_Pistol</defName>
                 <statBases>
                     <Mass>2.3</Mass>
@@ -167,22 +167,22 @@
                     <RangedWeapon_Cooldown>0.3</RangedWeapon_Cooldown>
                 </statBases>
                 <Properties>
-					<verbClass>CombatExtended.Verb_ShootCE</verbClass>
-					<hasStandardCommand>true</hasStandardCommand>
-					<defaultProjectile>Bullet_5x50mmCaseless_FMJ_LV</defaultProjectile>
-					<warmupTime>0.6</warmupTime>
-					<range>25</range>
-					<burstShotCount>3</burstShotCount>
-					<ticksBetweenBurstShots>4</ticksBetweenBurstShots>
-					<soundCast>Shot_Autopistol</soundCast>
-					<soundCastTail>GunTail_Medium</soundCastTail>
-					<muzzleFlashScale>10</muzzleFlashScale>
-					<recoilAmount>0.23</recoilAmount>
+                    <verbClass>CombatExtended.Verb_ShootCE</verbClass>
+                    <hasStandardCommand>true</hasStandardCommand>
+                    <defaultProjectile>Bullet_5x50mmCaseless_FMJ_LV</defaultProjectile>
+                    <warmupTime>0.6</warmupTime>
+                    <range>25</range>
+                    <burstShotCount>3</burstShotCount>
+                    <ticksBetweenBurstShots>4</ticksBetweenBurstShots>
+                    <soundCast>Shot_Autopistol</soundCast>
+                    <soundCastTail>GunTail_Medium</soundCastTail>
+                    <muzzleFlashScale>10</muzzleFlashScale>
+                    <recoilAmount>0.23</recoilAmount>
                 </Properties>
                 <AmmoUser>
-					<magazineSize>25</magazineSize>
-					<reloadTime>3</reloadTime>
-					<ammoSet>DMSE_AmmoSet_5x50mmCaseless_LV</ammoSet>
+                    <magazineSize>25</magazineSize>
+                    <reloadTime>3</reloadTime>
+                    <ammoSet>DMSE_AmmoSet_5x50mmCaseless_LV</ammoSet>
                 </AmmoUser>
                 <FireModes>
                     <aiUseBurstMode>true</aiUseBurstMode>
@@ -190,6 +190,6 @@
                     <aimedBurstShotCount>5</aimedBurstShotCount>
                 </FireModes>
             </li>
-		</operations>
-	</Operation>
+        </operations>
+    </Operation>
 </Patch>
