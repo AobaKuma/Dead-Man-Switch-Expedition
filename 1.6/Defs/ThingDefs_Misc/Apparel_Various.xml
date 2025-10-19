@@ -42,7 +42,7 @@
 			<bodyPartGroups>
 				<li>UpperHead</li>
 			</bodyPartGroups>
-			<wornGraphicPath>Things/Apparel/RangerHelmet/apparel</wornGraphicPath>
+			<wornGraphicPath>Things/Apparel/RangerHelmet/Apparel</wornGraphicPath>
 			<layers>
 				<li>Overhead</li>
 			</layers>

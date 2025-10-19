@@ -14,7 +14,7 @@
     <defName>DMSE_Make_Carbohydrate</defName>
     <label>extract carbohydrate</label>
     <!-- 一種透過高壓分離植物中富含澱粉的部位來萃取高純度碳水化合物的工藝。這是一種技術成熟的實驗室級別澱粉製程，但通常來說由於較低的生產效率以及對生產環境的清潔要求，因此除非是你一位野心勃勃的分子料理廚師否則直接烹飪農作物肯定會更加划算。 -->
-    <description>A process that extracts high-purity carbohydrates by separating the starch-rich parts of plants under high pressure. This is a well-established laboratory-scale starch extraction process, but due to its lower production efficiency and the need for clean production environments, it's generally more cost-effective to cook the produce directly unless you're an aspiring molecular gastronomy chef.</description>
+    <description>A process that extracts high-purity carbohydrates by separating the starch-rich parts of plants under high pressure.\n\nThis is a well-established laboratory-scale starch extraction process, but due to its low production efficiency and the need for clean production environments, it's generally less-effective unless you're an aspiring molecular gastronomy chef.</description>
     <jobString>Extracting carbohydrate.</jobString>
     <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
     <effectWorking>Cook</effectWorking>
