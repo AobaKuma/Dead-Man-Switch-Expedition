@@ -22,6 +22,7 @@
 	<!-- Note By PolandBall -->
 	<!-- This ammunition is designed to consume surplus Tungsteel while allowing more players to test new PELE (Penetration with Enhanced Lateral Effects) ammunition design concepts. -->
 	<!-- 该弹药是为了消耗过剩的Tungsteel的同时，让更多玩家测试新的PELE（横向效应增强弹）弹药设计思路。 -->
+	<!-- Ammunition Operating Principle（弹药工作原理）:    https://kipdf.com/125-mm-pele-firing-results_5ac370f41723dd9245ed4e46.html -->
 
 	<ThingDef Class="CombatExtended.AmmoDef" ParentName="762x385mmRCannonShellBase">
 		<defName>DMSE_Ammo_762x385mmRCannonShell_PELE</defName>
