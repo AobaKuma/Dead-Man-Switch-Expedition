@@ -43,7 +43,7 @@
 
 	<!-- ================== Projectiles ================== -->
 
-	<ThingDef ParentName="Base40x365mmBoforsBullet">
+	<ThingDef ParentName="Base762x385mmRCannonShell">
 		<defName>DMSE_Bullet_762x385mmRCannonShell_PELE_HV</defName>
 		<label>76.2x385mmR cannon shell (PELE-Tungsteel)</label>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">
