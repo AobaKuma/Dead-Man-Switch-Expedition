@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <DMSE.Letter.HuntdownThreat.Label>Huntdown</DMSE.Letter.HuntdownThreat.Label>
+  <DMSE.Letter.HuntdownThreat.Text>blablabla, anyway {0} need you dead.</DMSE.Letter.HuntdownThreat.Text>
+
+  <DMSE.Alert.HuntdownThreat>Huntdown squad</DMSE.Alert.HuntdownThreat>
+
+  <DMSE.Alert.HuntdownThreat.Desc>military police of colonial fleet are searching the signal of missing Stele, it is only a matter of time they find you and send a hunting squad.</DMSE.Alert.HuntdownThreat.Desc>
+
+  <DMSE.Alert.HuntdownThreatCritical>Huntdown approaching</DMSE.Alert.HuntdownThreatCritical>
+  <DMSE.Alert.HuntdownThreatCritical.Desc>the position of Stele has been tracked down, hunting squad and possible air strike will arrive in no time, transfer before it's too late.</DMSE.Alert.HuntdownThreatCritical.Desc>
+
+</LanguageData>

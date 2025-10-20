@@ -9,8 +9,10 @@ namespace DMSE
 {
     [StaticConstructorOnStartup]
     [DefOf]
-    public static class PRDefOf
+    public static class DMSE_DefOf
     {
+        public static FactionDef DMS_Army;
+        public static ThingDef DMSE_VacuumPump;
         public static ThingDef DMSE_NuclearThruster;
         public static WorldObjectDef Ship;
         public static GravshipComponentTypeDef AAA;

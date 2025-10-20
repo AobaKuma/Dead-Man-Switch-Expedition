@@ -105,6 +105,7 @@
       <DMS_CombatRation>1</DMS_CombatRation>
     </products>
   </RecipeDef>
+  
   <!-- 澱粉生產C口糧(批量) -->
   <RecipeDef ParentName="DMSE_CleanRoom_Recipe">
     <defName>DMSE_Make_CRationCarbonBulk</defName>

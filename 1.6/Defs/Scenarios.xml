@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ScenarioDef ParentName="ScenarioBase">
+    <defName>DMSE_Deviant</defName>
+    <label>The Deviant</label>
+    <description>todo</description>
+    <scenario>
+      <summary>A traitor of the colonial fleet, with a stolen cargo ship.</summary>
+      
+      <!-- 這裡要做一個專門的陣營 -->
+      <playerFaction>
+        <factionDef>GravshipCrew</factionDef>
+      </playerFaction>
+      <parts Inherit="False">
+        <!-- Layers -->
+        <li Class="ScenPart_PlanetLayer">
+          <def>PlanetLayerFixed</def>
+          <tag>Orbit</tag>
+          <layer>Orbit</layer>
+          <settingsDef>Orbit</settingsDef>
+          <hide>true</hide>
+          <connections>
+            <Surface>
+              <zoomMode>ZoomIn</zoomMode>
+            </Surface>
+          </connections>
+        </li>
+        
+        <!-- Game start dialog -->
+        <li Class="ScenPart_GameStartDialog">
+          <def>GameStartDialog</def>
+          <text>todo</text>
+          <closeSound>GameStartSting</closeSound>
+        </li>
+
+        <!-- Config pages -->
+        <li Class="ScenPart_ConfigPage_ConfigureStartingPawns">
+          <def>ConfigPage_ConfigureStartingPawns</def>
+          <pawnCount>1</pawnCount>
+          <pawnChoiceCount>4</pawnChoiceCount>
+          <allowedDevelopmentalStages>Adult</allowedDevelopmentalStages>
+          <requiredSkills>
+            <li>Intellectual</li>
+          </requiredSkills>
+        </li>
+
+        <!-- 這裡要做一個專門的船塢地圖 -->
+        <li Class="ScenPart_ForcedMap">
+          <def>ForcedMap</def>
+          <mapGenerator>OrbitalRelay</mapGenerator>
+          <layerDef>Orbit</layerDef>
+        </li>
+
+        <!-- 這裡要做一個專門的重力船開局 -->
+        <!-- Player starting stuff spawn method-->
+        <li Class="ScenPart_PlayerPawnsArriveMethod">
+          <def>PlayerPawnsArriveMethod</def>
+          <method>Gravship</method>
+        </li>
+
+        <li Class="DMSE.ScenPart_Huntdown">
+          <def>DMSE_Huntdown</def>
+        </li>
+
+        <li Class="ScenPart_DisableQuest">
+          <def>DisableQuest</def>
+          <questDef>MechanoidSignal</questDef>
+        </li>
+
+        <!-- Starting research -->
+        <li Class="ScenPart_StartingResearch">
+          <def>StartingResearch</def>
+          <project>BasicGravtech</project>
+        </li>
+        <li Class="ScenPart_StartingResearch">
+          <def>StartingResearch</def>
+          <project>BiofuelRefining</project>
+        </li>
+
+        <!-- Player starting things -->
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>Chemfuel</thingDef>
+          <count>100</count>
+        </li>
+      </parts>
+    </scenario>
+  </ScenarioDef>
+
+  <ScenPartDef>
+    <defName>DMSE_Huntdown</defName>
+    <label>deviant huntdown</label>
+    <category>Misc</category>
+    <scenPartClass>DMSE.ScenPart_Huntdown</scenPartClass>
+    <maxUses>1</maxUses>
+    <preventRemovalOfFaction>DMS_Army</preventRemovalOfFaction>
+  </ScenPartDef>
+
+</Defs>

@@ -46,4 +46,54 @@
       <li>BuildingsMisc</li>
     </thingCategories>
   </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_VacuumPump</defName>
+    <label>Oxygen candle</label>
+    <description>No description....yet.</description>
+    <graphicData>
+      <texPath>Things/Building/Candle/building</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>1.2</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.9</staticSunShadowHeight>
+    <fillPercent>0.9</fillPercent>
+    <canOverlapZones>false</canOverlapZones>
+    <pathCost>42</pathCost>
+    <tickerType>Normal</tickerType>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <WorkToBuild>10000</WorkToBuild>
+      <Mass>5</Mass>
+      <Flammability>0.25</Flammability>
+    </statBases>
+    <size>(1,1)</size>
+    <costList>
+      <Steel>200</Steel>
+    </costList>
+    <building>
+      <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+    </building>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <shortCircuitInRain>true</shortCircuitInRain>
+        <basePowerConsumption>800</basePowerConsumption>
+        <idlePowerDraw>50</idlePowerDraw>
+      </li>
+      <li Class="DMSE.CompProperties_OxygenCandle"/>
+    </comps>
+    <researchPrerequisites>
+      <li>DMSE_OrbitalDynamics</li>
+    </researchPrerequisites>
+    <designationCategory>DMS_Category</designationCategory>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <constructionSkillPrerequisite>3</constructionSkillPrerequisite>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
+  </ThingDef>
 </Defs>

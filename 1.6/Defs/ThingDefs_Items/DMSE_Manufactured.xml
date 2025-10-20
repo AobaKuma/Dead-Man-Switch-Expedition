@@ -51,7 +51,7 @@
   <!-- 鉭鎢合金 強度高於鎢鋼的材料 -->  
   <ThingDef ParentName="ResourceBase">
     <defName>DMSE_TantastenAlloy</defName>
-    <label>TantastenAlloy</label>
+    <label>Tantasteel</label>
     <description>A special alloy material composed of tantalum and tungsten. It is hard, wear-resistant, corrosion-resistant, and has an extremely high melting point of up to 3080°C, making it widely used in rocket engine De Laval nozzles and high-performance military mecha pulse thrusters. \n\nTantalum is found in trace amounts in asteroids and can be extracted through vacstone mining. Its processing and production must be carried out in a vacuum environment to avoid contamination by gases such as nitrogen and oxygen. Therefore, worlds capable of large-scale production and application typically have substantial industrial platforms orbiting dedicated to manufacturing and processing these materials.</description>
     <descriptionHyperlinks>
       <ThingDef>DMS_Furnace</ThingDef>
@@ -64,21 +64,22 @@
     </graphicData>
     <soundInteract>Metal_Drop</soundInteract>
     <soundDrop>Metal_Drop</soundDrop>
-    <useHitPoints>false</useHitPoints>
+    <useHitPoints>true</useHitPoints>
     <healthAffectsPrice>false</healthAffectsPrice>
     <statBases>
       <MarketValue>30</MarketValue>
       <Mass>3</Mass>
-      <StuffPower_Armor_Sharp>1.2</StuffPower_Armor_Sharp>
-      <StuffPower_Armor_Blunt>0.8</StuffPower_Armor_Blunt>
-      <StuffPower_Armor_Heat>1.2</StuffPower_Armor_Heat>
-      <StuffPower_Insulation_Cold>0</StuffPower_Insulation_Cold>
-      <StuffPower_Insulation_Heat>0</StuffPower_Insulation_Heat>
+      <StuffPower_Armor_Sharp>1.6</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>1.2</StuffPower_Armor_Blunt>
+      <StuffPower_Armor_Heat>1.8</StuffPower_Armor_Heat>
+      <StuffPower_Insulation_Cold>1</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>2</StuffPower_Insulation_Heat>
       <SharpDamageMultiplier>1.2</SharpDamageMultiplier>
       <BluntDamageMultiplier>1.1</BluntDamageMultiplier>
     </statBases>
     <generateCommonality>0</generateCommonality>
-    <thingCategories inherit="false">
+    <thingCategories>
+      <li>Manufactured</li>
     </thingCategories>
     <tradeTags>
       <li>ExoticMisc</li>
@@ -119,14 +120,13 @@
       <recipeDef>DMSE_Make_Graphene_Chemfuel</recipeDef>
       <recipeDef>DMSE_Make_Graphene_WoodLog</recipeDef>
     </descriptionHyperlinks>
-    <possessionCount>2</possessionCount>
     <graphicData>
       <texPath>Things/Resource/Graphene</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <soundInteract>Metal_Drop</soundInteract>
     <soundDrop>Standard_Drop</soundDrop>
-    <stackLimit>25</stackLimit>
+    <stackLimit>75</stackLimit>
     <healthAffectsPrice>false</healthAffectsPrice>
     <statBases>
       <RoyalFavorValue>0.2</RoyalFavorValue>
@@ -136,6 +136,7 @@
       <Flammability>1</Flammability>
       <DeteriorationRate>3.0</DeteriorationRate>
     </statBases>
+    <generateCommonality>0</generateCommonality>
     <intricate>true</intricate>
     <thingSetMakerTags inherit="false">
     </thingSetMakerTags>

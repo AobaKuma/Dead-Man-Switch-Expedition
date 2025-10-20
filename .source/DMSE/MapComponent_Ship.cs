@@ -75,7 +75,7 @@ namespace DMSE
                 this.Init(((ThingWithComps)map.listerThings.ThingsOfDef(ThingDefOf.GravEngine).First()).GetComp<CompAffectedByFacilities>()
                         .LinkedFacilitiesListForReading.FindAll(
                         thing => thing.TryGetComp<CompGravshipFacility>() is CompGravshipFacility comp0 &&
-                        comp0.Props.componentTypeDef == PRDefOf.AAA), this.wo);
+                        comp0.Props.componentTypeDef == DMSE_DefOf.AAA), this.wo);
             }
         }
         public void Init(List<Thing> things, WorldObject_Transfer wo)

@@ -24,7 +24,7 @@ namespace DMSE
         [HarmonyPrefix]
         public static bool prefix(CompPilotConsole __instance)
         {
-            int count = __instance.engine.GetComp<CompAffectedByFacilities>().LinkedFacilitiesListForReading.FindAll(a => a.TryGetComp<CompGravshipFacility>() is CompGravshipFacility comp0 && comp0.parent.def == PRDefOf.DMSE_NuclearThruster).Count;
+            int count = __instance.engine.GetComp<CompAffectedByFacilities>().LinkedFacilitiesListForReading.FindAll(a => a.TryGetComp<CompGravshipFacility>() is CompGravshipFacility comp0 && comp0.parent.def == DMSE_DefOf.DMSE_NuclearThruster).Count;
             if (count < 2)
             {
                 return true;
@@ -62,7 +62,7 @@ namespace DMSE
             int count = comp.engine.GetComp<CompAffectedByFacilities>().LinkedFacilitiesListForReading
                 .FindAll(a =>
             a.TryGetComp<CompGravshipFacility>() is CompGravshipFacility comp0
-            && comp0.Props.componentTypeDef == PRDefOf.AAA).Count;
+            && comp0.Props.componentTypeDef == DMSE_DefOf.AAA).Count;
             if (count < 2)
             {
                 Log.Error("建筑不够" + count);
@@ -110,7 +110,7 @@ namespace DMSE
                     ConsumeFuel(comp.engine, t);
                     SoundDefOf.Gravship_Launch.PlayOneShotOnCamera(null);
                     WorldObject_Transfer wo = (WorldObject_Transfer)WorldObjectMaker.
-                    MakeWorldObject(PRDefOf.Ship);
+                    MakeWorldObject(DMSE_DefOf.Ship);
                     wo.Tile = curTile;
                     wo.start = curTile;
                     wo.end = t;
@@ -121,7 +121,7 @@ namespace DMSE
                     mc.Init(comp.engine.GetComp<CompAffectedByFacilities>()
                         .LinkedFacilitiesListForReading.FindAll(
                         thing => thing.TryGetComp<CompGravshipFacility>() is CompGravshipFacility comp0
-            && comp0.Props.componentTypeDef == PRDefOf.AAA), wo);
+            && comp0.Props.componentTypeDef == DMSE_DefOf.AAA), wo);
                 }, () => Start(comp), comp.engine);
             }
             , null, delegate
