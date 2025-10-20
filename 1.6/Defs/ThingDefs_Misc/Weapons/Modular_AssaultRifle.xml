@@ -37,7 +37,7 @@
 	<ThingDef ParentName="DMSE_BaseHumanMakeableGun">
 		<defName>DMSE_Modular_AR</defName>
 		<label>caseless assault rifle</label>
-		<description>一種使用無殼彈藥與複合材料槍身的突擊步槍，具有較平衡的爆發射速與載彈量並可根據任務選裝配件。/n/n追溯至人類於地球上的冷戰時期，由柏林機械製造局所生產的軍團機兵迫切的需要一種高度通用武裝來維持其龐大機兵集團軍的需求。而隨之而生的便是G93MCR為首的MCR槍系與其對應的5x50通用無殼彈藥。這類無殼彈藥具有較穩定的彈道性能並且能通用於所有MCR槍系的裝備。</description>
+		<description>一種使用無殼彈藥與複合材料槍身的突擊步槍，具有較平衡的爆發射速與載彈量並可根據任務選裝配件。\n\n追溯至人類於地球上的冷戰時期，由柏林機械製造局所生產的軍團機兵迫切的需要一種高度通用武裝來維持其龐大機兵集團軍的需求。而隨之而生的便是G93MCR為首的MCR槍系與其對應的5x50通用無殼彈藥。這類無殼彈藥具有較穩定的彈道性能並且能通用於所有MCR槍系的裝備。</description>
 		<graphicData>
 			<texPath>Things/Weapons/DMS_G93Caseless</texPath>
 			<graphicClass>Graphic_Single</graphicClass>

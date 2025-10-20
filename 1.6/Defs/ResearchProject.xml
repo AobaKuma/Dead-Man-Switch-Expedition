@@ -7,7 +7,7 @@
     <description>在真空環境的材料生產能夠有效的避免材料在化學反應中受到氮氣與氧氣等常見氣體的影響，透過在大氣層外的材料學研究，這對於應用像鉭鎢合金這樣會在大氣內環境的加工過程中受氧化影響的特殊材料而言具有非常大的價值。\n\n透過該研究能夠在真空環境下的箱型爐與燒結爐中生產鉭鎢合金。</description>
     <baseCost>1000</baseCost>
     <requiredResearchBuilding Inherit="False"/>
-    <teachConcept>DMSE_SpecialProduction</teachConcept>
+    <teachConcept>FFF_EnvironmentalBill</teachConcept>
     <prerequisites>
       <li>DMS_Material</li>
     </prerequisites> 
