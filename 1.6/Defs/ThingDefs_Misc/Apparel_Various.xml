@@ -1,5 +1,83 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Defs>
+	<ThingDef ParentName="ApparelBase" Name="DMSE_OrbitalApparelBase" Abstract="true">
+		<techLevel>Industrial</techLevel>
+		<recipeMaker>
+			<researchPrerequisite>DMSE_OrbitalDynamics</researchPrerequisite>
+			<workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+			<workSkill>Crafting</workSkill>
+		</recipeMaker>
+		<tradeTags>
+			<li>Clothing</li>
+			<li>DMS_Clothing</li>
+		</tradeTags>
+	</ThingDef>
+
+	<ThingDef ParentName="DMSE_OrbitalApparelBase">
+		<defName>DMS_Apparel_IVASuit</defName>
+		<label>IVA suit</label>
+		<description>A semi-pressurized suit for working inside a pressurized spacecraft, It is generally used as work clothes for space vehicle operators.\n\nIt doesn't have sufficient vacuum resistance to be used directly in EVA activities but is enough to buy more time in exposed environments.</description>
+		<recipeMaker>
+			<effectWorking>Tailor</effectWorking>
+			<soundWorking>Recipe_Tailor</soundWorking>
+			<unfinishedThingDef>UnfinishedApparel</unfinishedThingDef>
+			<recipeUsers>
+				<li>ElectricTailoringBench</li>
+				<li>DMS_TableMachinePrinter</li>
+			</recipeUsers>	
+		</recipeMaker>
+		<costList>
+			<ComponentStamped>1</ComponentStamped>
+			<Polyester>20</Polyester>
+		</costList>
+		<costStuffCount>100</costStuffCount>
+		<stuffCategories>
+			<li>Fabric</li>
+		</stuffCategories>
+		<graphicData>
+			<texPath>Things/Apparel/IVASuit/Apparel</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<thingCategories>
+			<li>ApparelArmor</li>
+		</thingCategories>
+		<statBases>
+			<MaxHitPoints>120</MaxHitPoints>
+			<WorkToMake>9000</WorkToMake>
+			<Mass>1.5</Mass>
+			<StuffEffectMultiplierArmor>0.3</StuffEffectMultiplierArmor>
+			<StuffEffectMultiplierInsulation_Cold>0.6</StuffEffectMultiplierInsulation_Cold>
+			<StuffEffectMultiplierInsulation_Heat>0.3</StuffEffectMultiplierInsulation_Heat>
+			<EquipDelay>5</EquipDelay>
+		</statBases>
+		<equippedStatOffsets>
+			<VacuumResistance MayRequire="ludeon.rimworld.odyssey">0.28</VacuumResistance>
+		</equippedStatOffsets>
+		<apparel>
+			<wornGraphicPath>Things/Apparel/IVASuit/Apparel</wornGraphicPath>
+			<blocksAddedPartWoundGraphics>true</blocksAddedPartWoundGraphics>
+			<bodyPartGroups>
+				<li>Torso</li>
+				<li>Neck</li>
+				<li>Shoulders</li>
+				<li>Arms</li>
+				<li>Legs</li>
+			</bodyPartGroups>
+			<layers>
+				<li>OnSkin</li>
+			</layers>
+			<tags>
+				<li>DMS_Spacer</li>
+			</tags>
+			<defaultOutfitTags>
+				<li>Worker</li>
+				<li>Soldier</li>
+			</defaultOutfitTags>
+			<canBeGeneratedToSatisfyWarmth>true</canBeGeneratedToSatisfyWarmth>
+			<canBeGeneratedToSatisfyToxicEnvironmentResistance>false</canBeGeneratedToSatisfyToxicEnvironmentResistance>
+		</apparel>
+	</ThingDef>
+
 	<!-- 軌道游騎兵頭盔 -->
 	<ThingDef ParentName="DMS_ArmorHelmetMakeableBase">
 		<defName>DMSE_Apparel_RangerHelmet</defName>
@@ -7,7 +85,7 @@
 		<!-- 一種由殖民艦隊軌道游騎兵普遍配備的全覆式真空密封防彈頭盔，具有完整的保護與內部集成的電子系統輔助，是殖民艦隊海軍陸戰隊與軌道龍騎兵在真空微重力環境下作戰的標準裝備。 -->
 		<description>A full-covering vacuum-sealed helmet used by the Orbital Rangers,With complete protection and internal integrated electronic system assistance, it is the standard equipment for Colonial Fleet Marines and Orbital Dragoons operating in microgravity environments.</description>
 		<recipeMaker>
-			<researchPrerequisite>FlakArmor</researchPrerequisite>
+			<researchPrerequisite>DMSE_OrbitalDynamics</researchPrerequisite>
 			<skillRequirements>
 				<Crafting>8</Crafting>
 			</skillRequirements>
@@ -81,27 +159,26 @@
 	</ThingDef>
 
 		<!-- 重型外骨骼 -->
-	<ThingDef ParentName="ApparelBase">
+	<ThingDef ParentName="DMSE_OrbitalApparelBase">
 		<defName>DMSE_Apparel_HeavyPowerSkeleton</defName>
 		<label>Heavy Powered Exoskeletal Unit</label>
 		<description>A heavy powered exoskeletal suit which mimics the human form and can be worn by an untrained operator. It significantly increases the wearer's strength. \n\nCompared to the exoskeleton on BigSister, this model has removed the jump system and shield system to reduce costs. When using it, don't assume you've gained the protective level of heavy mechanical units.</description>
-		<techLevel>Industrial</techLevel>
+		<techLevel>Spacer</techLevel>
 		<recipeMaker>
 			<workSpeedStat>GeneralLaborSpeed</workSpeedStat>
 			<workSkill>Crafting</workSkill>
 			<effectWorking>ConstructMetal</effectWorking>
 			<soundWorking>Recipe_Machining</soundWorking>
-			<researchPrerequisite>DMS_EquipmentHeavy</researchPrerequisite>
 			<recipeUsers>
-			  <li>DMS_TableMachinePrinter</li>
+			  <li>DMSE_MicrogravityFacility</li>
 			</recipeUsers>
 			<unfinishedThingDef>UnfinishedTechArmor</unfinishedThingDef>
 		</recipeMaker>
 		<generateAllowChance>0</generateAllowChance>
 		<costList>
-			<Tungsteel>90</Tungsteel>
-			<Plasfiber>75</Plasfiber>
+			<DMSE_TantastenAlloy>90</DMSE_TantastenAlloy>
 			<Artifuscle>80</Artifuscle>
+			<DMSE_Graphene>75</DMSE_Graphene>
 			<Uranium>15</Uranium>
 			<ComponentStamped>9</ComponentStamped>
 		</costList>
@@ -133,6 +210,12 @@
 			<CarryingCapacity>150</CarryingCapacity>
 		</equippedStatOffsets>
 		<tickerType>Normal</tickerType>
+		<comps>
+		  <li Class="CompProperties_CauseHediff_Apparel">
+			<hediff>DMSE_GravityFactor</hediff>
+			<part>Torso</part>
+		  </li>
+		</comps>
 		<apparel>
 			<bodyPartGroups>
 				<li>Hands</li>
@@ -209,4 +292,22 @@
 			</li>
 		</modExtensions>
 	</ThingDef>
+
+	<HediffDef>
+		<defName>DMSE_GravityFactor</defName>
+		<label>gravity factor</label>
+		<description>this pawn is wearing an apparel designed for microgravity environment.</description>
+		<hediffClass>HediffWithComps</hediffClass>
+		<stages>
+		  <li>
+			<becomeVisible>false</becomeVisible>
+		  </li>
+		</stages>
+		<comps>
+			<!-- 需要一個根據當前地圖環境給予不同StatOffsets的Comp -->
+		  <li Class="HediffCompProperties_RemoveIfApparelDropped"/>
+		</comps>
+		<isBad>false</isBad>
+	  </HediffDef>
+
 </Defs>

@@ -24,11 +24,11 @@
       <li>DMS_LabFurnace</li>
     </recipeUsers>
     <skillRequirements>
-      <Crafting>3</Crafting>
+      <Crafting>8</Crafting>
     </skillRequirements>
     <workSkill>Crafting</workSkill>
     <researchPrerequisite>DMSE_VacuumMaterial</researchPrerequisite>
-    <workAmount>15000</workAmount>
+    <workAmount>30000</workAmount>
     <ingredients>
       <li>
         <filter>
@@ -44,7 +44,7 @@
             <li>BlocksVacstone</li>
           </thingDefs>
         </filter>
-        <count>120</count>
+        <count>125</count>
       </li>
     </ingredients>
     <fixedIngredientFilter>
@@ -57,7 +57,7 @@
       <DMSE_TantastenAlloy>25</DMSE_TantastenAlloy>
     </products>
   </RecipeDef>
-
+  
   <!-- 鉭鎢合金(批量) -->
   <RecipeDef ParentName="DMSE_Vacuum_Recipe">
     <defName>DMSE_Make_TantastenAlloyMass</defName>
@@ -72,11 +72,11 @@
       <!-- <li>DMS_LabFurnace</li> 由於某些限制，不能讓實驗爐使用該配方 -->
     </recipeUsers>
     <skillRequirements>
-      <Crafting>3</Crafting>
+      <Crafting>7</Crafting>
     </skillRequirements>
     <workSkill>Crafting</workSkill>
     <researchPrerequisite>DMSE_VacuumMaterial</researchPrerequisite>
-    <workAmount>22000</workAmount>
+    <workAmount>45000</workAmount>
     <ingredients>
       <li>
         <filter>
@@ -92,7 +92,7 @@
             <li>BlocksVacstone</li>
           </thingDefs>
         </filter>
-        <count>480</count>
+        <count>500</count>
       </li>
     </ingredients>
     <fixedIngredientFilter>
@@ -105,4 +105,5 @@
       <DMSE_TantastenAlloy>100</DMSE_TantastenAlloy>
     </products>
   </RecipeDef>
+
 </Defs>	

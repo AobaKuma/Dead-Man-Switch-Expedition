@@ -127,6 +127,8 @@
       <li Class="CompProperties_Refuelable">
         <fuelConsumptionRate>10.0</fuelConsumptionRate>
         <fuelCapacity>50.0</fuelCapacity>
+        <targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>
+        <initialConfigurableTargetFuelLevel>50</initialConfigurableTargetFuelLevel>
         <fuelFilter>
           <thingDefs>
             <li>DMSE_Graphene</li>

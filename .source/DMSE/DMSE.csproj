@@ -33,6 +33,7 @@
   <ItemGroup>
     <Compile Include="CompProperties_OxygenCandle.cs" />
     <Compile Include="DefOf.cs" />
+    <Compile Include="FactionGoodwill_Patch.cs" />
     <Compile Include="MapComponent_Ship.cs" />
     <Compile Include="ModExtension_ReplacePawn.cs" />
     <Compile Include="PatchMain.cs" />

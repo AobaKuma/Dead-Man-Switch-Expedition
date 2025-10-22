@@ -1,6 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-  
+   
+  <RecipeDef>
+    <defName>DMSE_Make_MedicineUltratech</defName>
+    <label>Make glitterworld medicine</label>
+    <description>todo</description>
+    <jobString>Producing.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
+    <recipeUsers>
+      <li>DMSE_MicrogravityFacility</li>
+    </recipeUsers>
+    <skillRequirements>
+      <Crafting>12</Crafting>
+    </skillRequirements>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>DMSE_Microgravity</researchPrerequisite>
+    <workAmount>30000</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>MedicineIndustrial</li>
+          </thingDefs>
+        </filter>
+        <count>8</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>DMSE_Graphene</li>
+          </thingDefs>
+        </filter>
+        <count>4</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>DMSE_Nitrogallium</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>MedicineIndustrial</li>
+        <li>DMSE_Graphene</li>
+        <li>DMSE_Nitrogallium</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <MedicineUltratech>4</MedicineUltratech>
+    </products>
+    <modExtensions>
+      <li Class="Fortified.ModExt_EnvironmentalBill">
+        <OnlyInCleanliness>true</OnlyInCleanliness>
+        <TemperatureRestricted>true</TemperatureRestricted>
+        <AllowedTemperatureRange>5~20</AllowedTemperatureRange>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <!-- 氮化鎵 恆溫真空淨室 -->
+  <RecipeDef>
+    <defName>DMSE_Make_Nitrogallium</defName>
+    <label>Make Nitrogallium</label>
+    <description>Grow a Nitrogallium mono-crystal</description>
+    <jobString>Producing.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
+    <recipeUsers>
+      <li>DMSE_MicrogravityFacility</li>
+    </recipeUsers>
+    <skillRequirements>
+      <Crafting>12</Crafting>
+    </skillRequirements>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>DMSE_Microgravity</researchPrerequisite>
+    <workAmount>90000</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Jade</li>
+          </thingDefs>
+        </filter>
+        <count>150</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>Jade</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <DMSE_Nitrogallium>1</DMSE_Nitrogallium>
+    </products>
+    <modExtensions>
+      <li Class="Fortified.ModExt_EnvironmentalBill">
+        <OnlyInCleanliness>true</OnlyInCleanliness>
+        <OnlyInVacuum>true</OnlyInVacuum>
+        <TemperatureRestricted>true</TemperatureRestricted>
+        <AllowedTemperatureRange>-30~-10</AllowedTemperatureRange>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
   <!-- 集群控制晶片 淨室暗室 -->
   <RecipeDef>
     <defName>DMSE_Make_ComponentControlChip</defName>
@@ -49,7 +159,7 @@
       <li>
         <filter>
           <thingDefs>
-            <li>Neurocomputer</li>
+            <li>DMSE_Nitrogallium</li>
           </thingDefs>
         </filter>
         <count>1</count>
@@ -60,7 +170,7 @@
         <li>DMSE_TantastenAlloy</li>
         <li>ComponentStamped</li>
         <li>ComponentSpacer</li>
-        <li>Neurocomputer</li>
+        <li>DMSE_Nitrogallium</li>
       </thingDefs>
     </fixedIngredientFilter>
     <products>

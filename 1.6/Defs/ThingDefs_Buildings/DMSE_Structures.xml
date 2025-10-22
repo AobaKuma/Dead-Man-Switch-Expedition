@@ -34,7 +34,7 @@
     </statBases>
     <size>(5,5)</size>
     <costList>
-      <Tungsteel>400</Tungsteel>
+      <Tungsteel>500</Tungsteel>
       <DMSE_Graphene>75</DMSE_Graphene>
       <ComponentStamped>12</ComponentStamped>
       <ComponentSpacer>6</ComponentSpacer>

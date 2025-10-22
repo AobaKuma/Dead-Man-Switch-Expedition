@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Diagnostics;
 using UnityEngine.Tilemaps;
 using Verse;
 using Verse.Sound;
@@ -61,7 +62,5 @@ namespace DMSE
                 transform.position = vector + b + b2 + wo.Tile.Layer.Origin;
             }
         }
-        
     }
- 
 }

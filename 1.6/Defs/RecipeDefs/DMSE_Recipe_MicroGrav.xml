@@ -192,7 +192,7 @@
       <li>
         <filter>
           <thingDefs>
-            <li>ComponentIndustrial</li>
+            <li>DMSE_Nitrogallium</li>
           </thingDefs>
         </filter>
         <count>1</count>
@@ -200,33 +200,15 @@
       <li>
         <filter>
           <thingDefs>
-            <li>Steel</li>
-          </thingDefs>
-        </filter>
-        <count>20</count>
-      </li>
-      <li>
-        <filter>
-          <thingDefs>
-            <li>Plasteel</li>
-          </thingDefs>
-        </filter>
-        <count>10</count>
-      </li>
-      <li>
-        <filter>
-          <thingDefs>
             <li>DMSE_Graphene</li>
           </thingDefs>
         </filter>
-        <count>3</count>
+        <count>5</count>
       </li>
     </ingredients>
     <fixedIngredientFilter>
       <thingDefs>
-        <li>ComponentIndustrial</li>
-        <li>Steel</li>
-        <li>Plasteel</li>
+        <li>DMSE_Nitrogallium</li>
         <li>DMSE_Graphene</li>
       </thingDefs>
     </fixedIngredientFilter>
@@ -262,7 +244,7 @@
       <li>
         <filter>
           <thingDefs>
-            <li>ComponentIndustrial</li>
+            <li>DMSE_Nitrogallium</li>
           </thingDefs>
         </filter>
         <count>4</count>
@@ -270,33 +252,15 @@
       <li>
         <filter>
           <thingDefs>
-            <li>Steel</li>
-          </thingDefs>
-        </filter>
-        <count>80</count>
-      </li>
-      <li>
-        <filter>
-          <thingDefs>
-            <li>Plasteel</li>
-          </thingDefs>
-        </filter>
-        <count>40</count>
-      </li>
-      <li>
-        <filter>
-          <thingDefs>
             <li>DMSE_Graphene</li>
           </thingDefs>
         </filter>
-        <count>12</count>
+        <count>20</count>
       </li>
     </ingredients>
     <fixedIngredientFilter>
       <thingDefs>
-        <li>ComponentIndustrial</li>
-        <li>Steel</li>
-        <li>Plasteel</li>
+        <li>DMSE_Nitrogallium</li>
         <li>DMSE_Graphene</li>
       </thingDefs>
     </fixedIngredientFilter>

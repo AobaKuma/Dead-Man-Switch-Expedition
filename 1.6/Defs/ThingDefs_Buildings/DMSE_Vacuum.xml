@@ -1,56 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-  <ThingDef ParentName="BuildingBase">
-    <defName>DMSE_lathedeco</defName>
-    <label>lathe deco</label>
-    <description>No description....yet.</description>
-    <graphicData>
-      <texPath>Things/Building/Lathe/latheDeco</texPath>
-      <graphicClass>Graphic_Multi</graphicClass>
-      <drawSize>(7,4)</drawSize>
-      <damageData>
-        <cornerTL>Damage/Corner</cornerTL>
-        <cornerTR>Damage/Corner</cornerTR>
-        <cornerBL>Damage/Corner</cornerBL>
-        <cornerBR>Damage/Corner</cornerBR>
-      </damageData>
-    </graphicData>
-    <altitudeLayer>Building</altitudeLayer>
-    <passability>PassThroughOnly</passability>
-    <castEdgeShadows>true</castEdgeShadows>
-    <staticSunShadowHeight>0.9</staticSunShadowHeight>
-    <fillPercent>0.9</fillPercent>
-    <canOverlapZones>false</canOverlapZones>
-    <pathCost>42</pathCost>
-    <tickerType>Normal</tickerType>
-    <statBases>
-      <MaxHitPoints>450</MaxHitPoints>
-      <WorkToBuild>40000</WorkToBuild>
-      <Mass>300</Mass>
-      <Flammability>0.25</Flammability>
-    </statBases>
-    <size>(5,2)</size>
-    <costList>
-      <Steel>200</Steel>
-    </costList>
-    <building>
-      <destroySound>BuildingDestroyed_Metal_Small</destroySound>
-    </building>
-    <researchPrerequisites>
-      <li>DMS_Autofacturer</li>
-    </researchPrerequisites>
-    <designationCategory>DMS_Category</designationCategory>
-    <minifiedDef>MinifiedThing</minifiedDef>
-    <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
-    <thingCategories>
-      <li>BuildingsMisc</li>
-    </thingCategories>
-  </ThingDef>
 
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_VacuumPump</defName>
-    <label>Oxygen candle</label>
-    <description>No description....yet.</description>
+    <label>Vacuum pump</label>
+    <description>A gas pump that can slowly evacuates the air from a sealed chamber to artificially create a vacuum zone. It's widely used to meet the environmental requirements of specialized production processes.\n\nHowever, should be noted that when used within atmosphere, a specialized vacuum chamber is required to effectively create a vacuum zone.</description>
     <graphicData>
       <texPath>Things/Building/Candle/building</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
@@ -72,7 +26,8 @@
     </statBases>
     <size>(1,1)</size>
     <costList>
-      <Steel>200</Steel>
+      <Steel>100</Steel>
+      <ComponentStamped>4</ComponentStamped>
     </costList>
     <building>
       <destroySound>BuildingDestroyed_Metal_Small</destroySound>
@@ -81,15 +36,68 @@
       <li Class="CompProperties_Power">
         <compClass>CompPowerTrader</compClass>
         <shortCircuitInRain>true</shortCircuitInRain>
-        <basePowerConsumption>800</basePowerConsumption>
-        <idlePowerDraw>50</idlePowerDraw>
+        <basePowerConsumption>500</basePowerConsumption>
       </li>
       <li Class="DMSE.CompProperties_OxygenCandle"/>
     </comps>
     <researchPrerequisites>
       <li>DMSE_OrbitalDynamics</li>
     </researchPrerequisites>
-    <designationCategory>DMS_Category</designationCategory>
+    <designationCategory>Odyssey</designationCategory>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <constructionSkillPrerequisite>3</constructionSkillPrerequisite>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_OxygenCandle</defName>
+    <label>Oxygen candle</label>
+    <description>A disposable oxygen supply device that generates breathable oxygen by burning sodium chlorate, maintaining 24-hours of oxygen supply within a sealed cabin before burning out.\n\nIt was widely used for emergency use in enclosed environments such as aircraft, submarines, and manned spacecraft. During the era of space colonization it also became a standard feature of decompression shelters.</description>
+    <graphicData>
+      <texPath>Things/Building/Candle/building</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>1.2</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.9</staticSunShadowHeight>
+    <fillPercent>0.9</fillPercent>
+    <canOverlapZones>false</canOverlapZones>
+    <pathCost>42</pathCost>
+    <tickerType>Normal</tickerType>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <WorkToBuild>10000</WorkToBuild>
+      <Mass>5</Mass>
+      <Flammability>0.25</Flammability>
+    </statBases>
+    <size>(1,1)</size>
+    <costList>
+      <Steel>75</Steel>
+      <Chemfuel>25</Chemfuel>
+    </costList>
+    <building>
+      <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+    </building>
+    <comps>
+      <li Class="CompProperties_Refuelable">
+        <fuelConsumptionRate>1.0</fuelConsumptionRate>
+        <fuelCapacity>24.0</fuelCapacity>
+        <destroyOnNoFuel>true</destroyOnNoFuel>
+        <autoRefuelPercent>0</autoRefuelPercent>
+        <initialFuelPercent>1</initialFuelPercent>
+        <showAllowAutoRefuelToggle>false</showAllowAutoRefuelToggle>
+        <functionsInVacuum>true</functionsInVacuum>
+      </li>
+      <li Class="DMSE.CompProperties_OxygenCandle"/>
+    </comps>
+    <researchPrerequisites>
+      <li>DMSE_OrbitalDynamics</li>
+    </researchPrerequisites>
+    <designationCategory>Odyssey</designationCategory>
     <minifiedDef>MinifiedThing</minifiedDef>
     <constructionSkillPrerequisite>3</constructionSkillPrerequisite>
     <thingCategories>

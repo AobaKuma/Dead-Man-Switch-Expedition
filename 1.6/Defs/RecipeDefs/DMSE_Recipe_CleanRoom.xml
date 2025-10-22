@@ -19,7 +19,7 @@
     <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
     <effectWorking>Cook</effectWorking>
     <soundWorking>Recipe_Machining</soundWorking>
-    <workAmount>20000</workAmount>
+    <workAmount>6000</workAmount>
     <recipeUsers>
       <li>DMS_LabReactor</li>
       <li>DMS_ReactionChamber</li>
@@ -33,8 +33,11 @@
           <categories>
             <li>PlantFoodRaw</li>
           </categories>
+          <disallowedThingDefs>
+          <li>DMSE_Carbohydrate</li>
+        </disallowedThingDefs>
         </filter>
-        <count>3</count>
+        <count>1</count>
       </li>
     </ingredients>
     <fixedIngredientFilter>
@@ -54,7 +57,7 @@
       </disallowedThingDefs>
     </defaultIngredientFilter>
     <products>
-      <DMSE_Carbohydrate>6</DMSE_Carbohydrate>
+      <DMSE_Carbohydrate>2</DMSE_Carbohydrate>
     </products>
     <workSkill>Medicine</workSkill>
   </RecipeDef>
@@ -162,7 +165,7 @@
     <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
     <effectWorking>Cook</effectWorking>
     <soundWorking>Recipe_Machining</soundWorking>
-    <workAmount>5000</workAmount>
+    <workAmount>10000</workAmount>
     <allowMixingIngredients>true</allowMixingIngredients>
     <ingredientValueGetterClass>IngredientValueGetter_Nutrition</ingredientValueGetterClass>
     <ingredients>
@@ -172,7 +175,7 @@
             <li>MeatRaw</li>
           </categories>
         </filter>
-        <count>5</count>
+        <count>10</count>
       </li>
     </ingredients>
     <fixedIngredientFilter>
@@ -186,11 +189,8 @@
       </categories>
     </defaultIngredientFilter>
     <products>
-      <Neutroamine>5</Neutroamine>
+      <Neutroamine>10</Neutroamine>
     </products>
-    <skillRequirements>
-      <Medicine>8</Medicine>
-    </skillRequirements>
     <workSkill>Medicine</workSkill>
   </RecipeDef>
 </Defs>	
