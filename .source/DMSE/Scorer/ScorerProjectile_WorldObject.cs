@@ -98,7 +98,7 @@ namespace DMSE
         protected override void TickInterval(int delta)
         {
             base.TickInterval(delta);
-            this.traveledPct += this.TraveledPctStepPerTick * (float)delta;
+            this.traveledPct += TraveledPctStepPerTick * (float)delta;
             if (this.traveledPct >= 1f)
             {
                 this.traveledPct = 1f;
@@ -112,41 +112,63 @@ namespace DMSE
                 return;
             }
             arrived = true;
-            Map map = GetOrGenerateMapUtility.GetOrGenerateMap(destinationTile, WorldObjectDefOf.Camp);
-            Current.Game.GetComponent<GameComponent_MissileEngage>().times.SetOrAdd(map,
-                Find.TickManager.TicksGame + (GenDate.TicksPerDay * 2));
-            if (Find.CurrentMap != map)
+            if (Find.World.worldObjects.WorldObjectAt<WorldObject>(destinationTile) is WorldObject target &&
+                target.Faction is Faction f &&
+                !f.IsPlayer &&
+                f.RelationKindWith(Faction.OfPlayer)
+            != FactionRelationKind.Hostile)
             {
-                CameraJumper.TryJump(map.Center, map);
+                f.TryAffectGoodwillWith(Faction.OfPlayer, f.GoodwillToMakeHostile(Faction.OfPlayer), true);
             }
-            ThingDef def = ThingDef.Named(ProjectileDefName);
+            Map map = GetOrGenerateMapUtility.GetOrGenerateMap(destinationTile, WorldObjectDefOf.Camp);
+            Current.Game.GetComponent<GameComponent_MissileEngage>().times.SetOrAdd(map, Find.TickManager.TicksGame + (GenDate.TicksPerDay * 2));
             Find.TickManager.CurTimeSpeed = TimeSpeed.Paused;
-            bool launch = false;
-            Find.Targeter.BeginTargeting(new TargetingParameters()
+
+            if (Find.CurrentMap == map)
             {
-                canTargetLocations = true,
-                canTargetItems = false
-            }, t =>
+                CameraJumper.TryJump(Find.CameraDriver.MapPosition, map, CameraJumper.MovementMode.Cut);
+            }
+            else
+            {
+                CameraJumper.TryJump(map.Center, map, CameraJumper.MovementMode.Cut);
+            }
+
+            ThingDef def = ThingDef.Named(ProjectileDefName);
+
+            bool launch = false;
+            Find.Targeter.BeginTargeting(
+                new TargetingParameters()
+                {
+                    canTargetLocations = true,
+                    canTargetItems = false
+                },
+            action: t =>
                 {
                     SkyfallerMaker.SpawnSkyfaller(def, t.Cell, map);
                     Find.TickManager.CurTimeSpeed = TimeSpeed.Normal;
                     launch = true;
-                },null,null,null, () =>
+                },
+            null,
+            null,
+            null,
+            actionWhenFinished: () =>
                 {
                     if (!launch)
                     {
                         SkyfallerMaker.SpawnSkyfaller(def, map.Center, map);
                         Find.TickManager.CurTimeSpeed = TimeSpeed.Normal;
                     }
-                },null,true,t => Find.TickManager.CurTimeSpeed = TimeSpeed.Paused);
-            this.Destroy();
+                },
+            null,
+            true,
+            t => Find.TickManager.CurTimeSpeed = TimeSpeed.Paused);
+            Destroy();
         }
 
         public PlanetTile destinationTile = PlanetTile.Invalid;
         private bool arrived;
         private PlanetTile initialTile = PlanetTile.Invalid;
         private float traveledPct;
-        private const float TravelSpeed = 0.00025f;
 
         private const string ProjectileDefName = "MeteoriteIncoming";
         //选中并生成的坠落物定义，用原版的陨石当占位符

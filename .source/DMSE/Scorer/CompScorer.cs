@@ -31,16 +31,6 @@ namespace DMSE
         {
             base.PostDrawExtraSelectionOverlays();
         }
-        private void DrawSteps(ref Vector3 drawPos, float step)
-        {
-            var direction = new Vector3(parent.Rotation.AsVector2.x, 0, parent.Rotation.AsVector2.y).normalized; // 方向
-
-            var speed = Props.skyfaller.skyfaller.speedCurve.Evaluate(step);
-
-            var rotation = parent.Rotation.AsAngle + Props.skyfaller.skyfaller.rotationCurve.Evaluate(step);
-            drawPos = new Vector3(drawPos.x + speed, 0, this.parent.DrawPos.z + Props.skyfaller.skyfaller.zPositionCurve.Evaluate(step));
-            GenDraw.DrawArrowRotated(drawPos, rotation, true);
-        }
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
         {
             Command_Action command = new Command_Action()
@@ -50,7 +40,7 @@ namespace DMSE
                 icon = CompLaunchable.LaunchCommandTex,
                 action = () => 
                 {
-                    CameraJumper.TryJump(CameraJumper.GetWorldTarget(this.parent), CameraJumper.MovementMode.Pan);
+                    CameraJumper.TryJump(CameraJumper.GetWorldTarget(parent), CameraJumper.MovementMode.Pan);
                     Find.WorldTargeter.BeginTargeting(t =>
                     {
                         if (t.Tile.Tile.PrimaryBiome.isWaterBiome ||
@@ -61,7 +51,8 @@ namespace DMSE
                         }
                         Launch(t);
                         return true;
-                    },canTargetTiles: true,
+                    },
+                    canTargetTiles: true,
                     mouseAttachment: Props.worldObjectDef.ExpandingIconTexture,
                     closeWorldTabWhenFinished: true,
                     onUpdate: null,
@@ -92,17 +83,8 @@ namespace DMSE
             wo.Tile = this.parent.Map.Tile;
             wo.destinationTile = t.Tile;
             faller.worldObject = wo;
-            if (Find.World.worldObjects.WorldObjectAt<WorldObject>(t.Tile) is WorldObject target
-            && target.Faction is Faction f && !f.IsPlayer && f.RelationKindWith(Faction.OfPlayer)
-            != FactionRelationKind.Hostile)
-            {
-                f.TryAffectGoodwillWith(Faction.OfPlayer,
-                    f.GoodwillToMakeHostile(Faction.OfPlayer), true);
-            }
             this.Refuelable.ConsumeFuel(this.Refuelable.Fuel);
         }
-
-
         public CompRefuelable refuelable;
     }
 }
