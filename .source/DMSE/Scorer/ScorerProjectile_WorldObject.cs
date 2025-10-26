@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using Verse;
 
@@ -116,7 +115,10 @@ namespace DMSE
             Map map = GetOrGenerateMapUtility.GetOrGenerateMap(destinationTile, WorldObjectDefOf.Camp);
             Current.Game.GetComponent<GameComponent_MissileEngage>().times.SetOrAdd(map,
                 Find.TickManager.TicksGame + (GenDate.TicksPerDay * 2));
-            CameraJumper.TryJump(map.Center, map);
+            if (Find.CurrentMap != map)
+            {
+                CameraJumper.TryJump(map.Center, map);
+            }
             ThingDef def = ThingDef.Named(ProjectileDefName);
             Find.TickManager.CurTimeSpeed = TimeSpeed.Paused;
             bool launch = false;

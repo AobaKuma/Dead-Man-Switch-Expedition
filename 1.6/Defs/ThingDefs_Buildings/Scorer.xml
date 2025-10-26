@@ -2,8 +2,8 @@
 <Defs>
     <ThingDef ParentName="BuildingBase">
         <defName>DMSE_Building_Scorer</defName>
-        <label>cruise missile launch tube</label>
-        <description>todo.</description>
+        <label>Scorer MLS</label>
+        <description>The S1120 "Scorer" is a cruise missile launch system. It is a highly versatile anti-ship missile launcher used on cruisers and armed landing ships of the Colonial Fleet Space Force.</description>
         <category>Building</category>
         <graphicData>
             <texPath>Things/Building/MissileLauncher/building</texPath>
@@ -34,7 +34,7 @@
         </costList>
         <building>
             <destroySound>BuildingDestroyed_Metal_Small</destroySound>
-            <fixedStorageSettings>
+            <!-- <fixedStorageSettings>
                 <filter>
                     <categories>
                         <li>MortarShells</li>
@@ -51,7 +51,7 @@
                         <li>Shell_AntigrainWarhead</li>
                     </disallowedThingDefs>
                 </filter>
-            </defaultStorageSettings>
+            </defaultStorageSettings> -->
         </building>
         <soundImpactDefault>BulletImpact_Ground</soundImpactDefault>
         <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
@@ -86,12 +86,12 @@
 
     <ThingDef ParentName="SkyfallerBase">
         <defName>DMS_TestSkyFaller</defName>
-        <label>noctolith (incoming)</label>
+        <label>cruise missile (incoming)</label>
         <size>(2,2)</size>
         <graphicData>
             <texPath>Projectile</texPath>
             <graphicClass>Graphic_Single</graphicClass>
-            <drawSize>(4,4)</drawSize>
+            <drawSize>5</drawSize>
         </graphicData>
         <thingClass>DMSE.ScorerProjectile</thingClass>
         <skyfaller>
@@ -105,9 +105,10 @@
             <anticipationSoundTicks>-1</anticipationSoundTicks>
             <speedCurve>
                 <points>
-                    <li>(0,0.1)</li>
-                    <li>(0.25,0.1)</li>
-                    <li>(1,2)</li>
+                    <li>(0,0.3)</li>
+                    <li>(0.2,0.2)</li>
+                    <li>(0.5,0.5)</li>
+                    <li>(1,1)</li>
                 </points>
             </speedCurve>
             <rotationCurve>
@@ -121,15 +122,37 @@
             <zPositionCurve>
                 <points>
                     <li>(0,0)</li>
-                    <li>(0.1,1)</li>
-                    <li>(0.3,0)</li>
-                    <li>(1,50)</li>
+                    <li>(0.05,2)</li>
+                    <li>(0.3,1)</li>
+                    <li>(1,10)</li>
                 </points>
             </zPositionCurve>
         </skyfaller>
         <comps>
             <li Class="CompProperties_Effecter">
                 <effecterDef>DMS_LaunchDust_Recoilless</effecterDef>
+            </li>
+            <li Class="DMSE.CompProperties_EffecterColdLaunch">
+                <delayTicks>40</delayTicks>
+                <ExhaustFleck>DMS_Fleck_RocketFlame</ExhaustFleck>
+                <ExhaustCurve>
+                    <points>
+                        <li>(0,2)</li>
+                        <li>(0.1,8)</li>
+                        <li>(0.5,4)</li>
+                        <li>(0.9,2)</li>
+                    </points>
+                </ExhaustCurve>
+                <!-- <SmokeFleck>DMS_Fleck_RocketSmokeTrail</SmokeFleck> -->
+                <SmokeFleck>Smoke</SmokeFleck>
+                <SmokeCurve>
+                    <points>
+                        <li>(0,12)</li>
+                        <li>(0.5,9)</li>
+                        <li>(1,2)</li>
+                    </points>
+                </SmokeCurve>
+                <launchEffectTrigger>DMS_LaunchDust_Recoilless</launchEffectTrigger>
             </li>
         </comps>
     </ThingDef>

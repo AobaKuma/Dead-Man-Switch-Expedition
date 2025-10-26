@@ -18,6 +18,31 @@ namespace DMSE
             Find.WorldObjects.Add(this.worldObject);
             CameraJumper.TryJump(this.worldObject);
         }
+        public Vector3 trueDrawPos = Vector3.zero;
+        public float trueRotation = 0f;
+        protected override void DrawAt(Vector3 drawLoc, bool flip = false)
+        {
+            base.DrawAt(drawLoc, flip);
+            GetDrawPositionAndRotation(ref drawLoc, out var extraRotation);
+            Thing thingForGraphic = GetThingForGraphic();
+            if (!WorldComponent_GravshipController.GravshipRenderInProgess)
+            {
+                Graphic.Draw(drawLoc, flip ? thingForGraphic.Rotation.Opposite : thingForGraphic.Rotation, thingForGraphic, extraRotation);
+            }
+
+            DrawDropSpotShadow();
+            trueDrawPos = drawLoc;
+            trueRotation = thingForGraphic.Rotation.AsAngle + extraRotation;
+        }
+        private Thing GetThingForGraphic()
+        {
+            if (def.graphicData != null || !innerContainer.Any)
+            {
+                return this;
+            }
+
+            return innerContainer[0];
+        }
         protected override void GetDrawPositionAndRotation(ref Vector3 drawLoc, out float extraRotation)
         {
             extraRotation = 0f;  

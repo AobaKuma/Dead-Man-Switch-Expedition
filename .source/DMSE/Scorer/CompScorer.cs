@@ -30,13 +30,6 @@ namespace DMSE
         public override void PostDrawExtraSelectionOverlays()
         {
             base.PostDrawExtraSelectionOverlays();
-
-            Vector3 drawPos = parent.DrawPos;
-            for (int i = 0; i < 300; i++)
-            {
-                float step = i / 300f;
-                DrawSteps(ref drawPos,step);
-            }
         }
         private void DrawSteps(ref Vector3 drawPos, float step)
         {
@@ -85,13 +78,13 @@ namespace DMSE
             yield return command;
             yield break;
         }
-        private void StartLanchSequence()
+        private void StartLaunchSequence()
         {
 
         }
         private void Launch(GlobalTargetInfo t)
         {
-            ScorerProjectile faller = (ScorerProjectile)SkyfallerMaker.SpawnSkyfaller(Props.skyfaller, parent.Position, parent.Map);
+            ScorerProjectile faller = (ScorerProjectile)SkyfallerMaker.SpawnSkyfaller(Props.skyfaller, parent.Position + (parent.Rotation.AsIntVec3 * 2), parent.Map);
             faller.Rotation = parent.Rotation;
             faller.angle = faller.Rotation.AsAngle;
             ScorerProjectile_WorldObject wo = (ScorerProjectile_WorldObject)WorldObjectMaker.MakeWorldObject(Props.worldObjectDef);
