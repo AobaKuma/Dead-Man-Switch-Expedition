@@ -129,8 +129,8 @@
         </skyfaller>
         <comps>
             <li Class="CompProperties_Effecter">
-				<effecterDef>DMS_LaunchDust_Recoilless</effecterDef>
-			</li>
+                <effecterDef>DMS_LaunchDust_Recoilless</effecterDef>
+            </li>
         </comps>
     </ThingDef>
 
@@ -169,7 +169,7 @@
         <altitudeLayer>FloorEmplacement</altitudeLayer>
         <passability>PassThroughOnly</passability>
         <holdsRoof>true</holdsRoof>
-        <destroyable>false</destroyable>
+        <destroyable>true</destroyable>
         <building>
             <isEdifice>true</isEdifice>
             <deconstructible>false</deconstructible>
@@ -178,6 +178,12 @@
             <claimable>false</claimable>
             <expandHomeArea>false</expandHomeArea>
         </building>
+        <comps>
+            <li Class="DMSE.Scorer.CompPropertiesLandFillable">
+                <job>DMS_Landfill</job> 
+                <filled>DMSE_Building_Scorer</filled> 
+            </li>
+        </comps>
         <portal>
             <pocketMapGenerator>DMSE_VacuumRoom</pocketMapGenerator>
             <exitDef>CaveExit</exitDef>
