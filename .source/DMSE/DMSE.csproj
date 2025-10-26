@@ -32,8 +32,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CompProperties_OxygenCandle.cs" />
+    <Compile Include="ScenPart_Huntdown.cs" />
+    <Compile Include="Scorer\Alerts_Exist.cs" />
+    <Compile Include="Scorer\CompScorer.cs" />
     <Compile Include="DefOf.cs" />
-    <Compile Include="FactionGoodwill_Patch.cs" />
     <Compile Include="MapComponent_Ship.cs" />
     <Compile Include="ModExtension_ReplacePawn.cs" />
     <Compile Include="PatchMain.cs" />
@@ -42,7 +44,11 @@
     <Compile Include="Patch_Visible.cs" />
     <Compile Include="Patch_Select.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScenPart_Huntdown.cs" />
+    <Compile Include="Scorer\GameComponent_DMS.cs" />
+    <Compile Include="Scorer\GenStep_Prefab.cs" />
+    <Compile Include="Scorer\Patch_ShouldBeRemoved.cs" />
+    <Compile Include="Scorer\ScorerProjectile.cs" />
+    <Compile Include="Scorer\ScorerProjectile_WorldObject.cs" />
     <Compile Include="ThingComp_Ship.cs" />
     <Compile Include="WorldDrawLayer_SpaceTiles.cs" />
     <Compile Include="WorldObject_Transfer.cs" />

@@ -4,7 +4,7 @@
   <ThingDef ParentName="DMS_AutofacturerBenchBase">
     <defName>DMSE_MicrogravityFacility</defName>
     <label>Precise fabrication center</label>
-    <description>A precise-additive manufacturing facility that designed for special production environment such as microgravity and vacuum.</description>
+    <description>An extremely sophisticated additive manufacturing machine designed for nanoscale processing while also meeting the demands of extreme and demanding production environments. It can produce with exceptional precision even in conditions such as microgravity, vacuum, ultra-high pressure, and extreme temperatures.</description>
     <graphicData>
       <texPath>Things/Building/PreciseFabricationCenter/building</texPath>
       <graphicClass>Graphic_Multi</graphicClass>

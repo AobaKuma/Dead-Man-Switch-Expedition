@@ -1,5 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_Sealed_Wall</defName>
+    <label>vacuum sealing facility wall</label>
+    <description>A structure with vacuum sealing layers made by plasticfiber, allows facility assort with vacuum pumps can effectively maintain a sufficiently large vacuum environment at atmospheric pressure, Ideal for storage extremely flammable products or simply for entity containment.</description>
+    <graphicData>
+      <texPath>Things/Building/Wall/Wall_Atlas_Concrete</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+        <li>Rock</li>
+      </linkFlags>
+      <damageData>
+        <rect>(0.35,0.1,0.3,0.7)</rect>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+        <edgeTop>Damage/Edge</edgeTop>
+        <edgeBot>Damage/Edge</edgeBot>
+        <edgeLeft>Damage/Edge</edgeLeft>
+        <edgeRight>Damage/Edge</edgeRight>
+      </damageData>
+      <shadowData>
+        <volume>(1, 0.5, 0.45)</volume>
+        <offset>(0,0,-0.23)</offset>
+      </shadowData>
+    </graphicData>
+    <noRightClickDraftAttack>true</noRightClickDraftAttack>
+    <replaceTags>
+      <li>Wall</li>
+    </replaceTags>
+    <uiIconPath>Things/Building/Wall/Wall_Atlas_Concrete_UI</uiIconPath>
+    <statBases>
+      <Flammability>0</Flammability>
+      <WorkToBuild>135</WorkToBuild>
+      <MeditationFocusStrength>0.22</MeditationFocusStrength>
+    </statBases>
+    <useHitPoints>false</useHitPoints>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <holdsRoof>true</holdsRoof>
+    <blockWind>true</blockWind>
+    <blockLight>true</blockLight>
+    <castEdgeShadows>true</castEdgeShadows>
+    <fillPercent>1</fillPercent>
+    <drawStyleCategory>Walls</drawStyleCategory>
+    <coversFloor>true</coversFloor>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <tickerType>Never</tickerType>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <neverMultiSelect>true</neverMultiSelect>
+    <fertility>0</fertility>
+    <canOverlapZones>false</canOverlapZones>
+    <building>
+      <paintable>false</paintable>
+      <isInert>true</isInert>
+      <isPlaceOverableWall>true</isPlaceOverableWall>
+      <ai_chillDestination>false</ai_chillDestination>
+      <supportsWallAttachments>true</supportsWallAttachments>
+      <paintable>true</paintable>
+      <isTargetable>false</isTargetable>
+      <ai_neverTrashThis>true</ai_neverTrashThis>
+      <deconstructible>false</deconstructible>
+      <alwaysDeconstructible>false</alwaysDeconstructible>
+    </building>
+    <comps>
+      <li Class="CompProperties_MeditationFocus">
+        <statDef>MeditationFocusStrength</statDef>
+        <focusTypes>
+          <li>Minimal</li>
+        </focusTypes>
+      </li>
+    </comps>
+    <damageMultipliers>
+      <li>
+        <damageDef>Bomb</damageDef>
+        <multiplier>0</multiplier>
+      </li>
+      <li>
+        <damageDef>Thump</damageDef>
+        <multiplier>0</multiplier>
+      </li>
+    </damageMultipliers>
+  </ThingDef>
+
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_StealthDevice</defName>
     <label>signal stealth device</label>
@@ -96,9 +185,9 @@
           <!--fxz.ratkinanomaly.update-->
           <li MayRequire="fxz.ratkinanomaly.update">RA_ObsessionArrival</li>    <!-- RA_ObsessionArrival--><!--幽怨执念 -->
           <li MayRequire="fxz.ratkinanomaly.update">RA_FruiterCome</li>    <!-- RA_ObsessionArrival--><!--华丽果树 -->
-          <!-- Vanilla Genetics Expanded -->          
+          <!-- Vanilla Genetics Expanded -->
           <li MayRequire="VanillaExpanded.VGeneticsE">GR_ManhunterMonstrosities</li>  <!-- roaming monstrosities -->
-          <!-- Vanilla Events Expanded -->          
+          <!-- Vanilla Events Expanded -->
           <li MayRequire="VanillaExpanded.VEE">ManhunterPackPurple</li>  <!-- manhunter pack -->
           <li MayRequire="VanillaExpanded.VEE">AnimalInsanityMassPurple</li>  <!-- mass animal insanity -->
 
@@ -125,8 +214,8 @@
 
           <!-- Vanilla -->
           <li>RaidEnemy</li>
-		      <li>PsychicEmanatorShipPartCrash</li>
-		      <li>DefoliatorShipPartCrash</li>
+          <li>PsychicEmanatorShipPartCrash</li>
+          <li>DefoliatorShipPartCrash</li>
           <!-- Anomaly -->
           <li MayRequire="Ludeon.RimWorld.Anomaly">WarpedObelisk_Duplicator</li>    <!-- WarpedObelisk_Duplicator--><!--腐化方尖碑-->
           <li MayRequire="Ludeon.RimWorld.Anomaly">WarpedObelisk_Abductor</li>    <!-- WarpedObelisk_Abductor--><!--扭曲方尖碑-->
@@ -138,7 +227,7 @@
           <li MayRequire="fxz.ratkinanomaly.update">RA_DarkKnightArrival</li>    <!-- RA_DarkKnightArrival--><!--黑暗骑士-->
           <li MayRequire="fxz.ratkinanomaly.update">RA_FleshbeastAttack</li>    <!-- RA_FleshbeastAttack--><!--血肉兽袭击-->
           <li MayRequire="fxz.ratkinanomaly.update">RA_MetalBeanAppear</li>    <!-- RA_MetalBeanAppear--><!--金属蚕豆-->
-          <li MayRequire="fxz.ratkinanomaly.update">RA_Curse</li>    <!-- RA_MetalBeanAppear--><!--诅咒--> 
+          <li MayRequire="fxz.ratkinanomaly.update">RA_Curse</li>    <!-- RA_MetalBeanAppear--><!--诅咒-->
         </incidentsWhitelist>
         <coolDownPerRaidPoint>24</coolDownPerRaidPoint>
         <powerCostPerColonist>1000</powerCostPerColonist>

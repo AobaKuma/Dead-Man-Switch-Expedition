@@ -12,8 +12,6 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using Verse;
 using Verse.Sound;
-using static Unity.Burst.Intrinsics.X86.Avx;
-using static UnityEngine.Networking.UnityWebRequest;
 
 namespace DMSE
 {
@@ -76,7 +74,7 @@ namespace DMSE
             PlanetTile cachedClosestLayerTile = PlanetTile.Invalid;
             float radius = count * GravshipUtility.MaxDistForFuel(comp.engine.TotalFuel,
                 curLayer, PlanetLayer.Selected, FuelConsumePerTile, comp.engine.FuelUseageFactor) / 4f;
-            Find.TilePicker.StartTargeting(t =>
+            Find.TilePicker.StartTargeting_NewTemp(t =>
             {
                 if (!GravshipUtility.TryGetPathFuelCost(curTile, t,
                     out float cost, out int distance, 10f, comp.engine.FuelUseageFactor) && !DebugSettings.ignoreGravshipRange)
@@ -127,7 +125,7 @@ namespace DMSE
             , null, delegate
             {
                 GenDraw.DrawWorldRadiusRing(curTile, (int)radius, CompPilotConsole.GetThrusterRadiusMat(curTile));
-            }, true, () => CameraJumper.TryJump(comp.parent.Position, comp.parent.Map), null, false, true, true, true, null);
+            }, true, () => CameraJumper.TryJump(comp.parent.Position, comp.parent.Map), null, false, true, true, true);
         }
 
         public static void ConsumeFuel(Building_GravEngine engine,PlanetTile tile)

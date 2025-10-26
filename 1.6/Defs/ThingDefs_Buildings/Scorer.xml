@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="BuildingBase">
+        <defName>DMSE_Building_Scorer</defName>
+        <label>cruise missile launch tube</label>
+        <description>A traditional unpowered cooler that works by water evaporation. Must be regularly replenished with wood. Not efficient enough to refrigerate food.</description>
+        <category>Building</category>
+        <graphicData>
+            <texPath>Things/Building/MissileLauncher/building</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>(4,7)</drawSize>
+            <drawOffset>(0,0.05,0)</drawOffset>
+            <shadowData>
+                <volume>(0.9,0.3,0.9)</volume>
+            </shadowData>
+            <damageData>
+                <rect>(0.2,0,0.6,0.1)</rect>
+            </damageData>
+        </graphicData>
+        <rotatable>true</rotatable>
+        <altitudeLayer>Building</altitudeLayer>
+        <passability>PassThroughOnly</passability>
+        <pathCost>30</pathCost>
+        <constructEffect>ConstructMetal</constructEffect>
+        <tickerType>Normal</tickerType>
+        <drawerType>RealtimeOnly</drawerType>
+        <fillPercent>0.9</fillPercent>
+        <designationCategory>DMS_Category</designationCategory>
+        <size>(2,5)</size>
+        <statBases>
+            <MaxHitPoints>500</MaxHitPoints>
+            <WorkToBuild>10000</WorkToBuild>
+            <Flammability>0.05</Flammability>
+        </statBases>
+        <selectable>true</selectable>
+        <costList>
+            <WoodLog>50</WoodLog>
+        </costList>
+        <building>
+            <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+            <fixedStorageSettings>
+                <filter>
+                    <categories>
+                        <li>MortarShells</li>
+                    </categories>
+                </filter>
+            </fixedStorageSettings>
+            <defaultStorageSettings>
+                <filter>
+                    <categories>
+                        <li>MortarShells</li>
+                    </categories>
+                    <disallowedThingDefs>
+                        <li>Shell_Firefoam</li>
+                        <li>Shell_AntigrainWarhead</li>
+                    </disallowedThingDefs>
+                </filter>
+            </defaultStorageSettings>
+        </building>
+        <soundImpactDefault>BulletImpact_Ground</soundImpactDefault>
+        <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+        <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
+        <comps>
+            <li Class="DMSE.CompPropertiesScorer">
+                <skyfaller>DMS_TestSkyFaller</skyfaller>
+                <worldObjectDef>DMS_WorldObject</worldObjectDef>
+            </li>
+            <li Class="CompProperties_Refuelable">
+                <fuelFilter>
+                    <thingDefs>
+                        <li>ReinforcedBarrel</li>
+                    </thingDefs>
+                </fuelFilter>
+                <fuelIsMortarBarrel>true</fuelIsMortarBarrel>
+                <fuelCapacity>20</fuelCapacity>
+                <fuelMultiplier>20</fuelMultiplier>
+                <initialFuelPercent>1</initialFuelPercent>
+                <showFuelGizmo>true</showFuelGizmo>
+                <minimumFueledThreshold>1</minimumFueledThreshold>
+                <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+                <initialAllowAutoRefuel>true</initialAllowAutoRefuel>
+                <autoRefuelPercent>0</autoRefuelPercent>
+                <fuelIconPath>Things/Item/Resource/ReinforcedBarrel/ReinforcedBarrel</fuelIconPath>
+            </li>
+
+        </comps>
+        <researchPrerequisites>
+            <li>DMSE_OrbitalDynamics</li>
+        </researchPrerequisites>
+    </ThingDef>
+
+    <ThingDef ParentName="SkyfallerBase">
+        <defName>DMS_TestSkyFaller</defName>
+        <label>noctolith (incoming)</label>
+        <size>(2, 2)</size>
+        <graphicData>
+            <texPath>Projectile</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>(4,4)</drawSize>
+        </graphicData>
+        <thingClass>DMSE.ScorerProjectile</thingClass>
+        <skyfaller>
+            <movementType>Accelerate</movementType>
+            <reversed>true</reversed>
+            <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
+            <shadowSize>(2, 2)</shadowSize>
+            <ticksToDiscardInReverse>150</ticksToDiscardInReverse>
+            <ticksToImpactRange>0</ticksToImpactRange>
+            <anticipationSound>DropPod_Leaving</anticipationSound>
+            <anticipationSoundTicks>-10</anticipationSoundTicks>
+            <speedCurve>
+                <points>
+                    <li>(0,0.1)</li>
+                    <li>(0.5,0.5)</li>
+                    <li>(1,1)</li>
+                </points>
+            </speedCurve>
+            <rotationCurve>
+                <points>
+                    <li>(0,-10)</li>
+                    <li>(0.30,-5)</li>
+                    <li>(0.6,-1)</li>
+                    <li>(1,0)</li>
+                </points>
+            </rotationCurve>
+            <zPositionCurve>
+                <points>
+                    <li>(0,0)</li>
+                    <li>(0.3,2.5)</li>
+                    <li>(1,50)</li>
+                </points>
+            </zPositionCurve>
+        </skyfaller>
+    </ThingDef>
+
+    <WorldObjectDef>
+        <defName>DMS_WorldObject</defName>
+        <label>transport pods</label>
+        <description>Transport pods in flight.</description>
+        <worldObjectClass>DMSE.ScorerProjectile_WorldObject</worldObjectClass>
+        <texture>World/WorldObjects/TravelingTransportPods</texture>
+        <useDynamicDrawer>true</useDynamicDrawer>
+        <expandingIcon>true</expandingIcon>
+        <expandingIconTexture>World/WorldObjects/Expanding/TravelingTransportPods</expandingIconTexture>
+        <expandingIconPriority>60</expandingIconPriority>
+        <expandMore>true</expandMore>
+        <allowCaravanIncidentsWhichGenerateMap>true</allowCaravanIncidentsWhichGenerateMap>
+        <fullyExpandedInSpace>true</fullyExpandedInSpace>
+        <validLaunchTarget>false</validLaunchTarget>
+    </WorldObjectDef>
+
+    <ThingDef ParentName="BuildingBase">
+        <defName>DMSE_VacuumRoom_Entrance</defName>
+        <label>vacuum sealed room</label>
+        <description>A massive, foreboding hole that connects the surface with a dark network of underground caves. It is possible to climb down into the caverns below.</description>
+        <size>(8,8)</size>
+        <useHitPoints>false</useHitPoints>
+        <thingClass>MapPortal</thingClass>
+        <tickerType>Normal</tickerType>
+        <rotatable>false</rotatable>
+        <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+        <canOverlapZones>false</canOverlapZones>
+        <graphicData>
+            <graphicClass>Graphic_Single</graphicClass>
+            <texPath>Things/Building/PitGate/PitGate</texPath>
+            <drawSize>(8,8)</drawSize>
+        </graphicData>
+        <altitudeLayer>FloorEmplacement</altitudeLayer>
+        <passability>Impassable</passability>
+        <holdsRoof>true</holdsRoof>
+        <destroyable>false</destroyable>
+        <building>
+            <isEdifice>true</isEdifice>
+            <deconstructible>false</deconstructible>
+            <isTargetable>false</isTargetable>
+            <isInert>true</isInert>
+            <claimable>false</claimable>
+            <expandHomeArea>false</expandHomeArea>
+        </building>
+        <portal>
+            <pocketMapGenerator>DMSE_VacuumRoom</pocketMapGenerator>
+            <exitDef>CaveExit</exitDef>
+            <pocketMapSize>32</pocketMapSize>
+        </portal>
+        <statBases>
+            <Flammability>0</Flammability>
+        </statBases>
+        <inspectorTabs>
+            <li>ITab_ContentsMapPortal</li>
+        </inspectorTabs>
+        <designationCategory>DMS_Category</designationCategory>
+    </ThingDef>
+
+    <MapGeneratorDef>
+        <defName>DMSE_VacuumRoom</defName>
+        <label>vacuum sealed room</label>
+        <isUnderground>true</isUnderground>
+        <forceCaves>true</forceCaves>
+        <ignoreAreaRevealedLetter>true</ignoreAreaRevealedLetter>
+        <disableCallAid>true</disableCallAid>
+        <pocketMapProperties>
+            <biome>Space</biome>
+            <temperature>10</temperature>
+        </pocketMapProperties>
+        <genSteps>
+            <li>DMSE_VacuumRoom_GenStep</li>
+        </genSteps>
+    </MapGeneratorDef>
+
+    <GenStepDef>
+        <defName>DMSE_VacuumRoom_GenStep</defName>
+        <order>251</order>
+        <genStep Class="DMSE.GenStep_Prefab">
+            <prefab>DMSE_VacuumRoom_Prefab</prefab>
+        </genStep>
+    </GenStepDef>
+
+    <PrefabDef>
+        <defName>DMSE_VacuumRoom_Prefab</defName>        <!-- rename -->
+        <size>(32,32)</size>
+        <things>
+            <CaveExit>
+                <position>(14, 0, 18)</position>
+            </CaveExit>
+            <DMSE_Sealed_Wall>
+                <rects>
+                    <li>(0,0,31,0)</li>
+                    <li>(0,1,0,31)</li>
+                    <li>(31,1,31,31)</li>
+                    <li>(1,31,30,31)</li>
+                </rects>
+            </DMSE_Sealed_Wall>
+        </things>
+    </PrefabDef>
+
+
+</Defs> 

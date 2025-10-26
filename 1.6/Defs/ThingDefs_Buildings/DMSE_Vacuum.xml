@@ -37,8 +37,11 @@
         <compClass>CompPowerTrader</compClass>
         <shortCircuitInRain>true</shortCircuitInRain>
         <basePowerConsumption>500</basePowerConsumption>
+        <idlePowerDraw>10</idlePowerDraw>
       </li>
-      <li Class="DMSE.CompProperties_OxygenCandle"/>
+      <li Class="DMSE.CompProperties_VacuumPump">
+        <vacuumPerTick>0.1</vacuumPerTick>
+      </li>
     </comps>
     <researchPrerequisites>
       <li>DMSE_OrbitalDynamics</li>
@@ -91,8 +94,13 @@
         <initialFuelPercent>1</initialFuelPercent>
         <showAllowAutoRefuelToggle>false</showAllowAutoRefuelToggle>
         <functionsInVacuum>true</functionsInVacuum>
+        <fuelFilter>
+          <thingDefs>
+            <li>ReinforcedBarrel</li>
+          </thingDefs>
+        </fuelFilter>
       </li>
-      <li Class="DMSE.CompProperties_OxygenCandle"/>
+      <li Class="DMSE.CompProperties_OxygenCandle" />
     </comps>
     <researchPrerequisites>
       <li>DMSE_OrbitalDynamics</li>

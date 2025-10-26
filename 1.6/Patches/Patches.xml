@@ -65,15 +65,6 @@
 	</Operation>
 
 	<Operation Class="PatchOperationAdd">
-		<xpath>/Defs/WorkGiverDef[defName="DMS_Operate"]/fixedBillGiverDefs</xpath>
-		<value>
-			<li>DMSE_MicrogravityFacility</li>
-			<li>DMSE_TableLathe</li>
-			<li>DMSE_TableArtifuscle</li>
-		</value>
-	</Operation>
-
-	<Operation Class="PatchOperationAdd">
 		<xpath>/Defs/ThingDef[defName="GravEngine"]/comps/li[@Class="CompProperties_AffectedByFacilities"]/linkableFacilities</xpath>
 		<value>
 			<li>AAAAAAAAAA</li>
