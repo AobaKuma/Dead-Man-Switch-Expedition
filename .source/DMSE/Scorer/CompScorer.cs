@@ -5,16 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 using Verse;
 
 namespace DMSE
 {
     public class CompPropertiesScorer : CompProperties
     {
-        public CompPropertiesScorer()
-        {
-            this.compClass = typeof(CompScorer);
-        }
+        public CompPropertiesScorer() => this.compClass = typeof(CompScorer);
         public ThingDef skyfaller;
         public WorldObjectDef worldObjectDef;
     }
@@ -28,6 +26,27 @@ namespace DMSE
                 if(refuelable == null) this.refuelable = this.parent.GetComp<CompRefuelable>();
                 return refuelable;
             }
+        }
+        public override void PostDrawExtraSelectionOverlays()
+        {
+            base.PostDrawExtraSelectionOverlays();
+
+            Vector3 drawPos = parent.DrawPos;
+            for (int i = 0; i < 300; i++)
+            {
+                float step = i / 300f;
+                DrawSteps(ref drawPos,step);
+            }
+        }
+        private void DrawSteps(ref Vector3 drawPos, float step)
+        {
+            var direction = new Vector3(parent.Rotation.AsVector2.x, 0, parent.Rotation.AsVector2.y).normalized; // 方向
+
+            var speed = Props.skyfaller.skyfaller.speedCurve.Evaluate(step);
+
+            var rotation = parent.Rotation.AsAngle + Props.skyfaller.skyfaller.rotationCurve.Evaluate(step);
+            drawPos = new Vector3(drawPos.x + speed, 0, this.parent.DrawPos.z + Props.skyfaller.skyfaller.zPositionCurve.Evaluate(step));
+            GenDraw.DrawArrowRotated(drawPos, rotation, true);
         }
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
         {
@@ -49,7 +68,14 @@ namespace DMSE
                         }
                         Launch(t);
                         return true;
-                    }, true, Props.worldObjectDef.ExpandingIconTexture,true,null,null,null,null,true);
+                    },canTargetTiles: true,
+                    mouseAttachment: Props.worldObjectDef.ExpandingIconTexture,
+                    closeWorldTabWhenFinished: true,
+                    onUpdate: null,
+                    extraLabelGetter: null,
+                    canSelectTarget: null,
+                    originForClosest: null,
+                    showCancelButton: true);
                 }
             };
             if (this.Refuelable != null && !this.Refuelable.IsFull) 
@@ -59,15 +85,16 @@ namespace DMSE
             yield return command;
             yield break;
         }
+        private void StartLanchSequence()
+        {
 
+        }
         private void Launch(GlobalTargetInfo t)
         {
-            ScorerProjectile faller = (ScorerProjectile)SkyfallerMaker.SpawnSkyfaller(this.Props.skyfaller,
-this.parent.Position, this.parent.Map);
-            faller.Rotation = this.parent.Rotation;
+            ScorerProjectile faller = (ScorerProjectile)SkyfallerMaker.SpawnSkyfaller(Props.skyfaller, parent.Position, parent.Map);
+            faller.Rotation = parent.Rotation;
             faller.angle = faller.Rotation.AsAngle;
-            ScorerProjectile_WorldObject wo
-            = (ScorerProjectile_WorldObject)WorldObjectMaker.MakeWorldObject(Props.worldObjectDef);
+            ScorerProjectile_WorldObject wo = (ScorerProjectile_WorldObject)WorldObjectMaker.MakeWorldObject(Props.worldObjectDef);
             wo.SetFaction(Faction.OfPlayer);
             wo.Tile = this.parent.Map.Tile;
             wo.destinationTile = t.Tile;

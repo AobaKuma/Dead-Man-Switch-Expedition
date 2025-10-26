@@ -21,8 +21,7 @@ namespace DMSE
         protected override void GetDrawPositionAndRotation(ref Vector3 drawLoc, out float extraRotation)
         {
             extraRotation = 0f;  
-            if (def.skyfaller.zPositionCurve != null && (this.Rotation == Rot4.East || this.Rotation
-                == Rot4.West))
+            if (def.skyfaller.zPositionCurve != null && (this.Rotation == Rot4.East || this.Rotation == Rot4.West))
             {
                 drawLoc.z += this.def.skyfaller.zPositionCurve.Evaluate(this.TimeInAnimation);
             } 
@@ -36,8 +35,6 @@ namespace DMSE
                     break;
             } 
         }
-
-
 
         public override void ExposeData()
         {

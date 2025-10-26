@@ -26,7 +26,7 @@ namespace DMSE
         public override void GameComponentTick()
         {
             base.GameComponentTick();
-            this.times.RemoveAll(t =>
+            times.RemoveAll(t =>
             { 
                 return Find.TickManager.TicksGame >= t.Value
                 ||
