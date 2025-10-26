@@ -119,6 +119,7 @@ namespace DMSE
             CameraJumper.TryJump(map.Center, map);
             ThingDef def = ThingDef.Named(ProjectileDefName);
             Find.TickManager.CurTimeSpeed = TimeSpeed.Paused;
+            bool launch = false;
             Find.Targeter.BeginTargeting(new TargetingParameters()
             {
                 canTargetLocations = true,
@@ -127,7 +128,15 @@ namespace DMSE
                 {
                     SkyfallerMaker.SpawnSkyfaller(def, t.Cell, map);
                     Find.TickManager.CurTimeSpeed = TimeSpeed.Normal;
-                }, t => Find.TickManager.CurTimeSpeed = TimeSpeed.Paused);
+                    launch = true;
+                },null,null,null, () =>
+                {
+                    if (!launch)
+                    {
+                        SkyfallerMaker.SpawnSkyfaller(def, map.Center, map);
+                        Find.TickManager.CurTimeSpeed = TimeSpeed.Normal;
+                    }
+                },null,true,t => Find.TickManager.CurTimeSpeed = TimeSpeed.Paused);
             this.Destroy();
         }
 

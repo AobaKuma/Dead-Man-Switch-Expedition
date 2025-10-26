@@ -36,6 +36,7 @@
     <Compile Include="CompVacuumPump.cs" />
     <Compile Include="ScenPart_Huntdown.cs" />
     <Compile Include="Scorer\Alerts_Exist.cs" />
+    <Compile Include="Scorer\CompLandFillable.cs" />
     <Compile Include="Scorer\CompScorer.cs" />
     <Compile Include="DefOf.cs" />
     <Compile Include="MapComponent_Ship.cs" />
@@ -48,6 +49,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scorer\GameComponent_MissileEngage.cs" />
     <Compile Include="Scorer\GenStep_Prefab.cs" />
+    <Compile Include="Scorer\JobDriver_LandFill.cs" />
     <Compile Include="Scorer\Patch_ShouldBeRemoved.cs" />
     <Compile Include="Scorer\ScorerProjectile.cs" />
     <Compile Include="Scorer\ScorerProjectile_WorldObject.cs" />
