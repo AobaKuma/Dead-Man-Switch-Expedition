@@ -49,6 +49,7 @@ namespace DMSE
                         InterceptProjectile projectile = (InterceptProjectile)SkyfallerMaker.SpawnSkyfaller(
                             turret.Props.projectile, turret.parent.Position, map);
                         projectile.Rotation = Rot4.Random;
+                        projectile.angle = projectile.Rotation.AsAngle;
                         projectile.faller = __result;
                         if (Prefs.DevMode)
                         {
