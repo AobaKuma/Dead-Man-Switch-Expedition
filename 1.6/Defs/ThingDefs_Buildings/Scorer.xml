@@ -89,9 +89,9 @@
         <label>cruise missile (incoming)</label>
         <size>(2,2)</size>
         <graphicData>
-            <texPath>Projectile</texPath>
+            <texPath>Things/Missile/skyFaller_moskit</texPath>
             <graphicClass>Graphic_Single</graphicClass>
-            <drawSize>5</drawSize>
+            <drawSize>4</drawSize>
         </graphicData>
         <thingClass>DMSE.ScorerProjectile</thingClass>
         <skyfaller>
