@@ -172,4 +172,164 @@
         <fullyExpandedInSpace>true</fullyExpandedInSpace>
         <validLaunchTarget>false</validLaunchTarget>
     </WorldObjectDef>
+    
+    <!-- 拦截炮塔 -->
+    <ThingDef ParentName="BuildingBase">
+        <defName>DMS_Turret_MiniTurret</defName>
+        <label>拦截炮塔</label>
+        <description>A portable automatic turret. Requires steel to refurbish its barrel after heavy use. May explode when damaged. Its dumb AI brain can't be directly controlled, so beware of friendly fire.</description>
+        <thingClass>Building_TurretGun</thingClass>
+        <drawerType>MapMeshAndRealTime</drawerType>
+        <drawHighlight>true</drawHighlight>
+        <drawHighlightOnlyForHostile>true</drawHighlightOnlyForHostile>
+        <graphicData>
+            <texPath>Things/Building/Security/TurretMini_Base</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>(3,3)</drawSize>
+            <damageData>
+                <rect>(0.2,0.2,0.6,0.6)</rect>
+            </damageData>
+            <shadowData>
+                <volume>(0.27,0.25,0.27)</volume>
+                <offset>(0,0,0)</offset>
+            </shadowData>
+        </graphicData>
+        <uiIconPath>Things/Building/Security/TurretMini_MenuIcon</uiIconPath>
+        <uiIconScale>0.90</uiIconScale>
+        <minifiedDef>MinifiedThing</minifiedDef>
+        <altitudeLayer>Building</altitudeLayer>
+        <stealable>false</stealable>
+        <rotatable>false</rotatable>
+        <thingCategories>
+            <li>BuildingsSecurity</li>
+        </thingCategories>
+        <statBases>
+            <MaxHitPoints>100</MaxHitPoints>
+            <Flammability>0.7</Flammability>
+            <WorkToBuild>1800</WorkToBuild>
+            <Mass>8</Mass>
+            <Beauty>-20</Beauty>
+            <ShootingAccuracyTurret>0.96</ShootingAccuracyTurret>
+        </statBases>
+        <tickerType>Normal</tickerType>
+        <comps>
+            <li Class="DMSE.SkyFallerTurret.SkyfallerTurretCompProperties">
+                <projectile>DMS_Turret_MiniTurret_Projectile</projectile>
+            </li>
+            <li Class="CompProperties_Explosive">
+                <wickTicks>240</wickTicks>
+                <explosiveRadius>3.9</explosiveRadius>
+                <explosiveDamageType>Bomb</explosiveDamageType>
+                <chanceNeverExplodeFromDamage>0.5</chanceNeverExplodeFromDamage>
+            </li>
+            <li Class="CompProperties_Forbiddable"/>
+            <li Class="CompProperties_Power">
+                <compClass>CompPowerTrader</compClass>
+                <basePowerConsumption>80</basePowerConsumption>
+            </li>
+            <li Class="CompProperties_Flickable"/>
+            <li Class="CompProperties_Breakdownable"/>
+            <li Class="CompProperties_Refuelable">
+                <fuelLabel>Shots until barrel change</fuelLabel>
+                <fuelGizmoLabel>Barrel durability</fuelGizmoLabel>
+                <outOfFuelMessage>Needs new barrel</outOfFuelMessage>
+                <fuelFilter>
+                    <thingDefs>
+                        <li>Steel</li>
+                    </thingDefs>
+                </fuelFilter>
+                <fuelCapacity>60</fuelCapacity>                <!-- 30 bursts -->
+                <fuelMultiplier>0.75</fuelMultiplier>                <!-- 1.333 steel per burst, 80 per full rearm -->
+                <initialFuelPercent>1</initialFuelPercent>
+                <autoRefuelPercent>0.5</autoRefuelPercent>
+                <showFuelGizmo>true</showFuelGizmo>
+                <minimumFueledThreshold>1</minimumFueledThreshold>
+                <factorByDifficulty>true</factorByDifficulty>
+                <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+                <fuelIconPath>UI/Overlays/Barrel</fuelIconPath>
+            </li>
+            <li Class="CompProperties_Stunnable">
+                <affectedDamageDefs>
+                    <li>Stun</li>
+                    <li>EMP</li>
+                </affectedDamageDefs>
+            </li>
+        </comps>
+        <passability>PassThroughOnly</passability>
+        <pathCost>50</pathCost>
+        <fillPercent>0.4</fillPercent>
+        <hasTooltip>true</hasTooltip>
+        <stuffCategories>
+            <li>Metallic</li>
+        </stuffCategories>
+        <costStuffCount>30</costStuffCount>
+        <costList>
+            <Steel>70</Steel>
+            <ComponentIndustrial>3</ComponentIndustrial>
+        </costList>
+        <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+        <designationCategory>Security</designationCategory>
+        <constructionSkillPrerequisite>5</constructionSkillPrerequisite>
+        <building>
+            <combatPower>45</combatPower>            <!-- same as a scavenger -->
+            <ai_combatDangerous>true</ai_combatDangerous>
+            <turretGunDef>Gun_MiniTurret</turretGunDef>
+            <turretBurstCooldownTime>4.8</turretBurstCooldownTime>
+        </building>
+        <placeWorkers>
+            <li>PlaceWorker_TurretTop</li>
+            <li>PlaceWorker_ShowTurretRadius</li>
+        </placeWorkers>
+        <designationHotKey>Misc2</designationHotKey>
+        <researchPrerequisites>
+            <li>GunTurrets</li>
+        </researchPrerequisites>
+    </ThingDef>
+
+
+    <ThingDef ParentName="SkyfallerBase">
+        <defName>DMS_Turret_MiniTurret_Projectile</defName>
+        <label>noctolith (incoming)</label>
+        <size>(2,2)</size>
+        <graphicData>
+            <texPath>Projectile</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>(4,4)</drawSize>
+        </graphicData>
+        <thingClass>DMSE.InterceptProjectile</thingClass>
+        <skyfaller>
+            <movementType>Accelerate</movementType>
+            <reversed>true</reversed>
+            <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
+            <shadowSize>(2, 2)</shadowSize>
+            <ticksToDiscardInReverse>300</ticksToDiscardInReverse>
+            <ticksToImpactRange>0</ticksToImpactRange>
+            <anticipationSound>DropPod_Leaving</anticipationSound>
+            <anticipationSoundTicks>-1</anticipationSoundTicks>
+            <speedCurve>
+                <points>
+                    <li>(0,0.1)</li>
+                    <li>(0.25,0.1)</li>
+                    <li>(1,2)</li>
+                </points>
+            </speedCurve>
+            <rotationCurve>
+                <points>
+                    <li>(0,-10)</li>
+                    <li>(0.30,-25)</li>
+                    <li>(0.6,-5)</li>
+                    <li>(1,0)</li>
+                </points>
+            </rotationCurve>
+            <zPositionCurve>
+                <points>
+                    <li>(0,0)</li>
+                    <li>(0.1,1)</li>
+                    <li>(0.3,0)</li>
+                    <li>(1,50)</li>
+                </points>
+            </zPositionCurve>
+        </skyfaller> 
+    </ThingDef>
+
 </Defs> 
