@@ -11,7 +11,7 @@ namespace DMSE
 {
     public class ScorerProjectile_WorldObject : WorldObject
     {
-        protected ThingDef skyfallerIncoming;
+        public ThingDef skyfallerIncoming;
         private Vector3 Start
         {
             get

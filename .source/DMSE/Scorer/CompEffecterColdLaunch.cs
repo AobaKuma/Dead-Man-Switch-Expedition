@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Verse;
 using Verse.Noise;
+using Verse.Sound;
 
 namespace DMSE
 {
@@ -10,6 +11,7 @@ namespace DMSE
     {
         public float offsetY = -1.5f;
         public int delayTicks = 10;
+        public SoundDef ignitionSound;
         public EffecterDef launchEffectTrigger;
         public FleckDef ExhaustFleck;
         public SimpleCurve ExhaustCurve;
@@ -53,6 +55,7 @@ namespace DMSE
                 if (ticksSinceSpawn == Props.delayTicks)
                 {
                     Props.launchEffectTrigger?.Spawn(skyfaller.DrawPos.ToIntVec3(), parent.Map).Trigger(skyfaller, skyfaller);
+                    Props.ignitionSound?.PlayOneShot(new TargetInfo(skyfaller.trueDrawPos.ToIntVec3(), parent.Map));
                 }
                 if (effecter == null)
                 {

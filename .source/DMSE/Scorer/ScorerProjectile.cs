@@ -12,6 +12,7 @@ namespace DMSE
 {
     public class ScorerProjectile : Skyfaller
     {
+        public ScorerProjectile_WorldObject worldObject;
         protected override void LeaveMap()
         {
             base.LeaveMap();
@@ -66,7 +67,5 @@ namespace DMSE
             base.ExposeData();
             Scribe_Deep.Look(ref this.worldObject, "worldObject");
         }
-
-        public ScorerProjectile_WorldObject worldObject;
     }
 }

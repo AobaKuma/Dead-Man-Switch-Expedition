@@ -132,6 +132,7 @@
         <comps>
             <li Class="DMSE.CompProperties_EffecterColdLaunch">
                 <delayTicks>40</delayTicks>
+                <ignitionSound>DMSE_Missile_Flight</ignitionSound>
                 <ExhaustFleck>DMS_Fleck_RocketFlame</ExhaustFleck>
                 <ExhaustCurve>
                     <points>
@@ -160,10 +161,11 @@
         <description>cruise missile in flight.</description>
         <worldObjectClass>DMSE.ScorerProjectile_WorldObject</worldObjectClass>
         <texture>UI/DMSE/TravelingMissile</texture>
+        <rotateGraphicWhenTraveling>true</rotateGraphicWhenTraveling>
         <useDynamicDrawer>true</useDynamicDrawer>
         <expandingIcon>true</expandingIcon>
         <expandingIconTexture>UI/DMSE/TravelingMissile_Expanding</expandingIconTexture>
-        <expandingIconPriority>60</expandingIconPriority>
+        <expandingIconPriority>100</expandingIconPriority>
         <expandMore>true</expandMore>
         <allowCaravanIncidentsWhichGenerateMap>true</allowCaravanIncidentsWhichGenerateMap>
         <fullyExpandedInSpace>true</fullyExpandedInSpace>
@@ -174,7 +176,7 @@
         <defName>DMSE_Incoming_CruiseMissile</defName>
         <label>cruise missile (incoming)</label>
         <graphicData>
-            <texPath>Things/Missile/skyFaller_moskit</texPath>
+            <texPath>Things/Missile/skyFaller_moskit_incoming</texPath>
             <graphicClass>Graphic_Single</graphicClass>
             <drawSize>4</drawSize>
         </graphicData>
@@ -184,7 +186,12 @@
             <explosionRadius>9</explosionRadius>
             <explosionDamage>Bomb</explosionDamage>
             <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
-            <speed>1.2</speed>
+            <speed>1</speed>
         </skyfaller>
+        <!-- <comps>
+            <li Class="DMSE.CompProperties_PlaySoundOnSpawn">
+                <sound>DMSE_Missile_Shot</sound>
+            </li>
+        </comps> -->
     </ThingDef>
 </Defs>

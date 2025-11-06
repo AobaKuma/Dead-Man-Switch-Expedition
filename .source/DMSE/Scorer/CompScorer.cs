@@ -80,6 +80,7 @@ namespace DMSE
             faller.Rotation = parent.Rotation;
             faller.angle = faller.Rotation.AsAngle;
             ScorerProjectile_WorldObject wo = (ScorerProjectile_WorldObject)WorldObjectMaker.MakeWorldObject(Props.worldObjectDef);
+            wo.skyfallerIncoming = Props.skyfallerIncoming;
             wo.SetFaction(Faction.OfPlayer);
             wo.Tile = this.parent.Map.Tile;
             wo.destinationTile = t.Tile;
