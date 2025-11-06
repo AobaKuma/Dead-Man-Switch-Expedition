@@ -1,5 +1,4 @@
-﻿using DMSE.SkyFallerTurret;
-using HarmonyLib;
+﻿using HarmonyLib;
 using RimWorld;
 using System;
 using Verse;
@@ -15,7 +14,7 @@ namespace DMSE
         {
             if (Prefs.DevMode) 
             {
-                Log.Message("生成空投中：" + innerThing.Label);
+                Log.Message("Generating SkyFaller：" + innerThing.Label);
             }
             bool hostile = false;
             if (innerThing is Pawn pawn && pawn.Faction != Faction.OfPlayer
@@ -37,7 +36,7 @@ namespace DMSE
                     + 600,__result,pos));
                 if (Prefs.DevMode)
                 {
-                    Log.Message("空投延迟：" + innerThing.Label);
+                    Log.Message("skyFaller delay：" + innerThing.Label);
                 }
                 foreach (var turret in comp.turrets)
                 {
@@ -53,7 +52,7 @@ namespace DMSE
                         projectile.faller = __result;
                         if (Prefs.DevMode)
                         {
-                            Log.Message("发射拦截：" + projectile + $"curTIck:{Find.TickManager.TicksGame}," +
+                            Log.Message("Launch intercept：" + projectile + $"curTIck:{Find.TickManager.TicksGame}," +
                                 $"{turret.cooldown}");
                         }
                         turret.cooldown = Find.TickManager.TicksGame + turret.Props.cooldown;

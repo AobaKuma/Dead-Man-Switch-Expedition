@@ -14,6 +14,7 @@ namespace DMSE
     {
         public CompPropertiesScorer() => this.compClass = typeof(CompScorer);
         public ThingDef skyfaller;
+        public ThingDef skyfallerIncoming;
         public WorldObjectDef worldObjectDef;
     }
     public class CompScorer : ThingComp

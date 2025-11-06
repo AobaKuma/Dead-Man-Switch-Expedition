@@ -1,5 +1,4 @@
-﻿using DMSE.SkyFallerTurret;
-using RimWorld;
+﻿using RimWorld;
 using RimWorld.Planet;
 using System;
 using System.Collections.Generic;
@@ -13,6 +12,9 @@ namespace DMSE
 {
     public class InterceptProjectile : Skyfaller
     {
+        public Skyfaller faller;
+
+        public static float HitChance = 0.9f;
         protected override void LeaveMap()
         {
             if (Rand.Chance(HitChance))
@@ -116,8 +118,5 @@ namespace DMSE
             Scribe_References.Look(ref this.faller, "faller");
         }
 
-        public Skyfaller faller;
-
-        public static float HitChance = 0.9f;
     }
 }

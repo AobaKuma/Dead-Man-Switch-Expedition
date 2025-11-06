@@ -1,6 +1,6 @@
 ﻿using Verse;
 
-namespace DMSE.SkyFallerTurret
+namespace DMSE
 {
     public class SkyfallerTurretCompProperties : CompProperties
     {

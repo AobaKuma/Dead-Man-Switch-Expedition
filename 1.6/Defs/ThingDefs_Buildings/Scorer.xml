@@ -1,178 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef ParentName="BuildingBase">
-        <defName>DMSE_Building_Scorer</defName>
-        <label>Scorer MLS</label>
-        <description>The S1120 "Scorer" is a cruise missile launch system. It is a highly versatile anti-ship missile launcher used on cruisers and armed landing ships of the Colonial Fleet Space Force.</description>
-        <category>Building</category>
-        <graphicData>
-            <texPath>Things/Building/MissileLauncher/building</texPath>
-            <graphicClass>Graphic_Multi</graphicClass>
-            <drawSize>(2,6)</drawSize>
-            <drawOffsetEast>(0,0,0.35)</drawOffsetEast>
-            <drawOffsetWest>(0,0,0.35)</drawOffsetWest>
-        </graphicData>
-        <rotatable>true</rotatable>
-        <altitudeLayer>Building</altitudeLayer>
-        <passability>PassThroughOnly</passability>
-        <pathCost>100</pathCost>
-        <constructEffect>ConstructMetal</constructEffect>
-        <tickerType>Normal</tickerType>
-        <drawerType>RealtimeOnly</drawerType>
-        <fillPercent>0.9</fillPercent>
-        <designationCategory>DMS_Category</designationCategory>
-        <size>(1,5)</size>
-        <staticSunShadowHeight>0.1</staticSunShadowHeight>
-        <statBases>
-            <MaxHitPoints>500</MaxHitPoints>
-            <WorkToBuild>10000</WorkToBuild>
-            <Flammability>0.05</Flammability>
-        </statBases>
-        <selectable>true</selectable>
-        <costList>
-            <WoodLog>50</WoodLog>
-        </costList>
-        <building>
-            <destroySound>BuildingDestroyed_Metal_Small</destroySound>
-            <!-- <fixedStorageSettings>
-                <filter>
-                    <categories>
-                        <li>MortarShells</li>
-                    </categories>
-                </filter>
-            </fixedStorageSettings>
-            <defaultStorageSettings>
-                <filter>
-                    <categories>
-                        <li>MortarShells</li>
-                    </categories>
-                    <disallowedThingDefs>
-                        <li>Shell_Firefoam</li>
-                        <li>Shell_AntigrainWarhead</li>
-                    </disallowedThingDefs>
-                </filter>
-            </defaultStorageSettings> -->
-        </building>
-        <soundImpactDefault>BulletImpact_Ground</soundImpactDefault>
-        <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
-        <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
-        <comps>
-            <li Class="DMSE.CompPropertiesScorer">
-                <skyfaller>DMS_TestSkyFaller</skyfaller>
-                <worldObjectDef>DMS_WorldObject</worldObjectDef>
-            </li>
-            <li Class="CompProperties_Refuelable">
-                <fuelFilter>
-                    <thingDefs>
-                        <li>ReinforcedBarrel</li>
-                    </thingDefs>
-                </fuelFilter>
-                <fuelIsMortarBarrel>true</fuelIsMortarBarrel>
-                <fuelCapacity>20</fuelCapacity>
-                <fuelMultiplier>20</fuelMultiplier>
-                <initialFuelPercent>1</initialFuelPercent>
-                <showFuelGizmo>true</showFuelGizmo>
-                <minimumFueledThreshold>1</minimumFueledThreshold>
-                <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
-                <initialAllowAutoRefuel>true</initialAllowAutoRefuel>
-                <autoRefuelPercent>0</autoRefuelPercent>
-                <fuelIconPath>Things/Item/Resource/ReinforcedBarrel/ReinforcedBarrel</fuelIconPath>
-            </li>
-        </comps>
-        <researchPrerequisites>
-            <li>DMSE_OrbitalDynamics</li>
-        </researchPrerequisites>
-    </ThingDef>
-
-    <ThingDef ParentName="SkyfallerBase">
-        <defName>DMS_TestSkyFaller</defName>
-        <label>cruise missile (incoming)</label>
-        <size>(2,2)</size>
-        <graphicData>
-            <texPath>Things/Missile/skyFaller_moskit</texPath>
-            <graphicClass>Graphic_Single</graphicClass>
-            <drawSize>4</drawSize>
-        </graphicData>
-        <thingClass>DMSE.ScorerProjectile</thingClass>
-        <skyfaller>
-            <movementType>Accelerate</movementType>
-            <reversed>true</reversed>
-            <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
-            <shadowSize>(2, 2)</shadowSize>
-            <ticksToDiscardInReverse>300</ticksToDiscardInReverse>
-            <ticksToImpactRange>0</ticksToImpactRange>
-            <anticipationSound>DropPod_Leaving</anticipationSound>
-            <anticipationSoundTicks>-1</anticipationSoundTicks>
-            <speedCurve>
-                <points>
-                    <li>(0,0.3)</li>
-                    <li>(0.2,0.2)</li>
-                    <li>(0.5,0.5)</li>
-                    <li>(1,1)</li>
-                </points>
-            </speedCurve>
-            <rotationCurve>
-                <points>
-                    <li>(0,-10)</li>
-                    <li>(0.30,-25)</li>
-                    <li>(0.6,-5)</li>
-                    <li>(1,0)</li>
-                </points>
-            </rotationCurve>
-            <zPositionCurve>
-                <points>
-                    <li>(0,0)</li>
-                    <li>(0.05,2)</li>
-                    <li>(0.3,1)</li>
-                    <li>(1,10)</li>
-                </points>
-            </zPositionCurve>
-        </skyfaller>
-        <comps>
-            <li Class="CompProperties_Effecter">
-                <effecterDef>DMS_LaunchDust_Recoilless</effecterDef>
-            </li>
-            <li Class="DMSE.CompProperties_EffecterColdLaunch">
-                <delayTicks>40</delayTicks>
-                <ExhaustFleck>DMS_Fleck_RocketFlame</ExhaustFleck>
-                <ExhaustCurve>
-                    <points>
-                        <li>(0,2)</li>
-                        <li>(0.1,8)</li>
-                        <li>(0.5,4)</li>
-                        <li>(0.9,2)</li>
-                    </points>
-                </ExhaustCurve>
-                <!-- <SmokeFleck>DMS_Fleck_RocketSmokeTrail</SmokeFleck> -->
-                <SmokeFleck>Smoke</SmokeFleck>
-                <SmokeCurve>
-                    <points>
-                        <li>(0,12)</li>
-                        <li>(0.5,9)</li>
-                        <li>(1,2)</li>
-                    </points>
-                </SmokeCurve>
-                <launchEffectTrigger>DMS_LaunchDust_Recoilless</launchEffectTrigger>
-            </li>
-        </comps>
-    </ThingDef>
-
-    <WorldObjectDef>
-        <defName>DMS_WorldObject</defName>
-        <label>transport pods</label>
-        <description>Transport pods in flight.</description>
-        <worldObjectClass>DMSE.ScorerProjectile_WorldObject</worldObjectClass>
-        <texture>World/WorldObjects/TravelingTransportPods</texture>
-        <useDynamicDrawer>true</useDynamicDrawer>
-        <expandingIcon>true</expandingIcon>
-        <expandingIconTexture>World/WorldObjects/Expanding/TravelingTransportPods</expandingIconTexture>
-        <expandingIconPriority>60</expandingIconPriority>
-        <expandMore>true</expandMore>
-        <allowCaravanIncidentsWhichGenerateMap>true</allowCaravanIncidentsWhichGenerateMap>
-        <fullyExpandedInSpace>true</fullyExpandedInSpace>
-        <validLaunchTarget>false</validLaunchTarget>
-    </WorldObjectDef>
-    
     <!-- 拦截炮塔 -->
     <ThingDef ParentName="BuildingBase">
         <defName>DMS_Turret_MiniTurret</defName>
@@ -213,7 +40,7 @@
         </statBases>
         <tickerType>Normal</tickerType>
         <comps>
-            <li Class="DMSE.SkyFallerTurret.SkyfallerTurretCompProperties">
+            <li Class="DMSE.SkyfallerTurretCompProperties">
                 <projectile>DMS_Turret_MiniTurret_Projectile</projectile>
             </li>
             <li Class="CompProperties_Explosive">
@@ -222,13 +49,13 @@
                 <explosiveDamageType>Bomb</explosiveDamageType>
                 <chanceNeverExplodeFromDamage>0.5</chanceNeverExplodeFromDamage>
             </li>
-            <li Class="CompProperties_Forbiddable"/>
+            <li Class="CompProperties_Forbiddable" />
             <li Class="CompProperties_Power">
                 <compClass>CompPowerTrader</compClass>
                 <basePowerConsumption>80</basePowerConsumption>
             </li>
-            <li Class="CompProperties_Flickable"/>
-            <li Class="CompProperties_Breakdownable"/>
+            <li Class="CompProperties_Flickable" />
+            <li Class="CompProperties_Breakdownable" />
             <li Class="CompProperties_Refuelable">
                 <fuelLabel>Shots until barrel change</fuelLabel>
                 <fuelGizmoLabel>Barrel durability</fuelGizmoLabel>
@@ -329,7 +156,7 @@
                     <li>(1,50)</li>
                 </points>
             </zPositionCurve>
-        </skyfaller> 
+        </skyfaller>
     </ThingDef>
 
 </Defs> 

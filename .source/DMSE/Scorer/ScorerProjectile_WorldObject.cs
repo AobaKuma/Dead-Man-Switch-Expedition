@@ -11,6 +11,7 @@ namespace DMSE
 {
     public class ScorerProjectile_WorldObject : WorldObject
     {
+        protected ThingDef skyfallerIncoming;
         private Vector3 Start
         {
             get
@@ -89,6 +90,7 @@ namespace DMSE
             Scribe_Values.Look<bool>(ref this.arrived, "arrived", false, false);
             Scribe_Values.Look<PlanetTile>(ref this.initialTile, "initialTile", default(PlanetTile), false);
             Scribe_Values.Look<float>(ref this.traveledPct, "traveledPct", 0f, false);
+            Scribe_Values.Look<ThingDef>(ref this.skyfallerIncoming, "skyfallerIncoming", null, false);
         }
         public override void PostAdd()
         {
@@ -133,7 +135,7 @@ namespace DMSE
                 CameraJumper.TryJump(map.Center, map, CameraJumper.MovementMode.Cut);
             }
 
-            ThingDef def = ThingDef.Named(ProjectileDefName);
+            ThingDef def = skyfallerIncoming ?? ThingDef.Named(ProjectileDefName);
 
             bool launch = false;
             Find.Targeter.BeginTargeting(

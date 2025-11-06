@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Verse;
 
-namespace DMSE.SkyFallerTurret
+namespace DMSE
 {
     public class MapComponent_InterceptSkyfaller : MapComponent
     {
