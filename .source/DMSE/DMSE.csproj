@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CompProperties_ApparelHediffs.cs" />
     <Compile Include="Scorer\CompEffecterColdLaunch.cs" />
     <Compile Include="CompOxygenCandle.cs" />
     <Compile Include="CompVacuumPump.cs" />

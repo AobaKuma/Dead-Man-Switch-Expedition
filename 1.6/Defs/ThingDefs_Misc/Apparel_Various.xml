@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
 	<ThingDef ParentName="ApparelBase" Name="DMSE_OrbitalApparelBase" Abstract="true">
 		<techLevel>Industrial</techLevel>
@@ -24,7 +24,7 @@
 			<recipeUsers>
 				<li>ElectricTailoringBench</li>
 				<li>DMS_TableMachinePrinter</li>
-			</recipeUsers>	
+			</recipeUsers>
 		</recipeMaker>
 		<costList>
 			<ComponentStamped>1</ComponentStamped>
@@ -158,10 +158,10 @@
 		</colorGenerator>
 	</ThingDef>
 
-		<!-- 重型外骨骼 -->
+	<!-- 重型外骨骼 -->
 	<ThingDef ParentName="DMSE_OrbitalApparelBase">
 		<defName>DMSE_Apparel_HeavyPowerSkeleton</defName>
-		<label>Heavy Powered Exoskeletal Unit</label>
+		<label>heavy powered exoskeletal unit</label>
 		<description>A heavy powered exoskeletal suit which mimics the human form and can be worn by an untrained operator. It significantly increases the wearer's strength. \n\nCompared to the exoskeleton on BigSister, this model has removed the jump system and shield system to reduce costs. When using it, don't assume you've gained the protective level of heavy mechanical units.</description>
 		<techLevel>Spacer</techLevel>
 		<recipeMaker>
@@ -170,7 +170,7 @@
 			<effectWorking>ConstructMetal</effectWorking>
 			<soundWorking>Recipe_Machining</soundWorking>
 			<recipeUsers>
-			  <li>DMSE_MicrogravityFacility</li>
+				<li>DMSE_MicrogravityFacility</li>
 			</recipeUsers>
 			<unfinishedThingDef>UnfinishedTechArmor</unfinishedThingDef>
 		</recipeMaker>
@@ -206,15 +206,18 @@
 		</statBases>
 		<equippedStatOffsets>
 			<MoveSpeed>-0.1</MoveSpeed>
+			<WorkSpeedGlobal>0.25</WorkSpeedGlobal>
+			<MechRepairSpeed>0.5</MechRepairSpeed>
 			<VEF_MassCarryCapacity MayRequire="oskarpotocki.vanillafactionsexpanded.core">150</VEF_MassCarryCapacity>
 			<CarryingCapacity>150</CarryingCapacity>
 		</equippedStatOffsets>
 		<tickerType>Normal</tickerType>
 		<comps>
-		  <li Class="CompProperties_CauseHediff_Apparel">
-			<hediff>DMSE_GravityFactor</hediff>
-			<part>Torso</part>
-		  </li>
+			<li Class="DMSE.CompProperties_ApparelCauseHediff_Microgravity">
+				<hediff>DMSE_GravityFactor</hediff>
+				<part>Torso</part>
+				<revert>true</revert>
+			</li>
 		</comps>
 		<apparel>
 			<bodyPartGroups>
@@ -269,11 +272,11 @@
 					</drawData>
 				</li>
 			</renderNodeProperties>
-			<blocksAddedPartWoundGraphics>true</blocksAddedPartWoundGraphics>	
+			<blocksAddedPartWoundGraphics>true</blocksAddedPartWoundGraphics>
 			<layers>
 				<li>Shell</li>
 			</layers>
-			<defaultOutfitTags/>
+			<defaultOutfitTags />
 			<canBeGeneratedToSatisfyWarmth>false</canBeGeneratedToSatisfyWarmth>
 			<canBeGeneratedToSatisfyToxicEnvironmentResistance>false</canBeGeneratedToSatisfyToxicEnvironmentResistance>
 		</apparel>
@@ -282,11 +285,11 @@
 				<pawnCapacityMinLevels>
 					<li>
 						<capacity>Moving</capacity>
-						<minLevel>0.78</minLevel>
+						<minLevel>0.5</minLevel>
 					</li>
 					<li>
 						<capacity>Manipulation</capacity>
-						<minLevel>0.78</minLevel>
+						<minLevel>0.5</minLevel>
 					</li>
 				</pawnCapacityMinLevels>
 			</li>
@@ -296,18 +299,28 @@
 	<HediffDef>
 		<defName>DMSE_GravityFactor</defName>
 		<label>gravity factor</label>
-		<description>this pawn is wearing an apparel designed for microgravity environment.</description>
+		<description>this pawn is operating an equipment designed for microgravity environment, staying in gravity will making it hard to operate.</description>
 		<hediffClass>HediffWithComps</hediffClass>
 		<stages>
-		  <li>
-			<becomeVisible>false</becomeVisible>
-		  </li>
+			<li>
+				<label>gravity</label>
+				<becomeVisible>true</becomeVisible>
+				<capMods>
+					<li>
+						<capacity>Moving</capacity>
+						<offset>-0.4</offset>
+					</li>
+					<li>
+						<capacity>Manipulation</capacity>
+						<offset>-0.4</offset>
+					</li>
+				</capMods>
+			</li>
 		</stages>
 		<comps>
-			<!-- 需要一個根據當前地圖環境給予不同StatOffsets的Comp -->
-		  <li Class="HediffCompProperties_RemoveIfApparelDropped"/>
+			<li Class="HediffCompProperties_RemoveIfApparelDropped" />
 		</comps>
 		<isBad>false</isBad>
-	  </HediffDef>
+	</HediffDef>
 
 </Defs>
