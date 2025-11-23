@@ -2,8 +2,8 @@
 <Defs> 
 
   <JobDef>
-    <defName>DMS_Landfill</defName>
-    <driverClass>DMSE.Scorer.JobDriver_LandFill</driverClass>
+    <defName>DMSE_Landfill</defName>
+    <driverClass>DMSE.JobDriver_LandFill</driverClass>
     <reportString>landfilling TargetA.</reportString>
   </JobDef>
 

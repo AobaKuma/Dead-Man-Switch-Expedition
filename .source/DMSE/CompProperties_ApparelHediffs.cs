@@ -49,6 +49,7 @@ namespace DMSE
         }
         public override void Notify_Equipped(Pawn pawn)
         {
+            RemoveHediff(pawn);
             if (InMicroGravity(pawn) && Props.revert == false) //如果在微重力環境下，且不是反向作用
             {
                 ApplyHediff(pawn);

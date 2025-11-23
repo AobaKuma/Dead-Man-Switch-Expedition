@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Verse;
 using Verse.AI;
 
-namespace DMSE.Scorer
+namespace DMSE
 {
     public class JobDriver_LandFill : JobDriver
     {

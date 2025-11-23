@@ -34,24 +34,6 @@
         </costList>
         <building>
             <destroySound>BuildingDestroyed_Metal_Small</destroySound>
-            <!-- <fixedStorageSettings>
-                <filter>
-                    <categories>
-                        <li>MortarShells</li>
-                    </categories>
-                </filter>
-            </fixedStorageSettings>
-            <defaultStorageSettings>
-                <filter>
-                    <categories>
-                        <li>MortarShells</li>
-                    </categories>
-                    <disallowedThingDefs>
-                        <li>Shell_Firefoam</li>
-                        <li>Shell_AntigrainWarhead</li>
-                    </disallowedThingDefs>
-                </filter>
-            </defaultStorageSettings> -->
         </building>
         <soundImpactDefault>BulletImpact_Ground</soundImpactDefault>
         <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>

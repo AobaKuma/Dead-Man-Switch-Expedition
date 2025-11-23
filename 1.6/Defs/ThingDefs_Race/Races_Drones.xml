@@ -26,7 +26,7 @@
                   <targetAcquireRadius>65</targetAcquireRadius>
                   <targetKeepRadius>72</targetKeepRadius>
                   <chaseTarget>true</chaseTarget>
-                  <humanlikesOnly>true</humanlikesOnly>
+                  <humanlikesOnly>false</humanlikesOnly>
                 </li>
               </subNodes>
             </li>
@@ -42,8 +42,36 @@
       </subNodes>
     </thinkRoot>
   </ThinkTreeDef>
-
-  <ThingDef ParentName="BaseDrone">
+    
+  <!-- 新开了个DMS的drone父类确保根节点是机械体不是pawn，我修改了DMS_BaseDroidRace -->
+  <ThingDef Name="DMS_BaseDroneRace" ParentName="BaseMechanoid" Abstract="True">
+    <race>
+        <intelligence>ToolUser</intelligence>
+        <thinkTreeMain>DMS_Mechanoid</thinkTreeMain>
+        <nameGenerator>DMS_VanguardMechStandard</nameGenerator>
+        <soundCallIntervalRange>2000~4000</soundCallIntervalRange>
+        <soundCallIntervalFriendlyFactor>2</soundCallIntervalFriendlyFactor>
+        <soundCallIntervalAggressiveFactor>0.5</soundCallIntervalAggressiveFactor>
+        <soundMeleeHitPawn>Pawn_Melee_MechanoidBash_HitPawn</soundMeleeHitPawn>
+        <soundMeleeHitBuilding>Pawn_Melee_MechanoidBash_HitBuilding</soundMeleeHitBuilding>
+        <soundMeleeMiss>Pawn_Melee_MechanoidBash_Miss</soundMeleeMiss>
+        <mechFixedSkillLevel>8</mechFixedSkillLevel>
+    </race>
+    <comps Inherit="False">
+        <li Class="CompProperties_MechRepairable" />
+        <li Class="CompProperties_CanBeDormant" />
+        <li Class="CompProperties_WakeUpDormant">
+            <wakeUpOnDamage>true</wakeUpOnDamage>
+            <wakeUpCheckRadius>30</wakeUpCheckRadius>
+            <wakeUpSound>MechanoidsWakeUp</wakeUpSound>
+        </li>
+    </comps>
+    <butcherProducts>
+        <Steel>5</Steel>
+    </butcherProducts>
+  </ThingDef>
+    
+  <ThingDef ParentName="DMS_BaseDroneRace"> <!-- 调用上面的父节点 -->
     <defName>DMSE_Drone_Wildfowl</defName>
     <label>wildfowl</label>
     <description>The UAS 1/B "Hunter Bee" nicknamed "wildfowl" is a foldable, small coaxial rotor drone equipped with a plastic explosive charge equivalent to an M67 hand grenade, posing a significant threat when approaching a target in swarms.</description>

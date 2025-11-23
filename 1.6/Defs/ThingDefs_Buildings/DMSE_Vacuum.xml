@@ -116,8 +116,8 @@
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_VacuumRoom_Entrance</defName>
     <label>vacuum sealed room</label>
-    <description>A massive, foreboding hole that connects the surface with a dark network of underground caves. It is possible to climb down into the caverns below.</description>
-    <size>(8,8)</size>
+    <description>Entrance that leads to an underground sealed room, through multiple layers of plasticfiber membrane and pressurized hatches, this room can maintained vacuum even inside a planetry atmospheric conditions. The gas pressure inside the facility is completely independent of the external environment.\n\nTherefore, before entering, ensure that you wear a full pressure suit or pressurize the entire space to avoid accidental vacuum burns.</description>
+    <size>(3,3)</size>
     <useHitPoints>false</useHitPoints>
     <thingClass>MapPortal</thingClass>
     <tickerType>Normal</tickerType>
@@ -126,8 +126,9 @@
     <canOverlapZones>false</canOverlapZones>
     <graphicData>
       <graphicClass>Graphic_Single</graphicClass>
-      <texPath>Things/Building/PitGate/PitGate</texPath>
-      <drawSize>(8,8)</drawSize>
+      <texPath>Things/Building/VacuumRoom/building_entrance</texPath>
+      <drawSize>(3.65,3.65)</drawSize>
+      <drawOffset>(0,0,0.25)</drawOffset>
     </graphicData>
     <altitudeLayer>FloorEmplacement</altitudeLayer>
     <passability>PassThroughOnly</passability>
@@ -141,17 +142,25 @@
       <claimable>false</claimable>
       <expandHomeArea>false</expandHomeArea>
     </building>
+    <costList>
+      <Steel>750</Steel>
+      <Chemfuel>25</Chemfuel>
+    </costList>
     <comps>
-      <li Class="DMSE.Scorer.CompPropertiesLandFillable">
-        <job>DMS_Landfill</job>
-        <filled>DMSE_Building_Scorer</filled>
+      <li Class="DMSE.CompPropertiesLandFillable">
+        <job>DMSE_Landfill</job>
+        <iconPath>Things/Building/VacuumRoom/building_sealed</iconPath>
+        <filled>DMSE_VacuumRoom_Filled</filled>
       </li>
     </comps>
     <portal>
       <pocketMapGenerator>DMSE_VacuumRoom</pocketMapGenerator>
-      <exitDef>CaveExit</exitDef>
+      <exitDef>DMSE_VacuumRoom_Exit</exitDef>
       <pocketMapSize>32</pocketMapSize>
     </portal>
+    <researchPrerequisites>
+      <li>DMSE_OrbitalDynamics</li>
+    </researchPrerequisites>
     <statBases>
       <Flammability>0</Flammability>
     </statBases>
@@ -159,6 +168,71 @@
       <li>ITab_ContentsMapPortal</li>
     </inspectorTabs>
     <designationCategory>DMS_Category</designationCategory>
+  </ThingDef>
+
+  <ThingDef ParentName="PocketMapExit">
+    <defName>DMSE_VacuumRoom_Exit</defName>
+    <label>room exit</label>
+    <description>a vacuum-sealed outlet maintains room pressure when people enter or exit.</description>
+    <size>(3,3)</size>
+    <thingClass>CaveExit</thingClass>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Building/VacuumRoom/building_exit</texPath>
+      <drawSize>(3.65,3.65)</drawSize>
+      <drawOffset>(0,0,0.25)</drawOffset>
+    </graphicData>
+    <statBases>
+      <Flammability>0</Flammability>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>10</glowRadius>
+        <glowColor>(140,160,184,0)</glowColor>
+      </li>
+      <li Class="CompProperties_Effecter">
+        <effecterDef>UndercaveMapExitLightshafts</effecterDef>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_VacuumRoom_Filled</defName>
+    <label>filled entrance</label>
+    <description>a filled entrance ready for deconstruct and recycle resources.</description>
+    <size>(3,3)</size>
+    <thingClass>Building</thingClass>
+    <drawerType>MapMeshOnly</drawerType>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Building/VacuumRoom/building_sealed</texPath>
+      <drawSize>(3.65,3.65)</drawSize>
+      <drawOffset>(0,0,0.25)</drawOffset>
+    </graphicData>
+    <statBases>
+      <Flammability>0</Flammability>
+    </statBases>
+    <destroyable>true</destroyable>
+    <building>
+      <isEdifice>true</isEdifice>
+      <deconstructible>true</deconstructible>
+      <isTargetable>true</isTargetable>
+      <isInert>true</isInert>
+      <claimable>false</claimable>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <costList>
+      <Steel>750</Steel>
+      <Chemfuel>25</Chemfuel>
+    </costList>
+    <comps>
+      <li Class="DMSE.CompPropertiesLandFillable">
+        <job>DMSE_Landfill</job>
+        <iconPath>Things/Building/VacuumRoom/building_entrance</iconPath>
+        <filled>DMSE_VacuumRoom_Entrance</filled>
+      </li>
+    </comps>
   </ThingDef>
 
   <MapGeneratorDef>
@@ -189,9 +263,9 @@
     <defName>DMSE_VacuumRoom_Prefab</defName>        <!-- rename -->
     <size>(32,32)</size>
     <things>
-      <CaveExit>
+      <DMSE_VacuumRoom_Exit>
         <position>(14, 0, 18)</position>
-      </CaveExit>
+      </DMSE_VacuumRoom_Exit>
       <DMSE_Sealed_Wall>
         <rects>
           <li>(0,0,31,0)</li>
