@@ -3,28 +3,28 @@
   "WorkspaceRootPath": "D:\\Game\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch-Expedition\\.source\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|D:\\Game\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch-Expedition\\.source\\dmse\\skyfallerturret\\patch_makedroppodat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|solutionrelative:dmse\\skyfallerturret\\patch_makedroppodat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|D:\\Game\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch-Expedition\\.source\\dmse\\scorer\\scorerprojectile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|solutionrelative:dmse\\scorer\\scorerprojectile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|d:\\game\\steam\\steamapps\\common\\rimworld\\mods\\dead-man-switch-expedition\\.source\\dmse\\skyfallerturret\\interceptprojectile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|solutionrelative:dmse\\skyfallerturret\\interceptprojectile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|D:\\Game\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch-Expedition\\.source\\dmse\\skyfallerturret\\skyfallerturretcomp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|solutionrelative:dmse\\skyfallerturret\\skyfallerturretcomp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|d:\\game\\steam\\steamapps\\common\\rimworld\\mods\\dead-man-switch-expedition\\.source\\dmse\\skyfallerturret\\alerts_pods.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|D:\\Game\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch-Expedition\\.source\\dmse\\skyfallerturret\\interceptprojectile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|solutionrelative:dmse\\skyfallerturret\\interceptprojectile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|D:\\Game\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch-Expedition\\.source\\dmse\\skyfallerturret\\patch_makedroppodat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|solutionrelative:dmse\\skyfallerturret\\patch_makedroppodat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|d:\\game\\steam\\steamapps\\common\\rimworld\\mods\\dead-man-switch-expedition\\.source\\dmse\\skyfallerturret\\mapcomponent_interceptskyfaller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|solutionrelative:dmse\\skyfallerturret\\mapcomponent_interceptskyfaller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|D:\\Game\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch-Expedition\\.source\\dmse\\skyfallerturret\\alerts_pods.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|solutionrelative:dmse\\skyfallerturret\\alerts_pods.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|D:\\Game\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch-Expedition\\.source\\dmse\\skyfallerturret\\mapcomponent_interceptskyfaller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|solutionrelative:dmse\\skyfallerturret\\mapcomponent_interceptskyfaller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|D:\\Game\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch-Expedition\\.source\\dmse\\scorer\\scorerprojectile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|solutionrelative:dmse\\scorer\\scorerprojectile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|D:\\Game\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch-Expedition\\.source\\dmse\\scorer\\scorerprojectile_worldobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -122,7 +122,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -134,15 +134,67 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "InterceptProjectile.cs",
               "DocumentMoniker": "D:\\Game\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch-Expedition\\.source\\DMSE\\SkyFallerTurret\\InterceptProjectile.cs",
               "RelativeDocumentMoniker": "DMSE\\SkyFallerTurret\\InterceptProjectile.cs",
               "ToolTip": "D:\\Game\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch-Expedition\\.source\\DMSE\\SkyFallerTurret\\InterceptProjectile.cs",
               "RelativeToolTip": "DMSE\\SkyFallerTurret\\InterceptProjectile.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAAFsAAAAzAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-03T15:59:47.521Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "SkyfallerTurretComp.cs",
+              "DocumentMoniker": "D:\\Game\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch-Expedition\\.source\\DMSE\\SkyFallerTurret\\SkyfallerTurretComp.cs",
+              "RelativeDocumentMoniker": "DMSE\\SkyFallerTurret\\SkyfallerTurretComp.cs",
+              "ToolTip": "D:\\Game\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch-Expedition\\.source\\DMSE\\SkyFallerTurret\\SkyfallerTurretComp.cs*",
+              "RelativeToolTip": "DMSE\\SkyFallerTurret\\SkyfallerTurretComp.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwBAAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-01T05:48:49.756Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ScorerProjectile.cs",
+              "DocumentMoniker": "D:\\Game\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch-Expedition\\.source\\DMSE\\Scorer\\ScorerProjectile.cs",
+              "RelativeDocumentMoniker": "DMSE\\Scorer\\ScorerProjectile.cs",
+              "ToolTip": "D:\\Game\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch-Expedition\\.source\\DMSE\\Scorer\\ScorerProjectile.cs",
+              "RelativeToolTip": "DMSE\\Scorer\\ScorerProjectile.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAwwBYAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-24T06:51:55.957Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Patch_MakeDropPodAt.cs",
+              "DocumentMoniker": "D:\\Game\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch-Expedition\\.source\\DMSE\\SkyFallerTurret\\Patch_MakeDropPodAt.cs",
+              "RelativeDocumentMoniker": "DMSE\\SkyFallerTurret\\Patch_MakeDropPodAt.cs",
+              "ToolTip": "D:\\Game\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch-Expedition\\.source\\DMSE\\SkyFallerTurret\\Patch_MakeDropPodAt.cs",
+              "RelativeToolTip": "DMSE\\SkyFallerTurret\\Patch_MakeDropPodAt.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAAQwCoAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-03T13:44:07.113Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "MapComponent_InterceptSkyfaller.cs",
+              "DocumentMoniker": "D:\\Game\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch-Expedition\\.source\\DMSE\\SkyFallerTurret\\MapComponent_InterceptSkyfaller.cs",
+              "RelativeDocumentMoniker": "DMSE\\SkyFallerTurret\\MapComponent_InterceptSkyfaller.cs",
+              "ToolTip": "D:\\Game\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch-Expedition\\.source\\DMSE\\SkyFallerTurret\\MapComponent_InterceptSkyfaller.cs",
+              "RelativeToolTip": "DMSE\\SkyFallerTurret\\MapComponent_InterceptSkyfaller.cs",
+              "ViewState": "AgIAADUAAAAAAAAAAADwv0kAAAA+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-03T06:07:19.166Z",
               "EditorCaption": ""
             },
             {
@@ -153,61 +205,10 @@
               "RelativeDocumentMoniker": "DMSE\\SkyFallerTurret\\Alerts_Pods.cs",
               "ToolTip": "D:\\Game\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch-Expedition\\.source\\DMSE\\SkyFallerTurret\\Alerts_Pods.cs",
               "RelativeToolTip": "DMSE\\SkyFallerTurret\\Alerts_Pods.cs",
-              "ViewState": "AgIAAAQAAAAAAAAAAADwvxUAAAB2AAAAAAAAAA==",
+              "ViewState": "AgIAABwAAAAAAAAAAAAQwCcAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-03T14:26:28.433Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "SkyfallerTurretComp.cs",
-              "DocumentMoniker": "D:\\Game\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch-Expedition\\.source\\DMSE\\SkyFallerTurret\\SkyfallerTurretComp.cs",
-              "RelativeDocumentMoniker": "DMSE\\SkyFallerTurret\\SkyfallerTurretComp.cs",
-              "ToolTip": "D:\\Game\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch-Expedition\\.source\\DMSE\\SkyFallerTurret\\SkyfallerTurretComp.cs",
-              "RelativeToolTip": "DMSE\\SkyFallerTurret\\SkyfallerTurretComp.cs",
-              "ViewState": "AgIAABYAAAAAAAAAAAAUwBkAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-01T05:48:49.756Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "ScorerProjectile.cs",
-              "DocumentMoniker": "D:\\Game\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch-Expedition\\.source\\DMSE\\Scorer\\ScorerProjectile.cs",
-              "RelativeDocumentMoniker": "DMSE\\Scorer\\ScorerProjectile.cs",
-              "ToolTip": "D:\\Game\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch-Expedition\\.source\\DMSE\\Scorer\\ScorerProjectile.cs",
-              "RelativeToolTip": "DMSE\\Scorer\\ScorerProjectile.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABYAAAAhAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-24T06:51:55.957Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Patch_MakeDropPodAt.cs",
-              "DocumentMoniker": "D:\\Game\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch-Expedition\\.source\\DMSE\\SkyFallerTurret\\Patch_MakeDropPodAt.cs",
-              "RelativeDocumentMoniker": "DMSE\\SkyFallerTurret\\Patch_MakeDropPodAt.cs",
-              "ToolTip": "D:\\Game\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch-Expedition\\.source\\DMSE\\SkyFallerTurret\\Patch_MakeDropPodAt.cs*",
-              "RelativeToolTip": "DMSE\\SkyFallerTurret\\Patch_MakeDropPodAt.cs*",
-              "ViewState": "AgIAABwAAAAAAAAAAAAAwDMAAABHAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-03T13:44:07.113Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "MapComponent_InterceptSkyfaller.cs",
-              "DocumentMoniker": "D:\\Game\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch-Expedition\\.source\\DMSE\\SkyFallerTurret\\MapComponent_InterceptSkyfaller.cs",
-              "RelativeDocumentMoniker": "DMSE\\SkyFallerTurret\\MapComponent_InterceptSkyfaller.cs",
-              "ToolTip": "D:\\Game\\Steam\\steamapps\\common\\RimWorld\\Mods\\Dead-Man-Switch-Expedition\\.source\\DMSE\\SkyFallerTurret\\MapComponent_InterceptSkyfaller.cs",
-              "RelativeToolTip": "DMSE\\SkyFallerTurret\\MapComponent_InterceptSkyfaller.cs",
-              "ViewState": "AgIAABcAAAAAAAAAAAAQwCsAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-03T06:07:19.166Z"
             },
             {
               "$type": "Document",

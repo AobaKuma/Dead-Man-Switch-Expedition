@@ -18,10 +18,21 @@ namespace DMSE
             if (Rand.Chance(HitChance))
             {
                 var comp = this.Map.GetComponent<MapComponent_InterceptSkyfaller>();
-                var pod = comp.Pods.Find(p => p.pod == this.faller);
+                PodData pod = null;
+                DroppodData data = null;
+                foreach (var p in comp.Pods)
+                {
+                    foreach (var p2 in p.pods)
+                    {
+                        if (p2.pod == this.faller) 
+                        {
+                            pod = p2;
+                            data = p;
+                        }
+                    }
+                }
                 if (pod != null)
                 {
-                    comp.Pods.Remove(pod);
                     Pawn pawn = null;
                     if (pod.pod.innerContainer.First() is ActiveTransporter transporter &&
                         transporter.Contents.SingleContainedThing  is Pawn pawn2)
@@ -75,6 +86,11 @@ namespace DMSE
                             Log.Message("尸体进入残骸失败");
                         }
                         DropPodUtility.MakeDropPodAt(pod.position, this.Map, info);
+                        data.pods.Remove(pod);
+                        if (!data.pods.Any()) 
+                        {
+                            comp.Pods.Remove(data);
+                        }
                         if (Prefs.DevMode)
                         {
                             Log.Message("生成残骸空投" + pod.position);

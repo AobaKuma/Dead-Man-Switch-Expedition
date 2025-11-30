@@ -11,6 +11,12 @@ namespace DMSE.SkyFallerTurret
         public ThingDef projectile;
         public int cooldown = 600;
         public int countLimit = 3;
+
+        //最后N秒内仍然有未拦截的时候触发
+        public ThingDef projectile_Last;
+        public float lastInterceptTick = 200;
+        public int countLimitForLast = 5;
+        public float interceptChance = 0.5f;
     }
 
     public class SkyfallerTurretComp : ThingComp
@@ -49,12 +55,12 @@ namespace DMSE.SkyFallerTurret
         }
         public override void PostExposeData()
         {
-            base.PostExposeData();
+            base.PostExposeData(); 
             Scribe_Values.Look(ref this.cooldown, "cooldown");
             Scribe_Values.Look(ref this.count, "count");
         }
 
-
+         
         public int cooldown;
         public int count;
     }

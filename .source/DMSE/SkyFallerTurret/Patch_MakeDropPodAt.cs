@@ -2,6 +2,7 @@
 using HarmonyLib;
 using RimWorld;
 using System;
+using System.Collections.Generic;
 using Verse;
 
 namespace DMSE
@@ -32,9 +33,18 @@ namespace DMSE
             if (hostile) 
             {
                 __result.DeSpawn();
+                int time = Find.TickManager.TicksGame
+                    + 2500;
                 var comp = map.GetComponent<MapComponent_InterceptSkyfaller>();
-                comp.Pods.Add(new DroppodData(Find.TickManager.TicksGame
-                    + 600,__result,pos));
+                if (comp.Pods.Find(p => p.tickToSpawn == time) is DroppodData data)
+                {
+                    data.pods.Add(new PodData(__result,pos));
+
+                }
+                else 
+                {
+                    comp.Pods.Add(new DroppodData(time,new List<PodData>() { new PodData(__result, pos) })); 
+                }
                 if (Prefs.DevMode)
                 {
                     Log.Message("空投延迟：" + innerThing.Label);
