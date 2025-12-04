@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Verse;
+using Verse.AI.Group;
 
 namespace DMSE.SkyFallerTurret
 {
@@ -97,8 +98,18 @@ namespace DMSE.SkyFallerTurret
                 {
                     pod.pods.ForEach(p => 
                     {
-                        GenSpawn.Spawn(p.pod, p.position, this.map);
-                    }); 
+                        p.pod.TryDrop(p.pod.InnerListForReading.First(),p.position,p.map,ThingPlaceMode.Direct,
+                            out var p2);
+                        if (pod.lord != null && p2.innerContainer.First() is Pawn pawn 
+                        && !pod.lord.ownedPawns.Contains(pawn)) 
+                        {
+                            pod.lord.AddPawn(pawn);
+                        }
+                    });
+                    pod.signal.ForEach(p =>
+                    { 
+                        Find.SignalManager.SendSignal(new Signal(p, false));
+                    });
                     Pods.RemoveAt(i);
                 }
             }
@@ -130,34 +141,41 @@ namespace DMSE.SkyFallerTurret
         }
         public void ExposeData()
         {
-            Scribe_Values.Look(ref this.tickToSpawn,"tickToSpawn"); 
+            Scribe_Values.Look(ref this.tickToSpawn,"tickToSpawn");
+            Scribe_References.Look(ref this.lord,"lord");
             Scribe_Collections.Look(ref this.pods, "pods",LookMode.Deep);
+            Scribe_Collections.Look(ref this.signal, "signal", LookMode.Value);
         }
 
         public int tickToSpawn;
-        public List<PodData> pods = new List<PodData>(); 
+        public List<PodData> pods = new List<PodData>();
+        public Lord lord;
+        public List<string> signal = new List<string>();
     }
 
-    public class PodData : IExposable
+    public class PodData : IExposable,IThingHolder
     {
         public PodData()
         {
 
         }
-        public PodData(Skyfaller pod, IntVec3 pos)
-        { 
-            this.pod = pod;
+        public PodData(Skyfaller pod, IntVec3 pos,Map map)
+        {
+            this.map = map;
+            this.pod = new ThingOwner<Skyfaller>(this);
+            this.pod.TryAdd(pod);
             this.position = pos;
         }
+        public IThingHolder ParentHolder => this.map;
         public void Intercept(Map map)
         {
             Pawn pawn = null;
-            if (this.pod.innerContainer.First() is ActiveTransporter transporter &&
+            if (this.pod.InnerListForReading.First().innerContainer.First() is ActiveTransporter transporter &&
                 transporter.Contents.SingleContainedThing is Pawn pawn2)
             {
                 pawn = pawn2;
             }
-            if (this.pod.innerContainer.First() is Pawn p)
+            if (this.pod.InnerListForReading.First().innerContainer.First() is Pawn p)
             {
                 pawn = p;
             }
@@ -211,12 +229,24 @@ namespace DMSE.SkyFallerTurret
             }
         }
         public void ExposeData()
-        { 
+        {
+            Scribe_References.Look(ref this.map,"map");
             Scribe_Values.Look(ref this.position, "position");
             Scribe_Deep.Look(ref this.pod, "pod");
         }
-         
-        public Skyfaller pod;
+
+        public void GetChildHolders(List<IThingHolder> outChildren)
+        {
+            ThingOwnerUtility.AppendThingHoldersFromThings(outChildren, this.GetDirectlyHeldThings());
+        }
+
+        public ThingOwner GetDirectlyHeldThings()
+        {
+            return pod;
+        }
+
+        public ThingOwner<Skyfaller> pod;
         public IntVec3 position;
+        public Map map;
     }
 } 

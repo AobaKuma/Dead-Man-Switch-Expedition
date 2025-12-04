@@ -3,7 +3,9 @@ using HarmonyLib;
 using RimWorld;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Verse;
+using Verse.AI.Group;
 
 namespace DMSE
 {
@@ -11,6 +13,7 @@ namespace DMSE
         new Type[] { typeof(ThingDef), typeof(Thing), typeof(IntVec3), typeof(Map) })]
     public class Patch_MakeDropPodAt
     {
+        public static int Delay = 2500;
         [HarmonyPostfix]
         public static void postfix(Skyfaller __result, Thing innerThing, IntVec3 pos, Map map)
         {
@@ -18,32 +21,33 @@ namespace DMSE
             {
                 Log.Message("生成空投中：" + innerThing.Label);
             }
-            bool hostile = false;
+            bool hostile = false; 
             if (innerThing is Pawn pawn && pawn.Faction != Faction.OfPlayer
                 && pawn.Faction?.HostileTo(Faction.OfPlayer) == true) 
             {
-                hostile = true;
+                hostile = true; 
             }
             if (innerThing is ActiveTransporter transporter && transporter.Contents.SingleContainedThing
                 is Pawn pawn2 && pawn2.Faction != Faction.OfPlayer
                 && pawn2.Faction?.HostileTo(Faction.OfPlayer) == true) 
             {
-                hostile = true;
+                hostile = true; 
             }
             if (hostile) 
-            {
+            { 
                 __result.DeSpawn();
                 int time = Find.TickManager.TicksGame
-                    + 2500;
+                    + Delay;
                 var comp = map.GetComponent<MapComponent_InterceptSkyfaller>();
                 if (comp.Pods.Find(p => p.tickToSpawn == time) is DroppodData data)
                 {
-                    data.pods.Add(new PodData(__result,pos));
+                    data.pods.Add(new PodData(__result,pos,map));
 
                 }
                 else 
                 {
-                    comp.Pods.Add(new DroppodData(time,new List<PodData>() { new PodData(__result, pos) })); 
+                    DroppodData d = new DroppodData(time, new List<PodData>() { new PodData(__result, pos, map) });  
+                    comp.Pods.Add(d); 
                 }
                 if (Prefs.DevMode)
                 {

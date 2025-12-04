@@ -24,7 +24,7 @@ namespace DMSE
                 {
                     foreach (var p2 in p.pods)
                     {
-                        if (p2.pod == this.faller) 
+                        if (p2.pod.InnerListForReading.First() == this.faller) 
                         {
                             pod = p2;
                             data = p;
@@ -34,12 +34,12 @@ namespace DMSE
                 if (pod != null)
                 {
                     Pawn pawn = null;
-                    if (pod.pod.innerContainer.First() is ActiveTransporter transporter &&
+                    if (pod.pod.InnerListForReading.First().innerContainer.First() is ActiveTransporter transporter &&
                         transporter.Contents.SingleContainedThing  is Pawn pawn2)
                     {
                         pawn = pawn2;
                     }
-                    if (pod.pod.innerContainer.First() is Pawn p)
+                    if (pod.pod.InnerListForReading.First().innerContainer.First() is Pawn p)
                     {
                         pawn = p;
                     }
