@@ -9,6 +9,8 @@
   <DMSE.Alert.HuntdownThreat.Desc>殖民艦隊的憲兵正在搜尋石碑所散發出的輻射訊號，他們找到你並派出追捕小隊只是時間問題。</DMSE.Alert.HuntdownThreat.Desc>
 
   <DMSE.Alert.HuntdownThreatCritical>追捕正在逼近</DMSE.Alert.HuntdownThreatCritical>
-  <DMSE.Alert.HuntdownThreatCritical.Desc>石碑的位置已被追踪，追捕小隊和可能的空襲將很快到達，請在為時已晚之前轉移。</DMSE.Alert.HuntdownThreatCritical.Desc>
+  <DMSE.Alert.HuntdownThreatCritical.Desc>石碑的位置已被追蹤，追捕小隊和可能的空襲將很快到達，請在為時已晚之前轉移。</DMSE.Alert.HuntdownThreatCritical.Desc>
+
+  <DMSE.Alert.Pods>{0}個空降艙將在{1}後來襲</DMSE.Alert.Pods>
 
 </LanguageData>

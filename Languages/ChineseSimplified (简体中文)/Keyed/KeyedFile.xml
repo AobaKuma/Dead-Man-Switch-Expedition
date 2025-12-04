@@ -11,6 +11,6 @@
   <DMSE.Alert.HuntdownThreatCritical>追捕正在逼近</DMSE.Alert.HuntdownThreatCritical>
   <DMSE.Alert.HuntdownThreatCritical.Desc>石碑的位置已被追踪，追捕小队和可能的空袭将很快到达，请在为时已晚之前转移。</DMSE.Alert.HuntdownThreatCritical.Desc>
 
-  <DMS_Alerts_Pods>{0}个空头仓在{1}后来袭</DMS_Alerts_Pods>
+  <DMSE.Alert.Pods>{0}个空投仓将在{1}后来袭</DMSE.Alert.Pods>
 
 </LanguageData>

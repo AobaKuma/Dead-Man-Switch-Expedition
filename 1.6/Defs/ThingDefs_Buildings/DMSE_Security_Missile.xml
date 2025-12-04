@@ -72,7 +72,7 @@
         <label>cruise missile (leaving)</label>
         <size>(1,1)</size>
         <graphicData>
-            <texPath>Things/Missile/skyFaller_moskit</texPath>
+            <texPath>Things/Missile/Moskit/skyFaller_moskit</texPath>
             <graphicClass>Graphic_Single</graphicClass>
             <drawSize>4</drawSize>
         </graphicData>
@@ -158,7 +158,7 @@
         <defName>DMSE_Incoming_CruiseMissile</defName>
         <label>cruise missile (incoming)</label>
         <graphicData>
-            <texPath>Things/Missile/skyFaller_moskit_incoming</texPath>
+            <texPath>Things/Missile/Moskit/skyFaller_moskit_incoming</texPath>
             <graphicClass>Graphic_Single</graphicClass>
             <drawSize>4</drawSize>
         </graphicData>

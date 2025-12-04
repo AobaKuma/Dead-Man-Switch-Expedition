@@ -11,4 +11,5 @@
   <DMSE.Alert.HuntdownThreatCritical>Huntdown approaching</DMSE.Alert.HuntdownThreatCritical>
   <DMSE.Alert.HuntdownThreatCritical.Desc>the position of Stele has been tracked down, hunting squad and possible air strike will arrive in no time, transfer before it's too late.</DMSE.Alert.HuntdownThreatCritical.Desc>
 
+  <DMSE.Alert.Pods>{0} drop pods will breach in {1}</DMSE.Alert.Pods>
 </LanguageData>

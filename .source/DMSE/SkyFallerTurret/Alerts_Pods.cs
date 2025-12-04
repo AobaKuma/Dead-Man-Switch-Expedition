@@ -20,7 +20,7 @@ namespace DMSE
                 if (!comp.Pods.NullOrEmpty())
                 {
                     var pod = comp.Pods.First();
-                    return "DMS_Alerts_Pods".Translate(pod.pods.Count, (pod.tickToSpawn - Find.TickManager.TicksGame).ToStringTicksToPeriod());
+                    return "DMSE.Alert.Pods".Translate(pod.pods.Count, (pod.tickToSpawn - Find.TickManager.TicksGame).ToStringTicksToPeriod());
                 }
             }
             return base.GetLabel();

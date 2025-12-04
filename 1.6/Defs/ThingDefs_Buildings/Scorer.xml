@@ -41,7 +41,7 @@
         <tickerType>Normal</tickerType>
         <comps>
             <li Class="DMSE.SkyfallerTurretCompProperties">
-                <projectile>DMS_Turret_MiniTurret_Projectile</projectile>
+                <projectile>DMSE_InterceptProjectile</projectile>
                 <projectile_Last>Bullet_Autopistol</projectile_Last>
             </li> 
             <li Class="CompProperties_Explosive">
@@ -116,13 +116,13 @@
 
 
     <ThingDef ParentName="SkyfallerBase">
-        <defName>DMS_Turret_MiniTurret_Projectile</defName>
-        <label>noctolith (incoming)</label>
-        <size>(2,2)</size>
+        <defName>DMSE_InterceptProjectile</defName>
+        <label>intercepting projectile</label>
+        <size>(1,1)</size>
         <graphicData>
-            <texPath>Projectile</texPath>
+            <texPath>Things/Missile/Moskit/skyFaller_moskit</texPath>
             <graphicClass>Graphic_Single</graphicClass>
-            <drawSize>(4,4)</drawSize>
+            <drawSize>4</drawSize>
         </graphicData>
         <thingClass>DMSE.InterceptProjectile</thingClass>
         <skyfaller>
