@@ -14,11 +14,14 @@ namespace DMSE
         public override string GetLabel()
         {
             Map map = Find.CurrentMap;
-            if (map != null && map.GetComponent<MapComponent_InterceptSkyfaller>().Pods is 
-                var list && list.Count is 
-                int count && list.First().tickToSpawn is int time)
+            if (map != null)
             {
-                return "DMS_Alerts_Pods".Translate(count,(time - Find.TickManager.TicksGame).ToStringTicksToPeriod());
+                MapComponent_InterceptSkyfaller comp = map.GetComponent<MapComponent_InterceptSkyfaller>();
+                if (!comp.Pods.NullOrEmpty())
+                {
+                    var pod = comp.Pods.First();
+                    return "DMS_Alerts_Pods".Translate(pod.pods.Count, (pod.tickToSpawn - Find.TickManager.TicksGame).ToStringTicksToPeriod());
+                }
             }
             return base.GetLabel();
         }
@@ -36,9 +39,9 @@ namespace DMSE
             base.OnClick();
             Map map = Find.CurrentMap;
             if (map != null && map.GetComponent<MapComponent_InterceptSkyfaller>().Pods is var list
-                && list.Any())
+                && list.Any() && list.First().pods.Any())
             {
-                CameraJumper.TryJump(list.First().position,map);
+                CameraJumper.TryJump(list.First().pods.First().position,map);
             }
         }
     }

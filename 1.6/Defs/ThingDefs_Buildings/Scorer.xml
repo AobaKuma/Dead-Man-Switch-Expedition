@@ -42,7 +42,8 @@
         <comps>
             <li Class="DMSE.SkyfallerTurretCompProperties">
                 <projectile>DMS_Turret_MiniTurret_Projectile</projectile>
-            </li>
+                <projectile_Last>Bullet_Autopistol</projectile_Last>
+            </li> 
             <li Class="CompProperties_Explosive">
                 <wickTicks>240</wickTicks>
                 <explosiveRadius>3.9</explosiveRadius>

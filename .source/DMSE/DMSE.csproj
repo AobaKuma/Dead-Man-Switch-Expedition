@@ -59,6 +59,7 @@
     <Compile Include="SkyFallerTurret\Alerts_Pods.cs" />
     <Compile Include="SkyFallerTurret\Patch_MakeDropPodAt.cs" />
     <Compile Include="SkyFallerTurret\InterceptProjectile.cs" />
+    <Compile Include="SkyFallerTurret\Patch_QuestPart_Bossgroup.cs" />
     <Compile Include="SkyFallerTurret\SkyfallerTurretComp.cs" />
     <Compile Include="ThingComp_Ship.cs" />
     <Compile Include="WorldDrawLayer_SpaceTiles.cs" />
