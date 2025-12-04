@@ -14,16 +14,10 @@ namespace DMSE
     {
         [HarmonyPostfix]
         public static void postfix(QuestPart_Bossgroup __instance, Lord __result)
-        {
-            Log.Message(__result);
-            foreach (var item in __instance.bosses)
-            {
-                Log.Message(item.Label);
-            }
+        { 
             if (__instance.Map is Map map && map.GetComponent<MapComponent_InterceptSkyfaller>() is MapComponent_InterceptSkyfaller 
                 comp && comp.Pods.Find(p => p.pods.Exists(p2 => IsOk(p2.pod,__instance.bosses))) is DroppodData data) 
-            {
-                Log.Message(__result);
+            { 
                 data.lord = __result;
             }
         }

@@ -68,7 +68,7 @@ namespace DMSE.SkyFallerTurret
                 int time = pod.tickToSpawn - Find.TickManager.TicksGame;
                 foreach (var c in this.turrets)
                 { 
-                    if (time <= c.Props.lastInterceptTick && c.parent is Building_TurretGun turret
+                    if (time <= c.Props.lastInterceptTick && c.cooldownLast <= 0 && c.parent is Building_TurretGun turret
                         && BurstCooldownTicksLeft.GetValue(turret) is int cooldown && cooldown <= 0) 
                     { 
                         ResetCurrentTarget.Invoke(turret, null);
@@ -81,6 +81,10 @@ namespace DMSE.SkyFallerTurret
                             pro.Launch(c.parent, target, target,ProjectileHitFlags.All);
                             CurrentTargetInt.SetValue(turret,target);
                             count--;
+                            if (count <= 0) 
+                            {
+                                break;
+                            }
                             if (Rand.Chance(c.Props.interceptChance))
                             { 
                                 p.Intercept(this.map);
@@ -92,6 +96,7 @@ namespace DMSE.SkyFallerTurret
                             }
                         }
                         BurstCooldownTicksLeft.SetValue(turret,turret.AttackVerb.verbProps.defaultCooldownTime.SecondsToTicks());
+                        c.cooldownLast = time;
                     }
                 }
                 if (Find.TickManager.TicksGame >= pod.tickToSpawn)
