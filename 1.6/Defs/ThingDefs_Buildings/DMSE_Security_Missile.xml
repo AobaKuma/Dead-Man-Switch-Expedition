@@ -9,8 +9,9 @@
             <texPath>Things/Building/MissileLauncher/building</texPath>
             <graphicClass>Graphic_Multi</graphicClass>
             <drawSize>(2,6)</drawSize>
-            <drawOffsetEast>(0,0,0.35)</drawOffsetEast>
-            <drawOffsetWest>(0,0,0.35)</drawOffsetWest>
+            <drawOffset>(0,0.00875,0)</drawOffset>
+            <drawOffsetEast>(0,0.00875,0.35)</drawOffsetEast>
+            <drawOffsetWest>(0,0.00875,0.35)</drawOffsetWest>
         </graphicData>
         <rotatable>true</rotatable>
         <altitudeLayer>Building</altitudeLayer>

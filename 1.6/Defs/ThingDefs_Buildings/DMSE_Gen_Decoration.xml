@@ -26,9 +26,9 @@
       <texPath>Things/Building/StructuralFrame/Section/building</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
       <drawSize>(2,3)</drawSize>
-      <drawOffset>(0,-0.002,0)</drawOffset>
-      <drawOffsetNorth>(0,-0.004,0)</drawOffsetNorth>
-      <drawOffsetSouth>(0,-0.004,0)</drawOffsetSouth>
+      <drawOffset>(0,-0.002,-0.1)</drawOffset>
+      <drawOffsetNorth>(0,-0.004,-0.1)</drawOffsetNorth>
+      <drawOffsetSouth>(0,-0.004,-0.1)</drawOffsetSouth>
     </graphicData>
     <statBases>
       <MaxHitPoints>650</MaxHitPoints>
@@ -44,9 +44,9 @@
             <texPath>Things/Building/StructuralFrame/Section/building_top</texPath>
             <graphicClass>Graphic_Multi</graphicClass>
             <drawSize>(2,3)</drawSize>
-            <drawOffset>(0,0.002,0)</drawOffset>
-            <drawOffsetNorth>(0,0.006,0)</drawOffsetNorth>
-            <drawOffsetSouth>(0,0.006,0)</drawOffsetSouth>
+            <drawOffset>(0,0.002,-0.1)</drawOffset>
+            <drawOffsetNorth>(0,0.006,-0.1)</drawOffsetNorth>
+            <drawOffsetSouth>(0,0.006,-0.1)</drawOffsetSouth>
           </li>
         </extraGraphic>
       </li>
@@ -59,7 +59,7 @@
       <texPath>Things/Building/StructuralFrame/End/building</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
       <drawSize>(2,2)</drawSize>
-      <drawOffset>(0,-0.004,0)</drawOffset>
+      <drawOffset>(0,-0.004,-0.1)</drawOffset>
     </graphicData>
     <comps>
       <li Class="DMSE.CompProperties_BuildingExtraRenderer">
@@ -68,7 +68,7 @@
             <texPath>Things/Building/StructuralFrame/End/building_top</texPath>
             <graphicClass>Graphic_Multi</graphicClass>
             <drawSize>(2,2)</drawSize>
-            <drawOffset>(0,0.004,0)</drawOffset>
+            <drawOffset>(0,0.004,-0.1)</drawOffset>
           </li>
         </extraGraphic>
       </li>
@@ -81,7 +81,7 @@
       <texPath>Things/Building/StructuralFrame/Center/building</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(2,2)</drawSize>
-      <drawOffset>(0,-0.001,0)</drawOffset>
+      <drawOffset>(0,-0.002,-0.1)</drawOffset>
     </graphicData>
     <rotatable>false</rotatable>
     <comps>
@@ -91,7 +91,7 @@
             <texPath>Things/Building/StructuralFrame/Center/building_top</texPath>
             <graphicClass>Graphic_Single</graphicClass>
             <drawSize>(2,2)</drawSize>
-            <drawOffset>(0,0.002,0)</drawOffset>
+            <drawOffset>(0,0.002,-0.1)</drawOffset>
           </li>
         </extraGraphic>
       </li>
