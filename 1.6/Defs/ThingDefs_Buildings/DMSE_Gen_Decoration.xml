@@ -1,6 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
- 
+
+  <ThingDef ParentName="DMSE_BaseDecoration" Name="DMSE_BaseStructuralFrame" Abstract="true">
+    <label>structural frame</label>
+    <description>No description....yet.</description>
+    <rotatable>true</rotatable>
+    <altitudeLayer>Building</altitudeLayer>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.5</staticSunShadowHeight>
+    <fillPercent>0.5</fillPercent>
+    <statBases>
+      <MaxHitPoints>325</MaxHitPoints>
+      <WorkToBuild>40000</WorkToBuild>
+      <Flammability>0</Flammability>
+    </statBases>
+    <size>(1,1)</size>
+    <costList>
+      <Steel>4</Steel>
+    </costList>
+  </ThingDef>
+
+  <ThingDef ParentName="DMSE_BaseStructuralFrame">
+    <defName>DMSE_StructuralFrame_Section</defName>
+    <graphicData>
+      <texPath>Things/Building/StructuralFrame/Section/building</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,3)</drawSize>
+      <drawOffset>(0,-0.002,0)</drawOffset>
+      <drawOffsetNorth>(0,-0.004,0)</drawOffsetNorth>
+      <drawOffsetSouth>(0,-0.004,0)</drawOffsetSouth>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>650</MaxHitPoints>
+    </statBases>
+    <size>(1,2)</size>
+    <costList>
+      <Steel>8</Steel>
+    </costList>
+    <comps>
+      <li Class="DMSE.CompProperties_BuildingExtraRenderer">
+        <extraGraphic>
+          <li>
+            <texPath>Things/Building/StructuralFrame/Section/building_top</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>(2,3)</drawSize>
+            <drawOffset>(0,0.002,0)</drawOffset>
+            <drawOffsetNorth>(0,0.006,0)</drawOffsetNorth>
+            <drawOffsetSouth>(0,0.006,0)</drawOffsetSouth>
+          </li>
+        </extraGraphic>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="DMSE_BaseStructuralFrame">
+    <defName>DMSE_StructuralFrame_End</defName>
+    <graphicData>
+      <texPath>Things/Building/StructuralFrame/End/building</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,2)</drawSize>
+      <drawOffset>(0,-0.004,0)</drawOffset>
+    </graphicData>
+    <comps>
+      <li Class="DMSE.CompProperties_BuildingExtraRenderer">
+        <extraGraphic>
+          <li>
+            <texPath>Things/Building/StructuralFrame/End/building_top</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>(2,2)</drawSize>
+            <drawOffset>(0,0.004,0)</drawOffset>
+          </li>
+        </extraGraphic>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="DMSE_BaseStructuralFrame">
+    <defName>DMSE_StructuralFrame_Center</defName>
+    <graphicData>
+      <texPath>Things/Building/StructuralFrame/Center/building</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,2)</drawSize>
+      <drawOffset>(0,-0.001,0)</drawOffset>
+    </graphicData>
+    <rotatable>false</rotatable>
+    <comps>
+      <li Class="DMSE.CompProperties_BuildingExtraRenderer">
+        <extraGraphic>
+          <li>
+            <texPath>Things/Building/StructuralFrame/Center/building_top</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>(2,2)</drawSize>
+            <drawOffset>(0,0.002,0)</drawOffset>
+          </li>
+        </extraGraphic>
+      </li>
+    </comps>
+  </ThingDef>
 
   <ThingDef ParentName="DMSE_BaseDecoration">
     <defName>DMSE_lathedeco</defName>

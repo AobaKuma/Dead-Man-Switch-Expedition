@@ -38,6 +38,7 @@
     <Compile Include="ScenPart_Huntdown.cs" />
     <Compile Include="Scorer\Alerts_Exist.cs" />
     <Compile Include="Scorer\CompPlaySoundOnSpawn.cs" />
+    <Compile Include="CompBuildingExtraRenderer.cs" />
     <Compile Include="SkyFallerTurret\MapComponent_InterceptSkyfaller.cs" />
     <Compile Include="VacuumRoom\CompLandFillable.cs" />
     <Compile Include="Scorer\CompScorer.cs" />
