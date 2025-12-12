@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <DesignationCategoryDef>
+        <defName>DMSE_Category</defName>
+        <label>DMSE Decoration</label>
+        <order>14</order>
+        <specialDesignatorClasses>
+            <li>Designator_Cancel</li>
+            <li>Designator_Deconstruct</li>
+        </specialDesignatorClasses>
+        <preferredColumn>1</preferredColumn>
+    </DesignationCategoryDef>
+
+    <!-- 玩家不可建造也不可拆除的建築(但可以摧毀) -->
+    <ThingDef ParentName="BuildingBase" Name="DMSE_BaseBuilding" Abstract="true">
+        <canOverlapZones>false</canOverlapZones>
+        <designationCategory>DMSE_Category</designationCategory>
+        <building>
+            <deconstructible>false</deconstructible>
+            <alwaysDeconstructible>false</alwaysDeconstructible>
+            <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+        </building>
+    </ThingDef>
+
+    <ThingDef ParentName="DMSE_BaseBuilding" Name="DMSE_BaseDecoration" Abstract="true">
+        <graphicData>
+            <graphicClass>Graphic_Single</graphicClass>
+            <damageData>
+                <cornerTL>Damage/Corner</cornerTL>
+                <cornerTR>Damage/Corner</cornerTR>
+                <cornerBL>Damage/Corner</cornerBL>
+                <cornerBR>Damage/Corner</cornerBR>
+            </damageData>
+        </graphicData>
+        <pathCost>42</pathCost>
+        <passability>PassThroughOnly</passability>
+        <tickerType>Never</tickerType>
+    </ThingDef>
+</Defs>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+ 
+
+  <ThingDef ParentName="DMSE_BaseDecoration">
+    <defName>DMSE_lathedeco</defName>
+    <label>lathe deco</label>
+    <description>No description....yet.</description>
+    <graphicData>
+      <texPath>Things/Building/Lathe/latheDeco</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(7,4)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.9</staticSunShadowHeight>
+    <fillPercent>0.9</fillPercent>
+    <statBases>
+      <MaxHitPoints>450</MaxHitPoints>
+      <WorkToBuild>40000</WorkToBuild>
+      <Mass>300</Mass>
+      <Flammability>0.25</Flammability>
+    </statBases>
+    <size>(5,2)</size>
+    <costList>
+      <Steel>200</Steel>
+    </costList>
+  </ThingDef>
+</Defs>
