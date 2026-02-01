@@ -54,16 +54,23 @@ namespace DMSE
                 this.cooldown = Find.TickManager.TicksGame + this.Props.cooldown;
                 this.count++;
             }
+            if (this.cooldownLast > 0) 
+            {
+                this.cooldownLast--;
+            }
         }
         public override void PostExposeData()
         {
             base.PostExposeData(); 
             Scribe_Values.Look(ref this.cooldown, "cooldown");
             Scribe_Values.Look(ref this.count, "count");
+            Scribe_Values.Look(ref this.cooldownLast, "cooldownLast");
         }
 
          
         public int cooldown;
         public int count;
+
+        public int cooldownLast;
     }
 }
