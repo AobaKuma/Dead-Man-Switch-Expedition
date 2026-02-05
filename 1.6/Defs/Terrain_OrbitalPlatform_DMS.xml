@@ -74,7 +74,7 @@
       <li>Heavy</li>
       <li>Walkable</li>
       <li>VoidSpace</li>
-      <li>Platform</li>
+      <li MayRequire="rashomcree.odyssey.orbitalplatforms">Platform</li>
     </affordances>
     <terrainAffordanceNeeded>VoidSpace</terrainAffordanceNeeded>
   </TerrainDef>
