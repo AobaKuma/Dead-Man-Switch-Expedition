@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- ================================ Missile Guidance Defs ================================ -->
+
+  <MissileGuidanceDef>
+    <defName>MissileGuidance_Ballistic</defName>
+    <label>Ballistic Guidance</label>
+    <description>Simple ballistic trajectory following gravity. Low cost, no active guidance after launch.</description>
+    <guidanceMethod>Ballistic</guidanceMethod>
+    <maxTurnRate>5</maxTurnRate>
+    <accuracy>0.85</accuracy>
+    <radarRange>0</radarRange>
+    <maxSpeed>45</maxSpeed>
+    <minSpeed>5</minSpeed>
+    <accelerationRate>1.5</accelerationRate>
+    <gravityFactor>1.0</gravityFactor>
+    <airResistance>0.15</airResistance>
+    <weight>25</weight>
+    <cost>50</cost>
+    <powerConsumption>1</powerConsumption>
+  </MissileGuidanceDef>
+
+  <MissileGuidanceDef>
+    <defName>MissileGuidance_Proportional</defName>
+    <label>Proportional Navigation Guidance</label>
+    <description>Advanced guidance system using proportional navigation. Tracks moving targets effectively.</description>
+    <guidanceMethod>Proportional</guidanceMethod>
+    <maxTurnRate>15</maxTurnRate>
+    <accuracy>0.92</accuracy>
+    <radarRange>80</radarRange>
+    <maxSpeed>50</maxSpeed>
+    <minSpeed>8</minSpeed>
+    <accelerationRate>2.0</accelerationRate>
+    <gravityFactor>0.8</gravityFactor>
+    <airResistance>0.1</airResistance>
+    <weight>35</weight>
+    <cost>150</cost>
+    <powerConsumption>3</powerConsumption>
+  </MissileGuidanceDef>
+
+  <MissileGuidanceDef>
+    <defName>MissileGuidance_Radar</defName>
+    <label>Active Radar Guidance</label>
+    <description>Sophisticated radar-guided system with excellent accuracy. Requires active radar tracking.</description>
+    <guidanceMethod>Radar</guidanceMethod>
+    <maxTurnRate>20</maxTurnRate>
+    <accuracy>0.98</accuracy>
+    <radarRange>150</radarRange>
+    <maxSpeed>55</maxSpeed>
+    <minSpeed>10</minSpeed>
+    <accelerationRate>2.5</accelerationRate>
+    <gravityFactor>0.5</gravityFactor>
+    <airResistance>0.08</airResistance>
+    <weight>45</weight>
+    <cost>300</cost>
+    <powerConsumption>5</powerConsumption>
+  </MissileGuidanceDef>
+
+  <MissileGuidanceDef>
+    <defName>MissileGuidance_Inertial</defName>
+    <label>Inertial Guidance</label>
+    <description>Self-contained guidance system. No external tracking needed but less accurate against moving targets.</description>
+    <guidanceMethod>Inertial</guidanceMethod>
+    <maxTurnRate>8</maxTurnRate>
+    <accuracy>0.88</accuracy>
+    <radarRange>0</radarRange>
+    <maxSpeed>48</maxSpeed>
+    <minSpeed>6</minSpeed>
+    <accelerationRate>1.8</accelerationRate>
+    <gravityFactor>0.9</gravityFactor>
+    <airResistance>0.12</airResistance>
+    <weight>30</weight>
+    <cost>120</cost>
+    <powerConsumption>2</powerConsumption>
+  </MissileGuidanceDef>
+
+  <!-- ================================ Missile Warhead Defs ================================ -->
+
+  <MissileWarheadDef>
+    <defName>MissileWarhead_HighExplosive</defName>
+    <label>High Explosive Warhead</label>
+    <description>Standard high explosive warhead. Causes severe blast damage in a wide area.</description>
+    <warheadType>Explosive</warheadType>
+    <blastRadius>20</blastRadius>
+    <blastDamage>120</blastDamage>
+    <damageType>Bomb</damageType>
+    <fireExplosionChance>0.1</fireExplosionChance>
+    <weight>50</weight>
+    <cost>80</cost>
+  </MissileWarheadDef>
+
+  <MissileWarheadDef>
+    <defName>MissileWarhead_Incendiary</defName>
+    <label>Incendiary Warhead</label>
+    <description>Spreads intense fire across a large area. Excellent against buildings and vegetation.</description>
+    <warheadType>Incendiary</warheadType>
+    <blastRadius>25</blastRadius>
+    <blastDamage>80</blastDamage>
+    <damageType>Flame</damageType>
+    <fireExplosionChance>0.6</fireExplosionChance>
+    <weight>45</weight>
+    <cost>70</cost>
+  </MissileWarheadDef>
+
+  <MissileWarheadDef>
+    <defName>MissileWarhead_EMP</defName>
+    <label>Electromagnetic Pulse Warhead</label>
+    <description>Disables electronics and turrets without causing physical damage. Effective against mechanoids.</description>
+    <warheadType>EMP</warheadType>
+    <blastRadius>30</blastRadius>
+    <blastDamage>60</blastDamage>
+    <damageType>EMP</damageType>
+    <empDisableChance>0.8</empDisableChance>
+    <empDisableDuration>5000</empDisableDuration>
+    <weight>40</weight>
+    <cost>150</cost>
+  </MissileWarheadDef>
+
+  <MissileWarheadDef>
+    <defName>MissileWarhead_Fragmentation</defName>
+    <label>Fragmentation Warhead</label>
+    <description>Explodes into numerous fragments. Excellent against personnel and lightly armored targets.</description>
+    <warheadType>Fragmentation</warheadType>
+    <blastRadius>18</blastRadius>
+    <blastDamage>90</blastDamage>
+    <damageType>Bomb</damageType>
+    <fragmentCount>20</fragmentCount>
+    <fragmentDamage>20</fragmentDamage>
+    <weight>48</weight>
+    <cost>100</cost>
+  </MissileWarheadDef>
+
+</Defs>

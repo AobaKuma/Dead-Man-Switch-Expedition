@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using Verse;
 
 namespace DMSE
@@ -19,11 +20,45 @@ namespace DMSE
         public float lastInterceptTick = 200;
         public int countLimitForLast = 5;
         public float interceptChance = 0.5f;
+        
+        // Guidance law parameters
+        public float guidanceVelocity = 20f; // 导弹速度 (Projectile velocity)
+        public float effectiveCrossSection = 10f; // 有效面积系数 (Effective cross section coefficient)
+        public float interceptionThreshold = 0.5f; // 拦截阈值 (Interception threshold)
     }
 
     public class SkyfallerTurretComp : ThingComp
     {
         public SkyfallerTurretCompProperties Props => (SkyfallerTurretCompProperties)this.props;
+        
+        /// <summary>
+        /// Calculate guidance-based fire window using radar calculations
+        /// </summary>
+        public float CalculateFireWindow(float remainingTime)
+        {
+            // Calculate projectile arrival time
+            float arrivalTime = RadarUtility.CalculateArrivalTime(
+                Props.effectiveCrossSection * Props.guidanceVelocity,
+                0,
+                Props.guidanceVelocity);
+
+            // Calculate interception window
+            return RadarUtility.CalculateInterceptionWindow(
+                Props.effectiveCrossSection * Props.guidanceVelocity,
+                Props.guidanceVelocity,
+                remainingTime);
+        }
+
+        /// <summary>
+        /// Calculate radar coverage contribution for this turret
+        /// </summary>
+        public float CalculateCoverageContribution(float distance)
+        {
+            float h = Props.effectiveCrossSection;
+            float w = Mathf.Max(0, h - distance);
+            return RadarUtility.CalculateRadarCrossSection(h, w);
+        }
+
         public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
         {
             base.PostDeSpawn(map, mode);

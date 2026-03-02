@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using UnityEngine;
 using Verse;
 using Verse.AI.Group;
 
@@ -59,6 +60,54 @@ namespace DMSE
                 return this.resetCurrentTarget;
             }
         }
+
+        /// <summary>
+        /// Calculate the critical interception time for a pod using radar guidance law
+        /// </summary>
+        private float CalculateCriticalInterceptionTime(DroppodData pod)
+        {
+            if (turrets.Count == 0)
+                return float.MaxValue;
+
+            List<float> radarCoverage = new List<float>();
+            List<float> distances = new List<float>();
+
+            foreach (var turret in turrets)
+            {
+                if (turret?.parent == null) continue;
+
+                // Radar coverage strength (使用建筑的生命值百分比作为强度)
+                radarCoverage.Add(turret.parent.HitPoints / (float)turret.parent.MaxHitPoints);
+                
+                // Distance from turret to pod - use first pod's position
+                if (pod.pods.Count > 0)
+                {
+                    distances.Add(turret.parent.Position.DistanceTo(pod.pods[0].position));
+                }
+                else
+                {
+                    distances.Add(0);
+                }
+            }
+
+            if (radarCoverage.Count == 0)
+                return float.MaxValue;
+
+            // Use radar utility to calculate critical time
+            // h = effective cross section coefficient (based on pod properties)
+            // v = projectile velocity (estimate based on props)
+            float h = 10f; // Default effective area coefficient
+            float velocity = 20f; // Default projectile velocity
+            float vht = 0.5f; // Interception threshold
+
+            return RadarUtility.CalculateCriticalInterceptionTime(
+                radarCoverage.ToArray(),
+                distances.ToArray(),
+                velocity,
+                h,
+                vht);
+        }
+
         public override void MapComponentTick()
         {
             base.MapComponentTick();
@@ -66,8 +115,13 @@ namespace DMSE
             {
                 var pod = Pods[i];
                 int time = pod.tickToSpawn - Find.TickManager.TicksGame;
+                
+                // Calculate critical interception time for this pod
+                float criticalTime = CalculateCriticalInterceptionTime(pod);
+                
                 foreach (var c in this.turrets)
                 { 
+                    // Check if we're within the interception window
                     if (time <= c.Props.lastInterceptTick && c.cooldownLast <= 0 && c.parent is Building_TurretGun turret
                         && BurstCooldownTicksLeft.GetValue(turret) is int cooldown && cooldown <= 0) 
                     { 

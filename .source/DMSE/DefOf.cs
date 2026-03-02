@@ -16,5 +16,16 @@ namespace DMSE
         public static ThingDef DMSE_NuclearThruster;
         public static WorldObjectDef Ship;
         public static GravshipComponentTypeDef AAA;
+        
+        // Missile guidance defs
+        public static MissileGuidanceDef MissileGuidance_Ballistic;
+        public static MissileGuidanceDef MissileGuidance_Radar;
+        public static MissileGuidanceDef MissileGuidance_Proportional;
+        
+        // Warhead defs
+        public static MissileWarheadDef MissileWarhead_HighExplosive;
+        public static MissileWarheadDef MissileWarhead_Incendiary;
+        public static MissileWarheadDef MissileWarhead_EMP;
+        public static MissileWarheadDef MissileWarhead_Fragmentation;
     }
 }

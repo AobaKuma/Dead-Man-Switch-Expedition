@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- ================================ EXAMPLE: Missile Launcher Building ================================ -->
+  
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_MissileLauncher_Example</defName>
+    <label>Example Missile Launcher</label>
+    <description>An advanced launcher capable of firing guided missiles with various warhead types. Can be loaded with different guidance systems and warheads for tactical flexibility.</description>
+    <graphicData>
+      <texPath>Things/Building/Misc/CargoLandingBeacon</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>2,2</drawSize>
+    </graphicData>
+    <size>(2,2)</size>
+    <building>
+      <allowAutoroof>false</allowAutoroof>
+      <allowAutofoundation>false</allowAutofoundation>
+      <fullyEnclosedRoom>false</fullyEnclosedRoom>
+    </building>
+    <statBases>
+      <MaxHitPoints>500</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>-5</Beauty>
+      <Mass>100</Mass>
+    </statBases>
+    <selectable>true</selectable>
+    <passability>PassThroughOnly</passability>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    
+    <costList>
+      <Steel>200</Steel>
+      <Plasteel>50</Plasteel>
+      <Advanced>10</Advanced>
+    </costList>
+    
+    <designationCategory>Security</designationCategory>
+    <researchPrerequisites>
+      <li>MissileTech</li>
+    </researchPrerequisites>
+    
+    <comps>
+      <!-- Power requirement -->
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <powerConsumption>300</powerConsumption>
+        <transmitsPower>false</transmitsPower>
+      </li>
+      
+      <!-- Fuel requirement -->
+      <li Class="CompProperties_Refuelable">
+        <compClass>CompRefuelable</compClass>
+        <fuelLabel>missile fuel</fuelLabel>
+        <fuelGizmoLabel>missile fuel</fuelGizmoLabel>
+        <outOfFuelMessage>Needs missile fuel</outOfFuelMessage>
+        <showAllowAutoRefuel>true</showAllowAutoRefuel>
+        <fuelFilter>
+          <thingDefs>
+            <li>MissileFuel</li>
+          </thingDefs>
+        </fuelFilter>
+        <fuelCapacity>100</fuelCapacity>
+        <initialFuelPercent>0</initialFuelPercent>
+        <autoRefuelPercent>0.75</autoRefuelPercent>
+        <showFuelGizmo>true</showFuelGizmo>
+        <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+        <fuelMultiplier>1</fuelMultiplier>
+        <amountToRefuel>10</amountToRefuel>
+      </li>
+      
+      <!-- Missile Loader Component -->
+      <li Class="DMSE.CompProperties_MissileLoader">
+        <compClass>DMSE.CompMissileLoader</compClass>
+        <maxMissiles>4</maxMissiles>
+        <maxAmmo>100</maxAmmo>
+        <ticksToLoadMissile>1200</ticksToLoadMissile>
+        <ticksToLoadWarhead>600</ticksToLoadWarhead>
+        <ticksToLoadFuel>2400</ticksToLoadFuel>
+        <loaderLabel>Missile Loader</loaderLabel>
+        <showLoaderUI>true</showLoaderUI>
+        <requiresPowerToLoad>true</requiresPowerToLoad>
+        
+        <!-- Available guidance systems for this launcher -->
+        <availableGuidances>
+          <li>MissileGuidance_Ballistic</li>
+          <li>MissileGuidance_Proportional</li>
+          <li>MissileGuidance_Radar</li>
+          <li>MissileGuidance_Inertial</li>
+        </availableGuidances>
+        
+        <!-- Available warheads for this launcher -->
+        <availableWarheads>
+          <li>MissileWarhead_HighExplosive</li>
+          <li>MissileWarhead_Incendiary</li>
+          <li>MissileWarhead_EMP</li>
+          <li>MissileWarhead_Fragmentation</li>
+        </availableWarheads>
+      </li>
+      
+      <!-- Optional: Gizmo renderer for building -->
+      <li Class="CompProperties_Glower">
+        <glowRadius>2</glowRadius>
+        <glowColor>(255, 255, 255)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ================================ Launcher Variants ================================ -->
+  
+  <!-- Basic launcher - only ballistic missiles -->
+  <ThingDef ParentName="DMSE_MissileLauncher_Example">
+    <defName>DMSE_MissileLauncher_Basic</defName>
+    <label>Basic Missile Launcher</label>
+    <description>Simple launcher for unguided ballistic missiles. Low cost but requires manual aiming calculations.</description>
+    
+    <costList>
+      <Steel>100</Steel>
+      <Plasteel>20</Plasteel>
+    </costList>
+    
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <powerConsumption>150</powerConsumption>
+        <transmitsPower>false</transmitsPower>
+      </li>
+      
+      <li Class="CompProperties_Refuelable">
+        <compClass>CompRefuelable</compClass>
+        <fuelLabel>missile fuel</fuelLabel>
+        <fuelCapacity>50</fuelCapacity>
+        <initialFuelPercent>0</initialFuelPercent>
+      </li>
+      
+      <li Class="DMSE.CompProperties_MissileLoader">
+        <compClass>DMSE.CompMissileLoader</compClass>
+        <maxMissiles>2</maxMissiles>
+        <ticksToLoadMissile>1800</ticksToLoadMissile>
+        <ticksToLoadWarhead>800</ticksToLoadWarhead>
+        <ticksToLoadFuel>3000</ticksToLoadFuel>
+        <requiresPowerToLoad>true</requiresPowerToLoad>
+        
+        <availableGuidances>
+          <li>MissileGuidance_Ballistic</li>
+        </availableGuidances>
+        
+        <availableWarheads>
+          <li>MissileWarhead_HighExplosive</li>
+          <li>MissileWarhead_Incendiary</li>
+        </availableWarheads>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- Advanced launcher - all guidance and warhead types -->
+  <ThingDef ParentName="DMSE_MissileLauncher_Example">
+    <defName>DMSE_MissileLauncher_Advanced</defName>
+    <label>Advanced Missile Launcher</label>
+    <description>Sophisticated launcher with support for all guidance systems and warhead types. Requires significant research and resources.</description>
+    
+    <costList>
+      <Steel>300</Steel>
+      <Plasteel>100</Plasteel>
+      <Advanced>25</Advanced>
+      <Component>5</Component>
+    </costList>
+    
+    <researchPrerequisites>
+      <li>MissileTechAdvanced</li>
+      <li>RadarSystems</li>
+    </researchPrerequisites>
+    
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <powerConsumption>500</powerConsumption>
+        <transmitsPower>false</transmitsPower>
+      </li>
+      
+      <li Class="CompProperties_Refuelable">
+        <compClass>CompRefuelable</compClass>
+        <fuelLabel>missile fuel</fuelLabel>
+        <fuelCapacity>200</fuelCapacity>
+        <initialFuelPercent>0</initialFuelPercent>
+      </li>
+      
+      <li Class="DMSE.CompProperties_MissileLoader">
+        <compClass>DMSE.CompMissileLoader</compClass>
+        <maxMissiles>8</maxMissiles>
+        <ticksToLoadMissile>1000</ticksToLoadMissile>
+        <ticksToLoadWarhead>500</ticksToLoadWarhead>
+        <ticksToLoadFuel>2000</ticksToLoadFuel>
+        <requiresPowerToLoad>true</requiresPowerToLoad>
+        
+        <availableGuidances>
+          <li>MissileGuidance_Ballistic</li>
+          <li>MissileGuidance_Proportional</li>
+          <li>MissileGuidance_Radar</li>
+          <li>MissileGuidance_Inertial</li>
+          <li>MissileGuidance_GravityGradient</li>
+        </availableGuidances>
+        
+        <availableWarheads>
+          <li>MissileWarhead_HighExplosive</li>
+          <li>MissileWarhead_Incendiary</li>
+          <li>MissileWarhead_EMP</li>
+          <li>MissileWarhead_Fragmentation</li>
+        </availableWarheads>
+      </li>
+      
+      <!-- Optional: Radar system integration -->
+      <li Class="DMSE.CompProperties_Radar">
+        <compClass>DMSE.CompRadar</compClass>
+        <radarRange>300</radarRange>
+        <powerConsumption>200</powerConsumption>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

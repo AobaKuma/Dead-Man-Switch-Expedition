@@ -32,24 +32,29 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CompProperties_ApparelHediffs.cs" />
+    <Compile Include="Radar\CompRadar.cs" />
+    <Compile Include="Radar\SkyfallerExtension.cs" />
     <Compile Include="Scorer\CompEffecterColdLaunch.cs" />
     <Compile Include="CompOxygenCandle.cs" />
     <Compile Include="CompVacuumPump.cs" />
     <Compile Include="ScenPart_Huntdown.cs" />
     <Compile Include="Scorer\Alerts_Exist.cs" />
+    <Compile Include="Scorer\CompMissileLoader.cs" />
     <Compile Include="Scorer\CompPlaySoundOnSpawn.cs" />
     <Compile Include="CompBuildingExtraRenderer.cs" />
+    <Compile Include="Scorer\MissileGuidance.cs" />
+    <Compile Include="Scorer\MissileWarhead.cs" />
     <Compile Include="SkyFallerTurret\MapComponent_InterceptSkyfaller.cs" />
     <Compile Include="VacuumRoom\CompLandFillable.cs" />
     <Compile Include="Scorer\CompScorer.cs" />
     <Compile Include="DefOf.cs" />
-    <Compile Include="MapComponent_Ship.cs" />
+    <Compile Include="OrbitMovement\MapComponent_Ship.cs" />
     <Compile Include="ModExtension_ReplacePawn.cs" />
     <Compile Include="PatchMain.cs" />
     <Compile Include="Patch_Replace.cs" />
-    <Compile Include="Patch_Background.cs" />
-    <Compile Include="Patch_Visible.cs" />
-    <Compile Include="Patch_Select.cs" />
+    <Compile Include="OrbitMovement\Patch_Background.cs" />
+    <Compile Include="OrbitMovement\Patch_Visible.cs" />
+    <Compile Include="OrbitMovement\Patch_Select.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scorer\GameComponent_MissileEngage.cs" />
     <Compile Include="VacuumRoom\GenStep_Prefab.cs" />
@@ -62,9 +67,10 @@
     <Compile Include="SkyFallerTurret\InterceptProjectile.cs" />
     <Compile Include="SkyFallerTurret\Patch_QuestPart_Bossgroup.cs" />
     <Compile Include="SkyFallerTurret\SkyfallerTurretComp.cs" />
-    <Compile Include="ThingComp_Ship.cs" />
-    <Compile Include="WorldDrawLayer_SpaceTiles.cs" />
-    <Compile Include="WorldObject_Transfer.cs" />
+    <Compile Include="OrbitMovement\ThingComp_Ship.cs" />
+    <Compile Include="OrbitMovement\WorldDrawLayer_SpaceTiles.cs" />
+    <Compile Include="OrbitMovement\WorldObject_Transfer.cs" />
+    <Compile Include="RadarUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
@@ -420,6 +426,24 @@
       <HintPath>bin\Debug\UnityEngine.XRModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="MISSILE_SYSTEM_COMPLETE.md" />
+    <None Include="RadarUtility_Final_Report.md" />
+    <None Include="RadarUtility_Index.md" />
+    <None Include="RadarUtility_Integration_Checklist.md" />
+    <None Include="RadarUtility_Integration_Summary.md" />
+    <None Include="RadarUtility_Quick_Reference.md" />
+    <None Include="RadarUtility_Usage_Examples.md" />
+    <None Include="Scorer\FILE_INDEX.md" />
+    <None Include="Scorer\IMPLEMENTATION_SUMMARY.md" />
+    <None Include="Scorer\INTEGRATION_GUIDE.md" />
+    <None Include="Scorer\MISSILE_SYSTEM_README.md" />
+    <None Include="Scorer\QUICK_REFERENCE.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Defs\MissileLauncherExamples.xml" />
+    <Content Include="Defs\MissileSystemDefs.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
