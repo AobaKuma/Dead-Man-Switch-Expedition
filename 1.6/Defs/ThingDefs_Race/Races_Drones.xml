@@ -43,7 +43,7 @@
     </thinkRoot>
   </ThinkTreeDef>
     
-  <!-- 新开了个DMS的drone父类确保根节点是机械体不是pawn，我修改了DMS_BaseDroidRace -->
+  <!-- Added a DMS drone parent to ensure the root node is a mechanoid instead of a pawn; DMS_BaseDroidRace was adjusted accordingly. -->
   <ThingDef Name="DMS_BaseDroneRace" ParentName="BaseMechanoid" Abstract="True">
     <race>
         <intelligence>ToolUser</intelligence>
@@ -71,7 +71,7 @@
     </butcherProducts>
   </ThingDef>
     
-  <ThingDef ParentName="DMS_BaseDroneRace"> <!-- 调用上面的父节点 -->
+  <ThingDef ParentName="DMS_BaseDroneRace"> <!-- Uses the parent definition above -->
     <defName>DMSE_Drone_Wildfowl</defName>
     <label>wildfowl</label>
     <description>The UAS 1/B "Hunter Bee" nicknamed "wildfowl" is a foldable, small coaxial rotor drone equipped with a plastic explosive charge equivalent to an M67 hand grenade, posing a significant threat when approaching a target in swarms.</description>

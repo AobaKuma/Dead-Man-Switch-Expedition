@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: cruise missile -->
+  <DMSE_WorldObject_CruiseMissile.label>巡弋飛彈</DMSE_WorldObject_CruiseMissile.label>
+  <!-- EN: cruise missile in flight. -->
+  <DMSE_WorldObject_CruiseMissile.description>正在飛行中的巡弋飛彈。</DMSE_WorldObject_CruiseMissile.description>
+  
+</LanguageData>

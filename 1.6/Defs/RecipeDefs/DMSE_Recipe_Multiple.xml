@@ -64,7 +64,7 @@
     </modExtensions>
   </RecipeDef>
 
-  <!-- 氮化鎵 恆溫真空淨室 -->
+  <!-- Nitrogallium, constant-temperature vacuum cleanroom -->
   <RecipeDef>
     <defName>DMSE_Make_Nitrogallium</defName>
     <label>Make Nitrogallium</label>
@@ -111,7 +111,7 @@
     </modExtensions>
   </RecipeDef>
 
-  <!-- 集群控制晶片 淨室暗室 -->
+  <!-- Cluster control chipset, clean darkroom -->
   <RecipeDef>
     <defName>DMSE_Make_ComponentControlChip</defName>
     <label>Make Cluster Control Chipsets</label>
@@ -184,9 +184,9 @@
     </modExtensions>
   </RecipeDef>
 
-<!-- 精密生產設施 -->
+<!-- Precise fabrication facility -->
 
-  <!-- T/R組件 (T/R) 無重力淨室-->
+  <!-- T/R component (T/R), microgravity cleanroom -->
   <RecipeDef>
     <defName>DMSE_Make_ComponentTransmitter</defName>
     <label>Make T/R Component</label>
@@ -249,7 +249,7 @@
     </modExtensions>
   </RecipeDef>
 
-  <!-- 火控系統 (FCS) 無重力淨室暗室-->
+  <!-- Fire control system (FCS), microgravity clean darkroom -->
   <RecipeDef>
     <defName>DMSE_Make_ComponentFireControl</defName>
     <label>Make Fire Control System</label>
@@ -313,7 +313,7 @@
     </modExtensions>
   </RecipeDef>
 
-  <!-- 穿梭機引擎 (shuttle engine) 真空無重力淨室-->
+  <!-- Shuttle engine, vacuum microgravity cleanroom -->
   <RecipeDef>
     <defName>DMSE_Make_ShuttleEngine</defName>
     <label>Make Shuttle Engine</label>

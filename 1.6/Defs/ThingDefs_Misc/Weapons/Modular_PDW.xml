@@ -3,7 +3,7 @@
 	<ThingDef ParentName="DMSE_BaseHumanMakeableGun">
 		<defName>DMSE_Modular_PDW</defName>
 		<label>caseless defense firearm</label>
-		<description>一種緊湊輕便的個人防衛武器，設計上是提供載具乘員自保時能提供足夠的火力。具有快速更換彈夾的設計並能根據個人需要安裝配件。</description>
+		<description>A compact and lightweight personal defense weapon designed to provide enough firepower for vehicle crews to protect themselves. It features a quick magazine-change design and can mount accessories according to user needs.</description>
 		<graphicData>
 			<texPath>Things/Weapons/DMS_C90Caseless</texPath>
 			<graphicClass>Graphic_Single</graphicClass>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: Carbohydrate -->
+  <DMSE_Carbohydrate.label>碳水化合物</DMSE_Carbohydrate.label>
+  <!-- EN: A white, solid powder that remains highly stable at room temperature, this substance is artificially synthesized from starch, lactose, and other compounds using industrial equipment. Composed of basic elements such as carbon, hydrogen, and oxygen, it does not spoil even when stored in a dry, ambient environment, making it an extremely space-efficient nutritional source for interstellar travel. However, consuming it untreated may cause short-term symptoms such as abdominal pain. \n\nDue to its highly flammable chemical nature and rapid decomposition when exposed to open air, it is typically compressed into dense blocks and vacuum-sealed immediately after synthesis for long-term storage and distribution. -->
+  <DMSE_Carbohydrate.description>一种在常温下高度稳定的白色固体粉末。此物质由工业设备以淀粉、乳糖等化合物人工合成，主要由碳、氢、氧等基础元素组成，即使在乾燥常温环境中储存也不易腐败，是星际旅行中空间效率极高的营养来源。不过若未经处理直接食用，可能引发短暂腹痛等症状。
+
+由於其化学性质高度易燃，且暴露在空气中会快速分解，通常会在合成後立即压制成高密度块体并进行真空封装，以利长期储存与运输。</DMSE_Carbohydrate.description>
+  
+  <!-- EN: Graphene -->
+  <DMSE_Graphene.label>石墨烯</DMSE_Graphene.label>
+  <!-- EN: A single-layer carbon material produced by exfoliating graphite, it is the most widely used non-metallic material in the Midsphere World. Thanks to its excellent thermal conductivity and electrical properties, it is commonly employed in electronic components, beam emitters, and supercapacitors. \n\nGraphene itself demands extremely stringent production conditions and is often further processed into materials like carbon nanotubes or fullerenes. As a result, worlds capable of large-scale production and application typically possess massive industrial platforms in near-Earth orbit dedicated to manufacturing and processing these materials. -->
+  <DMSE_Graphene.description>由石墨剥离制得的单层碳材料，是中层世界最广泛应用的非金属材料之一。凭藉优异的导热与导电特性，常见於电子元件、光束发射器与超级电容等装置。
+
+石墨烯本身对生产条件要求极严，通常还会再加工为碳奈米管或富勒烯等材料。因此，能大规模生产并应用此材料的世界，通常都拥有近地轨道的大型工业平台来进行制造与加工。</DMSE_Graphene.description>
+  <!-- EN: carbon fiber -->
+  <DMSE_Graphene.stuffProps.stuffAdjective>碳纤维</DMSE_Graphene.stuffProps.stuffAdjective>
+  
+  <!-- EN: nitrogallium -->
+  <DMSE_Nitrogallium.label>氮化镓</DMSE_Nitrogallium.label>
+  <!-- EN: A semiconductor material with excellent thermal conductivity, This glass-like single-crystal compound has been widely used in most spacer worlds to replace silicon-based semiconductor materials in various electronics applications, and it can also prevent bionic prostheses from rejecting biological tissue. The production process for nitrogallium requires a vacuum environment to avoid chemical contamination from air, it "grows" crystal structure onto a substrate through vapor deposition. Therefore, worlds that utilize this material on a large scale typically have specialized vacuum production facility for manufacturing and processing within a sealed vacuum environment. -->
+  <DMSE_Nitrogallium.description>一种具备优异导热性的半导体材料。这种玻璃态单晶化合物在多数太空文明世界中已广泛取代矽基半导体，可用於多种电子设备，亦能降低仿生义体对生物组织的排斥反应。氮化镓的制程需要真空环境以避免空气污染，并透过气相沉积在基板上「生长」晶体结构。因此，凡是大规模使用此材料的世界，通常都具备专门的密封真空生产设施。</DMSE_Nitrogallium.description>
+  
+  <!-- EN: Tantasteel -->
+  <DMSE_TantastenAlloy.label>钽钨合金</DMSE_TantastenAlloy.label>
+  <!-- EN: A special alloy material composed of tantalum and tungsten. It is hard, wear-resistant, corrosion-resistant, and has an extremely high melting point of up to 3080°C, making it widely used in rocket engine De Laval nozzles and high-performance military mecha pulse thrusters. \n\nTantalum is found in trace amounts in asteroids and can be extracted through vacstone mining. Its processing and production must be carried out in a vacuum environment to avoid contamination by gases such as nitrogen and oxygen. Therefore, worlds capable of large-scale production and application typically have substantial industrial platforms orbiting dedicated to manufacturing and processing these materials. -->
+  <DMSE_TantastenAlloy.description>由钽与钨组成的特殊合金材料，具备高硬度、耐磨、耐蚀与高达 3080°C 的超高熔点，广泛用於火箭引擎的德拉瓦喷嘴与高性能军用机甲脉冲推进器。
+
+钽元素在小行星中以微量形式存在，可透过真空岩采矿提取；其加工与生产需在真空环境中进行，避免氮氧等气体污染。因此，能大规模制造并应用此材料的世界，通常都拥有环绕轨道的大型工业平台。</DMSE_TantastenAlloy.description>
+  
+</LanguageData>

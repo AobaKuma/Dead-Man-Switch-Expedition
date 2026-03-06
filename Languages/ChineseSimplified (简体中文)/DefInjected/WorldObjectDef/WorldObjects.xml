@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: gravship -->
+  <Ship.label>重力船</Ship.label>
+  <!-- EN: A gravship in flight. -->
+  <Ship.description>一艘正在飞行中的重力船。</Ship.description>
+  
+</LanguageData>

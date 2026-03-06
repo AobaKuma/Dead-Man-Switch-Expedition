@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: vacuum sealing facility wall -->
+  <DMSE_Sealed_Wall.label>真空密封设施墙</DMSE_Sealed_Wall.label>
+  <!-- EN: A structure with vacuum sealing layers made by plasticfiber, allows facility assort with vacuum pumps can effectively maintain a sufficiently large vacuum environment at atmospheric pressure, Ideal for storage extremely flammable products or simply for entity containment. -->
+  <DMSE_Sealed_Wall.description>由塑纤维真空密封层构成的墙体。搭配真空泵可在大气压下有效维持足够大的真空环境，适合储存极易燃物，或用於实体收容。</DMSE_Sealed_Wall.description>
+  
+</LanguageData>

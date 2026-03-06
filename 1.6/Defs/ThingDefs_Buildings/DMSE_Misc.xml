@@ -3,7 +3,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_StealthDevice</defName>
     <label>signal stealth device</label>
-    <!--一種巨大的等離子場護盾發生器，能夠有效的屏蔽訊號的產生，並透過定向抵銷雷達波來使外部無法搜索到發生器所在的小行星基地，但要注意內部的活體訊號越多會使得使用該設備所消耗的電力越多，並且在成功阻止一次雷達搜索後需要一天的時間來冷卻並重新充能。 -->
+    <!-- A massive plasma-field shield generator that suppresses detectable signals and directionally cancels radar waves, preventing external forces from locating the asteroid base hosting the device. Note that higher internal life-signal density increases power draw, and after each successful radar denial the device requires one day to cool down and recharge. -->
     <description>A massive plasma field generator, widely used by the colonial fleet in automated orbital facilities, effectively shielding against internal life signals, effectively cloaking the device in space and rendering it invisible to active radar.\n\nInternal life signals increase the device's power consumption, requiring a day to cool and recharge after successful shielding.</description>
     <graphicData>
       <texPath>Things/Building/StealthDevice/building</texPath>
@@ -67,23 +67,23 @@
           <li>ManhunterPack</li>
           <li>AnimalInsanityMass</li>
           <!-- Anomaly -->
-          <li MayRequire="Ludeon.RimWorld.Anomaly">ShamblerSwarm</li>    <!-- ShamblerSwarm --><!--蹒跚猎群-->
-          <li MayRequire="Ludeon.RimWorld.Anomaly">ShamblerSwarmAnimals</li>    <!-- ShamblerSwarmAnimals --><!--蹒跚猎群-->
-          <li MayRequire="Ludeon.RimWorld.Anomaly">SmallShamblerSwarm</li>    <!-- SmallShamblerSwarm --><!--隐形魔猎群-->
-          <li MayRequire="Ludeon.RimWorld.Anomaly">SightstealerSwarm</li>    <!-- SightstealerSwarm --><!--蹒跚猎群-->
-          <li MayRequire="Ludeon.RimWorld.Anomaly">ShamblerAssault</li>    <!-- ShamblerAssault --><!--蹒跚怪袭击-->
-          <li MayRequire="Ludeon.RimWorld.Anomaly">GhoulAttack</li>    <!-- GhoulAttack --><!--食尸鬼袭击-->
-          <li MayRequire="Ludeon.RimWorld.Anomaly">Revenant</li>    <!-- Revenant--><!--幽魂-->
-          <li MayRequire="Ludeon.RimWorld.Anomaly">SightstealerArrival</li>    <!-- SightstealerArrival--><!--隐形魔出现-->
-          <li MayRequire="Ludeon.RimWorld.Anomaly">FleshbeastAttack</li>    <!-- FleshbeastAttack--><!--血肉兽袭击-->
-          <li MayRequire="Ludeon.RimWorld.Anomaly">FrenziedAnimals</li>    <!-- FrenziedAnimals--><!--发狂的动物-->
-          <li MayRequire="Ludeon.RimWorld.Anomaly">GorehulkAssault</li>    <!-- GorehulkAssault--><!--血棘巨人袭击-->
-          <li MayRequire="Ludeon.RimWorld.Anomaly">DevourerAssault</li>    <!-- DevourerAssault--><!--吞噬兽袭击-->
-          <li MayRequire="Ludeon.RimWorld.Anomaly">DevourerWaterAssault</li><!-- DevourerWaterAssault--><!--吞噬兽袭击-->
-          <li MayRequire="Ludeon.RimWorld.Anomaly">ChimeraAssault</li>    <!-- ChimeraAssault--><!--嵌合兽袭击-->
-          <li MayRequire="Ludeon.RimWorld.Anomaly">Nociosphere</li>    <!-- Nociosphere--><!--苦痛之球 -->
-          <li MayRequire="Ludeon.RimWorld.Anomaly">PitGate</li>    <!-- PitGate--><!--巨坑 -->
-          <li MayRequire="Ludeon.RimWorld.Anomaly">FleshmassHeart</li>    <!-- FleshmassHeart--><!--血肉心脏 -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">ShamblerSwarm</li>    <!-- ShamblerSwarm -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">ShamblerSwarmAnimals</li>    <!-- ShamblerSwarmAnimals -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">SmallShamblerSwarm</li>    <!-- SmallShamblerSwarm -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">SightstealerSwarm</li>    <!-- SightstealerSwarm -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">ShamblerAssault</li>    <!-- ShamblerAssault -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">GhoulAttack</li>    <!-- GhoulAttack -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">Revenant</li>    <!-- Revenant -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">SightstealerArrival</li>    <!-- SightstealerArrival -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">FleshbeastAttack</li>    <!-- FleshbeastAttack -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">FrenziedAnimals</li>    <!-- FrenziedAnimals -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">GorehulkAssault</li>    <!-- GorehulkAssault -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">DevourerAssault</li>    <!-- DevourerAssault -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">DevourerWaterAssault</li><!-- DevourerWaterAssault -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">ChimeraAssault</li>    <!-- ChimeraAssault -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">Nociosphere</li>    <!-- Nociosphere -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">PitGate</li>    <!-- PitGate -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">FleshmassHeart</li>    <!-- FleshmassHeart -->
           <!-- Alpha Animals -->
           <li MayRequire="sarg.alphaanimals">AA_IncidentStalkingArcticLion</li>
           <li MayRequire="sarg.alphaanimals">AA_IncidentBlizzariskClutchMother</li>
@@ -94,8 +94,8 @@
           <li MayRequire="sarg.alphaanimals">AA_Incident_BlackHive</li>
           <li MayRequire="sarg.alphaanimals">AA_IncidentFungalHusk</li>
           <!--fxz.ratkinanomaly.update-->
-          <li MayRequire="fxz.ratkinanomaly.update">RA_ObsessionArrival</li>    <!-- RA_ObsessionArrival--><!--幽怨执念 -->
-          <li MayRequire="fxz.ratkinanomaly.update">RA_FruiterCome</li>    <!-- RA_ObsessionArrival--><!--华丽果树 -->
+          <li MayRequire="fxz.ratkinanomaly.update">RA_ObsessionArrival</li>    <!-- RA_ObsessionArrival -->
+          <li MayRequire="fxz.ratkinanomaly.update">RA_FruiterCome</li>    <!-- RA_ObsessionArrival -->
           <!-- Vanilla Genetics Expanded -->
           <li MayRequire="VanillaExpanded.VGeneticsE">GR_ManhunterMonstrosities</li>  <!-- roaming monstrosities -->
           <!-- Vanilla Events Expanded -->
@@ -105,8 +105,8 @@
           <!-- Royalty -->
           <li MayRequire="Ludeon.RimWorld.Royalty">ProblemCauser</li>    <!-- problem causer -->
           <!-- Anomaly -->
-          <li MayRequire="Ludeon.RimWorld.Anomaly">PsychicRitualSiege</li>    <!-- PsychicRitualSiege--><!--心灵仪式围攻-->
-          <li MayRequire="Ludeon.RimWorld.Anomaly">HateChanters</li>    <!-- HateChanters--><!--恶咒吟诵者-->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">PsychicRitualSiege</li>    <!-- PsychicRitualSiege -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">HateChanters</li>    <!-- HateChanters -->
           <!-- [SR]Raid Extension -->
           <li MayRequire="SR.ModRimworld.RaidExtension">SrPoaching</li>    <!-- Poaching -->
           <li MayRequire="SR.ModRimworld.RaidExtension">SrLogging</li>    <!-- Logging -->
@@ -128,17 +128,17 @@
           <li>PsychicEmanatorShipPartCrash</li>
           <li>DefoliatorShipPartCrash</li>
           <!-- Anomaly -->
-          <li MayRequire="Ludeon.RimWorld.Anomaly">WarpedObelisk_Duplicator</li>    <!-- WarpedObelisk_Duplicator--><!--腐化方尖碑-->
-          <li MayRequire="Ludeon.RimWorld.Anomaly">WarpedObelisk_Abductor</li>    <!-- WarpedObelisk_Abductor--><!--扭曲方尖碑-->
-          <li MayRequire="Ludeon.RimWorld.Anomaly">WarpedObelisk_Mutator</li>    <!-- WarpedObelisk_Mutator--><!--畸变方尖碑 -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">WarpedObelisk_Duplicator</li>    <!-- WarpedObelisk_Duplicator -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">WarpedObelisk_Abductor</li>    <!-- WarpedObelisk_Abductor -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">WarpedObelisk_Mutator</li>    <!-- WarpedObelisk_Mutator -->
           <!--fxz.ratkinanomaly.update-->
-          <li MayRequire="fxz.ratkinanomaly.update">RA_PokerSoldierArrival</li>    <!-- RA_PokerSoldierArrival--><!--扑克兵 -->
-          <li MayRequire="fxz.ratkinanomaly.update">RA_DarkKnightArrivalPre</li>    <!-- RA_DarkKnightArrivalPre--><!--赎罪骑士-->
-          <li MayRequire="fxz.ratkinanomaly.update">RA_DarkKnightArrivalPre_Commander</li>    <!-- RA_DarkKnightArrivalPre_Commander--><!--附带骑士长-->
-          <li MayRequire="fxz.ratkinanomaly.update">RA_DarkKnightArrival</li>    <!-- RA_DarkKnightArrival--><!--黑暗骑士-->
-          <li MayRequire="fxz.ratkinanomaly.update">RA_FleshbeastAttack</li>    <!-- RA_FleshbeastAttack--><!--血肉兽袭击-->
-          <li MayRequire="fxz.ratkinanomaly.update">RA_MetalBeanAppear</li>    <!-- RA_MetalBeanAppear--><!--金属蚕豆-->
-          <li MayRequire="fxz.ratkinanomaly.update">RA_Curse</li>    <!-- RA_MetalBeanAppear--><!--诅咒-->
+          <li MayRequire="fxz.ratkinanomaly.update">RA_PokerSoldierArrival</li>    <!-- RA_PokerSoldierArrival -->
+          <li MayRequire="fxz.ratkinanomaly.update">RA_DarkKnightArrivalPre</li>    <!-- RA_DarkKnightArrivalPre -->
+          <li MayRequire="fxz.ratkinanomaly.update">RA_DarkKnightArrivalPre_Commander</li>    <!-- RA_DarkKnightArrivalPre_Commander -->
+          <li MayRequire="fxz.ratkinanomaly.update">RA_DarkKnightArrival</li>    <!-- RA_DarkKnightArrival -->
+          <li MayRequire="fxz.ratkinanomaly.update">RA_FleshbeastAttack</li>    <!-- RA_FleshbeastAttack -->
+          <li MayRequire="fxz.ratkinanomaly.update">RA_MetalBeanAppear</li>    <!-- RA_MetalBeanAppear -->
+          <li MayRequire="fxz.ratkinanomaly.update">RA_Curse</li>    <!-- RA_MetalBeanAppear -->
         </incidentsWhitelist>
         <coolDownPerRaidPoint>24</coolDownPerRaidPoint>
         <powerCostPerColonist>1000</powerCostPerColonist>

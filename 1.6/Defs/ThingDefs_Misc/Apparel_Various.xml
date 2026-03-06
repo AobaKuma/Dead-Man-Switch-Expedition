@@ -78,11 +78,11 @@
 		</apparel>
 	</ThingDef>
 
-	<!-- 軌道游騎兵頭盔 -->
+	<!-- Orbital ranger helmet -->
 	<ThingDef ParentName="DMS_ArmorHelmetMakeableBase">
 		<defName>DMSE_Apparel_RangerHelmet</defName>
 		<label>Orbital ranger Helmet</label>
-		<!-- 一種由殖民艦隊軌道游騎兵普遍配備的全覆式真空密封防彈頭盔，具有完整的保護與內部集成的電子系統輔助，是殖民艦隊海軍陸戰隊與軌道龍騎兵在真空微重力環境下作戰的標準裝備。 -->
+		<!-- A full-cover vacuum-sealed ballistic helmet commonly issued to Colonial Fleet orbital rangers. It offers complete protection with integrated electronic assistance and is standard equipment for Colonial Fleet marines and orbital dragoons in vacuum microgravity operations. -->
 		<description>A full-covering vacuum-sealed helmet used by the Orbital Rangers,With complete protection and internal integrated electronic system assistance, it is the standard equipment for Colonial Fleet Marines and Orbital Dragoons operating in microgravity environments.</description>
 		<recipeMaker>
 			<researchPrerequisite>DMSE_OrbitalDynamics</researchPrerequisite>
@@ -158,7 +158,7 @@
 		</colorGenerator>
 	</ThingDef>
 
-	<!-- 重型外骨骼 -->
+	<!-- Heavy exoskeleton -->
 	<ThingDef ParentName="DMSE_OrbitalApparelBase">
 		<defName>DMSE_Apparel_HeavyPowerSkeleton</defName>
 		<label>heavy powered exoskeletal unit</label>

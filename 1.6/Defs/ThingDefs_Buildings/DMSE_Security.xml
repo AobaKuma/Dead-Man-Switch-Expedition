@@ -48,7 +48,7 @@
         <minimumFueledThreshold>0.9</minimumFueledThreshold>
         <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
         <initialAllowAutoRefuel>true</initialAllowAutoRefuel>
-        <targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>              <!--重裝填設定-->
+        <targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>              <!-- Reload threshold setting -->
         <initialConfigurableTargetFuelLevel>1000</initialConfigurableTargetFuelLevel>
         <autoRefuelPercent>0.8</autoRefuelPercent>
         <fuelIconPath>Things/Item/Resource/ReinforcedBarrel/ReinforcedBarrel</fuelIconPath>
@@ -61,7 +61,7 @@
     <building>
       <turretGunDef>DMSE_Gun_Vulcan_WingBack</turretGunDef>
       <turretTopDrawSize>5</turretTopDrawSize>
-      <turretBurstWarmupTime>2</turretBurstWarmupTime>   <!--================冷卻與瞄準時間================-->
+      <turretBurstWarmupTime>2</turretBurstWarmupTime>   <!--================ Cooldown and aiming time ================-->
       <turretBurstCooldownTime>2.5</turretBurstCooldownTime>
     </building>
     <constructionSkillPrerequisite>9</constructionSkillPrerequisite>
@@ -161,7 +161,7 @@
     <size>(3,3)</size>
     <rotatable>true</rotatable>
     <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
-    <statBases>   <!--================血量與重量工作量================-->
+    <statBases>   <!--================ HP, mass, and work amount ================-->
       <MaxHitPoints>2250</MaxHitPoints>
       <Flammability>0.4</Flammability>
       <WorkToBuild>8500</WorkToBuild>
@@ -192,7 +192,7 @@
         <minimumFueledThreshold>0.1</minimumFueledThreshold>
         <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
         <initialAllowAutoRefuel>true</initialAllowAutoRefuel>
-        <targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>              <!--重裝填設定-->
+        <targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>              <!-- Reload threshold setting -->
         <initialConfigurableTargetFuelLevel>80</initialConfigurableTargetFuelLevel>
         <fuelIconPath>Things/Item/Resource/ReinforcedBarrel/ReinforcedBarrel</fuelIconPath>
       </li>
@@ -204,7 +204,7 @@
     <building>
       <turretGunDef>DMSE_Gun_Dawnblade_Striker</turretGunDef>
       <turretTopDrawSize>5</turretTopDrawSize>
-      <turretBurstWarmupTime>2.0</turretBurstWarmupTime>   <!--================冷卻與瞄準時間================-->
+      <turretBurstWarmupTime>2.0</turretBurstWarmupTime>   <!--================ Cooldown and aiming time ================-->
       <turretBurstCooldownTime>2.8</turretBurstCooldownTime>
       <turretTopOffset>(0,0.4)</turretTopOffset>
     </building>

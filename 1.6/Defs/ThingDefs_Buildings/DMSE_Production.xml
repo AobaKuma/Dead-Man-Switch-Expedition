@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-  <!-- 精密生產設施 -->
+  <!-- Precise fabrication facility -->
   <ThingDef ParentName="DMS_AutofacturerBenchBase">
     <defName>DMSE_MicrogravityFacility</defName>
     <label>Precise fabrication center</label>
@@ -64,7 +64,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_GrapheneBioreactor</defName>
     <label>Graphene bio-reactor</label>
-    <!-- 一種固定式碳電生物反應器，能夠以二氧化碳等為碳源借助電力與恆溫環境合成作為生物營養來源的各類碳水化合物，需消耗石墨烯作為電極與催化載體提升反應效率，其人工合成澱粉與葡萄糖的能量效率約為農業種植的八倍，面積效率則高達三千倍。 -->
+    <!-- A stationary carbon-electric bioreactor that uses carbon sources such as CO2, electricity, and temperature control to synthesize carbohydrates as biological nutrients. It consumes graphene as an electrode and catalytic carrier to improve reaction efficiency. Its synthetic starch/glucose process reaches about 8x the energy efficiency and up to 3000x the area efficiency of traditional farming. -->
     <description>A stationary carbon-electric bioreactor. It uses carbon dioxide to synthesize various carbohydrates, a biological nutrient source. Requires graphene as a catalytic carrier during the reaction, operating in an environment of constant temperature and electricity to improve reaction efficiency.</description>
     <graphicData>
       <texPath>Things/Building/GrapheneBioreactor/building</texPath>

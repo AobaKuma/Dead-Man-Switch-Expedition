@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: 拦截炮塔 -->
+  <DMS_Turret_MiniTurret.label>攔截炮塔</DMS_Turret_MiniTurret.label>
+  <!-- EN: A portable automatic turret. Requires steel to refurbish its barrel after heavy use. May explode when damaged. Its dumb AI brain can't be directly controlled, so beware of friendly fire. -->
+  <DMS_Turret_MiniTurret.description>一種可攜式自動炮塔。經過高強度使用後，需要鋼材翻修其槍管。受損時可能爆炸。其低階 AI 腦無法直接控制，請留意友軍誤傷。</DMS_Turret_MiniTurret.description>
+  <!-- EN: Barrel durability -->
+  <DMS_Turret_MiniTurret.comps.CompRefuelable.fuelGizmoLabel>槍管耐久度</DMS_Turret_MiniTurret.comps.CompRefuelable.fuelGizmoLabel>
+  <!-- EN: Shots until barrel change -->
+  <DMS_Turret_MiniTurret.comps.CompRefuelable.fuelLabel>距離更換槍管剩餘射擊次數</DMS_Turret_MiniTurret.comps.CompRefuelable.fuelLabel>
+  <!-- EN: Needs new barrel -->
+  <DMS_Turret_MiniTurret.comps.CompRefuelable.outOfFuelMessage>需要新的槍管</DMS_Turret_MiniTurret.comps.CompRefuelable.outOfFuelMessage>
+  
+  <!-- EN: intercepting projectile -->
+  <DMSE_InterceptProjectile.label>攔截彈體</DMSE_InterceptProjectile.label>
+  
+</LanguageData>

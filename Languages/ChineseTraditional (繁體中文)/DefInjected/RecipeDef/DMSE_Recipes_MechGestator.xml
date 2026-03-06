@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: Gestate ClusterWeaver -->
+  <DMSE_Make_ClusterWeaver.label>組裝集群織鳥</DMSE_Make_ClusterWeaver.label>
+  <!-- EN: Gestate a ClusterWeaver Automatroid. -->
+  <DMSE_Make_ClusterWeaver.description>組裝一架集群織鳥機兵。</DMSE_Make_ClusterWeaver.description>
+  <!-- EN: Gestating mech. -->
+  <DMSE_Make_ClusterWeaver.jobString>正在組裝機械體</DMSE_Make_ClusterWeaver.jobString>
+  
+</LanguageData>

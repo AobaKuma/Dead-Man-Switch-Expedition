@@ -8,8 +8,8 @@
     </modExtensions>
   </RecipeDef>
 
-<!-- 反應釜 -->
-  <!-- 化合燃料產石墨稀 -->
+<!-- Reactor vessel -->
+  <!-- Produce graphene from chemfuel -->
   <RecipeDef ParentName="DMSE_MicroGrav_Recipe">
     <defName>DMSE_Make_Graphene_Chemfuel</defName>
     <label>Make Graphene with Chemfuel</label>
@@ -48,7 +48,7 @@
     </products>
   </RecipeDef>
 
-  <!-- 化合燃料產石墨稀(批量) -->
+  <!-- Produce graphene from chemfuel (bulk) -->
   <RecipeDef ParentName="DMSE_MicroGrav_Recipe">
     <defName>DMSE_Make_GrapheneMass_Chemfuel</defName>
     <label>Make Graphene with Chemfuel x4</label>
@@ -87,7 +87,7 @@
     </products>
   </RecipeDef>
 
-  <!-- 木頭產石墨稀 -->
+  <!-- Produce graphene from wood -->
   <RecipeDef ParentName="DMSE_MicroGrav_Recipe">
     <defName>DMSE_Make_Graphene_WoodLog</defName>
     <label>Make graphene with wood</label>
@@ -126,7 +126,7 @@
     </products>
   </RecipeDef>
 
-  <!-- 木頭產石墨稀(批量) -->
+  <!-- Produce graphene from wood (bulk) -->
   <RecipeDef ParentName="DMSE_MicroGrav_Recipe">
     <defName>DMSE_Make_GrapheneMass_WoodLog</defName>
     <label>Make graphene with wood x4</label>
@@ -165,9 +165,9 @@
     </products>
   </RecipeDef>
 
-<!-- 精密生產設施 -->
+<!-- Precise fabrication facility -->
 
-  <!-- 高級零件 (ComponentSpacer)-->
+  <!-- Advanced component (ComponentSpacer) -->
   <RecipeDef ParentName="DMSE_MicroGrav_Recipe">
     <defName>DMSE_Make_ComponentSpacer</defName>
     <label>make advanced component with graphene</label>
@@ -219,7 +219,7 @@
     <displayPriority>10</displayPriority>
   </RecipeDef>
 
-  <!-- 高級零件(批量) (ComponentSpacer)-->
+  <!-- Advanced component (bulk) (ComponentSpacer) -->
   <RecipeDef ParentName="DMSE_MicroGrav_Recipe">
     <defName>DMSE_Make_ComponentSpacerBulk</defName>
     <label>make advanced component with graphene x4</label>

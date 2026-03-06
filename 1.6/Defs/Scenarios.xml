@@ -8,7 +8,7 @@
     <scenario>
       <summary>A traitor of the colonial fleet, with a stolen cargo ship.</summary>
       
-      <!-- 這裡要做一個專門的陣營 -->
+      <!-- TODO: create a dedicated faction -->
       <playerFaction>
         <factionDef>GravshipCrew</factionDef>
       </playerFaction>
@@ -45,14 +45,14 @@
           </requiredSkills>
         </li>
 
-        <!-- 這裡要做一個專門的船塢地圖 -->
+        <!-- TODO: create a dedicated dock map -->
         <li Class="ScenPart_ForcedMap">
           <def>ForcedMap</def>
           <mapGenerator>OrbitalRelay</mapGenerator>
           <layerDef>Orbit</layerDef>
         </li>
 
-        <!-- 這裡要做一個專門的重力船開局 -->
+        <!-- TODO: create a dedicated gravship start -->
         <!-- Player starting stuff spawn method-->
         <li Class="ScenPart_PlayerPawnsArriveMethod">
           <def>PlayerPawnsArriveMethod</def>

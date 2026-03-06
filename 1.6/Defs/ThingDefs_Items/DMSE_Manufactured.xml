@@ -16,7 +16,7 @@
     </thingCategories>
 	</ThingDef>
 
-  <!-- 碳水化合物 -->  
+  <!-- Carbohydrate -->  
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_Carbohydrate</defName>
     <label>Carbohydrate</label>
@@ -56,7 +56,7 @@
     </thingCategories>
   </ThingDef>
   
-  <!-- 鉭鎢合金 強度高於鎢鋼的材料 -->  
+  <!-- Tantasteel: stronger than tungsten steel -->  
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_TantastenAlloy</defName>
     <label>Tantasteel</label>
@@ -111,7 +111,7 @@
     <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
   </ThingDef>
 
-  <!-- 石墨烯，石墨烯电容、碳纖維等技术物品會需要用到 -->
+  <!-- Graphene: used for graphene capacitors, carbon fiber, and other advanced tech items -->
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_Graphene</defName>
     <label>Graphene</label>
@@ -160,7 +160,7 @@
     </thingCategories>
   </ThingDef>
   
-  <!-- 氮化鎵，T/R组件、集群控制芯片等高级複雜技术物品都會需要用到 -->
+  <!-- Nitrogallium: required by advanced complex tech items such as T/R components and cluster control chipsets -->
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_Nitrogallium</defName>
     <label>nitrogallium</label>

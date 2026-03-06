@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: IVA suit -->
+  <DMS_Apparel_IVASuit.label>IVA 艙內作業服</DMS_Apparel_IVASuit.label>
+  <!-- EN: A semi-pressurized suit for working inside a pressurized spacecraft, It is generally used as work clothes for space vehicle operators.\n\nIt doesn't have sufficient vacuum resistance to be used directly in EVA activities but is enough to buy more time in exposed environments. -->
+  <DMS_Apparel_IVASuit.description>一種在加壓太空船艙內工作的半加壓服，通常作為太空載具操作員的工作服。
+
+它並不具備足夠的真空抗性以直接用於艙外活動，但在暴露環境下可爭取更多生存時間。</DMS_Apparel_IVASuit.description>
+  
+  <!-- EN: heavy powered exoskeletal unit -->
+  <DMSE_Apparel_HeavyPowerSkeleton.label>重型外骨骼</DMSE_Apparel_HeavyPowerSkeleton.label>
+  <!-- EN: A heavy powered exoskeletal suit which mimics the human form and can be worn by an untrained operator. It significantly increases the wearer's strength. \n\nCompared to the exoskeleton on BigSister, this model has removed the jump system and shield system to reduce costs. When using it, don't assume you've gained the protective level of heavy mechanical units. -->
+  <DMSE_Apparel_HeavyPowerSkeleton.description>一種擬人化的重型動力外骨骼服，未受訓練的操作員也可穿戴，能顯著提升穿戴者力量。
+
+與 BigSister 的外骨骼相比，此型號移除了跳躍系統與護盾系統以降低成本。使用時請勿將其防護力視為重型機械單位等級。</DMSE_Apparel_HeavyPowerSkeleton.description>
+  <!-- EN: exoframe top -->
+  <DMSE_Apparel_HeavyPowerSkeleton.apparel.renderNodeProperties.0.debugLabel>外骨骼上段</DMSE_Apparel_HeavyPowerSkeleton.apparel.renderNodeProperties.0.debugLabel>
+  <!-- EN: exoframe bottom -->
+  <DMSE_Apparel_HeavyPowerSkeleton.apparel.renderNodeProperties.1.debugLabel>外骨骼下段</DMSE_Apparel_HeavyPowerSkeleton.apparel.renderNodeProperties.1.debugLabel>
+  
+  <!-- EN: Orbital ranger Helmet -->
+  <DMSE_Apparel_RangerHelmet.label>軌道游騎兵頭盔</DMSE_Apparel_RangerHelmet.label>
+  <!-- EN: A full-covering vacuum-sealed helmet used by the Orbital Rangers,With complete protection and internal integrated electronic system assistance, it is the standard equipment for Colonial Fleet Marines and Orbital Dragoons operating in microgravity environments. -->
+  <DMSE_Apparel_RangerHelmet.description>一種由殖民艦隊軌道游騎兵普遍配備的全覆式真空密封防彈頭盔，具有完整的保護與內部集成電子系統輔助，是殖民艦隊海軍陸戰隊與軌道龍騎兵在真空微重力環境下作戰的標準裝備。</DMSE_Apparel_RangerHelmet.description>
+  
+</LanguageData>

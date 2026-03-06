@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <!-- 拦截炮塔 -->
+    <!-- Intercept turret -->
     <ThingDef ParentName="BuildingBase">
         <defName>DMS_Turret_MiniTurret</defName>
-        <label>拦截炮塔</label>
+        <label>intercept turret</label>
         <description>A portable automatic turret. Requires steel to refurbish its barrel after heavy use. May explode when damaged. Its dumb AI brain can't be directly controlled, so beware of friendly fire.</description>
         <thingClass>Building_TurretGun</thingClass>
         <drawerType>MapMeshAndRealTime</drawerType>

@@ -50,7 +50,7 @@
   <ThingDef ParentName="ThrusterBase">
     <defName>DMSE_NuclearThruster</defName>
     <label>Nuclear thermal thruster</label>
-    <description>一種重型核熱火箭推进器，透過核裂變加熱液態氫來產生推力，其比沖是傳統化學火箭推進器的兩倍以上，這類大推力的推進器經常會被用於星際拖船使其能夠為質量龐大的軌道平台進行較大幅度的軌道轉移。由於其起飛時所製造的大量放射性汙染，這類引擎被設計為無法在大氣環境內使用。\n\n在田中-約翰遜引擎問世以前，人類透過這樣的推進器將第一艘前往半人馬座星系的亞光速飛船加速到光速的20%。並在10年後傳回了人類在太陽系外的第一張自拍照。</description>
+    <description>A heavy nuclear-thermal rocket thruster that generates thrust by heating liquid hydrogen through nuclear fission. Its specific impulse is more than twice that of conventional chemical rockets. These high-thrust engines are commonly used on interstellar tugs to perform major orbital transfers for massive platforms. Because launch operation produces substantial radioactive contamination, this engine is designed for non-atmospheric use only.\n\nBefore the Tanaka-Johnson drive was introduced, humanity used this class of thruster to accelerate the first sublight ship to the Alpha Centauri system to 20% of light speed, and received the first selfie from outside the Solar System ten years later.</description>
     <graphicData>
       <graphicClass>Graphic_Single</graphicClass>
       <texPath>Things/Building/NuclearThruster/building</texPath>

@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: caseless defense firearm -->
+  <DMSE_Modular_PDW.label>無殼彈防衛武器</DMSE_Modular_PDW.label>
+  <!-- EN: 一種緊湊輕便的個人防衛武器，設計上是提供載具乘員自保時能提供足夠的火力。具有快速更換彈夾的設計並能根據個人需要安裝配件。 -->
+  <DMSE_Modular_PDW.description>一種緊湊輕便的個人防衛武器，設計上是提供載具乘員自保時能提供足夠的火力。具有快速更換彈匣的設計並能根據個人需要安裝配件。</DMSE_Modular_PDW.description>
+  <!-- EN: stock -->
+  <DMSE_Modular_PDW.tools.stock.label>槍托</DMSE_Modular_PDW.tools.stock.label>
+  <!-- EN: barrel -->
+  <DMSE_Modular_PDW.tools.barrel-0.label>槍管</DMSE_Modular_PDW.tools.barrel-0.label>
+  <!-- EN: grip -->
+  <DMSE_Modular_PDW.tools.grip.label>握把</DMSE_Modular_PDW.tools.grip.label>
+  <!-- EN: barrel -->
+  <DMSE_Modular_PDW.tools.barrel-1.label>槍管</DMSE_Modular_PDW.tools.barrel-1.label>
+  <!-- EN: caseless defense firearm -->
+  <DMSE_Modular_PDW.verbs.Verb_Shoot.label>無殼彈防衛武器</DMSE_Modular_PDW.verbs.Verb_Shoot.label>
+  
+</LanguageData>

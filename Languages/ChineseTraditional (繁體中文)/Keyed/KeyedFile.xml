@@ -1,16 +1,22 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
   
+  <!-- EN: Huntdown -->
   <DMSE.Letter.HuntdownThreat.Label>追捕</DMSE.Letter.HuntdownThreat.Label>
+  <!-- EN: blablabla, anyway {0} need you dead. -->
   <DMSE.Letter.HuntdownThreat.Text>(此處省略200字)，總之{0}要你死。</DMSE.Letter.HuntdownThreat.Text>
 
+  <!-- EN: Huntdown squad -->
   <DMSE.Alert.HuntdownThreat>追捕小隊</DMSE.Alert.HuntdownThreat>
 
-  <DMSE.Alert.HuntdownThreat.Desc>殖民艦隊的憲兵正在搜尋石碑所散發出的輻射訊號，他們找到你並派出追捕小隊只是時間問題。</DMSE.Alert.HuntdownThreat.Desc>
+  <!-- EN: military police of colonial fleet are searching the signal of missing Stele, it is only a matter of time they find you and send a hunting squad. -->
+  <DMSE.Alert.HuntdownThreat.Desc>殖民艦隊的特別行動組正在搜尋石碑所散發出的輻射訊號，他們找到你並派出追捕小隊只是時間問題。</DMSE.Alert.HuntdownThreat.Desc>
 
+  <!-- EN: Huntdown approaching -->
   <DMSE.Alert.HuntdownThreatCritical>追捕正在逼近</DMSE.Alert.HuntdownThreatCritical>
+  <!-- EN: the position of Stele has been tracked down, hunting squad and possible air strike will arrive in no time, transfer before it's too late. -->
   <DMSE.Alert.HuntdownThreatCritical.Desc>石碑的位置已被追蹤，追捕小隊和可能的空襲將很快到達，請在為時已晚之前轉移。</DMSE.Alert.HuntdownThreatCritical.Desc>
 
+  <!-- EN: {0} drop pods will breach in {1} -->
   <DMSE.Alert.Pods>{0}個空降艙將在{1}後來襲</DMSE.Alert.Pods>
-
 </LanguageData>

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: The Deviant -->
+  <DMSE_Deviant.label>脫序者</DMSE_Deviant.label>
+  <!-- EN: todo -->
+  <DMSE_Deviant.description>你是殖民艦隊的叛逃者，駕著偷來的貨船逃離追捕，在邊緣世界展開亡命生存。</DMSE_Deviant.description>
+  <!-- EN: todo -->
+  <DMSE_Deviant.scenario.description>被殖民艦隊通緝的叛逃者，帶著偷來的貨船與有限的物資，必須在追擊中找到逃出這顆星球或與殖民艦隊做個了斷的方式。</DMSE_Deviant.scenario.description>
+  <!-- EN: The Deviant -->
+  <DMSE_Deviant.scenario.name>叛逃者</DMSE_Deviant.scenario.name>
+  <!-- EN: A traitor of the colonial fleet, with a stolen cargo ship. -->
+  <DMSE_Deviant.scenario.summary>殖民艦隊的叛徒，帶著偷來的貨船。</DMSE_Deviant.scenario.summary>
+  
+</LanguageData>

@@ -71,11 +71,11 @@
     </researchPrerequisites>
   </ThingDef>
 
-  <!-- 光電板 -->
+  <!-- Photovoltaic panel -->
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_PhotovoltaicPanels</defName>
     <label>photovoltaic panel</label>
-    <description>一種由單層碳原子構成的石墨稀導電薄膜構成的高效能光電轉換裝置。其能量轉換效率遠高於傳統矽晶太陽能板並具備優異的導熱與耐輻射特性。即使在稀薄大氣、低溫或塵埃覆蓋的環境下仍能維持穩定輸出。</description>
+    <description>A high-efficiency photovoltaic conversion device built from conductive graphene film composed of single-layer carbon atoms. Its energy conversion efficiency is far higher than conventional silicon solar panels, while offering excellent thermal conductivity and radiation resistance. It maintains stable output even in thin atmosphere, low temperatures, or dusty conditions.</description>
     <thingClass>Building</thingClass>
     <drawerType>MapMeshAndRealTime</drawerType>
     <graphicData>

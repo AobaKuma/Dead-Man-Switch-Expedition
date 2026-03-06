@@ -9,11 +9,11 @@
     </modExtensions>
   </RecipeDef>
    
-  <!-- 人工製備澱粉 -->
+  <!-- Artificial starch preparation -->
   <RecipeDef ParentName="DMSE_CleanRoom_Recipe">
     <defName>DMSE_Make_Carbohydrate</defName>
     <label>extract carbohydrate</label>
-    <!-- 一種透過高壓分離植物中富含澱粉的部位來萃取高純度碳水化合物的工藝。這是一種技術成熟的實驗室級別澱粉製程，但通常來說由於較低的生產效率以及對生產環境的清潔要求，因此除非是你一位野心勃勃的分子料理廚師否則直接烹飪農作物肯定會更加划算。 -->
+    <!-- A process that extracts high-purity carbohydrates by separating starch-rich plant matter under high pressure. This is a mature laboratory-scale starch process, but due to low production efficiency and strict cleanliness requirements, direct cooking is usually more practical unless you are aiming for molecular gastronomy. -->
     <description>A process that extracts high-purity carbohydrates by separating the starch-rich parts of plants under high pressure.\n\nThis is a well-established laboratory-scale starch extraction process, but due to its low production efficiency and the need for clean production environments, it's generally less-effective unless you're an aspiring molecular gastronomy chef.</description>
     <jobString>Extracting carbohydrate.</jobString>
     <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -62,7 +62,7 @@
     <workSkill>Medicine</workSkill>
   </RecipeDef>
 
-  <!-- 澱粉生產C口糧 -->
+  <!-- Produce C-rations from starch -->
   <RecipeDef ParentName="DMSE_CleanRoom_Recipe">
     <defName>DMSE_Make_CRationCarbon</defName>
     <label>Make C-Ration using carbohydrate</label>
@@ -109,7 +109,7 @@
     </products>
   </RecipeDef>
   
-  <!-- 澱粉生產C口糧(批量) -->
+  <!-- Produce C-rations from starch (bulk) -->
   <RecipeDef ParentName="DMSE_CleanRoom_Recipe">
     <defName>DMSE_Make_CRationCarbonBulk</defName>
     <label>Make C-Ration using carbohydrate x4</label>
@@ -156,7 +156,7 @@
     </products>
   </RecipeDef>
 
-  <!-- 肉生產中性胺 -->
+  <!-- Produce neutroamine from meat -->
   <RecipeDef ParentName="DMSE_CleanRoom_Recipe">
     <defName>DMSE_Make_Neutroamine</defName>
     <label>synthesize Neutroamine</label>

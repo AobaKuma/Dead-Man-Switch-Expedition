@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: Caseless pistol -->
+  <DMSE_Modular_C95_Pistol.label>無殼手槍</DMSE_Modular_C95_Pistol.label>
+  <!-- EN: A semi-automatic pistol utilizing caseless ammunition, commonly employed for personal defense. -->
+  <DMSE_Modular_C95_Pistol.description>一種使用無殼彈藥的半自動手槍，通常用於個人防衛。</DMSE_Modular_C95_Pistol.description>
+  <!-- EN: stock -->
+  <DMSE_Modular_C95_Pistol.tools.stock.label>槍托</DMSE_Modular_C95_Pistol.tools.stock.label>
+  <!-- EN: barrel -->
+  <DMSE_Modular_C95_Pistol.tools.barrel.label>槍管</DMSE_Modular_C95_Pistol.tools.barrel.label>
+  <!-- EN: grip -->
+  <DMSE_Modular_C95_Pistol.tools.grip.label>握把</DMSE_Modular_C95_Pistol.tools.grip.label>
+  <!-- EN: Caseless pistol -->
+  <DMSE_Modular_C95_Pistol.verbs.Verb_Shoot.label>無殼手槍</DMSE_Modular_C95_Pistol.verbs.Verb_Shoot.label>
+  
+</LanguageData>

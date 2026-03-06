@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: graphene battery -->
+  <DMSE_Battery.label>石墨烯電池</DMSE_Battery.label>
+  <!-- EN: Stores electricity for later use. Charged batteries explode when exposed to rain or fire. -->
+  <DMSE_Battery.description>儲存電力以供後續使用。電量充足的電池在暴露於雨水或火焰時會爆炸。</DMSE_Battery.description>
+  
+  <!-- EN: photovoltaic panel -->
+  <DMSE_PhotovoltaicPanels.label>光電板</DMSE_PhotovoltaicPanels.label>
+  <!-- EN: 一種由單層碳原子構成的石墨稀導電薄膜構成的高效能光電轉換裝置。其能量轉換效率遠高於傳統矽晶太陽能板並具備優異的導熱與耐輻射特性。即使在稀薄大氣、低溫或塵埃覆蓋的環境下仍能維持穩定輸出。 -->
+  <DMSE_PhotovoltaicPanels.description>一種由單層碳原子構成的石墨烯導電薄膜製成的高效光電轉換裝置。其能量轉換效率遠高於傳統矽晶太陽能板，並具備優異的導熱與耐輻射特性。即使在稀薄大氣、低溫或塵埃覆蓋環境下，仍能維持穩定輸出。</DMSE_PhotovoltaicPanels.description>
+  
+</LanguageData>

@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: Graphene bio-reactor -->
+  <DMSE_GrapheneBioreactor.label>石墨烯生物反應器</DMSE_GrapheneBioreactor.label>
+  <!-- EN: A stationary carbon-electric bioreactor. It uses carbon dioxide to synthesize various carbohydrates, a biological nutrient source. Requires graphene as a catalytic carrier during the reaction, operating in an environment of constant temperature and electricity to improve reaction efficiency. -->
+  <DMSE_GrapheneBioreactor.description>一種固定式碳電生物反應器，能夠以二氧化碳等為碳源，借助電力與恆溫環境合成作為生物營養來源的各類碳水化合物；需消耗石墨烯作為電極與催化載體以提升反應效率。其人工合成澱粉與葡萄糖的能量效率約為農業種植的八倍，面積效率則高達三千倍。</DMSE_GrapheneBioreactor.description>
+  
+  <!-- EN: Precise fabrication center -->
+  <DMSE_MicrogravityFacility.label>精密製造中心</DMSE_MicrogravityFacility.label>
+  <!-- EN: An extremely sophisticated additive manufacturing machine designed for nanoscale processing while also meeting the demands of extreme and demanding production environments. It can produce with exceptional precision even in conditions such as microgravity, vacuum, ultra-high pressure, and extreme temperatures. -->
+  <DMSE_MicrogravityFacility.description>一種極其精密的增材製造機，針對奈米級加工設計，並可滿足嚴苛與極端製程需求。即使在微重力、真空、超高壓與極端溫度條件下，也能進行高精度生產。</DMSE_MicrogravityFacility.description>
+  
+  <!-- EN: organic assembler -->
+  <DMSE_TableArtifuscle.label>有機組裝台</DMSE_TableArtifuscle.label>
+  <!-- EN: A massive piece of industrial equipment used to assemble Artifuscle and Neutroamine. -->
+  <DMSE_TableArtifuscle.description>用於組裝人造肌肉與中性胺的大型工業設備。</DMSE_TableArtifuscle.description>
+  
+  <!-- EN: rotary forger -->
+  <DMSE_TableLathe.label>旋鍛機</DMSE_TableLathe.label>
+  <!-- EN: A machine that combine the process of forging machine and lathe, rotates a workpiece about an axis of rotation to perform various operations. -->
+  <DMSE_TableLathe.description>結合鍛造機與車床工藝的設備，可讓工件繞旋轉軸轉動並執行多種加工操作。</DMSE_TableLathe.description>
+  
+</LanguageData>

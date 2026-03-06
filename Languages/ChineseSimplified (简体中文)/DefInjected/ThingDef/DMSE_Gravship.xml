@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: AAAAAAAAAAAAAAAAAAAA -->
+  <AAAAAAAAAA.label>重力船控制介面</AAAAAAAAAA.label>
+  <!-- EN: An interface that allows launching and piloting a gravship. It draws power directly from the grav engine. -->
+  <AAAAAAAAAA.description>可用於发射并驾驶重力船的操作介面。其电力直接由重力引擎供应。</AAAAAAAAAA.description>
+  
+  <!-- EN: Nuclear thermal thruster -->
+  <DMSE_NuclearThruster.label>核热推进器</DMSE_NuclearThruster.label>
+  <!-- EN: 一种重型核热火箭推进器，透过核裂变加热液态氢来产生推力，其比冲是传统化学火箭推进器的两倍以上，这类大推力的推进器经常会被用於星际拖船使其能够为质量庞大的轨道平台进行较大幅度的轨道转移。由於其起飞时所制造的大量放射性污染，这类引擎被设计为无法在大气环境内使用。\n\n在田中-约翰逊引擎问世以前，人类透过这样的推进器将第一艘前往半人马座星系的亚光速飞船加速到光速的20%。并在10年後传回了人类在太阳系外的第一张自拍照。 -->
+  <DMSE_NuclearThruster.description>一种重型核热火箭推进器，透过核分裂加热液态氢来产生推力，其比冲是传统化学火箭推进器的两倍以上。这类大推力推进器经常用於星际拖船，使其能为质量庞大的轨道平台进行较大幅度的轨道转移。由於起飞时会制造大量放射性污染，这类引擎被设计为无法在大气环境内使用。
+
+在田中-约翰逊引擎问世以前，人类便是透过这种推进器将第一艘前往半人马座星系的亚光速飞船加速到光速的 20%，并在 10 年後传回人类於太阳系外的第一张自拍照。</DMSE_NuclearThruster.description>
+  
+</LanguageData>

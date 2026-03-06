@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-  <!-- 砲管機產砲管 -->
+  <!-- Barrel machine produces barrels -->
   <RecipeDef>
     <defName>DMSE_Make_ReinforcedBarrel</defName>
     <label>make reinforced barrel</label>

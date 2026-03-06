@@ -9,8 +9,8 @@
     </modExtensions>
   </RecipeDef>
 
-<!-- 燒結爐 -->
-  <!-- 鉭鎢合金 -->
+<!-- Sintering furnace -->
+  <!-- Tantasteel -->
   <RecipeDef ParentName="DMSE_Vacuum_Recipe">
     <defName>DMSE_Make_TantastenAlloy</defName>
     <label>Make Tantasteel x25</label>
@@ -58,7 +58,7 @@
     </products>
   </RecipeDef>
   
-  <!-- 鉭鎢合金(批量) -->
+  <!-- Tantasteel (bulk) -->
   <RecipeDef ParentName="DMSE_Vacuum_Recipe">
     <defName>DMSE_Make_TantastenAlloyMass</defName>
     <label>Make Tantasteel x100</label>
@@ -69,7 +69,7 @@
     <soundWorking>Recipe_Machining</soundWorking>
     <recipeUsers>
       <li>DMS_Furnace</li>
-      <!-- <li>DMS_LabFurnace</li> 由於某些限制，不能讓實驗爐使用該配方 -->
+      <!-- <li>DMS_LabFurnace</li> Due to current limitations, this recipe cannot be enabled on the laboratory furnace. -->
     </recipeUsers>
     <skillRequirements>
       <Crafting>7</Crafting>

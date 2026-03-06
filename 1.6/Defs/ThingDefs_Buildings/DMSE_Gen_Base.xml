@@ -11,7 +11,7 @@
         <preferredColumn>1</preferredColumn>
     </DesignationCategoryDef>
 
-    <!-- 玩家不可建造也不可拆除的建築(但可以摧毀) -->
+    <!-- Buildings that players cannot build or deconstruct (but can destroy) -->
     <ThingDef ParentName="BuildingBase" Name="DMSE_BaseBuilding" Abstract="true">
         <canOverlapZones>false</canOverlapZones>
         <designationCategory>DMSE_Category</designationCategory>

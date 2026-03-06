@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: extract carbohydrate -->
+  <DMSE_Make_Carbohydrate.label>提取合成澱粉</DMSE_Make_Carbohydrate.label>
+  <!-- EN: A process that extracts high-purity carbohydrates by separating the starch-rich parts of plants under high pressure.\n\nThis is a well-established laboratory-scale starch extraction process, but due to its low production efficiency and the need for clean production environments, it's generally less-effective unless you're an aspiring molecular gastronomy chef. -->
+  <DMSE_Make_Carbohydrate.description>一種透過高壓分離植物中富含澱粉的部位來萃取高純度碳水化合物的工藝。這是一種技術成熟的實驗室級別澱粉製程，但通常來說由於較低的生產效率以及對生產環境的清潔要求，因此除非是你一位野心勃勃的分子料理廚師否則直接烹飪農作物肯定會更加划算。</DMSE_Make_Carbohydrate.description>
+  <!-- EN: Extracting carbohydrate. -->
+  <DMSE_Make_Carbohydrate.jobString>正在提取合成澱粉</DMSE_Make_Carbohydrate.jobString>
+  
+  <!-- EN: Make C-Ration using carbohydrate -->
+  <DMSE_Make_CRationCarbon.label>使用合成澱粉製作C口糧</DMSE_Make_CRationCarbon.label>
+  <!-- EN: Synthesize C-Ration from carbohydrate. -->
+  <DMSE_Make_CRationCarbon.description>使用合成澱粉製作C口糧。</DMSE_Make_CRationCarbon.description>
+  <!-- EN: Synthesizing. -->
+  <DMSE_Make_CRationCarbon.jobString>正在使用合成澱粉製作C口糧</DMSE_Make_CRationCarbon.jobString>
+  
+  <!-- EN: Make C-Ration using carbohydrate x4 -->
+  <DMSE_Make_CRationCarbonBulk.label>使用合成澱粉製作C口糧x4</DMSE_Make_CRationCarbonBulk.label>
+  <!-- EN: Synthesize C-Ration from carbohydrate. -->
+  <DMSE_Make_CRationCarbonBulk.description>使用合成澱粉製作C口糧。</DMSE_Make_CRationCarbonBulk.description>
+  <!-- EN: Synthesizing. -->
+  <DMSE_Make_CRationCarbonBulk.jobString>正在使用合成澱粉製作C口糧</DMSE_Make_CRationCarbonBulk.jobString>
+  
+  <!-- EN: synthesize Neutroamine -->
+  <DMSE_Make_Neutroamine.label>合成中性胺</DMSE_Make_Neutroamine.label>
+  <!-- EN: synthesize neutroamine from meat. -->
+  <DMSE_Make_Neutroamine.description>精煉肉類來合成並制取中性胺成分。</DMSE_Make_Neutroamine.description>
+  <!-- EN: Synthesizing neutroamine. -->
+  <DMSE_Make_Neutroamine.jobString>正在提取中性胺</DMSE_Make_Neutroamine.jobString>
+  
+</LanguageData>

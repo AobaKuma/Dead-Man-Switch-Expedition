@@ -17,11 +17,11 @@
         <pathCost>90</pathCost>
     </ThingDef>
 
-    <!-- 貨櫃 -->
+    <!-- Cargo container -->
     <ThingDef ParentName="DMSE_BaseLootBox">
         <defName>DMSE_Cargo</defName>
         <label>cargo container</label>
-        <!-- 俗稱的"標準運輸容器"，一種用於在殖民艦隊母艦與各大軌道基地之間往返運輸的星際標準貨櫃箱，能夠靈活的裝載各種標準尺寸內的裝備與資源。\n\n這種大型貨櫃箱需要專門的裝載設備與重型機器來運輸，因此更多被用於轉運平臺與具備完善裝卸裝備的大型基地。由於其便於運輸的規格，邊緣世界的人們也偏好將其改造為各種用途的平台及臨時居所。 -->
+        <!-- Commonly known as the "standard transport container," this is an interstellar-standard cargo box used between Colonial Fleet motherships and orbital bases. It can flexibly carry equipment and resources in many standard sizes.\n\nThese large containers require dedicated loading equipment and heavy machinery, so they are mostly used on transfer platforms and large bases with complete loading systems. Because of their transport-friendly format, people on rim worlds also repurpose them into platforms and temporary shelters. -->
         <description>Commonly known as "standard transport containers," these are standard interstellar cargo boxes used for transporting equipment and resources between colony fleet motherships and various orbital bases. They can flexibly accommodate equipment and resources of various standard sizes.\n\nThese large containers require specialized loading equipment and heavy machinery for transport, and are therefore primarily used as transshipment platforms and in large bases equipped with sophisticated loading and unloading systems. Due to their convenient transport specifications, people in the Edge World also prefer to convert them into platforms and temporary dwellings for various purposes.</description>
         <rotatable>true</rotatable>
         <tickerType>Normal</tickerType>
@@ -75,11 +75,11 @@
         </modExtensions>
     </ThingDef>
 
-    <!-- 油罐 -->
+    <!-- Fuel silo -->
     <ThingDef ParentName="DMSE_BaseLootBox">
         <defName>DMSE_FuelSilo</defName>
         <label>fuel silo</label>
-        <!-- 一種用於儲存液體燃料的大型儲罐，透過數層金屬板與特種合金來將各式燃料安全儲藏在其巨大的罐體內，常見於軌道平台與大型的燃料運輸艦上。\n\n 這一個罐體的保存完整並或許還保有少量的剩餘燃料，但在缺乏泵機設備的狀況下將其提取出來需要花上不少時間。 -->
+        <!-- A large tank for storing liquid fuels, using multiple metal layers and special alloys to keep various fuels safe inside a massive body. It is common on orbital platforms and large fuel transport ships.\n\nThis particular tank is still intact and may contain a small amount of residual fuel, but extraction takes significant time without pump equipment. -->
         <description>A large storage tank for liquid fuels, using multiple layers of metal plates and special alloys to safely store various fuels within its massive body, is commonly found on orbital platforms and large fuel transport ships.\n\nThis tank is well-preserved and may still contain a small amount of residual fuel, but extracting it without pumping equipment would take considerable time.</description>
         <rotatable>false</rotatable>
         <tickerType>Normal</tickerType>
@@ -153,7 +153,7 @@
     <ThingDef ParentName="DMSE_BaseLootBox">
         <defName>DMSE_Crate</defName>
         <label>rabbit crate</label>
-        <!-- 被暱稱為Rabbit的八分之一標準運輸容器，這類小尺寸運輸容器被廣泛用於小型前哨基地的建設與補給運輸，能夠剛好放入中小型穿梭機與輕型卡車的貨艙轉運並且直接由穿戴輔助動力單元的人類就地裝卸。\n\n來自殖民艦隊的往返運輸貨艦通常會裝載上萬個標準運輸箱並在太空軌道上的轉運平臺將其分裝為此種運輸容器派送給地面上的設施及工廠。 -->
+        <!-- Nicknamed "Rabbit," this one-eighth-size standard transport container is widely used for building and resupplying small outposts. It fits in small-to-medium shuttle bays and light trucks, and can be loaded or unloaded on-site by personnel using powered support units.\n\nColonial Fleet cargo ships often carry tens of thousands of standard containers, then repackage them on orbital transfer platforms into this container type for ground facilities and factories. -->
         <description>Nicknamed "Rabbit," these one-eighths standard transport containers are widely used for the construction and resupply of small outposts. They fit perfectly into the cargo holds of small to medium-sized shuttles and light trucks, and are loaded and unloaded directly on-site by humans wearing power units.\n\nCargo ships from colonial fleets typically carry tens of thousands of standard transport containers, which will distributed to ground facilities and factories via transfer platforms in space orbit.</description>
         <rotatable>true</rotatable>
         <tickerType>Normal</tickerType>
@@ -209,7 +209,7 @@
     <ThingDef ParentName="DMSE_BaseLootBox">
         <defName>DMSE_PackCrate</defName>
         <label>military parcel</label>
-        <!-- 一個用於運輸軍用補給品的標準運輸包。裡面的內容物跟包裹本身似乎都是在最近才製造的，並隨著機兵部隊的任務被送到各處。 -->
+        <!-- A standard transport parcel for military supplies. Both the package and its contents appear to be recently manufactured and distributed alongside mechanized unit deployments. -->
         <description>A Standard issue parcel containing supplies for military logistics. These parcel seemed to have been produced recently and sent to various locations.</description>
         <rotatable>false</rotatable>
         <tickerType>Normal</tickerType>

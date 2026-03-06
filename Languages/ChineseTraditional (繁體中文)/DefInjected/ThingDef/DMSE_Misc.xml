@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: signal stealth device -->
+  <DMSE_StealthDevice.label>訊號匿蹤裝置</DMSE_StealthDevice.label>
+  <!-- EN: A massive plasma field generator, widely used by the colonial fleet in automated orbital facilities, effectively shielding against internal life signals, effectively cloaking the device in space and rendering it invisible to active radar.\n\nInternal life signals increase the device's power consumption, requiring a day to cool and recharge after successful shielding. -->
+  <DMSE_StealthDevice.description>一種巨大的等離子場護盾發生器，能夠有效屏蔽訊號產生，並透過定向抵銷雷達波，使外部無法搜尋到發生器所在的小行星基地。
+
+但要注意，內部活體訊號越多，設備耗電越高；且每次成功阻止一次雷達搜尋後，都需要一天時間冷卻並重新充能。</DMSE_StealthDevice.description>
+  
+</LanguageData>

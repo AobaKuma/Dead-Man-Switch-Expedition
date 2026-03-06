@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: cargo container -->
+  <DMSE_Cargo.label>货柜</DMSE_Cargo.label>
+  <!-- EN: Commonly known as "standard transport containers," these are standard interstellar cargo boxes used for transporting equipment and resources between colony fleet motherships and various orbital bases. They can flexibly accommodate equipment and resources of various standard sizes.\n\nThese large containers require specialized loading equipment and heavy machinery for transport, and are therefore primarily used as transshipment platforms and in large bases equipped with sophisticated loading and unloading systems. Due to their convenient transport specifications, people in the Edge World also prefer to convert them into platforms and temporary dwellings for various purposes. -->
+  <DMSE_Cargo.description>俗称「标准运输容器」，是一种用於在殖民舰队母舰与各大轨道基地之间往返运输的星际标准货柜箱，能够灵活装载各种标准尺寸内的装备与资源。
+
+这种大型货柜箱需要专门装载设备与重型机器来运输，因此更多用於转运平台与具备完善装卸装备的大型基地。由於其便於运输的规格，边缘世界的人们也偏好将其改造成各种用途的平台及临时居所。</DMSE_Cargo.description>
+  
+  <!-- EN: rabbit crate -->
+  <DMSE_Crate.label>Rabbit货箱</DMSE_Crate.label>
+  <!-- EN: Nicknamed "Rabbit," these one-eighths standard transport containers are widely used for the construction and resupply of small outposts. They fit perfectly into the cargo holds of small to medium-sized shuttles and light trucks, and are loaded and unloaded directly on-site by humans wearing power units.\n\nCargo ships from colonial fleets typically carry tens of thousands of standard transport containers, which will distributed to ground facilities and factories via transfer platforms in space orbit. -->
+  <DMSE_Crate.description>被昵称为 Rabbit 的八分之一标准运输容器，这类小尺寸运输容器被广泛用於小型前哨基地的建设与补给运输，能够刚好放入中小型穿梭机与轻型卡车的货舱转运，并直接由穿戴辅助动力单元的人员就地装卸。
+
+来自殖民舰队的往返运输货舰通常会装载上万个标准运输箱，并在太空轨道上的转运平台将其分装为此种运输容器，再派送至地面上的设施及工厂。</DMSE_Crate.description>
+  
+  <!-- EN: fuel silo -->
+  <DMSE_FuelSilo.label>油罐</DMSE_FuelSilo.label>
+  <!-- EN: A large storage tank for liquid fuels, using multiple layers of metal plates and special alloys to safely store various fuels within its massive body, is commonly found on orbital platforms and large fuel transport ships.\n\nThis tank is well-preserved and may still contain a small amount of residual fuel, but extracting it without pumping equipment would take considerable time. -->
+  <DMSE_FuelSilo.description>一种用於储存液体燃料的大型储罐，透过数层金属板与特种合金，将各式燃料安全储藏在其巨大的罐体内，常见於轨道平台与大型燃料运输舰上。
+
+这一个罐体保存完整，或许仍保有少量剩余燃料，但在缺乏泵机设备的状况下，将其提取出来需要花上不少时间。</DMSE_FuelSilo.description>
+  
+  <!-- EN: military parcel -->
+  <DMSE_PackCrate.label>军用补给包裹</DMSE_PackCrate.label>
+  <!-- EN: A Standard issue parcel containing supplies for military logistics. These parcel seemed to have been produced recently and sent to various locations. -->
+  <DMSE_PackCrate.description>一个用於运输军用补给品的标准运输包。里面的内容物和包裹本身似乎都是最近才制造，并随机兵部队任务送往各处。</DMSE_PackCrate.description>
+  
+</LanguageData>
