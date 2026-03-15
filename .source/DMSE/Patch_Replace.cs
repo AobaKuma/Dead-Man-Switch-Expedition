@@ -20,7 +20,7 @@ namespace DMSE
     public class Patch_Replace
     {
         [HarmonyPrefix]
-        public static bool prefix(ref Thing newThing, IntVec3 loc, Map map, Rot4 rot)
+        public static bool Prefix(ref Thing newThing, IntVec3 loc, Map map, Rot4 rot)
         {
             if (newThing is Pawn pawn && pawn.kindDef?.GetModExtension<ModExtension_ReplacePawn>()
                 is ModExtension_ReplacePawn ex && map.Parent is Site site)

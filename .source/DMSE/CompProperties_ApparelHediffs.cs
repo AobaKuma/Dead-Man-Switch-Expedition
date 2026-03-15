@@ -5,6 +5,7 @@ using Verse;
 
 namespace DMSE
 {
+
     public class CompProperties_ApparelCauseHediff_Microgravity : CompProperties
     {
         public bool revert = false;
@@ -16,7 +17,7 @@ namespace DMSE
     public class CompApparelCauseHediff_Microgravity : ThingComp
     {
         protected Pawn wearer;
-        protected new CompProperties_ApparelCauseHediff_Microgravity Props => (CompProperties_ApparelCauseHediff_Microgravity)props;
+        protected CompProperties_ApparelCauseHediff_Microgravity Props => (CompProperties_ApparelCauseHediff_Microgravity)props;
         public static bool InMicroGravity(Pawn pawn)
         {
             if (pawn is null || !pawn.Spawned) return false;

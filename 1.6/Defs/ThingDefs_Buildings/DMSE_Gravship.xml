@@ -1,30 +1,37 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
   <GravshipComponentTypeDef>
-    <defName>AAA</defName>
-    <label>AAAAAnk</label>
+    <defName>DMSE_FusionCore</defName>
+    <label>Fusion core</label>
+    <requiredForLaunch>false</requiredForLaunch>
   </GravshipComponentTypeDef>
-  
+
+  <GravshipComponentTypeDef>
+    <defName>DMSE_TransferThruster</defName>
+    <label>transfer thruster</label>
+    <requiredForLaunch>false</requiredForLaunch>
+  </GravshipComponentTypeDef>
+
   <ThingDef ParentName="GravshipComponentBase">
-    <defName>AAAAAAAAAA</defName>
-    <label>AAAAAAAAAAAAAAAAAAAA</label>
-    <description>An interface that allows launching and piloting a gravship. It draws power directly from the grav engine.</description>
+    <defName>DMSE_FusionCore</defName>
+    <label>Fusion reactor</label>
+    <description>A highly mature compact tokamak fusion reactor, commonly found in colonial fleets and ships used in the Enlightened World, has a built-in supercritical carbon dioxide turbine to provide power for its own cycle and ship equipment. However, its most crucial function is to preheat the ship's nuclear thermal propulsion system so that it can reach its maximum design power to move small-mass celestial bodies.</description>
     <graphicData>
-      <graphicClass>Graphic_Multi</graphicClass>
-      <texPath>Things/Building/PilotConsole/PilotConsole</texPath>
-      <drawSize>(3.7, 2.6)</drawSize>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Building/DMSE_FusionCore</texPath>
+      <drawSize>4</drawSize>
     </graphicData>
     <statBases>
-      <MaxHitPoints>150</MaxHitPoints>
+      <MaxHitPoints>1500</MaxHitPoints>
       <Mass>50</Mass>
       <Flammability>0</Flammability>
       <Beauty>0</Beauty>
-      <WorkToBuild>2500</WorkToBuild>
+      <WorkToBuild>12500</WorkToBuild>
     </statBases>
-    <size>(3, 2)</size>
-    <rotatable>true</rotatable>
-    <fillPercent>0.4</fillPercent>
+    <size>(3, 3)</size>
+    <rotatable>false</rotatable>
+    <fillPercent>0.5</fillPercent>
     <passability>PassThroughOnly</passability>
     <pathCost>14</pathCost>
     <canOverlapZones>false</canOverlapZones>
@@ -42,15 +49,154 @@
     </researchPrerequisites>
     <terrainAffordanceNeeded>Substructure</terrainAffordanceNeeded>
     <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>-5000</basePowerConsumption>
+        <transmitsPower>true</transmitsPower>
+        <soundAmbientProducingPower>ScannerLongRangeMineral_Ambience</soundAmbientProducingPower>
+      </li>
+      <li Class="CompProperties_GravshipFacility">
+        <componentTypeDef>DMSE_FusionCore</componentTypeDef>
+        <requiresLOS>false</requiresLOS>
+        <showMaxSimultaneous>false</showMaxSimultaneous>
+        <maxSimultaneous>1</maxSimultaneous>
+        <maxDistance>200</maxDistance>
+      </li>
       <li Class="CompProperties_Breakdownable" />
     </comps>
     <uiOrder>2100</uiOrder>
   </ThingDef>
 
+  <ThingDef ParentName="FuelTankBase">
+    <defName>DMSE_FuelSiloTank</defName>
+    <label>chemfuel silo</label>
+    <description>A large storage tank for storing liquid fuels uses multiple layers of metal plates and special alloys to store pressurized liquefied fuel within the tank. It provides robust protection while also holding a large amount of fuel. supplie for thrusters on a gravship.</description>
+    <graphicData>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <texPath>Things/Building/DMSE_FuelSilo</texPath>
+      <drawSize>(4,4)</drawSize>
+      <drawOffset>(0,0.001,0.35)</drawOffset>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>1000</MaxHitPoints>
+      <Mass>70</Mass>
+      <Flammability>0</Flammability>
+      <Beauty>-10</Beauty>
+      <WorkToBuild>13000</WorkToBuild>
+    </statBases>
+    <size>(3, 3)</size>
+    <costList>
+      <Steel>200</Steel>
+    </costList>
+    <researchPrerequisites>
+      <li>StandardGravtech</li>
+    </researchPrerequisites>
+    <comps>
+      <li Class="CompProperties_Refuelable">
+        <fuelCapacity>1000</fuelCapacity>
+        <targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>
+        <initialConfigurableTargetFuelLevel>1500</initialConfigurableTargetFuelLevel>
+        <fuelFilter>
+          <thingDefs>
+            <li>Chemfuel</li>
+          </thingDefs>
+        </fuelFilter>
+        <fuelLabel>Chemfuel</fuelLabel>
+        <fuelGizmoLabel>Chemfuel</fuelGizmoLabel>
+        <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+        <autoRefuelPercent>1</autoRefuelPercent>
+        <showFuelGizmo>true</showFuelGizmo>
+        <drawOutOfFuelOverlay>false</drawOutOfFuelOverlay>
+        <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+        <canEjectFuel>true</canEjectFuel>
+        <drawFuelGaugeInMap>false</drawFuelGaugeInMap>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>PlaceWorker_BandNode</li>
+    </placeWorkers>
+    <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
+    <uiOrder>2160</uiOrder>
+  </ThingDef>
+
+  <ThingDef ParentName="ThrusterBase">
+    <defName>DMSE_SolidRocketThruster</defName>
+    <label>rocket booster</label>
+    <!-- 一種結構簡單可靠的一次性推進器。透過將燃料和氧化劑預混為固體藥柱，在點火後燃燒產生高溫燃氣來提供推力,啟動快.在許多Pre-Spacer星球中常作為火箭助推器或戰略飛彈的初始動力,也常被用於中小型艦船在亞軌道飛行時的臨時增程手段. -->
+    <description>A simple and reliable disposable thruster. It provides thrust by premixing fuel and oxidizer into a solid propellant grain, which burns upon ignition to generate high-temperature gas. It has a rapid start-up capability. It is commonly used as a rocket booster or initial propulsion for strategic missiles on many pre-spacer planets, and is also frequently used as a temporary range extension for small and medium-sized ships during suborbital flight.</description>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Building/DMSE_Booster</texPath>
+      <drawSize>5.75</drawSize>
+      <shadowData>
+        <volume>(1, 1, 2)</volume>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>250</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>-10</Beauty>
+      <WorkToBuild>12000</WorkToBuild>
+      <Mass>20</Mass>
+    </statBases>
+    <size>(1,4)</size>
+    <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+    <costList>
+      <Chemfuel>150</Chemfuel>
+      <Steel>75</Steel>
+      <ComponentIndustrial>1</ComponentIndustrial>
+    </costList>
+    <researchPrerequisites>
+      <li>BasicGravtech</li>
+    </researchPrerequisites>
+    <comps>
+      <li Class="DMSE.CompProperties_SolidBoosterThruster">
+        <statOffsets>
+          <GravshipRange>15</GravshipRange>
+        </statOffsets>
+        <componentTypeDef>Thruster</componentTypeDef>
+        <exclusionAreaSize>(1, 0, 5)</exclusionAreaSize>
+        <exclusionAreaOffset>(0, 0, -6)</exclusionAreaOffset>
+        <directionInfluence>20</directionInfluence>
+        <flameSize>6.0</flameSize>
+        <flameOffsetsPerDirection>
+          <li>(0, 0, 0.5)</li>
+          <li>(0, 0, 0.5)</li>
+          <li>(0, 0, 0.5)</li>
+          <li>(0, 0, 0.5)</li>
+        </flameOffsetsPerDirection>
+        <flameShaderType>MoteGlow</flameShaderType>
+        <flameShaderParameters>
+          <_MainTex>/Things/Mote/SmallThruster_Burn</_MainTex>
+        </flameShaderParameters>
+        <requiresLOS>false</requiresLOS>
+        <maxSimultaneous>4</maxSimultaneous>
+        <maxDistance>500</maxDistance>
+        <exhaustSettings>
+          <exhaustFleckDef>GravshipThrusterExhaust</exhaustFleckDef>
+          <emissionsPerSecond>40.0</emissionsPerSecond>
+          <spawnRadiusRange>0.0~0.5</spawnRadiusRange>
+          <velocity>(0.0,0.0,-20.0)</velocity>
+          <velocityRotationRange>-10.0~10.0</velocityRotationRange>
+          <velocityMultiplierRange>0.8~1.2</velocityMultiplierRange>
+          <rotationOverTimeRange>-180.0~180.0</rotationOverTimeRange>
+          <scaleRange>1.5~3.0</scaleRange>
+        </exhaustSettings>
+      </li>
+      <li Class="CompProperties_Breakdownable" />
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>50</basePowerConsumption>
+        <transmitsPower>true</transmitsPower>
+      </li>
+    </comps>
+  </ThingDef>
+
   <ThingDef ParentName="ThrusterBase">
     <defName>DMSE_NuclearThruster</defName>
     <label>Nuclear thermal thruster</label>
-    <description>A heavy nuclear-thermal rocket thruster that generates thrust by heating liquid hydrogen through nuclear fission. Its specific impulse is more than twice that of conventional chemical rockets. These high-thrust engines are commonly used on interstellar tugs to perform major orbital transfers for massive platforms. Because launch operation produces substantial radioactive contamination, this engine is designed for non-atmospheric use only.\n\nBefore the Tanaka-Johnson drive was introduced, humanity used this class of thruster to accelerate the first sublight ship to the Alpha Centauri system to 20% of light speed, and received the first selfie from outside the Solar System ten years later.</description>
+    <description>A heavy nuclear-thermal rocket thruster that generates thrust by heating liquid hydrogen through nuclear Fusion. Its specific impulse is more than twice that of conventional chemical rockets. These high-thrust engines are commonly used on interstellar tugs to perform major orbital transfers for massive platforms. Because launch operation produces substantial radioactive contamination, this engine is designed for non-atmospheric use only.\n\nBefore the Tanaka-Johnson drive was introduced, humanity used this class of thruster to accelerate the first sublight ship to the Alpha Centauri system to 20% of light speed, and received the first selfie from outside the Solar System ten years later.</description>
     <graphicData>
       <graphicClass>Graphic_Single</graphicClass>
       <texPath>Things/Building/NuclearThruster/building</texPath>
@@ -67,11 +213,12 @@
       <Mass>200</Mass>
     </statBases>
     <size>(3,5)</size>
-    <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
+    <constructionSkillPrerequisite>10</constructionSkillPrerequisite>
     <costList>
-      <Steel>500</Steel>
-      <DMSE_TantastenAlloy>125</DMSE_TantastenAlloy>
+      <Steel>750</Steel>
+      <DMSE_TantastenAlloy>250</DMSE_TantastenAlloy>
       <ComponentStamped>20</ComponentStamped>
+      <ComponentSpacer>5</ComponentSpacer>
     </costList>
     <researchPrerequisites>
       <li>DMSE_Aerospace</li>
@@ -83,7 +230,7 @@
           <GravshipRange>30</GravshipRange>
         </statOffsets>
         <fuelSavingsPercent>-0.5</fuelSavingsPercent>
-        <componentTypeDef>AAA</componentTypeDef>
+        <componentTypeDef>DMSE_TransferThruster</componentTypeDef>
         <exclusionAreaSize>(5, 0, 11)</exclusionAreaSize>
         <exclusionAreaOffset>(-2, 0, -13)</exclusionAreaOffset>
         <directionInfluence>90</directionInfluence>
@@ -116,4 +263,5 @@
     </comps>
     <uiOrder>2206</uiOrder>
   </ThingDef>
+
 </Defs>

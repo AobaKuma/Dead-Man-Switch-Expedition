@@ -114,10 +114,6 @@
       <li>BuildingsMisc</li>
     </thingCategories>
     <comps>
-      <!-- <li Class="Fortified.CompProperties_Effector">
-        <effecter>DMSE_Effect_Bioreactor</effecter>
-        <offset>(0,0,0)</offset>
-      </li> -->
       <li Class="Fortified.CompProperties_FueledSpawner">
         <thingToSpawn>DMSE_Carbohydrate</thingToSpawn>
         <spawnCount>20</spawnCount>
@@ -139,6 +135,7 @@
         <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
         <functionsInVacuum>false</functionsInVacuum>
       </li>
+      <li Class="CompProperties_Breakdownable" />
       <li Class="CompProperties_Flickable" />
       <li Class="CompProperties_Power">
         <compClass>CompPowerTrader</compClass>

@@ -13,4 +13,17 @@
 
   <DMSE.Alert.Pods>{0}个空投仓将在{1}后来袭</DMSE.Alert.Pods>
 
+  <DMSE.Flight.Select>选择飞行模式</DMSE.Flight.Select>
+  <DMSE.Flight.Regular>常规飞行</DMSE.Flight.Regular>
+  <DMSE.Flight.Transfer>转移飞行</DMSE.Flight.Transfer>
+  <DMSE.Flight.ShowAdvanced>显示高级选项</DMSE.Flight.ShowAdvanced>
+  <DMSE.Flight.Impact>引力撞击</DMSE.Flight.Impact>
+  <DMSE.Flight.ImpactHard>终结撞击</DMSE.Flight.ImpactHard>
+
+  <DMSE.Cannot.Reason.Null>无法转移：舰船状态无效。</DMSE.Cannot.Reason.Null>
+  <DMSE.Cannot.Reason.NotInSpace>无法转移：必须位于太空层。</DMSE.Cannot.Reason.NotInSpace>
+  <DMSE.Cannot.Reason.TransferThruster>无法转移：转移推进器数量不足（{0}/{1}）。</DMSE.Cannot.Reason.TransferThruster>
+  <DMSE.Cannot.Reason.NoFusionCore>无法转移：未连接聚变核心。</DMSE.Cannot.Reason.NoFusionCore>
+  <DMSE.Cannot.Reason.NoFuel>无法转移：燃料不足。</DMSE.Cannot.Reason.NoFuel>
+
 </LanguageData>

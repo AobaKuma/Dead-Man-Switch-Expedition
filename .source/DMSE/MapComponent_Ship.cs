@@ -7,8 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using Verse;
-using System.Diagnostics;
-using static HarmonyLib.Code;
 
 namespace DMSE
 {
@@ -24,7 +22,7 @@ namespace DMSE
         public OrbitalTransferState status = OrbitalTransferState.Idle;
         public MapComponent_Ship(Map map) : base(map)
         {
-            MapComponent_Ship.manualTicker = new EventQueue(0.0166666675f);
+            manualTicker = new EventQueue(0.0166666675f);
         }
         public override void MapComponentUpdate()
         {
@@ -37,7 +35,7 @@ namespace DMSE
         }
         private void PreWarmUp()
         {
-            //TODO這部分用一個tickStamp來做發射前倒數計時與
+            //TODO這部分用一個tickStamp來做發射前倒數計時引擎預熱
         }
         public override void MapComponentTick()
         {
@@ -75,7 +73,7 @@ namespace DMSE
                 this.Init(((ThingWithComps)map.listerThings.ThingsOfDef(ThingDefOf.GravEngine).First()).GetComp<CompAffectedByFacilities>()
                         .LinkedFacilitiesListForReading.FindAll(
                         thing => thing.TryGetComp<CompGravshipFacility>() is CompGravshipFacility comp0 &&
-                        comp0.Props.componentTypeDef == DMSE_DefOf.AAA), this.wo);
+                        comp0.Props.componentTypeDef == DMSE_DefOf.DMSE_TransferThruster), this.wo);
             }
         }
         public void Init(List<Thing> things, WorldObject_Transfer wo)
@@ -192,10 +190,6 @@ namespace DMSE
         {
             this.exhaustFleckSystem.ForceDraw(this.drawBatch);
             this.drawBatch.Flush(true);
-        }
-        private Vector3 RotateAroundPivot(Vector3 position, Vector3 pivot, Quaternion rotation)
-        {
-            return rotation * (position - pivot) + pivot;
         }
         public override void ExposeData()
         {

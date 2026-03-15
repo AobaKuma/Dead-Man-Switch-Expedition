@@ -12,6 +12,7 @@
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,6 +33,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CompProperties_ApparelHediffs.cs" />
+    <Compile Include="CompProperties_SolidBoosterThruster.cs" />
+    <Compile Include="Dialog_SelectFlightMode.cs" />
+    <Compile Include="Patch_CompGravshipFacility_CanBeActive.cs" />
     <Compile Include="Scorer\CompEffecterColdLaunch.cs" />
     <Compile Include="CompOxygenCandle.cs" />
     <Compile Include="CompVacuumPump.cs" />
@@ -40,6 +44,7 @@
     <Compile Include="Scorer\CompPlaySoundOnSpawn.cs" />
     <Compile Include="CompBuildingExtraRenderer.cs" />
     <Compile Include="SkyFallerTurret\MapComponent_InterceptSkyfaller.cs" />
+    <Compile Include="Utilities\TransferFlightUtility.cs" />
     <Compile Include="VacuumRoom\CompLandFillable.cs" />
     <Compile Include="Scorer\CompScorer.cs" />
     <Compile Include="DefOf.cs" />
@@ -49,7 +54,7 @@
     <Compile Include="Patch_Replace.cs" />
     <Compile Include="Patch_Background.cs" />
     <Compile Include="Patch_Visible.cs" />
-    <Compile Include="Patch_Select.cs" />
+    <Compile Include="Patch_CompPilotConsole_StartChoosingDestination.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scorer\GameComponent_MissileEngage.cs" />
     <Compile Include="VacuumRoom\GenStep_Prefab.cs" />

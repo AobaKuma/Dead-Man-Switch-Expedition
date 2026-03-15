@@ -23,7 +23,7 @@ namespace DMSE
         public static void postfix(WorldCameraDriver __instance)
         {
             if (Find.CurrentMap != null && Patch_Visible.WO.Any() 
-                && Patch_Visible.WO.Find(w => w.worldObjec == Find.CurrentMap.Parent)
+                && Patch_Visible.WO.Find(w => w.worldObject == Find.CurrentMap.Parent)
                 is WorldObject_Transfer wo) 
             {
                 Camera c = (Camera)AccessTools.Property(typeof(WorldCameraDriver), "MyCamera")

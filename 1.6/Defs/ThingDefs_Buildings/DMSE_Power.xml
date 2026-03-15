@@ -3,13 +3,14 @@
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_Battery</defName>
     <label>graphene battery</label>
-    <description>Stores electricity for later use. Charged batteries explode when exposed to rain or fire.</description>
+    <!-- 一種應用石墨烯材料的電池。相比於常見的電池能夠有更高的容量與充電效率，然而其高能級的代價是在常溫下有著比傳統電池更高的自放電功率。 -->
+    <description>A battery that utilizes graphene materials, store electricity for later use. Compared to common batteries, it has higher capacity and charging efficiency; however, its high energy level comes at the cost of a higher self-discharge power than traditional batteries. Won't explode when exposed to rain or fire.</description>
     <drawerType>MapMeshAndRealTime</drawerType>
     <thingClass>Building_Battery</thingClass>
     <graphicData>
-      <texPath>Things/Building/Power/Battery</texPath>
+      <texPath>Things/Building/DMSE_Battery</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
-      <drawSize>(2,3)</drawSize>
+      <drawSize>(2,4)</drawSize>
       <damageData>
         <cornerTL>Damage/Corner</cornerTL>
         <cornerTR>Damage/Corner</cornerTR>
@@ -30,7 +31,7 @@
     </thingCategories>
     <statBases>
       <MaxHitPoints>400</MaxHitPoints>
-      <WorkToBuild>1800</WorkToBuild>
+      <WorkToBuild>3000</WorkToBuild>
       <Mass>35</Mass>
       <Flammability>0</Flammability>
       <Beauty>0</Beauty>
@@ -43,11 +44,12 @@
       <Tungsteel>120</Tungsteel>
       <DMSE_Graphene>50</DMSE_Graphene>
 			<DMSE_TantastenAlloy>25</DMSE_TantastenAlloy>
+      <ComponentStamped>5</ComponentStamped>
     </costList>
     <comps>
       <li Class="CompProperties_Battery">
         <storedEnergyMax>4800</storedEnergyMax>
-        <efficiency>1</efficiency>
+        <efficiency>0.95</efficiency>
         <shortCircuitInRain>false</shortCircuitInRain>
         <transmitsPower>true</transmitsPower>
       </li>
@@ -63,7 +65,6 @@
     <uiOrder>2020</uiOrder>
     <staticSunShadowHeight>0.2</staticSunShadowHeight>
     <constructEffect>ConstructMetal</constructEffect>
-    <designationHotKey>Misc4</designationHotKey>
     <canOverlapZones>false</canOverlapZones>
     <researchPrerequisites>
       <li>DMSE_OrbitalDynamics</li>

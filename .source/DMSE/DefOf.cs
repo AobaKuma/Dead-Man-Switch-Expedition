@@ -15,6 +15,7 @@ namespace DMSE
         public static ThingDef DMSE_VacuumPump;
         public static ThingDef DMSE_NuclearThruster;
         public static WorldObjectDef Ship;
-        public static GravshipComponentTypeDef AAA;
+        public static GravshipComponentTypeDef DMSE_FusionCore;
+        public static GravshipComponentTypeDef DMSE_TransferThruster;
     }
 }

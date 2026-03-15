@@ -1,10 +1,4 @@
-﻿using RimWorld;
-using RimWorld.Planet;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 
@@ -38,14 +32,14 @@ namespace DMSE
             base.SpawnSetup();
             Patch_Visible.WO.Add(this); 
         }
-        public override Material Material => this.worldObjec?.Material;
-        public override Material ExpandingMaterial => this.worldObjec?.ExpandingMaterial;
-        public override Texture2D ExpandingIcon => this.worldObjec?.ExpandingIcon;
-        public override Color ExpandingIconColor => this.worldObjec.ExpandingIconColor;
-        public override string Label => this.worldObjec?.Label;
+        public override Material Material => this.worldObject?.Material;
+        public override Material ExpandingMaterial => this.worldObject?.ExpandingMaterial;
+        public override Texture2D ExpandingIcon => this.worldObject?.ExpandingIcon;
+        public override Color ExpandingIconColor => this.worldObject.ExpandingIconColor;
+        public override string Label => this.worldObject?.Label;
         public override string GetDescription()
         {
-            return this.worldObjec?.GetDescription();
+            return this.worldObject?.GetDescription();
         }
         public float TraveledPctStepPerTick
         {
@@ -72,8 +66,8 @@ namespace DMSE
             if (this.progress >= 1f)
             {
                 this.progress = 1f;
-                this.worldObjec.Tile = this.end;
-                if (this.worldObjec is MapParent parent && parent.Map is Map map
+                this.worldObject.Tile = this.end;
+                if (this.worldObject is MapParent parent && parent.Map is Map map
                     && map.GetComponent<MapComponent_Ship>() is MapComponent_Ship comp) 
                 {
                     comp.End();
@@ -85,7 +79,7 @@ namespace DMSE
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_References.Look(ref this.worldObjec, "worldObjec");
+            Scribe_References.Look(ref this.worldObject, "worldObject");
             Scribe_Values.Look(ref this.progress, "progress");
             Scribe_Values.Look(ref this.start, "start");
             Scribe_Values.Look(ref this.end, "end");
@@ -95,6 +89,6 @@ namespace DMSE
         public float progress;
         public PlanetTile start;
         public PlanetTile end;
-        public WorldObject worldObjec;
+        public WorldObject worldObject;
     }
 }

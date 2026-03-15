@@ -12,4 +12,17 @@
   <DMSE.Alert.HuntdownThreatCritical.Desc>the position of Stele has been tracked down, hunting squad and possible air strike will arrive in no time, transfer before it's too late.</DMSE.Alert.HuntdownThreatCritical.Desc>
 
   <DMSE.Alert.Pods>{0} drop pods will breach in {1}</DMSE.Alert.Pods>
+
+  <DMSE.Flight.Select>Select flight mode</DMSE.Flight.Select>
+  <DMSE.Flight.Regular>Regular flight</DMSE.Flight.Regular>
+  <DMSE.Flight.Transfer>Transfer flight</DMSE.Flight.Transfer>
+  <DMSE.Flight.ShowAdvanced>Show advanced options</DMSE.Flight.ShowAdvanced>
+  <DMSE.Flight.Impact>Impact flight</DMSE.Flight.Impact>
+  <DMSE.Flight.ImpactHard>Hard impact flight</DMSE.Flight.ImpactHard>
+
+  <DMSE.Cannot.Reason.Null>Cannot transfer: ship state invalid.</DMSE.Cannot.Reason.Null>
+  <DMSE.Cannot.Reason.NotInSpace>Cannot transfer: must be in space.</DMSE.Cannot.Reason.NotInSpace>
+  <DMSE.Cannot.Reason.TransferThruster>Cannot transfer: transfer thrusters {0}/{1}.</DMSE.Cannot.Reason.TransferThruster>
+  <DMSE.Cannot.Reason.NoFusionCore>Cannot transfer: no Fusion core connected.</DMSE.Cannot.Reason.NoFusionCore>
+  <DMSE.Cannot.Reason.NoFuel>Cannot transfer: no fuel.</DMSE.Cannot.Reason.NoFuel>
 </LanguageData>
