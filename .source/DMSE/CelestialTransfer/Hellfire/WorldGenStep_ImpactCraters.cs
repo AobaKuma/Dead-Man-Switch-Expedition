@@ -31,102 +31,15 @@ namespace DMSE
             var records = ImpactCraterUtility.Service.GetRecords();
             if (records == null || records.Count == 0) return;
 
+            Log.Message($"[ImpactCrater] seed={seed}, records={records.Count}");
+
             for (int i = 0; i < records.Count; i++)
             {
                 var rec = records[i];
                 if (rec == null || !rec.enabled || !rec.IsValid()) continue;
                 if (!string.Equals(rec.planetSeedString, seed, StringComparison.Ordinal)) continue;
 
-                ApplyCraterBiomeOverlay(layer, seed, rec);
-            }
-        }
-
-        private static void ApplyCraterBiomeOverlay(PlanetLayer layer, string worldSeed, ImpactCraterRecord rec)
-        {
-            // 你可以改成從 record 自訂
-            BiomeDef coreBiome = DefDatabase<BiomeDef>.GetNamedSilentFail("Wasteland");
-            BiomeDef rimBiome = DefDatabase<BiomeDef>.GetNamedSilentFail("Desert");
-            BiomeDef ejectaBiome = DefDatabase<BiomeDef>.GetNamedSilentFail("AridShrubland");
-
-            if (coreBiome == null || rimBiome == null || ejectaBiome == null)
-            {
-                Log.Warning("[ImpactCrater] Missing biome defs for crater overlay.");
-                return;
-            }
-
-            PlanetTile center = FindClosestTileByLongLat(layer, rec.longitude, rec.latitude);
-            if (!center.Valid) return;
-
-            // 避免把海洋改成陸地遺跡（可按需求移除）
-            Tile centerTile = center.Tile;
-            if (centerTile.PrimaryBiome == BiomeDefOf.Ocean || centerTile.PrimaryBiome == BiomeDefOf.Lake)
-                return;
-
-            int baseRadius = Mathf.Max(4, rec.radiusInTiles > 0 ? rec.radiusInTiles : 10);
-            int coreRadius = Mathf.Max(1, Mathf.RoundToInt(baseRadius * 0.40f));
-            int rimRadius = Mathf.Max(coreRadius + 1, Mathf.RoundToInt(baseRadius * 0.78f));
-            int rimWidth = Mathf.Max(1, Mathf.RoundToInt(baseRadius * 0.18f));
-            int ejectaRadius = Mathf.Max(rimRadius + 1, Mathf.RoundToInt(baseRadius * 1.55f));
-
-            int noiseSeedBase = Gen.HashCombineInt(GenText.StableStringHash(worldSeed), GenText.StableStringHash(rec.craterName));
-
-            var q = new Queue<(PlanetTile tile, int dist)>();
-            var visited = new HashSet<PlanetTile>();
-            var neighbors = new List<PlanetTile>(8);
-
-            visited.Add(center);
-            q.Enqueue((center, 0));
-
-            while (q.Count > 0)
-            {
-                var (cur, dist) = q.Dequeue();
-                if (dist > ejectaRadius) continue;
-
-                Tile t = cur.Tile;
-                if (t.PrimaryBiome != BiomeDefOf.Ocean && t.PrimaryBiome != BiomeDefOf.Lake)
-                {
-                    int tileSeed = Gen.HashCombineInt(noiseSeedBase, cur.tileId);
-                    float n = Rand.ValueSeeded(tileSeed);                 // 0..1
-                    float jitter = (n - 0.5f) * (baseRadius * 0.22f);    // 邊界抖動
-                    float d = dist + jitter;
-
-                    // 1) 坑底（明顯中心）
-                    if (d <= coreRadius)
-                    {
-                        t.PrimaryBiome = coreBiome;
-                    }
-                    // 2) 環形坑壁（高可見度）
-                    else
-                    {
-                        float ringDelta = Mathf.Abs(d - rimRadius);
-                        if (ringDelta <= rimWidth)
-                        {
-                            // 靠近 ring 中線機率更高，形成連續坑壁
-                            float ringFactor = 1f - (ringDelta / rimWidth); // 0..1
-                            float placeChance = Mathf.Lerp(0.55f, 0.92f, ringFactor);
-                            if (n < placeChance)
-                                t.PrimaryBiome = rimBiome;
-                        }
-                        // 3) 外圍噴濺（稀疏斑塊）
-                        else if (d <= ejectaRadius)
-                        {
-                            float t01 = Mathf.InverseLerp(rimRadius, ejectaRadius, d); // 越外越接近1
-                            float chance = Mathf.Lerp(0.35f, 0.06f, t01);
-                            if (n < chance)
-                                t.PrimaryBiome = ejectaBiome;
-                        }
-                    }
-                }
-
-                if (dist >= ejectaRadius) continue;
-                neighbors.Clear();
-                layer.GetTileNeighbors(cur, neighbors);
-                for (int i = 0; i < neighbors.Count; i++)
-                {
-                    PlanetTile nb = neighbors[i];
-                    if (visited.Add(nb))
-                        q.Enqueue((nb, dist + 1));
-                }
+                ApplyCraterTerrainFromRecord(layer, seed, rec);
             }
         }
 
@@ -162,6 +75,129 @@ namespace DMSE
             a = Mathf.Clamp01(a);
             float c = 2f * Mathf.Asin(Mathf.Sqrt(a));
             return c * Mathf.Rad2Deg;
+        }
+
+        private static void ApplyCraterTerrainFromRecord(PlanetLayer layer, string worldSeed, ImpactCraterRecord rec)
+        {
+            if (!layer.IsRootSurface) return;
+
+            PlanetTile center = FindClosestTileByLongLat(layer, rec.longitude, rec.latitude);
+            if (!center.Valid) return;
+
+            // 與 ApplyImpactCraterAtTile 一致
+            int craterRadius = Mathf.Max(1, rec.radiusInTiles);
+            float craterDepth = Mathf.Clamp(120f + rec.radiusInTiles * 100f, 120f, 450f);
+            float rimHeight = craterDepth * 5f;
+
+            float centerBaseElevation = center.Tile.elevation;
+            float transportStrength = Mathf.Clamp01(rec.radiusInTiles / 40f);
+
+            const float minElevation = -500f;
+            const float maxElevation = 5000f;
+
+            var visited = new HashSet<PlanetTile>();
+            var q = new Queue<(PlanetTile tile, int dist)>();
+            var neighbors = new List<PlanetTile>(8);
+
+            visited.Add(center);
+            q.Enqueue((center, 0));
+
+            while (q.Count > 0)
+            {
+                var (cur, dist) = q.Dequeue();
+
+                // 與 runtime 一致：用幾何距離決定是否在坑內
+                float radial = Find.WorldGrid.ApproxDistanceInTiles(center, cur);
+                if (radial <= craterRadius)
+                {
+                    Tile t = cur.Tile;
+
+                    float n = Mathf.Clamp01(radial / craterRadius); // 0..1
+                    float originalElevation = t.elevation;
+
+                    float bowl = -craterDepth * Mathf.Pow(1f - n, 2f);
+                    float rim = rimHeight * Mathf.Exp(-Mathf.Pow((n - 0.9f) / 0.08f, 2f));
+                    float delta = bowl + rim;
+
+                    // 外拋搬運：中心剝蝕、外圈堆積（把既有地形往外推）
+                    float relief = Mathf.Max(0f, originalElevation - centerBaseElevation);
+                    float outwardTransport = 0f;
+
+                    // 內圈：移除高地
+                    if (n < 0.7f)
+                    {
+                        outwardTransport -= relief * (1f - n / 0.7f) * 0.55f * transportStrength;
+                    }
+                    // 外圈：沉積抬升
+                    else
+                    {
+                        outwardTransport += relief * ((n - 0.7f) / 0.3f) * 0.35f * transportStrength;
+                    }
+
+                    // 外緣額外噴濺堆積
+                    if (n >= 0.75f)
+                    {
+                        outwardTransport += Mathf.Lerp(0f, craterDepth * 0.18f, (n - 0.75f) / 0.25f) * transportStrength;
+                    }
+
+                    float newElevation = Mathf.Clamp(originalElevation + delta + outwardTransport, minElevation, maxElevation);
+
+                    // 核心區強制壓平：確保中心可移平原有山脈
+                    float coreRadius = Mathf.Max(2f, craterRadius * 0.2f);
+                    if (radial <= coreRadius)
+                    {
+                        // 越靠中心壓得越平，中心目標高度約 6（一定是 Flat）
+                        float core01 = 1f - Mathf.Clamp01(radial / coreRadius);
+                        float targetFlatElevation = Mathf.Lerp(20f, 6f, core01);
+                        newElevation = Mathf.Min(newElevation, targetFlatElevation);
+                    }
+
+                    // 河流侵蝕：有河流(含鄰近)時，削低高處、回填低處
+                    float riverErosion = ImpactCraterUtility.GetRiverErosionFactor(layer, cur); // 0..1
+                    if (riverErosion > 0f)
+                    {
+                        float cut = Mathf.Lerp(0f, 80f, riverErosion) * (0.3f + 0.7f * n);      // 越靠外圈越容易被切蝕
+                        float fill = Mathf.Lerp(0f, 30f, riverErosion) * (1f - n);               // 中心有些沉積
+                        newElevation = Mathf.Clamp(newElevation - cut + fill, minElevation, maxElevation);
+                    }
+
+                    t.elevation = newElevation;
+
+                    // 與 ApplyImpactCraterAtTile 的 hilliness 規則一致
+                    t.hilliness = ImpactCraterUtility.RecalculateHillinessFromElevation(newElevation);
+
+                    if (newElevation <= 0f)
+                    {
+                        t.PrimaryBiome = BiomeDefOf.Lake;
+                        ImpactCraterUtility.TryAddLakeshoreMutator(t);
+                    }
+                    else
+                    {
+                        // 外環（高於海平面）依氣候改變地塊
+                        float outerRingStart = craterRadius * 0.72f;
+                        if (radial >= outerRingStart)
+                        {
+                            BiomeDef climateBiome =ImpactCraterUtility.GetClimateBiomeForTile(t);
+                            if (climateBiome != null)
+                            {
+                                t.PrimaryBiome = climateBiome;
+                            }
+                        }
+                    }
+                }
+
+                // 擴散：保持足夠範圍讓 radial<=10 的 tile 都可被遍歷到
+                if (dist >= craterRadius + 4) continue;
+
+                neighbors.Clear();
+                layer.GetTileNeighbors(cur, neighbors);
+                for (int i = 0; i < neighbors.Count; i++)
+                {
+                    PlanetTile nb = neighbors[i];
+                    if (visited.Add(nb))
+                        q.Enqueue((nb, dist + 1));
+                }
+            }
         }
     }
 }

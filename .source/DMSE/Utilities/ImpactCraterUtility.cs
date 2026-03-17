@@ -6,6 +6,7 @@ using Verse;
 
 namespace DMSE
 {
+    [StaticConstructorOnStartup]
     public static class ImpactCraterUtility
     {
         public static IImpactCraterService Service { get; private set; }
@@ -16,30 +17,17 @@ namespace DMSE
         }
 
         /// <summary>
-        /// WorldGenStep entry: apply configured craters by seed.
-        /// </summary>
-        public static int ApplyConfiguredCraters(string seedString, PlanetLayer layer, string mutatorDefName)
-        {
-            if (Service == null || layer == null || seedString.NullOrEmpty()) return 0;
-
-            TileMutatorDef mutatorDef = DefDatabase<TileMutatorDef>.GetNamedSilentFail(mutatorDefName);
-            if (mutatorDef == null)
-            {
-                Log.Warning($"[ImpactCrater] TileMutatorDef not found: {mutatorDefName}");
-                return 0;
-            }
-
-            return Service.ApplyToWorld(layer, seedString, mutatorDef);
-        }
-
-        /// <summary>
         /// Runtime: apply an impact crater mutator to a specific world tile.
         /// </summary>
         public static void ApplyImpactCraterAtTile(string shipName, int level, PlanetTile planetTile)
         {
             if (!planetTile.Valid) return;
             if (planetTile.LayerDef.isSpace) return;
-
+            if (Service == null)
+            {
+                Log.Warning("[DMSE] ImpactCraterUtility not initialized.");
+                return;
+            }
             // 記錄當前座標
             if (Service is ImpactCraterService craterService)
             {
@@ -50,7 +38,7 @@ namespace DMSE
                     craterName = "DMSE_Crater".Translate(shipName),
                     longitude = lonhLat.x,
                     latitude = lonhLat.y,
-                    radiusInTiles = level,
+                    radiusInTiles = 10 + level * 10,
                     enabled = true
                 });
             }
@@ -62,7 +50,8 @@ namespace DMSE
                 return;
             }
 
-            const int craterRadius = 10;
+            int craterRadius = 10;
+            craterRadius += level * 10; // 依撞擊等級調整坑半徑（可再微調）
 
             // 依撞擊等級調整坑深（可再微調）
             float craterDepth = Mathf.Clamp(120f + level * 100f, 120f, 450f);
@@ -73,62 +62,99 @@ namespace DMSE
             const float maxElevation = 5000f;
 
             List<PlanetTile> craterTiles = new List<PlanetTile>();
+            float centerBaseElevation = planetTile.Tile.elevation;
 
-            planetTile.Layer.Filler.FloodFill(planetTile, x => true, (tile, dist) =>
-            {
-                float radial = Find.WorldGrid.ApproxDistanceInTiles(planetTile, tile);
-                if (radial > craterRadius) return false;
+            planetTile.Layer.Filler.FloodFill(
+                planetTile,
+                x => Find.WorldGrid.ApproxDistanceInTiles(planetTile, x) <= craterRadius + 2f,
+                (tile, dist) =>
+                {
+                    float radial = Find.WorldGrid.ApproxDistanceInTiles(planetTile, tile);
+                    if (radial > craterRadius) return false;
 
-                craterTiles.Add(tile);
+                    craterTiles.Add(tile);
 
-                float n = Mathf.Clamp01(radial / craterRadius); // 0~1
-                float bowl = -craterDepth * Mathf.Pow(1f - n, 2f);
-                float rim = rimHeight * Mathf.Exp(-Mathf.Pow((n - 0.9f) / 0.08f, 2f));
-                float delta = bowl + rim;
+                    float n = Mathf.Clamp01(radial / craterRadius); // 0~1
+                    Tile worldTile = tile.Tile;
+                    float originalElevation = worldTile.elevation;
 
-                Tile worldTile = tile.Tile;
-                float newElevation = Mathf.Clamp(worldTile.elevation + delta, minElevation, maxElevation);
-                worldTile.elevation = newElevation;
+                    float bowl = -craterDepth * Mathf.Pow(1f - n, 2f);
+                    float rim = rimHeight * Mathf.Exp(-Mathf.Pow((n - 0.9f) / 0.08f, 2f));
+                    float delta = bowl + rim;
 
-                // 依新海拔重算地形等級（hilliness）
-                if (newElevation <= 0f)
-                {
-                    worldTile.hilliness = Hilliness.Flat;
-                }
-                else if (newElevation > 1000f)
-                {
-                    worldTile.hilliness = Hilliness.Impassable;
-                }
-                else if (newElevation > 500f)
-                {
-                    worldTile.hilliness = Hilliness.Mountainous;
-                }
-                else if (newElevation > 250f)
-                {
-                    worldTile.hilliness = Hilliness.LargeHills;
-                }
-                else if (newElevation > 15f)
-                {
-                    worldTile.hilliness = Hilliness.SmallHills;
-                }
-                else
-                {
-                    worldTile.hilliness = Hilliness.Flat;
-                }
+                    // 外拋搬運：中心剝蝕、外圈堆積
+                    float transportStrength = Mathf.Clamp01(level / 5f);
+                    float relief = Mathf.Max(0f, originalElevation - centerBaseElevation); // 只搬運高地量
+                    float outwardTransport = 0f;
 
-                if (newElevation <= 0f)
-                {
-                    worldTile.PrimaryBiome = BiomeDefOf.Lake;
-                    if (!worldTile.Mutators.Contains(TileMutatorDefOf.Lakeshore))
-                        worldTile.AddMutator(TileMutatorDefOf.Lakeshore);
-                }
-                else
-                {
-                    worldTile.PrimaryBiome = lavaBiome;
-                }
+                    // 內圈（0~0.7）：把原地形向外「挖走」
+                    if (n < 0.7f)
+                    {
+                        outwardTransport -= relief * (1f - n / 0.7f) * 0.55f * transportStrength;
+                    }
+                    // 外圈（0.7~1.0）：把地形「堆到外圍」
+                    else
+                    {
+                        outwardTransport += relief * ((n - 0.7f) / 0.3f) * 0.35f * transportStrength;
+                    }
 
-                return false;
-            });
+                    // 外圍再加一圈噴發堆積，增加「被推向外圍」視覺
+                    if (n >= 0.75f)
+                    {
+                        outwardTransport += Mathf.Lerp(0f, craterDepth * 0.18f, (n - 0.75f) / 0.25f) * transportStrength;
+                    }
+
+                    float newElevation = Mathf.Clamp(originalElevation + delta + outwardTransport, minElevation, maxElevation);
+
+                    // 核心區強制壓平：確保中心可移平原有山脈
+                    float coreRadius = Mathf.Max(2f, craterRadius * 0.2f);
+                    if (radial <= coreRadius)
+                    {
+                        // 越靠中心壓得越平，中心目標高度約 6（一定是 Flat）
+                        float core01 = 1f - Mathf.Clamp01(radial / coreRadius);
+                        float targetFlatElevation = Mathf.Lerp(20f, 6f, core01);
+                        newElevation = Mathf.Min(newElevation, targetFlatElevation);
+                    }
+
+                    worldTile.elevation = newElevation;
+
+                    // 依新海拔重算地形等級（hilliness）
+                    if (newElevation <= 0f)
+                    {
+                        worldTile.hilliness = Hilliness.Flat;
+                    }
+                    else if (newElevation > 1000f)
+                    {
+                        worldTile.hilliness = Hilliness.Impassable;
+                    }
+                    else if (newElevation > 500f)
+                    {
+                        worldTile.hilliness = Hilliness.Mountainous;
+                    }
+                    else if (newElevation > 250f)
+                    {
+                        worldTile.hilliness = Hilliness.LargeHills;
+                    }
+                    else if (newElevation > 15f)
+                    {
+                        worldTile.hilliness = Hilliness.SmallHills;
+                    }
+                    else
+                    {
+                        worldTile.hilliness = Hilliness.Flat;
+                    }
+
+                    if (newElevation <= 0f)
+                    {
+                        TryAddLakeshoreMutator(worldTile);
+                    }
+                    else
+                    {
+                        worldTile.PrimaryBiome = lavaBiome;
+                    }
+
+                    return false;
+                });
 
             if (planetTile.Layer.IsRootSurface)
             {
@@ -150,7 +176,7 @@ namespace DMSE
                     // 移除河流相關 mutator，避免 TileMutatorWorker_River.GetLabel() 讀取 Rivers[0] 時 NRE
                     if (tileData.mutatorsNullable != null)
                     {
-                        tileData.mutatorsNullable.RemoveAll(m => m != null && m.Worker is TileMutatorWorker_River);
+                        tileData.mutatorsNullable = null; // 坑內地形突變太多，直接清空 mutators，避免殘留不適用的 mutator 造成 NRE
                     }
                     NormalizeSurfaceTileLinksAndMutators(tileData);
                 }
@@ -193,8 +219,9 @@ namespace DMSE
                 if (settlement.Tile.Layer != planetTile.Layer) continue; // 同層才計算
 
                 float dist = Find.WorldGrid.ApproxDistanceInTiles(planetTile, settlement.Tile);
-                if (dist >= 20f && dist <= 30f)
+                if (dist <= 200f)
                 {
+                    if (Rand.Chance(dist / 200)) continue;
                     toDestroy.Add(settlement);
                 }
             }
@@ -245,6 +272,103 @@ namespace DMSE
             {
                 tileData.mutatorsNullable.RemoveAll(m => m != null && m.Worker is TileMutatorWorker_River);
             }
+        }
+
+        public static void TryAddLakeshoreMutator(Tile tile)
+        {
+            if (tile == null) return;
+
+            TileMutatorDef lakeshore = TileMutatorDefOf.Lakeshore;
+            if (lakeshore == null) return;
+
+            if (tile.Mutators != null)
+            {
+                if (tile.Mutators.Contains(lakeshore)) return;
+
+                for (int i = 0; i < tile.Mutators.Count; i++)
+                {
+                    TileMutatorDef m = tile.Mutators[i];
+                    if (m == null || m.categories == null) continue;
+
+                    // 已有任一 Coast 類別 mutator（如 CoastalIsland）就不要再加 Lakeshore
+                    if (m.categories.Contains("Coast"))
+                        return;
+                }
+            }
+
+            tile.AddMutator(lakeshore);
+        }
+        public static float GetRiverErosionFactor(PlanetLayer layer, PlanetTile tile)
+        {
+            int score = 0;
+            int total = 0;
+
+            SurfaceTile self = tile.Tile as SurfaceTile;
+            if (self != null)
+            {
+                total += 3;
+                if (self.potentialRivers != null && self.potentialRivers.Count > 0)
+                    score += 3;
+            }
+
+            List<PlanetTile> ns = new List<PlanetTile>(8);
+            layer.GetTileNeighbors(tile, ns);
+            for (int i = 0; i < ns.Count; i++)
+            {
+                total += 1;
+                SurfaceTile st = ns[i].Tile as SurfaceTile;
+                if (st != null && st.potentialRivers != null && st.potentialRivers.Count > 0)
+                    score += 1;
+            }
+
+            if (total <= 0) return 0f;
+            return Mathf.Clamp01((float)score / total);
+        }
+
+        public static Hilliness RecalculateHillinessFromElevation(float elevation)
+        {
+            if (elevation <= 0f) return Hilliness.Flat;
+            if (elevation > 1000f) return Hilliness.Impassable;
+            if (elevation > 500f) return Hilliness.Mountainous;
+            if (elevation > 250f) return Hilliness.LargeHills;
+            if (elevation > 15f) return Hilliness.SmallHills;
+            return Hilliness.Flat;
+        }
+
+        public static BiomeDef GetClimateBiomeForTile(Tile t)
+        {
+            float temp = t.temperature;
+            float rain = t.rainfall;
+
+            // 寒冷帶
+            if (temp < -5f)
+                return DefDatabase<BiomeDef>.GetNamedSilentFail("Tundra");
+
+            if (temp < 8f)
+                return rain > 700f
+                    ? DefDatabase<BiomeDef>.GetNamedSilentFail("BorealForest")
+                    : DefDatabase<BiomeDef>.GetNamedSilentFail("Tundra");
+
+            // 溫帶
+            if (temp < 20f)
+            {
+                if (rain > 1400f) return DefDatabase<BiomeDef>.GetNamedSilentFail("TemperateSwamp");
+                if (rain > 700f) return DefDatabase<BiomeDef>.GetNamedSilentFail("TemperateForest");
+                return DefDatabase<BiomeDef>.GetNamedSilentFail("Grasslands");
+            }
+
+            // 熱帶/乾熱帶
+            if (temp < 30f)
+            {
+                if (rain > 1600f) return DefDatabase<BiomeDef>.GetNamedSilentFail("TropicalRainforest");
+                if (rain > 900f) return DefDatabase<BiomeDef>.GetNamedSilentFail("TropicalSwamp");
+                return DefDatabase<BiomeDef>.GetNamedSilentFail("AridShrubland");
+            }
+
+            // 極熱
+            return rain < 300f
+                ? DefDatabase<BiomeDef>.GetNamedSilentFail("ExtremeDesert")
+                : DefDatabase<BiomeDef>.GetNamedSilentFail("Desert");
         }
     }
 }

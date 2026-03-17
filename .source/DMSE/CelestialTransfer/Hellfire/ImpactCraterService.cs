@@ -187,8 +187,8 @@ namespace DMSE
 
         public void AddRecord(ImpactCraterRecord record)
         {
-            if (record == null) return;
-            settings.records.Add(record);
+            AddOrUpdate(record); // 內含 settings.Write()
+            Log.Message($"Added/Updated crater record: {record.planetSeedString} - {record.craterName}");
         }
     }
 }

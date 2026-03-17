@@ -44,6 +44,7 @@
     <Compile Include="CelestialTransfer\Hellfire\ImpactCraterRecord.cs" />
     <Compile Include="CelestialTransfer\Hellfire\ImpactCraterService.cs" />
     <Compile Include="CelestialTransfer\Hellfire\WorldObject_ImpactGravship.cs" />
+    <Compile Include="DMSEMod.cs" />
     <Compile Include="Utilities\ImpactCraterUtility.cs" />
     <Compile Include="CelestialTransfer\Hellfire\PlayerConfigSettings.cs" />
     <Compile Include="CelestialTransfer\Hellfire\WorldGenStep_ImpactCraters.cs" />

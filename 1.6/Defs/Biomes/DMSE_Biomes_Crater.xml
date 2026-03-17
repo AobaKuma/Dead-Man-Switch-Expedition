@@ -2,7 +2,7 @@
 <Defs>
     <WorldGenStepDef>
         <defName>DMSE_ImpactCraterBiomeOverlay</defName>
-        <order>710</order>
+        <order>210</order>
         <worldGenStep Class="DMSE.WorldGenStep_ImpactCrater" />
     </WorldGenStepDef>
 
