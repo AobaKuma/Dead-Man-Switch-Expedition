@@ -100,6 +100,7 @@ namespace DMSE
             {
                 var wo = (WorldObject_ImpactGravship)WorldObjectMaker.MakeWorldObject(DMSE_DefOf.DMSE_ImpactGravship);
                 wo.Setup(curTile, target);
+                wo.worldObject = comp.parent.Map.Parent;
                 Find.World.worldObjects.Add(wo);
                 InitShipMapComponent(comp, wo);
             }
@@ -107,6 +108,7 @@ namespace DMSE
             {
                 var wo = (WorldObject_Transfer)WorldObjectMaker.MakeWorldObject(DMSE_DefOf.DMSE_TransferGravShip);
                 wo.Setup(curTile, target);
+                wo.worldObject = comp.parent.Map.Parent;
                 Find.World.worldObjects.Add(wo);
                 InitShipMapComponent(comp, wo);
             }

@@ -107,12 +107,12 @@ namespace DMSE
             Scribe_Values.Look(ref progressAtWorkStart, "progressAtWorkStart");
             Scribe_Values.Look(ref initialTile, "initialTile");
 
-            WorldObject shipWO = shipWorldObject as WorldObject;
+            WorldObject shipWO = shipWorldObject;
             Scribe_References.Look(ref shipWO, "shipWorldObject");
             if (Scribe.mode == LoadSaveMode.LoadingVars)
                 shipWorldObject = shipWO as TravelingObject;
 
-            WorldObject pendingWO = pendingShipWorldObject as WorldObject;
+            WorldObject pendingWO = pendingShipWorldObject;
             Scribe_References.Look(ref pendingWO, "pendingShipWorldObject");
             if (Scribe.mode == LoadSaveMode.LoadingVars)
                 pendingShipWorldObject = pendingWO as TravelingObject;

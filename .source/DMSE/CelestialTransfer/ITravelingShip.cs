@@ -7,7 +7,6 @@ namespace DMSE
     {
         PlanetTile start { get; set; }
         PlanetTile end { get; set; }
-        float progress { get; }
         Vector3 DrawPos { get; }
     }
 }
