@@ -1,14 +1,13 @@
 using RimWorld.Planet;
-using Verse;
+using UnityEngine;
 
 namespace DMSE
 {
     public interface ITravelingShip
     {
-        WorldObject WO { get; set; }
-        float progress { get; set; }
-        PlanetTile destinationTile { get; }
-        void Setup(PlanetTile origin, PlanetTile destination);
-        void Arrive();
+        PlanetTile start { get; set; }
+        PlanetTile end { get; set; }
+        float progress { get; }
+        Vector3 DrawPos { get; }
     }
 }

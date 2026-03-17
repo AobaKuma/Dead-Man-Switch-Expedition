@@ -112,7 +112,7 @@ namespace DMSE
             }
         }
 
-        private static void InitShipMapComponent(CompPilotConsole comp, ITravelingShip wo)
+        private static void InitShipMapComponent(CompPilotConsole comp, TravelingObject wo)
         {
             MapComponent_Ship mc = comp.parent.Map.GetComponent<MapComponent_Ship>();
             mc.status = OrbitalTransferState.Working;

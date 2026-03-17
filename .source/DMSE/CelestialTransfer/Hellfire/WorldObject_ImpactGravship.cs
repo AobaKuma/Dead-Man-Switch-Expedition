@@ -8,51 +8,103 @@ using Verse;
 
 namespace DMSE
 {
-    public class WorldObject_ImpactGravship : WorldObject, ITravelingShip
+    public class WorldObject_ImpactGravship : TravelingObject
     {
+        public Map sourceMap;
+
         private float traveledPct;
-        private PlanetTile initialTile = PlanetTile.Invalid;
-        private PlanetTile destTile = PlanetTile.Invalid;
 
-        // 新增：紀錄引擎，供撞擊時計算 Thruster 數量
-        public Building_GravEngine engine;
+        private const float TravelSpeed = 0.00035f;
+        private const float ScreenFadeSeconds = 5f;
 
-        public float progress
-        {
-            get => traveledPct;
-            set => traveledPct = value;
-        }
+        private Vector3 Start => Find.WorldGrid.GetTileCenter(_start);
+        private Vector3 End => Find.WorldGrid.GetTileCenter(_end);
 
-        public PlanetTile destinationTile => destTile;
-
-        private Vector3 Start => Find.WorldGrid.GetTileCenter(initialTile);
-        private Vector3 End => Find.WorldGrid.GetTileCenter(destTile);
         public override Vector3 DrawPos => Vector3.Slerp(Start, End, traveledPct);
 
-        public WorldObject WO { get => wo; set => wo = value; }
-        private WorldObject wo;
-
-        public void Setup(PlanetTile origin, PlanetTile destination)
+        private float TraveledPctStepPerTick
         {
-            initialTile = origin;
-            destTile = destination;
-            traveledPct = 0f;
-            Tile = origin;
+            get
+            {
+                Vector3 a = Start;
+                Vector3 b = End;
+                if (a == b) return 1f;
+                float dist = GenMath.SphericalDistance(a.normalized, b.normalized);
+                if (dist == 0f) return 1f;
+                return TravelSpeed / dist;
+            }
         }
 
-        public void Arrive()
+        protected override void TickInterval(int delta)
         {
-            if (Spawned)
-                Find.WorldObjects.Remove(this);
+            base.TickInterval(delta);
+            traveledPct += TraveledPctStepPerTick * delta;
+            if (traveledPct >= 1f)
+            {
+                traveledPct = 1f;
+                Arrive();
+            }
         }
-
 
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Values.Look(ref traveledPct, "traveledPct");
-            Scribe_Values.Look(ref initialTile, "initialTile");
-            Scribe_Values.Look(ref destTile, "destTile");
+            Scribe_Values.Look(ref _start, "start");
+            Scribe_Values.Look(ref _end, "end");
+            Scribe_Values.Look(ref traveledPct, "traveledPct", 0f);
+            Scribe_References.Look(ref sourceMap, "sourceMap");
+        }
+
+        public override void Setup(PlanetTile origin, PlanetTile destination)
+        {
+            _start = origin;
+            _end = destination;
+            traveledPct = 0f;
+            Tile = origin;
+        }
+
+        public override void Arrive()
+        {
+            if (_end.Valid && !_end.LayerDef.isSpace)
+            {
+                ImpactCraterUtility.ApplyImpactCraterAtTile(_end);
+            }
+
+            Settlement settlement = Find.WorldObjects.SettlementAt(_end);
+            if (settlement != null && settlement.Faction != Faction.OfPlayer)
+            {
+                DestroyedSettlement ds = (DestroyedSettlement)WorldObjectMaker.MakeWorldObject(
+                    settlement.Tile.LayerDef.DestroyedSettlementWorldObjectDef);
+                ds.Tile = settlement.Tile;
+                ds.SetFaction(settlement.Faction);
+                Find.WorldObjects.Add(ds);
+                settlement.Destroy();
+            }
+
+            StringBuilder sbEscapees = new StringBuilder();
+            List<Pawn> aboard = new List<Pawn>();
+            if (sourceMap != null)
+            {
+                foreach (Pawn p in sourceMap.mapPawns.FreeColonistsSpawned.ToList())
+                {
+                    aboard.Add(p);
+                    sbEscapees.AppendLine("   " + p.LabelCap);
+                }
+            }
+
+            string credits = GameVictoryUtility.MakeEndCredits(
+                "DMSE.Impact.Ending.Intro".Translate(),
+                "DMSE.Impact.Ending.Outro".Translate(),
+                sbEscapees.ToString(),
+                "DMSE.Impact.Ending.Aboard",
+                aboard);
+
+            ScreenFader.StartFade(Color.white, ScreenFadeSeconds);
+            GameVictoryUtility.ShowCredits(credits, SongDefOf.EndCreditsSong,
+                exitToMainMenu: true, songStartDelay: ScreenFadeSeconds);
+
+            if (!Destroyed)
+                Destroy();
         }
     }
 }

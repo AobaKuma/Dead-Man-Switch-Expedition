@@ -90,7 +90,7 @@ namespace DMSE
 
             // 簡短說明
             curY += LineGap;
-            string desc = "DMSE.Flight.Select.Desc".Translate(); // 建議在語系檔中加入此 key
+            string desc = "DMSE.Flight.Select.Desc".Translate();
             Widgets.Label(new Rect(rect.x, curY, width, 32f), desc);
             curY += 32f + SectionGap;
 

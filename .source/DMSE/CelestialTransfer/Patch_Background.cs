@@ -9,14 +9,11 @@ namespace DMSE
     public class Patch_Background
     {
         [HarmonyPostfix]
-        public static void postfix(WorldCameraDriver __instance)
+        public static void Postfix(WorldCameraDriver __instance)
         {
-            if (Find.CurrentMap != null && Patch_Visible.WO.Any()
-                && Patch_Visible.WO.Find(w => w.worldObject == Find.CurrentMap.Parent)
-                is WorldObject_Transfer wo)
+            if (Find.CurrentMap != null && Patch_Visible.WO.Any() && Patch_Visible.WO.Find(w => w.worldObject == Find.CurrentMap.Parent) is WorldObject_Transfer wo)
             {
-                Camera c = (Camera)AccessTools.Property(typeof(WorldCameraDriver), "MyCamera")
-                    .GetValue(__instance);
+                Camera c = (Camera)AccessTools.Property(typeof(WorldCameraDriver), "MyCamera").GetValue(__instance);
                 Vector3 vector = wo.DrawPos;
                 Vector3 vector2 = -vector.normalized;
                 vector += -vector2 * wo.Tile.Layer.BackgroundWorldCameraOffset;
@@ -50,7 +47,5 @@ namespace DMSE
                 transform.position = vector + b + b2 + wo.Tile.Layer.Origin;
             }
         }
-
     }
-
 }

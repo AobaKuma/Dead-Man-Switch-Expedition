@@ -11,20 +11,36 @@
       "RelativeMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|solutionrelative:dmse\\celestialtransfer\\worldobject_transfer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\dmse\\celestialtransfer\\itravelingship.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|solutionrelative:dmse\\celestialtransfer\\itravelingship.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\dmse\\celestialtransfer\\dialog_selectflightmode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|solutionrelative:dmse\\celestialtransfer\\dialog_selectflightmode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\dmse\\celestialtransfer\\patch_background.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|solutionrelative:dmse\\celestialtransfer\\patch_background.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\dmse\\celestialtransfer\\patch_visible.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|solutionrelative:dmse\\celestialtransfer\\patch_visible.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\_dead-man-switch-expedition\\.source\\dmse\\celestialtransfer\\flightmodelauncher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|solutionrelative:dmse\\celestialtransfer\\flightmodelauncher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\dmse\\celestialtransfer\\hellfire\\worldobject_impactgravship.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|solutionrelative:dmse\\celestialtransfer\\hellfire\\worldobject_impactgravship.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\_dead-man-switch-expedition\\.source\\dmse\\celestialtransfer\\itravelingship.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|solutionrelative:dmse\\celestialtransfer\\itravelingship.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\dmse\\celestialtransfer\\patch_visible.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|solutionrelative:dmse\\celestialtransfer\\patch_visible.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\dmse\\celestialtransfer\\patch_comppilotconsole_startchoosingdestination.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|solutionrelative:dmse\\celestialtransfer\\patch_comppilotconsole_startchoosingdestination.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\dmse\\celestialtransfer\\flightutility.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|solutionrelative:dmse\\celestialtransfer\\flightutility.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\dmse\\celestialtransfer\\hellfire\\worldgenstep_impactcraters.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -35,24 +51,8 @@
       "RelativeMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|solutionrelative:dmse\\celestialtransfer\\patch_compgravshipfacility_canbeactive.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\dmse\\celestialtransfer\\dialog_selectflightmode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|solutionrelative:dmse\\celestialtransfer\\dialog_selectflightmode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\dmse\\celestialtransfer\\hellfire\\impactcraterservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|solutionrelative:dmse\\celestialtransfer\\hellfire\\impactcraterservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\dmse\\celestialtransfer\\flightutility.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|solutionrelative:dmse\\celestialtransfer\\flightutility.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\dmse\\celestialtransfer\\patch_comppilotconsole_startchoosingdestination.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|solutionrelative:dmse\\celestialtransfer\\patch_comppilotconsole_startchoosingdestination.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\dmse\\celestialtransfer\\thingcomp_ship.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|solutionrelative:dmse\\celestialtransfer\\thingcomp_ship.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\dmse\\utilities\\impactcraterutility.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -201,9 +201,22 @@
               "RelativeDocumentMoniker": "DMSE\\CelestialTransfer\\MapComponent_Ship.cs",
               "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\DMSE\\CelestialTransfer\\MapComponent_Ship.cs",
               "RelativeToolTip": "DMSE\\CelestialTransfer\\MapComponent_Ship.cs",
-              "ViewState": "AgIAADsAAAAAAAAAAAAUwEsAAAAvAAAAAAAAAA==",
+              "ViewState": "AgIAAL4AAAAAAAAAAAAgwNUAAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-16T16:21:57.228Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Dialog_SelectFlightMode.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\DMSE\\CelestialTransfer\\Dialog_SelectFlightMode.cs",
+              "RelativeDocumentMoniker": "DMSE\\CelestialTransfer\\Dialog_SelectFlightMode.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\DMSE\\CelestialTransfer\\Dialog_SelectFlightMode.cs",
+              "RelativeToolTip": "DMSE\\CelestialTransfer\\Dialog_SelectFlightMode.cs",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAuwFwAAABAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-17T03:58:01.281Z",
               "EditorCaption": ""
             },
             {
@@ -214,21 +227,10 @@
               "RelativeDocumentMoniker": "DMSE\\CelestialTransfer\\Patch_Background.cs",
               "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\DMSE\\CelestialTransfer\\Patch_Background.cs",
               "RelativeToolTip": "DMSE\\CelestialTransfer\\Patch_Background.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAA0wBUAAAAmAAAAAAAAAA==",
+              "ViewState": "AgIAABAAAAAAAAAAAAAkwCAAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-17T06:21:48.242Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Patch_Visible.cs",
-              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\DMSE\\CelestialTransfer\\Patch_Visible.cs",
-              "RelativeDocumentMoniker": "DMSE\\CelestialTransfer\\Patch_Visible.cs",
-              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\DMSE\\CelestialTransfer\\Patch_Visible.cs",
-              "RelativeToolTip": "DMSE\\CelestialTransfer\\Patch_Visible.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAgAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-17T08:13:47.179Z"
+              "WhenOpened": "2026-03-17T06:21:48.242Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -238,22 +240,27 @@
               "RelativeDocumentMoniker": "DMSE\\CelestialTransfer\\WorldObject_Transfer.cs",
               "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\DMSE\\CelestialTransfer\\WorldObject_Transfer.cs",
               "RelativeToolTip": "DMSE\\CelestialTransfer\\WorldObject_Transfer.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAUwB4AAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAABcAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-31T05:31:57.891Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ITravelingShip.cs",
-              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\DMSE\\CelestialTransfer\\ITravelingShip.cs",
-              "RelativeDocumentMoniker": "DMSE\\CelestialTransfer\\ITravelingShip.cs",
-              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\DMSE\\CelestialTransfer\\ITravelingShip.cs",
-              "RelativeToolTip": "DMSE\\CelestialTransfer\\ITravelingShip.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAYAAAAFAAAAAAAAAA==",
+              "DocumentIndex": 4,
+              "Title": "FlightModeLauncher.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\DMSE\\CelestialTransfer\\FlightModeLauncher.cs",
+              "RelativeDocumentMoniker": "DMSE\\CelestialTransfer\\FlightModeLauncher.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\DMSE\\CelestialTransfer\\FlightModeLauncher.cs",
+              "RelativeToolTip": "DMSE\\CelestialTransfer\\FlightModeLauncher.cs",
+              "ViewState": "AgIAAFQAAAAAAAAAAAAAACcAAABDAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-17T08:10:22.961Z"
+              "WhenOpened": "2026-03-17T08:45:35.574Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
             },
             {
               "$type": "Document",
@@ -263,13 +270,66 @@
               "RelativeDocumentMoniker": "DMSE\\CelestialTransfer\\Hellfire\\WorldObject_ImpactGravship.cs",
               "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\DMSE\\CelestialTransfer\\Hellfire\\WorldObject_ImpactGravship.cs",
               "RelativeToolTip": "DMSE\\CelestialTransfer\\Hellfire\\WorldObject_ImpactGravship.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAFAAAAAAAAAA==",
+              "ViewState": "AgIAAFcAAAAAAAAAAAAYwG0AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-16T15:56:04.254Z"
+              "WhenOpened": "2026-03-16T15:56:04.254Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 6,
+              "Title": "ITravelingShip.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\DMSE\\CelestialTransfer\\ITravelingShip.cs",
+              "RelativeDocumentMoniker": "DMSE\\CelestialTransfer\\ITravelingShip.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\DMSE\\CelestialTransfer\\ITravelingShip.cs",
+              "RelativeToolTip": "DMSE\\CelestialTransfer\\ITravelingShip.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-17T11:22:15.408Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Patch_Visible.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\DMSE\\CelestialTransfer\\Patch_Visible.cs",
+              "RelativeDocumentMoniker": "DMSE\\CelestialTransfer\\Patch_Visible.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\DMSE\\CelestialTransfer\\Patch_Visible.cs",
+              "RelativeToolTip": "DMSE\\CelestialTransfer\\Patch_Visible.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADIAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-17T08:13:47.179Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "FlightUtility.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\DMSE\\CelestialTransfer\\FlightUtility.cs",
+              "RelativeDocumentMoniker": "DMSE\\CelestialTransfer\\FlightUtility.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\DMSE\\CelestialTransfer\\FlightUtility.cs",
+              "RelativeToolTip": "DMSE\\CelestialTransfer\\FlightUtility.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-15T12:31:54.404Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Patch_CompPilotConsole_StartChoosingDestination.cs",
+              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\DMSE\\CelestialTransfer\\Patch_CompPilotConsole_StartChoosingDestination.cs",
+              "RelativeDocumentMoniker": "DMSE\\CelestialTransfer\\Patch_CompPilotConsole_StartChoosingDestination.cs",
+              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\DMSE\\CelestialTransfer\\Patch_CompPilotConsole_StartChoosingDestination.cs",
+              "RelativeToolTip": "DMSE\\CelestialTransfer\\Patch_CompPilotConsole_StartChoosingDestination.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAkwB8AAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-16T07:29:27.503Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
               "Title": "WorldGenStep_ImpactCraters.cs",
               "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\DMSE\\CelestialTransfer\\Hellfire\\WorldGenStep_ImpactCraters.cs",
               "RelativeDocumentMoniker": "DMSE\\CelestialTransfer\\Hellfire\\WorldGenStep_ImpactCraters.cs",
@@ -281,7 +341,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 11,
               "Title": "Patch_CompGravshipFacility_CanBeActive.cs",
               "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\DMSE\\CelestialTransfer\\Patch_CompGravshipFacility_CanBeActive.cs",
               "RelativeDocumentMoniker": "DMSE\\CelestialTransfer\\Patch_CompGravshipFacility_CanBeActive.cs",
@@ -293,19 +353,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "Dialog_SelectFlightMode.cs",
-              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\DMSE\\CelestialTransfer\\Dialog_SelectFlightMode.cs",
-              "RelativeDocumentMoniker": "DMSE\\CelestialTransfer\\Dialog_SelectFlightMode.cs",
-              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\DMSE\\CelestialTransfer\\Dialog_SelectFlightMode.cs",
-              "RelativeToolTip": "DMSE\\CelestialTransfer\\Dialog_SelectFlightMode.cs",
-              "ViewState": "AgIAAEwAAAAAAAAAAAAkwJgAAABHAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-17T03:58:01.281Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 12,
               "Title": "ImpactCraterService.cs",
               "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\DMSE\\CelestialTransfer\\Hellfire\\ImpactCraterService.cs",
               "RelativeDocumentMoniker": "DMSE\\CelestialTransfer\\Hellfire\\ImpactCraterService.cs",
@@ -314,42 +362,6 @@
               "ViewState": "AgIAAAMAAAAAAAAAAAAAAA0AAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-16T07:03:19.434Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "FlightUtility.cs",
-              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\DMSE\\CelestialTransfer\\FlightUtility.cs",
-              "RelativeDocumentMoniker": "DMSE\\CelestialTransfer\\FlightUtility.cs",
-              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\DMSE\\CelestialTransfer\\FlightUtility.cs",
-              "RelativeToolTip": "DMSE\\CelestialTransfer\\FlightUtility.cs",
-              "ViewState": "AgIAAHIAAAAAAAAAAAAAAIMAAABNAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-15T12:31:54.404Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "Patch_CompPilotConsole_StartChoosingDestination.cs",
-              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\DMSE\\CelestialTransfer\\Patch_CompPilotConsole_StartChoosingDestination.cs",
-              "RelativeDocumentMoniker": "DMSE\\CelestialTransfer\\Patch_CompPilotConsole_StartChoosingDestination.cs",
-              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\DMSE\\CelestialTransfer\\Patch_CompPilotConsole_StartChoosingDestination.cs",
-              "RelativeToolTip": "DMSE\\CelestialTransfer\\Patch_CompPilotConsole_StartChoosingDestination.cs",
-              "ViewState": "AgIAAAUAAAAAAAAAAAAkwBQAAAAkAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-16T07:29:27.503Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "ThingComp_Ship.cs",
-              "DocumentMoniker": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\DMSE\\CelestialTransfer\\ThingComp_Ship.cs",
-              "RelativeDocumentMoniker": "DMSE\\CelestialTransfer\\ThingComp_Ship.cs",
-              "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\DMSE\\CelestialTransfer\\ThingComp_Ship.cs",
-              "RelativeToolTip": "DMSE\\CelestialTransfer\\ThingComp_Ship.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-31T10:49:25.831Z"
             },
             {
               "$type": "Document",

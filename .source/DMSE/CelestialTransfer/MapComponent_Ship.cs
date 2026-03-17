@@ -18,7 +18,7 @@ namespace DMSE
     {
         // ── Serialized state ──────────────────────────────────────────────────
         public OrbitalTransferState status = OrbitalTransferState.Idle;
-        public ITravelingShip shipWorldObject;
+        public TravelingObject shipWorldObject;
         public List<Thing> thrusterPlacements = new List<Thing>();
 
         // ── Warm-up bookkeeping ───────────────────────────────────────────────
@@ -26,16 +26,10 @@ namespace DMSE
         private int warmUpTicksRemaining = 0;
         private float progressAtWorkStart = 0f;
         private List<Thing> pendingThrusters = new List<Thing>();
-        private ITravelingShip pendingShipWorldObject;
+        private TravelingObject pendingShipWorldObject;
 
         // ── Travel ────────────────────────────────────────────────────────────
         private PlanetTile initialTile = PlanetTile.Invalid;
-        private const float TravelSpeed = 0.00025f;
-
-        // ── Camera lerp ───────────────────────────────────────────────────────
-        private const float CameraLerpDuration = 2f;
-        private float cameraLerpProgress = 1f;
-        private Quaternion cameraLerpStartRotation = Quaternion.identity;
 
         // ── Rendering ─────────────────────────────────────────────────────────
         private MaterialPropertyBlock thrusterFlameBlock = new MaterialPropertyBlock();
@@ -66,7 +60,6 @@ namespace DMSE
             var engineThings = map.listerThings.ThingsOfDef(ThingDefOf.GravEngine);
             if (engineThings.Count == 0)
             {
-                Log.Warning("[DMSE] MapComponent_Ship.FinalizeInit: no GravEngine found on map — resetting state.");
                 status = OrbitalTransferState.Idle;
                 return;
             }
@@ -78,39 +71,6 @@ namespace DMSE
                     t.TryGetComp<CompGravshipFacility>().Props.componentTypeDef == DMSE_DefOf.DMSE_TransferThruster);
 
             Init(facilities, shipWorldObject);
-        }
-
-        public override void MapComponentUpdate()
-        {
-            base.MapComponentUpdate();
-
-            if (status != OrbitalTransferState.Working
-                || shipWorldObject == null
-                || exhaustFleckSystem == null
-                || Find.CurrentMap != map
-                || !WorldRendererUtility.DrawingMap)
-                return;
-
-            float rawProgress = shipWorldObject.progress;
-            float remapped = (rawProgress - progressAtWorkStart)
-                / Mathf.Max(1f - progressAtWorkStart, 0.0001f);
-            Draw(Mathf.Clamp01(1f - remapped));
-
-            WorldCameraDriver cam = Find.WorldCameraDriver;
-            Vector3 shipPos = ((WorldObject)shipWorldObject).DrawPos;
-            Quaternion targetRotation = Quaternion.Inverse(Quaternion.LookRotation(-shipPos.normalized));
-
-            if (cameraLerpProgress < 1f)
-            {
-                cameraLerpProgress = Mathf.Min(
-                    cameraLerpProgress + Time.deltaTime / CameraLerpDuration, 1f);
-                float t = cameraLerpProgress * cameraLerpProgress * (3f - 2f * cameraLerpProgress);
-                cam.sphereRotation = Quaternion.Slerp(cameraLerpStartRotation, targetRotation, t);
-            }
-            else
-            {
-                cam.sphereRotation = targetRotation;
-            }
         }
 
         public override void MapComponentTick()
@@ -146,18 +106,16 @@ namespace DMSE
             Scribe_Values.Look(ref warmUpTicksRemaining, "warmUpTicksRemaining");
             Scribe_Values.Look(ref progressAtWorkStart, "progressAtWorkStart");
             Scribe_Values.Look(ref initialTile, "initialTile");
-            Scribe_Values.Look(ref cameraLerpProgress, "cameraLerpProgress", 1f);
-            Scribe_Values.Look(ref cameraLerpStartRotation, "cameraLerpStartRotation", Quaternion.identity);
 
             WorldObject shipWO = shipWorldObject as WorldObject;
             Scribe_References.Look(ref shipWO, "shipWorldObject");
             if (Scribe.mode == LoadSaveMode.LoadingVars)
-                shipWorldObject = shipWO as ITravelingShip;
+                shipWorldObject = shipWO as TravelingObject;
 
             WorldObject pendingWO = pendingShipWorldObject as WorldObject;
             Scribe_References.Look(ref pendingWO, "pendingShipWorldObject");
             if (Scribe.mode == LoadSaveMode.LoadingVars)
-                pendingShipWorldObject = pendingWO as ITravelingShip;
+                pendingShipWorldObject = pendingWO as TravelingObject;
 
             Scribe_Collections.Look(ref thrusterPlacements, "thrusterPlacements", LookMode.Reference);
             Scribe_Collections.Look(ref pendingThrusters, "pendingThrusters", LookMode.Reference);
@@ -170,7 +128,7 @@ namespace DMSE
         }
 
         // ── Public API ────────────────────────────────────────────────────────
-        public void StartWarmUp(Thing core, List<Thing> thrusters, ITravelingShip wo)
+        public void StartWarmUp(Thing core, List<Thing> thrusters, TravelingObject wo)
         {
             pendingThrusters = thrusters;
             pendingShipWorldObject = wo;
@@ -188,7 +146,7 @@ namespace DMSE
                 historical: false);
         }
 
-        public void Init(List<Thing> thrusters, ITravelingShip wo)
+        public void Init(List<Thing> thrusters, TravelingObject wo)
         {
             thrusterPlacements = thrusters;
             shipWorldObject = wo;
@@ -251,35 +209,17 @@ namespace DMSE
 
             if (warmUpTicksRemaining > 0)
                 return;
-
-            progressAtWorkStart = pendingShipWorldObject.progress;
-            cameraLerpStartRotation = Find.WorldCameraDriver.sphereRotation;
-            cameraLerpProgress = 0f;
-            initialTile = ((WorldObject)pendingShipWorldObject).Tile;
+            pendingShipWorldObject.StartTraveling();
+            initialTile = (pendingShipWorldObject).Tile;
+            status = OrbitalTransferState.Working;
             Init(pendingThrusters, pendingShipWorldObject);
             pendingThrusters.Clear();
             pendingShipWorldObject = null;
-            status = OrbitalTransferState.Working;
         }
 
         private void TickWorking()
         {
             Find.CameraDriver.shaker.DoShake(0.1f);
-
-            // ── Drive travel progress ─────────────────────────────────
-            if (shipWorldObject != null)
-            {
-                float step = ComputeTravelStep();
-                shipWorldObject.progress = Mathf.Clamp01(shipWorldObject.progress + step);
-
-                if (shipWorldObject.progress >= 1f)
-                {
-                    ITravelingShip arrived = shipWorldObject;
-                    End();
-                    arrived.Arrive();
-                    return;
-                }
-            }
 
             // ── Vaporize pawns near thrusters ─────────────────────────
             foreach (Pawn pawn in map.mapPawns.AllPawns.ListFullCopy())
@@ -303,19 +243,6 @@ namespace DMSE
                         pawn.TakeDamage(new DamageInfo(DamageDefOf.Vaporize, 1000f));
                 }
             }
-        }
-
-        private float ComputeTravelStep()
-        {
-            WorldObject wo = (WorldObject)shipWorldObject;
-            Vector3 start = Find.WorldGrid.GetTileCenter(initialTile);
-            Vector3 end = Find.WorldGrid.GetTileCenter(shipWorldObject.destinationTile);
-            if (start == end)
-                return 1f;
-            float dist = GenMath.SphericalDistance(start.normalized, end.normalized);
-            if (dist == 0f)
-                return 1f;
-            return TravelSpeed / dist;
         }
 
         // ── Private draw helpers ──────────────────────────────────────────────
