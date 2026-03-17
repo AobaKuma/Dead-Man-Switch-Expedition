@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 using Verse.Sound;
+using System.ComponentModel;
 
 namespace DMSE
 {
@@ -162,7 +163,10 @@ namespace DMSE
         {
             status = OrbitalTransferState.Working;
             Log.Message("Initializing ship map component with " + thrusters.Count + " thrusters and world object " + wo);
-            thrusterPlacements = thrusters;
+            foreach (var thruster in thrusters)
+            {
+                thrusterPlacements.Add(thruster);
+            }
             shipWorldObject = wo;
 
             exhaustFleckSystem = new FleckSystemThrown(map.flecks);
