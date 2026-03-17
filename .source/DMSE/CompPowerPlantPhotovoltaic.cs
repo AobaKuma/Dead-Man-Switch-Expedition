@@ -10,7 +10,7 @@ namespace DMSE
         private const float NightOutputFactor = 0.10f;   // 夜晚 10%
         private const float MinVacuumToOperate = 0.25f;   // 視為真空的門檻
 
-        private static readonly Vector2 BarSize = new Vector2(2.3f, 0.14f);
+        private static readonly Vector2 BarSize = new Vector2(1.4f, 0.08f);
         private static readonly Material BarFilledMat =
             SolidColorMaterials.SimpleSolidColorMaterial(new Color(0.5f, 0.475f, 0.1f));
         private static readonly Material BarUnfilledMat =

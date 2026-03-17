@@ -32,11 +32,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Building_BatteryGraphene.cs" />
     <Compile Include="CelestialTransfer\FlightModeLauncher.cs" />
     <Compile Include="CelestialTransfer\ITravelingShip.cs" />
     <Compile Include="CompPowerPlantPhotovoltaic.cs" />
     <Compile Include="CompProperties_ApparelHediffs.cs" />
-    <Compile Include="CompProperties_BatteryTempSelfDischarge.cs" />
+    <Compile Include="CompProperties_BatteryGraphene.cs" />
     <Compile Include="CompProperties_SolidBoosterThruster.cs" />
     <Compile Include="CelestialTransfer\Dialog_SelectFlightMode.cs" />
     <Compile Include="CelestialTransfer\Hellfire\GenStep_ImpactCraterDeposits.cs" />

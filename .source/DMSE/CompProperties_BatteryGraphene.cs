@@ -4,7 +4,7 @@ using RimWorld;
 
 namespace DMSE
 {
-    public class CompProperties_BatteryTempSelfDischarge : CompProperties_Battery
+    public class CompProperties_BatteryGraphene : CompProperties_Battery
     {
         // 20°C 無自放電
         public float zeroDischargeTemperature = 20f;
@@ -15,17 +15,17 @@ namespace DMSE
         // 峰值自放電功率（W）
         public float maxSelfDischargeWatts = 100f;
 
-        public CompProperties_BatteryTempSelfDischarge()
+        public CompProperties_BatteryGraphene()
         {
-            compClass = typeof(CompPowerBattery_TempSelfDischarge);
+            compClass = typeof(CompPowerBattery_Graphene);
         }
     }
 
-    public class CompPowerBattery_TempSelfDischarge : CompPowerBattery
+    public class CompPowerBattery_Graphene : CompPowerBattery
     {
         // 方便轉型
-        public new CompProperties_BatteryTempSelfDischarge Props
-            => (CompProperties_BatteryTempSelfDischarge)props;
+        public new CompProperties_BatteryGraphene Props
+            => (CompProperties_BatteryGraphene)props;
 
         public override void CompTick()
         {
@@ -62,9 +62,14 @@ namespace DMSE
             {
                 text += "\n" + "SelfDischarging".Translate() + ": " + dischargeWatts.ToString("F1") + " W";
             }
+            if (PowerNet == null)
+            {
+                return "PowerNotConnected".Translate();
+            }
+            string baseText = (PowerNet.CurrentEnergyGainRate() / WattsToWattDaysPerTick).ToString("F0");
+            string baseText2 = PowerNet.CurrentStoredEnergy().ToString("F0");
 
-            // 追加電網資訊（相當於原版最底下 + base.CompInspectStringExtra()）
-            string powerText = base.CompInspectStringExtra();
+            string powerText = "PowerConnectedRateStored".Translate(baseText, baseText2);
             if (!powerText.NullOrEmpty())
                 text += "\n" + powerText;
 

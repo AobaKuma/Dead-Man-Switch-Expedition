@@ -110,7 +110,7 @@ namespace DMSE
 
             if (Scribe.mode == LoadSaveMode.Saving)
             {
-                thrusterPlacements.RemoveAll(t => t == null || !t.Spawned);
+                //thrusterPlacements.RemoveAll(t => t == null || !t.Spawned);
                 pendingThrusters.RemoveAll(t => t == null || !t.Spawned);
             }
 
@@ -129,12 +129,12 @@ namespace DMSE
             if (Scribe.mode == LoadSaveMode.LoadingVars)
                 pendingShipWorldObject = pendingWO as TravelingObject;
 
-            Scribe_Collections.Look(ref thrusterPlacements, "thrusterPlacements", LookMode.Reference);
+            //Scribe_Collections.Look(ref thrusterPlacements, "thrusterPlacements", LookMode.Reference);
             Scribe_Collections.Look(ref pendingThrusters, "pendingThrusters", LookMode.Reference);
 
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
-                if (thrusterPlacements == null) thrusterPlacements = new List<Thing>();
+                //if (thrusterPlacements == null) thrusterPlacements = new List<Thing>();
                 if (pendingThrusters == null) pendingThrusters = new List<Thing>();
             }
         }

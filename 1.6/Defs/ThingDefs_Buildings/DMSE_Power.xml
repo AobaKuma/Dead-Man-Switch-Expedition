@@ -6,7 +6,7 @@
     <!-- 一種應用石墨烯材料的電池。相比於常見的電池能夠有更高的容量與充電效率，然而其高能級的代價是在常溫下有著比傳統電池更高的自放電功率。 -->
     <description>A battery that utilizes graphene materials, store electricity for later use. Compared to common batteries, it has higher capacity and charging efficiency; however, its high energy level comes at the cost of a higher self-discharge power than traditional batteries. Won't explode when exposed to rain or fire.</description>
     <drawerType>MapMeshAndRealTime</drawerType>
-    <thingClass>Building_Battery</thingClass>
+    <thingClass>DMSE.Building_BatteryGraphene</thingClass>
     <graphicData>
       <texPath>Things/Building/DMSE_Battery</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
@@ -47,7 +47,8 @@
       <ComponentStamped>5</ComponentStamped>
     </costList>
     <comps>
-      <li Class="DMSE.CompProperties_BatteryTempSelfDischarge">
+      <li Class="DMSE.CompProperties_BatteryGraphene">
+        <compClass>DMSE.CompPowerBattery_Graphene</compClass>
         <storedEnergyMax>4800</storedEnergyMax>
         <efficiency>0.95</efficiency>
         <shortCircuitInRain>false</shortCircuitInRain>
