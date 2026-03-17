@@ -29,6 +29,9 @@ namespace DMSE
         private Vector3 End => Find.WorldGrid.GetTileCenter(destTile);
         public override Vector3 DrawPos => Vector3.Slerp(Start, End, traveledPct);
 
+        public WorldObject WO { get => wo; set => wo = value; }
+        private WorldObject wo;
+
         public void Setup(PlanetTile origin, PlanetTile destination)
         {
             initialTile = origin;
@@ -39,12 +42,10 @@ namespace DMSE
 
         public void Arrive()
         {
-            // TODO: impact-specific arrival logic (crater generation, etc.)
             if (Spawned)
                 Find.WorldObjects.Remove(this);
         }
 
-        // No TickInterval override ¡X MapComponent_Ship drives progress.
 
         public override void ExposeData()
         {

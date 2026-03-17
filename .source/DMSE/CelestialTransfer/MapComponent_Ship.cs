@@ -12,7 +12,6 @@ namespace DMSE
         Idle,
         WarmUp,
         Working,
-        Cooling
     }
 
     public class MapComponent_Ship : MapComponent
@@ -76,8 +75,7 @@ namespace DMSE
             var facilities = engine.GetComp<CompAffectedByFacilities>()
                 .LinkedFacilitiesListForReading
                 .FindAll(t =>
-                    t.TryGetComp<CompGravshipFacility>() is CompGravshipFacility comp &&
-                    comp.Props.componentTypeDef == DMSE_DefOf.DMSE_TransferThruster);
+                    t.TryGetComp<CompGravshipFacility>().Props.componentTypeDef == DMSE_DefOf.DMSE_TransferThruster);
 
             Init(facilities, shipWorldObject);
         }
@@ -130,11 +128,6 @@ namespace DMSE
 
                 case OrbitalTransferState.Working:
                     TickWorking();
-                    break;
-
-                case OrbitalTransferState.Cooling:
-                    // TODO: implement cooling-down behaviour.
-                    status = OrbitalTransferState.Idle;
                     break;
             }
         }
@@ -219,7 +212,7 @@ namespace DMSE
 
         public void End()
         {
-            status = OrbitalTransferState.Cooling;
+            status = OrbitalTransferState.Idle;
             shipWorldObject = null;
             initialTile = PlanetTile.Invalid;
             thrusterPlacements.Clear();

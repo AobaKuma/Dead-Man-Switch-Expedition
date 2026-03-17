@@ -34,7 +34,7 @@ namespace DMSE
 
     public class Patch_Visible
     {
-        public static List<WorldObject> WO = new List<WorldObject>();
+        public static List<TravelingObject> WO = new List<TravelingObject>();
     }
 
     [HarmonyPatch(typeof(WorldSelector), nameof(WorldSelector.Select))]

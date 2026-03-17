@@ -99,14 +99,14 @@ namespace DMSE
             if (isImpact)
             {
                 var wo = (WorldObject_ImpactGravship)WorldObjectMaker.MakeWorldObject(DMSE_DefOf.DMSE_ImpactGravship);
-                wo.Tile = curTile;
+                wo.Setup(curTile, target);
                 Find.World.worldObjects.Add(wo);
                 InitShipMapComponent(comp, wo);
             }
             else
             {
                 var wo = (WorldObject_Transfer)WorldObjectMaker.MakeWorldObject(DMSE_DefOf.DMSE_TransferGravShip);
-                wo.Tile = curTile;
+                wo.Setup(curTile, target);
                 Find.World.worldObjects.Add(wo);
                 InitShipMapComponent(comp, wo);
             }
