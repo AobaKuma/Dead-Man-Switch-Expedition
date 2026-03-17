@@ -184,5 +184,11 @@ namespace DMSE
             float c = 2f * Mathf.Asin(Mathf.Sqrt(a));
             return c * Mathf.Rad2Deg;
         }
+
+        public void AddRecord(ImpactCraterRecord record)
+        {
+            if (record == null) return;
+            settings.records.Add(record);
+        }
     }
 }

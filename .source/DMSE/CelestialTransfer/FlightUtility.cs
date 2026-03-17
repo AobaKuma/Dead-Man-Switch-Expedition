@@ -42,26 +42,30 @@ namespace DMSE
 
         public static bool ValidateDestinationTile(PlanetTile targetTile, PlanetTile currentTile, float radius, FlightMode mode)
         {
+            float fuelPerTile = (mode == FlightMode.Transfer || mode == FlightMode.Impact)
+                ? FuelConsumePerTile
+                : 10f;
+
             if (!GravshipUtility.TryGetPathFuelCost(currentTile, targetTile,
-                out float cost, out int distance, 10f, 1f) && !DebugSettings.ignoreGravshipRange)
+                out float cost, out int distance, fuelPerTile, 1f) && !DebugSettings.ignoreGravshipRange)
             {
                 ShowErrorDialog("CannotLaunchDestination".Translate());
                 return false;
             }
 
-            if (mode != FlightMode.Impact && !Find.World.worldObjects.ObjectsAt(targetTile).EnumerableNullOrEmpty())
+            if (mode == FlightMode.Transfer && !Find.World.worldObjects.ObjectsAt(targetTile).EnumerableNullOrEmpty())
             {
                 ShowErrorDialog("DMSE.Disabled.DestinationOccupied".Translate());
                 return false;
             }
 
-            if (mode != FlightMode.Impact && targetTile.Layer == Find.WorldGrid.FirstLayerOfDef(PlanetLayerDefOf.Surface))
+            if (mode == FlightMode.Transfer && targetTile.Layer == Find.WorldGrid.FirstLayerOfDef(PlanetLayerDefOf.Surface))
             {
                 ShowErrorDialog("DMSE.Disabled.TargetedSurface".Translate());
                 return false;
             }
 
-            if (distance > radius && !DebugSettings.ignoreGravshipRange)
+            if (mode == FlightMode.Transfer && distance > radius && !DebugSettings.ignoreGravshipRange)
             {
                 ShowErrorDialog("TransportPodDestinationBeyondMaximumRange".Translate());
                 return false;

@@ -69,7 +69,7 @@ namespace DMSE
                 {
                     SettlementProximityGoodwillUtility.CheckConfirmSettle(
                         t,
-                        () => DoLaunch(comp, t, curTile, isImpact, mode),
+                        () => DoLaunch(comp, t, curTile, mode),
                         () => StartTransferOrImpact(comp, mode),
                         comp.engine);
                 },
@@ -89,14 +89,13 @@ namespace DMSE
             CompPilotConsole comp,
             PlanetTile target,
             PlanetTile curTile,
-            bool isImpact,
             FlightMode mode)
         {
             Find.World.renderer.wantedMode = WorldRenderMode.None;
             FlightUtility.ConsumeFuel(comp.engine, target);
             SoundDefOf.Gravship_Launch.PlayOneShotOnCamera(null);
 
-            if (isImpact)
+            if (mode == FlightMode.Impact)
             {
                 var wo = (WorldObject_ImpactGravship)WorldObjectMaker.MakeWorldObject(DMSE_DefOf.DMSE_ImpactGravship);
                 wo.Setup(curTile, target);
@@ -117,7 +116,7 @@ namespace DMSE
         private static void InitShipMapComponent(CompPilotConsole comp, TravelingObject wo)
         {
             MapComponent_Ship mc = comp.parent.Map.GetComponent<MapComponent_Ship>();
-            mc.status = OrbitalTransferState.Working;
+            mc.status = OrbitalTransferState.WarmUp;
             var core = comp.engine.GetComp<CompAffectedByFacilities>().LinkedFacilitiesListForReading.Find(thing =>
             {
                 var fac = thing.TryGetComp<CompGravshipFacility>();

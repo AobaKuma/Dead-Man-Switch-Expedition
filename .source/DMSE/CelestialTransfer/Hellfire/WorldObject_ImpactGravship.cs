@@ -10,66 +10,32 @@ namespace DMSE
 {
     public class WorldObject_ImpactGravship : TravelingObject
     {
-        public Map sourceMap;
-
-        private float traveledPct;
-
-        private const float TravelSpeed = 0.00035f;
-        private const float ScreenFadeSeconds = 5f;
-
-        private Vector3 Start => Find.WorldGrid.GetTileCenter(_start);
-        private Vector3 End => Find.WorldGrid.GetTileCenter(_end);
-
-        public override Vector3 DrawPos => Vector3.Slerp(Start, End, traveledPct);
-
-        private float TraveledPctStepPerTick
-        {
-            get
-            {
-                Vector3 a = Start;
-                Vector3 b = End;
-                if (a == b) return 1f;
-                float dist = GenMath.SphericalDistance(a.normalized, b.normalized);
-                if (dist == 0f) return 1f;
-                return TravelSpeed / dist;
-            }
-        }
-
-        protected override void TickInterval(int delta)
-        {
-            base.TickInterval(delta);
-            traveledPct += TraveledPctStepPerTick * delta;
-            if (traveledPct >= 1f)
-            {
-                traveledPct = 1f;
-                Arrive();
-            }
-        }
-
+        const float ScreenFadeSeconds = 5f;
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref _start, "start");
             Scribe_Values.Look(ref _end, "end");
-            Scribe_Values.Look(ref traveledPct, "traveledPct", 0f);
-            Scribe_References.Look(ref sourceMap, "sourceMap");
         }
 
         public override void Setup(PlanetTile origin, PlanetTile destination)
         {
             _start = origin;
             _end = destination;
-            traveledPct = 0f;
+            progress = 0f;
             Tile = origin;
+        }
+        protected override void Tick()
+        {
+            if (isTraveling && progress > 0.8)
+            {
+                ScreenFader.StartFade(Color.white, ScreenFadeSeconds);
+            }
+            base.Tick();
         }
 
         public override void Arrive()
         {
-            if (_end.Valid && !_end.LayerDef.isSpace)
-            {
-                ImpactCraterUtility.ApplyImpactCraterAtTile(_end);
-            }
-
             Settlement settlement = Find.WorldObjects.SettlementAt(_end);
             if (settlement != null && settlement.Faction != Faction.OfPlayer)
             {
@@ -81,27 +47,47 @@ namespace DMSE
                 settlement.Destroy();
             }
 
+            Building_GravEngine engine = Find.Maps.Where(m=>m.Tile==worldObject.Tile).First()?.listerBuildings?.AllBuildingsColonistOfClass<Building_GravEngine>()?.FirstOrDefault();
+            int thrusterCount = engine != null ? FlightUtility.GetTransferThrusterCount(engine) : 0;
+
+            string time = GenDate.DateFullStringAt(Find.TickManager.TicksGame, Find.WorldGrid.LongLatOf(_end));
+            bool colonialFleet = Find.FactionManager.FirstFactionOfDef(DMSE_DefOf.DMS_Army) != null;
+            bool toMenu = false;
             StringBuilder sbEscapees = new StringBuilder();
             List<Pawn> aboard = new List<Pawn>();
-            if (sourceMap != null)
-            {
-                foreach (Pawn p in sourceMap.mapPawns.FreeColonistsSpawned.ToList())
-                {
-                    aboard.Add(p);
-                    sbEscapees.AppendLine("   " + p.LabelCap);
-                }
-            }
-
             string credits = GameVictoryUtility.MakeEndCredits(
-                "DMSE.Impact.Ending.Intro".Translate(),
+                time+"\n"+"DMSE.Impact.Ending.Intro".Translate(),
                 "DMSE.Impact.Ending.Outro".Translate(),
                 sbEscapees.ToString(),
-                "DMSE.Impact.Ending.Aboard",
+                "DMSE.Impact.Ending.Aboard".Translate(),
                 aboard);
 
-            ScreenFader.StartFade(Color.white, ScreenFadeSeconds);
+            if (colonialFleet)
+            {
+                credits = GameVictoryUtility.MakeEndCredits(
+                    time + "\n" + "DMSE.Impact.Ending.FleetFailed.Intro".Translate(),
+                    "DMSE.Impact.Ending.FleetFailed.Outro".Translate(),
+                    sbEscapees.ToString(),
+                    "DMSE.Impact.Ending.Aboard".Translate(),
+                    aboard);
+            }
+            if (thrusterCount >= 4)
+            {
+                credits = GameVictoryUtility.MakeEndCredits(
+                    time + "\n" + "DMSE.Impact.Planetkiller.Ending.Intro".Translate(),
+                    "DMSE.Impact.Planetkiller.Ending.Outro".Translate(),
+                    sbEscapees.ToString(),
+                    "DMSE.Impact.Planetkiller.Ending.Aboard".Translate(),
+                    aboard);
+                toMenu = true;
+            }
+
+            ImpactCraterUtility.ApplyImpactCraterAtTile(engine.LabelCap, thrusterCount, _end);
+
+            worldObject.Tile = this.end;
+            worldObject.Destroy();
             GameVictoryUtility.ShowCredits(credits, SongDefOf.EndCreditsSong,
-                exitToMainMenu: true, songStartDelay: ScreenFadeSeconds);
+                exitToMainMenu: toMenu, songStartDelay: ScreenFadeSeconds);
 
             if (!Destroyed)
                 Destroy();
