@@ -8,7 +8,7 @@
   <!-- EN: chemfuel silo -->
   <DMSE_FuelSiloTank.label>化学燃料储槽</DMSE_FuelSiloTank.label>
   <!-- EN: A large storage tank for storing liquid fuels uses multiple layers of metal plates and special alloys to store pressurized liquefied fuel within the tank. It provides robust protection while also holding a large amount of fuel. supplie for thrusters on a gravship. -->
-  <DMSE_FuelSiloTank.description>一种用于储存液态燃料的大型储槽，采用多层金属板和特殊合金结构，可在槽体内安全存放加压液化燃料。它在提供良好防护的同时，也能容纳大量燃料，为重力船上的推进器供应燃料。</DMSE_FuelSiloTank.description>
+  <DMSE_FuelSiloTank.description>一种用于储存液态燃料的大型储槽，采用多层金属板和特殊合金结构，可在槽体内安全存放加压液化燃料。一种用于储存液态燃料的大型储槽，采用多层金属板与特殊合金结构，可在槽体内安全存放加压液化燃料。它在提供良好防护的同时也为重力船上的推进器供应大量燃料。</DMSE_FuelSiloTank.description>
 
   <!-- EN: rocket booster -->
   <DMSE_SolidRocketThruster.label>火箭助推器</DMSE_SolidRocketThruster.label>

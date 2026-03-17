@@ -25,4 +25,7 @@
   <DMSE.Cannot.Reason.TransferThruster>Cannot transfer: transfer thrusters {0}/{1}.</DMSE.Cannot.Reason.TransferThruster>
   <DMSE.Cannot.Reason.NoFusionCore>Cannot transfer: no Fusion core connected.</DMSE.Cannot.Reason.NoFusionCore>
   <DMSE.Cannot.Reason.NoFuel>Cannot transfer: no fuel.</DMSE.Cannot.Reason.NoFuel>
+
+  <DMSE_ShipWarmUpBegin>Fusion core heating up. Launching procedure in 5...</DMSE_ShipWarmUpBegin>
+  <DMSE_ShipWarmUpCountdown>{0}...</DMSE_ShipWarmUpCountdown>
 </LanguageData>

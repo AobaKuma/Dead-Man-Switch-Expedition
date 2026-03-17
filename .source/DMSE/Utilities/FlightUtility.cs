@@ -2,10 +2,11 @@
 using RimWorld.Planet;
 using System.Collections.Generic;
 using Verse;
+using Verse.Sound;
 
 namespace DMSE
 {
-    public static class TransferFlightUtility
+    public static class FlightUtility
     {
         public const float FuelConsumePerTile = 50f;
 
@@ -13,6 +14,7 @@ namespace DMSE
         {
             return GetTransferThrusterCount(engine) > 0 || GetFusionCores(engine).Count > 0;
         }
+
         public static int GetTransferThrusterCount(Building_GravEngine engine)
         {
             return engine.GetComp<CompAffectedByFacilities>().LinkedFacilitiesListForReading
@@ -28,58 +30,17 @@ namespace DMSE
                     && comp.Props.componentTypeDef == DMSE_DefOf.DMSE_FusionCore);
         }
 
-        public static bool ValidateStartConditions(CompPilotConsole comp, out string errorMessage)
-        {
-            errorMessage = null;
-
-            if (comp.engine == null || comp.parent == null || !comp.parent.Spawned || comp.parent.Map == null)
-            {
-                errorMessage = "DMSE.Cannot.Reason.Null";
-                return false;
-            }
-
-            if (!comp.parent.Map.Parent.Tile.LayerDef.isSpace)
-            {
-                errorMessage = "DMSE.Cannot.Reason.NotInSpace";
-                return false;
-            }
-
-            return true;
-        }
-
         public static bool ValidateTransferPreconditions(CompPilotConsole comp)
         {
-            if (!ValidateStartConditions(comp, out string errorMessage))
+            if (GetFailReason(comp, out string reason))
             {
-                ShowErrorDialog(errorMessage);
+                ShowErrorDialog(reason);
                 return false;
             }
-
-            int transferThrusterCount = GetTransferThrusterCount(comp.engine);
-            if (transferThrusterCount < 2)
-            {
-                string message = "DMSE.Cannot.Reason.TransferThruster".Translate(transferThrusterCount, 2);
-                ShowErrorDialog(message);
-                return false;
-            }
-
-            List<Thing> FusionCores = GetFusionCores(comp.engine);
-            if (FusionCores.Count == 0)
-            {
-                ShowErrorDialog("DMSE.Cannot.Reason.NoFusionCore".Translate());
-                return false;
-            }
-
-            if (comp.engine.TotalFuel <= 0f)
-            {
-                ShowErrorDialog("DMSE.Cannot.Reason.NoFuel".Translate());
-                return false;
-            }
-
             return true;
         }
 
-        public static bool ValidateDestinationTile(PlanetTile targetTile, PlanetTile currentTile, float radius)
+        public static bool ValidateDestinationTile(PlanetTile targetTile, PlanetTile currentTile, float radius, FlightMode mode)
         {
             if (!GravshipUtility.TryGetPathFuelCost(currentTile, targetTile,
                 out float cost, out int distance, 10f, 1f) && !DebugSettings.ignoreGravshipRange)
@@ -88,15 +49,15 @@ namespace DMSE
                 return false;
             }
 
-            if (!Find.World.worldObjects.ObjectsAt(targetTile).EnumerableNullOrEmpty())
+            if (mode != FlightMode.Impact && !Find.World.worldObjects.ObjectsAt(targetTile).EnumerableNullOrEmpty())
             {
-                ShowErrorDialog("DMSE_DestinationOccupied".Translate());
+                ShowErrorDialog("DMSE.Disabled.DestinationOccupied".Translate());
                 return false;
             }
 
-            if (targetTile.Layer != currentTile.Layer)
+            if (mode != FlightMode.Impact && targetTile.Layer == Find.WorldGrid.FirstLayerOfDef(PlanetLayerDefOf.Surface))
             {
-                ShowErrorDialog("DMSE_DifferentLayer".Translate());
+                ShowErrorDialog("DMSE.Disabled.TargetedSurface".Translate());
                 return false;
             }
 
@@ -164,7 +125,7 @@ namespace DMSE
                 launchInfo != null ? launchInfo.quality : 1f);
         }
 
-        public static bool GetTransferFailReason(CompPilotConsole comp, out string reason)
+        public static bool GetFailReason(CompPilotConsole comp, out string reason)
         {
             reason = null;
 

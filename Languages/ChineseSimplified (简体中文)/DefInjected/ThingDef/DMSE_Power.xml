@@ -7,8 +7,8 @@
   <DMSE_Battery.description>储存电力以供後续使用。电量充足的电池在暴露於雨水或火焰时会爆炸。</DMSE_Battery.description>
   
   <!-- EN: photovoltaic panel -->
-  <DMSE_PhotovoltaicPanels.label>光电板</DMSE_PhotovoltaicPanels.label>
+  <DMSE_PhotovoltaicPanel.label>光电板</DMSE_PhotovoltaicPanel.label>
   <!-- EN: 一种由单层碳原子构成的石墨稀导电薄膜构成的高效能光电转换装置。其能量转换效率远高於传统矽晶太阳能板并具备优异的导热与耐辐射特性。即使在稀薄大气、低温或尘埃覆盖的环境下仍能维持稳定输出。 -->
-  <DMSE_PhotovoltaicPanels.description>一种由单层碳原子构成的石墨烯导电薄膜制成的高效光电转换装置。其能量转换效率远高於传统矽晶太阳能板，并具备优异的导热与耐辐射特性。即使在稀薄大气、低温或尘埃覆盖环境下，仍能维持稳定输出。</DMSE_PhotovoltaicPanels.description>
+  <DMSE_PhotovoltaicPanel.description>一种由单层碳原子构成的石墨烯导电薄膜制成的高效光电转换装置。其能量转换效率远高於传统矽晶太阳能板，并具备优异的导热与耐辐射特性。即使在稀薄大气、低温或尘埃覆盖环境下，仍能维持稳定输出。</DMSE_PhotovoltaicPanel.description>
   
 </LanguageData>

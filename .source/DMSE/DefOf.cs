@@ -14,8 +14,9 @@ namespace DMSE
         public static FactionDef DMS_Army;
         public static ThingDef DMSE_VacuumPump;
         public static ThingDef DMSE_NuclearThruster;
-        public static WorldObjectDef Ship;
+        public static WorldObjectDef DMSE_TransferGravShip;
         public static GravshipComponentTypeDef DMSE_FusionCore;
         public static GravshipComponentTypeDef DMSE_TransferThruster;
+        public static WorldObjectDef DMSE_ImpactGravship;
     }
 }

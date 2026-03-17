@@ -32,10 +32,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CelestialTransfer\FlightModeLauncher.cs" />
+    <Compile Include="CelestialTransfer\ITravelingShip.cs" />
+    <Compile Include="CompPowerPlantPhotovoltaic.cs" />
     <Compile Include="CompProperties_ApparelHediffs.cs" />
+    <Compile Include="CompProperties_BatteryTempSelfDischarge.cs" />
     <Compile Include="CompProperties_SolidBoosterThruster.cs" />
-    <Compile Include="Dialog_SelectFlightMode.cs" />
-    <Compile Include="Patch_CompGravshipFacility_CanBeActive.cs" />
+    <Compile Include="CelestialTransfer\Dialog_SelectFlightMode.cs" />
+    <Compile Include="Hellfire\GenStep_ImpactCraterDeposits.cs" />
+    <Compile Include="Hellfire\ImpactCraterRecord.cs" />
+    <Compile Include="Hellfire\ImpactCraterService.cs" />
+    <Compile Include="Hellfire\WorldObject_ImpactGravship.cs" />
+    <Compile Include="Utilities\ImpactCraterUtility.cs" />
+    <Compile Include="Hellfire\PlayerConfigSettings.cs" />
+    <Compile Include="Hellfire\WorldGenStep_ImpactCraters.cs" />
+    <Compile Include="CelestialTransfer\Patch_CompGravshipFacility_CanBeActive.cs" />
     <Compile Include="Scorer\CompEffecterColdLaunch.cs" />
     <Compile Include="CompOxygenCandle.cs" />
     <Compile Include="CompVacuumPump.cs" />
@@ -44,17 +55,17 @@
     <Compile Include="Scorer\CompPlaySoundOnSpawn.cs" />
     <Compile Include="CompBuildingExtraRenderer.cs" />
     <Compile Include="SkyFallerTurret\MapComponent_InterceptSkyfaller.cs" />
-    <Compile Include="Utilities\TransferFlightUtility.cs" />
+    <Compile Include="Utilities\FlightUtility.cs" />
     <Compile Include="VacuumRoom\CompLandFillable.cs" />
     <Compile Include="Scorer\CompScorer.cs" />
     <Compile Include="DefOf.cs" />
-    <Compile Include="MapComponent_Ship.cs" />
+    <Compile Include="CelestialTransfer\MapComponent_Ship.cs" />
     <Compile Include="ModExtension_ReplacePawn.cs" />
     <Compile Include="PatchMain.cs" />
     <Compile Include="Patch_Replace.cs" />
-    <Compile Include="Patch_Background.cs" />
-    <Compile Include="Patch_Visible.cs" />
-    <Compile Include="Patch_CompPilotConsole_StartChoosingDestination.cs" />
+    <Compile Include="CelestialTransfer\Patch_Background.cs" />
+    <Compile Include="CelestialTransfer\Patch_Visible.cs" />
+    <Compile Include="CelestialTransfer\Patch_CompPilotConsole_StartChoosingDestination.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scorer\GameComponent_MissileEngage.cs" />
     <Compile Include="VacuumRoom\GenStep_Prefab.cs" />
@@ -67,9 +78,9 @@
     <Compile Include="SkyFallerTurret\InterceptProjectile.cs" />
     <Compile Include="SkyFallerTurret\Patch_QuestPart_Bossgroup.cs" />
     <Compile Include="SkyFallerTurret\SkyfallerTurretComp.cs" />
-    <Compile Include="ThingComp_Ship.cs" />
-    <Compile Include="WorldDrawLayer_SpaceTiles.cs" />
-    <Compile Include="WorldObject_Transfer.cs" />
+    <Compile Include="CelestialTransfer\ThingComp_Ship.cs" />
+    <Compile Include="CelestialTransfer\WorldDrawLayer_SpaceTiles.cs" />
+    <Compile Include="CelestialTransfer\WorldObject_Transfer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
@@ -426,6 +437,7 @@
       <Private>False</Private>
     </Reference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

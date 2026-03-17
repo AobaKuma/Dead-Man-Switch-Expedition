@@ -43,16 +43,20 @@
     <costList>
       <Tungsteel>120</Tungsteel>
       <DMSE_Graphene>50</DMSE_Graphene>
-			<DMSE_TantastenAlloy>25</DMSE_TantastenAlloy>
+      <DMSE_TantastenAlloy>25</DMSE_TantastenAlloy>
       <ComponentStamped>5</ComponentStamped>
     </costList>
     <comps>
-      <li Class="CompProperties_Battery">
+      <li Class="DMSE.CompProperties_BatteryTempSelfDischarge">
         <storedEnergyMax>4800</storedEnergyMax>
         <efficiency>0.95</efficiency>
         <shortCircuitInRain>false</shortCircuitInRain>
         <transmitsPower>true</transmitsPower>
+        <zeroDischargeTemperature>20</zeroDischargeTemperature>
+        <peakDistance>40</peakDistance>
+        <maxSelfDischargeWatts>100</maxSelfDischargeWatts>
       </li>
+      <li Class="CompProperties_Breakdownable" />
       <li Class="CompProperties_Stunnable">
         <useLargeEMPEffecter>true</useLargeEMPEffecter>
         <affectedDamageDefs>
@@ -74,13 +78,13 @@
 
   <!-- Photovoltaic panel -->
   <ThingDef ParentName="BuildingBase">
-    <defName>DMSE_PhotovoltaicPanels</defName>
+    <defName>DMSE_PhotovoltaicPanel</defName>
     <label>photovoltaic panel</label>
-    <description>A high-efficiency photovoltaic conversion device built from conductive graphene film composed of single-layer carbon atoms. Its energy conversion efficiency is far higher than conventional silicon solar panels, while offering excellent thermal conductivity and radiation resistance. It maintains stable output even in thin atmosphere, low temperatures, or dusty conditions.</description>
+    <description>A solar panel that generates energy using the photovoltaic principle. It filters light through a graphene coating and uses the green light band to convert it into stable, usable electricity. However, because green light is easily scattered in the atmosphere, this type of solar panel can only be used in a vacuum. Nevertheless, due to atmospheric refraction, it can generate electricity at a lower power even at night.</description>
     <thingClass>Building</thingClass>
     <drawerType>MapMeshAndRealTime</drawerType>
     <graphicData>
-      <texPath>Things/Building/Power/SolarCollector</texPath>
+      <texPath>Things/Building/DMSE_PhotovoltaicPanel</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(4,4)</drawSize>
       <shadowData>
@@ -111,12 +115,12 @@
     <costList>
       <Tungsteel>100</Tungsteel>
       <DMSE_Graphene>75</DMSE_Graphene>
-      <ComponentStamped>2</ComponentStamped>
+      <ComponentStamped>1</ComponentStamped>
     </costList>
     <comps>
       <li Class="CompProperties_Power">
-        <compClass>CompPowerPlantSolar</compClass>
-        <basePowerConsumption>-2700</basePowerConsumption>
+        <compClass>DMSE.CompPowerPlantPhotovoltaic</compClass>
+        <basePowerConsumption>-2500</basePowerConsumption>
         <transmitsPower>true</transmitsPower>
       </li>
       <li Class="CompProperties_Stunnable">

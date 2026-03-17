@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <WorldGenStepDef>
+        <defName>DMSE_ImpactCraterBiomeOverlay</defName>
+        <order>710</order>
+        <worldGenStep Class="DMSE.WorldGenStep_ImpactCrater" />
+    </WorldGenStepDef>
+
+    <GenStepDef>
+        <defName>DMSE_Crater_DepositsRadial</defName>
+        <order>238</order>
+        <genStep Class="DMSE.GenStep_ImpactCraterDeposits">
+            <coreObsidianChance>0.05</coreObsidianChance>
+            <coreComponentsChance>0.18</coreComponentsChance>
+            <coreSteelChance>0.12</coreSteelChance>
+            <vacstoneScarChanceCore>0.30</vacstoneScarChanceCore>
+
+            <rimObsidianChance>0.14</rimObsidianChance>
+            <rimComponentsChance>0.10</rimComponentsChance>
+            <rimSteelChance>0.22</rimSteelChance>
+            <rimSlagChance>0.08</rimSlagChance>
+            <vacstoneScarChanceRim>0.18</vacstoneScarChanceRim>
+
+            <ejectaObsidianChance>0.03</ejectaObsidianChance>
+            <ejectaComponentsChance>0.03</ejectaComponentsChance>
+            <ejectaSteelChance>0.08</ejectaSteelChance>
+            <ejectaSlagChance>0.05</ejectaSlagChance>
+            <vacstoneScarChanceEjecta>0.05</vacstoneScarChanceEjecta>
+        </genStep>
+    </GenStepDef>
+
+    <BiomeDef>
+        <defName>DMSE_ImpactCraterBiome</defName>
+        <label>impact crater wasteland</label>
+        <description>Ancient impact basin filled with compacted machinery, steel remnants, and vacstone strata.</description>
+
+        <!-- 用現成 worker，避免額外 worker class -->
+        <workerClass>BiomeWorker_Desert</workerClass>
+
+        <canAutoChoose>false</canAutoChoose>
+        <generatesNaturally>false</generatesNaturally>
+        <allowRoads>false</allowRoads>
+        <allowRivers>false</allowRivers>
+
+        <animalDensity>0.05</animalDensity>
+        <plantDensity>0.05</plantDensity>
+        <forageability>0.05</forageability>
+        <wildPlantRegrowDays>45</wildPlantRegrowDays>
+        <movementDifficulty>1.2</movementDifficulty>
+        <hasVirtualPlants>false</hasVirtualPlants>
+
+        <!-- 關鍵：強制岩石類型為 Vacstone -->
+        <!-- <forceRockTypes>
+            <li>Vacstone</li>
+        </forceRockTypes> -->
+
+        <!-- 關鍵：附加資源生成 step -->
+        <extraGenSteps>
+            <li>DMSE_Crater_DepositsRadial</li>
+        </extraGenSteps>
+
+        <texture>World/Biomes/ExtremeDesert</texture>
+    </BiomeDef>
+</Defs>

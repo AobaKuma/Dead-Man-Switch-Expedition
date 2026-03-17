@@ -20,27 +20,41 @@
   <!-- EN: {0} drop pods will breach in {1} -->
   <DMSE.Alert.Pods>{0}個空降艙將在{1}後來襲</DMSE.Alert.Pods>
 
+  
+  <DMSE.Flight.Select.Desc>由於艦船上存在有效裝置，因此請選擇此次巡航的模式:</DMSE.Flight.Select.Desc>
   <!-- EN: Select flight mode -->
-  <DMSE.Flight.Select>選擇飛行模式</DMSE.Flight.Select>
+  <DMSE.Flight.Select>選擇巡航模式</DMSE.Flight.Select>
   <!-- EN: Regular flight -->
-  <DMSE.Flight.Regular>常規飛行</DMSE.Flight.Regular>
+  <DMSE.Flight.Regular>常規巡航</DMSE.Flight.Regular>
   <!-- EN: Transfer flight -->
-  <DMSE.Flight.Transfer>轉移飛行</DMSE.Flight.Transfer>
-  <!-- EN: Show advanced options -->
-  <DMSE.Flight.ShowAdvanced>顯示進階選項</DMSE.Flight.ShowAdvanced>
+  <DMSE.Flight.Transfer>轉移巡航</DMSE.Flight.Transfer>
+  
   <!-- EN: Impact flight -->
-  <DMSE.Flight.Impact>引力撞擊</DMSE.Flight.Impact>
-  <!-- EN: Hard impact flight -->
-  <DMSE.Flight.ImpactHard>終結撞擊</DMSE.Flight.ImpactHard>
+  <DMSE.Flight.Impact.Header>你的殖民者知道這是一個切實存在但不明智的選擇。</DMSE.Flight.Impact.Header>
+  <!-- EN: Impact flight -->
+  <DMSE.Flight.Impact>終結巡航</DMSE.Flight.Impact>
+  
+  <DMSE.Flight.Impact.Confirm>即使航路主機顯示著鮮紅的警告，但它仍然顯示了一條可行的加速方案。\n\n透過啟動終結巡航協議，聚變核心將在超載功率下輸出完整的動力，使得核熱引擎能夠以最大功率推動向著這顆星球加速並撞擊地表。\n\n這將使得整艘船以及推動的天體成為有效且威力十足的質量武器，並對於星球造成無法復原的破壞。\n\n\n\n你確定要這麼做嗎?</DMSE.Flight.Impact.Confirm>
 
   <!-- EN: Cannot transfer: ship state invalid. -->
   <DMSE.Cannot.Reason.Null>無法轉移：船艦狀態無效。</DMSE.Cannot.Reason.Null>
   <!-- EN: Cannot transfer: must be in space. -->
-  <DMSE.Cannot.Reason.NotInSpace>無法轉移：必須位於太空層。</DMSE.Cannot.Reason.NotInSpace>
+  <DMSE.Cannot.Reason.NotInSpace>無法轉移：目的地必須位於太空。</DMSE.Cannot.Reason.NotInSpace>
   <!-- EN: Cannot transfer: transfer thrusters {0}/{1}. -->
   <DMSE.Cannot.Reason.TransferThruster>無法轉移：轉移推進器數量不足（{0}/{1}）。</DMSE.Cannot.Reason.TransferThruster>
   <!-- EN: Cannot transfer: no Fusion core connected. -->
   <DMSE.Cannot.Reason.NoFusionCore>無法轉移：未連接聚變核心。</DMSE.Cannot.Reason.NoFusionCore>
   <!-- EN: Cannot transfer: no fuel. -->
   <DMSE.Cannot.Reason.NoFuel>無法轉移：燃料不足。</DMSE.Cannot.Reason.NoFuel>
+
+  <DMSE.Impact.Ending.Intro>重力船拖著長長的軌跡劃過天際，攜帶著巨大的質量沒入大地，地平線上的一切都變成了光，隨之而來的是劇烈的衝擊波化作風暴與地震席捲了整顆星球的地表，在短時間內無數的生靈與景觀在這場驚天動地的碰撞之中煙飛灰滅。</DMSE.Impact.Ending.Intro>
+  <DMSE.Impact.Ending.Outro>所幸這並非核熱引擎所能發揮得最大功率，在災害平息後地表上的大部分人類都得以倖存。無論其背後的目的如何，這顆星球的歷史都將永遠記住這一場撞擊。</DMSE.Impact.Ending.Outro>
+  <DMSE.Impact.Ending.Aboard>我們無法得知重力船上的船員們是否在最後一刻逃出生天，又或者徹底地隨著撞擊煙飛灰滅。</DMSE.Impact.Ending.Aboard>
+
+  <DMSE.Impact.Ending.FleetFailed.Intro>重力船拖著長長的軌跡劃過天際，攜帶著巨大的質量沒入大地，地平線上的一切都變成了光，隨之而來的是劇烈的衝擊波化作風暴與地震席捲了整顆星球的地表，在短時間內無數的生靈與景觀在這場驚天動地的碰撞之中煙飛灰滅。</DMSE.Impact.Ending.FleetFailed.Intro>
+  <DMSE.Impact.Ending.FleetFailed.Outro>殖民艦隊本部在評估災情後只能夠撤離地面上倖存的人員，可預估的星球改造成本使得殖民艦隊不得不中止最這顆星球的開發。無論其背後的目的如何，殖民艦隊與這顆星球的歷史都將永遠記住這一場撞擊。</DMSE.Impact.Ending.FleetFailed.Outro>
+
+  <DMSE.Impact.Planetkiller.Ending.Intro>重力船拖著長長的軌跡劃過天際，每一具熱核引擎都在噴湧著蓬勃的推力，攜帶著巨大的質量沒入大地，在地平線上升起了一面由地殼升起的牆，隨之而來的是劇烈的高溫衝擊波化作火海席捲了整顆星球的地表。</DMSE.Impact.Planetkiller.Ending.Intro>
+  <DMSE.Impact.Planetkiller.Ending.Outro>這是天火，在神書當中只有神靈所能做到的，為生靈們降下的最高審判。\n\n無論其背後的目的如何，這顆星球或許在百年內都無法重現生機。</DMSE.Impact.Planetkiller.Ending.Outro>
+  <DMSE.Impact.Planetkiller.Ending.Aboard>沒有人能夠在這樣的天災下保全性命。</DMSE.Impact.Planetkiller.Ending.Aboard>
 </LanguageData>

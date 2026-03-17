@@ -2,8 +2,8 @@
 <LanguageData>
   
   <!-- EN: gravship -->
-  <Ship.label>重力船</Ship.label>
+  <DMSE_TransferGravShip.label>重力船</DMSE_TransferGravShip.label>
   <!-- EN: A gravship in flight. -->
-  <Ship.description>一艘正在飛行中的重力船。</Ship.description>
+  <DMSE_TransferGravShip.description>一艘正在飛行中的重力船。</DMSE_TransferGravShip.description>
   
 </LanguageData>

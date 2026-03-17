@@ -1,8 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
+  <WorldObjectDef>
+    <defName>DMSE_ImpactGravship</defName>
+    <label>impact gravship</label>
+    <description>A gravship on a collision trajectory.</description>
+    <worldObjectClass>DMSE.WorldObject_ImpactGravship</worldObjectClass>
+    <canHaveFaction>true</canHaveFaction>
+    <saved>true</saved>
+    <selectable>true</selectable>
+    <useDynamicDrawer>true</useDynamicDrawer>
+    <validLaunchTarget>false</validLaunchTarget>
+    <expandingIcon>true</expandingIcon>
+    <expandingIconPriority>60</expandingIconPriority>
+    <expandingIconTexture>World/WorldObjects/Expanding/TravelingTransportPods</expandingIconTexture>
+    <texture>World/WorldObjects/TravelingTransportPods</texture>
+  </WorldObjectDef>
 
   <WorldObjectDef>
-    <defName>Ship</defName>
+    <defName>DMSE_TransferGravShip</defName>
     <label>gravship</label>
     <description>A gravship in flight.</description>
     <worldObjectClass>DMSE.WorldObject_Transfer</worldObjectClass>
