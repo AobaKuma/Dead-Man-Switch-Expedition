@@ -244,7 +244,7 @@
     <disableCallAid>true</disableCallAid>
     <pocketMapProperties>
       <biome>Space</biome>
-      <temperature>10</temperature>
+      <temperature>20</temperature>
     </pocketMapProperties>
     <genSteps>
       <li>DMSE_VacuumRoom_GenStep</li>

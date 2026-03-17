@@ -36,8 +36,11 @@
     <pathCost>14</pathCost>
     <canOverlapZones>false</canOverlapZones>
     <costList>
-      <Steel>140</Steel>
-      <ComponentIndustrial>3</ComponentIndustrial>
+      <Plasteel>250</Plasteel>
+      <Uranium>90</Uranium>
+      <DMSE_TantastenAlloy>50</DMSE_TantastenAlloy>
+      <ComponentStamped>20</ComponentStamped>
+      <ComponentSpacer>8</ComponentSpacer>
     </costList>
     <resourcesFractionWhenDeconstructed>1</resourcesFractionWhenDeconstructed>
     <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
@@ -45,7 +48,7 @@
     <hasInteractionCell>true</hasInteractionCell>
     <interactionCellOffset>(0, 0,-1)</interactionCellOffset>
     <researchPrerequisites>
-      <li>BasicGravtech</li>
+      <li>DMSE_Aerospace</li>
     </researchPrerequisites>
     <terrainAffordanceNeeded>Substructure</terrainAffordanceNeeded>
     <comps>
@@ -89,11 +92,11 @@
       <Steel>200</Steel>
     </costList>
     <researchPrerequisites>
-      <li>StandardGravtech</li>
+      <li>DMSE_OrbitalDynamics</li>
     </researchPrerequisites>
     <comps>
       <li Class="CompProperties_Refuelable">
-        <fuelCapacity>1000</fuelCapacity>
+        <fuelCapacity>1500</fuelCapacity>
         <targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>
         <initialConfigurableTargetFuelLevel>1500</initialConfigurableTargetFuelLevel>
         <fuelFilter>
@@ -147,7 +150,7 @@
       <ComponentIndustrial>1</ComponentIndustrial>
     </costList>
     <researchPrerequisites>
-      <li>BasicGravtech</li>
+      <li>DMSE_OrbitalDynamics</li>
     </researchPrerequisites>
     <comps>
       <li Class="DMSE.CompProperties_SolidBoosterThruster">
