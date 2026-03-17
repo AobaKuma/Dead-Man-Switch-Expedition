@@ -47,6 +47,11 @@
   <!-- EN: Cannot transfer: no fuel. -->
   <DMSE.Cannot.Reason.NoFuel>無法轉移：燃料不足。</DMSE.Cannot.Reason.NoFuel>
 
+  <!-- EN: Cannot transfer: destination occupied. -->
+  <DMSE.Disabled.DestinationOccupied>無法轉移：目標位置已有世界物件。</DMSE.Disabled.DestinationOccupied>
+  <!-- EN: Cannot transfer: target must be in space. -->
+  <DMSE.Disabled.TargetedSurface>無法轉移：目的地必須位於太空。</DMSE.Disabled.TargetedSurface>
+
   <DMSE_ShipWarmUpBegin>聚變核心正在提升功率. 推進器點火倒數: 5</DMSE_ShipWarmUpBegin>
   <DMSE_ShipWarmUpCountdown>推進器點火倒數: {0}</DMSE_ShipWarmUpCountdown>
 
@@ -60,4 +65,6 @@
   <DMSE.Impact.Planetkiller.Ending.Intro>重力船拖著長長的軌跡劃過天際，每一具熱核引擎都在噴湧著蓬勃的推力，攜帶著巨大的質量沒入大地，在地平線上升起了一面由地殼升起的牆，隨之而來的是劇烈的高溫衝擊波化作火海席捲了整顆星球的地表。</DMSE.Impact.Planetkiller.Ending.Intro>
   <DMSE.Impact.Planetkiller.Ending.Outro>這是天火，在神書當中只有神靈所能做到的，為生靈們降下的最高審判。\n\n無論其背後的目的如何，這顆星球或許在百年內都無法重現生機。</DMSE.Impact.Planetkiller.Ending.Outro>
   <DMSE.Impact.Planetkiller.Ending.Aboard>沒有人能夠在這樣的天災下保全性命。</DMSE.Impact.Planetkiller.Ending.Aboard>
+
+  <DMSE_Crater>{0}撞擊坑</DMSE_Crater>
 </LanguageData>

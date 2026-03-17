@@ -27,9 +27,9 @@ namespace DMSE
         public float vacstoneScarChanceRim = 0.16f;
         public float vacstoneScarChanceEjecta = 0.08f;
 
-        public float coreObsidianChance = 0.06f;
-        public float rimObsidianChance = 0.12f;
-        public float ejectaObsidianChance = 0.04f;
+        public float coreObsidianChance = 0.56f;
+        public float rimObsidianChance = 0.22f;
+        public float ejectaObsidianChance = 0.14f;
 
         public override void Generate(Map map, GenStepParams parms)
         {
@@ -37,7 +37,7 @@ namespace DMSE
             var mechDef = DefDatabase<ThingDef>.GetNamedSilentFail("MineableComponentsIndustrial");
             var obsidianMineableDef = DefDatabase<ThingDef>.GetNamedSilentFail("MineableObsidian");
             var slagDef = ThingDefOf.ChunkSlagSteel;
-            var vacstoneTerrain = DefDatabase<TerrainDef>.GetNamedSilentFail("TileVacstone");
+            var vacstoneTerrain = DefDatabase<TerrainDef>.GetNamedSilentFail("Vacstone_Rough");
 
             if (steelDef == null || mechDef == null || slagDef == null || vacstoneTerrain == null)
             {

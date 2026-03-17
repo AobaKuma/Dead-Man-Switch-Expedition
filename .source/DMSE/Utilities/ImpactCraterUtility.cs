@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -32,8 +33,15 @@ namespace DMSE
             if (Service is ImpactCraterService craterService)
             {
                 Vector2 lonhLat = Find.WorldGrid.LongLatOf(planetTile);
+                string currentCampaignId = Find.World?.info != null
+                    ? (Find.World.info.seedString + ":" + Find.World.info.persistentRandomValue)
+                    : string.Empty;
+
                 craterService.AddRecord(new ImpactCraterRecord
                 {
+                    campaignId = currentCampaignId,
+                    impactTick = GenTicks.TicksGame,
+                    recordId = Guid.NewGuid().ToString("N"),
                     planetSeedString = Find.World?.info?.seedString ?? string.Empty,
                     craterName = "DMSE_Crater".Translate(shipName),
                     longitude = lonhLat.x,
@@ -146,11 +154,22 @@ namespace DMSE
 
                     if (newElevation <= 0f)
                     {
+                        worldTile.PrimaryBiome = BiomeDefOf.Lake;
                         TryAddLakeshoreMutator(worldTile);
                     }
                     else
                     {
-                        worldTile.PrimaryBiome = lavaBiome;
+                        // 外環（高於海平面）依氣候改變地塊
+                        float outerRingStart = craterRadius * 0.72f;
+                        if (radial >= outerRingStart)
+                        {
+                            BiomeDef climateBiome = GetClimateBiomeForTile(worldTile);
+                            worldTile.PrimaryBiome = climateBiome ?? lavaBiome;
+                        }
+                        else
+                        {
+                            worldTile.PrimaryBiome = lavaBiome;
+                        }
                     }
 
                     return false;

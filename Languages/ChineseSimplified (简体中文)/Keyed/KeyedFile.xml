@@ -26,4 +26,27 @@
   <DMSE.Cannot.Reason.NoFusionCore>无法转移：未连接聚变核心。</DMSE.Cannot.Reason.NoFusionCore>
   <DMSE.Cannot.Reason.NoFuel>无法转移：燃料不足。</DMSE.Cannot.Reason.NoFuel>
 
+  <DMSE.Disabled.DestinationOccupied>无法转移：目标位置已有世界物体。</DMSE.Disabled.DestinationOccupied>
+  <DMSE.Disabled.TargetedSurface>无法转移：目的地必须位于太空。</DMSE.Disabled.TargetedSurface>
+
+  <DMSE.Flight.Select.Desc>由于舰船上存在有效装置，因此请选择此次巡航的模式:</DMSE.Flight.Select.Desc>
+  <DMSE.Flight.Impact.Header>你的殖民者知道这是一个切实存在但不明智的选择。</DMSE.Flight.Impact.Header>
+  <DMSE.Flight.Impact.Confirm>即使航路主机显示着鲜红的警告，但它仍然显示了一条可行的加速方案。\n\n通过启动终结巡航协议，聚变核心将在超载功率下输出完整的动力，使得核热引擎能够以最大功率推动向着这颗星球加速并撞击地表。\n\n这将使得整艘船以及推动的天体成为有效且威力十足的质量武器，并对于星球造成无法复原的破坏。\n\n\n\n你确定要这么做吗?</DMSE.Flight.Impact.Confirm>
+
+  <DMSE_ShipWarmUpBegin>聚变核心正在提升功率. 推进器点火倒计时: 5</DMSE_ShipWarmUpBegin>
+  <DMSE_ShipWarmUpCountdown>推进器点火倒计时: {0}</DMSE_ShipWarmUpCountdown>
+
+  <DMSE.Impact.Ending.Intro>重力船拖着长长的轨迹划过天际，携带着巨大的质量没入大地，地平线上的一切都变成了光，随之而来的是剧烈的冲击波化作风暴与地震席卷了整颗星球的地表，在短时间内无数的生灵与景观在这场惊天动地的碰撞之中烟飞灰灭。</DMSE.Impact.Ending.Intro>
+  <DMSE.Impact.Ending.Outro>所幸这并非核热引擎所能发挥的最大功率，在灾害平息后地表上的大部分人类都得以幸存。无论其背后的目的如何，这颗星球的历史都将永远记住这一场撞击。</DMSE.Impact.Ending.Outro>
+  <DMSE.Impact.Ending.Aboard>我们无法得知重力船上的船员们是否在最后一刻逃出生天，又或者彻底地随着撞击烟飞灰灭。</DMSE.Impact.Ending.Aboard>
+
+  <DMSE.Impact.Ending.FleetFailed.Intro>重力船拖着长长的轨迹划过天际，携带着巨大的质量没入大地，地平线上的一切都变成了光，随之而来的是剧烈的冲击波化作风暴与地震席卷了整颗星球的地表，在短时间内无数的生灵与景观在这场惊天动地的碰撞之中烟飞灰灭。</DMSE.Impact.Ending.FleetFailed.Intro>
+  <DMSE.Impact.Ending.FleetFailed.Outro>殖民舰队本部在评估灾情后只能够撤离地面上幸存的人员，可预估的星球改造成本使得殖民舰队不得不中止对这颗星球的开发。无论其背后的目的如何，殖民舰队与这颗星球的历史都将永远记住这一场撞击。</DMSE.Impact.Ending.FleetFailed.Outro>
+
+  <DMSE.Impact.Planetkiller.Ending.Intro>重力船拖着长长的轨迹划过天际，每一具热核引擎都在喷涌着蓬勃的推力，携带着巨大的质量没入大地，在地平线上升起了一面由地壳升起的墙，随之而来的是剧烈的高温冲击波化作火海席卷了整颗星球的地表。</DMSE.Impact.Planetkiller.Ending.Intro>
+  <DMSE.Impact.Planetkiller.Ending.Outro>这是天火，在神书当中只有神灵所能做到的，为生灵们降下的最高审判。\n\n无论其背后的目的如何，这颗星球或许在百年内都无法重现生机。</DMSE.Impact.Planetkiller.Ending.Outro>
+  <DMSE.Impact.Planetkiller.Ending.Aboard>没有人能够在这样的天灾下保全性命。</DMSE.Impact.Planetkiller.Ending.Aboard>
+
+  <DMSE_Crater>{0}撞击坑</DMSE_Crater>
+
 </LanguageData>

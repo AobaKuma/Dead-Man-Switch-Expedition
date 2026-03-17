@@ -18,13 +18,13 @@
             <rimObsidianChance>0.14</rimObsidianChance>
             <rimComponentsChance>0.10</rimComponentsChance>
             <rimSteelChance>0.22</rimSteelChance>
-            <rimSlagChance>0.08</rimSlagChance>
+            <rimSlagChance>0.01</rimSlagChance>
             <vacstoneScarChanceRim>0.18</vacstoneScarChanceRim>
 
             <ejectaObsidianChance>0.03</ejectaObsidianChance>
             <ejectaComponentsChance>0.03</ejectaComponentsChance>
             <ejectaSteelChance>0.08</ejectaSteelChance>
-            <ejectaSlagChance>0.05</ejectaSlagChance>
+            <ejectaSlagChance>0.01</ejectaSlagChance>
             <vacstoneScarChanceEjecta>0.05</vacstoneScarChanceEjecta>
         </genStep>
     </GenStepDef>
@@ -35,7 +35,7 @@
         <description>Ancient impact basin filled with compacted machinery, steel remnants, and vacstone strata.</description>
 
         <!-- 用現成 worker，避免額外 worker class -->
-        <workerClass>BiomeWorker_Desert</workerClass>
+        <workerClass>BiomeWorker_LavaField</workerClass>
 
         <canAutoChoose>false</canAutoChoose>
         <generatesNaturally>false</generatesNaturally>
@@ -49,16 +49,53 @@
         <movementDifficulty>1.2</movementDifficulty>
         <hasVirtualPlants>false</hasVirtualPlants>
 
-        <!-- 關鍵：強制岩石類型為 Vacstone -->
-        <!-- <forceRockTypes>
-            <li>Vacstone</li>
-        </forceRockTypes> -->
+        <!-- 避免 StartInitialWeather 在空天氣清單上隨機導致崩潰 -->
+        <baseWeatherCommonalities>
+            <Clear>12</Clear>
+            <Rain>1</Rain>
+            <DryThunderstorm>1</DryThunderstorm>
+        </baseWeatherCommonalities>
 
+        <!-- 關鍵：強制岩石類型為 Vacstone -->
+        <forceRockTypes>
+            <li>Vacstone</li>
+        </forceRockTypes>
+
+        <terrainPatchMakers>
+            <li>
+                <perlinFrequency>0.035</perlinFrequency>
+                <perlinLacunarity>1.5</perlinLacunarity>
+                <perlinOctaves>6</perlinOctaves>
+                <isPond>true</isPond>
+                <thresholds>
+                    <li>
+                        <terrain>VolcanicRock</terrain>
+                        <min>0.6</min>
+                        <max>0.9</max>
+                    </li>
+                    <li>
+                        <terrain>LavaDeep</terrain>
+                        <min>0.9</min>
+                        <max>999</max>
+                    </li>
+                </thresholds>
+            </li>
+        </terrainPatchMakers>
+        <allowedPackAnimals>
+            <li>Muffalo</li>
+            <li>Dromedary</li>
+            <li>Elephant</li>
+            <li>Alpaca</li>
+        </allowedPackAnimals>
+        <soundsAmbient>
+            <li>Ambient_NightInsects_Standard</li>
+        </soundsAmbient>
+        <diseaseMtbDays>65</diseaseMtbDays>
         <!-- 關鍵：附加資源生成 step -->
         <extraGenSteps>
             <li>DMSE_Crater_DepositsRadial</li>
         </extraGenSteps>
 
-        <texture>World/Biomes/ExtremeDesert</texture>
+        <texture>World/Biomes/LavaFields</texture>
     </BiomeDef>
 </Defs>

@@ -7,6 +7,10 @@ namespace DMSE
 {
     public class ImpactCraterRecord : IExposable
     {
+        public string campaignId;
+        public int impactTick;
+        public string recordId;
+
         public string planetSeedString;
         public string craterName;
         public float longitude;       // -180 ~ 180
@@ -16,6 +20,10 @@ namespace DMSE
 
         public void ExposeData()
         {
+            Scribe_Values.Look(ref campaignId, "campaignId");
+            Scribe_Values.Look(ref impactTick, "impactTick", 0);
+            Scribe_Values.Look(ref recordId, "recordId");
+
             Scribe_Values.Look(ref planetSeedString, "planetSeedString");
             Scribe_Values.Look(ref craterName, "craterName");
             Scribe_Values.Look(ref longitude, "longitude", 0f);
@@ -26,7 +34,8 @@ namespace DMSE
 
         public bool IsValid()
         {
-            return !planetSeedString.NullOrEmpty()
+            return !campaignId.NullOrEmpty()
+                && !planetSeedString.NullOrEmpty()
                 && !craterName.NullOrEmpty()
                 && latitude >= -90f && latitude <= 90f
                 && longitude >= -180f && longitude <= 180f
@@ -35,5 +44,4 @@ namespace DMSE
 
         public string Key => $"{planetSeedString}::{craterName}";
     }
-
 }

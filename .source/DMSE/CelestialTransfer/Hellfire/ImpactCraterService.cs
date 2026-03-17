@@ -38,17 +38,52 @@ namespace DMSE
 
         public bool AddOrUpdate(ImpactCraterRecord record)
         {
-            if (record == null || !record.IsValid())
+            if (record == null)
                 return false;
 
-            int idx = settings.records.FindIndex(r =>
-                string.Equals(r.planetSeedString, record.planetSeedString, StringComparison.Ordinal) &&
-                string.Equals(r.craterName, record.craterName, StringComparison.Ordinal));
+            // 基本驗證（允許舊資料沒有 campaignId）
+            if (record.planetSeedString.NullOrEmpty() ||
+                record.craterName.NullOrEmpty() ||
+                record.latitude < -90f || record.latitude > 90f ||
+                record.longitude < -180f || record.longitude > 180f ||
+                record.radiusInTiles < 0)
+            {
+                return false;
+            }
+
+            int idx = -1;
+
+            // 1) 優先用 recordId 精準匹配
+            if (!record.recordId.NullOrEmpty())
+            {
+                idx = settings.records.FindIndex(r =>
+                    r != null &&
+                    !r.recordId.NullOrEmpty() &&
+                    string.Equals(r.recordId, record.recordId, StringComparison.Ordinal));
+            }
+
+            // 2) 新資料：campaignId + craterName
+            if (idx < 0 && !record.campaignId.NullOrEmpty())
+            {
+                idx = settings.records.FindIndex(r =>
+                    r != null &&
+                    string.Equals(r.campaignId, record.campaignId, StringComparison.Ordinal) &&
+                    string.Equals(r.craterName, record.craterName, StringComparison.Ordinal));
+            }
+
+            // 3) 舊資料 fallback：seed + craterName
+            if (idx < 0)
+            {
+                idx = settings.records.FindIndex(r =>
+                    r != null &&
+                    string.Equals(r.planetSeedString, record.planetSeedString, StringComparison.Ordinal) &&
+                    string.Equals(r.craterName, record.craterName, StringComparison.Ordinal));
+            }
 
             if (idx >= 0) settings.records[idx] = record;
             else settings.records.Add(record);
 
-            settings.Write(); // 立即寫入 player config
+            settings.Write();
             return true;
         }
 
@@ -86,7 +121,11 @@ namespace DMSE
             var targets = settings.records.Where(r =>
                 r != null &&
                 r.enabled &&
-                r.IsValid() &&
+                !r.planetSeedString.NullOrEmpty() &&
+                !r.craterName.NullOrEmpty() &&
+                r.latitude >= -90f && r.latitude <= 90f &&
+                r.longitude >= -180f && r.longitude <= 180f &&
+                r.radiusInTiles >= 0 &&
                 string.Equals(r.planetSeedString, worldSeedString, StringComparison.Ordinal));
 
             foreach (var rec in targets)
@@ -189,6 +228,15 @@ namespace DMSE
         {
             AddOrUpdate(record); // 內含 settings.Write()
             Log.Message($"Added/Updated crater record: {record.planetSeedString} - {record.craterName}");
+        }
+
+        public static string CurrentCampaignId
+        {
+            get
+            {
+                if (Find.World?.info == null) return string.Empty;
+                return Find.World.info.seedString + ":" + Find.World.info.persistentRandomValue;
+            }
         }
     }
 }

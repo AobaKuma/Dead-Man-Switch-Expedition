@@ -26,6 +26,26 @@
   <DMSE.Cannot.Reason.NoFusionCore>Cannot transfer: no Fusion core connected.</DMSE.Cannot.Reason.NoFusionCore>
   <DMSE.Cannot.Reason.NoFuel>Cannot transfer: no fuel.</DMSE.Cannot.Reason.NoFuel>
 
+  <DMSE.Disabled.DestinationOccupied>Cannot transfer: destination occupied.</DMSE.Disabled.DestinationOccupied>
+  <DMSE.Disabled.TargetedSurface>Cannot transfer: destination must be in space.</DMSE.Disabled.TargetedSurface>
+
+  <DMSE.Flight.Select.Desc>A valid flight module is installed on this ship. Please choose a flight mode:</DMSE.Flight.Select.Desc>
+  <DMSE.Flight.Impact.Header>Your colonists know this is a real option, but not a wise one.</DMSE.Flight.Impact.Header>
+  <DMSE.Flight.Impact.Confirm>Even while the navigation console flashes crimson warnings, it still shows a feasible acceleration profile.\n\nBy activating the hard impact protocol, the fusion core will output full power under overload conditions, allowing the nuclear-thermal engines to accelerate this ship toward the planet at maximum thrust and collide with the surface.\n\nThis will turn both the ship and its momentum into an effective high-yield kinetic weapon, causing irreversible damage to the planet.\n\n\n\nAre you sure you want to proceed?</DMSE.Flight.Impact.Confirm>
+
   <DMSE_ShipWarmUpBegin>Fusion core heating up. Launching procedure in 5...</DMSE_ShipWarmUpBegin>
   <DMSE_ShipWarmUpCountdown>{0}...</DMSE_ShipWarmUpCountdown>
+
+  <DMSE.Impact.Ending.Intro>The gravship streaked across the sky with a blazing trail, carrying immense mass into the ground. The horizon turned to light, and violent shockwaves followed, becoming storms and earthquakes that swept across the planet's surface. In a short span, countless lives and landscapes were erased in this world-shattering impact.</DMSE.Impact.Ending.Intro>
+  <DMSE.Impact.Ending.Outro>Fortunately, this was not the maximum output the nuclear-thermal engines could produce. After the disaster subsided, most people on the surface survived. Whatever the purpose behind it, this impact will be remembered forever in the history of this world.</DMSE.Impact.Ending.Outro>
+  <DMSE.Impact.Ending.Aboard>We may never know whether the crew aboard the gravship escaped at the last moment, or vanished entirely in the impact.</DMSE.Impact.Ending.Aboard>
+
+  <DMSE.Impact.Ending.FleetFailed.Intro>The gravship streaked across the sky with a blazing trail, carrying immense mass into the ground. The horizon turned to light, and violent shockwaves followed, becoming storms and earthquakes that swept across the planet's surface. In a short span, countless lives and landscapes were erased in this world-shattering impact.</DMSE.Impact.Ending.FleetFailed.Intro>
+  <DMSE.Impact.Ending.FleetFailed.Outro>After assessing the damage, colonial fleet command could only evacuate surface survivors. The projected terraforming cost forced the fleet to abandon development of this planet. Whatever the purpose behind it, both the fleet and this world will remember this impact forever.</DMSE.Impact.Ending.FleetFailed.Outro>
+
+  <DMSE.Impact.Planetkiller.Ending.Intro>The gravship cut across the sky, every thermonuclear engine roaring with overwhelming thrust, before driving its colossal mass into the ground. A wall of rising crust surged along the horizon, and the following superheated shockwave became a sea of fire that swept across the planet's surface.</DMSE.Impact.Planetkiller.Ending.Intro>
+  <DMSE.Impact.Planetkiller.Ending.Outro>This was heavenly fire, a supreme judgment said in sacred texts to belong only to gods.\n\nWhatever the purpose behind it, this world may not recover life for a hundred years.</DMSE.Impact.Planetkiller.Ending.Outro>
+  <DMSE.Impact.Planetkiller.Ending.Aboard>No one could survive a cataclysm of this scale.</DMSE.Impact.Planetkiller.Ending.Aboard>
+
+  <DMSE_Crater>{0} Crater</DMSE_Crater>
 </LanguageData>

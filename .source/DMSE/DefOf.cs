@@ -18,5 +18,7 @@ namespace DMSE
         public static GravshipComponentTypeDef DMSE_FusionCore;
         public static GravshipComponentTypeDef DMSE_TransferThruster;
         public static WorldObjectDef DMSE_ImpactGravship;
+
+        public static BiomeDef DMSE_ImpactCraterBiome;
     }
 }
