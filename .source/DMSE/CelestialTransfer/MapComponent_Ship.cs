@@ -73,6 +73,18 @@ namespace DMSE
             Init(facilities, shipWorldObject);
         }
 
+
+        public override void MapComponentUpdate()
+        {
+            base.MapComponentUpdate();
+            if (Find.CurrentMap != map) return;
+            if (Find.World.renderer.wantedMode != WorldRenderMode.None) { Log.Message("wantermode"); return; }
+            if (status != OrbitalTransferState.Working) { Log.Message("status"); return; }
+            if (shipWorldObject == null) { Log.Message("shipWorldObject"); return; }
+            if (thrusterPlacements == null || thrusterPlacements.Count == 0) { Log.Message("no thruster"); return; }
+
+            Draw(Mathf.Clamp01(1f - shipWorldObject.Progress));
+        }
         public override void MapComponentTick()
         {
             base.MapComponentTick();
@@ -148,6 +160,8 @@ namespace DMSE
 
         public void Init(List<Thing> thrusters, TravelingObject wo)
         {
+            status = OrbitalTransferState.Working;
+            Log.Message("Initializing ship map component with " + thrusters.Count + " thrusters and world object " + wo);
             thrusterPlacements = thrusters;
             shipWorldObject = wo;
 
@@ -166,6 +180,7 @@ namespace DMSE
                 exhaustFleckSystem.handledDefs.AddUnique(ex.ExhaustFleckDef);
                 exhaustTimers.Add(thing, new EventQueue(1f / ex.emissionsPerSecond));
             }
+            wo.StartTraveling();
         }
 
         public void End()
@@ -178,19 +193,9 @@ namespace DMSE
             flareBlock.Clear();
         }
 
-        // ── Rendering helpers ─────────────────────────────────────────────────
-        public void BeginUpdate()
+        public override void MapComponentDraw()
         {
-            manualTicker.Push(Time.deltaTime);
-            while (manualTicker.Pop())
-                exhaustFleckSystem.Tick();
-            exhaustFleckSystem.Update(Time.deltaTime);
-        }
-
-        public void EndUpdate()
-        {
-            exhaustFleckSystem.ForceDraw(drawBatch);
-            drawBatch.Flush(true);
+            base.MapComponentDraw();
         }
 
         // ── Private tick helpers ──────────────────────────────────────────────
@@ -209,10 +214,9 @@ namespace DMSE
 
             if (warmUpTicksRemaining > 0)
                 return;
-            pendingShipWorldObject.StartTraveling();
             initialTile = (pendingShipWorldObject).Tile;
-            status = OrbitalTransferState.Working;
             Init(pendingThrusters, pendingShipWorldObject);
+
             pendingThrusters.Clear();
             pendingShipWorldObject = null;
         }
@@ -244,97 +248,94 @@ namespace DMSE
                 }
             }
         }
+        public void BeginUpdate()
+        {
+            this.exhaustFleckSystem.parent = Find.CurrentMap.flecks;
+            manualTicker.Push(Time.deltaTime);
+            while (manualTicker.Pop())
+            {
+                this.exhaustFleckSystem.Tick();
+            }
+            this.exhaustFleckSystem.Update(Time.deltaTime);
+        }
 
-        // ── Private draw helpers ──────────────────────────────────────────────
         private void Draw(float cutsceneProgressPercent)
         {
-            if (exhaustFleckSystem == null) return;
-
             BeginUpdate();
-
-            Color color = Color.white * Mathf.Lerp(0.75f, 1f, Mathf.PerlinNoise1D(cutsceneProgressPercent * 100f));
+            Color color = new Color(1f, 1f, 1f, 1f);
+            color *= Mathf.Lerp(0.75f, 1f, Mathf.PerlinNoise1D(cutsceneProgressPercent * 100f));
             color.a = Mathf.InverseLerp(0f, 0.1f, cutsceneProgressPercent);
             MatGravshipLensFlare.SetColor(ShaderPropertyColor2, color);
-
-            foreach (Thing thing in thrusterPlacements)
+            foreach (Thing thing in this.thrusterPlacements)
             {
-                CompGravshipThruster comp = thing.TryGetComp<CompGravshipThruster>();
-                if (comp == null) continue;
-
-                CompProperties_GravshipThruster props = comp.Props;
-                float flameSize = thing.def.size.x * props.flameSize;
-                Vector3 flameOffset = thing.Rotation.AsQuat * props.flameOffsetsPerDirection[thing.Rotation.AsInt];
+                CompProperties_GravshipThruster props = thing.TryGetComp<CompGravshipThruster>().Props;
+                float num = (float)thing.def.size.x * props.flameSize;
+                Vector3 b2 = thing.Rotation.AsQuat * props.flameOffsetsPerDirection[thing.Rotation.AsInt];
                 Vector3 drawPos = GenThing.TrueCenter(thing.Position, thing.Rotation, thing.def.size, 0f)
-                    - thing.Rotation.AsIntVec3.ToVector3()
-                        * (thing.def.size.z * 0.5f + flameSize * 0.5f)
-                    + flameOffset;
-                drawPos = drawPos.SetToAltitude(AltitudeLayer.Skyfaller).WithYOffset(0.07317074f);
-
-                Material flameMat = MaterialPool.MatFrom(new MaterialRequest(props.FlameShaderType.Shader)
+                    - thing.Rotation.AsIntVec3.ToVector3() *
+                    ((float)thing.def.size.z * 0.5f + num * 0.5f) + b2;
+                Material material = MaterialPool.MatFrom(new MaterialRequest(props.FlameShaderType.Shader)
                 {
                     renderQueue = 3201
                 });
-
-                thrusterFlameBlock.Clear();
-                thrusterFlameBlock.SetColor(ShaderPropertyColor2, color);
-                foreach (ShaderParameter param in props.flameShaderParameters)
-                    param.Apply(thrusterFlameBlock);
-
-                GenDraw.DrawQuad(flameMat, drawPos, thing.Rotation.AsQuat, flameSize, thrusterFlameBlock);
-
-                flareBlock.SetVector(ShaderPropertyIDs.DrawPos,
-                    Find.Camera.WorldToViewportPoint(drawPos));
-                DrawLayer(
-                    MatGravshipLensFlare,
-                    drawPos.SetToAltitude(AltitudeLayer.MetaOverlays).WithYOffset(0.03658537f),
-                    flareBlock);
-
-                CompProperties_GravshipThruster.ExhaustSettings ex = props.exhaustSettings;
-                if (ex != null && ex.enabled
-                    && exhaustTimers.TryGetValue(thing, out EventQueue eventQueue))
+                this.thrusterFlameBlock.Clear();
+                this.thrusterFlameBlock.SetColor(ShaderPropertyColor2, color);
+                foreach (ShaderParameter shaderParameter in props.flameShaderParameters)
                 {
+                    shaderParameter.Apply(this.thrusterFlameBlock);
+                }
+                var rotation = thing.Rotation;
+                GenDraw.DrawQuad(material, drawPos, thing.Rotation.AsQuat, num, this.thrusterFlameBlock);
+                this.flareBlock.SetVector(ShaderPropertyIDs.DrawPos, drawPos);
+                this.DrawLayer(MatGravshipLensFlare, drawPos.SetToAltitude(AltitudeLayer.MetaOverlays).WithYOffset(0.03658537f), this.flareBlock);
+                if (props.exhaustSettings.enabled)
+                {
+                    EventQueue eventQueue = this.exhaustTimers[thing];
                     eventQueue.Push(Time.deltaTime);
                     while (eventQueue.Pop())
-                        EmitSmoke(ex, drawPos, Rot4.North.AsQuat, thing.Rotation.AsQuat);
+                    {
+                        CompProperties_GravshipThruster.ExhaustSettings exhaustSettings = props.exhaustSettings;
+                        Vector3 position3 = drawPos;
+                        rotation = thing.Rotation;
+                        this.EmitSmoke(exhaustSettings, position3, Rot4.North.AsQuat, rotation.AsQuat);
+                    }
                 }
             }
-
-            EndUpdate();
+            this.EndUpdate();
         }
-
-        private void EmitSmoke(
-            CompProperties_GravshipThruster.ExhaustSettings settings,
-            Vector3 position,
-            Quaternion gravshipRotation,
-            Quaternion thrusterRotation)
+        private void EmitSmoke(CompProperties_GravshipThruster.ExhaustSettings settings,
+            Vector3 position, Quaternion gravshipRotation, Quaternion thrusterRotation)
         {
-            Quaternion rotation = Quaternion.identity;
+            Quaternion quaternion = Quaternion.identity;
             if (settings.inheritThrusterRotation)
-                rotation = thrusterRotation * rotation;
+            {
+                quaternion = thrusterRotation * quaternion;
+            }
             if (settings.inheritGravshipRotation)
-                rotation = gravshipRotation * rotation;
-
-            exhaustFleckSystem.CreateFleck(new FleckCreationData
+            {
+                quaternion = gravshipRotation * quaternion;
+            }
+            this.exhaustFleckSystem.CreateFleck(new FleckCreationData
             {
                 def = settings.ExhaustFleckDef,
-                spawnPosition = position
-                    + rotation * settings.spawnOffset
-                    + UnityEngine.Random.insideUnitSphere.WithY(0f).normalized
-                        * settings.spawnRadiusRange.RandomInRange,
+                spawnPosition = position + quaternion * settings.spawnOffset + UnityEngine.Random.insideUnitSphere.WithY(0f).normalized * settings.spawnRadiusRange.RandomInRange,
                 scale = settings.scaleRange.RandomInRange,
-                velocity = rotation
-                    * Quaternion.Euler(0f, settings.velocityRotationRange.RandomInRange, 0f)
-                    * (settings.velocity * settings.velocityMultiplierRange.RandomInRange),
+                velocity = new Vector3?(quaternion * Quaternion.Euler(0f, settings.velocityRotationRange.RandomInRange, 0f) * (settings.velocity * settings.velocityMultiplierRange.RandomInRange)),
                 rotationRate = settings.rotationOverTimeRange.RandomInRange,
                 ageTicksOverride = -1
             });
         }
-
         private void DrawLayer(Material mat, Vector3 position, MaterialPropertyBlock props)
         {
-            float size = Find.Camera.orthographicSize * 2f;
-            Vector3 s = new Vector3(size * Find.Camera.aspect, 1f, size);
-            Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(position, Quaternion.identity, s), mat, 0, null, 0, props);
+            float num = Find.Camera.orthographicSize * 2f;
+            Vector3 s = new Vector3(num * Find.Camera.aspect, 1f, num);
+            Matrix4x4 matrix = Matrix4x4.TRS(position, Quaternion.identity, s);
+            Graphics.DrawMesh(MeshPool.plane10, matrix, mat, 0, null, 0, props);
+        }
+        public void EndUpdate()
+        {
+            this.exhaustFleckSystem.ForceDraw(this.drawBatch);
+            this.drawBatch.Flush(true);
         }
     }
 }

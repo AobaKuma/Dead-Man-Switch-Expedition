@@ -47,6 +47,9 @@
   <!-- EN: Cannot transfer: no fuel. -->
   <DMSE.Cannot.Reason.NoFuel>無法轉移：燃料不足。</DMSE.Cannot.Reason.NoFuel>
 
+  <DMSE_ShipWarmUpBegin>聚變核心正在提升功率. 推進器點火倒數: 5</DMSE_ShipWarmUpBegin>
+  <DMSE_ShipWarmUpCountdown>推進器點火倒數: {0}</DMSE_ShipWarmUpCountdown>
+
   <DMSE.Impact.Ending.Intro>重力船拖著長長的軌跡劃過天際，攜帶著巨大的質量沒入大地，地平線上的一切都變成了光，隨之而來的是劇烈的衝擊波化作風暴與地震席捲了整顆星球的地表，在短時間內無數的生靈與景觀在這場驚天動地的碰撞之中煙飛灰滅。</DMSE.Impact.Ending.Intro>
   <DMSE.Impact.Ending.Outro>所幸這並非核熱引擎所能發揮得最大功率，在災害平息後地表上的大部分人類都得以倖存。無論其背後的目的如何，這顆星球的歷史都將永遠記住這一場撞擊。</DMSE.Impact.Ending.Outro>
   <DMSE.Impact.Ending.Aboard>我們無法得知重力船上的船員們是否在最後一刻逃出生天，又或者徹底地隨著撞擊煙飛灰滅。</DMSE.Impact.Ending.Aboard>

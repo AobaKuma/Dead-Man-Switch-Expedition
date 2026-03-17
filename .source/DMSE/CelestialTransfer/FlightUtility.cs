@@ -8,7 +8,7 @@ namespace DMSE
 {
     public static class FlightUtility
     {
-        public const float FuelConsumePerTile = 50f;
+        public const float FuelConsumePerTile = 100f;
 
         public static bool AnyOfRelatedFacilities(Building_GravEngine engine)
         {

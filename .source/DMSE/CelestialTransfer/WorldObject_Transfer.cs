@@ -25,6 +25,7 @@ namespace DMSE
 
         protected float progress = 0;
 
+        public float Progress => progress;
 
         private Vector3 StartPos => Find.WorldGrid.GetTileCenter(_start);
         private Vector3 EndPos => Find.WorldGrid.GetTileCenter(_end);
@@ -52,15 +53,12 @@ namespace DMSE
 
         protected bool isTraveling = false;
 
-        private const float TravelSpeed = 0.00025f;
-
         public void StartTraveling()
         {
             isTraveling = true;
         }
         protected override void Tick()
         {
-            Log.Message($"TravelingObject Tick: {progress}");
             base.Tick();
             if (isTraveling)
             {
@@ -90,8 +88,6 @@ namespace DMSE
             }
             return 0.00025f / num;
         }
-
-
         public override void ExposeData()
         {
             base.ExposeData();
