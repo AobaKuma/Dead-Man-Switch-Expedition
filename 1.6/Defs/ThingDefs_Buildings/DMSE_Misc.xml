@@ -1,6 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
   <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_PhaseArrayRadar</defName>
+    <label>phased-array radar</label>
+    <!-- 一種用於預警與火控瞄準的多用途雷達，通常被安裝於艦船或軍事基地追蹤周圍空間內的活動物體。能夠有效識別如dropPod等亞軌道飛行物體的軌跡並提前預測其下落位置，然而十分消耗電力。 -->
+    <description>A multi-purpose radar used for early warning and fire control targeting, typically installed on ships or military bases to track moving objects in the surrounding space. It can effectively identify the trajectories of suborbital objects such as droppods and predict their descent locations in advance; however, it is extremely power-intensive.</description>
+    <graphicData>
+      <texPath>Things/Building/PhaseArrayRadar</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(6,6)</drawSize>
+      <drawOffset>(0,0,0)</drawOffset>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <rotatable>false</rotatable>
+    <passability>PassThroughOnly</passability>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.3</staticSunShadowHeight>
+    <fillPercent>0.9</fillPercent>
+    <canOverlapZones>false</canOverlapZones>
+    <pathCost>42</pathCost>
+    <tickerType>Normal</tickerType>
+    <statBases>
+      <MaxHitPoints>500</MaxHitPoints>
+      <WorkToBuild>30000</WorkToBuild>
+      <!-- <Mass>500</Mass> -->
+      <Flammability>0</Flammability>
+    </statBases>
+    <size>(3,3)</size>
+    <costList>
+      <Tungsteel>300</Tungsteel>
+      <DMSE_Graphene>100</DMSE_Graphene>
+      <ComponentSpacer>12</ComponentSpacer>
+      <DMSE_Nitrogallium>10</DMSE_Nitrogallium>
+      <ComponentFireControl>8</ComponentFireControl>
+    </costList>
+    <building>
+      <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+      <buildingTags>
+        <!-- 重要 -->
+        <li>DMSE_InterceptRadar</li>
+      </buildingTags>
+    </building>
+    <researchPrerequisites>
+      <li>DMSE_Aerospace</li>
+    </researchPrerequisites>
+    <designationCategory>DMS_Category</designationCategory>
+    <!-- <minifiedDef>MinifiedThing</minifiedDef> -->
+    <constructionSkillPrerequisite>10</constructionSkillPrerequisite>
+    <!-- <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories> -->
+    <comps>
+      <li Class="CompProperties_Breakdownable" />
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>5000</basePowerConsumption>
+        <transmitsPower>true</transmitsPower>
+      </li>
+      <li Class="DMSE.CompProperties_InterceptRadar">
+        <delayTicks>1200</delayTicks>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>PlaceWorker_BandNode</li>
+    </placeWorkers>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
     <defName>DMSE_StealthDevice</defName>
     <label>signal stealth device</label>
     <!-- A massive plasma-field shield generator that suppresses detectable signals and directionally cancels radar waves, preventing external forces from locating the asteroid base hosting the device. Note that higher internal life-signal density increases power draw, and after each successful radar denial the device requires one day to cool down and recharge. -->
@@ -36,9 +109,9 @@
     <costList>
       <Tungsteel>500</Tungsteel>
       <DMSE_Graphene>75</DMSE_Graphene>
-      <ComponentStamped>12</ComponentStamped>
-      <ComponentSpacer>6</ComponentSpacer>
-      <ComponentTransmitter>4</ComponentTransmitter>
+      <ComponentStamped>20</ComponentStamped>
+      <ComponentSpacer>10</ComponentSpacer>
+      <ComponentTransmitter>8</ComponentTransmitter>
     </costList>
     <building>
       <destroySound>BuildingDestroyed_Metal_Small</destroySound>

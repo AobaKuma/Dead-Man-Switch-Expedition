@@ -12,7 +12,7 @@ namespace DMSE
         new Type[] { typeof(ThingDef), typeof(Thing), typeof(IntVec3), typeof(Map) })]
     public class Patch_MakeDropPodAt
     {
-        public static int Delay = 2500;
+
         [HarmonyPostfix]
         public static void postfix(Skyfaller __result, Thing innerThing, IntVec3 pos, Map map)
         {
@@ -20,61 +20,28 @@ namespace DMSE
             {
                 Log.Message("Generating SkyFaller：" + innerThing.Label);
             }
-            bool hostile = false; 
-            if (innerThing is Pawn pawn && pawn.Faction != Faction.OfPlayer
-                && pawn.Faction?.HostileTo(Faction.OfPlayer) == true) 
+            if (EarlyWarningUtility.IsHostileDropThing(innerThing))
             {
-                hostile = true; 
-            }
-            if (innerThing is ActiveTransporter transporter && transporter.Contents.SingleContainedThing
-                is Pawn pawn2 && pawn2.Faction != Faction.OfPlayer
-                && pawn2.Faction?.HostileTo(Faction.OfPlayer) == true) 
-            {
-                hostile = true; 
-            }
-            if (hostile) 
-            { 
-                __result.DeSpawn();
-                int time = Find.TickManager.TicksGame
-                    + Delay;
-                var comp = map.GetComponent<MapComponent_InterceptSkyfaller>();
-                if (comp.Pods.Find(p => p.tickToSpawn == time) is DroppodData data)
+                if (!EarlyWarningUtility.HasRadarBuildingOnMap(map))
                 {
-                    data.pods.Add(new PodData(__result,pos,map));
+                    if (Prefs.DevMode)
+                    {
+                        Log.Message("No DMSE_InterceptRadar on map, skip intercept logic.");
+                    }
+                    return;
+                }
 
-                }
-                else 
-                {
-                    DroppodData d = new DroppodData(time, new List<PodData>() { new PodData(__result, pos, map) });  
-                    comp.Pods.Add(d); 
-                }
+                __result.DeSpawn();
+
+                int delayTicks = EarlyWarningUtility.ResolveDelay(map);
+
                 if (Prefs.DevMode)
                 {
-                    Log.Message("skyFaller delay：" + innerThing.Label);
+                    Log.Message("skyFaller delay：" + innerThing.Label + $" delayTicks:{delayTicks}");
                 }
-                foreach (var turret in comp.turrets)
-                {
-                    if (turret.count > 0
-                        && ((!(turret.parent.TryGetComp<CompPowerTrader>() is CompPowerTrader power)
-                        || power.PowerOn))&& ((!(turret.parent.TryGetComp<CompRefuelable>() is CompRefuelable refuelable)
-                        || refuelable.Fuel > 0)))
-                    {
-                        InterceptProjectile projectile = (InterceptProjectile)SkyfallerMaker.SpawnSkyfaller(
-                            turret.Props.projectile, turret.parent.Position, map);
-                        projectile.Rotation = Rot4.Random;
-                        projectile.angle = projectile.Rotation.AsAngle;
-                        projectile.faller = __result;
-                        if (Prefs.DevMode)
-                        {
-                            Log.Message("Launch intercept：" + projectile + $"curTIck:{Find.TickManager.TicksGame}," +
-                                $"{turret.cooldown}");
-                        }
-                        turret.cooldown = Find.TickManager.TicksGame + turret.Props.cooldown;
-                        turret.count--;
-                        break;
-                    }
-                }
-            }
-        } 
+
+                InterceptSkyfallerUtility.Handle(map, __result, pos, delayTicks);
+            } 
+        }
     }
 }

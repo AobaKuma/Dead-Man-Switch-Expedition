@@ -8,9 +8,9 @@
     <description>This is a gravship-based variant of the GAU-4 rotary cannon, also utilizing 20x102mm NATO ammunition. The ship-mounted turret features a longer barrel to increase effective range, but it also introduces a larger blind spot for close-range engagements.</description>
     <techLevel>Industrial</techLevel>
     <graphicData>
-      <texPath>Things/Turrets/DMS_M161</texPath>
+      <texPath>Things/Building/TurretBase/base</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
-      <drawSize>2.8</drawSize>
+      <drawSize>4</drawSize>
       <drawOffset>(0,0,0)</drawOffset>
     </graphicData>
     <size>(2,2)</size>
@@ -41,7 +41,7 @@
           </thingDefs>
         </fuelFilter>
         <fuelIsMortarBarrel>true</fuelIsMortarBarrel>
-        <fuelCapacity>1500</fuelCapacity>    <!-- 20 burst -->
+        <fuelCapacity>600</fuelCapacity>    <!-- 20 burst -->
         <fuelMultiplier>150</fuelMultiplier><!-- 1 Barrel=100 ammo -->
         <initialFuelPercent>0.1</initialFuelPercent>
         <showFuelGizmo>true</showFuelGizmo>
@@ -74,8 +74,8 @@
     <researchPrerequisites>
       <li>DMS_EquipmentElite</li>
     </researchPrerequisites>
-    <uiIconPath>Things/Turrets/DMS_GateKeeper</uiIconPath>
-    <uiIconScale>1.2</uiIconScale>
+    <uiIconPath>Things/Turrets/DMS_WingBack_icon</uiIconPath>
+    <uiIconScale>1.1</uiIconScale>
     <placeWorkers>
       <li>PlaceWorker_BandNode</li>
     </placeWorkers>

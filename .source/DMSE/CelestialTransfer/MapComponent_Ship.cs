@@ -79,10 +79,10 @@ namespace DMSE
         {
             base.MapComponentUpdate();
             if (Find.CurrentMap != map) return;
-            if (Find.World.renderer.wantedMode != WorldRenderMode.None) { Log.Message("wantermode"); return; }
-            if (status != OrbitalTransferState.Working) { Log.Message("status"); return; }
-            if (shipWorldObject == null) { Log.Message("shipWorldObject"); return; }
-            if (thrusterPlacements == null || thrusterPlacements.Count == 0) { Log.Message("no thruster"); return; }
+            if (Find.World.renderer.wantedMode != WorldRenderMode.None) { return; }
+            if (status != OrbitalTransferState.Working) { return; }
+            if (shipWorldObject == null) { return; }
+            if (thrusterPlacements == null || thrusterPlacements.Count == 0) { return; }
 
             Draw(Mathf.Clamp01(1f - shipWorldObject.Progress));
         }
@@ -162,7 +162,6 @@ namespace DMSE
         public void Init(List<Thing> thrusters, TravelingObject wo)
         {
             status = OrbitalTransferState.Working;
-            Log.Message("Initializing ship map component with " + thrusters.Count + " thrusters and world object " + wo);
             foreach (var thruster in thrusters)
             {
                 thrusterPlacements.Add(thruster);

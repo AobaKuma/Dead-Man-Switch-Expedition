@@ -2,10 +2,6 @@
 using RimWorld.Planet;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
 using Verse;
 
 namespace DMSE
@@ -69,10 +65,6 @@ namespace DMSE
             }
             yield return command;
             yield break;
-        }
-        private void StartLaunchSequence()
-        {
-
         }
         private void Launch(GlobalTargetInfo t)
         {
