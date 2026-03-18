@@ -39,7 +39,7 @@
 			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
 		<thingCategories>
-			<li>ApparelArmor</li>
+			<li>Apparel</li>
 		</thingCategories>
 		<statBases>
 			<MaxHitPoints>120</MaxHitPoints>
@@ -52,6 +52,8 @@
 		</statBases>
 		<equippedStatOffsets>
 			<VacuumResistance MayRequire="ludeon.rimworld.odyssey">0.28</VacuumResistance>
+			<WorkSpeedGlobal>0.1</WorkSpeedGlobal>
+			<MechRepairSpeed>0.1</MechRepairSpeed>
 		</equippedStatOffsets>
 		<apparel>
 			<wornGraphicPath>Things/Apparel/IVASuit/Apparel</wornGraphicPath>
@@ -64,7 +66,7 @@
 				<li>Legs</li>
 			</bodyPartGroups>
 			<layers>
-				<li>OnSkin</li>
+				<li>Middle</li>
 			</layers>
 			<tags>
 				<li>DMS_Spacer</li>
@@ -161,7 +163,7 @@
 	<!-- Heavy exoskeleton -->
 	<ThingDef ParentName="DMSE_OrbitalApparelBase">
 		<defName>DMSE_Apparel_HeavyPowerSkeleton</defName>
-		<label>heavy powered exoskeletal unit</label>
+		<label>heavy exoskeletal unit</label>
 		<description>A heavy powered exoskeletal suit which mimics the human form and can be worn by an untrained operator. It significantly increases the wearer's strength. \n\nCompared to the exoskeleton on BigSister, this model has removed the jump system and shield system to reduce costs. When using it, don't assume you've gained the protective level of heavy mechanical units.</description>
 		<techLevel>Spacer</techLevel>
 		<recipeMaker>
@@ -206,9 +208,9 @@
 		</statBases>
 		<equippedStatOffsets>
 			<MoveSpeed>-0.1</MoveSpeed>
-			<WorkSpeedGlobal>0.25</WorkSpeedGlobal>
+			<WorkSpeedGlobal>0.15</WorkSpeedGlobal>
 			<MechRepairSpeed>0.5</MechRepairSpeed>
-			<VEF_MassCarryCapacity MayRequire="oskarpotocki.vanillafactionsexpanded.core">150</VEF_MassCarryCapacity>
+			<FFF_MassCarryCapacity MayRequire="oskarpotocki.vanillafactionsexpanded.core">150</FFF_MassCarryCapacity>
 			<CarryingCapacity>150</CarryingCapacity>
 		</equippedStatOffsets>
 		<tickerType>Normal</tickerType>
@@ -217,6 +219,12 @@
 				<hediff>DMSE_GravityFactor</hediff>
 				<part>Torso</part>
 				<revert>true</revert>
+			</li>
+			<li Class="Fortified.CompProperties_BulletproofPlate">
+				<armorRating>0.38</armorRating>
+				<maxDurability>450</maxDurability>
+				<plateThing>DMS_CeramicsPlating</plateThing>
+				<durabilityRestorePerMaterial>150</durabilityRestorePerMaterial>
 			</li>
 		</comps>
 		<apparel>
@@ -322,5 +330,4 @@
 		</comps>
 		<isBad>false</isBad>
 	</HediffDef>
-
 </Defs>

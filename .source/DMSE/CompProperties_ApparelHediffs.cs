@@ -18,28 +18,52 @@ namespace DMSE
     {
         protected Pawn wearer;
         protected CompProperties_ApparelCauseHediff_Microgravity Props => (CompProperties_ApparelCauseHediff_Microgravity)props;
+
         public static bool InMicroGravity(Pawn pawn)
         {
-            if (pawn is null || !pawn.Spawned) return false;
+            if (pawn == null || !pawn.Spawned) return false;
             if (!ModsConfig.OdysseyActive) Log.WarningOnce($"Warning, {pawn} checking Gravity without OdysseyActive.", 123457);
 
-            if (pawn.Map?.TileInfo?.Layer?.Def == PlanetLayerDefOf.Surface)
-            {
-                return false;
-            }
-            return true;
+            return pawn.Map?.TileInfo?.Layer?.Def != PlanetLayerDefOf.Surface;
         }
+
+        private bool ShouldHaveHediff(Pawn pawn)
+        {
+            if (pawn == null || !pawn.Spawned) return false;
+
+            bool inMicroGravity = InMicroGravity(pawn);
+            return Props.revert ? !inMicroGravity : inMicroGravity;
+        }
+
+        private void SyncHediff(Pawn pawn)
+        {
+            if (pawn == null) return;
+
+            if (ShouldHaveHediff(pawn))
+            {
+                ApplyHediff(pawn);
+            }
+            else
+            {
+                RemoveHediff(pawn);
+            }
+        }
+
         protected void ApplyHediff(Pawn pawn)
         {
             if (pawn.health.hediffSet.GetFirstHediffOfDef(Props.hediff) == null)
             {
-                HediffComp_RemoveIfApparelDropped hediffComp_RemoveIfApparelDropped = pawn.health.AddHediff(Props.hediff, pawn.health.hediffSet.GetNotMissingParts().FirstOrFallback((BodyPartRecord p) => p.def == Props.part)).TryGetComp<HediffComp_RemoveIfApparelDropped>();
-                if (hediffComp_RemoveIfApparelDropped != null)
+                HediffComp_RemoveIfApparelDropped comp = pawn.health
+                    .AddHediff(Props.hediff, pawn.health.hediffSet.GetNotMissingParts().FirstOrFallback(p => p.def == Props.part))
+                    .TryGetComp<HediffComp_RemoveIfApparelDropped>();
+
+                if (comp != null)
                 {
-                    hediffComp_RemoveIfApparelDropped.wornApparel = (Apparel)parent;
+                    comp.wornApparel = (Apparel)parent;
                 }
             }
         }
+
         protected void RemoveHediff(Pawn pawn)
         {
             Hediff hediff = pawn.health.hediffSet.GetFirstHediffOfDef(Props.hediff);
@@ -48,26 +72,38 @@ namespace DMSE
                 pawn.health.RemoveHediff(hediff);
             }
         }
+
         public override void Notify_Equipped(Pawn pawn)
         {
-            RemoveHediff(pawn);
-            if (InMicroGravity(pawn) && Props.revert == false) //如果在微重力環境下，且不是反向作用
-            {
-                ApplyHediff(pawn);
-            }
-            else if (Props.revert) //如果是反向作用
-            {
-                ApplyHediff(pawn);
-            }
+            wearer = pawn;
+            SyncHediff(pawn);
         }
+
         public override void Notify_Unequipped(Pawn pawn)
         {
-            wearer = null;
             RemoveHediff(pawn);
+            if (wearer == pawn) wearer = null;
         }
+
         public override void Notify_WearerDied()
         {
-            RemoveHediff(wearer);
+            if (wearer != null)
+            {
+                RemoveHediff(wearer);
+                wearer = null;
+            }
+        }
+
+        public override void CompTickRare()
+        {
+            base.CompTickRare();
+
+            Apparel apparel = parent as Apparel;
+            Pawn currentWearer = apparel?.Wearer;
+            if (currentWearer == null) return;
+
+            wearer = currentWearer;
+            SyncHediff(currentWearer);
         }
     }
 }

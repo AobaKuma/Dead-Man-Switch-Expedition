@@ -267,6 +267,8 @@ namespace DMSE
             Find.World.renderer.GetLayer<WorldDrawLayer_Rivers>(planetTile.Layer).RegenerateNow();
             Find.WorldPathGrid.RecalculateLayerPerceivedPathCosts(planetTile.Layer);
             Find.WorldReachability.ClearCache();
+
+            MakeAllFactionsHostileToPlayerFromImpact();
         }
 
         private static void NormalizeSurfaceTileLinksAndMutators(Tile tileData)
@@ -388,6 +390,58 @@ namespace DMSE
             return rain < 300f
                 ? DefDatabase<BiomeDef>.GetNamedSilentFail("ExtremeDesert")
                 : DefDatabase<BiomeDef>.GetNamedSilentFail("Desert");
+        }
+
+        public static void MakeAllFactionsHostileToPlayerFromImpact()
+        {
+            Faction player = Faction.OfPlayer;
+            if (player == null) return;
+
+            List<Faction> factions = Find.FactionManager?.AllFactionsListForReading;
+            if (factions == null) return;
+
+            for (int i = 0; i < factions.Count; i++)
+            {
+                Faction faction = factions[i];
+                if (faction == null || faction == player || faction.defeated) continue;
+
+                int goodwillChange = player.GoodwillToMakeHostile(faction);
+                if (goodwillChange >= 0) continue; // 已敵對或無需變更
+
+                player.TryAffectGoodwillWith(
+                    faction,
+                    goodwillChange,
+                    canSendMessage: false,
+                    canSendHostilityLetter: false,
+                    reason: HistoryEventDefOf.AttackedSettlement);
+            }
+        }
+
+        public static void RemoveAllDmsArmySettlements()
+        {
+            var f  = Find.FactionManager.FirstFactionOfDef(DMSE_DefOf.DMS_Army);
+            if (f is null || f.defeated) return;
+            List<Settlement> settlements = Find.WorldObjects?.Settlements;
+            if (settlements == null || settlements.Count == 0) return;
+
+            List<Settlement> toRemove = new List<Settlement>();
+
+            for (int i = 0; i < settlements.Count; i++)
+            {
+                Settlement settlement = settlements[i];
+                if (settlement == null || settlement.Destroyed) continue;
+                if (settlement.Faction == null) continue;
+                if (settlement.Faction.def != DMSE_DefOf.DMS_Army) continue;
+
+                toRemove.Add(settlement);
+            }
+
+            for (int i = 0; i < toRemove.Count; i++)
+            {
+                Settlement settlement = toRemove[i];
+                settlement.Destroy();
+            }
+            Find.FactionManager.FirstFactionOfDef(DMSE_DefOf.DMS_Army).defeated = true;
         }
     }
 }
