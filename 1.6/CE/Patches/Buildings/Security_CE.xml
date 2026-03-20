@@ -21,7 +21,8 @@
 			</li>
 			
 			<li Class="PatchOperationAdd">
-				<xpath>Defs/ThingDef[defName="DMSE_Turret_Vulcan_WingBack"]</xpath>
+				<xpath>Defs/ThingDef[defName="DMSE_Turret_Vulcan_WingBack" or
+					defName="DMSE_Turret_Dawnblade_Striker"]</xpath>
 				<value>
 					<thingClass MayRequire="CETeam.CombatExtended">CombatExtended.Building_CIWS_CE</thingClass>
 				</value>
@@ -167,6 +168,35 @@
 				</FireModes>
 				<weaponTags>
 				</weaponTags>
+			</li>
+			
+			<li Class="PatchOperationAdd">
+				<xpath>Defs/ThingDef[defName="DMSE_Gun_Dawnblade_Striker"]/verbs</xpath>
+				<value>
+					<li Class="CombatExtended.VerbProperties_CIWSSkyfaller">
+						<verbClass>CombatExtended.VerbCIWSSkyfaller</verbClass>
+						<recoilAmount>1.33</recoilAmount>
+						<hasStandardCommand>true</hasStandardCommand>
+						<defaultProjectile>DMSE_Bullet_762x385mmRCannonShell_HEAT_HV</defaultProjectile>
+						<warmupTime>1</warmupTime>
+						<range>500</range>
+						<ticksBetweenBurstShots>15</ticksBetweenBurstShots>
+						<burstShotCount>8</burstShotCount>
+						<soundCast>Explosion_Bomb</soundCast>
+						<soundCastTail>GunTail_Heavy</soundCastTail>
+						<muzzleFlashScale>24</muzzleFlashScale>
+						<recoilPattern>Mounted</recoilPattern>
+					</li>
+				</value>
+			</li>
+			
+			<li Class="PatchOperationAdd">
+				<xpath>Defs/ThingDef[defName="DMSE_Gun_Dawnblade_Striker"]/comps</xpath>
+				<value>
+					<li>
+						<compClass>CombatExtended.CompVerbDisabler</compClass>
+					</li>
+				</value>
 			</li>
 
 			<li Class="PatchOperationReplace">
