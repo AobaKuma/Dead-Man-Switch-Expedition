@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
 	<ThingCategoryDef>
 		<defName>DMSE_AerospaceWeapon</defName>
@@ -29,6 +29,9 @@
 			<MaxHitPoints>150</MaxHitPoints>
 			<WorkToMake>60000</WorkToMake>
 		</statBases>
+		<weaponTags>
+			<li>DMSE_Gun</li>
+		</weaponTags>
 		<tradeTags>
 			<li>DMS_WeaponRanged</li>
 		</tradeTags>
@@ -57,10 +60,6 @@
 			<DMSE_Graphene>15</DMSE_Graphene>
 			<ComponentStamped>4</ComponentStamped>
 		</costList>
-		<weaponTags>
-			<li>IndustrialGunAdvanced</li>
-			<li>AssaultRifle</li>
-		</weaponTags>
 		<verbs>
 			<li>
 				<verbClass>Verb_Shoot</verbClass>

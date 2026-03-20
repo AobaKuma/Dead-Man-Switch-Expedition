@@ -23,9 +23,6 @@
 			<DMSE_Graphene>10</DMSE_Graphene>
 			<ComponentStamped>3</ComponentStamped>
 		</costList>
-		<weaponTags>
-			<li>IndustrialGunAdvanced</li>
-		</weaponTags>
 		<verbs>
 			<li>
 				<verbClass>Verb_Shoot</verbClass>

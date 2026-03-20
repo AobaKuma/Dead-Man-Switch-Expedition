@@ -10,13 +10,13 @@
       <li>RewardStandardCore</li>
     </thingSetMakerTags>
     <healthAffectsPrice>false</healthAffectsPrice>
-    <thingSetMakerTags inherit="false"/>
+    <thingSetMakerTags inherit="false" />
     <thingCategories>
       <li>Manufactured</li>
     </thingCategories>
-	</ThingDef>
+  </ThingDef>
 
-  <!-- Carbohydrate -->  
+  <!-- Carbohydrate -->
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_Carbohydrate</defName>
     <label>Carbohydrate</label>
@@ -55,8 +55,8 @@
       <li>FoodRaw</li>
     </thingCategories>
   </ThingDef>
-  
-  <!-- Tantasteel: stronger than tungsten steel -->  
+
+  <!-- Tantasteel: stronger than tungsten steel -->
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_TantastenAlloy</defName>
     <label>Tantasteel</label>
@@ -93,7 +93,7 @@
       <appearance>Metal</appearance>
       <commonality>0</commonality>
       <constructEffect>ConstructMetal</constructEffect>
-	    <isAirtight>true</isAirtight>
+      <isAirtight>true</isAirtight>
       <color>(80,80,80)</color>
       <soundImpactBullet>BulletImpact_Ground</soundImpactBullet>
       <soundMeleeHitSharp>MeleeHit_Metal_Sharp</soundMeleeHitSharp>
@@ -159,7 +159,7 @@
       <li>Textiles</li>
     </thingCategories>
   </ThingDef>
-  
+
   <!-- Nitrogallium: required by advanced complex tech items such as T/R components and cluster control chipsets -->
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_Nitrogallium</defName>
@@ -184,5 +184,48 @@
       <Flammability>0</Flammability>
       <DeteriorationRate>10.0</DeteriorationRate>
     </statBases>
+  </ThingDef>
+
+  <ThingDef ParentName="DMSE_ResourceBase">
+    <defName>DMSE_CruiseMissile</defName>
+    <label>cruise missile</label>
+    <description>A tactical cruise missile awaiting loading.</description>
+    <descriptionHyperlinks>
+      <ThingDef>DMSE_Building_Scorer</ThingDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Things/Missile/skyFaller_moskit</texPath>
+      <drawSize>(4,4)</drawSize>
+      <drawOffset>(0,0,2)</drawOffset>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>1</stackLimit>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <MarketValue>2500</MarketValue>
+      <Mass>500</Mass>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>10.0</DeteriorationRate>
+    </statBases>
+    <costList>
+      <Chemfuel>250</Chemfuel>
+      <Steel>125</Steel>
+      <DMSE_TantastenAlloy>15</DMSE_TantastenAlloy>
+      <ComponentStamped>10</ComponentStamped>
+      <ComponentSpacer>1</ComponentSpacer>
+    </costList>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <effectWorking>Smith</effectWorking>
+      <soundWorking>Recipe_Smith</soundWorking>
+      <recipeUsers Inherit="False">
+        <li>DMS_TableMachinePrinter</li>
+      </recipeUsers>
+      <researchPrerequisite>DMSE_OrbitalDynamics</researchPrerequisite>
+      <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
+    </recipeMaker>
   </ThingDef>
 </Defs>

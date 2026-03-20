@@ -28,11 +28,6 @@
             <li>RangedHeavy</li>
             <li>Ranged</li>
         </weaponClasses>
-        <weaponTags>
-            <li>IndustrialGunAdvanced</li>
-            <li>DMS_MechWeaponLongRifle</li>
-            <li>A_SuppressWeapon</li>
-        </weaponTags>
         <verbs>
             <li>
 				<verbClass>Verb_Shoot</verbClass>

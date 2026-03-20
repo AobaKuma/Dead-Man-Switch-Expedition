@@ -28,9 +28,9 @@
 		</recipeMaker>
 		<costList>
 			<ComponentStamped>1</ComponentStamped>
-			<Polyester>20</Polyester>
+			<Polyester>120</Polyester>
 		</costList>
-		<costStuffCount>100</costStuffCount>
+		<costStuffCount>30</costStuffCount>
 		<stuffCategories>
 			<li>Fabric</li>
 		</stuffCategories>

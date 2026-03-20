@@ -28,12 +28,6 @@
 			<li>RangedLight</li>
 			<li>ShortShots</li>
 		</weaponClasses>
-		<weaponTags>
-			<li>IndustrialGunAdvanced</li>
-			<li>CE_OneHandedWeapon</li>
-			<li>CE_Sidearm</li>
-			<li>CE_AI_BROOM</li>
-		</weaponTags>
 		<verbs>
 			<li>
 				<verbClass>Verb_Shoot</verbClass>

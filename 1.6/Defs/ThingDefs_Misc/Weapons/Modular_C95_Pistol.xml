@@ -28,9 +28,6 @@
 			<li>RangedLight</li>
 			<li>ShortShots</li>
 		</weaponClasses>
-		<weaponTags>
-			<li>IndustrialGunAdvanced</li>
-		</weaponTags>
 		<verbs>
 			<li>
 				<verbClass>Verb_Shoot</verbClass>

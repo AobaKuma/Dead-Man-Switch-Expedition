@@ -37,8 +37,8 @@
     <canOverlapZones>false</canOverlapZones>
     <costList>
       <Plasteel>250</Plasteel>
+      <DMSE_TantastenAlloy>150</DMSE_TantastenAlloy>
       <Uranium>90</Uranium>
-      <DMSE_TantastenAlloy>50</DMSE_TantastenAlloy>
       <ComponentStamped>20</ComponentStamped>
       <ComponentSpacer>8</ComponentSpacer>
     </costList>
@@ -90,6 +90,8 @@
     <size>(3, 3)</size>
     <costList>
       <Steel>200</Steel>
+      <Plasfiber>100</Plasfiber>
+      <ComponentStamped>4</ComponentStamped>
     </costList>
     <researchPrerequisites>
       <li>DMSE_OrbitalDynamics</li>
@@ -147,6 +149,7 @@
     <costList>
       <Chemfuel>150</Chemfuel>
       <Steel>75</Steel>
+      <DMSE_TantastenAlloy>5</DMSE_TantastenAlloy>
       <ComponentIndustrial>1</ComponentIndustrial>
     </costList>
     <researchPrerequisites>

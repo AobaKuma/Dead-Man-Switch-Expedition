@@ -3,7 +3,7 @@
     <ThingDef ParentName="BuildingBase">
         <defName>DMSE_Building_Scorer</defName>
         <label>Scorer MLS</label>
-        <description>The S1120 "Scorer" is a cruise missile launch system. It is a highly versatile anti-ship missile launcher used on cruisers and armed landing ships of the Colonial Fleet Space Force.</description>
+        <description>The S1120 "Scorer" is a cruise missile launch system. It is a highly versatile anti-ship missile launcher used on cruisers and armed landing ships of the Colonial Fleet.</description>
         <category>Building</category>
         <graphicData>
             <texPath>Things/Building/MissileLauncher/building</texPath>
@@ -31,7 +31,9 @@
         </statBases>
         <selectable>true</selectable>
         <costList>
-            <WoodLog>50</WoodLog>
+            <Steel>250</Steel>
+            <ComponentStamped>10</ComponentStamped>
+            <ComponentSpacer>1</ComponentSpacer>
         </costList>
         <building>
             <destroySound>BuildingDestroyed_Metal_Small</destroySound>
@@ -48,19 +50,19 @@
             <li Class="CompProperties_Refuelable">
                 <fuelFilter>
                     <thingDefs>
-                        <li>ReinforcedBarrel</li>
+                        <li>DMSE_CruiseMissile</li>
                     </thingDefs>
                 </fuelFilter>
-                <fuelIsMortarBarrel>true</fuelIsMortarBarrel>
-                <fuelCapacity>20</fuelCapacity>
-                <fuelMultiplier>20</fuelMultiplier>
-                <initialFuelPercent>1</initialFuelPercent>
+                <fuelIsMortarBarrel>false</fuelIsMortarBarrel>
+                <fuelCapacity>1</fuelCapacity>
+                <fuelMultiplier>1</fuelMultiplier>
+                <initialFuelPercent>0</initialFuelPercent>
                 <showFuelGizmo>true</showFuelGizmo>
                 <minimumFueledThreshold>1</minimumFueledThreshold>
                 <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
                 <initialAllowAutoRefuel>true</initialAllowAutoRefuel>
                 <autoRefuelPercent>0</autoRefuelPercent>
-                <fuelIconPath>Things/Item/Resource/ReinforcedBarrel/ReinforcedBarrel</fuelIconPath>
+                <fuelIconPath>UI/DMSE/TravelingMissile</fuelIconPath>
             </li>
         </comps>
         <researchPrerequisites>
@@ -167,14 +169,9 @@
         <skyfaller>
             <shadowSize>(3, 3)</shadowSize>
             <explosionRadius>9</explosionRadius>
-            <explosionDamage>Bomb</explosionDamage>
+            <explosionDamage>BombSuper</explosionDamage>
             <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
             <speed>1</speed>
         </skyfaller>
-        <!-- <comps>
-            <li Class="DMSE.CompProperties_PlaySoundOnSpawn">
-                <sound>DMSE_Missile_Shot</sound>
-            </li>
-        </comps> -->
     </ThingDef>
 </Defs>

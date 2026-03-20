@@ -115,7 +115,6 @@
         <targetParams>
           <canTargetLocations>true</canTargetLocations>
         </targetParams>
-        <!-- <forcedMissRadius>1.6</forcedMissRadius> -->
       </li>
     </verbs>
     <modExtensions>
@@ -206,7 +205,7 @@
       <turretTopDrawSize>5</turretTopDrawSize>
       <turretBurstWarmupTime>2.0</turretBurstWarmupTime>   <!--================ Cooldown and aiming time ================-->
       <turretBurstCooldownTime>2.8</turretBurstCooldownTime>
-      <turretTopOffset>(0,0.4)</turretTopOffset>
+      <!-- <turretTopOffset>(0)</turretTopOffset> -->
     </building>
     <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
     <costList>
