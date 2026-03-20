@@ -199,8 +199,6 @@
                 </openedGraphicdata>
                 <loots>
                     <li>Reward_ItemsStandard</li>
-                    <li MayRequire="Aoba.DeadManSwitch.AncientCorps">DMSAC_CrateLoots</li>
-                    <li MayRequire="ceteam.combatextended">DMSAC_CrateLootsCE</li>
                 </loots>
             </li>
         </modExtensions>

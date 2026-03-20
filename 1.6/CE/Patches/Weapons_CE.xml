@@ -20,7 +20,7 @@
                     <defaultProjectile>Bullet_5x50mmCaseless_FMJ</defaultProjectile>
                     <warmupTime>1.2</warmupTime>
                     <range>75</range>
-                    <burstShotCount>3</burstShotCount>
+                    <burstShotCount>5</burstShotCount>
                     <ticksBetweenBurstShots>3</ticksBetweenBurstShots>
                     <soundCast>Shot_AssaultRifle</soundCast>
                     <soundCastTail>GunTail_Medium</soundCastTail>

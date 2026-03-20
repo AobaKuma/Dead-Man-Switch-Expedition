@@ -121,7 +121,7 @@
     <comps>
       <li Class="CompProperties_Power">
         <compClass>DMSE.CompPowerPlantPhotovoltaic</compClass>
-        <basePowerConsumption>-2500</basePowerConsumption>
+        <basePowerConsumption>-3000</basePowerConsumption>
         <transmitsPower>true</transmitsPower>
       </li>
       <li Class="CompProperties_Stunnable">

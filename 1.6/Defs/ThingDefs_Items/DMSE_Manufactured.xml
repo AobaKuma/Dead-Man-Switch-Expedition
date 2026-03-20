@@ -196,7 +196,7 @@
     <graphicData>
       <texPath>Things/Missile/Moskit/skyFaller_moskit</texPath>
       <drawSize>(4,4)</drawSize>
-      <drawOffset>(0,0,2)</drawOffset>
+      <drawOffset>(0,0,1.5)</drawOffset>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <soundInteract>Metal_Drop</soundInteract>
