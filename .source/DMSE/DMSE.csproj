@@ -82,7 +82,7 @@
     <Compile Include="SkyFallerTurret\Patch_MakeDropPodAt.cs" />
     <Compile Include="SkyFallerTurret\InterceptProjectile.cs" />
     <Compile Include="SkyFallerTurret\Patch_QuestPart_Bossgroup.cs" />
-    <Compile Include="SkyFallerTurret\SkyfallerTurretComp.cs" />
+    <Compile Include="SkyFallerTurret\CompSkyfallerTurret.cs" />
     <Compile Include="CelestialTransfer\ThingComp_Ship.cs" />
     <Compile Include="CelestialTransfer\WorldDrawLayer_SpaceTiles.cs" />
     <Compile Include="CelestialTransfer\WorldObject_Transfer.cs" />

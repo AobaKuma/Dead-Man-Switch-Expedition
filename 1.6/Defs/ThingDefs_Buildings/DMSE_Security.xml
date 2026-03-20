@@ -57,6 +57,14 @@
         <compClass>CompPowerTrader</compClass>
         <basePowerConsumption>500</basePowerConsumption>
       </li>
+      <li Class="DMSE.CompProperties_SkyfallerTurret">
+        <cooldown>600</cooldown>
+        <countLimit>3</countLimit>
+        <projectile_Last>DMSE_Bullet_Vulcan_WingBack_CIWS</projectile_Last>
+        <lastInterceptTick>200</lastInterceptTick>
+        <countLimitForLast>5</countLimitForLast>
+        <interceptChance>0.5</interceptChance>
+      </li>
     </comps>
     <building>
       <turretGunDef>DMSE_Gun_Vulcan_WingBack</turretGunDef>
@@ -142,6 +150,24 @@
       <armorPenetrationBase>0.44</armorPenetrationBase>
       <stoppingPower>6</stoppingPower>
       <speed>102</speed>
+    </projectile>
+  </ThingDef>
+
+
+  <ThingDef ParentName="BaseBullet">
+    <defName>DMSE_Bullet_Vulcan_WingBack_CIWS</defName>
+    <label>APT shell</label>
+    <graphicData>
+      <texPath>Things/Projectile/Bullet_Big</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <projectile>
+      <damageDef>Bullet</damageDef>
+      <damageAmountBase>20</damageAmountBase>
+      <armorPenetrationBase>0.44</armorPenetrationBase>
+      <stoppingPower>6</stoppingPower>
+      <speed>102</speed>
+      <flyOverhead>true</flyOverhead>
     </projectile>
   </ThingDef>
 

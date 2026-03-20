@@ -4,11 +4,11 @@ using Verse;
 
 namespace DMSE
 {
-    public class SkyfallerTurretCompProperties : CompProperties
+    public class CompProperties_SkyfallerTurret : CompProperties
     {
-        public SkyfallerTurretCompProperties() 
+        public CompProperties_SkyfallerTurret() 
         {
-            this.compClass = typeof(SkyfallerTurretComp);
+            this.compClass = typeof(CompSkyfallerTurret);
         }
         public ThingDef projectile;
         public int cooldown = 600;
@@ -21,9 +21,9 @@ namespace DMSE
         public float interceptChance = 0.5f;
     }
 
-    public class SkyfallerTurretComp : ThingComp
+    public class CompSkyfallerTurret : ThingComp
     {
-        public SkyfallerTurretCompProperties Props => (SkyfallerTurretCompProperties)this.props;
+        public CompProperties_SkyfallerTurret Props => (CompProperties_SkyfallerTurret)this.props;
         public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
         {
             base.PostDeSpawn(map, mode);
@@ -39,10 +39,6 @@ namespace DMSE
             var list = this.parent.Map.GetComponent<MapComponent_InterceptSkyfaller>().turrets;
             if (!list.Contains(this))
             {
-                if (Prefs.DevMode) 
-                {
-                    Log.Message("添加Turrets:" + this.parent.Label);
-                }
                 list.Add(this);
             }
         }
@@ -70,7 +66,6 @@ namespace DMSE
          
         public int cooldown;
         public int count;
-
         public int cooldownLast;
     }
 }

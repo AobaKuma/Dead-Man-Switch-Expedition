@@ -53,7 +53,10 @@ namespace DMSE
                 {
                     continue;
                 }
-
+                if (turret?.Props?.projectile == null)
+                {
+                    continue;
+                }
                 InterceptProjectile projectile = (InterceptProjectile)SkyfallerMaker.SpawnSkyfaller(
                     turret.Props.projectile, turret.parent.Position, map);
 

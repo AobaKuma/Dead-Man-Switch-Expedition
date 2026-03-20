@@ -75,6 +75,10 @@ namespace DMSE
                         int count = c.Props.countLimitForLast;
                         while (count > 0 && pod.pods.Any()) 
                         {
+                            if (c.Props.projectile_Last == null)
+                            {
+                                break;
+                            }
                             var p = pod.pods.First(); 
                             LocalTargetInfo target = new LocalTargetInfo(p.position);
                             Projectile pro = (Projectile)GenSpawn.Spawn(c.Props.projectile_Last,c.parent.Position,c.parent.Map, WipeMode.Vanish);
@@ -131,7 +135,7 @@ namespace DMSE
         FieldInfo burstCooldownTicksLeft;
         FieldInfo currentTargetInt;
         MethodInfo resetCurrentTarget;
-        public HashSet<SkyfallerTurretComp> turrets = new HashSet<SkyfallerTurretComp>();
+        public HashSet<CompSkyfallerTurret> turrets = new HashSet<CompSkyfallerTurret>();
     }
     public class DroppodData : IExposable
     {

@@ -18,7 +18,7 @@
 
   <WorldObjectDef>
     <defName>DMSE_TransferGravShip</defName>
-    <label>gravship</label>
+    <label>transfering gravship</label>
     <description>A gravship in flight.</description>
     <worldObjectClass>DMSE.WorldObject_Transfer</worldObjectClass>
     <texture>World/WorldObjects/Caravan</texture>

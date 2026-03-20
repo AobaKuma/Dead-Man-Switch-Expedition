@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
   
+  <ScorerLaunch>發射導彈</ScorerLaunch>
+  <ScorerLaunchDesc>發射裝載的戰術導彈，導彈將能夠遠程打擊大地圖外的目標，並保留3天的地圖可見性用於評估打擊效果，再次發射可以重置該時間。</ScorerLaunchDesc>
+  
   <!-- EN: Huntdown -->
   <DMSE.Letter.HuntdownThreat.Label>追捕</DMSE.Letter.HuntdownThreat.Label>
   <!-- EN: blablabla, anyway {0} need you dead. -->

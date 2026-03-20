@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
-  
+
+  <ScorerLaunch>Launch Missile</ScorerLaunch>
+
+  <ScorerLaunchDesc>Launches the loaded tactical missile. The missile will be able to strike targets outside the large map at long range and retain map visibility for 3 days to assess the strike's effectiveness. Re-launching resets this time.</ScorerLaunchDesc>
+
   <DMSE.Letter.HuntdownThreat.Label>Huntdown</DMSE.Letter.HuntdownThreat.Label>
   <DMSE.Letter.HuntdownThreat.Text>(TODO) blablabla, anyway {0} need you dead.</DMSE.Letter.HuntdownThreat.Text>
 

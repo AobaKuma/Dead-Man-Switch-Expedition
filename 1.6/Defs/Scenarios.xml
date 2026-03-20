@@ -3,10 +3,10 @@
 
   <ScenarioDef ParentName="ScenarioBase">
     <defName>DMSE_Deviant</defName>
-    <label>The Deviant</label>
+    <label>(WIP) The Deviant</label>
     <description>todo</description>
     <scenario>
-      <summary>A traitor of the colonial fleet, with a stolen cargo ship.</summary>
+      <summary>A traitor of the Colonial fleet, with a stolen gravship.</summary>
       
       <!-- TODO: create a dedicated faction -->
       <playerFaction>

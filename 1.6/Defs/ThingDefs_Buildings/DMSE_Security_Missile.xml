@@ -48,6 +48,7 @@
                 <worldObjectDef>DMSE_WorldObject_CruiseMissile</worldObjectDef>
             </li>
             <li Class="CompProperties_Refuelable">
+                <fuelGizmoLabel>Loaded missile</fuelGizmoLabel>
                 <fuelFilter>
                     <thingDefs>
                         <li>DMSE_CruiseMissile</li>
