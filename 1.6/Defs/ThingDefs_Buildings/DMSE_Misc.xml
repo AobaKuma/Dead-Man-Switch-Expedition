@@ -287,4 +287,86 @@
       </li>
     </children>
   </EffecterDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_SolarShield</defName>
+    <label>solar shielding device</label>
+    <description>A massive magnetic field generator, widely used by the colonial fleet in automated orbital facilities, effectively shielding against incoming solar radiation, effectively protecting area from solar flares.</description>
+    <graphicData>
+      <texPath>Things/Building/DMSE_SolarShield</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(6,6)</drawSize>
+      <drawOffset>(0,0,0)</drawOffset>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <rotatable>false</rotatable>
+    <passability>PassThroughOnly</passability>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.3</staticSunShadowHeight>
+    <fillPercent>0.9</fillPercent>
+    <canOverlapZones>false</canOverlapZones>
+    <pathCost>42</pathCost>
+    <tickerType>Normal</tickerType>
+    <statBases>
+      <MaxHitPoints>750</MaxHitPoints>
+      <WorkToBuild>30000</WorkToBuild>
+      <Mass>500</Mass>
+      <Flammability>0.25</Flammability>
+    </statBases>
+    <size>(5,5)</size>
+    <costList>
+      <Tungsteel>400</Tungsteel>
+      <DMSE_Graphene>100</DMSE_Graphene>
+      <ComponentStamped>20</ComponentStamped>
+      <ComponentSpacer>4</ComponentSpacer>
+      <ComponentControlChip>2</ComponentControlChip>
+      <ComponentTransmitter>4</ComponentTransmitter>
+    </costList>
+    <building>
+      <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+    </building>
+    <researchPrerequisites>
+      <li>DMSE_Aerospace</li>
+    </researchPrerequisites>
+    <designationCategory>DMS_Category</designationCategory>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
+    <comps>
+      <li Class="CompProperties_Breakdownable" />
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>5000</basePowerConsumption>
+        <transmitsPower>true</transmitsPower>
+      </li>
+      <li Class="CompProperties_CausesGameCondition">
+        <compClass>Fortified.CompCauseGameConditionAdjustable</compClass>
+        <conditionDef>DMSE_SolarShield</conditionDef>
+        <worldRange>3</worldRange>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>PlaceWorker_BandNode</li>
+    </placeWorkers>
+  </ThingDef>
+
+  <GameConditionDef>
+    <defName>DMSE_SolarShield</defName>
+    <conditionClass>GameCondition</conditionClass>
+    <label>solar radiation shield</label>
+    <description>A shielding device protects this area from solar flares.</description>
+    <canBePermanent>true</canBePermanent>
+    <allowUnderground>false</allowUnderground>
+    <natural>false</natural>
+  </GameConditionDef>
+  
 </Defs>

@@ -101,4 +101,14 @@
 		</value>
 	</Operation>
 
+  <!-- ==== Solar shield === -->
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/GameConditionDef[defName="SolarFlare"]/silencedByConditions</xpath>
+    <value>
+      <li>DMSE_SolarShield</li>
+    </value>
+  </Operation>
+
+
 </Patch>
