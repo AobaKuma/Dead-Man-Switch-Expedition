@@ -43,7 +43,7 @@
         <fuelIsMortarBarrel>true</fuelIsMortarBarrel>
         <fuelCapacity>600</fuelCapacity>    <!-- 20 burst -->
         <fuelMultiplier>150</fuelMultiplier><!-- 1 Barrel=100 ammo -->
-        <initialFuelPercent>0.1</initialFuelPercent>
+        <initialFuelPercent>0.5</initialFuelPercent>
         <showFuelGizmo>true</showFuelGizmo>
         <minimumFueledThreshold>0.9</minimumFueledThreshold>
         <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
@@ -57,14 +57,14 @@
         <compClass>CompPowerTrader</compClass>
         <basePowerConsumption>500</basePowerConsumption>
       </li>
-      <li Class="DMSE.CompProperties_SkyfallerTurret">
+      <!-- <li Class="DMSE.CompProperties_SkyfallerTurret">
         <cooldown>600</cooldown>
         <countLimit>3</countLimit>
         <projectile_Last>DMSE_Bullet_Vulcan_WingBack_CIWS</projectile_Last>
         <lastInterceptTick>200</lastInterceptTick>
         <countLimitForLast>5</countLimitForLast>
         <interceptChance>0.5</interceptChance>
-      </li>
+      </li> -->
     </comps>
     <building>
       <turretGunDef>DMSE_Gun_Vulcan_WingBack</turretGunDef>
@@ -154,7 +154,7 @@
   </ThingDef>
 
 
-  <ThingDef ParentName="BaseBullet">
+  <!-- <ThingDef ParentName="BaseBullet">
     <defName>DMSE_Bullet_Vulcan_WingBack_CIWS</defName>
     <label>APT shell</label>
     <graphicData>
@@ -169,7 +169,7 @@
       <speed>102</speed>
       <flyOverhead>true</flyOverhead>
     </projectile>
-  </ThingDef>
+  </ThingDef> -->
 
   <!--Dawnblade Striker-->
   <ThingDef ParentName="DMS_BaseCannonBuilding">
