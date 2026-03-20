@@ -194,7 +194,7 @@
       <ThingDef>DMSE_Building_Scorer</ThingDef>
     </descriptionHyperlinks>
     <graphicData>
-      <texPath>Things/Missile/skyFaller_moskit</texPath>
+      <texPath>Things/Missile/Moskit/skyFaller_moskit</texPath>
       <drawSize>(4,4)</drawSize>
       <drawOffset>(0,0,2)</drawOffset>
       <graphicClass>Graphic_Single</graphicClass>

@@ -20,21 +20,18 @@
   <!-- EN: {0} drop pods will breach in {1} -->
   <DMSE.Alert.Pods>{0}個空降艙將在{1}後來襲</DMSE.Alert.Pods>
 
-  
-  <DMSE.Flight.Select.Desc>由於艦船上存在有效裝置，因此請選擇此次巡航的模式:</DMSE.Flight.Select.Desc>
   <!-- EN: Select flight mode -->
   <DMSE.Flight.Select>選擇巡航模式</DMSE.Flight.Select>
   <!-- EN: Regular flight -->
   <DMSE.Flight.Regular>常規巡航</DMSE.Flight.Regular>
   <!-- EN: Transfer flight -->
   <DMSE.Flight.Transfer>轉移巡航</DMSE.Flight.Transfer>
-  
-  <!-- EN: Impact flight -->
-  <DMSE.Flight.Impact.Header>你的殖民者知道這是一個切實存在但不明智的選擇。</DMSE.Flight.Impact.Header>
+  <!-- EN: Show advanced options -->
+  <DMSE.Flight.ShowAdvanced>高級選項</DMSE.Flight.ShowAdvanced>
   <!-- EN: Impact flight -->
   <DMSE.Flight.Impact>終結巡航</DMSE.Flight.Impact>
-  
-  <DMSE.Flight.Impact.Confirm>即使航路主機顯示著鮮紅的警告，但它仍然顯示了一條可行的加速方案。\n\n透過啟動終結巡航協議，聚變核心將在超載功率下輸出完整的動力，使得核熱引擎能夠以最大功率推動向著這顆星球加速並撞擊地表。\n\n這將使得整艘船以及推動的天體成為有效且威力十足的質量武器，並對於星球造成無法復原的破壞。\n\n\n\n你確定要這麼做嗎?</DMSE.Flight.Impact.Confirm>
+  <!-- EN: Hard impact flight -->
+  <DMSE.Flight.ImpactHard>終結巡航</DMSE.Flight.ImpactHard>
 
   <!-- EN: Cannot transfer: ship state invalid. -->
   <DMSE.Cannot.Reason.Null>無法轉移：船艦狀態無效。</DMSE.Cannot.Reason.Null>
@@ -49,22 +46,40 @@
 
   <!-- EN: Cannot transfer: destination occupied. -->
   <DMSE.Disabled.DestinationOccupied>無法轉移：目標位置已有世界物件。</DMSE.Disabled.DestinationOccupied>
-  <!-- EN: Cannot transfer: target must be in space. -->
+  <!-- EN: Cannot transfer: destination must be in space. -->
   <DMSE.Disabled.TargetedSurface>無法轉移：目的地必須位於太空。</DMSE.Disabled.TargetedSurface>
 
-  <DMSE_ShipWarmUpBegin>聚變核心正在提升功率. 推進器點火倒數: 5</DMSE_ShipWarmUpBegin>
+  <!-- EN: A valid flight module is installed on this ship. Please choose a flight mode: -->
+  <DMSE.Flight.Select.Desc>由於艦船上存在有效裝置，因此請選擇此次巡航的模式:</DMSE.Flight.Select.Desc>
+  <!-- EN: Your colonists know this is a real option, but not a wise one. -->
+  <DMSE.Flight.Impact.Header>你的殖民者知道這是一個切實存在但不明智的選擇。</DMSE.Flight.Impact.Header>
+  <!-- EN: Even while the navigation console flashes crimson warnings, it still shows a feasible acceleration profile.\n\nBy activating the hard impact protocol, the fusion core will output full power under overload conditions, allowing the nuclear-thermal engines to accelerate this ship toward the planet at maximum thrust and collide with the surface.\n\nThis will turn both the ship and its momentum into an effective high-yield kinetic weapon, causing irreversible damage to the planet.\n\n\n\nAre you sure you want to proceed? -->
+  <DMSE.Flight.Impact.Confirm>即使航路主機顯示著鮮紅的警告，但它仍然顯示了一條可行的加速方案。\n\n透過啟動終結巡航協議，聚變核心將在超載功率下輸出完整的動力，使得核熱引擎能夠以最大功率推動向著這顆星球加速並撞擊地表。\n\n這將使得整艘船以及推動的天體成為有效且威力十足的質量武器，並對於星球造成無法復原的破壞。\n\n\n\n你確定要這麼做嗎?</DMSE.Flight.Impact.Confirm>
+
+  <!-- EN: Fusion core heating up. Launching procedure in 5... -->
+  <DMSE_ShipWarmUpBegin>聚變核心正在提升功率. 推進器點火倒數: 6</DMSE_ShipWarmUpBegin>
+  <!-- EN: {0}... -->
   <DMSE_ShipWarmUpCountdown>推進器點火倒數: {0}</DMSE_ShipWarmUpCountdown>
 
+  <!-- EN: The gravship streaked across the sky with a blazing trail, carrying immense mass into the ground. The horizon turned to light, and violent shockwaves followed, becoming storms and earthquakes that swept across the planet's surface. In a short span, countless lives and landscapes were erased in this world-shattering impact. -->
   <DMSE.Impact.Ending.Intro>重力船拖著長長的軌跡劃過天際，攜帶著巨大的質量沒入大地，地平線上的一切都變成了光，隨之而來的是劇烈的衝擊波化作風暴與地震席捲了整顆星球的地表，在短時間內無數的生靈與景觀在這場驚天動地的碰撞之中煙飛灰滅。</DMSE.Impact.Ending.Intro>
+  <!-- EN: Fortunately, this was not the maximum output the nuclear-thermal engines could produce. After the disaster subsided, most people on the surface survived. Whatever the purpose behind it, this impact will be remembered forever in the history of this world. -->
   <DMSE.Impact.Ending.Outro>所幸這並非核熱引擎所能發揮得最大功率，在災害平息後地表上的大部分人類都得以倖存。無論其背後的目的如何，這顆星球的歷史都將永遠記住這一場撞擊。</DMSE.Impact.Ending.Outro>
+  <!-- EN: We may never know whether the crew aboard the gravship escaped at the last moment, or vanished entirely in the impact. -->
   <DMSE.Impact.Ending.Aboard>我們無法得知重力船上的船員們是否在最後一刻逃出生天，又或者徹底地隨著撞擊煙飛灰滅。</DMSE.Impact.Ending.Aboard>
 
+  <!-- EN: The gravship streaked across the sky with a blazing trail, carrying immense mass into the ground. The horizon turned to light, and violent shockwaves followed, becoming storms and earthquakes that swept across the planet's surface. In a short span, countless lives and landscapes were erased in this world-shattering impact. -->
   <DMSE.Impact.Ending.FleetFailed.Intro>重力船拖著長長的軌跡劃過天際，攜帶著巨大的質量沒入大地，地平線上的一切都變成了光，隨之而來的是劇烈的衝擊波化作風暴與地震席捲了整顆星球的地表，在短時間內無數的生靈與景觀在這場驚天動地的碰撞之中煙飛灰滅。</DMSE.Impact.Ending.FleetFailed.Intro>
-  <DMSE.Impact.Ending.FleetFailed.Outro>殖民艦隊本部在評估災情後只能夠撤離地面上倖存的人員，可預估的星球改造成本使得殖民艦隊不得不中止最這顆星球的開發。無論其背後的目的如何，殖民艦隊與這顆星球的歷史都將永遠記住這一場撞擊。</DMSE.Impact.Ending.FleetFailed.Outro>
+  <!-- EN: After assessing the damage, colonial fleet command could only evacuate surface survivors. The projected terraforming cost forced the fleet to abandon development of this planet. Whatever the purpose behind it, both the fleet and this world will remember this impact forever. -->
+  <DMSE.Impact.Ending.FleetFailed.Outro>殖民艦隊本部在評估災情後只能夠撤離地面上倖存的人員，可預估的星球改造成本使得殖民艦隊不得不中止對這顆星球的開發。無論其背後的目的如何，殖民艦隊與這顆星球的歷史都將永遠記住這一場撞擊。</DMSE.Impact.Ending.FleetFailed.Outro>
 
+  <!-- EN: The gravship cut across the sky, every thermonuclear engine roaring with overwhelming thrust, before driving its colossal mass into the ground. A wall of rising crust surged along the horizon, and the following superheated shockwave became a sea of fire that swept across the planet's surface. -->
   <DMSE.Impact.Planetkiller.Ending.Intro>重力船拖著長長的軌跡劃過天際，每一具熱核引擎都在噴湧著蓬勃的推力，攜帶著巨大的質量沒入大地，在地平線上升起了一面由地殼升起的牆，隨之而來的是劇烈的高溫衝擊波化作火海席捲了整顆星球的地表。</DMSE.Impact.Planetkiller.Ending.Intro>
+  <!-- EN: This was heavenly fire, a supreme judgment said in sacred texts to belong only to gods.\n\nWhatever the purpose behind it, this world may not recover life for a hundred years. -->
   <DMSE.Impact.Planetkiller.Ending.Outro>這是天火，在神書當中只有神靈所能做到的，為生靈們降下的最高審判。\n\n無論其背後的目的如何，這顆星球或許在百年內都無法重現生機。</DMSE.Impact.Planetkiller.Ending.Outro>
+  <!-- EN: No one could survive a cataclysm of this scale. -->
   <DMSE.Impact.Planetkiller.Ending.Aboard>沒有人能夠在這樣的天災下保全性命。</DMSE.Impact.Planetkiller.Ending.Aboard>
 
+  <!-- EN: {0} Crater -->
   <DMSE_Crater>{0}撞擊坑</DMSE_Crater>
 </LanguageData>

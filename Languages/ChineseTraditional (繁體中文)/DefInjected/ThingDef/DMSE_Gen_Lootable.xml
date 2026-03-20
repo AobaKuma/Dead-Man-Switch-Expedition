@@ -4,23 +4,17 @@
   <!-- EN: cargo container -->
   <DMSE_Cargo.label>貨櫃</DMSE_Cargo.label>
   <!-- EN: Commonly known as "standard transport containers," these are standard interstellar cargo boxes used for transporting equipment and resources between colony fleet motherships and various orbital bases. They can flexibly accommodate equipment and resources of various standard sizes.\n\nThese large containers require specialized loading equipment and heavy machinery for transport, and are therefore primarily used as transshipment platforms and in large bases equipped with sophisticated loading and unloading systems. Due to their convenient transport specifications, people in the Edge World also prefer to convert them into platforms and temporary dwellings for various purposes. -->
-  <DMSE_Cargo.description>俗稱「標準運輸容器」，是一種用於在殖民艦隊母艦與各大軌道基地之間往返運輸的星際標準貨櫃箱，能夠靈活裝載各種標準尺寸內的裝備與資源。
-
-這種大型貨櫃箱需要專門裝載設備與重型機器來運輸，因此更多用於轉運平台與具備完善裝卸裝備的大型基地。由於其便於運輸的規格，邊緣世界的人們也偏好將其改造成各種用途的平台及臨時居所。</DMSE_Cargo.description>
+  <DMSE_Cargo.description>俗稱「標準運輸容器」，是一種用於在殖民艦隊母艦與各大軌道基地之間往返運輸的星際標準貨櫃箱，能夠靈活裝載各種標準尺寸內的裝備與資源。\n\n這種大型貨櫃箱需要專門裝載設備與重型機器來運輸，因此更多用於轉運平台與具備完善裝卸裝備的大型基地。由於其便於運輸的規格，邊緣世界的人們也偏好將其改造成各種用途的平台及臨時居所。</DMSE_Cargo.description>
   
   <!-- EN: rabbit crate -->
   <DMSE_Crate.label>Rabbit貨箱</DMSE_Crate.label>
   <!-- EN: Nicknamed "Rabbit," these one-eighths standard transport containers are widely used for the construction and resupply of small outposts. They fit perfectly into the cargo holds of small to medium-sized shuttles and light trucks, and are loaded and unloaded directly on-site by humans wearing power units.\n\nCargo ships from colonial fleets typically carry tens of thousands of standard transport containers, which will distributed to ground facilities and factories via transfer platforms in space orbit. -->
-  <DMSE_Crate.description>被暱稱為 Rabbit 的八分之一標準運輸容器，這類小尺寸運輸容器被廣泛用於小型前哨基地的建設與補給運輸，能夠剛好放入中小型穿梭機與輕型卡車的貨艙轉運，並直接由穿戴輔助動力單元的人員就地裝卸。
-
-來自殖民艦隊的往返運輸貨艦通常會裝載上萬個標準運輸箱，並在太空軌道上的轉運平台將其分裝為此種運輸容器，再派送至地面上的設施及工廠。</DMSE_Crate.description>
+  <DMSE_Crate.description>被暱稱為 Rabbit 的八分之一標準運輸容器，這類小尺寸運輸容器被廣泛用於小型前哨基地的建設與補給運輸，能夠剛好放入中小型穿梭機與輕型卡車的貨艙轉運，並直接由穿戴輔助動力單元的人員就地裝卸。\n\n來自殖民艦隊的往返運輸貨艦通常會裝載上萬個標準運輸箱，並在太空軌道上的轉運平台將其分裝為此種運輸容器，再派送至地面上的設施及工廠。</DMSE_Crate.description>
   
   <!-- EN: fuel silo -->
   <DMSE_FuelSilo.label>油罐</DMSE_FuelSilo.label>
   <!-- EN: A large storage tank for liquid fuels, using multiple layers of metal plates and special alloys to safely store various fuels within its massive body, is commonly found on orbital platforms and large fuel transport ships.\n\nThis tank is well-preserved and may still contain a small amount of residual fuel, but extracting it without pumping equipment would take considerable time. -->
-  <DMSE_FuelSilo.description>一種用於儲存液體燃料的大型儲罐，透過數層金屬板與特種合金，將各式燃料安全儲藏在其巨大的罐體內，常見於軌道平台與大型燃料運輸艦上。
-
-這一個罐體保存完整，或許仍保有少量剩餘燃料，但在缺乏泵機設備的狀況下，將其提取出來需要花上不少時間。</DMSE_FuelSilo.description>
+  <DMSE_FuelSilo.description>一種用於儲存液體燃料的大型儲罐，透過數層金屬板與特種合金，將各式燃料安全儲藏在其巨大的罐體內，常見於軌道平台與大型燃料運輸艦上。\n\n這一個罐體保存完整，或許仍保有少量剩餘燃料，但在缺乏泵機設備的狀況下，將其提取出來需要花上不少時間。</DMSE_FuelSilo.description>
   
   <!-- EN: military parcel -->
   <DMSE_PackCrate.label>軍用補給包裹</DMSE_PackCrate.label>

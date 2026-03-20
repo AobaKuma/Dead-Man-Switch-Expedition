@@ -3,10 +3,8 @@
   
   <!-- EN: caseless assault rifle -->
   <DMSE_Modular_AR.label>无壳突击步枪</DMSE_Modular_AR.label>
-  <!-- EN: 一种使用无壳弹药与复合材料枪身的突击步枪，具有较平衡的爆发射速与载弹量并可根据任务选装配件。\n\n追溯至人类於地球上的冷战时期，由柏林机械制造局所生产的军团机兵迫切的需要一种高度通用武装来维持其庞大机兵集团军的需求。而随之而生的便是G93MCR为首的MCR枪系与其对应的5x50通用无壳弹药。这类无壳弹药具有较稳定的弹道性能并且能通用於所有MCR枪系的装备。 -->
-  <DMSE_Modular_AR.description>一种使用无壳弹药与复合材料枪身的突击步枪，具有较平衡的爆发射速与载弹量并可根据任务选装配件。
-
-追溯至人类於地球上的冷战时期，由柏林机械制造局所生产的军团机兵迫切地需要一种高度通用武装来维持其庞大机兵集团军的需求。而随之而生的便是 G93MCR 为首的 MCR 枪系与其对应的 5x50 通用无壳弹药。这类无壳弹药具有较稳定的弹道性能，并且能通用於所有 MCR 枪系装备。</DMSE_Modular_AR.description>
+  <!-- EN: An assault rifle that uses caseless ammunition and a composite receiver, offering balanced burst fire rate and magazine capacity with mission-specific accessory options.\n\nIts lineage traces back to the Cold War era on Earth, when the Berlin Mechanical Manufacturing Bureau needed a highly standardized weapon platform to equip large mechanized formations. This led to the MCR family led by the G93MCR and its matching 5x50 universal caseless ammunition. This ammo type has stable ballistic performance and is compatible across all MCR-series weapons. -->
+  <DMSE_Modular_AR.description>一种使用无壳弹药与复合材料枪身的突击步枪，具有较平衡的爆发射速与载弹量并可根据任务选装配件。\n\n追溯至人类於地球上的冷战时期，由柏林机械制造局所生产的军团机兵迫切地需要一种高度通用武装来维持其庞大机兵集团军的需求。而随之而生的便是 G93MCR 为首的 MCR 枪系与其对应的 5x50 通用无壳弹药。这类无壳弹药具有较稳定的弹道性能，并且能通用於所有 MCR 枪系装备。</DMSE_Modular_AR.description>
   <!-- EN: stock -->
   <DMSE_Modular_AR.tools.stock-0.label>枪托</DMSE_Modular_AR.tools.stock-0.label>
   <!-- EN: barrel -->

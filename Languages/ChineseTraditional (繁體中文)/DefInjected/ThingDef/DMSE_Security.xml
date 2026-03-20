@@ -10,23 +10,21 @@
   <!-- EN: Type 85 Multi-Purpose-Quick-Firing System -->
   <DMSE_Gun_Dawnblade_Striker.label>85 型多用途速射系統</DMSE_Gun_Dawnblade_Striker.label>
   <!-- EN: An automated artillery system widely used on small to medium-sized frigates and corvettes in colonial fleets. -->
-  <DMSE_Gun_Dawnblade_Striker.description>一種廣泛裝備於殖民艦隊中小型巡防艦與護衛艦的自動化火炮系統。</DMSE_Gun_Dawnblade_Striker.description>
+  <DMSE_Gun_Dawnblade_Striker.description>一種廣泛裝備於殖民艦隊中小型巡防艦與護衛艦的艦載多用途速射炮系統。</DMSE_Gun_Dawnblade_Striker.description>
   <!-- EN: Type 85 Multi-Purpose-Quick-Firing System -->
   <DMSE_Gun_Dawnblade_Striker.verbs.Verb_Shoot.label>85 型多用途速射系統</DMSE_Gun_Dawnblade_Striker.verbs.Verb_Shoot.label>
   
   <!-- EN: GAU-4 “Wing-Back” -->
-  <DMSE_Gun_Vulcan_WingBack.label>GAU-4「翼背」</DMSE_Gun_Vulcan_WingBack.label>
+  <DMSE_Gun_Vulcan_WingBack.label>GAU-4「翼衛」</DMSE_Gun_Vulcan_WingBack.label>
   <!-- EN: This is a gravship-based variant of the GAU-4 rotary cannon, also utilizing 20x102mm NATO ammunition. The ship-mounted turret features a longer barrel to increase effective range, but it also introduces a larger blind spot for close-range engagements. -->
-  <DMSE_Gun_Vulcan_WingBack.description>這是 GAU-4 旋轉機炮的重力船搭載型，同樣使用 20x102mm NATO 彈藥。艦載炮塔採用更長槍管以提升有效射程，但也帶來近距離交戰盲區較大的缺點。</DMSE_Gun_Vulcan_WingBack.description>
+  <DMSE_Gun_Vulcan_WingBack.description>這是 GAU-4 旋轉機炮的重力船搭載型，採用更長槍管以提升有效射程，但也帶來近距離交戰盲區較大的缺點。</DMSE_Gun_Vulcan_WingBack.description>
   <!-- EN: GAU-4 “Wing-Back” -->
-  <DMSE_Gun_Vulcan_WingBack.verbs.Verb_Shoot.label>GAU-4「翼背」</DMSE_Gun_Vulcan_WingBack.verbs.Verb_Shoot.label>
+  <DMSE_Gun_Vulcan_WingBack.verbs.Verb_Shoot.label>GAU-4「翼衛」</DMSE_Gun_Vulcan_WingBack.verbs.Verb_Shoot.label>
   
   <!-- EN: Dawnblade "Striker" -->
-  <DMSE_Turret_Dawnblade_Striker.label>Dawnblade「Striker」</DMSE_Turret_Dawnblade_Striker.label>
+  <DMSE_Turret_Dawnblade_Striker.label>MPQFS-85「前鋒」</DMSE_Turret_Dawnblade_Striker.label>
   <!-- EN: MPQFS-85 "Dawnblade" is an onboard multirole quick-firing cannon system. It uses drum magazines and an automatic revolver loader to permit a high rate of sustained fire.\n\nThe armor plating has been removed to allow emplacement to be redeployed as needed for heavy fire support. -->
-  <DMSE_Turret_Dawnblade_Striker.description>MPQFS-85「Dawnblade」是一種艦載多用途速射炮系統。它使用鼓式彈匣與自動左輪裝填機構，可維持高持續射速。
-
-此部署型號移除了裝甲防護，以便按需求重新部署，提供重火力支援。</DMSE_Turret_Dawnblade_Striker.description>
+  <DMSE_Turret_Dawnblade_Striker.description>MPQFS-85「前鋒」是一種殖民艦隊海軍常用的艦載多用途速射炮系統。它使用鼓式彈艙與自動左輪裝填機構，可維持高持續射速。</DMSE_Turret_Dawnblade_Striker.description>
   <!-- EN: Barrel durability -->
   <DMSE_Turret_Dawnblade_Striker.comps.CompRefuelable.fuelGizmoLabel>槍管耐久度</DMSE_Turret_Dawnblade_Striker.comps.CompRefuelable.fuelGizmoLabel>
   <!-- EN: Shots until barrel change -->
@@ -35,9 +33,9 @@
   <DMSE_Turret_Dawnblade_Striker.comps.CompRefuelable.outOfFuelMessage>無法開火：需要新的強化槍管。</DMSE_Turret_Dawnblade_Striker.comps.CompRefuelable.outOfFuelMessage>
   
   <!-- EN: GAU-4 “Wing-Back” -->
-  <DMSE_Turret_Vulcan_WingBack.label>GAU-4「翼背」</DMSE_Turret_Vulcan_WingBack.label>
+  <DMSE_Turret_Vulcan_WingBack.label>GAU-4「翼衛」</DMSE_Turret_Vulcan_WingBack.label>
   <!-- EN: This is a gravship-based variant of the GAU-4 rotary cannon, also utilizing 20x102mm NATO ammunition. The ship-mounted turret features a longer barrel to increase effective range, but it also introduces a larger blind spot for close-range engagements. -->
-  <DMSE_Turret_Vulcan_WingBack.description>這是 GAU-4 旋轉機炮的重力船搭載型，同樣使用 20x102mm NATO 彈藥。艦載炮塔採用更長槍管以提升有效射程，但也帶來近距離交戰盲區較大的缺點。</DMSE_Turret_Vulcan_WingBack.description>
+  <DMSE_Turret_Vulcan_WingBack.description>這是 GAU-4 旋轉機炮的重力船搭載型，炮塔採用更長槍管以提升有效射程，但也帶來近距離交戰盲區較大的缺點。</DMSE_Turret_Vulcan_WingBack.description>
   <!-- EN: Barrel durability -->
   <DMSE_Turret_Vulcan_WingBack.comps.CompRefuelable.fuelGizmoLabel>槍管耐久度</DMSE_Turret_Vulcan_WingBack.comps.CompRefuelable.fuelGizmoLabel>
   <!-- EN: Shots until barrel change -->

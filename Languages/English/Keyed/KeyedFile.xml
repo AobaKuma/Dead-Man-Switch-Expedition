@@ -2,7 +2,7 @@
 <LanguageData>
   
   <DMSE.Letter.HuntdownThreat.Label>Huntdown</DMSE.Letter.HuntdownThreat.Label>
-  <DMSE.Letter.HuntdownThreat.Text>blablabla, anyway {0} need you dead.</DMSE.Letter.HuntdownThreat.Text>
+  <DMSE.Letter.HuntdownThreat.Text>(TODO) blablabla, anyway {0} need you dead.</DMSE.Letter.HuntdownThreat.Text>
 
   <DMSE.Alert.HuntdownThreat>Huntdown squad</DMSE.Alert.HuntdownThreat>
 
@@ -33,8 +33,8 @@
   <DMSE.Flight.Impact.Header>Your colonists know this is a real option, but not a wise one.</DMSE.Flight.Impact.Header>
   <DMSE.Flight.Impact.Confirm>Even while the navigation console flashes crimson warnings, it still shows a feasible acceleration profile.\n\nBy activating the hard impact protocol, the fusion core will output full power under overload conditions, allowing the nuclear-thermal engines to accelerate this ship toward the planet at maximum thrust and collide with the surface.\n\nThis will turn both the ship and its momentum into an effective high-yield kinetic weapon, causing irreversible damage to the planet.\n\n\n\nAre you sure you want to proceed?</DMSE.Flight.Impact.Confirm>
 
-  <DMSE_ShipWarmUpBegin>Fusion core heating up. Launching procedure in 5...</DMSE_ShipWarmUpBegin>
-  <DMSE_ShipWarmUpCountdown>{0}...</DMSE_ShipWarmUpCountdown>
+  <DMSE_ShipWarmUpBegin>Fusion core heating up. Launching procedure in 6...</DMSE_ShipWarmUpBegin>
+  <DMSE_ShipWarmUpCountdown>Launching procedure in {0}</DMSE_ShipWarmUpCountdown>
 
   <DMSE.Impact.Ending.Intro>The gravship streaked across the sky with a blazing trail, carrying immense mass into the ground. The horizon turned to light, and violent shockwaves followed, becoming storms and earthquakes that swept across the planet's surface. In a short span, countless lives and landscapes were erased in this world-shattering impact.</DMSE.Impact.Ending.Intro>
   <DMSE.Impact.Ending.Outro>Fortunately, this was not the maximum output the nuclear-thermal engines could produce. After the disaster subsided, most people on the surface survived. Whatever the purpose behind it, this impact will be remembered forever in the history of this world.</DMSE.Impact.Ending.Outro>

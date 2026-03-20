@@ -3,7 +3,7 @@
   
   <!-- EN: caseless defense firearm -->
   <DMSE_Modular_PDW.label>无壳弹防卫武器</DMSE_Modular_PDW.label>
-  <!-- EN: 一种紧凑轻便的个人防卫武器，设计上是提供载具乘员自保时能提供足够的火力。具有快速更换弹夹的设计并能根据个人需要安装配件。 -->
+  <!-- EN: A compact and lightweight personal defense weapon designed to provide enough firepower for vehicle crews to protect themselves. It features a quick magazine-change design and can mount accessories according to user needs. -->
   <DMSE_Modular_PDW.description>一种紧凑轻便的个人防卫武器，设计上是提供载具乘员自保时能提供足够的火力。具有快速更换弹匣的设计并能根据个人需要安装配件。</DMSE_Modular_PDW.description>
   <!-- EN: stock -->
   <DMSE_Modular_PDW.tools.stock.label>枪托</DMSE_Modular_PDW.tools.stock.label>

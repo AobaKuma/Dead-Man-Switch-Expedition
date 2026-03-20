@@ -78,28 +78,35 @@
     </statBases>
     <size>(1,1)</size>
     <costList>
-      <Steel>75</Steel>
-      <Chemfuel>25</Chemfuel>
+      <Steel>45</Steel>
+      <Neutroamine>3</Neutroamine>
     </costList>
     <building>
       <destroySound>BuildingDestroyed_Metal_Small</destroySound>
     </building>
     <comps>
+      <li Class="CompProperties_Flickable" />
       <li Class="CompProperties_Refuelable">
-        <fuelConsumptionRate>1.0</fuelConsumptionRate>
-        <fuelCapacity>24.0</fuelCapacity>
-        <destroyOnNoFuel>true</destroyOnNoFuel>
-        <autoRefuelPercent>0</autoRefuelPercent>
-        <initialFuelPercent>1</initialFuelPercent>
-        <showAllowAutoRefuelToggle>false</showAllowAutoRefuelToggle>
-        <functionsInVacuum>true</functionsInVacuum>
+        <fuelCapacity>60</fuelCapacity>
+        <initialFuelPercent>1</initialFuelPercent> <!-- destroyOnNoFuel=true 時建議 >0 -->
+        <fuelMultiplier>20</fuelMultiplier>
         <fuelFilter>
           <thingDefs>
-            <li>ReinforcedBarrel</li>
+            <li>Neutroamine</li>
           </thingDefs>
         </fuelFilter>
+        <destroyOnNoFuel>true</destroyOnNoFuel>
+        <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+        <externalTicking>true</externalTicking>
+        <showFuelGizmo>true</showFuelGizmo>
+        <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+        <canEjectFuel>true</canEjectFuel>
       </li>
-      <li Class="DMSE.CompProperties_OxygenCandle" />
+      <li Class="DMSE.CompProperties_OxygenCandle">
+        <tickInterval>60</tickInterval>
+        <fuelConsumePerInterval>1.0</fuelConsumePerInterval>
+        <vacuumReductionPerTick>0.05</vacuumReductionPerTick>
+      </li>
     </comps>
     <researchPrerequisites>
       <li>DMSE_VacuumMaterial</li>
@@ -143,7 +150,7 @@
     </building>
     <costList>
       <Steel>750</Steel>
-      <Chemfuel>25</Chemfuel>
+      <Plasfiber>400</Plasfiber>
     </costList>
     <comps>
       <li Class="DMSE.CompPropertiesLandFillable">
@@ -166,7 +173,10 @@
     <inspectorTabs>
       <li>ITab_ContentsMapPortal</li>
     </inspectorTabs>
-    <designationCategory>DMS_Category</designationCategory>
+    <placeWorkers>
+      <li>PlaceWorker_InvalidOverSubstructure</li>
+    </placeWorkers>
+    <designationCategory>Odyssey</designationCategory>
   </ThingDef>
 
   <ThingDef ParentName="PocketMapExit">
@@ -194,6 +204,9 @@
         <effecterDef>UndercaveMapExitLightshafts</effecterDef>
       </li>
     </comps>
+    <placeWorkers>
+      <li>PlaceWorker_InvalidOverSubstructure</li>
+    </placeWorkers>
   </ThingDef>
 
   <ThingDef ParentName="BuildingBase">
@@ -232,6 +245,9 @@
         <filled>DMSE_VacuumRoom_Entrance</filled>
       </li>
     </comps>
+    <placeWorkers>
+      <li>PlaceWorker_InvalidOverSubstructure</li>
+    </placeWorkers>
   </ThingDef>
 
   <MapGeneratorDef>

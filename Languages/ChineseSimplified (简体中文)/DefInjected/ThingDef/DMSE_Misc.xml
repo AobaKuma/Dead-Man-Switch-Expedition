@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
   
+  <!-- EN: phased-array radar -->
+  <DMSE_PhaseArrayRadar.label>相控阵雷达</DMSE_PhaseArrayRadar.label>
+  <!-- EN: A multi-purpose radar used for early warning and fire control targeting, typically installed on ships or military bases to track moving objects in the surrounding space. It can effectively identify the trajectories of suborbital objects such as droppods and predict their descent locations in advance; however, it is extremely power-intensive. -->
+  <DMSE_PhaseArrayRadar.description>一种用於预警与火控瞄准的多用途雷达，通常被安装於舰船或军事基地追踪周围空间内的活动物体。能够有效识别空降舱等亚轨道飞行物体的轨迹并提前预测其下落位置，能够为基地的预警及提前部署提供宝贵的反应时间，然而十分消耗电力。</DMSE_PhaseArrayRadar.description>
+  
   <!-- EN: signal stealth device -->
   <DMSE_StealthDevice.label>讯号匿踪装置</DMSE_StealthDevice.label>
   <!-- EN: A massive plasma field generator, widely used by the colonial fleet in automated orbital facilities, effectively shielding against internal life signals, effectively cloaking the device in space and rendering it invisible to active radar.\n\nInternal life signals increase the device's power consumption, requiring a day to cool and recharge after successful shielding. -->
-  <DMSE_StealthDevice.description>一种巨大的等离子场护盾发生器，能够有效屏蔽讯号产生，并透过定向抵销雷达波，使外部无法搜寻到发生器所在的小行星基地。
-
-但要注意，内部活体讯号越多，设备耗电越高；且每次成功阻止一次雷达搜寻後，都需要一天时间冷却并重新充能。</DMSE_StealthDevice.description>
+  <DMSE_StealthDevice.description>一种巨大的等离子场护盾发生器，能够有效屏蔽讯号产生，并透过定向抵销雷达波，使外部无法搜寻到发生器所在的小行星基地。\n\n但要注意，内部活体讯号越多，设备耗电越高；且每次成功阻止一次雷达搜寻後，都需要一天时间冷却并重新充能。</DMSE_StealthDevice.description>
   
 </LanguageData>

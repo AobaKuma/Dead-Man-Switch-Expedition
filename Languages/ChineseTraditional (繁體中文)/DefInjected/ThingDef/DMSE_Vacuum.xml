@@ -4,23 +4,17 @@
   <!-- EN: Oxygen candle -->
   <DMSE_OxygenCandle.label>氧燭</DMSE_OxygenCandle.label>
   <!-- EN: A disposable oxygen supply device that generates breathable oxygen by burning sodium chlorate, maintaining 24-hours of oxygen supply within a sealed cabin before burning out.\n\nIt was widely used for emergency use in enclosed environments such as aircraft, submarines, and manned spacecraft. During the era of space colonization it also became a standard feature of decompression shelters. -->
-  <DMSE_OxygenCandle.description>一種一次性供氧裝置，透過燃燒氯酸鈉產生可呼吸氧氣，可在密封艙內維持約 24 小時供氧後耗盡。
-
-它曾廣泛用於飛機、潛艦與載人太空船等封閉環境的緊急用途；在太空殖民時代也成為減壓避難設施的標準配備。</DMSE_OxygenCandle.description>
+  <DMSE_OxygenCandle.description>一種一次性供氧裝置，透過燃燒氯酸鈉產生可呼吸氧氣，可在密封艙內維持約 24 小時供氧後耗盡。\n\n它曾廣泛用於飛機、潛艦與載人太空船等封閉環境的緊急用途；在太空殖民時代也成為減壓避難設施的標準配備。</DMSE_OxygenCandle.description>
   
   <!-- EN: Vacuum pump -->
   <DMSE_VacuumPump.label>真空泵</DMSE_VacuumPump.label>
   <!-- EN: A gas pump that can slowly evacuates the air from a sealed chamber to artificially create a vacuum zone. It's widely used to meet the environmental requirements of specialized production processes.\n\nHowever, should be noted that when used within atmosphere, a specialized vacuum chamber is required to effectively create a vacuum zone. -->
-  <DMSE_VacuumPump.description>可緩慢抽離密封艙內空氣以人工建立真空區域的氣泵，廣泛用於滿足特殊製程的環境需求。
-
-但需注意，在大氣環境中使用時，必須搭配專用真空腔體，才能有效形成真空區域。</DMSE_VacuumPump.description>
+  <DMSE_VacuumPump.description>可緩慢抽離密封艙內空氣以人工建立真空區域的氣泵，廣泛用於滿足特殊製程的環境需求。\n\n但需注意，在大氣環境中使用時，必須搭配專用真空腔體，才能有效形成真空區域。</DMSE_VacuumPump.description>
   
   <!-- EN: vacuum sealed room -->
   <DMSE_VacuumRoom_Entrance.label>真空密封設施入口</DMSE_VacuumRoom_Entrance.label>
   <!-- EN: Entrance that leads to an underground sealed room, through multiple layers of plasticfiber membrane and pressurized hatches, this room can maintained vacuum even inside a planetry atmospheric conditions. The gas pressure inside the facility is completely independent of the external environment.\n\nTherefore, before entering, ensure that you wear a full pressure suit or pressurize the entire space to avoid accidental vacuum burns. -->
-  <DMSE_VacuumRoom_Entrance.description>通往地下密封艙室的入口。透過多層塑纖膜與加壓艙門，即使在行星大氣條件下也能維持真空。設施內部氣壓與外界完全隔離。
-
-因此，在進入前請確認已穿著全壓力服，或先對整個空間加壓，以避免意外真空灼傷。</DMSE_VacuumRoom_Entrance.description>
+  <DMSE_VacuumRoom_Entrance.description>通往地下密封艙室的入口。透過多層塑纖膜與加壓艙門，即使在行星大氣條件下也能維持真空。設施內部氣壓與外界完全隔離。\n\n因此，在進入前請確認已穿著全壓力服，或先對整個空間加壓，以避免意外真空灼傷。</DMSE_VacuumRoom_Entrance.description>
   
   <!-- EN: room exit -->
   <DMSE_VacuumRoom_Exit.label>艙室出口</DMSE_VacuumRoom_Exit.label>

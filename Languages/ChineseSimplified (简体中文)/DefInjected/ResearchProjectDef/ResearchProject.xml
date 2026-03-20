@@ -3,27 +3,27 @@
   
   <!-- EN: Aerospace Applications -->
   <DMSE_Aerospace.label>航太应用</DMSE_Aerospace.label>
-  <!-- EN: 透过规模化的生产钽钨合金与石墨烯并发掘这些特种材料在航空航天领与微电子等领域中的关键应用。\n\n透过该研究解锁应用於重力船与轨道星舰上的热核推进引擎与轨道电子战隐蔽设备。 -->
+  <!-- EN: By scaling up Tantasteel and graphene production and exploring the key applications of these specialty materials in aerospace and microelectronics, this research unlocks nuclear thermal propulsion engines and orbital electronic-warfare stealth equipment for gravships and orbital starships. -->
   <DMSE_Aerospace.description>透过规模化的生产钽钨合金与石墨烯并发掘这些特种材料在航空航天领与微电子等领域中的关键应用。\n\n透过该研究解锁应用於重力船与轨道星舰上的热核推进引擎与轨道电子战隐蔽设备。</DMSE_Aerospace.description>
   
   <!-- EN: Carbon synthesis -->
   <DMSE_Carbohydrate.label>碳合成</DMSE_Carbohydrate.label>
-  <!-- EN: 透过工业规模的有机反应来将二氧化碳与水转换为有机生物质，这样相当於把空气变成粮食的技术早在第三次世界大战前便已经达到商业化运行的水平，其能量转换效率相当於传统农业的八到三十倍。\n\n透过该研究解锁建造生物反应器，能够透过消耗电能与石墨烯来合成淀粉与醣类等有机物质组成的碳水化合物。 -->
+  <!-- EN: Industrial-scale organic reactions can convert carbon dioxide and water into organic biomass. This "turn air into food" technology reached commercial viability before World War III, with energy conversion efficiency roughly eight to thirty times that of traditional agriculture.\n\nThis research unlocks construction of a bioreactor that consumes electricity and graphene to synthesize carbohydrates composed of starches, sugars, and other organic compounds. -->
   <DMSE_Carbohydrate.description>透过工业规模的有机反应来将二氧化碳与水转换为有机生物质，这样相当於把空气变成粮食的技术早在第三次世界大战前便已经达到商业化运行的水平，其能量转换效率相当於传统农业的八到三十倍。\n\n透过该研究解锁建造生物反应器，能够透过消耗电能与石墨烯来合成淀粉与醣类等有机物质组成的碳水化合物。</DMSE_Carbohydrate.description>
   
   <!-- EN: Microgravity Manufacturing -->
   <DMSE_Microgravity.label>微重力生产</DMSE_Microgravity.label>
-  <!-- EN: 在微重力环境下的增材打印能够做到远比重力环境下所能做的还要复杂与精确。脱离了重力这个人类习以为常的影响因素，人类对於各类材料学与加工制造业的许多基本认知也受到了极大的影响。\n\n透过该研究解锁建造一种在微重力环境下加工生产物品的大型组装机。 -->
+  <!-- EN: Additive manufacturing in microgravity can achieve complexity and precision far beyond what is possible under gravity. Once gravity is removed as a constant constraint, many fundamental assumptions in materials science and manufacturing are significantly altered.\n\nThis research unlocks construction of a large assembly machine for producing items in microgravity. -->
   <DMSE_Microgravity.description>在微重力环境下的增材打印能够做到远比重力环境下所能做的还要复杂与精确。脱离了重力这个人类习以为常的影响因素，人类对於各类材料学与加工制造业的许多基本认知也受到了极大的影响。\n\n透过该研究解锁建造一种在微重力环境下加工生产物品的大型组装机。</DMSE_Microgravity.description>
   
   <!-- EN: orbital dynamics -->
   <DMSE_OrbitalDynamics.label>轨道动力学</DMSE_OrbitalDynamics.label>
-  <!-- EN: 透过对基本轨道运行规律与太空环境特性的深入研究，研制专门适用於真空微重力环境的装备与精密设备，以及由先进材料生产并特化设计的无壳弹枪械家族，\n\n制造这些装备所使用的关键材料与零件依赖於殖民舰队的交易往来，但也可以透过更深入的研究来实现完全的自主生产。 -->
+  <!-- EN: By studying fundamental orbital mechanics and space environmental characteristics, you can develop equipment and precision devices designed for vacuum microgravity conditions, as well as a family of specialized caseless firearms built from advanced materials.\n\nKey materials and components for this equipment rely on trade with the colonial fleet, but deeper research can eventually enable fully independent production. -->
   <DMSE_OrbitalDynamics.description>透过对基本轨道运行规律与太空环境特性的深入研究，研制专门适用於真空微重力环境的装备与精密设备，以及由先进材料生产并特化设计的无壳弹枪械家族，\n\n制造这些装备所使用的关键材料与零件依赖於殖民舰队的交易往来，但也可以透过更深入的研究来实现完全的自主生产。</DMSE_OrbitalDynamics.description>
   
   <!-- EN: vacuumize process -->
   <DMSE_VacuumMaterial.label>真空处里</DMSE_VacuumMaterial.label>
-  <!-- EN: 在真空环境的材料生产能够有效的避免材料在化学反应中受到氮气与氧气等常见气体的影响，透过在大气层外的材料学研究，这对於应用像钽钨合金这样会在大气内环境的加工过程中受氧化影响的特殊材料而言具有非常大的价值。\n\n透过该研究能够在真空环境下的箱型炉与烧结炉中生产钽钨合金。 -->
+  <!-- EN: Material production in vacuum effectively avoids interference from common gases such as nitrogen and oxygen during chemical reactions. Researching materials science outside the atmosphere is especially valuable for special materials like Tantasteel, which are prone to oxidation when processed in atmospheric conditions.\n\nThis research unlocks Tantasteel production in vacuum-compatible box furnaces and sintering furnaces. -->
   <DMSE_VacuumMaterial.description>在真空环境的材料生产能够有效的避免材料在化学反应中受到氮气与氧气等常见气体的影响，透过在大气层外的材料学研究，这对於应用像钽钨合金这样会在大气内环境的加工过程中受氧化影响的特殊材料而言具有非常大的价值。\n\n透过该研究能够在真空环境下的箱型炉与烧结炉中生产钽钨合金。</DMSE_VacuumMaterial.description>
   
 </LanguageData>

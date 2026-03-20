@@ -5,6 +5,7 @@ using Verse.Sound;
 
 namespace DMSE
 {
+    [StaticConstructorOnStartup]
     public class Building_BatteryGraphene : Building
     {
         private int ticksToExplode;

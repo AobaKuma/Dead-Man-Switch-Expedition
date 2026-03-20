@@ -1,26 +1,28 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
-
+  
+  <!-- EN: chemfuel silo -->
+  <DMSE_FuelSiloTank.label>液態燃料筒倉</DMSE_FuelSiloTank.label>
+  <!-- EN: A large storage tank for storing liquid fuels uses multiple layers of metal plates and special alloys to store pressurized liquefied fuel within the tank. It provides robust protection while also holding a large amount of fuel. supplie for thrusters on a gravship. -->
+  <DMSE_FuelSiloTank.description>一種用於儲存液態燃料的大型儲槽，採用多層金屬板與特殊合金結構，可在槽體內安全存放加壓液化燃料。它在提供良好防護的同時也為重力船上的推進器供應大量燃料。</DMSE_FuelSiloTank.description>
+  <!-- EN: Chemfuel -->
+  <DMSE_FuelSiloTank.comps.CompRefuelable.fuelGizmoLabel>化合燃料</DMSE_FuelSiloTank.comps.CompRefuelable.fuelGizmoLabel>
+  <!-- EN: Chemfuel -->
+  <DMSE_FuelSiloTank.comps.CompRefuelable.fuelLabel>液態燃料</DMSE_FuelSiloTank.comps.CompRefuelable.fuelLabel>
+  
   <!-- EN: Fusion reactor -->
   <DMSE_FusionCore.label>聚變反應爐</DMSE_FusionCore.label>
   <!-- EN: A highly mature compact tokamak fusion reactor, commonly found in colonial fleets and ships used in the Enlightened World, has a built-in supercritical carbon dioxide turbine to provide power for its own cycle and ship equipment. However, its most crucial function is to preheat the ship's nuclear thermal propulsion system so that it can reach its maximum design power to move small-mass celestial bodies. -->
   <DMSE_FusionCore.description>一種高度成熟的緊湊型托卡馬克聚變反應爐，常見於殖民艦隊與啟明世界所使用的各式艦船。其內建超臨界二氧化碳渦輪，可為自身循環系統與船艦設備提供電力。不過，它最關鍵的用途是為船艦的核熱推進系統進行預熱，使其能達到最大設計功率，以推動小質量天體。</DMSE_FusionCore.description>
-
-  <!-- EN: chemfuel silo -->
-  <DMSE_FuelSiloTank.label>化學燃料筒倉</DMSE_FuelSiloTank.label>
-  <!-- EN: A large storage tank for storing liquid fuels uses multiple layers of metal plates and special alloys to store pressurized liquefied fuel within the tank. It provides robust protection while also holding a large amount of fuel. supplie for thrusters on a gravship. -->
-  <DMSE_FuelSiloTank.description>一種用於儲存液態燃料的大型儲槽，採用多層金屬板與特殊合金結構，可在槽體內安全存放加壓液化燃料。它在提供良好防護的同時也為重力船上的推進器供應大量燃料。</DMSE_FuelSiloTank.description>
-
+  
+  <!-- EN: Nuclear thermal thruster -->
+  <DMSE_NuclearThruster.label>核熱推進器</DMSE_NuclearThruster.label>
+  <!-- EN: A heavy nuclear-thermal rocket thruster that generates thrust by heating liquid hydrogen through nuclear Fusion. Its specific impulse is more than twice that of conventional chemical rockets. These high-thrust engines are commonly used on interstellar tugs to perform major orbital transfers for massive platforms. Because launch operation produces substantial radioactive contamination, this engine is designed for non-atmospheric use only.\n\nBefore the Tanaka-Johnson drive was introduced, humanity used this class of thruster to accelerate the first sublight ship to the Alpha Centauri system to 20% of light speed, and received the first selfie from outside the Solar System ten years later. -->
+  <DMSE_NuclearThruster.description>一種重型核熱火箭推進器，透過核分裂加熱液態氫來產生推力，其比衝是傳統化學火箭推進器的兩倍以上。這類大推力推進器經常用於星際拖船，使其能為質量龐大的軌道平台進行較大幅度的軌道轉移。由於起飛時會製造大量放射性污染，這類引擎被設計為無法在大氣環境內使用。\n\n在田中-約翰遜引擎問世以前，人類便是透過這種推進器將第一艘前往半人馬座星系的亞光速飛船加速到光速的 20%，並在 10 年後傳回人類於太陽系外的第一張自拍照。</DMSE_NuclearThruster.description>
+  
   <!-- EN: rocket booster -->
   <DMSE_SolidRocketThruster.label>火箭助推器</DMSE_SolidRocketThruster.label>
   <!-- EN: A simple and reliable disposable thruster. It provides thrust by premixing fuel and oxidizer into a solid propellant grain, which burns upon ignition to generate high-temperature gas. It has a rapid start-up capability. It is commonly used as a rocket booster or initial propulsion for strategic missiles on many pre-spacer planets, and is also frequently used as a temporary range extension for small and medium-sized ships during suborbital flight. -->
   <DMSE_SolidRocketThruster.description>一種結構簡單且可靠的一次性推進器。它將燃料與氧化劑預先混合為固體推進藥柱，點火後燃燒產生高溫燃氣以提供推力，具備快速啟動的特性。在許多前太空時代星球上，它常被用作火箭助推器或戰略飛彈的初始動力，也常作為中小型艦船進行亞軌道飛行時的臨時增程手段。</DMSE_SolidRocketThruster.description>
-  
-  <!-- EN: Nuclear thermal thruster -->
-  <DMSE_NuclearThruster.label>核熱推進器</DMSE_NuclearThruster.label>
-  <!-- EN: 一種重型核熱火箭推进器，透過核聚變加熱液態氫來產生推力，其比沖是傳統化學火箭推進器的兩倍以上，這類大推力的推進器經常會被用於星際拖船使其能夠為質量龐大的軌道平台進行較大幅度的軌道轉移。由於其起飛時所製造的大量放射性汙染，這類引擎被設計為無法在大氣環境內使用。\n\n在田中-約翰遜引擎問世以前，人類透過這樣的推進器將第一艘前往半人馬座星系的亞光速飛船加速到光速的20%。並在10年後傳回了人類在太陽系外的第一張自拍照。 -->
-  <DMSE_NuclearThruster.description>一種重型核熱火箭推進器，透過核分裂加熱液態氫來產生推力，其比衝是傳統化學火箭推進器的兩倍以上。這類大推力推進器經常用於星際拖船，使其能為質量龐大的軌道平台進行較大幅度的軌道轉移。由於起飛時會製造大量放射性污染，這類引擎被設計為無法在大氣環境內使用。
-
-在田中-約翰遜引擎問世以前，人類便是透過這種推進器將第一艘前往半人馬座星系的亞光速飛船加速到光速的 20%，並在 10 年後傳回人類於太陽系外的第一張自拍照。</DMSE_NuclearThruster.description>
   
 </LanguageData>

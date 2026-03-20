@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
-
+  
   <!-- EN: Fusion core -->
   <DMSE_FusionCore.label>聚变核心</DMSE_FusionCore.label>
-
+  
   <!-- EN: transfer thruster -->
   <DMSE_TransferThruster.label>转移推进器</DMSE_TransferThruster.label>
-  
-  <!-- EN: AAAAAnk -->
-  <AAA.label>AAAAAnk</AAA.label>
   
 </LanguageData>

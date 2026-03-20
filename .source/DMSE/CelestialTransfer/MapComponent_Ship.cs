@@ -15,6 +15,7 @@ namespace DMSE
         Working,
     }
 
+    [StaticConstructorOnStartup]
     public class MapComponent_Ship : MapComponent
     {
         // ── Serialized state ──────────────────────────────────────────────────

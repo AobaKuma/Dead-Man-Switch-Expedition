@@ -1,6 +1,11 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
   
+  <!-- EN: impact gravship -->
+  <DMSE_ImpactGravship.label>TODO</DMSE_ImpactGravship.label>
+  <!-- EN: A gravship on a collision trajectory. -->
+  <DMSE_ImpactGravship.description>TODO</DMSE_ImpactGravship.description>
+  
   <!-- EN: gravship -->
   <DMSE_TransferGravShip.label>重力船</DMSE_TransferGravShip.label>
   <!-- EN: A gravship in flight. -->
