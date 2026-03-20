@@ -3,7 +3,7 @@
   "WorkspaceRootPath": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\dmse\\skyfallerturret\\mapcomponent_interceptskyfaller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\_dead-man-switch-expedition\\.source\\dmse\\skyfallerturret\\mapcomponent_interceptskyfaller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|solutionrelative:dmse\\skyfallerturret\\mapcomponent_interceptskyfaller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -39,11 +39,11 @@
       "RelativeMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|solutionrelative:dmse\\celestialtransfer\\itravelingship.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\_dead-man-switch-expedition\\.source\\dmse\\compproperties_apparelhediffs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\dmse\\compproperties_apparelhediffs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|solutionrelative:dmse\\compproperties_apparelhediffs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|d:\\steam\\steamapps\\common\\rimworld\\mods\\_dead-man-switch-expedition\\.source\\dmse\\utilities\\impactcraterutility.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\dmse\\utilities\\impactcraterutility.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E3B26DB1-7CCA-4ACA-873F-4ADF15F34A2F}|DMSE\\DMSE.csproj|solutionrelative:dmse\\utilities\\impactcraterutility.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -137,6 +137,10 @@
               "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
               "$type": "Document",
               "DocumentIndex": 9,
               "Title": "CompProperties_ApparelHediffs.cs",
@@ -146,12 +150,7 @@
               "RelativeToolTip": "DMSE\\CompProperties_ApparelHediffs.cs",
               "ViewState": "AgIAABYAAAAAAAAAAIAwwBAAAAA0AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-18T17:31:15.804Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+              "WhenOpened": "2026-03-18T17:31:15.804Z"
             },
             {
               "$type": "Document",
@@ -163,8 +162,7 @@
               "RelativeToolTip": "DMSE\\Utilities\\ImpactCraterUtility.cs",
               "ViewState": "AgIAAJ0BAAAAAAAAAAAQwK4BAAA3AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-18T13:47:15.348Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-18T13:47:15.348Z"
             },
             {
               "$type": "Document",
@@ -306,7 +304,7 @@
               "RelativeDocumentMoniker": "DMSE\\SkyFallerTurret\\MapComponent_InterceptSkyfaller.cs",
               "ToolTip": "D:\\Steam\\steamapps\\common\\RimWorld\\Mods\\_Dead-Man-Switch-Expedition\\.source\\DMSE\\SkyFallerTurret\\MapComponent_InterceptSkyfaller.cs",
               "RelativeToolTip": "DMSE\\SkyFallerTurret\\MapComponent_InterceptSkyfaller.cs",
-              "ViewState": "AgIAABsAAAAAAAAAAAAAACcAAAAPAAAAAAAAAA==",
+              "ViewState": "AgIAABsAAAAAAAAAAAAAACEAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-18T10:08:01.667Z",
               "EditorCaption": ""
@@ -345,8 +343,7 @@
               "RelativeToolTip": "DMSE\\CelestialTransfer\\Hellfire\\ImpactCraterRecord.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAAAABgAAAA2AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-17T17:50:06.305Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-17T17:50:06.305Z"
             },
             {
               "$type": "Document",
@@ -358,8 +355,7 @@
               "RelativeToolTip": "DMSE\\CelestialTransfer\\Hellfire\\WorldGenStep_ImpactCraters.cs",
               "ViewState": "AgIAACcAAAAAAAAAAAAswDkAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-17T17:48:32.85Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-17T17:48:32.85Z"
             },
             {
               "$type": "Document",
@@ -371,8 +367,7 @@
               "RelativeToolTip": "DMSE\\CelestialTransfer\\Hellfire\\ImpactCraterService.cs",
               "ViewState": "AgIAACcAAAAAAAAAAAAEwD0AAAA9AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-17T17:48:31.997Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-17T17:48:31.997Z"
             },
             {
               "$type": "Document",
@@ -396,8 +391,7 @@
               "RelativeToolTip": "DMSE\\CelestialTransfer\\Patch_CompPilotConsole_StartChoosingDestination.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAAAABIAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-17T17:48:20.878Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-17T17:48:20.878Z"
             },
             {
               "$type": "Document",
@@ -409,8 +403,7 @@
               "RelativeToolTip": "DMSE\\CelestialTransfer\\ITravelingShip.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-17T17:48:13.556Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-17T17:48:13.556Z"
             },
             {
               "$type": "Document",
@@ -422,8 +415,7 @@
               "RelativeToolTip": "DMSE\\CelestialTransfer\\Hellfire\\WorldObject_ImpactGravship.cs",
               "ViewState": "AgIAAFsAAAAAAAAAAAAjwGsAAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-17T17:37:55.394Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-17T17:37:55.394Z"
             },
             {
               "$type": "Document",
@@ -459,8 +451,7 @@
               "RelativeToolTip": "DMSE\\CelestialTransfer\\FlightUtility.cs",
               "ViewState": "AgIAADEAAAAAAAAAAAAkwBEAAABOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-17T13:21:23.164Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-17T13:21:23.164Z"
             },
             {
               "$type": "Document",
@@ -484,8 +475,7 @@
               "RelativeToolTip": "DMSE\\CelestialTransfer\\Patch_CompGravshipFacility_CanBeActive.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-17T12:50:31.065Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-17T12:50:31.065Z"
             },
             {
               "$type": "Document",

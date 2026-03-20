@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_VacuumPump</defName>
     <label>Vacuum pump</label>
@@ -44,7 +43,7 @@
       </li>
     </comps>
     <researchPrerequisites>
-      <li>DMSE_OrbitalDynamics</li>
+      <li>DMSE_VacuumMaterial</li>
     </researchPrerequisites>
     <designationCategory>Odyssey</designationCategory>
     <minifiedDef>MinifiedThing</minifiedDef>
@@ -103,7 +102,7 @@
       <li Class="DMSE.CompProperties_OxygenCandle" />
     </comps>
     <researchPrerequisites>
-      <li>DMSE_OrbitalDynamics</li>
+      <li>DMSE_VacuumMaterial</li>
     </researchPrerequisites>
     <designationCategory>Odyssey</designationCategory>
     <minifiedDef>MinifiedThing</minifiedDef>
@@ -159,7 +158,7 @@
       <pocketMapSize>32</pocketMapSize>
     </portal>
     <researchPrerequisites>
-      <li>DMSE_OrbitalDynamics</li>
+      <li>DMSE_VacuumMaterial</li>
     </researchPrerequisites>
     <statBases>
       <Flammability>0</Flammability>

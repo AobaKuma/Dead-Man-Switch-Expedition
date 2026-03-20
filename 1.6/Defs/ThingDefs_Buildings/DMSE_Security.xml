@@ -153,8 +153,8 @@
     <description>MPQFS-85 "Dawnblade" is an onboard multirole quick-firing cannon system. It uses drum magazines and an automatic revolver loader to permit a high rate of sustained fire.\n\nThe armor plating has been removed to allow emplacement to be redeployed as needed for heavy fire support.</description>
     <techLevel>Industrial</techLevel>
     <graphicData>
-      <texPath>Things/Turrets/DMS_Base_Tunguska_GateKeeper</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Building/TurretBase/baseHeavy</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
       <drawSize>4</drawSize>
       <drawOffset>(0,0,0)</drawOffset>
     </graphicData>
@@ -248,7 +248,7 @@
         <minRange>3.9</minRange>
         <range>71.9</range>
         <ai_AvoidFriendlyFireRadius>2.9</ai_AvoidFriendlyFireRadius>
-        <ticksBetweenBurstShots>40</ticksBetweenBurstShots>
+        <ticksBetweenBurstShots>30</ticksBetweenBurstShots>
         <burstShotCount>4</burstShotCount>
         <soundCast>DMS_Shot_Dawnblade</soundCast>
         <soundCastTail>GunTail_Heavy</soundCastTail>
