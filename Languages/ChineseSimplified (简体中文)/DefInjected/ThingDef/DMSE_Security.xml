@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: armor piercing shell -->
+  <DMSE_Bullet_Dawnblade_Striker.label>穿甲炮弹</DMSE_Bullet_Dawnblade_Striker.label>
+  
+  <!-- EN: APT shell -->
+  <DMSE_Bullet_Vulcan_WingBack.label>APT炮弹</DMSE_Bullet_Vulcan_WingBack.label>
+  
+  <!-- EN: Type 85 Multi-Purpose-Quick-Firing System -->
+  <DMSE_Gun_Dawnblade_Striker.label>85型多用途速射系统</DMSE_Gun_Dawnblade_Striker.label>
+  <!-- EN: An automated artillery system widely used on small to medium-sized frigates and corvettes in colonial fleets. -->
+  <DMSE_Gun_Dawnblade_Striker.description>一种广泛装备於殖民舰队中小型巡防舰与护卫舰的舰载多用途速射炮系统。</DMSE_Gun_Dawnblade_Striker.description>
+  
+  <!-- UNUSED -->
+  <DMSE_Gun_Dawnblade_Striker.verbs.Verb_Shoot.label>85型多用途速射系统</DMSE_Gun_Dawnblade_Striker.verbs.Verb_Shoot.label>
+  
+  <!-- EN: GAU-4 “Wing-Back” -->
+  <DMSE_Gun_Vulcan_WingBack.label>GAU-4「翼卫」</DMSE_Gun_Vulcan_WingBack.label>
+  <!-- EN: This is a gravship-based variant of the GAU-4 rotary cannon, also utilizing 20x102mm NATO ammunition. The ship-mounted turret features a longer barrel to increase effective range, but it also introduces a larger blind spot for close-range engagements. -->
+  <DMSE_Gun_Vulcan_WingBack.description>这是GAU-4旋转机炮的重力船搭载型，采用更长枪管以提升有效射程，但也带来近距离交战盲区较大的缺点。</DMSE_Gun_Vulcan_WingBack.description>
+  
+  <!-- UNUSED -->
+  <DMSE_Gun_Vulcan_WingBack.verbs.Verb_Shoot.label>GAU-4「翼卫」</DMSE_Gun_Vulcan_WingBack.verbs.Verb_Shoot.label>
+  
+  <!-- EN: Dawnblade "Striker" -->
+  <DMSE_Turret_Dawnblade_Striker.label>MPQFS-85「前锋」</DMSE_Turret_Dawnblade_Striker.label>
+  <!-- EN: MPQFS-85 "Dawnblade" is an onboard multirole quick-firing cannon system. It uses drum magazines and an automatic revolver loader to permit a high rate of sustained fire. -->
+  <DMSE_Turret_Dawnblade_Striker.description>MPQFS-85「前锋」是一种殖民舰队使用的舰载多用途速射炮系统。透过炮座下复杂的供弹盘系统以及高性能合金制成的炮管可维持致命且高持续性的射速。</DMSE_Turret_Dawnblade_Striker.description>
+  
+  <!-- UNUSED -->
+  <DMSE_Turret_Dawnblade_Striker.comps.CompRefuelable.fuelGizmoLabel>枪管耐久度</DMSE_Turret_Dawnblade_Striker.comps.CompRefuelable.fuelGizmoLabel>
+  <DMSE_Turret_Dawnblade_Striker.comps.CompRefuelable.fuelLabel>距离更换枪管剩余射击次数</DMSE_Turret_Dawnblade_Striker.comps.CompRefuelable.fuelLabel>
+  <DMSE_Turret_Dawnblade_Striker.comps.CompRefuelable.outOfFuelMessage>无法开火：需要新的强化枪管。</DMSE_Turret_Dawnblade_Striker.comps.CompRefuelable.outOfFuelMessage>
+  
+  <!-- EN: GAU-4 “Wing-Back” -->
+  <DMSE_Turret_Vulcan_WingBack.label>GAU-4「翼卫」</DMSE_Turret_Vulcan_WingBack.label>
+  <!-- EN: This is a gravship-based variant of the GAU-4 rotary cannon, also utilizing 20x102mm NATO ammunition. The ship-mounted turret features a longer barrel to increase effective range, but it also introduces a larger blind spot for close-range engagements. -->
+  <DMSE_Turret_Vulcan_WingBack.description>这是GAU-4旋转机炮的重力船搭载型，炮塔采用更长枪管以提升有效射程，但也带来近距离交战盲区较大的缺点。</DMSE_Turret_Vulcan_WingBack.description>
+  
+  <!-- UNUSED -->
+  <DMSE_Turret_Vulcan_WingBack.comps.CompRefuelable.fuelGizmoLabel>枪管耐久度</DMSE_Turret_Vulcan_WingBack.comps.CompRefuelable.fuelGizmoLabel>
+  <DMSE_Turret_Vulcan_WingBack.comps.CompRefuelable.fuelLabel>距离更换枪管剩余射击次数</DMSE_Turret_Vulcan_WingBack.comps.CompRefuelable.fuelLabel>
+  <DMSE_Turret_Vulcan_WingBack.comps.CompRefuelable.outOfFuelMessage>无法射击：需要新的强化枪管。</DMSE_Turret_Vulcan_WingBack.comps.CompRefuelable.outOfFuelMessage>
+  
+</LanguageData>

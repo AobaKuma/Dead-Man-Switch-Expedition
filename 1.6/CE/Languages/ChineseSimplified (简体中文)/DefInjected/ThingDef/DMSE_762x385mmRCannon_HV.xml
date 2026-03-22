@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: 76.2x385mmR cannon shell (PELE-Tungsteel) -->
+  <DMSE_Ammo_762x385mmRCannonShell_PELE.label>76.2x385mmR 加农炮炮弹 (横向效应增强弹-钨钢)</DMSE_Ammo_762x385mmRCannonShell_PELE.label>
+  <!-- EN: The design purpose of this ammunition is to experiment with tungsten steel as a new material for projectiles, while extensively testing the PELE (Penetration with Enhanced Lateral Effects) ammunition design in order to gather comprehensive feedback for performance improvements.
+\n\nPenetrator with Enhanced Lateral Effect:
+\nPELE–“penetrator with enhanced lateral effect”–is a new type of automatic cannon ammunition without a fuse or explosive. The combination of two materials with different densities causes the shell to disintegrate in the target zone without the need for an explosive charge or fuse. Therefore, this type of ammunition can be manufactured without the need for FSX.
+\n\n使用者: -->
+  <DMSE_Ammo_762x385mmRCannonShell_PELE.description>该弹药的设计目的是试验钨钢作为新型弹头材料，同时对PELE（增强侧向效应穿透弹）弹药设计进行广泛测试，以收集全面的反馈意见，从而改进其性能。\n\n横向效应增强弹：\nPELE不含引信或炸药。它由两种不同密度的材料组合而成，使得弹体在目标区域自行解体产生破片。</DMSE_Ammo_762x385mmRCannonShell_PELE.description>
+  
+  <!-- EN: 76.2x385mmR cannon shell (AP) -->
+  <DMSE_Bullet_762x385mmRCannonShell_AP_HV.label>76.2x385mmR 加农炮炮弹 (穿甲弹)</DMSE_Bullet_762x385mmRCannonShell_AP_HV.label>
+  
+  <!-- EN: 76.2x385mmR cannon shell (APCR) -->
+  <DMSE_Bullet_762x385mmRCannonShell_APCR_HV.label>76.2x385mmR 加农炮炮弹 (硬芯穿甲弹)</DMSE_Bullet_762x385mmRCannonShell_APCR_HV.label>
+  
+  <!-- EN: 76.2x385mmR cannon shell (EMP) -->
+  <DMSE_Bullet_762x385mmRCannonShell_EMP_HV.label>76.2x385mmR 加农炮炮弹 (电磁脉冲弹)</DMSE_Bullet_762x385mmRCannonShell_EMP_HV.label>
+  
+  <!-- EN: 76.2x385mmR cannon shell (HE) -->
+  <DMSE_Bullet_762x385mmRCannonShell_HE_HV.label>76.2x385mmR 加农炮炮弹 (高爆弹)</DMSE_Bullet_762x385mmRCannonShell_HE_HV.label>
+  
+  <!-- EN: 76.2x385mmR cannon shell (HEAT) -->
+  <DMSE_Bullet_762x385mmRCannonShell_HEAT_HV.label>76.2x385mmR 加农炮炮弹 (穿甲弹)</DMSE_Bullet_762x385mmRCannonShell_HEAT_HV.label>
+  
+  <!-- EN: 76.2x385mmR cannon shell (PELE-Tungsteel) -->
+  <DMSE_Bullet_762x385mmRCannonShell_PELE_HV.label>76.2x385mmR 加农炮炮弹 (横向效应增强弹-钨钢)</DMSE_Bullet_762x385mmRCannonShell_PELE_HV.label>
+  
+  <!-- EN: large fragments -->
+  <DMSE_Fragment_Large.label>大破片</DMSE_Fragment_Large.label>
+  
+  <!-- EN: medium fragments -->
+  <DMSE_Fragment_Medium.label>中破片</DMSE_Fragment_Medium.label>
+  
+  <!-- EN: small fragments -->
+  <DMSE_Fragment_Small.label>小破片</DMSE_Fragment_Small.label>
+  
+</LanguageData>

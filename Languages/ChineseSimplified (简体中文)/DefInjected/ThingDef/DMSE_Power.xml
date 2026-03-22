@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: graphene battery -->
+  <DMSE_Battery.label>石墨烯电池</DMSE_Battery.label>
+  <!-- EN: A battery that utilizes graphene materials, store electricity for later use. Compared to common batteries, it has higher capacity and charging efficiency; however, its high energy level comes at the cost of a higher self-discharge power than traditional batteries. Won't explode when exposed to rain or fire. -->
+  <DMSE_Battery.description>一种应用石墨烯材料的电池。相比於常见的电池能够有更高的容量与充电效率，然而其高能级的代价是在极端温度下有着比传统电池更高的自放电功率。</DMSE_Battery.description>
+  
+  <!-- EN: photovoltaic panel -->
+  <DMSE_PhotovoltaicPanel.label>光电板</DMSE_PhotovoltaicPanel.label>
+  <!-- EN: A solar panel that generates energy using the photovoltaic principle. It filters light through a graphene coating and uses the green light band to convert it into stable, usable electricity. However, because green light is easily scattered in the atmosphere, this type of solar panel can only be used in a vacuum. Nevertheless, due to atmospheric refraction, it can generate electricity at a lower power even at night. -->
+  <DMSE_PhotovoltaicPanel.description>一种透过光伏原理产生能量的发电板，透过石墨烯镀层过滤光线并利用其中的绿光波段来转换为可供使用的稳定电力，但由於绿光在大气中十分容易散射因此这类太阳能板只能够在真空中使用，不过因为大气折射的缘故即使是在夜晚也能以较低的功率发电。</DMSE_PhotovoltaicPanel.description>
+  
+</LanguageData>

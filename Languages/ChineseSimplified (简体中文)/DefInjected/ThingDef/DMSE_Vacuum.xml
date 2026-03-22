@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: Oxygen candle -->
+  <DMSE_OxygenCandle.label>氧烛</DMSE_OxygenCandle.label>
+  <!-- EN: A disposable oxygen supply device that generates breathable oxygen by burning sodium chlorate, maintaining 24-hours of oxygen supply within a sealed cabin before burning out.\n\nIt was widely used for emergency use in enclosed environments such as aircraft, submarines, and manned spacecraft. During the era of space colonization it also became a standard feature of decompression shelters. -->
+  <DMSE_OxygenCandle.description>一种一次性供氧装置，透过燃烧氯酸钠产生可呼吸氧气，可在密封舱内维持约 24 小时供氧後耗尽。\n\n它曾广泛用於飞机、潜舰与载人太空船等封闭环境的紧急用途；在太空殖民时代也成为减压避难设施的标准配备。</DMSE_OxygenCandle.description>
+  
+  <!-- EN: Vacuum pump -->
+  <DMSE_VacuumPump.label>真空泵</DMSE_VacuumPump.label>
+  <!-- EN: A gas pump that can slowly evacuates the air from a sealed chamber to artificially create a vacuum zone. It's widely used to meet the environmental requirements of specialized production processes.\n\nHowever, should be noted that when used within atmosphere, a specialized vacuum chamber is required to effectively create a vacuum zone. -->
+  <DMSE_VacuumPump.description>可缓慢抽离密封舱内空气以人工建立真空区域的气泵，广泛用於满足特殊制程的环境需求。\n\n但需注意，在大气环境中使用时，必须搭配专用真空腔体，才能有效形成真空区域。</DMSE_VacuumPump.description>
+  
+  <!-- EN: vacuum sealed room -->
+  <DMSE_VacuumRoom_Entrance.label>真空密封设施入口</DMSE_VacuumRoom_Entrance.label>
+  <!-- EN: Entrance that leads to an underground sealed room, through multiple layers of plasticfiber membrane and pressurized hatches, this room can maintained vacuum even inside a planetry atmospheric conditions. The gas pressure inside the facility is completely independent of the external environment.\n\nTherefore, before entering, ensure that you wear a full pressure suit or pressurize the entire space to avoid accidental vacuum burns. -->
+  <DMSE_VacuumRoom_Entrance.description>通往地下密封舱室的入口。透过多层塑纤膜与加压舱门，即使在行星大气条件下也能维持真空。设施内部气压与外界完全隔离。\n\n因此，在进入前请确认已穿着全压力服，或先对整个空间加压，以避免意外真空灼伤。</DMSE_VacuumRoom_Entrance.description>
+  
+  <!-- EN: room exit -->
+  <DMSE_VacuumRoom_Exit.label>舱室出口</DMSE_VacuumRoom_Exit.label>
+  <!-- EN: a vacuum-sealed outlet maintains room pressure when people enter or exit. -->
+  <DMSE_VacuumRoom_Exit.description>一种可在人员进出时维持室内压力的真空密封出口。</DMSE_VacuumRoom_Exit.description>
+  
+  <!-- EN: filled entrance -->
+  <DMSE_VacuumRoom_Filled.label>填埋入口</DMSE_VacuumRoom_Filled.label>
+  <!-- EN: a filled entrance ready for deconstruct and recycle resources. -->
+  <DMSE_VacuumRoom_Filled.description>已填埋的入口，可拆除并回收资源。</DMSE_VacuumRoom_Filled.description>
+  
+</LanguageData>

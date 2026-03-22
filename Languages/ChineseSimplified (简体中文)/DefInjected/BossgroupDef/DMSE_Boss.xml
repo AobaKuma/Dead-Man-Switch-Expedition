@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: The {LEADERKIND_label} is a nightmare since ww3, it's not a weapon suitable in a total war but a perfect machine for counterinsurgency, be aware of it can deploy suicide drone swarm to overrun your defense. -->
+  <DMSE_ClusterWeaver.leaderDescription>{LEADERKIND_label}是自第三次世界大战以来的游击队噩梦，其脆弱的主结构或许并非适合用於全面战争，但却是治安战的完美机器。要小心它可以部署自杀式无人机群来突破你的防御。</DMSE_ClusterWeaver.leaderDescription>
+  
+</LanguageData>
