@@ -2,38 +2,38 @@
 <LanguageData>
   
   <!-- EN: make 5x50mm Caseless (AP) cartridge x500 -->
-  <MakeAmmo_5x50mmCaseless_AP.label>TODO</MakeAmmo_5x50mmCaseless_AP.label>
+  <MakeAmmo_5x50mmCaseless_AP.label>製作 5x50mm 無殼彈 (穿甲彈) x500</MakeAmmo_5x50mmCaseless_AP.label>
   <!-- EN: Craft 500 5x50mm Caseless (AP) cartridges. -->
-  <MakeAmmo_5x50mmCaseless_AP.description>TODO</MakeAmmo_5x50mmCaseless_AP.description>
+  <MakeAmmo_5x50mmCaseless_AP.description>製作 5x50mm 無殼彈 (穿甲彈) x500</MakeAmmo_5x50mmCaseless_AP.description>
   <!-- EN: Making 5x50mm Caseless (AP) cartridges. -->
-  <MakeAmmo_5x50mmCaseless_AP.jobString>TODO</MakeAmmo_5x50mmCaseless_AP.jobString>
+  <MakeAmmo_5x50mmCaseless_AP.jobString>正在製作 5x50mm 無殼彈 (穿甲彈)。</MakeAmmo_5x50mmCaseless_AP.jobString>
   
   <!-- EN: make 5x50mm Caseless (FMJ) cartridge x500 -->
-  <MakeAmmo_5x50mmCaseless_FMJ.label>TODO</MakeAmmo_5x50mmCaseless_FMJ.label>
+  <MakeAmmo_5x50mmCaseless_FMJ.label>製作 5x50mm 無殼彈 (全金屬披甲彈) x500</MakeAmmo_5x50mmCaseless_FMJ.label>
   <!-- EN: Craft 500 5x50mm Caseless (FMJ) cartridges. -->
-  <MakeAmmo_5x50mmCaseless_FMJ.description>TODO</MakeAmmo_5x50mmCaseless_FMJ.description>
+  <MakeAmmo_5x50mmCaseless_FMJ.description>製作 5x50mm 無殼彈 (全金屬披甲彈) x500</MakeAmmo_5x50mmCaseless_FMJ.description>
   <!-- EN: Making 5x50mm Caseless (FMJ) cartridges. -->
-  <MakeAmmo_5x50mmCaseless_FMJ.jobString>TODO</MakeAmmo_5x50mmCaseless_FMJ.jobString>
+  <MakeAmmo_5x50mmCaseless_FMJ.jobString>正在製作 5x50mm 無殼彈 (全金屬披甲彈)。</MakeAmmo_5x50mmCaseless_FMJ.jobString>
   
   <!-- EN: make 5x50mm Caseless (AP-HE) cartridge x500 -->
-  <MakeAmmo_5x50mmCaseless_HE.label>TODO</MakeAmmo_5x50mmCaseless_HE.label>
+  <MakeAmmo_5x50mmCaseless_HE.label>製作 5x50mm 無殼彈 (高爆穿甲彈) x500</MakeAmmo_5x50mmCaseless_HE.label>
   <!-- EN: Craft 500 5x50mm Caseless (AP-HE) cartridges. -->
-  <MakeAmmo_5x50mmCaseless_HE.description>TODO</MakeAmmo_5x50mmCaseless_HE.description>
+  <MakeAmmo_5x50mmCaseless_HE.description>製作 5x50mm 無殼彈 (高爆穿甲彈) x500</MakeAmmo_5x50mmCaseless_HE.description>
   <!-- EN: Making 5x50mm Caseless (AP-HE) cartridges. -->
-  <MakeAmmo_5x50mmCaseless_HE.jobString>TODO</MakeAmmo_5x50mmCaseless_HE.jobString>
+  <MakeAmmo_5x50mmCaseless_HE.jobString>正在製作 5x50mm 無殼彈 (高爆穿甲彈)。</MakeAmmo_5x50mmCaseless_HE.jobString>
   
   <!-- EN: make 5x50mm Caseless (HP) cartridge x500 -->
-  <MakeAmmo_5x50mmCaseless_HP.label>TODO</MakeAmmo_5x50mmCaseless_HP.label>
+  <MakeAmmo_5x50mmCaseless_HP.label>製作 5x50mm 無殼彈 (空尖彈) x500</MakeAmmo_5x50mmCaseless_HP.label>
   <!-- EN: Craft 500 5x50mm Caseless (HP) cartridges. -->
-  <MakeAmmo_5x50mmCaseless_HP.description>TODO</MakeAmmo_5x50mmCaseless_HP.description>
+  <MakeAmmo_5x50mmCaseless_HP.description>製作 5x50mm 無殼彈 (空尖彈) x500</MakeAmmo_5x50mmCaseless_HP.description>
   <!-- EN: Making 5x50mm Caseless (HP) cartridges. -->
-  <MakeAmmo_5x50mmCaseless_HP.jobString>TODO</MakeAmmo_5x50mmCaseless_HP.jobString>
+  <MakeAmmo_5x50mmCaseless_HP.jobString>正在製作 5x50mm 無殼彈 (空尖彈)。</MakeAmmo_5x50mmCaseless_HP.jobString>
   
   <!-- EN: make 5x50mm Caseless (AP-I) cartridge x500 -->
-  <MakeAmmo_5x50mmCaseless_Incendiary.label>TODO</MakeAmmo_5x50mmCaseless_Incendiary.label>
+  <MakeAmmo_5x50mmCaseless_Incendiary.label>製作 5x50mm 無殼彈 (穿甲燃燒彈) x500</MakeAmmo_5x50mmCaseless_Incendiary.label>
   <!-- EN: Craft 500 5x50mm Caseless (AP-I) cartridges. -->
-  <MakeAmmo_5x50mmCaseless_Incendiary.description>TODO</MakeAmmo_5x50mmCaseless_Incendiary.description>
+  <MakeAmmo_5x50mmCaseless_Incendiary.description>製作 5x50mm 無殼彈 (穿甲燃燒彈) x500</MakeAmmo_5x50mmCaseless_Incendiary.description>
   <!-- EN: Making 5x50mm Caseless (AP-I) cartridges. -->
-  <MakeAmmo_5x50mmCaseless_Incendiary.jobString>TODO</MakeAmmo_5x50mmCaseless_Incendiary.jobString>
+  <MakeAmmo_5x50mmCaseless_Incendiary.jobString>正在製作 5x50mm 無殼彈 (穿甲燃燒彈)。</MakeAmmo_5x50mmCaseless_Incendiary.jobString>
   
 </LanguageData>

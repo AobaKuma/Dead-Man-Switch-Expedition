@@ -2,10 +2,10 @@
 <LanguageData>
   
   <!-- EN: make 76.2x385mmR (PELE-Tungsteel) cannon shells x5 -->
-  <MakeDMSE_Ammo_762x385mmRCannonShell_PELE.label>TODO</MakeDMSE_Ammo_762x385mmRCannonShell_PELE.label>
+  <MakeDMSE_Ammo_762x385mmRCannonShell_PELE.label>製作 76.2x385mmR 加農炮炮彈 (橫向效應增強彈-鎢鋼) x5</MakeDMSE_Ammo_762x385mmRCannonShell_PELE.label>
   <!-- EN: Craft 5 76.2x385mmR (PELE-Tungsteel) cannon shells. -->
-  <MakeDMSE_Ammo_762x385mmRCannonShell_PELE.description>TODO</MakeDMSE_Ammo_762x385mmRCannonShell_PELE.description>
+  <MakeDMSE_Ammo_762x385mmRCannonShell_PELE.description>製作 76.2x385mmR (橫向效應增強彈-鎢鋼) x5</MakeDMSE_Ammo_762x385mmRCannonShell_PELE.description>
   <!-- EN: Making 76.2x385mmR (PELE-Tungsteel) cannon shells. -->
-  <MakeDMSE_Ammo_762x385mmRCannonShell_PELE.jobString>TODO</MakeDMSE_Ammo_762x385mmRCannonShell_PELE.jobString>
+  <MakeDMSE_Ammo_762x385mmRCannonShell_PELE.jobString>正在製作 76.2x385mmR (橫向效應增強彈-鎢鋼)。</MakeDMSE_Ammo_762x385mmRCannonShell_PELE.jobString>
   
 </LanguageData>

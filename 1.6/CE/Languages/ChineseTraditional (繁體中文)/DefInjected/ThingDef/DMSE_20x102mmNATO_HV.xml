@@ -2,15 +2,15 @@
 <LanguageData>
   
   <!-- EN: 20x102mm NATO bullet (AP) -->
-  <DMSE_Bullet_20x102mmNATO_AP_HV.label>TODO</DMSE_Bullet_20x102mmNATO_AP_HV.label>
+  <DMSE_Bullet_20x102mmNATO_AP_HV.label>20x102mm 北約標準機炮彈 (穿甲彈)</DMSE_Bullet_20x102mmNATO_AP_HV.label>
   
   <!-- EN: 20x102mm NATO bullet (AP-HE) -->
-  <DMSE_Bullet_20x102mmNATO_HE_HV.label>TODO</DMSE_Bullet_20x102mmNATO_HE_HV.label>
+  <DMSE_Bullet_20x102mmNATO_HE_HV.label>20x102mm 北約標準機炮彈 (穿甲高爆彈)</DMSE_Bullet_20x102mmNATO_HE_HV.label>
   
   <!-- EN: 20x102mm NATO bullet (AP-I) -->
-  <DMSE_Bullet_20x102mmNATO_Incendiary_HV.label>TODO</DMSE_Bullet_20x102mmNATO_Incendiary_HV.label>
+  <DMSE_Bullet_20x102mmNATO_Incendiary_HV.label>20x102mm 北約標準機炮彈 (穿甲燃燒彈)</DMSE_Bullet_20x102mmNATO_Incendiary_HV.label>
   
   <!-- EN: 20x102mm NATO bullet (Sabot) -->
-  <DMSE_Bullet_20x102mmNATO_Sabot_HV.label>TODO</DMSE_Bullet_20x102mmNATO_Sabot_HV.label>
+  <DMSE_Bullet_20x102mmNATO_Sabot_HV.label>20x102mm 北約標準機炮彈 (脫殼穿甲彈)</DMSE_Bullet_20x102mmNATO_Sabot_HV.label>
   
 </LanguageData>

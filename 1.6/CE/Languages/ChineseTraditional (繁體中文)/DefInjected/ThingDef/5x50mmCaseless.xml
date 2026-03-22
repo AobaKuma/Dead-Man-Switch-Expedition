@@ -2,91 +2,91 @@
 <LanguageData>
   
   <!-- EN: 5x50mm Caseless (AP) -->
-  <Ammo_5x50mmCaseless_AP.label>TODO</Ammo_5x50mmCaseless_AP.label>
+  <Ammo_5x50mmCaseless_AP.label>5x50mm 無殼彈(穿甲彈)</Ammo_5x50mmCaseless_AP.label>
   <!-- EN: A long caseless cartridge with a solid propellant enveloping the slim projectile.
 \n\nArmor-piercing:
 \nFeatures a hardened steel penetrator core for increased armor penetration.
 \n\n使用者: -->
-  <Ammo_5x50mmCaseless_AP.description>TODO</Ammo_5x50mmCaseless_AP.description>
+  <Ammo_5x50mmCaseless_AP.description>用固體推推劑包裹彈頭的子彈。</Ammo_5x50mmCaseless_AP.description>
   
   <!-- EN: 5x50mm Caseless (FMJ) -->
-  <Ammo_5x50mmCaseless_FMJ.label>TODO</Ammo_5x50mmCaseless_FMJ.label>
+  <Ammo_5x50mmCaseless_FMJ.label>5x50mm 無殼彈(全金屬披甲彈)</Ammo_5x50mmCaseless_FMJ.label>
   <!-- EN: A long caseless cartridge with a solid propellant enveloping the slim projectile.
 \n\nFull metal jacket:
 \nThe soft lead core is encased in a harder metal coating, combining a medium amount of stopping power and armor penetration.
 \n\n使用者: -->
-  <Ammo_5x50mmCaseless_FMJ.description>TODO</Ammo_5x50mmCaseless_FMJ.description>
+  <Ammo_5x50mmCaseless_FMJ.description>用固體推推劑包裹彈頭的子彈。</Ammo_5x50mmCaseless_FMJ.description>
   
   <!-- EN: 5x50mm Caseless (AP-HE) -->
-  <Ammo_5x50mmCaseless_HE.label>TODO</Ammo_5x50mmCaseless_HE.label>
+  <Ammo_5x50mmCaseless_HE.label>5x50mm 無殼彈(高爆穿甲彈)</Ammo_5x50mmCaseless_HE.label>
   <!-- EN: A long caseless cartridge with a solid propellant enveloping the slim projectile.
 \n\nArmor-piercing high-explosive:
 \nFilled with high-explosives that detonate on impact for additional damage.
 \n\n使用者: -->
-  <Ammo_5x50mmCaseless_HE.description>TODO</Ammo_5x50mmCaseless_HE.description>
+  <Ammo_5x50mmCaseless_HE.description>用固體推推劑包裹彈頭的子彈。</Ammo_5x50mmCaseless_HE.description>
   
   <!-- EN: 5x50mm Caseless (HP) -->
-  <Ammo_5x50mmCaseless_HP.label>TODO</Ammo_5x50mmCaseless_HP.label>
+  <Ammo_5x50mmCaseless_HP.label>5x50mm 無殼彈(空尖彈)</Ammo_5x50mmCaseless_HP.label>
   <!-- EN: A long caseless cartridge with a solid propellant enveloping the slim projectile.
 \n\nHollow point:
 \nA hollowed out tip causes the bullet to expand on impact, increasing tissue damage at the cost of armor penetration.
 \n\n使用者: -->
-  <Ammo_5x50mmCaseless_HP.description>TODO</Ammo_5x50mmCaseless_HP.description>
+  <Ammo_5x50mmCaseless_HP.description>用固體推推劑包裹彈頭的子彈。</Ammo_5x50mmCaseless_HP.description>
   
   <!-- EN: 5x50mm Caseless (AP-I) -->
-  <Ammo_5x50mmCaseless_Incendiary.label>TODO</Ammo_5x50mmCaseless_Incendiary.label>
+  <Ammo_5x50mmCaseless_Incendiary.label>5x50mm 無殼彈(穿甲燃燒彈)</Ammo_5x50mmCaseless_Incendiary.label>
   <!-- EN: A long caseless cartridge with a solid propellant enveloping the slim projectile.
 \n\nArmor-piercing incendiary:
 \nFilled with an incendiary compound that ignites on impact, doing additional damage and increasing armor penetration.
 \n\n使用者: -->
-  <Ammo_5x50mmCaseless_Incendiary.description>TODO</Ammo_5x50mmCaseless_Incendiary.description>
+  <Ammo_5x50mmCaseless_Incendiary.description>用固體推推劑包裹彈頭的子彈。</Ammo_5x50mmCaseless_Incendiary.description>
   
   <!-- EN: 5x50mm Caseless bullet (AP) -->
-  <Bullet_5x50mmCaseless_AP.label>TODO</Bullet_5x50mmCaseless_AP.label>
+  <Bullet_5x50mmCaseless_AP.label>5x50mm 無殼彈(穿甲彈)</Bullet_5x50mmCaseless_AP.label>
   
   <!-- EN: 5x50mm Caseless bullet (AP) -->
-  <Bullet_5x50mmCaseless_AP_HV.label>TODO</Bullet_5x50mmCaseless_AP_HV.label>
+  <Bullet_5x50mmCaseless_AP_HV.label>5x50mm 無殼彈(穿甲彈)</Bullet_5x50mmCaseless_AP_HV.label>
   
   <!-- EN: 5x50mm Caseless bullet (AP) -->
-  <Bullet_5x50mmCaseless_AP_LV.label>TODO</Bullet_5x50mmCaseless_AP_LV.label>
+  <Bullet_5x50mmCaseless_AP_LV.label>5x50mm 無殼彈(穿甲彈)</Bullet_5x50mmCaseless_AP_LV.label>
   
   <!-- EN: 5x50mm Caseless bullet (FMJ) -->
-  <Bullet_5x50mmCaseless_FMJ.label>TODO</Bullet_5x50mmCaseless_FMJ.label>
+  <Bullet_5x50mmCaseless_FMJ.label>5x50mm 無殼彈(全金屬披甲彈)</Bullet_5x50mmCaseless_FMJ.label>
   
   <!-- EN: 5x50mm Caseless bullet (FMJ) -->
-  <Bullet_5x50mmCaseless_FMJ_HV.label>TODO</Bullet_5x50mmCaseless_FMJ_HV.label>
+  <Bullet_5x50mmCaseless_FMJ_HV.label>5x50mm 無殼彈(全金屬披甲彈)</Bullet_5x50mmCaseless_FMJ_HV.label>
   
   <!-- EN: 5x50mm Caseless bullet (FMJ) -->
-  <Bullet_5x50mmCaseless_FMJ_LV.label>TODO</Bullet_5x50mmCaseless_FMJ_LV.label>
+  <Bullet_5x50mmCaseless_FMJ_LV.label>5x50mm 無殼彈(全金屬披甲彈)</Bullet_5x50mmCaseless_FMJ_LV.label>
   
   <!-- EN: 5x50mm Caseless bullet (AP-HE) -->
-  <Bullet_5x50mmCaseless_HE.label>TODO</Bullet_5x50mmCaseless_HE.label>
+  <Bullet_5x50mmCaseless_HE.label>5x50mm 無殼彈(高爆穿甲彈)</Bullet_5x50mmCaseless_HE.label>
   
   <!-- EN: 5x50mm Caseless bullet (AP-HE) -->
-  <Bullet_5x50mmCaseless_HE_HV.label>TODO</Bullet_5x50mmCaseless_HE_HV.label>
+  <Bullet_5x50mmCaseless_HE_HV.label>5x50mm 無殼彈(高爆穿甲彈)</Bullet_5x50mmCaseless_HE_HV.label>
   
   <!-- EN: 5x50mm Caseless bullet (AP-HE) -->
-  <Bullet_5x50mmCaseless_HE_LV.label>TODO</Bullet_5x50mmCaseless_HE_LV.label>
+  <Bullet_5x50mmCaseless_HE_LV.label>5x50mm 無殼彈(高爆穿甲彈)</Bullet_5x50mmCaseless_HE_LV.label>
   
   <!-- EN: 5x50mm Caseless bullet (HP) -->
-  <Bullet_5x50mmCaseless_HP.label>TODO</Bullet_5x50mmCaseless_HP.label>
+  <Bullet_5x50mmCaseless_HP.label>5x50mm 無殼彈(空尖彈)</Bullet_5x50mmCaseless_HP.label>
   
   <!-- EN: 5x50mm Caseless bullet (HP) -->
-  <Bullet_5x50mmCaseless_HP_HV.label>TODO</Bullet_5x50mmCaseless_HP_HV.label>
+  <Bullet_5x50mmCaseless_HP_HV.label>5x50mm 無殼彈(空尖彈)</Bullet_5x50mmCaseless_HP_HV.label>
   
   <!-- EN: 5x50mm Caseless bullet (HP) -->
-  <Bullet_5x50mmCaseless_HP_LV.label>TODO</Bullet_5x50mmCaseless_HP_LV.label>
+  <Bullet_5x50mmCaseless_HP_LV.label>5x50mm 無殼彈(空尖彈)</Bullet_5x50mmCaseless_HP_LV.label>
   
   <!-- EN: 5x50mm Caseless bullet (AP-I) -->
-  <Bullet_5x50mmCaseless_Incendiary.label>TODO</Bullet_5x50mmCaseless_Incendiary.label>
+  <Bullet_5x50mmCaseless_Incendiary.label>5x50mm 無殼彈(穿甲燃燒彈)</Bullet_5x50mmCaseless_Incendiary.label>
   
   <!-- EN: 5x50mm Caseless bullet (AP-I) -->
-  <Bullet_5x50mmCaseless_Incendiary_HV.label>TODO</Bullet_5x50mmCaseless_Incendiary_HV.label>
+  <Bullet_5x50mmCaseless_Incendiary_HV.label>5x50mm 無殼彈(穿甲燃燒彈)</Bullet_5x50mmCaseless_Incendiary_HV.label>
   
   <!-- EN: 5x50mm Caseless bullet (AP-I) -->
-  <Bullet_5x50mmCaseless_Incendiary_LV.label>TODO</Bullet_5x50mmCaseless_Incendiary_LV.label>
+  <Bullet_5x50mmCaseless_Incendiary_LV.label>5x50mm 無殼彈(穿甲燃燒彈)</Bullet_5x50mmCaseless_Incendiary_LV.label>
   
   <!-- EN: 5x50mm Caseless bullet(cook-off) -->
-  <DMSE_Bullet_5x50mmCaseless_Safe.label>TODO</DMSE_Bullet_5x50mmCaseless_Safe.label>
+  <DMSE_Bullet_5x50mmCaseless_Safe.label>5x50mm 無殼彈(安全彈藥)</DMSE_Bullet_5x50mmCaseless_Safe.label>
   
 </LanguageData>
