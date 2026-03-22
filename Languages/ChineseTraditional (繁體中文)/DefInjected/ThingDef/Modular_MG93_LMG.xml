@@ -9,7 +9,12 @@
   <DMSE_Modular_LMG.tools.stock.label>槍托</DMSE_Modular_LMG.tools.stock.label>
   <!-- EN: barrel -->
   <DMSE_Modular_LMG.tools.barrel.label>槍管</DMSE_Modular_LMG.tools.barrel.label>
+  <!-- EN: muzzle -->
+  <DMSE_Modular_LMG.tools.muzzle.label>槍口</DMSE_Modular_LMG.tools.muzzle.label>
   <!-- EN: Caseless light machinegun -->
+  <DMSE_Modular_LMG.verbs.Verb_ShootCE.label>無殼輕機槍</DMSE_Modular_LMG.verbs.Verb_ShootCE.label>
+  
+  <!-- UNUSED -->
   <DMSE_Modular_LMG.verbs.Verb_Shoot.label>無殼輕機槍</DMSE_Modular_LMG.verbs.Verb_Shoot.label>
   
 </LanguageData>

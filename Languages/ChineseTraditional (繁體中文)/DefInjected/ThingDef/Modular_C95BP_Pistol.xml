@@ -9,9 +9,14 @@
   <DMSE_Modular_C95BP_Pistol.tools.stock.label>槍托</DMSE_Modular_C95BP_Pistol.tools.stock.label>
   <!-- EN: barrel -->
   <DMSE_Modular_C95BP_Pistol.tools.barrel.label>槍管</DMSE_Modular_C95BP_Pistol.tools.barrel.label>
+  <!-- EN: muzzle -->
+  <DMSE_Modular_C95BP_Pistol.tools.muzzle.label>槍口</DMSE_Modular_C95BP_Pistol.tools.muzzle.label>
   <!-- EN: grip -->
   <DMSE_Modular_C95BP_Pistol.tools.grip.label>握把</DMSE_Modular_C95BP_Pistol.tools.grip.label>
   <!-- EN: Caseless auto pistol -->
+  <DMSE_Modular_C95BP_Pistol.verbs.Verb_ShootCE.label>無殼自動手槍</DMSE_Modular_C95BP_Pistol.verbs.Verb_ShootCE.label>
+  
+  <!-- UNUSED -->
   <DMSE_Modular_C95BP_Pistol.verbs.Verb_Shoot.label>無殼自動手槍</DMSE_Modular_C95BP_Pistol.verbs.Verb_Shoot.label>
   
 </LanguageData>

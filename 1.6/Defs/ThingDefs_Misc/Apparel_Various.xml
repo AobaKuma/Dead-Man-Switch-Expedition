@@ -14,7 +14,7 @@
 	</ThingDef>
 
 	<ThingDef ParentName="DMSE_OrbitalApparelBase">
-		<defName>DMS_Apparel_IVASuit</defName>
+		<defName>DMSE_Apparel_IVASuit</defName>
 		<label>IVA suit</label>
 		<description>A semi-pressurized suit for working inside a pressurized spacecraft, It is generally used as work clothes for space vehicle operators.\n\nIt doesn't have sufficient vacuum resistance to be used directly in EVA activities but is enough to buy more time in exposed environments.</description>
 		<recipeMaker>

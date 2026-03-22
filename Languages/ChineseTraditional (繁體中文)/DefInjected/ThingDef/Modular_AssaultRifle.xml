@@ -9,11 +9,16 @@
   <DMSE_Modular_AR.tools.stock-0.label>槍托</DMSE_Modular_AR.tools.stock-0.label>
   <!-- EN: barrel -->
   <DMSE_Modular_AR.tools.barrel-0.label>槍管</DMSE_Modular_AR.tools.barrel-0.label>
+  <!-- EN: muzzle -->
+  <DMSE_Modular_AR.tools.muzzle.label>槍口</DMSE_Modular_AR.tools.muzzle.label>
   <!-- EN: stock -->
   <DMSE_Modular_AR.tools.stock-1.label>槍托</DMSE_Modular_AR.tools.stock-1.label>
   <!-- EN: barrel -->
   <DMSE_Modular_AR.tools.barrel-1.label>槍管</DMSE_Modular_AR.tools.barrel-1.label>
   <!-- EN: caseless assault rifle -->
+  <DMSE_Modular_AR.verbs.Verb_ShootCE.label>無殼突擊步槍</DMSE_Modular_AR.verbs.Verb_ShootCE.label>
+  
+  <!-- UNUSED -->
   <DMSE_Modular_AR.verbs.Verb_Shoot.label>無殼突擊步槍</DMSE_Modular_AR.verbs.Verb_Shoot.label>
   
 </LanguageData>

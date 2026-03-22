@@ -31,22 +31,20 @@
     </statBases>
     <size>(3, 3)</size>
     <rotatable>false</rotatable>
-    <fillPercent>0.5</fillPercent>
+    <fillPercent>0.75</fillPercent>
     <passability>PassThroughOnly</passability>
     <pathCost>14</pathCost>
     <canOverlapZones>false</canOverlapZones>
     <costList>
-      <Plasteel>250</Plasteel>
+      <Plasteel>350</Plasteel>
       <DMSE_TantastenAlloy>150</DMSE_TantastenAlloy>
       <Uranium>90</Uranium>
-      <ComponentStamped>20</ComponentStamped>
-      <ComponentSpacer>8</ComponentSpacer>
+      <ComponentStamped>40</ComponentStamped>
+      <ComponentSpacer>20</ComponentSpacer>
     </costList>
-    <resourcesFractionWhenDeconstructed>1</resourcesFractionWhenDeconstructed>
-    <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+    <constructionSkillPrerequisite>10</constructionSkillPrerequisite>
     <designationCategory>Odyssey</designationCategory>
-    <hasInteractionCell>true</hasInteractionCell>
-    <interactionCellOffset>(0, 0,-1)</interactionCellOffset>
+    <hasInteractionCell>false</hasInteractionCell>
     <researchPrerequisites>
       <li>DMSE_Aerospace</li>
     </researchPrerequisites>
@@ -54,7 +52,7 @@
     <comps>
       <li Class="CompProperties_Power">
         <compClass>CompPowerTrader</compClass>
-        <basePowerConsumption>-5000</basePowerConsumption>
+        <basePowerConsumption>-10000</basePowerConsumption>
         <transmitsPower>true</transmitsPower>
         <soundAmbientProducingPower>ScannerLongRangeMineral_Ambience</soundAmbientProducingPower>
       </li>
@@ -98,7 +96,7 @@
     </researchPrerequisites>
     <comps>
       <li Class="CompProperties_Refuelable">
-        <fuelCapacity>1500</fuelCapacity>
+        <fuelCapacity>1750</fuelCapacity>
         <targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>
         <initialConfigurableTargetFuelLevel>1500</initialConfigurableTargetFuelLevel>
         <fuelFilter>

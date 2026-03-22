@@ -76,11 +76,13 @@
     <costList>
       <Steel>180</Steel>
       <Tungsteel>280</Tungsteel>
+      <DMSE_TantastenAlloy>25</DMSE_TantastenAlloy>
       <ComponentStamped>7</ComponentStamped>
       <ComponentIndustrial>8</ComponentIndustrial>
     </costList>
     <researchPrerequisites>
       <li>DMS_EquipmentElite</li>
+      <li>DMSE_OrbitalDynamics</li>
     </researchPrerequisites>
     <uiIconPath>Things/Turrets/DMS_WingBack_icon</uiIconPath>
     <uiIconScale>1.1</uiIconScale>
@@ -175,7 +177,7 @@
   <ThingDef ParentName="DMS_BaseCannonBuilding">
     <defName>DMSE_Turret_Dawnblade_Striker</defName>
     <label>Dawnblade "Striker"</label>
-    <description>MPQFS-85 "Dawnblade" is an onboard multirole quick-firing cannon system. It uses drum magazines and an automatic revolver loader to permit a high rate of sustained fire.\n\nThe armor plating has been removed to allow emplacement to be redeployed as needed for heavy fire support.</description>
+    <description>MPQFS-85 "Dawnblade" is an onboard multirole quick-firing cannon system. It uses drum magazines and an automatic revolver loader to permit a high rate of sustained fire.</description>
     <techLevel>Industrial</techLevel>
     <graphicData>
       <texPath>Things/Building/TurretBase/baseHeavy</texPath>
@@ -231,20 +233,20 @@
       <turretTopDrawSize>5</turretTopDrawSize>
       <turretBurstWarmupTime>2.0</turretBurstWarmupTime>   <!--================ Cooldown and aiming time ================-->
       <turretBurstCooldownTime>2.8</turretBurstCooldownTime>
-      <!-- <turretTopOffset>(0)</turretTopOffset> -->
     </building>
     <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
     <costList>
       <Steel>450</Steel>
       <Tungsteel>500</Tungsteel>
+      <DMSE_TantastenAlloy>100</DMSE_TantastenAlloy>
       <ComponentStamped>18</ComponentStamped>
       <ComponentFireControl>2</ComponentFireControl>
     </costList>
     <researchPrerequisites>
-      <li>DMS_Synthroid</li>
-      <li>DMS_EquipmentHeavy</li>
+      <li>DMS_EquipmentElite</li>
+      <li>DMSE_OrbitalDynamics</li>
     </researchPrerequisites>
-    <uiIconPath>Things/Turrets/DMS_DawnBlade</uiIconPath>
+    <uiIconPath>Things/Turrets/DMS_Striker_icon</uiIconPath>
     <uiIconScale>1.2</uiIconScale>
   </ThingDef>
 

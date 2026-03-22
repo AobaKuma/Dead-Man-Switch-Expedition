@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: Decoy radio -->
+  <DMSE_DecoyRadio.label>誘導基站</DMSE_DecoyRadio.label>
+  <!-- EN: A high-powered radio, used fake radio signals to lure away the automated defense systems that still exist on the planet. Once activated, it puts out a powerful wave radiation signal which will attract ultra heavy automatroid to attack along with its escorts. If you can defeat it, you can collect the advanced technology from its corpse. The signal pulse burns out the transmitter, so this building can only be used once. -->
+  <DMSE_DecoyRadio.description>一台高功率無線電裝置，利用偽造的無線電訊號引誘星球上殘存的自動防禦系統。一旦啟動，它會發出強大的輻射波訊號，吸引超重型機兵及其護衛前來攻擊。如果你能擊敗它，就能從它的殘骸中獲得先進技術。訊號脈衝會燒毀發射器，因此只能使用一次。</DMSE_DecoyRadio.description>
+  <!-- EN: Attract cluster weaver threat -->
+  <DMSE_DecoyRadio.comps.CompUsable.useLabel>吸引集群織鳥襲擊</DMSE_DecoyRadio.comps.CompUsable.useLabel>
+  
+</LanguageData>

@@ -2,11 +2,11 @@
 <LanguageData>
   
   <!-- EN: impact gravship -->
-  <DMSE_ImpactGravship.label>TODO</DMSE_ImpactGravship.label>
+  <DMSE_ImpactGravship.label>重力船</DMSE_ImpactGravship.label>
   <!-- EN: A gravship on a collision trajectory. -->
-  <DMSE_ImpactGravship.description>TODO</DMSE_ImpactGravship.description>
+  <DMSE_ImpactGravship.description>一艘即將撞擊大地的重力船。</DMSE_ImpactGravship.description>
   
-  <!-- EN: gravship -->
+  <!-- EN: transfering gravship -->
   <DMSE_TransferGravShip.label>重力船</DMSE_TransferGravShip.label>
   <!-- EN: A gravship in flight. -->
   <DMSE_TransferGravShip.description>一艘正在飛行中的重力船。</DMSE_TransferGravShip.description>

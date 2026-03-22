@@ -6,6 +6,8 @@
         <rotatable>true</rotatable>
         <useHitPoints>true</useHitPoints>
         <destroyable>true</destroyable>
+        
+        <designationCategory inherit="false"/>
         <statBases>
             <MaxHitPoints>500</MaxHitPoints>
         </statBases>

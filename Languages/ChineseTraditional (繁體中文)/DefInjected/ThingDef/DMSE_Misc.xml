@@ -6,6 +6,11 @@
   <!-- EN: A multi-purpose radar used for early warning and fire control targeting, typically installed on ships or military bases to track moving objects in the surrounding space. It can effectively identify the trajectories of suborbital objects such as droppods and predict their descent locations in advance; however, it is extremely power-intensive. -->
   <DMSE_PhaseArrayRadar.description>一種用於預警與火控瞄準的多用途雷達，通常被安裝於艦船或軍事基地追蹤周圍空間內的活動物體。能夠有效識別空降艙等亞軌道飛行物體的軌跡並提前預測其下落位置，能夠為基地的預警及提前部署提供寶貴的反應時間，然而十分消耗電力。</DMSE_PhaseArrayRadar.description>
   
+  <!-- EN: solar shielding device -->
+  <DMSE_SolarShield.label>耀班盾</DMSE_SolarShield.label>
+  <!-- EN: A massive magnetic field generator, widely used by the colonial fleet in automated orbital facilities, effectively shielding against incoming solar radiation, effectively protecting area from solar flares. -->
+  <DMSE_SolarShield.description>一種殖民艦隊在自動化軌道設施中廣泛使用巨型磁場發生器。能有效屏蔽入射太陽輻射，保護區域免受太陽耀斑的影響。</DMSE_SolarShield.description>
+  
   <!-- EN: signal stealth device -->
   <DMSE_StealthDevice.label>訊號匿蹤裝置</DMSE_StealthDevice.label>
   <!-- EN: A massive plasma field generator, widely used by the colonial fleet in automated orbital facilities, effectively shielding against internal life signals, effectively cloaking the device in space and rendering it invisible to active radar.\n\nInternal life signals increase the device's power consumption, requiring a day to cool and recharge after successful shielding. -->

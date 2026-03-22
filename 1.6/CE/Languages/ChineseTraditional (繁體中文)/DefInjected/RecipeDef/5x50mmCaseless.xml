@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: make 5x50mm Caseless (AP) cartridge x500 -->
+  <MakeAmmo_5x50mmCaseless_AP.label>TODO</MakeAmmo_5x50mmCaseless_AP.label>
+  <!-- EN: Craft 500 5x50mm Caseless (AP) cartridges. -->
+  <MakeAmmo_5x50mmCaseless_AP.description>TODO</MakeAmmo_5x50mmCaseless_AP.description>
+  <!-- EN: Making 5x50mm Caseless (AP) cartridges. -->
+  <MakeAmmo_5x50mmCaseless_AP.jobString>TODO</MakeAmmo_5x50mmCaseless_AP.jobString>
+  
+  <!-- EN: make 5x50mm Caseless (FMJ) cartridge x500 -->
+  <MakeAmmo_5x50mmCaseless_FMJ.label>TODO</MakeAmmo_5x50mmCaseless_FMJ.label>
+  <!-- EN: Craft 500 5x50mm Caseless (FMJ) cartridges. -->
+  <MakeAmmo_5x50mmCaseless_FMJ.description>TODO</MakeAmmo_5x50mmCaseless_FMJ.description>
+  <!-- EN: Making 5x50mm Caseless (FMJ) cartridges. -->
+  <MakeAmmo_5x50mmCaseless_FMJ.jobString>TODO</MakeAmmo_5x50mmCaseless_FMJ.jobString>
+  
+  <!-- EN: make 5x50mm Caseless (AP-HE) cartridge x500 -->
+  <MakeAmmo_5x50mmCaseless_HE.label>TODO</MakeAmmo_5x50mmCaseless_HE.label>
+  <!-- EN: Craft 500 5x50mm Caseless (AP-HE) cartridges. -->
+  <MakeAmmo_5x50mmCaseless_HE.description>TODO</MakeAmmo_5x50mmCaseless_HE.description>
+  <!-- EN: Making 5x50mm Caseless (AP-HE) cartridges. -->
+  <MakeAmmo_5x50mmCaseless_HE.jobString>TODO</MakeAmmo_5x50mmCaseless_HE.jobString>
+  
+  <!-- EN: make 5x50mm Caseless (HP) cartridge x500 -->
+  <MakeAmmo_5x50mmCaseless_HP.label>TODO</MakeAmmo_5x50mmCaseless_HP.label>
+  <!-- EN: Craft 500 5x50mm Caseless (HP) cartridges. -->
+  <MakeAmmo_5x50mmCaseless_HP.description>TODO</MakeAmmo_5x50mmCaseless_HP.description>
+  <!-- EN: Making 5x50mm Caseless (HP) cartridges. -->
+  <MakeAmmo_5x50mmCaseless_HP.jobString>TODO</MakeAmmo_5x50mmCaseless_HP.jobString>
+  
+  <!-- EN: make 5x50mm Caseless (AP-I) cartridge x500 -->
+  <MakeAmmo_5x50mmCaseless_Incendiary.label>TODO</MakeAmmo_5x50mmCaseless_Incendiary.label>
+  <!-- EN: Craft 500 5x50mm Caseless (AP-I) cartridges. -->
+  <MakeAmmo_5x50mmCaseless_Incendiary.description>TODO</MakeAmmo_5x50mmCaseless_Incendiary.description>
+  <!-- EN: Making 5x50mm Caseless (AP-I) cartridges. -->
+  <MakeAmmo_5x50mmCaseless_Incendiary.jobString>TODO</MakeAmmo_5x50mmCaseless_Incendiary.jobString>
+  
+</LanguageData>

@@ -1,12 +1,15 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
-  
+
+  <!-- EN: Launch Missile -->
   <ScorerLaunch>發射導彈</ScorerLaunch>
+
+  <!-- EN: Launches the loaded tactical missile. The missile will be able to strike targets outside the large map at long range and retain map visibility for 3 days to assess the strike's effectiveness. Re-launching resets this time. -->
   <ScorerLaunchDesc>發射裝載的戰術導彈，導彈將能夠遠程打擊大地圖外的目標，並保留3天的地圖可見性用於評估打擊效果，再次發射可以重置該時間。</ScorerLaunchDesc>
-  
+
   <!-- EN: Huntdown -->
   <DMSE.Letter.HuntdownThreat.Label>追捕</DMSE.Letter.HuntdownThreat.Label>
-  <!-- EN: blablabla, anyway {0} need you dead. -->
+  <!-- EN: (TODO) blablabla, anyway {0} need you dead. -->
   <DMSE.Letter.HuntdownThreat.Text>(此處省略200字)，總之{0}要你死。</DMSE.Letter.HuntdownThreat.Text>
 
   <!-- EN: Huntdown squad -->
@@ -59,9 +62,9 @@
   <!-- EN: Even while the navigation console flashes crimson warnings, it still shows a feasible acceleration profile.\n\nBy activating the hard impact protocol, the fusion core will output full power under overload conditions, allowing the nuclear-thermal engines to accelerate this ship toward the planet at maximum thrust and collide with the surface.\n\nThis will turn both the ship and its momentum into an effective high-yield kinetic weapon, causing irreversible damage to the planet.\n\n\n\nAre you sure you want to proceed? -->
   <DMSE.Flight.Impact.Confirm>即使航路主機顯示著鮮紅的警告，但它仍然顯示了一條可行的加速方案。\n\n透過啟動終結巡航協議，聚變核心將在超載功率下輸出完整的動力，使得核熱引擎能夠以最大功率推動向著這顆星球加速並撞擊地表。\n\n這將使得整艘船以及推動的天體成為有效且威力十足的質量武器，並對於星球造成無法復原的破壞。\n\n\n\n你確定要這麼做嗎?</DMSE.Flight.Impact.Confirm>
 
-  <!-- EN: Fusion core heating up. Launching procedure in 5... -->
+  <!-- EN: Fusion core heating up. Launching procedure in 6... -->
   <DMSE_ShipWarmUpBegin>聚變核心正在提升功率. 推進器點火倒數: 6</DMSE_ShipWarmUpBegin>
-  <!-- EN: {0}... -->
+  <!-- EN: Launching procedure in {0} -->
   <DMSE_ShipWarmUpCountdown>推進器點火倒數: {0}</DMSE_ShipWarmUpCountdown>
 
   <!-- EN: The gravship streaked across the sky with a blazing trail, carrying immense mass into the ground. The horizon turned to light, and violent shockwaves followed, becoming storms and earthquakes that swept across the planet's surface. In a short span, countless lives and landscapes were erased in this world-shattering impact. -->
@@ -79,7 +82,7 @@
   <!-- EN: The gravship cut across the sky, every thermonuclear engine roaring with overwhelming thrust, before driving its colossal mass into the ground. A wall of rising crust surged along the horizon, and the following superheated shockwave became a sea of fire that swept across the planet's surface. -->
   <DMSE.Impact.Planetkiller.Ending.Intro>重力船拖著長長的軌跡劃過天際，每一具熱核引擎都在噴湧著蓬勃的推力，攜帶著巨大的質量沒入大地，在地平線上升起了一面由地殼升起的牆，隨之而來的是劇烈的高溫衝擊波化作火海席捲了整顆星球的地表。</DMSE.Impact.Planetkiller.Ending.Intro>
   <!-- EN: This was heavenly fire, a supreme judgment said in sacred texts to belong only to gods.\n\nWhatever the purpose behind it, this world may not recover life for a hundred years. -->
-  <DMSE.Impact.Planetkiller.Ending.Outro>這是天火，在神書當中只有神靈所能做到的，為生靈們降下的最高審判。\n\n無論其背後的目的如何，這顆星球或許在百年內都無法重現生機。</DMSE.Impact.Planetkiller.Ending.Outro>
+  <DMSE.Impact.Planetkiller.Ending.Outro>這是天火，這是遠超神明的力量，在這顆星球上降下的天災。\n\n無論其背後的目的如何，這顆星球或許在百年內都無法重現生機。</DMSE.Impact.Planetkiller.Ending.Outro>
   <!-- EN: No one could survive a cataclysm of this scale. -->
   <DMSE.Impact.Planetkiller.Ending.Aboard>沒有人能夠在這樣的天災下保全性命。</DMSE.Impact.Planetkiller.Ending.Aboard>
 

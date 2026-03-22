@@ -100,7 +100,7 @@
 
   <ThingDef ParentName="DMSE_BaseDecoration">
     <defName>DMSE_lathedeco</defName>
-    <label>lathe deco</label>
+    <label>rotary part</label>
     <description>No description....yet.</description>
     <graphicData>
       <texPath>Things/Building/Lathe/latheDeco</texPath>

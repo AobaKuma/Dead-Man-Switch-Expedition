@@ -346,6 +346,7 @@
     <isFighter>true</isFighter>
     <combatPower>200</combatPower>
     <maxPerGroup>5</maxPerGroup>
+    <isBoss>true</isBoss>
     <lifeStages>
       <li>
         <bodyGraphicData>

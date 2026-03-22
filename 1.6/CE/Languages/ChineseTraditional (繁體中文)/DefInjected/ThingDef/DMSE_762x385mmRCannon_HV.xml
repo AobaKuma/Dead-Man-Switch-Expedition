@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: 76.2x385mmR cannon shell (PELE-Tungsteel) -->
+  <DMSE_Ammo_762x385mmRCannonShell_PELE.label>TODO</DMSE_Ammo_762x385mmRCannonShell_PELE.label>
+  <!-- EN: The design purpose of this ammunition is to experiment with tungsten steel as a new material for projectiles, while extensively testing the PELE (Penetration with Enhanced Lateral Effects) ammunition design in order to gather comprehensive feedback for performance improvements.
+\n\nPenetrator with Enhanced Lateral Effect:
+\nPELE–“penetrator with enhanced lateral effect”–is a new type of automatic cannon ammunition without a fuse or explosive. The combination of two materials with different densities causes the shell to disintegrate in the target zone without the need for an explosive charge or fuse. Therefore, this type of ammunition can be manufactured without the need for FSX.
+\n\n使用者: -->
+  <DMSE_Ammo_762x385mmRCannonShell_PELE.description>TODO</DMSE_Ammo_762x385mmRCannonShell_PELE.description>
+  
+  <!-- EN: 76.2x385mmR cannon shell (AP) -->
+  <DMSE_Bullet_762x385mmRCannonShell_AP_HV.label>TODO</DMSE_Bullet_762x385mmRCannonShell_AP_HV.label>
+  
+  <!-- EN: 76.2x385mmR cannon shell (APCR) -->
+  <DMSE_Bullet_762x385mmRCannonShell_APCR_HV.label>TODO</DMSE_Bullet_762x385mmRCannonShell_APCR_HV.label>
+  
+  <!-- EN: 76.2x385mmR cannon shell (EMP) -->
+  <DMSE_Bullet_762x385mmRCannonShell_EMP_HV.label>TODO</DMSE_Bullet_762x385mmRCannonShell_EMP_HV.label>
+  
+  <!-- EN: 76.2x385mmR cannon shell (HE) -->
+  <DMSE_Bullet_762x385mmRCannonShell_HE_HV.label>TODO</DMSE_Bullet_762x385mmRCannonShell_HE_HV.label>
+  
+  <!-- EN: 76.2x385mmR cannon shell (HEAT) -->
+  <DMSE_Bullet_762x385mmRCannonShell_HEAT_HV.label>TODO</DMSE_Bullet_762x385mmRCannonShell_HEAT_HV.label>
+  
+  <!-- EN: 76.2x385mmR cannon shell (PELE-Tungsteel) -->
+  <DMSE_Bullet_762x385mmRCannonShell_PELE_HV.label>TODO</DMSE_Bullet_762x385mmRCannonShell_PELE_HV.label>
+  
+  <!-- EN: large fragments -->
+  <DMSE_Fragment_Large.label>TODO</DMSE_Fragment_Large.label>
+  
+  <!-- EN: medium fragments -->
+  <DMSE_Fragment_Medium.label>TODO</DMSE_Fragment_Medium.label>
+  
+  <!-- EN: small fragments -->
+  <DMSE_Fragment_Small.label>TODO</DMSE_Fragment_Small.label>
+  
+</LanguageData>
