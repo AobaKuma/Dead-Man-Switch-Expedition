@@ -22,7 +22,7 @@
   <DMSE_OrbitalDynamics.description>透過對基本軌道運行規律與太空環境特性的深入研究，研製專門適用於真空微重力環境的裝備與精密設備，以及由先進材料生產並特化設計的無殼彈槍械家族，\n\n製造這些裝備所使用的關鍵材料與零件依賴於殖民艦隊的交易往來，但也可以透過更深入的研究來實現完全的自主生產。</DMSE_OrbitalDynamics.description>
   
   <!-- EN: vacuumize process -->
-  <DMSE_VacuumMaterial.label>真空處裡</DMSE_VacuumMaterial.label>
+  <DMSE_VacuumMaterial.label>真空處理</DMSE_VacuumMaterial.label>
   <!-- EN: Material production in vacuum effectively avoids interference from common gases such as nitrogen and oxygen during chemical reactions. Researching materials science outside the atmosphere is especially valuable for special materials like Tantasteel, which are prone to oxidation when processed in atmospheric conditions.\n\nThis research unlocks Tantasteel production in vacuum-compatible box furnaces and sintering furnaces. -->
   <DMSE_VacuumMaterial.description>在真空環境的材料生產能夠有效的避免材料在化學反應中受到氮氣與氧氣等常見氣體的影響，透過在大氣層外的材料學研究，這對於應用像鉭鎢合金這樣會在大氣內環境的加工過程中受氧化影響的特殊材料而言具有非常大的價值。\n\n透過該研究能夠在真空環境下的箱型爐與燒結爐中生產鉭鎢合金。</DMSE_VacuumMaterial.description>
   

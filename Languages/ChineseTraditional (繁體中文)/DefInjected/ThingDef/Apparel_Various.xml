@@ -4,7 +4,7 @@
   <!-- EN: heavy exoskeletal unit -->
   <DMSE_Apparel_HeavyPowerSkeleton.label>重型外骨骼</DMSE_Apparel_HeavyPowerSkeleton.label>
   <!-- EN: A heavy powered exoskeletal suit which mimics the human form and can be worn by an untrained operator. It significantly increases the wearer's strength. \n\nCompared to the exoskeleton on BigSister, this model has removed the jump system and shield system to reduce costs. When using it, don't assume you've gained the protective level of heavy mechanical units. -->
-  <DMSE_Apparel_HeavyPowerSkeleton.description>一種擬人化的重型動力外骨骼服，未受訓練的操作員也可穿戴，能顯著提升穿戴者力量。\n\n與 BigSister 的外骨骼相比，此型號移除了跳躍系統與護盾系統以降低成本。使用時請勿將其防護力視為重型機械單位等級。</DMSE_Apparel_HeavyPowerSkeleton.description>
+  <DMSE_Apparel_HeavyPowerSkeleton.description>一種設計於微重力環境作業的重型外骨骼，即使是未受訓練的操作員也可穿戴使用，並顯著提升穿戴者力量。\n\n相比其技術原型的外骨骼系統，其移除了護盾與諸多功能以降低成本。</DMSE_Apparel_HeavyPowerSkeleton.description>
   <!-- EN: exoframe top -->
   <DMSE_Apparel_HeavyPowerSkeleton.apparel.renderNodeProperties.0.debugLabel>外骨骼上段</DMSE_Apparel_HeavyPowerSkeleton.apparel.renderNodeProperties.0.debugLabel>
   <!-- EN: exoframe bottom -->
@@ -17,9 +17,9 @@
   <DMSE_Apparel_HeavyPowerSkeleton.comps.CompBulletproofPlate.refillVerbKey>為{0}更換防彈插板({1}x {2})</DMSE_Apparel_HeavyPowerSkeleton.comps.CompBulletproofPlate.refillVerbKey>
   
   <!-- EN: IVA suit -->
-  <DMSE_Apparel_IVASuit.label>IVA 艙內作業服</DMSE_Apparel_IVASuit.label>
+  <DMSE_Apparel_IVASuit.label>艙內作業服</DMSE_Apparel_IVASuit.label>
   <!-- EN: A semi-pressurized suit for working inside a pressurized spacecraft, It is generally used as work clothes for space vehicle operators.\n\nIt doesn't have sufficient vacuum resistance to be used directly in EVA activities but is enough to buy more time in exposed environments. -->
-  <DMSE_Apparel_IVASuit.description>一種在加壓太空船艙內工作的半加壓服，通常作為太空載具操作員的工作服。\n\n它並不具備足夠的真空抗性以直接用於艙外活動，但在暴露環境下可爭取更多生存時間。</DMSE_Apparel_IVASuit.description>
+  <DMSE_Apparel_IVASuit.description>一種在太空載具內穿戴的半加壓服，通常作為軌道載具操作員及軌道工業設施內的通用工作服。\n\n它並不具備足夠的真空抗性以直接用於艙外活動，但在暴露環境下可爭取更多生存時間。</DMSE_Apparel_IVASuit.description>
   
   <!-- EN: Orbital ranger Helmet -->
   <DMSE_Apparel_RangerHelmet.label>軌道游騎兵頭盔</DMSE_Apparel_RangerHelmet.label>

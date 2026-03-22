@@ -14,11 +14,11 @@
   <!-- EN: organic assembler -->
   <DMSE_TableArtifuscle.label>有機組裝台</DMSE_TableArtifuscle.label>
   <!-- EN: A massive piece of industrial equipment used to assemble Artifuscle and Neutroamine. -->
-  <DMSE_TableArtifuscle.description>用於組裝人造肌肉與中性胺的大型工業設備。</DMSE_TableArtifuscle.description>
+  <DMSE_TableArtifuscle.description>一種用於量產人工肌肉與中性胺的工業級培育裝置。生物合成對環境的需求及其苛刻，因此即便降低了培育標準也依然需要在整個過程中維持淨室環境來避免外來細菌污染製品。那怕是殖民艦隊也只會在軌道上的無人生產設施中少量部署來維持人工肌肉的基本供應。</DMSE_TableArtifuscle.description>
   
   <!-- EN: rotary forger -->
   <DMSE_TableLathe.label>旋鍛機</DMSE_TableLathe.label>
   <!-- EN: A machine that combine the process of forging machine and lathe, rotates a workpiece about an axis of rotation to perform various operations. -->
-  <DMSE_TableLathe.description>結合鍛造機與車床工藝的設備，可讓工件繞旋轉軸轉動並執行多種加工操作。</DMSE_TableLathe.description>
+  <DMSE_TableLathe.description>結合鍛造機與車床工藝的設備，可讓工件繞旋轉軸轉動並執行多種加工操作。大部分流通於邊緣世界的加固砲管基本上都是透過這種設備或其簡化的人工操作版本所生產</DMSE_TableLathe.description>
   
 </LanguageData>

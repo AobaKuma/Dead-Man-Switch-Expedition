@@ -4,7 +4,7 @@
   <!-- EN: Carbohydrate -->
   <DMSE_Carbohydrate.label>碳水化合物</DMSE_Carbohydrate.label>
   <!-- EN: A white, solid powder that remains highly stable at room temperature, this substance is artificially synthesized from starch, lactose, and other compounds using industrial equipment. Composed of basic elements such as carbon, hydrogen, and oxygen, it does not spoil even when stored in a dry, ambient environment, making it an extremely space-efficient nutritional source for interstellar travel. However, consuming it untreated may cause short-term symptoms such as abdominal pain. \n\nDue to its highly flammable chemical nature and rapid decomposition when exposed to open air, it is typically compressed into dense blocks and vacuum-sealed immediately after synthesis for long-term storage and distribution. -->
-  <DMSE_Carbohydrate.description>一種在常溫下高度穩定的白色固體粉末。此物質由工業設備以澱粉、乳糖等化合物人工合成，主要由碳、氫、氧等基礎元素組成，即使在乾燥常溫環境中儲存也不易腐敗，是星際旅行中空間效率極高的營養來源。不過若未經處理直接食用，可能引發短暫腹痛等症狀。\n\n由於其化學性質高度易燃，且暴露在空氣中會快速分解，通常會在合成後立即壓製成高密度塊體並進行真空封裝，以利長期儲存與運輸。</DMSE_Carbohydrate.description>
+  <DMSE_Carbohydrate.description>一種在常溫下高度穩定的白色固體粉末。此物質由工業設備以澱粉、乳糖等化合物人工合成，主要由碳、氫、氧等基礎元素組成，即使在乾燥常溫環境中儲存也不易腐敗，是星際旅行中空間效率極高的營養來源。不過若未經處理直接食用，可能引發短暫腹痛等症狀。\n\n由於其物理與化學性質的共同作用使之高度易燃，且暴露在空氣中會快速分解，通常會在合成後立即壓製成高密度塊體並進行真空封裝，以利長期儲存與運輸。</DMSE_Carbohydrate.description>
   
   <!-- EN: cruise missile -->
   <DMSE_CruiseMissile.label>巡航導彈</DMSE_CruiseMissile.label>
@@ -14,18 +14,18 @@
   <!-- EN: Graphene -->
   <DMSE_Graphene.label>石墨烯</DMSE_Graphene.label>
   <!-- EN: A single-layer carbon material produced by exfoliating graphite, it is the most widely used non-metallic material in the Midsphere World. Thanks to its excellent thermal conductivity and electrical properties, it is commonly employed in electronic components, beam emitters, and supercapacitors. \n\nGraphene itself demands extremely stringent production conditions and is often further processed into materials like carbon nanotubes or fullerenes. As a result, worlds capable of large-scale production and application typically possess massive industrial platforms in near-Earth orbit dedicated to manufacturing and processing these materials. -->
-  <DMSE_Graphene.description>由石墨剝離製得的單層碳材料，是中層世界最廣泛應用的非金屬材料之一。憑藉優異的導熱與導電特性，常見於電子元件、光束發射器與超級電容等裝置。\n\n石墨烯本身對生產條件要求極嚴，通常還會再加工為碳奈米管或富勒烯等材料。因此，能大規模生產並應用此材料的世界，通常都擁有近地軌道的大型工業平台來進行製造與加工。</DMSE_Graphene.description>
+  <DMSE_Graphene.description>透過剝離石墨來製造的單層碳材料，是中層世界應用最廣泛的非金屬材料之一。憑藉優異的導熱與導電特性，常見於電子元件、光束發射器與超級電容等裝置。\n\n石墨烯本身對生產條件要求極嚴，通常還會再加工為碳奈米管或富勒烯等材料。因此能大規模生產並應用此材料的世界通常都擁有近地軌道的大型工業平台來進行製造與加工。</DMSE_Graphene.description>
   <!-- EN: carbon fiber -->
   <DMSE_Graphene.stuffProps.stuffAdjective>碳纖維</DMSE_Graphene.stuffProps.stuffAdjective>
   
   <!-- EN: nitrogallium -->
   <DMSE_Nitrogallium.label>氮化鎵</DMSE_Nitrogallium.label>
   <!-- EN: A semiconductor material with excellent thermal conductivity, This glass-like single-crystal compound has been widely used in most spacer worlds to replace silicon-based semiconductor materials in various electronics applications, and it can also prevent bionic prostheses from rejecting biological tissue. The production process for nitrogallium requires a vacuum environment to avoid chemical contamination from air, it "grows" crystal structure onto a substrate through vapor deposition. Therefore, worlds that utilize this material on a large scale typically have specialized vacuum production facility for manufacturing and processing within a sealed vacuum environment. -->
-  <DMSE_Nitrogallium.description>一種具備優異導熱性的半導體材料。這種玻璃態單晶化合物在多數太空文明世界中已廣泛取代矽基半導體，可用於多種電子設備，亦能降低仿生義體對生物組織的排斥反應。氮化鎵的製程需要真空環境以避免空氣污染，並透過氣相沉積在基板上「生長」晶體結構。因此，凡是大規模使用此材料的世界，通常都具備專門的密封真空生產設施。</DMSE_Nitrogallium.description>
+  <DMSE_Nitrogallium.description>一種具備優異導熱性的半導體材料。這種玻璃態單晶化合物在多數太空文明世界中已廣泛取代矽基半導體，可用於多種電子設備，亦能降低仿生義體對生物組織的排斥反應。氮化鎵的製程需要真空環境以避免空氣污染，並透過氣相沉積在基板上「生長」晶體結構。因此凡是大規模使用此材料的世界通常都具備專門的密封真空生產設施。</DMSE_Nitrogallium.description>
   
   <!-- EN: Tantasteel -->
   <DMSE_TantastenAlloy.label>鉭鎢合金</DMSE_TantastenAlloy.label>
   <!-- EN: A special alloy material composed of tantalum and tungsten. It is hard, wear-resistant, corrosion-resistant, and has an extremely high melting point of up to 3080°C, making it widely used in rocket engine De Laval nozzles and high-performance military mecha pulse thrusters. \n\nTantalum is found in trace amounts in asteroids and can be extracted through vacstone mining. Its processing and production must be carried out in a vacuum environment to avoid contamination by gases such as nitrogen and oxygen. Therefore, worlds capable of large-scale production and application typically have substantial industrial platforms orbiting dedicated to manufacturing and processing these materials. -->
-  <DMSE_TantastenAlloy.description>由鉭與鎢組成的特殊合金材料，具備高硬度、耐磨、耐蝕與高達 3080°C 的超高熔點，廣泛用於火箭引擎的德拉瓦噴嘴與高性能軍用機甲脈衝推進器。\n\n鉭元素在小行星中以微量形式存在，可透過真空岩採礦提取；其加工與生產需在真空環境中進行，避免氮氧等氣體污染。因此，能大規模製造並應用此材料的世界，通常都擁有環繞軌道的大型工業平台。</DMSE_TantastenAlloy.description>
+  <DMSE_TantastenAlloy.description>由鉭與鎢組成的特殊合金材料，具備高硬度、耐磨、耐蝕與高達3080°C的超高熔點，廣泛用於火箭引擎的噴嘴與高性能軍用機甲的脈衝推進器。\n\n鉭元素在小行星中以微量形式存在，可透過真空岩採礦提取；其加工與生產需在真空環境中進行，避免氮氧等氣體污染。因此能大規模製造並應用此材料的世界通常都擁有環繞軌道的大型工業平台。</DMSE_TantastenAlloy.description>
   
 </LanguageData>

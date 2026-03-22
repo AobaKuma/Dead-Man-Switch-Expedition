@@ -7,9 +7,9 @@
   <DMSE_Cargo.description>俗稱「標準運輸容器」，是一種用於在殖民艦隊母艦與各大軌道基地之間往返運輸的星際標準貨櫃箱，能夠靈活裝載各種標準尺寸內的裝備與資源。\n\n這種大型貨櫃箱需要專門裝載設備與重型機器來運輸，因此更多用於轉運平台與具備完善裝卸裝備的大型基地。由於其便於運輸的規格，邊緣世界的人們也偏好將其改造成各種用途的平台及臨時居所。</DMSE_Cargo.description>
   
   <!-- EN: rabbit crate -->
-  <DMSE_Crate.label>Rabbit貨箱</DMSE_Crate.label>
+  <DMSE_Crate.label>兔子箱貨箱</DMSE_Crate.label>
   <!-- EN: Nicknamed "Rabbit," these one-eighths standard transport containers are widely used for the construction and resupply of small outposts. They fit perfectly into the cargo holds of small to medium-sized shuttles and light trucks, and are loaded and unloaded directly on-site by humans wearing power units.\n\nCargo ships from colonial fleets typically carry tens of thousands of standard transport containers, which will distributed to ground facilities and factories via transfer platforms in space orbit. -->
-  <DMSE_Crate.description>被暱稱為 Rabbit 的八分之一標準運輸容器，這類小尺寸運輸容器被廣泛用於小型前哨基地的建設與補給運輸，能夠剛好放入中小型穿梭機與輕型卡車的貨艙轉運，並直接由穿戴輔助動力單元的人員就地裝卸。\n\n來自殖民艦隊的往返運輸貨艦通常會裝載上萬個標準運輸箱，並在太空軌道上的轉運平台將其分裝為此種運輸容器，再派送至地面上的設施及工廠。</DMSE_Crate.description>
+  <DMSE_Crate.description>被暱稱為兔子箱的八分之一標準運輸容器，這類小尺寸運輸容器被廣泛用於小型前哨基地的建設與補給運輸，能夠剛好放入中小型穿梭機與輕型卡車的貨艙轉運，並直接由穿戴輔助動力單元的人員就地裝卸。\n\n來自殖民艦隊的往返運輸貨艦通常會裝載上萬個標準運輸箱，並在太空軌道上的轉運平台將其分裝為此種運輸容器，再派送至地面上的設施及工廠。</DMSE_Crate.description>
   
   <!-- EN: fuel silo -->
   <DMSE_FuelSilo.label>油罐</DMSE_FuelSilo.label>

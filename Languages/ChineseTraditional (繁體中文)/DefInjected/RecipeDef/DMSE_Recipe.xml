@@ -2,10 +2,10 @@
 <LanguageData>
   
   <!-- EN: make reinforced barrel -->
-  <DMSE_Make_ReinforcedBarrel.label>製作強化槍管</DMSE_Make_ReinforcedBarrel.label>
+  <DMSE_Make_ReinforcedBarrel.label>製作加固砲管</DMSE_Make_ReinforcedBarrel.label>
   <!-- EN: Make a reinforced barrel from rotary forger. -->
-  <DMSE_Make_ReinforcedBarrel.description>在旋鍛機上製作一根強化槍管。</DMSE_Make_ReinforcedBarrel.description>
+  <DMSE_Make_ReinforcedBarrel.description>在旋鍛機上生產一根加固砲管。</DMSE_Make_ReinforcedBarrel.description>
   <!-- EN: Making reinforced Barrel. -->
-  <DMSE_Make_ReinforcedBarrel.jobString>正在製作強化槍管</DMSE_Make_ReinforcedBarrel.jobString>
+  <DMSE_Make_ReinforcedBarrel.jobString>正在製作加固砲管</DMSE_Make_ReinforcedBarrel.jobString>
   
 </LanguageData>
