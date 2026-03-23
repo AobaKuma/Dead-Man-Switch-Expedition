@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<ThingDef ParentName="ApparelBase" Name="DMSE_OrbitalApparelBase" Abstract="true">
+		<techLevel>Industrial</techLevel>
+		<recipeMaker>
+			<researchPrerequisite>DMSE_OrbitalDynamics</researchPrerequisite>
+			<workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+			<workSkill>Crafting</workSkill>
+		</recipeMaker>
+		<tradeTags>
+			<li>Clothing</li>
+			<li>DMS_Clothing</li>
+		</tradeTags>
+	</ThingDef>
+
+	<ThingDef ParentName="DMS_CapBase"><!-- GarrisonCap -->
+		<defName>DMS_Apparel_UniformCap</defName>
+		<label>Uniform Cap</label>
+		<description>A soft cap for servicemen for the times when a helmet is not required or available.</description>
+		<graphicData>
+			<texPath>Things/Apparel/UniformCap/cap_icon</texPath>
+		</graphicData>
+		<recipeMaker>
+			<researchPrerequisite>DMS_EquipmentBasis</researchPrerequisite>
+		</recipeMaker>
+		<costStuffCount>45</costStuffCount>
+		<stuffCategories>
+			<li>Fabric</li>
+			<li>Leathery</li>
+		</stuffCategories>
+		<statBases>
+			<MaxHitPoints>50</MaxHitPoints>
+			<WorkToMake>2500</WorkToMake>
+			<Mass>0.05</Mass>
+			<EquipDelay>1</EquipDelay>
+		</statBases>
+		<equippedStatOffsets>
+			<MentalBreakThreshold>-0.10</MentalBreakThreshold>
+		</equippedStatOffsets>
+		<apparel>
+			<wornGraphicPath>Things/Apparel/UniformCap/cap</wornGraphicPath>
+			<tags>
+				<li>DMS_Garrison</li>
+				<li>GarrisonCap</li>
+			</tags>
+		</apparel>
+	</ThingDef>
+
+	<ThingDef ParentName="ApparelMakeableBase">
+		<defName>DMS_Apparel_Uniform</defName>
+		<label>Uniform</label>
+		<description>A typical coat for an enlisted man, designed to keep one warm in chilly weather.</description>
+		<possessionCount>1</possessionCount>
+		<recipeMaker>
+			<researchPrerequisite>DMS_EquipmentBasis</researchPrerequisite>
+		</recipeMaker>
+		<graphicData>
+			<texPath>Things/Apparel/Uniform/Uniform</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+			<drawSize>0.85</drawSize>
+		</graphicData>
+		<costStuffCount>80</costStuffCount>
+		<stuffCategories>
+			<li>Fabric</li>
+			<li>Leathery</li>
+		</stuffCategories>
+		<thingCategories>
+			<li>ApparelMisc</li>
+		</thingCategories>
+		<statBases>
+			<MaxHitPoints>160</MaxHitPoints>
+			<WorkToMake>7000</WorkToMake>
+			<Mass>1.5</Mass>
+			<StuffEffectMultiplierArmor>0.4</StuffEffectMultiplierArmor>
+			<StuffEffectMultiplierInsulation_Cold>0.8</StuffEffectMultiplierInsulation_Cold>
+			<StuffEffectMultiplierInsulation_Heat>0.5</StuffEffectMultiplierInsulation_Heat>
+			<EquipDelay>1.5</EquipDelay>
+		</statBases>
+		<apparel>
+			<bodyPartGroups>
+				<li>Torso</li>
+				<li>Neck</li>
+				<li>Shoulders</li>
+				<li>Arms</li>
+			</bodyPartGroups>
+			<wornGraphicPath>Things/Apparel/Uniform/Uniform</wornGraphicPath>
+			<blocksAddedPartWoundGraphics>true</blocksAddedPartWoundGraphics>
+			<layers>
+				<li>Shell</li>
+			</layers>
+			<tags>
+				<li>IndustrialAdvanced</li>
+				<li>DMS_Garrison</li>
+				<li>DMS_Officer</li>
+			</tags>
+			<defaultOutfitTags>
+				<li>Soldier</li>
+			</defaultOutfitTags>
+			<canBeDesiredForIdeo>true</canBeDesiredForIdeo>
+		</apparel>
+		<colorGenerator Class="ColorGenerator_Options">
+			<options>
+				<li>
+					<weight>10</weight>
+					<only>(0.33,0.33,0.33)</only>
+				</li>
+				<li>
+					<weight>10</weight>
+					<only>(0.65,0.65,0.65)</only>
+				</li>
+				<li>
+					<weight>10</weight>
+					<only>(0.4,0.3,0.15)</only>
+				</li>
+				<li>
+					<weight>15</weight>
+					<min>(0.3,0.3,0.3)</min>
+					<max>(0.5,0.5,0.5)</max>
+				</li>
+				<li>
+					<weight>6</weight>
+					<min>(0.5,0.5,0.5)</min>
+					<max>(1,1,1)</max>
+				</li>
+			</options>
+		</colorGenerator>
+		<tradeTags>
+			<li>BasicClothing</li>
+			<li>DMS_Clothing</li>
+		</tradeTags>
+	</ThingDef>
+
+</Defs>

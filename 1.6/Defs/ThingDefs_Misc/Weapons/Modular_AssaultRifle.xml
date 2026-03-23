@@ -67,7 +67,8 @@
 				<defaultProjectile>Bullet_AssaultRifle</defaultProjectile>
 				<warmupTime>1.0</warmupTime>
 				<range>30.9</range>
-				<ticksBetweenBurstShots>10</ticksBetweenBurstShots>
+				<burstShotCount>5</burstShotCount>
+				<ticksBetweenBurstShots>4</ticksBetweenBurstShots>
 				<soundCast>Shot_AssaultRifle</soundCast>
 				<soundCastTail>GunTail_Medium</soundCastTail>
 				<muzzleFlashScale>9</muzzleFlashScale>
