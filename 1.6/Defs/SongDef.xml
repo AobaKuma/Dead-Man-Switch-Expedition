@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <SongDef>
+        <defName>DMSE_SongA</defName>
+        <label>Dayung Sampan</label>
+        <clipPath>DMSE/Song</clipPath>
+        <volume>1.0</volume>
+        <tense>false</tense>
+        <commonality>0</commonality>
+    </SongDef>
+</Defs>

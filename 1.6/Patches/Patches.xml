@@ -110,5 +110,11 @@
     </value>
   </Operation>
 
-
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/MusicSequenceDef[defName="OrbitalRelax"]/songs</xpath>
+    <value>
+      <li>DMSE_SongA</li>
+    </value>
+  </Operation>
+  
 </Patch>

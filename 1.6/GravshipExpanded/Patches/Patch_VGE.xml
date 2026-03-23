@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+
+	<Operation Class="PatchOperationAdd">
+		<xpath>/Defs/ThingDef[defName="VGE_GravjumperEngine"]/comps/li[@Class="CompProperties_AffectedByFacilities"]/linkableFacilities</xpath>
+		<value>
+			<li>DMSE_SolidRocketThruster</li>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationAdd">
+		<xpath>/Defs/ThingDef[defName="VGE_GravhulkEngine"]/comps/li[@Class="CompProperties_AffectedByFacilities"]/linkableFacilities</xpath>
+		<value>
+			<li>DMSE_FusionCore</li>
+			<li>DMSE_FuelSiloTank</li>
+			<li>DMSE_NuclearThruster</li>
+			<li>DMSE_SolidRocketThruster</li>
+		</value>
+	</Operation>
+	
+	
+</Patch>

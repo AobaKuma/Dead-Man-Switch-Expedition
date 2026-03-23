@@ -6,5 +6,6 @@
 		<li>1.6</li>
 		<li IfModActive="CETeam.CombatExtended,CETeam.CombatExtended_steam">1.6/CE</li>
 		<li IfModActive="BreadMo.Cinders">1.6/Cinders</li>
+		<li IfModActive="vanillaexpanded.gravship">1.6/GravshipExpanded</li>
 	</v1.6>
 </loadFolders>
