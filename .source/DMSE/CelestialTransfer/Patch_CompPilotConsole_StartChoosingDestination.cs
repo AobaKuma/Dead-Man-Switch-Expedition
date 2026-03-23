@@ -15,7 +15,7 @@ namespace DMSE
         [HarmonyPriority(Priority.Normal)]
         public static bool Prefix(CompPilotConsole __instance, bool launching)
         {
-            // 如果 VGE 已加载，跳过此补丁
+            // 如果 VGE 已加载，跳过此补丁（由 VGE 兼容补丁处理）
             if (ModsConfig.IsActive("vanillaexpanded.gravship"))
             {
                 return true;

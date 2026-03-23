@@ -17,7 +17,6 @@ namespace DMSE.VGE
         }
     }
 
-    // VGE环境下拦截StartChoosingDestination_NewTemp
     [HarmonyPatch(typeof(CompPilotConsole), nameof(CompPilotConsole.StartChoosingDestination_NewTemp))]
     public static class Patch_VGE_StartChoosingDestination_Interceptor
     {
@@ -67,6 +66,12 @@ namespace DMSE.VGE
                 return true;
             }
 
+            // 保存当前的 VGE state（如果存在）
+            var vgeState = GetVGEState();
+
+            // 清除 VGE 的状态，防止其补丁劫持后续流程
+            ClearVGEState();
+
             // 具备转移能力，弹出模式选择
             Find.WindowStack.Add(new Dialog_SelectFlightMode(mode =>
             {
@@ -74,25 +79,61 @@ namespace DMSE.VGE
 
                 if (mode == FlightMode.Standard)
                 {
-                    // 标准起飞：直接放行给 VGE 的正常流程
-                    Log.Message("[DMSE.VGE] Standard mode - calling VGE StartChoosingDestination_NewTemp");
+                    // 标准起飞：恢复 VGE state 并放行给 VGE 的正常流程
+                    Log.Message("[DMSE.VGE] Standard mode - restoring VGE state and calling StartChoosingDestination_NewTemp");
+                    RestoreVGEState(vgeState);
                     _allowPass = true;
                     __instance.StartChoosingDestination_NewTemp();
                 }
                 else
                 {
-                    // 转移/撞击飞行：清除 VGE state 并由 DMS 接管
-                    Log.Message($"[DMSE.VGE] Transfer/Impact mode - clearing VGE state and calling DMSE StartTransferOrImpact with mode {mode}");
-                    ClearVGEState();
+                    // 转移/撞击飞行：由 DMS 接管，state 保持清除状态
+                    Log.Message($"[DMSE.VGE] Transfer/Impact mode - calling DMSE StartTransferOrImpact with mode {mode}");
                     FlightModeLauncher.StartTransferOrImpact(__instance, mode);
                 }
-            }, __instance)
-            {
-                // 窗口关闭时也清除 VGE state，防止残留
-                closeAction = () => ClearVGEState()
-            });
+            }, __instance));
 
             return false;
+        }
+
+        // 获取 VGE 的状态
+        private static object GetVGEState()
+        {
+            try
+            {
+                var stateField = AccessTools.Field(
+                    AccessTools.TypeByName("VanillaGravshipExpanded.Dialog_BeginRitual_ShowRitualBeginWindow_Patch"),
+                    "state");
+                if (stateField != null)
+                {
+                    return stateField.GetValue(null);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"[DMSE.VGE] Failed to get VGE state: {ex}");
+            }
+            return null;
+        }
+
+        // 恢复 VGE 的状态
+        private static void RestoreVGEState(object state)
+        {
+            try
+            {
+                var stateField = AccessTools.Field(
+                    AccessTools.TypeByName("VanillaGravshipExpanded.Dialog_BeginRitual_ShowRitualBeginWindow_Patch"),
+                    "state");
+                if (stateField != null)
+                {
+                    stateField.SetValue(null, state);
+                    Log.Message("[DMSE.VGE] Restored VGE state for standard launch");
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"[DMSE.VGE] Failed to restore VGE state: {ex}");
+            }
         }
 
         // 清除 VGE 的状态，防止其补丁劫持 DMSE 的流程
@@ -106,7 +147,7 @@ namespace DMSE.VGE
                 if (stateField != null)
                 {
                     stateField.SetValue(null, null);
-                    Log.Message("[DMSE.VGE] Cleared VGE state");
+                    Log.Message("[DMSE.VGE] Cleared VGE state to prevent hijacking");
                 }
             }
             catch (Exception ex)
