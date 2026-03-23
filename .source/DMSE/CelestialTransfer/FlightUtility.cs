@@ -1,4 +1,4 @@
-﻿using RimWorld;
+using RimWorld;
 using RimWorld.Planet;
 using System.Collections.Generic;
 using Verse;
@@ -105,6 +105,13 @@ namespace DMSE
 
         public static void ConsumeFuel(Building_GravEngine engine, PlanetTile tile)
         {
+            // 如果VGE加载，则跳过
+            // 依赖兼容性补丁直接调用处理Astrofuel和热量。
+            if (ModsConfig.IsActive("vanillaexpanded.gravship"))
+            {
+                return;
+            }
+
             if (!GravshipUtility.TryGetPathFuelCost(engine.Map.Tile, tile, out float num, out int num2,
                 FuelConsumePerTile, 1f))
             {
