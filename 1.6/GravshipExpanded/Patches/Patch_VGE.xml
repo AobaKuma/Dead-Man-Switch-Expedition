@@ -6,6 +6,7 @@
 		<xpath>/Defs/ThingDef[defName="VGE_GravjumperEngine"]/comps/li[@Class="CompProperties_AffectedByFacilities"]/linkableFacilities</xpath>
 		<value>
 			<li>DMSE_SolidRocketThruster</li>
+			<li>DMSE_FuelSiloTank</li>
 		</value>
 	</Operation>
 
