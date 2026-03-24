@@ -55,15 +55,16 @@ namespace DMSE.VGE
 
             Log.Message($"[DMSE.VGE] Processed {tanksProcessed} tanks, total consumed={totalConsumed}");
 
-            // 添加热量
+            // 添加热量 转移飞行热量缩放到正常飞行水平
             var heatManager = engine.AllComps.FirstOrDefault(c => c.GetType().Name == "CompHeatManager");
             if (heatManager != null)
             {
                 var addHeatMethod = heatManager.GetType().GetMethod("AddHeat");
                 if (addHeatMethod != null)
                 {
-                    addHeatMethod.Invoke(heatManager, new object[] { cost });
-                    Log.Message($"[DMSE.VGE] Added heat: {cost}");
+                    float scaledHeat = cost * 0.1f;
+                    addHeatMethod.Invoke(heatManager, new object[] { scaledHeat });
+                    Log.Message($"[DMSE.VGE] Added heat: {scaledHeat} (original cost: {cost})");
                 }
             }
 
