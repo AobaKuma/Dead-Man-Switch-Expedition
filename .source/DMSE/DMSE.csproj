@@ -26,7 +26,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\1.6\Assemblies\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -35,6 +35,7 @@
     <Compile Include="Building_BatteryGraphene.cs" />
     <Compile Include="CelestialTransfer\FlightModeLauncher.cs" />
     <Compile Include="CelestialTransfer\ITravelingShip.cs" />
+    <Compile Include="CelestialTransfer\VGECompatibility.cs" />
     <Compile Include="CompPowerPlantPhotovoltaic.cs" />
     <Compile Include="CompProperties_ApparelHediffs.cs" />
     <Compile Include="CompProperties_BatteryGraphene.cs" />

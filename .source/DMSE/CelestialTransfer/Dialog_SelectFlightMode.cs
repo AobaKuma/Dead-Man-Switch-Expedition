@@ -15,6 +15,7 @@ namespace DMSE
     public class Dialog_SelectFlightMode : Window
     {
         private readonly Action<FlightMode> _onChosen;
+        private readonly Action _onCancelled;
         private readonly bool _canTransfer;
         private readonly string _transferFailReason;
         private readonly int _engineCount;
@@ -62,9 +63,10 @@ namespace DMSE
 
         public override Vector2 InitialSize => new Vector2(460f, 58f + ContentHeight + VerticalPadding * 2f + 40f);
 
-        public Dialog_SelectFlightMode(Action<FlightMode> onChosen, CompPilotConsole comp)
+        public Dialog_SelectFlightMode(Action<FlightMode> onChosen, CompPilotConsole comp, Action onCancelled = null)
         {
             _onChosen = onChosen;
+            _onCancelled = onCancelled;
             _canTransfer = !FlightUtility.GetFailReason(comp, out _transferFailReason);
             _engineCount = FlightUtility.GetTransferThrusterCount(comp.engine);
 
@@ -73,6 +75,12 @@ namespace DMSE
             doCloseX = true;
             absorbInputAroundWindow = true;
             closeOnAccept = false;
+        }
+
+        public override void PostClose()
+        {
+            base.PostClose();
+            _onCancelled?.Invoke();
         }
 
         public override void DoWindowContents(Rect inRect)

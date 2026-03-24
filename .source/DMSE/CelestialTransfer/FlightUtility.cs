@@ -1,6 +1,7 @@
 using RimWorld;
 using RimWorld.Planet;
 using System.Collections.Generic;
+using System.Linq;
 using Verse;
 using Verse.Sound;
 
@@ -105,20 +106,30 @@ namespace DMSE
 
         public static void ConsumeFuel(Building_GravEngine engine, PlanetTile tile)
         {
-            // 如果VGE加载，则跳过
-            // 依赖兼容性补丁直接调用处理Astrofuel和热量。
-            if (ModsConfig.IsActive("vanillaexpanded.gravship"))
-            {
-                return;
-            }
-
-            if (!GravshipUtility.TryGetPathFuelCost(engine.Map.Tile, tile, out float num, out int num2,
+            if (!GravshipUtility.TryGetPathFuelCost(engine.Map.Tile, tile, out float cost, out int distance,
                 FuelConsumePerTile, 1f))
             {
                 Log.Error(string.Format("Failed to get the fuel cost from tile ({0}) to {1}.", engine.Map.Tile, tile));
                 return;
             }
-            float ratio = num / engine.TotalFuel;
+
+            Log.Message($"[DMSE] ConsumeFuel: distance={distance}, cost={cost}, fuelPerTile={FuelConsumePerTile}");
+
+            // 检查VGE是否激活
+            bool vgeActive = ModsConfig.IsActive("vanillaexpanded.gravship") ||
+                           ModsConfig.IsActive("vanillaexpanded.gravship_steam");
+
+            // 如果VGE激活，委托给VGE兼容层处理
+            if (vgeActive)
+            {
+                Log.Message("[DMSE] VGE detected, delegating to VGE compatibility layer");
+                VGECompatibility.ConsumeFuel(engine, cost);
+                return;
+            }
+
+            // 非VGE环境：使用DMSE的化合燃料消耗逻辑
+            Log.Message("[DMSE] Using DMSE chemfuel consumption");
+            float ratio = cost / engine.TotalFuel;
             foreach (CompGravshipFacility compGravshipFacility in engine.GravshipComponents)
             {
                 if (compGravshipFacility.CanBeActive && compGravshipFacility.Props.providesFuel)
