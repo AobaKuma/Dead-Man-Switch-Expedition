@@ -60,4 +60,57 @@
 			</li>
 		</operations>
 	</Operation>
+	
+	<!--DMS_Apparel_Uniform-->
+		<li Class="PatchOperationReplace">
+			<xpath>Defs/ThingDef[defName="DMS_Apparel_Uniform"]/statBases/StuffEffectMultiplierArmor</xpath>
+			<value>
+				<StuffEffectMultiplierArmor>4</StuffEffectMultiplierArmor>
+			</value>
+		</li>
+
+		<li Class="PatchOperationAdd">
+			<xpath>Defs/ThingDef[defName="DMS_Apparel_Uniform"]/statBases</xpath>
+			<value>
+				<Bulk>4</Bulk>
+				<WornBulk>0</WornBulk>
+			</value>
+		</li>
+		<li Class="PatchOperationAdd">
+			<xpath>Defs/ThingDef[defName="DMS_Apparel_Uniform"]</xpath>
+			<value>
+				<equippedStatOffsets>
+					<CarryBulk>20</CarryBulk>
+				</equippedStatOffsets>
+			</value>
+		</li>
+		<li Class="PatchOperationAdd">
+			<xpath>Defs/ThingDef[defName="DMS_Apparel_Uniform"]/apparel/bodyPartGroups</xpath>
+			<value>
+				<li>Hands</li>
+				<li>Feet</li>
+			</value>
+		</li>
+
+		<li Class="PatchOperationAddModExtension">
+			<xpath>Defs/ThingDef[defName="DMS_Apparel_Uniform"]</xpath>
+			<value>
+				<li Class="CombatExtended.PartialArmorExt">
+					<stats>
+						<li>
+							<ArmorRating_Sharp>0.75</ArmorRating_Sharp>
+							<parts>
+								<li>Hand</li>
+							</parts>
+						</li>
+						<li>
+							<ArmorRating_Blunt>0.75</ArmorRating_Blunt>
+							<parts>
+								<li>Hand</li>
+							</parts>
+						</li>
+					</stats>
+				</li>
+			</value>
+		</li>
 </Patch>
