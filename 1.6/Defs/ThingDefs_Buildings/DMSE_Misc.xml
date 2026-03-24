@@ -134,6 +134,9 @@
         <transmitsPower>true</transmitsPower>
       </li>
       <li Class="Fortified.CompProperties_ShieldingDevice">
+        <planetLayerWhitelist>
+          <li>Orbit</li>
+        </planetLayerWhitelist>
         <incidentsWhitelist>
           <li>Infestation</li>
           <li>DeepDrillInfestation</li>
@@ -348,10 +351,12 @@
         <basePowerConsumption>5000</basePowerConsumption>
         <transmitsPower>true</transmitsPower>
       </li>
-      <li Class="CompProperties_CausesGameCondition">
-        <compClass>Fortified.CompCauseGameConditionAdjustable</compClass>
+      <li Class="Fortified.CompProperties_CausesGameConditionAdjustable">
         <conditionDef>DMSE_SolarShield</conditionDef>
         <worldRange>3</worldRange>
+        <planetLayerWhitelist>
+          <li>Orbit</li>
+        </planetLayerWhitelist>
       </li>
     </comps>
     <placeWorkers>
