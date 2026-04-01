@@ -354,9 +354,6 @@
       <li Class="Fortified.CompProperties_CausesGameConditionAdjustable">
         <conditionDef>DMSE_SolarShield</conditionDef>
         <worldRange>3</worldRange>
-        <planetLayerWhitelist>
-          <li>Orbit</li>
-        </planetLayerWhitelist>
       </li>
     </comps>
     <placeWorkers>

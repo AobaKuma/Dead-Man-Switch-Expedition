@@ -34,7 +34,7 @@
   <designationCategory>Odyssey</designationCategory>
   </TerrainDef>
   
-  <TerrainDef ParentName="PlatformBase">
+  <TerrainDef ParentName="PlatformBase" MayRequire="rashomcree.odyssey.orbitalplatforms">
     <defName>DMS_OrbitalPlatform</defName>
     <label>orbital platform</label>
     <texturePath>terrain/DMS_Orbitalplatform/OrbitalPlatform</texturePath>
@@ -74,7 +74,7 @@
       <li>Heavy</li>
       <li>Walkable</li>
       <li>VoidSpace</li>
-      <li MayRequire="rashomcree.odyssey.orbitalplatforms">Platform</li>
+      <li>Platform</li>
     </affordances>
     <terrainAffordanceNeeded>VoidSpace</terrainAffordanceNeeded>
   </TerrainDef>
