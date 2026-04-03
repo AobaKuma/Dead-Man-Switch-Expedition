@@ -1,6 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
+  <!--Squall-->
+  <ThingDef ParentName="DMS_BaseCannonBuilding">
+    <defName>DMSE_Turret_Squall</defName>
+    <label>Squall</label>
+    <description>A gravship-based caseless turret.</description>
+    <techLevel>Industrial</techLevel>
+    <graphicData>
+      <texPath>Things/Building/TurretBase/baseLight</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>3</drawSize>
+      <drawOffset>(0,0,0)</drawOffset>
+    </graphicData>
+    <size>(1,1)</size>
+    <rotatable>false</rotatable>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <fillPercent>0.7</fillPercent>
+    <statBases>
+      <MaxHitPoints>350</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+      <WorkToBuild>1500</WorkToBuild>
+      <Beauty>-2</Beauty>
+      <ShootingAccuracyTurret>0.94</ShootingAccuracyTurret>
+    </statBases>
+    <researchPrerequisites>
+      <li>DMS_EquipmentElite</li>
+    </researchPrerequisites>
+    <comps>
+      <li Class="CompProperties_Refuelable">
+        <fuelLabel>Shots until barrel change</fuelLabel>
+        <fuelGizmoLabel>Barrel durability</fuelGizmoLabel>
+        <outOfFuelMessage>Cannot shoot: Needs new reinforced barrel.</outOfFuelMessage>
+        <fuelFilter>
+          <thingDefs>
+            <li>ReinforcedBarrel</li>
+          </thingDefs>
+        </fuelFilter>
+        <fuelIsMortarBarrel>true</fuelIsMortarBarrel>
+        <fuelCapacity>300</fuelCapacity>
+        <fuelMultiplier>150</fuelMultiplier>
+        <initialFuelPercent>0.5</initialFuelPercent>
+        <showFuelGizmo>true</showFuelGizmo>
+        <minimumFueledThreshold>0.5</minimumFueledThreshold>
+        <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+        <initialAllowAutoRefuel>true</initialAllowAutoRefuel>
+        <targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>
+        <initialConfigurableTargetFuelLevel>150</initialConfigurableTargetFuelLevel>
+        <autoRefuelPercent>0.5</autoRefuelPercent>
+        <fuelIconPath>Things/Item/Resource/ReinforcedBarrel/ReinforcedBarrel</fuelIconPath>
+      </li>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>500</basePowerConsumption>
+      </li>
+    </comps>
+    <building>
+      <turretGunDef>DMSE_Gun_Squall</turretGunDef>
+      <turretTopDrawSize>2</turretTopDrawSize>
+      <turretBurstWarmupTime>1.5</turretBurstWarmupTime>
+      <turretBurstCooldownTime>2</turretBurstCooldownTime>
+    </building>
+    <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
+    <costList>
+      <Steel>150</Steel>
+      <Tungsteel>50</Tungsteel>
+      <DMSE_TantastenAlloy>20</DMSE_TantastenAlloy>
+      <DMSE_Graphene>20</DMSE_Graphene>
+      <ComponentStamped>5</ComponentStamped>
+      <ComponentIndustrial>5</ComponentIndustrial>
+    </costList>
+    <uiIconPath>Things/Turrets/DMS_Squall_icon</uiIconPath>
+    <uiIconScale>1</uiIconScale>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseWeaponTurret">
+    <defName>DMSE_Gun_Squall</defName>
+    <label>Squall</label>
+    <description>caseless turret</description>
+    <graphicData>
+      <texPath>Things/Turrets/DMS_Squall</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>2</drawSize>
+    </graphicData>
+    <statBases>
+      <AccuracyTouch>0.80</AccuracyTouch>
+      <AccuracyShort>0.70</AccuracyShort>
+      <AccuracyMedium>0.65</AccuracyMedium>
+      <AccuracyLong>0.55</AccuracyLong>
+      <RangedWeapon_Cooldown>2.0</RangedWeapon_Cooldown>
+    </statBases>
+    <verbs>
+      <li>
+        <verbClass>Verb_Shoot</verbClass>
+        <defaultProjectile>Bullet_AssaultRifle</defaultProjectile>
+        <warmupTime>1.0</warmupTime>
+        <range>28.9</range>
+        <ticksBetweenBurstShots>5</ticksBetweenBurstShots>
+        <requireLineOfSight>true</requireLineOfSight>
+        <ai_AvoidFriendlyFireRadius>7.9</ai_AvoidFriendlyFireRadius>
+        <burstShotCount>15</burstShotCount>
+        <soundCast>Shot_AssaultRifle</soundCast>
+        <soundCastTail>GunTail_Heavy</soundCastTail>
+        <muzzleFlashScale>10</muzzleFlashScale>
+        <consumeFuelPerShot>1</consumeFuelPerShot>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+      </li>
+    </verbs>
+  </ThingDef>
+  
   <!--GAU-4 Wing-Back-->
   <ThingDef ParentName="DMS_BaseCannonBuilding">
     <defName>DMSE_Turret_Vulcan_WingBack</defName>

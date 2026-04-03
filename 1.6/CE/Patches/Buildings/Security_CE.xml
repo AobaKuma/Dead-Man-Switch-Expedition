@@ -7,10 +7,12 @@
 			<!-- All Patch-->
 
 			<li Class="PatchOperationRemove">
-				<xpath>Defs/ThingDef[
-					defName="DMSE_Turret_Vulcan_WingBack" or
-					defName="DMSE_Turret_Dawnblade_Striker" 
-					]/comps/li[@Class="CompProperties_Refuelable"]</xpath>
+				<xpath>
+          Defs/ThingDef[
+          defName="DMSE_Turret_Vulcan_WingBack" or
+          defName="DMSE_Turret_Squall" or
+          defName="DMSE_Turret_Dawnblade_Striker"
+          ]/comps/li[@Class="CompProperties_Refuelable"]</xpath>
 			</li>
 			
 			<li Class="PatchOperationRemove">
@@ -21,12 +23,77 @@
 			</li>
 			
 			<li Class="PatchOperationAdd">
-				<xpath>Defs/ThingDef[defName="DMSE_Turret_Vulcan_WingBack" or
-					defName="DMSE_Turret_Dawnblade_Striker"]</xpath>
+				<xpath>
+          Defs/ThingDef[defName="DMSE_Turret_Vulcan_WingBack" or
+          defName="DMSE_Turret_Squall" or
+          defName="DMSE_Turret_Dawnblade_Striker"]</xpath>
 				<value>
 					<thingClass MayRequire="CETeam.CombatExtended">CombatExtended.Building_CIWS_CE</thingClass>
 				</value>
 			</li>
+
+      <!-- Squall -->
+
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="DMSE_Turret_Squall"]</xpath>
+        <value>
+          <fillPercent>0.79</fillPercent>
+        </value>
+      </li>
+
+      <li Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="DMSE_Turret_Squall"]/statBases/ShootingAccuracyTurret</xpath>
+        <value>
+          <ShootingAccuracyTurret>2</ShootingAccuracyTurret>
+        </value>
+      </li>
+
+      <li Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="DMSE_Turret_Squall"]/building/turretBurstCooldownTime</xpath>
+        <value>
+          <turretBurstCooldownTime>0.02</turretBurstCooldownTime>
+        </value>
+      </li>
+
+      <li Class="CombatExtended.PatchOperationMakeGunCECompatible">
+        <defName>DMSE_Gun_Squall</defName>
+        <statBases>
+          <Mass>8</Mass>
+          <Bulk>10</Bulk>
+          <RangedWeapon_Cooldown>0.78</RangedWeapon_Cooldown>
+          <SightsEfficiency>1.4</SightsEfficiency>
+          <ShotSpread>0.02</ShotSpread>
+          <SwayFactor>1.12</SwayFactor>
+        </statBases>
+        <Properties>
+          <recoilAmount>0.48</recoilAmount>
+          <verbClass>CombatExtended.Verb_ShootCE</verbClass>
+          <hasStandardCommand>true</hasStandardCommand>
+          <defaultProjectile>Bullet_5x50mmCaseless_FMJ</defaultProjectile>
+          <burstShotCount>15</burstShotCount>
+          <ticksBetweenBurstShots>5</ticksBetweenBurstShots>
+          <warmupTime>1.5</warmupTime>
+          <range>65</range>
+          <soundCast>Shot_AssaultRifle</soundCast>
+          <soundCastTail>GunTail_Medium</soundCastTail>
+          <targetParams>
+            <canTargetLocations>true</canTargetLocations>
+          </targetParams>
+          <muzzleFlashScale>10</muzzleFlashScale>
+          <recoilPattern>Mounted</recoilPattern>
+        </Properties>
+        <AmmoUser>
+          <magazineSize>300</magazineSize>
+          <reloadTime>10</reloadTime>
+          <ammoSet>DMSE_AmmoSet_5x50mmCaseless_HV</ammoSet>
+        </AmmoUser>
+        <FireModes>
+          <noSingleShot>true</noSingleShot>
+          <aiUseBurstMode>FALSE</aiUseBurstMode>
+          <aiAimMode>SuppressFire</aiAimMode>
+          <aimedBurstShotCount>5</aimedBurstShotCount>
+        </FireModes>
+      </li>
 
 			
 			<!-- Vulcan "WingBack" -->
