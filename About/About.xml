@@ -2,11 +2,17 @@
 <ModMetaData>
 	<name>The Dead Man's Switch - Expedition</name>
 	<modIconPath IgnoreIfNoMatchingField="True">UI/NaraLogo</modIconPath>
-	<author>AobaKuma</author>
+	<authors>
+		<li>AobaKuma</li>
+		<li>Bread Mo</li>
+		<li>GoGaTio</li>
+		<li>Mortis</li>
+	</authors>
 	<supportedVersions>
 		<li>1.6</li>
 	</supportedVersions>
 	<packageId>Aoba.DeadManSwitch.Expedition</packageId>
+	<modVersion IgnoreIfNoMatchingField="true">0.35</modVersion>
 	<modDependencies>
 		<li>
 			<packageId>Ludeon.RimWorld.Odyssey</packageId>
@@ -21,5 +27,5 @@
 	<loadAfter>
 		<li>Aoba.DeadManSwitch.Core</li>
 	</loadAfter>
-	<description>失能機關奧德賽內容拓展</description>
+	<description>The Dead man switch contents expanded for Odyssey.</description>
 </ModMetaData>
