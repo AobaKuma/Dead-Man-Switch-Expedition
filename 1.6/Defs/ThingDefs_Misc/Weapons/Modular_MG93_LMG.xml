@@ -16,7 +16,7 @@
             <AccuracyShort>0.75</AccuracyShort>
             <AccuracyMedium>0.45</AccuracyMedium>
             <AccuracyLong>0.35</AccuracyLong>
-            <RangedWeapon_Cooldown>0.78</RangedWeapon_Cooldown>
+			<RangedWeapon_Cooldown>1.70</RangedWeapon_Cooldown>
         </statBases>
         <costList>
 			<DMSE_TantastenAlloy>80</DMSE_TantastenAlloy>
@@ -33,10 +33,10 @@
 				<verbClass>Verb_Shoot</verbClass>
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_AssaultRifle</defaultProjectile>
+                <warmupTime>1.2</warmupTime>
 				<range>30.9</range>
                 <burstShotCount>25</burstShotCount>
                 <ticksBetweenBurstShots>5</ticksBetweenBurstShots>
-                <warmupTime>1.2</warmupTime>
 				<soundCast>Shot_AssaultRifle</soundCast>
 				<soundCastTail>GunTail_Medium</soundCastTail>
 				<muzzleFlashScale>9</muzzleFlashScale>

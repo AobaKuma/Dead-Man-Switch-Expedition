@@ -38,7 +38,6 @@
       <DMSE_Graphene>100</DMSE_Graphene>
       <ComponentSpacer>12</ComponentSpacer>
       <DMSE_Nitrogallium>10</DMSE_Nitrogallium>
-      <ComponentFireControl>8</ComponentFireControl>
     </costList>
     <building>
       <destroySound>BuildingDestroyed_Metal_Small</destroySound>

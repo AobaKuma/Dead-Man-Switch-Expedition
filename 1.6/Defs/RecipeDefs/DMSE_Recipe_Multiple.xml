@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-   
+
   <RecipeDef>
     <defName>DMSE_Make_MedicineUltratech</defName>
     <label>Make glitterworld medicine</label>
@@ -90,7 +90,7 @@
             <li>Jade</li>
           </thingDefs>
         </filter>
-        <count>150</count>
+        <count>75</count>
       </li>
     </ingredients>
     <fixedIngredientFilter>
@@ -148,7 +148,7 @@
         </filter>
         <count>10</count>
       </li>
-	    <li>
+      <li>
         <filter>
           <thingDefs>
             <li>ComponentSpacer</li>
@@ -184,7 +184,7 @@
     </modExtensions>
   </RecipeDef>
 
-<!-- Precise fabrication facility -->
+  <!-- Precise fabrication facility -->
 
   <!-- T/R component (T/R), microgravity cleanroom -->
   <RecipeDef>
@@ -206,21 +206,13 @@
     <researchPrerequisite>DMSE_Microgravity</researchPrerequisite>
     <workAmount>60000</workAmount>
     <ingredients>
-	    <li>
-        <filter>
-          <thingDefs>
-            <li>DMSE_TantastenAlloy</li>
-          </thingDefs>
-        </filter>
-        <count>50</count>
-      </li>
       <li>
         <filter>
           <thingDefs>
             <li>DMSE_Graphene</li>
           </thingDefs>
         </filter>
-        <count>10</count>
+        <count>25</count>
       </li>
       <li>
         <filter>
@@ -228,14 +220,22 @@
             <li>Gold</li>
           </thingDefs>
         </filter>
+        <count>10</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>DMSE_Nitrogallium</li>
+          </thingDefs>
+        </filter>
         <count>1</count>
       </li>
     </ingredients>
     <fixedIngredientFilter>
       <thingDefs>
-		    <li>DMSE_TantastenAlloy</li>
         <li>DMSE_Graphene</li>
         <li>Gold</li>
+        <li>DMSE_Nitrogallium</li>
       </thingDefs>
     </fixedIngredientFilter>
     <products>
@@ -272,18 +272,10 @@
       <li>
         <filter>
           <thingDefs>
-            <li>DMSE_TantastenAlloy</li>
-          </thingDefs>
-        </filter>
-        <count>50</count>
-      </li>
-      <li>
-        <filter>
-          <thingDefs>
             <li>ComponentSpacer</li>
           </thingDefs>
         </filter>
-        <count>5</count>
+        <count>3</count>
       </li>
       <li>
         <filter>
@@ -291,13 +283,21 @@
             <li>ComponentTransmitter</li>
           </thingDefs>
         </filter>
+        <count>2</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>DMSE_Nitrogallium</li>
+          </thingDefs>
+        </filter>
         <count>1</count>
       </li>
     </ingredients>
     <fixedIngredientFilter>
       <thingDefs>
-        <li>DMSE_TantastenAlloy</li>
-        <li>ComponentIndustrial</li>
+        <li>ComponentSpacer</li>
+        <li>DMSE_Nitrogallium</li>
         <li>ComponentTransmitter</li>
       </thingDefs>
     </fixedIngredientFilter>
@@ -336,10 +336,18 @@
       <li>
         <filter>
           <thingDefs>
+            <li>Steel</li>
+          </thingDefs>
+        </filter>
+        <count>250</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
             <li>DMSE_TantastenAlloy</li>
           </thingDefs>
         </filter>
-        <count>150</count>
+        <count>75</count>
       </li>
       <li>
         <filter>
@@ -352,6 +360,7 @@
     </ingredients>
     <fixedIngredientFilter>
       <thingDefs>
+        <li>Steel</li>
         <li>DMSE_TantastenAlloy</li>
         <li>ComponentSpacer</li>
       </thingDefs>
