@@ -83,7 +83,7 @@
 	<!-- Orbital ranger helmet -->
 	<ThingDef ParentName="DMS_ArmorHelmetMakeableBase">
 		<defName>DMSE_Apparel_RangerHelmet</defName>
-		<label>Orbital ranger Helmet</label>
+		<label>Orbital ranger helmet</label>
 		<!-- A full-cover vacuum-sealed ballistic helmet commonly issued to Colonial Fleet orbital rangers. It offers complete protection with integrated electronic assistance and is standard equipment for Colonial Fleet marines and orbital dragoons in vacuum microgravity operations. -->
 		<description>A full-covering vacuum-sealed helmet used by the Orbital Rangers,With complete protection and internal integrated electronic system assistance, it is the standard equipment for Colonial Fleet Marines and Orbital Dragoons operating in microgravity environments.</description>
 		<recipeMaker>
@@ -113,9 +113,10 @@
 		</statBases>
 		<costStuffCount>75</costStuffCount>
 		<costList>
-			<ComponentSpacer>1</ComponentSpacer>
-			<ComponentStamped>2</ComponentStamped>
-			<Polyester>20</Polyester>
+			<ComponentSpacer>2</ComponentSpacer>
+			<ComponentStamped>8</ComponentStamped>
+			<DMSE_Graphene>20</DMSE_Graphene>
+			<Polyester>40</Polyester>
 		</costList>
 		<apparel>
 			<countsAsClothingForNudity>false</countsAsClothingForNudity>
