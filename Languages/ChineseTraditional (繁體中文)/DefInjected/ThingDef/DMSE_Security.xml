@@ -1,6 +1,11 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
   
+  <!-- EN: Squall -->
+  <DMSE_Gun_Squall.label>暴雨</DMSE_Gun_Squall.label>
+  <!-- EN: caseless turret -->
+  <DMSE_Gun_Squall.description>無殼砲防禦塔</DMSE_Gun_Squall.description>
+  
   <!-- EN: armor piercing shell -->
   <DMSE_Bullet_Dawnblade_Striker.label>穿甲砲彈</DMSE_Bullet_Dawnblade_Striker.label>
   
@@ -32,8 +37,16 @@
   <DMSE_Turret_Dawnblade_Striker.comps.CompRefuelable.fuelGizmoLabel>槍管耐久度</DMSE_Turret_Dawnblade_Striker.comps.CompRefuelable.fuelGizmoLabel>
   <DMSE_Turret_Dawnblade_Striker.comps.CompRefuelable.fuelLabel>距離更換槍管剩餘射擊次數</DMSE_Turret_Dawnblade_Striker.comps.CompRefuelable.fuelLabel>
   <DMSE_Turret_Dawnblade_Striker.comps.CompRefuelable.outOfFuelMessage>無法開火：需要新的強化槍管。</DMSE_Turret_Dawnblade_Striker.comps.CompRefuelable.outOfFuelMessage>
+    <!-- EN: Squall -->
+  <DMSE_Turret_Squall.label>暴雨</DMSE_Turret_Squall.label>
+  <!-- EN: A gravship-based caseless turret. -->
+  <DMSE_Turret_Squall.description>一種重力船艦載無殼砲防禦塔。</DMSE_Turret_Squall.description>
   
-  <!-- EN: GAU-4 “Wing-Back” -->
+  <!-- UNUSED -->
+  <DMSE_Turret_Squall.comps.CompRefuelable.fuelGizmoLabel>槍管耐久度</DMSE_Turret_Squall.comps.CompRefuelable.fuelGizmoLabel>
+  <DMSE_Turret_Squall.comps.CompRefuelable.fuelLabel>距離更換槍管剩餘射擊次數</DMSE_Turret_Squall.comps.CompRefuelable.fuelLabel>
+  <DMSE_Turret_Squall.comps.CompRefuelable.outOfFuelMessage>無法射擊：需要新的強化槍管。</DMSE_Turret_Squall.comps.CompRefuelable.outOfFuelMessage>
+    <!-- EN: GAU-4 “Wing-Back” -->
   <DMSE_Turret_Vulcan_WingBack.label>GAU-4「翼衛」</DMSE_Turret_Vulcan_WingBack.label>
   <!-- EN: This is a gravship-based variant of the GAU-4 rotary cannon, also utilizing 20x102mm NATO ammunition. The ship-mounted turret features a longer barrel to increase effective range, but it also introduces a larger blind spot for close-range engagements. -->
   <DMSE_Turret_Vulcan_WingBack.description>這是GAU-4旋轉機炮的重力船搭載型，炮塔採用更長槍管以提升有效射程，但也帶來近距離交戰盲區較大的缺點。</DMSE_Turret_Vulcan_WingBack.description>
