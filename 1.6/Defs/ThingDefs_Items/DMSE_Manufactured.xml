@@ -52,7 +52,7 @@
     <burnableByRecipe>true</burnableByRecipe>
     <minRewardCount>30</minRewardCount>
     <thingCategories>
-      <li>FoodRaw</li>
+      <li>PlantFoodRaw</li>
     </thingCategories>
   </ThingDef>
 
