@@ -88,4 +88,6 @@
 
   <!-- EN: {0} Crater -->
   <DMSE_Crater>{0}撞擊坑</DMSE_Crater>
+
+  <DMS_Exist>地圖可見計時:{0}</DMS_Exist>
 </LanguageData>

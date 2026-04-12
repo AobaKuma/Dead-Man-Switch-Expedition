@@ -52,4 +52,6 @@
   <DMSE.Impact.Planetkiller.Ending.Aboard>No one could survive a cataclysm of this scale.</DMSE.Impact.Planetkiller.Ending.Aboard>
 
   <DMSE_Crater>{0} Crater</DMSE_Crater>
+  
+  <DMS_Exist>Map visible countdown:{0}</DMS_Exist>
 </LanguageData>
