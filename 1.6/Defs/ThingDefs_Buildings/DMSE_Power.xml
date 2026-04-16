@@ -41,9 +41,8 @@
       <destroySound>BuildingDestroyed_Metal_Medium</destroySound>
     </building>
     <costList>
-      <Tungsteel>120</Tungsteel>
+      <DMSE_TantastenAlloy>75</DMSE_TantastenAlloy>
       <DMSE_Graphene>50</DMSE_Graphene>
-      <DMSE_TantastenAlloy>25</DMSE_TantastenAlloy>
       <ComponentStamped>5</ComponentStamped>
     </costList>
     <comps>
@@ -114,7 +113,7 @@
       <destroySound>BuildingDestroyed_Metal_Big</destroySound>
     </building>
     <costList>
-      <Tungsteel>100</Tungsteel>
+      <DMSE_TantastenAlloy>45</DMSE_TantastenAlloy>
       <DMSE_Graphene>75</DMSE_Graphene>
       <ComponentStamped>1</ComponentStamped>
     </costList>

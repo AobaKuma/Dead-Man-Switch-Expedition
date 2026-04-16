@@ -66,7 +66,7 @@
       <Steel>150</Steel>
       <Tungsteel>50</Tungsteel>
       <DMSE_TantastenAlloy>20</DMSE_TantastenAlloy>
-      <DMSE_Graphene>20</DMSE_Graphene>
+      <DMSE_Graphene>25</DMSE_Graphene>
       <ComponentStamped>5</ComponentStamped>
       <ComponentIndustrial>5</ComponentIndustrial>
     </costList>
@@ -185,8 +185,8 @@
     <constructionSkillPrerequisite>9</constructionSkillPrerequisite>
     <costList>
       <Steel>180</Steel>
-      <Tungsteel>280</Tungsteel>
-      <DMSE_TantastenAlloy>25</DMSE_TantastenAlloy>
+      <Tungsteel>200</Tungsteel>
+      <DMSE_TantastenAlloy>75</DMSE_TantastenAlloy>
       <ComponentStamped>7</ComponentStamped>
       <ComponentIndustrial>8</ComponentIndustrial>
     </costList>
@@ -346,9 +346,9 @@
     </building>
     <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
     <costList>
-      <Steel>450</Steel>
-      <Tungsteel>500</Tungsteel>
-      <DMSE_TantastenAlloy>100</DMSE_TantastenAlloy>
+      <Steel>400</Steel>
+      <Tungsteel>300</Tungsteel>
+      <DMSE_TantastenAlloy>200</DMSE_TantastenAlloy>
       <ComponentStamped>18</ComponentStamped>
       <ComponentFireControl>2</ComponentFireControl>
     </costList>

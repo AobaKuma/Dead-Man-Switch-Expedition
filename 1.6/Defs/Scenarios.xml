@@ -54,9 +54,9 @@
 
         <!-- TODO: create a dedicated gravship start -->
         <!-- Player starting stuff spawn method-->
-        <li Class="ScenPart_PlayerPawnsArriveMethod">
-          <def>PlayerPawnsArriveMethod</def>
-          <method>Gravship</method>
+        <li Class="Fortified.ScenPart_PlayerPawnsArriveGravship">
+          <def>FFF_PlayerPawnsArriveGravship</def>
+          <gravshipStructure>DMSE_ScenarioGravship</gravshipStructure>
         </li>
 
         <li Class="DMSE.ScenPart_Huntdown">
