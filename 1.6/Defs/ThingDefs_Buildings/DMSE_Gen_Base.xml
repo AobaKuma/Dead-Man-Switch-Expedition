@@ -1,20 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <DesignationCategoryDef>
-        <defName>DMSE_Category</defName>
-        <label>DMSE Decoration</label>
-        <order>14</order>
-        <specialDesignatorClasses>
-            <li>Designator_Cancel</li>
-            <li>Designator_Deconstruct</li>
-        </specialDesignatorClasses>
-        <preferredColumn>1</preferredColumn>
-    </DesignationCategoryDef>
 
     <!-- Buildings that players cannot build or deconstruct (but can destroy) -->
     <ThingDef ParentName="BuildingBase" Name="DMSE_BaseBuilding" Abstract="true">
         <canOverlapZones>false</canOverlapZones>
-        <designationCategory>DMSE_Category</designationCategory>
+        <designationCategory>FFF_DevCategory</designationCategory>
         <building>
             <deconstructible>false</deconstructible>
             <alwaysDeconstructible>false</alwaysDeconstructible>
