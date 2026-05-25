@@ -46,6 +46,9 @@
     <Compile Include="CelestialTransfer\Hellfire\ImpactCraterService.cs" />
     <Compile Include="CelestialTransfer\Hellfire\WorldObject_ImpactGravship.cs" />
     <Compile Include="DMSEMod.cs" />
+    <Compile Include="Research\ModExtension_DualSlotResearchTab.cs" />
+    <Compile Include="Research\Patch_CustomDualResearchTab.cs" />
+    <Compile Include="Research\ResearchTabUtility.cs" />
     <Compile Include="SkyFallerTurret\CompProperties_InterceptRadar.cs" />
     <Compile Include="SkyFallerTurret\EarlyWarningUtility.cs" />
     <Compile Include="SkyFallerTurret\InterceptSkyfallerUtility.cs" />

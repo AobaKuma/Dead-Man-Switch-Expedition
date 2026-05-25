@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- 自訂雙槽研究分頁示例 - Custom dual-slot research tab example -->
+  <ResearchTabDef>
+    <defName>DMSE_ExpeditionalKnowledge</defName>
+    <label>Occultech</label>
+    <generalTitle>Expeditional Knowledge</generalTitle>
+    <generalDescription>Advanced technologies held by colonial fleets but not openly used or circulated. mostly prohibited from circulation due to their danger or the potential for irreversible and far-reaching impact on the local world.</generalDescription>
+    <visibleByDefault>true</visibleByDefault>
+    <modExtensions>
+      <li Class="DMSE.ModExtension_UniqueResearchTab">
+        <categories>
+          <!-- Reference existing KnowledgeCategoryDef defNames here - these are example names -->
+          <li>Basic</li>
+          <li>Advanced</li>
+        </categories>
+      </li>
+    </modExtensions>
+  </ResearchTabDef>
+
+</Defs>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Basic Knowledge Category Project Example -->
+  <ResearchProjectDef>
+    <defName>DMSE_ExpKnowledge_BasicFoundation</defName>
+    <label>expeditional basic foundation</label>
+    <description>Establish fundamental understanding of expeditional technology and principles.</description>
+    <!-- <baseCost>1000</baseCost> -->
+    <tab>DMSE_ExpeditionalKnowledge</tab>
+    <researchViewX>1</researchViewX>
+    <researchViewY>1</researchViewY>
+    <knowledgeCategory>Basic</knowledgeCategory>
+    <knowledgeCost>500</knowledgeCost>
+  </ResearchProjectDef>
+
+  <!-- Advanced Knowledge Category Project Example -->
+  <ResearchProjectDef>
+    <defName>DMSE_ExpKnowledge_AdvancedMastery</defName>
+    <label>expeditional advanced mastery</label>
+    <description>Master advanced expeditional technology and unlock powerful applications.</description>
+    <!-- <baseCost>2000</baseCost> -->
+    <prerequisites>
+      <li>DMSE_ExpKnowledge_BasicFoundation</li>
+    </prerequisites>
+    <tab>DMSE_ExpeditionalKnowledge</tab>
+    <researchViewX>3</researchViewX>
+    <researchViewY>1</researchViewY>
+    <knowledgeCategory>Advanced</knowledgeCategory>
+    <knowledgeCost>1000</knowledgeCost>
+  </ResearchProjectDef>
+
+  <!-- Additional Basic Tier Project -->
+  <ResearchProjectDef>
+    <defName>DMSE_ExpKnowledge_BasicSecondary</defName>
+    <label>expeditional basic secondary</label>
+    <description>Secondary basic knowledge to support advanced research.</description>
+    <!-- <baseCost>800</baseCost> -->
+    <tab>DMSE_ExpeditionalKnowledge</tab>
+    <researchViewX>1</researchViewX>
+    <researchViewY>2</researchViewY>
+    <knowledgeCategory>Basic</knowledgeCategory>
+    <knowledgeCost>400</knowledgeCost>
+  </ResearchProjectDef>
+
+</Defs>
