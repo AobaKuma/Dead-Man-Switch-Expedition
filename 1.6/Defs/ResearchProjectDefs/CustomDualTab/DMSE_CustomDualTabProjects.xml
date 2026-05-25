@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
   <!-- Basic Knowledge Category Project Example -->
-  <ResearchProjectDef>
+   
+  <ResearchProjectDef Name="DMSE_BaseOccultTech" Abstract="True">
+    <tab>DMSE_ExpeditionalKnowledge</tab>
+    <knowledgeCategory>DMSE_Restricted</knowledgeCategory>
+    <knowledgeCost>750</knowledgeCost>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef ParentName="DMSE_BaseOccultTech">
     <defName>DMSE_ExpKnowledge_BasicFoundation</defName>
     <label>expeditional basic foundation</label>
     <description>Establish fundamental understanding of expeditional technology and principles.</description>
-    <!-- <baseCost>1000</baseCost> -->
-    <tab>DMSE_ExpeditionalKnowledge</tab>
     <researchViewX>1</researchViewX>
     <researchViewY>1</researchViewY>
-    <knowledgeCategory>Basic</knowledgeCategory>
     <knowledgeCost>500</knowledgeCost>
   </ResearchProjectDef>
 
@@ -25,7 +29,7 @@
     <tab>DMSE_ExpeditionalKnowledge</tab>
     <researchViewX>3</researchViewX>
     <researchViewY>1</researchViewY>
-    <knowledgeCategory>Advanced</knowledgeCategory>
+    <knowledgeCategory>DMSE_Sealed</knowledgeCategory>
     <knowledgeCost>1000</knowledgeCost>
   </ResearchProjectDef>
 
@@ -36,9 +40,12 @@
     <description>Secondary basic knowledge to support advanced research.</description>
     <!-- <baseCost>800</baseCost> -->
     <tab>DMSE_ExpeditionalKnowledge</tab>
-    <researchViewX>1</researchViewX>
+    <researchViewX>4</researchViewX>
     <researchViewY>2</researchViewY>
-    <knowledgeCategory>Basic</knowledgeCategory>
+    <prerequisites>
+      <li>DMSE_ExpKnowledge_AdvancedMastery</li>
+    </prerequisites>
+    <knowledgeCategory>DMSE_Occulted</knowledgeCategory>
     <knowledgeCost>400</knowledgeCost>
   </ResearchProjectDef>
 

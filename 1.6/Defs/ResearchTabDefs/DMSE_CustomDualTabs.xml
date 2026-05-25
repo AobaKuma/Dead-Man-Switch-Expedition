@@ -11,11 +11,34 @@
       <li Class="DMSE.ModExtension_UniqueResearchTab">
         <categories>
           <!-- Reference existing KnowledgeCategoryDef defNames here - these are example names -->
-          <li>Basic</li>
-          <li>Advanced</li>
+          <li>DMSE_Restricted</li>
+          <li>DMSE_Sealed</li>
+          <li>DMSE_Occulted</li>
         </categories>
       </li>
     </modExtensions>
   </ResearchTabDef>
 
+  <KnowledgeCategoryDef>
+    <defName>DMSE_Restricted</defName>
+    <label>restricted</label>
+    <color>(0.6, 0.6, 0.4, 1)</color>
+    <texPath>UI/DMSE/ResearchCategory_Restricted</texPath>
+  </KnowledgeCategoryDef>
+
+  <KnowledgeCategoryDef>
+    <defName>DMSE_Sealed</defName>
+    <label>sealed</label>
+    <color>(1, 0.5, 0.1, 1)</color>
+    <texPath>UI/DMSE/ResearchCategory_Sealed</texPath>
+    <overflowCategory>DMSE_Restricted</overflowCategory>
+  </KnowledgeCategoryDef>
+
+  <KnowledgeCategoryDef>
+    <defName>DMSE_Occulted</defName>
+    <label>occulted</label>
+    <color>(1, 0, 0, 1)</color>
+    <texPath>UI/DMSE/ResearchCategory_Occulted</texPath>
+    <overflowCategory>DMSE_Sealed</overflowCategory>
+  </KnowledgeCategoryDef>
 </Defs>
