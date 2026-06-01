@@ -23,6 +23,14 @@
 	<!-- 将DMSE燃料储罐转换为VGE的Astrofuel系统 -->
 	<Operation Class="PatchOperationSequence">
 		<operations>
+			<!-- 代替label -->
+			<li Class="PatchOperationReplace">
+				<xpath>/Defs/ThingDef[defName="DMSE_FuelSiloTank"]/label</xpath>
+				<value>
+					<label>Astrofuel silo</label>
+				</value>
+			</li>
+
 			<!-- 移除原有的CompRefuelable -->
 			<li Class="PatchOperationRemove">
 				<xpath>/Defs/ThingDef[defName="DMSE_FuelSiloTank"]/comps/li[@Class="CompProperties_Refuelable"]</xpath>
