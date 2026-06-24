@@ -54,4 +54,34 @@
   <DMSE_Crater>{0} Crater</DMSE_Crater>
   
   <DMS_Exist>Map visible countdown:{0}</DMS_Exist>
+
+  <DMSE.BVR.Online>online</DMSE.BVR.Online>
+  <DMSE.BVR.Offline>offline</DMSE.BVR.Offline>
+  <DMSE.BVR.SearchRadar>Search radar: range {0}, anti-stealth {1} ({2})</DMSE.BVR.SearchRadar>
+  <DMSE.BVR.FireControl>Fire control: {0} channel(s) ({1})</DMSE.BVR.FireControl>
+
+  <DMSE.Missile.Tab>Assembly</DMSE.Missile.Tab>
+  <DMSE.Missile.Body>Missile body</DMSE.Missile.Body>
+  <DMSE.Missile.None>None</DMSE.Missile.None>
+  <DMSE.Missile.Locked>locked</DMSE.Missile.Locked>
+  <DMSE.Missile.Stats>Effective stats</DMSE.Missile.Stats>
+  <DMSE.Missile.Stat.Radius>Blast radius: {0}</DMSE.Missile.Stat.Radius>
+  <DMSE.Missile.Stat.Damage>Warhead: {0} ({1})</DMSE.Missile.Stat.Damage>
+  <DMSE.Missile.Stat.Scatter>Impact dispersion: {0}</DMSE.Missile.Stat.Scatter>
+  <DMSE.Missile.Stat.Speed>Travel speed: x{0}</DMSE.Missile.Stat.Speed>
+  <DMSE.Missile.Stat.Fuel>Fuel: {0}</DMSE.Missile.Stat.Fuel>
+  <DMSE.Missile.Stat.Impulse>Specific impulse: {0}</DMSE.Missile.Stat.Impulse>
+  <DMSE.Missile.Stat.Range>Range: {0} tiles</DMSE.Missile.Stat.Range>
+  <DMSE.Missile.OutOfRange>Target is beyond missile range ({0} tiles).</DMSE.Missile.OutOfRange>
+  <DMSE.Missile.RangeLabel>{0} / {1} tiles</DMSE.Missile.RangeLabel>
+  <DMSE.Missile.Cat.Warhead>Warhead</DMSE.Missile.Cat.Warhead>
+  <DMSE.Missile.Cat.Guidance>Guidance</DMSE.Missile.Cat.Guidance>
+  <DMSE.Missile.Cat.Propulsion>Propulsion</DMSE.Missile.Cat.Propulsion>
+  <DMSE.Missile.Cat.Payload>Payload</DMSE.Missile.Cat.Payload>
+  <DMSE.Missile.Inspect>Body: {0}\nWarhead: {1}\nBlast: {2} / {3} dmg</DMSE.Missile.Inspect>
+  <DMSE.Missile.NeedResources>Needs (for assembly): {0}</DMSE.Missile.NeedResources>
+  <DMSE.Missile.ReadyToAssemble>Resources ready - awaiting assembly</DMSE.Missile.ReadyToAssemble>
+  <DMSE.Missile.NoResources>No resources available to assemble</DMSE.Missile.NoResources>
+  <DMSE.Missile.IncomingLetter>Incoming missile</DMSE.Missile.IncomingLetter>
+  <DMSE.Missile.IncomingLetterDesc>A missile launched by {0} is inbound and will strike the colony shortly.</DMSE.Missile.IncomingLetterDesc>
 </LanguageData>

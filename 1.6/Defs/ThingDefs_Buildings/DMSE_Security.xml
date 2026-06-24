@@ -167,14 +167,15 @@
         <compClass>CompPowerTrader</compClass>
         <basePowerConsumption>500</basePowerConsumption>
       </li>
-      <!-- <li Class="DMSE.CompProperties_SkyfallerTurret">
-        <cooldown>600</cooldown>
-        <countLimit>3</countLimit>
-        <projectile_Last>DMSE_Bullet_Vulcan_WingBack_CIWS</projectile_Last>
-        <lastInterceptTick>200</lastInterceptTick>
-        <countLimitForLast>5</countLimitForLast>
+      <!-- 末端攔截砲塔（CIWS）：在末端窗口內自主攔截，攔截成功時有機率生成殘骸。 -->
+      <li Class="DMSE.CompProperties_TerminalCIWS">
+        <projectile>DMSE_Bullet_Vulcan_WingBack_CIWS</projectile>
+        <terminalWindowTicks>1800</terminalWindowTicks>
+        <cooldownTicks>60</cooldownTicks>
+        <shotsPerBurst>5</shotsPerBurst>
         <interceptChance>0.5</interceptChance>
-      </li> -->
+        <debrisChance>0.3</debrisChance>
+      </li>
     </comps>
     <building>
       <turretGunDef>DMSE_Gun_Vulcan_WingBack</turretGunDef>
@@ -266,7 +267,7 @@
   </ThingDef>
 
 
-  <!-- <ThingDef ParentName="BaseBullet">
+  <ThingDef ParentName="BaseBullet">
     <defName>DMSE_Bullet_Vulcan_WingBack_CIWS</defName>
     <label>APT shell</label>
     <graphicData>
@@ -281,7 +282,7 @@
       <speed>102</speed>
       <flyOverhead>true</flyOverhead>
     </projectile>
-  </ThingDef> -->
+  </ThingDef>
 
   <!--Dawnblade Striker-->
   <ThingDef ParentName="DMS_BaseCannonBuilding">

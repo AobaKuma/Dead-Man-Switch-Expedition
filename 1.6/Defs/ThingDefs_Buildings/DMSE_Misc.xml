@@ -63,8 +63,21 @@
         <basePowerConsumption>5000</basePowerConsumption>
         <transmitsPower>true</transmitsPower>
       </li>
-      <li Class="DMSE.CompProperties_InterceptRadar">
-        <delayTicks>1200</delayTicks>
+      <!-- 複合功能示範：同一棟雷達同時搭載「搜索雷達」與「火控雷達」兩個 ThingComp。 -->
+      <li Class="DMSE.CompProperties_SearchRadar">
+        <searchDistance>200</searchDistance>
+        <powerLevel>2</powerLevel>
+        <antiStealthLevel>2</antiStealthLevel>
+        <ticksPerDistance>4</ticksPerDistance>
+      </li>
+      <li Class="DMSE.CompProperties_FireControlRadar">
+        <maxTargets>2</maxTargets>
+        <antiStealthLevel>2</antiStealthLevel>
+        <powerLevel>2</powerLevel>
+        <guidanceAccuracyTime>600</guidanceAccuracyTime>
+        <maxRangeTicks>6000</maxRangeTicks>
+        <maxHitChance>0.9</maxHitChance>
+        <stealthMissFactor>0.5</stealthMissFactor>
       </li>
     </comps>
     <placeWorkers>

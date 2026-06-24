@@ -227,5 +227,13 @@
       <researchPrerequisite>DMSE_OrbitalDynamics</researchPrerequisite>
       <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
     </recipeMaker>
+    <comps>
+      <li Class="DMSE.CompProperties_MissileConfig">
+        <defaultBody>DMSE_MissileBody_Cruise</defaultBody>
+      </li>
+    </comps>
+    <inspectorTabs>
+      <li>DMSE.ITab_MissileAssembly</li>
+    </inspectorTabs>
   </ThingDef>
 </Defs>

@@ -90,4 +90,34 @@
   <DMSE_Crater>{0}撞击坑</DMSE_Crater>
   
   <DMS_Exist>地图可见计时:{0}</DMS_Exist>
+
+  <DMSE.BVR.Online>运作中</DMSE.BVR.Online>
+  <DMSE.BVR.Offline>离线</DMSE.BVR.Offline>
+  <DMSE.BVR.SearchRadar>搜索雷达：搜索距离 {0}，反隐身 {1}（{2}）</DMSE.BVR.SearchRadar>
+  <DMSE.BVR.FireControl>火控雷达：{0} 条火力通道（{1}）</DMSE.BVR.FireControl>
+
+  <DMSE.Missile.Tab>装配</DMSE.Missile.Tab>
+  <DMSE.Missile.Body>导弹弹体</DMSE.Missile.Body>
+  <DMSE.Missile.None>无</DMSE.Missile.None>
+  <DMSE.Missile.Locked>未解锁</DMSE.Missile.Locked>
+  <DMSE.Missile.Stats>有效数值</DMSE.Missile.Stats>
+  <DMSE.Missile.Stat.Radius>爆炸半径：{0}</DMSE.Missile.Stat.Radius>
+  <DMSE.Missile.Stat.Damage>弹头：{0}（{1}）</DMSE.Missile.Stat.Damage>
+  <DMSE.Missile.Stat.Scatter>命中偏移：{0}</DMSE.Missile.Stat.Scatter>
+  <DMSE.Missile.Stat.Speed>飞行速度：x{0}</DMSE.Missile.Stat.Speed>
+  <DMSE.Missile.Stat.Fuel>燃料量：{0}</DMSE.Missile.Stat.Fuel>
+  <DMSE.Missile.Stat.Impulse>比冲（推进效率）：{0}</DMSE.Missile.Stat.Impulse>
+  <DMSE.Missile.Stat.Range>射程：{0} 格</DMSE.Missile.Stat.Range>
+  <DMSE.Missile.OutOfRange>目标超出导弹射程（{0} 格）。</DMSE.Missile.OutOfRange>
+  <DMSE.Missile.RangeLabel>{0} / {1} 格</DMSE.Missile.RangeLabel>
+  <DMSE.Missile.Cat.Warhead>弹头</DMSE.Missile.Cat.Warhead>
+  <DMSE.Missile.Cat.Guidance>导引</DMSE.Missile.Cat.Guidance>
+  <DMSE.Missile.Cat.Propulsion>推进／射程</DMSE.Missile.Cat.Propulsion>
+  <DMSE.Missile.Cat.Payload>特殊酬载</DMSE.Missile.Cat.Payload>
+  <DMSE.Missile.Inspect>弹体：{0}\n弹头：{1}\n爆炸：半径 {2} / 伤害 {3}</DMSE.Missile.Inspect>
+  <DMSE.Missile.NeedResources>装配所需：{0}</DMSE.Missile.NeedResources>
+  <DMSE.Missile.ReadyToAssemble>资源已备齐－等待装配</DMSE.Missile.ReadyToAssemble>
+  <DMSE.Missile.NoResources>没有可用于装配的资源</DMSE.Missile.NoResources>
+  <DMSE.Missile.IncomingLetter>导弹来袭</DMSE.Missile.IncomingLetter>
+  <DMSE.Missile.IncomingLetterDesc>{0} 发射的导弹正在接近，即将打击殖民地。</DMSE.Missile.IncomingLetterDesc>
 </LanguageData>

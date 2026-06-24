@@ -1,47 +1,43 @@
-﻿using RimWorld;
-using System;
-using System.Collections.Generic;
+using RimWorld;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Verse;
-using Verse.Noise;
 
 namespace DMSE
 {
     public class Alerts_Pods : Alert
     {
+        // 只提示由玩家防禦的波次（玩家自家基地防空）；玩家進攻敵方基地時，敵方防空不在此提示。
+        private static BVRWave FirstPlayerWave(Map map)
+        {
+            MapComponent_BVRCombat comp = map != null ? map.GetComponent<MapComponent_BVRCombat>() : null;
+            if (comp == null) { return null; }
+            return comp.Waves.FirstOrDefault(w => w.defenderFaction != null && w.defenderFaction.IsPlayer);
+        }
+
         public override string GetLabel()
         {
-            Map map = Find.CurrentMap;
-            if (map != null)
+            BVRWave wave = FirstPlayerWave(Find.CurrentMap);
+            if (wave != null)
             {
-                MapComponent_InterceptSkyfaller comp = map.GetComponent<MapComponent_InterceptSkyfaller>();
-                if (!comp.Pods.NullOrEmpty())
-                {
-                    var pod = comp.Pods.First();
-                    return "DMSE.Alert.Pods".Translate(pod.pods.Count, (pod.tickToSpawn - Find.TickManager.TicksGame).ToStringTicksToPeriod());
-                }
+                return "DMSE.Alert.Pods".Translate(wave.targets.Count,
+                    (wave.tickToImpact - Find.TickManager.TicksGame).ToStringTicksToPeriod());
             }
             return base.GetLabel();
         }
+
         public override AlertReport GetReport()
         {
-            Map map = Find.CurrentMap;
-            if (map != null && map.GetComponent<MapComponent_InterceptSkyfaller>().Pods.Any()) 
-            {
-                return AlertReport.Active;
-            }
-            return AlertReport.Inactive;
+            return FirstPlayerWave(Find.CurrentMap) != null ? AlertReport.Active : AlertReport.Inactive;
         }
+
         protected override void OnClick()
         {
             base.OnClick();
             Map map = Find.CurrentMap;
-            if (map != null && map.GetComponent<MapComponent_InterceptSkyfaller>().Pods is var list
-                && list.Any() && list.First().pods.Any())
+            BVRWave wave = FirstPlayerWave(map);
+            if (wave != null && wave.targets.Any())
             {
-                CameraJumper.TryJump(list.First().pods.First().position,map);
+                CameraJumper.TryJump(wave.targets.First().position, map);
             }
         }
     }

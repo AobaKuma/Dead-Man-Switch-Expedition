@@ -46,6 +46,12 @@ namespace DMSE
                         {
                             return false;
                         }
+                        int range = LoadedRange;
+                        if (range > 0 && DistanceToTile(t) > range)
+                        {
+                            Messages.Message("DMSE.Missile.OutOfRange".Translate(range), MessageTypeDefOf.RejectInput, false);
+                            return false;
+                        }
                         Launch(t);
                         return true;
                     },
@@ -53,7 +59,12 @@ namespace DMSE
                     mouseAttachment: Props.worldObjectDef.ExpandingIconTexture,
                     closeWorldTabWhenFinished: true,
                     onUpdate: null,
-                    extraLabelGetter: null,
+                    extraLabelGetter: t =>
+                    {
+                        int range = LoadedRange;
+                        if (range <= 0) { return string.Empty; }
+                        return "DMSE.Missile.RangeLabel".Translate(DistanceToTile(t), range);
+                    },
                     canSelectTarget: null,
                     originForClosest: null,
                     showCancelButton: true);
@@ -76,9 +87,30 @@ namespace DMSE
             wo.SetFaction(Faction.OfPlayer);
             wo.Tile = this.parent.Map.Tile;
             wo.destinationTile = t.Tile;
+            CompMissileConfig cfg = parent.GetComp<CompMissileConfig>();
+            if (cfg != null && cfg.config != null)
+            {
+                wo.config = cfg.config.Clone();
+            }
             faller.worldObject = wo;
             this.Refuelable.ConsumeFuel(this.Refuelable.Fuel);
         }
+
+        /// <summary>已裝填導彈設定算出的射程（世界 tile）；0 = 不限。</summary>
+        private int LoadedRange
+        {
+            get
+            {
+                CompMissileConfig cfg = parent.GetComp<CompMissileConfig>();
+                return cfg != null && cfg.config != null ? cfg.config.Range : 0;
+            }
+        }
+
+        private int DistanceToTile(GlobalTargetInfo t)
+        {
+            return (int)Find.WorldGrid.ApproxDistanceInTiles(parent.Map.Tile, t.Tile);
+        }
+
         public CompRefuelable refuelable;
     }
 }

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ==================== 彈體 ==================== -->
+  <DMSE.MissileBodyDef>
+    <defName>DMSE_MissileBody_Cruise</defName>
+    <label>cruise missile body</label>
+    <description>The standard chassis of the Scorer cruise missile. Provides four assembly slots for warhead, guidance, propulsion, and special payload.</description>
+    <baseExplosionRadius>6</baseExplosionRadius>
+    <baseDamageDef>Bomb</baseDamageDef>
+    <baseDamageAmount>120</baseDamageAmount>
+    <baseScatter>3</baseScatter>
+    <baseWorldSpeedFactor>1</baseWorldSpeedFactor>
+    <baseRange>0</baseRange>
+    <baseFuel>100</baseFuel>
+    <baseSpecificImpulse>3</baseSpecificImpulse>
+    <rangePerFuelImpulse>0.1</rangePerFuelImpulse>
+    <incomingSkyfaller>DMSE_Incoming_CruiseMissile</incomingSkyfaller>
+    <slots>
+      <li>Warhead</li>
+      <li>Guidance</li>
+      <li>Propulsion</li>
+      <li>Payload</li>
+    </slots>
+  </DMSE.MissileBodyDef>
+
+  <!-- ==================== 彈頭 Warhead ==================== -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Warhead_HE</defName>
+    <label>high-explosive warhead</label>
+    <description>A large blast warhead. Wide radius, high damage.</description>
+    <category>Warhead</category>
+    <explosionRadiusOffset>2</explosionRadiusOffset>
+    <damageAmountOffset>60</damageAmountOffset>
+    <damageDefOverride>Bomb</damageDefOverride>
+    <costList>
+      <Steel>30</Steel>
+      <Chemfuel>20</Chemfuel>
+    </costList>
+  </DMSE.MissilePartDef>
+
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Warhead_AP</defName>
+    <label>armor-piercing warhead</label>
+    <description>A focused penetrator. Smaller radius but far higher damage.</description>
+    <category>Warhead</category>
+    <explosionRadiusOffset>-2</explosionRadiusOffset>
+    <damageAmountOffset>140</damageAmountOffset>
+    <damageDefOverride>Bomb</damageDefOverride>
+    <costList>
+      <Steel>40</Steel>
+      <DMSE_TantastenAlloy>5</DMSE_TantastenAlloy>
+    </costList>
+  </DMSE.MissilePartDef>
+
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Warhead_EMP</defName>
+    <label>EMP warhead</label>
+    <description>Disables mechanoids and stuns targets in a wide area without lethal blast.</description>
+    <category>Warhead</category>
+    <explosionRadiusOffset>1</explosionRadiusOffset>
+    <damageDefOverride>EMP</damageDefOverride>
+    <costList>
+      <Steel>20</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </costList>
+  </DMSE.MissilePartDef>
+
+  <!-- ==================== 導引 Guidance ==================== -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Guidance_Inertial</defName>
+    <label>inertial guidance</label>
+    <description>Baseline guidance. Average accuracy.</description>
+    <category>Guidance</category>
+    <scatterOffset>0</scatterOffset>
+  </DMSE.MissilePartDef>
+
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Guidance_Precision</defName>
+    <label>precision guidance</label>
+    <description>Terminal homing seeker. Greatly tightens impact dispersion.</description>
+    <category>Guidance</category>
+    <scatterOffset>-2.5</scatterOffset>
+    <researchPrerequisites>
+      <li>DMSE_OrbitalDynamics</li>
+    </researchPrerequisites>
+    <costList>
+      <ComponentIndustrial>3</ComponentIndustrial>
+      <ComponentSpacer>1</ComponentSpacer>
+    </costList>
+  </DMSE.MissilePartDef>
+
+  <!-- ==================== 推進／射程 Propulsion ==================== -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Propulsion_Standard</defName>
+    <label>standard motor</label>
+    <description>Baseline solid-fuel motor.</description>
+    <category>Propulsion</category>
+  </DMSE.MissilePartDef>
+
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Propulsion_Booster</defName>
+    <label>boosted motor</label>
+    <description>A higher-impulse motor that reaches the target faster and extends range.</description>
+    <category>Propulsion</category>
+    <worldSpeedFactorOffset>0.6</worldSpeedFactorOffset>
+    <specificImpulseOffset>2</specificImpulseOffset>
+    <costList>
+      <Chemfuel>40</Chemfuel>
+      <Steel>20</Steel>
+    </costList>
+  </DMSE.MissilePartDef>
+
+  <!-- ==================== 特殊酬載 Payload ==================== -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Payload_Cluster</defName>
+    <label>cluster submunitions</label>
+    <description>Releases a secondary blast across the impact area.</description>
+    <category>Payload</category>
+    <payloadExplosionRadius>4</payloadExplosionRadius>
+    <payloadDamageDef>Bomb</payloadDamageDef>
+    <payloadDamageAmount>40</payloadDamageAmount>
+    <costList>
+      <Steel>25</Steel>
+      <Chemfuel>15</Chemfuel>
+    </costList>
+  </DMSE.MissilePartDef>
+
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Payload_EMP</defName>
+    <label>EMP submunitions</label>
+    <description>A secondary EMP burst that stuns and disables electronics around the impact.</description>
+    <category>Payload</category>
+    <payloadExplosionRadius>5</payloadExplosionRadius>
+    <payloadDamageDef>EMP</payloadDamageDef>
+    <costList>
+      <Steel>15</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </costList>
+  </DMSE.MissilePartDef>
+
+</Defs>

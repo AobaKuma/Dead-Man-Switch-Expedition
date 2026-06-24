@@ -80,7 +80,8 @@ namespace DMSE
                 {
                     return 1f;
                 }
-                return 0.00025f / num;
+                float speedFactor = config != null ? config.WorldSpeedFactor : 1f;
+                return (0.00025f * speedFactor) / num;
             }
         }
         public override void ExposeData()
@@ -91,6 +92,7 @@ namespace DMSE
             Scribe_Values.Look<PlanetTile>(ref this.initialTile, "initialTile", default(PlanetTile), false);
             Scribe_Values.Look<float>(ref this.traveledPct, "traveledPct", 0f, false);
             Scribe_Values.Look<ThingDef>(ref this.skyfallerIncoming, "skyfallerIncoming", null, false);
+            Scribe_Deep.Look(ref this.config, "config");
         }
         public override void PostAdd()
         {
@@ -146,7 +148,7 @@ namespace DMSE
                 },
             action: t =>
                 {
-                    SkyfallerMaker.SpawnSkyfaller(def, t.Cell, map);
+                    SpawnIncoming(def, t.Cell, map);
                     Find.TickManager.CurTimeSpeed = TimeSpeed.Normal;
                     launch = true;
                 },
@@ -157,7 +159,7 @@ namespace DMSE
                 {
                     if (!launch)
                     {
-                        SkyfallerMaker.SpawnSkyfaller(def, map.Center, map);
+                        SpawnIncoming(def, map.Center, map);
                         Find.TickManager.CurTimeSpeed = TimeSpeed.Normal;
                     }
                 },
@@ -167,6 +169,19 @@ namespace DMSE
             Destroy();
         }
 
+        /// <summary>生成落點導彈，並把裝配設定交給 MissileIncoming。</summary>
+        private void SpawnIncoming(ThingDef def, IntVec3 cell, Map map)
+        {
+            Skyfaller faller = SkyfallerMaker.SpawnSkyfaller(def, cell, map);
+            if (faller is MissileIncoming incoming)
+            {
+                incoming.config = config != null ? config.Clone() : null;
+                incoming.attacker = base.Faction; // 玩家的巡航導彈，供敵方 BVR 攔截判定。
+                MissileBVRUtility.TryRegister(incoming, cell);
+            }
+        }
+
+        public MissileConfig config;
         public PlanetTile destinationTile = PlanetTile.Invalid;
         private bool arrived;
         private PlanetTile initialTile = PlanetTile.Invalid;

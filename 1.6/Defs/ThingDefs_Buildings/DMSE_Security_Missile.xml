@@ -65,6 +65,10 @@
                 <autoRefuelPercent>0</autoRefuelPercent>
                 <fuelIconPath>UI/DMSE/TravelingMissile</fuelIconPath>
             </li>
+            <!-- 接收已裝填導彈的裝配設定（由 Patch_Refuel_CarryConfig 於裝填時複製）。 -->
+            <li Class="DMSE.CompProperties_MissileConfig">
+                <defaultBody>DMSE_MissileBody_Cruise</defaultBody>
+            </li>
         </comps>
         <researchPrerequisites>
             <li>DMSE_OrbitalDynamics</li>
@@ -158,21 +162,146 @@
         <validLaunchTarget>false</validLaunchTarget>
     </WorldObjectDef>
 
+    <!-- 通用來襲導彈（任何陣營皆可發射，抵達後自動落點生成 MissileIncoming） -->
+    <WorldObjectDef>
+        <defName>DMSE_WorldObject_IncomingMissile</defName>
+        <label>incoming missile</label>
+        <description>A missile inbound to a target.</description>
+        <worldObjectClass>DMSE.WorldObject_IncomingMissile</worldObjectClass>
+        <texture>UI/DMSE/TravelingMissile</texture>
+        <rotateGraphicWhenTraveling>true</rotateGraphicWhenTraveling>
+        <useDynamicDrawer>true</useDynamicDrawer>
+        <expandingIcon>true</expandingIcon>
+        <expandingIconTexture>UI/DMSE/TravelingMissile_Expanding</expandingIconTexture>
+        <expandingIconPriority>100</expandingIconPriority>
+        <expandMore>true</expandMore>
+        <fullyExpandedInSpace>true</fullyExpandedInSpace>
+        <validLaunchTarget>false</validLaunchTarget>
+    </WorldObjectDef>
+
     <ThingDef ParentName="SkyfallerBase">
         <defName>DMSE_Incoming_CruiseMissile</defName>
         <label>cruise missile (incoming)</label>
+        <thingClass>DMSE.MissileIncoming</thingClass>
         <graphicData>
             <texPath>Things/Missile/Moskit/skyFaller_moskit_incoming</texPath>
             <graphicClass>Graphic_Single</graphicClass>
             <drawSize>4</drawSize>
         </graphicData>
         <size>(1,1)</size>
+        <!-- 爆炸效果改由導彈裝配設定（MissileConfig）於落點動態套用，故此處不設固定 explosionRadius/explosionDamage。 -->
         <skyfaller>
             <shadowSize>(3, 3)</shadowSize>
-            <explosionRadius>9</explosionRadius>
-            <explosionDamage>BombSuper</explosionDamage>
             <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
             <speed>1</speed>
         </skyfaller>
+        <!-- BVR 攔截特性：巡航導彈有完整世界航跡，可較早偵測（窗口需大於末端窗口，
+             中過程 SAM 與末端 CIWS 才會依序作用）；仍需一定反隱身才能完整偵測。 -->
+        <modExtensions>
+            <li Class="DMSE.BVRTargetProps">
+                <distanceLevel>1.5</distanceLevel>
+                <stealthLevel>1</stealthLevel>
+                <speed>30</speed>
+            </li>
+        </modExtensions>
+    </ThingDef>
+
+    <!-- ==================== 中過程防空攔截彈（skyfaller，由 CompMissileLauncher 發射） ==================== -->
+    <ThingDef ParentName="SkyfallerBase">
+        <defName>DMSE_SkyFaller_Interceptor</defName>
+        <label>interceptor missile</label>
+        <thingClass>DMSE.InterceptProjectile</thingClass>
+        <size>(1,1)</size>
+        <graphicData>
+            <texPath>Things/Missile/Moskit/skyFaller_moskit</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>2.5</drawSize>
+        </graphicData>
+        <skyfaller>
+            <movementType>Accelerate</movementType>
+            <reversed>true</reversed>
+            <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
+            <shadowSize>(1.5, 1.5)</shadowSize>
+            <ticksToDiscardInReverse>120</ticksToDiscardInReverse>
+            <ticksToImpactRange>0</ticksToImpactRange>
+            <anticipationSound>DropPod_Leaving</anticipationSound>
+            <anticipationSoundTicks>-1</anticipationSoundTicks>
+            <speedCurve>
+                <points>
+                    <li>(0,0.3)</li>
+                    <li>(0.3,0.4)</li>
+                    <li>(1,1.2)</li>
+                </points>
+            </speedCurve>
+            <rotationCurve>
+                <points>
+                    <li>(0,-8)</li>
+                    <li>(0.4,-18)</li>
+                    <li>(1,0)</li>
+                </points>
+            </rotationCurve>
+            <zPositionCurve>
+                <points>
+                    <li>(0,0)</li>
+                    <li>(0.1,2)</li>
+                    <li>(1,12)</li>
+                </points>
+            </zPositionCurve>
+        </skyfaller>
+    </ThingDef>
+
+    <!-- ==================== 防空導彈發射裝置 ====================
+         功能由 ThingComp 提供；可獨立成棟，也可掛在其他建築上組合複合功能。
+         此處未掛 CompRefuelable，攔截彈無限但受 reloadCooldownTicks 節流；
+         若要限制彈藥，可加 CompProperties_Refuelable 並設定對應彈藥物品。 -->
+    <ThingDef ParentName="BuildingBase">
+        <defName>DMSE_Building_SAMLauncher</defName>
+        <label>SAM launcher</label>
+        <description>A surface-to-air missile launcher. Guided by a fire-control radar, it engages incoming hostile drops during the midcourse phase of the beyond-visual-range combat system.</description>
+        <category>Building</category>
+        <graphicData>
+            <texPath>Things/Building/MissileLauncher/building</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>(2,6)</drawSize>
+            <drawOffset>(0,0.00875,0)</drawOffset>
+            <drawOffsetEast>(0,0.00875,0.35)</drawOffsetEast>
+            <drawOffsetWest>(0,0.00875,0.35)</drawOffsetWest>
+        </graphicData>
+        <rotatable>true</rotatable>
+        <altitudeLayer>Building</altitudeLayer>
+        <passability>PassThroughOnly</passability>
+        <pathCost>100</pathCost>
+        <fillPercent>0.9</fillPercent>
+        <tickerType>Normal</tickerType>
+        <drawerType>RealtimeOnly</drawerType>
+        <designationCategory>DMS_Category</designationCategory>
+        <size>(1,5)</size>
+        <staticSunShadowHeight>0.1</staticSunShadowHeight>
+        <statBases>
+            <MaxHitPoints>500</MaxHitPoints>
+            <WorkToBuild>9000</WorkToBuild>
+            <Flammability>0.05</Flammability>
+        </statBases>
+        <costList>
+            <Steel>200</Steel>
+            <ComponentStamped>8</ComponentStamped>
+            <ComponentSpacer>2</ComponentSpacer>
+        </costList>
+        <comps>
+            <li Class="CompProperties_Power">
+                <compClass>CompPowerTrader</compClass>
+                <basePowerConsumption>400</basePowerConsumption>
+            </li>
+            <li Class="CompProperties_Flickable" />
+            <li Class="CompProperties_Breakdownable" />
+            <li Class="DMSE.CompProperties_MissileLauncher">
+                <interceptorSkyfaller>DMSE_SkyFaller_Interceptor</interceptorSkyfaller>
+                <reloadCooldownTicks>240</reloadCooldownTicks>
+                <interceptorTravelTicks>120</interceptorTravelTicks>
+            </li>
+        </comps>
+        <researchPrerequisites>
+            <li>DMSE_OrbitalDynamics</li>
+        </researchPrerequisites>
     </ThingDef>
 </Defs>

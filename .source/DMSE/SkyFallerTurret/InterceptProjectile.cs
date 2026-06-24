@@ -1,138 +1,66 @@
-﻿using RimWorld;
-using RimWorld.Planet;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using RimWorld;
 using UnityEngine;
 using Verse;
-using Verse.Noise;
 
 namespace DMSE
 {
+    /// <summary>
+    /// 中過程攔截彈（視覺 skyfaller）。離場時依 <see cref="hitChance"/> 擲骰：
+    /// 成功則乾淨擊毀目標（不生成殘骸）；無論成敗都釋放占用的火力通道。
+    /// </summary>
     public class InterceptProjectile : Skyfaller
     {
-        public Skyfaller faller;
+        public int targetId = -1;
+        public float hitChance = 0.9f;
 
-        public static float HitChance = 0.9f;
         protected override void LeaveMap()
         {
-            if (Rand.Chance(HitChance))
+            MapComponent_BVRCombat comp = Map != null ? Map.GetComponent<MapComponent_BVRCombat>() : null;
+            if (comp != null && targetId >= 0)
             {
-                var comp = this.Map.GetComponent<MapComponent_InterceptSkyfaller>();
-                PodData pod = null;
-                DroppodData data = null;
-                foreach (var p in comp.Pods)
+                BVRTarget target = comp.GetTarget(targetId);
+                if (target != null)
                 {
-                    foreach (var p2 in p.pods)
+                    // 釋放火力通道。
+                    target.midcourseEngagedUntil = -1;
+
+                    if (Rand.Chance(hitChance))
                     {
-                        if (p2.pod.InnerListForReading.First() == this.faller) 
-                        {
-                            pod = p2;
-                            data = p;
-                        }
+                        comp.RemoveTarget(targetId); // 中過程攔截成功：乾淨消滅，不留殘骸。
+                        if (Prefs.DevMode) { Log.Message($"[DMSE BVR] 中過程攔截成功 target#{targetId}"); }
+                    }
+                    else if (Prefs.DevMode)
+                    {
+                        Log.Message($"[DMSE BVR] 中過程攔截失敗 target#{targetId}");
                     }
                 }
-                if (pod != null)
-                {
-                    Pawn pawn = null;
-                    if (pod.pod.InnerListForReading.First().innerContainer.First() is ActiveTransporter transporter &&
-                        transporter.Contents.SingleContainedThing  is Pawn pawn2)
-                    {
-                        pawn = pawn2;
-                    }
-                    if (pod.pod.InnerListForReading.First().innerContainer.First() is Pawn p)
-                    {
-                        pawn = p;
-                    }
-                    if (pawn != null) 
-                    {
-                        pawn.Kill(new DamageInfo(DamageDefOf.Blunt, 50f));
-                        var info = new ActiveTransporterInfo();
-                        Corpse corpse = null;
-                        if (pawn.Corpse != null) 
-                        {
-                            corpse = pawn.Corpse;
-                        }
-                        if (corpse == null)
-                        {
-                            corpse = pawn.MakeCorpse(null, null);
-                        }
-                        if (corpse == null)
-                        {
-                            if (Prefs.DevMode)
-                            {
-                                Log.Message("尸体生成失败");
-                            }
-                        }
-                        else 
-                        {
-                            if (Prefs.DevMode)
-                            {
-                                Log.Message("尸体" + corpse);
-                            }
-                        }
-                        if (corpse.holdingOwner != null)
-                        {
-                            corpse.holdingOwner.Remove(corpse);
-                        }
-                        if (info.innerContainer.TryAdd(corpse)) 
-                        {
-                            if (Prefs.DevMode)
-                            {
-                                Log.Message("尸体进入残骸成功");
-                            } 
-                        }
-                        else if (Prefs.DevMode)
-                        {
-                            Log.Message("尸体进入残骸失败");
-                        }
-                        DropPodUtility.MakeDropPodAt(pod.position, this.Map, info);
-                        data.pods.Remove(pod);
-                        if (!data.pods.Any()) 
-                        {
-                            comp.Pods.Remove(data);
-                        }
-                        if (Prefs.DevMode)
-                        {
-                            Log.Message("生成残骸空投" + pod.position);
-                        }
-                    }
-                    if (Prefs.DevMode)
-                    {
-                        Log.Message("拦截成功");
-                    }
-                }
-            }
-            else if (Prefs.DevMode)
-            {
-                Log.Message("拦截失败");
             }
             base.LeaveMap();
         }
+
         protected override void GetDrawPositionAndRotation(ref Vector3 drawLoc, out float extraRotation)
         {
-            extraRotation = 0f;  
-            if (def.skyfaller.zPositionCurve != null && (this.Rotation == Rot4.East || this.Rotation == Rot4.West))
+            extraRotation = 0f;
+            if (def.skyfaller.zPositionCurve != null && (Rotation == Rot4.East || Rotation == Rot4.West))
             {
-                drawLoc.z += this.def.skyfaller.zPositionCurve.Evaluate(this.TimeInAnimation);
-            } 
+                drawLoc.z += def.skyfaller.zPositionCurve.Evaluate(TimeInAnimation);
+            }
             switch (base.Rotation.AsInt)
             {
-                case 1: 
-                    extraRotation += this.def.skyfaller.rotationCurve.Evaluate(base.TimeInAnimation);
+                case 1:
+                    extraRotation += def.skyfaller.rotationCurve.Evaluate(base.TimeInAnimation);
                     break;
                 case 3:
-                    extraRotation -= this.def.skyfaller.rotationCurve.Evaluate(base.TimeInAnimation);
+                    extraRotation -= def.skyfaller.rotationCurve.Evaluate(base.TimeInAnimation);
                     break;
-            } 
+            }
         }
 
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_References.Look(ref this.faller, "faller");
+            Scribe_Values.Look(ref targetId, "targetId", -1);
+            Scribe_Values.Look(ref hitChance, "hitChance", 0.9f);
         }
-
     }
 }

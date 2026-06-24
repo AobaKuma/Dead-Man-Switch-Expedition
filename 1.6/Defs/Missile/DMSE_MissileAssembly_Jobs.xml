@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <JobDef>
+    <defName>DMSE_DeliverMissileResource</defName>
+    <driverClass>DMSE.JobDriver_DeliverMissileResource</driverClass>
+    <reportString>delivering parts to TargetA.</reportString>
+  </JobDef>
+
+  <JobDef>
+    <defName>DMSE_AssembleMissile</defName>
+    <driverClass>DMSE.JobDriver_AssembleMissile</driverClass>
+    <reportString>assembling TargetA.</reportString>
+  </JobDef>
+
+  <WorkGiverDef>
+    <defName>DMSE_AssembleMissile</defName>
+    <label>assemble missiles</label>
+    <giverClass>DMSE.WorkGiver_AssembleMissile</giverClass>
+    <workType>Crafting</workType>
+    <verb>assemble</verb>
+    <gerund>assembling</gerund>
+    <scanThings>true</scanThings>
+    <scanCells>false</scanCells>
+    <priorityInType>50</priorityInType>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+</Defs>
