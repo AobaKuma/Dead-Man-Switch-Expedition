@@ -49,7 +49,8 @@ namespace DMSE
 
             InterceptProjectile p = (InterceptProjectile)SkyfallerMaker.SpawnSkyfaller(
                 Props.interceptorSkyfaller, parent.Position, parent.Map);
-            p.Rotation = Rot4.Random;
+            // 發射方向與發射器建築朝向一致（同巡航導彈）。
+            p.Rotation = parent.Rotation;
             p.angle = p.Rotation.AsAngle;
             p.targetId = target.id;
             p.hitChance = hitChance;

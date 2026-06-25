@@ -171,10 +171,18 @@
       <li Class="DMSE.CompProperties_TerminalCIWS">
         <projectile>DMSE_Bullet_Vulcan_WingBack_CIWS</projectile>
         <terminalWindowTicks>1800</terminalWindowTicks>
-        <cooldownTicks>60</cooldownTicks>
-        <shotsPerBurst>5</shotsPerBurst>
-        <interceptChance>0.5</interceptChance>
+        <cooldownTicks>20</cooldownTicks>
+        <ticksBetweenShots>2</ticksBetweenShots>
+        <shotsPerBurst>15</shotsPerBurst>
+        <interceptChance>0.25</interceptChance>
         <debrisChance>0.3</debrisChance>
+        <!-- 瞄準：提前量、有序掃射半幅、依迫近距離的瞄準高度（左上→左中） -->
+        <aimLeadCells>5</aimLeadCells>
+        <aimSweepCells>7</aimSweepCells>
+        <aimHeightFar>1</aimHeightFar>
+        <aimHeightNear>0.45</aimHeightNear>
+        <!-- 攔截時消耗的 Refuelable（裝甲砲管耐久）每發量 -->
+        <fuelPerShot>1</fuelPerShot>
       </li>
     </comps>
     <building>
@@ -274,13 +282,13 @@
       <texPath>Things/Projectile/Bullet_Big</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
+    <!-- 末端 CIWS 曳光彈：朝天空直射的視覺彈（由 CompTerminalCIWS 以 ProjectileHitFlags.None 發射，不造成傷害）。 -->
     <projectile>
       <damageDef>Bullet</damageDef>
       <damageAmountBase>20</damageAmountBase>
       <armorPenetrationBase>0.44</armorPenetrationBase>
       <stoppingPower>6</stoppingPower>
-      <speed>102</speed>
-      <flyOverhead>true</flyOverhead>
+      <speed>150</speed>
     </projectile>
   </ThingDef>
 

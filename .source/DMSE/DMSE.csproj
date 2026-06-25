@@ -57,6 +57,7 @@
     <Compile Include="CelestialTransfer\Hellfire\WorldGenStep_ImpactCraters.cs" />
     <Compile Include="CelestialTransfer\Patch_CompGravshipFacility_CanBeActive.cs" />
     <Compile Include="Scorer\CompEffecterColdLaunch.cs" />
+    <Compile Include="Scorer\CompEffecterHotLaunch.cs" />
     <Compile Include="CompOxygenCandle.cs" />
     <Compile Include="CompVacuumPump.cs" />
     <Compile Include="ScenPart_Huntdown.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="SkyFallerTurret\BVR\CompFireControlRadar.cs" />
     <Compile Include="SkyFallerTurret\BVR\CompMissileLauncher.cs" />
     <Compile Include="SkyFallerTurret\BVR\CompTerminalCIWS.cs" />
+    <Compile Include="SkyFallerTurret\BVR\MapComponent_InterceptEffects.cs" />
     <Compile Include="Scorer\Assembly\MissileDefs.cs" />
     <Compile Include="Scorer\Assembly\MissileConfig.cs" />
     <Compile Include="Scorer\Assembly\CompMissileConfig.cs" />

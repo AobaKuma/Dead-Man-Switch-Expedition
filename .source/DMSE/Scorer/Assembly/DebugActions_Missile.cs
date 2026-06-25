@@ -25,6 +25,41 @@ namespace DMSE
                 MessageTypeDefOf.NeutralEvent, false);
         }
 
+        [DebugAction("DMSE", "Enemy missile salvo (single wave x8)", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void EnemyMissileBarrage()
+        {
+            Map map = Find.CurrentMap;
+            if (map == null) { return; }
+            MapComponent_BVRCombat comp = map.GetComponent<MapComponent_BVRCombat>();
+            if (comp == null) { return; }
+
+            const int count = 8;
+            Faction attacker = FindHostileFaction();
+            Faction defender = comp.ResolveDefender(attacker);
+            ThingDef incomingDef = DefDatabase<ThingDef>.GetNamedSilentFail(IncomingMissileUtility.DefaultIncomingDef);
+
+            // 有防禦方：直接生成一個含 8 枚導彈的單一波次。
+            if (defender != null && comp.RegisterSalvo(incomingDef, count, BuildEnemyConfig(), attacker, defender))
+            {
+                Messages.Message("DMSE: missile salvo registered as single wave (" + count + ")"
+                    + (attacker != null ? " from " + attacker.Name : ""), MessageTypeDefOf.ThreatBig, false);
+                return;
+            }
+
+            // 無運作中的防禦方搜索雷達：直接落地，無法攔截。
+            for (int i = 0; i < count && incomingDef != null; i++)
+            {
+                IntVec3 cell = DropCellFinder.RandomDropSpot(map);
+                if (SkyfallerMaker.SpawnSkyfaller(incomingDef, cell, map) is MissileIncoming mi)
+                {
+                    mi.config = BuildEnemyConfig();
+                    mi.attacker = attacker;
+                }
+            }
+            Messages.Message("DMSE: missile salvo x" + count + " (no active defender radar — impacts directly)",
+                MessageTypeDefOf.NeutralEvent, false);
+        }
+
         [DebugAction("DMSE", "Enemy missile strike (single)", allowedGameStates = AllowedGameStates.PlayingOnMap)]
         private static void EnemyMissileStrikeSingle()
         {

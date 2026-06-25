@@ -8,10 +8,24 @@ namespace DMSE
     /// 中過程攔截彈（視覺 skyfaller）。離場時依 <see cref="hitChance"/> 擲骰：
     /// 成功則乾淨擊毀目標（不生成殘骸）；無論成敗都釋放占用的火力通道。
     /// </summary>
-    public class InterceptProjectile : Skyfaller
+    public class InterceptProjectile : Skyfaller, ILaunchTarget
     {
         public int targetId = -1;
         public float hitChance = 0.9f;
+
+        public Vector3 trueDrawPos = Vector3.zero;
+        public float trueRotation = 0f;
+
+        public Vector3 LaunchDrawPos => trueDrawPos;
+        public float LaunchRotation => trueRotation;
+
+        protected override void DrawAt(Vector3 drawLoc, bool flip = false)
+        {
+            base.DrawAt(drawLoc, flip);
+            GetDrawPositionAndRotation(ref drawLoc, out float extraRotation);
+            trueDrawPos = drawLoc;
+            trueRotation = Rotation.AsAngle + extraRotation;
+        }
 
         protected override void LeaveMap()
         {
@@ -26,6 +40,8 @@ namespace DMSE
 
                     if (Rand.Chance(hitChance))
                     {
+                        // 地圖外攔截光效與音效（中過程）。
+                        MapComponent_InterceptEffects.Trigger(Map, target.position, terminal: false);
                         comp.RemoveTarget(targetId); // 中過程攔截成功：乾淨消滅，不留殘骸。
                         if (Prefs.DevMode) { Log.Message($"[DMSE BVR] 中過程攔截成功 target#{targetId}"); }
                     }

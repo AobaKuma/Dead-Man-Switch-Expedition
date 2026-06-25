@@ -24,7 +24,7 @@
   <DMSE.Alert.HuntdownThreatCritical.Desc>石碑的位置已被追踪，追捕小队和可能的空袭将很快到达，请在为时已晚之前转移。</DMSE.Alert.HuntdownThreatCritical.Desc>
 
   <!-- EN: {0} drop pods will breach in {1} -->
-  <DMSE.Alert.Pods>{0}个空降舱将在{1}后来袭</DMSE.Alert.Pods>
+  <DMSE.Alert.Pods>{0} 个来袭目标 — 拦截窗口剩余 {1}</DMSE.Alert.Pods>
 
   <!-- EN: Select flight mode -->
   <DMSE.Flight.Select>选择巡航模式</DMSE.Flight.Select>

@@ -206,7 +206,7 @@
         </modExtensions>
     </ThingDef>
 
-    <!-- ==================== 中過程防空攔截彈（skyfaller，由 CompMissileLauncher 發射） ==================== -->
+    <!-- ==================== 中程防空攔截彈（skyfaller，由 CompMissileLauncher 發射） ==================== -->
     <ThingDef ParentName="SkyfallerBase">
         <defName>DMSE_SkyFaller_Interceptor</defName>
         <label>interceptor missile</label>
@@ -217,37 +217,66 @@
             <graphicClass>Graphic_Single</graphicClass>
             <drawSize>2.5</drawSize>
         </graphicData>
+        <!-- 與巡航導彈相同的發射軌跡 -->
         <skyfaller>
             <movementType>Accelerate</movementType>
             <reversed>true</reversed>
             <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
-            <shadowSize>(1.5, 1.5)</shadowSize>
-            <ticksToDiscardInReverse>120</ticksToDiscardInReverse>
+            <shadowSize>(2, 2)</shadowSize>
+            <ticksToDiscardInReverse>300</ticksToDiscardInReverse>
             <ticksToImpactRange>0</ticksToImpactRange>
             <anticipationSound>DropPod_Leaving</anticipationSound>
             <anticipationSoundTicks>-1</anticipationSoundTicks>
             <speedCurve>
                 <points>
                     <li>(0,0.3)</li>
-                    <li>(0.3,0.4)</li>
-                    <li>(1,1.2)</li>
+                    <li>(0.2,0.2)</li>
+                    <li>(0.5,0.5)</li>
+                    <li>(1,1)</li>
                 </points>
             </speedCurve>
             <rotationCurve>
                 <points>
-                    <li>(0,-8)</li>
-                    <li>(0.4,-18)</li>
+                    <li>(0,-10)</li>
+                    <li>(0.30,-25)</li>
+                    <li>(0.6,-5)</li>
                     <li>(1,0)</li>
                 </points>
             </rotationCurve>
             <zPositionCurve>
                 <points>
                     <li>(0,0)</li>
-                    <li>(0.1,2)</li>
-                    <li>(1,12)</li>
+                    <li>(0.05,2)</li>
+                    <li>(0.3,1)</li>
+                    <li>(1,10)</li>
                 </points>
             </zPositionCurve>
         </skyfaller>
+        <!-- SAM 熱發射特效：尾管立即點火、強烈初始噴焰（排氣火焰、煙霧、點火音效） -->
+        <comps>
+            <li Class="DMSE.CompProperties_EffecterHotLaunch">
+                <launchBlastScale>1</launchBlastScale>
+                <ignitionSound>DMSE_Missile_Flight</ignitionSound>
+                <ExhaustFleck>DMS_Fleck_RocketFlame</ExhaustFleck>
+                <ExhaustCurve>
+                    <points>
+                        <li>(0,2)</li>
+                        <li>(0.1,6)</li>
+                        <li>(0.5,4)</li>
+                        <li>(0.9,2)</li>
+                    </points>
+                </ExhaustCurve>
+                <SmokeFleck>Smoke</SmokeFleck>
+                <SmokeCurve>
+                    <points>
+                        <li>(0,3)</li>
+                        <li>(0.5,2)</li>
+                        <li>(1,1)</li>
+                    </points>
+                </SmokeCurve>
+                <launchEffectTrigger>DMS_LaunchDust_Recoilless</launchEffectTrigger>
+            </li>
+        </comps>
     </ThingDef>
 
     <!-- ==================== 防空導彈發射裝置 ====================
@@ -297,7 +326,7 @@
             <li Class="DMSE.CompProperties_MissileLauncher">
                 <interceptorSkyfaller>DMSE_SkyFaller_Interceptor</interceptorSkyfaller>
                 <reloadCooldownTicks>240</reloadCooldownTicks>
-                <interceptorTravelTicks>120</interceptorTravelTicks>
+                <interceptorTravelTicks>300</interceptorTravelTicks>
             </li>
         </comps>
         <researchPrerequisites>

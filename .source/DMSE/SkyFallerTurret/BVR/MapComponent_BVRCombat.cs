@@ -87,7 +87,9 @@ namespace DMSE
 
             BVRTarget target = new BVRTarget(faller, pos, map, nextTargetId++);
 
-            BVRWave wave = Waves.Find(w => w.tickToImpact == impactTick && w.defenderFaction == defender);
+            // 短時間內（MergeWindowTicks 容差）抵達的目標合併到同一個攔截窗口（同一波次）。
+            BVRWave wave = Waves.Find(w => w.defenderFaction == defender
+                && Mathf.Abs(w.tickToImpact - impactTick) <= BVRTuning.MergeWindowTicks);
             if (wave == null)
             {
                 wave = new BVRWave(impactTick, new List<BVRTarget> { target });
@@ -97,11 +99,49 @@ namespace DMSE
             else
             {
                 wave.targets.Add(target);
-                // 目標數量越多，整體窗口略為縮短（對應設計圖「目標數量 → 預警時間」）。
+                // 合併後窗口取最早抵達者；目標數量越多，整體窗口再略為縮短。
+                wave.tickToImpact = Mathf.Min(wave.tickToImpact, impactTick);
                 wave.tickToImpact = Mathf.Max(
                     Find.TickManager.TicksGame + 1,
                     wave.tickToImpact - BVRTuning.WindowPenaltyPerExtraTarget);
             }
+        }
+
+        /// <summary>
+        /// 直接生成一個含 count 枚導彈的單一攔截波次（測試用，繞過世界航跡）。
+        /// 需要有運作中的防禦方搜索雷達；成功回傳 true。
+        /// </summary>
+        public bool RegisterSalvo(ThingDef incomingDef, int count, MissileConfig config, Faction attacker, Faction defender)
+        {
+            if (incomingDef == null || count <= 0 || defender == null || map == null) { return false; }
+
+            // 以一枚樣本（帶 def 的 BVRTargetProps）計算單枚窗口。
+            MissileIncoming first = SkyfallerMaker.MakeSkyfaller(incomingDef) as MissileIncoming;
+            if (first == null) { return false; }
+
+            int window = ComputeWarningWindow(first, 1, defender);
+            if (window < 0) { return false; } // 防禦方無運作中搜索雷達（first 交由 GC）。
+
+            // 目標數量越多，整體窗口越短（同合併規則）。
+            int nowTick = Find.TickManager.TicksGame;
+            int impactTick = Mathf.Max(nowTick + 1, nowTick + window - BVRTuning.WindowPenaltyPerExtraTarget * (count - 1));
+
+            BVRWave wave = new BVRWave(impactTick, new List<BVRTarget>());
+            wave.defenderFaction = defender;
+
+            for (int i = 0; i < count; i++)
+            {
+                MissileIncoming mi = i == 0 ? first : SkyfallerMaker.MakeSkyfaller(incomingDef) as MissileIncoming;
+                if (mi == null) { continue; }
+                mi.config = config != null ? config.Clone() : null;
+                mi.attacker = attacker;
+                mi.bvrHandled = true; // 重投時不再重複登記。
+                IntVec3 pos = DropCellFinder.RandomDropSpot(map);
+                wave.targets.Add(new BVRTarget(mi, pos, map, nextTargetId++));
+            }
+
+            Waves.Add(wave);
+            return true;
         }
 
         /// <summary>
@@ -329,5 +369,8 @@ namespace DMSE
 
         /// <summary>反隱身不足時，搜索窗口的折扣係數。</summary>
         public const float StealthDetectFactor = 0.4f;
+
+        /// <summary>預測抵達時間相差在此 ticks 內的目標，合併到同一個攔截窗口（同一波次）。</summary>
+        public const int MergeWindowTicks = 600;
     }
 }

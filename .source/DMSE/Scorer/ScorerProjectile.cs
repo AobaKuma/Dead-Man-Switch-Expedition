@@ -10,9 +10,12 @@ using Verse.Noise;
 
 namespace DMSE
 {
-    public class ScorerProjectile : Skyfaller
+    public class ScorerProjectile : Skyfaller, ILaunchTarget
     {
         public ScorerProjectile_WorldObject worldObject;
+
+        public Vector3 LaunchDrawPos => trueDrawPos;
+        public float LaunchRotation => trueRotation;
         protected override void LeaveMap()
         {
             base.LeaveMap();
