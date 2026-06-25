@@ -172,14 +172,14 @@
         <projectile>DMSE_Bullet_Vulcan_WingBack_CIWS</projectile>
         <terminalWindowTicks>1800</terminalWindowTicks>
         <cooldownTicks>20</cooldownTicks>
-        <ticksBetweenShots>2</ticksBetweenShots>
-        <shotsPerBurst>15</shotsPerBurst>
+        <ticksBetweenShots>4</ticksBetweenShots>
+        <shotsPerBurst>10</shotsPerBurst>
         <interceptChance>0.25</interceptChance>
         <debrisChance>0.3</debrisChance>
         <!-- 瞄準：提前量、有序掃射半幅、依迫近距離的瞄準高度（左上→左中） -->
         <aimLeadCells>5</aimLeadCells>
         <aimSweepCells>7</aimSweepCells>
-        <aimHeightFar>1</aimHeightFar>
+        <aimHeightFar>10</aimHeightFar>
         <aimHeightNear>0.45</aimHeightNear>
         <!-- 攔截時消耗的 Refuelable（裝甲砲管耐久）每發量 -->
         <fuelPerShot>1</fuelPerShot>
@@ -235,7 +235,7 @@
         <minRange>2.9</minRange>
         <range>44</range>
         <ai_AvoidFriendlyFireRadius>4.9</ai_AvoidFriendlyFireRadius>
-        <ticksBetweenBurstShots>1</ticksBetweenBurstShots>
+        <ticksBetweenBurstShots>4</ticksBetweenBurstShots>
         <burstShotCount>50</burstShotCount>
         <soundCast>DMS_Shot_GAU</soundCast>
         <soundCastTail>GunTail_Heavy</soundCastTail>

@@ -28,6 +28,9 @@ namespace DMSE
         private static SoundDef defaultSound;
         private static bool resolvedSound;
 
+        private int lastWeatherFlashTick = -9999;
+        private const int WeatherFlashMinInterval = 12;
+
         public MapComponent_InterceptEffects(Map map) : base(map) { }
 
         /// <summary>外部呼叫入口：在 cell 上方生成攔截光效與音效。terminal 表示末端攔截（較低較近）。</summary>
@@ -53,6 +56,14 @@ namespace DMSE
             if (s != null)
             {
                 s.PlayOneShot(SoundInfo.InMap(new TargetInfo(cell, map)));
+            }
+
+            // 基於原版閃電閃光：短暫提亮天空並偏移陰影方位（直接用原版事件，節流避免齊射過度閃爍）。
+            int nowTick = Find.TickManager.TicksGame;
+            if (nowTick - lastWeatherFlashTick >= WeatherFlashMinInterval)
+            {
+                lastWeatherFlashTick = nowTick;
+                map.weatherManager.eventHandler.AddEvent(new WeatherEvent_LightningFlash(map));
             }
         }
 
