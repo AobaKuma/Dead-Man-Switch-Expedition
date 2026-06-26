@@ -121,7 +121,7 @@
 		<apparel>
 			<countsAsClothingForNudity>false</countsAsClothingForNudity>
 			<bodyPartGroups>
-				<li>UpperHead</li>
+				<li>FullHead</li>
 			</bodyPartGroups>
 			<wornGraphicPath>Things/Apparel/RangerHelmet/Apparel</wornGraphicPath>
 			<layers>
