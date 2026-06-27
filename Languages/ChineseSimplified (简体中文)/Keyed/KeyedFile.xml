@@ -118,6 +118,16 @@
   <DMSE.Missile.NeedResources>装配所需：{0}</DMSE.Missile.NeedResources>
   <DMSE.Missile.ReadyToAssemble>资源已备齐－等待装配</DMSE.Missile.ReadyToAssemble>
   <DMSE.Missile.NoResources>没有可用于装配的资源</DMSE.Missile.NoResources>
+  <DMSE.Missile.LaunchCooldown>发射轨重新装填中：{0}</DMSE.Missile.LaunchCooldown>
+  <DMSE.Missile.NoMissileLoaded>未装填导弹</DMSE.Missile.NoMissileLoaded>
+  <DMSE.SAM.Reloading>装填中：{0}</DMSE.SAM.Reloading>
+  <DMSE.SAM.Ready>可发射</DMSE.SAM.Ready>
   <DMSE.Missile.IncomingLetter>导弹来袭</DMSE.Missile.IncomingLetter>
   <DMSE.Missile.IncomingLetterDesc>{0} 发射的导弹正在接近，即将打击殖民地。</DMSE.Missile.IncomingLetterDesc>
+
+  <DMSE_MissileDecayedAway>{0} 已劣化至无法使用而解体。</DMSE_MissileDecayedAway>
+  <DMSE_MissileDecaySheltered>已庇护：耐久稳定</DMSE_MissileDecaySheltered>
+  <DMSE_MissileDecayUnsheltered>未庇护：每日损失 {0} 点耐久</DMSE_MissileDecayUnsheltered>
+
+  <DMSE_MissileRackStored>已存放导弹：{0} / {1}</DMSE_MissileRackStored>
 </LanguageData>

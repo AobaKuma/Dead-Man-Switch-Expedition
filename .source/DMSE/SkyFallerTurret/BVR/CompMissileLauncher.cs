@@ -61,6 +61,16 @@ namespace DMSE
             if (r != null) { r.ConsumeFuel(1f); }
         }
 
+        public override string CompInspectStringExtra()
+        {
+            int remaining = cooldownUntil - Find.TickManager.TicksGame;
+            if (remaining > 0)
+            {
+                return "DMSE.SAM.Reloading".Translate(remaining.ToStringTicksToPeriod());
+            }
+            return "DMSE.SAM.Ready".Translate();
+        }
+
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);

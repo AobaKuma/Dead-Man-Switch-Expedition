@@ -16,6 +16,21 @@
     <generalRules/>
   </ResearchProjectDef>
   
+  <!-- 巡飛彈：大前期可研究的 BVR 武器。 -->
+  <ResearchProjectDef ParentName="DMS_BaseTech">
+    <defName>DMSE_LoiteringMunitions</defName>
+    <label>loitering munitions</label>
+    <description>Rail-launched folding-wing loitering munitions give an early colony a crude beyond-visual-range strike capability. Slow and easy to detect, but available long before proper cruise missiles.\n\nThis research unlocks the loitering munition, its tilt-launch rail, and a storage rack.</description>
+    <baseCost>600</baseCost>
+    <requiredResearchBuilding Inherit="False"/>
+    <prerequisites>
+      <li>DMS_MechBasis</li>
+    </prerequisites>
+    <researchViewX>2.00</researchViewX>
+    <researchViewY>3.40</researchViewY>
+    <generalRules/>
+  </ResearchProjectDef>
+
   <ResearchProjectDef ParentName="DMS_BaseTech">
     <defName>DMSE_OrbitalDynamics</defName>
     <label>orbital dynamics</label>

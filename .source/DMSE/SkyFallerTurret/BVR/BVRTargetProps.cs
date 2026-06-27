@@ -14,7 +14,7 @@ namespace DMSE
         /// <summary>隱身值：雷達的反隱身等級需 >= 此值才能完整偵測，否則窗口縮短、命中率下降。</summary>
         public int stealthLevel = 0;
 
-        /// <summary>末端速度，用於窗口與末端時間估算（對應設計圖中的 speed）。</summary>
+        /// <summary>飛行速度：越快越難被攔截（降低火控命中率、延長鎖定時間）。</summary>
         public float speed = 15f;
 
         public static readonly BVRTargetProps Default = new BVRTargetProps();

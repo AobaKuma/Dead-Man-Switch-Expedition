@@ -33,8 +33,6 @@ namespace DMSE
         public readonly HashSet<CompTerminalCIWS> ciwsTurrets = new HashSet<CompTerminalCIWS>();
 
         /// <summary>地圖上是否存在任何運作中的搜索雷達（決定是否啟用攔截流程）。</summary>
-        public bool AnyActiveSearchRadar => searchRadars.Any(r => r.Active);
-
         /// <summary>末端攔截窗口：取防禦方所有 CIWS 中最大的窗口；沒有則為 0。</summary>
         public int TerminalWindowTicks(Faction defender)
         {
@@ -162,12 +160,19 @@ namespace DMSE
             float window = 0f;
             foreach (CompSearchRadar radar in active)
             {
-                float eff = radar.Props.searchDistance
-                            * radar.Props.ticksPerDistance
-                            * Mathf.Max(1, radar.Props.powerLevel);
-                if (radar.Props.antiStealthLevel < tp.stealthLevel)
+                // 功率對窗口的影響改為超線性（指數放大）：高功率雷達顯著拉長預警/攔截窗口。
+                float powerFactor = Mathf.Pow(Mathf.Max(1, radar.Props.powerLevel), BVRTuning.PowerWindowExponent);
+                float eff = radar.Props.searchDistance * radar.Props.ticksPerDistance * powerFactor;
+
+                // 反隱身強度：高出目標隱身越多，窗口加成越大；不足則大幅縮短（僅能局部偵測）。
+                int antiGap = radar.Props.antiStealthLevel - tp.stealthLevel;
+                if (antiGap < 0)
                 {
-                    eff *= BVRTuning.StealthDetectFactor; // 反隱身不足，僅能局部偵測，窗口縮短。
+                    eff *= BVRTuning.StealthDetectFactor;
+                }
+                else
+                {
+                    eff *= 1f + BVRTuning.AntiStealthBonusPerLevel * antiGap;
                 }
                 window += eff;
             }
@@ -263,34 +268,46 @@ namespace DMSE
             }
             if (capacity <= 0) { return; }
 
-            int engaged = CountEngaged(now);
+            int engaged = CountEngaged();
 
             foreach (BVRTarget target in wave.targets)
             {
-                if (engaged >= capacity) { break; }
                 if (target.midcourseEngagedUntil > now) { continue; } // 已有攔截彈在飛。
+                if (target.lockUntil > now) { continue; }             // 鎖定中（已占用通道）。
 
+                if (target.lockUntil >= 0)
+                {
+                    // 鎖定完成 → 嘗試發射（已占用通道，不受 capacity 限制）。
+                    CompFireControlRadar fcReady = SelectBestRadar(target, timeLeft, defender);
+                    CompMissileLauncher launcher = SelectReadyLauncher(now, defender);
+                    if (fcReady != null && launcher != null)
+                    {
+                        launcher.FireInterceptor(target, fcReady.ComputeHitChance(target, timeLeft - terminalWindow), now);
+                        target.midcourseEngagedUntil = now + launcher.Props.interceptorTravelTicks;
+                        target.lockUntil = -1; // 發射後即釋放火力通道，供下一目標鎖定。
+                    }
+                    continue; // 此通道已被占用（無論是否成功發射）。
+                }
+
+                // 未鎖定的新目標：受火力通道容量限制才開始鎖定。
+                if (engaged >= capacity) { continue; }
                 CompFireControlRadar fc = SelectBestRadar(target, timeLeft, defender);
                 if (fc == null) { continue; }
-
-                CompMissileLauncher launcher = SelectReadyLauncher(now, defender);
-                if (launcher == null) { break; } // 沒有可用的發射裝置。
-
-                float hitChance = fc.ComputeHitChance(target, timeLeft - terminalWindow);
-                launcher.FireInterceptor(target, hitChance, now);
-                target.midcourseEngagedUntil = now + launcher.Props.interceptorTravelTicks;
+                target.lockUntil = now + fc.LockOnTicksFor(target);
                 engaged++;
             }
         }
 
-        private int CountEngaged(int now)
+        // 火力通道只在「鎖定階段」占用；攔截彈一旦發射（lockUntil = -1）即釋放通道。
+        // 因此同時在飛的攔截彈數量僅受發射平台數量限制——地圖上越多可用 SAM 平台，越多攔截彈可同時在飛。
+        private int CountEngaged()
         {
             int n = 0;
             foreach (BVRWave w in Waves)
             {
                 foreach (BVRTarget t in w.targets)
                 {
-                    if (t.midcourseEngagedUntil > now) { n++; }
+                    if (t.lockUntil >= 0) { n++; }
                 }
             }
             return n;
@@ -369,6 +386,12 @@ namespace DMSE
 
         /// <summary>反隱身不足時，搜索窗口的折扣係數。</summary>
         public const float StealthDetectFactor = 0.4f;
+
+        /// <summary>搜索雷達功率對預警窗口的指數（>1 即超線性，越高功率影響越顯著）。</summary>
+        public const float PowerWindowExponent = 2f;
+
+        /// <summary>反隱身等級每高出目標隱身 1 級，預警窗口的加成比例。</summary>
+        public const float AntiStealthBonusPerLevel = 0.5f;
 
         /// <summary>預測抵達時間相差在此 ticks 內的目標，合併到同一個攔截窗口（同一波次）。</summary>
         public const int MergeWindowTicks = 600;

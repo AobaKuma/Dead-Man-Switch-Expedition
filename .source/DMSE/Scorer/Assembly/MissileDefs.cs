@@ -15,10 +15,51 @@ namespace DMSE
     }
 
     /// <summary>
+    /// 導彈尺寸分級。決定對應的發射平台與儲藏架（見設計文件「DMSE 導彈戰鬥內容」）。
+    /// </summary>
+    public enum MissileSizeClass
+    {
+        Loitering,  // 巡飛彈：軌道傾斜發射、最前期 BVR、隱身與速度差
+        Light,      // 輕型導彈：中短程防空/地對地、四發彈容、無法自定義
+        Medium,     // 中型導彈：巡航/反彈道、可在儲存設備上自定義
+        Ballistic   // 彈道導彈：長程、只能垂直發射、不可上重力船、無物品型態
+    }
+
+    /// <summary>
+    /// 發射方式。純建造限制＋視覺：垂直發射架不可建於重力船基structure 且為單一朝向；
+    /// 傾斜發射架可旋轉。不影響彈道數值。Both 表示彈體本身可被任一型發射平台使用。
+    /// </summary>
+    public enum MissileLaunchMode
+    {
+        Tilt,       // 傾斜發射（可旋轉、可上重力船）
+        Vertical,   // 垂直發射（單一朝向、禁止建於 substructure）
+        Both        // 彈體可同時相容傾斜與垂直平台
+    }
+
+    /// <summary>導彈自定義（裝配）介面所在位置。</summary>
+    public enum MissileCustomizeLocation
+    {
+        None,            // 不可自定義（巡飛彈、輕型導彈）
+        Item,            // 在導彈物品上以 ITab 裝配（現有中型彈體的範本行為）
+        StorageBuilding, // 在專屬儲存建築上消耗資源調整（設計文件之中型導彈目標行為）
+        Launcher         // 直接在發射架上建造／自定義（彈道導彈，無物品型態）
+    }
+
+    /// <summary>
     /// 導彈彈體定義。提供基礎參數，並決定此彈體開放哪些裝配槽位、抵達時使用哪個 incoming skyfaller。
     /// </summary>
     public class MissileBodyDef : Def
     {
+        // ===== 分級（四階導彈分類）=====
+        /// <summary>導彈尺寸分級，決定可用的發射平台與儲存架。</summary>
+        public MissileSizeClass sizeClass = MissileSizeClass.Medium;
+
+        /// <summary>此彈體可被哪種發射平台使用（Tilt／Vertical／Both）。</summary>
+        public MissileLaunchMode launchMode = MissileLaunchMode.Both;
+
+        /// <summary>自定義介面所在位置；None 表示此彈體不可自定義。</summary>
+        public MissileCustomizeLocation customizeLocation = MissileCustomizeLocation.Item;
+
         // 基礎參數
         public float baseExplosionRadius = 5f;
         public DamageDef baseDamageDef;          // 為 null 時於 MissileConfig 內回退為 Bomb

@@ -49,7 +49,7 @@ namespace DMSE
                 start = Time.realtimeSinceStartup,
                 duration = terminal ? 0.6f : 0.85f,
                 maxScale = terminal ? 3.5f : 6f,
-                color = terminal ? new Color(1f, 0.8f, 0.35f, 1f) : new Color(0.55f, 0.8f, 1f, 1f)
+                color = terminal ? new Color(1f, 0.8f, 0.35f, 1f) : new Color(0.85f, 0.8f, 0.5f, 1f)
             });
 
             SoundDef s = sound ?? DefaultSound;
@@ -58,12 +58,13 @@ namespace DMSE
                 s.PlayOneShot(SoundInfo.InMap(new TargetInfo(cell, map)));
             }
 
-            // 基於原版閃電閃光：短暫提亮天空並偏移陰影方位（直接用原版事件，節流避免齊射過度閃爍）。
+            // 攔截空爆閃光：用暖色爆炸閃光（與導彈爆炸同款），節流避免齊射過度閃爍。
             int nowTick = Find.TickManager.TicksGame;
             if (nowTick - lastWeatherFlashTick >= WeatherFlashMinInterval)
             {
                 lastWeatherFlashTick = nowTick;
-                map.weatherManager.eventHandler.AddEvent(new WeatherEvent_LightningFlash(map));
+                Vector2 shadow = new Vector2(Rand.Range(-4f, 4f), Rand.Range(-4f, 0f));
+                map.weatherManager.eventHandler.AddEvent(new WeatherEvent_MissileFlash(map, terminal ? 0.45f : 0.65f, shadow));
             }
         }
 

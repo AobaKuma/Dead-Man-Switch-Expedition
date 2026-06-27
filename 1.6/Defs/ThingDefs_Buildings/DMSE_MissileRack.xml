@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_MissileRack</defName>
+    <label>missile rack</label>
+    <description>A 2x4 armoured rack that holds up to four cruise missiles. Missiles stored inside are sheltered from the elements and will not degrade.</description>
+    <thingClass>DMSE.Building_MissileRack</thingClass>
+    <category>Building</category>
+    <!-- 佔位美術：暫借發射器貼圖，請替換為 2x4 專屬 rack 貼圖。 -->
+    <graphicData>
+      <texPath>Things/Building/MissilePlatform/building</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(3,5)</drawSize>
+    </graphicData>
+    <rotatable>true</rotatable>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>60</pathCost>
+    <fillPercent>0.45</fillPercent>
+    <!-- RealtimeOnly：建築每幀走 DrawAt → Comps_PostDraw，渲染 Comp 才會被呼叫（與原版 Bookcase 一致）。 -->
+    <drawerType>RealtimeOnly</drawerType>
+    <tickerType>Never</tickerType>
+    <constructEffect>ConstructMetal</constructEffect>
+    <designationCategory>DMS_Category</designationCategory>
+    <size>(2,4)</size>
+    <selectable>true</selectable>
+    <statBases>
+      <MaxHitPoints>350</MaxHitPoints>
+      <WorkToBuild>6000</WorkToBuild>
+      <Flammability>0.4</Flammability>
+      <Mass>30</Mass>
+    </statBases>
+    <costList>
+      <Steel>120</Steel>
+      <ComponentStamped>4</ComponentStamped>
+    </costList>
+    <building>
+      <maxItemsInCell>1</maxItemsInCell>
+      <ignoreStoredThingsBeauty>true</ignoreStoredThingsBeauty>
+      <!-- 固定僅接受導彈；玩家無法在儲存設定中加入其他物品。 -->
+      <fixedStorageSettings>
+        <filter>
+          <thingDefs>
+            <li>DMSE_CruiseMissile</li>
+          </thingDefs>
+        </filter>
+      </fixedStorageSettings>
+      <defaultStorageSettings>
+        <priority>Important</priority>
+        <filter>
+          <thingDefs>
+            <li>DMSE_CruiseMissile</li>
+          </thingDefs>
+        </filter>
+      </defaultStorageSettings>
+    </building>
+    <comps>
+      <li Class="DMSE.CompProperties_MissileRackRenderer">
+        <maxStored>4</maxStored>
+        <!-- 北向時 4 個槽位（2 欄 x 2 列）；整體會隨 parent.Rotation 旋轉。 -->
+        <slotOffsets>
+          <li>(-0.5, 0,0)</li>
+          <li>( 0.5, 0, 0)</li>
+          <li>(-0.5, 0.2, 0.75)</li>
+          <li>( 0.5, 0.2, 0.75)</li>
+        </slotOffsets>
+        <!-- 每個方向可單獨覆寫座標與旋轉（兩者獨立）：
+             slotOffsets 為該方向的原值座標（不再隨 parent.Rotation 自動旋轉）；
+             rotation 為導彈貼圖角度（度，繞 Y）。任一項留空則回退到上方共用行為。
+        <east>
+          <slotOffsets>
+            <li>(0, 0, -0.5)</li>
+            <li>(0, 0, 0.5)</li>
+            <li>(0.75, 0.2, -0.5)</li>
+            <li>(0.75, 0.2, 0.5)</li>
+          </slotOffsets>
+          <rotation>90</rotation>
+        </east>
+        -->
+      </li>
+    </comps>
+    <inspectorTabs>
+      <li>RimWorld.ITab_Storage</li>
+    </inspectorTabs>
+    <researchPrerequisites>
+      <li>DMSE_OrbitalDynamics</li>
+    </researchPrerequisites>
+  </ThingDef>
+
+</Defs>

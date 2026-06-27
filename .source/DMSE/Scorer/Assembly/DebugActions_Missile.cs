@@ -3,6 +3,7 @@ using System.Linq;
 using LudeonTK;
 using RimWorld;
 using RimWorld.Planet;
+using UnityEngine;
 using Verse;
 
 namespace DMSE
@@ -25,7 +26,7 @@ namespace DMSE
                 MessageTypeDefOf.NeutralEvent, false);
         }
 
-        [DebugAction("DMSE", "Enemy missile salvo (single wave x8)", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        [DebugAction("DMSE", "Enemy missile salvo", allowedGameStates = AllowedGameStates.PlayingOnMap)]
         private static void EnemyMissileBarrage()
         {
             Map map = Find.CurrentMap;
@@ -45,9 +46,9 @@ namespace DMSE
                     + (attacker != null ? " from " + attacker.Name : ""), MessageTypeDefOf.ThreatBig, false);
                 return;
             }
-
+int c = Random.Range(8,20);
             // 無運作中的防禦方搜索雷達：直接落地，無法攔截。
-            for (int i = 0; i < count && incomingDef != null; i++)
+            for (int i = 0; i < c  && incomingDef != null; i++)
             {
                 IntVec3 cell = DropCellFinder.RandomDropSpot(map);
                 if (SkyfallerMaker.SpawnSkyfaller(incomingDef, cell, map) is MissileIncoming mi)

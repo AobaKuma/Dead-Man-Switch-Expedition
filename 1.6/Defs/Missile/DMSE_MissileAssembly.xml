@@ -6,6 +6,10 @@
     <defName>DMSE_MissileBody_Cruise</defName>
     <label>cruise missile body</label>
     <description>The standard chassis of the Scorer cruise missile. Provides four assembly slots for warhead, guidance, propulsion, and special payload.</description>
+    <!-- 四階分類：中型導彈（巡航/反彈道）。現有 cruise 作為中型階的基礎範本。 -->
+    <sizeClass>Medium</sizeClass>
+    <launchMode>Both</launchMode>
+    <customizeLocation>Item</customizeLocation>
     <baseExplosionRadius>6</baseExplosionRadius>
     <baseDamageDef>Bomb</baseDamageDef>
     <baseDamageAmount>120</baseDamageAmount>

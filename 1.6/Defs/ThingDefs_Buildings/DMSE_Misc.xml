@@ -72,12 +72,12 @@
       </li>
       <li Class="DMSE.CompProperties_FireControlRadar">
         <maxTargets>2</maxTargets>
-        <antiStealthLevel>2</antiStealthLevel>
         <powerLevel>2</powerLevel>
         <guidanceAccuracyTime>600</guidanceAccuracyTime>
         <maxRangeTicks>6000</maxRangeTicks>
         <maxHitChance>0.9</maxHitChance>
         <stealthMissFactor>0.5</stealthMissFactor>
+        <lockOnTicks>120</lockOnTicks>
       </li>
     </comps>
     <placeWorkers>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    四階導彈發射平台的共用抽象母 Def（架構腳手架）。
+    各階導彈的實際發射架請以 ParentName 繼承下列其一，並各自補上 graphicData / size /
+    costList / statBases / comps（CompProperties_Refuelable + DMSE.CompProperties...）以及
+    一份 DMSE.MissileLauncherExtension（宣告 sizeClass / launchMode / capacity）。
+
+    發射方式（傾斜 vs 垂直）為「純建造限制＋視覺」：
+      - 垂直發射：rotatable=false（單一朝向）＋ PlaceWorker_InvalidOverSubstructure
+        （原版，阻止建於重力船 substructure 地板上）。彈道導彈專用。
+      - 傾斜發射：rotatable=true，可旋轉、可建於重力船。
+    兩者皆不影響彈道數值。
+  -->
+
+  <!-- 傾斜發射平台母 Def（可旋轉、可上重力船） -->
+  <ThingDef Name="DMSE_TiltLauncherBase" ParentName="BuildingBase" Abstract="True">
+    <category>Building</category>
+    <rotatable>true</rotatable>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <tickerType>Normal</tickerType>
+    <drawerType>RealtimeOnly</drawerType>
+    <designationCategory>DMS_Category</designationCategory>
+    <selectable>true</selectable>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
+  </ThingDef>
+
+  <!-- 垂直發射平台母 Def（單一朝向、禁止建於重力船 substructure） -->
+  <ThingDef Name="DMSE_VerticalLauncherBase" ParentName="BuildingBase" Abstract="True">
+    <category>Building</category>
+    <rotatable>false</rotatable>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <tickerType>Normal</tickerType>
+    <drawerType>RealtimeOnly</drawerType>
+    <designationCategory>DMS_Category</designationCategory>
+    <selectable>true</selectable>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
+    <placeWorkers>
+      <!-- 原版：落在 substructure（重力船地板）時禁止放置。 -->
+      <li>PlaceWorker_InvalidOverSubstructure</li>
+    </placeWorkers>
+  </ThingDef>
+
+</Defs>

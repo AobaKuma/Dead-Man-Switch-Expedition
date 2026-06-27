@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ==================== 巡飛彈 彈體 ==================== -->
+  <!-- 第一階：軌道傾斜發射、最前期 BVR、無自定義。隱身與速度皆不理想（低 WorldSpeedFactor）。 -->
+  <DMSE.MissileBodyDef>
+    <defName>DMSE_MissileBody_Loiter</defName>
+    <label>loitering munition</label>
+    <description>An early rail-launched loitering munition. Slow and easy to detect, but it can strike beyond visual range long before proper cruise missiles are available.</description>
+    <sizeClass>Loitering</sizeClass>
+    <launchMode>Tilt</launchMode>
+    <customizeLocation>None</customizeLocation>
+    <baseExplosionRadius>3</baseExplosionRadius>
+    <baseDamageDef>Bomb</baseDamageDef>
+    <baseDamageAmount>60</baseDamageAmount>
+    <baseScatter>4</baseScatter>
+    <baseWorldSpeedFactor>0.55</baseWorldSpeedFactor>
+    <baseRange>0</baseRange>
+    <baseFuel>60</baseFuel>
+    <baseSpecificImpulse>2</baseSpecificImpulse>
+    <rangePerFuelImpulse>0.1</rangePerFuelImpulse>
+    <incomingSkyfaller>DMSE_Incoming_Loiter</incomingSkyfaller>
+    <!-- 無 slots：不可自定義。 -->
+  </DMSE.MissileBodyDef>
+
+</Defs>

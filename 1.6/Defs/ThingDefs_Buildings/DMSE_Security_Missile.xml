@@ -41,6 +41,14 @@
         <soundImpactDefault>BulletImpact_Ground</soundImpactDefault>
         <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
         <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
+        <!-- 四階分類：中型階、傾斜發射、彈容 1。作為平台分類架構的具體範本。 -->
+        <modExtensions>
+            <li Class="DMSE.MissileLauncherExtension">
+                <sizeClass>Medium</sizeClass>
+                <launchMode>Tilt</launchMode>
+                <capacity>1</capacity>
+            </li>
+        </modExtensions>
         <comps>
             <li Class="DMSE.CompPropertiesScorer">
                 <skyfaller>DMSE_SkyFaller_CruiseMissile</skyfaller>

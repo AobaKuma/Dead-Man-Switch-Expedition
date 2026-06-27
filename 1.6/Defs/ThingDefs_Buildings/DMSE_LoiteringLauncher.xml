@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ==================== 巡飛彈 離場 skyfaller（軌道熱發射） ==================== -->
+  <ThingDef ParentName="SkyfallerBase">
+    <defName>DMSE_SkyFaller_Loiter</defName>
+    <label>loitering munition (leaving)</label>
+    <thingClass>DMSE.ScorerProjectile</thingClass>
+    <size>(1,1)</size>
+    <graphicData>
+      <texPath>Things/Missile/Termite/missile_north</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>3</drawSize>
+    </graphicData>
+    <skyfaller>
+      <movementType>Accelerate</movementType>
+      <reversed>true</reversed>
+      <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
+      <shadowSize>(1.5, 1.5)</shadowSize>
+      <ticksToDiscardInReverse>300</ticksToDiscardInReverse>
+      <ticksToImpactRange>0</ticksToImpactRange>
+      <anticipationSound>DropPod_Leaving</anticipationSound>
+      <anticipationSoundTicks>-1</anticipationSoundTicks>
+      <speedCurve>
+        <points>
+          <li>(0,0.3)</li>
+          <li>(0.2,0.2)</li>
+          <li>(0.5,0.5)</li>
+          <li>(1,1)</li>
+        </points>
+      </speedCurve>
+      <rotationCurve>
+        <points>
+          <li>(0,-10)</li>
+          <li>(0.30,-25)</li>
+          <li>(0.6,-5)</li>
+          <li>(1,0)</li>
+        </points>
+      </rotationCurve>
+      <zPositionCurve>
+        <points>
+          <li>(0,0)</li>
+          <li>(0.05,2)</li>
+          <li>(0.3,1)</li>
+          <li>(1,10)</li>
+        </points>
+      </zPositionCurve>
+    </skyfaller>
+    <comps>
+      <li Class="DMSE.CompProperties_EffecterHotLaunch">
+        <launchBlastScale>0.7</launchBlastScale>
+        <ignitionSound>DMSE_Missile_Flight</ignitionSound>
+        <ExhaustFleck>DMS_Fleck_RocketFlame</ExhaustFleck>
+        <ExhaustCurve>
+          <points>
+            <li>(0,2)</li>
+            <li>(0.1,5)</li>
+            <li>(0.5,3)</li>
+            <li>(0.9,2)</li>
+          </points>
+        </ExhaustCurve>
+        <SmokeFleck>Smoke</SmokeFleck>
+        <SmokeCurve>
+          <points>
+            <li>(0,3)</li>
+            <li>(0.5,2)</li>
+            <li>(1,1)</li>
+          </points>
+        </SmokeCurve>
+        <launchEffectTrigger>DMS_LaunchDust_Recoilless</launchEffectTrigger>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ==================== 巡飛彈 落點 incoming skyfaller ==================== -->
+  <ThingDef ParentName="SkyfallerBase">
+    <defName>DMSE_Incoming_Loiter</defName>
+    <label>loitering munition (incoming)</label>
+    <thingClass>DMSE.MissileIncoming</thingClass>
+    <graphicData>
+      <texPath>Things/Missile/Termite/missile_incoming</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>3</drawSize>
+    </graphicData>
+    <size>(1,1)</size>
+    <!-- 爆炸效果由 MissileConfig 於落點動態套用，故此處不設固定 explosionRadius/explosionDamage。 -->
+    <skyfaller>
+      <shadowSize>(2, 2)</shadowSize>
+      <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
+      <speed>1</speed>
+    </skyfaller>
+    <!-- BVR 攔截特性：巡飛彈速度慢、隱身差 → 容易被偵測（高 distanceLevel、低 stealthLevel）。 -->
+    <modExtensions>
+      <li Class="DMSE.BVRTargetProps">
+        <distanceLevel>1</distanceLevel>
+        <stealthLevel>0.5</stealthLevel>
+        <speed>15</speed>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- ==================== 巡飛彈 世界旅行物件 ==================== -->
+  <WorldObjectDef>
+    <defName>DMSE_WorldObject_Loiter</defName>
+    <label>loitering munition</label>
+    <description>A loitering munition in flight.</description>
+    <worldObjectClass>DMSE.ScorerProjectile_WorldObject</worldObjectClass>
+    <texture>UI/DMSE/TravelingMissile</texture>
+    <rotateGraphicWhenTraveling>true</rotateGraphicWhenTraveling>
+    <useDynamicDrawer>true</useDynamicDrawer>
+    <expandingIcon>true</expandingIcon>
+    <expandingIconTexture>UI/DMSE/TravelingMissile_Expanding</expandingIconTexture>
+    <expandingIconPriority>100</expandingIconPriority>
+    <expandMore>true</expandMore>
+    <allowCaravanIncidentsWhichGenerateMap>true</allowCaravanIncidentsWhichGenerateMap>
+    <fullyExpandedInSpace>true</fullyExpandedInSpace>
+    <validLaunchTarget>false</validLaunchTarget>
+  </WorldObjectDef>
+
+  <!-- ==================== 巡飛彈 發射架（1x3 傾斜軌） ====================
+       彈藥以實體 Thing 存於容器（Building_MissileRack，容量 1），由 CompMissileRackRenderer
+       依建築朝向渲染；CompMissileRailLauncher 提供 Scorer 式發射。 -->
+  <ThingDef ParentName="DMSE_TiltLauncherBase">
+    <defName>DMSE_Building_LoiteringLauncher</defName>
+    <label>loitering munition rail</label>
+    <description>A tilt-launch rail for a single loitering munition. A colonist hauls a munition onto the rail; from there it can be launched at targets beyond the local map. The loaded munition is rendered along the rail according to the building's facing.</description>
+    <thingClass>DMSE.Building_MissileRack</thingClass>
+    <graphicData>
+      <texPath>Things/Building/MissileLauncher/building</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,4)</drawSize>
+      <drawOffset>(0,0.00875,0)</drawOffset>
+      <drawOffsetEast>(0,0.00875,0.35)</drawOffsetEast>
+      <drawOffsetWest>(0,0.00875,0.35)</drawOffsetWest>
+    </graphicData>
+    <size>(1,3)</size>
+    <pathCost>80</pathCost>
+    <fillPercent>0.55</fillPercent>
+    <staticSunShadowHeight>0.1</staticSunShadowHeight>
+    <constructEffect>ConstructMetal</constructEffect>
+    <statBases>
+      <MaxHitPoints>300</MaxHitPoints>
+      <WorkToBuild>5000</WorkToBuild>
+      <Flammability>0.05</Flammability>
+    </statBases>
+    <costList>
+      <Steel>120</Steel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+    </costList>
+    <building>
+      <maxItemsInCell>1</maxItemsInCell>
+      <ignoreStoredThingsBeauty>true</ignoreStoredThingsBeauty>
+      <fixedStorageSettings>
+        <filter>
+          <thingDefs>
+            <li>DMSE_LoiteringMunition</li>
+          </thingDefs>
+        </filter>
+      </fixedStorageSettings>
+      <defaultStorageSettings>
+        <priority>Important</priority>
+        <filter>
+          <thingDefs>
+            <li>DMSE_LoiteringMunition</li>
+          </thingDefs>
+        </filter>
+      </defaultStorageSettings>
+    </building>
+    <modExtensions>
+      <li Class="DMSE.MissileLauncherExtension">
+        <sizeClass>Loitering</sizeClass>
+        <launchMode>Tilt</launchMode>
+        <capacity>1</capacity>
+      </li>
+    </modExtensions>
+    <comps>
+      <!-- 容量 1：發射軌上單枚；依建築朝向渲染（slotOffsets 留空 → 自動沿長軸置中）。 -->
+      <li Class="DMSE.CompProperties_MissileRackRenderer">
+        <maxStored>1</maxStored>
+        <useNativeDrawSize>true</useNativeDrawSize>
+        <slotOffsets>
+          <li>(0, 0, 0)</li>
+        </slotOffsets>
+      </li>
+      <li Class="DMSE.CompProperties_MissileRailLauncher">
+        <skyfaller>DMSE_SkyFaller_Loiter</skyfaller>
+        <skyfallerIncoming>DMSE_Incoming_Loiter</skyfallerIncoming>
+        <worldObjectDef>DMSE_WorldObject_Loiter</worldObjectDef>
+        <missileBody>DMSE_MissileBody_Loiter</missileBody>
+        <launchCooldownTicks>600</launchCooldownTicks>
+        <launchForwardCells>2</launchForwardCells>
+      </li>
+    </comps>
+    <inspectorTabs>
+      <li>RimWorld.ITab_Storage</li>
+    </inspectorTabs>
+    <researchPrerequisites>
+      <li>DMSE_LoiteringMunitions</li>
+    </researchPrerequisites>
+  </ThingDef>
+
+  <!-- ==================== 巡飛彈 儲存架（1x2） ====================
+       存放巡飛彈彈藥使其停止劣化（CompDurabilityDecay 庇護判定）。 -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_LoiteringRack</defName>
+    <label>loitering munition rack</label>
+    <description>A 1x2 armoured rack that holds up to two loitering munitions. Munitions stored inside are sheltered and will not degrade.</description>
+    <thingClass>DMSE.Building_MissileRack</thingClass>
+    <category>Building</category>
+    <!-- 佔位美術：暫借發射器貼圖，請替換為 1x2 專屬 rack 貼圖。 -->
+    <graphicData>
+      <texPath>Things/Building/MissileLauncher/building</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,3)</drawSize>
+    </graphicData>
+    <rotatable>true</rotatable>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <fillPercent>0.45</fillPercent>
+    <drawerType>RealtimeOnly</drawerType>
+    <tickerType>Never</tickerType>
+    <constructEffect>ConstructMetal</constructEffect>
+    <designationCategory>DMS_Category</designationCategory>
+    <size>(1,2)</size>
+    <selectable>true</selectable>
+    <statBases>
+      <MaxHitPoints>250</MaxHitPoints>
+      <WorkToBuild>3500</WorkToBuild>
+      <Flammability>0.4</Flammability>
+      <Mass>20</Mass>
+    </statBases>
+    <costList>
+      <Steel>80</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </costList>
+    <building>
+      <maxItemsInCell>1</maxItemsInCell>
+      <ignoreStoredThingsBeauty>true</ignoreStoredThingsBeauty>
+      <fixedStorageSettings>
+        <filter>
+          <thingDefs>
+            <li>DMSE_LoiteringMunition</li>
+          </thingDefs>
+        </filter>
+      </fixedStorageSettings>
+      <defaultStorageSettings>
+        <priority>Important</priority>
+        <filter>
+          <thingDefs>
+            <li>DMSE_LoiteringMunition</li>
+          </thingDefs>
+        </filter>
+      </defaultStorageSettings>
+    </building>
+    <comps>
+      <li Class="DMSE.CompProperties_MissileRackRenderer">
+        <maxStored>2</maxStored>
+        <useNativeDrawSize>true</useNativeDrawSize>
+        <!-- 北向時沿 1x2 長軸（z）前後各一枚；整體隨 parent.Rotation 旋轉。 -->
+        <slotOffsets>
+          <li>(0, 0, -0.5)</li>
+          <li>(0, 0, 0.5)</li>
+        </slotOffsets>
+      </li>
+    </comps>
+    <inspectorTabs>
+      <li>RimWorld.ITab_Storage</li>
+    </inspectorTabs>
+    <researchPrerequisites>
+      <li>DMSE_LoiteringMunitions</li>
+    </researchPrerequisites>
+  </ThingDef>
+
+</Defs>

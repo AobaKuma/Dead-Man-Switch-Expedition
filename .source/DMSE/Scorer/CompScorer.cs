@@ -12,6 +12,7 @@ namespace DMSE
         public ThingDef skyfaller;
         public ThingDef skyfallerIncoming;
         public WorldObjectDef worldObjectDef;
+        public int launchCooldownTicks = 300; // 一次發射後的冷卻（預設 5 秒）。
     }
     public class CompScorer : ThingComp
     {
@@ -70,9 +71,14 @@ namespace DMSE
                     showCancelButton: true);
                 }
             };
-            if (this.Refuelable != null && !this.Refuelable.IsFull) 
+            if (this.Refuelable != null && !this.Refuelable.IsFull)
             {
                 command.Disable("MissingPartWithLabel".Translate(this.Refuelable.Props.FuelLabel));
+            }
+            int cooldownLeft = cooldownUntil - Find.TickManager.TicksGame;
+            if (cooldownLeft > 0)
+            {
+                command.Disable("DMSE.Missile.LaunchCooldown".Translate(cooldownLeft.ToStringTicksToPeriod()));
             }
             yield return command;
             yield break;
@@ -94,6 +100,13 @@ namespace DMSE
             }
             faller.worldObject = wo;
             this.Refuelable.ConsumeFuel(this.Refuelable.Fuel);
+            cooldownUntil = Find.TickManager.TicksGame + Props.launchCooldownTicks;
+        }
+
+        public override void PostExposeData()
+        {
+            base.PostExposeData();
+            Scribe_Values.Look(ref cooldownUntil, "launchCooldownUntil", 0);
         }
 
         /// <summary>已裝填導彈設定算出的射程（世界 tile）；0 = 不限。</summary>
@@ -112,5 +125,6 @@ namespace DMSE
         }
 
         public CompRefuelable refuelable;
+        private int cooldownUntil;
     }
 }

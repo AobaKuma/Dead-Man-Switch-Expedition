@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- 巡飛彈彈藥（物品型態）。會隨時間劣化，需存放於巡飛彈儲存架或裝填於發射架內。
+       無 CompMissileConfig / ITab：不可自定義（customizeLocation=None）。
+       渲染：裝填於發射架後由 CompMissileRackRenderer 依建築朝向繪製折翼彈體（Termite 折疊貼圖）。 -->
+  <ThingDef ParentName="DMSE_ResourceBase">
+    <defName>DMSE_LoiteringMunition</defName>
+    <label>loitering munition</label>
+    <description>A folding-wing loitering munition awaiting loading onto a launch rail. Its airframe slowly degrades in the open; store it on a loitering-munition rack to keep it serviceable.</description>
+    <descriptionHyperlinks>
+      <ThingDef>DMSE_Building_LoiteringLauncher</ThingDef>
+      <ThingDef>DMSE_LoiteringRack</ThingDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Things/Missile/Termite/missile_fold_north</texPath>
+      <drawSize>(1.5,2.6)</drawSize>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>1</stackLimit>
+    <!-- Rare ticker 讓 CompDurabilityDecay 能在物品 Spawned 時運作（ResourceBase 預設為 Never）。 -->
+    <tickerType>Rare</tickerType>
+    <useHitPoints>true</useHitPoints>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>700</MarketValue>
+      <Mass>120</Mass>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>10.0</DeteriorationRate>
+    </statBases>
+    <costList>
+      <Chemfuel>80</Chemfuel>
+      <Steel>60</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </costList>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <effectWorking>Smith</effectWorking>
+      <soundWorking>Recipe_Smith</soundWorking>
+      <recipeUsers Inherit="False">
+        <li>DMS_TableMachinePrinter</li>
+      </recipeUsers>
+      <researchPrerequisite>DMSE_LoiteringMunitions</researchPrerequisite>
+      <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
+    </recipeMaker>
+    <comps>
+      <!-- 未存放於庇護建築（儲存架/發射架）內時緩慢扣耐久；歸零後摧毀。5 HP/日 ≒ 12 日（60 HP）。 -->
+      <li Class="DMSE.CompProperties_DurabilityDecay">
+        <hitPointsPerDay>5</hitPointsPerDay>
+        <destroyWhenDepleted>true</destroyWhenDepleted>
+        <shelterBuildings>
+          <li>DMSE_LoiteringRack</li>
+          <li>DMSE_Building_LoiteringLauncher</li>
+        </shelterBuildings>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

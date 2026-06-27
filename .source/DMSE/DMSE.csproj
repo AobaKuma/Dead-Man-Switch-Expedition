@@ -33,6 +33,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Building_BatteryGraphene.cs" />
+    <Compile Include="Building_MissileRack.cs" />
+    <Compile Include="CompMissileRackRenderer.cs" />
     <Compile Include="CelestialTransfer\FlightModeLauncher.cs" />
     <Compile Include="CelestialTransfer\ITravelingShip.cs" />
     <Compile Include="CelestialTransfer\VGECompatibility.cs" />
@@ -58,6 +60,7 @@
     <Compile Include="CelestialTransfer\Patch_CompGravshipFacility_CanBeActive.cs" />
     <Compile Include="Scorer\CompEffecterColdLaunch.cs" />
     <Compile Include="Scorer\CompEffecterHotLaunch.cs" />
+    <Compile Include="CompDurabilityDecay.cs" />
     <Compile Include="CompOxygenCandle.cs" />
     <Compile Include="CompVacuumPump.cs" />
     <Compile Include="ScenPart_Huntdown.cs" />
@@ -68,6 +71,7 @@
     <Compile Include="CelestialTransfer\FlightUtility.cs" />
     <Compile Include="VacuumRoom\CompLandFillable.cs" />
     <Compile Include="Scorer\CompScorer.cs" />
+    <Compile Include="Scorer\CompMissileRailLauncher.cs" />
     <Compile Include="DefOf.cs" />
     <Compile Include="CelestialTransfer\MapComponent_Ship.cs" />
     <Compile Include="ModExtension_ReplacePawn.cs" />
@@ -97,7 +101,9 @@
     <Compile Include="SkyFallerTurret\BVR\CompMissileLauncher.cs" />
     <Compile Include="SkyFallerTurret\BVR\CompTerminalCIWS.cs" />
     <Compile Include="SkyFallerTurret\BVR\MapComponent_InterceptEffects.cs" />
+    <Compile Include="SkyFallerTurret\BVR\WeatherEvent_MissileFlash.cs" />
     <Compile Include="Scorer\Assembly\MissileDefs.cs" />
+    <Compile Include="Scorer\Assembly\MissileLauncherExtension.cs" />
     <Compile Include="Scorer\Assembly\MissileConfig.cs" />
     <Compile Include="Scorer\Assembly\CompMissileConfig.cs" />
     <Compile Include="Scorer\Assembly\ITab_MissileAssembly.cs" />

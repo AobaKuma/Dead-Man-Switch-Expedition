@@ -202,6 +202,8 @@
     <soundInteract>Metal_Drop</soundInteract>
     <soundDrop>Standard_Drop</soundDrop>
     <stackLimit>1</stackLimit>
+    <!-- Rare ticker 讓 CompDurabilityDecay 能在物品 Spawned 時運作（ResourceBase 預設為 Never）。 -->
+    <tickerType>Rare</tickerType>
     <statBases>
       <MaxHitPoints>100</MaxHitPoints>
       <MarketValue>2500</MarketValue>
@@ -230,6 +232,15 @@
     <comps>
       <li Class="DMSE.CompProperties_MissileConfig">
         <defaultBody>DMSE_MissileBody_Cruise</defaultBody>
+      </li>
+      <!-- 未存放於庇護建築內時緩慢扣耐久；歸零後摧毀。5 HP/日 ≒ 20 日（100 HP）。 -->
+      <li Class="DMSE.CompProperties_DurabilityDecay">
+        <hitPointsPerDay>5</hitPointsPerDay>
+        <destroyWhenDepleted>true</destroyWhenDepleted>
+        <!-- 存入導彈儲存架即視為受庇護、停止劣化。 -->
+        <shelterBuildings>
+          <li>DMSE_MissileRack</li>
+        </shelterBuildings>
       </li>
     </comps>
     <inspectorTabs>

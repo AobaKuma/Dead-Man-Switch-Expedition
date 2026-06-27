@@ -51,11 +51,13 @@ namespace DMSE
 
         // 目標屬性（由 def 的 BVRTargetProps 解析）。
         public int stealthLevel;
-        public float distanceLevel = 1f;
         public float speed = 15f;
 
         // 中過程狀態：在此 tick 之前已有攔截彈在飛，避免重複指派（占用一個火力通道）。
         public int midcourseEngagedUntil = -1;
+
+        // 火控鎖定：>= 0 表示已占用一個火力通道（> now 鎖定中，<= now 鎖定完成待發）。-1 = 未鎖定（含已發射）。
+        public int lockUntil = -1;
 
         public BVRTarget() { }
 
@@ -70,7 +72,6 @@ namespace DMSE
             BVRTargetProps tp = (faller != null && faller.def != null
                 ? faller.def.GetModExtension<BVRTargetProps>() : null) ?? BVRTargetProps.Default;
             this.stealthLevel = tp.stealthLevel;
-            this.distanceLevel = tp.distanceLevel;
             this.speed = tp.speed;
         }
 
@@ -161,9 +162,9 @@ namespace DMSE
             Scribe_Values.Look(ref position, "position");
             Scribe_Deep.Look(ref skyfaller, "skyfaller", this);
             Scribe_Values.Look(ref stealthLevel, "stealthLevel", 0);
-            Scribe_Values.Look(ref distanceLevel, "distanceLevel", 1f);
             Scribe_Values.Look(ref speed, "speed", 15f);
             Scribe_Values.Look(ref midcourseEngagedUntil, "midcourseEngagedUntil", -1);
+            Scribe_Values.Look(ref lockUntil, "lockUntil", -1);
         }
     }
 }

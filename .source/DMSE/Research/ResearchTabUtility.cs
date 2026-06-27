@@ -108,6 +108,37 @@ namespace DMSE
         }
 
         /// <summary>
+        /// Safely returns the currently-active research project for a knowledge category.
+        ///
+        /// The per-category "current project" state lives in ResearchManager.CurrentAnomalyKnowledgeProjects,
+        /// which the base game only initializes while the Anomaly DLC is active. Without Anomaly that backing
+        /// list is null, and ResearchManager.GetProject(category) throws a NullReferenceException as it tries
+        /// to enumerate it. This wrapper guards every one of those preconditions so callers degrade gracefully
+        /// (returning null = "no active project for this category") instead of crashing.
+        /// </summary>
+        public static ResearchProjectDef GetActiveProjectForCategory(KnowledgeCategoryDef category)
+        {
+            if (category == null)
+            {
+                return null;
+            }
+
+            // Per-category active-project tracking is an Anomaly-only mechanic.
+            if (!ModsConfig.AnomalyActive)
+            {
+                return null;
+            }
+
+            var manager = Find.ResearchManager;
+            if (manager == null || manager.CurrentAnomalyKnowledgeProjects == null)
+            {
+                return null;
+            }
+
+            return manager.GetProject(category);
+        }
+
+        /// <summary>
         /// Registers a custom research tab for dual-slot UI support.
         /// Call this in your mod's initialization to add your custom tab.
         /// </summary>

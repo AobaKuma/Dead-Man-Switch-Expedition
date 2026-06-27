@@ -75,6 +75,14 @@ namespace DMSE
                 GenExplosion.DoExplosion(center, map, 5f, DamageDefOf.Bomb, null);
             }
 
+            // 爆炸閃光：強度與導彈威力（爆炸半徑）成正比。
+            if (map != null && map.weatherManager != null && map.weatherManager.eventHandler != null)
+            {
+                float radius = config != null && config.Valid ? config.ExplosionRadius : 5f;
+                Vector2 shadow = new Vector2(Rand.Range(-4f, 4f), Rand.Range(-4f, 0f));
+                map.weatherManager.eventHandler.AddEvent(new WeatherEvent_MissileFlash(map, radius / 1f, shadow));
+            }
+
             base.Impact();
         }
 

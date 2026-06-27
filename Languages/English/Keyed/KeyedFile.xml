@@ -82,6 +82,16 @@
   <DMSE.Missile.NeedResources>Needs (for assembly): {0}</DMSE.Missile.NeedResources>
   <DMSE.Missile.ReadyToAssemble>Resources ready - awaiting assembly</DMSE.Missile.ReadyToAssemble>
   <DMSE.Missile.NoResources>No resources available to assemble</DMSE.Missile.NoResources>
+  <DMSE.Missile.LaunchCooldown>Reloading launch rail: {0}</DMSE.Missile.LaunchCooldown>
+  <DMSE.Missile.NoMissileLoaded>No missile loaded</DMSE.Missile.NoMissileLoaded>
+  <DMSE.SAM.Reloading>Reloading: {0}</DMSE.SAM.Reloading>
+  <DMSE.SAM.Ready>Ready to fire</DMSE.SAM.Ready>
   <DMSE.Missile.IncomingLetter>Incoming missile</DMSE.Missile.IncomingLetter>
   <DMSE.Missile.IncomingLetterDesc>A missile launched by {0} is inbound and will strike the colony shortly.</DMSE.Missile.IncomingLetterDesc>
+
+  <DMSE_MissileDecayedAway>{0} has degraded beyond use and fallen apart.</DMSE_MissileDecayedAway>
+  <DMSE_MissileDecaySheltered>Sheltered: durability stable</DMSE_MissileDecaySheltered>
+  <DMSE_MissileDecayUnsheltered>Unsheltered: losing {0} durability/day</DMSE_MissileDecayUnsheltered>
+
+  <DMSE_MissileRackStored>Stored missiles: {0} / {1}</DMSE_MissileRackStored>
 </LanguageData>

@@ -90,16 +90,25 @@ namespace DMSE
                 // Use our utility to check if this tab should use dual-slot logic
                 if (ResearchTabUtility.ShouldUseUniqueTabUI(currentTab))
                 {
-                    // For tabs with mod extension, pick first non-null project from defined categories
+                    // For tabs with mod extension, pick first non-null project from defined categories.
+                    // GetActiveProjectForCategory is Anomaly-safe and simply returns null per category
+                    // when the Anomaly DLC is not active, so this never throws.
                     var categories = ResearchTabUtility.GetCategoriesForTab(currentTab);
                     foreach (var cat in categories)
                     {
-                        var proj = Find.ResearchManager.GetProject(cat);
+                        var proj = ResearchTabUtility.GetActiveProjectForCategory(cat);
                         if (proj != null)
                         {
                             selectedProject = proj;
                             break;
                         }
+                    }
+
+                    // Fallback (e.g. no Anomaly DLC, so no per-category active project): use the
+                    // single global current research project so the panel still has a sensible selection.
+                    if (selectedProject == null)
+                    {
+                        selectedProject = Find.ResearchManager.GetProject();
                     }
                 }
                 else
@@ -147,9 +156,11 @@ namespace DMSE
                 
                 // Calculate layout dimensions
                 float buttonHeight = (numSlots > 1) ? (75f * numSlots) : 100f;
+                // Match the vanilla layout: the start button sits above the header (which itself
+                // is 30px above the active-project box), so subtract header offset + button height.
                 Rect startButRect = new Rect(
                     rect.center.x - rect.width / 4f,
-                    rect.yMax - buttonHeight - 10f - 55f,
+                    rect.yMax - buttonHeight - 30f - 10f - 55f,
                     rect.width / 2f + 20f,
                     55f
                 );
@@ -207,6 +218,20 @@ namespace DMSE
                     Text.Font = GameFont.Small;
                 }
 
+                // Draw the selected project's detailed info (title, description text, prerequisites,
+                // bench/study requirements, unlockables). The original prefix skipped this entirely,
+                // which is why the description/intro text did not appear when selecting a project on
+                // custom research tabs. We delegate to the vanilla private methods via reflection so
+                // the layout and content stay identical to the base game.
+                if (selectedProject != null)
+                {
+                    float y = 0f;
+                    DrawProjectPrimaryInfo(__instance, rect, ref y);
+                    Rect scrollRect = new Rect(0f, y, rect.width, 0f);
+                    scrollRect.yMax = startButRect.yMin - 10f;
+                    DrawProjectScrollView(__instance, scrollRect);
+                }
+
                 return false; // Skip original method
             }
             catch (Exception ex)
@@ -249,7 +274,7 @@ namespace DMSE
                 var cat = categories[i];
                 Rect colRect = new Rect(rect.x + i * colWidth, rect.y, colWidth, rect.height);
 
-                ResearchProjectDef proj = Find.ResearchManager.GetProject(cat);
+                ResearchProjectDef proj = ResearchTabUtility.GetActiveProjectForCategory(cat);
                 if (proj != null)
                 {
                     anyProject = true;
@@ -388,6 +413,66 @@ namespace DMSE
             catch (Exception ex)
             {
                 Log.Warning($"[DMSE] Could not invoke DrawStartButton: {ex.Message}");
+            }
+        }
+
+        // Cached reflection for the vanilla method that draws the project title + description text.
+        private static MethodInfo cachedDrawPrimaryInfo = null;
+        private static MethodInfo DrawPrimaryInfoMethod => cachedDrawPrimaryInfo ??
+            (cachedDrawPrimaryInfo = typeof(MainTabWindow_Research).GetMethod(
+                "DrawProjectPrimaryInfo",
+                BindingFlags.NonPublic | BindingFlags.Instance,
+                null,
+                new[] { typeof(Rect), typeof(float).MakeByRefType() },
+                null
+            ));
+
+        /// <summary>
+        /// Draws the selected project's title and description text by delegating to the
+        /// vanilla private DrawProjectPrimaryInfo(Rect, ref float). The ref parameter is
+        /// marshalled back out so the caller knows where the description ends.
+        /// </summary>
+        private static void DrawProjectPrimaryInfo(MainTabWindow_Research instance, Rect rect, ref float y)
+        {
+            try
+            {
+                if (DrawPrimaryInfoMethod != null)
+                {
+                    object[] args = new object[] { rect, y };
+                    DrawPrimaryInfoMethod.Invoke(instance, args);
+                    y = (float)args[1];
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"[DMSE] Could not invoke DrawProjectPrimaryInfo: {ex.Message}");
+            }
+        }
+
+        // Cached reflection for the vanilla method that draws prerequisites, requirements, unlockables.
+        private static MethodInfo cachedDrawScrollView = null;
+        private static MethodInfo DrawScrollViewMethod => cachedDrawScrollView ??
+            (cachedDrawScrollView = typeof(MainTabWindow_Research).GetMethod(
+                "DrawProjectScrollView",
+                BindingFlags.NonPublic | BindingFlags.Instance,
+                null,
+                new[] { typeof(Rect) },
+                null
+            ));
+
+        /// <summary>
+        /// Draws the scrollable detail panel (prerequisites, bench/study requirements, unlockables,
+        /// content source) by delegating to the vanilla private DrawProjectScrollView(Rect).
+        /// </summary>
+        private static void DrawProjectScrollView(MainTabWindow_Research instance, Rect rect)
+        {
+            try
+            {
+                DrawScrollViewMethod?.Invoke(instance, new object[] { rect });
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"[DMSE] Could not invoke DrawProjectScrollView: {ex.Message}");
             }
         }
     }
