@@ -15,6 +15,17 @@ namespace DMSE
         /// <summary>是否已交由 BVR 處理（避免重複登記攔截）。</summary>
         public bool bvrHandled;
 
+        /// <summary>只顯示 def.label 且剔除括號後綴（如「cruise missile (incoming)」→「cruise missile」）。</summary>
+        public override string Label
+        {
+            get
+            {
+                string l = def.label;
+                int paren = l.IndexOf(" (", System.StringComparison.Ordinal);
+                return paren >= 0 ? l.Substring(0, paren) : l;
+            }
+        }
+
         private bool checkedBvr;
 
         protected override void Tick()
@@ -39,32 +50,44 @@ namespace DMSE
 
             if (config != null && config.Valid)
             {
+                float N = config.PayloadCapacity;
+
                 // 命中偏移（導引精度）
                 if (config.Scatter >= 1f)
                 {
                     center = CellFinder.RandomClosewalkCellNear(Position, map, Mathf.RoundToInt(config.Scatter));
                 }
 
-                // 主彈頭
+                // 主彈體爆炸（Body explosion：基礎參數 + Warhead 數值修正）
                 GenExplosion.DoExplosion(center, map, config.ExplosionRadius, config.DamageDef, null, config.DamageAmount);
 
-                // 特殊酬載
-                MissilePartDef payload = config.PartFor(MissilePartCategory.Payload);
-                if (payload != null)
+                // 戰鬥部特效（WarheadEffect class）
+                MissilePartDef warheadPart = config.PartFor(MissilePartCategory.Warhead);
+                warheadPart?.warheadEffect?.Apply(N, center, map, attacker);
+
+                // 載荷效果（PayloadEffect class）
+                MissilePartDef payloadPart = config.PartFor(MissilePartCategory.Payload);
+                if (payloadPart?.payloadEffect != null)
                 {
-                    if (payload.payloadExplosionRadius > 0f && payload.payloadDamageDef != null)
+                    payloadPart.payloadEffect.Apply(N, center, map, attacker);
+                }
+                else if (payloadPart != null)
+                {
+                    // 向後相容：舊式數值欄位（payloadExplosionRadius 等）仍可使用。
+                    if (payloadPart.payloadExplosionRadius > 0f && payloadPart.payloadDamageDef != null)
                     {
-                        GenExplosion.DoExplosion(center, map, payload.payloadExplosionRadius, payload.payloadDamageDef, null,
-                            payload.payloadDamageAmount > 0 ? payload.payloadDamageAmount : -1);
+                        GenExplosion.DoExplosion(center, map, payloadPart.payloadExplosionRadius,
+                            payloadPart.payloadDamageDef, null,
+                            payloadPart.payloadDamageAmount > 0 ? payloadPart.payloadDamageAmount : -1);
                     }
-                    if (payload.payloadSpawnThing != null && Rand.Chance(payload.payloadSpawnChance))
+                    if (payloadPart.payloadSpawnThing != null && Rand.Chance(payloadPart.payloadSpawnChance))
                     {
-                        int n = Mathf.Max(1, payload.payloadSpawnCount);
+                        int spawnN = Mathf.Max(1, payloadPart.payloadSpawnCount);
                         int spread = Mathf.Max(1, Mathf.RoundToInt(config.ExplosionRadius));
-                        for (int i = 0; i < n; i++)
+                        for (int i = 0; i < spawnN; i++)
                         {
                             IntVec3 c = CellFinder.RandomClosewalkCellNear(center, map, spread);
-                            GenSpawn.Spawn(payload.payloadSpawnThing, c, map);
+                            GenSpawn.Spawn(payloadPart.payloadSpawnThing, c, map);
                         }
                     }
                 }

@@ -4,29 +4,32 @@ using Verse;
 namespace DMSE
 {
     /// <summary>
-    /// 掛在「發射平台 / 儲存架 / 儲存建築」ThingDef 上的擴充，宣告此建築處理哪一階導彈、
-    /// 採用哪種發射方式、以及彈容量。供裝填驗證、ITab、WorkGiver 等共用判定使用。
+    /// 掛在「發射平台」ThingDef 上的擴充，宣告此建築處理哪一階導彈、採用哪種發射方式、彈容量。
+    /// 供裝填驗證、ITab、WorkGiver 等共用判定使用。
+    ///
+    /// 已與儲存架擴充合併：繼承 <see cref="MissileRackExtension"/>，因此 capacity / sizeClass /
+    /// launchMode 皆由基底提供（單一真實來源，亦同時驅動容器渲染）。本類僅再加上 isStorage，
+    /// 並作為「裝配發射平台」的型別標記——<see cref="MissileTaxonomy.PlatformAccepts(ThingDef, MissileBodyDef)"/>
+    /// 只認得本類（純彈架／發射管使用基底，故不會被當成裝配平台）。
     ///
     /// 注意：垂直發射的「不可上重力船 + 單一朝向」限制由 XML 達成（rotatable=false 並掛
     /// 原版 PlaceWorker_InvalidOverSubstructure），此擴充僅描述資料，不重複實作該限制。
     /// 參見抽象母 Def DMSE_VerticalLauncherBase / DMSE_TiltLauncherBase。
     /// </summary>
-    public class MissileLauncherExtension : DefModExtension
+    public class MissileLauncherExtension : MissileRackExtension
     {
-        /// <summary>此平台接受的導彈尺寸分級。</summary>
-        public MissileSizeClass sizeClass = MissileSizeClass.Medium;
-
-        /// <summary>此平台的發射方式（Tilt 或 Vertical；不應為 Both）。</summary>
-        public MissileLaunchMode launchMode = MissileLaunchMode.Tilt;
-
-        /// <summary>彈容量（可裝填／儲存的導彈數量）。</summary>
-        public int capacity = 1;
-
         /// <summary>是否為儲存類建築（彈架／彈藥庫），而非發射平台。</summary>
         public bool isStorage = false;
 
+        public MissileLauncherExtension()
+        {
+            // 發射平台沿用原本的預設彈容 1（基底 MissileRackExtension 預設為 4）。
+            capacity = 1;
+        }
+
         public override IEnumerable<string> ConfigErrors()
         {
+            // 基底會驗證 capacity >= 1。
             foreach (string e in base.ConfigErrors())
             {
                 yield return e;
@@ -35,10 +38,6 @@ namespace DMSE
             if (launchMode == MissileLaunchMode.Both)
             {
                 yield return "MissileLauncherExtension.launchMode 不應為 Both（平台必須是 Tilt 或 Vertical）。";
-            }
-            if (capacity < 1)
-            {
-                yield return "MissileLauncherExtension.capacity 必須 >= 1。";
             }
         }
     }

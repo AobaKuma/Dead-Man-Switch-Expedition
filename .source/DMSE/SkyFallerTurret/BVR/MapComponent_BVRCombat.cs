@@ -282,9 +282,31 @@ namespace DMSE
                     CompMissileLauncher launcher = SelectReadyLauncher(now, defender);
                     if (fcReady != null && launcher != null)
                     {
-                        launcher.FireInterceptor(target, fcReady.ComputeHitChance(target, timeLeft - terminalWindow), now);
+                        // 基礎命中率
+                        float hitChance = fcReady.ComputeHitChance(target, timeLeft - terminalWindow);
+
+                        // 讀取攔截彈的戰鬥部加成（ContinuousRod / Airburst 等）
+                        MissileConfig interceptorConfig = launcher.GetLoadedMissileConfig();
+                        float N = interceptorConfig?.PayloadCapacity ?? 0f;
+                        MissilePartDef wh = interceptorConfig?.PartFor(MissilePartCategory.Warhead);
+                        if (wh?.warheadEffect != null)
+                        {
+                            hitChance = Mathf.Clamp01(hitChance + wh.warheadEffect.InterceptBonus(N));
+                        }
+
+                        launcher.FireInterceptor(target, hitChance, now);
                         target.midcourseEngagedUntil = now + launcher.Props.interceptorTravelTicks;
-                        target.lockUntil = -1; // 發射後即釋放火力通道，供下一目標鎖定。
+                        target.lockUntil = -1;
+
+                        // 空爆：額外對同波次其他目標進行獨立攔截擲骰
+                        if (wh?.warheadEffect != null)
+                        {
+                            int extraRolls = wh.warheadEffect.ExtraInterceptRolls(N);
+                            if (extraRolls > 0)
+                            {
+                                ApplyExtraInterceptRolls(wave, target, hitChance, extraRolls);
+                            }
+                        }
                     }
                     continue; // 此通道已被占用（無論是否成功發射）。
                 }
@@ -298,16 +320,17 @@ namespace DMSE
             }
         }
 
-        // 火力通道只在「鎖定階段」占用；攔截彈一旦發射（lockUntil = -1）即釋放通道。
-        // 因此同時在飛的攔截彈數量僅受發射平台數量限制——地圖上越多可用 SAM 平台，越多攔截彈可同時在飛。
-        private int CountEngaged()
+        // 火力通道在「鎖定階段」（lockUntil >= 0）與「攔截彈在飛」（midcourseEngagedUntil > now）期間均占用；
+        // 直到攔截彈命中或落空結算後才釋放通道，供雷達重新鎖定下一目標。
+        public int CountEngaged()
         {
+            int now = Find.TickManager.TicksGame;
             int n = 0;
             foreach (BVRWave w in Waves)
             {
                 foreach (BVRTarget t in w.targets)
                 {
-                    if (t.lockUntil >= 0) { n++; }
+                    if (t.lockUntil >= 0 || t.midcourseEngagedUntil > now) { n++; }
                 }
             }
             return n;
@@ -338,6 +361,30 @@ namespace DMSE
                 }
             }
             return best;
+        }
+
+        // ---- 空爆額外攔截擲骰 ----
+        /// <summary>
+        /// 空爆戰鬥部的額外攔截：對同一波次中其他未被攔截的目標，
+        /// 以相同命中率進行獨立擲骰（不消耗彈藥/冷卻，純概率結算）。
+        /// </summary>
+        private void ApplyExtraInterceptRolls(BVRWave wave, BVRTarget source, float hitChance, int rolls)
+        {
+            int rollsLeft = rolls;
+            foreach (BVRTarget other in wave.targets)
+            {
+                if (rollsLeft <= 0) { break; }
+                if (other == source || other.midcourseEngagedUntil > Find.TickManager.TicksGame) { continue; }
+                rollsLeft--;
+                if (Rand.Chance(hitChance))
+                {
+                    RemoveTarget(other.id);
+                    if (Prefs.DevMode)
+                    {
+                        Log.Message($"[DMSE BVR] 空爆額外攔截命中目標 #{other.id}");
+                    }
+                }
+            }
         }
 
         // ---- 階段三：末端 CIWS ----

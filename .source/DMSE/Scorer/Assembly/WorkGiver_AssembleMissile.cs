@@ -15,6 +15,7 @@ namespace DMSE
 
         public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn)
         {
+            // 地面上已生成的導彈物品
             List<ThingDef> defs = MissileAssemblyUtility.MissileDefs;
             for (int i = 0; i < defs.Count; i++)
             {
@@ -24,12 +25,30 @@ namespace DMSE
                     yield return things[j];
                 }
             }
+
+            // 架內 unspawned 導彈：以儲存架本身作為工作目標（架已生成且有 map 位置）
+            foreach (Building_MissileRack rack in pawn.Map.listerBuildings.AllBuildingsColonistOfClass<Building_MissileRack>())
+            {
+                IReadOnlyList<Thing> held = rack.HeldThings;
+                if (held == null) { continue; }
+                for (int i = 0; i < held.Count; i++)
+                {
+                    CompMissileConfig c = held[i]?.TryGetComp<CompMissileConfig>();
+                    if (c != null && c.NeedsAssembly && c.assemblyConfirmed)
+                    {
+                        yield return rack;
+                        break; // 一個架只 yield 一次，JobOnThing 會取第一枚待裝配的導彈
+                    }
+                }
+            }
         }
 
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
-            CompMissileConfig comp = t.TryGetComp<CompMissileConfig>();
-            if (comp == null || !comp.NeedsAssembly) { return false; }
+            CompMissileConfig comp = MissileAssemblyUtility.GetAssemblyComp(t);
+            // GetAssemblyComp 對架內已過濾 NeedsAssembly + assemblyConfirmed；
+            // 對地面物品則直接回傳，需在此補充檢查。
+            if (comp == null || !comp.NeedsAssembly || !comp.assemblyConfirmed) { return false; }
             if (t.IsForbidden(pawn) || !pawn.CanReserve(t, 1, -1, null, forced)) { return false; }
 
             Dictionary<ThingDef, int> still = comp.StillNeeded();
@@ -45,8 +64,8 @@ namespace DMSE
 
         public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
-            CompMissileConfig comp = t.TryGetComp<CompMissileConfig>();
-            if (comp == null || !comp.NeedsAssembly) { return null; }
+            CompMissileConfig comp = MissileAssemblyUtility.GetAssemblyComp(t);
+            if (comp == null || !comp.NeedsAssembly || !comp.assemblyConfirmed) { return null; }
 
             Dictionary<ThingDef, int> still = comp.StillNeeded();
             if (still.Count > 0)

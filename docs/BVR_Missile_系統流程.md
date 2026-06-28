@@ -49,9 +49,11 @@ RegisterIncoming：以搜索雷達算出「預警窗口」→ tickToImpact = now
    │     • 對未占用通道的目標：選最佳火控雷達 + 一具就緒發射器
    │     • 命中率 = maxHitChance × clamp(可導引時間 / guidanceAccuracyTime)，反隱身不足再打折
    │     • CompMissileLauncher.FireInterceptor → 生成 InterceptProjectile（skyfaller），耗一枚彈、進冷卻
+   │     • 攔截彈升空後火力通道繼續占用（midcourseEngagedUntil > now），直到結算
    │     • InterceptProjectile.LeaveMap：擲 hitChance
    │           成功 → RemoveTarget（乾淨消滅，【不留碎片】）
-   │           無論成敗 → 釋放火力通道（midcourseEngagedUntil = -1）
+   │           落空 → 目標仍存活，lockUntil = -1 / midcourseEngagedUntil = -1，下一 tick 重新開始鎖定
+   │           無論成敗 → midcourseEngagedUntil = -1，火力通道正式釋放
    │
    ├─ timeLeft ≤ 末端窗口  →  末端（TerminalDefense）
    │     • 末端窗口 = 所有 CIWS 中最大的 terminalWindowTicks（約 30 秒）
@@ -66,7 +68,7 @@ RegisterIncoming：以搜索雷達算出「預警窗口」→ tickToImpact = now
 ### A-4. 重點設計
 
 - **碎片規則**：中過程攔截＝完全消滅、不落地、不留殘骸；末端攔截命中後依 `debrisChance` 機率生成殘骸。
-- **火力通道**：以「共用池」計算（Σ maxTargets），用 `midcourseEngagedUntil` 防止對同一目標重複發射，存讀檔安全（不需持久化 in-flight 引用）。
+- **火力通道**：以「共用池」計算（Σ maxTargets）。通道在「鎖定階段」（`lockUntil ≥ 0`）與「攔截彈在飛」（`midcourseEngagedUntil > now`）期間均持續占用——攔截彈命中或落空結算後（`InterceptProjectile.LeaveMap` 將 `midcourseEngagedUntil = -1`）才釋放，存讀檔安全（不需持久化 in-flight 引用）。
 - **存檔**：波次與目標經 `ExposeData` 持久化；in-flight 的 `InterceptProjectile` 以 `targetId`（int）回連目標，避免引用非 `ILoadReferenceable` 物件。
 - **陣營相對防禦**（非玩家專屬）：偵測與攔截以「防禦方」為基準。空投生成時由 `ResolveDefender` 找出「擁有運作中搜索雷達、且與空投內容物敵對」的陣營作為防禦方（玩家優先），整個波次（`BVRWave.defenderFaction`）只由該陣營的雷達/發射器/CIWS 參與。因此：
   - 敵方空降到玩家基地 → 玩家防空攔截（原行為）。

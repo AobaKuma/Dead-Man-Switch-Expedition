@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ==================== 彈道導彈 離場 skyfaller ==================== -->
+  <ThingDef ParentName="SkyfallerBase">
+    <defName>DMSE_SkyFaller_BallisticMissile</defName>
+    <label>ballistic missile (leaving)</label>
+    <thingClass>DMSE.ScorerProjectile</thingClass>
+    <size>(1,1)</size>
+    <graphicData>
+      <texPath>Things/Missile/Moskit/skyFaller</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>5</drawSize>
+    </graphicData>
+    <skyfaller>
+      <movementType>Accelerate</movementType>
+      <reversed>true</reversed>
+      <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
+      <shadowSize>(2.5, 2.5)</shadowSize>
+      <ticksToDiscardInReverse>300</ticksToDiscardInReverse>
+      <ticksToImpactRange>0</ticksToImpactRange>
+      <anticipationSound>DropPod_Leaving</anticipationSound>
+      <anticipationSoundTicks>-1</anticipationSoundTicks>
+      <speedCurve>
+        <points>
+          <li>(0,0.1)</li>
+          <li>(0.2,0.5)</li>
+          <li>(0.5,1.5)</li>
+          <li>(1,3)</li>
+        </points>
+      </speedCurve>
+      <rotationCurve>
+        <points>
+          <li>(0,0)</li>
+          <li>(0.5,0)</li>
+          <li>(1,0)</li>
+        </points>
+      </rotationCurve>
+      <zPositionCurve>
+        <points>
+          <li>(0,0)</li>
+          <li>(0.1,3)</li>
+          <li>(0.4,1)</li>
+          <li>(1,20)</li>
+        </points>
+      </zPositionCurve>
+    </skyfaller>
+    <comps>
+      <li Class="DMSE.CompProperties_EffecterColdLaunch">
+        <delayTicks>20</delayTicks>
+        <ignitionSound>DMSE_Missile_Flight</ignitionSound>
+        <ExhaustFleck>DMS_Fleck_RocketFlame</ExhaustFleck>
+        <ExhaustCurve>
+          <points>
+            <li>(0,3)</li>
+            <li>(0.1,12)</li>
+            <li>(0.5,8)</li>
+            <li>(0.9,3)</li>
+          </points>
+        </ExhaustCurve>
+        <SmokeFleck>Smoke</SmokeFleck>
+        <SmokeCurve>
+          <points>
+            <li>(0,16)</li>
+            <li>(0.5,10)</li>
+            <li>(1,3)</li>
+          </points>
+        </SmokeCurve>
+        <launchEffectTrigger>DMS_LaunchDust_Recoilless</launchEffectTrigger>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ==================== 彈道導彈 落點 incoming skyfaller ==================== -->
+  <ThingDef ParentName="SkyfallerBase">
+    <defName>DMSE_Incoming_BallisticMissile</defName>
+    <label>ballistic missile (incoming)</label>
+    <thingClass>DMSE.MissileIncoming</thingClass>
+    <graphicData>
+      <texPath>Things/Missile/Moskit/skyFaller_incoming</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>5</drawSize>
+    </graphicData>
+    <size>(1,1)</size>
+    <skyfaller>
+      <shadowSize>(4, 4)</shadowSize>
+      <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
+      <!-- 彈道導彈速度極快，窗口極短，幾乎無法攔截 -->
+      <speed>1</speed>
+    </skyfaller>
+    <modExtensions>
+      <li Class="DMSE.BVRTargetProps">
+        <!-- 彈道：高速（難以攔截）、低隱身（再入大氣層產生等離子鞘，雷達可見） -->
+        <distanceLevel>2</distanceLevel>
+        <stealthLevel>2</stealthLevel>
+        <speed>80</speed>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- ==================== 彈道導彈 世界旅行物件 ==================== -->
+  <WorldObjectDef>
+    <defName>DMSE_WorldObject_BallisticMissile</defName>
+    <label>ballistic missile</label>
+    <description>A ballistic missile following a lofted trajectory.</description>
+    <worldObjectClass>DMSE.ScorerProjectile_WorldObject</worldObjectClass>
+    <texture>UI/DMSE/TravelingMissile</texture>
+    <rotateGraphicWhenTraveling>true</rotateGraphicWhenTraveling>
+    <useDynamicDrawer>true</useDynamicDrawer>
+    <expandingIcon>true</expandingIcon>
+    <expandingIconTexture>UI/DMSE/TravelingMissile_Expanding</expandingIconTexture>
+    <expandingIconPriority>100</expandingIconPriority>
+    <expandMore>true</expandMore>
+    <fullyExpandedInSpace>true</fullyExpandedInSpace>
+    <validLaunchTarget>false</validLaunchTarget>
+  </WorldObjectDef>
+
+  <!-- ==================== 彈道導彈 發射井（3x3 垂發）====================
+       不可旋轉（垂直朝向唯一），禁止建於重力船 substructure（繼承自 DMSE_VerticalLauncherBase）。
+       建築本身持有 CompMissileConfig（直接在架上自定義、裝配）及 CompBallisticLauncher（發射控制）。
+       ITab_MissileAssembly 讓玩家選擇彈頭/導引/酬載，WorkGiver_AssembleBallisticSilo 分派小人裝配。
+       需 DMSE_StrategicSystems 解鎖。 -->
+  <ThingDef ParentName="DMSE_VerticalLauncherBase">
+    <defName>DMSE_Building_BallisticSilo</defName>
+    <label>ballistic missile silo</label>
+    <description>A 3x3 missile silo for ballistic weapons. Unlike cruise missiles, the ballistic airframe is assembled directly in the silo by colonists consuming raw materials — no item ever appears in the stockpile. Configure warhead, guidance, and payload in the assembly tab; once built, launch via the fire command at a world map target.\n\nCannot be installed on gravship decks.</description>
+    <graphicData>
+      <!-- 暫借巡弋飛彈貼圖；建議後期替換為 3x3 專屬發射井頂蓋貼圖。 -->
+      <texPath>Things/Building/MissileLauncher/building</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(4,4)</drawSize>
+    </graphicData>
+    <size>(3,3)</size>
+    <pathCost>80</pathCost>
+    <fillPercent>0.8</fillPercent>
+    <staticSunShadowHeight>0.2</staticSunShadowHeight>
+    <constructEffect>ConstructMetal</constructEffect>
+    <statBases>
+      <MaxHitPoints>800</MaxHitPoints>
+      <WorkToBuild>25000</WorkToBuild>
+      <Flammability>0.0</Flammability>
+    </statBases>
+    <costList>
+      <Steel>400</Steel>
+      <DMSE_TantastenAlloy>60</DMSE_TantastenAlloy>
+      <ComponentStamped>20</ComponentStamped>
+      <ComponentSpacer>5</ComponentSpacer>
+    </costList>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <!-- 待機功耗：維持環控系統、冷卻。 -->
+        <basePowerConsumption>1200</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Breakdownable" />
+      <!-- 彈道導彈的裝配設定（warhead/guidance/payload）直接存於建築本身。 -->
+      <li Class="DMSE.CompProperties_MissileConfig">
+        <defaultBody>DMSE_MissileBody_Ballistic</defaultBody>
+      </li>
+      <!-- 發射控制：在世界地圖選靶並點火。 -->
+      <li Class="DMSE.CompProperties_BallisticLauncher">
+        <skyfaller>DMSE_SkyFaller_BallisticMissile</skyfaller>
+        <skyfallerIncoming>DMSE_Incoming_BallisticMissile</skyfallerIncoming>
+        <worldObjectDef>DMSE_WorldObject_BallisticMissile</worldObjectDef>
+        <launchCooldownTicks>2400</launchCooldownTicks>
+        <launchForwardCells>0</launchForwardCells>
+      </li>
+    </comps>
+    <inspectorTabs>
+      <!-- 複用現有裝配 ITab（讀取 CompMissileConfig）來設定彈頭/導引/酬載 -->
+      <li>DMSE.ITab_MissileAssembly</li>
+    </inspectorTabs>
+    <researchPrerequisites>
+      <li>DMSE_StrategicSystems</li>
+    </researchPrerequisites>
+  </ThingDef>
+
+  <!-- ==================== Job Defs ====================
+       DMSE_AssembleBallisticSilo：在彈道發射井執行裝配施工。
+       搬運資源仍複用現有 DMSE_DeliverMissileResource（JobDriver 直接讀 CompMissileConfig）。 -->
+  <JobDef>
+    <defName>DMSE_AssembleBallisticSilo</defName>
+    <driverClass>DMSE.JobDriver_AssembleBallisticSilo</driverClass>
+    <reportString>assembling ballistic missile in TargetA.</reportString>
+  </JobDef>
+
+  <WorkGiverDef>
+    <defName>DMSE_AssembleBallisticSilo</defName>
+    <label>assemble ballistic missiles</label>
+    <giverClass>DMSE.WorkGiver_AssembleBallisticSilo</giverClass>
+    <workType>Crafting</workType>
+    <verb>assemble</verb>
+    <gerund>assembling</gerund>
+    <scanThings>true</scanThings>
+    <scanCells>false</scanCells>
+    <priorityInType>48</priorityInType>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+</Defs>

@@ -115,20 +115,23 @@ namespace DMSE
             Destroy();
         }
 
-        /// <summary>自動選擇落點：優先打擊玩家建築，其次殖民者，最後地圖中心。</summary>
+        /// <summary>
+        /// 選擇落點格：依導引頭類別委派，找不到有效格時退化為慣性邏輯。
+        /// </summary>
         private IntVec3 PickTargetCell(Map map)
         {
-            List<Building> buildings = map.listerBuildings.allBuildingsColonist;
-            if (buildings != null && buildings.Count > 0)
+            float N = config?.PayloadCapacity ?? 5f;
+            MissilePartDef guidancePart = config?.PartFor(MissilePartCategory.Guidance);
+            GuidanceType guidance = guidancePart?.guidanceType;
+
+            if (guidance != null)
             {
-                return buildings.RandomElement().Position;
+                IntVec3 result = guidance.PickTarget(N, map, base.Faction);
+                if (result.IsValid && result.InBounds(map)) { return result; }
             }
-            List<Pawn> colonists = map.mapPawns.FreeColonistsSpawned;
-            if (colonists != null && colonists.Count > 0)
-            {
-                return colonists.RandomElement().Position;
-            }
-            return map.Center;
+
+            // 後備慣性邏輯
+            return GuidanceType.InertialTarget(map, base.Faction);
         }
 
         public override void ExposeData()

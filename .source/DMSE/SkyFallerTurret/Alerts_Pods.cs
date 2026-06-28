@@ -1,5 +1,7 @@
 using RimWorld;
 using System.Linq;
+using System.Text;
+using UnityEngine;
 using Verse;
 
 namespace DMSE
@@ -31,6 +33,50 @@ namespace DMSE
                     (wave.tickToImpact - Find.TickManager.TicksGame).ToStringTicksToPeriod());
             }
             return base.GetLabel();
+        }
+
+        public override TaggedString GetExplanation()
+        {
+            Map map = Find.CurrentMap;
+            BVRWave wave = SoonestPlayerWave(map);
+            if (wave == null) { return base.GetExplanation(); }
+
+            int now = Find.TickManager.TicksGame;
+            int timeLeft = wave.tickToImpact - now;
+            MapComponent_BVRCombat comp = map.GetComponent<MapComponent_BVRCombat>();
+            int terminalWindow = comp != null ? comp.TerminalWindowTicks(wave.defenderFaction) : 0;
+            int midcourseLeft = Mathf.Max(0, timeLeft - terminalWindow);
+
+            StringBuilder sb = new StringBuilder();
+
+            // ---- 攔截階段剩餘窗口 ----
+            if (midcourseLeft > 0)
+            {
+                sb.AppendLine("DMSE.Alert.Pods.Window.Midcourse".Translate(
+                    midcourseLeft.ToStringTicksToPeriod()));
+            }
+            if (terminalWindow > 0)
+            {
+                sb.AppendLine("DMSE.Alert.Pods.Window.Terminal".Translate(
+                    Mathf.Min(timeLeft, terminalWindow).ToStringTicksToPeriod()));
+            }
+
+            // ---- 逐目標列表 ----
+            sb.AppendLine();
+            foreach (BVRTarget t in wave.targets)
+            {
+                string statusKey;
+                if (t.midcourseEngagedUntil > now)      { statusKey = "DMSE.Alert.Pods.Status.InFlight"; }
+                else if (t.lockUntil > now)              { statusKey = "DMSE.Alert.Pods.Status.Locking"; }
+                else                                     { statusKey = "DMSE.Alert.Pods.Status.Unengaged"; }
+
+                Skyfaller faller = t.Skyfaller;
+                string label = (faller?.def?.label).NullOrEmpty() ? "?" : faller.def.label;
+
+                sb.AppendLine("DMSE.Alert.Pods.Target".Translate(label, statusKey.Translate()));
+            }
+
+            return sb.ToString().TrimEnd();
         }
 
         public override AlertReport GetReport()

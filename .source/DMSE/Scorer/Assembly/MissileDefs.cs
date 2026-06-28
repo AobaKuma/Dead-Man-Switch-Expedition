@@ -73,6 +73,13 @@ namespace DMSE
         public float baseSpecificImpulse = 3f;   // 基礎比衝（推進效率）
         public float rangePerFuelImpulse = 0.1f; // 射程換算係數：射程 ≈ 燃料 × 比衝 × 此係數
 
+        // 載荷容量係數（N）
+        /// <summary>
+        /// 載荷容量係數 N。所有戰鬥部（WarheadEffect）與載荷（PayloadEffect）
+        /// 的效果強度、範圍均以此值縮放。預設 5。
+        /// </summary>
+        public float payloadCapacity = 5f;
+
         // 裝配相關
         public int assembleWorkAmount = 600;     // 套用一次裝配變更所需工作量
         public float refundFraction = 0.5f;      // 移除/更換部件時退還的資源比例
@@ -126,6 +133,29 @@ namespace DMSE
         public ThingDef payloadSpawnThing;        // 例如毒氣／煙霧的填充物
         public float payloadSpawnChance = 1f;
         public int payloadSpawnCount = 1;
+
+        // ---- 行為類別（以 XML Class 屬性指定子類別；留空 = 無特殊效果）----
+
+        /// <summary>
+        /// 戰鬥部效果（Warhead slot 專用）。在主彈體爆炸後執行。
+        /// 支援 8 種子類別：ContinuousRod、ExtendedFuel、Airburst、TungstenPenetrator、
+        /// Incendiary、EMP、AnimalBerserk、BerserkPulse。
+        /// </summary>
+        public WarheadEffect warheadEffect;
+
+        /// <summary>
+        /// 導引頭行為（Guidance slot 專用）。決定來襲導彈的落點選擇邏輯。
+        /// 支援 7 種子類別：Inertial、HighEnergy、HeatSource、AntiRadiation、
+        /// Infrared、TV、FireControl。
+        /// </summary>
+        public GuidanceType guidanceType;
+
+        /// <summary>
+        /// 載荷效果（Payload slot 專用）。在戰鬥部效果後執行。
+        /// 支援 8 種子類別：None、HighExplosive、Cluster、Defoliant、FireFoam、
+        /// Antiparticle、ToxicGas、AirburstTungsten。
+        /// </summary>
+        public PayloadEffect payloadEffect;
 
         /// <summary>相容彈體；null/空 = 相容所有具有此槽位的彈體。</summary>
         public List<MissileBodyDef> compatibleBodies;

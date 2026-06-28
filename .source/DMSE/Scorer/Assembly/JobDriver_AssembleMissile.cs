@@ -10,11 +10,15 @@ namespace DMSE
     {
         private const TargetIndex MissileInd = TargetIndex.A;
 
-        private Thing Missile => job.GetTarget(MissileInd).Thing;
-        private CompMissileConfig Comp => Missile != null ? Missile.TryGetComp<CompMissileConfig>() : null;
+        /// <summary>工作目標：可能是地面上的導彈物品，或含有待裝配導彈的儲存架。</summary>
+        private Thing Target => job.GetTarget(MissileInd).Thing;
+        private CompMissileConfig Comp => Target != null ? MissileAssemblyUtility.GetAssemblyComp(Target) : null;
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
             => pawn.Reserve(job.GetTarget(MissileInd), job, 1, -1, null, errorOnFailed);
+
+        // 舊屬性名稱保持相容（JobDriver 內部 toil 引用）
+        private Thing Missile => Target;
 
         protected override IEnumerable<Toil> MakeNewToils()
         {

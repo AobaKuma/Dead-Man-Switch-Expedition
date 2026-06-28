@@ -43,6 +43,7 @@
         <filter>
           <thingDefs>
             <li>DMSE_CruiseMissile</li>
+            <li>DMSE_InterceptorMissile</li>
           </thingDefs>
         </filter>
       </fixedStorageSettings>
@@ -51,6 +52,7 @@
         <filter>
           <thingDefs>
             <li>DMSE_CruiseMissile</li>
+            <li>DMSE_InterceptorMissile</li>
           </thingDefs>
         </filter>
       </defaultStorageSettings>
@@ -82,10 +84,14 @@
     </comps>
     <inspectorTabs>
       <li>RimWorld.ITab_Storage</li>
+      <li>DMSE.ITab_MissileInventory</li>
+      <!-- 顯示架上第一枚導彈的裝配設定（彈頭/導引/酬載）；若架空則隱藏。
+           點選 ITab_MissileInventory 清單中的其他導彈後，
+           此 ITab 轉而顯示該導彈的設定。 -->
+      <li>DMSE.ITab_MissileAssembly</li>
     </inspectorTabs>
     <researchPrerequisites>
       <li>DMSE_OrbitalDynamics</li>
     </researchPrerequisites>
   </ThingDef>
-
 </Defs>

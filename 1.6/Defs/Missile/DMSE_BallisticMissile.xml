@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ==================== 彈道導彈 彈體 ====================
+       第四階：長程、僅垂直發射、不可上重力船、無物品型態（直接在發射架上裝配）。
+       payloadCapacity N=8，最強效果強度。 -->
+  <DMSE.MissileBodyDef>
+    <defName>DMSE_MissileBody_Ballistic</defName>
+    <label>ballistic missile body</label>
+    <description>A long-range ballistic missile chassis that lofts its warhead to the edge of the atmosphere. Assembled directly in the silo; the airframe never exists as an item. Range and payload are far greater than any cruise missile.</description>
+    <sizeClass>Ballistic</sizeClass>
+    <!-- 只能垂直發射 -->
+    <launchMode>Vertical</launchMode>
+    <!-- 在發射架上直接裝配（無物品型態）-->
+    <customizeLocation>Launcher</customizeLocation>
+    <!-- N = 8：最強效果強度 -->
+    <payloadCapacity>8</payloadCapacity>
+    <baseExplosionRadius>8</baseExplosionRadius>
+    <baseDamageDef>Bomb</baseDamageDef>
+    <baseDamageAmount>200</baseDamageAmount>
+    <baseScatter>5</baseScatter>
+    <baseWorldSpeedFactor>1.5</baseWorldSpeedFactor>
+    <!-- 射程：150 * 3 * 0.1 = 45 格（洲際範圍） -->
+    <baseRange>0</baseRange>
+    <baseFuel>150</baseFuel>
+    <baseSpecificImpulse>3</baseSpecificImpulse>
+    <rangePerFuelImpulse>0.1</rangePerFuelImpulse>
+    <!-- 裝配工作量：遠多於中型 -->
+    <assembleWorkAmount>3600</assembleWorkAmount>
+    <incomingSkyfaller>DMSE_Incoming_BallisticMissile</incomingSkyfaller>
+    <slots>
+      <li>Warhead</li>
+      <li>Guidance</li>
+      <li>Payload</li>
+    </slots>
+  </DMSE.MissileBodyDef>
+
+  <!-- ==================== 彈道導彈 部件 Defs ====================
+       所有部件均使用新式 Class 欄位；成本反映大型彈體的物料需求。 -->
+
+  <!-- == Warhead == -->
+
+  <!-- 熱核彈頭：超大爆炸，無特殊效果（純粹毀傷力）。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Ballistic_Warhead_Thermonuclear</defName>
+    <label>thermonuclear warhead</label>
+    <description>A massive blast warhead with thermonuclear yield. No special effects — the explosion radius and damage speak for themselves.</description>
+    <category>Warhead</category>
+    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li></compatibleBodies>
+    <explosionRadiusOffset>5</explosionRadiusOffset>
+    <damageAmountOffset>200</damageAmountOffset>
+    <damageDefOverride>Bomb</damageDefOverride>
+    <costList>
+      <Steel>80</Steel>
+      <Chemfuel>100</Chemfuel>
+      <DMSE_TantastenAlloy>20</DMSE_TantastenAlloy>
+      <ComponentSpacer>2</ComponentSpacer>
+    </costList>
+  </DMSE.MissilePartDef>
+
+  <!-- 空爆戰鬥部：額外 floor(N/5)=1 次攔截擲骰 + N 半徑地面爆炸（用於反彈道攔截）。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Ballistic_Warhead_Airburst</defName>
+    <label>airburst warhead</label>
+    <description>Detonates above the target for maximum fragment coverage. When used as an interceptor, gains extra engagement rolls per engagement window.</description>
+    <category>Warhead</category>
+    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li></compatibleBodies>
+    <warheadEffect Class="DMSE.WarheadEffect_Airburst">
+      <groundDamageAmount>120</groundDamageAmount>
+    </warheadEffect>
+    <costList>
+      <Steel>60</Steel>
+      <Chemfuel>60</Chemfuel>
+      <DMSE_TantastenAlloy>10</DMSE_TantastenAlloy>
+    </costList>
+  </DMSE.MissilePartDef>
+
+  <!-- 鎢芯穿甲：貫穿厚岩頂、2 格爆炸，用於打擊地下設施。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Ballistic_Warhead_TungstenPenetrator</defName>
+    <label>tungsten penetrator</label>
+    <description>A dense tungsten rod that punches through thick roofs before detonating inside, making underground shelters no protection.</description>
+    <category>Warhead</category>
+    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li></compatibleBodies>
+    <warheadEffect Class="DMSE.WarheadEffect_TungstenPenetrator">
+      <damageAmount>200</damageAmount>
+    </warheadEffect>
+    <costList>
+      <DMSE_TantastenAlloy>40</DMSE_TantastenAlloy>
+      <Steel>30</Steel>
+    </costList>
+  </DMSE.MissilePartDef>
+
+  <!-- == Guidance == -->
+
+  <!-- 慣性：高散布，射程全開。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Ballistic_Guidance_Inertial</defName>
+    <label>inertial guidance</label>
+    <description>Strap-down inertial reference unit. High accuracy is unnecessary at thermonuclear yield.</description>
+    <category>Guidance</category>
+    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li></compatibleBodies>
+    <guidanceType Class="DMSE.GuidanceType_Inertial" />
+    <scatterOffset>0</scatterOffset>
+  </DMSE.MissilePartDef>
+
+  <!-- 火控制導：由火控雷達網路輔助瞄準，大幅收緊散布。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Ballistic_Guidance_FireControl</defName>
+    <label>fire-control guidance</label>
+    <description>Terminal guidance aided by the colony's fire-control radar network. Significantly tightens impact dispersion for precision strikes.</description>
+    <category>Guidance</category>
+    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li></compatibleBodies>
+    <guidanceType Class="DMSE.GuidanceType_FireControl" />
+    <scatterOffset>-3</scatterOffset>
+    <costList>
+      <ComponentSpacer>3</ComponentSpacer>
+      <ComponentStamped>5</ComponentStamped>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_IntegratedCircuits</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
+  <!-- == Payload == -->
+
+  <!-- 空酬載：僅主彈頭。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Ballistic_Payload_None</defName>
+    <label>no payload</label>
+    <description>No secondary payload. The primary warhead alone is typically sufficient for a ballistic strike.</description>
+    <category>Payload</category>
+    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li></compatibleBodies>
+    <payloadEffect Class="DMSE.PayloadEffect_None" />
+  </DMSE.MissilePartDef>
+
+  <!-- 子母彈酬載：N 半徑多個子爆炸，覆蓋廣大區域。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Ballistic_Payload_Cluster</defName>
+    <label>cluster payload</label>
+    <description>Releases a cloud of sub-munitions across a wide area. Trades blast concentration for area coverage.</description>
+    <category>Payload</category>
+    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li></compatibleBodies>
+    <payloadEffect Class="DMSE.PayloadEffect_Cluster">
+      <subDamageAmount>80</subDamageAmount>
+    </payloadEffect>
+    <costList>
+      <Steel>50</Steel>
+      <Chemfuel>80</Chemfuel>
+    </costList>
+  </DMSE.MissilePartDef>
+
+  <!-- 反粒子酬載：N 半徑 BombSuper 爆炸，毀傷力極強。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Ballistic_Payload_Antiparticle</defName>
+    <label>antiparticle payload</label>
+    <description>A secondary antiparticle burst that vaporises everything in range. The most destructive secondary payload available.</description>
+    <category>Payload</category>
+    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li></compatibleBodies>
+    <payloadEffect Class="DMSE.PayloadEffect_Antiparticle">
+      <damageAmount>300</damageAmount>
+    </payloadEffect>
+    <costList>
+      <DMSE_TantastenAlloy>30</DMSE_TantastenAlloy>
+      <ComponentSpacer>4</ComponentSpacer>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_StrategicSystems</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
+</Defs>

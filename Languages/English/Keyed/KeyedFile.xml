@@ -16,6 +16,23 @@
   <DMSE.Alert.HuntdownThreatCritical.Desc>the position of Stele has been tracked down, hunting squad and possible air strike will arrive in no time, transfer before it's too late.</DMSE.Alert.HuntdownThreatCritical.Desc>
 
   <DMSE.Alert.Pods>{0} incoming threats — interception window: {1} left</DMSE.Alert.Pods>
+  <!-- Tooltip detail lines for incoming-threat alert -->
+  <DMSE.Alert.Pods.Window.Midcourse>Midcourse intercept window: {0}</DMSE.Alert.Pods.Window.Midcourse>
+  <DMSE.Alert.Pods.Window.Terminal>Terminal (CIWS) window: {0}</DMSE.Alert.Pods.Window.Terminal>
+  <DMSE.Alert.Pods.Target>  · {0}  [{1}]</DMSE.Alert.Pods.Target>
+  <DMSE.Alert.Pods.Status.InFlight>interceptor in flight</DMSE.Alert.Pods.Status.InFlight>
+  <DMSE.Alert.Pods.Status.Locking>fire control locking</DMSE.Alert.Pods.Status.Locking>
+  <DMSE.Alert.Pods.Status.Unengaged>unengaged</DMSE.Alert.Pods.Status.Unengaged>
+  <!-- BVR system status alert (independent from incoming-threat alert) -->
+  <DMSE.Alert.BVRStatus.Label>BVR System</DMSE.Alert.BVRStatus.Label>
+  <DMSE.Alert.BVRStatus.SearchRadars>Search radars:</DMSE.Alert.BVRStatus.SearchRadars>
+  <DMSE.Alert.BVRStatus.SearchRadar.Line>  · {0}  range {1}, anti-stealth {2}, power {3}  [{4}]</DMSE.Alert.BVRStatus.SearchRadar.Line>
+  <DMSE.Alert.BVRStatus.FireControlRadars>Fire control radars:</DMSE.Alert.BVRStatus.FireControlRadars>
+  <DMSE.Alert.BVRStatus.FireControl.Line>  · {0}  {1} ch, power {2}  [{3}]</DMSE.Alert.BVRStatus.FireControl.Line>
+  <DMSE.Alert.BVRStatus.FireControl.Occupied>  Channels occupied: {0} / {1}</DMSE.Alert.BVRStatus.FireControl.Occupied>
+  <DMSE.Alert.BVRStatus.None>  (none installed)</DMSE.Alert.BVRStatus.None>
+
+  <!-- Building rename (button drawn by Patch_InspectPaneRename; uses vanilla Dialog_Rename) -->
 
   <DMSE.Flight.Select>Select flight mode</DMSE.Flight.Select>
   <DMSE.Flight.Regular>Regular flight</DMSE.Flight.Regular>
@@ -64,7 +81,7 @@
   <DMSE.Missile.Body>Missile body</DMSE.Missile.Body>
   <DMSE.Missile.None>None</DMSE.Missile.None>
   <DMSE.Missile.Locked>locked</DMSE.Missile.Locked>
-  <DMSE.Missile.Stats>Effective stats</DMSE.Missile.Stats>
+  <DMSE.Missile.Stats>Pending stats (after assembly)</DMSE.Missile.Stats>
   <DMSE.Missile.Stat.Radius>Blast radius: {0}</DMSE.Missile.Stat.Radius>
   <DMSE.Missile.Stat.Damage>Warhead: {0} ({1})</DMSE.Missile.Stat.Damage>
   <DMSE.Missile.Stat.Scatter>Impact dispersion: {0}</DMSE.Missile.Stat.Scatter>
@@ -80,10 +97,15 @@
   <DMSE.Missile.Cat.Payload>Payload</DMSE.Missile.Cat.Payload>
   <DMSE.Missile.Inspect>Body: {0}\nWarhead: {1}\nBlast: {2} / {3} dmg</DMSE.Missile.Inspect>
   <DMSE.Missile.NeedResources>Needs (for assembly): {0}</DMSE.Missile.NeedResources>
-  <DMSE.Missile.ReadyToAssemble>Resources ready - awaiting assembly</DMSE.Missile.ReadyToAssemble>
+  <DMSE.Missile.ReadyToAssemble>Resources ready — confirm to begin assembly</DMSE.Missile.ReadyToAssemble>
   <DMSE.Missile.NoResources>No resources available to assemble</DMSE.Missile.NoResources>
+  <DMSE.Missile.EditingSlot>Editing missile 1 of {1} in rack</DMSE.Missile.EditingSlot>
+  <DMSE.Missile.ConfirmAssembly>Queue for assembly</DMSE.Missile.ConfirmAssembly>
+  <DMSE.Missile.AssemblyQueued>Assembly queued — colonists will begin shortly</DMSE.Missile.AssemblyQueued>
+  <DMSE.Missile.ResetToCurrent>Reset to assembled config</DMSE.Missile.ResetToCurrent>
   <DMSE.Missile.LaunchCooldown>Reloading launch rail: {0}</DMSE.Missile.LaunchCooldown>
   <DMSE.Missile.NoMissileLoaded>No missile loaded</DMSE.Missile.NoMissileLoaded>
+  <DMSE.Missile.NoRackAvailable>No missile rack with compatible missiles found</DMSE.Missile.NoRackAvailable>
   <DMSE.SAM.Reloading>Reloading: {0}</DMSE.SAM.Reloading>
   <DMSE.SAM.Ready>Ready to fire</DMSE.SAM.Ready>
   <DMSE.Missile.IncomingLetter>Incoming missile</DMSE.Missile.IncomingLetter>
@@ -94,4 +116,27 @@
   <DMSE_MissileDecayUnsheltered>Unsheltered: losing {0} durability/day</DMSE_MissileDecayUnsheltered>
 
   <DMSE_MissileRackStored>Stored missiles: {0} / {1}</DMSE_MissileRackStored>
+
+  <!-- ITab_MissileInventory: building-level missile management tab -->
+  <DMSE.Tab.MissileInventory>Inventory</DMSE.Tab.MissileInventory>
+  <DMSE.MissileInventory.Count>Loaded: {0} / {1}</DMSE.MissileInventory.Count>
+  <DMSE.MissileInventory.Empty>No missiles loaded.</DMSE.MissileInventory.Empty>
+  <DMSE.MissileInventory.Warhead>Warhead</DMSE.MissileInventory.Warhead>
+  <DMSE.MissileInventory.Guidance>Guidance</DMSE.MissileInventory.Guidance>
+  <!-- {0} = blast radius, {1} = damage -->
+  <DMSE.MissileInventory.Stats>Blast {0}  ·  Dmg {1}</DMSE.MissileInventory.Stats>
+  <DMSE.MissileInventory.Pending>assembly pending</DMSE.MissileInventory.Pending>
+  <DMSE.MissileInventory.InterceptorReady>Ready to fire</DMSE.MissileInventory.InterceptorReady>
+
+  <!-- ==================== Ballistic silo (CompBallisticLauncher) ==================== -->
+  <!-- Gizmo: fire button -->
+  <DMSE.Ballistic.Fire>Fire Ballistic Missile</DMSE.Ballistic.Fire>
+  <DMSE.Ballistic.FireDesc>Launch the assembled ballistic missile at a world-map target. The missile follows a lofted trajectory and is nearly impossible to intercept once launched.</DMSE.Ballistic.FireDesc>
+  <!-- Disabled reasons -->
+  <DMSE.Ballistic.NotLoaded>Missile not assembled. Configure warhead, guidance, and payload in the Assembly tab, then wait for colonists to deliver materials and complete assembly.</DMSE.Ballistic.NotLoaded>
+  <!-- Inspect strings -->
+  <DMSE.Ballistic.Loaded>Ballistic missile: assembled and ready</DMSE.Ballistic.Loaded>
+  <DMSE.Ballistic.LoadedWith>Ballistic missile loaded: {0}</DMSE.Ballistic.LoadedWith>
+  <DMSE.Ballistic.AwaitingAssembly>Ballistic missile: awaiting assembly by colonists</DMSE.Ballistic.AwaitingAssembly>
+  <DMSE.Ballistic.Unloaded>Ballistic missile silo: unloaded — configure in Assembly tab</DMSE.Ballistic.Unloaded>
 </LanguageData>

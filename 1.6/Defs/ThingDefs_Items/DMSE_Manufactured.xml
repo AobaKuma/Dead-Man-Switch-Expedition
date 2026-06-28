@@ -194,7 +194,7 @@
       <ThingDef>DMSE_Building_Scorer</ThingDef>
     </descriptionHyperlinks>
     <graphicData>
-      <texPath>Things/Missile/Moskit/skyFaller_moskit</texPath>
+      <texPath>Things/Missile/Moskit/skyFaller</texPath>
       <drawSize>(4,4)</drawSize>
       <drawOffset>(0,0,1.5)</drawOffset>
       <graphicClass>Graphic_Single</graphicClass>
@@ -230,6 +230,8 @@
       <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
     </recipeMaker>
     <comps>
+      <!-- 允許玩家為每枚導彈設定自訂名稱；重命名按鈕顯示於 ITab_MissileInventory 各列右側。 -->
+      <li Class="DMSE.CompProperties_Renameable" />
       <li Class="DMSE.CompProperties_MissileConfig">
         <defaultBody>DMSE_MissileBody_Cruise</defaultBody>
       </li>
@@ -237,9 +239,10 @@
       <li Class="DMSE.CompProperties_DurabilityDecay">
         <hitPointsPerDay>5</hitPointsPerDay>
         <destroyWhenDepleted>true</destroyWhenDepleted>
-        <!-- 存入導彈儲存架即視為受庇護、停止劣化。 -->
+        <!-- 存入導彈儲存架或發射平台容器即視為受庇護、停止劣化。 -->
         <shelterBuildings>
           <li>DMSE_MissileRack</li>
+          <li>DMSE_Building_Scorer</li>
         </shelterBuildings>
       </li>
     </comps>
@@ -247,4 +250,131 @@
       <li>DMSE.ITab_MissileAssembly</li>
     </inspectorTabs>
   </ThingDef>
+
+  <!-- SAM 攔截彈：防空導彈發射器（DMSE_Building_SAMLauncher）的容器式彈藥。
+       與巡弋飛彈不同，攔截彈為固定戰備彈，不需裝配/世界選靶，故無 CompMissileConfig 與裝配頁籤。
+       未存放於發射器/彈藥庫內時緩慢劣化（CompDurabilityDecay）。 -->
+  <ThingDef ParentName="DMSE_ResourceBase">
+    <defName>DMSE_InterceptorMissile</defName>
+    <label>interceptor missile</label>
+    <description>A ready-to-fire surface-to-air interceptor round. Loaded into a SAM launcher's internal container, it is expended one per engagement to destroy incoming threats during the midcourse phase of beyond-visual-range combat.</description>
+    <descriptionHyperlinks>
+      <ThingDef>DMSE_Building_SAMLauncher</ThingDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Things/Missile/Grison/skyFaller</texPath>
+      <drawSize>(2.5,2.5)</drawSize>
+      <drawOffset>(0,0,1)</drawOffset>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>1</stackLimit>
+    <!-- Rare ticker 讓 CompDurabilityDecay 能在物品 Spawned 時運作（ResourceBase 預設為 Never）。 -->
+    <tickerType>Rare</tickerType>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <MarketValue>900</MarketValue>
+      <Mass>120</Mass>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>10.0</DeteriorationRate>
+    </statBases>
+    <costList>
+      <Chemfuel>100</Chemfuel>
+      <Steel>50</Steel>
+      <DMSE_TantastenAlloy>5</DMSE_TantastenAlloy>
+      <ComponentStamped>4</ComponentStamped>
+      <ComponentSpacer>1</ComponentSpacer>
+    </costList>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <effectWorking>Smith</effectWorking>
+      <soundWorking>Recipe_Smith</soundWorking>
+      <recipeUsers Inherit="False">
+        <li>DMS_TableMachinePrinter</li>
+      </recipeUsers>
+      <researchPrerequisite>DMSE_OrbitalDynamics</researchPrerequisite>
+      <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
+    </recipeMaker>
+    <comps>
+      <!-- 允許玩家為每枚攔截彈設定自訂名稱；重命名按鈕顯示於 ITab_MissileInventory 各列右側。 -->
+      <li Class="DMSE.CompProperties_Renameable" />
+      <!-- 未存放於庇護建築內時緩慢扣耐久；歸零後摧毀。5 HP/日 ≒ 20 日（100 HP）。
+           存入 SAM 發射器或導彈儲存架即視為受庇護、停止劣化。 -->
+      <li Class="DMSE.CompProperties_DurabilityDecay">
+        <hitPointsPerDay>5</hitPointsPerDay>
+        <destroyWhenDepleted>true</destroyWhenDepleted>
+        <shelterBuildings>
+          <li>DMSE_MissileRack</li>
+          <li>DMSE_Building_SAMLauncher</li>
+        </shelterBuildings>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ==================== 輕型導彈（彈體物品）====================
+       第二階可定制導彈；比巡弋飛彈輕便廉價，配備三槽（Warhead/Guidance/Payload）。
+       未存入庇護建築時緩慢劣化；ITab_MissileAssembly 供玩家配置各槽。 -->
+  <ThingDef ParentName="DMSE_ResourceBase">
+    <defName>DMSE_LightMissile</defName>
+    <label>light missile</label>
+    <description>A compact single-stage missile with customisable warhead, guidance, and payload slots. Faster and longer-ranged than a loitering munition, but lighter and cheaper than a full cruise missile.</description>
+    <descriptionHyperlinks>
+      <ThingDef>DMSE_Building_LightMissileLauncher</ThingDef>
+      <ThingDef>DMSE_Building_LightMissileVLS</ThingDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Things/Missile/Grison/skyFaller</texPath>
+      <drawSize>(2.5,2.5)</drawSize>
+      <drawOffset>(0,0,1)</drawOffset>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>1</stackLimit>
+    <tickerType>Rare</tickerType>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <MarketValue>1200</MarketValue>
+      <Mass>200</Mass>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>10.0</DeteriorationRate>
+    </statBases>
+    <costList>
+      <Chemfuel>150</Chemfuel>
+      <Steel>80</Steel>
+      <DMSE_TantastenAlloy>8</DMSE_TantastenAlloy>
+      <ComponentStamped>6</ComponentStamped>
+    </costList>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <effectWorking>Smith</effectWorking>
+      <soundWorking>Recipe_Smith</soundWorking>
+      <recipeUsers Inherit="False">
+        <li>DMS_TableMachinePrinter</li>
+      </recipeUsers>
+      <researchPrerequisite>DMSE_Ballistics</researchPrerequisite>
+      <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
+    </recipeMaker>
+    <comps>
+      <li Class="DMSE.CompProperties_Renameable" />
+      <li Class="DMSE.CompProperties_MissileConfig">
+        <defaultBody>DMSE_MissileBody_Light</defaultBody>
+      </li>
+      <li Class="DMSE.CompProperties_DurabilityDecay">
+        <hitPointsPerDay>5</hitPointsPerDay>
+        <destroyWhenDepleted>true</destroyWhenDepleted>
+        <shelterBuildings>
+          <li>DMSE_Building_LightMissileLauncher</li>
+          <li>DMSE_Building_LightMissileVLS</li>
+        </shelterBuildings>
+      </li>
+    </comps>
+    <inspectorTabs>
+      <li>DMSE.ITab_MissileAssembly</li>
+    </inspectorTabs>
+  </ThingDef>
+
 </Defs>

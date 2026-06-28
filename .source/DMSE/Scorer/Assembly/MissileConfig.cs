@@ -59,11 +59,35 @@ namespace DMSE
         /// <summary>有效比衝（推進效率）= 彈體基礎比衝 + 部件比衝加成。</summary>
         public float SpecificImpulse => Mathf.Max(0f, Base(b => b.baseSpecificImpulse) + SumF(p => p.specificImpulseOffset));
 
-        /// <summary>射程（世界 tile）≈ 燃料 × 比衝 × 係數 + 固定射程加成。0 = 不限。</summary>
-        public int Range => Mathf.Max(0,
-            Mathf.RoundToInt(Fuel * SpecificImpulse * Base(b => b.rangePerFuelImpulse))
-            + Mathf.RoundToInt(Base(b => b.baseRange))
-            + SumI(p => p.rangeOffset));
+        /// <summary>
+        /// 載荷容量係數 N。WarheadEffect/PayloadEffect 的效果以此縮放。
+        /// </summary>
+        public float PayloadCapacity => body != null ? body.payloadCapacity : 5f;
+
+        /// <summary>
+        /// 射程（世界 tile）= 燃料×比衝×係數 + 固定加成 + 戰鬥部增程格數，
+        /// 最終乘以載荷係數（AirburstTungsten 減 25%）。0 = 不限。
+        /// </summary>
+        public int Range
+        {
+            get
+            {
+                float n = PayloadCapacity;
+                float r = Fuel * SpecificImpulse * Base(b => b.rangePerFuelImpulse)
+                          + Base(b => b.baseRange)
+                          + SumI(p => p.rangeOffset);
+
+                // 戰鬥部增程偏移（ExtendedFuel +N*2 格）
+                MissilePartDef wh = PartFor(MissilePartCategory.Warhead);
+                if (wh?.warheadEffect != null) { r += wh.warheadEffect.RangeOffset(n); }
+
+                // 載荷射程係數（AirburstTungsten ×0.75）
+                MissilePartDef pl = PartFor(MissilePartCategory.Payload);
+                if (pl?.payloadEffect != null) { r *= pl.payloadEffect.RangeFactor(n); }
+
+                return Mathf.Max(0, Mathf.RoundToInt(r));
+            }
+        }
 
         public bool Valid => body != null;
 

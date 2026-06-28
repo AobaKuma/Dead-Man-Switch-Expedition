@@ -13,9 +13,9 @@
       <ThingDef>DMSE_LoiteringRack</ThingDef>
     </descriptionHyperlinks>
     <graphicData>
-      <texPath>Things/Missile/Termite/missile_fold_north</texPath>
-      <drawSize>(1.5,2.6)</drawSize>
-      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Missile/Termite/missile_fold</texPath>
+      <drawSize>3</drawSize>
+      <graphicClass>Graphic_Multi</graphicClass>
     </graphicData>
     <soundInteract>Metal_Drop</soundInteract>
     <soundDrop>Standard_Drop</soundDrop>

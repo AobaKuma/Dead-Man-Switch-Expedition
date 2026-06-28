@@ -20,15 +20,19 @@ namespace DMSE
 
         /// <summary>
         /// 此朝向下導彈貼圖的旋轉角度（度，繞 Y 軸）。
-        /// 留空（null）則回退使用建築朝向 parent.Rotation.AsQuat，
-        /// 設定後即與座標獨立、可單獨調整。
+        /// 留空（null）則回退使用建築朝向（單張貼圖時旋轉、方向貼圖時不旋轉）。
+        /// 設定後即與座標獨立、可單獨調整，且一律優先於自動旋轉。
         /// </summary>
         public float? rotation;
     }
 
     public class CompProperties_MissileRackRenderer : CompProperties
     {
-        /// <summary>最大渲染／存放數量。</summary>
+        /// <summary>
+        /// 最大渲染數量（顯示幾枚）。僅控制「渲染」，與容器容量分離：
+        /// 容量請改由 <see cref="MissileRackExtension"/>.capacity 指定；未指定時
+        /// <see cref="Building_MissileRack"/> 會向後相容地以本值作為容量。
+        /// </summary>
         public int maxStored = 4;
 
         /// <summary>
@@ -78,9 +82,16 @@ namespace DMSE
     /// 依建築旋轉方向，按順序最多繪製 maxStored 枚已存放的導彈。
     /// 由 ThingWithComps.DrawAt → Comps_PostDraw 每幀呼叫（需 drawerType 含 realtime）。
     ///
-    /// 渲染來源優先序（座標與旋轉各自獨立判斷）：
+    /// 發射模式（來自合併後的 <see cref="MissileRackExtension"/>）影響渲染：
+    ///   發射模式為 Vertical（發射管／發射井）時不顯示彈體。量級（sizeClass）不影響渲染。
+    ///
+    /// 彈體貼圖取向依建築朝向（parent.Rotation）決定：
+    ///   <see cref="Graphic_Multi"/>（含 _north/_east/_south/_west）→ 依朝向換對應方向貼圖、貼圖本身不再旋轉；
+    ///   <see cref="Graphic_Single"/>（單張）→ 旋轉單張貼圖使其指向該朝向（沿用舊行為）。
+    ///
+    /// 座標與旋轉來源（各自獨立）：
     ///   座標：對應方向覆寫的 slotOffsets（原值，不自動旋轉）→ 共用 slotOffsets（依朝向旋轉）→ 自動均分。
-    ///   旋轉：對應方向覆寫的 rotation（度）→ 建築朝向 parent.Rotation.AsQuat。
+    ///   旋轉：方向覆寫的 rotation（度，一律優先）→ 依 Graphic 取向規則自動處理。
     /// </summary>
     public class CompMissileRackRenderer : ThingComp
     {
@@ -144,6 +155,14 @@ namespace DMSE
                 return;
             }
 
+            // 發射模式（來自合併後的 MissileRackExtension）影響渲染：
+            // 垂直發射（發射管／發射井）不顯示彈體。
+            MissileRackExtension ext = rack.RackExt;
+            if (ext != null && !ext.ShowStoredBody)
+            {
+                return;
+            }
+
             Rot4 rot = parent.Rotation;
             MissileRackDirectional dir = DirectionalFor(rot);
 
@@ -157,10 +176,11 @@ namespace DMSE
                 return;
             }
 
-            // ---- 旋轉來源：方向覆寫（度）優先，否則建築朝向 ----
-            Quaternion quat = (dir != null && dir.rotation.HasValue)
+            // ---- 旋轉覆寫：方向覆寫的 rotation（度）一律優先 ----
+            bool hasManualRotation = dir != null && dir.rotation.HasValue;
+            Quaternion manualQuat = hasManualRotation
                 ? Quaternion.Euler(0f, dir.rotation.Value, 0f)
-                : rot.AsQuat;
+                : Quaternion.identity;
 
             float y = AltitudeLayer.BuildingOnTop.AltitudeFor() + Props.altitudeOffset;
             Vector3 center = parent.DrawPos;
@@ -185,9 +205,33 @@ namespace DMSE
                     ? new Vector3(graphic.drawSize.x, 1f, graphic.drawSize.y)
                     : fallbackScale;
 
-                Material mat = graphic.MatAt(Rot4.North, missile);
+                // 依建築朝向取方向貼圖：Graphic_Multi → _north/_east/_south/_west；Graphic_Single → 單張。
+                Material mat = graphic.MatAt(rot, missile);
+
+                // 旋轉決策：
+                //   1) 手動角度覆寫（dir.rotation）一律優先；
+                //   2) 否則該 Graphic 需旋轉（單張：Graphic_Single 或退化的 Multi）→ 依朝向旋轉，使彈體指向該朝向（沿用舊行為）；
+                //   3) 否則（具方向貼圖的 Graphic_Multi）→ 不旋轉，貼圖本身已朝該向。
+                Quaternion quat;
+                if (hasManualRotation)
+                {
+                    quat = manualQuat;
+                }
+                else if (graphic.ShouldDrawRotated)
+                {
+                    quat = Quaternion.Euler(0f, rot.AsAngle + graphic.DrawRotatedExtraAngleOffset, 0f);
+                }
+                else
+                {
+                    quat = Quaternion.identity;
+                }
+
+                // 方向貼圖以鏡像合成東/西時（EastFlipped/WestFlipped），採用翻轉網格。
+                bool flip = (rot == Rot4.East && graphic.EastFlipped)
+                    || (rot == Rot4.West && graphic.WestFlipped);
+
                 Matrix4x4 matrix = Matrix4x4.TRS(pos, quat, scale);
-                Graphics.DrawMesh(MeshPool.GridPlane(Vector2.one), matrix, mat, 0);
+                Graphics.DrawMesh(MeshPool.GridPlane(Vector2.one, flip), matrix, mat, 0);
             }
         }
     }

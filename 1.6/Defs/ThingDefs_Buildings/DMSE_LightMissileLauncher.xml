@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
-  <!-- ==================== 巡飛彈 離場 skyfaller（軌道熱發射） ==================== -->
+  <!-- ==================== 輕型導彈 離場 skyfaller ==================== -->
   <ThingDef ParentName="SkyfallerBase">
-    <defName>DMSE_SkyFaller_Loiter</defName>
-    <label>loitering munition (leaving)</label>
+    <defName>DMSE_SkyFaller_LightMissile</defName>
+    <label>light missile (leaving)</label>
     <thingClass>DMSE.ScorerProjectile</thingClass>
     <size>(1,1)</size>
     <graphicData>
-      <texPath>Things/Missile/Termite/missile_north</texPath>
+      <texPath>Things/Missile/Grison/skyFaller</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>3</drawSize>
+      <drawSize>2.5</drawSize>
     </graphicData>
     <skyfaller>
       <movementType>Accelerate</movementType>
@@ -48,22 +48,22 @@
     </skyfaller>
     <comps>
       <li Class="DMSE.CompProperties_EffecterHotLaunch">
-        <launchBlastScale>0.7</launchBlastScale>
+        <launchBlastScale>0.85</launchBlastScale>
         <ignitionSound>DMSE_Missile_Flight</ignitionSound>
         <ExhaustFleck>DMS_Fleck_RocketFlame</ExhaustFleck>
         <ExhaustCurve>
           <points>
             <li>(0,2)</li>
-            <li>(0.1,5)</li>
-            <li>(0.5,3)</li>
+            <li>(0.1,6)</li>
+            <li>(0.5,4)</li>
             <li>(0.9,2)</li>
           </points>
         </ExhaustCurve>
         <SmokeFleck>Smoke</SmokeFleck>
         <SmokeCurve>
           <points>
-            <li>(0,3)</li>
-            <li>(0.5,2)</li>
+            <li>(0,4)</li>
+            <li>(0.5,3)</li>
             <li>(1,1)</li>
           </points>
         </SmokeCurve>
@@ -72,38 +72,37 @@
     </comps>
   </ThingDef>
 
-  <!-- ==================== 巡飛彈 落點 incoming skyfaller ==================== -->
+  <!-- ==================== 輕型導彈 落點 incoming skyfaller ==================== -->
   <ThingDef ParentName="SkyfallerBase">
-    <defName>DMSE_Incoming_Loiter</defName>
-    <label>loitering munition (incoming)</label>
+    <defName>DMSE_Incoming_LightMissile</defName>
+    <label>light missile (incoming)</label>
     <thingClass>DMSE.MissileIncoming</thingClass>
     <graphicData>
-      <texPath>Things/Missile/Termite/missile_incoming</texPath>
+      <texPath>Things/Missile/Grison/skyFaller</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>3</drawSize>
+      <drawSize>2.5</drawSize>
     </graphicData>
     <size>(1,1)</size>
-    <!-- 爆炸效果由 MissileConfig 於落點動態套用，故此處不設固定 explosionRadius/explosionDamage。 -->
     <skyfaller>
       <shadowSize>(2, 2)</shadowSize>
       <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
       <speed>1</speed>
     </skyfaller>
-    <!-- BVR 攔截特性：巡飛彈速度慢、隱身差 → 容易被偵測（高 distanceLevel、低 stealthLevel）。 -->
+    <!-- BVR 特性：輕型導彈比巡航快，但比彈道慢；隱身適中。 -->
     <modExtensions>
       <li Class="DMSE.BVRTargetProps">
-        <distanceLevel>1</distanceLevel>
-        <stealthLevel>0.5</stealthLevel>
-        <speed>15</speed>
+        <distanceLevel>1.2</distanceLevel>
+        <stealthLevel>0.8</stealthLevel>
+        <speed>22</speed>
       </li>
     </modExtensions>
   </ThingDef>
 
-  <!-- ==================== 巡飛彈 世界旅行物件 ==================== -->
+  <!-- ==================== 輕型導彈 世界旅行物件 ==================== -->
   <WorldObjectDef>
-    <defName>DMSE_WorldObject_Loiter</defName>
-    <label>loitering munition</label>
-    <description>A loitering munition in flight.</description>
+    <defName>DMSE_WorldObject_LightMissile</defName>
+    <label>light missile</label>
+    <description>A light missile in flight.</description>
     <worldObjectClass>DMSE.ScorerProjectile_WorldObject</worldObjectClass>
     <texture>UI/DMSE/TravelingMissile</texture>
     <rotateGraphicWhenTraveling>true</rotateGraphicWhenTraveling>
@@ -117,13 +116,13 @@
     <validLaunchTarget>false</validLaunchTarget>
   </WorldObjectDef>
 
-  <!-- ==================== 巡飛彈 發射架（1x3 傾斜軌） ====================
-       彈藥以實體 Thing 存於容器（Building_MissileRack，容量 1），由 CompMissileRackRenderer
-       依建築朝向渲染；CompMissileRailLauncher 提供 Scorer 式發射。 -->
+  <!-- ==================== 輕型導彈 傾斜發射軌（1x3）====================
+       參考 DMSE_Building_LoiteringLauncher 結構，提升成本以反映更高技術層次。
+       容量 1 枚，需 DMSE_Ballistics 解鎖。 -->
   <ThingDef ParentName="DMSE_TiltLauncherBase">
-    <defName>DMSE_Building_LoiteringLauncher</defName>
-    <label>loitering munition rail</label>
-    <description>A tilt-launch rail for a single loitering munition. A colonist hauls a munition onto the rail; from there it can be launched at targets beyond the local map. The loaded munition is rendered along the rail according to the building's facing.</description>
+    <defName>DMSE_Building_LightMissileLauncher</defName>
+    <label>light missile rail</label>
+    <description>A tilt-launch rail for a single light missile. Faster and more capable than a loitering munition rail, supporting customisable warhead, guidance, and payload configurations.</description>
     <thingClass>DMSE.Building_MissileRack</thingClass>
     <graphicData>
       <texPath>Things/Building/MissileLauncher/building</texPath>
@@ -139,13 +138,13 @@
     <staticSunShadowHeight>0.1</staticSunShadowHeight>
     <constructEffect>ConstructMetal</constructEffect>
     <statBases>
-      <MaxHitPoints>300</MaxHitPoints>
-      <WorkToBuild>5000</WorkToBuild>
+      <MaxHitPoints>350</MaxHitPoints>
+      <WorkToBuild>7000</WorkToBuild>
       <Flammability>0.05</Flammability>
     </statBases>
     <costList>
-      <Steel>120</Steel>
-      <ComponentIndustrial>4</ComponentIndustrial>
+      <Steel>150</Steel>
+      <ComponentIndustrial>6</ComponentIndustrial>
     </costList>
     <building>
       <maxItemsInCell>1</maxItemsInCell>
@@ -153,7 +152,7 @@
       <fixedStorageSettings>
         <filter>
           <thingDefs>
-            <li>DMSE_LoiteringMunition</li>
+            <li>DMSE_LightMissile</li>
           </thingDefs>
         </filter>
       </fixedStorageSettings>
@@ -161,20 +160,19 @@
         <priority>Important</priority>
         <filter>
           <thingDefs>
-            <li>DMSE_LoiteringMunition</li>
+            <li>DMSE_LightMissile</li>
           </thingDefs>
         </filter>
       </defaultStorageSettings>
     </building>
     <modExtensions>
       <li Class="DMSE.MissileLauncherExtension">
-        <sizeClass>Loitering</sizeClass>
+        <sizeClass>Light</sizeClass>
         <launchMode>Tilt</launchMode>
         <capacity>1</capacity>
       </li>
     </modExtensions>
     <comps>
-      <!-- 容量 1：發射軌上單枚；依建築朝向渲染（slotOffsets 留空 → 自動沿長軸置中）。 -->
       <li Class="DMSE.CompProperties_MissileRackRenderer">
         <maxStored>1</maxStored>
         <useNativeDrawSize>true</useNativeDrawSize>
@@ -183,57 +181,50 @@
         </slotOffsets>
       </li>
       <li Class="DMSE.CompProperties_MissileRailLauncher">
-        <skyfaller>DMSE_SkyFaller_Loiter</skyfaller>
-        <skyfallerIncoming>DMSE_Incoming_Loiter</skyfallerIncoming>
-        <worldObjectDef>DMSE_WorldObject_Loiter</worldObjectDef>
-        <missileBody>DMSE_MissileBody_Loiter</missileBody>
-        <launchCooldownTicks>600</launchCooldownTicks>
+        <skyfaller>DMSE_SkyFaller_LightMissile</skyfaller>
+        <skyfallerIncoming>DMSE_Incoming_LightMissile</skyfallerIncoming>
+        <worldObjectDef>DMSE_WorldObject_LightMissile</worldObjectDef>
+        <missileBody>DMSE_MissileBody_Light</missileBody>
+        <launchCooldownTicks>450</launchCooldownTicks>
         <launchForwardCells>2</launchForwardCells>
       </li>
     </comps>
     <inspectorTabs>
       <li>RimWorld.ITab_Storage</li>
       <li>DMSE.ITab_MissileInventory</li>
+      <li>DMSE.ITab_MissileAssembly</li>
     </inspectorTabs>
     <researchPrerequisites>
-      <li>DMSE_LoiteringMunitions</li>
+      <li>DMSE_Ballistics</li>
     </researchPrerequisites>
   </ThingDef>
 
-  <!-- ==================== 巡飛彈 儲存架（1x2） ====================
-       存放巡飛彈彈藥使其停止劣化（CompDurabilityDecay 庇護判定）。 -->
-  <ThingDef ParentName="BuildingBase">
-    <defName>DMSE_LoiteringRack</defName>
-    <label>loitering munition rack</label>
-    <description>A 1x2 armoured rack that holds up to two loitering munitions. Munitions stored inside are sheltered and will not degrade.</description>
+  <!-- ==================== 輕型導彈 垂直發射單元（1x1）====================
+       單格 VLS 單元，適合密集部署或空間受限場合。
+       不可旋轉（垂直朝向），禁止建於重力船 substructure。 -->
+  <ThingDef ParentName="DMSE_VerticalLauncherBase">
+    <defName>DMSE_Building_LightMissileVLS</defName>
+    <label>light missile VLS cell</label>
+    <description>A single-cell vertical launch system for light missiles. Compact footprint allows dense battery deployment. Cannot be installed on gravship decks.</description>
     <thingClass>DMSE.Building_MissileRack</thingClass>
-    <category>Building</category>
-    <!-- 佔位美術：暫借發射器貼圖，請替換為 1x2 專屬 rack 貼圖。 -->
     <graphicData>
+      <!-- 暫借 1x1 貼圖；建議後期替換為獨立 VLS 頂蓋貼圖。 -->
       <texPath>Things/Building/MissileLauncher/building</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
-      <drawSize>(2,3)</drawSize>
+      <drawSize>(2,2)</drawSize>
     </graphicData>
-    <rotatable>true</rotatable>
-    <altitudeLayer>Building</altitudeLayer>
-    <passability>PassThroughOnly</passability>
-    <pathCost>50</pathCost>
-    <fillPercent>0.45</fillPercent>
-    <drawerType>RealtimeOnly</drawerType>
-    <tickerType>Never</tickerType>
+    <size>(1,1)</size>
+    <pathCost>60</pathCost>
+    <fillPercent>0.8</fillPercent>
     <constructEffect>ConstructMetal</constructEffect>
-    <designationCategory>DMS_Category</designationCategory>
-    <size>(1,2)</size>
-    <selectable>true</selectable>
     <statBases>
-      <MaxHitPoints>250</MaxHitPoints>
-      <WorkToBuild>3500</WorkToBuild>
-      <Flammability>0.4</Flammability>
-      <Mass>20</Mass>
+      <MaxHitPoints>200</MaxHitPoints>
+      <WorkToBuild>4000</WorkToBuild>
+      <Flammability>0.05</Flammability>
     </statBases>
     <costList>
       <Steel>80</Steel>
-      <ComponentIndustrial>2</ComponentIndustrial>
+      <ComponentIndustrial>3</ComponentIndustrial>
     </costList>
     <building>
       <maxItemsInCell>1</maxItemsInCell>
@@ -241,7 +232,7 @@
       <fixedStorageSettings>
         <filter>
           <thingDefs>
-            <li>DMSE_LoiteringMunition</li>
+            <li>DMSE_LightMissile</li>
           </thingDefs>
         </filter>
       </fixedStorageSettings>
@@ -249,28 +240,42 @@
         <priority>Important</priority>
         <filter>
           <thingDefs>
-            <li>DMSE_LoiteringMunition</li>
+            <li>DMSE_LightMissile</li>
           </thingDefs>
         </filter>
       </defaultStorageSettings>
     </building>
+    <modExtensions>
+      <li Class="DMSE.MissileLauncherExtension">
+        <sizeClass>Light</sizeClass>
+        <launchMode>Vertical</launchMode>
+        <capacity>1</capacity>
+      </li>
+    </modExtensions>
     <comps>
       <li Class="DMSE.CompProperties_MissileRackRenderer">
-        <maxStored>2</maxStored>
+        <maxStored>1</maxStored>
         <useNativeDrawSize>true</useNativeDrawSize>
-        <!-- 北向時沿 1x2 長軸（z）前後各一枚；整體隨 parent.Rotation 旋轉。 -->
         <slotOffsets>
-          <li>(0, 0, -0.5)</li>
-          <li>(0, 0, 0.5)</li>
+          <li>(0, 0, 0)</li>
         </slotOffsets>
+      </li>
+      <li Class="DMSE.CompProperties_MissileRailLauncher">
+        <skyfaller>DMSE_SkyFaller_LightMissile</skyfaller>
+        <skyfallerIncoming>DMSE_Incoming_LightMissile</skyfallerIncoming>
+        <worldObjectDef>DMSE_WorldObject_LightMissile</worldObjectDef>
+        <missileBody>DMSE_MissileBody_Light</missileBody>
+        <launchCooldownTicks>450</launchCooldownTicks>
+        <launchForwardCells>1</launchForwardCells>
       </li>
     </comps>
     <inspectorTabs>
       <li>RimWorld.ITab_Storage</li>
       <li>DMSE.ITab_MissileInventory</li>
+      <li>DMSE.ITab_MissileAssembly</li>
     </inspectorTabs>
     <researchPrerequisites>
-      <li>DMSE_LoiteringMunitions</li>
+      <li>DMSE_Ballistics</li>
     </researchPrerequisites>
   </ThingDef>
 

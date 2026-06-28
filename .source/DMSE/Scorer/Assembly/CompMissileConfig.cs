@@ -27,6 +27,13 @@ namespace DMSE
         public MissileConfig config = new MissileConfig();   // 已套用
         public MissileConfig pending = new MissileConfig();  // 待裝配目標
 
+        /// <summary>
+        /// 玩家已按下「確認裝配」按鈕。
+        /// WorkGiver 僅在此旗標為 true 且 NeedsAssembly 時才派工。
+        /// 換部件時自動清除，需玩家重新確認。
+        /// </summary>
+        public bool assemblyConfirmed = false;
+
         // 已搬運到此導彈、尚未消耗的資源。
         public Dictionary<ThingDef, int> delivered = new Dictionary<ThingDef, int>();
 
@@ -136,6 +143,7 @@ namespace DMSE
 
             delivered.Clear();
             config = pending.Clone();
+            assemblyConfirmed = false;
         }
 
         /// <summary>pending 已回到與 config 相同卻仍有搬運資源時，把資源退回（取消裝配）。</summary>
@@ -152,7 +160,7 @@ namespace DMSE
         private void SpawnResources(Dictionary<ThingDef, int> things)
         {
             if (things == null || things.Count == 0) { return; }
-            if (parent == null || !parent.Spawned || parent.Map == null) { return; }
+            if (!MissileAssemblyUtility.TryGetSpawnLocation(this, out Map map, out IntVec3 pos)) { return; }
             foreach (KeyValuePair<ThingDef, int> kv in things)
             {
                 int remaining = kv.Value;
@@ -161,7 +169,7 @@ namespace DMSE
                     int stack = Mathf.Min(remaining, kv.Key.stackLimit);
                     Thing t = ThingMaker.MakeThing(kv.Key);
                     t.stackCount = stack;
-                    GenPlace.TryPlaceThing(t, parent.Position, parent.Map, ThingPlaceMode.Near);
+                    GenPlace.TryPlaceThing(t, pos, map, ThingPlaceMode.Near);
                     remaining -= stack;
                 }
             }
@@ -225,6 +233,7 @@ namespace DMSE
             Scribe_Deep.Look(ref config, "config");
             Scribe_Deep.Look(ref pending, "pending");
             Scribe_Collections.Look(ref delivered, "delivered", LookMode.Def, LookMode.Value);
+            Scribe_Values.Look(ref assemblyConfirmed, "assemblyConfirmed", false);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 if (config == null) { config = new MissileConfig(); }

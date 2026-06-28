@@ -5,6 +5,8 @@
         <label>Scorer MLS</label>
         <description>The S1120 "Scorer" is a cruise missile launch system. It is a highly versatile anti-ship missile launcher used on cruisers and armed landing ships of the Colonial Fleet.</description>
         <category>Building</category>
+        <!-- 容器式裝載：彈藥以實體 Thing 存入內部容器，逐枚保留各自數值與渲染（取代舊 CompRefuelable 抽象燃料）。 -->
+        <thingClass>DMSE.Building_MissileRack</thingClass>
         <graphicData>
             <texPath>Things/Building/MissileLauncher/building</texPath>
             <graphicClass>Graphic_Multi</graphicClass>
@@ -37,6 +39,24 @@
         </costList>
         <building>
             <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+            <!-- 儲存設定：使小人把巡弋飛彈搬入發射平台（Building_MissileRack 為 IHaulDestination/IStoreSettingsParent）。 -->
+            <maxItemsInCell>1</maxItemsInCell>
+            <ignoreStoredThingsBeauty>true</ignoreStoredThingsBeauty>
+            <fixedStorageSettings>
+                <filter>
+                    <thingDefs>
+                        <li>DMSE_CruiseMissile</li>
+                    </thingDefs>
+                </filter>
+            </fixedStorageSettings>
+            <defaultStorageSettings>
+                <priority>Important</priority>
+                <filter>
+                    <thingDefs>
+                        <li>DMSE_CruiseMissile</li>
+                    </thingDefs>
+                </filter>
+            </defaultStorageSettings>
         </building>
         <soundImpactDefault>BulletImpact_Ground</soundImpactDefault>
         <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
@@ -50,34 +70,31 @@
             </li>
         </modExtensions>
         <comps>
-            <li Class="DMSE.CompPropertiesScorer">
+            <!-- 發射：取出容器中的實體飛彈，採用其自身 CompMissileConfig（逐枚數值），以 Scorer 方式打擊地圖外目標。
+                 無自身設定時回退 missileBody。已取代舊 CompScorer + CompRefuelable。 -->
+            <li Class="DMSE.CompProperties_MissileRailLauncher">
                 <skyfaller>DMSE_SkyFaller_CruiseMissile</skyfaller>
                 <skyfallerIncoming>DMSE_Incoming_CruiseMissile</skyfallerIncoming>
                 <worldObjectDef>DMSE_WorldObject_CruiseMissile</worldObjectDef>
+                <missileBody>DMSE_MissileBody_Cruise</missileBody>
+                <launchCooldownTicks>300</launchCooldownTicks>
+                <launchForwardCells>2</launchForwardCells>
             </li>
-            <li Class="CompProperties_Refuelable">
-                <fuelGizmoLabel>Loaded missile</fuelGizmoLabel>
-                <fuelFilter>
-                    <thingDefs>
-                        <li>DMSE_CruiseMissile</li>
-                    </thingDefs>
-                </fuelFilter>
-                <fuelIsMortarBarrel>false</fuelIsMortarBarrel>
-                <fuelCapacity>1</fuelCapacity>
-                <fuelMultiplier>1</fuelMultiplier>
-                <initialFuelPercent>0</initialFuelPercent>
-                <showFuelGizmo>true</showFuelGizmo>
-                <minimumFueledThreshold>1</minimumFueledThreshold>
-                <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
-                <initialAllowAutoRefuel>true</initialAllowAutoRefuel>
-                <autoRefuelPercent>0</autoRefuelPercent>
-                <fuelIconPath>UI/DMSE/TravelingMissile</fuelIconPath>
-            </li>
-            <!-- 接收已裝填導彈的裝配設定（由 Patch_Refuel_CarryConfig 於裝填時複製）。 -->
-            <li Class="DMSE.CompProperties_MissileConfig">
-                <defaultBody>DMSE_MissileBody_Cruise</defaultBody>
+            <!-- 渲染：依建築朝向，並依擴充的 sizeClass（量級縮放）/ launchMode（垂直則不顯示）繪製容器中的飛彈。 -->
+            <li Class="DMSE.CompProperties_MissileRackRenderer">
+                <maxStored>1</maxStored>
+                <useNativeDrawSize>false</useNativeDrawSize>
+                <missileDrawSize>(2, 4)</missileDrawSize>
+                <slotOffsets>
+                    <li>(0, 0, 0)</li>
+                </slotOffsets>
             </li>
         </comps>
+        <inspectorTabs>
+            <li>RimWorld.ITab_Storage</li>
+            <li>DMSE.ITab_MissileInventory</li>
+            <li>DMSE.ITab_MissileAssembly</li>
+        </inspectorTabs>
         <researchPrerequisites>
             <li>DMSE_OrbitalDynamics</li>
         </researchPrerequisites>
@@ -88,7 +105,7 @@
         <label>cruise missile (leaving)</label>
         <size>(1,1)</size>
         <graphicData>
-            <texPath>Things/Missile/Moskit/skyFaller_moskit</texPath>
+            <texPath>Things/Missile/Moskit/skyFaller</texPath>
             <graphicClass>Graphic_Single</graphicClass>
             <drawSize>4</drawSize>
         </graphicData>
@@ -192,7 +209,7 @@
         <label>cruise missile (incoming)</label>
         <thingClass>DMSE.MissileIncoming</thingClass>
         <graphicData>
-            <texPath>Things/Missile/Moskit/skyFaller_moskit_incoming</texPath>
+            <texPath>Things/Missile/Moskit/skyFaller_incoming</texPath>
             <graphicClass>Graphic_Single</graphicClass>
             <drawSize>4</drawSize>
         </graphicData>
@@ -221,7 +238,7 @@
         <thingClass>DMSE.InterceptProjectile</thingClass>
         <size>(1,1)</size>
         <graphicData>
-            <texPath>Things/Missile/Moskit/skyFaller_moskit</texPath>
+            <texPath>Things/Missile/Grison/skyFaller</texPath>
             <graphicClass>Graphic_Single</graphicClass>
             <drawSize>2.5</drawSize>
         </graphicData>
@@ -289,13 +306,16 @@
 
     <!-- ==================== 防空導彈發射裝置 ====================
          功能由 ThingComp 提供；可獨立成棟，也可掛在其他建築上組合複合功能。
-         此處未掛 CompRefuelable，攔截彈無限但受 reloadCooldownTicks 節流；
-         若要限制彈藥，可加 CompProperties_Refuelable 並設定對應彈藥物品。 -->
+         彈藥裝填改為與 Scorer 相同的容器式：thingClass = Building_MissileRack，攔截彈以實體
+         Thing（DMSE_InterceptorMissile）逐枚存入內部容器，小人自動搬入；發射時 CompMissileLauncher
+         由容器取出一枚並摧毀（取代舊 CompRefuelable 抽象燃料 / 無限彈）。容量 4 枚（見渲染 Comp maxStored）。 -->
     <ThingDef ParentName="BuildingBase">
         <defName>DMSE_Building_SAMLauncher</defName>
         <label>SAM launcher</label>
-        <description>A surface-to-air missile launcher. Guided by a fire-control radar, it engages incoming hostile drops during the midcourse phase of the beyond-visual-range combat system.</description>
+        <description>A surface-to-air missile launcher. Guided by a fire-control radar, it engages incoming hostile drops during the midcourse phase of the beyond-visual-range combat system.\n\nLoads physical interceptor missiles into its internal container; haulers stock it automatically, and each engagement consumes one round.</description>
         <category>Building</category>
+        <!-- 容器式裝載：彈藥以實體 Thing 存入內部容器，逐枚保留各自數值與渲染（取代舊抽象彈藥）。 -->
+        <thingClass>DMSE.Building_MissileRack</thingClass>
         <graphicData>
             <texPath>Things/Building/MissileLauncher/building</texPath>
             <graphicClass>Graphic_Multi</graphicClass>
@@ -308,6 +328,7 @@
         <altitudeLayer>Building</altitudeLayer>
         <passability>PassThroughOnly</passability>
         <pathCost>100</pathCost>
+        <constructEffect>ConstructMetal</constructEffect>
         <fillPercent>0.9</fillPercent>
         <tickerType>Normal</tickerType>
         <drawerType>RealtimeOnly</drawerType>
@@ -324,6 +345,29 @@
             <ComponentStamped>8</ComponentStamped>
             <ComponentSpacer>2</ComponentSpacer>
         </costList>
+        <building>
+            <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+            <!-- 儲存設定：使小人把攔截彈搬入發射平台（Building_MissileRack 為 IHaulDestination/IStoreSettingsParent）。 -->
+            <maxItemsInCell>4</maxItemsInCell>
+            <ignoreStoredThingsBeauty>true</ignoreStoredThingsBeauty>
+            <fixedStorageSettings>
+                <filter>
+                    <thingDefs>
+                        <li>DMSE_InterceptorMissile</li>
+                    </thingDefs>
+                </filter>
+            </fixedStorageSettings>
+            <defaultStorageSettings>
+                <priority>Important</priority>
+                <filter>
+                    <thingDefs>
+                        <li>DMSE_InterceptorMissile</li>
+                    </thingDefs>
+                </filter>
+            </defaultStorageSettings>
+        </building>
+        <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+        <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
         <comps>
             <li Class="CompProperties_Power">
                 <compClass>CompPowerTrader</compClass>
@@ -331,14 +375,38 @@
             </li>
             <li Class="CompProperties_Flickable" />
             <li Class="CompProperties_Breakdownable" />
+            <!-- 發射：受火控雷達指派時，由內部容器取出一枚實體攔截彈並摧毀（無彈則不可發射）。 -->
             <li Class="DMSE.CompProperties_MissileLauncher">
                 <interceptorSkyfaller>DMSE_SkyFaller_Interceptor</interceptorSkyfaller>
                 <reloadCooldownTicks>240</reloadCooldownTicks>
                 <interceptorTravelTicks>300</interceptorTravelTicks>
             </li>
+            <!-- 渲染：依建築朝向，並依擴充的 sizeClass/launchMode 繪製容器中的攔截彈（最多 4 枚）。 -->
+            <li Class="DMSE.CompProperties_MissileRackRenderer">
+                <maxStored>4</maxStored>
+                <useNativeDrawSize>false</useNativeDrawSize>
+                <missileDrawSize>(1, 2.2)</missileDrawSize>
+                <slotOffsets>
+                    <li>(0, 0, -1.5)</li>
+                    <li>(0, 0, -0.5)</li>
+                    <li>(0, 0, 0.5)</li>
+                    <li>(0, 0, 1.5)</li>
+                </slotOffsets>
+            </li>
         </comps>
+        <modExtensions>
+            <li Class="DMSE.MissileRackExtension">
+                <capacity>4</capacity>
+                <sizeClass>Medium</sizeClass>
+                <launchMode>Tilt</launchMode>
+            </li>
+        </modExtensions>
+        <inspectorTabs>
+            <li>RimWorld.ITab_Storage</li>
+            <li>DMSE.ITab_MissileInventory</li>
+        </inspectorTabs>
         <researchPrerequisites>
-            <li>DMSE_OrbitalDynamics</li>
+            <li>DMSE_IntegratedCircuits</li>
         </researchPrerequisites>
     </ThingDef>
 </Defs>

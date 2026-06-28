@@ -25,6 +25,22 @@
 
   <!-- EN: {0} drop pods will breach in {1} -->
   <DMSE.Alert.Pods>{0} 個來襲目標 — 攔截窗口剩餘 {1}</DMSE.Alert.Pods>
+  <DMSE.Alert.Pods.Window.Midcourse>中過程攔截窗口：{0}</DMSE.Alert.Pods.Window.Midcourse>
+  <DMSE.Alert.Pods.Window.Terminal>末端攔截窗口（CIWS）：{0}</DMSE.Alert.Pods.Window.Terminal>
+  <DMSE.Alert.Pods.Target>  · {0}  【{1}】</DMSE.Alert.Pods.Target>
+  <DMSE.Alert.Pods.Status.InFlight>攔截彈飛行中</DMSE.Alert.Pods.Status.InFlight>
+  <DMSE.Alert.Pods.Status.Locking>火控鎖定中</DMSE.Alert.Pods.Status.Locking>
+  <DMSE.Alert.Pods.Status.Unengaged>未接戰</DMSE.Alert.Pods.Status.Unengaged>
+  <!-- BVR 系統狀態提示（獨立於來襲威脅提示） -->
+  <DMSE.Alert.BVRStatus.Label>BVR 系統</DMSE.Alert.BVRStatus.Label>
+  <DMSE.Alert.BVRStatus.SearchRadars>搜索雷達：</DMSE.Alert.BVRStatus.SearchRadars>
+  <DMSE.Alert.BVRStatus.SearchRadar.Line>  · {0}  搜索距離 {1}，反隱身 {2}，功率 {3}  [{4}]</DMSE.Alert.BVRStatus.SearchRadar.Line>
+  <DMSE.Alert.BVRStatus.FireControlRadars>火控雷達：</DMSE.Alert.BVRStatus.FireControlRadars>
+  <DMSE.Alert.BVRStatus.FireControl.Line>  · {0}  {1} 條通道，功率 {2}  [{3}]</DMSE.Alert.BVRStatus.FireControl.Line>
+  <DMSE.Alert.BVRStatus.FireControl.Occupied>  已占用通道：{0} / {1}</DMSE.Alert.BVRStatus.FireControl.Occupied>
+  <DMSE.Alert.BVRStatus.None>  （未安裝）</DMSE.Alert.BVRStatus.None>
+
+  <!-- 建築重新命名：按鈕由 Patch_InspectPaneRename 繪製，對話框沿用原版 Dialog_Rename -->
 
   <!-- EN: Select flight mode -->
   <DMSE.Flight.Select>選擇巡航模式</DMSE.Flight.Select>
@@ -100,7 +116,7 @@
   <DMSE.Missile.Body>導彈彈體</DMSE.Missile.Body>
   <DMSE.Missile.None>無</DMSE.Missile.None>
   <DMSE.Missile.Locked>未解鎖</DMSE.Missile.Locked>
-  <DMSE.Missile.Stats>有效數值</DMSE.Missile.Stats>
+  <DMSE.Missile.Stats>待裝配數值（裝配後生效）</DMSE.Missile.Stats>
   <DMSE.Missile.Stat.Radius>爆炸半徑：{0}</DMSE.Missile.Stat.Radius>
   <DMSE.Missile.Stat.Damage>彈頭：{0}（{1}）</DMSE.Missile.Stat.Damage>
   <DMSE.Missile.Stat.Scatter>命中偏移：{0}</DMSE.Missile.Stat.Scatter>
@@ -116,10 +132,15 @@
   <DMSE.Missile.Cat.Payload>特殊酬載</DMSE.Missile.Cat.Payload>
   <DMSE.Missile.Inspect>彈體：{0}\n彈頭：{1}\n爆炸：半徑 {2} / 傷害 {3}</DMSE.Missile.Inspect>
   <DMSE.Missile.NeedResources>裝配所需：{0}</DMSE.Missile.NeedResources>
-  <DMSE.Missile.ReadyToAssemble>資源已備齊－等待裝配</DMSE.Missile.ReadyToAssemble>
+  <DMSE.Missile.ReadyToAssemble>資源已備齊——確認後開始裝配</DMSE.Missile.ReadyToAssemble>
   <DMSE.Missile.NoResources>沒有可用於裝配的資源</DMSE.Missile.NoResources>
+  <DMSE.Missile.EditingSlot>正在編輯架上第 1 枚（共 {1} 枚）</DMSE.Missile.EditingSlot>
+  <DMSE.Missile.ConfirmAssembly>加入裝配佇列</DMSE.Missile.ConfirmAssembly>
+  <DMSE.Missile.AssemblyQueued>已加入佇列——殖民者即將開始裝配</DMSE.Missile.AssemblyQueued>
+  <DMSE.Missile.ResetToCurrent>還原為已裝配設定</DMSE.Missile.ResetToCurrent>
   <DMSE.Missile.LaunchCooldown>發射軌重新裝填中：{0}</DMSE.Missile.LaunchCooldown>
   <DMSE.Missile.NoMissileLoaded>未裝填導彈</DMSE.Missile.NoMissileLoaded>
+  <DMSE.Missile.NoRackAvailable>找不到含相容導彈的儲存架</DMSE.Missile.NoRackAvailable>
   <DMSE.SAM.Reloading>裝填中：{0}</DMSE.SAM.Reloading>
   <DMSE.SAM.Ready>可發射</DMSE.SAM.Ready>
   <DMSE.Missile.IncomingLetter>導彈來襲</DMSE.Missile.IncomingLetter>
@@ -130,4 +151,24 @@
   <DMSE_MissileDecayUnsheltered>未庇護：每日損失 {0} 點耐久</DMSE_MissileDecayUnsheltered>
 
   <DMSE_MissileRackStored>已存放導彈：{0} / {1}</DMSE_MissileRackStored>
+
+  <!-- ITab_MissileInventory（建築庫存分頁） -->
+  <DMSE.Tab.MissileInventory>庫存</DMSE.Tab.MissileInventory>
+  <DMSE.MissileInventory.Count>已裝填：{0} / {1}</DMSE.MissileInventory.Count>
+  <DMSE.MissileInventory.Empty>未裝填任何導彈。</DMSE.MissileInventory.Empty>
+  <DMSE.MissileInventory.Warhead>彈頭</DMSE.MissileInventory.Warhead>
+  <DMSE.MissileInventory.Guidance>導引</DMSE.MissileInventory.Guidance>
+  <!-- {0} = 爆炸半徑, {1} = 傷害 -->
+  <DMSE.MissileInventory.Stats>爆炸 {0}  ·  傷害 {1}</DMSE.MissileInventory.Stats>
+  <DMSE.MissileInventory.Pending>裝配待定</DMSE.MissileInventory.Pending>
+  <DMSE.MissileInventory.InterceptorReady>可發射</DMSE.MissileInventory.InterceptorReady>
+
+  <!-- 彈道發射井（CompBallisticLauncher） -->
+  <DMSE.Ballistic.Fire>發射彈道導彈</DMSE.Ballistic.Fire>
+  <DMSE.Ballistic.FireDesc>向世界地圖目標發射已裝配的彈道導彈。導彈以拋物線彈道飛行，一旦發射幾乎無法被攔截。</DMSE.Ballistic.FireDesc>
+  <DMSE.Ballistic.NotLoaded>導彈尚未裝配。請在「裝配」分頁設定彈頭、導引與酬載，等待殖民者搬運材料並完成裝配。</DMSE.Ballistic.NotLoaded>
+  <DMSE.Ballistic.Loaded>彈道導彈：已裝配，可發射</DMSE.Ballistic.Loaded>
+  <DMSE.Ballistic.LoadedWith>彈道導彈已裝填：{0}</DMSE.Ballistic.LoadedWith>
+  <DMSE.Ballistic.AwaitingAssembly>彈道導彈：等待殖民者完成裝配</DMSE.Ballistic.AwaitingAssembly>
+  <DMSE.Ballistic.Unloaded>彈道發射井：未裝填—請在裝配分頁設定</DMSE.Ballistic.Unloaded>
 </LanguageData>

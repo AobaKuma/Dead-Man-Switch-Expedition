@@ -28,4 +28,26 @@
     </requiredCapacities>
   </WorkGiverDef>
 
+  <!-- 從導彈儲存架取出導彈裝填至發射平台（儲存架內的 unspawned 導彈無法被標準搬運系統處理） -->
+  <JobDef>
+    <defName>DMSE_LoadMissileLauncher</defName>
+    <driverClass>DMSE.JobDriver_LoadMissileLauncher</driverClass>
+    <reportString>loading missile into TargetA.</reportString>
+  </JobDef>
+
+  <WorkGiverDef>
+    <defName>DMSE_LoadMissileLauncher</defName>
+    <label>load missile launchers</label>
+    <giverClass>DMSE.WorkGiver_LoadMissileLauncher</giverClass>
+    <workType>Hauling</workType>
+    <verb>load</verb>
+    <gerund>loading</gerund>
+    <scanThings>true</scanThings>
+    <scanCells>false</scanCells>
+    <priorityInType>85</priorityInType>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
 </Defs>

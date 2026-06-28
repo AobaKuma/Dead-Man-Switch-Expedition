@@ -27,15 +27,31 @@ namespace DMSE
 
         public int cooldownUntil;
 
-        private CompRefuelable Refuelable => parent.GetComp<CompRefuelable>();
+        // 彈藥來源：parent 為 Building_MissileRack（容器），攔截彈以實體 Thing 逐枚存放，
+        // 與 Scorer 的 CompMissileRailLauncher 相同；發射時取出一枚並摧毀（取代舊 CompRefuelable 抽象燃料）。
+        private ThingOwner HeldContainer => (parent as IThingHolder)?.GetDirectlyHeldThings();
 
-        private bool HasAmmo
+        private Thing LoadedMissile
         {
             get
             {
-                CompRefuelable r = Refuelable;
-                return r == null || r.Fuel > 0f;
+                ThingOwner owner = HeldContainer;
+                return owner != null && owner.Count > 0 ? owner[0] : null;
             }
+        }
+
+        private bool HasAmmo => LoadedMissile != null;
+
+        /// <summary>
+        /// 取得已裝填攔截彈的 MissileConfig，供 BVR 系統讀取戰鬥部加成。
+        /// 裝填物無 CompMissileConfig 時回傳 null。
+        /// </summary>
+        public MissileConfig GetLoadedMissileConfig()
+        {
+            Thing missile = LoadedMissile;
+            if (missile == null) { return null; }
+            CompMissileConfig comp = missile.TryGetComp<CompMissileConfig>();
+            return comp?.config;
         }
 
         public override bool Active => base.Active && HasAmmo;
@@ -47,6 +63,10 @@ namespace DMSE
         {
             if (Props.interceptorSkyfaller == null || parent.Map == null) { return; }
 
+            // 取出一枚實體攔截彈作為彈藥；無彈則不發射。
+            Thing missile = LoadedMissile;
+            if (missile == null) { return; }
+
             InterceptProjectile p = (InterceptProjectile)SkyfallerMaker.SpawnSkyfaller(
                 Props.interceptorSkyfaller, parent.Position, parent.Map);
             // 發射方向與發射器建築朝向一致（同巡航導彈）。
@@ -57,8 +77,9 @@ namespace DMSE
 
             cooldownUntil = now + Props.reloadCooldownTicks;
 
-            CompRefuelable r = Refuelable;
-            if (r != null) { r.ConsumeFuel(1f); }
+            // 消耗實體彈藥（與 CompMissileRailLauncher 相同）。
+            HeldContainer?.Remove(missile);
+            missile.Destroy(DestroyMode.Vanish);
         }
 
         public override string CompInspectStringExtra()

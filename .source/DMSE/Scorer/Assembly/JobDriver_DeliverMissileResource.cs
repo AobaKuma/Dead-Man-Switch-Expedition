@@ -11,8 +11,9 @@ namespace DMSE
         private const TargetIndex MissileInd = TargetIndex.A;
         private const TargetIndex ResourceInd = TargetIndex.B;
 
-        private Thing Missile => job.GetTarget(MissileInd).Thing;
-        private CompMissileConfig Comp => Missile != null ? Missile.TryGetComp<CompMissileConfig>() : null;
+        /// <summary>工作目標：地面上的導彈物品，或含有待裝配導彈的儲存架。</summary>
+        private Thing Target => job.GetTarget(MissileInd).Thing;
+        private CompMissileConfig Comp => Target != null ? MissileAssemblyUtility.GetAssemblyComp(Target) : null;
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {

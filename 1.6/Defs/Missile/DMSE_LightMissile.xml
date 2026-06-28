@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ==================== 輕型導彈 彈體 ====================
+       第二階：較巡飛彈更快、更遠，可定制，但比中型巡航導彈輕便低廉。
+       payloadCapacity N=3，供 warheadEffect/payloadEffect 縮放強度。 -->
+  <DMSE.MissileBodyDef>
+    <defName>DMSE_MissileBody_Light</defName>
+    <label>light missile body</label>
+    <description>A compact single-stage missile chassis with three assembly slots: warhead, guidance, and payload. Faster and longer-ranged than a loitering munition, but lighter and cheaper than a full cruise missile.</description>
+    <sizeClass>Light</sizeClass>
+    <launchMode>Both</launchMode>
+    <customizeLocation>Item</customizeLocation>
+    <!-- N = 3：中等效果強度（巡飛彈無 N；中型 N=5；彈道 N=8） -->
+    <payloadCapacity>3</payloadCapacity>
+    <baseExplosionRadius>4</baseExplosionRadius>
+    <baseDamageDef>Bomb</baseDamageDef>
+    <baseDamageAmount>85</baseDamageAmount>
+    <baseScatter>3</baseScatter>
+    <baseWorldSpeedFactor>0.75</baseWorldSpeedFactor>
+    <!-- 射程：70 * 2.5 * 0.1 = 17.5 格（巡飛彈 ~12，中型 ~30） -->
+    <baseRange>0</baseRange>
+    <baseFuel>70</baseFuel>
+    <baseSpecificImpulse>2.5</baseSpecificImpulse>
+    <rangePerFuelImpulse>0.1</rangePerFuelImpulse>
+    <incomingSkyfaller>DMSE_Incoming_LightMissile</incomingSkyfaller>
+    <slots>
+      <li>Warhead</li>
+      <li>Guidance</li>
+      <li>Payload</li>
+    </slots>
+  </DMSE.MissileBodyDef>
+
+  <!-- ==================== 輕型導彈 部件 Defs ====================
+       使用新式 Class 欄位，與舊式 explosionRadiusOffset 並存（各自獨立）。 -->
+
+  <!-- == Warhead == -->
+
+  <!-- 標準高爆：純炸藥，無特殊效果。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Light_Warhead_HE</defName>
+    <label>light HE warhead</label>
+    <description>A compact high-explosive warhead scaled for light missiles. Standard blast, no special effects.</description>
+    <category>Warhead</category>
+    <compatibleBodies><li>DMSE_MissileBody_Light</li></compatibleBodies>
+    <explosionRadiusOffset>1</explosionRadiusOffset>
+    <damageAmountOffset>30</damageAmountOffset>
+    <damageDefOverride>Bomb</damageDefOverride>
+    <costList>
+      <Steel>20</Steel>
+      <Chemfuel>15</Chemfuel>
+    </costList>
+  </DMSE.MissilePartDef>
+
+  <!-- 燒夷戰鬥部：N 半徑點燃。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Light_Warhead_Incendiary</defName>
+    <label>incendiary warhead</label>
+    <description>Scatters burning thermite on impact. Ignites all cells within N radius regardless of line of sight.</description>
+    <category>Warhead</category>
+    <compatibleBodies><li>DMSE_MissileBody_Light</li></compatibleBodies>
+    <warheadEffect Class="DMSE.WarheadEffect_Incendiary" />
+    <costList>
+      <Steel>15</Steel>
+      <Chemfuel>25</Chemfuel>
+    </costList>
+  </DMSE.MissilePartDef>
+
+  <!-- 連續桿：用作攔截彈時 +N×5% 命中率。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Light_Warhead_ContinuousRod</defName>
+    <label>continuous rod warhead</label>
+    <description>A ring of steel rods that expand on detonation, maximising fragment density against aerial targets. Provides an intercept hit-chance bonus when used as a SAM round.</description>
+    <category>Warhead</category>
+    <compatibleBodies><li>DMSE_MissileBody_Light</li></compatibleBodies>
+    <warheadEffect Class="DMSE.WarheadEffect_ContinuousRod" />
+    <costList>
+      <Steel>30</Steel>
+      <DMSE_TantastenAlloy>3</DMSE_TantastenAlloy>
+    </costList>
+  </DMSE.MissilePartDef>
+
+  <!-- == Guidance == -->
+
+  <!-- 慣性制導：預設，無額外費用。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Light_Guidance_Inertial</defName>
+    <label>inertial guidance</label>
+    <description>Baseline strap-down inertial reference unit. No seekers; relies on pre-programmed flight path. Scatter unchanged.</description>
+    <category>Guidance</category>
+    <compatibleBodies><li>DMSE_MissileBody_Light</li></compatibleBodies>
+    <guidanceType Class="DMSE.GuidanceType_Inertial" />
+    <scatterOffset>0</scatterOffset>
+  </DMSE.MissilePartDef>
+
+  <!-- 紅外制導：優先攻擊殖民者；散布降低。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Light_Guidance_IR</defName>
+    <label>infrared seeker</label>
+    <description>A passive infrared seeker that homes on body heat. Targets the nearest colonist if any are present; falls back to inertial targeting otherwise.</description>
+    <category>Guidance</category>
+    <compatibleBodies><li>DMSE_MissileBody_Light</li></compatibleBodies>
+    <guidanceType Class="DMSE.GuidanceType_Infrared" />
+    <scatterOffset>-1.5</scatterOffset>
+    <costList>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </costList>
+  </DMSE.MissilePartDef>
+
+  <!-- 反輻射制導：優先打雷達建築。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Light_Guidance_AntiRadiation</defName>
+    <label>anti-radiation seeker</label>
+    <description>Homes on active radar emissions. Prioritises the most powerful search or fire-control radar on the target map, then falls back to high-energy targeting.</description>
+    <category>Guidance</category>
+    <compatibleBodies><li>DMSE_MissileBody_Light</li></compatibleBodies>
+    <guidanceType Class="DMSE.GuidanceType_AntiRadiation" />
+    <scatterOffset>-1</scatterOffset>
+    <costList>
+      <ComponentIndustrial>3</ComponentIndustrial>
+    </costList>
+  </DMSE.MissilePartDef>
+
+  <!-- == Payload == -->
+
+  <!-- 空酬載：僅依靠主彈頭爆炸。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Light_Payload_None</defName>
+    <label>no payload</label>
+    <description>No secondary payload. The missile relies entirely on its primary warhead detonation.</description>
+    <category>Payload</category>
+    <compatibleBodies><li>DMSE_MissileBody_Light</li></compatibleBodies>
+    <payloadEffect Class="DMSE.PayloadEffect_None" />
+  </DMSE.MissilePartDef>
+
+  <!-- 高爆子炸藥：N 半徑額外 Bomb 爆炸。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Light_Payload_HighExplosive</defName>
+    <label>HE payload</label>
+    <description>A secondary high-explosive charge that detonates after the primary warhead, extending the damage radius.</description>
+    <category>Payload</category>
+    <compatibleBodies><li>DMSE_MissileBody_Light</li></compatibleBodies>
+    <payloadEffect Class="DMSE.PayloadEffect_HighExplosive" />
+    <costList>
+      <Steel>15</Steel>
+      <Chemfuel>20</Chemfuel>
+    </costList>
+  </DMSE.MissilePartDef>
+
+  <!-- 毒氣酬載：N 半徑釋放毒氣。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Light_Payload_ToxicGas</defName>
+    <label>toxic gas payload</label>
+    <description>Disperses a cloud of toxic gas across N tiles, persisting long after the blast to deny area to unprotected infantry.</description>
+    <category>Payload</category>
+    <compatibleBodies><li>DMSE_MissileBody_Light</li></compatibleBodies>
+    <payloadEffect Class="DMSE.PayloadEffect_ToxicGas" />
+    <costList>
+      <Steel>10</Steel>
+      <Chemfuel>10</Chemfuel>
+    </costList>
+  </DMSE.MissilePartDef>
+
+</Defs>

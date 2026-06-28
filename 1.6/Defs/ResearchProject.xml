@@ -88,4 +88,59 @@
     <researchViewX>4.00</researchViewX>
     <researchViewY>2.20</researchViewY>
   </ResearchProjectDef>
+
+  <!-- ==================== 導彈科技樹 ====================
+       三段式進階解鎖，以巡飛彈為起點，逐步開放輕型→中型→彈道導彈。
+       LoiteringMunitions(600) → Ballistics(4000) → IntegratedCircuits(6000) → StrategicSystems(8000)
+  -->
+
+  <!-- 彈道學基礎：解鎖輕型導彈及其發射架。 -->
+  <ResearchProjectDef ParentName="DMS_BaseTech">
+    <defName>DMSE_Ballistics</defName>
+    <label>ballistics</label>
+    <description>Systematic study of in-atmosphere missile flight dynamics, solid-fuel staging, and terminal guidance. Miniaturising rocket motors and seekers for rapid-reload tube launchers opens a new tier of battlefield fires.\n\nThis research unlocks the light missile, its tilt-launch rail, and a vertical single-cell launcher.</description>
+    <baseCost>4000</baseCost>
+    <requiredResearchBuilding Inherit="False"/>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>DMSE_LoiteringMunitions</li>
+    </prerequisites>
+    <researchViewX>3.00</researchViewX>
+    <researchViewY>3.40</researchViewY>
+    <generalRules/>
+  </ResearchProjectDef>
+
+  <!-- 集成電路：解鎖中型導彈進階系統（搜索雷達、火控雷達、SAM 發射架）。 -->
+  <ResearchProjectDef ParentName="DMS_BaseTech">
+    <defName>DMSE_IntegratedCircuits</defName>
+    <label>integrated circuits</label>
+    <description>High-density integrated electronics allow miniaturised phased-array signal processing and strapdown inertial reference units compact enough to fit inside a missile airframe. The result is a beyond-visual-range combat network with search radar, fire-control radar, and surface-to-air missile defence.\n\nThis research unlocks the search radar, fire-control radar, and the SAM launcher.</description>
+    <baseCost>6000</baseCost>
+    <requiredResearchBuilding Inherit="False"/>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>DMSE_Ballistics</li>
+      <li>DMSE_OrbitalDynamics</li>
+    </prerequisites>
+    <researchViewX>4.00</researchViewX>
+    <researchViewY>3.40</researchViewY>
+    <generalRules/>
+  </ResearchProjectDef>
+
+  <!-- 戰略系統：解鎖彈道導彈（3x3 垂發）。 -->
+  <ResearchProjectDef ParentName="DMS_BaseTech">
+    <defName>DMSE_StrategicSystems</defName>
+    <label>strategic systems</label>
+    <description>Mastery of re-entry physics, high-energy propellant chemistry, and stellar-inertial guidance enables ballistic missiles that loft their payload to the edge of the atmosphere. The ballistic arc defeats most point defences and allows strikes at extreme range with any assembled warhead configuration.\n\nThis research unlocks the ballistic missile silo and its assembly interface.</description>
+    <baseCost>8000</baseCost>
+    <requiredResearchBuilding Inherit="False"/>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>DMSE_IntegratedCircuits</li>
+    </prerequisites>
+    <researchViewX>5.00</researchViewX>
+    <researchViewY>3.40</researchViewY>
+    <generalRules/>
+  </ResearchProjectDef>
+
 </Defs>

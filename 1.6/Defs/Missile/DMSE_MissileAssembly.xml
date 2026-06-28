@@ -34,6 +34,7 @@
     <label>high-explosive warhead</label>
     <description>A large blast warhead. Wide radius, high damage.</description>
     <category>Warhead</category>
+    <compatibleBodies><li>DMSE_MissileBody_Cruise</li></compatibleBodies>
     <explosionRadiusOffset>2</explosionRadiusOffset>
     <damageAmountOffset>60</damageAmountOffset>
     <damageDefOverride>Bomb</damageDefOverride>
@@ -48,6 +49,7 @@
     <label>armor-piercing warhead</label>
     <description>A focused penetrator. Smaller radius but far higher damage.</description>
     <category>Warhead</category>
+    <compatibleBodies><li>DMSE_MissileBody_Cruise</li></compatibleBodies>
     <explosionRadiusOffset>-2</explosionRadiusOffset>
     <damageAmountOffset>140</damageAmountOffset>
     <damageDefOverride>Bomb</damageDefOverride>
@@ -62,6 +64,7 @@
     <label>EMP warhead</label>
     <description>Disables mechanoids and stuns targets in a wide area without lethal blast.</description>
     <category>Warhead</category>
+    <compatibleBodies><li>DMSE_MissileBody_Cruise</li></compatibleBodies>
     <explosionRadiusOffset>1</explosionRadiusOffset>
     <damageDefOverride>EMP</damageDefOverride>
     <costList>
@@ -76,6 +79,7 @@
     <label>inertial guidance</label>
     <description>Baseline guidance. Average accuracy.</description>
     <category>Guidance</category>
+    <compatibleBodies><li>DMSE_MissileBody_Cruise</li></compatibleBodies>
     <scatterOffset>0</scatterOffset>
   </DMSE.MissilePartDef>
 
@@ -84,6 +88,7 @@
     <label>precision guidance</label>
     <description>Terminal homing seeker. Greatly tightens impact dispersion.</description>
     <category>Guidance</category>
+    <compatibleBodies><li>DMSE_MissileBody_Cruise</li></compatibleBodies>
     <scatterOffset>-2.5</scatterOffset>
     <researchPrerequisites>
       <li>DMSE_OrbitalDynamics</li>
@@ -100,6 +105,7 @@
     <label>standard motor</label>
     <description>Baseline solid-fuel motor.</description>
     <category>Propulsion</category>
+    <compatibleBodies><li>DMSE_MissileBody_Cruise</li></compatibleBodies>
   </DMSE.MissilePartDef>
 
   <DMSE.MissilePartDef>
@@ -107,6 +113,7 @@
     <label>boosted motor</label>
     <description>A higher-impulse motor that reaches the target faster and extends range.</description>
     <category>Propulsion</category>
+    <compatibleBodies><li>DMSE_MissileBody_Cruise</li></compatibleBodies>
     <worldSpeedFactorOffset>0.6</worldSpeedFactorOffset>
     <specificImpulseOffset>2</specificImpulseOffset>
     <costList>
@@ -121,6 +128,7 @@
     <label>cluster submunitions</label>
     <description>Releases a secondary blast across the impact area.</description>
     <category>Payload</category>
+    <compatibleBodies><li>DMSE_MissileBody_Cruise</li></compatibleBodies>
     <payloadExplosionRadius>4</payloadExplosionRadius>
     <payloadDamageDef>Bomb</payloadDamageDef>
     <payloadDamageAmount>40</payloadDamageAmount>
@@ -135,6 +143,7 @@
     <label>EMP submunitions</label>
     <description>A secondary EMP burst that stuns and disables electronics around the impact.</description>
     <category>Payload</category>
+    <compatibleBodies><li>DMSE_MissileBody_Cruise</li></compatibleBodies>
     <payloadExplosionRadius>5</payloadExplosionRadius>
     <payloadDamageDef>EMP</payloadDamageDef>
     <costList>
