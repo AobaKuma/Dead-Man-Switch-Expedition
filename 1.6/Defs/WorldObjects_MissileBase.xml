@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       GenStepDef 地圖生成步驟定義
+       RimWorld 1.6：genSteps 是 List<GenStepDef>（Def 引用），
+       不再支援 MapGeneratorDef 內行內 Class="..." 語法。
+       每個 GenStep 需定義為獨立的 GenStepDef，然後在
+       MapGeneratorDef.genSteps 中以 defName 引用。
+       ══════════════════════════════════════════════════════════════ -->
+
+  <GenStepDef>
+    <defName>DMSE_MissileBase_GS_Terrain</defName>
+    <order>100</order>
+    <genStep Class="GenStep_Terrain" />
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>DMSE_MissileBase_GS_Snow</defName>
+    <order>200</order>
+    <genStep Class="GenStep_Snow" />
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>DMSE_MissileBase_GS_RocksFromGrid</defName>
+    <order>210</order>
+    <genStep Class="GenStep_RocksFromGrid" />
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>DMSE_MissileBase_GS_ScatterLumps</defName>
+    <order>220</order>
+    <genStep Class="GenStep_ScatterLumpsMineable">
+      <count>3</count>
+    </genStep>
+  </GenStepDef>
+
+  <!-- FFF 結構生成：依 tag = "DMSE_MissileBase" 的 FFF_StructureDef 選取 -->
+  <GenStepDef>
+    <defName>DMSE_MissileBase_GS_FFFStructure</defName>
+    <order>400</order>
+    <genStep Class="Fortified.Structures.GenStep_FFFStructureGen">
+      <useTag>DMSE_MissileBase</useTag>
+      <randomRotation>true</randomRotation>
+    </genStep>
+  </GenStepDef>
+
+  <Fortified.Structures.FFF_StructureDef>
+    <defName>LaunchSite_A</defName>
+    <tags>
+      <li>DMSE_MissileBase</li>
+    </tags>
+    <size>(26, 17)</size>
+    <disableSuggestedRoof>True</disableSuggestedRoof>
+    <elements>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>DMSE_Building_SAMLauncher</def>
+        <pos>(18, 0, 3)</pos>
+        <size>(1, 2)</size>
+        <rot>1</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>DMSE_Battery</def>
+        <pos>(9, 0, 7)</pos>
+        <size>(2, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>DMSE_Building_Scorer</def>
+        <rot>3</rot>
+        <posList>
+          <li>(8, 0, 2)</li>
+          <li>(5, 0, 7)</li>
+          <li>(7, 0, 12)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMSE_Battery</def>
+        <pos>(14, 0, 7)</pos>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMSE_PhaseArrayRadar</def>
+        <pos>(12, 0, 7)</pos>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMSE_Building_Scorer</def>
+        <pos>(18, 0, 7)</pos>
+        <rot>1</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMSE_Turret_Vulcan_WingBack</def>
+        <pos>(16, 0, 13)</pos>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>Concrete</def>
+        <pos>(5, 0, 1)</pos>
+        <size>(8, 3)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>Concrete</def>
+        <pos>(16, 0, 2)</pos>
+        <size>(6, 2)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>Concrete</def>
+        <pos>(2, 0, 4)</pos>
+        <size>(23, 4)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>Concrete</def>
+        <pos>(1, 0, 8)</pos>
+        <size>(24, 3)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>Concrete</def>
+        <pos>(4, 0, 11)</pos>
+        <size>(7, 4)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>Concrete</def>
+        <pos>(15, 0, 12)</pos>
+        <size>(4, 4)</size>
+      </li>
+    </elements>
+  </Fortified.Structures.FFF_StructureDef>
+
+
+  <!-- 陣地 Pawn 生成：在 FFF 結構（order 400）之後，RectOfInterest 已設置。
+       炮手（gunnerFraction）→ LordJob_ManTurrets（占據 Mannable 炮塔）
+       陣地班（其餘）→ LordJob_MissileCrewDuty（防守 + 搬運導彈 + 食物空投） -->
+  <GenStepDef>
+    <defName>DMSE_MissileBase_GS_SpawnCrew</defName>
+    <order>450</order>
+    <genStep Class="DMSE.GenStep_MissileBaseCrew">
+      <!-- crewCount=-1：依 SitePartParams.threatPoints / pointsPerPawn 換算 -->
+      <crewCount>-1</crewCount>
+      <pointsPerPawn>100</pointsPerPawn>
+      <minCrew>4</minCrew>
+      <maxCrew>16</maxCrew>
+      <gunnerFraction>0.25</gunnerFraction>
+      <spawnRadius>12</spawnRadius>
+    </genStep>
+  </GenStepDef>
+
+  <!-- 霧化：全圖上霧後從可達邊緣洪水揭霧。開放地形全部可見；FFF 封閉房間繼續霧化。
+       order 460：FFF 結構（400）和 Pawn 生成（450）已完成，牆壁和 Pawn 均已就位。 -->
+  <GenStepDef>
+    <defName>DMSE_MissileBase_GS_Fog</defName>
+    <order>460</order>
+    <genStep Class="DMSE.GenStep_MissileBaseFog" />
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>DMSE_MissileBase_GS_ScatterSlag</defName>
+    <order>500</order>
+    <genStep Class="GenStep_ScatterThings">
+      <thingDef>ChunkSlagSteel</thingDef>
+      <count>5</count>
+      <nearPlayerStart>false</nearPlayerStart>
+    </genStep>
+  </GenStepDef>
+
+  <!-- GenStep_Fog 已移除：需要 MapGenerator.PlayerStartSpot，但 NPC 陣地地圖無玩家出生點，
+       呼叫會觸發 "Accessing player start spot before setting it" 錯誤。
+       敵方陣地應讓玩家探索時自然揭霧，不需預設霧化範圍。 -->
+
+  <!-- ══════════════════════════════════════════════════════════════
+       地圖生成器：引用上方 GenStepDef 以 defName 方式
+       ══════════════════════════════════════════════════════════════ -->
+
+  <MapGeneratorDef>
+    <defName>DMSE_MissileBase_MapGen</defName>
+    <genSteps>
+      <li>DMSE_MissileBase_GS_Terrain</li>
+      <li>DMSE_MissileBase_GS_Snow</li>
+      <li>DMSE_MissileBase_GS_RocksFromGrid</li>
+      <li>DMSE_MissileBase_GS_ScatterLumps</li>
+      <li>DMSE_MissileBase_GS_FFFStructure</li>
+      <li>DMSE_MissileBase_GS_SpawnCrew</li>
+      <li>DMSE_MissileBase_GS_Fog</li>
+      <li>DMSE_MissileBase_GS_ScatterSlag</li>
+    </genSteps>
+  </MapGeneratorDef>
+
+
+  <!-- ══════════════════════════════════════════════════════════════
+       NPC 導彈陣地（世界站點）
+       ══════════════════════════════════════════════════════════════ -->
+
+  <WorldObjectDef>
+    <defName>DMSE_MissileBase</defName>
+    <label>missile launch position</label>
+    <description>A mobile tactical ballistic missile launch position. The enemy crew continuously fires missiles at your colony and replenishes their stocks via supply drops. The position will relocate after some time.</description>
+    <worldObjectClass>RimWorld.Planet.Site</worldObjectClass>
+    <canHaveFaction>true</canHaveFaction>
+    <saved>true</saved>
+    <selectable>true</selectable>
+    <expandingIcon>true</expandingIcon>
+    <expandingIconPriority>60</expandingIconPriority>
+    <expandingIconTexture>World/WorldObjects/Expanding/Settlement</expandingIconTexture>
+    <validLaunchTarget>false</validLaunchTarget>
+    <!-- Site 渲染使用 SitePartDef.siteTexture；WorldObjectDef.texture 對 Site 類型無效，已移除避免材質警告 -->
+    <!-- 地圖生成器（SitePartDef 無此欄位；由 WorldObjectDef 指定） -->
+    <mapGenerator>DMSE_MissileBase_MapGen</mapGenerator>
+
+    <!-- 導彈陣地行為元件 -->
+    <comps>
+      <li Class="DMSE.CompProperties_MissileBase">
+        <missileFireIntervalDays>
+          <min>1</min>
+          <max>2</max>
+        </missileFireIntervalDays>
+        <range>20</range>
+        <relocationDays>
+          <min>15</min>
+          <max>30</max>
+        </relocationDays>
+        <!-- 玩家撤退且敵方雷達尚存時，陣地封鎖地面再進入的持續時間（天數）。 -->
+        <reentryBlockedDays>
+          <min>0.5</min>
+          <max>1.5</max>
+        </reentryBlockedDays>
+        <!-- missileBody：留空則取第一個 MissileBodyDef -->
+        <incomingWorldObjectDef>DMSE_WorldObject_IncomingMissile</incomingWorldObjectDef>
+        <nextFireInspectKey>DMSE.MissileBase.NextFireIn</nextFireInspectKey>
+        <localMonitoringInspectKey>DMSE.MissileBase.LocalMonitoring</localMonitoringInspectKey>
+        <relocationInspectKey>DMSE.MissileBase.RelocationIn</relocationInspectKey>
+        <reentryBlockedInspectKey>DMSE.MissileBase.ReentryBlockedIn</reentryBlockedInspectKey>
+      </li>
+    </comps>
+  </WorldObjectDef>
+
+
+  <!-- ══════════════════════════════════════════════════════════════
+       Site Part Def：導彈陣地站點組成部分
+       ══════════════════════════════════════════════════════════════ -->
+
+  <SitePartDef>
+    <defName>DMSE_MissileBaseSitePart</defName>
+    <label>missile launch facility</label>
+    <description>A concealed missile launch facility with fire control radar, launch vehicles, and support structures.</description>
+    <workerClass>DMSE.SitePartWorker_MissileBase</workerClass>
+    <!-- Site.Material 讀取 siteTexture（非 WorldObjectDef.texture），缺少此欄位 MatFrom 收到 null → ArgumentNullException -->
+    <siteTexture>World/WorldObjects/Sites/Outpost</siteTexture>
+    <applyFactionColorToSiteTexture>true</applyFactionColorToSiteTexture>
+    <!-- Site.PostMapGenerate() 在最後呼叫 GetComponent<TimedDetectionRaids>().StartDetectionCountdown()，
+         若 WorldObjectDef 未定義該 comp 則 GetComponent 返回 null → NullReferenceException。
+         設定 disallowsAutomaticDetectionTimerStart=true 使 if 守衛短路，跳過該呼叫。 -->
+    <disallowsAutomaticDetectionTimerStart>true</disallowsAutomaticDetectionTimerStart>
+    <tags>
+      <li>MissileBase</li>
+    </tags>
+    <wantsThreatPoints>true</wantsThreatPoints>
+    <!-- 不強制離開計時（0 = 停用），允許玩家無限駐紮 -->
+    <forceExitAndRemoveMapCountdownDurationDays>0</forceExitAndRemoveMapCountdownDurationDays>
+  </SitePartDef>
+
+
+
+</Defs>

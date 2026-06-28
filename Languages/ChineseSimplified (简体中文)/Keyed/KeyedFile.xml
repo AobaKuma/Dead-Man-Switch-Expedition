@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
 
+  <!-- NPC 导弹阵地 -->
+  <DMSE.MissileBase.ReentryBlockedIn>地面通道封锁中——敌方整备防线（{0}）</DMSE.MissileBase.ReentryBlockedIn>
+  <DMSE.MissileBase.ReentryBlocked>通道封锁——敌方整备防线（{0}）</DMSE.MissileBase.ReentryBlocked>
+
   <!-- EN: Launch Missile -->
   <ScorerLaunch>发射导弹</ScorerLaunch>
 

@@ -82,6 +82,30 @@
         -->
       </li>
     </comps>
+    <!-- 敵方陣地生成時自動填充：Industrial 以上填巡弋，Spacer 以上額外允許攔截彈混填。 -->
+    <modExtensions>
+      <li Class="DMSE.MissileRackAutoFillExtension">
+        <enemyFactionOnly>true</enemyFactionOnly>
+        <fillRules>
+          <!-- 規則 1：Spacer+（Ultra、Archotech）→ 巡弋與攔截彈混填（各 50%） -->
+          <li>
+            <minTechLevel>Spacer</minTechLevel>
+            <candidates>
+              <li>DMSE_CruiseMissile</li>
+              <li>DMSE_InterceptorMissile</li>
+            </candidates>
+          </li>
+          <!-- 規則 2：Industrial（Spacer 以下）→ 只填巡弋 -->
+          <li>
+            <minTechLevel>Industrial</minTechLevel>
+            <candidates>
+              <li>DMSE_CruiseMissile</li>
+            </candidates>
+          </li>
+          <!-- Medieval 以下：無規則匹配 → 不填充 -->
+        </fillRules>
+      </li>
+    </modExtensions>
     <inspectorTabs>
       <li>RimWorld.ITab_Storage</li>
       <li>DMSE.ITab_MissileInventory</li>

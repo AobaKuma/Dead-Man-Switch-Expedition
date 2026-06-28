@@ -68,6 +68,19 @@
                 <launchMode>Tilt</launchMode>
                 <capacity>1</capacity>
             </li>
+            <!-- 敵方陣地生成時自動填充：Industrial 以上派系填入巡弋導彈。 -->
+            <li Class="DMSE.MissileRackAutoFillExtension">
+                <enemyFactionOnly>true</enemyFactionOnly>
+                <fillRules>
+                    <li>
+                        <minTechLevel>Industrial</minTechLevel>
+                        <candidates>
+                            <li>DMSE_CruiseMissile</li>
+                        </candidates>
+                        <!-- fillCount=-1 = 填滿至容量上限 -->
+                    </li>
+                </fillRules>
+            </li>
         </modExtensions>
         <comps>
             <!-- 發射：取出容器中的實體飛彈，採用其自身 CompMissileConfig（逐枚數值），以 Scorer 方式打擊地圖外目標。
@@ -399,6 +412,18 @@
                 <capacity>4</capacity>
                 <sizeClass>Medium</sizeClass>
                 <launchMode>Tilt</launchMode>
+            </li>
+            <!-- 敵方陣地生成時自動填充：Industrial 以上派系填入攔截彈。 -->
+            <li Class="DMSE.MissileRackAutoFillExtension">
+                <enemyFactionOnly>true</enemyFactionOnly>
+                <fillRules>
+                    <li>
+                        <minTechLevel>Industrial</minTechLevel>
+                        <candidates>
+                            <li>DMSE_InterceptorMissile</li>
+                        </candidates>
+                    </li>
+                </fillRules>
             </li>
         </modExtensions>
         <inspectorTabs>

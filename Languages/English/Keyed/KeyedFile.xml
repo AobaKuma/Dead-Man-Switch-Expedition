@@ -1,6 +1,20 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
 
+  <!-- NPC Missile Base -->
+  <DMSE.MissileBase.NextFireIn>Next missile strike in: {0}</DMSE.MissileBase.NextFireIn>
+  <DMSE.MissileBase.LocalMonitoring>Position detected (local map under observation)</DMSE.MissileBase.LocalMonitoring>
+  <DMSE.MissileBase.RelocationIn>Position relocating in: {0}</DMSE.MissileBase.RelocationIn>
+  <DMSE.MissileBase.Relocated>Missile position relocated</DMSE.MissileBase.Relocated>
+  <DMSE.MissileBase.RelocatedDesc>An enemy missile launch position has completed its strike mission and relocated to avoid counteraction.</DMSE.MissileBase.RelocatedDesc>
+  <DMSE.MissileBase.Destroyed>Missile position destroyed</DMSE.MissileBase.Destroyed>
+  <DMSE.MissileBase.DestroyedDesc>Your colonists have destroyed all radars and launch facilities at the enemy missile position. The missile threat from this position has been neutralized.</DMSE.MissileBase.DestroyedDesc>
+  <DMSE.MissileBase.ShuttleBlocked>This area is within {0} tiles of an enemy missile position's anti-air denial zone. Shuttle takeoff and landing are not possible here.</DMSE.MissileBase.ShuttleBlocked>
+  <DMSE.MissileBase.ReentryBlockedIn>Ground access denied — enemy regrouping ({0})</DMSE.MissileBase.ReentryBlockedIn>
+  <DMSE.MissileBase.ReentryBlocked>Access denied — enemy regrouping ({0})</DMSE.MissileBase.ReentryBlocked>
+  <DMSE.MissileBase.ArrivedLetter>Your pawns have arrived at a missile launch position. The enemy has deployed fire control radars and launch vehicles here, continuously striking nearby colonies. Destroying all radars will neutralize their strike capability.</DMSE.MissileBase.ArrivedLetter>
+  <DMSE.MissileBase.SiteDesc>A mobile tactical ballistic missile launch position equipped with fire control radar and missile launchers. The position will relocate after completing its mission.</DMSE.MissileBase.SiteDesc>
+
   <ScorerLaunch>Launch Missile</ScorerLaunch>
 
   <ScorerLaunchDesc>Launches the loaded tactical missile. The missile will be able to strike targets outside the large map at long range and retain map visibility for 3 days to assess the strike's effectiveness. Re-launching resets this time.</ScorerLaunchDesc>
@@ -71,6 +85,23 @@
   <DMSE_Crater>{0} Crater</DMSE_Crater>
   
   <DMS_Exist>Map visible countdown:{0}</DMS_Exist>
+  <!-- Alerts_Exist tooltip and end-observation dialog -->
+  <DMSE.Alert.Exist.Observing>Observing: {0}</DMSE.Alert.Exist.Observing>
+  <DMSE.Alert.Exist.TimeLeft>Observation ends in: {0}</DMSE.Alert.Exist.TimeLeft>
+  <DMSE.Alert.Exist.EnemiesAlive>Enemy combatants remaining: {0}</DMSE.Alert.Exist.EnemiesAlive>
+  <DMSE.Alert.Exist.IsMissileBase>This is an active missile launch position. Ending observation early will allow the crew to regroup and reset their defenses.</DMSE.Alert.Exist.IsMissileBase>
+  <DMSE.Alert.Exist.ClickHint>Click to end observation early.</DMSE.Alert.Exist.ClickHint>
+  <DMSE.Alert.Exist.EndEarly.Confirm>End observation now? The map will no longer be held open and may be cleaned up by the game.</DMSE.Alert.Exist.EndEarly.Confirm>
+  <DMSE.Alert.Exist.EndEarly.Confirm.MissileBase>End observation early?\n\nThe enemy crew will have the opportunity to regroup — the launch position's defenses and timers will reset, as if the observation never happened.\n\nThis cannot be undone.</DMSE.Alert.Exist.EndEarly.Confirm.MissileBase>
+  <DMSE.Alert.Exist.ObservationEnded>Observation ended early. Enemy forces may regroup.</DMSE.Alert.Exist.ObservationEnded>
+
+  <!-- Alerts_PlayerMissiles — player attacking, enemy BVR tracking our missiles -->
+  <DMSE.Alert.PlayerMissiles.Label>{0} missiles outbound — first impact in {1}</DMSE.Alert.PlayerMissiles.Label>
+  <DMSE.Alert.PlayerMissiles.MapHeader>Target: {0}</DMSE.Alert.PlayerMissiles.MapHeader>
+  <DMSE.Alert.PlayerMissiles.WaveImpact>  Impact in {0}:</DMSE.Alert.PlayerMissiles.WaveImpact>
+  <!-- {0}=missile label, {1}=col, {2}=row, {3}=intercept status -->
+  <DMSE.Alert.PlayerMissiles.Target>    · {0}  ({1},{2})  [{3}]</DMSE.Alert.PlayerMissiles.Target>
+  <DMSE.Alert.PlayerMissiles.ClickHint>Left-click to cycle to next impact site. Right-click to cycle back.</DMSE.Alert.PlayerMissiles.ClickHint>
 
   <DMSE.BVR.Online>online</DMSE.BVR.Online>
   <DMSE.BVR.Offline>offline</DMSE.BVR.Offline>

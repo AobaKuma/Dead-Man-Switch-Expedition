@@ -12,18 +12,24 @@ namespace DMSE
     public class ScorerProjectile_WorldObject : WorldObject
     {
         public ThingDef skyfallerIncoming;
+        // PlanetTile.Valid ⟺ tileId >= 0。在 PostAdd() 執行前或存讀失敗時，
+        // initialTile/destinationTile 可能仍為 PlanetTile.Invalid（-1），
+        // 直接傳入 GetTileCenter 會觸發越界錯誤，因此加 Valid 防衛。
         private Vector3 Start
         {
             get
             {
-                return Find.WorldGrid.GetTileCenter(initialTile);
+                PlanetTile t = initialTile.Valid ? initialTile : Tile;
+                return t.Valid ? Find.WorldGrid.GetTileCenter(t) : Vector3.zero;
             }
         }
         private Vector3 End
         {
             get
             {
-                return Find.WorldGrid.GetTileCenter(destinationTile);
+                return destinationTile.Valid
+                    ? Find.WorldGrid.GetTileCenter(destinationTile)
+                    : Vector3.zero;
             }
         }
         public override Vector3 DrawPos
@@ -87,11 +93,20 @@ namespace DMSE
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Values.Look<PlanetTile>(ref this.destinationTile, "destinationTile", default(PlanetTile), false);
-            Scribe_Values.Look<bool>(ref this.arrived, "arrived", false, false);
-            Scribe_Values.Look<PlanetTile>(ref this.initialTile, "initialTile", default(PlanetTile), false);
-            Scribe_Values.Look<float>(ref this.traveledPct, "traveledPct", 0f, false);
-            Scribe_Values.Look<ThingDef>(ref this.skyfallerIncoming, "skyfallerIncoming", null, false);
+            // PlanetTile 是含兩個 int 欄位的 struct，Scribe_Values 無法可靠地序列化它。
+            // 以 int 分別儲存 tileId，layerId 維持 Surface（0）即可。
+            int destId = destinationTile.tileId;
+            int initId = initialTile.tileId;
+            Scribe_Values.Look(ref destId, "destinationTileId", -1);
+            Scribe_Values.Look(ref initId, "initialTileId", -1);
+            if (Scribe.mode == LoadSaveMode.LoadingVars)
+            {
+                destinationTile = destId >= 0 ? new PlanetTile(destId) : PlanetTile.Invalid;
+                initialTile     = initId >= 0 ? new PlanetTile(initId) : PlanetTile.Invalid;
+            }
+            Scribe_Values.Look(ref this.arrived, "arrived", false);
+            Scribe_Values.Look(ref this.traveledPct, "traveledPct", 0f);
+            Scribe_Values.Look(ref this.skyfallerIncoming, "skyfallerIncoming", null);
             Scribe_Deep.Look(ref this.config, "config");
         }
         public override void PostAdd()

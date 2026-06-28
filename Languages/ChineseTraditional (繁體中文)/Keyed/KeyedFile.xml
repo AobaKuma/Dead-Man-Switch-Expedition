@@ -1,6 +1,20 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
 
+  <!-- NPC 導彈陣地 (WorldObjectComp_MissileBase) -->
+  <DMSE.MissileBase.NextFireIn>下次導彈打擊：{0}</DMSE.MissileBase.NextFireIn>
+  <DMSE.MissileBase.LocalMonitoring>陣地已被偵測（本地地圖觀察中）</DMSE.MissileBase.LocalMonitoring>
+  <DMSE.MissileBase.RelocationIn>陣地轉移倒計時：{0}</DMSE.MissileBase.RelocationIn>
+  <DMSE.MissileBase.Relocated>導彈陣地轉移</DMSE.MissileBase.Relocated>
+  <DMSE.MissileBase.RelocatedDesc>一處敵方導彈陣地在部署後完成射擊任務並轉移，防止殖民地反制。</DMSE.MissileBase.RelocatedDesc>
+  <DMSE.MissileBase.Destroyed>導彈陣地已摧毀</DMSE.MissileBase.Destroyed>
+  <DMSE.MissileBase.DestroyedDesc>殖民者已摧毀敵方導彈陣地的所有雷達與發射設施。來自該陣地的導彈威脅已解除。</DMSE.MissileBase.DestroyedDesc>
+  <DMSE.MissileBase.ShuttleBlocked>此區域位於敵方導彈陣地的防空封鎖範圍內（{0} 格），無法進行穿梭機起降。</DMSE.MissileBase.ShuttleBlocked>
+  <DMSE.MissileBase.ReentryBlockedIn>地面通道封鎖中——敵方整備防線（{0}）</DMSE.MissileBase.ReentryBlockedIn>
+  <DMSE.MissileBase.ReentryBlocked>通道封鎖——敵方整備防線（{0}）</DMSE.MissileBase.ReentryBlocked>
+  <DMSE.MissileBase.ArrivedLetter>你們抵達了一處導彈陣地——敵方已在此部署火控雷達與導彈發射架，不斷向周圍殖民地發射打擊。摧毀所有雷達可瓦解其打擊能力。</DMSE.MissileBase.ArrivedLetter>
+  <DMSE.MissileBase.SiteDesc>一處配備火控雷達與導彈發射架的機動戰術彈道導彈陣地。陣地會在完成任務後轉移，以躲避反制。</DMSE.MissileBase.SiteDesc>
+
   <!-- EN: Launch Missile -->
   <ScorerLaunch>發射導彈</ScorerLaunch>
 

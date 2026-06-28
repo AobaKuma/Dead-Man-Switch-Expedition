@@ -48,6 +48,16 @@
     <Compile Include="CelestialTransfer\Hellfire\ImpactCraterService.cs" />
     <Compile Include="CelestialTransfer\Hellfire\WorldObject_ImpactGravship.cs" />
     <Compile Include="DMSEMod.cs" />
+    <Compile Include="MissileBase\DebugActions_MissileBase.cs" />
+    <Compile Include="MissileBase\GenStep_MissileBaseCrew.cs" />
+    <Compile Include="MissileBase\GenStep_MissileBaseFog.cs" />
+    <Compile Include="MissileBase\LordJob_MissileCrewDuty.cs" />
+    <Compile Include="MissileBase\MapComponent_MissileBase.cs" />
+    <Compile Include="MissileBase\MissileAutoFillUtility.cs" />
+    <Compile Include="MissileBase\Patch_MissileBaseReentry.cs" />
+    <Compile Include="MissileBase\Patch_MissileBaseShuttleBlock.cs" />
+    <Compile Include="MissileBase\SitePartWorker_MissileBase.cs" />
+    <Compile Include="MissileBase\WorldObjectComp_MissileBase.cs" />
     <Compile Include="Renameable\CompRenameable.cs" />
     <Compile Include="Renameable\Dialog_RenameBuilding.cs" />
     <Compile Include="Renameable\Patch_InspectPaneRename.cs" />
@@ -60,6 +70,7 @@
     <Compile Include="Scorer\Ballistic\JobDriver_AssembleBallisticSilo.cs" />
     <Compile Include="Scorer\Ballistic\WorkGiver_AssembleBallisticSilo.cs" />
     <Compile Include="SkyFallerTurret\Alerts_BVRStatus.cs" />
+    <Compile Include="SkyFallerTurret\Alerts_PlayerMissiles.cs" />
     <Compile Include="SkyFallerTurret\CompProperties_InterceptRadar.cs" />
     <Compile Include="SkyFallerTurret\EarlyWarningUtility.cs" />
     <Compile Include="SkyFallerTurret\InterceptSkyfallerUtility.cs" />
