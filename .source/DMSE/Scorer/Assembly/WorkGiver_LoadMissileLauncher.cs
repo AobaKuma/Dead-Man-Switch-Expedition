@@ -6,8 +6,8 @@ using Verse.AI;
 namespace DMSE
 {
     /// <summary>
-    /// 搜尋未滿的導彈發射平台（<see cref="Building_MissileRack"/> 含 <see cref="CompMissileRailLauncher"/>
-    /// 或 <see cref="CompMissileLauncher"/>），並安排殖民者從鄰近的導彈儲存架（純
+    /// 搜尋未滿的導彈發射平台（<see cref="Building_MissileRack"/> 含 <see cref="CompMissileLauncher_Rail"/>
+    /// 或 <see cref="CompMissileLauncher_Interceptor"/>），並安排殖民者從鄰近的導彈儲存架（純
     /// <see cref="Building_MissileRack"/>）取出相容導彈裝填。
     ///
     /// 正常地面堆放的導彈已由 <see cref="IHaulDestination"/> 的標準搬運系統自動處理；
@@ -35,8 +35,8 @@ namespace DMSE
         /// </summary>
         public static bool IsLauncher(Building b)
         {
-            return b.TryGetComp<CompMissileRailLauncher>() != null
-                || b.TryGetComp<CompMissileLauncher>() != null;
+            return b.TryGetComp<CompMissileLauncher_Rail>() != null
+                || b.TryGetComp<CompMissileLauncher_Interceptor>() != null;
         }
 
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)

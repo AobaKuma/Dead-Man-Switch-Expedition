@@ -17,18 +17,27 @@ namespace DMSE
 
         public CompProperties_MissileLauncher()
         {
-            compClass = typeof(CompMissileLauncher);
+            compClass = typeof(CompMissileLauncher_Interceptor);
         }
     }
 
-    public class CompMissileLauncher : CompBVRDevice
+    /// <summary>
+    /// 防空攔截彈旋轉發射架：<see cref="CompMissileLauncher"/> 家族中負責地圖內超視距攔截的成員。
+    /// 與 <see cref="CompMissileLauncher_Ballistic"/>／<see cref="CompMissileLauncher_Rail"/> 不同，
+    /// 本類別不投射至世界地圖，而是由 <see cref="MapComponent_BVRCombat"/> 依火控雷達鎖定結果
+    /// 呼叫 <see cref="FireInterceptor"/> 生成地圖內攔截彈。
+    /// </summary>
+    public class CompMissileLauncher_Interceptor : CompMissileLauncher
     {
         public CompProperties_MissileLauncher Props => (CompProperties_MissileLauncher)props;
 
-        public int cooldownUntil;
+        protected override int LaunchCooldownTicks => Props.reloadCooldownTicks;
+
+        protected override string CooldownScribeKey => "cooldownUntil";
+
+        protected override string CooldownTranslationKey => "DMSE.MissileLauncher.Interceptor.Reloading";
 
         // 彈藥來源：parent 為 Building_MissileRack（容器），攔截彈以實體 Thing 逐枚存放，
-        // 與 Scorer 的 CompMissileRailLauncher 相同；發射時取出一枚並摧毀（取代舊 CompRefuelable 抽象燃料）。
         private ThingOwner HeldContainer => (parent as IThingHolder)?.GetDirectlyHeldThings();
 
         private Thing LoadedMissile
@@ -40,7 +49,7 @@ namespace DMSE
             }
         }
 
-        private bool HasAmmo => LoadedMissile != null;
+        public override bool HasAmmo => LoadedMissile != null;
 
         /// <summary>
         /// 取得已裝填攔截彈的 MissileConfig，供 BVR 系統讀取戰鬥部加成。
@@ -54,10 +63,8 @@ namespace DMSE
             return comp?.config;
         }
 
-        public override bool Active => base.Active && HasAmmo;
-
         public bool ReadyToFire(int now)
-            => Active && now >= cooldownUntil && Props.interceptorSkyfaller != null;
+            => Active && !OnCooldown(now) && Props.interceptorSkyfaller != null;
 
         public void FireInterceptor(BVRTarget target, float hitChance, int now)
         {
@@ -75,22 +82,14 @@ namespace DMSE
             p.targetId = target.id;
             p.hitChance = hitChance;
 
-            cooldownUntil = now + Props.reloadCooldownTicks;
+            StartCooldown(now);
 
-            // 消耗實體彈藥（與 CompMissileRailLauncher 相同）。
+            // 消耗實體彈藥（與 CompMissileLauncher_Rail 相同）。
             HeldContainer?.Remove(missile);
             missile.Destroy(DestroyMode.Vanish);
         }
 
-        public override string CompInspectStringExtra()
-        {
-            int remaining = cooldownUntil - Find.TickManager.TicksGame;
-            if (remaining > 0)
-            {
-                return "DMSE.SAM.Reloading".Translate(remaining.ToStringTicksToPeriod());
-            }
-            return "DMSE.SAM.Ready".Translate();
-        }
+        protected override string LoadedStatusText => "DMSE.MissileLauncher.Interceptor.Ready".Translate();
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
@@ -104,12 +103,6 @@ namespace DMSE
             base.PostDeSpawn(map, mode);
             MapComponent_BVRCombat m = map != null ? map.GetComponent<MapComponent_BVRCombat>() : null;
             if (m != null) { m.launchers.Remove(this); }
-        }
-
-        public override void PostExposeData()
-        {
-            base.PostExposeData();
-            Scribe_Values.Look(ref cooldownUntil, "cooldownUntil", 0);
         }
     }
 }

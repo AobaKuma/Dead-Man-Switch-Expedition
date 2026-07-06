@@ -13,6 +13,8 @@ namespace DMSE
         public static JobDef DMSE_AssembleMissile;
         /// <summary>從導彈儲存架取出導彈並裝填至發射平台。</summary>
         public static JobDef DMSE_LoadMissileLauncher;
+        /// <summary>操作旋轉導彈發射架：操作者自行尋找鄰近儲存架的相容彈藥並裝填，裝滿後才開始操作。</summary>
+        public static JobDef DMSE_ManMissileLauncher;
 
         static DMSE_MissileJobDefOf()
         {

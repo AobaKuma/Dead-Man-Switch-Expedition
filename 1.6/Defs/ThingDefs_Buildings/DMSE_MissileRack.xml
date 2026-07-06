@@ -1,29 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
+  <!-- ==================== 巡飛彈 儲存架（1x2） ====================
+       存放巡飛彈彈藥使其停止劣化（CompDurabilityDecay 庇護判定）。 -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_LoiteringRack</defName>
+    <label>loitering munition rack</label>
+    <description>A rack that hold loitering munitions. Stored Munition will not degrade.</description>
+    <thingClass>DMSE.Building_MissileRack</thingClass>
+    <category>Building</category>
+    <graphicData>
+      <texPath>Things/Building/MissilePlatform/small</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,3)</drawSize>
+    </graphicData>
+    <rotatable>true</rotatable>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <fillPercent>0.45</fillPercent>
+    <staticSunShadowHeight>0.1</staticSunShadowHeight>
+    <drawerType>RealtimeOnly</drawerType>
+    <tickerType>Never</tickerType>
+    <constructEffect>ConstructMetal</constructEffect>
+    <designationCategory>DMS_Category</designationCategory>
+    <size>(1,2)</size>
+    <selectable>true</selectable>
+    <statBases>
+      <MaxHitPoints>250</MaxHitPoints>
+      <WorkToBuild>3500</WorkToBuild>
+      <Flammability>0.4</Flammability>
+      <Mass>20</Mass>
+    </statBases>
+    <costList>
+      <Steel>80</Steel>
+    </costList>
+    <building>
+      <maxItemsInCell>1</maxItemsInCell>
+      <ignoreStoredThingsBeauty>true</ignoreStoredThingsBeauty>
+      <fixedStorageSettings>
+        <filter>
+          <thingDefs>
+            <li>DMSE_Missile_Termite</li>
+          </thingDefs>
+        </filter>
+      </fixedStorageSettings>
+      <defaultStorageSettings>
+        <priority>Important</priority>
+        <filter>
+          <thingDefs>
+            <li>DMSE_Missile_Termite</li>
+          </thingDefs>
+        </filter>
+      </defaultStorageSettings>
+    </building>
+    <comps>
+      <li Class="DMSE.CompProperties_MissileRackRenderer">
+        <maxStored>1</maxStored>
+        <useNativeDrawSize>true</useNativeDrawSize>
+        <slotOffsets>
+          <li>(0, 0, 0.1)</li>
+        </slotOffsets>
+        <south>
+          <slotOffsets>
+            <li>(0, 0, 0.1)</li>
+          </slotOffsets>
+          <rotation>180</rotation>
+        </south>
+        <east>
+          <slotOffsets>
+            <li>(0, 0, 0.1)</li>
+          </slotOffsets>
+          <rotation>0</rotation>
+        </east>
+        <west>
+          <slotOffsets>
+            <li>(0, 0, 0.1)</li>
+          </slotOffsets>
+          <rotation>0</rotation>
+        </west>
+      </li>
+    </comps>
+    <inspectorTabs>
+      <li>RimWorld.ITab_Storage</li>
+      <li>DMSE.ITab_MissileInventory</li>
+    </inspectorTabs>
+    <researchPrerequisites>
+      <li>DMSE_LoiteringMunitions</li>
+    </researchPrerequisites>
+  </ThingDef>
 
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_MissileRack</defName>
     <label>missile rack</label>
-    <description>A 2x4 armoured rack that holds up to four cruise missiles. Missiles stored inside are sheltered from the elements and will not degrade.</description>
+    <description>A metal rack that holds up to four light missiles. Missiles stored inside are sheltered from the elements and will not degrade.</description>
     <thingClass>DMSE.Building_MissileRack</thingClass>
     <category>Building</category>
-    <!-- 佔位美術：暫借發射器貼圖，請替換為 2x4 專屬 rack 貼圖。 -->
     <graphicData>
-      <texPath>Things/Building/MissilePlatform/building</texPath>
+      <texPath>Things/Building/MissilePlatform/medium</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
-      <drawSize>(3,5)</drawSize>
+      <drawSize>(2,4)</drawSize>
     </graphicData>
     <rotatable>true</rotatable>
     <altitudeLayer>Building</altitudeLayer>
     <passability>PassThroughOnly</passability>
     <pathCost>60</pathCost>
     <fillPercent>0.45</fillPercent>
-    <!-- RealtimeOnly：建築每幀走 DrawAt → Comps_PostDraw，渲染 Comp 才會被呼叫（與原版 Bookcase 一致）。 -->
-    <drawerType>RealtimeOnly</drawerType>
+    <staticSunShadowHeight>0.1</staticSunShadowHeight>
+    <drawerType>MapMeshAndRealTime</drawerType>
     <tickerType>Never</tickerType>
     <constructEffect>ConstructMetal</constructEffect>
     <designationCategory>DMS_Category</designationCategory>
-    <size>(2,4)</size>
+    <size>(1,3)</size>
     <selectable>true</selectable>
     <statBases>
       <MaxHitPoints>350</MaxHitPoints>
@@ -42,7 +129,6 @@
       <fixedStorageSettings>
         <filter>
           <thingDefs>
-            <li>DMSE_CruiseMissile</li>
             <li>DMSE_InterceptorMissile</li>
           </thingDefs>
         </filter>
@@ -51,7 +137,6 @@
         <priority>Important</priority>
         <filter>
           <thingDefs>
-            <li>DMSE_CruiseMissile</li>
             <li>DMSE_InterceptorMissile</li>
           </thingDefs>
         </filter>
@@ -60,26 +145,52 @@
     <comps>
       <li Class="DMSE.CompProperties_MissileRackRenderer">
         <maxStored>4</maxStored>
-        <!-- 北向時 4 個槽位（2 欄 x 2 列）；整體會隨 parent.Rotation 旋轉。 -->
-        <slotOffsets>
-          <li>(-0.5, 0,0)</li>
-          <li>( 0.5, 0, 0)</li>
-          <li>(-0.5, 0.2, 0.75)</li>
-          <li>( 0.5, 0.2, 0.75)</li>
-        </slotOffsets>
-        <!-- 每個方向可單獨覆寫座標與旋轉（兩者獨立）：
-             slotOffsets 為該方向的原值座標（不再隨 parent.Rotation 自動旋轉）；
-             rotation 為導彈貼圖角度（度，繞 Y）。任一項留空則回退到上方共用行為。
         <east>
           <slotOffsets>
-            <li>(0, 0, -0.5)</li>
-            <li>(0, 0, 0.5)</li>
-            <li>(0.75, 0.2, -0.5)</li>
-            <li>(0.75, 0.2, 0.5)</li>
+            <li>(0.01, 0, -0.3)</li>
+            <li>(0.01, 0, 0.3)</li>
+            <li>(-0.01, 0.1, 0)</li>
+            <li>(-0.01, 0.1, 0.6)</li>
           </slotOffsets>
           <rotation>90</rotation>
         </east>
-        -->
+        <west>
+          <slotOffsets>
+            <li>(-0.01, 0, -0.3)</li>
+            <li>(-0.01, 0, 0.3)</li>
+            <li>(0.01, 0.1, 0)</li>
+            <li>(0.01, 0.1, 0.6)</li>
+          </slotOffsets>
+          <rotation>-90</rotation>
+        </west>
+        <south>
+          <slotOffsets>
+            <li>(0.29, 0, 0.1)</li>
+            <li>(-0.31, 0, 0.1)</li>
+            <li>(-0.29, 0.1, 0.4)</li>
+            <li>(0.31, 0.1, 0.4)</li>
+          </slotOffsets>
+          <rotation>180</rotation>
+        </south>
+        <north>
+          <slotOffsets>
+            <li>(0.29, 0, -0.1)</li>
+            <li>(-0.31, 0, -0.1)</li>
+            <li>(-0.29, 0.1, 0.2)</li>
+            <li>(0.31, 0.1, 0.2)</li>
+          </slotOffsets>
+          <rotation>0</rotation>
+        </north>
+      </li>
+      <li Class="Fortified.CompProperties_BuildingExtraRenderer">
+        <extraGraphic>
+          <li>
+            <texPath>Things/Building/MissilePlatform/medium_top</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>(2,4)</drawSize>
+            <drawOffset>(0,0.75,0)</drawOffset>
+          </li>
+        </extraGraphic>
       </li>
     </comps>
     <!-- 敵方陣地生成時自動填充：Industrial 以上填巡弋，Spacer 以上額外允許攔截彈混填。 -->
@@ -91,7 +202,6 @@
           <li>
             <minTechLevel>Spacer</minTechLevel>
             <candidates>
-              <li>DMSE_CruiseMissile</li>
               <li>DMSE_InterceptorMissile</li>
             </candidates>
           </li>
@@ -99,7 +209,7 @@
           <li>
             <minTechLevel>Industrial</minTechLevel>
             <candidates>
-              <li>DMSE_CruiseMissile</li>
+              <li>DMSE_InterceptorMissile</li>
             </candidates>
           </li>
           <!-- Medieval 以下：無規則匹配 → 不填充 -->
@@ -109,13 +219,136 @@
     <inspectorTabs>
       <li>RimWorld.ITab_Storage</li>
       <li>DMSE.ITab_MissileInventory</li>
-      <!-- 顯示架上第一枚導彈的裝配設定（彈頭/導引/酬載）；若架空則隱藏。
-           點選 ITab_MissileInventory 清單中的其他導彈後，
-           此 ITab 轉而顯示該導彈的設定。 -->
+    </inspectorTabs>
+    <researchPrerequisites>
+      <li>DMSE_Ballistics</li>
+    </researchPrerequisites>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_CruiseMissileRack</defName>
+    <label>cruise missile rack</label>
+    <description>A 2x4 armoured rack that holds up to two cruise missiles. Missiles stored inside are sheltered from the elements and will not degrade.</description>
+    <thingClass>DMSE.Building_MissileRack</thingClass>
+    <category>Building</category>
+    <graphicData>
+      <texPath>Things/Building/MissilePlatform/large2x</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(3,5)</drawSize>
+    </graphicData>
+    <rotatable>true</rotatable>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>60</pathCost>
+    <fillPercent>0.45</fillPercent>
+    <staticSunShadowHeight>0.1</staticSunShadowHeight>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <tickerType>Never</tickerType>
+    <constructEffect>ConstructMetal</constructEffect>
+    <designationCategory>DMS_Category</designationCategory>
+    <size>(2,4)</size>
+    <selectable>true</selectable>
+    <statBases>
+      <MaxHitPoints>350</MaxHitPoints>
+      <WorkToBuild>6000</WorkToBuild>
+      <Flammability>0.4</Flammability>
+      <Mass>30</Mass>
+    </statBases>
+    <costList>
+      <Steel>120</Steel>
+    </costList>
+    <building>
+      <maxItemsInCell>1</maxItemsInCell>
+      <ignoreStoredThingsBeauty>true</ignoreStoredThingsBeauty>
+      <!-- 固定僅接受導彈；玩家無法在儲存設定中加入其他物品。 -->
+      <fixedStorageSettings>
+        <filter>
+          <thingDefs>
+            <li>DMSE_Missile_Moskit</li>
+          </thingDefs>
+        </filter>
+      </fixedStorageSettings>
+      <defaultStorageSettings>
+        <priority>Important</priority>
+        <filter>
+          <thingDefs>
+            <li>DMSE_Missile_Moskit</li>
+          </thingDefs>
+        </filter>
+      </defaultStorageSettings>
+    </building>
+    <comps>
+      <li Class="DMSE.CompProperties_MissileRackRenderer">
+        <maxStored>2</maxStored>
+        <east>
+          <slotOffsets>
+            <li>(0.1, 0, -0.45)</li>
+            <li>(0.1, 0, 0.65)</li>
+          </slotOffsets>
+          <rotation>90</rotation>
+        </east>
+        <west>
+          <slotOffsets>
+            <li>(-0.1, 0, 0.65)</li>
+            <li>(-0.1, 0, -0.45)</li>
+          </slotOffsets>
+          <rotation>-90</rotation>
+        </west>
+        <south>
+          <slotOffsets>
+            <li>(-0.5, 0, 0.2)</li>
+            <li>(0.5, 0, 0.2)</li>
+          </slotOffsets>
+          <rotation>180</rotation>
+        </south>
+        <north>
+          <slotOffsets>
+            <li>(0.5, 0, 0.2)</li>
+            <li>(-0.5, 0, 0.2)</li>
+          </slotOffsets>
+          <rotation>0</rotation>
+        </north>
+      </li>
+      <li Class="Fortified.CompProperties_BuildingExtraRenderer">
+        <extraGraphic>
+          <li>
+            <texPath>Things/Building/MissilePlatform/large2x_top</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>(3,5)</drawSize>
+            <drawOffset>(0,0.75,0)</drawOffset>
+          </li>
+        </extraGraphic>
+      </li>
+    </comps>
+    <!-- 敵方陣地生成時自動填充：Industrial 以上填巡弋，Spacer 以上額外允許攔截彈混填。 -->
+    <modExtensions>
+      <li Class="DMSE.MissileRackAutoFillExtension">
+        <enemyFactionOnly>true</enemyFactionOnly>
+        <fillRules>
+          <!-- 規則 1：Spacer+（Ultra、Archotech）→ 巡弋與攔截彈混填（各 50%） -->
+          <li>
+            <minTechLevel>Spacer</minTechLevel>
+            <candidates>
+              <li>DMSE_Missile_Moskit</li>
+            </candidates>
+          </li>
+          <!-- 規則 2：Industrial（Spacer 以下）→ 只填巡弋 -->
+          <li>
+            <minTechLevel>Industrial</minTechLevel>
+            <candidates>
+              <li>DMSE_Missile_Moskit</li>
+            </candidates>
+          </li>
+        </fillRules>
+      </li>
+    </modExtensions>
+    <inspectorTabs>
+      <li>RimWorld.ITab_Storage</li>
+      <li>DMSE.ITab_MissileInventory</li>
       <li>DMSE.ITab_MissileAssembly</li>
     </inspectorTabs>
     <researchPrerequisites>
-      <li>DMSE_OrbitalDynamics</li>
+      <li>DMSE_Ballistics</li>
     </researchPrerequisites>
   </ThingDef>
 </Defs>

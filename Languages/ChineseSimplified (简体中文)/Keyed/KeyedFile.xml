@@ -128,8 +128,8 @@
   <DMSE.Missile.Stat.Fuel>燃料量：{0}</DMSE.Missile.Stat.Fuel>
   <DMSE.Missile.Stat.Impulse>比冲（推进效率）：{0}</DMSE.Missile.Stat.Impulse>
   <DMSE.Missile.Stat.Range>射程：{0} 格</DMSE.Missile.Stat.Range>
-  <DMSE.Missile.OutOfRange>目标超出导弹射程（{0} 格）。</DMSE.Missile.OutOfRange>
-  <DMSE.Missile.RangeLabel>{0} / {1} 格</DMSE.Missile.RangeLabel>
+  <DMSE.MissileLauncher.OutOfRange>目标超出导弹射程（{0} 格）。</DMSE.MissileLauncher.OutOfRange>
+  <DMSE.MissileLauncher.RangeLabel>{0} / {1} 格</DMSE.MissileLauncher.RangeLabel>
   <DMSE.Missile.Cat.Warhead>弹头</DMSE.Missile.Cat.Warhead>
   <DMSE.Missile.Cat.Guidance>导引</DMSE.Missile.Cat.Guidance>
   <DMSE.Missile.Cat.Propulsion>推进／射程</DMSE.Missile.Cat.Propulsion>
@@ -142,11 +142,11 @@
   <DMSE.Missile.ConfirmAssembly>加入装配队列</DMSE.Missile.ConfirmAssembly>
   <DMSE.Missile.AssemblyQueued>已加入队列——殖民者即将开始装配</DMSE.Missile.AssemblyQueued>
   <DMSE.Missile.ResetToCurrent>还原为已装配设定</DMSE.Missile.ResetToCurrent>
-  <DMSE.Missile.LaunchCooldown>发射轨重新装填中：{0}</DMSE.Missile.LaunchCooldown>
-  <DMSE.Missile.NoMissileLoaded>未装填导弹</DMSE.Missile.NoMissileLoaded>
+  <DMSE.MissileLauncher.LaunchCooldown>发射轨重新装填中：{0}</DMSE.MissileLauncher.LaunchCooldown>
+  <DMSE.MissileLauncher.Rail.NoMissileLoaded>未装填导弹</DMSE.MissileLauncher.Rail.NoMissileLoaded>
   <DMSE.Missile.NoRackAvailable>找不到含兼容导弹的储存架</DMSE.Missile.NoRackAvailable>
-  <DMSE.SAM.Reloading>装填中：{0}</DMSE.SAM.Reloading>
-  <DMSE.SAM.Ready>可发射</DMSE.SAM.Ready>
+  <DMSE.MissileLauncher.Interceptor.Reloading>装填中：{0}</DMSE.MissileLauncher.Interceptor.Reloading>
+  <DMSE.MissileLauncher.Interceptor.Ready>可发射</DMSE.MissileLauncher.Interceptor.Ready>
   <DMSE.Missile.IncomingLetter>导弹来袭</DMSE.Missile.IncomingLetter>
   <DMSE.Missile.IncomingLetterDesc>{0} 发射的导弹正在接近，即将打击殖民地。</DMSE.Missile.IncomingLetterDesc>
 
@@ -167,12 +167,33 @@
   <DMSE.MissileInventory.Pending>装配待定</DMSE.MissileInventory.Pending>
   <DMSE.MissileInventory.InterceptorReady>可发射</DMSE.MissileInventory.InterceptorReady>
 
-  <!-- 弹道发射井（CompBallisticLauncher） -->
-  <DMSE.Ballistic.Fire>发射弹道导弹</DMSE.Ballistic.Fire>
-  <DMSE.Ballistic.FireDesc>向世界地图目标发射已装配的弹道导弹。导弹以抛物线弹道飞行，一旦发射几乎无法被拦截。</DMSE.Ballistic.FireDesc>
-  <DMSE.Ballistic.NotLoaded>导弹尚未装配。请在「装配」分页设定弹头、导引与酬载，等待殖民者搬运材料并完成装配。</DMSE.Ballistic.NotLoaded>
-  <DMSE.Ballistic.Loaded>弹道导弹：已装配，可发射</DMSE.Ballistic.Loaded>
-  <DMSE.Ballistic.LoadedWith>弹道导弹已装填：{0}</DMSE.Ballistic.LoadedWith>
-  <DMSE.Ballistic.AwaitingAssembly>弹道导弹：等待殖民者完成装配</DMSE.Ballistic.AwaitingAssembly>
-  <DMSE.Ballistic.Unloaded>弹道发射井：未装填—请在装配分页设定</DMSE.Ballistic.Unloaded>
+  <!-- 弹道发射井（CompMissileLauncher_Ballistic） -->
+  <DMSE.MissileLauncher.Ballistic.Fire>发射弹道导弹</DMSE.MissileLauncher.Ballistic.Fire>
+  <DMSE.MissileLauncher.Ballistic.FireDesc>向世界地图目标发射已装配的弹道导弹。导弹以抛物线弹道飞行，一旦发射几乎无法被拦截。</DMSE.MissileLauncher.Ballistic.FireDesc>
+  <DMSE.MissileLauncher.Ballistic.NotLoaded>导弹尚未装配。请在「装配」分页设定弹头、导引与酬载，等待殖民者搬运材料并完成装配。</DMSE.MissileLauncher.Ballistic.NotLoaded>
+  <DMSE.MissileLauncher.Ballistic.Loaded>弹道导弹：已装配，可发射</DMSE.MissileLauncher.Ballistic.Loaded>
+  <DMSE.MissileLauncher.Ballistic.LoadedWith>弹道导弹已装填：{0}</DMSE.MissileLauncher.Ballistic.LoadedWith>
+  <DMSE.MissileLauncher.Ballistic.AwaitingAssembly>弹道导弹：等待殖民者完成装配</DMSE.MissileLauncher.Ballistic.AwaitingAssembly>
+  <DMSE.MissileLauncher.Ballistic.Unloaded>弹道发射井：未装填—请在装配分页设定</DMSE.MissileLauncher.Ballistic.Unloaded>
+
+  <!-- 火炮打击（CompArtilleryStrike） -->
+  <DMSE.Artillery.Fire>火炮射击</DMSE.Artillery.Fire>
+  <DMSE.Artillery.FireDesc>在大地图上选定目标。榴弹炮发射可见炮弹，并以世界地图航迹物件追踪，直到炮弹从对应方位重新进入目标 Tile 并落地引爆。持续射击——直到停止命令前持续开火。</DMSE.Artillery.FireDesc>
+  <DMSE.Artillery.Stop>停止射击</DMSE.Artillery.Stop>
+  <DMSE.Artillery.StopDesc>停止持续射击。当前状态：{0}</DMSE.Artillery.StopDesc>
+  <DMSE.Artillery.NotConfigured>火炮尚未配置（XML 缺少 def 引用）。</DMSE.Artillery.NotConfigured>
+  <DMSE.Artillery.TooClose>目标距离太近——最小射程为 {0} 格。</DMSE.Artillery.TooClose>
+  <DMSE.Artillery.NoFireControl>没有具备空闲引导通道的火控雷达。</DMSE.Artillery.NoFireControl>
+  <DMSE.Artillery.NoAmmo>未装填炮弹——持续射击已停止。</DMSE.Artillery.NoAmmo>
+  <DMSE.Artillery.NoBarrel>炮管已磨损——持续射击已停止，请更换强化炮管。</DMSE.Artillery.NoBarrel>
+  <DMSE.BVR.DeviceInactive>装置不可用（无电、损坏或已关闭）。</DMSE.BVR.DeviceInactive>
+  <!-- 状态字符串（用于 StopDesc） -->
+  <DMSE.Artillery.StateCooldown>装填冷却中，剩余 {0}</DMSE.Artillery.StateCooldown>
+  <DMSE.Artillery.StateAiming>瞄准中（{0}%）</DMSE.Artillery.StateAiming>
+  <DMSE.Artillery.StateReady>可发射</DMSE.Artillery.StateReady>
+  <DMSE.Artillery.Ready>火炮：可发射</DMSE.Artillery.Ready>
+
+  <!-- PlaceWorker -->
+  <DMSE.PlaceWorker.TooCloseSameLayer>与 {0} 太近（同一放置图层）。</DMSE.PlaceWorker.TooCloseSameLayer>
+
 </LanguageData>

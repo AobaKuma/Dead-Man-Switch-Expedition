@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ==================== 火砲打擊 世界航跡物件 ==================== -->
+  <WorldObjectDef>
+    <defName>DMSE_ArtilleryStrike</defName>
+    <label>artillery shell</label>
+    <description>An artillery round following a ballistic arc toward its designated target.</description>
+    <worldObjectClass>DMSE.WorldObject_ArtilleryStrike</worldObjectClass>
+    <texture>UI/DMSE/TravelingMissile</texture>
+    <rotateGraphicWhenTraveling>true</rotateGraphicWhenTraveling>
+    <useDynamicDrawer>true</useDynamicDrawer>
+    <expandingIcon>true</expandingIcon>
+    <expandingIconTexture>UI/DMSE/TravelingMissile_Expanding</expandingIconTexture>
+    <expandingIconPriority>90</expandingIconPriority>
+    <expandMore>true</expandMore>
+    <fullyExpandedInSpace>true</fullyExpandedInSpace>
+    <validLaunchTarget>false</validLaunchTarget>
+    <travelSpeed>10</travelSpeed>
+  </WorldObjectDef>
+
+
+  <!-- ==================== 離場 Projectile ====================
+       thingClass = DMSE.Projectile_ArtilleryDeparture
+       從建築位置沿弧線飛向對應方位邊緣格。
+       flyOverhead=true：不碰撞中途目標，直接飛至邊緣格後 Impact()，
+       建立 WorldObject_ArtilleryStrike 並加入世界地圖。
+       damageDef 設 Bomb 但 damageAmountBase=0，Impact() 不呼叫父類，不造成傷害。 -->
+  <ThingDef ParentName="BaseBullet">
+    <defName>DMSE_Projectile_ArtilleryDeparture</defName>
+    <label>155mm shell (departing)</label>
+    <thingClass>DMSE.Projectile_ArtilleryDeparture</thingClass>
+    <graphicData>
+      <!-- 出膛時的砲彈外觀；視覺上飛向地平線 -->
+      <texPath>Things/Missile/Moskit/skyFaller_incoming</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>2</drawSize>
+    </graphicData>
+    <projectile>
+      <damageDef>Bomb</damageDef>
+      <damageAmountBase>0</damageAmountBase>
+      <speed>30</speed>
+      <!-- flyOverhead=true：沿弧線飛行，不碰撞中途障礙物 -->
+      <flyOverhead>true</flyOverhead>
+      <soundCast>Mortar_LaunchA</soundCast>
+      <soundCastTail>GunTail_Heavy</soundCastTail>
+    </projectile>
+  </ThingDef>
+
+
+  <!-- ==================== 落地 Projectile ====================
+       從邊緣格射入地圖，抵達目標格後爆炸。
+       flyOverhead=true：飛越牆壁與地形障礙，僅在落點引爆（曲射彈道）。 -->
+  <ThingDef ParentName="BaseBullet">
+    <defName>DMSE_Projectile_ArtilleryShell</defName>
+    <label>155mm HE shell</label>
+    <thingClass>Verse.Projectile_Explosive</thingClass>
+    <graphicData>
+      <texPath>Things/Missile/Moskit/skyFaller_incoming</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>2.5</drawSize>
+    </graphicData>
+    <projectile>
+      <damageDef>Bomb</damageDef>
+      <damageAmountBase>80</damageAmountBase>
+      <armorPenetrationBase>2.0</armorPenetrationBase>
+      <speed>40</speed>
+      <flyOverhead>true</flyOverhead>
+      <explosionRadius>3.9</explosionRadius>
+      <explosionDamageFalloff>true</explosionDamageFalloff>
+      <soundExplode>MortarBomb_Explode</soundExplode>
+      <soundImpactAnticipate>MortarRound_PreImpact</soundImpactAnticipate>
+      <soundAmbient>MortarRound_Ambient</soundAmbient>
+      <screenShakeFactor>2.5</screenShakeFactor>
+      <preExplosionSpawnSingleThingDef>Filth_BlastMark</preExplosionSpawnSingleThingDef>
+    </projectile>
+  </ThingDef>
+
+
+  <!-- ==================== 砲塔武器 def ====================
+       供 Building_TurretGun 使用的本地端自動瞄準武器。
+       isMortar=true → 飛越障礙物、顯示散佈圓、需要操砲手。 -->
+  <ThingDef ParentName="BaseWeaponTurret">
+    <defName>DMSE_Gun_HowitzerLocal</defName>
+    <label>howitzer (local)</label>
+    <description>Internal turret mechanism for local-map fire support.</description>
+    <graphicData>
+      <texPath>Things/Building/Security/TurretMortar_Top</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2, 2)</drawSize>
+    </graphicData>
+    <statBases>
+      <AccuracyTouch>0.05</AccuracyTouch>
+      <AccuracyShort>0.20</AccuracyShort>
+      <AccuracyMedium>0.40</AccuracyMedium>
+      <AccuracyLong>0.60</AccuracyLong>
+      <RangedWeapon_Cooldown>60</RangedWeapon_Cooldown>
+    </statBases>
+    <verbs>
+      <li>
+        <verbClass>Verb_Shoot</verbClass>
+        <isMortar>true</isMortar>
+        <hasStandardCommand>true</hasStandardCommand>
+        <defaultProjectile>DMSE_Projectile_ArtilleryShell</defaultProjectile>
+        <warmupTime>4</warmupTime>
+        <range>180</range>
+        <minRange>15</minRange>
+        <forcedMissRadius>9</forcedMissRadius>
+        <requireLineOfSight>false</requireLineOfSight>
+        <mustCastOnOpenGround>true</mustCastOnOpenGround>
+        <consumeFuelPerShot>1</consumeFuelPerShot>
+        <soundCast>Mortar_LaunchA</soundCast>
+        <soundCastTail>GunTail_Heavy</soundCastTail>
+        <muzzleFlashScale>9</muzzleFlashScale>
+      </li>
+    </verbs>
+    <comps>
+      <li Class="CompProperties_ChangeableProjectile" />
+    </comps>
+    <tools>
+      <li>
+        <label>barrel</label>
+        <capacities><li>Blunt</li></capacities>
+        <power>18</power>
+        <cooldownTime>2</cooldownTime>
+      </li>
+    </tools>
+  </ThingDef>
+
+
+  <!-- ==================== 自走砲系統 建築 ====================
+       雙模式：
+         A) 本地端砲塔（Building_TurretGun + CompMannable）
+            操砲手在場時自動對地圖內敵人開火，消耗裝填砲彈與砲管。
+         B) 超視距世界地圖攻擊（CompArtilleryStrike Gizmo）
+            點擊 Gizmo 後切換至世界地圖選目標 tile；
+            選定後發射一枚離場投射物（Projectile_ArtilleryDeparture）
+            朝對應方位邊緣格飛去，抵達後轉換為世界航跡物件。 -->
+  <ThingDef ParentName="DMSE_TiltLauncherBase">
+    <defName>DMSE_Building_ArtillerySystem</defName>
+    <label>self-propelled howitzer</label>
+    <description>A long-range artillery system with two operating modes.\n\nLOCAL: When manned, the howitzer automatically engages enemies on the current map with loaded shells.\n\nSTRATEGIC: The long-range strike gizmo opens the world map — select any target tile. The howitzer fires a visible shell that arcs toward the map edge in the target's direction, then transitions into a world-travel object and re-enters the destination map from that same direction before detonating.\n\nThe barrel degrades with use and must be periodically replaced.</description>
+
+    <graphicData>
+      <texPath>Things/Building/Security/TurretMortar</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(3, 4)</drawSize>
+    </graphicData>
+    <uiIconPath>Things/Building/Security/TurretMortar_MenuIcon</uiIconPath>
+
+    <thingClass>Building_TurretGun</thingClass>
+
+    <size>(2, 2)</size>
+    <pathCost>60</pathCost>
+    <fillPercent>0.4</fillPercent>
+    <staticSunShadowHeight>0.15</staticSunShadowHeight>
+    <constructEffect>ConstructMetal</constructEffect>
+
+    <placeWorkers>
+      <li>PlaceWorker_NotUnderRoof</li>
+    </placeWorkers>
+
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0, 0, -1)</interactionCellOffset>
+
+    <statBases>
+      <MaxHitPoints>500</MaxHitPoints>
+      <WorkToBuild>15000</WorkToBuild>
+      <Flammability>0.2</Flammability>
+      <Mass>80</Mass>
+      <Beauty>-15</Beauty>
+    </statBases>
+    <costList>
+      <Steel>250</Steel>
+      <ComponentStamped>15</ComponentStamped>
+      <ComponentSpacer>3</ComponentSpacer>
+    </costList>
+
+    <building>
+      <turretGunDef>DMSE_Gun_HowitzerLocal</turretGunDef>
+      <turretBurstCooldownTime>60</turretBurstCooldownTime>
+      <ai_combatDangerous>true</ai_combatDangerous>
+    </building>
+
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>800</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Breakdownable" />
+
+      <li Class="CompProperties_Mannable">
+        <manWorkType>Violent</manWorkType>
+      </li>
+
+      <li Class="CompProperties_Refuelable">
+        <fuelLabel>Shots until barrel replacement</fuelLabel>
+        <fuelGizmoLabel>Barrel durability</fuelGizmoLabel>
+        <outOfFuelMessage>Needs new reinforced barrel</outOfFuelMessage>
+        <fuelFilter>
+          <thingDefs><li>ReinforcedBarrel</li></thingDefs>
+        </fuelFilter>
+        <fuelIsMortarBarrel>true</fuelIsMortarBarrel>
+        <fuelCapacity>15</fuelCapacity>
+        <fuelMultiplier>15</fuelMultiplier>
+        <initialFuelPercent>1</initialFuelPercent>
+        <showFuelGizmo>true</showFuelGizmo>
+        <minimumFueledThreshold>1</minimumFueledThreshold>
+        <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+        <initialAllowAutoRefuel>true</initialAllowAutoRefuel>
+        <fuelIconPath>Things/Item/Resource/ReinforcedBarrel/ReinforcedBarrel</fuelIconPath>
+      </li>
+
+      <li Class="CompProperties_Explosive">
+        <wickTicks>240</wickTicks>
+        <explosiveRadius>5.9</explosiveRadius>
+        <explosiveDamageType>Bomb</explosiveDamageType>
+      </li>
+
+      <li Class="DMSE.CompProperties_ArtilleryStrike">
+        <!-- 離場投射物（Projectile_ArtilleryDeparture，flyOverhead=true，朝對應方位邊緣格飛去）-->
+        <departureProjectileDef>DMSE_Projectile_ArtilleryDeparture</departureProjectileDef>
+        <worldObjectDef>DMSE_ArtilleryStrike</worldObjectDef>
+        <!-- 後備落地 def；優先讀取 CompChangeableProjectile 中裝填的砲彈 -->
+        <projectileDef>DMSE_Projectile_ArtilleryShell</projectileDef>
+        <cooldownTicks>3600</cooldownTicks>
+        <!-- 瞄準時間 240 tick = 4 秒，同原版迫擊砲 warmupTime=4 -->
+        <warmupTicks>240</warmupTicks>
+        <scatterRadius>4.0</scatterRadius>
+        <salvoCount>1</salvoCount>
+        <salvoIntervalTicks>0</salvoIntervalTicks>
+      </li>
+    </comps>
+
+    <inspectorTabs>
+      <li>ITab_Shells</li>
+    </inspectorTabs>
+
+    <researchPrerequisites>
+      <li>DMSE_StrategicSystems</li>
+    </researchPrerequisites>
+  </ThingDef>
+
+</Defs>

@@ -18,6 +18,13 @@ namespace DMSE
         /// <summary>每「搜索距離」單位換算的窗口 ticks。</summary>
         public float ticksPerDistance = 12f;
 
+        /// <summary>
+        /// 是否不受反輻射導引頭（<see cref="GuidanceType_AntiRadiation"/>）的目標選擇影響。
+        /// 設為 true 時，此雷達不會被列入反輻射制導的候選目標清單（例如純被動聲學早期預警裝置，
+        /// 不發射任何主動電磁波，理論上無法被反輻射導引頭偵測鎖定）。
+        /// </summary>
+        public bool immuneToAntiRadiationSeeker = false;
+
         public CompProperties_SearchRadar()
         {
             compClass = typeof(CompSearchRadar);

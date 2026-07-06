@@ -5,7 +5,7 @@
        無 CompMissileConfig / ITab：不可自定義（customizeLocation=None）。
        渲染：裝填於發射架後由 CompMissileRackRenderer 依建築朝向繪製折翼彈體（Termite 折疊貼圖）。 -->
   <ThingDef ParentName="DMSE_ResourceBase">
-    <defName>DMSE_LoiteringMunition</defName>
+    <defName>DMSE_Missile_Termite</defName>
     <label>loitering munition</label>
     <description>A folding-wing loitering munition awaiting loading onto a launch rail. Its airframe slowly degrades in the open; store it on a loitering-munition rack to keep it serviceable.</description>
     <descriptionHyperlinks>

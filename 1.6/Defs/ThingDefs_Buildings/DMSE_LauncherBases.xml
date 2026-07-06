@@ -26,6 +26,10 @@
     <selectable>true</selectable>
     <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
     <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
+    <placeWorkers>
+      <!-- 傾斜發射時排焰/後座範圍較大，禁止同層建築在1格範圍內貼靠。 -->
+      <li>DMSE.PlaceWorker_NoAdjacentSameLayer</li>
+    </placeWorkers>
   </ThingDef>
 
   <!-- 垂直發射平台母 Def（單一朝向、禁止建於重力船 substructure） -->

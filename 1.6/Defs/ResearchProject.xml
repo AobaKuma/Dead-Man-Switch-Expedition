@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
   <ResearchProjectDef ParentName="DMS_BaseTech">
@@ -6,29 +6,44 @@
     <label>vacuumize process</label>
     <description>Material production in vacuum effectively avoids interference from common gases such as nitrogen and oxygen during chemical reactions. Researching materials science outside the atmosphere is especially valuable for special materials like Tantasteel, which are prone to oxidation when processed in atmospheric conditions.\n\nThis research unlocks Tantasteel production in vacuum-compatible box furnaces and sintering furnaces.</description>
     <baseCost>1000</baseCost>
-    <requiredResearchBuilding Inherit="False"/>
+    <requiredResearchBuilding Inherit="False" />
     <teachConcept>FFF_EnvironmentalBill</teachConcept>
     <prerequisites>
       <li>DMS_Material</li>
-    </prerequisites> 
+    </prerequisites>
     <researchViewX>2.00</researchViewX>
     <researchViewY>2.50</researchViewY>
-    <generalRules/>
+    <generalRules />
   </ResearchProjectDef>
-  
+
+  <!-- 雷達基礎：BVR機制的基礎科技。 -->
+  <ResearchProjectDef ParentName="DMS_BaseTech">
+    <defName>DMSE_RadarBasis</defName>
+    <label>Radar</label>
+    <description>TODO</description>
+    <baseCost>1000</baseCost>
+    <requiredResearchBuilding Inherit="False" />
+    <prerequisites>
+      <li>DMS_UAVBasis</li>
+    </prerequisites>
+    <researchViewX>1.00</researchViewX>
+    <researchViewY>0.30</researchViewY>
+    <generalRules />
+  </ResearchProjectDef>
+
   <!-- 巡飛彈：大前期可研究的 BVR 武器。 -->
   <ResearchProjectDef ParentName="DMS_BaseTech">
     <defName>DMSE_LoiteringMunitions</defName>
-    <label>loitering munitions</label>
+    <label>loitering munition</label>
     <description>Rail-launched folding-wing loitering munitions give an early colony a crude beyond-visual-range strike capability. Slow and easy to detect, but available long before proper cruise missiles.\n\nThis research unlocks the loitering munition, its tilt-launch rail, and a storage rack.</description>
-    <baseCost>600</baseCost>
-    <requiredResearchBuilding Inherit="False"/>
+    <baseCost>1000</baseCost>
+    <requiredResearchBuilding Inherit="False" />
     <prerequisites>
-      <li>DMS_MechBasis</li>
+      <li>DMSE_RadarBasis</li>
     </prerequisites>
     <researchViewX>2.00</researchViewX>
-    <researchViewY>3.40</researchViewY>
-    <generalRules/>
+    <researchViewY>0.30</researchViewY>
+    <generalRules />
   </ResearchProjectDef>
 
   <ResearchProjectDef ParentName="DMS_BaseTech">
@@ -36,21 +51,21 @@
     <label>orbital dynamics</label>
     <description>By studying fundamental orbital mechanics and space environmental characteristics, you can develop equipment and precision devices designed for vacuum microgravity conditions, as well as a family of specialized caseless firearms built from advanced materials.\n\nKey materials and components for this equipment rely on trade with the colonial fleet, but deeper research can eventually enable fully independent production.</description>
     <baseCost>1000</baseCost>
-    <requiredResearchBuilding Inherit="False"/>
+    <requiredResearchBuilding Inherit="False" />
     <prerequisites>
       <li>DMS_MechBasis</li>
-    </prerequisites> 
+    </prerequisites>
     <researchViewX>3.00</researchViewX>
-    <researchViewY>2.80</researchViewY>
-    <generalRules/>
+    <researchViewY>2.90</researchViewY>
+    <generalRules />
   </ResearchProjectDef>
-  
+
   <ResearchProjectDef ParentName="DMS_BaseTech">
     <defName>DMSE_Carbohydrate</defName>
     <label>Carbon synthesis</label>
     <description>Industrial-scale organic reactions can convert carbon dioxide and water into organic biomass. This "turn air into food" technology reached commercial viability before World War III, with energy conversion efficiency roughly eight to thirty times that of traditional agriculture.\n\nThis research unlocks construction of a bioreactor that consumes electricity and graphene to synthesize carbohydrates composed of starches, sugars, and other organic compounds.</description>
     <baseCost>3000</baseCost>
-    <requiredResearchBuilding Inherit="False"/>
+    <requiredResearchBuilding Inherit="False" />
     <techLevel>Industrial</techLevel>
     <prerequisites>
       <li>DMS_Autofacturer</li>
@@ -65,14 +80,14 @@
     <label>Microgravity Manufacturing</label>
     <description>Additive manufacturing in microgravity can achieve complexity and precision far beyond what is possible under gravity. Once gravity is removed as a constant constraint, many fundamental assumptions in materials science and manufacturing are significantly altered.\n\nThis research unlocks construction of a large assembly machine for producing items in microgravity.</description>
     <baseCost>1000</baseCost>
-    <requiredResearchBuilding Inherit="False"/>
+    <requiredResearchBuilding Inherit="False" />
     <techLevel>Industrial</techLevel>
     <prerequisites>
-      <li>DMS_MechBasis</li>
+      <li>DMSE_OrbitalDynamics</li>
       <li>DMSE_VacuumMaterial</li>
     </prerequisites>
-    <researchViewX>3.00</researchViewX>
-    <researchViewY>2.20</researchViewY>
+    <researchViewX>4.00</researchViewX>
+    <researchViewY>2.50</researchViewY>
   </ResearchProjectDef>
 
   <ResearchProjectDef ParentName="DMS_BaseTech">
@@ -80,19 +95,14 @@
     <label>Aerospace Applications</label>
     <description>By scaling up Tantasteel and graphene production and exploring the key applications of these specialty materials in aerospace and microelectronics, this research unlocks nuclear thermal propulsion engines and orbital electronic-warfare stealth equipment for gravships and orbital starships.</description>
     <baseCost>1500</baseCost>
-    <requiredResearchBuilding Inherit="False"/>
+    <requiredResearchBuilding Inherit="False" />
     <techLevel>Industrial</techLevel>
     <prerequisites>
       <li>DMSE_Microgravity</li>
     </prerequisites>
-    <researchViewX>4.00</researchViewX>
-    <researchViewY>2.20</researchViewY>
+    <researchViewX>5.00</researchViewX>
+    <researchViewY>2.50</researchViewY>
   </ResearchProjectDef>
-
-  <!-- ==================== 導彈科技樹 ====================
-       三段式進階解鎖，以巡飛彈為起點，逐步開放輕型→中型→彈道導彈。
-       LoiteringMunitions(600) → Ballistics(4000) → IntegratedCircuits(6000) → StrategicSystems(8000)
-  -->
 
   <!-- 彈道學基礎：解鎖輕型導彈及其發射架。 -->
   <ResearchProjectDef ParentName="DMS_BaseTech">
@@ -100,14 +110,14 @@
     <label>ballistics</label>
     <description>Systematic study of in-atmosphere missile flight dynamics, solid-fuel staging, and terminal guidance. Miniaturising rocket motors and seekers for rapid-reload tube launchers opens a new tier of battlefield fires.\n\nThis research unlocks the light missile, its tilt-launch rail, and a vertical single-cell launcher.</description>
     <baseCost>4000</baseCost>
-    <requiredResearchBuilding Inherit="False"/>
+    <requiredResearchBuilding Inherit="False" />
     <techLevel>Industrial</techLevel>
     <prerequisites>
       <li>DMSE_LoiteringMunitions</li>
     </prerequisites>
-    <researchViewX>3.00</researchViewX>
-    <researchViewY>3.40</researchViewY>
-    <generalRules/>
+    <researchViewX>4.00</researchViewX>
+    <researchViewY>0.30</researchViewY>
+    <generalRules />
   </ResearchProjectDef>
 
   <!-- 集成電路：解鎖中型導彈進階系統（搜索雷達、火控雷達、SAM 發射架）。 -->
@@ -115,16 +125,18 @@
     <defName>DMSE_IntegratedCircuits</defName>
     <label>integrated circuits</label>
     <description>High-density integrated electronics allow miniaturised phased-array signal processing and strapdown inertial reference units compact enough to fit inside a missile airframe. The result is a beyond-visual-range combat network with search radar, fire-control radar, and surface-to-air missile defence.\n\nThis research unlocks the search radar, fire-control radar, and the SAM launcher.</description>
-    <baseCost>6000</baseCost>
-    <requiredResearchBuilding Inherit="False"/>
+    <baseCost>4000</baseCost>
+    <requiredResearchBuilding Inherit="False" />
     <techLevel>Industrial</techLevel>
     <prerequisites>
       <li>DMSE_Ballistics</li>
-      <li>DMSE_OrbitalDynamics</li>
     </prerequisites>
-    <researchViewX>4.00</researchViewX>
-    <researchViewY>3.40</researchViewY>
-    <generalRules/>
+    <hiddenPrerequisites>
+      <li>DMSE_OrbitalDynamics</li>
+    </hiddenPrerequisites>
+    <researchViewX>5.00</researchViewX>
+    <researchViewY>0.30</researchViewY>
+    <generalRules />
   </ResearchProjectDef>
 
   <!-- 戰略系統：解鎖彈道導彈（3x3 垂發）。 -->
@@ -132,15 +144,18 @@
     <defName>DMSE_StrategicSystems</defName>
     <label>strategic systems</label>
     <description>Mastery of re-entry physics, high-energy propellant chemistry, and stellar-inertial guidance enables ballistic missiles that loft their payload to the edge of the atmosphere. The ballistic arc defeats most point defences and allows strikes at extreme range with any assembled warhead configuration.\n\nThis research unlocks the ballistic missile silo and its assembly interface.</description>
-    <baseCost>8000</baseCost>
-    <requiredResearchBuilding Inherit="False"/>
+    <baseCost>6000</baseCost>
+    <requiredResearchBuilding Inherit="False" />
     <techLevel>Industrial</techLevel>
     <prerequisites>
       <li>DMSE_IntegratedCircuits</li>
     </prerequisites>
-    <researchViewX>5.00</researchViewX>
-    <researchViewY>3.40</researchViewY>
-    <generalRules/>
+    <hiddenPrerequisites>
+      <li>DMSE_Aerospace</li>
+    </hiddenPrerequisites>
+    <researchViewX>6.00</researchViewX>
+    <researchViewY>0.30</researchViewY>
+    <generalRules />
   </ResearchProjectDef>
 
 </Defs>

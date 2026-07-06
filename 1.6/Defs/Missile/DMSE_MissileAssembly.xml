@@ -91,7 +91,7 @@
     <compatibleBodies><li>DMSE_MissileBody_Cruise</li></compatibleBodies>
     <scatterOffset>-2.5</scatterOffset>
     <researchPrerequisites>
-      <li>DMSE_OrbitalDynamics</li>
+      <li>DMSE_IntegratedCircuits</li>
     </researchPrerequisites>
     <costList>
       <ComponentIndustrial>3</ComponentIndustrial>

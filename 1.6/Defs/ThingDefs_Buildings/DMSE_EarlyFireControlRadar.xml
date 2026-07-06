@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_EarlyFireControlRadar</defName>
+    <label>early fire control radar</label>
+    <!-- 早期型號的火控雷達，仍需由一名操作員手動操作方能運作。鎖定速度較慢、可靠度較低，但能讓殖民地在集成電路技術成熟前就獲得初步的超視距攔截及打擊能力。 -->
+    <description>An early fire control radar that still requires a manual operator to function. Compared to later phased-array systems it locks on more slowly and less reliably, but it lets a colony field rudimentary beyond-visual-range intercept capability before integrated circuit technology matures.</description>
+    <graphicData>
+      <texPath>Things/Building/FacilityBase</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(4,4)</drawSize>
+      <drawOffset>(0,0,0)</drawOffset>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <!-- 必須為 MapMeshAndRealTime（或 RealtimeOnly）：CompProperties_TurretFacingRenderer 是透過
+         ThingComp.PostDraw 逐幀繪製砲塔頭，而 PostDraw 只有在 ThingWithComps.DrawAt 被呼叫時才會觸發；
+         繼承自 BuildingBase 的預設 drawerType 是 MapMeshOnly（本體烘進靜態地圖網格、不逐幀呼叫 DrawAt），
+         若未覆寫，此 Comp 的渲染永遠不會出現。 -->
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <rotatable>false</rotatable>
+    <passability>PassThroughOnly</passability>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.3</staticSunShadowHeight>
+    <fillPercent>0.8</fillPercent>
+    <canOverlapZones>false</canOverlapZones>
+    <pathCost>42</pathCost>
+    <tickerType>Normal</tickerType>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,-2)</interactionCellOffset>
+    <statBases>
+      <MaxHitPoints>300</MaxHitPoints>
+      <WorkToBuild>15000</WorkToBuild>
+      <Mass>250</Mass>
+      <Flammability>0.25</Flammability>
+    </statBases>
+    <size>(3,3)</size>
+    <costList>
+      <Steel>100</Steel>
+      <DMSE_TantastenAlloy>40</DMSE_TantastenAlloy>
+      <ComponentIndustrial>10</ComponentIndustrial>
+      <ComponentSpacer>4</ComponentSpacer>
+    </costList>
+    <building>
+      <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+      <buildingTags>
+        <li>DMSE_InterceptRadar</li>
+      </buildingTags>
+    </building>
+    <researchPrerequisites>
+      <li>DMSE_RadarBasis</li>
+    </researchPrerequisites>
+    <designationCategory>DMS_Category</designationCategory>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
+    <comps>
+      <li Class="CompProperties_Forbiddable" />
+      <li Class="CompProperties_Breakdownable" />
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>1200</basePowerConsumption>
+        <transmitsPower>true</transmitsPower>
+      </li>
+      <!-- 需要操作員手動操作方能運作；無人操作時雷達不會運轉。 -->
+      <li Class="CompProperties_Mannable">
+        <planetLayerWhitelist>
+          <li>Surface</li>
+          <li>Orbit</li>
+        </planetLayerWhitelist>
+      </li>
+      <!-- 提供兩個火力通道，鎖定與精準時間皆遜於後期相控陣雷達。 -->
+      <li Class="DMSE.CompProperties_FireControlRadar">
+        <maxTargets>2</maxTargets>
+        <powerLevel>1</powerLevel>
+        <guidanceAccuracyTime>900</guidanceAccuracyTime>
+        <maxRangeTicks>4000</maxRangeTicks>
+        <maxHitChance>0.75</maxHitChance>
+        <stealthMissFactor>0.6</stealthMissFactor>
+        <lockOnTicks>200</lockOnTicks>
+        <!-- 支援為超視距砲擊提供引導：己方砲兵開火前須向本雷達佔用一個火力通道，
+             與攔截目標共用同一份 maxTargets 額度。 -->
+        <supportsArtilleryGuidance>true</supportsArtilleryGuidance>
+      </li>
+      <!-- 額外渲染一個朝目標方向轉動的砲塔頭，純視覺表現，不影響戰鬥判定；貼圖路徑請自行替換為實際美術資源。 -->
+      <li Class="DMSE.CompProperties_TurretFacingRenderer">
+        <texPath>Things/Building/Radar_EarlyFC</texPath>
+        <drawSize>(5,5)</drawSize>
+        <altitudeOffset>0.01</altitudeOffset>
+        <rotationSpeedDegPerTick>3</rotationSpeedDegPerTick>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>PlaceWorker_BandNode</li>
+    </placeWorkers>
+  </ThingDef>
+
+</Defs>

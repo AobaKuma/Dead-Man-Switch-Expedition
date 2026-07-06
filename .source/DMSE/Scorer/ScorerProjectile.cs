@@ -12,7 +12,11 @@ namespace DMSE
 {
     public class ScorerProjectile : Skyfaller, ILaunchTarget
     {
-        public ScorerProjectile_WorldObject worldObject;
+        /// <summary>
+        /// 離場後要加入世界地圖的物件。可為 <see cref="ScorerProjectile_WorldObject"/>
+        /// 或任何其他 <see cref="WorldObject"/> 子類（例如 <see cref="WorldObject_ArtilleryStrike"/>）。
+        /// </summary>
+        public WorldObject worldObject;
 
         public Vector3 LaunchDrawPos => trueDrawPos;
         public float LaunchRotation => trueRotation;

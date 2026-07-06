@@ -117,18 +117,17 @@
 
   <!-- ==================== 彈道導彈 發射井（3x3 垂發）====================
        不可旋轉（垂直朝向唯一），禁止建於重力船 substructure（繼承自 DMSE_VerticalLauncherBase）。
-       建築本身持有 CompMissileConfig（直接在架上自定義、裝配）及 CompBallisticLauncher（發射控制）。
+       建築本身持有 CompMissileConfig（直接在架上自定義、裝配）及 CompMissileLauncher_Ballistic（發射控制）。
        ITab_MissileAssembly 讓玩家選擇彈頭/導引/酬載，WorkGiver_AssembleBallisticSilo 分派小人裝配。
        需 DMSE_StrategicSystems 解鎖。 -->
   <ThingDef ParentName="DMSE_VerticalLauncherBase">
     <defName>DMSE_Building_BallisticSilo</defName>
     <label>ballistic missile silo</label>
-    <description>A 3x3 missile silo for ballistic weapons. Unlike cruise missiles, the ballistic airframe is assembled directly in the silo by colonists consuming raw materials — no item ever appears in the stockpile. Configure warhead, guidance, and payload in the assembly tab; once built, launch via the fire command at a world map target.\n\nCannot be installed on gravship decks.</description>
+    <description>A 3x3 missile silo for ballistic weapons. Unlike cruise missiles, the ballistic airframe is assembled directly in the silo by colonists consuming raw materials; once built, launch via the fire command at a world map target.\n\nCannot be installed on gravship decks.</description>
     <graphicData>
-      <!-- 暫借巡弋飛彈貼圖；建議後期替換為 3x3 專屬發射井頂蓋貼圖。 -->
-      <texPath>Things/Building/MissileLauncher/building</texPath>
-      <graphicClass>Graphic_Multi</graphicClass>
-      <drawSize>(4,4)</drawSize>
+      <texPath>Things/Building/MissileSilo</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(3.5,3.5)</drawSize>
     </graphicData>
     <size>(3,3)</size>
     <pathCost>80</pathCost>

@@ -28,6 +28,19 @@ namespace DMSE
         /// <summary>基礎鎖定時間（ticks）：新目標計入火力通道後需鎖定此時間才發射；受隱身對衝與速度延長。</summary>
         public int lockOnTicks = 120;
 
+        /// <summary>
+        /// 是否不受反輻射導引頭（<see cref="GuidanceType_AntiRadiation"/>）的目標選擇影響。
+        /// 與 <see cref="CompProperties_SearchRadar.immuneToAntiRadiationSeeker"/> 語意相同。
+        /// </summary>
+        public bool immuneToAntiRadiationSeeker = false;
+
+        /// <summary>
+        /// 是否支援為超視距（BVR）砲擊提供引導：<see cref="CompArtilleryStrike"/> 開火前
+        /// 須先向同陣營、具備此旗標且尚有空閒通道的火控雷達佔用一個火力通道
+        /// （與 <see cref="maxTargets"/> 共用同一份額度），開火後持續佔用直到引導結束才釋放。
+        /// </summary>
+        public bool supportsArtilleryGuidance = false;
+
         public CompProperties_FireControlRadar()
         {
             compClass = typeof(CompFireControlRadar);
@@ -87,8 +100,115 @@ namespace DMSE
 
         public override string CompInspectStringExtra()
         {
-            return "DMSE.BVR.FireControl".Translate(Props.maxTargets,
+            string baseStr = "DMSE.BVR.FireControl".Translate(Props.maxTargets,
                 Active ? "DMSE.BVR.Online".Translate() : "DMSE.BVR.Offline".Translate());
+
+            if (Props.supportsArtilleryGuidance)
+            {
+                baseStr += "\n" + "DMSE.BVR.ArtilleryChannels".Translate(FreeArtilleryChannels, Props.maxTargets);
+            }
+
+            return baseStr;
+        }
+
+        // ====================================================================
+        //  超視距砲擊引導：火力通道佔用（供 CompArtilleryStrike 使用）
+        //
+        //  通道額度 = Props.maxTargets（與 BVR 飛彈中過程攔截共用同一份）。
+        //  BVR 系統在 MapComponent_BVRCombat.MidcourseDefense() 計算全域容量時
+        //  會透過 OccupiedArtilleryChannels 扣除已預留給砲擊引導的通道，
+        //  確保兩者不會超額使用同一份額度。
+        // ====================================================================
+
+        private int reservedArtilleryChannels;
+
+        /// <summary>
+        /// 目前已預留給砲擊引導的火力通道數。
+        /// BVR 系統在計算中過程攔截容量時會讀取此值，從 maxTargets 中扣除。
+        /// </summary>
+        public int OccupiedArtilleryChannels => reservedArtilleryChannels;
+
+        /// <summary>
+        /// 目前可用於砲擊引導的空閒火力通道數。
+        /// = maxTargets − 已預留砲擊通道 − 當前 BVR 波次已佔用通道（全域估算）。
+        /// 若 supportsArtilleryGuidance = false 或裝置離線，固定為 0。
+        /// </summary>
+        public int FreeArtilleryChannels
+        {
+            get
+            {
+                if (!Active || !Props.supportsArtilleryGuidance) { return 0; }
+
+                // BVR 中過程攔截佔用的通道是全域計算的，無法精確歸屬到單一雷達。
+                // 以「全域已佔用數 × 本雷達份額」做保守估算，避免重複授權。
+                int bvrGlobalEngaged = 0;
+                Map map = parent.MapHeld;
+                if (map != null)
+                {
+                    MapComponent_BVRCombat mgr = map.GetComponent<MapComponent_BVRCombat>();
+                    if (mgr != null)
+                    {
+                        // 本雷達在全域容量中所占的比例（以防禦方為單位），
+                        // 用來估算其應承擔的 BVR 佔用數。
+                        int totalCapacity = 0;
+                        foreach (CompFireControlRadar fc in mgr.fireControlRadars)
+                        {
+                            if (fc.Active && fc.parent.Faction == parent.Faction)
+                            {
+                                totalCapacity += fc.Props.maxTargets;
+                            }
+                        }
+                        if (totalCapacity > 0)
+                        {
+                            int globalEngaged = mgr.CountEngaged();
+                            // 以整數四捨五入分攤（保守：Ceil 使估算偏高，減少雙重授權風險）
+                            bvrGlobalEngaged = Mathf.CeilToInt(
+                                (float)globalEngaged * Props.maxTargets / totalCapacity);
+                        }
+                    }
+                }
+
+                return Mathf.Max(0, Props.maxTargets - reservedArtilleryChannels - bvrGlobalEngaged);
+            }
+        }
+
+        /// <summary>
+        /// 佔用一個火力通道以引導超視距砲擊。
+        /// 呼叫前應先確認 <see cref="FreeArtilleryChannels"/> > 0
+        /// （由 <see cref="CompArtilleryStrike.FindAvailableRadar"/> 保證）。
+        /// 不回傳結果：若需要原子性「確認後佔用」，請改用 <see cref="TryOccupyArtilleryChannel"/>。
+        /// </summary>
+        public void OccupyArtilleryChannel()
+        {
+            reservedArtilleryChannels = Mathf.Min(reservedArtilleryChannels + 1, Props.maxTargets);
+        }
+
+        /// <summary>
+        /// 原子性確認後佔用：先確認 Active、supportsArtilleryGuidance、有空閒通道，
+        /// 若都滿足則立即佔用並回傳 true，否則回傳 false（無副作用）。
+        /// 適合在沒有預先呼叫 FindAvailableRadar 的情境中使用。
+        /// </summary>
+        public bool TryOccupyArtilleryChannel()
+        {
+            if (!Active || !Props.supportsArtilleryGuidance) { return false; }
+            if (FreeArtilleryChannels <= 0) { return false; }
+            OccupyArtilleryChannel();
+            return true;
+        }
+
+        /// <summary>
+        /// 釋放一個先前佔用的砲擊引導火力通道。
+        /// 安全防呆：不會扣至負數，多餘呼叫無副作用。
+        /// </summary>
+        public void ReleaseArtilleryChannel()
+        {
+            reservedArtilleryChannels = Mathf.Max(0, reservedArtilleryChannels - 1);
+        }
+
+        public override void PostExposeData()
+        {
+            base.PostExposeData();
+            Scribe_Values.Look(ref reservedArtilleryChannels, "reservedArtilleryChannels", 0);
         }
     }
 }

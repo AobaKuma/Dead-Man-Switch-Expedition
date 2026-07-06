@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_AcousticEarlyWarningRadar</defName>
+    <label>early warning radar</label>
+    <!-- 一種前雷達時代的巨型混凝土聲學反射鏡，藉由收集遠方來襲飛行器的引擎噪音達成早期預警。由於全程被動聆聽、不發射任何電磁波，反輻射導引頭無法將其鎖定為目標。偵測距離與精準度皆遜於真正的雷達，且完全無法辨識隱身目標。 -->
+    <description>A pre-radar-era concrete acoustic mirror that provides early warning by passively collecting the engine noise of distant incoming aircraft. Because it never emits any electromagnetic signal, anti-radiation seeker heads cannot lock onto it as a target. Its detection range and precision are inferior to true radar, and it cannot identify stealth targets at all.</description>
+    <graphicData>
+      <texPath>Things/Building/AcousticMirror/building</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(8,5)</drawSize>
+      <drawOffset>(0,0,0)</drawOffset>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <drawerType>MapMeshOnly</drawerType>
+    <rotatable>true</rotatable>
+    <passability>PassThroughOnly</passability>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.3</staticSunShadowHeight>
+    <fillPercent>0.8</fillPercent>
+    <canOverlapZones>false</canOverlapZones>
+    <pathCost>42</pathCost>
+    <tickerType>Normal</tickerType>
+    <statBases>
+      <MaxHitPoints>400</MaxHitPoints>
+      <WorkToBuild>12000</WorkToBuild>
+      <Mass>300</Mass>
+      <Flammability>0</Flammability>
+    </statBases>
+    <size>(5,3)</size>
+    <costStuffCount>750</costStuffCount>
+    <stuffCategories>
+      <li>Stony</li>
+    </stuffCategories>
+    <costList>
+      <Steel>60</Steel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+    </costList>
+    <building>
+      <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+      <buildingTags>
+        <li>DMSE_InterceptRadar</li>
+      </buildingTags>
+    </building>
+    <researchPrerequisites>
+      <li>DMSE_RadarBasis</li>
+    </researchPrerequisites>
+    <designationCategory>DMS_Category</designationCategory>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
+    <comps>
+      <li Class="CompProperties_Forbiddable" />
+      <li Class="CompProperties_Breakdownable" />
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <!-- 純被動聲學裝置，僅需少量電力驅動聆聽陣列與訊號處理，遠低於主動雷達。 -->
+        <basePowerConsumption>150</basePowerConsumption>
+        <transmitsPower>true</transmitsPower>
+      </li>
+      <!-- 早期預警：只提供搜索/預警窗口，不具備火控鎖定能力（無 CompProperties_FireControlRadar）。 -->
+      <li Class="DMSE.CompProperties_SearchRadar">
+        <searchDistance>120</searchDistance>
+        <powerLevel>1</powerLevel>
+        <antiStealthLevel>0</antiStealthLevel>
+        <ticksPerDistance>10</ticksPerDistance>
+        <!-- 核心需求：全程被動聆聽、不主動發射電磁波，故不受反輻射導引頭的目標選擇影響。 -->
+        <immuneToAntiRadiationSeeker>true</immuneToAntiRadiationSeeker>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>PlaceWorker_BandNode</li>
+      <li>DMSE.PlaceWorker_NoAdjacentSameLayer</li>
+    </placeWorkers>
+  </ThingDef>
+
+</Defs>

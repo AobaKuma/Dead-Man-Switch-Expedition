@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    旋轉導彈發射架：底座（turretBase）固定不轉，砲塔頭（slideLauncher）由
+    CompTurretFacingRenderer 逐幀朝向目標平滑轉動；掛載中的攔截彈會隨砲塔頭一起旋轉
+    （CompTurretFacingRenderer.drawLoadedAmmo），視覺上呈現「彈藥掛在旋轉發射軌上」。
+
+    雙聯裝：容器容量 2，並以 ammoSlotOffsets 指定左右兩個掛載槽位，容器內第 i 枚彈藥
+    對應第 i 個槽位，兩枚會一起隨砲塔頭旋轉（多彈頭渲染）。
+
+    需要操作員手動操作方能運作（CompMannable）：未有人操作時，CompTurretFacingRenderer.DeviceActive
+    會判定為 false，停止追蹤轉向；CompMissileLauncher.Active 亦繼承自 CompBVRDevice 的運作判定，
+    無人操作時同樣不會發射。
+  -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_Building_RotaryMissileLauncher</defName>
+    <label>rotary missile launcher</label>
+    <!-- 一款可 360 度旋轉的中程防空發射架，砲塔頭與彈藥掛架隨追蹤目標平滑轉向，需人力操作方能運作。 -->
+    <description>A surface-to-air launcher with a fully rotating turret. Unlike fixed tilt/vertical racks, its launch rail continuously slews to face the current threat, but it requires a manual operator to function.</description>
+    <thingClass>DMSE.Building_MissileRack</thingClass>
+    <category>Building</category>
+    <graphicData>
+      <texPath>Things/Building/turretBase</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(4,4)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <!-- 必須為 MapMeshAndRealTime：CompProperties_TurretFacingRenderer 透過 PostDraw 逐幀繪製砲塔頭與掛載彈藥，
+         繼承自 BuildingBase 的預設 drawerType（MapMeshOnly）不會逐幀呼叫 DrawAt，此 Comp 將永遠不會出現。 -->
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <rotatable>false</rotatable>
+    <passability>PassThroughOnly</passability>
+    <castEdgeShadows>false</castEdgeShadows>
+    <fillPercent>0.36</fillPercent>
+    <canOverlapZones>false</canOverlapZones>
+    <pathCost>50</pathCost>
+    <tickerType>Normal</tickerType>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,-2)</interactionCellOffset>
+    <selectable>true</selectable>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
+    <statBases>
+      <MaxHitPoints>260</MaxHitPoints>
+      <WorkToBuild>9000</WorkToBuild>
+      <Mass>200</Mass>
+      <Flammability>0.25</Flammability>
+    </statBases>
+    <size>(3,3)</size>
+    <costList>
+      <Steel>140</Steel>
+      <ComponentIndustrial>8</ComponentIndustrial>
+    </costList>
+    <building>
+      <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+      <maxItemsInCell>1</maxItemsInCell>
+      <ignoreStoredThingsBeauty>true</ignoreStoredThingsBeauty>
+      <fixedStorageSettings>
+        <filter>
+          <thingDefs>
+            <li>DMSE_InterceptorMissile</li>
+            <li>DMSE_Missile_Termite</li>
+          </thingDefs>
+        </filter>
+      </fixedStorageSettings>
+      <defaultStorageSettings>
+        <priority>Important</priority>
+        <filter>
+          <thingDefs>
+            <li>DMSE_InterceptorMissile</li>
+            <li>DMSE_Missile_Termite</li>
+          </thingDefs>
+        </filter>
+      </defaultStorageSettings>
+      <buildingTags>
+        <li>DMSE_InterceptRadar</li>
+      </buildingTags>
+    </building>
+    <researchPrerequisites>
+      <li>DMSE_Ballistics</li>
+    </researchPrerequisites>
+    <designationCategory>DMS_Category</designationCategory>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
+    <!-- 四階分類：輕量級、傾斜發射（旋轉發射架不佔用 Vertical 語意）、彈容 2（雙聯裝，對應下方 ammoSlotOffsets 兩槽）。 -->
+    <modExtensions>
+      <li Class="DMSE.MissileLauncherExtension">
+        <sizeClass>Light</sizeClass>
+        <launchMode>Tilt</launchMode>
+        <capacity>1</capacity>
+        <renderStoredBody>false</renderStoredBody>
+      </li>
+      <!-- 敵方陣地生成時自動填充：Industrial 以上派系填入攔截彈。 -->
+      <li Class="DMSE.MissileRackAutoFillExtension">
+        <enemyFactionOnly>true</enemyFactionOnly>
+        <fillRules>
+          <li>
+            <minTechLevel>Industrial</minTechLevel>
+            <candidates>
+              <li>DMSE_InterceptorMissile</li>
+              <li>DMSE_Missile_Termite</li>
+            </candidates>
+          </li>
+        </fillRules>
+      </li>
+    </modExtensions>
+    <comps>
+      <li Class="CompProperties_Forbiddable" />
+      <li Class="CompProperties_Breakdownable" />
+      <!-- 需要操作員手動操作方能運作；無人操作時停止轉向追蹤與發射（見 DeviceActive / CompBVRDevice.Active）。
+           compClass 覆寫為 CompMannableMissileLauncher：右鍵「操作」時改派 DMSE_ManMissileLauncher，
+           使操作者會自行前往鄰近儲存架尋找相容彈藥並裝填（裝滿彈槽才開始操作），而非 vanilla
+           JobDriver_ManTurret（只認得 Building_TurretGun 的裝填邏輯，對本建築不會生效）。 -->
+      <li Class="CompProperties_Mannable">
+        <compClass>DMSE.CompMannableMissileLauncher</compClass>
+        <planetLayerWhitelist>
+          <li>Surface</li>
+          <li>Orbit</li>
+        </planetLayerWhitelist>
+      </li>
+      <!-- 發射：受火控雷達指派目標，取出容器中的攔截彈作為彈藥。 -->
+      <li Class="DMSE.CompProperties_MissileLauncher">
+        <interceptorSkyfaller>DMSE_SkyFaller_Interceptor</interceptorSkyfaller>
+        <reloadCooldownTicks>200</reloadCooldownTicks>
+        <interceptorTravelTicks>180</interceptorTravelTicks>
+      </li>
+      <li Class="DMSE.CompProperties_TurretFacingRenderer">
+        <texPath>Things/Building/slideLauncher</texPath>
+        <drawSize>(4,4)</drawSize>
+        <altitudeOffset>0.01</altitudeOffset>
+        <rotationSpeedDegPerTick>2</rotationSpeedDegPerTick>
+        <drawLoadedAmmo>true</drawLoadedAmmo>
+        <ammoSlotOffsets>
+          <li>(0,0,0.45)</li>
+        </ammoSlotOffsets>
+        <ammoAltitudeOffset>0.005</ammoAltitudeOffset>
+      </li>
+    </comps>
+    <inspectorTabs>
+      <li>RimWorld.ITab_Storage</li>
+      <li>DMSE.ITab_MissileInventory</li>
+      <li>DMSE.ITab_MissileAssembly</li>
+    </inspectorTabs>
+    <placeWorkers>
+      <li>DMSE.PlaceWorker_NoAdjacentSameLayer</li>
+    </placeWorkers>
+  </ThingDef>
+
+</Defs>

@@ -187,8 +187,8 @@
   </ThingDef>
 
   <ThingDef ParentName="DMSE_ResourceBase">
-    <defName>DMSE_CruiseMissile</defName>
-    <label>cruise missile</label>
+    <defName>DMSE_Missile_Moskit</defName>
+    <label>hyper-sonic cruise missile</label>
     <description>A tactical cruise missile awaiting loading.</description>
     <descriptionHyperlinks>
       <ThingDef>DMSE_Building_Scorer</ThingDef>
@@ -226,7 +226,7 @@
       <recipeUsers Inherit="False">
         <li>DMS_TableMachinePrinter</li>
       </recipeUsers>
-      <researchPrerequisite>DMSE_OrbitalDynamics</researchPrerequisite>
+      <researchPrerequisite>DMSE_Ballistics</researchPrerequisite>
       <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
     </recipeMaker>
     <comps>
@@ -251,7 +251,7 @@
     </inspectorTabs>
   </ThingDef>
 
-  <!-- SAM 攔截彈：防空導彈發射器（DMSE_Building_SAMLauncher）的容器式彈藥。
+  <!-- SAM 攔截彈：防空導彈發射器（DMSE_Building_LightMissileLauncher）的容器式彈藥。
        與巡弋飛彈不同，攔截彈為固定戰備彈，不需裝配/世界選靶，故無 CompMissileConfig 與裝配頁籤。
        未存放於發射器/彈藥庫內時緩慢劣化（CompDurabilityDecay）。 -->
   <ThingDef ParentName="DMSE_ResourceBase">
@@ -259,10 +259,10 @@
     <label>interceptor missile</label>
     <description>A ready-to-fire surface-to-air interceptor round. Loaded into a SAM launcher's internal container, it is expended one per engagement to destroy incoming threats during the midcourse phase of beyond-visual-range combat.</description>
     <descriptionHyperlinks>
-      <ThingDef>DMSE_Building_SAMLauncher</ThingDef>
+      <ThingDef>DMSE_Building_LightMissileLauncher</ThingDef>
     </descriptionHyperlinks>
     <graphicData>
-      <texPath>Things/Missile/Grison/skyFaller</texPath>
+      <texPath>Things/Missile/Grison/ammo</texPath>
       <drawSize>(2.5,2.5)</drawSize>
       <drawOffset>(0,0,1)</drawOffset>
       <graphicClass>Graphic_Single</graphicClass>
@@ -294,7 +294,7 @@
       <recipeUsers Inherit="False">
         <li>DMS_TableMachinePrinter</li>
       </recipeUsers>
-      <researchPrerequisite>DMSE_OrbitalDynamics</researchPrerequisite>
+      <researchPrerequisite>DMSE_IntegratedCircuits</researchPrerequisite>
       <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
     </recipeMaker>
     <comps>
@@ -307,7 +307,7 @@
         <destroyWhenDepleted>true</destroyWhenDepleted>
         <shelterBuildings>
           <li>DMSE_MissileRack</li>
-          <li>DMSE_Building_SAMLauncher</li>
+          <li>DMSE_Building_LightMissileLauncher</li>
         </shelterBuildings>
       </li>
     </comps>

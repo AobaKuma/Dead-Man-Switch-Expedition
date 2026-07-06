@@ -163,17 +163,17 @@ namespace DMSE
             {
                 if (attacker != null && b.Faction == attacker) { continue; }
 
-                // 搜索雷達
+                // 搜索雷達（標記為免疫者不列入候選，例如純被動聲學早期預警裝置）
                 CompSearchRadar sr = b.TryGetComp<CompSearchRadar>();
-                if (sr != null && sr.Active)
+                if (sr != null && sr.Active && !sr.Props.immuneToAntiRadiationSeeker)
                 {
                     int p = sr.Props.powerLevel;
                     if (p > bestPower) { bestPower = p; bestRadar = b; }
                     continue;
                 }
-                // 火控雷達
+                // 火控雷達（同樣尊重免疫標記）
                 CompFireControlRadar fc = b.TryGetComp<CompFireControlRadar>();
-                if (fc != null && fc.Active)
+                if (fc != null && fc.Active && !fc.Props.immuneToAntiRadiationSeeker)
                 {
                     int p = fc.Props.powerLevel;
                     if (p > bestPower) { bestPower = p; bestRadar = b; }
@@ -228,7 +228,7 @@ namespace DMSE
     //  火控雷達制導（Fire Control Radar）
     //  在 WorldObject_IncomingMissile 路徑退化為慣性。
     //  此制導的主要語意是「此導彈作為 BVR 攔截彈使用」，
-    //  對應的攔截邏輯由 CompMissileLauncher 驅動，不影響落點選擇。
+    //  對應的攔截邏輯由 CompMissileLauncher_Interceptor 驅動，不影響落點選擇。
     // ============================================================
     public class GuidanceType_FireControl : GuidanceType
     {

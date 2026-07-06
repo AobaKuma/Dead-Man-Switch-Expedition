@@ -22,7 +22,7 @@ namespace DMSE
     ///
     /// 與 <see cref="JobDriver_AssembleMissile"/> 的差異：
     ///   - 目標是建築而非導彈物品，但兩者皆為 <c>Thing</c>，Toil 邏輯完全相容。
-    ///   - 完成時額外呼叫 <see cref="CompBallisticLauncher.MarkLoaded"/>。
+    ///   - 完成時額外呼叫 <see cref="CompMissileLauncher_Ballistic.MarkLoaded"/>。
     /// </summary>
     public class JobDriver_AssembleBallisticSilo : JobDriver
     {
@@ -30,7 +30,7 @@ namespace DMSE
 
         private Thing Silo => job.GetTarget(SiloInd).Thing;
         private CompMissileConfig MissileCfg => Silo != null ? Silo.TryGetComp<CompMissileConfig>() : null;
-        private CompBallisticLauncher Launcher => Silo != null ? Silo.TryGetComp<CompBallisticLauncher>() : null;
+        private CompMissileLauncher_Ballistic Launcher => Silo != null ? Silo.TryGetComp<CompMissileLauncher_Ballistic>() : null;
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
             => pawn.Reserve(job.GetTarget(SiloInd), job, 1, -1, null, errorOnFailed);
@@ -40,7 +40,7 @@ namespace DMSE
             this.FailOnDespawnedNullOrForbidden(SiloInd);
             AddFailCondition(() =>
             {
-                CompBallisticLauncher launcher = Launcher;
+                CompMissileLauncher_Ballistic launcher = Launcher;
                 CompMissileConfig config = MissileCfg;
                 return launcher == null || config == null
                     || launcher.IsLoaded

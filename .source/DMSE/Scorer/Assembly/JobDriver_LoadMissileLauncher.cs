@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using RimWorld;
 using Verse;
 using Verse.AI;
+using Verse.Sound;
 
 namespace DMSE
 {
@@ -89,14 +90,19 @@ namespace DMSE
                     return;
                 }
 
-                // 從容器取出並生成於儲存架旁（pawn 已在此處），再讓 pawn 拿起
-                if (!rack.GetDirectlyHeldThings().TryDrop(toTake, ThingPlaceMode.Near, out Thing dropped) || dropped == null)
+                // 直接容器對容器搬運（rack 內部容器 → pawn 的 carryTracker 容器），不經過地圖。
+                // 舊寫法先 TryDrop(ThingPlaceMode.Near) 落地再撿起：若儲存架週遭沒有空格
+                // （例如緊貼牆面、其他建築的密集部署），TryDrop 會失敗、dropped 為 null，
+                // 導致裝填工作在讀條取出後被直接中斷。改用 TryTransferToContainer 完全不依賴
+                // 地圖上是否有空位，取出必定成功（只要 toTake 確實在 rack 容器內）。
+                int transferred = rack.GetDirectlyHeldThings().TryTransferToContainer(
+                    toTake, pawn.carryTracker.innerContainer, toTake.stackCount, out Thing carried);
+                if (transferred <= 0 || carried == null)
                 {
                     pawn.jobs.EndCurrentJob(JobCondition.Incompletable, true);
                     return;
                 }
-
-                pawn.carryTracker.TryStartCarry(dropped);
+                carried.def.soundPickup.PlayOneShot(new TargetInfo(pawn.Position, pawn.Map));
                 // 旗標：導彈已成功取出，後續不再檢查儲存架是否為空
                 missileExtracted = true;
             };

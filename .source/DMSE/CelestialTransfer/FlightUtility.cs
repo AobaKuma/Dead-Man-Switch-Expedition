@@ -153,13 +153,13 @@ namespace DMSE
 
             if (comp.engine == null || comp.parent == null || !comp.parent.Spawned || comp.parent.Map == null)
             {
-                reason = "DMSE.Cannot.Reason.Null";
+                reason = "DMSE.Cannot.Reason.Null".Translate();
                 return true;
             }
 
             if (!comp.parent.Map.Parent.Tile.LayerDef.isSpace)
             {
-                reason = "DMSE.Cannot.Reason.NotInSpace";
+                reason = "DMSE.Cannot.Reason.NotInSpace".Translate();
                 return true;
             }
 

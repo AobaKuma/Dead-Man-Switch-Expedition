@@ -20,5 +20,8 @@ namespace DMSE
         public static WorldObjectDef DMSE_ImpactGravship;
 
         public static BiomeDef DMSE_ImpactCraterBiome;
+
+        /// <summary>超視距火砲打擊的世界地圖航跡物件 def。</summary>
+        public static WorldObjectDef DMSE_ArtilleryStrike;
     }
 }

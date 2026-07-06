@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using RimWorld;
 using RimWorld.Planet;
 using Verse;
@@ -24,28 +23,28 @@ namespace DMSE
 
         public CompProperties_BallisticLauncher()
         {
-            compClass = typeof(CompBallisticLauncher);
+            compClass = typeof(CompMissileLauncher_Ballistic);
         }
     }
 
     /// <summary>
-    /// 彈道導彈發射架核心元件。
+    /// 彈道導彈發射井：<see cref="CompMissileLauncher_WorldTargeting"/> 家族中以裝配旗標
+    /// （而非物品型態彈藥）判斷裝填狀態的成員。
     ///
     /// 工作流程：
     ///   1. 玩家於 <see cref="ITab_MissileAssembly"/> 設定 pending 設定（選擇彈頭/導引/酬載）。
     ///   2. <see cref="WorkGiver_AssembleBallisticSilo"/> 指派小人搬運資源並執行
     ///      <see cref="JobDriver_AssembleBallisticSilo"/>。
     ///   3. 裝配完成後 <see cref="MarkLoaded"/> 被呼叫，<see cref="IsLoaded"/> 變為 true。
-    ///   4. 玩家透過 Gizmo 在世界地圖選靶並發射；發射後重置為未裝填。
+    ///   4. 玩家透過 Gizmo（中介類提供）在世界地圖選靶並發射；發射後重置為未裝填。
     ///
-    /// 與 <see cref="CompMissileRailLauncher"/> 的差異：
+    /// 與 <see cref="CompMissileLauncher_Rail"/> 的差異：
     ///   - 彈藥來源為同一建築上的 <see cref="CompMissileConfig"/>（無物品型態）。
     ///   - 以 <c>isAssembled</c> 旗標而非容器物品計數判斷「已裝填」。
     /// </summary>
-    public class CompBallisticLauncher : ThingComp
+    public class CompMissileLauncher_Ballistic : CompMissileLauncher_WorldTargeting
     {
         private bool isAssembled;
-        private int cooldownUntil;
 
         public CompProperties_BallisticLauncher Props => (CompProperties_BallisticLauncher)props;
 
@@ -55,151 +54,78 @@ namespace DMSE
         /// <summary>裝配作業完成後由 <see cref="JobDriver_AssembleBallisticSilo"/> 呼叫。</summary>
         public void MarkLoaded() { isAssembled = true; }
 
+        protected override int LaunchCooldownTicks => Props.launchCooldownTicks;
+
+        protected override string CooldownScribeKey => "ballisticCooldownUntil";
+
+        public override bool HasAmmo => isAssembled;
+
         private CompMissileConfig MissileCfg => parent?.TryGetComp<CompMissileConfig>();
 
-        private MissileConfig GetFiringConfig() => MissileCfg?.config?.Clone();
+        protected override ThingDef LaunchSkyfallerDef => Props.skyfaller;
 
-        private int LoadedRange
+        protected override ThingDef IncomingSkyfallerDef => Props.skyfallerIncoming;
+
+        protected override WorldObjectDef TravelWorldObjectDef => Props.worldObjectDef;
+
+        protected override int LaunchForwardCells => Props.launchForwardCells;
+
+        /// <summary>發射後重置流程依賴 config 存在，config 為 null 時中止發射。</summary>
+        protected override bool RequiresConfig => true;
+
+        protected override string GizmoLabel => "DMSE.MissileLauncher.Ballistic.Fire".Translate();
+
+        protected override string GizmoDesc => "DMSE.MissileLauncher.Ballistic.FireDesc".Translate();
+
+        protected override string NoAmmoDisableReason => "DMSE.MissileLauncher.Ballistic.NotLoaded".Translate();
+
+        protected override MissileConfig BuildFiringConfig() => MissileCfg?.config?.Clone();
+
+        /// <summary>
+        /// 發射後重置為未裝填，並清除 config（保留 body），使 config ≠ pending
+        /// → NeedsAssembly = true → 殖民者下次必須重新搬運資源並執行製造工作。
+        /// pending 保留：玩家不必重新選擇彈頭/導引/酬載，只需等待裝填。
+        /// </summary>
+        protected override void ConsumeAmmo()
         {
-            get
-            {
-                MissileConfig c = GetFiringConfig();
-                return c != null ? c.Range : 0;
-            }
-        }
-
-        private int DistanceToTile(GlobalTargetInfo t)
-            => (int)Find.WorldGrid.ApproxDistanceInTiles(parent.Map.Tile, t.Tile);
-
-        public override IEnumerable<Gizmo> CompGetGizmosExtra()
-        {
-            Command_Action command = new Command_Action
-            {
-                defaultLabel = "DMSE.Ballistic.Fire".Translate(),
-                defaultDesc = "DMSE.Ballistic.FireDesc".Translate(),
-                icon = CompLaunchable.LaunchCommandTex,
-                action = () =>
-                {
-                    CameraJumper.TryJump(CameraJumper.GetWorldTarget(parent), CameraJumper.MovementMode.Pan);
-                    Find.WorldTargeter.BeginTargeting(t =>
-                    {
-                        if (t.Tile.Tile.PrimaryBiome.isWaterBiome) { return false; }
-                        int range = LoadedRange;
-                        if (range > 0 && DistanceToTile(t) > range)
-                        {
-                            Messages.Message(
-                                "DMSE.Missile.OutOfRange".Translate(range),
-                                MessageTypeDefOf.RejectInput,
-                                false);
-                            return false;
-                        }
-                        Launch(t);
-                        return true;
-                    },
-                    canTargetTiles: true,
-                    mouseAttachment: Props.worldObjectDef?.ExpandingIconTexture,
-                    closeWorldTabWhenFinished: true,
-                    onUpdate: null,
-                    extraLabelGetter: t =>
-                    {
-                        int range = LoadedRange;
-                        if (range <= 0) { return string.Empty; }
-                        return "DMSE.Missile.RangeLabel".Translate(DistanceToTile(t), range);
-                    },
-                    canSelectTarget: null,
-                    originForClosest: null,
-                    showCancelButton: true);
-                }
-            };
-
-            if (!isAssembled)
-            {
-                command.Disable("DMSE.Ballistic.NotLoaded".Translate());
-            }
-
-            int cooldownLeft = cooldownUntil - Find.TickManager.TicksGame;
-            if (cooldownLeft > 0)
-            {
-                command.Disable("DMSE.Missile.LaunchCooldown".Translate(cooldownLeft.ToStringTicksToPeriod()));
-            }
-
-            yield return command;
-        }
-
-        private void Launch(GlobalTargetInfo t)
-        {
-            if (Props.skyfaller == null || Props.worldObjectDef == null) { return; }
-
-            MissileConfig config = GetFiringConfig();
-            if (config == null) { return; }
-
-            // 計算生成位置（垂直發射架通常在中心格正上方）。
-            IntVec3 spawnPos = parent.Position;
-            if (Props.launchForwardCells > 0)
-            {
-                spawnPos += parent.Rotation.AsIntVec3 * Props.launchForwardCells;
-            }
-
-            ScorerProjectile faller = (ScorerProjectile)SkyfallerMaker.SpawnSkyfaller(
-                Props.skyfaller,
-                spawnPos,
-                parent.Map);
-            faller.Rotation = parent.Rotation;
-            faller.angle = faller.Rotation.AsAngle;
-
-            ScorerProjectile_WorldObject wo = (ScorerProjectile_WorldObject)WorldObjectMaker.MakeWorldObject(Props.worldObjectDef);
-            wo.skyfallerIncoming = Props.skyfallerIncoming;
-            wo.SetFaction(Faction.OfPlayer);
-            wo.Tile = parent.Map.Tile;
-            wo.destinationTile = t.Tile;
-            wo.config = config;
-            faller.worldObject = wo;
-
-            // 重置為未裝填，並清除 config（保留 body），使 config ≠ pending
-            // → NeedsAssembly = true → 殖民者下次必須重新搬運資源並執行製造工作。
-            // pending 保留：玩家不必重新選擇彈頭/導引/酬載，只需等待裝填。
             isAssembled = false;
-            cooldownUntil = Find.TickManager.TicksGame + Props.launchCooldownTicks;
 
             CompMissileConfig cfg = MissileCfg;
             if (cfg != null)
             {
                 // 保留 body 但清空部件 → config ≠ pending（pending 仍有選好的部件）
-                cfg.config = new MissileConfig { body = cfg.pending?.body ?? cfg.config.body };
+                cfg.config = new MissileConfig { body = cfg.pending?.body ?? cfg.config?.body };
                 // 清除已搬運資源（彈體已發射消耗）
                 cfg.delivered.Clear();
             }
         }
 
-        public override string CompInspectStringExtra()
+        protected override string LoadedStatusText
         {
-            if (isAssembled)
+            get
             {
-                MissileConfig c = GetFiringConfig();
-                if (c?.body != null)
+                if (isAssembled)
                 {
-                    return "DMSE.Ballistic.LoadedWith".Translate(c.body.LabelCap);
+                    MissileConfig c = BuildFiringConfig();
+                    if (c?.body != null)
+                    {
+                        return "DMSE.MissileLauncher.Ballistic.LoadedWith".Translate(c.body.LabelCap);
+                    }
+                    return "DMSE.MissileLauncher.Ballistic.Loaded".Translate();
                 }
-                return "DMSE.Ballistic.Loaded".Translate();
+                CompMissileConfig cfg = MissileCfg;
+                if (cfg != null && cfg.NeedsAssembly)
+                {
+                    return "DMSE.MissileLauncher.Ballistic.AwaitingAssembly".Translate();
+                }
+                return "DMSE.MissileLauncher.Ballistic.Unloaded".Translate();
             }
-            int cooldownLeft = cooldownUntil - Find.TickManager.TicksGame;
-            if (cooldownLeft > 0)
-            {
-                return "DMSE.Missile.LaunchCooldown".Translate(cooldownLeft.ToStringTicksToPeriod());
-            }
-            CompMissileConfig cfg = MissileCfg;
-            if (cfg != null && cfg.NeedsAssembly)
-            {
-                return "DMSE.Ballistic.AwaitingAssembly".Translate();
-            }
-            return "DMSE.Ballistic.Unloaded".Translate();
         }
 
         public override void PostExposeData()
         {
             base.PostExposeData();
             Scribe_Values.Look(ref isAssembled, "ballisticIsAssembled", false);
-            Scribe_Values.Look(ref cooldownUntil, "ballisticCooldownUntil", 0);
         }
     }
 }

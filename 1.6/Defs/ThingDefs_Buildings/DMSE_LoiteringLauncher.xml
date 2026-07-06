@@ -119,7 +119,7 @@
 
   <!-- ==================== 巡飛彈 發射架（1x3 傾斜軌） ====================
        彈藥以實體 Thing 存於容器（Building_MissileRack，容量 1），由 CompMissileRackRenderer
-       依建築朝向渲染；CompMissileRailLauncher 提供 Scorer 式發射。 -->
+       依建築朝向渲染；CompMissileLauncher_Rail 提供 Scorer 式發射。 -->
   <ThingDef ParentName="DMSE_TiltLauncherBase">
     <defName>DMSE_Building_LoiteringLauncher</defName>
     <label>loitering munition rail</label>
@@ -153,7 +153,7 @@
       <fixedStorageSettings>
         <filter>
           <thingDefs>
-            <li>DMSE_LoiteringMunition</li>
+            <li>DMSE_Missile_Termite</li>
           </thingDefs>
         </filter>
       </fixedStorageSettings>
@@ -161,7 +161,7 @@
         <priority>Important</priority>
         <filter>
           <thingDefs>
-            <li>DMSE_LoiteringMunition</li>
+            <li>DMSE_Missile_Termite</li>
           </thingDefs>
         </filter>
       </defaultStorageSettings>
@@ -189,80 +189,6 @@
         <missileBody>DMSE_MissileBody_Loiter</missileBody>
         <launchCooldownTicks>600</launchCooldownTicks>
         <launchForwardCells>2</launchForwardCells>
-      </li>
-    </comps>
-    <inspectorTabs>
-      <li>RimWorld.ITab_Storage</li>
-      <li>DMSE.ITab_MissileInventory</li>
-    </inspectorTabs>
-    <researchPrerequisites>
-      <li>DMSE_LoiteringMunitions</li>
-    </researchPrerequisites>
-  </ThingDef>
-
-  <!-- ==================== 巡飛彈 儲存架（1x2） ====================
-       存放巡飛彈彈藥使其停止劣化（CompDurabilityDecay 庇護判定）。 -->
-  <ThingDef ParentName="BuildingBase">
-    <defName>DMSE_LoiteringRack</defName>
-    <label>loitering munition rack</label>
-    <description>A 1x2 armoured rack that holds up to two loitering munitions. Munitions stored inside are sheltered and will not degrade.</description>
-    <thingClass>DMSE.Building_MissileRack</thingClass>
-    <category>Building</category>
-    <!-- 佔位美術：暫借發射器貼圖，請替換為 1x2 專屬 rack 貼圖。 -->
-    <graphicData>
-      <texPath>Things/Building/MissileLauncher/building</texPath>
-      <graphicClass>Graphic_Multi</graphicClass>
-      <drawSize>(2,3)</drawSize>
-    </graphicData>
-    <rotatable>true</rotatable>
-    <altitudeLayer>Building</altitudeLayer>
-    <passability>PassThroughOnly</passability>
-    <pathCost>50</pathCost>
-    <fillPercent>0.45</fillPercent>
-    <drawerType>RealtimeOnly</drawerType>
-    <tickerType>Never</tickerType>
-    <constructEffect>ConstructMetal</constructEffect>
-    <designationCategory>DMS_Category</designationCategory>
-    <size>(1,2)</size>
-    <selectable>true</selectable>
-    <statBases>
-      <MaxHitPoints>250</MaxHitPoints>
-      <WorkToBuild>3500</WorkToBuild>
-      <Flammability>0.4</Flammability>
-      <Mass>20</Mass>
-    </statBases>
-    <costList>
-      <Steel>80</Steel>
-      <ComponentIndustrial>2</ComponentIndustrial>
-    </costList>
-    <building>
-      <maxItemsInCell>1</maxItemsInCell>
-      <ignoreStoredThingsBeauty>true</ignoreStoredThingsBeauty>
-      <fixedStorageSettings>
-        <filter>
-          <thingDefs>
-            <li>DMSE_LoiteringMunition</li>
-          </thingDefs>
-        </filter>
-      </fixedStorageSettings>
-      <defaultStorageSettings>
-        <priority>Important</priority>
-        <filter>
-          <thingDefs>
-            <li>DMSE_LoiteringMunition</li>
-          </thingDefs>
-        </filter>
-      </defaultStorageSettings>
-    </building>
-    <comps>
-      <li Class="DMSE.CompProperties_MissileRackRenderer">
-        <maxStored>2</maxStored>
-        <useNativeDrawSize>true</useNativeDrawSize>
-        <!-- 北向時沿 1x2 長軸（z）前後各一枚；整體隨 parent.Rotation 旋轉。 -->
-        <slotOffsets>
-          <li>(0, 0, -0.5)</li>
-          <li>(0, 0, 0.5)</li>
-        </slotOffsets>
       </li>
     </comps>
     <inspectorTabs>

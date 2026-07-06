@@ -29,7 +29,7 @@ namespace DMSE
         // ---- 裝置註冊表 ----
         public readonly HashSet<CompSearchRadar> searchRadars = new HashSet<CompSearchRadar>();
         public readonly HashSet<CompFireControlRadar> fireControlRadars = new HashSet<CompFireControlRadar>();
-        public readonly HashSet<CompMissileLauncher> launchers = new HashSet<CompMissileLauncher>();
+        public readonly HashSet<CompMissileLauncher_Interceptor> launchers = new HashSet<CompMissileLauncher_Interceptor>();
         public readonly HashSet<CompTerminalCIWS> ciwsTurrets = new HashSet<CompTerminalCIWS>();
 
         /// <summary>地圖上是否存在任何運作中的搜索雷達（決定是否啟用攔截流程）。</summary>
@@ -257,18 +257,24 @@ namespace DMSE
         {
             Faction defender = wave.defenderFaction;
 
-            // 火力通道：防禦方所有運作中火控雷達的最大目標數總和（共用池）。
+            // 火力通道：防禦方所有運作中火控雷達的有效容量總和（共用池）。
+            // 每個雷達的有效容量 = maxTargets − 已預留給砲擊引導的通道數，
+            // 確保砲擊引導與 BVR 飛彈中過程攔截真正共用同一份額度。
             int capacity = 0;
             foreach (CompFireControlRadar fc in fireControlRadars)
             {
                 if (fc.Active && fc.parent.Faction == defender && timeLeft <= fc.Props.maxRangeTicks)
                 {
-                    capacity += fc.Props.maxTargets;
+                    capacity += Mathf.Max(0, fc.Props.maxTargets - fc.OccupiedArtilleryChannels);
                 }
             }
             if (capacity <= 0) { return; }
 
             int engaged = CountEngaged();
+
+            // 空爆額外攔截命中的目標：先收集、待 foreach 結束後統一移除，
+            // 避免在枚舉 wave.targets 期間修改集合（InvalidOperationException）。
+            List<int> airburstKills = null;
 
             foreach (BVRTarget target in wave.targets)
             {
@@ -279,7 +285,7 @@ namespace DMSE
                 {
                     // 鎖定完成 → 嘗試發射（已占用通道，不受 capacity 限制）。
                     CompFireControlRadar fcReady = SelectBestRadar(target, timeLeft, defender);
-                    CompMissileLauncher launcher = SelectReadyLauncher(now, defender);
+                    CompMissileLauncher_Interceptor launcher = SelectReadyLauncher(now, defender);
                     if (fcReady != null && launcher != null)
                     {
                         // 基礎命中率
@@ -304,7 +310,8 @@ namespace DMSE
                             int extraRolls = wh.warheadEffect.ExtraInterceptRolls(N);
                             if (extraRolls > 0)
                             {
-                                ApplyExtraInterceptRolls(wave, target, hitChance, extraRolls);
+                                ApplyExtraInterceptRolls(wave, target, hitChance, extraRolls,
+                                    ref airburstKills);
                             }
                         }
                     }
@@ -317,6 +324,22 @@ namespace DMSE
                 if (fc == null) { continue; }
                 target.lockUntil = now + fc.LockOnTicksFor(target);
                 engaged++;
+            }
+
+            // 枚舉結束後才移除空爆額外攔截命中的目標。
+            // 只從 wave.targets 移除、不移除空波次本身：空波次由 MapComponentTick
+            // 迴圈尾端的 targets.Count == 0 檢查處理，避免索引錯位。
+            if (airburstKills != null)
+            {
+                for (int k = 0; k < airburstKills.Count; k++)
+                {
+                    BVRTarget t = wave.targets.Find(x => x.id == airburstKills[k]);
+                    if (t != null)
+                    {
+                        t.Discard();
+                        wave.targets.Remove(t);
+                    }
+                }
             }
         }
 
@@ -349,15 +372,15 @@ namespace DMSE
             return best;
         }
 
-        private CompMissileLauncher SelectReadyLauncher(int now, Faction defender)
+        private CompMissileLauncher_Interceptor SelectReadyLauncher(int now, Faction defender)
         {
-            CompMissileLauncher best = null;
-            foreach (CompMissileLauncher l in launchers)
+            CompMissileLauncher_Interceptor best = null;
+            foreach (CompMissileLauncher_Interceptor l in launchers)
             {
                 if (l.parent.Faction == defender && l.ReadyToFire(now))
                 {
                     // 偏好冷卻最早結束（最閒置）的發射裝置。
-                    if (best == null || l.cooldownUntil < best.cooldownUntil) { best = l; }
+                    if (best == null || l.CooldownUntil < best.CooldownUntil) { best = l; }
                 }
             }
             return best;
@@ -367,18 +390,23 @@ namespace DMSE
         /// <summary>
         /// 空爆戰鬥部的額外攔截：對同一波次中其他未被攔截的目標，
         /// 以相同命中率進行獨立擲骰（不消耗彈藥/冷卻，純概率結算）。
+        /// 命中的目標 id 收集到 kills，由呼叫端在枚舉結束後統一移除
+        /// （不得在此直接 RemoveTarget：呼叫端正在枚舉 wave.targets）。
         /// </summary>
-        private void ApplyExtraInterceptRolls(BVRWave wave, BVRTarget source, float hitChance, int rolls)
+        private void ApplyExtraInterceptRolls(BVRWave wave, BVRTarget source, float hitChance, int rolls,
+            ref List<int> kills)
         {
             int rollsLeft = rolls;
             foreach (BVRTarget other in wave.targets)
             {
                 if (rollsLeft <= 0) { break; }
                 if (other == source || other.midcourseEngagedUntil > Find.TickManager.TicksGame) { continue; }
+                if (kills != null && kills.Contains(other.id)) { continue; } // 已被先前空爆命中。
                 rollsLeft--;
                 if (Rand.Chance(hitChance))
                 {
-                    RemoveTarget(other.id);
+                    if (kills == null) { kills = new List<int>(); }
+                    kills.Add(other.id);
                     if (Prefs.DevMode)
                     {
                         Log.Message($"[DMSE BVR] 空爆額外攔截命中目標 #{other.id}");
@@ -428,7 +456,7 @@ namespace DMSE
     /// <summary>系統的可調平衡常數（集中於此方便調整）。</summary>
     public static class BVRTuning
     {
-        /// <summary>搜索雷達每「搜索距離」單位換算的窗口 ticks（被 Props.ticksPerDistance 覆寫，這裡是後備）。</summary>
+        /// <summary>波次合併時，每多一個目標整體攔截窗口縮短的 ticks。</summary>
         public const int WindowPenaltyPerExtraTarget = 60;
 
         /// <summary>反隱身不足時，搜索窗口的折扣係數。</summary>

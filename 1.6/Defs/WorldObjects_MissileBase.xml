@@ -54,7 +54,7 @@
     <disableSuggestedRoof>True</disableSuggestedRoof>
     <elements>
       <li Class="Fortified.Structures.FFF_Element_ThingRect">
-        <def>DMSE_Building_SAMLauncher</def>
+        <def>DMSE_Building_LightMissileLauncher</def>
         <pos>(18, 0, 3)</pos>
         <size>(1, 2)</size>
         <rot>1</rot>

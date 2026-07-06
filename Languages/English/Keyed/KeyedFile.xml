@@ -120,8 +120,8 @@
   <DMSE.Missile.Stat.Fuel>Fuel: {0}</DMSE.Missile.Stat.Fuel>
   <DMSE.Missile.Stat.Impulse>Specific impulse: {0}</DMSE.Missile.Stat.Impulse>
   <DMSE.Missile.Stat.Range>Range: {0} tiles</DMSE.Missile.Stat.Range>
-  <DMSE.Missile.OutOfRange>Target is beyond missile range ({0} tiles).</DMSE.Missile.OutOfRange>
-  <DMSE.Missile.RangeLabel>{0} / {1} tiles</DMSE.Missile.RangeLabel>
+  <DMSE.MissileLauncher.OutOfRange>Target is beyond missile range ({0} tiles).</DMSE.MissileLauncher.OutOfRange>
+  <DMSE.MissileLauncher.RangeLabel>{0} / {1} tiles</DMSE.MissileLauncher.RangeLabel>
   <DMSE.Missile.Cat.Warhead>Warhead</DMSE.Missile.Cat.Warhead>
   <DMSE.Missile.Cat.Guidance>Guidance</DMSE.Missile.Cat.Guidance>
   <DMSE.Missile.Cat.Propulsion>Propulsion</DMSE.Missile.Cat.Propulsion>
@@ -134,11 +134,11 @@
   <DMSE.Missile.ConfirmAssembly>Queue for assembly</DMSE.Missile.ConfirmAssembly>
   <DMSE.Missile.AssemblyQueued>Assembly queued — colonists will begin shortly</DMSE.Missile.AssemblyQueued>
   <DMSE.Missile.ResetToCurrent>Reset to assembled config</DMSE.Missile.ResetToCurrent>
-  <DMSE.Missile.LaunchCooldown>Reloading launch rail: {0}</DMSE.Missile.LaunchCooldown>
-  <DMSE.Missile.NoMissileLoaded>No missile loaded</DMSE.Missile.NoMissileLoaded>
+  <DMSE.MissileLauncher.LaunchCooldown>Reloading launch rail: {0}</DMSE.MissileLauncher.LaunchCooldown>
+  <DMSE.MissileLauncher.Rail.NoMissileLoaded>No missile loaded</DMSE.MissileLauncher.Rail.NoMissileLoaded>
   <DMSE.Missile.NoRackAvailable>No missile rack with compatible missiles found</DMSE.Missile.NoRackAvailable>
-  <DMSE.SAM.Reloading>Reloading: {0}</DMSE.SAM.Reloading>
-  <DMSE.SAM.Ready>Ready to fire</DMSE.SAM.Ready>
+  <DMSE.MissileLauncher.Interceptor.Reloading>Reloading: {0}</DMSE.MissileLauncher.Interceptor.Reloading>
+  <DMSE.MissileLauncher.Interceptor.Ready>Ready to fire</DMSE.MissileLauncher.Interceptor.Ready>
   <DMSE.Missile.IncomingLetter>Incoming missile</DMSE.Missile.IncomingLetter>
   <DMSE.Missile.IncomingLetterDesc>A missile launched by {0} is inbound and will strike the colony shortly.</DMSE.Missile.IncomingLetterDesc>
 
@@ -159,15 +159,39 @@
   <DMSE.MissileInventory.Pending>assembly pending</DMSE.MissileInventory.Pending>
   <DMSE.MissileInventory.InterceptorReady>Ready to fire</DMSE.MissileInventory.InterceptorReady>
 
-  <!-- ==================== Ballistic silo (CompBallisticLauncher) ==================== -->
+  <!-- ==================== Ballistic silo (CompMissileLauncher_Ballistic) ==================== -->
   <!-- Gizmo: fire button -->
-  <DMSE.Ballistic.Fire>Fire Ballistic Missile</DMSE.Ballistic.Fire>
-  <DMSE.Ballistic.FireDesc>Launch the assembled ballistic missile at a world-map target. The missile follows a lofted trajectory and is nearly impossible to intercept once launched.</DMSE.Ballistic.FireDesc>
+  <DMSE.MissileLauncher.Ballistic.Fire>Fire Ballistic Missile</DMSE.MissileLauncher.Ballistic.Fire>
+  <DMSE.MissileLauncher.Ballistic.FireDesc>Launch the assembled ballistic missile at a world-map target. The missile follows a lofted trajectory and is nearly impossible to intercept once launched.</DMSE.MissileLauncher.Ballistic.FireDesc>
   <!-- Disabled reasons -->
-  <DMSE.Ballistic.NotLoaded>Missile not assembled. Configure warhead, guidance, and payload in the Assembly tab, then wait for colonists to deliver materials and complete assembly.</DMSE.Ballistic.NotLoaded>
+  <DMSE.MissileLauncher.Ballistic.NotLoaded>Missile not assembled. Configure warhead, guidance, and payload in the Assembly tab, then wait for colonists to deliver materials and complete assembly.</DMSE.MissileLauncher.Ballistic.NotLoaded>
   <!-- Inspect strings -->
-  <DMSE.Ballistic.Loaded>Ballistic missile: assembled and ready</DMSE.Ballistic.Loaded>
-  <DMSE.Ballistic.LoadedWith>Ballistic missile loaded: {0}</DMSE.Ballistic.LoadedWith>
-  <DMSE.Ballistic.AwaitingAssembly>Ballistic missile: awaiting assembly by colonists</DMSE.Ballistic.AwaitingAssembly>
-  <DMSE.Ballistic.Unloaded>Ballistic missile silo: unloaded — configure in Assembly tab</DMSE.Ballistic.Unloaded>
+  <DMSE.MissileLauncher.Ballistic.Loaded>Ballistic missile: assembled and ready</DMSE.MissileLauncher.Ballistic.Loaded>
+  <DMSE.MissileLauncher.Ballistic.LoadedWith>Ballistic missile loaded: {0}</DMSE.MissileLauncher.Ballistic.LoadedWith>
+  <DMSE.MissileLauncher.Ballistic.AwaitingAssembly>Ballistic missile: awaiting assembly by colonists</DMSE.MissileLauncher.Ballistic.AwaitingAssembly>
+  <DMSE.MissileLauncher.Ballistic.Unloaded>Ballistic missile silo: unloaded — configure in Assembly tab</DMSE.MissileLauncher.Ballistic.Unloaded>
+
+  <!-- ==================== Artillery strike (CompArtilleryStrike) ==================== -->
+  <!-- Gizmo -->
+  <DMSE.Artillery.Fire>Fire Artillery</DMSE.Artillery.Fire>
+  <DMSE.Artillery.FireDesc>Select a target on the world map. The howitzer fires a visible departing shell, then tracks it as a world-travel object until it re-enters the destination tile from the correct direction and detonates. Sustained — keeps firing until stopped.</DMSE.Artillery.FireDesc>
+  <DMSE.Artillery.Stop>Stop Firing</DMSE.Artillery.Stop>
+  <DMSE.Artillery.StopDesc>Halt sustained fire. Current status: {0}</DMSE.Artillery.StopDesc>
+  <!-- Disabled / error reasons -->
+  <DMSE.Artillery.NotConfigured>Artillery not configured (missing def reference in XML).</DMSE.Artillery.NotConfigured>
+  <DMSE.Artillery.TooClose>Target is too close — minimum range is {0} cells.</DMSE.Artillery.TooClose>
+  <DMSE.Artillery.NoFireControl>No fire control radar with a free guidance channel available.</DMSE.Artillery.NoFireControl>
+  <DMSE.Artillery.NoAmmo>No shell loaded — sustained fire halted.</DMSE.Artillery.NoAmmo>
+  <DMSE.Artillery.NoBarrel>Barrel worn out — sustained fire halted. Replace the reinforced barrel.</DMSE.Artillery.NoBarrel>
+  <DMSE.BVR.DeviceInactive>Device is inactive (no power, broken down, or switched off).</DMSE.BVR.DeviceInactive>
+  <!-- State strings (used in StopDesc) -->
+  <DMSE.Artillery.StateCooldown>reloading, {0} remaining</DMSE.Artillery.StateCooldown>
+  <DMSE.Artillery.StateAiming>aiming ({0}%)</DMSE.Artillery.StateAiming>
+  <DMSE.Artillery.StateReady>ready to fire</DMSE.Artillery.StateReady>
+  <!-- Inspect strings -->
+  <DMSE.Artillery.Ready>Artillery: ready to fire</DMSE.Artillery.Ready>
+
+  <!-- PlaceWorker -->
+  <DMSE.PlaceWorker.TooCloseSameLayer>Too close to {0} (same placement layer).</DMSE.PlaceWorker.TooCloseSameLayer>
+
 </LanguageData>

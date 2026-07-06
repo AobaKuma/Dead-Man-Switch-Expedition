@@ -50,4 +50,15 @@
     </requiredCapacities>
   </WorkGiverDef>
 
+  <!-- 操作旋轉導彈發射架：由 CompMannableMissileLauncher 的右鍵「操作」指令指派（非一般 WorkGiver
+       自動搜尋，語意上與 vanilla ManTurret 一致，皆由玩家下令或既有派遣邏輯觸發）。
+       操作者會在進入/持續操作時自行前往鄰近儲存架取彈裝填，詳見 JobDriver_ManMissileLauncher。 -->
+  <JobDef>
+    <defName>DMSE_ManMissileLauncher</defName>
+    <driverClass>DMSE.JobDriver_ManMissileLauncher</driverClass>
+    <reportString>operating missile launcher.</reportString>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
 </Defs>

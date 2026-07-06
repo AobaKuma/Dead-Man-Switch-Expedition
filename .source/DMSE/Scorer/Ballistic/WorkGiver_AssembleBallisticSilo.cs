@@ -9,7 +9,7 @@ namespace DMSE
     /// 掃描需要裝配的彈道導彈發射架（建築），並分派搬運資源或執行裝配的工作。
     ///
     /// 與 <see cref="WorkGiver_AssembleMissile"/> 的差異：
-    ///   - 掃描的是建築（<see cref="CompBallisticLauncher"/>），而非導彈物品。
+    ///   - 掃描的是建築（<see cref="CompMissileLauncher_Ballistic"/>），而非導彈物品。
     ///   - 重複使用現有的 <c>DMSE_DeliverMissileResource</c> 與新的
     ///     <c>DMSE_AssembleBallisticSilo</c> Job。
     /// </summary>
@@ -21,7 +21,7 @@ namespace DMSE
         {
             foreach (Building b in pawn.Map.listerBuildings.allBuildingsColonist)
             {
-                CompBallisticLauncher launcher = b.TryGetComp<CompBallisticLauncher>();
+                CompMissileLauncher_Ballistic launcher = b.TryGetComp<CompMissileLauncher_Ballistic>();
                 if (launcher == null || launcher.IsLoaded) { continue; }
 
                 CompMissileConfig cfg = b.TryGetComp<CompMissileConfig>();
@@ -33,7 +33,7 @@ namespace DMSE
 
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
-            CompBallisticLauncher launcher = t.TryGetComp<CompBallisticLauncher>();
+            CompMissileLauncher_Ballistic launcher = t.TryGetComp<CompMissileLauncher_Ballistic>();
             CompMissileConfig cfg = t.TryGetComp<CompMissileConfig>();
 
             if (launcher == null || cfg == null) { return false; }
@@ -57,7 +57,7 @@ namespace DMSE
 
         public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
-            CompBallisticLauncher launcher = t.TryGetComp<CompBallisticLauncher>();
+            CompMissileLauncher_Ballistic launcher = t.TryGetComp<CompMissileLauncher_Ballistic>();
             CompMissileConfig cfg = t.TryGetComp<CompMissileConfig>();
 
             if (launcher == null || cfg == null || launcher.IsLoaded || !cfg.NeedsAssembly)

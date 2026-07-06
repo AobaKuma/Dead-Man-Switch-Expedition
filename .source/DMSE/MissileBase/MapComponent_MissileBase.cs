@@ -16,7 +16,7 @@ namespace DMSE
     ///      導彈落地或被攔截（<see cref="WorldObject.Destroyed"/>）後通道自動釋放。<br/>
     ///    ‧ 彈藥來源：地圖上敵方 <see cref="Building_MissileRack"/>；耗盡後停止射擊直到補給。<br/>
     /// 2. 指派 <see cref="LordJob_MissileCrewDuty"/> 給地圖內的敵方 Pawn。<br/>
-    /// 3. 偵測「保留觀察狀態 + 所有 NPC 雷達（CompScorer）不可用」→ 哨站摧毀。
+    /// 3. 偵測「保留觀察狀態 + 所有 NPC 雷達（CompMissileLauncher_Scorer）不可用」→ 哨站摧毀。
     /// </summary>
     public class MapComponent_MissileBase : MapComponent
     {
@@ -345,7 +345,7 @@ namespace DMSE
                 {
                     if (b.Faction != enemy) continue;
                     if (b.Destroyed) continue;
-                    if (b.TryGetComp<CompScorer>() == null) continue;
+                    if (b.TryGetComp<CompMissileLauncher_Scorer>() == null) continue;
                     cachedEnemyLaunchers.Add(b);
                 }
             }
