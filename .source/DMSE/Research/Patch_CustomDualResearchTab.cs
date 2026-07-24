@@ -85,35 +85,37 @@ namespace DMSE
             try
             {
                 ResearchTabDef currentTab = GetCurrentTab(__instance);
+
+                // Only take over selection logic for DMSE's own unique tabs. For every other tab
+                // (vanilla main, Anomaly, and tabs added by other mods such as Occultech) fall
+                // through to the original method so their own patches keep working. Returning false
+                // unconditionally here is what breaks the active-research display in all panels when
+                // another mod also patches this method.
+                if (!ResearchTabUtility.ShouldUseUniqueTabUI(currentTab))
+                {
+                    return true;
+                }
+
                 ResearchProjectDef selectedProject = null;
 
-                // Use our utility to check if this tab should use dual-slot logic
-                if (ResearchTabUtility.ShouldUseUniqueTabUI(currentTab))
+                // For tabs with mod extension, pick first non-null project from defined categories.
+                // GetActiveProjectForCategory is Anomaly-safe and simply returns null per category
+                // when the Anomaly DLC is not active, so this never throws.
+                var categories = ResearchTabUtility.GetCategoriesForTab(currentTab);
+                foreach (var cat in categories)
                 {
-                    // For tabs with mod extension, pick first non-null project from defined categories.
-                    // GetActiveProjectForCategory is Anomaly-safe and simply returns null per category
-                    // when the Anomaly DLC is not active, so this never throws.
-                    var categories = ResearchTabUtility.GetCategoriesForTab(currentTab);
-                    foreach (var cat in categories)
+                    var proj = ResearchTabUtility.GetActiveProjectForCategory(cat);
+                    if (proj != null)
                     {
-                        var proj = ResearchTabUtility.GetActiveProjectForCategory(cat);
-                        if (proj != null)
-                        {
-                            selectedProject = proj;
-                            break;
-                        }
-                    }
-
-                    // Fallback (e.g. no Anomaly DLC, so no per-category active project): use the
-                    // single global current research project so the panel still has a sensible selection.
-                    if (selectedProject == null)
-                    {
-                        selectedProject = Find.ResearchManager.GetProject();
+                        selectedProject = proj;
+                        break;
                     }
                 }
-                else
+
+                // Fallback (e.g. no Anomaly DLC, so no per-category active project): use the
+                // single global current research project so the panel still has a sensible selection.
+                if (selectedProject == null)
                 {
-                    // Single-slot behavior: standard project selection
                     selectedProject = Find.ResearchManager.GetProject();
                 }
 
@@ -123,7 +125,7 @@ namespace DMSE
                     selectedProjectField.SetValue(__instance, selectedProject);
                 }
 
-                return false; // Skip original method
+                return false; // Skip original method (DMSE unique tab only)
             }
             catch (Exception ex)
             {
@@ -149,6 +151,17 @@ namespace DMSE
             try
             {
                 ResearchTabDef currentTab = GetCurrentTab(__instance);
+
+                // Only take over rendering for DMSE's own unique tabs. For vanilla, Anomaly, and
+                // other mods' tabs (e.g. Occultech) return true so the original method and their
+                // Harmony patches draw the active-research box normally. Unconditionally returning
+                // false here suppresses every other patch, which is why the current research fails
+                // to display in all research panels when Occultech is also installed.
+                if (!ResearchTabUtility.ShouldUseUniqueTabUI(currentTab))
+                {
+                    return true;
+                }
+
                 ResearchProjectDef selectedProject = GetSelectedProject(__instance);
 
                 // Determine number of active project slots

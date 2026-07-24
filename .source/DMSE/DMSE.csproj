@@ -72,6 +72,10 @@
     <Compile Include="Research\ModExtension_DualSlotResearchTab.cs" />
     <Compile Include="Research\Patch_CustomDualResearchTab.cs" />
     <Compile Include="Research\ResearchTabUtility.cs" />
+    <Compile Include="Research\OccultechKnowledge.cs" />
+    <Compile Include="Research\Patch_ResearchProgress.cs" />
+    <Compile Include="CompOccultechSource.cs" />
+    <Compile Include="CompOccultechExtractor.cs" />
     <Compile Include="Scorer\Assembly\ITab_MissileInventory.cs" />
     <Compile Include="Scorer\Ballistic\CompBallisticLauncher.cs" />
     <Compile Include="Scorer\Ballistic\JobDriver_AssembleBallisticSilo.cs" />
