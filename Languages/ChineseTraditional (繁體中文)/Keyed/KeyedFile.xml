@@ -206,15 +206,5 @@
   <!-- PlaceWorker -->
   <DMSE.PlaceWorker.TooCloseSameLayer>與 {0} 太近。</DMSE.PlaceWorker.TooCloseSameLayer>
 
-  <!-- ==================== Occultech 知識建築 ==================== -->
-  <DMSE_Occultech_SourceRemaining>可提取數據：剩餘 {0} / {1}</DMSE_Occultech_SourceRemaining>
-  <DMSE_Occultech_SourceDepleted>已耗盡——剩餘數據已完全損毀，無法提取</DMSE_Occultech_SourceDepleted>
-  <DMSE_Occultech_SourceStatLabel>數據存量</DMSE_Occultech_SourceStatLabel>
-  <DMSE_Occultech_SourceStatDesc>此數據源尚可被提取的封存技術數據量。</DMSE_Occultech_SourceStatDesc>
-  <DMSE_Occultech_ExtractorNoPower>停止運作：無電力</DMSE_Occultech_ExtractorNoPower>
-  <DMSE_Occultech_ExtractorNoSource>停止運作：需要面向石碑</DMSE_Occultech_ExtractorNoSource>
-  <DMSE_Occultech_ExtractorSourceDepleted>停止運作：石碑內的數據已完全損毀</DMSE_Occultech_ExtractorSourceDepleted>
-  <DMSE_Occultech_ExtractorNoResearch>停止運作：目前沒有研究中的封存技術</DMSE_Occultech_ExtractorNoResearch>
-  <DMSE_Occultech_ExtractorWorking>正在提取 {0} 數據/日（尚餘 {1}）</DMSE_Occultech_ExtractorWorking>
 
 </LanguageData>

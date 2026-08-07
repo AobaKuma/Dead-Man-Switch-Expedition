@@ -196,15 +196,5 @@
   <!-- PlaceWorker -->
   <DMSE.PlaceWorker.TooCloseSameLayer>与 {0} 太近（同一放置图层）。</DMSE.PlaceWorker.TooCloseSameLayer>
 
-  <!-- ==================== Occultech 知识建筑 ==================== -->
-  <DMSE_Occultech_SourceRemaining>秘术知识：剩余 {0} / {1}</DMSE_Occultech_SourceRemaining>
-  <DMSE_Occultech_SourceDepleted>已耗尽——仅剩无用空壳，无知识可萃取</DMSE_Occultech_SourceDepleted>
-  <DMSE_Occultech_SourceStatLabel>知识储量</DMSE_Occultech_SourceStatLabel>
-  <DMSE_Occultech_SourceStatDesc>此知识源尚可被萃取的秘术知识点数。</DMSE_Occultech_SourceStatDesc>
-  <DMSE_Occultech_ExtractorNoPower>停止运作：无电力</DMSE_Occultech_ExtractorNoPower>
-  <DMSE_Occultech_ExtractorNoSource>停止运作：正面无资料石碑</DMSE_Occultech_ExtractorNoSource>
-  <DMSE_Occultech_ExtractorSourceDepleted>停止运作：正面的石碑已耗尽</DMSE_Occultech_ExtractorSourceDepleted>
-  <DMSE_Occultech_ExtractorNoResearch>停止运作：目前没有研究中的 Occultech 专案</DMSE_Occultech_ExtractorNoResearch>
-  <DMSE_Occultech_ExtractorWorking>正在萃取 {0} 知识/日（石碑尚余 {1}）</DMSE_Occultech_ExtractorWorking>
 
 </LanguageData>

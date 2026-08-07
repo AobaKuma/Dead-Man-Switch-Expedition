@@ -194,17 +194,5 @@
   <!-- PlaceWorker -->
   <DMSE.PlaceWorker.TooCloseSameLayer>Too close to {0} (same placement layer).</DMSE.PlaceWorker.TooCloseSameLayer>
 
-  <!-- ==================== Occultech knowledge buildings ==================== -->
-  <!-- Source (font) inspect -->
-  <DMSE_Occultech_SourceRemaining>Occult knowledge: {0} / {1} remaining</DMSE_Occultech_SourceRemaining>
-  <DMSE_Occultech_SourceDepleted>Depleted — an inert husk; no knowledge remains</DMSE_Occultech_SourceDepleted>
-  <DMSE_Occultech_SourceStatLabel>Knowledge reserve</DMSE_Occultech_SourceStatLabel>
-  <DMSE_Occultech_SourceStatDesc>Occult knowledge points still extractable from this font.</DMSE_Occultech_SourceStatDesc>
-  <!-- Extractor inspect -->
-  <DMSE_Occultech_ExtractorNoPower>Inactive: no power</DMSE_Occultech_ExtractorNoPower>
-  <DMSE_Occultech_ExtractorNoSource>Inactive: no data stele in front</DMSE_Occultech_ExtractorNoSource>
-  <DMSE_Occultech_ExtractorSourceDepleted>Inactive: stele depleted</DMSE_Occultech_ExtractorSourceDepleted>
-  <DMSE_Occultech_ExtractorNoResearch>Inactive: no project in progress</DMSE_Occultech_ExtractorNoResearch>
-  <DMSE_Occultech_ExtractorWorking>Extracting {0} knowledge/day (stele: {1} left)</DMSE_Occultech_ExtractorWorking>
 
 </LanguageData>
