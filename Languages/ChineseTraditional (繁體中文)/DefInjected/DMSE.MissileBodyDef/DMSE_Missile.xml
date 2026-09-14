@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <DMSE_MissileBody_Loiter.label>遊蕩彈藥</DMSE_MissileBody_Loiter.label>
+  <DMSE_MissileBody_Loiter.description>一種早期的軌道發射式遊蕩彈藥。速度慢且容易被偵測，但能在正規巡弋導彈問世之前很久就提供超視距打擊能力。</DMSE_MissileBody_Loiter.description>
+  <DMSE_MissileBody_Light.label>輕型導彈彈體</DMSE_MissileBody_Light.label>
+  <DMSE_MissileBody_Light.description>一種緊湊的單級導彈彈體，具備彈頭、導引與酬載三個裝配槽。比遊蕩彈藥更快、射程更遠，但比完整的巡弋導彈更輕、更便宜。</DMSE_MissileBody_Light.description>
+  <DMSE_MissileBody_Cruise.label>巡弋導彈彈體</DMSE_MissileBody_Cruise.label>
+  <DMSE_MissileBody_Cruise.description>「射門手」巡弋導彈的標準彈體。提供彈頭、導引、推進與特殊酬載四個裝配槽。</DMSE_MissileBody_Cruise.description>
+  <DMSE_MissileBody_Ballistic.label>彈道導彈彈體</DMSE_MissileBody_Ballistic.label>
+  <DMSE_MissileBody_Ballistic.description>一種將彈頭拋射至大氣層邊緣的遠程彈道導彈彈體。直接在發射井內裝配，彈體本身不會以物品形式存在。射程與酬載遠超任何巡弋導彈。</DMSE_MissileBody_Ballistic.description>
+
+</LanguageData>

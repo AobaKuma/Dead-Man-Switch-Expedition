@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
   
   <!-- EN: Scorer MLS -->
@@ -14,4 +14,7 @@
   <!-- EN: cruise missile (leaving) -->
   <DMSE_SkyFaller_CruiseMissile.label>巡弋飞弹（升空）</DMSE_SkyFaller_CruiseMissile.label>
   
+
+  <DMSE_SkyFaller_Interceptor.label>拦截弹</DMSE_SkyFaller_Interceptor.label>
+
 </LanguageData>

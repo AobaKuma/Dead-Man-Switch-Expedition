@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <DMSE_LoiteringRack.label>巡飞弹储存架</DMSE_LoiteringRack.label>
+  <DMSE_LoiteringRack.description>一座存放巡飞弹的储存架。存放其中的弹药不会劣化。</DMSE_LoiteringRack.description>
+  <DMSE_MissileRack.label>导弹储存架</DMSE_MissileRack.label>
+  <DMSE_MissileRack.description>一座可容纳最多四枚轻型导弹的金属储存架。存放其中的导弹不受环境侵蚀，不会劣化。</DMSE_MissileRack.description>
+  <DMSE_CruiseMissileRack.label>巡弋导弹储存架</DMSE_CruiseMissileRack.label>
+  <DMSE_CruiseMissileRack.description>一座 2x4 的装甲储存架，可容纳最多两枚巡弋导弹。存放其中的导弹不受环境侵蚀，不会劣化。</DMSE_CruiseMissileRack.description>
+
+</LanguageData>

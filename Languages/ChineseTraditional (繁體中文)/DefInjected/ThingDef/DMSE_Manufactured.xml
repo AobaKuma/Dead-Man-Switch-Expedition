@@ -28,4 +28,12 @@
   <!-- EN: A special alloy material composed of tantalum and tungsten. It is hard, wear-resistant, corrosion-resistant, and has an extremely high melting point of up to 3080°C, making it widely used in rocket engine De Laval nozzles and high-performance military mecha pulse thrusters. \n\nTantalum is found in trace amounts in asteroids and can be extracted through vacstone mining. Its processing and production must be carried out in a vacuum environment to avoid contamination by gases such as nitrogen and oxygen. Therefore, worlds capable of large-scale production and application typically have substantial industrial platforms orbiting dedicated to manufacturing and processing these materials. -->
   <DMSE_TantastenAlloy.description>由鉭與鎢組成的特殊合金材料，具備高硬度、耐磨、耐蝕與高達3080°C的超高熔點，廣泛用於火箭引擎的噴嘴與高性能軍用機甲的脈衝推進器。\n\n鉭元素在小行星中以微量形式存在，可透過真空岩採礦提取；其加工與生產需在真空環境中進行，避免氮氧等氣體污染。因此能大規模製造並應用此材料的世界通常都擁有環繞軌道的大型工業平台。</DMSE_TantastenAlloy.description>
   
+
+  <DMSE_Missile_Moskit.label>高超音速巡弋導彈</DMSE_Missile_Moskit.label>
+  <DMSE_Missile_Moskit.description>一枚等待裝填的戰術巡弋導彈。</DMSE_Missile_Moskit.description>
+  <DMSE_InterceptorMissile.label>攔截彈</DMSE_InterceptorMissile.label>
+  <DMSE_InterceptorMissile.description>一枚可立即發射的地對空攔截彈。裝填至防空導彈發射架的內部彈艙後，每次接戰消耗一枚，用於在超視距作戰的中段飛行階段摧毀來襲威脅。</DMSE_InterceptorMissile.description>
+  <DMSE_LightMissile.label>輕型導彈</DMSE_LightMissile.label>
+  <DMSE_LightMissile.description>一枚具備可自訂彈頭、導引與酬載槽的緊湊單級導彈。比遊蕩彈藥更快、射程更遠，但比完整的巡弋導彈更輕、更便宜。</DMSE_LightMissile.description>
+
 </LanguageData>

@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <DMSE_AcousticEarlyWarningRadar.label>早期預警雷達</DMSE_AcousticEarlyWarningRadar.label>
+  <DMSE_AcousticEarlyWarningRadar.description>一座雷達時代之前的混凝土聲學反射鏡，透過被動收集遠處來襲飛行器的引擎噪音來提供早期預警。由於它從不發射任何電磁訊號，反輻射導引頭無法將其鎖定為目標。其偵測距離與精度皆不如真正的雷達，且完全無法識別隱身目標。</DMSE_AcousticEarlyWarningRadar.description>
+  <DMSE_EarlyFireControlRadar.label>早期火控雷達</DMSE_EarlyFireControlRadar.label>
+  <DMSE_EarlyFireControlRadar.description>一座仍需人工操作員才能運作的早期火控雷達。與後期的相控陣系統相比，其鎖定速度更慢也更不可靠，但能讓殖民地在積體電路技術成熟之前就擁有初步的超視距攔截能力。</DMSE_EarlyFireControlRadar.description>
+
+</LanguageData>

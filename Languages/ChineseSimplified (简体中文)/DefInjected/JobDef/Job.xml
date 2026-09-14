@@ -1,7 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
   
   <!-- EN: landfilling TargetA. -->
   <DMSE_Landfill.reportString>正在填埋TargetA</DMSE_Landfill.reportString>
   
+
+  <DMSE_DeliverMissileResource.reportString>正在将零件运送至TargetA。</DMSE_DeliverMissileResource.reportString>
+  <DMSE_AssembleMissile.reportString>正在装配TargetA。</DMSE_AssembleMissile.reportString>
+  <DMSE_LoadMissileLauncher.reportString>正在将导弹装填至TargetA。</DMSE_LoadMissileLauncher.reportString>
+  <DMSE_ManMissileLauncher.reportString>正在操作导弹发射器。</DMSE_ManMissileLauncher.reportString>
+  <DMSE_AssembleBallisticSilo.reportString>正在TargetA中装配弹道导弹。</DMSE_AssembleBallisticSilo.reportString>
+
 </LanguageData>

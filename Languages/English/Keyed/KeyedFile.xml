@@ -107,6 +107,7 @@
   <DMSE.BVR.Offline>offline</DMSE.BVR.Offline>
   <DMSE.BVR.SearchRadar>Search radar: range {0}, anti-stealth {1} ({2})</DMSE.BVR.SearchRadar>
   <DMSE.BVR.FireControl>Fire control: {0} channel(s) ({1})</DMSE.BVR.FireControl>
+  <DMSE.BVR.ArtilleryChannels>Artillery guidance channels: {0} / {1} free</DMSE.BVR.ArtilleryChannels>
 
   <DMSE.Missile.Tab>Assembly</DMSE.Missile.Tab>
   <DMSE.Missile.Body>Missile body</DMSE.Missile.Body>

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <DMSE_WorldObject_Loiter.label>巡飞弹</DMSE_WorldObject_Loiter.label>
+  <DMSE_WorldObject_Loiter.description>一枚飞行中的巡飞弹。</DMSE_WorldObject_Loiter.description>
+  <DMSE_WorldObject_LightMissile.label>轻型导弹</DMSE_WorldObject_LightMissile.label>
+  <DMSE_WorldObject_LightMissile.description>一枚飞行中的轻型导弹。</DMSE_WorldObject_LightMissile.description>
+  <DMSE_WorldObject_BallisticMissile.label>弹道导弹</DMSE_WorldObject_BallisticMissile.label>
+  <DMSE_WorldObject_BallisticMissile.description>一枚沿高抛弹道飞行的弹道导弹。</DMSE_WorldObject_BallisticMissile.description>
+
+</LanguageData>

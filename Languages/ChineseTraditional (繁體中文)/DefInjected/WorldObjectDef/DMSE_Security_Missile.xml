@@ -6,4 +6,8 @@
   <!-- EN: cruise missile in flight. -->
   <DMSE_WorldObject_CruiseMissile.description>正在飛行中的巡弋飛彈。</DMSE_WorldObject_CruiseMissile.description>
   
+
+  <DMSE_WorldObject_IncomingMissile.label>來襲導彈</DMSE_WorldObject_IncomingMissile.label>
+  <DMSE_WorldObject_IncomingMissile.description>一枚正飛向目標的導彈。</DMSE_WorldObject_IncomingMissile.description>
+
 </LanguageData>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
   
   <!-- EN: Carbohydrate -->
@@ -28,4 +28,12 @@
   <!-- EN: A special alloy material composed of tantalum and tungsten. It is hard, wear-resistant, corrosion-resistant, and has an extremely high melting point of up to 3080°C, making it widely used in rocket engine De Laval nozzles and high-performance military mecha pulse thrusters. \n\nTantalum is found in trace amounts in asteroids and can be extracted through vacstone mining. Its processing and production must be carried out in a vacuum environment to avoid contamination by gases such as nitrogen and oxygen. Therefore, worlds capable of large-scale production and application typically have substantial industrial platforms orbiting dedicated to manufacturing and processing these materials. -->
   <DMSE_TantastenAlloy.description>由钽与钨组成的特殊合金材料，具备高硬度、耐磨、耐蚀与高达3080°C的超高熔点，广泛用於火箭引擎的喷嘴与高性能军用机甲的脉冲推进器。\n\n钽元素在小行星中以微量形式存在，可透过真空岩采矿提取；其加工与生产需在真空环境中进行，避免氮氧等气体污染。因此能大规模制造并应用此材料的世界通常都拥有环绕轨道的大型工业平台。</DMSE_TantastenAlloy.description>
   
+
+  <DMSE_Missile_Moskit.label>高超音速巡弋导弹</DMSE_Missile_Moskit.label>
+  <DMSE_Missile_Moskit.description>一枚等待装填的战术巡弋导弹。</DMSE_Missile_Moskit.description>
+  <DMSE_InterceptorMissile.label>拦截弹</DMSE_InterceptorMissile.label>
+  <DMSE_InterceptorMissile.description>一枚可立即发射的地对空拦截弹。装填至防空导弹发射架的内部弹舱后，每次接战消耗一枚，用于在超视距作战的中段飞行阶段摧毁来袭威胁。</DMSE_InterceptorMissile.description>
+  <DMSE_LightMissile.label>轻型导弹</DMSE_LightMissile.label>
+  <DMSE_LightMissile.description>一枚具备可自定义弹头、导引与酬载槽的紧凑单级导弹。比巡飞弹更快、射程更远，但比完整的巡弋导弹更轻、更便宜。</DMSE_LightMissile.description>
+
 </LanguageData>

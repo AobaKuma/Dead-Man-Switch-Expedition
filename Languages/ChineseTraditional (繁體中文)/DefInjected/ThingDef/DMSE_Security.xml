@@ -56,4 +56,7 @@
   <DMSE_Turret_Vulcan_WingBack.comps.CompRefuelable.fuelLabel>距離更換槍管剩餘射擊次數</DMSE_Turret_Vulcan_WingBack.comps.CompRefuelable.fuelLabel>
   <DMSE_Turret_Vulcan_WingBack.comps.CompRefuelable.outOfFuelMessage>無法射擊：需要新的強化槍管。</DMSE_Turret_Vulcan_WingBack.comps.CompRefuelable.outOfFuelMessage>
   
+
+  <DMSE_Bullet_Vulcan_WingBack_CIWS.label>APT砲彈</DMSE_Bullet_Vulcan_WingBack_CIWS.label>
+
 </LanguageData>

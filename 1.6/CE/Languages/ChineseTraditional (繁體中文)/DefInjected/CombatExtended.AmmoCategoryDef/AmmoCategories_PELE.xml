@@ -6,4 +6,7 @@
   <!-- EN: PELE–“penetrator with enhanced lateral effect”–is a new type of automatic cannon ammunition without a fuse or explosive. The combination of two materials with different densities causes the shell to disintegrate in the target zone without the need for an explosive charge or fuse. Therefore, this type of ammunition can be manufactured without the need for FSX. -->
   <DMSE_PELE.description>PELE不含引信或炸藥。它由兩種不同密度的材料組合而成，使得彈體在目標區域自行解體產生破片。</DMSE_PELE.description>
   
+
+  <DMSE_PELE.labelShort>PELE</DMSE_PELE.labelShort>
+
 </LanguageData>

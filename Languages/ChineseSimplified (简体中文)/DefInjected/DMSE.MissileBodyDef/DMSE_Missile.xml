@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <DMSE_MissileBody_Loiter.label>巡飞弹</DMSE_MissileBody_Loiter.label>
+  <DMSE_MissileBody_Loiter.description>一种早期的轨道发射式巡飞弹。速度慢且容易被侦测，但能在正规巡弋导弹问世之前很久就提供超视距打击能力。</DMSE_MissileBody_Loiter.description>
+  <DMSE_MissileBody_Light.label>轻型导弹弹体</DMSE_MissileBody_Light.label>
+  <DMSE_MissileBody_Light.description>一种紧凑的单级导弹弹体，具备弹头、导引与酬载三个装配槽。比巡飞弹更快、射程更远，但比完整的巡弋导弹更轻、更便宜。</DMSE_MissileBody_Light.description>
+  <DMSE_MissileBody_Cruise.label>巡弋导弹弹体</DMSE_MissileBody_Cruise.label>
+  <DMSE_MissileBody_Cruise.description>「射门手」巡弋导弹的标准弹体。提供弹头、导引、推进与特殊酬载四个装配槽。</DMSE_MissileBody_Cruise.description>
+  <DMSE_MissileBody_Ballistic.label>弹道导弹弹体</DMSE_MissileBody_Ballistic.label>
+  <DMSE_MissileBody_Ballistic.description>一种将弹头抛射至大气层边缘的远程弹道导弹弹体。直接在发射井内装配，弹体本身不会以物品形式存在。射程与酬载远超任何巡弋导弹。</DMSE_MissileBody_Ballistic.description>
+
+</LanguageData>

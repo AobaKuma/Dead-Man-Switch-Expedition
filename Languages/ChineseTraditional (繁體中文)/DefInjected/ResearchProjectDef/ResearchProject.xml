@@ -26,4 +26,15 @@
   <!-- EN: Material production in vacuum effectively avoids interference from common gases such as nitrogen and oxygen during chemical reactions. Researching materials science outside the atmosphere is especially valuable for special materials like Tantasteel, which are prone to oxidation when processed in atmospheric conditions.\n\nThis research unlocks Tantasteel production in vacuum-compatible box furnaces and sintering furnaces. -->
   <DMSE_VacuumMaterial.description>在真空環境的材料生產能夠有效的避免材料在化學反應中受到氮氣與氧氣等常見氣體的影響，透過在大氣層外的材料學研究，這對於應用像鉭鎢合金這樣會在大氣內環境的加工過程中受氧化影響的特殊材料而言具有非常大的價值。\n\n透過該研究能夠在真空環境下的箱型爐與燒結爐中生產鉭鎢合金。</DMSE_VacuumMaterial.description>
   
+
+  <DMSE_RadarBasis.label>雷達</DMSE_RadarBasis.label>
+  <DMSE_LoiteringMunitions.label>遊蕩彈藥</DMSE_LoiteringMunitions.label>
+  <DMSE_LoiteringMunitions.description>軌道發射的摺疊翼遊蕩彈藥為早期殖民地提供了粗糙的超視距打擊能力。速度慢且容易被偵測，但遠早於正規巡弋導彈便可投入使用。\n\n透過該研究解鎖遊蕩彈藥、其傾斜發射軌與儲存架。</DMSE_LoiteringMunitions.description>
+  <DMSE_Ballistics.label>彈道學</DMSE_Ballistics.label>
+  <DMSE_Ballistics.description>對大氣層內導彈飛行動力學、固態燃料分級與末端導引的系統性研究。將火箭發動機與導引頭小型化以配合可快速再裝填的發射筒，開啟了新一級的戰場火力。\n\n透過該研究解鎖輕型導彈、其傾斜發射軌與單聯裝垂直發射器。</DMSE_Ballistics.description>
+  <DMSE_IntegratedCircuits.label>積體電路</DMSE_IntegratedCircuits.label>
+  <DMSE_IntegratedCircuits.description>高密度積體電子技術使小型化的相控陣訊號處理與捷聯式慣性參考單元得以緊湊到足以裝入導彈彈體內。其成果是一套由搜索雷達、火控雷達與地對空導彈防禦組成的超視距作戰網路。\n\n透過該研究解鎖搜索雷達、火控雷達與防空導彈發射架。</DMSE_IntegratedCircuits.description>
+  <DMSE_StrategicSystems.label>戰略系統</DMSE_StrategicSystems.label>
+  <DMSE_StrategicSystems.description>對再入物理、高能推進劑化學與星光慣性導引的掌握，使彈道導彈能將其酬載拋射至大氣層邊緣。彈道弧線能突破大多數的點防禦，並允許以任何已裝配的彈頭組態進行極遠距離的打擊。\n\n透過該研究解鎖彈道導彈發射井及其裝配介面。</DMSE_StrategicSystems.description>
+
 </LanguageData>

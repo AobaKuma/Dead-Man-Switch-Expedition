@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <DMSE_SkyFaller_Loiter.label>遊蕩彈藥（升空）</DMSE_SkyFaller_Loiter.label>
+  <DMSE_Incoming_Loiter.label>遊蕩彈藥（來襲）</DMSE_Incoming_Loiter.label>
+  <DMSE_Building_LoiteringLauncher.label>遊蕩彈藥發射軌</DMSE_Building_LoiteringLauncher.label>
+  <DMSE_Building_LoiteringLauncher.description>一具供單枚遊蕩彈藥使用的傾斜發射軌。由殖民者將彈藥搬運上軌；之後便可對本地地圖以外的目標發射。裝載的彈藥會依建築朝向沿發射軌顯示。</DMSE_Building_LoiteringLauncher.description>
+  <DMSE_SkyFaller_LightMissile.label>輕型導彈（升空）</DMSE_SkyFaller_LightMissile.label>
+  <DMSE_Incoming_LightMissile.label>輕型導彈（來襲）</DMSE_Incoming_LightMissile.label>
+  <DMSE_Building_LightMissileLauncher.label>輕型導彈發射箱</DMSE_Building_LightMissileLauncher.label>
+  <DMSE_Building_LightMissileLauncher.description>一具可容納最多四枚輕型導彈的傾斜發射箱。比遊蕩彈藥更快、能力更強，支援自訂彈頭、導引與酬載組態。</DMSE_Building_LightMissileLauncher.description>
+  <DMSE_Building_LightMissileVLS.label>輕型導彈垂直發射單元</DMSE_Building_LightMissileVLS.label>
+  <DMSE_Building_LightMissileVLS.description>一具輕型導彈用的單聯裝垂直發射系統。緊湊的占地面積允許密集部署成發射陣列。無法安裝於重力船甲板上。</DMSE_Building_LightMissileVLS.description>
+  <DMSE_Building_RotaryMissileLauncher.label>旋轉式導彈發射架</DMSE_Building_RotaryMissileLauncher.label>
+  <DMSE_Building_RotaryMissileLauncher.description>一具配備全向旋轉砲塔的地對空發射架。與固定式的傾斜／垂直發射架不同，其發射軌會持續轉向以面對當前威脅，但需要人工操作員才能運作。</DMSE_Building_RotaryMissileLauncher.description>
+  <DMSE_SkyFaller_BallisticMissile.label>彈道導彈（升空）</DMSE_SkyFaller_BallisticMissile.label>
+  <DMSE_Incoming_BallisticMissile.label>彈道導彈（來襲）</DMSE_Incoming_BallisticMissile.label>
+  <DMSE_Building_BallisticSilo.label>彈道導彈發射井</DMSE_Building_BallisticSilo.label>
+  <DMSE_Building_BallisticSilo.description>一座 3x3 的彈道武器發射井。與巡弋導彈不同，彈道導彈的彈體由殖民者消耗原材料直接在發射井內裝配；建成後，透過發射指令對世界地圖上的目標發射。\n\n無法安裝於重力船甲板上。</DMSE_Building_BallisticSilo.description>
+
+</LanguageData>

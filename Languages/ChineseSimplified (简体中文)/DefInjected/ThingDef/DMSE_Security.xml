@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
   
   <!-- EN: Squall -->
@@ -56,4 +56,7 @@
   <DMSE_Turret_Vulcan_WingBack.comps.CompRefuelable.fuelLabel>距离更换枪管剩余射击次数</DMSE_Turret_Vulcan_WingBack.comps.CompRefuelable.fuelLabel>
   <DMSE_Turret_Vulcan_WingBack.comps.CompRefuelable.outOfFuelMessage>无法射击：需要新的强化枪管。</DMSE_Turret_Vulcan_WingBack.comps.CompRefuelable.outOfFuelMessage>
   
+
+  <DMSE_Bullet_Vulcan_WingBack_CIWS.label>APT炮弹</DMSE_Bullet_Vulcan_WingBack_CIWS.label>
+
 </LanguageData>

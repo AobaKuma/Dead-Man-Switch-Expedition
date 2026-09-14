@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <DMSE_SkyFaller_Loiter.label>巡飞弹（升空）</DMSE_SkyFaller_Loiter.label>
+  <DMSE_Incoming_Loiter.label>巡飞弹（来袭）</DMSE_Incoming_Loiter.label>
+  <DMSE_Building_LoiteringLauncher.label>巡飞弹发射轨</DMSE_Building_LoiteringLauncher.label>
+  <DMSE_Building_LoiteringLauncher.description>一具供单枚巡飞弹使用的倾斜发射轨。由殖民者将弹药搬运上轨；之后便可对本地地图以外的目标发射。装载的弹药会依建筑朝向沿发射轨显示。</DMSE_Building_LoiteringLauncher.description>
+  <DMSE_SkyFaller_LightMissile.label>轻型导弹（升空）</DMSE_SkyFaller_LightMissile.label>
+  <DMSE_Incoming_LightMissile.label>轻型导弹（来袭）</DMSE_Incoming_LightMissile.label>
+  <DMSE_Building_LightMissileLauncher.label>轻型导弹发射箱</DMSE_Building_LightMissileLauncher.label>
+  <DMSE_Building_LightMissileLauncher.description>一具可容纳最多四枚轻型导弹的倾斜发射箱。比巡飞弹更快、能力更强，支援自定义弹头、导引与酬载组态。</DMSE_Building_LightMissileLauncher.description>
+  <DMSE_Building_LightMissileVLS.label>轻型导弹垂直发射单元</DMSE_Building_LightMissileVLS.label>
+  <DMSE_Building_LightMissileVLS.description>一具轻型导弹用的单联装垂直发射系统。紧凑的占地面积允许密集部署成发射阵列。无法安装于重力船甲板上。</DMSE_Building_LightMissileVLS.description>
+  <DMSE_Building_RotaryMissileLauncher.label>旋转式导弹发射架</DMSE_Building_RotaryMissileLauncher.label>
+  <DMSE_Building_RotaryMissileLauncher.description>一具配备全向旋转炮塔的地对空发射架。与固定式的倾斜／垂直发射架不同，其发射轨会持续转向以面对当前威胁，但需要人工操作员才能运作。</DMSE_Building_RotaryMissileLauncher.description>
+  <DMSE_SkyFaller_BallisticMissile.label>弹道导弹（升空）</DMSE_SkyFaller_BallisticMissile.label>
+  <DMSE_Incoming_BallisticMissile.label>弹道导弹（来袭）</DMSE_Incoming_BallisticMissile.label>
+  <DMSE_Building_BallisticSilo.label>弹道导弹发射井</DMSE_Building_BallisticSilo.label>
+  <DMSE_Building_BallisticSilo.description>一座 3x3 的弹道武器发射井。与巡弋导弹不同，弹道导弹的弹体由殖民者消耗原材料直接在发射井内装配；建成后，透过发射指令对世界地图上的目标发射。\n\n无法安装于重力船甲板上。</DMSE_Building_BallisticSilo.description>
+
+</LanguageData>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
   
   <!-- EN: Aerospace Applications -->
@@ -26,4 +26,15 @@
   <!-- EN: Material production in vacuum effectively avoids interference from common gases such as nitrogen and oxygen during chemical reactions. Researching materials science outside the atmosphere is especially valuable for special materials like Tantasteel, which are prone to oxidation when processed in atmospheric conditions.\n\nThis research unlocks Tantasteel production in vacuum-compatible box furnaces and sintering furnaces. -->
   <DMSE_VacuumMaterial.description>在真空环境的材料生产能够有效的避免材料在化学反应中受到氮气与氧气等常见气体的影响，透过在大气层外的材料学研究，这对於应用像钽钨合金这样会在大气内环境的加工过程中受氧化影响的特殊材料而言具有非常大的价值。\n\n透过该研究能够在真空环境下的箱型炉与烧结炉中生产钽钨合金。</DMSE_VacuumMaterial.description>
   
+
+  <DMSE_RadarBasis.label>雷达</DMSE_RadarBasis.label>
+  <DMSE_LoiteringMunitions.label>巡飞弹</DMSE_LoiteringMunitions.label>
+  <DMSE_LoiteringMunitions.description>轨道发射的折叠翼巡飞弹为早期殖民地提供了粗糙的超视距打击能力。速度慢且容易被侦测，但远早于正规巡弋导弹便可投入使用。\n\n透过该研究解锁巡飞弹、其倾斜发射轨与储存架。</DMSE_LoiteringMunitions.description>
+  <DMSE_Ballistics.label>弹道学</DMSE_Ballistics.label>
+  <DMSE_Ballistics.description>对大气层内导弹飞行动力学、固态燃料分级与末端导引的系统性研究。将火箭发动机与导引头小型化以配合可快速再装填的发射筒，开启了新一级的战场火力。\n\n透过该研究解锁轻型导弹、其倾斜发射轨与单联装垂直发射器。</DMSE_Ballistics.description>
+  <DMSE_IntegratedCircuits.label>集成电路</DMSE_IntegratedCircuits.label>
+  <DMSE_IntegratedCircuits.description>高密度积体电子技术使小型化的相控阵信号处理与捷联式惯性参考单元得以紧凑到足以装入导弹弹体内。其成果是一套由搜索雷达、火控雷达与地对空导弹防御组成的超视距作战网络。\n\n透过该研究解锁搜索雷达、火控雷达与防空导弹发射架。</DMSE_IntegratedCircuits.description>
+  <DMSE_StrategicSystems.label>战略系统</DMSE_StrategicSystems.label>
+  <DMSE_StrategicSystems.description>对再入物理、高能推进剂化学与星光惯性导引的掌握，使弹道导弹能将其酬载抛射至大气层边缘。弹道弧线能突破大多数的点防御，并允许以任何已装配的弹头组态进行极远距离的打击。\n\n透过该研究解锁弹道导弹发射井及其装配界面。</DMSE_StrategicSystems.description>
+
 </LanguageData>

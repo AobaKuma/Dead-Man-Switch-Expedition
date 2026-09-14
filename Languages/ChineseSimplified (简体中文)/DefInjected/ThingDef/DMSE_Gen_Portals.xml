@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <DMSE_StaircaseEntrance.label>远古储藏库入口</DMSE_StaircaseEntrance.label>
+  <DMSE_StaircaseEntrance.description>一处废弃已久的地下设施入口。破解以开启舱门。</DMSE_StaircaseEntrance.description>
+  <DMSE_StaircaseEntrance_Ancient.label>远古储藏库入口</DMSE_StaircaseEntrance_Ancient.label>
+  <DMSE_StaircaseEntrance_Ancient.description>一处废弃已久的地下设施入口。破解以开启舱门。</DMSE_StaircaseEntrance_Ancient.description>
+  <DMSE_StaircaseEntrance_White.label>远古储藏库入口</DMSE_StaircaseEntrance_White.label>
+  <DMSE_StaircaseEntrance_White.description>一处废弃已久的地下设施入口。破解以开启舱门。</DMSE_StaircaseEntrance_White.description>
+  <DMSE_StaircaseExit.label>楼梯出口</DMSE_StaircaseExit.label>
+  <DMSE_StaircaseExit.description>一道通往上方地表的梯子。</DMSE_StaircaseExit.description>
+  <DMSE_StaircaseExit_Ancient.label>远古楼梯出口</DMSE_StaircaseExit_Ancient.label>
+  <DMSE_StaircaseExit_Ancient.description>一道通往上方地表的梯子。</DMSE_StaircaseExit_Ancient.description>
+  <DMSE_StaircaseExit_White.label>楼梯出口</DMSE_StaircaseExit_White.label>
+  <DMSE_StaircaseExit_White.description>一道通往上方地表的梯子。</DMSE_StaircaseExit_White.description>
+
+</LanguageData>

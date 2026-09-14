@@ -2,8 +2,18 @@
 <LanguageData>
 
   <!-- NPC 导弹阵地 -->
+  <DMSE.MissileBase.NextFireIn>下次导弹打击：{0}</DMSE.MissileBase.NextFireIn>
+  <DMSE.MissileBase.LocalMonitoring>阵地已被侦测（本地地图观察中）</DMSE.MissileBase.LocalMonitoring>
+  <DMSE.MissileBase.RelocationIn>阵地转移倒计时：{0}</DMSE.MissileBase.RelocationIn>
+  <DMSE.MissileBase.Relocated>导弹阵地转移</DMSE.MissileBase.Relocated>
+  <DMSE.MissileBase.RelocatedDesc>一处敌方导弹阵地在部署后完成射击任务并转移，防止殖民地反制。</DMSE.MissileBase.RelocatedDesc>
+  <DMSE.MissileBase.Destroyed>导弹阵地已摧毁</DMSE.MissileBase.Destroyed>
+  <DMSE.MissileBase.DestroyedDesc>殖民者已摧毁敌方导弹阵地的所有雷达与发射设施。来自该阵地的导弹威胁已解除。</DMSE.MissileBase.DestroyedDesc>
+  <DMSE.MissileBase.ShuttleBlocked>此区域位于敌方导弹阵地的防空封锁范围内（{0} 格），无法进行穿梭机起降。</DMSE.MissileBase.ShuttleBlocked>
   <DMSE.MissileBase.ReentryBlockedIn>地面通道封锁中——敌方整备防线（{0}）</DMSE.MissileBase.ReentryBlockedIn>
   <DMSE.MissileBase.ReentryBlocked>通道封锁——敌方整备防线（{0}）</DMSE.MissileBase.ReentryBlocked>
+  <DMSE.MissileBase.ArrivedLetter>你们抵达了一处导弹阵地——敌方已在此部署火控雷达与导弹发射架，不断向周围殖民地发射打击。摧毁所有雷达可瓦解其打击能力。</DMSE.MissileBase.ArrivedLetter>
+  <DMSE.MissileBase.SiteDesc>一处配备火控雷达与导弹发射架的机动战术弹道导弹阵地。阵地会在完成任务后转移，以躲避反制。</DMSE.MissileBase.SiteDesc>
 
   <!-- EN: Launch Missile -->
   <ScorerLaunch>发射导弹</ScorerLaunch>
@@ -110,11 +120,25 @@
   <DMSE_Crater>{0}撞击坑</DMSE_Crater>
   
   <DMS_Exist>地图可见计时:{0}</DMS_Exist>
+  <DMSE.Alert.Exist.Observing>观察中：{0}</DMSE.Alert.Exist.Observing>
+  <DMSE.Alert.Exist.TimeLeft>观察结束倒数：{0}</DMSE.Alert.Exist.TimeLeft>
+  <DMSE.Alert.Exist.EnemiesAlive>剩余敌方战斗人员：{0}</DMSE.Alert.Exist.EnemiesAlive>
+  <DMSE.Alert.Exist.IsMissileBase>这是一处运作中的导弹阵地。提前结束观察将让敌方人员得以重整并重置其防御。</DMSE.Alert.Exist.IsMissileBase>
+  <DMSE.Alert.Exist.ClickHint>点击以提前结束观察。</DMSE.Alert.Exist.ClickHint>
+  <DMSE.Alert.Exist.EndEarly.Confirm>现在就结束观察？地图将不再被保留，可能会被游戏清理。</DMSE.Alert.Exist.EndEarly.Confirm>
+  <DMSE.Alert.Exist.EndEarly.Confirm.MissileBase>提前结束观察？\n\n敌方人员将有机会重整——该导弹阵地的防御与计时器都会重置，如同观察从未发生。\n\n此操作无法复原。</DMSE.Alert.Exist.EndEarly.Confirm.MissileBase>
+  <DMSE.Alert.Exist.ObservationEnded>观察已提前结束。敌军可能会重整。</DMSE.Alert.Exist.ObservationEnded>
+  <DMSE.Alert.PlayerMissiles.Label>{0} 枚导弹飞行中 — 首波落地倒数 {1}</DMSE.Alert.PlayerMissiles.Label>
+  <DMSE.Alert.PlayerMissiles.MapHeader>目标：{0}</DMSE.Alert.PlayerMissiles.MapHeader>
+  <DMSE.Alert.PlayerMissiles.WaveImpact>  落地倒数 {0}：</DMSE.Alert.PlayerMissiles.WaveImpact>
+  <DMSE.Alert.PlayerMissiles.Target>    · {0}  ({1},{2})  【{3}】</DMSE.Alert.PlayerMissiles.Target>
+  <DMSE.Alert.PlayerMissiles.ClickHint>左键切换至下一个落点，右键切换回上一个。</DMSE.Alert.PlayerMissiles.ClickHint>
 
   <DMSE.BVR.Online>运作中</DMSE.BVR.Online>
   <DMSE.BVR.Offline>离线</DMSE.BVR.Offline>
   <DMSE.BVR.SearchRadar>搜索雷达：搜索距离 {0}，反隐身 {1}（{2}）</DMSE.BVR.SearchRadar>
   <DMSE.BVR.FireControl>火控雷达：{0} 条火力通道（{1}）</DMSE.BVR.FireControl>
+  <DMSE.BVR.ArtilleryChannels>火炮引导通道：{0} / {1} 空闲</DMSE.BVR.ArtilleryChannels>
 
   <DMSE.Missile.Tab>装配</DMSE.Missile.Tab>
   <DMSE.Missile.Body>导弹弹体</DMSE.Missile.Body>

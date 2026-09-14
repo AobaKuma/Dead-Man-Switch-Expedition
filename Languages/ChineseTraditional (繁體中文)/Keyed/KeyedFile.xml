@@ -120,11 +120,25 @@
   <DMSE_Crater>{0}撞擊坑</DMSE_Crater>
 
   <DMS_Exist>地圖可見計時:{0}</DMS_Exist>
+  <DMSE.Alert.Exist.Observing>觀察中：{0}</DMSE.Alert.Exist.Observing>
+  <DMSE.Alert.Exist.TimeLeft>觀察結束倒數：{0}</DMSE.Alert.Exist.TimeLeft>
+  <DMSE.Alert.Exist.EnemiesAlive>剩餘敵方戰鬥人員：{0}</DMSE.Alert.Exist.EnemiesAlive>
+  <DMSE.Alert.Exist.IsMissileBase>這是一處運作中的導彈陣地。提前結束觀察將讓敵方人員得以重整並重置其防禦。</DMSE.Alert.Exist.IsMissileBase>
+  <DMSE.Alert.Exist.ClickHint>點擊以提前結束觀察。</DMSE.Alert.Exist.ClickHint>
+  <DMSE.Alert.Exist.EndEarly.Confirm>現在就結束觀察？地圖將不再被保留，可能會被遊戲清理。</DMSE.Alert.Exist.EndEarly.Confirm>
+  <DMSE.Alert.Exist.EndEarly.Confirm.MissileBase>提前結束觀察？\n\n敵方人員將有機會重整——該導彈陣地的防禦與計時器都會重置，如同觀察從未發生。\n\n此操作無法復原。</DMSE.Alert.Exist.EndEarly.Confirm.MissileBase>
+  <DMSE.Alert.Exist.ObservationEnded>觀察已提前結束。敵軍可能會重整。</DMSE.Alert.Exist.ObservationEnded>
+  <DMSE.Alert.PlayerMissiles.Label>{0} 枚導彈飛行中 — 首波落地倒數 {1}</DMSE.Alert.PlayerMissiles.Label>
+  <DMSE.Alert.PlayerMissiles.MapHeader>目標：{0}</DMSE.Alert.PlayerMissiles.MapHeader>
+  <DMSE.Alert.PlayerMissiles.WaveImpact>  落地倒數 {0}：</DMSE.Alert.PlayerMissiles.WaveImpact>
+  <DMSE.Alert.PlayerMissiles.Target>    · {0}  ({1},{2})  【{3}】</DMSE.Alert.PlayerMissiles.Target>
+  <DMSE.Alert.PlayerMissiles.ClickHint>左鍵切換至下一個落點，右鍵切換回上一個。</DMSE.Alert.PlayerMissiles.ClickHint>
 
   <DMSE.BVR.Online>運作中</DMSE.BVR.Online>
   <DMSE.BVR.Offline>離線</DMSE.BVR.Offline>
   <DMSE.BVR.SearchRadar>搜索雷達：搜索距離 {0}，反隱身 {1}（{2}）</DMSE.BVR.SearchRadar>
   <DMSE.BVR.FireControl>火控雷達：{0} 條火力通道（{1}）</DMSE.BVR.FireControl>
+  <DMSE.BVR.ArtilleryChannels>火砲引導通道：{0} / {1} 空閒</DMSE.BVR.ArtilleryChannels>
 
   <DMSE.Missile.Tab>裝配</DMSE.Missile.Tab>
   <DMSE.Missile.Body>導彈彈體</DMSE.Missile.Body>

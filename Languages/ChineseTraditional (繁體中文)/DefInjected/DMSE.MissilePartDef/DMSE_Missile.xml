@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <DMSE_Warhead_HE.label>高爆彈頭</DMSE_Warhead_HE.label>
+  <DMSE_Warhead_HE.description>大型爆破彈頭。半徑大、傷害高。</DMSE_Warhead_HE.description>
+  <DMSE_Warhead_AP.label>穿甲彈頭</DMSE_Warhead_AP.label>
+  <DMSE_Warhead_AP.description>聚焦式穿透彈頭。半徑較小，但傷害高得多。</DMSE_Warhead_AP.description>
+  <DMSE_Warhead_EMP.label>EMP 彈頭</DMSE_Warhead_EMP.label>
+  <DMSE_Warhead_EMP.description>在大範圍內癱瘓機械體並震暈目標，不造成致命爆炸。</DMSE_Warhead_EMP.description>
+  <DMSE_Guidance_Inertial.label>慣性導引</DMSE_Guidance_Inertial.label>
+  <DMSE_Guidance_Inertial.description>基礎導引。精度一般。</DMSE_Guidance_Inertial.description>
+  <DMSE_Guidance_Precision.label>精確導引</DMSE_Guidance_Precision.label>
+  <DMSE_Guidance_Precision.description>末端尋標導引頭。大幅收斂落點散布。</DMSE_Guidance_Precision.description>
+  <DMSE_Propulsion_Standard.label>標準發動機</DMSE_Propulsion_Standard.label>
+  <DMSE_Propulsion_Standard.description>基礎固態燃料發動機。</DMSE_Propulsion_Standard.description>
+  <DMSE_Propulsion_Booster.label>增推發動機</DMSE_Propulsion_Booster.label>
+  <DMSE_Propulsion_Booster.description>更高比衝的發動機，能更快抵達目標並延長射程。</DMSE_Propulsion_Booster.description>
+  <DMSE_Payload_Cluster.label>集束子彈藥</DMSE_Payload_Cluster.label>
+  <DMSE_Payload_Cluster.description>在落點區域內釋放次級爆炸。</DMSE_Payload_Cluster.description>
+  <DMSE_Payload_EMP.label>EMP 子彈藥</DMSE_Payload_EMP.label>
+  <DMSE_Payload_EMP.description>次級 EMP 爆發，震暈落點周圍的目標並癱瘓電子設備。</DMSE_Payload_EMP.description>
+  <DMSE_Light_Warhead_HE.label>輕型高爆彈頭</DMSE_Light_Warhead_HE.label>
+  <DMSE_Light_Warhead_HE.description>為輕型導彈縮小設計的緊湊高爆彈頭。標準爆炸，沒有特殊效果。</DMSE_Light_Warhead_HE.description>
+  <DMSE_Light_Warhead_Incendiary.label>燃燒彈頭</DMSE_Light_Warhead_Incendiary.label>
+  <DMSE_Light_Warhead_Incendiary.description>命中時散布燃燒中的鋁熱劑。無視視線，點燃半徑範圍內的所有格子。</DMSE_Light_Warhead_Incendiary.description>
+  <DMSE_Light_Warhead_ContinuousRod.label>連續桿彈頭</DMSE_Light_Warhead_ContinuousRod.label>
+  <DMSE_Light_Warhead_ContinuousRod.description>一圈在引爆時向外展開的鋼桿，針對空中目標將破片密度最大化。作為防空攔截彈使用時提供攔截命中率加成。</DMSE_Light_Warhead_ContinuousRod.description>
+  <DMSE_Light_Guidance_Inertial.label>慣性導引</DMSE_Light_Guidance_Inertial.label>
+  <DMSE_Light_Guidance_Inertial.description>基礎捷聯式慣性參考單元。沒有導引頭，依靠預先設定的飛行路徑。散布不變。</DMSE_Light_Guidance_Inertial.description>
+  <DMSE_Light_Guidance_IR.label>紅外線導引頭</DMSE_Light_Guidance_IR.label>
+  <DMSE_Light_Guidance_IR.description>追蹤體熱的被動紅外線導引頭。若目標地圖上有殖民者，則鎖定最近的一名；否則退回慣性導引。</DMSE_Light_Guidance_IR.description>
+  <DMSE_Light_Guidance_AntiRadiation.label>反輻射導引頭</DMSE_Light_Guidance_AntiRadiation.label>
+  <DMSE_Light_Guidance_AntiRadiation.description>追蹤主動雷達訊號。優先鎖定目標地圖上功率最高的搜索或火控雷達，其次退回高能量目標。</DMSE_Light_Guidance_AntiRadiation.description>
+  <DMSE_Light_Payload_None.label>無酬載</DMSE_Light_Payload_None.label>
+  <DMSE_Light_Payload_None.description>沒有次級酬載。導彈完全依靠主彈頭的引爆。</DMSE_Light_Payload_None.description>
+  <DMSE_Light_Payload_HighExplosive.label>高爆酬載</DMSE_Light_Payload_HighExplosive.label>
+  <DMSE_Light_Payload_HighExplosive.description>在主彈頭之後引爆的次級高爆裝藥，擴大傷害半徑。</DMSE_Light_Payload_HighExplosive.description>
+  <DMSE_Light_Payload_ToxicGas.label>毒氣酬載</DMSE_Light_Payload_ToxicGas.label>
+  <DMSE_Light_Payload_ToxicGas.description>在範圍內散布毒氣雲，於爆炸後長時間滯留，阻絕無防護步兵進入該區域。</DMSE_Light_Payload_ToxicGas.description>
+  <DMSE_Ballistic_Warhead_Thermonuclear.label>熱核彈頭</DMSE_Ballistic_Warhead_Thermonuclear.label>
+  <DMSE_Ballistic_Warhead_Thermonuclear.description>具備熱核當量的大型爆破彈頭。沒有特殊效果——爆炸半徑與傷害本身就足以說明一切。</DMSE_Ballistic_Warhead_Thermonuclear.description>
+  <DMSE_Ballistic_Warhead_Airburst.label>空爆彈頭</DMSE_Ballistic_Warhead_Airburst.label>
+  <DMSE_Ballistic_Warhead_Airburst.description>在目標上方引爆以取得最大破片覆蓋範圍。作為攔截彈使用時，每個接戰窗口可獲得額外的接戰判定次數。</DMSE_Ballistic_Warhead_Airburst.description>
+  <DMSE_Ballistic_Warhead_TungstenPenetrator.label>鎢合金穿透彈頭</DMSE_Ballistic_Warhead_TungstenPenetrator.label>
+  <DMSE_Ballistic_Warhead_TungstenPenetrator.description>一根高密度鎢棒，能在引爆前貫穿厚重的屋頂並在內部引爆，使地下掩體形同虛設。</DMSE_Ballistic_Warhead_TungstenPenetrator.description>
+  <DMSE_Ballistic_Guidance_Inertial.label>慣性導引</DMSE_Ballistic_Guidance_Inertial.label>
+  <DMSE_Ballistic_Guidance_Inertial.description>捷聯式慣性參考單元。在熱核當量下，高精度並非必要。</DMSE_Ballistic_Guidance_Inertial.description>
+  <DMSE_Ballistic_Guidance_FireControl.label>火控導引</DMSE_Ballistic_Guidance_FireControl.label>
+  <DMSE_Ballistic_Guidance_FireControl.description>由殖民地火控雷達網路輔助的末端導引。大幅收斂落點散布，適合精確打擊。</DMSE_Ballistic_Guidance_FireControl.description>
+  <DMSE_Ballistic_Payload_None.label>無酬載</DMSE_Ballistic_Payload_None.label>
+  <DMSE_Ballistic_Payload_None.description>沒有次級酬載。對彈道打擊而言，主彈頭通常已經足夠。</DMSE_Ballistic_Payload_None.description>
+  <DMSE_Ballistic_Payload_Cluster.label>集束酬載</DMSE_Ballistic_Payload_Cluster.label>
+  <DMSE_Ballistic_Payload_Cluster.description>在廣大區域內釋放大量子彈藥。以爆炸集中度換取覆蓋面積。</DMSE_Ballistic_Payload_Cluster.description>
+  <DMSE_Ballistic_Payload_Antiparticle.label>反粒子酬載</DMSE_Ballistic_Payload_Antiparticle.label>
+  <DMSE_Ballistic_Payload_Antiparticle.description>次級反粒子爆發，將範圍內的一切汽化。現有最具破壞力的次級酬載。</DMSE_Ballistic_Payload_Antiparticle.description>
+
+</LanguageData>

@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <DMSE_AssembleMissile.label>装配导弹</DMSE_AssembleMissile.label>
+  <DMSE_AssembleMissile.verb>装配</DMSE_AssembleMissile.verb>
+  <DMSE_AssembleMissile.gerund>装配</DMSE_AssembleMissile.gerund>
+  <DMSE_LoadMissileLauncher.label>装填导弹发射器</DMSE_LoadMissileLauncher.label>
+  <DMSE_LoadMissileLauncher.verb>装填</DMSE_LoadMissileLauncher.verb>
+  <DMSE_LoadMissileLauncher.gerund>装填</DMSE_LoadMissileLauncher.gerund>
+  <DMSE_AssembleBallisticSilo.label>装配弹道导弹</DMSE_AssembleBallisticSilo.label>
+  <DMSE_AssembleBallisticSilo.verb>装配</DMSE_AssembleBallisticSilo.verb>
+  <DMSE_AssembleBallisticSilo.gerund>装配</DMSE_AssembleBallisticSilo.gerund>
+
+</LanguageData>
