@@ -9,23 +9,23 @@
                 <statBases>
                     <Mass>4.3</Mass>
                     <Bulk>5</Bulk>
-                    <SwayFactor>1.76</SwayFactor>
-                    <ShotSpread>0.19</ShotSpread>
-                    <SightsEfficiency>0.75</SightsEfficiency>
-                    <RangedWeapon_Cooldown>0.41</RangedWeapon_Cooldown>
+                    <SwayFactor>1.25</SwayFactor>
+                    <ShotSpread>0.05</ShotSpread>
+                    <SightsEfficiency>1.1</SightsEfficiency>
+                    <RangedWeapon_Cooldown>0.46</RangedWeapon_Cooldown>
                 </statBases>
                 <Properties>
                     <verbClass>CombatExtended.Verb_ShootCE</verbClass>
                     <hasStandardCommand>true</hasStandardCommand>
                     <defaultProjectile>Bullet_5x50mmCaseless_FMJ</defaultProjectile>
-                    <warmupTime>1.2</warmupTime>
-                    <range>75</range>
-                    <burstShotCount>5</burstShotCount>
+                    <warmupTime>0.95</warmupTime>
+                    <range>60</range>
+                    <burstShotCount>10</burstShotCount>
                     <ticksBetweenBurstShots>3</ticksBetweenBurstShots>
-                    <soundCast>Shot_AssaultRifle</soundCast>
+                    <soundCast>Shot_CE_BattleRifle</soundCast>
                     <soundCastTail>GunTail_Medium</soundCastTail>
                     <muzzleFlashScale>10</muzzleFlashScale>
-                    <recoilAmount>0.48</recoilAmount>
+                    <recoilAmount>0.58</recoilAmount>
                 </Properties>
                 <AmmoUser>
                     <magazineSize>45</magazineSize>
@@ -35,12 +35,52 @@
                 <FireModes>
                     <aiUseBurstMode>true</aiUseBurstMode>
                     <aiAimMode>Snapshot</aiAimMode>
-                    <aimedBurstShotCount>3</aimedBurstShotCount>
+                    <aimedBurstShotCount>5</aimedBurstShotCount>
                 </FireModes>
                 <weaponTags>
                     <li>CE_AI_AR</li>
                 </weaponTags>
             </li>
+            
+            <li Class="PatchOperationReplace">
+                <xpath>Defs/ThingDef[defName="DMSE_Modular_AR"]/tools</xpath>
+                <value>
+                    <tools>
+                        <li Class="CombatExtended.ToolCE">
+                            <label>stock</label>
+                            <capacities>
+                                <li>Blunt</li>
+                            </capacities>
+                            <power>10</power>
+                            <cooldownTime>1.55</cooldownTime>
+                            <chanceFactor>1.5</chanceFactor>
+                            <armorPenetrationBlunt>2.755</armorPenetrationBlunt>
+                            <linkedBodyPartsGroup>Stock</linkedBodyPartsGroup>
+                        </li>
+                        <li Class="CombatExtended.ToolCE">
+                            <label>barrel</label>
+                            <capacities>
+                                <li>Blunt</li>
+                            </capacities>
+                            <power>7</power>
+                            <cooldownTime>2.02</cooldownTime>
+                            <armorPenetrationBlunt>1.630</armorPenetrationBlunt>
+                            <linkedBodyPartsGroup>Barrel</linkedBodyPartsGroup>
+                        </li>
+                        <li Class="CombatExtended.ToolCE">
+                            <label>muzzle</label>
+                            <capacities>
+                                <li>Poke</li>
+                            </capacities>
+                            <power>10</power>
+                            <cooldownTime>1.55</cooldownTime>
+                            <armorPenetrationBlunt>2.755</armorPenetrationBlunt>
+                            <linkedBodyPartsGroup>Muzzle</linkedBodyPartsGroup>
+                        </li>
+                    </tools>
+                </value>
+            </li>
+
             <!-- LMG -->
             <li Class="CombatExtended.PatchOperationMakeGunCECompatible">
                 <defName>DMSE_Modular_LMG</defName>
@@ -48,21 +88,21 @@
                     <WorkToMake>46000</WorkToMake>
                     <Mass>6</Mass>
                     <Bulk>8.8</Bulk>
-                    <RangedWeapon_Cooldown>0.78</RangedWeapon_Cooldown>
-                    <SightsEfficiency>1.4</SightsEfficiency>
+                    <RangedWeapon_Cooldown>0.58</RangedWeapon_Cooldown>
+                    <SightsEfficiency>1.5</SightsEfficiency>
                     <ShotSpread>0.02</ShotSpread>
                     <SwayFactor>1.12</SwayFactor>
                 </statBases>
                 <Properties>
-                    <recoilAmount>0.48</recoilAmount>
+                    <recoilAmount>0.45</recoilAmount>
                     <verbClass>CombatExtended.Verb_ShootCE</verbClass>
                     <hasStandardCommand>true</hasStandardCommand>
-                    <defaultProjectile>Bullet_5x50mmCaseless_FMJ</defaultProjectile>
-                    <burstShotCount>25</burstShotCount>
+                    <defaultProjectile>Bullet_5x50mmCaseless_FMJ_HV</defaultProjectile>
+                    <burstShotCount>16</burstShotCount>
                     <ticksBetweenBurstShots>5</ticksBetweenBurstShots>
-                    <warmupTime>1.2</warmupTime>
-                    <range>75</range>
-                    <soundCast>Shot_AssaultRifle</soundCast>
+                    <warmupTime>1.35</warmupTime>
+                    <range>70</range>
+                    <soundCast>Shot_CE_BattleRifle</soundCast>
                     <soundCastTail>GunTail_Medium</soundCastTail>
                     <muzzleFlashScale>10</muzzleFlashScale>
                 </Properties>
@@ -74,7 +114,7 @@
                 <FireModes>
                     <aiUseBurstMode>true</aiUseBurstMode>
                     <aiAimMode>AimedShot</aiAimMode>
-                    <aimedBurstShotCount>15</aimedBurstShotCount>
+                    <aimedBurstShotCount>8</aimedBurstShotCount>
                 </FireModes>
                 <weaponTags>
                     <li>A_MG_Light</li>
