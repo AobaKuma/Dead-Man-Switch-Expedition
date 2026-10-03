@@ -19,16 +19,6 @@
 
   <ScorerLaunchDesc>Launches the loaded tactical missile. The missile will be able to strike targets outside the large map at long range and retain map visibility for 3 days to assess the strike's effectiveness. Re-launching resets this time.</ScorerLaunchDesc>
 
-  <DMSE.Letter.HuntdownThreat.Label>Huntdown</DMSE.Letter.HuntdownThreat.Label>
-  <DMSE.Letter.HuntdownThreat.Text>(TODO) blablabla, anyway {0} need you dead.</DMSE.Letter.HuntdownThreat.Text>
-
-  <DMSE.Alert.HuntdownThreat>Huntdown squad</DMSE.Alert.HuntdownThreat>
-
-  <DMSE.Alert.HuntdownThreat.Desc>military police of colonial fleet are searching the signal of missing Stele, it is only a matter of time they find you and send a hunting squad.</DMSE.Alert.HuntdownThreat.Desc>
-
-  <DMSE.Alert.HuntdownThreatCritical>Huntdown approaching</DMSE.Alert.HuntdownThreatCritical>
-  <DMSE.Alert.HuntdownThreatCritical.Desc>the position of Stele has been tracked down, hunting squad and possible air strike will arrive in no time, transfer before it's too late.</DMSE.Alert.HuntdownThreatCritical.Desc>
-
   <DMSE.Alert.Pods>{0} incoming threats — interception window: {1} left</DMSE.Alert.Pods>
   <!-- Tooltip detail lines for incoming-threat alert -->
   <DMSE.Alert.Pods.Window.Midcourse>Midcourse intercept window: {0}</DMSE.Alert.Pods.Window.Midcourse>

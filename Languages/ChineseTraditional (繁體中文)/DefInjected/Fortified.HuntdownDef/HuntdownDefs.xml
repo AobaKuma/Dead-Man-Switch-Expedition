@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: deviant huntdown -->
+  <DMSE_DeviantHuntdown.label>脫序者追緝</DMSE_DeviantHuntdown.label>
+  <!-- EN: Huntdown -->
+  <DMSE_DeviantHuntdown.letterLabel>追捕</DMSE_DeviantHuntdown.letterLabel>
+  <!-- EN: (TODO) blablabla, anyway {0} need you dead. -->
+  <DMSE_DeviantHuntdown.letterText>(此處省略200字)，總之{0}要你死。</DMSE_DeviantHuntdown.letterText>
+  <!-- EN: Huntdown squad -->
+  <DMSE_DeviantHuntdown.alertLabel>追捕小隊</DMSE_DeviantHuntdown.alertLabel>
+  <!-- EN: Huntdown approaching -->
+  <DMSE_DeviantHuntdown.alertLabelCritical>追捕正在逼近</DMSE_DeviantHuntdown.alertLabelCritical>
+  <!-- EN: military police of colonial fleet are searching the signal of missing Stele, it is only a matter of time they find you and send a hunting squad. -->
+  <DMSE_DeviantHuntdown.alertExplanation>殖民艦隊的特別行動組正在搜尋石碑所散發出的輻射訊號，他們找到你並派出追捕小隊只是時間問題。</DMSE_DeviantHuntdown.alertExplanation>
+  <!-- EN: the position of Stele has been tracked down, hunting squad and possible air strike will arrive in no time, transfer before it's too late. -->
+  <DMSE_DeviantHuntdown.alertExplanationCritical>石碑的位置已被追蹤，追捕小隊和可能的空襲將很快到達，請在為時已晚之前轉移。</DMSE_DeviantHuntdown.alertExplanationCritical>
+  
+</LanguageData>

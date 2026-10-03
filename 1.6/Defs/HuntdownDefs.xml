@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- 叛逃者開局的追緝：殖民艦隊循著石碑訊號追殺玩家（Fortified.HuntdownDef，見 FFF Docs/Huntdown_Usage.md）。
+       Deviant start: the Colonial Fleet hunts the player by the stele's signal. -->
+  <Fortified.HuntdownDef>
+    <defName>DMSE_DeviantHuntdown</defName>
+    <label>deviant huntdown</label>
+    <faction>DMS_Army</faction>
+    <goodwillChangeOnStart>-200</goodwillChangeOnStart>
+    <!-- 之後換成指定 Pawn 與解密建築被摧毀時結束（改用 requiredThings 或自訂 workerClass）。
+         TODO: end on a specific pawn / the decoder being destroyed (requiredThings or a custom workerClass). -->
+    <requireGravEngine>true</requireGravEngine>
+    <followGravship>true</followGravship>
+    <letterLookTargets>
+      <li>PilotConsole</li>
+    </letterLookTargets>
+    <letterLabel>Huntdown</letterLabel>
+    <letterText>(TODO) blablabla, anyway {0} need you dead.</letterText>
+    <alertLabel>Huntdown squad</alertLabel>
+    <alertLabelCritical>Huntdown approaching</alertLabelCritical>
+    <alertExplanation>military police of colonial fleet are searching the signal of missing Stele, it is only a matter of time they find you and send a hunting squad.</alertExplanation>
+    <alertExplanationCritical>the position of Stele has been tracked down, hunting squad and possible air strike will arrive in no time, transfer before it's too late.</alertExplanationCritical>
+  </Fortified.HuntdownDef>
+
+</Defs>

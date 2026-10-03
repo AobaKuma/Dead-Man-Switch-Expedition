@@ -21,22 +21,6 @@
   <!-- EN: Launches the loaded tactical missile. The missile will be able to strike targets outside the large map at long range and retain map visibility for 3 days to assess the strike's effectiveness. Re-launching resets this time. -->
   <ScorerLaunchDesc>發射裝載的戰術導彈，導彈將能夠遠程打擊大地圖外的目標，並保留3天的地圖可見性用於評估打擊效果，再次發射可以重置該時間。</ScorerLaunchDesc>
 
-  <!-- EN: Huntdown -->
-  <DMSE.Letter.HuntdownThreat.Label>追捕</DMSE.Letter.HuntdownThreat.Label>
-  <!-- EN: (TODO) blablabla, anyway {0} need you dead. -->
-  <DMSE.Letter.HuntdownThreat.Text>(此處省略200字)，總之{0}要你死。</DMSE.Letter.HuntdownThreat.Text>
-
-  <!-- EN: Huntdown squad -->
-  <DMSE.Alert.HuntdownThreat>追捕小隊</DMSE.Alert.HuntdownThreat>
-
-  <!-- EN: military police of colonial fleet are searching the signal of missing Stele, it is only a matter of time they find you and send a hunting squad. -->
-  <DMSE.Alert.HuntdownThreat.Desc>殖民艦隊的特別行動組正在搜尋石碑所散發出的輻射訊號，他們找到你並派出追捕小隊只是時間問題。</DMSE.Alert.HuntdownThreat.Desc>
-
-  <!-- EN: Huntdown approaching -->
-  <DMSE.Alert.HuntdownThreatCritical>追捕正在逼近</DMSE.Alert.HuntdownThreatCritical>
-  <!-- EN: the position of Stele has been tracked down, hunting squad and possible air strike will arrive in no time, transfer before it's too late. -->
-  <DMSE.Alert.HuntdownThreatCritical.Desc>石碑的位置已被追蹤，追捕小隊和可能的空襲將很快到達，請在為時已晚之前轉移。</DMSE.Alert.HuntdownThreatCritical.Desc>
-
   <!-- EN: {0} drop pods will breach in {1} -->
   <DMSE.Alert.Pods>{0} 個來襲目標 — 攔截窗口剩餘 {1}</DMSE.Alert.Pods>
   <DMSE.Alert.Pods.Window.Midcourse>中過程攔截窗口：{0}</DMSE.Alert.Pods.Window.Midcourse>

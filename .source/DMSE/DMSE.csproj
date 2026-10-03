@@ -90,7 +90,6 @@
     <Compile Include="CompDurabilityDecay.cs" />
     <Compile Include="CompOxygenCandle.cs" />
     <Compile Include="CompVacuumPump.cs" />
-    <Compile Include="ScenPart_Huntdown.cs" />
     <Compile Include="Scorer\Alerts_Exist.cs" />
     <Compile Include="Scorer\CompPlaySoundOnSpawn.cs" />
     <Compile Include="CompBuildingExtraRenderer.cs" />

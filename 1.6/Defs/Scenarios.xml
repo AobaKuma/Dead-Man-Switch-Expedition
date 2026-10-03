@@ -59,8 +59,9 @@
           <gravshipStructure>DMSE_ScenarioGravship</gravshipStructure>
         </li>
 
-        <li Class="DMSE.ScenPart_Huntdown">
+        <li Class="Fortified.ScenPart_Huntdown">
           <def>DMSE_Huntdown</def>
+          <huntdown>DMSE_DeviantHuntdown</huntdown>
         </li>
 
         <li Class="ScenPart_DisableQuest">
@@ -92,7 +93,7 @@
     <defName>DMSE_Huntdown</defName>
     <label>deviant huntdown</label>
     <category>Misc</category>
-    <scenPartClass>DMSE.ScenPart_Huntdown</scenPartClass>
+    <scenPartClass>Fortified.ScenPart_Huntdown</scenPartClass>
     <maxUses>1</maxUses>
     <preventRemovalOfFaction>DMS_Army</preventRemovalOfFaction>
   </ScenPartDef>
