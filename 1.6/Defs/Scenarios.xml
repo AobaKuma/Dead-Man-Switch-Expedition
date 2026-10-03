@@ -62,6 +62,7 @@
         <li Class="Fortified.ScenPart_Huntdown">
           <def>DMSE_Huntdown</def>
           <huntdown>DMSE_DeviantHuntdown</huntdown>
+          <bindStartingPawn>true</bindStartingPawn>
         </li>
 
         <li Class="ScenPart_DisableQuest">

@@ -8,10 +8,15 @@
     <label>deviant huntdown</label>
     <faction>DMS_Army</faction>
     <goodwillChangeOnStart>-200</goodwillChangeOnStart>
-    <!-- 之後換成指定 Pawn 與解密建築被摧毀時結束（改用 requiredThings 或自訂 workerClass）。
-         TODO: end on a specific pawn / the decoder being destroyed (requiredThings or a custom workerClass). -->
+    <!-- 綁定開局角色（ScenPart 的 bindStartingPawn）：他死亡，或在軍事法庭受審結案時追緝結束。
+         解密建築被摧毀時結束仍待補（requiredThings 或自訂 workerClass）。
+         Bound to the starting pawn (ScenPart bindStartingPawn): ends when they die or their court-martial concludes.
+         TODO: also end when the decoder is destroyed (requiredThings or a custom workerClass). -->
+    <stopWhenBoundPawnLost>true</stopWhenBoundPawnLost>
     <requireGravEngine>true</requireGravEngine>
     <followGravship>true</followGravship>
+    <raidArrivalMode>RandomDrop</raidArrivalMode>
+    <raidStrategy>ImmediateAttack</raidStrategy>
     <letterLookTargets>
       <li>PilotConsole</li>
     </letterLookTargets>
