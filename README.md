@@ -2,6 +2,7 @@
 
 > 開發文檔：https://docs.qq.com/doc/DRnhtVGJYVU5SUndD
 > 遠程作戰系統技術說明：[docs/BVR_Missile_系統流程.md](docs/BVR_Missile_系統流程.md)
+> 轉移飛行重構規劃（設計稿）：[docs/CelestialTransfer_轉移飛行重構.md](docs/CelestialTransfer_轉移飛行重構.md)
 
 《Dead Man's Switch》的 Odyssey 擴充。以太空 / 軌道 / 遠程作戰為主題，在 DMS Core 的基礎上加入超視距攔截、導彈裝配與發射、天體轉移飛行、真空製造與軌道平台等內容。
 
