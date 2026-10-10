@@ -2,6 +2,8 @@
 
 > 狀態：**設計稿（尚未實作）**　｜　撰寫：2026-10-10　｜　依據：`.source/DMSE/CelestialTransfer` 現行程式碼 + RimWorld 1.6 / Odyssey 原版原始碼
 >
+> 修訂 2026-10-10：結構樁連結改為**玩家以 Gizmo 手動建立**（§3-2、§3-3），鋼樑依玩家建立的連結渲染（§3-9）。
+>
 > 本文是重構的實作藍圖：先盤點現況，再逐項定義新系統的 Def、Comp、演算法、狀態機與分期驗收方式。數值皆為**建議初值**，集中在一個 Tuning Def 便於後續平衡。
 
 ---
@@ -11,8 +13,8 @@
 | # | 需求 | 設計要點 | 主要類別 / Def |
 |---|---|---|---|
 | 1 | 不再依附逆重船，獨立控制台 | 新建築「轉移飛行控制台」；完全不碰 `Building_GravEngine` / `CompPilotConsole`，移除駕駛台攔截 patch | `DMSE_TransferConsole`、`CompTransferConsole`、`ITab_TransferShip` |
-| 2 | 3×3 結構樁界定飛行範圍；需連結成一體 | 每根樁覆蓋一個方形範圍；覆蓋範圍**相接或重疊**即連結；同一連通分量＝一艘船；範圍內非虛空的地板與其上物件＝船體 | `DMSE_StructuralPile`、`CompStructuralPile`、`MapComponent_PileNetwork`、`ShipFootprint` |
-| 3 | 燃料 ∝ 連結的樁數；地板下渲染鋼樑 | 燃料公式對樁數（權重和）線性；`SectionLayer` 於 `AltitudeLayer.BelowTerrain` 依連結（最小生成樹）畫鋼樑 | `TransferFlightMath`、`SectionLayer_StructuralBeams` |
+| 2 | 3×3 結構樁界定飛行範圍；需連結成一體 | 每根樁覆蓋一個方形範圍；**連結由玩家手動建立**：選取結構樁 → Gizmo → 點選範圍內另一根樁；以連結相連的樁＝一艘船；範圍內非虛空的地板與其上物件＝船體 | `DMSE_StructuralPile`、`CompStructuralPile`、`PileLinkUtility`、`MapComponent_PileNetwork` |
+| 3 | 燃料 ∝ 連結的樁數；地板下渲染鋼樑 | 燃料公式對網路內（經連結相連的）樁數線性；`SectionLayer` 於 `AltitudeLayer.BelowTerrain` 為玩家建立的**每一條連結**畫一根鋼樑 | `TransferFlightMath`、`SectionLayer_StructuralBeams` |
 | 4 | 只在起終點點火加減速；飛行中殖民地正常運作（含穿梭機起降） | 起飛時把船體「分離」成獨立的船體地圖，掛在會移動的 `SpaceMapParent` 子類上；狀態機：倒數 → 分離 → 離軌點火 → 滑行 → 入軌點火 → 抵達；只有點火階段有推力效果 | `WorldObject_TransferShip`、`ShipSeparationUtility`、`TransferPhase` |
 | 5 | 前期化學燃料引擎 | 新增 `DMSE_ChemicalTransferEngine`：中推力、燃耗基準 1.0、前期研究即可建造 | `CompTransferEngine` |
 | 6 | 熱核推進器改低燃耗大推力 | `DMSE_NuclearThruster` 改掛 `CompTransferEngine`：高推力、燃耗倍率 0.35；需核融合爐支援 | 同上 + `DMSE_FusionCore` 角色調整 |
@@ -60,7 +62,8 @@
 | 名詞 | 定義 |
 |---|---|
 | 結構樁（Structural Pile） | 3×3 建築，提供一個方形「覆蓋範圍」 |
-| 結構網路（Pile Network） | 覆蓋範圍相接/重疊的樁所構成的連通分量；**一個網路＝一艘可移動的船** |
+| 結構連結（Pile Link） | 玩家以結構樁 Gizmo 在兩根樁之間手動建立的雙向連結；地板下以鋼樑呈現 |
+| 結構網路（Pile Network） | 經由連結相連的樁所構成的連通分量；**一個網路＝一艘可移動的船**。未連結的樁不屬於同一艘船，即使覆蓋範圍重疊 |
 | 船體範圍（Footprint） | 網路覆蓋範圍聯集 ∩ 非虛空地形的格子 |
 | 船載物（Manifest） | 完整位於船體範圍內的建築、站在範圍內的 pawn / 物品 / 其他物件 |
 | 船體地圖（Ship Map） | 起飛時新建的地圖，船體範圍原座標搬入；飛行期間正常運作 |
@@ -84,8 +87,9 @@
 
 ```mermaid
 flowchart TD
+    P[玩家放置結構樁<br/>以 Gizmo 手動建立連結] --> A
     A[玩家在控制台制定轉移計畫<br/>選目的地 / 檢視燃料與 ETA] --> B{整備檢查<br/>TransferReadiness}
-    B -- 失敗 --> A
+    B -- 失敗 --> P
     B -- 通過 --> C[殖民者操作控制台<br/>JobDriver_InitiateTransfer]
     C --> D[倒數 Countdown<br/>警報：範圍外人員 / 尾焰區]
     D -- 玩家中止 --> A
@@ -98,7 +102,7 @@ flowchart TD
 
 ---
 
-## 3. 結構樁與結構網路（需求 2）
+## 3. 結構樁與結構網路（需求 2、3）
 
 ### 3-1. 建築 Def：`DMSE_StructuralPile`
 
@@ -120,6 +124,8 @@ flowchart TD
   <comps>
     <li Class="DMSE.CompProperties_StructuralPile">
       <coverageRadius>6</coverageRadius>   <!-- 以中心格為準的 Chebyshev 半徑：6 → 13×13 -->
+      <linkRange>13</linkRange>            <!-- 可連結的最大中心距離（Chebyshev） -->
+      <maxLinks>4</maxLinks>               <!-- 每根樁最多連結數；0 = 不限 -->
       <massWeight>1</massWeight>           <!-- 燃料/質量權重；標準樁 = 1 -->
     </li>
   </comps>
@@ -131,17 +137,102 @@ flowchart TD
 | 欄位 | 預設 | 說明 |
 |---|---|---|
 | `coverageRadius` | 6 | 方形覆蓋半徑（Chebyshev）。方形比圓形更貼合格狀建造，邊界一目了然 |
-| `linkRange` | `-1`（自動 = `2 × coverageRadius + 1`） | 兩樁中心 Chebyshev 距離 ≤ linkRange 即連結。自動值的意義是「覆蓋範圍相接或重疊就連結」，因此**任一格不會同時屬於兩個網路** |
+| `linkRange` | 13 | Gizmo 可選取的連結對象範圍：兩樁中心 Chebyshev 距離 ≤ `linkRange`（兩端不同時取較小者）。預設值 `2 × coverageRadius + 1` 的意義是：在此距離內連結的兩根樁，覆蓋範圍必然相接或重疊，船體範圍不會中斷。調大可做「橫跨虛空的鋼樑」，但中間的虛空本來就不會被帶走 |
+| `maxLinks` | 4 | 每根樁最多幾條連結，限制鋼樑雜亂；0 = 不限 |
 | `massWeight` | 1 | 需求 3 的「樁數」實際上取 Σ massWeight，方便日後做重型/輕型樁變體；標準樁全為 1 時即等於樁數 |
-| `beamGraphic` 系列 | — | 鋼樑貼圖（見 §3-7） |
+| `beamGraphic` 系列 | — | 鋼樑貼圖（見 §3-9） |
 
-> 不變式：若各樁 `coverageRadius` 不同，連結條件改用「兩樁覆蓋方形相接或重疊」（`|dx| ≤ r1 + r2 + 1` 且 `|dz| ≤ r1 + r2 + 1`），仍維持「格子不跨網路」。
+### 3-2. 手動連結（結構樁 Gizmo）
 
-### 3-2. 船體範圍（Footprint）判定
+**原則**：連結**只能由玩家建立**。結構樁蓋好時是獨立的；即使兩根樁的覆蓋範圍重疊，沒有連結就不是同一艘船。玩家選取一根結構樁，用 Gizmo 在其 `linkRange` 內點選另一根結構樁，才建立一條連結。連結是雙向的、即時生效、不耗材料（是否改為需施工見 §12）。
+
+**操作流程**
+
+1. 選取結構樁 → Gizmo「建立連結」。
+2. 進入選取目標模式：
+   - 以來源樁為中心畫出 `linkRange` 方形（`GenDraw.DrawFieldEdges`）；
+   - 範圍內所有可連結的樁以淡色線預覽（`GenDraw.DrawLineBetween`）；
+   - 滑鼠指向的樁：可連結 → 綠色連線；不可連結 → 紅色連線，並以 `Widgets.MouseAttachedLabel` 在游標旁顯示原因。
+3. 左鍵點擊目標樁 → 立即建立連結並播放音效；若這條連結合併了兩個網路，顯示訊息「結構網路已合併：共 N 根結構樁」。
+4. **按住 Shift 點擊** → 建立後自動以目標樁為新來源，繼續選下一根（連續拉樑）。右鍵或 Esc 結束。
+
+**連結條件** `PileLinkUtility.CanLink(a, b, out string reason)`
+
+| 條件 | 失敗時顯示 |
+|---|---|
+| `b` 是已完工的結構樁（非藍圖/框架）、與 `a` 同地圖、同為玩家陣營 | `DMSE.Pile.Link.NotPile` |
+| `b ≠ a` | （不顯示，直接視為無效目標） |
+| 兩樁中心 Chebyshev 距離 ≤ `min(a.linkRange, b.linkRange)` | `DMSE.Pile.Link.OutOfRange` |
+| 兩者尚未連結 | `DMSE.Pile.Link.AlreadyLinked` |
+| 兩者連結數皆 < `maxLinks` | `DMSE.Pile.Link.MaxLinks` |
+| 兩者所屬網路都不在倒數中（§4-2） | `DMSE.Pile.Link.Locked` |
+
+**Gizmo 一覽**（`CompStructuralPile.CompGetGizmosExtra`，僅玩家陣營）
+
+| Gizmo | 行為 | 停用條件 |
+|---|---|---|
+| 建立連結 | 上述選取模式 | 已達 `maxLinks`；所屬網路倒數中 |
+| 解除連結 | 彈出 `FloatMenu`，每條連結一個選項（標示對方位置與距離；滑鼠移過時高亮該條鋼樑），另加「解除全部連結」 | 沒有連結；所屬網路倒數中 |
+| 連結選取的結構樁（選用 QoL） | 恰好選取 2 根且符合連結條件時出現，一鍵連結 | — |
+| 選取整個網路（選用 QoL） | 把同網路所有結構樁加入選取，方便檢視範圍 | — |
+
+**實作骨架**
+
+```csharp
+public class CompStructuralPile : ThingComp
+{
+    private List<Thing> links = new();          // 雙向各存一份，Scribe_Collections LookMode.Reference
+    public IReadOnlyList<Thing> Links => links;
+
+    private void BeginLinkTargeting()
+    {
+        Find.Targeter.BeginTargeting(
+            PileTargetingParams(),                                   // canTargetBuildings = true，validator：有 CompStructuralPile
+            action:         t => OnLinkTargetChosen(t.Thing),
+            highlightAction: t => { if (PileLinkUtility.CanLink(this, t.Thing, out _)) GenDraw.DrawTargetHighlight(t); },
+            targetValidator: t => PileLinkUtility.CanLink(this, t.Thing, out _),
+            onGuiAction:    t => { if (t.Thing != null && !PileLinkUtility.CanLink(this, t.Thing, out string why) && why != null)
+                                       Widgets.MouseAttachedLabel(why); },
+            onUpdateAction: DrawLinkPreview);                        // 範圍框 + 候選淡線 + 指向線
+    }
+
+    private void OnLinkTargetChosen(Thing other)
+    {
+        var otherComp = other.TryGetComp<CompStructuralPile>();
+        PileLinkUtility.Link(this, otherComp);                       // 兩端 links.Add + MapComponent_PileNetwork.MarkDirty
+        if (Event.current.shift && otherComp.CanAddLink)
+            otherComp.BeginLinkTargeting();                          // 連續連結
+    }
+}
+```
+
+- 使用的是 1.6 `Targeter.BeginTargeting(TargetingParameters, Action<LocalTargetInfo> action, Action<LocalTargetInfo> highlightAction, Func<LocalTargetInfo,bool> targetValidator, Pawn caster = null, Action actionWhenFinished = null, Texture2D mouseAttachment = null, bool playSoundOnAction = true, Action<LocalTargetInfo> onGuiAction = null, Action<LocalTargetInfo> onUpdateAction = null)`。
+- **連續連結可行的原因**：`Targeter.ProcessInputEvents` 在呼叫 `action` 之後才依 `needsStopTargetingCall` 決定是否 `StopTargeting()`；而此 overload 的 `BeginTargeting` 會把 `needsStopTargetingCall` 歸零，所以在 `action` 內再開一次選取不會被立刻關掉。原版 Shift 多選（`targetingSource.MultiSelect && Event.current.shift`）也是同一手法。
+- `targetValidator` 回傳 false 時，原版會保持選取模式（不關閉），玩家可以直接改點別根。
+
+**連結的存檔與生命週期**
+
+| 事件 | 處理 |
+|---|---|
+| 存讀檔 | 每根樁以 `Scribe_Collections.Look(ref links, "links", LookMode.Reference)` 存對方參照；`PostLoadInit` 移除 null / 已摧毀者；`MapComponent_PileNetwork.FinalizeInit` 補齊單向殘缺（A 有 B、B 沒有 A 就補上） |
+| 樁被摧毀、拆除、打包搬運（Minify） | `PostDeSpawn` 中解除這根樁的所有連結（兩端都移除）並 `MarkDirty` |
+| **分離（§7）** | 結構樁會以 `DeSpawn(DestroyMode.WillReplace)` 搬到船體地圖，此時 `parent.BeingTransportedOnGravship == true` → **不可**解除連結；參照的是同一批 Thing，搬過去後連結原樣保留 |
+| 被敵方佔領 / 陣營改變 | 解除所有連結 |
+
+### 3-3. 結構網路與重疊規則
+
+- **網路**＝以玩家建立的連結為邊，求出的連通分量。未連結的樁自成一個只有一根樁的網路（單樁也能當一艘小船）。
+- **覆蓋重疊**：因為連結是手動的，兩個**不同**網路的覆蓋範圍可能重疊。重疊格稱為「爭議格」：
+  - 選取疊加層中以紅色標示；
+  - 若讓起飛的一方直接帶走爭議格，另一方的建築可能被切開或被誤帶走，因此規則採**起飛時擋下**：整備檢查回報 Error「與其他結構網路覆蓋重疊 N 格（請建立連結或移開結構樁）」；
+  - 平常建造時允許重疊（玩家可能正在擴建、尚未拉好連結），只做提示。
+- **附近未連結的樁**：任何不在本網路、但位於本網路某根樁 `linkRange` 內的結構樁，整備檢查給 Warning「附近有 N 根未連結的結構樁，它們及其範圍不會隨船移動」，避免玩家以為「放在旁邊就會一起走」。
+
+### 3-4. 船體範圍（Footprint）判定
 
 ```
 Footprint(network):
-  covered = ⋃ 每根樁的 CellRect.CenteredOn(pile.Position, r)，裁切到地圖邊界
+  covered = ⋃ 網路內每根樁的 CellRect.CenteredOn(pile.Position, r)，裁切到地圖邊界
   footprint = { c ∈ covered | IsSolidCell(c) }
 
 IsSolidCell(c):
@@ -153,7 +244,7 @@ IsSolidCell(c):
 - 軌道平台：`DMS_OrbitalPlatform`（及其他 mod 平台地形）同理。
 - 範圍內的虛空格不搬（上面也不會有東西，`Space` 地形 `passability = Impassable`）。
 
-### 3-3. 船載物納入規則
+### 3-5. 船載物納入規則
 
 | 物件 | 規則 | 備註 |
 |---|---|---|
@@ -165,56 +256,61 @@ IsSolidCell(c):
 | `Mote` / `Skyfaller` | 不搬 | 同原版 `Gravship.ShouldBringOnGravship` |
 | 地圖入口（`MapPortal`，例：DMSE 真空密封室） | 搬，並把對應 `PocketMapParent.sourceMap` 改指船體地圖 | 否則口袋地圖會在原地圖棄置時被一起銷毀（`Game` 內 `destroyOnParentMapAbandoned`） |
 
-### 3-4. `MapComponent_PileNetwork`
+### 3-6. `MapComponent_PileNetwork`
 
 ```csharp
 public class MapComponent_PileNetwork : MapComponent
 {
-    private readonly List<CompStructuralPile> piles = new();   // 不存檔，FinalizeInit 時由 listerBuildings 重建
+    private readonly List<CompStructuralPile> piles = new();   // 不存檔，FinalizeInit 時由 listerBuildings 重建；連結本身存在各樁 Comp 上
     private List<PileNetwork> networks;                         // 快取
     private bool dirty = true;
 
     public void Register(CompStructuralPile p)   { piles.Add(p); MarkDirty(); }   // PostSpawnSetup
     public void Deregister(CompStructuralPile p) { piles.Remove(p); MarkDirty(); } // PostDeSpawn
-    public void MarkDirty() { dirty = true; map.mapDrawer.WholeMapChanged(DMSE_DefOf.DMSE_StructuralBeams); }  // 重建網路時 footprint 一併失效
+    public void MarkDirty() { dirty = true; map.mapDrawer.WholeMapChanged(DMSE_DefOf.DMSE_StructuralBeams); }  // 連結增刪、樁增刪都呼叫；footprint 一併失效
 
     public IReadOnlyList<PileNetwork> Networks { get { if (dirty) Rebuild(); return networks; } }
     public PileNetwork NetworkOf(Thing pile);
-    public PileNetwork NetworkAt(IntVec3 c);   // 依 covered 判定
+    public PileNetwork NetworkAt(IntVec3 c);   // 依 covered 判定；爭議格回傳 null
 }
 
 public class PileNetwork
 {
     public List<CompStructuralPile> Piles;
-    public List<(CompStructuralPile a, CompStructuralPile b)> BeamEdges; // 最小生成樹，給渲染用
+    public List<(CompStructuralPile a, CompStructuralPile b)> Links; // 玩家建立的連結（去重：a.thingIDNumber < b.thingIDNumber），鋼樑渲染直接用
     public float MassWeight;                    // Σ massWeight（需求 3）
     public HashSet<IntVec3> Covered;            // 覆蓋聯集
+    public HashSet<IntVec3> ContestedCells;     // 與其他網路重疊的格子（§3-3）
     public HashSet<IntVec3> Footprint;          // 懶計算，地形變動時失效
     public CompTransferConsole PrimaryConsole;  // 網路內第一個可用控制台
 }
 ```
 
-- **Rebuild**：樁數 P 通常 < 100，直接 O(P²) 兩兩判斷連結 → 併查集求連通分量 → 每個分量再用 Kruskal 求最小生成樹（MST）作為 `BeamEdges`。連通性與 MST 等價，所以「是否連成一體」就看 MST 是否只有一棵。
-- **Footprint 失效**：地形改變（鋪地板、挖礦、拆地基）會改變 footprint。不必即時追蹤；在「被查詢且距上次計算 > 250 tick」或 `TerrainGrid.SetTerrain`/`SetFoundation`/`RemoveFoundation` 的 postfix 中標記 `footprintDirty`（後者只在格子落在某網路的 `Covered` 內時才標記）。起飛時一律強制重算。
+- **Rebuild**：直接沿著各樁的 `links` 走訪（BFS 或併查集），O(樁數 + 連結數)；不再需要兩兩比較距離。接著算各網路 `Covered`，再用一張「格子 → 網路」暫存表找出 `ContestedCells`。
+- **Footprint 失效**：地形改變（鋪地板、挖礦、拆地基）會改變 footprint。不必即時追蹤；在「被查詢且距上次計算 > 250 tick」或 `TerrainGrid.SetTerrain`/`SetFoundation`/`RemoveFoundation` 的 postfix 中標記失效（後者只在格子落在某網路的 `Covered` 內時才標記）。起飛時一律強制重算。
 
-### 3-5. 放置與檢視 UI
+### 3-7. 放置與檢視 UI
 
 - `PlaceWorker_StructuralPile.DrawGhost`：
-  - 以 `GenDraw.DrawFieldEdges` 畫出預定覆蓋方形。
-  - 對 linkRange 內的既有樁以 `GenDraw.DrawLineBetween` 畫預覽連線；若會**合併**兩個網路，用不同顏色提示。
+  - 以 `GenDraw.DrawFieldEdges` 畫出預定覆蓋方形；
+  - 以較淡的框畫出 `linkRange`，並把範圍內的既有結構樁標成「可連結對象」（只是提示，**放置後不會自動連結**）；
+  - 若預定覆蓋範圍與某個網路重疊，以紅色提示「蓋好後請記得建立連結」。
 - `AllowsPlacing`：中心 3×3 必須是 solid cell（不能蓋在虛空上）。
-- 選取任一樁或控制台時（`CompStructuralPile.PostDrawExtraSelectionOverlays`）：畫出整個網路的 footprint 邊界、所有樁的連線、推進器尾焰區；跨界建築以紅框標示。
+- 選取任一樁或控制台時（`CompStructuralPile.PostDrawExtraSelectionOverlays`）：畫出整個網路的 footprint 邊界、所有連結線、推進器尾焰區；跨界建築以紅框、爭議格以紅色、附近未連結的樁以黃框標示。
 
-### 3-6. 樁被摧毀/拆除時
+### 3-8. 樁或連結變動時
 
-- 網路即時重算；若船正在**倒數**階段 → 自動中止並發信件。
-- **飛行中**（已分離）：船體已是獨立地圖，樁的增減只影響**下一次**轉移，不會讓船在飛行中「解體」。（保持簡單，避免飛行中切割地圖。）
+- 網路即時重算；拆掉中間的樁或解除連結可能讓網路分裂，此時顯示訊息「結構網路已分裂」。
+- 若該網路正在**倒數** → 連結 Gizmo 本來就被鎖住；若仍因樁被摧毀而改變 → 自動中止並發信件。
+- **飛行中**（已分離）：船體已是獨立地圖，樁與連結的增減只影響**下一次**轉移，不會讓船在飛行中「解體」。（保持簡單，避免飛行中切割地圖。）
 
-### 3-7. 地板下鋼樑渲染（需求 3 後半）
+### 3-9. 地板下鋼樑渲染（需求 3 後半）
 
 **原理**：Odyssey 的 `Space` 地形 `dontRender = true`，虛空格看得到背景；`AltitudeLayer.BelowTerrain = 0` 低於所有地形。因此把鋼樑畫在 `BelowTerrain`：
 - 有地板的格子 → 被地形蓋住，看不到；
 - 虛空格 / 地形邊緣的透明處 → 鋼樑透出，呈現「船體骨架伸出小行星/平台」的效果。
+
+**渲染對象**：**正好是玩家建立的每一條連結**——一條連結一根鋼樑，玩家拉了什麼就看到什麼（`maxLinks` 已限制雜亂程度，不需要再做最小生成樹之類的篩選）。
 
 **實作**：`SectionLayer_StructuralBeams : SectionLayer`（原版 `Section` 會以 `typeof(SectionLayer).AllSubclassesNonAbstract()` 自動實例化所有子類，不需註冊）。
 
@@ -233,7 +329,7 @@ public class SectionLayer_StructuralBeams : SectionLayer
         float alt = AltitudeLayer.BelowTerrain.AltitudeFor();
         CellRect rect = section.CellRect;
         foreach (var net in comp.Networks)
-        foreach (var (a, b) in net.BeamEdges)
+        foreach (var (a, b) in net.Links)
         {
             Vector3 from = a.parent.TrueCenter(), to = b.parent.TrueCenter();
             float angle = (to - from).AngleFlat();
@@ -242,14 +338,13 @@ public class SectionLayer_StructuralBeams : SectionLayer
                 if (rect.Contains(mid.ToIntVec3()))
                     Printer_Plane.PrintPlane(this, mid.WithY(alt), BeamSegmentSize, BeamMat, angle);
         }
-        // 節點：樁中心畫 Center 貼圖；度數 = 1 的樁在連線方向外側畫 End 端蓋
+        // 節點：每根樁中心畫 Center 貼圖；每條連結在樁的 3×3 邊緣處畫 End 端蓋（接頭）
         FinalizeMesh(MeshParts.All);
     }
 }
 ```
 
-- **渲染邊**：只畫 MST 邊，避免多樁密集時變成蜘蛛網；Tuning 可選「再加畫長度 ≤ 0.6 × linkRange 的冗餘邊」做桁架感。
-- **重建時機**：網路變動時 `map.mapDrawer.WholeMapChanged(DMSE_StructuralBeams)`（變動頻率低，整圖重建可接受）。需要新增：
+- **重建時機**：建立/解除連結、樁增刪時 `map.mapDrawer.WholeMapChanged(DMSE_StructuralBeams)`（變動頻率低，整圖重建可接受）。需要新增：
 
 ```xml
 <MapMeshFlagDef><defName>DMSE_StructuralBeams</defName></MapMeshFlagDef>
@@ -257,8 +352,9 @@ public class SectionLayer_StructuralBeams : SectionLayer
 
   `MapMeshFlagDef` 以 `ulong` 位元遮罩實作（`FlagDefUtility.SetMaskFromIndex`，可隱式轉 `ulong`），全遊戲上限 64 個；只新增這一個即可，不要每種效果各開一個。
 
+- **地面上的提示線**：鋼樑在地板下看不到，所以選取樁/控制台時另以 `GenDraw.DrawLineBetween` 在上層畫出連結線（§3-7），讓玩家在有地板的區域也能確認連結。
 - **美術**：repo 已有 `Textures/Things/Building/StructuralFrame/{Center,Section,End}`（`building` / `building_top` 兩層，目前用於裝飾建築 `DMSE_StructuralFrame_*`）。初期可直接沿用 `Section` 做樑段、`Center` 做節點、`End` 做端蓋；但這組是帶正面透視的立面圖，地板下的俯視樑建議美術另出一組 **俯視、可無縫平鋪** 的樑段貼圖（建議 64×64 / 每格一段）。
-- 任意角度：`Printer_Plane.PrintPlane(layer, center, size, mat, rot)` 支援浮點旋轉，樑段可沿任意方向。若想要純直角桁架風格，可改為 L 形（先 X 後 Z）兩段直線，屬美術選擇。
+- 任意角度：`Printer_Plane.PrintPlane(layer, center, size, mat, rot)` 支援浮點旋轉，連結可沿任意方向。若想要純直角桁架風格，可改為 L 形（先 X 後 Z）兩段直線，屬美術選擇。
 
 ---
 
@@ -304,12 +400,13 @@ public class SectionLayer_StructuralBeams : SectionLayer
 4. **倒數**：作業完成 → `state = Countdown`。倒數期間：
    - `Alert_TransferPawnsOutside`：列出在原地圖、**不在** footprint 內的殖民者/囚犯/動物（左鍵輪流跳轉）。
    - `Alert_TransferExhaustDanger`：列出站在推進器尾焰區的 pawn。
-   - 每次 tick 檢查整備狀態，失敗就自動中止（例：樁被拆、燃料被搬走）。
+   - 本網路結構樁的「建立/解除連結」Gizmo 鎖定，避免倒數中改變船體範圍。
+   - 每 250 tick 檢查整備狀態，失敗就自動中止（例：樁被拆、燃料被搬走）。
 5. **分離**：倒數結束 → §7。
 
 ### 4-3. `ITab_TransferShip` 內容
 
-- 網路：樁數 / massWeight 合計 / footprint 格數 / 是否有跨界建築（可點擊跳轉）。
+- 網路：樁數 / 連結數 / massWeight 合計 / footprint 格數 / 跨界建築、爭議格、附近未連結的樁（皆可點擊跳轉）。
 - 推進：引擎清單（類型、推力、狀態：可用/尾焰受阻/無核融合爐支援/斷電/損壞）、總推力、TWR（低於門檻紅字）。
 - 燃料：燃料來源清單與總量、目前計畫需求、以現有燃料可達的最大距離。
 - 飛行中（控制台已在船體地圖上）：目前階段、階段剩餘時間、總進度、目的地、預計抵達日期。
@@ -325,10 +422,12 @@ public class SectionLayer_StructuralBeams : SectionLayer
 | 無可用引擎，或 TWR < `minTWR` | Error |
 | 燃料 < 計畫需求 | Error |
 | 存在跨界建築 | Error |
+| 與其他結構網路覆蓋重疊（爭議格，§3-3） | Error |
 | 已有另一艘船正從此地圖起飛（同一地圖同時只允許一個倒數中的計畫） | Error |
 | 範圍外有殖民者 / 囚犯 / 動物 | Warning |
 | footprint 內有 `bringAlongOnGravship = false` 的物件 | Warning |
 | pawn 站在尾焰區 | Warning |
+| 本網路樁的 `linkRange` 內有未連結的結構樁（§3-3） | Warning |
 
 ---
 
@@ -379,7 +478,7 @@ public static class TransferFuelSources { public static void RegisterProvider(Fu
 
 | 符號 | 定義 |
 |---|---|
-| `W` | 網路的 Σ massWeight（標準樁 = 樁數） |
+| `W` | 網路內（經連結相連的）所有樁的 Σ massWeight（標準樁 = 樁數）。未連結的樁不計入，也不會被帶走 |
 | `T` | Σ 可用引擎 `thrust` |
 | `TWR` | `T / W` |
 | `η` | 推力加權燃耗倍率 = Σ(thrustᵢ × fuelFactorᵢ) / T |
@@ -483,7 +582,6 @@ public static class TransferFuelSources { public static void RegisterProvider(Fu
   <coastHoursPerTile>2</coastHoursPerTile>
   <exhaustDamageIntervalTicks>60</exhaustDamageIntervalTicks>
   <carryNaturalRock>true</carryNaturalRock>
-  <drawRedundantBeams>false</drawRedundantBeams>
 </DMSE.TransferFlightTuningDef>
 ```
 
@@ -641,7 +739,7 @@ t ∈ [t_a + t_c, t_total]    : u = t − t_a − t_c;  p = 0.5·v·t_a + v·t_c
 
 ### 7-2. 必測案例（分離矩陣）
 
-儲存區 / 種植區 / 儲存群組（櫃子連動）/ bill 目標倉庫 / 床位與醫療床上的倒地者 / 囚犯與奴隸 / 動物與區域限制 / 徵召中的小人 / 搬運中的物品 / 藍圖與施工框架 / 可安裝物品（Minified）/ 電網（含跨界導線被切斷）/ 電池電量 / 房間溫度與真空 / 迷霧 / 屋頂（含小行星天然岩頂）/ 船上停著原版逆重船（GravEngine + Substructure）/ DMSE BVR 雷達與發射器（`CompBVRDevice` 重新註冊）/ 導彈架與彈藥 / 真空密封室（口袋地圖）/ 跨界建築（應被擋下）/ `bringAlongOnGravship = false` 的物件。
+儲存區 / 種植區 / 儲存群組（櫃子連動）/ bill 目標倉庫 / 床位與醫療床上的倒地者 / 囚犯與奴隸 / 動物與區域限制 / 徵召中的小人 / 搬運中的物品 / 藍圖與施工框架 / 可安裝物品（Minified）/ 電網（含跨界導線被切斷）/ 電池電量 / 房間溫度與真空 / 迷霧 / 屋頂（含小行星天然岩頂）/ 船上停著原版逆重船（GravEngine + Substructure）/ DMSE BVR 雷達與發射器（`CompBVRDevice` 重新註冊）/ 導彈架與彈藥 / 真空密封室（口袋地圖）/ 跨界建築（應被擋下）/ `bringAlongOnGravship = false` 的物件 / **結構樁連結**（分離後船上連結與鋼樑完整保留，原地圖不殘留指向船上樁的連結）。
 
 ### 7-3. 效能
 
@@ -681,7 +779,7 @@ footprint 上限約 30 樁 × 169 格 ≈ 5000 格，與一艘大型逆重船同
 | 刪除 | `Patch_CompPilotConsole_StartChoosingDestination.cs`、`FlightModeLauncher.cs`、`Dialog_SelectFlightMode.cs`、`Patch_CompGravshipFacility_CanBeActive.cs`（已全註解）、`ThingComp_Ship.cs`（空殼）、`ITravelingShip.cs`、`Patch_Visible.cs` |
 | 改寫 | `FlightUtility.cs` → `TransferFlightMath.cs` + `TransferReadiness.cs`；`Patch_Background.cs`（改認 `WorldObject_TransferShip`）；`VGECompatibility.cs` → 燃料來源 provider 註冊；`WorldObject_ImpactGravship.cs` → 併入 `WorldObject_TransferShip` |
 | 移入 `CelestialTransfer/Legacy/` | `WorldObject_Transfer.cs`、`MapComponent_Ship.cs`（僅供舊檔載入，見 10-2） |
-| 新增（C#） | `CompStructuralPile.cs`、`MapComponent_PileNetwork.cs`、`PileNetwork.cs`、`PlaceWorker_StructuralPile.cs`、`SectionLayer_StructuralBeams.cs`、`CompTransferConsole.cs`、`TransferPlan.cs`、`ITab_TransferShip.cs`、`Dialog_TransferPlan.cs`、`JobDriver_InitiateTransfer.cs`、`WorkGiver_InitiateTransfer.cs`、`Alerts_Transfer.cs`、`CompTransferEngine.cs`、`PlaceWorker_TransferEngine.cs`、`CompTransferReactor.cs`、`TransferFuelSources.cs`、`TransferFlightTuningDef.cs`、`WorldObject_TransferShip.cs`、`ShipSeparationUtility.cs`、`Patch_CompLaunchable_CanLaunch.cs`、`Patch_TravellingTransporters_Homing.cs`、`DebugActions_Transfer.cs` |
+| 新增（C#） | `CompStructuralPile.cs`（含連結 Gizmo 與選取模式）、`PileLinkUtility.cs`、`MapComponent_PileNetwork.cs`、`PileNetwork.cs`、`PlaceWorker_StructuralPile.cs`、`SectionLayer_StructuralBeams.cs`、`CompTransferConsole.cs`、`TransferPlan.cs`、`ITab_TransferShip.cs`、`Dialog_TransferPlan.cs`、`JobDriver_InitiateTransfer.cs`、`WorkGiver_InitiateTransfer.cs`、`Alerts_Transfer.cs`、`CompTransferEngine.cs`、`PlaceWorker_TransferEngine.cs`、`CompTransferReactor.cs`、`TransferFuelSources.cs`、`TransferFlightTuningDef.cs`、`WorldObject_TransferShip.cs`、`ShipSeparationUtility.cs`、`Patch_CompLaunchable_CanLaunch.cs`、`Patch_TravellingTransporters_Homing.cs`、`DebugActions_Transfer.cs` |
 | 新增（XML） | `ThingDefs_Buildings/DMSE_TransferFlight.xml`（樁、控制台、化學引擎、`DMSE_TransferEngineBase`）、`DMSE_TransferFlightTuning.xml`、`MapMeshFlagDef`、`JobDef`/`WorkGiverDef`、`WorldObjectDef DMSE_TransferShip`、`MapGeneratorDef DMSE_ShipVoid` |
 | 修改（XML） | `DMSE_Gravship.xml`（熱核推進器、核融合爐、燃料筒倉）、`Patches.xml`、`GravshipExpanded/Patches/Patch_VGE.xml`、三語系 Keyed / DefInjected |
 | 專案檔 | `DMSE.csproj` 為舊式專案、逐檔 `<Compile Include>`，新增/刪除檔案都要同步更新；VGE 專案同理 |
@@ -701,7 +799,9 @@ footprint 上限約 30 樁 × 169 格 ≈ 5000 格，與一艘大型逆重船同
 
 ### 10-4. 新增翻譯鍵（三語系）
 
-`DMSE.Transfer.*` 前綴：計畫/中止/倒數/各階段名稱、整備檢查各項原因、ITab 欄位、警報（範圍外人員、尾焰危險）、信件（分離完成、抵達、推進器全損減速、原據點棄置）、穿梭機點火禁飛原因、Debug 指令。舊 `DMSE.Flight.*` / `DMSE.Cannot.Reason.*` / `DMSE_ShipWarmUp*` 於遷移期結束後移除。
+`DMSE.Pile.*` 前綴：建立連結/解除連結/解除全部連結 Gizmo、各項無法連結原因（不是結構樁、超出範圍、已連結、達連結上限、倒數中鎖定）、網路合併/分裂訊息。
+
+`DMSE.Transfer.*` 前綴：計畫/中止/倒數/各階段名稱、整備檢查各項原因（含覆蓋重疊、附近未連結的樁）、ITab 欄位、警報（範圍外人員、尾焰危險）、信件（分離完成、抵達、推進器全損減速、原據點棄置）、穿梭機點火禁飛原因、Debug 指令。舊 `DMSE.Flight.*` / `DMSE.Cannot.Reason.*` / `DMSE_ShipWarmUp*` 於遷移期結束後移除。
 
 ---
 
@@ -710,8 +810,8 @@ footprint 上限約 30 樁 × 169 格 ≈ 5000 格，與一艘大型逆重船同
 | 期 | 內容 | 驗收 |
 |---|---|---|
 | **P0 基礎** | Tuning Def、DefOf、`DMSE_TransferEngineBase`、Legacy 遷移殼、刪除駕駛台攔截 | 舊檔（含飛行中）可載入且無紅字；逆重船一般跳躍不再彈 DMSE 選單 |
-| **P1 結構網路** | 樁 Def/Comp、`MapComponent_PileNetwork`、footprint、PlaceWorker、選取疊加層 | 小行星/軌道平台/逆重船底板上放樁；相接即連結、拆中間樁會分裂成兩網路；footprint 不含虛空；存讀檔後網路一致 |
-| **P2 鋼樑** | `SectionLayer_StructuralBeams`、MapMeshFlagDef、貼圖 | 虛空處看得到樑、地板下看不到；網路變動即時更新；樑跨 section 不消失 |
+| **P1 結構網路** | 樁 Def/Comp、連結 Gizmo（建立/解除/Shift 連續連結）、`PileLinkUtility`、`MapComponent_PileNetwork`、footprint、爭議格、PlaceWorker、選取疊加層 | 小行星/軌道平台/逆重船底板上放樁；放下後不會自動連結；超出範圍、已連結、達上限、選自己、藍圖/框架都被拒並在游標旁顯示原因；Shift 可連續連結；解除連結或拆中間樁會分裂網路；打包搬運後連結清除；存讀檔後連結與網路一致；footprint 不含虛空；兩網路覆蓋重疊時標紅 |
+| **P2 鋼樑** | `SectionLayer_StructuralBeams`、MapMeshFlagDef、貼圖 | 每條連結恰好一根樑；虛空處看得到、地板下看不到；建立/解除連結即時更新；樑跨 section 不消失 |
 | **P3 控制台與推進** | 控制台、ITab、`TransferReadiness`、`CompTransferEngine`、燃料來源、核融合爐支援、化學引擎、熱核改造、數值公式 | §5-4 試算表數字與 ITab 顯示一致；尾焰受阻/斷電/無核融合爐支援時引擎正確顯示不可用 |
 | **P4 分離** | `ShipSeparationUtility` + Debug「立即分離（不飛行）」 | §7-2 矩陣全數通過；分離後立即存讀檔無錯誤 |
 | **P5 飛行** | `WorldObject_TransferShip`、狀態機、進度函數、格子推進、點火效果、尾焰傷害、背景 patch、抵達 | 全程可存讀檔、各階段時間符合公式；滑行期殖民地正常（工作、事件、交易船）；抵達後成為一般據點 |
@@ -727,7 +827,9 @@ Debug 指令（`DebugActions_Transfer`）：顯示 footprint、立即分離、�
 
 | # | 問題 | 建議 |
 |---|---|---|
-| 1 | 樁覆蓋半徑、方形或圓形 | 方形、`r = 6`（13×13），相接即連結 |
+| 1 | 樁覆蓋半徑、連結範圍、連結上限 | 方形覆蓋 `r = 6`（13×13）；`linkRange = 13`（連結的兩樁覆蓋必相接）；`maxLinks = 4` |
+| 1a | 建立連結是即時免費，還是要施工（例如下達「架設鋼樑」藍圖、依長度耗鋼材、由小人施工） | 依需求描述先做即時免費；施工版可在 `PileLinkUtility.Link` 外包一層「鋼樑框架」藍圖，不影響網路與渲染邏輯 |
+| 1b | 兩個未連結網路覆蓋重疊時 | 允許建造、起飛時擋下（§3-3）；替代方案是由起飛方取得爭議格 |
 | 2 | 範圍內天然岩是否一起帶走 | 帶走（Tuning 開關） |
 | 3 | 熱核推進器是否必須有核融合爐 | 是，每座爐支援 2 具 |
 | 4 | 燃料何時扣除 | v1 分離時一次扣足；分段扣除與缺油應變列後期 |
