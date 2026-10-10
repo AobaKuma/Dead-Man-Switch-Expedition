@@ -4,6 +4,7 @@
 >
 > 修訂 2026-10-10（一）：結構樁連結改為**玩家以 Gizmo 手動建立**（§3-2、§3-3），鋼樑依玩家建立的連結渲染（§3-9）。
 > 修訂 2026-10-10（二）：連結改為**下達施工單、由殖民者送料施工**（§3-1、§3-2）；覆蓋重疊時**由起飛的船帶走**範圍內地板與建築，未被完整包含的多格建築在分離時摧毀（§3-3、§3-5、§7-1）。
+> 修訂 2026-10-10（三）：被摧毀的跨界建築**一律留下殘骸與資源**，並先彈出容器內容物（§3-5「跨界建築的摧毀程序」）。
 >
 > 本文是重構的實作藍圖：先盤點現況，再逐項定義新系統的 Def、Comp、演算法、狀態機與分期驗收方式。數值皆為**建議初值**，集中在一個 Tuning Def 便於後續平衡。
 
@@ -286,13 +287,25 @@ IsSolidCell(c):
 | 物件 | 規則 | 備註 |
 |---|---|---|
 | 建築（含多格） | `OccupiedRect` **每一格**都在 footprint 內 → 帶走 | 對應原版 `engine.OnValidSubstructure(thing)` |
-| **未被完整包含的多格建築** | 分離時**摧毀**：建築 `Destroy(DestroyMode.KillFinalize)`（依 def 留下殘骸與 `leaveResourcesWhenKilled` 資源）；藍圖與施工框架 `Destroy(DestroyMode.Cancel)`（材料退回） | 摧毀在擷取之前執行，掉落物與被彈出的內容物（例：休眠艙內的 pawn、床上的傷患）若落在 footprint 內就跟著上船。整備檢查以 Warning 列出、選取疊加層以紅框標示、分離後發信件列出清單 |
+| **未被完整包含的多格建築** | 分離時**摧毀，一律留下殘骸與資源**（程序見下方）；藍圖與施工框架則 `Destroy(DestroyMode.Cancel)`（已送達材料全額退回） | 摧毀在擷取之前執行，殘骸、資源與被彈出的內容物落在 footprint 內的就跟著上船，落在外面的留在原地圖。整備檢查以 Warning 列出、選取疊加層以紅框標示、分離後發信件列出清單 |
 | 附掛建築（`building.isAttachment`） | 跟隨母體；母體被摧毀則一併摧毀 | 原版用 `GenConstruct.GetAttachedBuildings` |
 | 天然岩（mineable） | 納入（小行星碎塊一起帶走） | Tuning 可關閉 |
 | Pawn / 物品 / 汙物 / 1×1 藍圖與框架 | `Position` 在 footprint 內即納入 | 搬運中物品先放下到原格 |
 | `def.bringAlongOnGravship == false` | 尊重原版旗標，不搬 | 若其位於 footprint 內，分離後會懸在虛空 → 直接 `Destroy(Vanish)`，整備檢查時先警告 |
 | `Mote` / `Skyfaller` | 不搬 | 同原版 `Gravship.ShouldBringOnGravship` |
 | 地圖入口（`MapPortal`，例：DMSE 真空密封室） | 搬，並把對應 `PocketMapParent.sourceMap` 改指船體地圖 | 否則口袋地圖會在原地圖棄置時被一起銷毀（`Game` 內 `destroyOnParentMapAbandoned`）；入口若未被完整包含則依上列規則摧毀，口袋地圖隨之銷毀，整備檢查需特別標註 |
+
+**跨界建築的摧毀程序** `ShipSeparationUtility.TearApart(Building b)`
+
+原版 `GenLeaving` 對 `DestroyMode.KillFinalize` 的處理是：在建築佔地（再外擴 `killedLeavingsExpandRect`）上鋪 `filthLeaving` 殘骸；**只有** def 的 `leaveResourcesWhenKilled = true` 時才返還建材 25%（鋼材部分會變成鋼渣），且落在 Home 區外的掉落物會被設為禁用。原版 `BuildingBase` 預設為 true，但不少 def 會關掉（原版的門、牆、圍欄、導線等，以及部分家具、溫控、保全、特殊建築；其他 mod 的建築也常如此），對這些建築直接 `KillFinalize` 會「只有殘骸、沒有資源」。因此：
+
+1. **先彈出內容物**：容器類建築（`Building_Casket` 系列如休眠艙、`Building_Enterable` 系列、收容平台等）先呼叫各自的彈出方法把 pawn/物品放到其 `Position` 附近。原因：原版 `Building_Casket.Destroy` 在 `KillFinalize` 時會先對內部 pawn 執行 `HealthUtility.DamageUntilDowned` 才丟出來——起飛造成乘客重傷不是想要的效果。
+2. **記下建材**：`List<ThingDefCountClass> cost = b.CostListAdjusted()`、`bool vanillaLeaves = b.def.leaveResourcesWhenKilled`、記下 `OccupiedRect`。
+3. `b.Destroy(DestroyMode.KillFinalize)`：由原版產生殘骸、`killedLeavings`、各 Comp 的額外掉落，以及（`vanillaLeaves` 時）25% 建材。
+4. **補發資源**：若 `!vanillaLeaves`，自行把 `cost × tornResourceFraction`（Tuning，預設 0.25，與原版被摧毀比例一致；排除 `building.leavingsBlacklist`）以 `ThingOwner.TryDrop(..., ThingPlaceMode.Near)` 散落在原佔地格上，Home 區外者設為禁用（比照原版）。
+5. 附掛建築（`isAttachment`）隨母體以同一程序處理。
+
+不用 `DestroyMode.KillFinalizeLeavingsOnly`：它雖然不返還建材、方便自己補發，但 `Building_Casket.Destroy` 只在 `Deconstruct`/`KillFinalize` 時丟出內容物，其他模式會直接 `ClearAndDestroyContents()`，裡面的 pawn 會消失。
 
 ### 3-6. `MapComponent_PileNetwork`
 
@@ -621,6 +634,7 @@ public static class TransferFuelSources { public static void RegisterProvider(Fu
   <maxBurnHours>12</maxBurnHours>
   <coastHoursPerTile>2</coastHoursPerTile>
   <exhaustDamageIntervalTicks>60</exhaustDamageIntervalTicks>
+  <tornResourceFraction>0.25</tornResourceFraction>   <!-- 跨界建築被扯斷時返還的建材比例 -->
   <carryNaturalRock>true</carryNaturalRock>
 </DMSE.TransferFlightTuningDef>
 ```
@@ -764,7 +778,7 @@ t ∈ [t_a + t_c, t_total]    : u = t − t_a − t_c;  p = 0.5·v·t_a + v·t_c
 
 | # | 步驟 | 對照原版 / 注意事項 |
 |---|---|---|
-| 1 | 強制重算網路與 footprint；再跑一次 `TransferReadiness`，失敗就中止。接著**處理邊界**：① 摧毀未被完整包含的多格建築（建築 `KillFinalize`、藍圖/框架 `Cancel`；附掛建築隨母體）；② 被帶走的他網結構樁與留下的樁之間的連結解除（不返還材料）；③ 一端在船內、一端在船外的施工單取消，已送達材料丟在施工端樁旁。完成後**重新收集**船載物（摧毀產生的殘骸、彈出的內容物若落在 footprint 內就一起帶走） | 摧毀必須在擷取之前，否則跨界建築會被拆成「一半在船上」。分離後發信件列出被摧毀的建築 |
+| 1 | 強制重算網路與 footprint；再跑一次 `TransferReadiness`，失敗就中止。接著**處理邊界**：① 摧毀未被完整包含的多格建築（建築走 `TearApart`：先彈出內容物 → `KillFinalize` → 視需要補發資源，§3-5；藍圖/框架 `Cancel`；附掛建築隨母體）；② 被帶走的他網結構樁與留下的樁之間的連結解除（不返還材料）；③ 一端在船內、一端在船外的施工單取消，已送達材料丟在施工端樁旁。完成後**重新收集**船載物（摧毀產生的殘骸、彈出的內容物若落在 footprint 內就一起帶走） | 摧毀必須在擷取之前，否則跨界建築會被拆成「一半在船上」。分離後發信件列出被摧毀的建築 |
 | 2 | 建立 `WorldObject_TransferShip`（faction = 玩家、名稱 = 控制台/玩家命名、`Tile = path[1]`），`Find.WorldObjects.Add` | |
 | 3 | `MapGenerator.GenerateMap(origin.Size, ship, DMSE_ShipVoid)` 產生同尺寸虛空地圖 | 同尺寸 → 座標恆等 |
 | 4 | 擷取地圖層資料（在移除任何東西之前）：zones（儲存區/種植區的格子與 `StorageSettings`）、areas（Home / 允許區 / BuildRoof / NoRoof / SnowOrSandClear / PollutionClear）與各 pawn 的區域指派、storage groups、各格的 foundation / top / under 地形與地形顏色、屋頂、氣體、迷霧、地形類 designation（RemoveFloor / PaintFloor / RemovePaintFloor）、物件類 designation、各房間溫度與真空度、`CompPowerTrader.PowerOn`、`CompPower.connectParent` | 原版的 `MoveableArea` 系列建構子要 `Gravship`，且 `RelativeCells` 會讀 `gravship.Rotation`，**不能傳 null 重用** → 自寫輕量快照（不需 `IExposable`，因為同步完成） |
@@ -779,7 +793,7 @@ t ∈ [t_a + t_c, t_total]    : u = t − t_a − t_c;  p = 0.5·v·t_a + v·t_c
 
 ### 7-2. 必測案例（分離矩陣）
 
-儲存區 / 種植區 / 儲存群組（櫃子連動）/ bill 目標倉庫 / 床位與醫療床上的倒地者 / 囚犯與奴隸 / 動物與區域限制 / 徵召中的小人 / 搬運中的物品 / 藍圖與施工框架 / 可安裝物品（Minified）/ 電網（含跨界導線被切斷）/ 電池電量 / 房間溫度與真空 / 迷霧 / 屋頂（含小行星天然岩頂）/ 船上停著原版逆重船（GravEngine + Substructure）/ DMSE BVR 雷達與發射器（`CompBVRDevice` 重新註冊）/ 導彈架與彈藥 / 真空密封室（口袋地圖）/ **跨界多格建築**（應被摧毀：一般邊界與爭議格邊界各測一次；含有內容物者——休眠艙內的 pawn、醫療床上的傷患、裝著材料的鋼樑施工端——彈出物落在船內者上船、船外者留下）/ **爭議格**（他網的地板、建築、完整包含的結構樁被帶走，他網斷裂的連結不返還、可能分裂）/ `bringAlongOnGravship = false` 的物件 / **結構樁連結與施工單**（船內的連結、鋼樑、施工單與已送達材料完整保留；跨界施工單取消並退料；原地圖不殘留指向船上樁的連結）。
+儲存區 / 種植區 / 儲存群組（櫃子連動）/ bill 目標倉庫 / 床位與醫療床上的倒地者 / 囚犯與奴隸 / 動物與區域限制 / 徵召中的小人 / 搬運中的物品 / 藍圖與施工框架 / 可安裝物品（Minified）/ 電網（含跨界導線被切斷）/ 電池電量 / 房間溫度與真空 / 迷霧 / 屋頂（含小行星天然岩頂）/ 船上停著原版逆重船（GravEngine + Substructure）/ DMSE BVR 雷達與發射器（`CompBVRDevice` 重新註冊）/ 導彈架與彈藥 / 真空密封室（口袋地圖）/ **跨界多格建築**（應被摧毀：一般邊界與爭議格邊界各測一次；每座都應留下殘骸與資源，包含 def 設 `leaveResourcesWhenKilled = false` 者；鋼材部分出現鋼渣；含有內容物者——休眠艙內的 pawn、醫療床上的傷患、裝著材料的鋼樑施工端——內容物先彈出且 pawn 不受傷，落在船內者上船、船外者留下）/ **爭議格**（他網的地板、建築、完整包含的結構樁被帶走，他網斷裂的連結不返還、可能分裂）/ `bringAlongOnGravship = false` 的物件 / **結構樁連結與施工單**（船內的連結、鋼樑、施工單與已送達材料完整保留；跨界施工單取消並退料；原地圖不殘留指向船上樁的連結）。
 
 ### 7-3. 效能
 
@@ -869,7 +883,7 @@ Debug 指令（`DebugActions_Transfer`）：顯示 footprint、立即分離、�
 |---|---|---|
 | 1 | 樁覆蓋半徑、連結範圍、連結上限 | 方形覆蓋 `r = 6`（13×13）；`linkRange = 13`（連結的兩樁覆蓋必相接）；`maxLinks = 4` |
 | 1a | 鋼樑施工成本與拆除返還 | **已定案：需施工**（§3-2）。建議：每格 Steel 5、工作量 120；拆除工作量 ×0.5、返還 50%；樁被拆除時其鋼樑依返還比例退料、被摧毀時不退 |
-| 1b | 跨界多格建築的摧毀方式 | **已定案：重疊處由起飛方帶走、未完整包含的多格建築摧毀**（§3-3、§3-5）。建議用 `KillFinalize`（留殘骸、依 def 掉部分資源，與「被扯斷」的觀感一致）；若希望不留任何東西可改 `Vanish`。是否提供「起飛前自動下達拆除（Deconstruct）跨界建築」的按鈕，方便玩家回收材料 |
+| 1b | 跨界多格建築的摧毀方式 | **已定案：重疊處由起飛方帶走；未完整包含的多格建築摧毀，一律留下殘骸與資源**（§3-3、§3-5）。仍待定：資源比例是否維持原版被摧毀的 25%（`tornResourceFraction`）；是否另提供「起飛前自動下達拆除（Deconstruct）跨界建築」的按鈕，讓玩家改用拆除比例回收 |
 | 2 | 範圍內天然岩是否一起帶走 | 帶走（Tuning 開關） |
 | 3 | 熱核推進器是否必須有核融合爐 | 是，每座爐支援 2 具 |
 | 4 | 燃料何時扣除 | v1 分離時一次扣足；分段扣除與缺油應變列後期 |
