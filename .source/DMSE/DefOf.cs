@@ -30,6 +30,7 @@ namespace DMSE
         public static JobDef DMSE_InitiateTransfer;
         public static WorldObjectDef DMSE_TransferShip;
         public static MapGeneratorDef DMSE_ShipVoid;
+        public static GameConditionDef DMSE_TransferGrace;
 
         // ── 太空平台拆除 ──
         public static DesignationDef DMSE_RemovePlatform;

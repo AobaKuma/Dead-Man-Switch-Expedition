@@ -45,5 +45,21 @@ namespace DMSE
 
         /// <summary>撞擊前畫面淡出為白色的秒數（實際時間）。</summary>
         public float impactFadeSeconds = 5f;
+
+        // ── 轉移後安全期（<see cref="TransferGraceUtility"/>） ──
+
+        /// <summary>安全期門檻格數：船體不超過此格數時安全期為 <see cref="graceMaxDays"/>，超過則與格數成反比縮短。</summary>
+        public int graceThresholdCells = 2000;
+
+        /// <summary>難度係數 1 時的安全期上限（天）。</summary>
+        public float graceMaxDays = 5f;
+
+        /// <summary>難度係數：依說書人難度的 threatScale 換算，乘在安全期上（自訂難度同樣適用）。</summary>
+        public SimpleCurve graceFactorByThreatScale = new SimpleCurve
+        {
+            new CurvePoint(0.1f, 1.5f),
+            new CurvePoint(1f, 1f),
+            new CurvePoint(2.2f, 0.5f)
+        };
     }
 }

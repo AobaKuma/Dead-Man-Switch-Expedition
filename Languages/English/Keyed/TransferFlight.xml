@@ -195,6 +195,8 @@
   <DMSE.Transfer.Flight.ArrivedText>{0} has arrived.</DMSE.Transfer.Flight.ArrivedText>
   <DMSE.Transfer.Issue.InFlight>The ship is in flight.</DMSE.Transfer.Issue.InFlight>
   <DMSE.Transfer.UI.FlightHeader>In flight: {0}</DMSE.Transfer.UI.FlightHeader>
+  <DMSE.Transfer.Grace.Begin>{0} has arrived unnoticed: no events will occur on this map for {1} (hull: {2} cells).</DMSE.Transfer.Grace.Begin>
+  <DMSE.Transfer.UI.GracePeriod>Safe period after arrival</DMSE.Transfer.UI.GracePeriod>
   <DMSE.Transfer.UI.Phase>Phase</DMSE.Transfer.UI.Phase>
   <DMSE.Transfer.UI.PhaseLeft>Time left in phase</DMSE.Transfer.UI.PhaseLeft>
   <DMSE.Transfer.UI.FlightProgress>Progress</DMSE.Transfer.UI.FlightProgress>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!-- EN: post-transfer safe period -->
+  <DMSE_TransferGrace.label>轉移後安全期</DMSE_TransferGrace.label>
+  <!-- EN: The ship has just completed a transfer flight and nobody here has noticed it yet. ... -->
+  <DMSE_TransferGrace.description>飛船剛完成轉移飛行，尚未被附近的勢力察覺。在此期間，本地圖不會發生任何事件（包括襲擊）。船越小，越久不會被發現。
+
+任務強制觸發的事件不受影響。</DMSE_TransferGrace.description>
+  <!-- EN: The post-transfer safe period has ended. Events can occur on this map again. -->
+  <DMSE_TransferGrace.endMessage>轉移後安全期已結束，本地圖再次可能發生事件。</DMSE_TransferGrace.endMessage>
+
+</LanguageData>

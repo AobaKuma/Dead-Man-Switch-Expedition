@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- 轉移後安全期（TransferGraceUtility）：抵達後一段時間內本地圖不觸發說書人事件；長度與船體格數成反比、受難度影響 -->
+  <GameConditionDef>
+    <defName>DMSE_TransferGrace</defName>
+    <label>post-transfer safe period</label>
+    <description>The ship has just completed a transfer flight and nobody here has noticed it yet. No events, including raids, will occur on this map until this ends. Smaller ships stay unnoticed for longer.\n\nEvents forced by quests are not prevented.</description>
+    <endMessage>The post-transfer safe period has ended. Events can occur on this map again.</endMessage>
+    <conditionClass>GameCondition</conditionClass>
+    <natural>false</natural>
+    <preventIncidents>true</preventIncidents>
+    <preventNeutralVisitors>true</preventNeutralVisitors>
+    <canAffectAllPlanetLayers>true</canAffectAllPlanetLayers>
+    <canBePermanent>false</canBePermanent>
+  </GameConditionDef>
+
+</Defs>

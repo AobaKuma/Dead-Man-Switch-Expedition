@@ -195,6 +195,8 @@
   <DMSE.Transfer.Flight.ArrivedText>{0} 已抵達。</DMSE.Transfer.Flight.ArrivedText>
   <DMSE.Transfer.Issue.InFlight>船正在飛行中。</DMSE.Transfer.Issue.InFlight>
   <DMSE.Transfer.UI.FlightHeader>飛行中：{0}</DMSE.Transfer.UI.FlightHeader>
+  <DMSE.Transfer.Grace.Begin>{0}抵達後尚未被察覺：{1}內本地圖不會發生任何事件（船體 {2} 格）。</DMSE.Transfer.Grace.Begin>
+  <DMSE.Transfer.UI.GracePeriod>抵達後安全期</DMSE.Transfer.UI.GracePeriod>
   <DMSE.Transfer.UI.Phase>階段</DMSE.Transfer.UI.Phase>
   <DMSE.Transfer.UI.PhaseLeft>本階段剩餘</DMSE.Transfer.UI.PhaseLeft>
   <DMSE.Transfer.UI.FlightProgress>航程進度</DMSE.Transfer.UI.FlightProgress>

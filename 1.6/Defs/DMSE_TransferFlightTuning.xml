@@ -18,6 +18,19 @@
     <impactMinEngines>3</impactMinEngines>             <!-- §9 撞擊飛行 -->
     <planetkillerMinEngines>4</planetkillerMinEngines>
     <impactFadeSeconds>5</impactFadeSeconds>
+    <!-- 轉移後安全期：船體 ≤ 門檻格數時為上限天數，超過則 上限 × 門檻 / 格數；再乘難度係數 -->
+    <graceThresholdCells>2000</graceThresholdCells>
+    <graceMaxDays>5</graceMaxDays>
+    <graceFactorByThreatScale>   <!-- x = 難度 threatScale（和平 0.1、輕鬆 0.3、普通 0.6、艱難 1、困難 1.55、極難 2.2） -->
+      <points>
+        <li>(0.1, 1.5)</li>
+        <li>(0.3, 1.3)</li>
+        <li>(0.6, 1.15)</li>
+        <li>(1, 1)</li>
+        <li>(1.55, 0.75)</li>
+        <li>(2.2, 0.5)</li>
+      </points>
+    </graceFactorByThreatScale>
   </DMSE.TransferFlightTuningDef>
 
 </Defs>

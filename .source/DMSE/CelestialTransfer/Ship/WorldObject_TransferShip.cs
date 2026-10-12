@@ -492,6 +492,8 @@ namespace DMSE
                 Tile = destination;
             }
             path = null;
+            // 轉移後安全期從抵達開始計時；之後降落到其他地圖時只轉移剩餘時間
+            TransferGraceUtility.BeginAfterArrival(this);
             MapParent site = landingTarget.Valid ? Find.WorldObjects.MapParentAt(landingTarget) : null;
             if (site != null)
             {

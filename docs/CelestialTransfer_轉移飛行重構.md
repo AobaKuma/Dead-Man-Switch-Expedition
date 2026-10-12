@@ -776,6 +776,17 @@ t ∈ [t_a + t_c, t_total]    : u = t − t_a − t_c;  p = 0.5·v·t_a + v·t_c
 
 沿用現行 `Patch_Background`（postfix `WorldCameraDriver.ApplyMapPositionToGameObject`）的做法，條件改為 `Find.CurrentMap.Parent is WorldObject_TransferShip ship && ship.InFlight`，以 `ship.DrawPos` 計算相機位置 → 飛行中能看到行星背景平滑移動。`Patch_Visible` / `Patch_Hide` / `Patch_Selectable`（隱藏被包裝的原 MapParent）在新設計中不再需要：船本身就是 MapParent，直接正常顯示。
 
+### 6-7. 轉移後安全期（2026-10-12 新增）
+
+目的：每次轉移後給玩家一段完全安全的時間，可以把船員全部派出去做任務、收集資源；船越小，安全期越長。
+
+- **機制**：在地圖上掛原版遊戲條件 `DMSE_TransferGrace`（`preventIncidents`、`preventNeutralVisitors`、`canAffectAllPlanetLayers`）。原版 `IncidentWorker.CanFireNow` 只要地圖上有 `preventIncidents` 的條件，就不觸發任何說書人事件（襲擊、新的遊戲條件、訪客……），不需要 Harmony patch；右上角會顯示剩餘時間，存檔與到期都由原版處理。**任務或劇本強制觸發的事件（`parms.forced`）不受影響。**
+- **長度**：`min(graceMaxDays, graceMaxDays × graceThresholdCells / 船體格數) × 難度係數`。船體格數＝抵達時船體地圖上所有非虛空的格子（`TransferLandingUtility.HullCells`）。預設門檻 2000 格／5 天：2000 格以下都是 5 天，4000 格 2.5 天，10000 格 1 天。
+- **難度**：係數 `graceFactorByThreatScale` 依說書人難度的 `threatScale` 換算（和平 1.5、輕鬆 1.3、普通 1.15、艱難 1、困難 0.75、極難 0.5；自訂難度依其 threatScale 內插）。
+- **時機**：`WorldObject_TransferShip.Arrive` 時對船體地圖開始計時；之後選位降落到目的地地圖（`TransferLandingUtility.Land`）時，只把船體地圖**剩餘**的時間轉移過去，不重新計時（避免抵達後拖延再降落來延長）。地圖上已有安全期時只延長、不縮短。撞擊飛行與開發者分離沒有安全期。
+- **UI**：抵達時發訊息（船名、時長、船體格數）；控制台 ITab 的估算區塊以本船船體範圍顯示預計安全期。
+- 實作：`TransferGraceUtility`、`1.6/Defs/DMSE_TransferGrace.xml`、Tuning 欄位 `graceThresholdCells` / `graceMaxDays` / `graceFactorByThreatScale`。
+
 ---
 
 ## 7. 分離（Separation）— 核心技術細節

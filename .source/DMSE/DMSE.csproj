@@ -165,6 +165,7 @@
     <Compile Include="CelestialTransfer\Ship\TransferLandingUtility.cs" />
     <Compile Include="CelestialTransfer\Ship\TransferTakeoffCutscene.cs" />
     <Compile Include="CelestialTransfer\Ship\WorldObject_TransferShip.cs" />
+    <Compile Include="CelestialTransfer\Ship\TransferGraceUtility.cs" />
     <Compile Include="CelestialTransfer\Console\Dialog_TransferPlan.cs" />
     <Compile Include="CelestialTransfer\Console\Dialog_RenameTransferShip.cs" />
     <Compile Include="CelestialTransfer\Console\ITab_TransferShip.cs" />

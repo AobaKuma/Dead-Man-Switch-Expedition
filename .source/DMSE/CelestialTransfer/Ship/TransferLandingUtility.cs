@@ -337,6 +337,7 @@ namespace DMSE
                 }
                 string shipLabel = ship.Label;
                 string siteLabel = dest.Parent?.Label ?? string.Empty;
+                TransferGraceUtility.CarryOver(shipMap, dest);
                 ship.landingTarget = PlanetTile.Invalid;
                 ship.Destroy();
                 Current.Game.CurrentMap = dest;

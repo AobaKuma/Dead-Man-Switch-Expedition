@@ -89,6 +89,12 @@ namespace DMSE
                     listing.Label("DMSE.Transfer.UI.ParkedAtNeighbor".Translate());
                 }
                 TransferUIUtility.DrawEstimate(listing, TransferEstimate.For(survey, plan != null ? plan.distance : -1, plan != null && plan.isImpact), net.piles.Count);
+                if (plan == null || !plan.isImpact)
+                {
+                    // 轉移後安全期（以本船船體範圍估算；實際以抵達時船體地圖上的格數計算）
+                    int graceTicks = TransferGraceUtility.GraceTicksFor(net.Footprint.Count);
+                    TransferUIUtility.Row(listing, "DMSE.Transfer.UI.GracePeriod".Translate(), graceTicks > 0 ? graceTicks.ToStringTicksToPeriod() : "-");
+                }
                 listing.GapLine();
 
                 TransferUIUtility.Header(listing, "DMSE.Transfer.UI.IssuesHeader".Translate());
