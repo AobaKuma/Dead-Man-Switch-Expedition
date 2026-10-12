@@ -34,17 +34,26 @@ namespace DMSE
             IStorageGroupMember sgm = thing as IStorageGroupMember;
             if (sgm != null && sgm.ShowRenameButton) { return; }
 
+            // 轉移飛行控制台：筆形按鈕為「命名飛船」（同原版逆重引擎的命名按鈕）。
             CompRenameable comp = thing.TryGetComp<CompRenameable>();
-            if (comp == null) { return; }
+            CompTransferConsole console = comp == null ? thing.TryGetComp<CompTransferConsole>() : null;
+            if (comp == null && console == null) { return; }
 
             // 在已有按鈕群的左側插入，與原版筆形按鈕的排列邏輯一致。
             float x = rect.width - lineEndWidth - 30f;
             Rect btnRect = new Rect(x, 0f, 30f, 30f);
 
-            TooltipHandler.TipRegionByKey(btnRect, "Rename");
+            if (console != null)
+            {
+                TooltipHandler.TipRegion(btnRect, "DMSE.Transfer.Console.Rename".Translate());
+            }
+            else
+            {
+                TooltipHandler.TipRegionByKey(btnRect, "Rename");
+            }
             if (Widgets.ButtonImage(btnRect, TexButton.Rename))
             {
-                Find.WindowStack.Add(new Dialog_RenameBuilding(comp));
+                Find.WindowStack.Add(console != null ? (Window)new Dialog_RenameTransferShip(console) : new Dialog_RenameBuilding(comp));
             }
             lineEndWidth += 30f;
         }

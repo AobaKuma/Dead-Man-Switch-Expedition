@@ -6,4 +6,9 @@
   <!-- EN: A structure with vacuum sealing layers made by plasticfiber, allows facility assort with vacuum pumps can effectively maintain a sufficiently large vacuum environment at atmospheric pressure, Ideal for storage extremely flammable products or simply for entity containment. -->
   <DMSE_Sealed_Wall.description>由塑纖維真空密封層構成的牆體。搭配真空泵可在大氣壓下有效維持足夠大的真空環境，適合儲存極易燃物、真空生產或用於實體收容。</DMSE_Sealed_Wall.description>
   
+  <!-- EN: platform hull -->
+  <DMSE_PlatformHull.label>平台船體</DMSE_PlatformHull.label>
+  <!-- EN: A strong airtight wall that prevents oxygen leaks in the vacuum of space. A variant of the gravship hull that anchors into orbital platform decking instead of substructure, so it can only be built on platforms. Hull sections that touch only at their corners are joined into a smooth diagonal wall. -->
+  <DMSE_PlatformHull.description>一種堅固的氣密牆壁，可防止往真空的太空中泄漏氧氣。這是重力船船體的變體，錨定在軌道平台甲板而非基礎結構上，所以只能在平台上建造。僅以斜角相接的船體段會連成平滑的斜牆。</DMSE_PlatformHull.description>
+  
 </LanguageData>

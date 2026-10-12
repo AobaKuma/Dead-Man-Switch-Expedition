@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <DMSE.Platform.Remove>拆除平台</DMSE.Platform.Remove>
+  <DMSE.Platform.RemoveDesc>拆除太空平台或真空岩地面，使其變回太空並回收部分材料。</DMSE.Platform.RemoveDesc>
+  <DMSE.Platform.FloorOnTop>請先拆除地板。</DMSE.Platform.FloorOnTop>
+  <DMSE.Platform.Blocked>這裡有{0}。</DMSE.Platform.Blocked>
+
+</LanguageData>

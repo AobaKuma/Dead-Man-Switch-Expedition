@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <!-- EN: building steel beam at TargetA. -->
+  <DMSE_BuildPileBeam.reportString>正在 TargetA 架設鋼樑。</DMSE_BuildPileBeam.reportString>
+  <!-- EN: running the transfer launch procedure at TargetA. -->
+  <DMSE_InitiateTransfer.reportString>正在 TargetA 執行轉移點火程序。</DMSE_InitiateTransfer.reportString>
+
+</LanguageData>

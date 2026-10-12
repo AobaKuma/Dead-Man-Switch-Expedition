@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- 轉移艦：分離出的船體地圖的父物件（docs/CelestialTransfer_轉移飛行重構.md §6-2）。
+       以 ClaimableSpace 為基底：可當玩家據點並接收 Map_PlayerHome 事件，飛行中殖民地照常運作。 -->
+  <WorldObjectDef ParentName="ClaimableSpace">
+    <defName>DMSE_TransferShip</defName>
+    <label>transfer ship</label>
+    <description>A section of ground carried off by a structural network, now a ship of its own.</description>
+    <worldObjectClass>DMSE.WorldObject_TransferShip</worldObjectClass>
+    <expandingIconTexture>World/WorldObjects/Expanding/Gravship</expandingIconTexture>
+    <mapGenerator>DMSE_ShipVoid</mapGenerator>
+  </WorldObjectDef>
+
+  <!-- 只鋪虛空：原版 Space 生成器含 ScenParts 與 FogSpace，前者不需要，後者由分離時從原地圖逐格複製迷霧 -->
+  <MapGeneratorDef ParentName="SpaceMapGenerator">
+    <defName>DMSE_ShipVoid</defName>
+    <label>transfer ship</label>
+    <genSteps Inherit="False">
+      <li>Space</li>
+    </genSteps>
+  </MapGeneratorDef>
+
+</Defs>

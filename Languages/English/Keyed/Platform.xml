@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <DMSE.Platform.Remove>Remove platform</DMSE.Platform.Remove>
+  <DMSE.Platform.RemoveDesc>Remove space platforms or vacstone ground, leaving open space and recovering some materials.</DMSE.Platform.RemoveDesc>
+  <DMSE.Platform.FloorOnTop>Remove the floor first.</DMSE.Platform.FloorOnTop>
+  <DMSE.Platform.Blocked>{0} is built here.</DMSE.Platform.Blocked>
+
+</LanguageData>

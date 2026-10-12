@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- 鋼樑架設/拆除：在施工端結構樁旁進行（送料直接用原版 HaulToContainer） -->
+  <JobDef>
+    <defName>DMSE_BuildPileBeam</defName>
+    <driverClass>DMSE.JobDriver_BuildPileBeam</driverClass>
+    <reportString>building steel beam at TargetA.</reportString>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
+
+  <!-- 轉移點火程序：起飛程序等待操作員時，在控制台互動格作業 -->
+  <JobDef>
+    <defName>DMSE_InitiateTransfer</defName>
+    <driverClass>DMSE.JobDriver_InitiateTransfer</driverClass>
+    <reportString>running the transfer launch procedure at TargetA.</reportString>
+  </JobDef>
+
+  <WorkGiverDef>
+    <defName>DMSE_InitiateTransfer</defName>
+    <label>run transfer launch procedures</label>
+    <giverClass>DMSE.WorkGiver_InitiateTransfer</giverClass>
+    <workType>Research</workType>
+    <verb>run launch procedure at</verb>
+    <gerund>running launch procedure at</gerund>
+    <priorityInType>110</priorityInType>
+    <canBeDoneByMechs>false</canBeDoneByMechs>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+  <WorkGiverDef>
+    <defName>DMSE_DeliverPileBeamMaterials</defName>
+    <label>deliver steel beam materials</label>
+    <giverClass>DMSE.WorkGiver_DeliverPileBeamMaterials</giverClass>
+    <workType>Construction</workType>
+    <verb>deliver materials to</verb>
+    <gerund>delivering materials to</gerund>
+    <priorityInType>70</priorityInType>
+    <nonColonistsCanDo>true</nonColonistsCanDo>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+  <WorkGiverDef>
+    <defName>DMSE_BuildPileBeam</defName>
+    <label>build steel beams</label>
+    <giverClass>DMSE.WorkGiver_BuildPileBeam</giverClass>
+    <workType>Construction</workType>
+    <verb>work on beam at</verb>
+    <gerund>working on beam at</gerund>
+    <priorityInType>80</priorityInType>
+    <nonColonistsCanDo>true</nonColonistsCanDo>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+</Defs>

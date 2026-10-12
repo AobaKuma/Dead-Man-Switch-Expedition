@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <!-- EN: transfer ship -->
+  <DMSE_TransferShip.label>轉移艦</DMSE_TransferShip.label>
+  <!-- EN: A section of ground carried off by a structural network, now a ship of its own. -->
+  <DMSE_TransferShip.description>由結構網路帶走的一片地面，如今成為一艘獨立的船。</DMSE_TransferShip.description>
+
+</LanguageData>

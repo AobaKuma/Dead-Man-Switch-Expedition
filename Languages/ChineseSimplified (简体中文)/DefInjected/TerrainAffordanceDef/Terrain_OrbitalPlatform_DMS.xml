@@ -4,4 +4,7 @@
   <!-- EN: Space -->
   <VoidSpace.label>太空</VoidSpace.label>
   
+  <!-- EN: platform -->
+  <DMSE_Platform.label>平台</DMSE_Platform.label>
+  
 </LanguageData>

@@ -23,5 +23,17 @@ namespace DMSE
 
         /// <summary>超視距火砲打擊的世界地圖航跡物件 def。</summary>
         public static WorldObjectDef DMSE_ArtilleryStrike;
+
+        // ── 轉移飛行重構 ──
+        public static TransferFlightTuningDef DMSE_TransferFlightTuning;
+        public static JobDef DMSE_BuildPileBeam;
+        public static JobDef DMSE_InitiateTransfer;
+        public static WorldObjectDef DMSE_TransferShip;
+        public static MapGeneratorDef DMSE_ShipVoid;
+
+        // ── 太空平台拆除 ──
+        public static DesignationDef DMSE_RemovePlatform;
+        public static JobDef DMSE_RemovePlatformJob;
+        public static TerrainAffordanceDef DMSE_Platform;
     }
 }

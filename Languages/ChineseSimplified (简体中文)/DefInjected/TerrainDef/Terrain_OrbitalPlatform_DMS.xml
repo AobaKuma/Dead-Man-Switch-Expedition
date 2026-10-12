@@ -6,4 +6,9 @@
   <!-- EN: A solid orbital surface that allows walking in outer space. You can build all kinds of structures on it. -->
   <DMS_OrbitalPlatform.description>可在外太空行走的坚固轨道地表。你可以在其上建造各类结构。</DMS_OrbitalPlatform.description>
   
+  <!-- EN: light platform -->
+  <DMS_LightPlatform.label>轻型平台</DMS_LightPlatform.label>
+  <!-- EN: A lightweight lattice deck for walking in outer space. Quick and cheap to lay down, but it can only support light and medium structures. -->
+  <DMS_LightPlatform.description>可在太空中行走的轻量桁架甲板。便宜又快，但只能承载轻型与中型结构。</DMS_LightPlatform.description>
+  
 </LanguageData>

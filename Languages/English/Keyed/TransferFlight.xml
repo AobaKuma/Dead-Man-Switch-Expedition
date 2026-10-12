@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <!-- Structural piles and steel beams -->
+  <DMSE.Pile.BuildBeam>Build beam</DMSE.Pile.BuildBeam>
+  <DMSE.Pile.BuildBeamDesc>Order a steel beam to another structural pile in range. Only piles joined by finished beams move together as one ship.\n\nShift-click to keep building from the target pile.</DMSE.Pile.BuildBeamDesc>
+  <DMSE.Pile.DismantleBeam>Dismantle beam</DMSE.Pile.DismantleBeam>
+  <DMSE.Pile.DismantleBeamDesc>Dismantle a finished beam. Part of the materials is refunded.</DMSE.Pile.DismantleBeamDesc>
+  <DMSE.Pile.DismantleAll>Dismantle all</DMSE.Pile.DismantleAll>
+  <DMSE.Pile.CancelBeam>Cancel beam order</DMSE.Pile.CancelBeam>
+  <DMSE.Pile.CancelBeamDesc>Cancel a beam order. Delivered materials are dropped next to the pile.</DMSE.Pile.CancelBeamDesc>
+  <DMSE.Pile.CancelAll>Cancel all</DMSE.Pile.CancelAll>
+  <DMSE.Pile.LinkSelected>Link selected piles</DMSE.Pile.LinkSelected>
+  <DMSE.Pile.LinkSelectedDesc>Order a steel beam between the two selected structural piles.</DMSE.Pile.LinkSelectedDesc>
+  <DMSE.Pile.SelectNetwork>Select network</DMSE.Pile.SelectNetwork>
+  <DMSE.Pile.SelectNetworkDesc>Select every structural pile connected to this one by finished beams.</DMSE.Pile.SelectNetworkDesc>
+
+  <DMSE.Pile.Disabled.NoLinks>This pile has no finished beams.</DMSE.Pile.Disabled.NoLinks>
+  <DMSE.Pile.Disabled.AllDismantling>All beams are already being dismantled.</DMSE.Pile.Disabled.AllDismantling>
+  <DMSE.Pile.Disabled.NoOrders>This pile has no beam orders.</DMSE.Pile.Disabled.NoOrders>
+
+  <DMSE.Pile.Link.NotPile>Must target one of your structural piles.</DMSE.Pile.Link.NotPile>
+  <DMSE.Pile.Link.OutOfRange>Out of range: {0} cells (max {1}).</DMSE.Pile.Link.OutOfRange>
+  <DMSE.Pile.Link.AlreadyLinked>Already linked or ordered.</DMSE.Pile.Link.AlreadyLinked>
+  <DMSE.Pile.Link.MaxLinks>{0} has reached its beam limit ({1}, including orders).</DMSE.Pile.Link.MaxLinks>
+  <DMSE.Pile.Link.CostLabel>Beam: {0} cells · {1} · work {2}</DMSE.Pile.Link.CostLabel>
+  <DMSE.Pile.Link.Locked>Beams cannot be changed during the countdown.</DMSE.Pile.Link.Locked>
+  <DMSE.Pile.Link.NoRange>Small structural piles cannot be linked to each other.</DMSE.Pile.Link.NoRange>
+
+  <DMSE.Pile.LinkOption>→ ({0}, {1}) · {2} cells</DMSE.Pile.LinkOption>
+  <DMSE.Pile.OrderKind.Build>Build</DMSE.Pile.OrderKind.Build>
+  <DMSE.Pile.OrderKind.Dismantle>Dismantle</DMSE.Pile.OrderKind.Dismantle>
+
+  <DMSE.Pile.Inspect.Network>Structural network: {0} piles, {1} beams, hull {2} cells</DMSE.Pile.Inspect.Network>
+  <DMSE.Pile.Inspect.Links>Beams: {0} finished, {1} / {2} including orders</DMSE.Pile.Inspect.Links>
+  <DMSE.Pile.Inspect.LinksUnlimited>Beams: {0} finished</DMSE.Pile.Inspect.LinksUnlimited>
+  <DMSE.Pile.Inspect.Building>Beam construction: → ({0}, {1}) {2} cells | materials {3} | progress {4}</DMSE.Pile.Inspect.Building>
+  <DMSE.Pile.Inspect.Dismantling>Beam dismantling: → ({0}, {1}) {2} cells | progress {3}</DMSE.Pile.Inspect.Dismantling>
+  <DMSE.Pile.Inspect.Queued>{0} more beam orders queued</DMSE.Pile.Inspect.Queued>
+
+  <DMSE.Pile.NetworkSplit>A structural network has split into separate ships.</DMSE.Pile.NetworkSplit>
+  <DMSE.Pile.Place.OverVoid>Must be placed on solid ground.</DMSE.Pile.Place.OverVoid>
+  <DMSE.Pile.Place.NeedProviderRange>Must be placed within the link range of a large or vacuum structural pile.</DMSE.Pile.Place.NeedProviderRange>
+  <DMSE.Pile.Place.WrongTerrain>Cannot be placed on {0}.</DMSE.Pile.Place.WrongTerrain>
+  <DMSE.Pile.Place.SpaceOnly>Can only be built in space.</DMSE.Pile.Place.SpaceOnly>
+  <DMSE.Pile.Report.Dismantle>dismantling steel beam at {0}.</DMSE.Pile.Report.Dismantle>
+
+  <!-- Transfer console -->
+  <DMSE.Transfer.Tab>Transfer</DMSE.Transfer.Tab>
+  <DMSE.Transfer.Console.Plan>Plan transfer</DMSE.Transfer.Console.Plan>
+  <DMSE.Transfer.Console.PlanDesc>Choose a destination and review fuel, travel time and readiness.</DMSE.Transfer.Console.PlanDesc>
+  <DMSE.Transfer.Console.Abort>Abort transfer</DMSE.Transfer.Console.Abort>
+  <DMSE.Transfer.Console.AbortDesc>Discard the current transfer plan.</DMSE.Transfer.Console.AbortDesc>
+  <DMSE.Transfer.Console.ShowFootprint>Show hull</DMSE.Transfer.Console.ShowFootprint>
+  <DMSE.Transfer.Console.ShowFootprintDesc>Always show this ship's hull area and engine exhaust zones.</DMSE.Transfer.Console.ShowFootprintDesc>
+  <DMSE.Transfer.Console.AlreadyLaunching>A transfer is already under way.</DMSE.Transfer.Console.AlreadyLaunching>
+  <DMSE.Transfer.Console.NotOnShip>Not on a ship.</DMSE.Transfer.Console.NotOnShip>
+  <DMSE.Transfer.Console.Primary>Ship command console</DMSE.Transfer.Console.Primary>
+  <DMSE.Transfer.Console.Backup>Backup console</DMSE.Transfer.Console.Backup>
+  <DMSE.Transfer.Console.ShipSummary>Ship: {0} piles, {1} working engines, TWR {2}, fuel {3}</DMSE.Transfer.Console.ShipSummary>
+  <DMSE.Transfer.Console.PlanSummary>Planned transfer to tile {0} ({1} tiles)</DMSE.Transfer.Console.PlanSummary>
+  <DMSE.Transfer.Console.Launch>Begin launch</DMSE.Transfer.Console.Launch>
+  <DMSE.Transfer.Console.LaunchDesc>Begin the launch sequence. Once a colonist operates this console, the ship counts down and departs.</DMSE.Transfer.Console.LaunchDesc>
+  <DMSE.Transfer.Console.AwaitingOperatorMsg>Launch sequence started. Waiting for an operator.</DMSE.Transfer.Console.AwaitingOperatorMsg>
+  <DMSE.Transfer.Console.StateAwaitingOperator>Waiting for an operator.</DMSE.Transfer.Console.StateAwaitingOperator>
+  <DMSE.Transfer.Console.StateCountdown>Departure in {0}.</DMSE.Transfer.Console.StateCountdown>
+  <DMSE.Transfer.Console.Rename>Name ship</DMSE.Transfer.Console.Rename>
+  <DMSE.Transfer.Console.RenameDesc>Give this ship a name. The name is saved on all of the ship's consoles and kept on every transfer flight.</DMSE.Transfer.Console.RenameDesc>
+  <DMSE.Transfer.Console.ShipName>Ship name: {0}</DMSE.Transfer.Console.ShipName>
+  <DMSE.Transfer.Console.Unnamed>Unnamed (named automatically at launch)</DMSE.Transfer.Console.Unnamed>
+  <DMSE.Transfer.Separating>Separating ship</DMSE.Transfer.Separating>
+
+  <DMSE.Transfer.Abort.NoPlan>There is no transfer plan.</DMSE.Transfer.Abort.NoPlan>
+  <DMSE.Transfer.Abort.NoFreeTile>No free tile to park on.</DMSE.Transfer.Abort.NoFreeTile>
+  <DMSE.Transfer.Abort.NetworkChanged>The ship's structure changed during the countdown.</DMSE.Transfer.Abort.NetworkChanged>
+
+  <DMSE.Transfer.Letter.AbortedLabel>Transfer aborted</DMSE.Transfer.Letter.AbortedLabel>
+  <DMSE.Transfer.Letter.AbortedText>The launch was aborted: {0}\n\nThe plan has been kept.</DMSE.Transfer.Letter.AbortedText>
+  <DMSE.Transfer.Letter.SeparatedLabel>Ship separated</DMSE.Transfer.Letter.SeparatedLabel>
+  <DMSE.Transfer.Letter.SeparatedText>{0} has separated and is now its own ship.</DMSE.Transfer.Letter.SeparatedText>
+  <DMSE.Transfer.Letter.Destroyed>Destroyed at the hull edge:</DMSE.Transfer.Letter.Destroyed>
+  <DMSE.Transfer.Letter.LeftBehind>Left behind:</DMSE.Transfer.Letter.LeftBehind>
+  <DMSE.Transfer.Letter.BrokenLinks>Beams broken: {0}. Beam orders cancelled: {1}.</DMSE.Transfer.Letter.BrokenLinks>
+  <DMSE.Transfer.Letter.LostThings>Lost: {0} things that could not be carried.</DMSE.Transfer.Letter.LostThings>
+  <DMSE.Transfer.Letter.OriginAbandoned>The old site was abandoned.</DMSE.Transfer.Letter.OriginAbandoned>
+
+  <DMSE.Transfer.Ship.DefaultName>Transfer ship {0}</DMSE.Transfer.Ship.DefaultName>
+  <DMSE.Transfer.Ship.Inspect>Structural piles: {0}, networks: {1}</DMSE.Transfer.Ship.Inspect>
+  <DMSE.Transfer.Ship.Abandon>Abandon ship</DMSE.Transfer.Ship.Abandon>
+  <DMSE.Transfer.Ship.AbandonDesc>Abandon this ship and everything on it.</DMSE.Transfer.Ship.AbandonDesc>
+  <DMSE.Transfer.Ship.AbandonConfirm>Abandon {0}? Everything aboard will be lost.</DMSE.Transfer.Ship.AbandonConfirm>
+  <DMSE.Transfer.Ship.AbandonHasColonists>There are still colonists on board.</DMSE.Transfer.Ship.AbandonHasColonists>
+
+  <DMSE.Transfer.Alert.PawnsOutside>People outside departing ship</DMSE.Transfer.Alert.PawnsOutside>
+  <DMSE.Transfer.Alert.PawnsOutsideDesc>These people are outside the departing ship and will be left behind.</DMSE.Transfer.Alert.PawnsOutsideDesc>
+  <DMSE.Transfer.Alert.ExhaustDanger>Standing in engine exhaust</DMSE.Transfer.Alert.ExhaustDanger>
+  <DMSE.Transfer.Alert.ExhaustDangerDesc>These people are in an engine exhaust zone and will be burned when the engines fire.</DMSE.Transfer.Alert.ExhaustDangerDesc>
+
+  <DMSE.Transfer.Dest.Invalid>Choose another tile.</DMSE.Transfer.Dest.Invalid>
+  <DMSE.Transfer.Dest.OtherLayer>Must be in the same orbit.</DMSE.Transfer.Dest.OtherLayer>
+  <DMSE.Transfer.Dest.OutOfRange>Out of range ({0} tiles).</DMSE.Transfer.Dest.OutOfRange>
+  <DMSE.Transfer.Dest.Occupied>Occupied, with no free tile nearby.</DMSE.Transfer.Dest.Occupied>
+
+  <DMSE.Transfer.Dialog.Title>Transfer plan</DMSE.Transfer.Dialog.Title>
+  <DMSE.Transfer.Dialog.Route>Tile {0} → tile {1}, {2} tiles</DMSE.Transfer.Dialog.Route>
+  <DMSE.Transfer.Dialog.Reselect>Choose again</DMSE.Transfer.Dialog.Reselect>
+  <DMSE.Transfer.Dialog.Confirm>Confirm plan</DMSE.Transfer.Dialog.Confirm>
+  <DMSE.Transfer.Dialog.ConfirmBlocked>Resolve the errors first.</DMSE.Transfer.Dialog.ConfirmBlocked>
+  <DMSE.Transfer.Dialog.PlanSet>Transfer plan set.</DMSE.Transfer.Dialog.PlanSet>
+
+  <DMSE.Transfer.UI.NetworkHeader>Structural network</DMSE.Transfer.UI.NetworkHeader>
+  <DMSE.Transfer.UI.Piles>Piles</DMSE.Transfer.UI.Piles>
+  <DMSE.Transfer.UI.Beams>Beams</DMSE.Transfer.UI.Beams>
+  <DMSE.Transfer.UI.Footprint>Hull cells</DMSE.Transfer.UI.Footprint>
+  <DMSE.Transfer.UI.TornApart>Buildings torn apart on departure</DMSE.Transfer.UI.TornApart>
+  <DMSE.Transfer.UI.Contested>Cells taken from other networks</DMSE.Transfer.UI.Contested>
+  <DMSE.Transfer.UI.UnlinkedPiles>Nearby unlinked piles</DMSE.Transfer.UI.UnlinkedPiles>
+  <DMSE.Transfer.UI.PendingOrders>Piles with beam orders</DMSE.Transfer.UI.PendingOrders>
+  <DMSE.Transfer.UI.PropulsionHeader>Propulsion</DMSE.Transfer.UI.PropulsionHeader>
+  <DMSE.Transfer.UI.NoEngines>No transfer engines on this ship.</DMSE.Transfer.UI.NoEngines>
+  <DMSE.Transfer.UI.ReactorSupport>Fusion reactor support (needed / available)</DMSE.Transfer.UI.ReactorSupport>
+  <DMSE.Transfer.UI.FuelHeader>Fuel</DMSE.Transfer.UI.FuelHeader>
+  <DMSE.Transfer.UI.NoFuelSources>No fuel tanks on this ship.</DMSE.Transfer.UI.NoFuelSources>
+  <DMSE.Transfer.UI.EstimateHeader>Transfer capability</DMSE.Transfer.UI.EstimateHeader>
+  <DMSE.Transfer.UI.PlanHeader>Plan: to tile {0}</DMSE.Transfer.UI.PlanHeader>
+  <DMSE.Transfer.UI.ParkedAtNeighbor>Tile occupied; the ship will park next to it.</DMSE.Transfer.UI.ParkedAtNeighbor>
+  <DMSE.Transfer.UI.MassWeight>Mass</DMSE.Transfer.UI.MassWeight>
+  <DMSE.Transfer.UI.MassWeightValue>{0} ({1} piles)</DMSE.Transfer.UI.MassWeightValue>
+  <DMSE.Transfer.UI.Thrust>Thrust</DMSE.Transfer.UI.Thrust>
+  <DMSE.Transfer.UI.ThrustWithBoosters>{0} (+{1} boosters, departure only)</DMSE.Transfer.UI.ThrustWithBoosters>
+  <DMSE.Transfer.UI.TWR>Thrust-to-weight (min {0})</DMSE.Transfer.UI.TWR>
+  <DMSE.Transfer.UI.Eta>Fuel consumption factor</DMSE.Transfer.UI.Eta>
+  <DMSE.Transfer.UI.FuelAvailable>Fuel on board</DMSE.Transfer.UI.FuelAvailable>
+  <DMSE.Transfer.UI.MaxDistance>Range (tiles)</DMSE.Transfer.UI.MaxDistance>
+  <DMSE.Transfer.UI.CannotDepart>Cannot depart</DMSE.Transfer.UI.CannotDepart>
+  <DMSE.Transfer.UI.BurnTime>Each burn</DMSE.Transfer.UI.BurnTime>
+  <DMSE.Transfer.UI.DepartureBurnTime>Departure burn</DMSE.Transfer.UI.DepartureBurnTime>
+  <DMSE.Transfer.UI.ArrivalBurnTime>Arrival burn</DMSE.Transfer.UI.ArrivalBurnTime>
+  <DMSE.Transfer.UI.Distance>Distance (tiles)</DMSE.Transfer.UI.Distance>
+  <DMSE.Transfer.UI.FuelRequired>Fuel required</DMSE.Transfer.UI.FuelRequired>
+  <DMSE.Transfer.UI.CoastTime>Coast</DMSE.Transfer.UI.CoastTime>
+  <DMSE.Transfer.UI.TotalTime>Total travel time</DMSE.Transfer.UI.TotalTime>
+  <DMSE.Transfer.UI.IssuesHeader>Readiness</DMSE.Transfer.UI.IssuesHeader>
+  <DMSE.Transfer.UI.NoIssues>Ready.</DMSE.Transfer.UI.NoIssues>
+  <DMSE.Transfer.UI.ErrorPrefix>[Error]</DMSE.Transfer.UI.ErrorPrefix>
+  <DMSE.Transfer.UI.WarningPrefix>[Warning]</DMSE.Transfer.UI.WarningPrefix>
+
+  <DMSE.Transfer.Issue.NotInSpace>The ship must be in orbit.</DMSE.Transfer.Issue.NotInSpace>
+  <DMSE.Transfer.Issue.ConsoleNotOnShip>The console is not on a ship.</DMSE.Transfer.Issue.ConsoleNotOnShip>
+  <DMSE.Transfer.Issue.ConsoleUnavailable>The console is unpowered, off or broken.</DMSE.Transfer.Issue.ConsoleUnavailable>
+  <DMSE.Transfer.Issue.NoEngines>No working transfer engines.</DMSE.Transfer.Issue.NoEngines>
+  <DMSE.Transfer.Issue.LowTWR>Thrust-to-weight {0} is below {1}.</DMSE.Transfer.Issue.LowTWR>
+  <DMSE.Transfer.Issue.NotEnoughFuel>Not enough fuel ({0}/{1}).</DMSE.Transfer.Issue.NotEnoughFuel>
+  <DMSE.Transfer.Issue.OtherShipDeparting>Another ship here is already departing.</DMSE.Transfer.Issue.OtherShipDeparting>
+  <DMSE.Transfer.Issue.PawnsLeftBehind>{0} people outside the hull will be left behind.</DMSE.Transfer.Issue.PawnsLeftBehind>
+  <DMSE.Transfer.Issue.NotCarried>{0} things cannot be carried and will be lost.</DMSE.Transfer.Issue.NotCarried>
+  <DMSE.Transfer.Issue.PawnsInExhaust>{0} people are in an exhaust zone.</DMSE.Transfer.Issue.PawnsInExhaust>
+  <DMSE.Transfer.Issue.NearbyUnlinkedPiles>{0} nearby piles are not linked to this ship.</DMSE.Transfer.Issue.NearbyUnlinkedPiles>
+  <DMSE.Transfer.Issue.TornApart>{0} buildings cross the hull edge and will be destroyed.</DMSE.Transfer.Issue.TornApart>
+  <DMSE.Transfer.Issue.TornApartWithPawns>{0} of them have people inside.</DMSE.Transfer.Issue.TornApartWithPawns>
+  <DMSE.Transfer.Issue.Contested>Takes {0} cells from other ships ({1} buildings, {2} piles).</DMSE.Transfer.Issue.Contested>
+  <DMSE.Transfer.Issue.PendingBeamOrders>{0} piles have unfinished beams.</DMSE.Transfer.Issue.PendingBeamOrders>
+
+  <!-- Engines and reactors -->
+  <DMSE.Transfer.Engine.Stats>Transfer thrust {0}, fuel consumption {1}</DMSE.Transfer.Engine.Stats>
+  <DMSE.Transfer.Engine.BoosterStats>Departure thrust {0}: adds to the launch thrust-to-weight ratio, uses no ship fuel, and burns out when the departure burn ends</DMSE.Transfer.Engine.BoosterStats>
+  <DMSE.Transfer.Engine.RequiresReactor>Requires fusion reactor support.</DMSE.Transfer.Engine.RequiresReactor>
+  <DMSE.Transfer.Engine.Status.Operational>Ready</DMSE.Transfer.Engine.Status.Operational>
+  <DMSE.Transfer.Engine.Status.NotOnShip>Not on a ship</DMSE.Transfer.Engine.Status.NotOnShip>
+  <DMSE.Transfer.Engine.Status.BrokenDown>Broken down</DMSE.Transfer.Engine.Status.BrokenDown>
+  <DMSE.Transfer.Engine.Status.SwitchedOff>Switched off</DMSE.Transfer.Engine.Status.SwitchedOff>
+  <DMSE.Transfer.Engine.Status.NoPower>No power</DMSE.Transfer.Engine.Status.NoPower>
+  <DMSE.Transfer.Engine.Status.ExhaustBlocked>Exhaust blocked by {0}</DMSE.Transfer.Engine.Status.ExhaustBlocked>
+  <DMSE.Transfer.Engine.Status.NoReactorSupport>No fusion reactor support</DMSE.Transfer.Engine.Status.NoReactorSupport>
+  <DMSE.Transfer.Engine.PlacedBlocked>{0}: the exhaust zone is blocked by {1}.</DMSE.Transfer.Engine.PlacedBlocked>
+  <DMSE.Transfer.Reactor.Support>Supports {0} nuclear thermal thrusters (ship: {1} needed / {2} available).</DMSE.Transfer.Reactor.Support>
+  <DMSE.Transfer.Reactor.NotOnShip>Supports {0} nuclear thermal thrusters on a ship.</DMSE.Transfer.Reactor.NotOnShip>
+
+  <DMSE.Transfer.Alert.CountdownDesc>A ship is counting down to launch.</DMSE.Transfer.Alert.CountdownDesc>
+
+  <!-- Transfer flight -->
+  <DMSE.Transfer.Phase.DepartureBurn>Departure burn</DMSE.Transfer.Phase.DepartureBurn>
+  <DMSE.Transfer.Phase.Coast>Coasting</DMSE.Transfer.Phase.Coast>
+  <DMSE.Transfer.Phase.ArrivalBurn>Arrival burn</DMSE.Transfer.Phase.ArrivalBurn>
+  <DMSE.Transfer.Phase.Arrived>Arrived</DMSE.Transfer.Phase.Arrived>
+  <DMSE.Transfer.Flight.Status>Transfer flight: {0}, {1} left in this phase</DMSE.Transfer.Flight.Status>
+  <DMSE.Transfer.Flight.Progress>Progress {0} to tile {1}, arrival in {2}</DMSE.Transfer.Flight.Progress>
+  <DMSE.Transfer.Flight.CoastBegin>{0} is coasting.</DMSE.Transfer.Flight.CoastBegin>
+  <DMSE.Transfer.Flight.BoostersBurnedOut>{0}: {1} rocket booster(s) burned out.</DMSE.Transfer.Flight.BoostersBurnedOut>
+  <DMSE.Transfer.Flight.ArrivalBurnBegin>{0} is firing its arrival burn.</DMSE.Transfer.Flight.ArrivalBurnBegin>
+  <DMSE.Transfer.Flight.Rerouted>{0}'s destination is occupied. It will park nearby.</DMSE.Transfer.Flight.Rerouted>
+  <DMSE.Transfer.Flight.NoThrustLabel>No thrust for arrival</DMSE.Transfer.Flight.NoThrustLabel>
+  <DMSE.Transfer.Flight.NoThrustText>{0} has no working engines and will brake on attitude thrusters ({1}).</DMSE.Transfer.Flight.NoThrustText>
+  <DMSE.Transfer.Flight.ArrivedLabel>Transfer complete</DMSE.Transfer.Flight.ArrivedLabel>
+  <DMSE.Transfer.Flight.ArrivedText>{0} has arrived.</DMSE.Transfer.Flight.ArrivedText>
+  <DMSE.Transfer.Issue.InFlight>The ship is in flight.</DMSE.Transfer.Issue.InFlight>
+  <DMSE.Transfer.UI.FlightHeader>In flight: {0}</DMSE.Transfer.UI.FlightHeader>
+  <DMSE.Transfer.UI.Phase>Phase</DMSE.Transfer.UI.Phase>
+  <DMSE.Transfer.UI.PhaseLeft>Time left in phase</DMSE.Transfer.UI.PhaseLeft>
+  <DMSE.Transfer.UI.FlightProgress>Progress</DMSE.Transfer.UI.FlightProgress>
+  <DMSE.Transfer.UI.Destination>Destination tile</DMSE.Transfer.UI.Destination>
+  <DMSE.Transfer.UI.ArrivalIn>Arrival in</DMSE.Transfer.UI.ArrivalIn>
+  <DMSE.Transfer.ShuttleBlockedBurn>Cannot launch while the ship's engines are firing.</DMSE.Transfer.ShuttleBlockedBurn>
+
+  <!-- Impact flight (design doc §9) -->
+  <DMSE.Transfer.Console.PlanImpact>Plan impact flight</DMSE.Transfer.Console.PlanImpact>
+  <DMSE.Transfer.Console.PlanImpactDesc>Crash this ship into the planet's surface. Everyone aboard will be lost and the game ends.\n\nRequires {0} working nuclear thermal thrusters; {1} or more will destroy the planet.</DMSE.Transfer.Console.PlanImpactDesc>
+  <DMSE.Transfer.Console.PlanSummaryImpact>Planned impact at tile {0} ({1} tiles)</DMSE.Transfer.Console.PlanSummaryImpact>
+  <DMSE.Transfer.Dest.NotSurface>Must be on the planet's surface.</DMSE.Transfer.Dest.NotSurface>
+  <DMSE.Transfer.Dest.ImpactHasMap>Cannot target a site with a map.</DMSE.Transfer.Dest.ImpactHasMap>
+  <DMSE.Transfer.Issue.ImpactEngines>Needs {1} working nuclear thermal thrusters ({0}).</DMSE.Transfer.Issue.ImpactEngines>
+  <DMSE.Transfer.Dialog.ImpactTitle>Impact flight</DMSE.Transfer.Dialog.ImpactTitle>
+  <DMSE.Transfer.Dialog.ImpactWarning>The ship will not brake. Everyone aboard will be lost and the game ends.</DMSE.Transfer.Dialog.ImpactWarning>
+  <DMSE.Transfer.Dialog.ImpactPlanetkiller>{0} nuclear thermal thrusters: the impact will destroy the planet.</DMSE.Transfer.Dialog.ImpactPlanetkiller>
+  <DMSE.Transfer.Dialog.ImpactRoute>Impact point: tile {0}, {1} tiles of flight</DMSE.Transfer.Dialog.ImpactRoute>
+  <DMSE.Transfer.Dialog.ConfirmImpact>Confirm impact</DMSE.Transfer.Dialog.ConfirmImpact>
+  <DMSE.Transfer.Phase.ImpactCourse>Impact course</DMSE.Transfer.Phase.ImpactCourse>
+  <DMSE.Transfer.Flight.ImpactCourseBegin>{0} is on an impact course. Impact in {1}.</DMSE.Transfer.Flight.ImpactCourseBegin>
+  <DMSE.Transfer.Flight.ImpactProgress>Progress {0} toward impact at tile {1}, impact in {2}</DMSE.Transfer.Flight.ImpactProgress>
+  <DMSE.Transfer.UI.ImpactIn>Impact in</DMSE.Transfer.UI.ImpactIn>
+  <DMSE.Transfer.UI.ImpactPlanHeader>Plan: impact at tile {0}</DMSE.Transfer.UI.ImpactPlanHeader>
+
+  <!-- Landing -->
+  <DMSE.Transfer.UI.LandOnSite>Will land at {0}.</DMSE.Transfer.UI.LandOnSite>
+  <DMSE.Transfer.Landing>Landing</DMSE.Transfer.Landing>
+  <DMSE.Transfer.Land.Designator>Choose landing site</DMSE.Transfer.Land.Designator>
+  <DMSE.Transfer.Land.DesignatorDesc>Choose where the ship lands on this map.</DMSE.Transfer.Land.DesignatorDesc>
+  <DMSE.Transfer.Land.WillMove>The ship will land at the nearest open spot.</DMSE.Transfer.Land.WillMove>
+  <DMSE.Transfer.Land.Gizmo>Land at {0}</DMSE.Transfer.Land.Gizmo>
+  <DMSE.Transfer.Land.GizmoDesc>Choose a landing site at {0}.</DMSE.Transfer.Land.GizmoDesc>
+  <DMSE.Transfer.Land.Auto>Land automatically</DMSE.Transfer.Land.Auto>
+  <DMSE.Transfer.Land.AutoDesc>Land at the open spot nearest the map center.</DMSE.Transfer.Land.AutoDesc>
+  <DMSE.Transfer.Land.Cancel>Cancel landing</DMSE.Transfer.Land.Cancel>
+  <DMSE.Transfer.Land.CancelDesc>Stay parked here.</DMSE.Transfer.Land.CancelDesc>
+  <DMSE.Transfer.Land.NoRoom>No room to land at {0}.</DMSE.Transfer.Land.NoRoom>
+  <DMSE.Transfer.Land.SiteGone>The landing site no longer exists.</DMSE.Transfer.Land.SiteGone>
+  <DMSE.Transfer.Land.ArrivedText>{0} is waiting to land at {1}.</DMSE.Transfer.Land.ArrivedText>
+  <DMSE.Transfer.Land.LandedLabel>Ship landed</DMSE.Transfer.Land.LandedLabel>
+  <DMSE.Transfer.Land.LandedText>{0} has landed at {1}.</DMSE.Transfer.Land.LandedText>
+  <DMSE.Transfer.Land.Moved>The chosen spot was blocked, so it landed at the nearest open spot.</DMSE.Transfer.Land.Moved>
+</LanguageData>

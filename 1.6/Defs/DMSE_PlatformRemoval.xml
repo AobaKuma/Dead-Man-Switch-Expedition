@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- 拆除太空平台（DMSE.Designator_RemovePlatform，加入 Odyssey 建築分頁；見 Patches/Patch_OrbitalPlatform.xml） -->
+  <DesignationDef>
+    <defName>DMSE_RemovePlatform</defName>
+    <targetType>Cell</targetType>
+    <texturePath>Designations/RemoveFloor</texturePath>
+  </DesignationDef>
+
+  <JobDef>
+    <defName>DMSE_RemovePlatformJob</defName>
+    <driverClass>DMSE.JobDriver_RemovePlatform</driverClass>
+    <reportString>removing platform.</reportString>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
+
+  <WorkGiverDef>
+    <defName>DMSE_ConstructRemovePlatform</defName>
+    <label>remove platforms</label>
+    <giverClass>DMSE.WorkGiver_RemovePlatform</giverClass>
+    <workType>Construction</workType>
+    <priorityInType>29</priorityInType>
+    <verb>remove platform</verb>
+    <gerund>removing platform</gerund>
+    <scanThings>false</scanThings>
+    <scanCells>true</scanCells>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+</Defs>

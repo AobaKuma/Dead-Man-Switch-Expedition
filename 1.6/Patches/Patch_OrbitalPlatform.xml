@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+	<!-- 讓原版太空虛空具備 VoidSpace 承載力，DMS_OrbitalPlatform 才能直接蓋在虛空上（不需 Orbital Platforms 模組）。
+	     該模組會重新定義 Space 且已含 VoidSpace，[not(...)] 讓它不被重複加入。 -->
+	<Operation Class="PatchOperationAdd">
+		<xpath>/Defs/TerrainDef[defName="Space"]/affordances[not(li="VoidSpace")]</xpath>
+		<success>Always</success>
+		<value>
+			<li>VoidSpace</li>
+		</value>
+	</Operation>
+
+	<!-- 太空可行走（穿著太空服 EVA）。Vanilla Gravship Expanded 的 SpaceTraversal.xml 會直接移除 passability 節點並把 pathCost 設為 490：
+	     這裡只在節點還在時改成 Standable、不動 pathCost，不論載入順序都不會讓 VGE 的 patch 找不到節點而報錯。 -->
+	<Operation Class="PatchOperationConditional">
+		<xpath>/Defs/TerrainDef[defName="Space"]/passability</xpath>
+		<match Class="PatchOperationReplace">
+			<xpath>/Defs/TerrainDef[defName="Space"]/passability</xpath>
+			<value>
+				<passability>Standable</passability>
+			</value>
+		</match>
+	</Operation>
+
+	<!-- 「拆除平台」指令放進 Odyssey 建築分頁 -->
+	<Operation Class="PatchOperationAdd">
+		<xpath>/Defs/DesignationCategoryDef[defName="Odyssey"]/specialDesignatorClasses</xpath>
+		<value>
+			<li>DMSE.Designator_RemovePlatform</li>
+		</value>
+	</Operation>
+
+	<!-- 原版地圖上自然生成的平台（沒有建造成本）也可拆除並回收材料 -->
+	<Operation Class="PatchOperationAddModExtension">
+		<xpath>/Defs/TerrainDef[defName="OrbitalPlatform"]</xpath>
+		<success>Always</success>
+		<value>
+			<li Class="DMSE.RemovablePlatformExtension">
+				<leavings>
+					<Steel>15</Steel>
+				</leavings>
+				<workAmount>2000</workAmount>
+			</li>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationAddModExtension">
+		<xpath>/Defs/TerrainDef[defName="MechanoidPlatform"]</xpath>
+		<success>Always</success>
+		<value>
+			<li Class="DMSE.RemovablePlatformExtension">
+				<leavings>
+					<Steel>10</Steel>
+					<Plasteel>3</Plasteel>
+				</leavings>
+				<workAmount>3000</workAmount>
+			</li>
+		</value>
+	</Operation>
+
+</Patch>

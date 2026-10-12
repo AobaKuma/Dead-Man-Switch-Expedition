@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <!-- EN: large structural pile -->
+  <DMSE_StructuralPile.label>大型结构桩</DMSE_StructuralPile.label>
+  <!-- EN: see 1.6/Defs/ThingDefs_Buildings/DMSE_TransferFlight.xml -->
+  <DMSE_StructuralPile.description>划出一块范围的重型承重桩。以钢梁相连的桩可以一起分离，成为一艘船移动。小型结构桩可以建在它的连结范围内。不能建在原生的轨道平台上，船体也不包含原生轨道平台；那类地形请使用真空结构桩。</DMSE_StructuralPile.description>
+
+  <!-- EN: small structural pile -->
+  <DMSE_StructuralPileSmall.label>小型结构桩</DMSE_StructuralPileSmall.label>
+  <!-- EN: see 1.6/Defs/ThingDefs_Buildings/DMSE_TransferFlight.xml -->
+  <DMSE_StructuralPileSmall.description>划出一块较小范围的承重桩。本身不提供连结范围：必须建在大型或真空结构桩的连结范围内，且小型结构桩之间无法相连。不能建在原生的轨道平台上，船体也不包含原生轨道平台。</DMSE_StructuralPileSmall.description>
+
+  <!-- EN: vacuum structural pile -->
+  <DMSE_StructuralPileVacuum.label>真空结构桩</DMSE_StructuralPileVacuum.label>
+  <!-- EN: see 1.6/Defs/ThingDefs_Buildings/DMSE_TransferFlight.xml -->
+  <DMSE_StructuralPileVacuum.description>锚入太空中实心地面（如小行星真空岩、改造出的土壤或原生轨道平台）的重型承重桩。只能建在太空中，船体包含那里所有的实心地面，但不含自行铺设的轨道平台与轻型平台——那些由大型与小型结构桩负责。以钢梁相连的桩可以一起分离，成为一艘船移动。小型结构桩也可以建在它的连结范围内。</DMSE_StructuralPileVacuum.description>
+
+  <!-- EN: chemical transfer engine -->
+  <DMSE_ChemicalTransferEngine.label>化学转移引擎</DMSE_ChemicalTransferEngine.label>
+  <!-- EN: see 1.6/Defs/ThingDefs_Buildings/DMSE_TransferFlight.xml -->
+  <DMSE_ChemicalTransferEngine.description>用于转移飞行的化学燃料火箭引擎，只在出发与抵达时点火。喷口后方须保持净空。</DMSE_ChemicalTransferEngine.description>
+
+  <!-- EN: transfer flight console -->
+  <DMSE_TransferConsole.label>转移飞行控制台</DMSE_TransferConsole.label>
+  <!-- EN: see 1.6/Defs/ThingDefs_Buildings/DMSE_TransferFlight.xml -->
+  <DMSE_TransferConsole.description>控制所在船只的转移飞行：制定目的地、检查燃料与整备状态，并启动起飞。</DMSE_TransferConsole.description>
+
+</LanguageData>

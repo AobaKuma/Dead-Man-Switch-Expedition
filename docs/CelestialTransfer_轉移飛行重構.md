@@ -1,6 +1,6 @@
 # DMSE 轉移飛行重構 — 實作流程與細節
 
-> 狀態：**設計稿（尚未實作）**　｜　撰寫：2026-10-10　｜　依據：`.source/DMSE/CelestialTransfer` 現行程式碼 + RimWorld 1.6 / Odyssey 原版原始碼
+> 狀態：**實作中**（P0–P8 已實作；P3 之後未經完整遊戲內驗收，數值待實測；進度見 §11-1）　｜　撰寫：2026-10-10　｜　依據：`.source/DMSE/CelestialTransfer` 現行程式碼 + RimWorld 1.6 / Odyssey 原版原始碼
 >
 > 修訂 2026-10-10（一）：結構樁連結改為**玩家以 Gizmo 手動建立**（§3-2、§3-3），鋼樑依玩家建立的連結渲染（§3-9）。
 > 修訂 2026-10-10（二）：連結改為**下達施工單、由殖民者送料施工**（§3-1、§3-2）；覆蓋重疊時**由起飛的船帶走**範圍內地板與建築，未被完整包含的多格建築在分離時摧毀（§3-3、§3-5、§7-1）。
@@ -16,7 +16,7 @@
 |---|---|---|---|
 | 1 | 不再依附逆重船，獨立控制台 | 新建築「轉移飛行控制台」；完全不碰 `Building_GravEngine` / `CompPilotConsole`，移除駕駛台攔截 patch | `DMSE_TransferConsole`、`CompTransferConsole`、`ITab_TransferShip` |
 | 2 | 3×3 結構樁界定飛行範圍；需連結成一體 | 每根樁覆蓋一個方形範圍；**連結由玩家下令、殖民者施工**：選取結構樁 → Gizmo → 點選範圍內另一根樁 → 送料施工完成才生效；以連結相連的樁＝一艘船；範圍內非虛空的地板與其上物件＝船體（與他網重疊處由起飛方帶走，未完整包含的多格建築摧毀） | `DMSE_StructuralPile`、`CompStructuralPile`、`PileLinkUtility`、`MapComponent_PileNetwork` |
-| 3 | 燃料 ∝ 連結的樁數；地板下渲染鋼樑 | 燃料公式對網路內（經連結相連的）樁數線性；`SectionLayer` 於 `AltitudeLayer.BelowTerrain` 為玩家建立的**每一條連結**畫一根鋼樑 | `TransferFlightMath`、`SectionLayer_StructuralBeams` |
+| 3 | 燃料 ∝ 連結的樁數；地板下渲染鋼樑 | 燃料公式對網路內（經連結相連的）樁數線性；整圖 `MapDrawLayer` 於 `AltitudeLayer.BelowTerrain` 為玩家建立的**每一條連結**畫一根鋼樑 | `TransferFlightMath`、`MapDrawLayer_StructuralBeams` |
 | 4 | 只在起終點點火加減速；飛行中殖民地正常運作（含穿梭機起降） | 起飛時把船體「分離」成獨立的船體地圖，掛在會移動的 `SpaceMapParent` 子類上；狀態機：倒數 → 分離 → 離軌點火 → 滑行 → 入軌點火 → 抵達；只有點火階段有推力效果 | `WorldObject_TransferShip`、`ShipSeparationUtility`、`TransferPhase` |
 | 5 | 前期化學燃料引擎 | 新增 `DMSE_ChemicalTransferEngine`：中推力、燃耗基準 1.0、前期研究即可建造 | `CompTransferEngine` |
 | 6 | 熱核推進器改低燃耗大推力 | `DMSE_NuclearThruster` 改掛 `CompTransferEngine`：高推力、燃耗倍率 0.35；需核融合爐支援 | 同上 + `DMSE_FusionCore` 角色調整 |
@@ -179,7 +179,7 @@ flowchart TD
 | 優先施工 | 兩個 WorkGiver 都是 `WorkGiver_Scanner`，右鍵目標樁時原版會自動產生「優先施工」選單 |
 | 顯示 | 結構樁檢視字串：「鋼樑施工：→ (x, z) 長 N 格｜材料 a/b｜進度 p%」；施工中的鋼樑以藍圖色線常駐顯示（不只選取時），可選擇依進度畫出部分鋼樑 |
 
-**拆除連結**：也是施工單。Gizmo「拆除鋼樑」→ `FloatMenu` 列出每條已完工連結（標示對方位置與長度，滑鼠移過時高亮該條鋼樑）→ 下達後小人到任一端的樁旁施工（工作量 × `beamDismantleWorkFactor`）→ 完工時解除雙向連結並在該樁旁掉落 `材料 × beamDismantleRefund`。
+**拆除連結**：也是施工單。Gizmo「拆除鋼樑」→ `FloatMenu` 列出每條已完工連結（標示對方位置與長度，滑鼠移過時高亮該條鋼樑）→ 拆除單掛在下令的那根樁上，小人在該樁旁施工（工作量 × `beamDismantleWorkFactor`）→ 完工時解除雙向連結並在該樁旁掉落 `材料 × beamDismantleRefund`。
 
 **取消施工單**：Gizmo「取消鋼樑施工」→ 列出施工單；取消時 `beamMaterials` 已送達的材料**全額**丟回樁旁（`TryDropAll`，比照原版取消 Frame）。
 
@@ -314,7 +314,7 @@ public class MapComponent_PileNetwork : MapComponent
 
     public void Register(CompStructuralPile p)   { piles.Add(p); MarkDirty(); }   // PostSpawnSetup
     public void Deregister(CompStructuralPile p) { piles.Remove(p); MarkDirty(); } // PostDeSpawn
-    public void MarkDirty() { dirty = true; map.mapDrawer.WholeMapChanged(DMSE_DefOf.DMSE_StructuralBeams); }  // 連結完工/解除、樁增刪都呼叫；footprint 一併失效
+    public void MarkDirty() { dirty = true; MapDrawLayer_StructuralBeams.SetDirty(map); }  // 連結完工/解除、樁增刪都呼叫；footprint 一併失效
 
     public IReadOnlyList<PileNetwork> Networks { get { if (dirty) Rebuild(); return networks; } }
     public IEnumerable<CompStructuralPile> PilesWithOrders;    // 給兩個 WorkGiver 掃描用
@@ -360,48 +360,36 @@ public class PileNetwork
 
 **渲染對象**：**每一條已完工的連結**畫一根鋼樑，玩家建了什麼就看到什麼（`maxLinks` 已限制雜亂程度，不需要再做最小生成樹之類的篩選）。施工中的鋼樑不進這個圖層，而是以藍圖色線常駐顯示在上層（§3-7）；若想表現施工進度，可在上層依 `workDone / workTotal` 畫出部分長度的半透明鋼樑。
 
-**實作**：`SectionLayer_StructuralBeams : SectionLayer`（原版 `Section` 會以 `typeof(SectionLayer).AllSubclassesNonAbstract()` 自動實例化所有子類，不需註冊）。
+**實作**：`MapDrawLayer_StructuralBeams : MapDrawLayer`——1.6 的**整圖圖層**（`MapDrawer` 會以 `typeof(MapDrawLayer).AllSubclassesNonAbstract()` 把非 `SectionLayer` 的子類實例化為 global layer，不需註冊；原版 `MapDrawLayer_OrbitalDebris` 同類）。相較原訂的 `SectionLayer`：
+
+- 長樑不必依 section 切段、也不會被視錐剔除（mesh bounds = 整張地圖）；
+- 不佔用 `MapMeshFlagDef` 的 64 個位元。`relevantChangeTypes` 保持 0：原版 `MapDrawer` **從不清除** `globalDirtyFlags`，掛旗標的 global layer 會在第一次變動後每幀重建。改為連結完工/拆除、樁增刪時由 `MapComponent_PileNetwork.MarkDirty()` 直接把圖層 `Dirty = true`，`MapDrawer.DrawMapMesh` 下一幀重建。
 
 ```csharp
-public class SectionLayer_StructuralBeams : SectionLayer
+public class MapDrawLayer_StructuralBeams : MapDrawLayer
 {
-    public SectionLayer_StructuralBeams(Section section) : base(section)
-    {
-        relevantChangeTypes = (ulong)DMSE_DefOf.DMSE_StructuralBeams;  // 自訂 MapMeshFlagDef
-    }
+    public static void SetDirty(Map map) { map.mapDrawer.GetGlobalLayer<MapDrawLayer_StructuralBeams>().Dirty = true; } // 地圖初始化前 GlobalLayers 為 null，需判空
 
     public override void Regenerate()
     {
+        Dirty = false;
         ClearSubMeshes(MeshParts.All);
-        var comp = Map.GetComponent<MapComponent_PileNetwork>();
         float alt = AltitudeLayer.BelowTerrain.AltitudeFor();
-        CellRect rect = section.CellRect;
-        foreach (var net in comp.Networks)
-        foreach (var (a, b) in net.Links)
+        foreach (PileNetwork net in MapComponent_PileNetwork.For(Map).Networks)
         {
-            Vector3 from = a.parent.TrueCenter(), to = b.parent.TrueCenter();
-            float angle = (to - from).AngleFlat();
-            // 將線段切成 1 格長的小段；只輸出中點落在本 section 內的段落 → 長樑跨 section 也不會被視錐剔除
-            foreach (Vector3 mid in BeamSegmentCenters(from, to))
-                if (rect.Contains(mid.ToIntVec3()))
-                    Printer_Plane.PrintPlane(this, mid.WithY(alt), BeamSegmentSize, BeamMat, angle);
+            foreach (PileNetwork.Link link in net.links) PrintBeam(link.a, link.b, alt);   // 每格一段 Section + 兩端 End 端蓋
+            foreach (CompStructuralPile p in net.piles) PrintPlane(Center, 3×3);         // 樁中心節點
         }
-        // 節點：每根樁中心畫 Center 貼圖；每條連結在樁的 3×3 邊緣處畫 End 端蓋（接頭）
         FinalizeMesh(MeshParts.All);
     }
 }
 ```
 
-- **重建時機**：連結完工/拆除、樁增刪時 `map.mapDrawer.WholeMapChanged(DMSE_StructuralBeams)`（變動頻率低，整圖重建可接受）。需要新增：
-
-```xml
-<MapMeshFlagDef><defName>DMSE_StructuralBeams</defName></MapMeshFlagDef>
-```
-
-  `MapMeshFlagDef` 以 `ulong` 位元遮罩實作（`FlagDefUtility.SetMaskFromIndex`，可隱式轉 `ulong`），全遊戲上限 64 個；只新增這一個即可，不要每種效果各開一個。
+- **繪製順序**：地形材質的 renderQueue 為 `2000 + renderPrecedence`；鋼樑材質用 `beamRenderQueue`（預設 1990，樑段 / 端蓋 / 節點依序 +0 / +1 / +2），因此先畫、被地板蓋住，只在虛空處透出。Odyssey 軌道碎片（`OrbitalDebris` shader）的佇列未確認，若碎片畫到鋼樑上方，調整 `beamRenderQueue` 即可。
+- **貼圖方向**：`Section` 的樑沿貼圖縱軸（北南向）延伸；`Vector3.AngleFlat()`（北 = 0、順時針）與 `PrintPlane` 的旋轉方向一致。
 
 - **地面上的提示線**：鋼樑在地板下看不到，所以選取樁/控制台時另以 `GenDraw.DrawLineBetween` 在上層畫出連結線（§3-7），讓玩家在有地板的區域也能確認連結。
-- **美術**：repo 已有 `Textures/Things/Building/StructuralFrame/{Center,Section,End}`（`building` / `building_top` 兩層，目前用於裝飾建築 `DMSE_StructuralFrame_*`）。初期可直接沿用 `Section` 做樑段、`Center` 做節點、`End` 做端蓋；但這組是帶正面透視的立面圖，地板下的俯視樑建議美術另出一組 **俯視、可無縫平鋪** 的樑段貼圖（建議 64×64 / 每格一段）。
+- **美術**：repo 已有 `Textures/Things/Building/StructuralFrame/{Center,Section,End}`（`building` / `building_top` 兩層，目前用於裝飾建築 `DMSE_StructuralFrame_*`）。初期可直接沿用 `Section` 做樑段、`Center` 做節點、`End` 做端蓋；但這組是帶正面透視的立面圖，地板下的俯視樑建議美術另出一組 **俯視、可無縫平鋪** 的樑段貼圖（建議 64×64 / 每格一段；白色佔位已放在 `Things/Building/StructuralBeam/`，見 §10-5）。
 - 任意角度：`Printer_Plane.PrintPlane(layer, center, size, mat, rot)` 支援浮點旋轉，連結可沿任意方向。若想要純直角桁架風格，可改為 L 形（先 X 後 Z）兩段直線，屬美術選擇。
 
 ---
@@ -424,7 +412,7 @@ public class SectionLayer_StructuralBeams : SectionLayer
     <li Class="CompProperties_Flickable" />
     <li Class="DMSE.CompProperties_TransferConsole">
       <operateTicks>1250</operateTicks>          <!-- 點火程序作業時間 -->
-      <countdownTicks>2500</countdownTicks>      <!-- 倒數 1 小時（遊戲內） -->
+      <countdownTicks>600</countdownTicks>       <!-- 倒數 10 秒＝引擎暖機（2026-10-12 由 1 遊戲小時縮短） -->
     </li>
   </comps>
 </ThingDef>
@@ -436,8 +424,9 @@ public class SectionLayer_StructuralBeams : SectionLayer
 |---|---|
 | 所屬網路 | 必須位於某網路 footprint 內；同網路多台時，`PrimaryConsole` 取第一台可用者，其餘顯示「備援」 |
 | 可用條件 | 已生成、通電、Flickable 開啟、未損壞（與 `CompBVRDevice.Active` 同樣的判定組合） |
-| 存檔狀態 | `TransferPlan plan`（`IExposable`）、`ConsoleState state`（Idle / Planned / AwaitingOperator / Countdown）、`int countdownEndTick` |
-| Gizmo | 「制定轉移計畫」、「中止」（Planned/Countdown）、「顯示船體範圍」切換、Debug：立即分離 / 立即抵達 |
+| 存檔狀態 | `TransferPlan plan`（`IExposable`）、`ConsoleState state`（Idle / Planned / AwaitingOperator / Countdown）、`int countdownEndTick`、`string shipName` |
+| 船名 | 控制台實作 `IRenameable`，以原版 `Dialog_Rename<T>`（`Dialog_RenameTransferShip`）命名；命名時同船（同網路）所有控制台一起改名，已在船體地圖上時同步改 `WorldObject_TransferShip.Name`。起飛時（分離前）`TakeShipNameForLaunch` 決定船名：本控制台 → 同船其他控制台 → 自動命名「轉移艦 N」，並存回同船所有控制台，之後每次起飛沿用。舊存檔中尚未命名、但已在船體地圖上的控制台沿用該船體的名稱 |
+| Gizmo | 「制定轉移計畫」、「中止」（Planned/Countdown）、「命名飛船」（選取面板也有筆形按鈕，ITab 頂端顯示船名）、「顯示船體範圍」切換、Debug：立即分離 / 立即抵達 |
 | ITab | 見 §4-3 |
 
 ### 4-2. 起飛操作流程
@@ -450,7 +439,8 @@ public class SectionLayer_StructuralBeams : SectionLayer
    - `Alert_TransferExhaustDanger`：列出站在推進器尾焰區的 pawn。
    - 本網路結構樁的鋼樑 Gizmo 鎖定、鋼樑 WorkGiver 略過本網路，避免倒數中改變船體範圍。
    - 每 250 tick 檢查整備狀態，失敗就自動中止（例：樁被拆、燃料被搬走）。
-5. **分離**：倒數結束 → §7。
+   - **引擎暖機**（`MapComponent_TransferBurn`）：倒數開始時在核融合爐（沒有則控制台）播放原版 `ShipReactor_Startup`（同舊版暖機）；之後依倒數進度 0 → 1：運作中引擎的火焰從斷續點火（前 35%）增強到約 55% 長度、排氣 fleck 15% → 60%、噴口火花與熱光越來越頻繁、進度 30% 起鏡頭震動逐漸增強、推進器持續音（原版 `Gravship_RetroThruster_Loop`）音量 15% → 80%。暖機不造成尾焰傷害。
+5. **分離**：倒數結束 → §7。起飛演出開始時播放原版 `Gravship_Launch`（同舊版起飛）；點火階段的推進器持續音以全音量播放（只在檢視該地圖時）。
 
 ### 4-3. `ITab_TransferShip` 內容
 
@@ -503,6 +493,7 @@ public class SectionLayer_StructuralBeams : SectionLayer
 **放置**：`PlaceWorker_TransferEngine` 畫出尾焰區並即時顯示是否受阻。
 
 **火焰繪製**：改由 `CompTransferEngine.PostDraw()` 在「所屬船正處於點火階段」時繪製（邏輯從現行 `MapComponent_Ship.Draw` 搬過來），不再由 MapComponent 統一畫；狀態由 `map.Parent as WorldObject_TransferShip` 查詢，Comp 本身不需存檔。
+> **實作差異**：火焰、排氣、光暈與音效集中在 `MapComponent_TransferBurn`（點火階段與倒數暖機共用，見 §4-2），不改建築的 `drawerType`；噴口位置由 `CompTransferEngine.NozzlePos` / `FlameCenter` 提供。
 
 ### 5-2. 燃料來源
 
@@ -516,7 +507,7 @@ public class SectionLayer_StructuralBeams : SectionLayer
 ```csharp
 public interface ITransferFuelSource { float Available { get; } void Draw(float amount); Thing Parent { get; } }
 // 內建：RefuelableFuelSource（CompRefuelable）
-// VGE 專案註冊：PipeResourceFuelSource（反射 PipeSystem.CompResourceStorage.AmountStored / DrawResource，沿用 VGEFuelHandler 的作法）
+// VGE 專案註冊：PipeStorageFuelSource（直接參考 PipeSystem.CompResourceStorage；以化學燃料當量計，見 §10-3）
 public static class TransferFuelSources { public static void RegisterProvider(Func<Thing, ITransferFuelSource> p); }
 ```
 
@@ -554,6 +545,20 @@ public static class TransferFuelSources { public static void RegisterProvider(Fu
 
 ### 5-4. 試算（以 §5-6 初值：B = 60、P = 12、chem η = 1.0、NTR η = 0.35、化學推力 3、熱核推力 12、minTWR 0.5、burnHoursRef 3h @ TWRref 1、coastHoursPerTile 2）
 
+> **P8 依目前 XML 重算**：結構樁已調為覆蓋半徑 11（23×23）、連結範圍 23、`massWeight` 4，所以 **W = 4 × 樁數**（下表第一欄的 W 仍適用，只是同樣的 W 只需約 1/4 的樁數）。
+>
+> | 船 | 引擎 | 樁數 / W | T / TWR | d | 燃料 F | 單次點火 | 滑行 | 總時間 | 燃料存放 |
+> |---|---|---|---|---|---|---|---|---|---|
+> | 前期小船 | 化學 ×2 | 1 / 4 | 6 / 1.5 | 5 | **480** | 2 h | 10 h | 14 h | 1 座大型化學燃料槽（750） |
+> | 前期小船 | 化學 ×2 | 1 / 4 | 6 / 1.5 | 20 | **1200** | 2 h | 40 h | 44 h | 1 座 DMSE 筒倉（1750；滿載航程 31 格） |
+> | 中型船 | 化學 ×4 | 3 / 12 | 12 / 1.0 | 10 | **2160** | 3 h | 20 h | 26 h | 2 座筒倉 |
+> | 中型船 | 熱核 ×1（+核融合爐 ×1） | 3 / 12 | 12 / 1.0 | 10 | **756** | 3 h | 20 h | 26 h | 1 座筒倉（滿載航程 29 格） |
+> | 大型船 | 熱核 ×3（+核融合爐 ×2） | 8 / 32 | 36 / 1.13 | 20 | **3360** | 2.7 h | 40 h | 45 h | 2 座筒倉 |
+> | 大型船 | 化學 ×11 | 8 / 32 | 33 / 1.03 | 20 | **9600** | 2.9 h | 40 h | 46 h | 6 座筒倉 |
+> | 撞擊（§9） | 熱核 ×3（+核融合爐 ×2） | 8 / 32 | 36 / 1.13 | 20 | **3360** | 2.7 h | 40 h | 44 h（不減速：1.5 × 點火 + 滑行） | 2 座筒倉 |
+>
+> VGE 環境下 1 單位 Astrofuel = 2 化學燃料當量，筒倉容量（1750）的航程加倍。結論：與設計意圖一致（小船用化學引擎即可、大船燃料壓力逼向熱核）；**未調整任何數值**，待遊戲內實測再改。
+
 | 船 | 引擎 | W | T / TWR | d | 燃料 F | 單次點火 | 滑行 | 總時間 |
 |---|---|---|---|---|---|---|---|---|
 | 前期小船 | 化學 ×2 | 4 | 6 / 1.5 | 5 | 4×(60+60)×1.0 = **480** | 2 h | 10 h | 14 h |
@@ -575,10 +580,10 @@ public static class TransferFuelSources { public static void RegisterProvider(Fu
 | 研究 | `DMSE_OrbitalDynamics`（DMSE 太空線第一個研究，前置僅 `DMS_MechBasis`） |
 | 成本 | Steel 180、ComponentIndustrial 4、Chemfuel 50 |
 | `thrust` / `fuelFactor` | 3 / 1.0 |
-| 尾焰區 | (2, 0, 6)，offset (0, 0, -6) |
+| 尾焰區 | (2, 0, 6)，offset (0, 0, -7)（實作：2×3 佔地的尾端從 -2 開始，四方向對齊） |
 | 電力 | 無（或 100W 點火泵），不需核融合爐 |
 | 地形 | `Heavy`（不需 Substructure） |
-| 外觀 | 可先借原版 `Things/Building/LateralThruster` / `LargeThruster_Burn` 火焰，之後換 DMSE 美術 |
+| 外觀 | 建築為白色佔位貼圖；火焰暫用熱核推進器的 `Visual/NuclearThruster_Burn`（原版 `LargeThruster_Burn` 點火時不顯示，§10-5） |
 
 **(b) 改造：熱核推進器 `DMSE_NuclearThruster`（需求 6）**
 
@@ -632,6 +637,10 @@ public static class TransferFuelSources { public static void RegisterProvider(Fu
   <coastHoursPerTile>2</coastHoursPerTile>
   <exhaustDamageIntervalTicks>60</exhaustDamageIntervalTicks>
   <carryNaturalRock>true</carryNaturalRock>
+  <footprintCacheTicks>250</footprintCacheTicks>       <!-- 實作時新增：footprint 快取 -->
+  <impactMinEngines>3</impactMinEngines>               <!-- §9 -->
+  <planetkillerMinEngines>4</planetkillerMinEngines>
+  <impactFadeSeconds>5</impactFadeSeconds>
 </DMSE.TransferFlightTuningDef>
 ```
 
@@ -747,6 +756,7 @@ t ∈ [t_a + t_c, t_total]    : u = t − t_a − t_c;  p = 0.5·v·t_a + v·t_c
 - **更新**：每 250 tick 依進度 p 找 path 上累積距離最接近的索引，設為 `Tile`。
 - **避讓**：若該格 `Find.WorldObjects.AnyMapParentAt(tile)` 已有其他地圖（例如途經小行星據點），保留前一格不前進，避免兩張地圖同格造成 `MapParentAt` / `Find.Maps.Find(m => m.Tile == t)` 類查詢混淆。
 - **分離當下**：船的 `Tile` 直接設為 `path[1]`（第一個鄰格），**不與原地圖同格**；`DrawPos` 仍從起點中心開始插值，視覺上看不出跳格。
+  - **修正（2026-10-12）**：上述做法加上「以起訖點直線 Slerp 畫位置、每 250 tick 依進度比例換格」，會讓畫面上的船與實際 `Tile` 差 1 格以上（起飛初期最明顯），穿梭機從船上出發時的起點也就不是畫面上的格子。改為：航線從**分離時船所在的格子** `flightStart`（起點地圖旁第一個空格）開始；`DrawPos` / 背景相機沿航線折線（相鄰格中心之間 Slerp，依累積角距換算進度）移動；`Tile` 每次 `TickInterval` 取顯示位置所在的航線格（線段前半取前一格、後半取後一格），兩者一致。只有途經已有地圖的格子時 `Tile` 會暫時停在前一格。入軌點火改停鄰格時，航線延伸為「起點 → 原目的地 → 新目的地」（`reroutedFrom` 存檔），並換算進度讓位置不跳動。
 - **抵達**：`Tile = destination`。若入軌點火開始時目的地已被其他世界物件占用（期間生成了任務點），自動改停最近的空鄰格並發訊息。
 
 ### 6-5. 目的地驗證（取代 `FlightUtility.ValidateDestinationTile`）
@@ -758,7 +768,9 @@ t ∈ [t_a + t_c, t_total]    : u = t − t_a − t_c;  p = 0.5·v·t_a + v·t_c
 | 距離 | `d ≤ d_max`（`DebugSettings.ignoreGravshipRange` 時略過） |
 | Impact 模式 | 見 §9 |
 
-> 想去小行星據點/空間站：停泊在其鄰格，再用穿梭機往返（正好利用需求 4 的穿梭機能力）。「直接對接/合併地圖」列為後期功能（§11），可重用 §7 的搬移程式碼並加上原版 `GravshipLandingMarker` 式的落點選擇。
+> 想去小行星據點/空間站：停泊在其鄰格，再用穿梭機往返（正好利用需求 4 的穿梭機能力）。
+>
+> **已實作降落（2026-10-12）**：目的地為已有地點的格子（`TransferLandingUtility.IsLandableSite`：同層、有 MapParent、不是飛行中的轉移艦）時，計畫標記 `landOnSite`，船飛往旁邊的空格（`WorldObject_TransferShip.landingTarget` 記下地點）。抵達後比照原版逆重船降落選位（`Designator_LandTransferShip`：船體輪廓跟隨滑鼠，逐格檢查同原版 `Designator_MoveGravship.IsValidCell`，但不檢查地形——地形由船體自帶），選定後以 `ShipSeparationUtility.MoveHull` 把船體地圖上所有非虛空格以位移搬入目的地地圖（與分離共用擷取 / 生成流程；降落區先清空），之後移除船體地圖與世界物件。選定位置受阻時自動找最近的可降落位置（附近逐格、再全圖粗掃）；全圖都放不下則繼續停在旁邊，世界物件提供「降落」「自動降落」「取消降落」Gizmo。目的地沒有地圖時，以 `RequiredMapSize`（原版預設 / 地點偏好尺寸，且至少船體範圍 + 每邊 14 格）生成，並比照原版處理無主地點歸屬與進入敵方據點的信件。尚未支援旋轉（只平移）。等待降落期間以 `Patch_MapParent_CheckRemoveMapNow_PendingLanding` 擋下原版的地圖移除檢查（原版 SpaceMapParent 的地圖上沒有 pawn / 建築時會連同地點一起移除，剛生成的空小行星地圖會在選位前消失）；選位設計器由 `GameComponent_TransferLanding` 在地圖切換與長時間事件結束後才選上。飛行途中目標地點消失時改為停在原處並提示。「直接對接/合併地圖」列為後期功能（§11），可重用 §7 的搬移程式碼並加上原版 `GravshipLandingMarker` 式的落點選擇。
 
 ### 6-6. 背景世界畫面
 
@@ -818,6 +830,14 @@ footprint 上限約 30 樁 × 169 格 ≈ 5000 格，與一艘大型逆重船同
 - `WorldObject_ImpactGravship` 的 fade-out 計時（`ScreenFadeSeconds`）邏輯搬進 `WorldObject_TransferShip`（`isImpact` 分支）。
 - 順手修正：`Find.Maps.Where(...).First()` 改 `FirstOrDefault`、`engine.LabelCap` 改用船名（新系統沒有 engine）、引擎計數改用 `CompTransferEngine`。
 
+**實作（P7）**：
+
+- 入口：控制台「規劃終結巡航」Gizmo，只在網路內運作中的撞擊用引擎（`CompProperties_TransferEngine.impactCapable`，目前只有熱核推進器）≥ `impactMinEngines` 時顯示（與舊版模式選單相同）。點擊 → 沿用舊 `DMSE.Flight.Impact.Confirm` 確認視窗（6 秒後可確認）→ 鏡頭移到地表、選撞擊點 → `Dialog_TransferPlan`（紅字警告；`impactEngines ≥ planetkillerMinEngines` 時另註明行星殺手結局）。
+- 撞擊點：地表層、目前沒有已載入地圖的格子。`TransferPlan.isImpact` + `approachTile`（起點太空層中最接近撞擊點的格子，`PlanetLayer.GetClosestTile_NewTemp`）；航程、燃料與滑行時間都以起點到 `approachTile` 的距離計算。
+- 飛行：離軌點火 → 撞擊航程（滑行，**不減速**，以滑行速度走完剩餘進度）→ 撞擊；撞擊時刻 = 點火 + 滑行 + 半個點火時長。世界地圖上船沿太空層航線飛到 `approachTile`。撞擊前 `impactFadeSeconds`（實際時間，依目前遊戲速度換算）畫面淡出為白色。
+- 結局：`TransferImpactUtility.Resolve`（摧毀目標非玩家據點 → 撞擊坑 → 移除 DMS 軍隊據點 → 全派系敵對 → 銷毀船與船體地圖 → 片尾），文本與舊版相同；撞擊坑規模與行星殺手判定用船上的撞擊用引擎數（不論是否運作中，同舊版）。點火結束後仍可用穿梭機離船（不在點火階段）。
+- Tuning：`impactMinEngines = 3`、`planetkillerMinEngines = 4`、`impactFadeSeconds = 5`。
+
 ---
 
 ## 10. 移除、相容與存檔遷移
@@ -828,16 +848,17 @@ footprint 上限約 30 樁 × 169 格 ≈ 5000 格，與一艘大型逆重船同
 |---|---|
 | 刪除 | `Patch_CompPilotConsole_StartChoosingDestination.cs`、`FlightModeLauncher.cs`、`Dialog_SelectFlightMode.cs`、`Patch_CompGravshipFacility_CanBeActive.cs`（已全註解）、`ThingComp_Ship.cs`（空殼）、`ITravelingShip.cs`、`Patch_Visible.cs` |
 | 改寫 | `FlightUtility.cs` → `TransferFlightMath.cs` + `TransferReadiness.cs`；`Patch_Background.cs`（改認 `WorldObject_TransferShip`）；`VGECompatibility.cs` → 燃料來源 provider 註冊；`WorldObject_ImpactGravship.cs` → 併入 `WorldObject_TransferShip` |
-| 移入 `CelestialTransfer/Legacy/` | `WorldObject_Transfer.cs`、`MapComponent_Ship.cs`（僅供舊檔載入，見 10-2） |
-| 新增（C#） | `CompStructuralPile.cs`（含連結 Gizmo 與選取模式）、`PileLinkUtility.cs`、`PileBeamOrder.cs`、`WorkGiver_DeliverPileBeamMaterials.cs`、`WorkGiver_BuildPileBeam.cs`、`JobDriver_BuildPileBeam.cs`、`MapComponent_PileNetwork.cs`、`PileNetwork.cs`、`PlaceWorker_StructuralPile.cs`、`SectionLayer_StructuralBeams.cs`、`CompTransferConsole.cs`、`TransferPlan.cs`、`ITab_TransferShip.cs`、`Dialog_TransferPlan.cs`、`JobDriver_InitiateTransfer.cs`、`WorkGiver_InitiateTransfer.cs`、`Alerts_Transfer.cs`、`CompTransferEngine.cs`、`PlaceWorker_TransferEngine.cs`、`CompTransferReactor.cs`、`TransferFuelSources.cs`、`TransferFlightTuningDef.cs`、`WorldObject_TransferShip.cs`、`ShipSeparationUtility.cs`、`Patch_CompLaunchable_CanLaunch.cs`、`Patch_TravellingTransporters_Homing.cs`、`DebugActions_Transfer.cs` |
-| 新增（XML） | `ThingDefs_Buildings/DMSE_TransferFlight.xml`（樁、控制台、化學引擎、`DMSE_TransferEngineBase`）、`DMSE_TransferFlightTuning.xml`、`MapMeshFlagDef`、`JobDef`/`WorkGiverDef`（轉移點火程序、鋼樑送料、鋼樑施工/拆除；送料直接用原版 `HaulToContainer`）、`WorldObjectDef DMSE_TransferShip`、`MapGeneratorDef DMSE_ShipVoid` |
+| 移入 `CelestialTransfer/Legacy/` | `WorldObject_Transfer.cs`、`MapComponent_Ship.cs`、`WorldObject_ImpactGravship.cs`（僅供舊檔載入，見 10-2）。**已完成（P7）**；刪除欄的檔案與 `FlightUtility.cs`、`VGECompatibility.cs`、`Patch_Background.cs` 也已刪除 |
+| 新增（C#） | `CompStructuralPile.cs`（含連結 Gizmo 與選取模式）、`PileLinkUtility.cs`、`PileBeamOrder.cs`、`WorkGiver_DeliverPileBeamMaterials.cs`、`WorkGiver_BuildPileBeam.cs`、`JobDriver_BuildPileBeam.cs`、`MapComponent_PileNetwork.cs`、`PileNetwork.cs`、`PlaceWorker_StructuralPile.cs`、`MapDrawLayer_StructuralBeams.cs`、`PileDrawUtility.cs`、`PileResources.cs`、`CompTransferConsole.cs`、`TransferPlan.cs`、`ITab_TransferShip.cs`、`Dialog_TransferPlan.cs`、`JobDriver_InitiateTransfer.cs`、`WorkGiver_InitiateTransfer.cs`、`Alerts_Transfer.cs`、`CompTransferEngine.cs`、`PlaceWorker_TransferEngine.cs`、`CompTransferReactor.cs`、`TransferFuelSources.cs`、`TransferFlightTuningDef.cs`、`WorldObject_TransferShip.cs`、`ShipSeparationUtility.cs`、`Patch_CompLaunchable_CanLaunch.cs`、`Patch_TravellingTransporters_Homing.cs`、`DebugActions_Transfer.cs` |
+| 新增（XML） | `ThingDefs_Buildings/DMSE_TransferFlight.xml`（樁、控制台、化學引擎、`DMSE_TransferEngineBase`）、`DMSE_TransferFlightTuning.xml`、`JobDef`/`WorkGiverDef`（轉移點火程序、鋼樑送料、鋼樑施工/拆除；送料直接用原版 `HaulToContainer`）、`WorldObjectDef DMSE_TransferShip`、`MapGeneratorDef DMSE_ShipVoid` |
 | 修改（XML） | `DMSE_Gravship.xml`（熱核推進器、核融合爐、燃料筒倉）、`Patches.xml`、`GravshipExpanded/Patches/Patch_VGE.xml`、三語系 Keyed / DefInjected |
 | 專案檔 | `DMSE.csproj` 為舊式專案、逐檔 `<Compile Include>`，新增/刪除檔案都要同步更新；VGE 專案同理 |
 | 文件 | README「4. 天體轉移飛行」段落改寫 |
 
 ### 10-2. 舊存檔遷移
 
-- 飛行中的舊檔：保留 `WorldObject_Transfer`、`DMSE_TransferGravShip` Def 與 `MapComponent_Ship` 類別一至兩個版本。`MapComponent_Ship.FinalizeInit` 改為：若 `status != Idle` → 立即呼叫舊 `Arrive()` 讓船瞬間抵達、狀態歸零並記 log。之後版本再刪除（移除 MapComponent 類別會讓舊檔出現 "Could not find class" 錯誤，所以至少保留空殼）。
+- 飛行中的舊檔：保留 `WorldObject_Transfer`、`DMSE_TransferGravShip` Def 與 `MapComponent_Ship` 類別一至兩個版本。之後版本再刪除（移除 MapComponent 類別會讓舊檔出現 "Could not find class" 錯誤，所以至少保留空殼）。
+  - **實作**：`MapComponent_Ship` 為空殼（不再讀舊欄位）；舊 `TravelingObject`（轉移與撞擊）讀檔後第一個 tick 直接 `Arrive()` 並記 log——轉移：原地圖父物件移到目的地；撞擊：以舊地圖上的撞擊用引擎數執行 `TransferImpactUtility.Resolve`。改在第一個 tick 而非 `FinalizeInit` 處理，避免在地圖載入途中銷毀地圖或播片尾。暖機中的舊檔同樣處理（舊流程在暖機前就已把 `TravelingObject` 加入世界）。
 - `DMSE_TransferThruster` `GravshipComponentTypeDef`：保留 Def 一個版本避免舊檔引用錯誤（無任何建築再使用）。
 - 熱核推進器移除 `CompGravshipThruster` 後，舊檔中該 Comp 的存檔節點會被忽略；與 GravEngine 的 facility 連結自動消失。
 
@@ -845,13 +866,33 @@ footprint 上限約 30 樁 × 169 格 ≈ 5000 格，與一艘大型逆重船同
 
 - 刪除 `Patch_VGE_StartChoosingDestination_Interceptor` 與 `ClearVGEState`：新系統不再碰駕駛台，VGE 劫持問題自然消失。
 - `VGEFuelHandler` 改寫為 `ITransferFuelSource` provider（讀寫 `PipeSystem.CompResourceStorage`），讓 Astrofuel 筒倉可作為轉移燃料來源。原本對 GravEngine `CompHeatManager` 加熱與 `cooldownCompleteTick` 的處理不再適用（轉移不經過 GravEngine）。
+  - **實作（P7）**：條件同內建來源（`providesFuel` 設施或 `TransferFuelSourceExtension`），且儲存槽的 `PipeNetDef` 帶 VGE `GravshipFuelExtension`。對外以化學燃料當量計：每單位 = 10 / `resourceToRangeRatio`（Astrofuel 為 5 → 1 單位 = 2 化學燃料，與 VGE 逆重船航程換算一致）。`ITransferFuelSource` 新增 `DebugFill()`，開發者「加滿燃料」也適用 Astrofuel。`DMSE_VGE_Patch` 不再有 Harmony patch；專案新增 `PipeSystem.dll` 參考（相對路徑 `Mods/VanillaExpandedFramework`）。
 - `Patch_VGE.xml`：從 Gravhulk `linkableFacilities` 移除 `DMSE_NuclearThruster`（及視 §5-5(c) 決定是否移除 `DMSE_FusionCore`）。
+  - **實作（P7）**：另移除熱核推進器的 `CompProperties_ResourceThruster` 與 Astrofuel 管線建造指令（轉移引擎直接從船上筒倉取燃料，接管線沒有作用，且未接管線時會誤顯示「無燃料」），保留 VGE 維護 comp。燃料筒倉比照 VGE 燃料槽設 `comps Inherit="False"`，並改用 VGE 的 `CompProperties_PipeNetFuelProvider`——原本會多繼承一個 `FuelTankBase` 的逆重船設施 comp 與原版化學燃料爆炸 comp。`DMSE_FusionCore` 仍可連 Gravhulk（未變）。
 
 ### 10-4. 新增翻譯鍵（三語系）
 
 `DMSE.Pile.*` 前綴：架設鋼樑/拆除鋼樑/拆除全部/取消施工 Gizmo、游標旁的長度/材料/工作量說明、各項無法連結原因（不是結構樁、超出範圍、已連結或施工中、達連結上限、倒數中鎖定）、檢視字串的施工進度、JobDef 報告字串、網路合併/分裂訊息、分離時摧毀建築與斷裂連結的信件。
 
 `DMSE.Transfer.*` 前綴：計畫/中止/倒數/各階段名稱、整備檢查各項原因（含覆蓋重疊、附近未連結的樁）、ITab 欄位、警報（範圍外人員、尾焰危險）、信件（分離完成、抵達、推進器全損減速、原據點棄置）、穿梭機點火禁飛原因、Debug 指令。舊 `DMSE.Flight.*` / `DMSE.Cannot.Reason.*` / `DMSE_ShipWarmUp*` 於遷移期結束後移除。
+
+### 10-5. 貼圖（目前為白色佔位）
+
+建築以本 mod 慣例每格 128 px 對應 `drawSize`；鋼樑依 §3-9 建議每格 64 px。美術替換時保持路徑與尺寸即可。
+
+| texPath（`Textures/` 下） | 用途 | graphicClass / drawSize | 像素 |
+|---|---|---|---|
+| `Things/Building/StructuralPile/building` | `DMSE_StructuralPile` | `Graphic_Single` / (3,3) | 384×384 |
+| `Things/Building/TransferConsole/building_{north,south}` | `DMSE_TransferConsole` | `Graphic_Multi` / (3,2) | 384×256 |
+| `Things/Building/TransferConsole/building_{east,west}` | 同上（橫向時 drawSize 轉置） | | 256×384 |
+| `Things/Building/ChemicalTransferEngine/building` | `DMSE_ChemicalTransferEngine`（比照熱核推進器以 `Graphic_Single` 旋轉繪製，尾焰朝下） | `Graphic_Single` / (2,3) | 256×384 |
+| `Things/Building/StructuralBeam/{Section,End}` | `MapDrawLayer_StructuralBeams` 樑段 / 端蓋（俯視、可平鋪） | `PrintPlane` 每格一段 / (1,1) | 64×64 |
+| `Things/Building/StructuralBeam/Center` | 同上，樁中心節點（蓋住整根樁底下） | `PrintPlane` / (3,3) | 192×192 |
+| `UI/DMSE/Transfer/{BuildBeam,DismantleBeam,CancelBeam,LinkSelectedPiles,SelectNetwork}` | 結構樁 Gizmo（§3-2） | — | 128×128 |
+| `UI/DMSE/Transfer/{PlanTransfer,LaunchTransfer,AbortTransfer,ShowFootprint}` | 控制台 Gizmo（§4-1；LaunchTransfer 為「啟動起飛程序」） | — | 128×128 |
+| `UI/DMSE/Transfer/PlanImpact` | 控制台「規劃終結巡航」Gizmo（§9） | — | 128×128 |
+
+沿用原版、不需新貼圖：世界物件圖示 `World/WorldObjects/Expanding/Gravship`、化學引擎火焰（暫用熱核推進器的 `Visual/NuclearThruster_Burn`：原版 `LargeThruster_Burn` 在點火時不顯示，待查或另做貼圖）、熱核推進器/核融合爐/燃料筒倉現有貼圖。
 
 ---
 
@@ -861,7 +902,7 @@ footprint 上限約 30 樁 × 169 格 ≈ 5000 格，與一艘大型逆重船同
 |---|---|---|
 | **P0 基礎** | Tuning Def、DefOf、`DMSE_TransferEngineBase`、Legacy 遷移殼、刪除駕駛台攔截 | 舊檔（含飛行中）可載入且無紅字；逆重船一般跳躍不再彈 DMSE 選單 |
 | **P1 結構網路** | 樁 Def/Comp、鋼樑 Gizmo（架設/拆除/取消/Shift 連續）、`PileBeamOrder`、送料與施工 WorkGiver/JobDriver、`PileLinkUtility`、`MapComponent_PileNetwork`、footprint、爭議格、PlaceWorker、選取疊加層 | 小行星/軌道平台/逆重船底板上放樁；放下後不會自動連結；超出範圍、已連結/施工中、達上限、選自己、藍圖/框架都被拒並在游標旁顯示原因；下單後小人送鋼材進樁、施工完成才連結（右鍵可優先施工、上帝模式即時完工）；取消施工全額退料、拆除依比例返還；跨虛空的鋼樑也能施工（只在施工端樁旁作業）；拆中間樁或拆鋼樑會分裂網路；存讀檔後連結、施工單、已送達材料一致；footprint 不含虛空；爭議格標橘 |
-| **P2 鋼樑** | `SectionLayer_StructuralBeams`、MapMeshFlagDef、貼圖 | 每條已完工連結恰好一根樑、施工中的以藍圖色線顯示；虛空處看得到、地板下看不到；完工/拆除即時更新；樑跨 section 不消失 |
+| **P2 鋼樑** | `MapDrawLayer_StructuralBeams`、貼圖 | 每條已完工連結恰好一根樑、施工中的以藍圖色線顯示；虛空處看得到、地板下看不到；完工/拆除即時更新；長樑不消失 |
 | **P3 控制台與推進** | 控制台、ITab、`TransferReadiness`、`CompTransferEngine`、燃料來源、核融合爐支援、化學引擎、熱核改造、數值公式 | §5-4 試算表數字與 ITab 顯示一致；尾焰受阻/斷電/無核融合爐支援時引擎正確顯示不可用 |
 | **P4 分離** | `ShipSeparationUtility` + Debug「立即分離（不飛行）」 | §7-2 矩陣全數通過；分離後立即存讀檔無錯誤 |
 | **P5 飛行** | `WorldObject_TransferShip`、狀態機、進度函數、格子推進、點火效果、尾焰傷害、背景 patch、抵達 | 全程可存讀檔、各階段時間符合公式；滑行期殖民地正常（工作、事件、交易船）；抵達後成為一般據點 |
@@ -870,6 +911,26 @@ footprint 上限約 30 樁 × 169 格 ≈ 5000 格，與一艘大型逆重船同
 | **P8 平衡與文案** | 數值調整、三語系、README | — |
 
 Debug 指令（`DebugActions_Transfer`）：顯示 footprint、立即分離、跳到下一階段、立即抵達、加滿網路燃料、列出網路資訊。
+
+### 11-1. 實作進度（2026-10-12，P8 後）
+
+程式碼在 `.source/DMSE/CelestialTransfer/`（結構樁相關在 `Piles/`）；可對專案參考的 `Assembly-CSharp` 與已安裝的 1.6.4871 編譯通過，尚未在遊戲內驗收。
+
+| 期 | 狀態 | 備註 |
+|---|---|---|
+| P0 | 已實作 | `TransferFlightTuningDef` + XML、`DMSE_DefOf`；`DMSE_TransferEngineBase` 隨 P3 完成；Legacy 遷移殼與刪除駕駛台攔截（含 VGE 攔截）隨 P7 完成（見「舊流程清理」） |
+| P1 | 已實作 | 與本文差異：拆除單在**下令的那根樁**旁施工（非任一端）；「倒數中鎖定」（§3-2 連結條件、§4-2）待 P3 控制台實作時加入；網路分裂偵測在解除連結/移除樁時即時判斷；開發者模式另有「完成目前施工單」「列出網路資訊」Gizmo |
+| P2 | 已實作（遊戲內確認鋼樑在虛空處顯示、地板下隱藏） | 改用整圖 `MapDrawLayer`（§3-9），不新增 `MapMeshFlagDef` |
+| P3 | 已實作 | 控制台（制定計畫 → `Dialog_TransferPlan` → 狀態 Planned）、`ITab_TransferShip`（另列出整備檢查）、`TransferReadiness`、`TransferShipSurvey`（網路層級的引擎/核融合爐/燃料/控制台勘查，60 tick 快取）、`CompTransferEngine` + `PlaceWorker_TransferEngine`、`CompTransferReactor`、燃料來源 provider、`TransferFlightMath`、化學轉移引擎、`DMSE_TransferEngineBase`。熱核推進器已改為轉移引擎並從 GravEngine / Gravhulk 的 `linkableFacilities` 移除——**舊的駕駛台轉移飛行因此不再觸發**（沒有 `DMSE_TransferThruster`，攔截 patch 直接放行原版流程），舊程式碼的清理仍在 P5。核融合爐、燃料筒倉改為 Heavy 地形（保留逆重船設施身分）。延到 P4：操作員 job、倒數與警報（計畫確認後先停在 Planned）。延到 P5：引擎火焰繪製 |
+| P4 | 已實作 | `ShipSeparationUtility`（§7-1 步驟 1–12）、`WorldObject_TransferShip`（`ClaimableSpace` 基底，P4 只有靜止狀態）、`DMSE_ShipVoid`、起飛程序：計畫確認後為 Planned →「啟動起飛程序」Gizmo → AwaitingOperator（`WorkGiver_InitiateTransfer`，智識工作）→ Countdown（鎖定本船鋼樑、每 250 tick 重做阻擋性檢查，失敗或網路改變即中止並退回 Planned）→ 分離。兩個警報（範圍外人員、尾焰區）。**暫行行為**：倒數結束後分離並直接把船停在目的地（扣足燃料），P5 再換成點火/滑行的飛行階段。開發者模式「Separate now」不檢查整備、不扣燃料，停在起點旁空格。與本文差異：區域（儲存區/種植區）跨界時**拆分**（原版逆重船是整個區域刪除），新區域使用新的 Zone ID 以免存檔參照衝突；物件與格子的 designation 一併搬移；跨界的安裝藍圖取消；非玩家 pawn 搬上船前脫離原地圖的 Lord；船上仍有結構樁時地圖不會因無人而被移除，另加「放棄船隻」Gizmo |
+| P5 | 已實作 | `WorldObject_TransferShip` 飛行狀態機（離軌點火 → 滑行 → 入軌點火 → 抵達，全部存檔；航線不存檔、讀檔後依起訖點重建）、§6-3 進度函數（入軌點火以「從當下進度減速收斂到 1」實作，推力重算後位置仍連續）、§6-4 格子推進（每 250 tick，避開有地圖的格子）、入軌時目的地被占用改停鄰格、推力歸零以 maxBurnHours × 2 慢速減速並發信件。點火效果集中在 `MapComponent_TransferBurn`（火焰、鏡頭光暈、排氣 fleck、低頻震動、每 exhaustDamageIntervalTicks 尾焰區 Flame 傷害 30），不改建築的 drawerType。背景移動改為覆寫原版的 `MapParent.WorldCameraPosition`，不需 Harmony patch。分離後由使用者加入的 `TransferTakeoffCutscene` 播放起飛演出。未做：世界地圖圖示尾焰、pawn 自動避開尾焰區 |
+| P6 | 已實作 | `CompLaunchable.CanLaunch` postfix：點火階段禁止從船上起飛；`TravellingTransporters.TickInterval` prefix：目標為轉移艦的穿梭機/運輸艙（LandInSpecificCell、VisitSpace、TransportShip）每次推進前把 destinationTile 同步為船的目前格子 |
+| P7 | 已實作 | 撞擊飛行移植（§9 實作段）：`TransferImpactUtility`、`WorldObject_TransferShip.isImpact`（撞擊航程、淡出、撞擊）、控制台「規劃終結巡航」、`TransferPlan.isImpact/approachTile`、整備檢查（撞擊用引擎門檻、撞擊點仍有效）、`CompProperties_TransferEngine.impactCapable`。VGE：Astrofuel 燃料 provider、`Patch_VGE.xml` 清理（§10-3 實作段）。開發者模式另有「Impact now」。未做：舊 `DMSE.Flight.*` / `DMSE.Cannot.Reason.*` / `DMSE.Disabled.*` / `DMSE_ShipWarmUpBegin` 翻譯鍵仍在（已無程式使用，`DMSE.Flight.Impact.Confirm` 與 `DMSE_ShipWarmUpCountdown` 仍在用），依 §10-4 於遷移期結束後移除 |
+| P8 | 已實作 | 倒數改為 10 秒並加入引擎暖機效果與音效（§4-2）、點火階段推進器音效、起飛音效；數值依目前 XML 重算（§5-4，未改數值）；核融合爐、熱核推進器、燃料筒倉的說明補上轉移飛行的用途（三語系）；README「4. 天體轉移飛行」等段落改寫；本文件與實作對齊（§4、§5）。仍待：遊戲內實測與數值調整、化學引擎與其他佔位貼圖的美術、世界地圖圖示尾焰、pawn 自動避開尾焰區、舊翻譯鍵移除（§10-4） |
+| 修正（2026-10-12） | 已修 | ① 點火與暖機效果、施工中鋼樑與「顯示船體範圍」在太空地圖上完全不繪製：原以 `WorldRendererUtility.WorldRendered` 判斷，但太空地圖以世界為背景時它也是 true，改為 `WorldSelected`（化學引擎「沒有效果」也是這個原因，不一定是貼圖）。② 分離時「PowerNet registered connector it already had」：原地圖排隊中的電網變動要在船上重新接線前先處理（`ShipSeparationUtility` 於移除後呼叫原地圖的 `UpdatePowerNetsAndConnections_First`）。③ 航行中 `Tile` 與顯示位置不一致（§6-4 修正段）。④ 離場動畫（`TransferTakeoffCutscene`）：`BeginTerrainRender` 不設 `GravshipCaptureBounds`，地圖只繪製主鏡頭視野內的區塊，船體影像可能缺塊或空白——改為自行設定擷取範圍並先把鏡頭移到船體中心；擷取時暫停地圖上的點火效果，避免火焰與光暈拍進貼圖。船體改沿推進方向（運作中引擎的推力加權朝向）加速離開，引擎火焰與排氣跟著船體繪製（火焰繪製抽成 `TransferEngineEffects`，與地圖上的點火共用） |
+| 舊流程清理 | 已完成 | `CelestialTransfer/Legacy/` 只留舊檔載入所需的 `MapComponent_Ship`（空殼）、`TravelingObject` / `WorldObject_Transfer`、`WorldObject_ImpactGravship`（§10-2 實作段）；駕駛台攔截、模式選單、`FlightModeLauncher`、`FlightUtility`、`Patch_Visible`、`Patch_Background`、`VGECompatibility`、`ThingComp_Ship`、`ITravelingShip` 與 VGE 攔截 patch 已刪除。起飛演出 `TransferTakeoffCutscene` 由新流程使用；`Alert_TransferCountdown` 拿掉舊暖機的分支 |
+
+另：`DMS_OrbitalPlatform` 改為不依賴 Orbital Platforms 模組即可建造——`Patches/Patch_OrbitalPlatform.xml` 為原版太空虛空補上 `VoidSpace` 承載力；平台維持非 foundation 的基底地形（`SectionLayer_TerrainEdges` 以 `BaseTerrainAt` 判斷邊緣，改成 foundation 會失去邊緣貼圖）。拆除改用 DMSE 的「拆除平台」指令（`Designator_RemovePlatform`，Odyssey 分頁）：DMS 軌道平台 / 輕型平台返還 costList 的一半，原版軌道平台、機械體平台依 `RemovablePlatformExtension` 指定的材料返還；施工者站在相鄰格，格上沒有 pawn 才完成。
 
 ---
 

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <!-- EN: run transfer launch procedures -->
+  <DMSE_InitiateTransfer.label>执行转移点火程序</DMSE_InitiateTransfer.label>
+  <!-- EN: run launch procedure at -->
+  <DMSE_InitiateTransfer.verb>执行点火程序于</DMSE_InitiateTransfer.verb>
+  <!-- EN: running launch procedure at -->
+  <DMSE_InitiateTransfer.gerund>执行点火程序于</DMSE_InitiateTransfer.gerund>
+
+  <!-- EN: deliver steel beam materials -->
+  <DMSE_DeliverPileBeamMaterials.label>运送钢梁材料</DMSE_DeliverPileBeamMaterials.label>
+  <!-- EN: deliver materials to -->
+  <DMSE_DeliverPileBeamMaterials.verb>运送材料到</DMSE_DeliverPileBeamMaterials.verb>
+  <!-- EN: delivering materials to -->
+  <DMSE_DeliverPileBeamMaterials.gerund>运送材料到</DMSE_DeliverPileBeamMaterials.gerund>
+  <!-- EN: build steel beams -->
+  <DMSE_BuildPileBeam.label>施工钢梁</DMSE_BuildPileBeam.label>
+  <!-- EN: work on beam at -->
+  <DMSE_BuildPileBeam.verb>施工钢梁于</DMSE_BuildPileBeam.verb>
+  <!-- EN: working on beam at -->
+  <DMSE_BuildPileBeam.gerund>施工钢梁于</DMSE_BuildPileBeam.gerund>
+
+</LanguageData>

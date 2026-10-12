@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- 轉移飛行的平衡常數（docs/CelestialTransfer_轉移飛行重構.md §5-6） -->
+  <DMSE.TransferFlightTuningDef>
+    <defName>DMSE_TransferFlightTuning</defName>
+    <fuelBasePerWeight>50</fuelBasePerWeight>         <!-- B -->
+    <fuelPerTilePerWeight>5</fuelPerTilePerWeight>   <!-- P -->
+    <minTWR>0.5</minTWR>
+    <burnHoursRef>3</burnHoursRef>
+    <twrRef>1</twrRef>
+    <minBurnHours>1</minBurnHours>
+    <maxBurnHours>24</maxBurnHours>
+    <coastHoursPerTile>4</coastHoursPerTile>
+    <exhaustDamageIntervalTicks>60</exhaustDamageIntervalTicks>
+    <carryNaturalRock>true</carryNaturalRock>
+    <footprintCacheTicks>250</footprintCacheTicks>
+    <impactMinEngines>3</impactMinEngines>             <!-- §9 撞擊飛行 -->
+    <planetkillerMinEngines>4</planetkillerMinEngines>
+    <impactFadeSeconds>5</impactFadeSeconds>
+  </DMSE.TransferFlightTuningDef>
+
+</Defs>

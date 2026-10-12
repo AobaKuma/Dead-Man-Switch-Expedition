@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <!-- 结构桩与钢梁 -->
+  <DMSE.Pile.BuildBeam>架设钢梁</DMSE.Pile.BuildBeam>
+  <DMSE.Pile.BuildBeamDesc>向范围内另一根结构桩下达钢梁施工。只有以完工钢梁相连的桩才会成为同一艘船。\n\n按住 Shift 点击可从目标桩继续架设。</DMSE.Pile.BuildBeamDesc>
+  <DMSE.Pile.DismantleBeam>拆除钢梁</DMSE.Pile.DismantleBeam>
+  <DMSE.Pile.DismantleBeamDesc>拆除已完工的钢梁，返还部分材料。</DMSE.Pile.DismantleBeamDesc>
+  <DMSE.Pile.DismantleAll>拆除全部</DMSE.Pile.DismantleAll>
+  <DMSE.Pile.CancelBeam>取消钢梁施工</DMSE.Pile.CancelBeam>
+  <DMSE.Pile.CancelBeamDesc>取消钢梁施工单，已送达的材料会放回桩旁。</DMSE.Pile.CancelBeamDesc>
+  <DMSE.Pile.CancelAll>取消全部</DMSE.Pile.CancelAll>
+  <DMSE.Pile.LinkSelected>连接选中的结构桩</DMSE.Pile.LinkSelected>
+  <DMSE.Pile.LinkSelectedDesc>在选中的两根结构桩之间下达钢梁施工单。</DMSE.Pile.LinkSelectedDesc>
+  <DMSE.Pile.SelectNetwork>选中整个网络</DMSE.Pile.SelectNetwork>
+  <DMSE.Pile.SelectNetworkDesc>选中所有经已完工钢梁与这根桩相连的结构桩。</DMSE.Pile.SelectNetworkDesc>
+
+  <DMSE.Pile.Disabled.NoLinks>这根桩没有已完工的钢梁。</DMSE.Pile.Disabled.NoLinks>
+  <DMSE.Pile.Disabled.AllDismantling>所有钢梁都已在拆除中。</DMSE.Pile.Disabled.AllDismantling>
+  <DMSE.Pile.Disabled.NoOrders>这根桩没有钢梁施工单。</DMSE.Pile.Disabled.NoOrders>
+
+  <DMSE.Pile.Link.NotPile>必须选择你的结构桩。</DMSE.Pile.Link.NotPile>
+  <DMSE.Pile.Link.OutOfRange>超出范围：{0} 格（上限 {1}）。</DMSE.Pile.Link.OutOfRange>
+  <DMSE.Pile.Link.AlreadyLinked>已经相连或已有施工单。</DMSE.Pile.Link.AlreadyLinked>
+  <DMSE.Pile.Link.MaxLinks>{0} 已达钢梁上限（{1}，含施工单）。</DMSE.Pile.Link.MaxLinks>
+  <DMSE.Pile.Link.CostLabel>钢梁：长 {0} 格・{1}・工作量 {2}</DMSE.Pile.Link.CostLabel>
+  <DMSE.Pile.Link.Locked>倒数中无法变更钢梁。</DMSE.Pile.Link.Locked>
+  <DMSE.Pile.Link.NoRange>小型结构桩之间无法相连。</DMSE.Pile.Link.NoRange>
+
+  <DMSE.Pile.LinkOption>→ ({0}, {1})・长 {2} 格</DMSE.Pile.LinkOption>
+  <DMSE.Pile.OrderKind.Build>架设</DMSE.Pile.OrderKind.Build>
+  <DMSE.Pile.OrderKind.Dismantle>拆除</DMSE.Pile.OrderKind.Dismantle>
+
+  <DMSE.Pile.Inspect.Network>结构网络：{0} 根桩、{1} 条钢梁，船体范围 {2} 格</DMSE.Pile.Inspect.Network>
+  <DMSE.Pile.Inspect.Links>钢梁：已完工 {0}，含施工单 {1} / {2}</DMSE.Pile.Inspect.Links>
+  <DMSE.Pile.Inspect.LinksUnlimited>钢梁：已完工 {0}</DMSE.Pile.Inspect.LinksUnlimited>
+  <DMSE.Pile.Inspect.Building>钢梁施工：→ ({0}, {1}) 长 {2} 格｜材料 {3}｜进度 {4}</DMSE.Pile.Inspect.Building>
+  <DMSE.Pile.Inspect.Dismantling>钢梁拆除：→ ({0}, {1}) 长 {2} 格｜进度 {3}</DMSE.Pile.Inspect.Dismantling>
+  <DMSE.Pile.Inspect.Queued>另有 {0} 张钢梁施工单排队中</DMSE.Pile.Inspect.Queued>
+
+  <DMSE.Pile.NetworkSplit>结构网络已分裂成数艘船。</DMSE.Pile.NetworkSplit>
+  <DMSE.Pile.Place.OverVoid>必须建在实地上。</DMSE.Pile.Place.OverVoid>
+  <DMSE.Pile.Place.NeedProviderRange>必须建在大型或真空结构桩的连结范围内。</DMSE.Pile.Place.NeedProviderRange>
+  <DMSE.Pile.Place.WrongTerrain>无法建在{0}上。</DMSE.Pile.Place.WrongTerrain>
+  <DMSE.Pile.Place.SpaceOnly>只能建在太空中。</DMSE.Pile.Place.SpaceOnly>
+  <DMSE.Pile.Report.Dismantle>正在拆除 {0} 的钢梁。</DMSE.Pile.Report.Dismantle>
+
+  <!-- 转移飞行控制台 -->
+  <DMSE.Transfer.Tab>转移</DMSE.Transfer.Tab>
+  <DMSE.Transfer.Console.Plan>制定转移计划</DMSE.Transfer.Console.Plan>
+  <DMSE.Transfer.Console.PlanDesc>选择目的地，并查看燃料、航行时间与整备状态。</DMSE.Transfer.Console.PlanDesc>
+  <DMSE.Transfer.Console.Abort>中止转移</DMSE.Transfer.Console.Abort>
+  <DMSE.Transfer.Console.AbortDesc>放弃当前的转移计划。</DMSE.Transfer.Console.AbortDesc>
+  <DMSE.Transfer.Console.ShowFootprint>显示船体范围</DMSE.Transfer.Console.ShowFootprint>
+  <DMSE.Transfer.Console.ShowFootprintDesc>常驻显示这艘船的船体范围与引擎尾焰区。</DMSE.Transfer.Console.ShowFootprintDesc>
+  <DMSE.Transfer.Console.AlreadyLaunching>转移程序已在进行中。</DMSE.Transfer.Console.AlreadyLaunching>
+  <DMSE.Transfer.Console.NotOnShip>不在船上。</DMSE.Transfer.Console.NotOnShip>
+  <DMSE.Transfer.Console.Primary>船舶主控台</DMSE.Transfer.Console.Primary>
+  <DMSE.Transfer.Console.Backup>备用控制台</DMSE.Transfer.Console.Backup>
+  <DMSE.Transfer.Console.ShipSummary>船：{0} 根桩、可用引擎 {1} 具、推重比 {2}、燃料 {3}</DMSE.Transfer.Console.ShipSummary>
+  <DMSE.Transfer.Console.PlanSummary>已制定转移计划：前往格子 {0}（{1} 格）</DMSE.Transfer.Console.PlanSummary>
+  <DMSE.Transfer.Console.Launch>启动起飞程序</DMSE.Transfer.Console.Launch>
+  <DMSE.Transfer.Console.LaunchDesc>开始起飞程序。殖民者操作此控制台后，船会倒数并起飞。</DMSE.Transfer.Console.LaunchDesc>
+  <DMSE.Transfer.Console.AwaitingOperatorMsg>已开始起飞程序，等待操作员。</DMSE.Transfer.Console.AwaitingOperatorMsg>
+  <DMSE.Transfer.Console.StateAwaitingOperator>等待操作员。</DMSE.Transfer.Console.StateAwaitingOperator>
+  <DMSE.Transfer.Console.StateCountdown>{0}后分离。</DMSE.Transfer.Console.StateCountdown>
+  <DMSE.Transfer.Console.Rename>命名飞船</DMSE.Transfer.Console.Rename>
+  <DMSE.Transfer.Console.RenameDesc>为这艘船命名。名称会保存在船上所有控制台，之后每次转移飞行都沿用。</DMSE.Transfer.Console.RenameDesc>
+  <DMSE.Transfer.Console.ShipName>船名：{0}</DMSE.Transfer.Console.ShipName>
+  <DMSE.Transfer.Console.Unnamed>未命名（起飞时自动命名）</DMSE.Transfer.Console.Unnamed>
+  <DMSE.Transfer.Separating>船体分离中</DMSE.Transfer.Separating>
+
+  <DMSE.Transfer.Abort.NoPlan>没有转移计划。</DMSE.Transfer.Abort.NoPlan>
+  <DMSE.Transfer.Abort.NoFreeTile>没有可停泊的空格。</DMSE.Transfer.Abort.NoFreeTile>
+  <DMSE.Transfer.Abort.NetworkChanged>船体结构在倒数中改变了。</DMSE.Transfer.Abort.NetworkChanged>
+
+  <DMSE.Transfer.Letter.AbortedLabel>转移中止</DMSE.Transfer.Letter.AbortedLabel>
+  <DMSE.Transfer.Letter.AbortedText>起飞已中止：{0}\n\n计划已保留。</DMSE.Transfer.Letter.AbortedText>
+  <DMSE.Transfer.Letter.SeparatedLabel>船体已分离</DMSE.Transfer.Letter.SeparatedLabel>
+  <DMSE.Transfer.Letter.SeparatedText>{0} 已分离，成为一艘独立的船。</DMSE.Transfer.Letter.SeparatedText>
+  <DMSE.Transfer.Letter.Destroyed>在船体边缘被摧毁：</DMSE.Transfer.Letter.Destroyed>
+  <DMSE.Transfer.Letter.LeftBehind>被留下的：</DMSE.Transfer.Letter.LeftBehind>
+  <DMSE.Transfer.Letter.BrokenLinks>断裂的钢梁：{0}。取消的施工单：{1}。</DMSE.Transfer.Letter.BrokenLinks>
+  <DMSE.Transfer.Letter.LostThings>遗失：{0} 件无法搬运的物件。</DMSE.Transfer.Letter.LostThings>
+  <DMSE.Transfer.Letter.OriginAbandoned>原据点已弃置。</DMSE.Transfer.Letter.OriginAbandoned>
+
+  <DMSE.Transfer.Ship.DefaultName>转移舰 {0}</DMSE.Transfer.Ship.DefaultName>
+  <DMSE.Transfer.Ship.Inspect>结构桩：{0}，结构网络：{1}</DMSE.Transfer.Ship.Inspect>
+  <DMSE.Transfer.Ship.Abandon>放弃船只</DMSE.Transfer.Ship.Abandon>
+  <DMSE.Transfer.Ship.AbandonDesc>放弃这艘船与船上的一切。</DMSE.Transfer.Ship.AbandonDesc>
+  <DMSE.Transfer.Ship.AbandonConfirm>要放弃 {0} 吗？船上的一切都会失去。</DMSE.Transfer.Ship.AbandonConfirm>
+  <DMSE.Transfer.Ship.AbandonHasColonists>船上还有殖民者。</DMSE.Transfer.Ship.AbandonHasColonists>
+
+  <DMSE.Transfer.Alert.PawnsOutside>人员在起飞船只外</DMSE.Transfer.Alert.PawnsOutside>
+  <DMSE.Transfer.Alert.PawnsOutsideDesc>这些人在即将起飞的船外，将被留下。</DMSE.Transfer.Alert.PawnsOutsideDesc>
+  <DMSE.Transfer.Alert.ExhaustDanger>人员站在引擎尾焰区</DMSE.Transfer.Alert.ExhaustDanger>
+  <DMSE.Transfer.Alert.ExhaustDangerDesc>这些人站在引擎尾焰区，点火时会被烧伤。</DMSE.Transfer.Alert.ExhaustDangerDesc>
+
+  <DMSE.Transfer.Dest.Invalid>请选择其他格子。</DMSE.Transfer.Dest.Invalid>
+  <DMSE.Transfer.Dest.OtherLayer>必须在同一轨道层。</DMSE.Transfer.Dest.OtherLayer>
+  <DMSE.Transfer.Dest.OutOfRange>超出航程（{0} 格）。</DMSE.Transfer.Dest.OutOfRange>
+  <DMSE.Transfer.Dest.Occupied>该格已被占用，附近也没有空格。</DMSE.Transfer.Dest.Occupied>
+
+  <DMSE.Transfer.Dialog.Title>转移计划</DMSE.Transfer.Dialog.Title>
+  <DMSE.Transfer.Dialog.Route>格子 {0} → 格子 {1}，{2} 格</DMSE.Transfer.Dialog.Route>
+  <DMSE.Transfer.Dialog.Reselect>重新选择</DMSE.Transfer.Dialog.Reselect>
+  <DMSE.Transfer.Dialog.Confirm>确认计划</DMSE.Transfer.Dialog.Confirm>
+  <DMSE.Transfer.Dialog.ConfirmBlocked>请先排除错误。</DMSE.Transfer.Dialog.ConfirmBlocked>
+  <DMSE.Transfer.Dialog.PlanSet>已制定转移计划。</DMSE.Transfer.Dialog.PlanSet>
+
+  <DMSE.Transfer.UI.NetworkHeader>结构网络</DMSE.Transfer.UI.NetworkHeader>
+  <DMSE.Transfer.UI.Piles>结构桩</DMSE.Transfer.UI.Piles>
+  <DMSE.Transfer.UI.Beams>钢梁</DMSE.Transfer.UI.Beams>
+  <DMSE.Transfer.UI.Footprint>船体格数</DMSE.Transfer.UI.Footprint>
+  <DMSE.Transfer.UI.TornApart>起飞时将被摧毁的跨界建筑</DMSE.Transfer.UI.TornApart>
+  <DMSE.Transfer.UI.Contested>将从其他网络带走的格数</DMSE.Transfer.UI.Contested>
+  <DMSE.Transfer.UI.UnlinkedPiles>附近未连接的桩</DMSE.Transfer.UI.UnlinkedPiles>
+  <DMSE.Transfer.UI.PendingOrders>有钢梁施工单的桩</DMSE.Transfer.UI.PendingOrders>
+  <DMSE.Transfer.UI.PropulsionHeader>推进</DMSE.Transfer.UI.PropulsionHeader>
+  <DMSE.Transfer.UI.NoEngines>这艘船上没有转移引擎。</DMSE.Transfer.UI.NoEngines>
+  <DMSE.Transfer.UI.ReactorSupport>聚变反应炉支持（需求 / 可用）</DMSE.Transfer.UI.ReactorSupport>
+  <DMSE.Transfer.UI.FuelHeader>燃料</DMSE.Transfer.UI.FuelHeader>
+  <DMSE.Transfer.UI.NoFuelSources>这艘船上没有燃料罐。</DMSE.Transfer.UI.NoFuelSources>
+  <DMSE.Transfer.UI.EstimateHeader>转移能力</DMSE.Transfer.UI.EstimateHeader>
+  <DMSE.Transfer.UI.PlanHeader>计划：前往格子 {0}</DMSE.Transfer.UI.PlanHeader>
+  <DMSE.Transfer.UI.ParkedAtNeighbor>目标格已被占用，船会停在旁边。</DMSE.Transfer.UI.ParkedAtNeighbor>
+  <DMSE.Transfer.UI.MassWeight>质量</DMSE.Transfer.UI.MassWeight>
+  <DMSE.Transfer.UI.MassWeightValue>{0}（{1} 根桩）</DMSE.Transfer.UI.MassWeightValue>
+  <DMSE.Transfer.UI.Thrust>推力</DMSE.Transfer.UI.Thrust>
+  <DMSE.Transfer.UI.ThrustWithBoosters>{0}（+{1} 助推器，仅离轨点火）</DMSE.Transfer.UI.ThrustWithBoosters>
+  <DMSE.Transfer.UI.TWR>推重比（最低 {0}）</DMSE.Transfer.UI.TWR>
+  <DMSE.Transfer.UI.Eta>燃耗倍率</DMSE.Transfer.UI.Eta>
+  <DMSE.Transfer.UI.FuelAvailable>船上燃料</DMSE.Transfer.UI.FuelAvailable>
+  <DMSE.Transfer.UI.MaxDistance>航程（格）</DMSE.Transfer.UI.MaxDistance>
+  <DMSE.Transfer.UI.CannotDepart>无法起飞</DMSE.Transfer.UI.CannotDepart>
+  <DMSE.Transfer.UI.BurnTime>单次点火</DMSE.Transfer.UI.BurnTime>
+  <DMSE.Transfer.UI.DepartureBurnTime>离轨点火</DMSE.Transfer.UI.DepartureBurnTime>
+  <DMSE.Transfer.UI.ArrivalBurnTime>入轨点火</DMSE.Transfer.UI.ArrivalBurnTime>
+  <DMSE.Transfer.UI.Distance>距离（格）</DMSE.Transfer.UI.Distance>
+  <DMSE.Transfer.UI.FuelRequired>燃料需求</DMSE.Transfer.UI.FuelRequired>
+  <DMSE.Transfer.UI.CoastTime>滑行</DMSE.Transfer.UI.CoastTime>
+  <DMSE.Transfer.UI.TotalTime>总航行时间</DMSE.Transfer.UI.TotalTime>
+  <DMSE.Transfer.UI.IssuesHeader>整备检查</DMSE.Transfer.UI.IssuesHeader>
+  <DMSE.Transfer.UI.NoIssues>整备完成。</DMSE.Transfer.UI.NoIssues>
+  <DMSE.Transfer.UI.ErrorPrefix>【错误】</DMSE.Transfer.UI.ErrorPrefix>
+  <DMSE.Transfer.UI.WarningPrefix>【警告】</DMSE.Transfer.UI.WarningPrefix>
+
+  <DMSE.Transfer.Issue.NotInSpace>船必须位于轨道上。</DMSE.Transfer.Issue.NotInSpace>
+  <DMSE.Transfer.Issue.ConsoleNotOnShip>控制台不在船上。</DMSE.Transfer.Issue.ConsoleNotOnShip>
+  <DMSE.Transfer.Issue.ConsoleUnavailable>控制台断电、关闭或损坏。</DMSE.Transfer.Issue.ConsoleUnavailable>
+  <DMSE.Transfer.Issue.NoEngines>没有可用的转移引擎。</DMSE.Transfer.Issue.NoEngines>
+  <DMSE.Transfer.Issue.LowTWR>推重比 {0} 低于 {1}。</DMSE.Transfer.Issue.LowTWR>
+  <DMSE.Transfer.Issue.NotEnoughFuel>燃料不足（{0}/{1}）。</DMSE.Transfer.Issue.NotEnoughFuel>
+  <DMSE.Transfer.Issue.OtherShipDeparting>此地图已有其他船正在起飞。</DMSE.Transfer.Issue.OtherShipDeparting>
+  <DMSE.Transfer.Issue.PawnsLeftBehind>{0} 人在船外，将被留下。</DMSE.Transfer.Issue.PawnsLeftBehind>
+  <DMSE.Transfer.Issue.NotCarried>{0} 件物件无法搬运，将会遗失。</DMSE.Transfer.Issue.NotCarried>
+  <DMSE.Transfer.Issue.PawnsInExhaust>{0} 人站在尾焰区。</DMSE.Transfer.Issue.PawnsInExhaust>
+  <DMSE.Transfer.Issue.NearbyUnlinkedPiles>附近有 {0} 根结构桩未与这艘船相连。</DMSE.Transfer.Issue.NearbyUnlinkedPiles>
+  <DMSE.Transfer.Issue.TornApart>{0} 座建筑跨越船体边缘，将被摧毁。</DMSE.Transfer.Issue.TornApart>
+  <DMSE.Transfer.Issue.TornApartWithPawns>其中 {0} 座内有人。</DMSE.Transfer.Issue.TornApartWithPawns>
+  <DMSE.Transfer.Issue.Contested>将从其他船带走 {0} 格（{1} 座建筑、{2} 根桩）。</DMSE.Transfer.Issue.Contested>
+  <DMSE.Transfer.Issue.PendingBeamOrders>{0} 根桩有未完工的钢梁。</DMSE.Transfer.Issue.PendingBeamOrders>
+
+  <!-- 引擎与聚变反应炉 -->
+  <DMSE.Transfer.Engine.Stats>转移推力 {0}，燃耗倍率 {1}</DMSE.Transfer.Engine.Stats>
+  <DMSE.Transfer.Engine.BoosterStats>离轨推力 {0}：提高起飞推重比，不消耗船上燃料，离轨点火结束后烧毁</DMSE.Transfer.Engine.BoosterStats>
+  <DMSE.Transfer.Engine.RequiresReactor>需要聚变反应炉支持。</DMSE.Transfer.Engine.RequiresReactor>
+  <DMSE.Transfer.Engine.Status.Operational>可用</DMSE.Transfer.Engine.Status.Operational>
+  <DMSE.Transfer.Engine.Status.NotOnShip>不在船上</DMSE.Transfer.Engine.Status.NotOnShip>
+  <DMSE.Transfer.Engine.Status.BrokenDown>故障</DMSE.Transfer.Engine.Status.BrokenDown>
+  <DMSE.Transfer.Engine.Status.SwitchedOff>已关闭</DMSE.Transfer.Engine.Status.SwitchedOff>
+  <DMSE.Transfer.Engine.Status.NoPower>没有电力</DMSE.Transfer.Engine.Status.NoPower>
+  <DMSE.Transfer.Engine.Status.ExhaustBlocked>尾焰受 {0} 阻挡</DMSE.Transfer.Engine.Status.ExhaustBlocked>
+  <DMSE.Transfer.Engine.Status.NoReactorSupport>没有聚变反应炉支持</DMSE.Transfer.Engine.Status.NoReactorSupport>
+  <DMSE.Transfer.Engine.PlacedBlocked>{0}：尾焰区被 {1} 挡住。</DMSE.Transfer.Engine.PlacedBlocked>
+  <DMSE.Transfer.Reactor.Support>可支持 {0} 具核热推进器（本船：需要 {1}／可用 {2}）。</DMSE.Transfer.Reactor.Support>
+  <DMSE.Transfer.Reactor.NotOnShip>在船上可支持 {0} 具核热推进器。</DMSE.Transfer.Reactor.NotOnShip>
+
+  <DMSE.Transfer.Alert.CountdownDesc>有船正在倒数起飞。</DMSE.Transfer.Alert.CountdownDesc>
+
+  <!-- 转移飞行 -->
+  <DMSE.Transfer.Phase.DepartureBurn>离轨点火</DMSE.Transfer.Phase.DepartureBurn>
+  <DMSE.Transfer.Phase.Coast>滑行</DMSE.Transfer.Phase.Coast>
+  <DMSE.Transfer.Phase.ArrivalBurn>入轨点火</DMSE.Transfer.Phase.ArrivalBurn>
+  <DMSE.Transfer.Phase.Arrived>已抵达</DMSE.Transfer.Phase.Arrived>
+  <DMSE.Transfer.Flight.Status>转移飞行：{0}，本阶段剩余 {1}</DMSE.Transfer.Flight.Status>
+  <DMSE.Transfer.Flight.Progress>进度 {0}，前往格子 {1}，{2}后抵达</DMSE.Transfer.Flight.Progress>
+  <DMSE.Transfer.Flight.CoastBegin>{0} 进入滑行。</DMSE.Transfer.Flight.CoastBegin>
+  <DMSE.Transfer.Flight.BoostersBurnedOut>{0}：{1} 具火箭助推器已燃尽烧毁。</DMSE.Transfer.Flight.BoostersBurnedOut>
+  <DMSE.Transfer.Flight.ArrivalBurnBegin>{0} 开始入轨点火。</DMSE.Transfer.Flight.ArrivalBurnBegin>
+  <DMSE.Transfer.Flight.Rerouted>{0} 的目的地已被占用，将停在附近。</DMSE.Transfer.Flight.Rerouted>
+  <DMSE.Transfer.Flight.NoThrustLabel>入轨无推力</DMSE.Transfer.Flight.NoThrustLabel>
+  <DMSE.Transfer.Flight.NoThrustText>{0} 没有可用的引擎，将以姿态推进器减速（{1}）。</DMSE.Transfer.Flight.NoThrustText>
+  <DMSE.Transfer.Flight.ArrivedLabel>转移完成</DMSE.Transfer.Flight.ArrivedLabel>
+  <DMSE.Transfer.Flight.ArrivedText>{0} 已抵达。</DMSE.Transfer.Flight.ArrivedText>
+  <DMSE.Transfer.Issue.InFlight>船正在飞行中。</DMSE.Transfer.Issue.InFlight>
+  <DMSE.Transfer.UI.FlightHeader>飞行中：{0}</DMSE.Transfer.UI.FlightHeader>
+  <DMSE.Transfer.UI.Phase>阶段</DMSE.Transfer.UI.Phase>
+  <DMSE.Transfer.UI.PhaseLeft>本阶段剩余</DMSE.Transfer.UI.PhaseLeft>
+  <DMSE.Transfer.UI.FlightProgress>航程进度</DMSE.Transfer.UI.FlightProgress>
+  <DMSE.Transfer.UI.Destination>目的地格子</DMSE.Transfer.UI.Destination>
+  <DMSE.Transfer.UI.ArrivalIn>距离抵达</DMSE.Transfer.UI.ArrivalIn>
+  <DMSE.Transfer.ShuttleBlockedBurn>船的引擎正在点火，无法起飞。</DMSE.Transfer.ShuttleBlockedBurn>
+
+  <!-- 终结巡航（设计稿 §9） -->
+  <DMSE.Transfer.Console.PlanImpact>规划终结巡航</DMSE.Transfer.Console.PlanImpact>
+  <DMSE.Transfer.Console.PlanImpactDesc>让这艘船撞向行星地表。船上所有人都会失去，游戏随之结束。\n\n需要 {0} 具运作中的核热推进器；{1} 具以上将毁灭行星。</DMSE.Transfer.Console.PlanImpactDesc>
+  <DMSE.Transfer.Console.PlanSummaryImpact>已规划终结巡航：撞击格子 {0}（{1} 格）</DMSE.Transfer.Console.PlanSummaryImpact>
+  <DMSE.Transfer.Dest.NotSurface>必须位于行星地表。</DMSE.Transfer.Dest.NotSurface>
+  <DMSE.Transfer.Dest.ImpactHasMap>无法以已有地图的地点为目标。</DMSE.Transfer.Dest.ImpactHasMap>
+  <DMSE.Transfer.Issue.ImpactEngines>需要 {1} 具运作中的核热推进器（当前 {0}）。</DMSE.Transfer.Issue.ImpactEngines>
+  <DMSE.Transfer.Dialog.ImpactTitle>终结巡航</DMSE.Transfer.Dialog.ImpactTitle>
+  <DMSE.Transfer.Dialog.ImpactWarning>船不会减速。船上所有人都会失去，游戏随之结束。</DMSE.Transfer.Dialog.ImpactWarning>
+  <DMSE.Transfer.Dialog.ImpactPlanetkiller>{0} 具核热推进器：撞击将毁灭行星。</DMSE.Transfer.Dialog.ImpactPlanetkiller>
+  <DMSE.Transfer.Dialog.ImpactRoute>撞击点：格子 {0}，航程 {1} 格</DMSE.Transfer.Dialog.ImpactRoute>
+  <DMSE.Transfer.Dialog.ConfirmImpact>确认撞击</DMSE.Transfer.Dialog.ConfirmImpact>
+  <DMSE.Transfer.Phase.ImpactCourse>撞击航程</DMSE.Transfer.Phase.ImpactCourse>
+  <DMSE.Transfer.Flight.ImpactCourseBegin>{0} 进入撞击航程，{1}后撞击。</DMSE.Transfer.Flight.ImpactCourseBegin>
+  <DMSE.Transfer.Flight.ImpactProgress>进度 {0}，撞击格子 {1}，{2}后撞击</DMSE.Transfer.Flight.ImpactProgress>
+  <DMSE.Transfer.UI.ImpactIn>距离撞击</DMSE.Transfer.UI.ImpactIn>
+  <DMSE.Transfer.UI.ImpactPlanHeader>计划：撞击格子 {0}</DMSE.Transfer.UI.ImpactPlanHeader>
+
+  <!-- Landing -->
+  <DMSE.Transfer.UI.LandOnSite>将降落在{0}。</DMSE.Transfer.UI.LandOnSite>
+  <DMSE.Transfer.Landing>降落中</DMSE.Transfer.Landing>
+  <DMSE.Transfer.Land.Designator>选择降落位置</DMSE.Transfer.Land.Designator>
+  <DMSE.Transfer.Land.DesignatorDesc>选择船在这张地图上的降落位置。</DMSE.Transfer.Land.DesignatorDesc>
+  <DMSE.Transfer.Land.WillMove>船会降落在最近的空位。</DMSE.Transfer.Land.WillMove>
+  <DMSE.Transfer.Land.Gizmo>降落到{0}</DMSE.Transfer.Land.Gizmo>
+  <DMSE.Transfer.Land.GizmoDesc>在{0}选择降落位置。</DMSE.Transfer.Land.GizmoDesc>
+  <DMSE.Transfer.Land.Auto>自动降落</DMSE.Transfer.Land.Auto>
+  <DMSE.Transfer.Land.AutoDesc>降落在最接近地图中央的空位。</DMSE.Transfer.Land.AutoDesc>
+  <DMSE.Transfer.Land.Cancel>取消降落</DMSE.Transfer.Land.Cancel>
+  <DMSE.Transfer.Land.CancelDesc>停留在原处。</DMSE.Transfer.Land.CancelDesc>
+  <DMSE.Transfer.Land.NoRoom>{0}没有足够空间降落。</DMSE.Transfer.Land.NoRoom>
+  <DMSE.Transfer.Land.SiteGone>降落地点已不存在。</DMSE.Transfer.Land.SiteGone>
+  <DMSE.Transfer.Land.ArrivedText>{0} 正等待降落到{1}。</DMSE.Transfer.Land.ArrivedText>
+  <DMSE.Transfer.Land.LandedLabel>船已降落</DMSE.Transfer.Land.LandedLabel>
+  <DMSE.Transfer.Land.LandedText>{0} 已降落在{1}。</DMSE.Transfer.Land.LandedText>
+  <DMSE.Transfer.Land.Moved>选定位置受阻，已改降落在最近的空位。</DMSE.Transfer.Land.Moved>
+</LanguageData>
