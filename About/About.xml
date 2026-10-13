@@ -13,7 +13,7 @@
 		<li>1.7</li>
 	</supportedVersions>
 	<packageId>Aoba.DeadManSwitch.Expedition</packageId>
-	<modVersion IgnoreIfNoMatchingField="true">0.35</modVersion>
+	<modVersion IgnoreIfNoMatchingField="true">0.6</modVersion>
 	<modDependencies>
 		<li>
 			<packageId>Ludeon.RimWorld.Odyssey</packageId>
