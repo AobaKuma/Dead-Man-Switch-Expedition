@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+	<Operation Class="PatchOperationConditional">
+		<xpath>/Defs/ThingDef[defName="ComponentControlChip"]/descriptionHyperlinks</xpath>
+		<match Class="PatchOperationAdd">
+			<xpath>/Defs/ThingDef[defName="ComponentControlChip"]/descriptionHyperlinks</xpath>
+			<value>
+				<recipeDef>DMSE_Make_ComponentControlChip</recipeDef>
+			</value>
+		</match>
+		<nomatch Class="PatchOperationAdd">
+			<xpath>/Defs/ThingDef[defName="ComponentControlChip"]</xpath>
+			<value>
+				<descriptionHyperlinks>
+					<recipeDef>DMSE_Make_ComponentControlChip</recipeDef>
+				</descriptionHyperlinks>
+			</value>
+		</nomatch>
+	</Operation>
+
+	<Operation Class="PatchOperationConditional">
+		<xpath>/Defs/ThingDef[defName="ComponentTransmitter"]/descriptionHyperlinks</xpath>
+		<match Class="PatchOperationAdd">
+			<xpath>/Defs/ThingDef[defName="ComponentTransmitter"]/descriptionHyperlinks</xpath>
+			<value>
+				<recipeDef>DMSE_Make_ComponentTransmitter</recipeDef>
+			</value>
+		</match>
+		<nomatch Class="PatchOperationAdd">
+			<xpath>/Defs/ThingDef[defName="ComponentTransmitter"]</xpath>
+			<value>
+				<descriptionHyperlinks>
+					<recipeDef>DMSE_Make_ComponentTransmitter</recipeDef>
+				</descriptionHyperlinks>
+			</value>
+		</nomatch>
+	</Operation>
+
+	<Operation Class="PatchOperationConditional">
+		<xpath>/Defs/ThingDef[defName="ComponentFireControl"]/descriptionHyperlinks</xpath>
+		<match Class="PatchOperationAdd">
+			<xpath>/Defs/ThingDef[defName="ComponentFireControl"]/descriptionHyperlinks</xpath>
+			<value>
+				<recipeDef>DMSE_Make_ComponentFireControl</recipeDef>
+			</value>
+		</match>
+		<nomatch Class="PatchOperationAdd">
+			<xpath>/Defs/ThingDef[defName="ComponentFireControl"]</xpath>
+			<value>
+				<descriptionHyperlinks>
+					<recipeDef>DMSE_Make_ComponentFireControl</recipeDef>
+				</descriptionHyperlinks>
+			</value>
+		</nomatch>
+	</Operation>
+
+	<Operation Class="PatchOperationAdd">
+		<xpath>/Defs/WorkGiverDef[defName="DMS_Operate"]/fixedBillGiverDefs</xpath>
+		<value>
+			<li>DMSE_MicrogravityFacility</li>
+			<li>DMSE_TableLathe</li>
+			<li>DMSE_TableArtifuscle</li>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationAdd">
+		<xpath>/Defs/ThingDef[defName="GravEngine"]/comps/li[@Class="CompProperties_AffectedByFacilities"]/linkableFacilities</xpath>
+		<value>
+			<li>DMSE_FusionCore</li>
+			<li>DMSE_FuelSiloTank</li>
+			<li>DMSE_SolidRocketThruster</li>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/PlanetLayerDef[@Name="OrbitLayer"]/worldDrawLayers</xpath>
+		<value>
+			<li>DMSE.WorldDrawLayer_SpaceTiles</li>
+			<li>WorldDrawLayer_SelectedTile</li>
+			<li>WorldDrawLayer_MouseTile</li>
+		</value>
+	</Operation>
+
+	<!-- ==== DMS shuttle === -->
+
+	<Operation Class="PatchOperationAdd">
+		<xpath>/Defs/ThingDef[defName="DMS_Shuttle_Player"]</xpath>
+		<value>
+			<designationCategory>DMS_Category</designationCategory>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationAdd">
+		<xpath>/Defs/ThingDef[defName="DMS_Shuttle_Player"]</xpath>
+		<value>
+			<researchPrerequisites>
+				<li>Shuttles</li>
+			</researchPrerequisites>
+		</value>
+	</Operation>
+
+  <!-- ==== Solar shield === -->
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/GameConditionDef[defName="SolarFlare"]/silencedByConditions</xpath>
+    <value>
+      <li>DMSE_SolarShield</li>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/MusicSequenceDef[defName="OrbitalRelax"]/songs</xpath>
+    <value>
+      <li>DMSE_SongA</li>
+    </value>
+  </Operation>
+  
+</Patch>

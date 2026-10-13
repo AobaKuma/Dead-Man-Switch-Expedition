@@ -67,6 +67,14 @@ namespace DMSE
             return cells;
         }
 
+        /// <summary>降落會佔用的格子：船體格加上掛在船體外側的牆面附掛物格子（附掛物隨牆移動）。用於選位、驗證與地圖尺寸。</summary>
+        public static List<IntVec3> LandingCells(Map shipMap)
+        {
+            List<IntVec3> cells = HullCells(shipMap);
+            cells.AddRange(ShipSeparationUtility.OuterAttachmentCells(shipMap, new HashSet<IntVec3>(cells)));
+            return cells;
+        }
+
         // ── 降落位置判定（比照原版 Designator_MoveGravship.IsValidCell，地形由船體自帶所以不檢查） ──
 
         public static AcceptanceReport IsValidLandingCell(IntVec3 cell, Map map)
@@ -269,7 +277,7 @@ namespace DMSE
             {
                 site.SetFaction(Faction.OfPlayer);
             }
-            IntVec3 size = RequiredMapSize(site, CellRect.FromCellList(HullCells(ship.Map)));
+            IntVec3 size = RequiredMapSize(site, CellRect.FromCellList(LandingCells(ship.Map)));
             Map map = GetOrGenerateMapUtility.GetOrGenerateMap(site.Tile, size, site.def);
             if ((map.Parent is Settlement || (map.Parent is Site s && s.parts.All(p => p.def.considerEnteringAsAttack))) && map.Parent.Faction != null && map.Parent.Faction != Faction.OfPlayer)
             {
@@ -306,7 +314,7 @@ namespace DMSE
                 BeginLanding(ship);
                 return;
             }
-            List<IntVec3> cells = HullCells(ship.Map);
+            List<IntVec3> cells = LandingCells(ship.Map);
             if (TryFindLandingOffset(site.Map, cells, CenteredOffset(site.Map, cells), out IntVec3 offset))
             {
                 Land(ship, site.Map, offset, moved: false);
@@ -454,7 +462,7 @@ namespace DMSE
         {
             this.ship = ship;
             this.map = map;
-            cells = TransferLandingUtility.HullCells(ship.Map);
+            cells = TransferLandingUtility.LandingCells(ship.Map);
             center = cells.Count > 0 ? CellRect.FromCellList(cells).CenterCell : IntVec3.Zero;
             defaultLabel = "DMSE.Transfer.Land.Designator".Translate();
             defaultDesc = "DMSE.Transfer.Land.DesignatorDesc".Translate();

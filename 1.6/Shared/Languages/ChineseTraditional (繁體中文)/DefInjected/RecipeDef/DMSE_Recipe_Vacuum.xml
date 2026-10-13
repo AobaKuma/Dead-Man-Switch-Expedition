@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: Make Tantasteel x25 -->
+  <DMSE_Make_TantastenAlloy.label>製作鉭鎢合金x25</DMSE_Make_TantastenAlloy.label>
+  <!-- EN: Sinter a small amount of Tantasteel. -->
+  <DMSE_Make_TantastenAlloy.description>燒結少量鉭鎢合金。</DMSE_Make_TantastenAlloy.description>
+  <!-- EN: Sintering. -->
+  <DMSE_Make_TantastenAlloy.jobString>正在燒結</DMSE_Make_TantastenAlloy.jobString>
+  
+  <!-- EN: Make Tantasteel x100 -->
+  <DMSE_Make_TantastenAlloyMass.label>製作鉭鎢合金x100</DMSE_Make_TantastenAlloyMass.label>
+  <!-- EN: Sinter a large amount of Tantasteel. -->
+  <DMSE_Make_TantastenAlloyMass.description>燒結大量鉭鎢合金。</DMSE_Make_TantastenAlloyMass.description>
+  <!-- EN: Sintering. -->
+  <DMSE_Make_TantastenAlloyMass.jobString>正在燒結</DMSE_Make_TantastenAlloyMass.jobString>
+  
+</LanguageData>

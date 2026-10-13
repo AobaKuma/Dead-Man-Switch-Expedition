@@ -1,0 +1,92 @@
+<Defs>
+    <RecipeDef Name="DMSE_MechRecipe" ParentName="BaseMechanoidRecipe" Abstract="True">
+        <gestationCycles>12</gestationCycles>
+        <researchPrerequisite>DMSE_Aerospace</researchPrerequisite>
+        <recipeUsers>
+            <li>DMS_MechGestatorSmall</li>
+        </recipeUsers>
+    </RecipeDef>
+    <!--DMSE_Mech_ClusterWeaver-->
+    <RecipeDef ParentName="DMSE_MechRecipe">
+        <defName>DMSE_Make_ClusterWeaver</defName>
+        <label>Gestate ClusterWeaver</label>
+        <description>Gestate a ClusterWeaver Automatroid.</description>
+        <products>
+            <DMSE_Mech_ClusterWeaver>1</DMSE_Mech_ClusterWeaver>
+        </products>
+        <descriptionHyperlinks>
+            <ThingDef>Neurocomputer</ThingDef>
+            <ThingDef>ComponentTransmitter</ThingDef>
+            <ThingDef>ComponentControlChip</ThingDef>
+            <ThingDef>DMSE_Mech_ClusterWeaver</ThingDef>
+        </descriptionHyperlinks>
+        <ingredients Inherit="False">
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>Steel</li>
+                    </thingDefs>
+                </filter>
+                <count>450</count>
+            </li>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>DMSE_TantastenAlloy</li>
+                    </thingDefs>
+                </filter>
+                <count>100</count>
+            </li>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>DMSE_Graphene</li>
+                    </thingDefs>
+                </filter>
+                <count>120</count>
+            </li>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>ComponentStamped</li>
+                    </thingDefs>
+                </filter>
+                <count>20</count>
+            </li>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>ComponentSpacer</li>
+                    </thingDefs>
+                </filter>
+                <count>4</count>
+            </li>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>Neurocomputer</li>
+                    </thingDefs>
+                </filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>ComponentTransmitter</li>
+                    </thingDefs>
+                </filter>
+                <count>1</count>
+            </li>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>ComponentControlChip</li>
+                    </thingDefs>
+                </filter>
+                <count>1</count>
+            </li>
+        </ingredients>
+    </RecipeDef>
+    <!--DMSE_Resurrection-->
+    
+</Defs>

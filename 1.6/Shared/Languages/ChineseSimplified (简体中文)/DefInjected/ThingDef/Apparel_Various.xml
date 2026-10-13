@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: heavy exoskeletal unit -->
+  <DMSE_Apparel_HeavyPowerSkeleton.label>重型外骨骼</DMSE_Apparel_HeavyPowerSkeleton.label>
+  <!-- EN: A heavy powered exoskeletal suit which mimics the human form and can be worn by an untrained operator. It significantly increases the wearer's strength. \n\nCompared to the exoskeleton on BigSister, this model has removed the jump system and shield system to reduce costs. When using it, don't assume you've gained the protective level of heavy mechanical units. -->
+  <DMSE_Apparel_HeavyPowerSkeleton.description>一种设计於微重力环境作业的重型外骨骼，即使是未受训练的操作员也可穿戴使用，并显着提升穿戴者力量。\n\n相比其技术原型的外骨骼系统，其移除了护盾与诸多功能以降低成本。</DMSE_Apparel_HeavyPowerSkeleton.description>
+  <!-- EN: exoframe top -->
+  <DMSE_Apparel_HeavyPowerSkeleton.apparel.renderNodeProperties.0.debugLabel>外骨骼上段</DMSE_Apparel_HeavyPowerSkeleton.apparel.renderNodeProperties.0.debugLabel>
+  <!-- EN: exoframe bottom -->
+  <DMSE_Apparel_HeavyPowerSkeleton.apparel.renderNodeProperties.1.debugLabel>外骨骼下段</DMSE_Apparel_HeavyPowerSkeleton.apparel.renderNodeProperties.1.debugLabel>
+  <!-- EN: offering additional {0} on covered body parts, will lose durability after taking damage.\n{1} -->
+  <DMSE_Apparel_HeavyPowerSkeleton.comps.CompBulletproofPlate.durabilityDescKey>对於覆盖的部位提供{0}的额外防护。在承受伤害後耐久将降低并有概率防护失效。</DMSE_Apparel_HeavyPowerSkeleton.comps.CompBulletproofPlate.durabilityDescKey>
+  <!-- EN: durability can be replenished using {0}, restoring {1} points per material. -->
+  <DMSE_Apparel_HeavyPowerSkeleton.comps.CompBulletproofPlate.refillDescKey>可以在脱下後使用{0}来补充耐久，每单位材料可恢复{1}点。</DMSE_Apparel_HeavyPowerSkeleton.comps.CompBulletproofPlate.refillDescKey>
+  <!-- EN: replenished plates {0} ({1}x {2}) -->
+  <DMSE_Apparel_HeavyPowerSkeleton.comps.CompBulletproofPlate.refillVerbKey>为{0}更换防弹插板({1}x {2})</DMSE_Apparel_HeavyPowerSkeleton.comps.CompBulletproofPlate.refillVerbKey>
+  
+  <!-- EN: IVA suit -->
+  <DMSE_Apparel_IVASuit.label>舱内作业服</DMSE_Apparel_IVASuit.label>
+  <!-- EN: A semi-pressurized suit for working inside a pressurized spacecraft, It is generally used as work clothes for space vehicle operators.\n\nIt doesn't have sufficient vacuum resistance to be used directly in EVA activities but is enough to buy more time in exposed environments. -->
+  <DMSE_Apparel_IVASuit.description>一种在太空载具内穿戴的半加压服，通常作为轨道载具操作员及轨道工业设施内的通用工作服。\n\n它并不具备足够的真空抗性以直接用於舱外活动，但在暴露环境下可争取更多生存时间。</DMSE_Apparel_IVASuit.description>
+  
+  <!-- EN: Orbital ranger Helmet -->
+  <DMSE_Apparel_RangerHelmet.label>轨道游骑兵头盔</DMSE_Apparel_RangerHelmet.label>
+  <!-- EN: A full-covering vacuum-sealed helmet used by the Orbital Rangers,With complete protection and internal integrated electronic system assistance, it is the standard equipment for Colonial Fleet Marines and Orbital Dragoons operating in microgravity environments. -->
+  <DMSE_Apparel_RangerHelmet.description>一种由殖民舰队轨道游骑兵普遍配备的全覆式真空密封防弹头盔，具有完整的保护与内部集成电子系统辅助，是殖民舰队海军陆战队与轨道龙骑兵在真空微重力环境下作战的标准装备。</DMSE_Apparel_RangerHelmet.description>
+  
+</LanguageData>

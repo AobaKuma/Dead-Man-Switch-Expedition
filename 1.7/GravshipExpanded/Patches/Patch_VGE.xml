@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+
+	<Operation Class="PatchOperationAdd">
+		<xpath>/Defs/ThingDef[defName="VGE_GravjumperEngine"]/comps/li[@Class="CompProperties_AffectedByFacilities"]/linkableFacilities</xpath>
+		<value>
+			<li>DMSE_SolidRocketThruster</li>
+			<li>DMSE_FuelSiloTank</li>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationAdd">
+		<xpath>/Defs/ThingDef[defName="VGE_GravhulkEngine"]/comps/li[@Class="CompProperties_AffectedByFacilities"]/linkableFacilities</xpath>
+		<value>
+			<li>DMSE_FusionCore</li>
+			<li>DMSE_FuelSiloTank</li>
+			<li>DMSE_SolidRocketThruster</li>
+		</value>
+	</Operation>
+
+	<!-- 将DMSE燃料储罐转换为VGE的Astrofuel系统 -->
+	<Operation Class="PatchOperationSequence">
+		<operations>
+			<!-- 代替label -->
+			<li Class="PatchOperationReplace">
+				<xpath>/Defs/ThingDef[defName="DMSE_FuelSiloTank"]/label</xpath>
+				<value>
+					<label>Astrofuel silo</label>
+				</value>
+			</li>
+
+			<!-- 移除原有的CompRefuelable -->
+			<li Class="PatchOperationRemove">
+				<xpath>/Defs/ThingDef[defName="DMSE_FuelSiloTank"]/comps/li[@Class="CompProperties_Refuelable"]</xpath>
+			</li>
+
+			<!-- 比照 VGE 的燃料槽不繼承 FuelTankBase 的 comps：否則會多一個逆重船設施 comp 與原版化學燃料爆炸 comp -->
+			<li Class="PatchOperationAttributeSet">
+				<xpath>/Defs/ThingDef[defName="DMSE_FuelSiloTank"]/comps</xpath>
+				<attribute>Inherit</attribute>
+				<value>False</value>
+			</li>
+
+			<!-- 添加VGE的CompResourceStorage -->
+			<li Class="PatchOperationAdd">
+				<xpath>/Defs/ThingDef[defName="DMSE_FuelSiloTank"]/comps</xpath>
+				<value>
+					<li Class="PipeSystem.CompProperties_ResourceStorage">
+						<pipeNet>VGE_AstrofuelNet</pipeNet>
+						<storageCapacity>1750</storageCapacity>
+						<barSize>(1.3, 0.25)</barSize>
+						<margin>0.1</margin>
+						<centerOffset>(0, 0, 0)</centerOffset>
+						<barHorizontal>true</barHorizontal>
+						<extractOptions>
+							<texPath>UI/Gizmos/ExtractAstrofuel_Gizmo</texPath>
+							<labelKey>VGE_ExtractAstrofuel</labelKey>
+							<descKey>VGE_ExtractAstrofuelDesc</descKey>
+							<disabledReasonKey>VGE_ExtractAstrofuelDisabled</disabledReasonKey>
+							<extractAmount>-1</extractAmount>
+							<extractExactAmount>false</extractExactAmount>
+							<thing>VGE_Astrofuel</thing>
+							<extractTime>120</extractTime>
+						</extractOptions>
+						<refillOptions>
+							<thing>VGE_Astrofuel</thing>
+							<refillTime>240</refillTime>
+						</refillOptions>
+						<destroyOptions>
+							<li>
+								<thing>VGE_Astrofuel</thing>
+								<spawnWhenDestroyed>false</spawnWhenDestroyed>
+							</li>
+						</destroyOptions>
+					</li>
+					<li Class="PipeSystem.CompProperties_ExplosiveContent">
+						<explosiveMinRadius>1.1</explosiveMinRadius>
+						<explosiveMaxRadius>30.0</explosiveMaxRadius>
+						<explosiveDamageType>VGE_AstrofireDamage</explosiveDamageType>
+						<damageAmountBase>14</damageAmountBase>
+						<destroyThingOnExplosionSize>2</destroyThingOnExplosionSize>
+						<startWickHitPointsPercent>0.2</startWickHitPointsPercent>
+						<preExplosionSpawnThingDef>VGE_Filth_Astrofuel</preExplosionSpawnThingDef>
+						<preExplosionSpawnChance>1</preExplosionSpawnChance>
+						<wickTicks>70~150</wickTicks>
+					</li>
+					<li Class="VanillaGravshipExpanded.CompProperties_GravMaintainable">
+						<maintenanceFallsOutsideSubstructure>false</maintenanceFallsOutsideSubstructure>
+					</li>
+					<!-- 與 VGE 燃料槽相同的管線燃料設施：逆重船從管線讀 Astrofuel；轉移飛行由 DMSE_VGE_Patch 直接從儲存槽扣除 -->
+					<li Class="VanillaGravshipExpanded.CompProperties_PipeNetFuelProvider">
+						<pipeNet>VGE_AstrofuelNet</pipeNet>
+						<providesFuel>true</providesFuel>
+						<componentTypeDef>FuelStorage</componentTypeDef>
+						<requiresLOS>false</requiresLOS>
+						<showMaxSimultaneous>false</showMaxSimultaneous>
+						<maxSimultaneous>9999</maxSimultaneous>
+						<maxDistance>500</maxDistance>
+					</li>
+				</value>
+			</li>
+
+			<!-- 添加building节点和管道相关构建命令 -->
+			<li Class="PatchOperationSequence">
+				<operations>
+					<li Class="PatchOperationAdd">
+						<xpath>/Defs/ThingDef[defName="DMSE_FuelSiloTank"]</xpath>
+						<value>
+							<building />
+						</value>
+					</li>
+					<li Class="PatchOperationAdd">
+						<xpath>/Defs/ThingDef[defName="DMSE_FuelSiloTank"]/building</xpath>
+						<value>
+							<relatedBuildCommands>
+								<li>VGE_AstrofuelPipe</li>
+							</relatedBuildCommands>
+						</value>
+					</li>
+				</operations>
+			</li>
+		</operations>
+	</Operation>
+
+	<!-- 核热推进器：已改为转移引擎（不再是逆重船推进器），燃料直接取自同一艘船上的燃料筒仓，不需要接 Astrofuel 管线；只保留 VGE 维护系统 -->
+	<Operation Class="PatchOperationAdd">
+		<xpath>/Defs/ThingDef[defName="DMSE_NuclearThruster"]/comps</xpath>
+		<value>
+			<li Class="VanillaGravshipExpanded.CompProperties_GravMaintainable">
+				<fleckEmissionRate>1</fleckEmissionRate>
+			</li>
+		</value>
+	</Operation>
+
+	<!-- 为聚变核心添加VGE维护系统 -->
+	<Operation Class="PatchOperationAdd">
+		<xpath>/Defs/ThingDef[defName="DMSE_FusionCore"]/comps</xpath>
+		<value>
+			<li Class="VanillaGravshipExpanded.CompProperties_GravMaintainable" />
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationAdd">
+		<xpath>/Defs/ThingDef[defName="DMSE_FusionCore"]/statBases</xpath>
+		<value>
+			<VGE_MaintenanceSensitivity>2</VGE_MaintenanceSensitivity>
+		</value>
+	</Operation>
+
+</Patch>

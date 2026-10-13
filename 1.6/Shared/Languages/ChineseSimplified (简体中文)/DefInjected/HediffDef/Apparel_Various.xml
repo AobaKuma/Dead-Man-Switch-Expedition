@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: gravity factor -->
+  <DMSE_GravityFactor.label>重力影响</DMSE_GravityFactor.label>
+  <!-- EN: this pawn is operating an equipment designed for microgravity environment, staying in gravity will making it hard to operate. -->
+  <DMSE_GravityFactor.description>正在穿戴一个专为微重力环境设计的装备，因此在重力环境下难以正常的操作与移动。</DMSE_GravityFactor.description>
+  <!-- EN: gravity -->
+  <DMSE_GravityFactor.stages.gravity.label>重力</DMSE_GravityFactor.stages.gravity.label>
+  
+</LanguageData>

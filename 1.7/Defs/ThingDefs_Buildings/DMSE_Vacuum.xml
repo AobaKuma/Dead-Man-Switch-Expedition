@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_VacuumPump</defName>
+    <label>Vacuum pump</label>
+    <description>A gas pump that can slowly evacuates the air from a sealed chamber to artificially create a vacuum zone. It's widely used to meet the environmental requirements of specialized production processes.\n\nHowever, should be noted that when used within atmosphere, a specialized vacuum chamber is required to effectively create a vacuum zone.</description>
+    <graphicData>
+      <texPath>Things/Building/Candle/building</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>1.2</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.9</staticSunShadowHeight>
+    <fillPercent>0.9</fillPercent>
+    <canOverlapZones>false</canOverlapZones>
+    <pathCost>42</pathCost>
+    <tickerType>Normal</tickerType>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <WorkToBuild>10000</WorkToBuild>
+      <Mass>5</Mass>
+      <Flammability>0.25</Flammability>
+    </statBases>
+    <size>(1,1)</size>
+    <costList>
+      <Steel>100</Steel>
+      <ComponentStamped>4</ComponentStamped>
+    </costList>
+    <building>
+      <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+    </building>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <shortCircuitInRain>true</shortCircuitInRain>
+        <basePowerConsumption>500</basePowerConsumption>
+        <idlePowerDraw>10</idlePowerDraw>
+      </li>
+      <li Class="DMSE.CompProperties_VacuumPump">
+        <vacuumPerTick>0.1</vacuumPerTick>
+      </li>
+    </comps>
+    <researchPrerequisites>
+      <li>DMSE_VacuumMaterial</li>
+    </researchPrerequisites>
+    <designationCategory>Odyssey</designationCategory>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <constructionSkillPrerequisite>3</constructionSkillPrerequisite>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_OxygenCandle</defName>
+    <label>Oxygen candle</label>
+    <description>A disposable oxygen supply device that generates breathable oxygen by burning sodium chlorate, maintaining 24-hours of oxygen supply within a sealed cabin before burning out.\n\nIt was widely used for emergency use in enclosed environments such as aircraft, submarines, and manned spacecraft. During the era of space colonization it also became a standard feature of decompression shelters.</description>
+    <graphicData>
+      <texPath>Things/Building/Candle/building</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>1.2</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.9</staticSunShadowHeight>
+    <fillPercent>0.9</fillPercent>
+    <canOverlapZones>false</canOverlapZones>
+    <pathCost>42</pathCost>
+    <tickerType>Normal</tickerType>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <WorkToBuild>10000</WorkToBuild>
+      <Mass>5</Mass>
+      <Flammability>0.25</Flammability>
+    </statBases>
+    <size>(1,1)</size>
+    <costList>
+      <Steel>45</Steel>
+      <Neutroamine>3</Neutroamine>
+    </costList>
+    <building>
+      <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+    </building>
+    <comps>
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Refuelable">
+        <fuelCapacity>60</fuelCapacity>
+        <initialFuelPercent>1</initialFuelPercent> <!-- destroyOnNoFuel=true 時建議 >0 -->
+        <fuelMultiplier>20</fuelMultiplier>
+        <fuelFilter>
+          <thingDefs>
+            <li>Neutroamine</li>
+          </thingDefs>
+        </fuelFilter>
+        <destroyOnNoFuel>true</destroyOnNoFuel>
+        <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+        <externalTicking>true</externalTicking>
+        <showFuelGizmo>true</showFuelGizmo>
+        <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+        <canEjectFuel>true</canEjectFuel>
+      </li>
+      <li Class="DMSE.CompProperties_OxygenCandle">
+        <tickInterval>60</tickInterval>
+        <fuelConsumePerInterval>1.0</fuelConsumePerInterval>
+        <vacuumReductionPerTick>0.05</vacuumReductionPerTick>
+      </li>
+    </comps>
+    <researchPrerequisites>
+      <li>DMSE_VacuumMaterial</li>
+    </researchPrerequisites>
+    <designationCategory>Odyssey</designationCategory>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <constructionSkillPrerequisite>3</constructionSkillPrerequisite>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_VacuumRoom_Entrance</defName>
+    <label>vacuum sealed room</label>
+    <description>Entrance that leads to an underground sealed room, through multiple layers of plasticfiber membrane and pressurized hatches, this room can maintained vacuum even inside a planetry atmospheric conditions. The gas pressure inside the facility is completely independent of the external environment.\n\nTherefore, before entering, ensure that you wear a full pressure suit or pressurize the entire space to avoid accidental vacuum burns.</description>
+    <size>(3,3)</size>
+    <useHitPoints>false</useHitPoints>
+    <thingClass>MapPortal</thingClass>
+    <tickerType>Normal</tickerType>
+    <rotatable>false</rotatable>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <canOverlapZones>false</canOverlapZones>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Building/VacuumRoom/building_entrance</texPath>
+      <drawSize>(3.65,3.65)</drawSize>
+      <drawOffset>(0,0,0.25)</drawOffset>
+    </graphicData>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <holdsRoof>true</holdsRoof>
+    <destroyable>true</destroyable>
+    <building>
+      <isEdifice>true</isEdifice>
+      <deconstructible>false</deconstructible>
+      <isTargetable>false</isTargetable>
+      <isInert>true</isInert>
+      <claimable>false</claimable>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <costList>
+      <Steel>750</Steel>
+      <Plasfiber>400</Plasfiber>
+    </costList>
+    <comps>
+      <li Class="DMSE.CompPropertiesLandFillable">
+        <job>DMSE_Landfill</job>
+        <iconPath>Things/Building/VacuumRoom/building_sealed</iconPath>
+        <filled>DMSE_VacuumRoom_Filled</filled>
+      </li>
+    </comps>
+    <portal>
+      <pocketMapGenerator>DMSE_VacuumRoom</pocketMapGenerator>
+      <exitDef>DMSE_VacuumRoom_Exit</exitDef>
+      <pocketMapSize>32</pocketMapSize>
+    </portal>
+    <researchPrerequisites>
+      <li>DMSE_VacuumMaterial</li>
+    </researchPrerequisites>
+    <statBases>
+      <Flammability>0</Flammability>
+    </statBases>
+    <inspectorTabs>
+      <li>ITab_ContentsMapPortal</li>
+    </inspectorTabs>
+    <placeWorkers>
+      <li>PlaceWorker_InvalidOverSubstructure</li>
+    </placeWorkers>
+    <designationCategory>Odyssey</designationCategory>
+  </ThingDef>
+
+  <ThingDef ParentName="PocketMapExit">
+    <defName>DMSE_VacuumRoom_Exit</defName>
+    <label>room exit</label>
+    <description>a vacuum-sealed outlet maintains room pressure when people enter or exit.</description>
+    <size>(3,3)</size>
+    <thingClass>CaveExit</thingClass>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Building/VacuumRoom/building_exit</texPath>
+      <drawSize>(3.65,3.65)</drawSize>
+      <drawOffset>(0,0,0.25)</drawOffset>
+    </graphicData>
+    <statBases>
+      <Flammability>0</Flammability>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>10</glowRadius>
+        <glowColor>(140,160,184,0)</glowColor>
+      </li>
+      <li Class="CompProperties_Effecter">
+        <effecterDef>UndercaveMapExitLightshafts</effecterDef>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>PlaceWorker_InvalidOverSubstructure</li>
+    </placeWorkers>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_VacuumRoom_Filled</defName>
+    <label>filled entrance</label>
+    <description>a filled entrance ready for deconstruct and recycle resources.</description>
+    <size>(3,3)</size>
+    <thingClass>Building</thingClass>
+    <drawerType>MapMeshOnly</drawerType>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Building/VacuumRoom/building_sealed</texPath>
+      <drawSize>(3.65,3.65)</drawSize>
+      <drawOffset>(0,0,0.25)</drawOffset>
+    </graphicData>
+    <statBases>
+      <Flammability>0</Flammability>
+    </statBases>
+    <destroyable>true</destroyable>
+    <building>
+      <isEdifice>true</isEdifice>
+      <deconstructible>true</deconstructible>
+      <isTargetable>true</isTargetable>
+      <isInert>true</isInert>
+      <claimable>false</claimable>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <costList>
+      <Steel>750</Steel>
+      <Chemfuel>25</Chemfuel>
+    </costList>
+    <comps>
+      <li Class="DMSE.CompPropertiesLandFillable">
+        <job>DMSE_Landfill</job>
+        <iconPath>Things/Building/VacuumRoom/building_entrance</iconPath>
+        <filled>DMSE_VacuumRoom_Entrance</filled>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>PlaceWorker_InvalidOverSubstructure</li>
+    </placeWorkers>
+  </ThingDef>
+
+  <MapGeneratorDef>
+    <defName>DMSE_VacuumRoom</defName>
+    <label>vacuum sealed room</label>
+    <isUnderground>true</isUnderground>
+    <forceCaves>true</forceCaves>
+    <ignoreAreaRevealedLetter>true</ignoreAreaRevealedLetter>
+    <disableCallAid>true</disableCallAid>
+    <pocketMapProperties>
+      <biome>Space</biome>
+      <temperature>20</temperature>
+    </pocketMapProperties>
+    <genSteps>
+      <li>DMSE_VacuumRoom_GenStep</li>
+    </genSteps>
+  </MapGeneratorDef>
+
+  <GenStepDef>
+    <defName>DMSE_VacuumRoom_GenStep</defName>
+    <order>251</order>
+    <genStep Class="DMSE.GenStep_Prefab">
+      <prefab>DMSE_VacuumRoom_Prefab</prefab>
+    </genStep>
+  </GenStepDef>
+
+  <PrefabDef>
+    <defName>DMSE_VacuumRoom_Prefab</defName>        <!-- rename -->
+    <size>(32,32)</size>
+    <things>
+      <DMSE_VacuumRoom_Exit>
+        <position>(14, 0, 18)</position>
+      </DMSE_VacuumRoom_Exit>
+      <DMSE_Sealed_Wall>
+        <rects>
+          <li>(0,0,31,0)</li>
+          <li>(0,1,0,31)</li>
+          <li>(31,1,31,31)</li>
+          <li>(1,31,30,31)</li>
+        </rects>
+      </DMSE_Sealed_Wall>
+    </things>
+  </PrefabDef>
+</Defs>

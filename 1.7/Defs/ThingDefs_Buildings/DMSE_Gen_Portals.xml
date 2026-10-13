@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ThingDef Name="DMSE_StaircaseEntranceBase" ParentName="BuildingBase" Abstract="True">
+    <size>(3,3)</size>
+    <useHitPoints>false</useHitPoints>
+    <thingClass>MapPortal</thingClass>
+    <rotatable>false</rotatable>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <canOverlapZones>false</canOverlapZones>
+    <tickerType>Normal</tickerType>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(3, 3)</drawSize>
+    </graphicData>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <fillPercent>0</fillPercent>
+    <passability>Impassable</passability>
+    <holdsRoof>true</holdsRoof>
+    <destroyable>false</destroyable>
+    <building>
+      <isEdifice>true</isEdifice>
+      <deconstructible>false</deconstructible>
+      <isTargetable>false</isTargetable>
+      <isInert>true</isInert>
+      <claimable>false</claimable>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <portal>
+      <pocketMapSize>75</pocketMapSize>
+    </portal>
+    <statBases>
+      <Flammability>0</Flammability>
+    </statBases>
+    <comps>
+      <!--
+      <li Class="CompProperties_Sealable">
+        <sealTexPath>UI/Commands/SealHatch</sealTexPath>
+        <sealCommandLabel>Seal entrance</sealCommandLabel>
+        <sealCommandDesc>Choose a colonist to permanently seal the entrance. Anything or anyone left below will be lost forever.</sealCommandDesc>
+        <cannotSealLabel>Cannot seal</cannotSealLabel>
+        <confirmSealText>Sealing the ancient stockpile entrance is permanent. Anything or anyone left below will be lost forever.{0}\n\nAre you sure you want to continue?</confirmSealText>
+        <sealedInspectString>Permanently sealed.</sealedInspectString>
+        <cannotEnterLabel>Sealed</cannotEnterLabel>
+      </li>-->
+    </comps>
+    <inspectorTabs>
+      <li>ITab_ContentsMapPortal</li>
+    </inspectorTabs>
+  </ThingDef>
+
+  <ThingDef ParentName="DMSE_StaircaseEntranceBase">
+    <defName>DMSE_StaircaseEntrance</defName>
+    <label>ancient stockpile entrance</label>
+    <description>The entrance to a long-abandoned subterranean facility. Hack it to open the hatch.</description>
+    <graphicData>
+      <texPath>Things/Building/DMS_Floor_ground</texPath>
+    </graphicData>
+    <portal>
+      <pocketMapGenerator>AncientStockpile</pocketMapGenerator>
+      <exitDef>DMSE_StaircaseExit</exitDef>
+      <pocketMapSize>75</pocketMapSize>
+    </portal>
+  </ThingDef>
+
+  <ThingDef ParentName="DMSE_StaircaseEntranceBase">
+    <defName>DMSE_StaircaseEntrance_Ancient</defName>
+    <label>ancient stockpile entrance</label>
+    <description>The entrance to a long-abandoned subterranean facility. Hack it to open the hatch.</description>
+    <graphicData>
+      <texPath>Things/Building/DMS_Floor_ground_ancient</texPath>
+    </graphicData>
+    <portal>
+      <pocketMapGenerator>AncientStockpile</pocketMapGenerator>
+      <exitDef>DMSE_StaircaseExit_Ancient</exitDef>
+      <pocketMapSize>75</pocketMapSize>
+    </portal>
+  </ThingDef>
+
+  <ThingDef ParentName="DMSE_StaircaseEntranceBase">
+    <defName>DMSE_StaircaseEntrance_White</defName>
+    <label>ancient stockpile entrance</label>
+    <description>The entrance to a long-abandoned subterranean facility. Hack it to open the hatch.</description>
+    <graphicData>
+      <texPath>Things/Building/DMS_Floor_ground_white</texPath>
+    </graphicData>
+    <portal>
+      <pocketMapGenerator>AncientStockpile</pocketMapGenerator>
+      <exitDef>DMSE_StaircaseExit_White</exitDef>
+      <pocketMapSize>75</pocketMapSize>
+    </portal>
+  </ThingDef>
+  
+  <!--Exits-->
+
+  <ThingDef ParentName="PocketMapExit">
+    <defName>DMSE_StaircaseExit</defName>
+    <label>staircase exit</label>
+    <description>A ladder which links to the surface above.</description>
+    <size>(3,3)</size>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Building/DMS_Floor_Bottom</texPath>
+      <drawSize>(3,3)</drawSize>
+    </graphicData>
+  </ThingDef>
+
+  <ThingDef ParentName="PocketMapExit">
+    <defName>DMSE_StaircaseExit_Ancient</defName>
+    <label>ancient staircase exit</label>
+    <description>A ladder which links to the surface above.</description>
+    <size>(3,3)</size>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Building/DMS_Floor_Bottom_ancient</texPath>
+      <drawSize>(3,3)</drawSize>
+    </graphicData>
+  </ThingDef>
+
+  <ThingDef ParentName="PocketMapExit">
+    <defName>DMSE_StaircaseExit_White</defName>
+    <label>staircase exit</label>
+    <description>A ladder which links to the surface above.</description>
+    <size>(3,3)</size>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Building/DMS_Floor_Bottom_white</texPath>
+      <drawSize>(3,3)</drawSize>
+    </graphicData>
+  </ThingDef>
+  
+</Defs>

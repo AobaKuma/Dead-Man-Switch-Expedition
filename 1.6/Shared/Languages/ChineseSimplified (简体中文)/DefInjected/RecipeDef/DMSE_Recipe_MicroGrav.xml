@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: make advanced component with graphene -->
+  <DMSE_Make_ComponentSpacer.label>使用石墨烯制作高级零件</DMSE_Make_ComponentSpacer.label>
+  <!-- EN: Make an advanced component. -->
+  <DMSE_Make_ComponentSpacer.description>制作一个高级零件。</DMSE_Make_ComponentSpacer.description>
+  <!-- EN: Making advanced component. -->
+  <DMSE_Make_ComponentSpacer.jobString>正在制作高级零件</DMSE_Make_ComponentSpacer.jobString>
+  
+  <!-- EN: make advanced component with graphene x4 -->
+  <DMSE_Make_ComponentSpacerBulk.label>使用石墨烯制作高级零件x4</DMSE_Make_ComponentSpacerBulk.label>
+  <!-- EN: Make advanced component x4 -->
+  <DMSE_Make_ComponentSpacerBulk.description>制作高级零件x4。</DMSE_Make_ComponentSpacerBulk.description>
+  <!-- EN: Making advanced component. -->
+  <DMSE_Make_ComponentSpacerBulk.jobString>正在制作高级零件</DMSE_Make_ComponentSpacerBulk.jobString>
+  
+  <!-- EN: Make Graphene with Chemfuel -->
+  <DMSE_Make_Graphene_Chemfuel.label>使用化学燃料制作石墨烯</DMSE_Make_Graphene_Chemfuel.label>
+  <!-- EN: Producing a small amount of graphene materials using Chemfuel and wood. -->
+  <DMSE_Make_Graphene_Chemfuel.description>使用化学燃料与木材生产少量石墨烯材料。</DMSE_Make_Graphene_Chemfuel.description>
+  <!-- EN: Producing. -->
+  <DMSE_Make_Graphene_Chemfuel.jobString>正在生产石墨烯</DMSE_Make_Graphene_Chemfuel.jobString>
+  
+  <!-- EN: Make graphene with wood -->
+  <DMSE_Make_Graphene_WoodLog.label>使用木材制作石墨烯</DMSE_Make_Graphene_WoodLog.label>
+  <!-- EN: Producing a small amount of graphene materials using Chemfuel and wood. -->
+  <DMSE_Make_Graphene_WoodLog.description>使用化学燃料与木材生产少量石墨烯材料。</DMSE_Make_Graphene_WoodLog.description>
+  <!-- EN: Producing. -->
+  <DMSE_Make_Graphene_WoodLog.jobString>正在生产石墨烯</DMSE_Make_Graphene_WoodLog.jobString>
+  
+  <!-- EN: Make Graphene with Chemfuel x4 -->
+  <DMSE_Make_GrapheneMass_Chemfuel.label>使用化学燃料制作石墨烯x4</DMSE_Make_GrapheneMass_Chemfuel.label>
+  <!-- EN: Producing a large amount of graphene materials using Chemfuel and wood. -->
+  <DMSE_Make_GrapheneMass_Chemfuel.description>使用化学燃料与木材生产大量石墨烯材料。</DMSE_Make_GrapheneMass_Chemfuel.description>
+  <!-- EN: Producing. -->
+  <DMSE_Make_GrapheneMass_Chemfuel.jobString>正在生产石墨烯</DMSE_Make_GrapheneMass_Chemfuel.jobString>
+  
+  <!-- EN: Make graphene with wood x4 -->
+  <DMSE_Make_GrapheneMass_WoodLog.label>使用木材制作石墨烯x4</DMSE_Make_GrapheneMass_WoodLog.label>
+  <!-- EN: Producing a large amount of graphene materials using Chemfuel and wood. -->
+  <DMSE_Make_GrapheneMass_WoodLog.description>使用化学燃料与木材生产大量石墨烯材料。</DMSE_Make_GrapheneMass_WoodLog.description>
+  <!-- EN: Producing. -->
+  <DMSE_Make_GrapheneMass_WoodLog.jobString>正在生产石墨烯</DMSE_Make_GrapheneMass_WoodLog.jobString>
+  
+</LanguageData>

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <RecipeDef Name="DMSE_CleanRoom_Recipe" Abstract="True">
+    <modExtensions>
+      <li Class="Fortified.ModExt_EnvironmentalBill">
+        <OnlyInCleanliness>true</OnlyInCleanliness>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+   
+  <!-- Artificial starch preparation -->
+  <RecipeDef ParentName="DMSE_CleanRoom_Recipe">
+    <defName>DMSE_Make_Carbohydrate</defName>
+    <label>extract carbohydrate</label>
+    <!-- A process that extracts high-purity carbohydrates by separating starch-rich plant matter under high pressure. This is a mature laboratory-scale starch process, but due to low production efficiency and strict cleanliness requirements, direct cooking is usually more practical unless you are aiming for molecular gastronomy. -->
+    <description>A process that extracts high-purity carbohydrates by separating the starch-rich parts of plants under high pressure.\n\nThis is a well-established laboratory-scale starch extraction process, but due to its low production efficiency and the need for clean production environments, it's generally less-effective unless you're an aspiring molecular gastronomy chef.</description>
+    <jobString>Extracting carbohydrate.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workAmount>6000</workAmount>
+    <recipeUsers>
+      <li>DMS_LabReactor</li>
+      <li>DMS_ReactionChamber</li>
+    </recipeUsers>
+    <researchPrerequisite>DMS_Material</researchPrerequisite>
+    <allowMixingIngredients>true</allowMixingIngredients>
+    <ingredientValueGetterClass>IngredientValueGetter_Nutrition</ingredientValueGetterClass>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>PlantFoodRaw</li>
+          </categories>
+          <disallowedThingDefs>
+          <li>DMSE_Carbohydrate</li>
+        </disallowedThingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <categories>
+        <li>PlantFoodRaw</li>
+      </categories>
+      <disallowedThingDefs>
+        <li>DMSE_Carbohydrate</li>
+      </disallowedThingDefs>
+    </fixedIngredientFilter>
+    <defaultIngredientFilter>
+      <categories>
+        <li>PlantFoodRaw</li>
+      </categories>
+      <disallowedThingDefs>
+        <li>DMSE_Carbohydrate</li>
+      </disallowedThingDefs>
+    </defaultIngredientFilter>
+    <products>
+      <DMSE_Carbohydrate>2</DMSE_Carbohydrate>
+    </products>
+    <workSkill>Medicine</workSkill>
+  </RecipeDef>
+
+  <!-- Produce C-rations from starch -->
+  <RecipeDef ParentName="DMSE_CleanRoom_Recipe">
+    <defName>DMSE_Make_CRationCarbon</defName>
+    <label>Make C-Ration using carbohydrate</label>
+    <description>Synthesize C-Ration from carbohydrate.</description>
+    <jobString>Synthesizing.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
+    <recipeUsers>
+      <li>DMS_TableArtifuscle</li>
+      <li>DMSE_TableArtifuscle</li>
+    </recipeUsers>
+    <skillRequirements />
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>DMS_Artifuscle</researchPrerequisite>
+    <workAmount>1000</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>DMSE_Carbohydrate</li>
+          </thingDefs>
+        </filter>
+        <count>4</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Neutroamine</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>DMSE_Carbohydrate</li>
+        <li>Neutroamine</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <DMS_CombatRation>1</DMS_CombatRation>
+    </products>
+  </RecipeDef>
+  
+  <!-- Produce C-rations from starch (bulk) -->
+  <RecipeDef ParentName="DMSE_CleanRoom_Recipe">
+    <defName>DMSE_Make_CRationCarbonBulk</defName>
+    <label>Make C-Ration using carbohydrate x4</label>
+    <description>Synthesize C-Ration from carbohydrate.</description>
+    <jobString>Synthesizing.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
+    <recipeUsers>
+      <li>DMS_TableArtifuscle</li>
+      <li>DMSE_TableArtifuscle</li>
+    </recipeUsers>
+    <skillRequirements />
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>DMS_Artifuscle</researchPrerequisite>
+    <workAmount>4000</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>DMSE_Carbohydrate</li>
+          </thingDefs>
+        </filter>
+        <count>16</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Neutroamine</li>
+          </thingDefs>
+        </filter>
+        <count>4</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>DMSE_Carbohydrate</li>
+        <li>Neutroamine</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <DMS_CombatRation>4</DMS_CombatRation>
+    </products>
+  </RecipeDef>
+
+  <!-- Produce neutroamine from meat -->
+  <RecipeDef ParentName="DMSE_CleanRoom_Recipe">
+    <defName>DMSE_Make_Neutroamine</defName>
+    <label>synthesize Neutroamine</label>
+    <description>synthesize neutroamine from meat.</description>
+    <jobString>Synthesizing neutroamine.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workAmount>10000</workAmount>
+    <allowMixingIngredients>true</allowMixingIngredients>
+    <ingredientValueGetterClass>IngredientValueGetter_Nutrition</ingredientValueGetterClass>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>MeatRaw</li>
+          </categories>
+        </filter>
+        <count>10</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <categories>
+        <li>MeatRaw</li>
+      </categories>
+    </fixedIngredientFilter>
+    <defaultIngredientFilter>
+      <categories>
+        <li>MeatRaw</li>
+      </categories>
+    </defaultIngredientFilter>
+    <products>
+      <Neutroamine>10</Neutroamine>
+    </products>
+    <workSkill>Medicine</workSkill>
+  </RecipeDef>
+</Defs>	

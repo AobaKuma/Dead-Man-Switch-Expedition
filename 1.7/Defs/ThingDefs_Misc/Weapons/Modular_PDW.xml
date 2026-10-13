@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<ThingDef ParentName="DMSE_BaseHumanMakeableGun">
+		<defName>DMSE_Modular_PDW</defName>
+		<label>caseless defense firearm</label>
+		<description>A compact and lightweight personal defense weapon designed to provide enough firepower for vehicle crews to protect themselves. It features a quick magazine-change design and can mount accessories according to user needs.</description>
+		<graphicData>
+			<texPath>Things/Weapons/DMS_C90Caseless</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+			<drawSize>1.1</drawSize>
+		</graphicData>
+		<statBases>
+			<WorkToMake>11000</WorkToMake>
+			<Mass>2.5</Mass>
+			<AccuracyTouch>0.90</AccuracyTouch>
+			<AccuracyShort>0.71</AccuracyShort>
+			<AccuracyMedium>0.35</AccuracyMedium>
+			<AccuracyLong>0.15</AccuracyLong>
+			<RangedWeapon_Cooldown>0.9</RangedWeapon_Cooldown>
+		</statBases>
+		<costList>
+			<DMSE_TantastenAlloy>25</DMSE_TantastenAlloy>
+			<DMSE_Graphene>10</DMSE_Graphene>
+			<ComponentStamped>3</ComponentStamped>
+		</costList>
+		<verbs>
+			<li>
+				<verbClass>Verb_Shoot</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_MachinePistol</defaultProjectile>
+				<warmupTime>0.5</warmupTime>
+				<range>19.9</range>
+				<burstShotCount>3</burstShotCount>
+				<ticksBetweenBurstShots>7</ticksBetweenBurstShots>
+				<soundCast>Shot_MachinePistol</soundCast>
+				<soundCastTail>GunTail_Light</soundCastTail>
+				<muzzleFlashScale>9</muzzleFlashScale>
+			</li>
+		</verbs>
+		<tools>
+			<li>
+				<label>grip</label>
+				<capacities>
+				<li>Blunt</li>
+				</capacities>
+				<power>9</power>
+				<cooldownTime>2</cooldownTime>
+			</li>
+			<li>
+				<label>barrel</label>
+				<capacities>
+				<li>Blunt</li>
+				<li>Poke</li>
+				</capacities>
+				<power>9</power>
+				<cooldownTime>2</cooldownTime>
+			</li>
+		</tools>
+	</ThingDef>
+</Defs>

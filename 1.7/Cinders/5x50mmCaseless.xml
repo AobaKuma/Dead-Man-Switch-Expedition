@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs MayRequire = "CETeam.CombatExtended">
+
+	<!-- ==================== Ammo ========================== -->
+
+	<ThingDef Class="CombatExtended.AmmoDef" ParentName="5x50mmCaselessBase">
+		<defName>Ammo_5x50mmCaseless_Erosion</defName>
+		<label>5x50mm Caseless (Erosion)</label>
+		<graphicData>
+			<texPath>Things/Ammo/FMJ</texPath>
+			<graphicClass>Graphic_StackCount</graphicClass>
+		</graphicData>
+		<statBases>
+			<MarketValue>0.08</MarketValue>
+		</statBases>
+		<ammoClass>Cinder_Erosion</ammoClass>
+		<cookOffProjectile>Bullet_5x50mmCaseless_Erosion</cookOffProjectile>
+	</ThingDef>
+
+
+	<!-- ================== Projectiles ================== -->
+
+
+	<ThingDef ParentName="Base5x50mmCaselessBullet" MayRequire="Ludeon.RimWorld.Biotech">
+		<defName>Bullet_5x50mmCaseless_Erosion</defName>
+		<label>5x50mm Caseless bullet (Erosion)</label>
+		<graphicData>
+			<texPath>Things/Projectile/Bullet_Small</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageDef>Cider_ErosionBullet</damageDef>
+			<damageAmountBase>10</damageAmountBase>
+			<armorPenetrationSharp>21</armorPenetrationSharp>
+			<armorPenetrationBlunt>73.2</armorPenetrationBlunt>
+			<speed>206</speed>
+		</projectile>
+	</ThingDef>
+
+	
+	<ThingDef ParentName="Base5x50mmCaselessBullet" MayRequire="Ludeon.RimWorld.Biotech">
+		<defName>Bullet_5x50mmCaseless_Erosion_LV</defName>
+		<label>5x50mm Caseless bullet (Erosion)</label>
+		<graphicData>
+			<texPath>Things/Projectile/Bullet_Small</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageDef>Cider_ErosionBullet</damageDef>
+			<damageAmountBase>7</damageAmountBase>
+			<armorPenetrationSharp>16</armorPenetrationSharp>
+			<armorPenetrationBlunt>40.5</armorPenetrationBlunt>
+			<speed>165</speed>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base5x50mmCaselessBullet" MayRequire="Ludeon.RimWorld.Biotech">
+		<defName>Bullet_5x50mmCaseless_Erosion_HV</defName>
+		<label>5x50mm Caseless bullet (Erosion)</label>
+		<graphicData>
+			<texPath>Things/Projectile/Bullet_Small</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageDef>Cider_ErosionBullet</damageDef>
+			<damageAmountBase>11</damageAmountBase>
+			<armorPenetrationSharp>26</armorPenetrationSharp>
+			<armorPenetrationBlunt>112.5</armorPenetrationBlunt>
+			<speed>242</speed>
+		</projectile>
+	</ThingDef>
+
+
+
+<!-- 5x50mm Caseless Sabot Projectile From Combat Extended(including LV and HV)
+
+	<ThingDef ParentName="Base5x50mmCaselessBullet">
+		<defName>Bullet_5x50mmCaseless_Sabot</defName>
+		<label>5x50mm Caseless bullet (Sabot)</label>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageDef>Bullet</damageDef>
+			<damageAmountBase>10</damageAmountBase>
+			<armorPenetrationSharp>21</armorPenetrationSharp>
+			<armorPenetrationBlunt>73.2</armorPenetrationBlunt>
+			<speed>206</speed>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base5x50mmCaselessBullet">
+		<defName>Bullet_5x50mmCaseless_Sabot_LV</defName>
+		<label>5x50mm Caseless bullet (Sabot)</label>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageDef>Bullet</damageDef>
+			<damageAmountBase>7</damageAmountBase>
+			<armorPenetrationSharp>16</armorPenetrationSharp>
+			<armorPenetrationBlunt>40.5</armorPenetrationBlunt>
+			<speed>165</speed>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base5x50mmCaselessBullet">
+		<defName>Bullet_5x50mmCaseless_Sabot_HV</defName>
+		<label>5x50mm Caseless bullet (Sabot)</label>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageDef>Bullet</damageDef>
+			<damageAmountBase>11</damageAmountBase>
+			<armorPenetrationSharp>26</armorPenetrationSharp>
+			<armorPenetrationBlunt>112.5</armorPenetrationBlunt>
+			<speed>242</speed>
+		</projectile>
+	</ThingDef>
+
+-->
+
+
+
+	<!-- ==================== Recipes ========================== -->
+
+	<RecipeDef ParentName="AmmoRecipeBase">
+		<defName>MakeAmmo_5x50mmCaseless_Erosion</defName>
+		<label>make 5x50mm Caseless (Erosion) cartridge x500</label>
+		<description>Craft 500 5x50mm Caseless (Erosion) cartridges.</description>
+		<jobString>Making 5x50mm Caseless (Erosion) cartridges.</jobString>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Steel</li>
+					</thingDefs>
+				</filter>
+				<count>20</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Cinder_AmorphousPolymer</li>
+					</thingDefs>
+				</filter>
+				<count>9</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>FSX</li>
+					</thingDefs>
+				</filter>
+				<count>1</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Gold</li>
+					</thingDefs>
+				</filter>
+				<count>1</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Chemfuel</li>
+					</thingDefs>
+				</filter>
+				<count>30</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Steel</li>
+				<li>Cinder_AmorphousPolymer</li>
+				<li>FSX</li>
+				<li>Gold</li>
+				<li>Chemfuel</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<Ammo_5x50mmCaseless_Erosion>500</Ammo_5x50mmCaseless_Erosion>
+		</products>
+		<recipeUsers Inherit="false">
+			<li>Cinder_AncientWorkstation</li>
+		</recipeUsers>
+		<workAmount>3200</workAmount>
+	</RecipeDef>
+
+</Defs>

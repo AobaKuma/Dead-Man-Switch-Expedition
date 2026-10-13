@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-  <!-- Legacy pilot-console transfer/impact flight: kept only so old saves load; such flights finish on the first tick after loading (see CelestialTransfer/Legacy). -->
   <WorldObjectDef>
     <defName>DMSE_ImpactGravship</defName>
     <label>impact gravship</label>

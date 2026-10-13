@@ -1,0 +1,305 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <GravshipComponentTypeDef>
+    <defName>DMSE_FusionCore</defName>
+    <label>Fusion core</label>
+    <requiredForLaunch>false</requiredForLaunch>
+  </GravshipComponentTypeDef>
+
+  <!-- 舊版駕駛台轉移飛行用；已無建築使用，僅保留給舊存檔（設計稿 §10-2） -->
+  <GravshipComponentTypeDef>
+    <defName>DMSE_TransferThruster</defName>
+    <label>transfer thruster</label>
+    <requiredForLaunch>false</requiredForLaunch>
+  </GravshipComponentTypeDef>
+
+  <ThingDef ParentName="GravshipComponentBase">
+    <defName>DMSE_FusionCore</defName>
+    <label>Fusion reactor</label>
+    <description>A highly mature compact tokamak fusion reactor, commonly found in colonial fleets and ships used in the Enlightened World, has a built-in supercritical carbon dioxide turbine to provide power for its own cycle and ship equipment. However, its most crucial function is to preheat the ship's nuclear thermal propulsion system so that it can reach its maximum design power to move small-mass celestial bodies.\n\nOn a ship built from structural piles, each working fusion reactor supports up to two nuclear thermal thrusters.</description>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Building/DMSE_FusionCore</texPath>
+      <drawSize>4</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>1500</MaxHitPoints>
+      <Mass>50</Mass>
+      <Flammability>0</Flammability>
+      <Beauty>0</Beauty>
+      <WorkToBuild>12500</WorkToBuild>
+    </statBases>
+    <size>(3, 3)</size>
+    <rotatable>false</rotatable>
+    <fillPercent>0.75</fillPercent>
+    <passability>PassThroughOnly</passability>
+    <pathCost>14</pathCost>
+    <canOverlapZones>false</canOverlapZones>
+    <costList>
+      <Plasteel>350</Plasteel>
+      <DMSE_TantastenAlloy>150</DMSE_TantastenAlloy>
+      <Uranium>90</Uranium>
+      <ComponentStamped>40</ComponentStamped>
+      <ComponentSpacer>20</ComponentSpacer>
+    </costList>
+    <constructionSkillPrerequisite>10</constructionSkillPrerequisite>
+    <designationCategory>Odyssey</designationCategory>
+    <hasInteractionCell>false</hasInteractionCell>
+    <researchPrerequisites>
+      <li>DMSE_Aerospace</li>
+    </researchPrerequisites>
+    <!-- 轉移飛行重構：不再要求逆重船底板，才能蓋在小行星岩地/軌道平台上（仍可作為逆重船設施） -->
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>-10000</basePowerConsumption>
+        <transmitsPower>true</transmitsPower>
+        <soundAmbientProducingPower>ScannerLongRangeMineral_Ambience</soundAmbientProducingPower>
+      </li>
+      <li Class="DMSE.CompProperties_TransferReactor">
+        <supportedEngines>2</supportedEngines>
+      </li>
+      <li Class="CompProperties_GravshipFacility">
+        <componentTypeDef>DMSE_FusionCore</componentTypeDef>
+        <requiresLOS>false</requiresLOS>
+        <showMaxSimultaneous>false</showMaxSimultaneous>
+        <maxSimultaneous>1</maxSimultaneous>
+        <maxDistance>200</maxDistance>
+      </li>
+      <li Class="CompProperties_Breakdownable" />
+    </comps>
+    <uiOrder>2100</uiOrder>
+  </ThingDef>
+
+  <ThingDef ParentName="FuelTankBase">
+    <defName>DMSE_FuelSiloTank</defName>
+    <label>chemfuel silo</label>
+    <description>A large storage tank for storing liquid fuels uses multiple layers of metal plates and special alloys to store pressurized liquefied fuel within the tank. It provides robust protection while also holding a large amount of fuel, and supplies it to the thrusters of a gravship or the transfer engines of a ship built from structural piles.</description>
+    <graphicData>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <texPath>Things/Building/DMSE_FuelSilo</texPath>
+      <drawSize>(4,4)</drawSize>
+      <drawOffset>(0,0.001,0.35)</drawOffset>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>1000</MaxHitPoints>
+      <Mass>70</Mass>
+      <Flammability>0</Flammability>
+      <Beauty>-10</Beauty>
+      <WorkToBuild>13000</WorkToBuild>
+    </statBases>
+    <size>(3, 3)</size>
+    <costList>
+      <Steel>200</Steel>
+      <Plasfiber>100</Plasfiber>
+      <ComponentStamped>4</ComponentStamped>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_OrbitalDynamics</li>
+    </researchPrerequisites>
+    <!-- 轉移飛行重構：覆寫 FuelTankBase 的 Substructure 需求；放在底板上時仍是逆重船燃料槽，放在岩地上則只供轉移飛行 -->
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <comps>
+      <li Class="CompProperties_Refuelable">
+        <fuelCapacity>1750</fuelCapacity>
+        <targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>
+        <initialConfigurableTargetFuelLevel>1500</initialConfigurableTargetFuelLevel>
+        <fuelFilter>
+          <thingDefs>
+            <li>Chemfuel</li>
+          </thingDefs>
+        </fuelFilter>
+        <fuelLabel>Chemfuel</fuelLabel>
+        <fuelGizmoLabel>Chemfuel</fuelGizmoLabel>
+        <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+        <autoRefuelPercent>1</autoRefuelPercent>
+        <showFuelGizmo>true</showFuelGizmo>
+        <drawOutOfFuelOverlay>false</drawOutOfFuelOverlay>
+        <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+        <canEjectFuel>true</canEjectFuel>
+        <drawFuelGaugeInMap>false</drawFuelGaugeInMap>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>PlaceWorker_BandNode</li>
+    </placeWorkers>
+    <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
+    <uiOrder>2160</uiOrder>
+  </ThingDef>
+
+  <ThingDef ParentName="ThrusterBase">
+    <defName>DMSE_SolidRocketThruster</defName>
+    <label>rocket booster</label>
+    <!-- 一種結構簡單可靠的一次性推進器。透過將燃料和氧化劑預混為固體藥柱，在點火後燃燒產生高溫燃氣來提供推力,啟動快.在許多Pre-Spacer星球中常作為火箭助推器或戰略飛彈的初始動力,也常被用於中小型艦船在亞軌道飛行時的臨時增程手段. -->
+    <description>A simple and reliable disposable thruster. It provides thrust by premixing fuel and oxidizer into a solid propellant grain, which burns upon ignition to generate high-temperature gas. It has a rapid start-up capability. It is commonly used as a rocket booster or initial propulsion for strategic missiles on many pre-spacer planets, and is also frequently used as a temporary range extension for small and medium-sized ships during suborbital flight.\n\nOn a ship built from structural piles, it adds thrust to the departure burn of a transfer flight, raising the launch thrust-to-weight ratio without using ship fuel, and burns out once the departure burn ends. It can be built on platforms.</description>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Building/DMSE_Booster</texPath>
+      <drawSize>5.75</drawSize>
+      <shadowData>
+        <volume>(1, 1, 2)</volume>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>250</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>-10</Beauty>
+      <WorkToBuild>12000</WorkToBuild>
+      <Mass>20</Mass>
+    </statBases>
+    <size>(1,4)</size>
+    <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+    <costList>
+      <Chemfuel>150</Chemfuel>
+      <Steel>75</Steel>
+      <DMSE_TantastenAlloy>5</DMSE_TantastenAlloy>
+      <ComponentIndustrial>1</ComponentIndustrial>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_OrbitalDynamics</li>
+    </researchPrerequisites>
+    <!-- 覆寫 ThrusterBase 的 Substructure 需求：平台（含輕型平台）、逆重船底板、岩地皆可建造 -->
+    <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+    <!-- 轉移飛行的尾焰區顯示（與逆重船推進器的尾焰區相同） -->
+    <placeWorkers Inherit="False">
+      <li>DMSE.PlaceWorker_TransferEngine</li>
+    </placeWorkers>
+    <comps>
+      <!-- 轉移飛行：一次性助推器，只在離軌點火提供推力（提高起飛推重比），離軌點火結束後燒毀 -->
+      <li Class="DMSE.CompProperties_TransferEngine">
+        <thrust>4</thrust>
+        <expendable>true</expendable>
+        <exclusionAreaSize>(1, 0, 5)</exclusionAreaSize>
+        <exclusionAreaOffset>(0, 0, -6)</exclusionAreaOffset>
+        <flameSize>6.0</flameSize>
+        <flameOffsetsPerDirection>
+          <li>(0, 0, 0.5)</li>
+          <li>(0, 0, 0.5)</li>
+          <li>(0, 0, 0.5)</li>
+          <li>(0, 0, 0.5)</li>
+        </flameOffsetsPerDirection>
+        <flameShaderType>MoteGlow</flameShaderType>
+        <!-- 暫用熱核推進器的火焰貼圖（原版推進器火焰貼圖在轉移點火時不顯示，同化學轉移引擎） -->
+        <flameShaderParameters>
+          <_MainTex>/Visual/NuclearThruster_Burn</_MainTex>
+        </flameShaderParameters>
+        <exhaustSettings>
+          <exhaustFleckDef>GravshipThrusterExhaust</exhaustFleckDef>
+          <emissionsPerSecond>40.0</emissionsPerSecond>
+          <spawnRadiusRange>0.0~0.5</spawnRadiusRange>
+          <velocity>(0.0,0.0,-20.0)</velocity>
+          <velocityRotationRange>-10.0~10.0</velocityRotationRange>
+          <velocityMultiplierRange>0.8~1.2</velocityMultiplierRange>
+          <rotationOverTimeRange>-180.0~180.0</rotationOverTimeRange>
+          <scaleRange>1.5~3.0</scaleRange>
+        </exhaustSettings>
+      </li>
+      <li Class="DMSE.CompProperties_SolidBoosterThruster">
+        <statOffsets>
+          <GravshipRange>15</GravshipRange>
+        </statOffsets>
+        <componentTypeDef>Thruster</componentTypeDef>
+        <exclusionAreaSize>(1, 0, 5)</exclusionAreaSize>
+        <exclusionAreaOffset>(0, 0, -6)</exclusionAreaOffset>
+        <directionInfluence>20</directionInfluence>
+        <flameSize>6.0</flameSize>
+        <flameOffsetsPerDirection>
+          <li>(0, 0, 0.5)</li>
+          <li>(0, 0, 0.5)</li>
+          <li>(0, 0, 0.5)</li>
+          <li>(0, 0, 0.5)</li>
+        </flameOffsetsPerDirection>
+        <flameShaderType>MoteGlow</flameShaderType>
+        <flameShaderParameters>
+          <_MainTex>/Things/Mote/SmallThruster_Burn</_MainTex>
+        </flameShaderParameters>
+        <requiresLOS>false</requiresLOS>
+        <maxSimultaneous>4</maxSimultaneous>
+        <maxDistance>500</maxDistance>
+        <exhaustSettings>
+          <exhaustFleckDef>GravshipThrusterExhaust</exhaustFleckDef>
+          <emissionsPerSecond>40.0</emissionsPerSecond>
+          <spawnRadiusRange>0.0~0.5</spawnRadiusRange>
+          <velocity>(0.0,0.0,-20.0)</velocity>
+          <velocityRotationRange>-10.0~10.0</velocityRotationRange>
+          <velocityMultiplierRange>0.8~1.2</velocityMultiplierRange>
+          <rotationOverTimeRange>-180.0~180.0</rotationOverTimeRange>
+          <scaleRange>1.5~3.0</scaleRange>
+        </exhaustSettings>
+      </li>
+      <li Class="CompProperties_Breakdownable" />
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>50</basePowerConsumption>
+        <transmitsPower>true</transmitsPower>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- 轉移飛行重構（需求 6）：改為轉移引擎——高推力、低燃耗，需要同一艘船上的核融合爐支援；不再是逆重船推進器 -->
+  <ThingDef ParentName="DMSE_TransferEngineBase">
+    <defName>DMSE_NuclearThruster</defName>
+    <label>Nuclear thermal thruster</label>
+    <description>A heavy nuclear-thermal rocket thruster that generates thrust by heating liquid hydrogen through nuclear Fusion. Its specific impulse is more than twice that of conventional chemical rockets. These high-thrust engines are commonly used on interstellar tugs to perform major orbital transfers for massive platforms. Because launch operation produces substantial radioactive contamination, this engine is designed for non-atmospheric use only.\n\nBefore the Tanaka-Johnson drive was introduced, humanity used this class of thruster to accelerate the first sublight ship to the Alpha Centauri system to 20% of light speed, and received the first selfie from outside the Solar System ten years later.\n\nTransfer engine: very high thrust and low fuel use, but it needs support from a working fusion reactor on the same ship (one reactor supports two thrusters).</description>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Building/NuclearThruster/building</texPath>
+      <drawSize>(4.8,8)</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>1000</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>-10</Beauty>
+      <WorkToBuild>23500</WorkToBuild>
+      <Mass>200</Mass>
+    </statBases>
+    <size>(3,5)</size>
+    <constructionSkillPrerequisite>10</constructionSkillPrerequisite>
+    <costList>
+      <Steel>750</Steel>
+      <DMSE_TantastenAlloy>250</DMSE_TantastenAlloy>
+      <ComponentStamped>20</ComponentStamped>
+      <ComponentSpacer>5</ComponentSpacer>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_Aerospace</li>
+    </researchPrerequisites>
+    <comps>
+      <li Class="DMSE.CompProperties_TransferEngine">
+        <thrust>12</thrust>
+        <fuelFactor>0.35</fuelFactor>
+        <requiresReactorSupport>true</requiresReactorSupport>
+        <impactCapable>true</impactCapable>
+        <exclusionAreaSize>(5, 0, 11)</exclusionAreaSize>
+        <exclusionAreaOffset>(-2, 0, -13)</exclusionAreaOffset>
+        <flameSize>15.0</flameSize>
+        <flameOffsetsPerDirection>
+          <li>(0, 0, 1)</li>
+          <li>(0, 0, 0.5)</li>
+          <li>(0, 0, 0.5)</li>
+          <li>(0, 0, 0.5)</li>
+        </flameOffsetsPerDirection>
+        <flameShaderType>MoteGlow</flameShaderType>
+        <flameShaderParameters>
+          <_MainTex>/Visual/NuclearThruster_Burn</_MainTex>
+        </flameShaderParameters>
+        <exhaustSettings>
+          <exhaustFleckDef>GravshipThrusterExhaust</exhaustFleckDef>
+          <emissionsPerSecond>40.0</emissionsPerSecond>
+          <spawnRadiusRange>-1.5~1.5</spawnRadiusRange>
+          <velocity>(0.0,0.0,-30.0)</velocity>
+          <velocityRotationRange>-5.0~5.0</velocityRotationRange>
+          <velocityMultiplierRange>0.8~1.2</velocityMultiplierRange>
+          <rotationOverTimeRange>-180.0~180.0</rotationOverTimeRange>
+          <scaleRange>2.0~8.0</scaleRange>
+        </exhaustSettings>
+      </li>
+      <li Class="CompProperties_Breakdownable" />
+    </comps>
+    <uiOrder>2206</uiOrder>
+  </ThingDef>
+
+</Defs>

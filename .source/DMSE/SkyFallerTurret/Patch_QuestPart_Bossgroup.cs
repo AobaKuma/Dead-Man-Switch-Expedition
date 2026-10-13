@@ -28,17 +28,8 @@ namespace DMSE
             {
                 return false;
             }
-            Thing innerThing = faller.InnerListForReading.First().innerContainer.First();
-            if (innerThing is Pawn pawn && p.Contains(pawn))
-            {
-                return true;
-            }
-            if (innerThing is ActiveTransporter transporter
-                && transporter.Contents.SingleContainedThing is Pawn pawn2 && p.Contains(pawn2))
-            {
-                return true;
-            }
-            return false;
+            Thing innerThing = faller.InnerListForReading.First().innerContainer.FirstOrDefault();
+            return BVRDetection.PawnsIn(innerThing).Any(p.Contains);
         }
     }
 }

@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData MayRequire = "CETeam.CombatExtended">
+
+	<MakeAmmo_5x50mmCaseless_Erosion.label>制作5x50mm 无壳弹(侵蚀弹)x500</MakeAmmo_5x50mmCaseless_Erosion.label>
+	<MakeAmmo_5x50mmCaseless_Erosion.description>制作500枚5x50mm 无壳弹(侵蚀弹)</MakeAmmo_5x50mmCaseless_Erosion.description>
+	<MakeAmmo_5x50mmCaseless_Erosion.jobString>正在制作5x50mm 无壳弹(侵蚀弹)</MakeAmmo_5x50mmCaseless_Erosion.jobString>
+
+</LanguageData>

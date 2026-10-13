@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <!-- EN: large structural pile -->
+  <DMSE_StructuralPile.label>大型結構樁</DMSE_StructuralPile.label>
+  <!-- EN: see 1.6/Defs/ThingDefs_Buildings/DMSE_TransferFlight.xml -->
+  <DMSE_StructuralPile.description>劃出一塊範圍的重型承重樁。以鋼樑相連的樁可以一起分離，成為一艘船移動。小型結構樁可以建在它的連結範圍內。不能建在原生的軌道平台上，船體也不包含原生軌道平台；那類地形請使用結構固定樁。</DMSE_StructuralPile.description>
+
+  <!-- EN: small structural pile -->
+  <DMSE_StructuralPileSmall.label>小型結構樁</DMSE_StructuralPileSmall.label>
+  <!-- EN: see 1.6/Defs/ThingDefs_Buildings/DMSE_TransferFlight.xml -->
+  <DMSE_StructuralPileSmall.description>劃出一塊較小範圍的承重樁。本身不提供連結範圍：必須建在大型結構樁或結構固定樁的連結範圍內，且小型結構樁之間無法相連。不能建在原生的軌道平台上，船體也不包含原生軌道平台。</DMSE_StructuralPileSmall.description>
+
+  <!-- EN: structural anchor pile -->
+  <DMSE_StructuralPileVacuum.label>結構固定樁</DMSE_StructuralPileVacuum.label>
+  <!-- EN: see 1.6/Defs/ThingDefs_Buildings/DMSE_TransferFlight.xml -->
+  <DMSE_StructuralPileVacuum.description>一種大型金屬強化結構，用來確保在移動小行星及軌道平台等天體結構的過程中不會因為受力變化而產生大規模崩塌。每個固定樁都能夠將半徑內的地板結構固定，並能夠透過鋼架結構連結相鄰範圍的固定樁來形成一個可被大型推進器移動的結構網路，透過這種方式能夠有效且安全的將小行星及軌道平台重新部署到新的位置上。也能夠將其作為軌道上的移動基地。\n\n只能建造在太空中。固定範圍包含小行星真空岩、改造出的土壤及原生軌道平台等所有實心地面，但不包含自行鋪設的軌道平台與輕型平台，這些地板需由大型或小型結構樁固定。小型結構樁也能夠建造在其連結範圍內。</DMSE_StructuralPileVacuum.description>
+
+  <!-- EN: chemical transfer engine -->
+  <DMSE_ChemicalTransferEngine.label>化學轉移引擎</DMSE_ChemicalTransferEngine.label>
+  <!-- EN: see 1.6/Defs/ThingDefs_Buildings/DMSE_TransferFlight.xml -->
+  <DMSE_ChemicalTransferEngine.description>用於轉移飛行的化學燃料火箭引擎，只在出發與抵達時點火。噴口後方須保持淨空。</DMSE_ChemicalTransferEngine.description>
+
+  <!-- EN: transfer flight console -->
+  <DMSE_TransferConsole.label>轉移飛行控制台</DMSE_TransferConsole.label>
+  <!-- EN: see 1.6/Defs/ThingDefs_Buildings/DMSE_TransferFlight.xml -->
+  <DMSE_TransferConsole.description>控制所在船隻的轉移飛行：制定目的地、檢查燃料與整備狀態，並啟動起飛。</DMSE_TransferConsole.description>
+
+</LanguageData>

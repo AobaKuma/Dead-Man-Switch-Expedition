@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Legacy pilot-console transfer/impact flight: kept only so old saves load; such flights finish on the first tick after loading (see CelestialTransfer/Legacy). -->
+  <WorldObjectDef>
+    <defName>DMSE_ImpactGravship</defName>
+    <label>impact gravship</label>
+    <description>A gravship on a collision trajectory.</description>
+    <worldObjectClass>DMSE.WorldObject_ImpactGravship</worldObjectClass>
+    <canHaveFaction>true</canHaveFaction>
+    <saved>true</saved>
+    <selectable>true</selectable>
+    <useDynamicDrawer>true</useDynamicDrawer>
+    <validLaunchTarget>false</validLaunchTarget>
+    <expandingIcon>true</expandingIcon>
+    <expandingIconPriority>60</expandingIconPriority>
+    <expandingIconTexture>World/WorldObjects/Expanding/TravelingTransportPods</expandingIconTexture>
+    <texture>World/WorldObjects/TravelingTransportPods</texture>
+  </WorldObjectDef>
+
+  <WorldObjectDef>
+    <defName>DMSE_TransferGravShip</defName>
+    <label>transfering gravship</label>
+    <description>A gravship in flight.</description>
+    <worldObjectClass>DMSE.WorldObject_Transfer</worldObjectClass>
+    <texture>World/WorldObjects/Caravan</texture>
+    <useDynamicDrawer>true</useDynamicDrawer>
+    <expandingIcon>true</expandingIcon>
+    <expandingIconTexture>World/WorldObjects/Expanding/Gravship</expandingIconTexture>
+    <expandingIconPriority>60</expandingIconPriority>
+    <expandingIconDrawSize>1.35</expandingIconDrawSize>
+    <fullyExpandedInSpace>true</fullyExpandedInSpace>
+    <validLaunchTarget>false</validLaunchTarget>
+  </WorldObjectDef>
+
+</Defs>

@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <SoundDef>
+    <defName>DMSE_Missile_Shot</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>6</maxSimultaneous>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>DMSE/Missile_Leaving</clipPath>
+          </li>
+        </grains>
+        <pitchRange>1.0~1.5</pitchRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <SoundDef>
+    <defName>DMSE_Missile_Flight</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>6</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>DMSE/Missile_Flight</clipPath>
+          </li>
+        </grains>
+        <pitchRange>0.954118~1.045882</pitchRange>
+        <volumeRange>20~30</volumeRange>
+        <distRange>0~200</distRange>
+        <muteWhenPaused>true</muteWhenPaused>
+      </li>
+    </subSounds>
+  </SoundDef>
+</Defs>

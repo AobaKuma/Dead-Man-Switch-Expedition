@@ -79,40 +79,4 @@
     </comps>
   </ThingDef>
 
-  <!-- 平台用的重力船船體：沿用原版 GravshipHull 的貼圖與數值，改為只能蓋在本模組的平台上；
-       掛 AngledHullExtension，斜角補全沿用原版斜角船體貼圖（純繪製，見 Platform/SectionLayer_PlatformHull.cs） -->
-  <ThingDef ParentName="Wall">
-    <defName>DMSE_PlatformHull</defName>
-    <label>platform hull</label>
-    <description>A strong airtight wall that prevents oxygen leaks in the vacuum of space. A variant of the gravship hull that anchors into orbital platform decking instead of substructure, so it can only be built on platforms. Hull sections that touch only at their corners are joined into a smooth diagonal wall.</description>
-    <designationCategory>Odyssey</designationCategory>
-    <uiOrder>1801</uiOrder>
-    <uiIconPath>Things/Building/Linked/GravshipHull/GravshipHull_MenuIcon</uiIconPath>
-    <graphicData>
-      <texPath>Things/Building/Linked/GravshipHull/GravshipHull_Atlas</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
-    </graphicData>
-    <researchPrerequisites>
-      <li>DMSE_OrbitalDynamics</li>
-    </researchPrerequisites>
-    <statBases>
-      <MaxHitPoints>420</MaxHitPoints>
-      <WorkToBuild>300</WorkToBuild>
-      <Flammability>0</Flammability>
-    </statBases>
-    <costStuffCount>7</costStuffCount>
-    <building>
-      <isAirtight>true</isAirtight>
-    </building>
-    <terrainAffordanceNeeded>DMSE_Platform</terrainAffordanceNeeded>
-    <useStuffTerrainAffordance>false</useStuffTerrainAffordance>
-    <stuffCategories Inherit="False">
-      <li>Metallic</li>
-    </stuffCategories>
-    <comps Inherit="False"/>
-    <modExtensions>
-      <li Class="DMSE.AngledHullExtension"/>
-    </modExtensions>
-  </ThingDef>
-
 </Defs>

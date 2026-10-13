@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<ThingCategoryDef>
+		<defName>DMSE_AerospaceWeapon</defName>
+		<label>aerospace weapon</label>
+		<parent>WeaponsRanged</parent>
+	</ThingCategoryDef>
+
+	<ThingDef Name="DMSE_BaseHumanMakeableGun" ParentName="DMS_AutomatroidGun" Abstract="True">
+		<soundInteract>DMS_EquipGear</soundInteract>
+		<thingCategories Inherit="False">
+			<li>DMSE_AerospaceWeapon</li>
+		</thingCategories>
+		<recipeMaker>
+			<workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+			<workSkill>Crafting</workSkill>
+			<effectWorking>Smith</effectWorking>
+			<soundWorking>Recipe_Smith</soundWorking>
+			<recipeUsers Inherit="False">
+				<li>DMS_TableMachinePrinter</li>
+			</recipeUsers>
+			<researchPrerequisite>DMSE_OrbitalDynamics</researchPrerequisite>
+			<unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
+		</recipeMaker>
+		<graphicData>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<statBases>
+			<MaxHitPoints>150</MaxHitPoints>
+			<WorkToMake>60000</WorkToMake>
+		</statBases>
+		<weaponTags>
+			<li>DMSE_Gun</li>
+		</weaponTags>
+		<tradeTags>
+			<li>DMS_WeaponRanged</li>
+		</tradeTags>
+	</ThingDef>
+
+	<ThingDef ParentName="DMSE_BaseHumanMakeableGun">
+		<defName>DMSE_Modular_AR</defName>
+		<label>caseless assault rifle</label>
+		<description>An assault rifle that uses caseless ammunition and a composite receiver, offering balanced burst fire rate and magazine capacity with mission-specific accessory options.\n\nIts lineage traces back to the Cold War era on Earth, when the Berlin Mechanical Manufacturing Bureau needed a highly standardized weapon platform to equip large mechanized formations. This led to the MCR family led by the G93MCR and its matching 5x50 universal caseless ammunition. This ammo type has stable ballistic performance and is compatible across all MCR-series weapons.</description>
+		<graphicData>
+			<texPath>Things/Weapons/DMS_G93Caseless</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+			<drawSize>1.2</drawSize>
+		</graphicData>
+		<statBases>
+			<WorkToMake>40000</WorkToMake>
+			<Mass>3.1</Mass>
+			<AccuracyTouch>0.60</AccuracyTouch>
+			<AccuracyShort>0.70</AccuracyShort>
+			<AccuracyMedium>0.65</AccuracyMedium>
+			<AccuracyLong>0.55</AccuracyLong>
+            <RangedWeapon_Cooldown>0.78</RangedWeapon_Cooldown>
+		</statBases>
+		<costList>
+			<DMSE_TantastenAlloy>45</DMSE_TantastenAlloy>
+			<DMSE_Graphene>15</DMSE_Graphene>
+			<ComponentStamped>4</ComponentStamped>
+		</costList>
+		<verbs>
+			<li>
+				<verbClass>Verb_Shoot</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_AssaultRifle</defaultProjectile>
+				<warmupTime>1.0</warmupTime>
+				<range>30.9</range>
+				<burstShotCount>5</burstShotCount>
+				<ticksBetweenBurstShots>4</ticksBetweenBurstShots>
+				<soundCast>Shot_AssaultRifle</soundCast>
+				<soundCastTail>GunTail_Medium</soundCastTail>
+				<muzzleFlashScale>9</muzzleFlashScale>
+			</li>
+		</verbs>
+		<tools>
+			<li>
+				<label>stock</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>9</power>
+				<cooldownTime>2</cooldownTime>
+			</li>
+			<li>
+				<label>barrel</label>
+				<capacities>
+					<li>Blunt</li>
+					<li>Poke</li>
+				</capacities>
+				<power>9</power>
+				<cooldownTime>2</cooldownTime>
+			</li>
+		</tools>
+	</ThingDef>
+</Defs>

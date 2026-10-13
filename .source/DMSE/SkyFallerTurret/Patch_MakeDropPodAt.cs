@@ -1,6 +1,7 @@
 using HarmonyLib;
 using RimWorld;
 using System;
+using System.Collections.Generic;
 using Verse;
 
 namespace DMSE
@@ -45,24 +46,39 @@ namespace DMSE
     /// <summary>目標識別輔助。</summary>
     public static class BVRDetection
     {
-        /// <summary>取得空投內容物（pawn，含 ActiveTransporter 內）的陣營；無 pawn 則回傳 null。</summary>
+        /// <summary>取得空投內容物（pawn，含 ActiveTransporter 內）中第一個有陣營的 pawn 的陣營；無則回傳 null。</summary>
         public static Faction GetDropFaction(Thing innerThing)
         {
-            if (innerThing == null) { return null; }
+            foreach (Pawn pawn in PawnsIn(innerThing))
+            {
+                if (pawn.Faction != null)
+                {
+                    return pawn.Faction;
+                }
+            }
+            return null;
+        }
 
+        /// <summary>
+        /// 空投內容物中的 pawn：innerThing 本身，或 ActiveTransporter 艙內的所有 pawn。
+        /// 艙內可能同時裝著多個物品（例如圍攻的補給艙），不能用 ActiveTransporterInfo.SingleContainedThing（多於一件會報錯）。
+        /// </summary>
+        public static IEnumerable<Pawn> PawnsIn(Thing innerThing)
+        {
             if (innerThing is Pawn pawn)
             {
-                return pawn.Faction;
+                yield return pawn;
+                yield break;
             }
-
-            if (innerThing is ActiveTransporter transporter
-                && transporter.Contents != null
-                && transporter.Contents.SingleContainedThing is Pawn pawn2)
+            ThingOwner contents = (innerThing as ActiveTransporter)?.Contents?.innerContainer;
+            if (contents == null) { yield break; }
+            for (int i = 0; i < contents.Count; i++)
             {
-                return pawn2.Faction;
+                if (contents[i] is Pawn contained)
+                {
+                    yield return contained;
+                }
             }
-
-            return null;
         }
     }
 }

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+	<CombatExtended.AmmoCategoryDef>
+		<defName>DMSE_PELE</defName>
+		<label>Penetrator with Enhanced Lateral Effect</label>
+		<labelShort>PELE</labelShort>
+		<description>PELE–“penetrator with enhanced lateral effect”–is a new type of automatic cannon ammunition without a fuse or explosive. The combination of two materials with different densities causes the shell to disintegrate in the target zone without the need for an explosive charge or fuse. Therefore, this type of ammunition can be manufactured without the need for FSX.</description>
+		<advanced>true</advanced>
+	</CombatExtended.AmmoCategoryDef>
+
+</Defs>

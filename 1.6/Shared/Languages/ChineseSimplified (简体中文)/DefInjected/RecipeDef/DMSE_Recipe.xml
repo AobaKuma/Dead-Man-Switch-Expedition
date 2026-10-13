@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: make reinforced barrel -->
+  <DMSE_Make_ReinforcedBarrel.label>制作加固炮管</DMSE_Make_ReinforcedBarrel.label>
+  <!-- EN: Make a reinforced barrel from rotary forger. -->
+  <DMSE_Make_ReinforcedBarrel.description>在旋锻机上生产一根加固炮管。</DMSE_Make_ReinforcedBarrel.description>
+  <!-- EN: Making reinforced Barrel. -->
+  <DMSE_Make_ReinforcedBarrel.jobString>正在制作加固炮管</DMSE_Make_ReinforcedBarrel.jobString>
+  
+</LanguageData>

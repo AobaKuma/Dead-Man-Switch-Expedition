@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef ParentName="SkyfallerBase">
+        <defName>DMSE_InterceptProjectile</defName>
+        <label>intercepting projectile</label>
+        <size>(1,1)</size>
+        <graphicData>
+            <texPath>Things/Missile/Moskit/skyFaller</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>4</drawSize>
+        </graphicData>
+        <thingClass>DMSE.InterceptProjectile</thingClass>
+        <skyfaller>
+            <movementType>Accelerate</movementType>
+            <reversed>true</reversed>
+            <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
+            <shadowSize>(2, 2)</shadowSize>
+            <ticksToDiscardInReverse>300</ticksToDiscardInReverse>
+            <ticksToImpactRange>0</ticksToImpactRange>
+            <anticipationSound>DropPod_Leaving</anticipationSound>
+            <anticipationSoundTicks>-1</anticipationSoundTicks>
+            <speedCurve>
+                <points>
+                    <li>(0,0.1)</li>
+                    <li>(0.25,0.1)</li>
+                    <li>(1,2)</li>
+                </points>
+            </speedCurve>
+            <rotationCurve>
+                <points>
+                    <li>(0,-10)</li>
+                    <li>(0.30,-25)</li>
+                    <li>(0.6,-5)</li>
+                    <li>(1,0)</li>
+                </points>
+            </rotationCurve>
+            <zPositionCurve>
+                <points>
+                    <li>(0,0)</li>
+                    <li>(0.1,1)</li>
+                    <li>(0.3,0)</li>
+                    <li>(1,50)</li>
+                </points>
+            </zPositionCurve>
+        </skyfaller>
+    </ThingDef>
+
+</Defs> 

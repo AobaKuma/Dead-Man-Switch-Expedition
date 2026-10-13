@@ -785,7 +785,7 @@ t ∈ [t_a + t_c, t_total]    : u = t − t_a − t_c;  p = 0.5·v·t_a + v·t_c
 - **難度**：係數 `graceFactorByThreatScale` 依說書人難度的 `threatScale` 換算（和平 1.5、輕鬆 1.3、普通 1.15、艱難 1、困難 0.75、極難 0.5；自訂難度依其 threatScale 內插）。
 - **時機**：`WorldObject_TransferShip.Arrive` 時對船體地圖開始計時；之後選位降落到目的地地圖（`TransferLandingUtility.Land`）時，只把船體地圖**剩餘**的時間轉移過去，不重新計時（避免抵達後拖延再降落來延長）。地圖上已有安全期時只延長、不縮短。撞擊飛行與開發者分離沒有安全期。
 - **UI**：抵達時發訊息（船名、時長、船體格數）；控制台 ITab 的估算區塊以本船船體範圍顯示預計安全期。
-- 實作：`TransferGraceUtility`、`1.6/Defs/DMSE_TransferGrace.xml`、Tuning 欄位 `graceThresholdCells` / `graceMaxDays` / `graceFactorByThreatScale`。
+- 實作：`TransferGraceUtility`、`1.7/Defs/DMSE_TransferGrace.xml`、Tuning 欄位 `graceThresholdCells` / `graceMaxDays` / `graceFactorByThreatScale`。
 
 ---
 

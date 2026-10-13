@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <!-- Buildings that players cannot build or deconstruct (but can destroy) -->
+    <ThingDef ParentName="BuildingBase" Name="DMSE_BaseBuilding" Abstract="true">
+        <canOverlapZones>false</canOverlapZones>
+        <designationCategory>FFF_DevCategory</designationCategory>
+        <building>
+            <deconstructible>false</deconstructible>
+            <alwaysDeconstructible>false</alwaysDeconstructible>
+            <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+        </building>
+    </ThingDef>
+
+    <ThingDef ParentName="DMSE_BaseBuilding" Name="DMSE_BaseDecoration" Abstract="true">
+        <graphicData>
+            <graphicClass>Graphic_Single</graphicClass>
+            <damageData>
+                <cornerTL>Damage/Corner</cornerTL>
+                <cornerTR>Damage/Corner</cornerTR>
+                <cornerBL>Damage/Corner</cornerBL>
+                <cornerBR>Damage/Corner</cornerBR>
+            </damageData>
+        </graphicData>
+        <pathCost>42</pathCost>
+        <passability>PassThroughOnly</passability>
+        <tickerType>Never</tickerType>
+    </ThingDef>
+</Defs>

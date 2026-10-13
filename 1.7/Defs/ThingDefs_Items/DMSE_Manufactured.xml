@@ -1,0 +1,380 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <ThingDef ParentName="ResourceBase" Name="DMSE_ResourceBase" Abstract="true">
+    <tradeability>Sellable</tradeability>
+    <generateCommonality>0</generateCommonality>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+    <thingSetMakerTags>
+      <li>RewardStandardCore</li>
+    </thingSetMakerTags>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <thingSetMakerTags inherit="false" />
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+  </ThingDef>
+
+  <!-- Carbohydrate -->
+  <ThingDef ParentName="DMSE_ResourceBase">
+    <defName>DMSE_Carbohydrate</defName>
+    <label>Carbohydrate</label>
+    <description>A white, solid powder that remains highly stable at room temperature, this substance is artificially synthesized from starch, lactose, and other compounds using industrial equipment. Composed of basic elements such as carbon, hydrogen, and oxygen, it does not spoil even when stored in a dry, ambient environment, making it an extremely space-efficient nutritional source for interstellar travel. However, consuming it untreated may cause short-term symptoms such as abdominal pain. \n\nDue to its highly flammable chemical nature and rapid decomposition when exposed to open air, it is typically compressed into dense blocks and vacuum-sealed immediately after synthesis for long-term storage and distribution.</description>
+    <descriptionHyperlinks>
+      <ThingDef>DMSE_GrapheneBioreactor</ThingDef>
+      <recipeDef>DMSE_Make_Carbohydrate</recipeDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Things/Resource/Carbohydrate</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <statBases>
+      <MaxHitPoints>25</MaxHitPoints>
+      <Flammability>6.0</Flammability>
+      <DeteriorationRate>100</DeteriorationRate>
+      <Mass>0.1</Mass>
+      <Nutrition>0.5</Nutrition>
+      <FoodPoisonChanceFixedHuman>0</FoodPoisonChanceFixedHuman>
+      <MarketValue>10</MarketValue>
+    </statBases>
+    <ingestible>
+      <foodType>Processed</foodType>
+      <preferability>RawBad</preferability>
+      <tasteThought>AteRawFood</tasteThought>
+      <ingestEffect>EatVegetarian</ingestEffect>
+      <ingestSound>RawVegetable_Eat</ingestSound>
+      <canAutoSelectAsFoodForCaravan>false</canAutoSelectAsFoodForCaravan>
+      <optimalityOffsetFeedingAnimals>-25</optimalityOffsetFeedingAnimals>
+      <tableDesired>false</tableDesired>
+    </ingestible>
+    <burnableByRecipe>true</burnableByRecipe>
+    <minRewardCount>30</minRewardCount>
+    <thingCategories>
+      <li>PlantFoodRaw</li>
+    </thingCategories>
+  </ThingDef>
+
+  <!-- Tantasteel: stronger than tungsten steel -->
+  <ThingDef ParentName="DMSE_ResourceBase">
+    <defName>DMSE_TantastenAlloy</defName>
+    <label>Tantasteel</label>
+    <description>A special alloy material composed of tantalum and tungsten. It is hard, wear-resistant, corrosion-resistant, and has an extremely high melting point of up to 3080°C, making it widely used in rocket engine De Laval nozzles and high-performance military mecha pulse thrusters. \n\nTantalum is found in trace amounts in asteroids and can be extracted through vacstone mining. Its processing and production must be carried out in a vacuum environment to avoid contamination by gases such as nitrogen and oxygen. Therefore, worlds capable of large-scale production and application typically have substantial industrial platforms orbiting dedicated to manufacturing and processing these materials.</description>
+    <descriptionHyperlinks>
+      <ThingDef>DMS_Furnace</ThingDef>
+      <ThingDef>DMS_LabFurnace</ThingDef>
+      <recipeDef>DMSE_Make_TantastenAlloy</recipeDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Things/Resource/Tantasten</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Metal_Drop</soundDrop>
+    <useHitPoints>true</useHitPoints>
+    <statBases>
+      <MarketValue>30</MarketValue>
+      <Mass>3</Mass>
+      <StuffPower_Armor_Sharp>1.6</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>1.2</StuffPower_Armor_Blunt>
+      <StuffPower_Armor_Heat>1.8</StuffPower_Armor_Heat>
+      <StuffPower_Insulation_Cold>1</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>2</StuffPower_Insulation_Heat>
+      <SharpDamageMultiplier>1.2</SharpDamageMultiplier>
+      <BluntDamageMultiplier>1.1</BluntDamageMultiplier>
+    </statBases>
+    <burnableByRecipe>false</burnableByRecipe>
+    <smeltable>true</smeltable>
+    <stuffProps>
+      <categories>
+        <li>Metallic</li>
+      </categories>
+      <appearance>Metal</appearance>
+      <commonality>0</commonality>
+      <constructEffect>ConstructMetal</constructEffect>
+      <isAirtight>true</isAirtight>
+      <color>(80,80,80)</color>
+      <soundImpactBullet>BulletImpact_Ground</soundImpactBullet>
+      <soundMeleeHitSharp>MeleeHit_Metal_Sharp</soundMeleeHitSharp>
+      <soundMeleeHitBlunt>MeleeHit_Metal_Blunt</soundMeleeHitBlunt>
+      <statFactors>
+        <MaxHitPoints>2</MaxHitPoints>
+        <Beauty>1</Beauty>
+        <Mass>1.5</Mass>
+        <Flammability>0</Flammability>
+        <WorkToMake>3.1</WorkToMake>
+        <WorkToBuild>3.1</WorkToBuild>
+        <MeleeWeapon_CooldownMultiplier>1</MeleeWeapon_CooldownMultiplier>
+      </statFactors>
+    </stuffProps>
+    <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+  </ThingDef>
+
+  <!-- Graphene: used for graphene capacitors, carbon fiber, and other advanced tech items -->
+  <ThingDef ParentName="DMSE_ResourceBase">
+    <defName>DMSE_Graphene</defName>
+    <label>Graphene</label>
+    <description>A single-layer carbon material produced by exfoliating graphite, it is the most widely used non-metallic material in the Midsphere World. Thanks to its excellent thermal conductivity and electrical properties, it is commonly employed in electronic components, beam emitters, and supercapacitors. \n\nGraphene itself demands extremely stringent production conditions and is often further processed into materials like carbon nanotubes or fullerenes. As a result, worlds capable of large-scale production and application typically possess massive industrial platforms in near-Earth orbit dedicated to manufacturing and processing these materials.</description>
+    <descriptionHyperlinks>
+      <ThingDef>DMSE_MicrogravityFacility</ThingDef>
+      <recipeDef>DMSE_Make_Graphene_Chemfuel</recipeDef>
+      <recipeDef>DMSE_Make_Graphene_WoodLog</recipeDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Things/Resource/Graphene</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>75</stackLimit>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <MarketValue>10</MarketValue>
+      <Mass>0.05</Mass>
+      <Flammability>1</Flammability>
+      <DeteriorationRate>3.0</DeteriorationRate>
+      <StuffPower_Armor_Sharp>1</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>1.5</StuffPower_Armor_Blunt>
+      <StuffPower_Armor_Heat>1.20</StuffPower_Armor_Heat>
+      <StuffPower_Insulation_Cold>5</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>15</StuffPower_Insulation_Heat>
+    </statBases>
+    <stuffProps>
+      <categories>
+        <li>Fabric</li>
+      </categories>
+      <stuffAdjective>carbon fiber</stuffAdjective>
+      <commonality>0</commonality>
+      <color>(140,140,140)</color>
+      <statFactors>
+        <Mass>0.2</Mass>
+        <WorkToMake>1.2</WorkToMake>
+        <MaxHitPoints>0.5</MaxHitPoints>
+        <Flammability>0</Flammability>
+        <Beauty>2</Beauty>
+      </statFactors>
+    </stuffProps>
+    <thingCategories>
+      <li>Textiles</li>
+    </thingCategories>
+  </ThingDef>
+
+  <!-- Nitrogallium: required by advanced complex tech items such as T/R components and cluster control chipsets -->
+  <ThingDef ParentName="DMSE_ResourceBase">
+    <defName>DMSE_Nitrogallium</defName>
+    <label>nitrogallium</label>
+    <description>A semiconductor material with excellent thermal conductivity, This glass-like single-crystal compound has been widely used in most spacer worlds to replace silicon-based semiconductor materials in various electronics applications, and it can also prevent bionic prostheses from rejecting biological tissue. The production process for nitrogallium requires a vacuum environment to avoid chemical contamination from air, it "grows" crystal structure onto a substrate through vapor deposition. Therefore, worlds that utilize this material on a large scale typically have specialized vacuum production facility for manufacturing and processing within a sealed vacuum environment.</description>
+    <descriptionHyperlinks>
+      <ThingDef>DMSE_MicrogravityFacility</ThingDef>
+      <recipeDef>DMSE_Make_Nitrogallium</recipeDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Things/Resource/Nitrogallium</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>25</stackLimit>
+    <statBases>
+      <RoyalFavorValue>0.5</RoyalFavorValue>
+      <MaxHitPoints>5</MaxHitPoints>
+      <MarketValue>75</MarketValue>
+      <Mass>0.05</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>10.0</DeteriorationRate>
+    </statBases>
+  </ThingDef>
+
+  <ThingDef ParentName="DMSE_ResourceBase">
+    <defName>DMSE_Missile_Moskit</defName>
+    <label>hyper-sonic cruise missile</label>
+    <description>A tactical cruise missile awaiting loading.</description>
+    <descriptionHyperlinks>
+      <ThingDef>DMSE_Building_Scorer</ThingDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Things/Missile/Moskit/skyFaller</texPath>
+      <drawSize>(4,4)</drawSize>
+      <drawOffset>(0,0,1.5)</drawOffset>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>1</stackLimit>
+    <!-- Rare ticker 讓 CompDurabilityDecay 能在物品 Spawned 時運作（ResourceBase 預設為 Never）。 -->
+    <tickerType>Rare</tickerType>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <MarketValue>2500</MarketValue>
+      <Mass>500</Mass>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>10.0</DeteriorationRate>
+    </statBases>
+    <costList>
+      <Chemfuel>250</Chemfuel>
+      <Steel>125</Steel>
+      <DMSE_TantastenAlloy>15</DMSE_TantastenAlloy>
+      <ComponentStamped>10</ComponentStamped>
+      <ComponentSpacer>1</ComponentSpacer>
+    </costList>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <effectWorking>Smith</effectWorking>
+      <soundWorking>Recipe_Smith</soundWorking>
+      <recipeUsers Inherit="False">
+        <li>DMS_TableMachinePrinter</li>
+      </recipeUsers>
+      <researchPrerequisite>DMSE_Ballistics</researchPrerequisite>
+      <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
+    </recipeMaker>
+    <comps>
+      <!-- 允許玩家為每枚導彈設定自訂名稱；重命名按鈕顯示於 ITab_MissileInventory 各列右側。 -->
+      <li Class="DMSE.CompProperties_Renameable" />
+      <li Class="DMSE.CompProperties_MissileConfig">
+        <defaultBody>DMSE_MissileBody_Cruise</defaultBody>
+      </li>
+      <!-- 未存放於庇護建築內時緩慢扣耐久；歸零後摧毀。5 HP/日 ≒ 20 日（100 HP）。 -->
+      <li Class="DMSE.CompProperties_DurabilityDecay">
+        <hitPointsPerDay>5</hitPointsPerDay>
+        <destroyWhenDepleted>true</destroyWhenDepleted>
+        <!-- 存入導彈儲存架或發射平台容器即視為受庇護、停止劣化。 -->
+        <shelterBuildings>
+          <li>DMSE_MissileRack</li>
+          <li>DMSE_Building_Scorer</li>
+        </shelterBuildings>
+      </li>
+    </comps>
+    <inspectorTabs>
+      <li>DMSE.ITab_MissileAssembly</li>
+    </inspectorTabs>
+  </ThingDef>
+
+  <!-- SAM 攔截彈：防空導彈發射器（DMSE_Building_LightMissileLauncher）的容器式彈藥。
+       與巡弋飛彈不同，攔截彈為固定戰備彈，不需裝配/世界選靶，故無 CompMissileConfig 與裝配頁籤。
+       未存放於發射器/彈藥庫內時緩慢劣化（CompDurabilityDecay）。 -->
+  <ThingDef ParentName="DMSE_ResourceBase">
+    <defName>DMSE_InterceptorMissile</defName>
+    <label>interceptor missile</label>
+    <description>A ready-to-fire surface-to-air interceptor round. Loaded into a SAM launcher's internal container, it is expended one per engagement to destroy incoming threats during the midcourse phase of beyond-visual-range combat.</description>
+    <descriptionHyperlinks>
+      <ThingDef>DMSE_Building_LightMissileLauncher</ThingDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Things/Missile/Grison/ammo</texPath>
+      <drawSize>(2.5,2.5)</drawSize>
+      <drawOffset>(0,0,1)</drawOffset>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>1</stackLimit>
+    <!-- Rare ticker 讓 CompDurabilityDecay 能在物品 Spawned 時運作（ResourceBase 預設為 Never）。 -->
+    <tickerType>Rare</tickerType>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <MarketValue>900</MarketValue>
+      <Mass>120</Mass>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>10.0</DeteriorationRate>
+    </statBases>
+    <costList>
+      <Chemfuel>100</Chemfuel>
+      <Steel>50</Steel>
+      <DMSE_TantastenAlloy>5</DMSE_TantastenAlloy>
+      <ComponentStamped>4</ComponentStamped>
+      <ComponentSpacer>1</ComponentSpacer>
+    </costList>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <effectWorking>Smith</effectWorking>
+      <soundWorking>Recipe_Smith</soundWorking>
+      <recipeUsers Inherit="False">
+        <li>DMS_TableMachinePrinter</li>
+      </recipeUsers>
+      <researchPrerequisite>DMSE_IntegratedCircuits</researchPrerequisite>
+      <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
+    </recipeMaker>
+    <comps>
+      <!-- 允許玩家為每枚攔截彈設定自訂名稱；重命名按鈕顯示於 ITab_MissileInventory 各列右側。 -->
+      <li Class="DMSE.CompProperties_Renameable" />
+      <!-- 未存放於庇護建築內時緩慢扣耐久；歸零後摧毀。5 HP/日 ≒ 20 日（100 HP）。
+           存入 SAM 發射器或導彈儲存架即視為受庇護、停止劣化。 -->
+      <li Class="DMSE.CompProperties_DurabilityDecay">
+        <hitPointsPerDay>5</hitPointsPerDay>
+        <destroyWhenDepleted>true</destroyWhenDepleted>
+        <shelterBuildings>
+          <li>DMSE_MissileRack</li>
+          <li>DMSE_Building_LightMissileLauncher</li>
+        </shelterBuildings>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ==================== 輕型導彈（彈體物品）====================
+       第二階可定制導彈；比巡弋飛彈輕便廉價，配備三槽（Warhead/Guidance/Payload）。
+       未存入庇護建築時緩慢劣化；ITab_MissileAssembly 供玩家配置各槽。 -->
+  <ThingDef ParentName="DMSE_ResourceBase">
+    <defName>DMSE_LightMissile</defName>
+    <label>light missile</label>
+    <description>A compact single-stage missile with customisable warhead, guidance, and payload slots. Faster and longer-ranged than a loitering munition, but lighter and cheaper than a full cruise missile.</description>
+    <descriptionHyperlinks>
+      <ThingDef>DMSE_Building_LightMissileLauncher</ThingDef>
+      <ThingDef>DMSE_Building_LightMissileVLS</ThingDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Things/Missile/Grison/skyFaller</texPath>
+      <drawSize>(2.5,2.5)</drawSize>
+      <drawOffset>(0,0,1)</drawOffset>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>1</stackLimit>
+    <tickerType>Rare</tickerType>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <MarketValue>1200</MarketValue>
+      <Mass>200</Mass>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>10.0</DeteriorationRate>
+    </statBases>
+    <costList>
+      <Chemfuel>150</Chemfuel>
+      <Steel>80</Steel>
+      <DMSE_TantastenAlloy>8</DMSE_TantastenAlloy>
+      <ComponentStamped>6</ComponentStamped>
+    </costList>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <effectWorking>Smith</effectWorking>
+      <soundWorking>Recipe_Smith</soundWorking>
+      <recipeUsers Inherit="False">
+        <li>DMS_TableMachinePrinter</li>
+      </recipeUsers>
+      <researchPrerequisite>DMSE_Ballistics</researchPrerequisite>
+      <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
+    </recipeMaker>
+    <comps>
+      <li Class="DMSE.CompProperties_Renameable" />
+      <li Class="DMSE.CompProperties_MissileConfig">
+        <defaultBody>DMSE_MissileBody_Light</defaultBody>
+      </li>
+      <li Class="DMSE.CompProperties_DurabilityDecay">
+        <hitPointsPerDay>5</hitPointsPerDay>
+        <destroyWhenDepleted>true</destroyWhenDepleted>
+        <shelterBuildings>
+          <li>DMSE_Building_LightMissileLauncher</li>
+          <li>DMSE_Building_LightMissileVLS</li>
+        </shelterBuildings>
+      </li>
+    </comps>
+    <inspectorTabs>
+      <li>DMSE.ITab_MissileAssembly</li>
+    </inspectorTabs>
+  </ThingDef>
+
+</Defs>

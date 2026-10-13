@@ -6,21 +6,12 @@
     <order>2400</order>
   </TerrainAffordanceDef>
 
-  <!-- 只有本模組的平台地形具備；平台船體（DMSE_PlatformHull）以此限定只能蓋在平台上 -->
-  <TerrainAffordanceDef>
-    <defName>DMSE_Platform</defName>
-    <label>platform</label>
-    <order>2410</order>
-  </TerrainAffordanceDef>
-
-  <!-- 不依賴 Orbital Platforms 模組也能建造：太空虛空的 VoidSpace 地形承載力由 Patches/Patch_OrbitalPlatform.xml 補上。
-       平台是基底地形（非 foundation、非 layerable），這樣 spaceEdgeGraphicData 的邊緣貼圖才會繪製
-       （原版 SectionLayer_TerrainEdges 以 BaseTerrainAt 判斷）。 -->
-  <TerrainDef Name="DMSE_PlatformBase" Abstract="True">
+  <TerrainDef Name="PlatformBase" Abstract="True">
     <renderPrecedence>240</renderPrecedence>
     <preventCraters>true</preventCraters>
     <layerable>false</layerable>
     <fertility>0</fertility>
+    <designationCategory />
     <canEverTerraform>false</canEverTerraform>
     <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionSoil</pollutionOverlayTexturePath>
     <pollutionColor>(1, 1, 1, 0.43)</pollutionColor>
@@ -41,15 +32,9 @@
 
   <!--Adicional tags-->
   <designationCategory>Odyssey</designationCategory>
-    <!-- 可用「拆除平台」指令拆回虛空，返還 costList 的一半 -->
-    <modExtensions>
-      <li Class="DMSE.RemovablePlatformExtension">
-        <refundFraction>0.5</refundFraction>
-      </li>
-    </modExtensions>
   </TerrainDef>
   
-  <TerrainDef ParentName="DMSE_PlatformBase">
+  <TerrainDef ParentName="PlatformBase" MayRequire="rashomcree.odyssey.orbitalplatforms">
     <defName>DMS_OrbitalPlatform</defName>
     <label>orbital platform</label>
     <texturePath>terrain/DMS_Orbitalplatform/OrbitalPlatform</texturePath>
@@ -74,7 +59,7 @@
     </spaceEdgeGraphicData>
 	  <description>A solid orbital surface that allows walking in outer space. You can build all kinds of structures on it.</description>
     <researchPrerequisites>
-      <li>DMSE_OrbitalDynamics</li>
+      <li>BasicGravtech</li>
     </researchPrerequisites>
     <costList>
       <Steel>25</Steel>
@@ -89,55 +74,7 @@
       <li>Heavy</li>
       <li>Walkable</li>
       <li>VoidSpace</li>
-      <li>DMSE_Platform</li>
-      <!-- Orbital Platforms 模組的「太空」地形需要 Platform 承載力，才能蓋在平台上把它拆掉 -->
-      <li MayRequire="rashomcree.odyssey.orbitalplatforms">Platform</li>
-    </affordances>
-    <terrainAffordanceNeeded>VoidSpace</terrainAffordanceNeeded>
-  </TerrainDef>
-
-  <!-- 輕型平台：便宜、施工快，但只承載 Light / Medium（不能蓋結構樁、轉移引擎等 Heavy 建築）。主地板貼圖目前為白色佔位 -->
-  <TerrainDef ParentName="DMSE_PlatformBase">
-    <defName>DMS_LightPlatform</defName>
-    <label>light platform</label>
-    <texturePath>terrain/DMS_LightPlatform/LightPlatform</texturePath>
-    <spaceEdgeGraphicData Inherit="False">
-      <OShapeTexPath>terrain/DMS_LightPlatform/borderinside/OrbitalPlatformBorderInside_OShape</OShapeTexPath>
-      <UShapeTexPath>terrain/DMS_LightPlatform/borderinside/OrbitalPlatformBorderInside_UShape</UShapeTexPath>
-      <CornerInnerTexPath>terrain/DMS_LightPlatform/borderinside/OrbitalPlatformBorderInside_CornerInner</CornerInnerTexPath>
-      <CornerOuterTexPath>terrain/DMS_LightPlatform/borderinside/OrbitalPlatformBorderInside_CornerOuter</CornerOuterTexPath>
-      <FlatTexPath>terrain/DMS_LightPlatform/borderinside/OrbitalPlatformBorderInside_Flat</FlatTexPath>
-
-      <LoopLeftTexPath>terrain/DMS_LightPlatform/OrbitalPlatformEdge_Left</LoopLeftTexPath>
-      <LoopRightTexPath>terrain/DMS_LightPlatform/OrbitalPlatformEdge_Right</LoopRightTexPath>
-      <LoopSingleTexPath>terrain/DMS_LightPlatform/OrbitalPlatformEdge_Single</LoopSingleTexPath>
-
-      <LoopTexPaths>
-        <li>terrain/DMS_LightPlatform/loop/OrbitalPlatformEdge_Loop1</li>
-        <li>terrain/DMS_LightPlatform/loop/OrbitalPlatformEdge_Loop2</li>
-        <li>terrain/DMS_LightPlatform/loop/OrbitalPlatformEdge_Loop3</li>
-        <li>terrain/DMS_LightPlatform/loop/OrbitalPlatformEdge_Loop4</li>
-        <li>terrain/DMS_LightPlatform/loop/OrbitalPlatformEdge_Loop5</li>
-      </LoopTexPaths>
-    </spaceEdgeGraphicData>
-    <description>A lightweight lattice deck for open space. Cheap and quick to lay, but only supports light and medium structures.</description>
-    <researchPrerequisites>
-      <li>DMSE_OrbitalDynamics</li>
-    </researchPrerequisites>
-    <costList>
-      <Steel>10</Steel>
-    </costList>
-    <statBases>
-      <WorkToBuild>3000</WorkToBuild>
-      <MarketValue>0</MarketValue>
-    </statBases>
-    <affordances Inherit="False">
-      <li>Light</li>
-      <li>Medium</li>
-      <li>Walkable</li>
-      <li>VoidSpace</li>
-      <li>DMSE_Platform</li>
-      <li MayRequire="rashomcree.odyssey.orbitalplatforms">Platform</li>
+      <li>Platform</li>
     </affordances>
     <terrainAffordanceNeeded>VoidSpace</terrainAffordanceNeeded>
   </TerrainDef>

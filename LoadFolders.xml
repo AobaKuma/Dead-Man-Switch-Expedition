@@ -1,28 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <loadFolders>
+	<!--
+		1.6 凍結在 Steam 創意工坊版（0.35，2026-04-20 發佈；開發版封存於標籤 dmse-1.6-dev-sealed）。
+		1.6/Shared 是該版根目錄的 Textures/ 與 Languages/，緊接在 / 之後載入，優先順序與 Steam 版相同；其餘與 Steam 版完全一致。
+		1.6 is frozen at the Steam Workshop release (0.35, published 2026-04-20; the development state is tagged dmse-1.6-dev-sealed).
+		1.6/Shared holds that release's root Textures/ and Languages/ and loads right after /, so priority matches the Steam version.
+	-->
 	<v1.6>
 		<li>/</li>
+		<li>1.6/Shared</li>
 		<li>1.6</li>
 		<li IfModActive="CETeam.CombatExtended,CETeam.CombatExtended_steam">1.6/CE</li>
 		<li IfModActive="BreadMo.Cinders">1.6/Cinders</li>
 		<li IfModActive="vanillaexpanded.gravship,vanillaexpanded.gravship_steam">1.6/GravshipExpanded</li>
-		<li IfModActive="vanillaexpanded.gravship,vanillaexpanded.gravship_steam" IfModNotActive="CETeam.CombatExtended,CETeam.CombatExtended_steam">1.6/GravshipExpanded/PointDefence</li>
 	</v1.6>
 	<!--
-		1.7 沿用 1.6 的 Defs / Patches；1.7 與 1.7/GravshipExpanded 只放 .NET 10 組件，列在對應的 1.6 資料夾之後，
-		相同相對路徑的 Assemblies/*.dll 會蓋掉 1.6 的 .NET Framework 版本。
-		Combat Extended 尚無 1.7 版，1.6/CE 與依賴它的 1.6/Cinders（CE 彈藥）暫不載入。
-		1.7 reuses 1.6's Defs / Patches. 1.7 and 1.7/GravshipExpanded only hold .NET 10 assemblies; listed after their 1.6
-		counterparts, each Assemblies/*.dll replaces the .NET Framework build at the same relative path.
-		Combat Extended has no 1.7 release yet, so 1.6/CE and 1.6/Cinders (CE ammo, depends on 1.6/CE) are not loaded.
+		1.7 = 開發版：所有內容（含 Textures/、Languages/ 與 .NET 10 組件）都在 1.7/，不讀 1.6；根目錄 / 只提供 Sounds/。
+		Combat Extended 尚無 1.7 版，1.7/CE 與依賴它的 1.7/Cinders（CE 彈藥）暫不載入。
+		1.7 = development version: everything (including Textures/, Languages/ and the .NET 10 assemblies) lives in 1.7/ and 1.6 is not read;
+		/ only provides Sounds/. Combat Extended has no 1.7 release yet, so 1.7/CE and 1.7/Cinders (CE ammo) are not loaded.
 	-->
 	<v1.7>
 		<li>/</li>
-		<li>1.6</li>
 		<li>1.7</li>
-		<li IfModActive="vanillaexpanded.gravship,vanillaexpanded.gravship_steam">1.6/GravshipExpanded</li>
 		<li IfModActive="vanillaexpanded.gravship,vanillaexpanded.gravship_steam">1.7/GravshipExpanded</li>
-		<li IfModActive="vanillaexpanded.gravship,vanillaexpanded.gravship_steam" IfModNotActive="CETeam.CombatExtended,CETeam.CombatExtended_steam">1.6/GravshipExpanded/PointDefence</li>
+		<li IfModActive="vanillaexpanded.gravship,vanillaexpanded.gravship_steam" IfModNotActive="CETeam.CombatExtended,CETeam.CombatExtended_steam">1.7/GravshipExpanded/PointDefence</li>
 	</v1.7>
 </loadFolders>

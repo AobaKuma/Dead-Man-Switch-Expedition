@@ -1,24 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <!--
-    與 DMSE.csproj 相同，同一份原始碼建置兩個遊戲版本：
-      net48    → RimWorld 1.6 → 1.6/GravshipExpanded/Assemblies（VGE 以 .NET Framework 4.8 建置，net472 無法參考）
-      net10.0  → RimWorld 1.7 → 1.7/GravshipExpanded/Assemblies（參考 1.7/Assemblies/DMSE.dll）
-    VGE / VEF 目前只有 1.6 版（.NET Framework），兩個目標都參考同一份；1.7 下由遊戲的相容層載入。
+    與 DMSE.csproj 相同，只建置 RimWorld 1.7 → 1.7/GravshipExpanded/Assemblies（參考 1.7/Assemblies/DMSE.dll）。
+    1.6 凍結在 Steam 創意工坊版，1.6/GravshipExpanded/Assemblies/DMSE_VGE_Patch.dll 不再由本專案產生。
+    VGE / VEF 目前只有 1.6 版（.NET Framework），1.7 下由遊戲的相容層載入。
     VGE 預設找 <RimWorld>/Mods/VanillaGravshipExpanded，找不到時改用 Steam 創意工坊（3609835606）；
     裝在別處時以 -p:VGEAssemblies=<VGE 的 1.6\Assemblies 資料夾>\ 覆寫。
-    Like DMSE.csproj, one source tree builds both game versions:
-      net48    → RimWorld 1.6 → 1.6/GravshipExpanded/Assemblies (VGE is built for .NET Framework 4.8, so net472 cannot reference it)
-      net10.0  → RimWorld 1.7 → 1.7/GravshipExpanded/Assemblies (references 1.7/Assemblies/DMSE.dll)
-    VGE / VEF only ship 1.6 (.NET Framework) builds so far; both targets reference them, and 1.7 loads them through its compatibility layer.
+    Like DMSE.csproj, builds RimWorld 1.7 only → 1.7/GravshipExpanded/Assemblies (references 1.7/Assemblies/DMSE.dll).
+    1.6 is frozen at the Steam Workshop release; 1.6/GravshipExpanded/Assemblies/DMSE_VGE_Patch.dll is no longer produced here.
+    VGE / VEF only ship 1.6 (.NET Framework) builds so far, which 1.7 loads through its compatibility layer.
     VGE is looked up in <RimWorld>/Mods/VanillaGravshipExpanded, then in the Steam Workshop folder (3609835606);
     override with -p:VGEAssemblies=<VGE's 1.6\Assemblies folder>\ when it lives elsewhere.
   -->
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFrameworks>net48;net10.0</TargetFrameworks>
+    <TargetFramework>net10.0</TargetFramework>
     <RootNamespace>DMSE.VGE</RootNamespace>
     <AssemblyName>DMSE_VGE_Patch</AssemblyName>
+    <OutputPath>$(MSBuildThisFileDirectory)..\..\1.7\GravshipExpanded\Assemblies\</OutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <LangVersion>10.0</LangVersion>
@@ -28,31 +27,14 @@
     <!-- Properties/AssemblyInfo.cs 已提供組件屬性。Properties/AssemblyInfo.cs already supplies the assembly attributes. -->
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DebugType>none</DebugType>
-    <!-- 中間檔依目標框架分開，避免兩個目標平行建置時互相覆寫。Keep intermediates per framework so the parallel builds do not collide. -->
-    <IntermediateOutputPath>$(BaseIntermediateOutputPath)$(Configuration)\$(TargetFramework)\</IntermediateOutputPath>
+    <DefineConstants>$(DefineConstants);RW_1_7</DefineConstants>
+    <GenerateDependencyFile>false</GenerateDependencyFile>
     <RimWorldDir Condition="'$(RimWorldDir)' == ''">$(MSBuildThisFileDirectory)..\..\..\..\</RimWorldDir>
     <VGEAssemblies Condition="'$(VGEAssemblies)' == '' And Exists('$(RimWorldDir)Mods\VanillaGravshipExpanded\1.6\Assemblies\VanillaGravshipExpanded.dll')">$(RimWorldDir)Mods\VanillaGravshipExpanded\1.6\Assemblies\</VGEAssemblies>
     <VGEAssemblies Condition="'$(VGEAssemblies)' == ''">$(RimWorldDir)..\..\workshop\content\294100\3609835606\1.6\Assemblies\</VGEAssemblies>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net48'">
-    <OutputPath>$(MSBuildThisFileDirectory)..\..\1.6\GravshipExpanded\Assemblies\</OutputPath>
-    <DMSEAssemblies>$(MSBuildThisFileDirectory)..\..\1.6\Assemblies\</DMSEAssemblies>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net10.0'">
-    <OutputPath>$(MSBuildThisFileDirectory)..\..\1.7\GravshipExpanded\Assemblies\</OutputPath>
-    <DMSEAssemblies>$(MSBuildThisFileDirectory)..\..\1.7\Assemblies\</DMSEAssemblies>
-    <DefineConstants>$(DefineConstants);RW_1_7</DefineConstants>
-    <GenerateDependencyFile>false</GenerateDependencyFile>
-  </PropertyGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
-    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4871" />
-    <PackageReference Include="Lib.Harmony" Version="2.4.2" ExcludeAssets="runtime" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net10.0'">
+  <ItemGroup>
     <PackageReference Include="Lib.Harmony" Version="3.0.0-rc.2" ExcludeAssets="runtime" />
     <Reference Include="Assembly-CSharp">
       <HintPath>$(RimWorldDir)Assembly-CSharp.dll</HintPath>
@@ -66,11 +48,8 @@
       <HintPath>$(RimWorldDir)Waylith.dll</HintPath>
       <Private>False</Private>
     </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="DMSE">
-      <HintPath>$(DMSEAssemblies)DMSE.dll</HintPath>
+      <HintPath>$(MSBuildThisFileDirectory)..\..\1.7\Assemblies\DMSE.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="VanillaGravshipExpanded">

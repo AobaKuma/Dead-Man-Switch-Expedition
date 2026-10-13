@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_PhaseArrayRadar</defName>
+    <label>phased-array radar</label>
+    <!-- 一種用於預警與火控瞄準的多用途雷達，通常被安裝於艦船或軍事基地追蹤周圍空間內的活動物體。能夠有效識別如dropPod等亞軌道飛行物體的軌跡並提前預測其下落位置，然而十分消耗電力。 -->
+    <description>A multi-purpose radar used for early warning and fire control targeting, typically installed on ships or military bases to track moving objects in the surrounding space. It can effectively identify the trajectories of suborbital objects such as droppods and predict their descent locations in advance; however, it is extremely power-intensive.</description>
+    <graphicData>
+      <texPath>Things/Building/PhaseArrayRadar</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(6,6)</drawSize>
+      <drawOffset>(0,0,0)</drawOffset>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <rotatable>false</rotatable>
+    <passability>PassThroughOnly</passability>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.3</staticSunShadowHeight>
+    <fillPercent>0.9</fillPercent>
+    <canOverlapZones>false</canOverlapZones>
+    <pathCost>42</pathCost>
+    <tickerType>Normal</tickerType>
+    <statBases>
+      <MaxHitPoints>500</MaxHitPoints>
+      <WorkToBuild>30000</WorkToBuild>
+      <!-- <Mass>500</Mass> -->
+      <Flammability>0</Flammability>
+    </statBases>
+    <size>(3,3)</size>
+    <costList>
+      <DMSE_TantastenAlloy>150</DMSE_TantastenAlloy>
+      <DMSE_Graphene>100</DMSE_Graphene>
+      <ComponentSpacer>12</ComponentSpacer>
+      <DMSE_Nitrogallium>10</DMSE_Nitrogallium>
+    </costList>
+    <building>
+      <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+      <buildingTags>
+        <!-- 重要 -->
+        <li>DMSE_InterceptRadar</li>
+      </buildingTags>
+    </building>
+    <researchPrerequisites>
+      <li>DMSE_Aerospace</li>
+    </researchPrerequisites>
+    <designationCategory>DMS_Category</designationCategory>
+    <!-- <minifiedDef>MinifiedThing</minifiedDef> -->
+    <constructionSkillPrerequisite>10</constructionSkillPrerequisite>
+    <!-- <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories> -->
+    <comps>
+      <li Class="CompProperties_Breakdownable" />
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>5000</basePowerConsumption>
+        <transmitsPower>true</transmitsPower>
+      </li>
+      <!-- 複合功能示範：同一棟雷達同時搭載「搜索雷達」與「火控雷達」兩個 ThingComp。 -->
+      <li Class="DMSE.CompProperties_SearchRadar">
+        <searchDistance>200</searchDistance>
+        <powerLevel>2</powerLevel>
+        <antiStealthLevel>2</antiStealthLevel>
+        <ticksPerDistance>4</ticksPerDistance>
+      </li>
+      <li Class="DMSE.CompProperties_FireControlRadar">
+        <maxTargets>2</maxTargets>
+        <powerLevel>2</powerLevel>
+        <guidanceAccuracyTime>600</guidanceAccuracyTime>
+        <maxRangeTicks>6000</maxRangeTicks>
+        <maxHitChance>0.9</maxHitChance>
+        <stealthMissFactor>0.5</stealthMissFactor>
+        <lockOnTicks>120</lockOnTicks>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>PlaceWorker_BandNode</li>
+    </placeWorkers>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_StealthDevice</defName>
+    <label>signal stealth device</label>
+    <!-- A massive plasma-field shield generator that suppresses detectable signals and directionally cancels radar waves, preventing external forces from locating the asteroid base hosting the device. Note that higher internal life-signal density increases power draw, and after each successful radar denial the device requires one day to cool down and recharge. -->
+    <description>A massive plasma field generator, widely used by the colonial fleet in automated orbital facilities, effectively shielding against internal life signals, effectively cloaking the device in space and rendering it invisible to active radar.\n\nInternal life signals increase the device's power consumption, requiring a day to cool and recharge after successful shielding.</description>
+    <graphicData>
+      <texPath>Things/Building/StealthDevice/building</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(6,6)</drawSize>
+      <drawOffset>(0,0,0)</drawOffset>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <rotatable>false</rotatable>
+    <passability>PassThroughOnly</passability>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.3</staticSunShadowHeight>
+    <fillPercent>0.9</fillPercent>
+    <canOverlapZones>false</canOverlapZones>
+    <pathCost>42</pathCost>
+    <tickerType>Normal</tickerType>
+    <statBases>
+      <MaxHitPoints>750</MaxHitPoints>
+      <WorkToBuild>30000</WorkToBuild>
+      <Mass>500</Mass>
+      <Flammability>0.25</Flammability>
+    </statBases>
+    <size>(5,5)</size>
+    <costList>
+      <DMSE_TantastenAlloy>100</DMSE_TantastenAlloy>
+      <Tungsteel>300</Tungsteel>
+      <DMSE_Graphene>75</DMSE_Graphene>
+      <ComponentStamped>20</ComponentStamped>
+      <ComponentSpacer>10</ComponentSpacer>
+      <ComponentTransmitter>8</ComponentTransmitter>
+    </costList>
+    <building>
+      <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+    </building>
+    <researchPrerequisites>
+      <li>DMSE_Aerospace</li>
+    </researchPrerequisites>
+    <designationCategory>DMS_Category</designationCategory>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
+    <comps>
+      <li Class="CompProperties_Breakdownable" />
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>1000</basePowerConsumption>
+        <transmitsPower>true</transmitsPower>
+      </li>
+      <li Class="Fortified.CompProperties_ShieldingDevice">
+        <planetLayerWhitelist>
+          <li>Orbit</li>
+        </planetLayerWhitelist>
+        <incidentsWhitelist>
+          <li>Infestation</li>
+          <li>DeepDrillInfestation</li>
+          <li>ManhunterPack</li>
+          <li>AnimalInsanityMass</li>
+          <!-- Anomaly -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">ShamblerSwarm</li>    <!-- ShamblerSwarm -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">ShamblerSwarmAnimals</li>    <!-- ShamblerSwarmAnimals -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">SmallShamblerSwarm</li>    <!-- SmallShamblerSwarm -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">SightstealerSwarm</li>    <!-- SightstealerSwarm -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">ShamblerAssault</li>    <!-- ShamblerAssault -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">GhoulAttack</li>    <!-- GhoulAttack -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">Revenant</li>    <!-- Revenant -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">SightstealerArrival</li>    <!-- SightstealerArrival -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">FleshbeastAttack</li>    <!-- FleshbeastAttack -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">FrenziedAnimals</li>    <!-- FrenziedAnimals -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">GorehulkAssault</li>    <!-- GorehulkAssault -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">DevourerAssault</li>    <!-- DevourerAssault -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">DevourerWaterAssault</li><!-- DevourerWaterAssault -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">ChimeraAssault</li>    <!-- ChimeraAssault -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">Nociosphere</li>    <!-- Nociosphere -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">PitGate</li>    <!-- PitGate -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">FleshmassHeart</li>    <!-- FleshmassHeart -->
+          <!-- Alpha Animals -->
+          <li MayRequire="sarg.alphaanimals">AA_IncidentStalkingArcticLion</li>
+          <li MayRequire="sarg.alphaanimals">AA_IncidentBlizzariskClutchMother</li>
+          <li MayRequire="sarg.alphaanimals">AA_IncidentDunealiskClutchMother</li>
+          <li MayRequire="sarg.alphaanimals">AA_IncidentFeraliskClutchMother</li>
+          <li MayRequire="sarg.alphaanimals">AA_IncidentSummitCrab</li>
+          <li MayRequire="sarg.alphaanimals">AA_CactipineDropPod</li>
+          <li MayRequire="sarg.alphaanimals">AA_Incident_BlackHive</li>
+          <li MayRequire="sarg.alphaanimals">AA_IncidentFungalHusk</li>
+          <!--fxz.ratkinanomaly.update-->
+          <li MayRequire="fxz.ratkinanomaly.update">RA_ObsessionArrival</li>    <!-- RA_ObsessionArrival -->
+          <li MayRequire="fxz.ratkinanomaly.update">RA_FruiterCome</li>    <!-- RA_ObsessionArrival -->
+          <!-- Vanilla Genetics Expanded -->
+          <li MayRequire="VanillaExpanded.VGeneticsE">GR_ManhunterMonstrosities</li>  <!-- roaming monstrosities -->
+          <!-- Vanilla Events Expanded -->
+          <li MayRequire="VanillaExpanded.VEE">ManhunterPackPurple</li>  <!-- manhunter pack -->
+          <li MayRequire="VanillaExpanded.VEE">AnimalInsanityMassPurple</li>  <!-- mass animal insanity -->
+
+          <!-- Royalty -->
+          <li MayRequire="Ludeon.RimWorld.Royalty">ProblemCauser</li>    <!-- problem causer -->
+          <!-- Anomaly -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">PsychicRitualSiege</li>    <!-- PsychicRitualSiege -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">HateChanters</li>    <!-- HateChanters -->
+          <!-- [SR]Raid Extension -->
+          <li MayRequire="SR.ModRimworld.RaidExtension">SrPoaching</li>    <!-- Poaching -->
+          <li MayRequire="SR.ModRimworld.RaidExtension">SrLogging</li>    <!-- Logging -->
+          <li MayRequire="SR.ModRimworld.RaidExtension">SrHositleCaravanPassing</li>    <!-- Hositle Caravan Passing By -->
+          <li MayRequire="SR.ModRimworld.RaidExtension">SrHositleTraveler</li>    <!-- Lost Raider -->
+          <!-- [SR]Factional War -->
+          <li MayRequire="SR.ModRimworld.FactionalWar">SrFactionWar</li>    <!-- Faction Assault -->
+          <li MayRequire="SR.ModRimworld.FactionalWar">SrFactionWarShellingSiteGenerate</li>    <!-- Faction Bombardment -->
+          <li MayRequire="SR.ModRimworld.FactionalWar">SrFactionWarContentionSiteGenerate</li>    <!-- Faction Contention -->
+          <li MayRequire="SR.ModRimworld.FactionalWar">SrFactionWarTempCampSiteGenerate</li>    <!-- Faction Defense -->
+          <!-- Vanilla Factions Expanded - Vikings -->
+          <li MayRequire="OskarPotocki.VFE.Vikings">VFEV_SlaverRaid</li>    <!-- raid (slavers) -->
+          <li MayRequire="OskarPotocki.VFE.Vikings">VFEV_PillageRaid</li>    <!-- raid (pillage) -->
+          <!-- Vanilla Events Expanded -->
+          <li MayRequire="VanillaExpanded.VEE">RaidEnemyPurple</li>  <!-- enemy raid ice age -->
+
+          <!-- Vanilla -->
+          <li>RaidEnemy</li>
+          <li>PsychicEmanatorShipPartCrash</li>
+          <li>DefoliatorShipPartCrash</li>
+          <!-- Anomaly -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">WarpedObelisk_Duplicator</li>    <!-- WarpedObelisk_Duplicator -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">WarpedObelisk_Abductor</li>    <!-- WarpedObelisk_Abductor -->
+          <li MayRequire="Ludeon.RimWorld.Anomaly">WarpedObelisk_Mutator</li>    <!-- WarpedObelisk_Mutator -->
+          <!--fxz.ratkinanomaly.update-->
+          <li MayRequire="fxz.ratkinanomaly.update">RA_PokerSoldierArrival</li>    <!-- RA_PokerSoldierArrival -->
+          <li MayRequire="fxz.ratkinanomaly.update">RA_DarkKnightArrivalPre</li>    <!-- RA_DarkKnightArrivalPre -->
+          <li MayRequire="fxz.ratkinanomaly.update">RA_DarkKnightArrivalPre_Commander</li>    <!-- RA_DarkKnightArrivalPre_Commander -->
+          <li MayRequire="fxz.ratkinanomaly.update">RA_DarkKnightArrival</li>    <!-- RA_DarkKnightArrival -->
+          <li MayRequire="fxz.ratkinanomaly.update">RA_FleshbeastAttack</li>    <!-- RA_FleshbeastAttack -->
+          <li MayRequire="fxz.ratkinanomaly.update">RA_MetalBeanAppear</li>    <!-- RA_MetalBeanAppear -->
+          <li MayRequire="fxz.ratkinanomaly.update">RA_Curse</li>    <!-- RA_MetalBeanAppear -->
+        </incidentsWhitelist>
+        <coolDownPerRaidPoint>24</coolDownPerRaidPoint>
+        <powerCostPerColonist>1000</powerCostPerColonist>
+        <activeEffecter>DMSE_Device_Active</activeEffecter>
+        <triggerEffecter>DMSE_Device_Trigger</triggerEffecter>
+        <cooldownEffecter>DMSE_Device_Cooling</cooldownEffecter>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>PlaceWorker_BandNode</li>
+    </placeWorkers>
+  </ThingDef>
+
+  <EffecterDef>
+    <defName>DMSE_Device_Trigger</defName>
+    <children>
+      <li>
+        <subEffecterClass>SubEffecter_SprayerTriggered</subEffecterClass>
+        <fleckDef>MicroSparksFast</fleckDef>
+        <burstCount>12~25</burstCount>
+        <spawnLocType>OnSource</spawnLocType>
+        <scale>1~2</scale>
+        <positionRadius>2</positionRadius>
+        <rotationRate>-10~10</rotationRate>
+        <angle>-180~180</angle>
+        <speed>.1~.2</speed>
+      </li>
+      <li>
+        <subEffecterClass>SubEffecter_SprayerTriggered</subEffecterClass>
+        <fleckDef>MicroSparks</fleckDef>
+        <burstCount>12~25</burstCount>
+        <spawnLocType>OnSource</spawnLocType>
+        <scale>2~3</scale>
+        <positionRadius>3</positionRadius>
+        <rotationRate>-10~10</rotationRate>
+        <angle>-180~180</angle>
+        <speed>.1~.2</speed>
+      </li>
+    </children>
+  </EffecterDef>
+
+  <!-- Active -->
+  <EffecterDef>
+    <defName>DMSE_Device_Active</defName>
+    <children>
+      <li>
+        <subEffecterClass>SubEffecter_SprayerContinuous</subEffecterClass>
+        <fleckDef>MicroSparks</fleckDef>
+        <burstCount>1~2</burstCount>
+        <spawnLocType>OnSource</spawnLocType>
+        <scale>1~3</scale>
+        <positionRadius>2</positionRadius>
+        <rotationRate>0</rotationRate>
+        <angle>-180~180</angle>
+        <speed>.01~.1</speed>
+      </li>
+    </children>
+  </EffecterDef>
+
+  <!-- Cooling -->
+  <EffecterDef>
+    <defName>DMSE_Device_Cooling</defName>
+    <children>
+      <li>
+        <subEffecterClass>SubEffecter_SprayerContinuous</subEffecterClass>
+        <fleckDef>Smoke</fleckDef>
+        <burstCount>2~5</burstCount>
+        <spawnLocType>OnSource</spawnLocType>
+        <scale>1~2</scale>
+        <positionRadius>2</positionRadius>
+        <rotationRate>-5~5</rotationRate>
+        <speed>.1~.2</speed>
+      </li>
+    </children>
+  </EffecterDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_SolarShield</defName>
+    <label>solar shielding device</label>
+    <description>A massive magnetic field generator, widely used by the colonial fleet in automated orbital facilities, effectively shielding against incoming solar radiation, effectively protecting area from solar flares.</description>
+    <graphicData>
+      <texPath>Things/Building/DMSE_SolarShield</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(6,6)</drawSize>
+      <drawOffset>(0,0,0)</drawOffset>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <rotatable>false</rotatable>
+    <passability>PassThroughOnly</passability>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.3</staticSunShadowHeight>
+    <fillPercent>0.9</fillPercent>
+    <canOverlapZones>false</canOverlapZones>
+    <pathCost>42</pathCost>
+    <tickerType>Normal</tickerType>
+    <statBases>
+      <MaxHitPoints>750</MaxHitPoints>
+      <WorkToBuild>30000</WorkToBuild>
+      <Mass>500</Mass>
+      <Flammability>0.25</Flammability>
+    </statBases>
+    <size>(5,5)</size>
+    <costList>
+      <DMSE_TantastenAlloy>100</DMSE_TantastenAlloy>
+      <Tungsteel>200</Tungsteel>
+      <DMSE_Graphene>100</DMSE_Graphene>
+      <ComponentStamped>20</ComponentStamped>
+      <ComponentSpacer>4</ComponentSpacer>
+      <ComponentControlChip>2</ComponentControlChip>
+      <ComponentTransmitter>4</ComponentTransmitter>
+    </costList>
+    <building>
+      <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+    </building>
+    <researchPrerequisites>
+      <li>DMSE_Aerospace</li>
+    </researchPrerequisites>
+    <designationCategory>DMS_Category</designationCategory>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
+    <comps>
+      <li Class="CompProperties_Breakdownable" />
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>5000</basePowerConsumption>
+        <transmitsPower>true</transmitsPower>
+      </li>
+      <li Class="Fortified.CompProperties_CausesGameConditionAdjustable">
+        <conditionDef>DMSE_SolarShield</conditionDef>
+        <worldRange>3</worldRange>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>PlaceWorker_BandNode</li>
+    </placeWorkers>
+  </ThingDef>
+
+  <GameConditionDef>
+    <defName>DMSE_SolarShield</defName>
+    <conditionClass>GameCondition</conditionClass>
+    <label>solar radiation shield</label>
+    <description>A shielding device protects this area from solar flares.</description>
+    <canBePermanent>true</canBePermanent>
+    <allowUnderground>false</allowUnderground>
+    <natural>false</natural>
+  </GameConditionDef>
+  
+</Defs>

@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- 轉移飛行重構（docs/CelestialTransfer_轉移飛行重構.md） -->
+
+  <!-- 結構樁：界定可移動的船體範圍；與其他樁之間的鋼樑連結由玩家下令、殖民者施工（§3-1、§3-2） -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_StructuralPile</defName>
+    <label>large structural pile</label>
+    <description>A heavy load-bearing pile that marks out a section of ground. Piles joined by steel beams can be detached and moved together as one ship. Small structural piles can be built within its link range. It cannot be built on prebuilt orbital platform and its hull never includes it; use a structural anchor pile for that.</description>
+    <graphicData>
+      <texPath>Things/Building/StructuralPile/building</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(5,5)</drawSize>
+    </graphicData>
+    <size>(3,3)</size>
+    <rotatable>false</rotatable>
+    <passability>Impassable</passability>
+    <fillPercent>1</fillPercent>
+    <holdsRoof>true</holdsRoof>
+    <blockWind>true</blockWind>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.5</staticSunShadowHeight>
+    <canOverlapZones>false</canOverlapZones>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <statBases>
+      <MaxHitPoints>800</MaxHitPoints>
+      <WorkToBuild>4000</WorkToBuild>
+      <Flammability>0</Flammability>
+      <Beauty>-4</Beauty>
+      <Mass>150</Mass>
+    </statBases>
+    <costList>
+      <Steel>150</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </costList>
+    <building>
+      <destroySound>BuildingDestroyed_Metal_Big</destroySound>
+    </building>
+    <designationCategory>Odyssey</designationCategory>
+    <researchPrerequisites>
+      <li>DMSE_OrbitalDynamics</li>
+    </researchPrerequisites>
+    <placeWorkers>
+      <li>DMSE.PlaceWorker_StructuralPile</li>
+    </placeWorkers>
+    <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
+    <comps>
+      <li Class="DMSE.CompProperties_StructuralPile">
+        <coverageRadius>11</coverageRadius>
+        <linkRange>23</linkRange>
+        <circularRange>true</circularRange>
+        <!-- 原版軌道平台由結構固定樁負責 -->
+        <excludedTerrains>
+          <li>OrbitalPlatform</li>
+        </excludedTerrains>
+        <maxLinks>4</maxLinks>
+        <massWeight>4</massWeight>
+        <beamCostPerCell>
+          <Steel>5</Steel>
+        </beamCostPerCell>
+        <beamWorkPerCell>120</beamWorkPerCell>
+        <beamDismantleWorkFactor>0.5</beamDismantleWorkFactor>
+        <beamDismantleRefund>0.5</beamDismantleRefund>
+      </li>
+    </comps>
+    <uiOrder>2205</uiOrder>
+  </ThingDef>
+
+ <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_StructuralPileSmall</defName>
+    <label>small structural pile</label>
+    <description>A load-bearing pile that marks out a smaller section of ground. It has no link range of its own: it must be built within the link range of a large structural pile or a structural anchor pile, and cannot be joined to other small structural piles. It cannot be built on prebuilt orbital platform and its hull never includes it.</description>
+    <graphicData>
+      <texPath>Things/Building/StructuralPile/building_Small</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <size>(1,1)</size>
+    <rotatable>false</rotatable>
+    <passability>Impassable</passability>
+    <fillPercent>1</fillPercent>
+    <holdsRoof>true</holdsRoof>
+    <blockWind>true</blockWind>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.5</staticSunShadowHeight>
+    <canOverlapZones>false</canOverlapZones>
+    <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+    <statBases>
+      <MaxHitPoints>400</MaxHitPoints>
+      <WorkToBuild>2000</WorkToBuild>
+      <Flammability>0</Flammability>
+      <Beauty>-4</Beauty>
+      <Mass>50</Mass>
+    </statBases>
+    <costList>
+      <Steel>50</Steel>
+      <ComponentIndustrial>1</ComponentIndustrial>
+    </costList>
+    <building>
+      <destroySound>BuildingDestroyed_Metal_Big</destroySound>
+    </building>
+    <designationCategory>Odyssey</designationCategory>
+    <researchPrerequisites>
+      <li>DMSE_OrbitalDynamics</li>
+    </researchPrerequisites>
+    <placeWorkers>
+      <li>DMSE.PlaceWorker_StructuralPile</li>
+    </placeWorkers>
+    <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
+    <comps>
+      <li Class="DMSE.CompProperties_StructuralPile">
+        <coverageRadius>7</coverageRadius>
+        <!-- 不提供連結範圍：只能建在大樁的連結範圍內，也只能連到大樁 -->
+        <linkRange>0</linkRange>
+        <excludedTerrains>
+          <li>OrbitalPlatform</li>
+        </excludedTerrains>
+        <maxLinks>4</maxLinks>
+        <massWeight>1</massWeight>
+        <beamCostPerCell>
+          <Steel>5</Steel>
+        </beamCostPerCell>
+        <beamWorkPerCell>120</beamWorkPerCell>
+        <beamDismantleWorkFactor>0.5</beamDismantleWorkFactor>
+        <beamDismantleRefund>0.5</beamDismantleRefund>
+      </li>
+    </comps>
+    <uiOrder>2205</uiOrder>
+  </ThingDef>
+
+  <!-- 結構固定樁：只能建在太空地圖上；船體包含太空中所有實心地形，但不含本模組的平台（由大型/小型結構樁負責） -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_StructuralPileVacuum</defName>
+    <label>structural anchor pile</label>
+    <description>A large reinforced metal structure that keeps celestial structures such as asteroids and orbital platforms from collapsing on a massive scale under shifting loads while they are being moved. Each anchor pile secures the floor structure within its radius, and can be joined to anchor piles in neighboring ranges by steel framework to form a structural network that large thrusters can move. This allows asteroids and orbital platforms to be redeployed to new positions effectively and safely, or even used as a mobile base in orbit.\n\nCan only be built in space. It secures all solid ground there, such as asteroid vacstone, terraformed soil and prebuilt orbital platforms, but not constructed orbital or light platforms; those must be secured by large or small structural piles. Small structural piles can also be built within its link range.</description>
+    <graphicData>
+      <texPath>Things/Building/StructuralPile/building</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(5,5)</drawSize>
+    </graphicData>
+    <size>(3,3)</size>
+    <rotatable>false</rotatable>
+    <passability>Impassable</passability>
+    <fillPercent>1</fillPercent>
+    <holdsRoof>true</holdsRoof>
+    <blockWind>true</blockWind>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.5</staticSunShadowHeight>
+    <canOverlapZones>false</canOverlapZones>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <statBases>
+      <MaxHitPoints>800</MaxHitPoints>
+      <WorkToBuild>4000</WorkToBuild>
+      <Flammability>0</Flammability>
+      <Beauty>-4</Beauty>
+      <Mass>150</Mass>
+    </statBases>
+    <costList>
+      <Steel>150</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </costList>
+    <building>
+      <destroySound>BuildingDestroyed_Metal_Big</destroySound>
+    </building>
+    <designationCategory>Odyssey</designationCategory>
+    <researchPrerequisites>
+      <li>DMSE_OrbitalDynamics</li>
+    </researchPrerequisites>
+    <placeWorkers>
+      <li>DMSE.PlaceWorker_StructuralPile</li>
+    </placeWorkers>
+    <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
+    <comps>
+      <li Class="DMSE.CompProperties_StructuralPile">
+        <coverageRadius>23</coverageRadius>
+        <linkRange>49</linkRange>
+        <circularRange>true</circularRange>
+        <!-- 只能建在太空地圖上；船體涵蓋太空中所有實心地形（以基底地形判斷，含源壤古樹改造出的肥沃土壤等），
+             只排除本模組的平台——那些由大型/小型結構樁負責 -->
+        <spaceMapOnly>true</spaceMapOnly>
+        <excludedTerrains>
+          <li>DMS_OrbitalPlatform</li>
+          <li>DMS_LightPlatform</li>
+        </excludedTerrains>
+        <maxLinks>6</maxLinks>
+        <massWeight>8</massWeight>
+        <beamCostPerCell>
+          <Steel>5</Steel>
+        </beamCostPerCell>
+        <beamWorkPerCell>120</beamWorkPerCell>
+        <beamDismantleWorkFactor>0.5</beamDismantleWorkFactor>
+        <beamDismantleRefund>0.5</beamDismantleRefund>
+      </li>
+    </comps>
+    <uiOrder>2205</uiOrder>
+  </ThingDef>
+
+  <!-- 轉移引擎基底（§5-5）：Heavy 地形即可（不需逆重船底板），可旋轉，尾焰朝背面 -->
+  <ThingDef ParentName="BuildingBase" Name="DMSE_TransferEngineBase" Abstract="True">
+    <rotatable>true</rotatable>
+    <passability>Impassable</passability>
+    <fillPercent>1</fillPercent>
+    <holdsRoof>true</holdsRoof>
+    <blockWind>true</blockWind>
+    <blockLight>true</blockLight>
+    <canOverlapZones>false</canOverlapZones>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.5</staticSunShadowHeight>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <designationCategory>Odyssey</designationCategory>
+    <tickerType>Rare</tickerType>
+    <!-- 與原版推進器（GravshipComponentBase）相同：可打包搬運，舊存檔中已打包的熱核推進器也能重新安裝 -->
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
+    <genericMarketSellable>false</genericMarketSellable>
+    <placeWorkers>
+      <li>DMSE.PlaceWorker_TransferEngine</li>
+    </placeWorkers>
+    <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
+    <drawPlaceWorkersWhileInstallBlueprintSelected>true</drawPlaceWorkersWhileInstallBlueprintSelected>
+    <statBases>
+      <Flammability>0</Flammability>
+      <Beauty>-10</Beauty>
+    </statBases>
+    <building>
+      <isAirtight>true</isAirtight>
+      <isInert>true</isInert>
+      <destroySound>BuildingDestroyed_Metal_Big</destroySound>
+    </building>
+    <uiOrder>2200</uiOrder>
+  </ThingDef>
+
+  <!-- 化學轉移引擎（需求 5）：前期研究即可建造，中推力、燃耗基準 1.0 -->
+  <ThingDef ParentName="DMSE_TransferEngineBase">
+    <defName>DMSE_ChemicalTransferEngine</defName>
+    <label>aerospike engine</label>
+    <description>A chemfuel rocket engine for transfer flights. It only fires at departure and arrival. Keep the area behind the nozzle clear.</description>
+    <graphicData>
+      <texPath>Things/Building/DMSE_Aerospike</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(3,4)</drawSize>
+    </graphicData>
+    <size>(2,3)</size>
+    <statBases>
+      <MaxHitPoints>400</MaxHitPoints>
+      <WorkToBuild>8000</WorkToBuild>
+      <Mass>60</Mass>
+    </statBases>
+    <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+    <constructionSkillPrerequisite>5</constructionSkillPrerequisite>
+    <costList>
+      <Steel>180</Steel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+      <Chemfuel>50</Chemfuel>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_OrbitalDynamics</li>
+    </researchPrerequisites>
+    <comps>
+      <li Class="DMSE.CompProperties_TransferEngine">
+        <thrust>3</thrust>
+        <fuelFactor>1</fuelFactor>
+        <!-- 2×3 佔地 z = -1..1，尾焰區從 -2 開始，四個方向皆對齊 -->
+        <exclusionAreaSize>(2, 0, 6)</exclusionAreaSize>
+        <exclusionAreaOffset>(0, 0, -7)</exclusionAreaOffset>
+        <flameSize>5.0</flameSize>
+        <flameOffsetsPerDirection>
+          <li>(0, 0, 0.5)</li>
+          <li>(0, 0, 0.5)</li>
+          <li>(0, 0, 0.5)</li>
+          <li>(0, 0, 0.5)</li>
+        </flameOffsetsPerDirection>
+        <flameShaderType>MoteGlow</flameShaderType>
+        <!-- 暫用熱核推進器的火焰貼圖（原版 LargeThruster_Burn 在點火時不顯示） -->
+        <flameShaderParameters>
+          <_MainTex>/Visual/NuclearThruster_Burn</_MainTex>
+        </flameShaderParameters>
+        <exhaustSettings>
+          <exhaustFleckDef>GravshipThrusterExhaust</exhaustFleckDef>
+          <emissionsPerSecond>40.0</emissionsPerSecond>
+          <spawnRadiusRange>0.0~0.5</spawnRadiusRange>
+          <velocity>(0.0,0.0,-20.0)</velocity>
+          <velocityRotationRange>-10.0~10.0</velocityRotationRange>
+          <velocityMultiplierRange>0.8~1.2</velocityMultiplierRange>
+          <rotationOverTimeRange>-180.0~180.0</rotationOverTimeRange>
+          <scaleRange>3.0~5.0</scaleRange>
+        </exhaustSettings>
+      </li>
+      <li Class="CompProperties_Breakdownable" />
+    </comps>
+    <uiOrder>2201</uiOrder>
+  </ThingDef>
+
+  <!-- 轉移飛行控制台（需求 1）：獨立於逆重船駕駛台，必須位於結構網路的船體範圍內 -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_TransferConsole</defName>
+    <label>transfer flight console</label>
+    <description>Controls transfer flights for the ship it stands on. Plan a destination, check fuel and readiness, and begin the launch.</description>
+    <graphicData>
+      <texPath>Things/Building/TransferConsole/building</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(3,2)</drawSize>
+    </graphicData>
+    <size>(3,2)</size>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <fillPercent>0.5</fillPercent>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.3</staticSunShadowHeight>
+    <canOverlapZones>false</canOverlapZones>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+    <statBases>
+      <MaxHitPoints>250</MaxHitPoints>
+      <WorkToBuild>4000</WorkToBuild>
+      <Mass>40</Mass>
+      <Flammability>0.5</Flammability>
+    </statBases>
+    <costList>
+      <Steel>150</Steel>
+      <ComponentIndustrial>6</ComponentIndustrial>
+    </costList>
+    <designationCategory>Odyssey</designationCategory>
+    <researchPrerequisites>
+      <li>DMSE_OrbitalDynamics</li>
+    </researchPrerequisites>
+    <inspectorTabs>
+      <li>DMSE.ITab_TransferShip</li>
+    </inspectorTabs>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>300</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="DMSE.CompProperties_TransferConsole">
+        <operateTicks>1250</operateTicks>
+        <countdownTicks>600</countdownTicks>   <!-- 10 秒：引擎暖機（火焰、排氣、震動、音效逐漸增強） -->
+      </li>
+    </comps>
+    <uiOrder>2199</uiOrder>
+  </ThingDef>
+
+</Defs>

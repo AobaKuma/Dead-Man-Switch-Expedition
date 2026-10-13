@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Precise fabrication facility -->
+  <ThingDef ParentName="DMS_AutofacturerBenchBase">
+    <defName>DMSE_MicrogravityFacility</defName>
+    <label>Precise fabrication center</label>
+    <description>An extremely sophisticated additive manufacturing machine designed for nanoscale processing while also meeting the demands of extreme and demanding production environments. It can produce with exceptional precision even in conditions such as microgravity, vacuum, ultra-high pressure, and extreme temperatures.</description>
+    <graphicData>
+      <texPath>Things/Building/PreciseFabricationCenter/building</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(5,3)</drawSize>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+    <designationCategory>DMS_Category</designationCategory>
+    <costList>
+      <Steel>400</Steel>
+      <ComponentStamped>12</ComponentStamped>
+      <ComponentSpacer>2</ComponentSpacer>
+      <ComponentControlChip>1</ComponentControlChip>
+    </costList>
+    <statBases>
+      <WorkToBuild>3000</WorkToBuild>
+      <MaxHitPoints>500</MaxHitPoints>
+      <Flammability>0.25</Flammability>
+      <WorkTableWorkSpeedFactor>2.0</WorkTableWorkSpeedFactor>
+    </statBases>
+    <recipes />
+    <size>(3,2)</size>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <shortCircuitInRain>true</shortCircuitInRain>
+        <basePowerConsumption>1000</basePowerConsumption>
+        <idlePowerDraw>50</idlePowerDraw>
+      </li>
+    </comps>
+    <researchPrerequisites>
+      <li>DMSE_Microgravity</li>
+    </researchPrerequisites>
+    <modExtensions>
+      <li Class="Fortified.ModExtension_AutoWorkTable">
+        <workAmountPerStage>10000</workAmountPerStage>
+        <phaseEffecter_east>DMS_Effect_Printer_East</phaseEffecter_east>
+        <phaseEffecter_west>DMS_Effect_Printer_West</phaseEffecter_west>
+        <phaseEffecter_north>DMS_Effect_Printer_North</phaseEffecter_north>
+        <phaseEffecter_south>DMS_Effect_Printer_South</phaseEffecter_south>
+        <skills>
+          <li>
+            <key>Crafting</key>
+            <value>12</value>
+          </li>
+        </skills>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_GrapheneBioreactor</defName>
+    <label>Graphene bio-reactor</label>
+    <!-- A stationary carbon-electric bioreactor that uses carbon sources such as CO2, electricity, and temperature control to synthesize carbohydrates as biological nutrients. It consumes graphene as an electrode and catalytic carrier to improve reaction efficiency. Its synthetic starch/glucose process reaches about 8x the energy efficiency and up to 3000x the area efficiency of traditional farming. -->
+    <description>A stationary carbon-electric bioreactor. It uses carbon dioxide to synthesize various carbohydrates, a biological nutrient source. Requires graphene as a catalytic carrier during the reaction, operating in an environment of constant temperature and electricity to improve reaction efficiency.</description>
+    <graphicData>
+      <texPath>Things/Building/GrapheneBioreactor/building</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(5,5)</drawSize>
+      <drawOffset>(0,0,0.105)</drawOffset>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+    <uiIconScale>0.8</uiIconScale>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.9</staticSunShadowHeight>
+    <fillPercent>0.9</fillPercent>
+    <canOverlapZones>false</canOverlapZones>
+    <pathCost>42</pathCost>
+    <tickerType>Normal</tickerType>
+    <statBases>
+      <MaxHitPoints>750</MaxHitPoints>
+      <WorkToBuild>40000</WorkToBuild>
+      <Mass>300</Mass>
+      <Flammability>0.25</Flammability>
+    </statBases>
+    <size>(3,3)</size>
+    <costList>
+      <Steel>200</Steel>
+      <Tungsteel>125</Tungsteel>
+      <DMSE_Graphene>75</DMSE_Graphene>
+      <ComponentStamped>10</ComponentStamped>
+      <ComponentSpacer>1</ComponentSpacer>
+    </costList>
+    <building>
+      <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+    </building>
+    <researchPrerequisites>
+      <li>DMSE_Carbohydrate</li>
+    </researchPrerequisites>
+    <designationCategory>DMS_Category</designationCategory>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
+    <comps>
+      <li Class="Fortified.CompProperties_FueledSpawner">
+        <thingToSpawn>DMSE_Carbohydrate</thingToSpawn>
+        <spawnCount>20</spawnCount>
+        <spawnIntervalRange>120000~144000</spawnIntervalRange>
+        <spawnForbidden>false</spawnForbidden>
+        <writeTimeLeftToSpawn>true</writeTimeLeftToSpawn>
+      </li>
+      <li Class="CompProperties_Refuelable">
+        <fuelConsumptionRate>10.0</fuelConsumptionRate>
+        <fuelCapacity>50.0</fuelCapacity>
+        <targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>
+        <initialConfigurableTargetFuelLevel>50</initialConfigurableTargetFuelLevel>
+        <fuelFilter>
+          <thingDefs>
+            <li>DMSE_Graphene</li>
+          </thingDefs>
+        </fuelFilter>
+        <initialFuelPercent>1</initialFuelPercent>
+        <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+        <functionsInVacuum>false</functionsInVacuum>
+      </li>
+      <li Class="CompProperties_Breakdownable" />
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>500</basePowerConsumption>
+        <transmitsPower>true</transmitsPower>
+        <soundAmbientProducingPower>ScannerLongRangeMineral_Ambience</soundAmbientProducingPower>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>PlaceWorker_BandNode</li>
+    </placeWorkers>
+  </ThingDef>
+
+  <EffecterDef>
+    <defName>DMSE_Effect_Bioreactor</defName>
+    <children>
+      <li>
+        <subEffecterClass>SubEffecter_SprayerContinuous</subEffecterClass>
+        <fleckDef>Smoke</fleckDef>
+        <chancePerTick>0.05</chancePerTick>
+        <maxMoteCount>20</maxMoteCount>
+        <burstCount>2~5</burstCount>
+        <spawnLocType>OnSource</spawnLocType>
+        <scale>0.1~1.5</scale>
+        <positionRadius>2</positionRadius>
+        <rotationRate>-5~5</rotationRate>
+        <speed>.05~.1</speed>
+      </li>
+    </children>
+  </EffecterDef>
+
+  <ThingDef ParentName="DMS_AutofacturerBenchBase">
+    <defName>DMSE_TableLathe</defName>
+    <label>rotary forger</label>
+    <description>A machine that combine the process of forging machine and lathe, rotates a workpiece about an axis of rotation to perform various operations.</description>
+    <graphicData>
+      <texPath>Things/Building/Lathe/autoLathe</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(7,4)</drawSize>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+    <designationCategory>DMS_Category</designationCategory>
+    <costList>
+      <Steel>250</Steel>
+      <ComponentStamped>10</ComponentStamped>
+      <ComponentSpacer>1</ComponentSpacer>
+    </costList>
+    <statBases>
+      <WorkToBuild>3000</WorkToBuild>
+      <MaxHitPoints>450</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Cleanliness>-2</Cleanliness>
+      <WorkTableWorkSpeedFactor>2.0</WorkTableWorkSpeedFactor>
+    </statBases>
+    <size>(5,2)</size>
+    <interactionCellOffset>(-1,0,-1)</interactionCellOffset>
+    <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+    <recipes>
+      <li>DMSE_Make_ReinforcedBarrel</li>
+    </recipes>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <shortCircuitInRain>true</shortCircuitInRain>
+        <basePowerConsumption>800</basePowerConsumption>
+        <idlePowerDraw>50</idlePowerDraw>
+      </li>
+    </comps>
+    <researchPrerequisites>
+      <li>DMS_Autofacturer</li>
+    </researchPrerequisites>
+    <placeWorkers>
+      <li>PlaceWorker_ShowFacilitiesConnections</li>
+      <li>PlaceWorker_PreventInteractionSpotOverlap</li>
+    </placeWorkers>
+    <modExtensions>
+      <li Class="Fortified.ModExtension_AutoWorkTable">
+        <workAmountPerStage>30000</workAmountPerStage>
+        <!-- <phaseEffecter_east>FTC_Producting</phaseEffecter_east>
+			<phaseEffecter_west>FTC_Producting</phaseEffecter_west>
+			<phaseEffecter_north>FTC_Producting</phaseEffecter_north>
+			<phaseEffecter_south>FTC_Producting</phaseEffecter_south>
+			<doneEffecter_east>FTC_ProductionDone</doneEffecter_east>
+			<doneEffecter_west>FTC_ProductionDone</doneEffecter_west>
+			<doneEffecter_north>FTC_ProductionDone</doneEffecter_north>
+			<doneEffecter_south>FTC_ProductionDone</doneEffecter_south> -->
+        <skills>
+          <li>
+            <key>Crafting</key>
+            <value>15</value>
+          </li>
+        </skills>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="DMS_AutofacturerBenchBase">
+    <defName>DMSE_TableArtifuscle</defName>
+    <label>organic assembler</label>
+    <description>A massive piece of industrial equipment used to assemble Artifuscle and Neutroamine.</description>
+    <graphicData>
+      <texPath>Things/Building/SynthBulider/building</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(6,6)</drawSize>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+    <designationCategory>DMS_Category</designationCategory>
+    <costList>
+      <Steel>300</Steel>
+      <Plasfiber>100</Plasfiber>
+      <ComponentStamped>8</ComponentStamped>
+      <ComponentSpacer>2</ComponentSpacer>
+    </costList>
+    <statBases>
+      <WorkToBuild>3000</WorkToBuild>
+      <MaxHitPoints>180</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Cleanliness>-2</Cleanliness>
+      <WorkTableWorkSpeedFactor>2.0</WorkTableWorkSpeedFactor>
+    </statBases>
+    <size>(3,3)</size>
+    <interactionCellOffset>(0,0,-2)</interactionCellOffset>
+    <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+    <recipes>
+      <li>DMSE_Make_Neutroamine</li>
+      <li>DMS_Make_ArtifuscleMass</li>
+    </recipes>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <shortCircuitInRain>true</shortCircuitInRain>
+        <basePowerConsumption>800</basePowerConsumption>
+        <idlePowerDraw>50</idlePowerDraw>
+      </li>
+    </comps>
+    <researchPrerequisites>
+      <li>DMS_Autofacturer</li>
+      <li>DMS_Artifuscle</li>
+    </researchPrerequisites>
+    <placeWorkers>
+      <li>PlaceWorker_ShowFacilitiesConnections</li>
+      <li>PlaceWorker_PreventInteractionSpotOverlap</li>
+    </placeWorkers>
+    <modExtensions>
+      <li Class="Fortified.ModExtension_AutoWorkTable">
+        <workAmountPerStage>30000</workAmountPerStage>
+        <skills>
+          <li>
+            <key>Medicine</key>
+            <value>15</value>
+          </li>
+        </skills>
+      </li>
+    </modExtensions>
+  </ThingDef>
+</Defs>

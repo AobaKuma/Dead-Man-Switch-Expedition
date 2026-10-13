@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: solar radiation shield -->
+  <DMSE_SolarShield.label>耀班护盾</DMSE_SolarShield.label>
+  <!-- EN: A shielding device protects this area from solar flares. -->
+  <DMSE_SolarShield.description>一个处於工作状态的电磁护盾正在保护本区域不受太阳耀班的影响。</DMSE_SolarShield.description>
+  
+</LanguageData>

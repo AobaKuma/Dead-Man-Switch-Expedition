@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: orbital platform -->
+  <DMS_OrbitalPlatform.label>軌道平台</DMS_OrbitalPlatform.label>
+  <!-- EN: A solid orbital surface that allows walking in outer space. You can build all kinds of structures on it. -->
+  <DMS_OrbitalPlatform.description>可在外太空行走的堅固軌道地表。你可以在其上建造各類結構。</DMS_OrbitalPlatform.description>
+  
+</LanguageData>

@@ -119,6 +119,9 @@ namespace DMSE
             public readonly List<RoomData> rooms = new List<RoomData>();
 
             public readonly List<Thing> notCarried = new List<Thing>();
+
+            /// <summary>所掛的牆被帶走、自己不能上重力船而留在範圍外的牆面附掛物（見 <see cref="DetachLeftBehindAttachments"/>）。</summary>
+            public readonly List<Thing> detachedAttachments = new List<Thing>();
         }
 
         /// <summary>分離 / 降落後信件的內容。</summary>
@@ -296,6 +299,7 @@ namespace DMSE
             {
                 GravshipUtility.generatingGravship = false;
             }
+            DetachLeftBehindAttachments(origin, snap, report);
             // 先處理原地圖排隊中的電網變動：拆掉被搬走的導線/電池所屬的舊電網，並重設它們的 transNet / connectChildren。
             // 否則搬到船上的發送端仍掛著原地圖的舊電網，重新接線時會重複登記（PowerNet registered connector it already had）。
             // 原版逆重船在起飛與降落之間隔了很多 tick，原地圖早已處理完，所以不會遇到。
@@ -331,6 +335,9 @@ namespace DMSE
             }
             console.AbortPlan();
             Current.Game.CurrentMap = shipMap;
+            // 起飛演出只顯示傳入的格子，船體外側的附掛物也要一起顯示
+            HashSet<IntVec3> shownCells = new HashSet<IntVec3>(footprint);
+            shownCells.UnionWith(OuterAttachmentCells(shipMap, footprint));
 
             // ── 步驟 11：原地圖去留
             LongEventHandler.ExecuteWhenFinished(delegate
@@ -347,7 +354,7 @@ namespace DMSE
                     SoundDefOf.Gravship_Launch.PlayOneShotOnCamera();
                 }
                 Find.WindowStack.Add(new TransferTakeoffCutscene(origin,
-                    CellRect.FromCellList(footprint).CenterVector3, finish, shipMap, footprint));
+                    CellRect.FromCellList(footprint).CenterVector3, finish, shipMap, shownCells));
             });
         }
 
@@ -573,7 +580,7 @@ namespace DMSE
                 for (int i = list.Count - 1; i >= 0; i--)
                 {
                     Thing t = list[i];
-                    if (t is Pawn || snap.moving.Contains(t))
+                    if (t is Pawn || snap.moving.Contains(t) || IsWallAttachment(t))
                     {
                         continue;
                     }
@@ -591,8 +598,91 @@ namespace DMSE
                     }
                 }
             }
+            // 牆面附掛物只跟著所掛的牆走（同原版 Gravship.CopyCellContents），不看自己的格子：
+            // 牆被帶走時附掛物一起帶走，掛在船體外側、格子不在範圍內的也一樣（船上會懸在虛空格，降落時見 OuterAttachmentCells）；
+            // 牆沒被帶走的附掛物整個留在原地。否則會留下沒有牆的附掛物，原版重新接電網時找不到牆而 NullReferenceException。
+            // 本身不能上重力船的附掛物：範圍內照一般規則移除，範圍外的留在原地圖，等牆移除後比照原版拆牆處理。
+            int carried = snap.things.Count;
+            for (int i = 0; i < carried; i++)
+            {
+                foreach (Thing a in GenConstruct.GetAttachedBuildings(snap.things[i]))
+                {
+                    if (snap.moving.Contains(a))
+                    {
+                        continue;
+                    }
+                    if (ShouldMove(a, a.Position))
+                    {
+                        snap.things.Add(a);
+                        snap.moving.Add(a);
+                        snap.thingPositions[a] = a.Position;
+                        snap.thingRotations[a] = a.Rotation;
+                    }
+                    else if (footprint.Contains(a.Position))
+                    {
+                        snap.notCarried.Add(a);
+                    }
+                    else
+                    {
+                        snap.detachedAttachments.Add(a);
+                    }
+                }
+            }
             // 與原版相同的優先順序：擷取時由高到低移除，生成時由低到高（建築先、物品與床後）
             snap.things.SortByDescending(GravshipUtility.ThingSpawnPriority);
+        }
+
+        private static bool IsWallAttachment(Thing t)
+        {
+            return GenConstruct.BuiltDefOf(t.def) is ThingDef def && def.building != null && def.building.isAttachment;
+        }
+
+        /// <summary>
+        /// 掛在 cells 內的牆上、自己的格子卻在 cells 外的牆面附掛物格子（船體外側的附掛物）。
+        /// 這些附掛物隨牆移動，降落時要一併檢查與清空落點，但它們底下沒有船體地形。
+        /// </summary>
+        internal static List<IntVec3> OuterAttachmentCells(Map map, ICollection<IntVec3> cells)
+        {
+            HashSet<IntVec3> result = new HashSet<IntVec3>();
+            foreach (IntVec3 c in cells)
+            {
+                List<Thing> things = map.thingGrid.ThingsListAtFast(c);
+                for (int i = 0; i < things.Count; i++)
+                {
+                    foreach (Thing a in GenConstruct.GetAttachedBuildings(things[i]))
+                    {
+                        if (!cells.Contains(a.Position))
+                        {
+                            result.Add(a.Position);
+                        }
+                    }
+                }
+            }
+            return result.ToList();
+        }
+
+        /// <summary>
+        /// 牆被帶走、自己不能上重力船而留在原地圖的附掛物：比照原版拆牆（Building.DeSpawn 在 WillReplace 以外的模式會處理附掛物），
+        /// 可打包的打包成物品放回原處，否則拆除。須在移除船上物件之後、處理原地圖電網之前呼叫。
+        /// </summary>
+        private static void DetachLeftBehindAttachments(Map map, Snapshot snap, Report report)
+        {
+            for (int i = 0; i < snap.detachedAttachments.Count; i++)
+            {
+                Thing a = snap.detachedAttachments[i];
+                if (a.Destroyed || !a.Spawned)
+                {
+                    continue;
+                }
+                IntVec3 pos = a.Position;
+                if (a.def.Minifiable)
+                {
+                    GenSpawn.Spawn(a.MakeMinified(), pos, map);
+                    continue;
+                }
+                report.destroyed.Add(a.LabelCap);
+                a.Destroy(a is Blueprint || a is Frame ? DestroyMode.Cancel : DestroyMode.Deconstruct);
+            }
         }
 
         private static void CaptureZonesAreasDesignations(Map map, HashSet<IntVec3> footprint, Snapshot snap)
@@ -1211,7 +1301,7 @@ namespace DMSE
         internal static Report MoveHull(Map from, Map to, HashSet<IntVec3> cells, IntVec3 offset)
         {
             Report report = new Report();
-            PrepareLandingCells(to, cells, offset);
+            PrepareLandingCells(to, cells, OuterAttachmentCells(from, cells), offset);
             Snapshot snap = new Snapshot();
             GravshipUtility.generatingGravship = true;
             try
@@ -1226,6 +1316,7 @@ namespace DMSE
             {
                 GravshipUtility.generatingGravship = false;
             }
+            DetachLeftBehindAttachments(from, snap, report);
             from.powerNetManager.UpdatePowerNetsAndConnections_First();
             ClearOrigin(from, cells, snap, report);
             GravshipPlacementUtility.placingGravship = true;
@@ -1243,14 +1334,22 @@ namespace DMSE
             return report;
         }
 
-        private static void PrepareLandingCells(Map map, HashSet<IntVec3> cells, IntVec3 offset)
+        /// <param name="attachmentCells">船體外側附掛物的格子（<see cref="OuterAttachmentCells"/>）：只清出物件，不動地形與區域。</param>
+        private static void PrepareLandingCells(Map map, HashSet<IntVec3> cells, List<IntVec3> attachmentCells, IntVec3 offset)
         {
             HashSet<IntVec3> target = new HashSet<IntVec3>();
             foreach (IntVec3 c in cells)
             {
                 target.Add(c + offset);
             }
-            Predicate<IntVec3> outside = x => !target.Contains(x) && x.Standable(map) && x.GetTerrain(map) != TerrainDefOf.Space;
+            List<IntVec3> attachmentTargets = attachmentCells.Select(c => c + offset).ToList();
+            HashSet<IntVec3> occupied = new HashSet<IntVec3>(target);
+            occupied.UnionWith(attachmentTargets);
+            Predicate<IntVec3> outside = x => !occupied.Contains(x) && x.Standable(map) && x.GetTerrain(map) != TerrainDefOf.Space;
+            for (int i = 0; i < attachmentTargets.Count; i++)
+            {
+                ClearThingsForLanding(map, attachmentTargets[i], outside);
+            }
             TerrainGrid tg = map.terrainGrid;
             foreach (IntVec3 d in target)
             {
@@ -1259,35 +1358,7 @@ namespace DMSE
                 {
                     map.designationManager.RemoveDesignation(des);
                 }
-                List<Thing> things = map.thingGrid.ThingsListAt(d).ToList();
-                for (int i = 0; i < things.Count; i++)
-                {
-                    Thing t = things[i];
-                    if (t.Destroyed || !t.Spawned)
-                    {
-                        continue;
-                    }
-                    if (t is Pawn pawn)
-                    {
-                        if (CellFinder.TryFindRandomCellNear(d, map, 12, outside, out IntVec3 cell))
-                        {
-                            pawn.Position = cell;
-                            pawn.Notify_Teleported();
-                        }
-                    }
-                    else if (t.def.category == ThingCategory.Item)
-                    {
-                        t.DeSpawn();
-                        if (!GenPlace.TryPlaceThing(t, d, map, ThingPlaceMode.Near, null, outside))
-                        {
-                            t.Destroy();
-                        }
-                    }
-                    else if (t.def.destroyable)
-                    {
-                        t.Destroy();
-                    }
-                }
+                ClearThingsForLanding(map, d, outside);
                 if (tg.TempTerrainAt(d) != null)
                 {
                     tg.RemoveTempTerrain(d, doLeavings: false, preventDestroyEffects: true);
@@ -1297,6 +1368,40 @@ namespace DMSE
                     tg.RemoveFoundation(d, doLeavings: false);
                 }
                 map.roofGrid.SetRoof(d, null);
+            }
+        }
+
+        /// <summary>落點上的 pawn 與物品移到旁邊（outside 格），可摧毀的建築、植物等移除。</summary>
+        private static void ClearThingsForLanding(Map map, IntVec3 d, Predicate<IntVec3> outside)
+        {
+            List<Thing> things = map.thingGrid.ThingsListAt(d).ToList();
+            for (int i = 0; i < things.Count; i++)
+            {
+                Thing t = things[i];
+                if (t.Destroyed || !t.Spawned)
+                {
+                    continue;
+                }
+                if (t is Pawn pawn)
+                {
+                    if (CellFinder.TryFindRandomCellNear(d, map, 12, outside, out IntVec3 cell))
+                    {
+                        pawn.Position = cell;
+                        pawn.Notify_Teleported();
+                    }
+                }
+                else if (t.def.category == ThingCategory.Item)
+                {
+                    t.DeSpawn();
+                    if (!GenPlace.TryPlaceThing(t, d, map, ThingPlaceMode.Near, null, outside))
+                    {
+                        t.Destroy();
+                    }
+                }
+                else if (t.def.destroyable)
+                {
+                    t.Destroy();
+                }
             }
         }
 

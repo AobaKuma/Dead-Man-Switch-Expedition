@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_Sealed_Wall</defName>
+    <label>vacuum sealing facility wall</label>
+    <description>A structure with vacuum sealing layers made by plasticfiber, allows facility assort with vacuum pumps can effectively maintain a sufficiently large vacuum environment at atmospheric pressure, Ideal for storage extremely flammable products or simply for entity containment.</description>
+    <graphicData>
+      <texPath>Things/Building/Wall/Wall_Atlas_Concrete</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+        <li>Rock</li>
+      </linkFlags>
+      <damageData>
+        <rect>(0.35,0.1,0.3,0.7)</rect>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+        <edgeTop>Damage/Edge</edgeTop>
+        <edgeBot>Damage/Edge</edgeBot>
+        <edgeLeft>Damage/Edge</edgeLeft>
+        <edgeRight>Damage/Edge</edgeRight>
+      </damageData>
+      <shadowData>
+        <volume>(1, 0.5, 0.45)</volume>
+        <offset>(0,0,-0.23)</offset>
+      </shadowData>
+    </graphicData>
+    <noRightClickDraftAttack>true</noRightClickDraftAttack>
+    <replaceTags>
+      <li>Wall</li>
+    </replaceTags>
+    <uiIconPath>Things/Building/Wall/Wall_Atlas_Concrete_UI</uiIconPath>
+    <statBases>
+      <Flammability>0</Flammability>
+      <WorkToBuild>135</WorkToBuild>
+      <MeditationFocusStrength>0.22</MeditationFocusStrength>
+    </statBases>
+    <useHitPoints>false</useHitPoints>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <holdsRoof>true</holdsRoof>
+    <blockWind>true</blockWind>
+    <blockLight>true</blockLight>
+    <castEdgeShadows>true</castEdgeShadows>
+    <fillPercent>1</fillPercent>
+    <drawStyleCategory>Walls</drawStyleCategory>
+    <coversFloor>true</coversFloor>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <tickerType>Never</tickerType>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <neverMultiSelect>true</neverMultiSelect>
+    <fertility>0</fertility>
+    <canOverlapZones>false</canOverlapZones>
+    <building>
+      <paintable>false</paintable>
+      <isInert>true</isInert>
+      <isPlaceOverableWall>true</isPlaceOverableWall>
+      <ai_chillDestination>false</ai_chillDestination>
+      <supportsWallAttachments>true</supportsWallAttachments>
+      <paintable>true</paintable>
+      <isTargetable>false</isTargetable>
+      <ai_neverTrashThis>true</ai_neverTrashThis>
+      <deconstructible>false</deconstructible>
+      <alwaysDeconstructible>false</alwaysDeconstructible>
+    </building>
+    <comps>
+      <li Class="CompProperties_MeditationFocus">
+        <statDef>MeditationFocusStrength</statDef>
+        <focusTypes>
+          <li>Minimal</li>
+        </focusTypes>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- 平台用的重力船船體：沿用原版 GravshipHull 的貼圖與數值，改為只能蓋在本模組的平台上；
+       掛 AngledHullExtension，斜角補全沿用原版斜角船體貼圖（純繪製，見 Platform/SectionLayer_PlatformHull.cs） -->
+  <ThingDef ParentName="Wall">
+    <defName>DMSE_PlatformHull</defName>
+    <label>platform hull</label>
+    <description>A strong airtight wall that prevents oxygen leaks in the vacuum of space. A variant of the gravship hull that anchors into orbital platform decking instead of substructure, so it can only be built on platforms. Hull sections that touch only at their corners are joined into a smooth diagonal wall.</description>
+    <designationCategory>Odyssey</designationCategory>
+    <uiOrder>1801</uiOrder>
+    <uiIconPath>Things/Building/Linked/GravshipHull/GravshipHull_MenuIcon</uiIconPath>
+    <graphicData>
+      <texPath>Things/Building/Linked/GravshipHull/GravshipHull_Atlas</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <researchPrerequisites>
+      <li>DMSE_OrbitalDynamics</li>
+    </researchPrerequisites>
+    <statBases>
+      <MaxHitPoints>420</MaxHitPoints>
+      <WorkToBuild>300</WorkToBuild>
+      <Flammability>0</Flammability>
+    </statBases>
+    <costStuffCount>7</costStuffCount>
+    <building>
+      <isAirtight>true</isAirtight>
+    </building>
+    <terrainAffordanceNeeded>DMSE_Platform</terrainAffordanceNeeded>
+    <useStuffTerrainAffordance>false</useStuffTerrainAffordance>
+    <stuffCategories Inherit="False">
+      <li>Metallic</li>
+    </stuffCategories>
+    <comps Inherit="False"/>
+    <modExtensions>
+      <li Class="DMSE.AngledHullExtension"/>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

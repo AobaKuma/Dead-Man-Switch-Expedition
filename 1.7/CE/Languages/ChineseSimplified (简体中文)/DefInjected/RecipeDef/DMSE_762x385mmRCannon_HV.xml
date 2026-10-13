@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: make 76.2x385mmR (PELE-Tungsteel) cannon shells x5 -->
+  <MakeDMSE_Ammo_762x385mmRCannonShell_PELE.label>制作 76.2x385mmR 加农炮炮弹 (横向效应增强弹-钨钢) x5</MakeDMSE_Ammo_762x385mmRCannonShell_PELE.label>
+  <!-- EN: Craft 5 76.2x385mmR (PELE-Tungsteel) cannon shells. -->
+  <MakeDMSE_Ammo_762x385mmRCannonShell_PELE.description>制作 76.2x385mmR (横向效应增强弹-钨钢) x5</MakeDMSE_Ammo_762x385mmRCannonShell_PELE.description>
+  <!-- EN: Making 76.2x385mmR (PELE-Tungsteel) cannon shells. -->
+  <MakeDMSE_Ammo_762x385mmRCannonShell_PELE.jobString>正在制作 76.2x385mmR (横向效应增强弹-钨钢)。</MakeDMSE_Ammo_762x385mmRCannonShell_PELE.jobString>
+  
+</LanguageData>

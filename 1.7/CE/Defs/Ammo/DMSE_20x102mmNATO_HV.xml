@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+	<!-- ==================== AmmoSet ========================== -->
+
+	<CombatExtended.AmmoSetDef>
+		<defName>DMSE_AmmoSet_20x102mmNATO_HV</defName>
+		<label>20x102mm NATO</label>
+		<ammoTypes>
+			<Ammo_20x102mmNATO_AP>DMSE_Bullet_20x102mmNATO_AP_HV</Ammo_20x102mmNATO_AP>
+			<Ammo_20x102mmNATO_Incendiary>DMSE_Bullet_20x102mmNATO_Incendiary_HV</Ammo_20x102mmNATO_Incendiary>
+			<Ammo_20x102mmNATO_HE>DMSE_Bullet_20x102mmNATO_HE_HV</Ammo_20x102mmNATO_HE>
+			<Ammo_20x102mmNATO_Sabot>DMSE_Bullet_20x102mmNATO_Sabot_HV</Ammo_20x102mmNATO_Sabot>
+		</ammoTypes>
+		<similarTo>AmmoSet_Autocannon</similarTo>
+	</CombatExtended.AmmoSetDef>
+
+	<!-- ================== Projectiles ================== -->
+
+	<!-- Note By PolandBall -->
+	<!-- Based on existing data, it is roughly estimated that increasing the barrel length could potentially raise the muzzle velocity by approximately 10%. The penetration values were referenced from the performance of the M61A1 and M39A3 autocannons in War Thunder. -->
+	<!-- 根据原有的数据，粗略推测能通过提升炮管长度的方法提升大致10%的弹药初速，穿透值则参考了War Thunder中M61A1和M39A3机炮的穿透能力。 -->
+
+	<ThingDef ParentName="Base20x102mmNATOBullet">
+		<defName>DMSE_Bullet_20x102mmNATO_AP_HV</defName>
+		<label>20x102mm NATO bullet (AP)</label>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageAmountBase>47</damageAmountBase>
+			<armorPenetrationSharp>36</armorPenetrationSharp>
+			<armorPenetrationBlunt>1245.18</armorPenetrationBlunt>
+			<speed>196</speed>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base20x102mmNATOBullet">
+		<defName>DMSE_Bullet_20x102mmNATO_Incendiary_HV</defName>
+		<label>20x102mm NATO bullet (AP-I)</label>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageAmountBase>47</damageAmountBase>
+			<armorPenetrationSharp>36</armorPenetrationSharp>
+			<armorPenetrationBlunt>1245.18</armorPenetrationBlunt>
+			<speed>196</speed>
+			<secondaryDamage>
+				<li>
+					<def>Flame_Secondary</def>
+					<amount>23</amount>
+				</li>
+			</secondaryDamage>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base20x102mmNATOBullet">
+		<defName>DMSE_Bullet_20x102mmNATO_HE_HV</defName>
+		<label>20x102mm NATO bullet (AP-HE)</label>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageAmountBase>74</damageAmountBase>
+			<armorPenetrationSharp>18</armorPenetrationSharp>
+			<armorPenetrationBlunt>1245.18</armorPenetrationBlunt>
+			<speed>196</speed>
+			<secondaryDamage>
+				<li>
+					<def>Bomb_Secondary</def>
+					<amount>32</amount>
+				</li>
+			</secondaryDamage>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base20x102mmNATOBullet">
+		<defName>DMSE_Bullet_20x102mmNATO_Sabot_HV</defName>
+		<label>20x102mm NATO bullet (Sabot)</label>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageAmountBase>39</damageAmountBase>
+			<armorPenetrationSharp>68</armorPenetrationSharp>
+			<armorPenetrationBlunt>1598.18</armorPenetrationBlunt>
+			<speed>265</speed>
+		</projectile>
+	</ThingDef>
+
+</Defs>

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData MayRequire = "CETeam.CombatExtended">
+
+
+	<Ammo_5x50mmCaseless_Erosion.label>5x50mm 无壳弹 (侵蚀弹)</Ammo_5x50mmCaseless_Erosion.label>
+	<Ammo_5x50mmCaseless_Erosion.description>用固体推进剂包裹弹丸的子弹。</Ammo_5x50mmCaseless_Erosion.description>
+	<Bullet_5x50mmCaseless_Erosion.label>5x50mm 无壳弹 (侵蚀弹)</Bullet_5x50mmCaseless_Erosion.label>
+	<Bullet_5x50mmCaseless_Erosion_LV.label>5x50mm 无壳弹 (侵蚀弹)</Bullet_5x50mmCaseless_Erosion_LV.label>
+	<Bullet_5x50mmCaseless_Erosion_HV.label>5x50mm 无壳弹 (侵蚀弹)</Bullet_5x50mmCaseless_Erosion_HV.label>
+
+
+</LanguageData>

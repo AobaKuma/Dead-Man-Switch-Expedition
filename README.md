@@ -9,7 +9,7 @@
 | 項目 | 內容 |
 |---|---|
 | packageId | `Aoba.DeadManSwitch.Expedition` |
-| 版本 | 0.35（支援 RimWorld 1.6、1.7） |
+| 版本 | 1.7：開發版；1.6：凍結在 Steam 創意工坊版 0.35（2026-04-20 發佈） |
 | 作者 | AobaKuma、Bread Mo、GoGaTio、Mortis |
 | 必要前置 | RimWorld **Odyssey** DLC、[Dead Man Switch (Core)](https://steamcommunity.com/sharedfiles/filedetails/?id=3121742525) |
 | 載入順序 | 於 `Aoba.DeadManSwitch.Core` 之後 |
@@ -21,35 +21,45 @@
 ```
 _Dead-Man-Switch-Expedition/
 ├── About/                  About.xml、Mod 圖示
-├── LoadFolders.xml         條件式載入（CE / Cinders / Gravship Expanded）
-├── 1.6/
-│   ├── Assemblies/         DMSE.dll（主程式）
+├── LoadFolders.xml         各版本的載入資料夾與條件式載入（CE / Cinders / Gravship Expanded）
+├── Sounds/                 音效（1.6、1.7 共用，兩版內容相同）
+├── 1.6/                    凍結：Steam 創意工坊版 0.35 的 1.6 內容，與 Steam 版逐位元組相同（含 .NET Framework 的 DMSE.dll）
+│   └── Shared/             該版根目錄的 Textures/、Languages/，只有 1.6 載入
+├── 1.7/                    開發版的全部內容
+│   ├── Assemblies/         DMSE.dll（net10.0）
 │   ├── Defs/               所有 Def（見下方「內容一覽」）
 │   ├── Patches/            對原版 / DMS Core 的 PatchOperation
-│   ├── CE/                 Combat Extended 相容（彈藥、AmmoSet、裝備 / 砲塔 patch）
-│   ├── Cinders/            BreadMo.Cinders 相容（5x50mm 無殼彈）
-│   └── GravshipExpanded/   Vanilla Gravship Expanded 相容（獨立 DLL + patch）
-├── 1.7/                    只放 RimWorld 1.7 的 .NET 10 組件，Defs / Patches 沿用 1.6
-│   ├── Assemblies/         DMSE.dll（net10.0）
-│   └── GravshipExpanded/   Assemblies/DMSE_VGE_Patch.dll（net10.0）
-├── Languages/              English / 繁體中文 / 简体中文
-├── Textures/、Sounds/      美術與音效資源
+│   ├── Textures/、Languages/  美術資源；English / 繁體中文 / 简体中文
+│   ├── CE/                 Combat Extended 相容（彈藥、AmmoSet、裝備 / 砲塔 patch），CE 尚無 1.7 版，暫不載入
+│   ├── Cinders/            BreadMo.Cinders 相容（5x50mm 無殼彈，依賴 CE），暫不載入
+│   └── GravshipExpanded/   Vanilla Gravship Expanded 相容（Assemblies/DMSE_VGE_Patch.dll + patch；PointDefence/ 為近防相容）
 ├── docs/                   系統設計文件
-├── .source/                C# 原始碼（DMSE.sln）
-│   ├── DMSE/               主專案 → 1.6/Assemblies、1.7/Assemblies 的 DMSE.dll
-│   └── GravshipExpanded/   VGE 相容專案 → 1.6/、1.7/GravshipExpanded/Assemblies 的 DMSE_VGE_Patch.dll
+├── .source/                C# 原始碼（DMSE.sln），只建置 1.7
+│   ├── DMSE/               主專案 → 1.7/Assemblies/DMSE.dll
+│   └── GravshipExpanded/   VGE 相容專案 → 1.7/GravshipExpanded/Assemblies/DMSE_VGE_Patch.dll
 └── _to_delete/             已遷移至 DMS Core 的舊內容（無人機、超重型 Automatroid、Boss 等），待清除
 ```
 
 ### 條件載入（LoadFolders.xml）
 
-| 資料夾 | 觸發條件 |
+| 版本 | 依序載入 |
 |---|---|
-| `1.6/CE` | `CETeam.CombatExtended` |
-| `1.6/Cinders` | `BreadMo.Cinders` |
-| `1.6/GravshipExpanded` | `vanillaexpanded.gravship` |
+| 1.6 | `/`、`1.6/Shared`、`1.6`，再依模組條件載入 `1.6/CE`、`1.6/Cinders`、`1.6/GravshipExpanded`（與 Steam 版相同） |
+| 1.7 | `/`、`1.7`，Gravship Expanded 啟用時加 `1.7/GravshipExpanded`，未啟用 CE 時再加 `1.7/GravshipExpanded/PointDefence` |
 
-RimWorld 1.7 依序載入 `/`、`1.6`、`1.7`：沿用 1.6 的 Defs / Patches，`1.7/Assemblies/DMSE.dll` 以相同相對路徑蓋掉 1.6 的 .NET Framework 版本；VGE 相容同理（`1.6/GravshipExpanded` 之後接 `1.7/GravshipExpanded`）。Combat Extended 尚無 1.7 版，1.7 不載入 `1.6/CE` 與依賴它的 `1.6/Cinders`。
+- 1.6 與 1.7 的內容完全分開：1.7 不讀 `1.6/`，1.6 不讀 `1.7/`；根目錄 `/` 只提供兩版相同的 `Sounds/`。
+- `1.6/Shared` 緊接在 `/` 之後，也就是 Steam 版根目錄 `Textures/`、`Languages/` 的位置，所以 1.6 的載入順序與 Steam 版相同。
+- Combat Extended 尚無 1.7 版，1.7 不載入 `1.7/CE` 與依賴它的 `1.7/Cinders`；CE 推出 1.7 後，驗證補丁再加進 `v1.7`。
+
+### 1.6 凍結規則
+
+- `1.6/`（含 `1.6/Shared`）與根目錄 `Sounds/` 不再修改，新內容一律放在 `1.7/`。真的要給 1.6 玩家的緊急修正，改完後必須重新確認與 Steam 版的差異只有該修正。
+- 1.6 的開發版內容封存在標籤 `dmse-1.6-dev-sealed`（`446d760`），已原樣搬到 `1.7/`。
+- 驗證 1.6 仍與 Steam 版相同（應無輸出）：
+  ```bash
+  WS="D:/Steam/steamapps/workshop/content/294100/3689879335"
+  diff -rq -x Shared "$WS/1.6" 1.6; diff -rq "$WS/Textures" 1.6/Shared/Textures; diff -rq "$WS/Languages" 1.6/Shared/Languages; diff -rq "$WS/Sounds" Sounds
+  ```
 
 ---
 
@@ -94,7 +104,7 @@ RimWorld 1.7 依序載入 `/`、`1.6`、`1.7`：沿用 1.6 的 Defs / Patches，
 4. **分離與飛行**：船體範圍以相同座標搬到一張新的虛空地圖，原地圖留下其餘部分。飛行依序為離軌點火 → 滑行 → 入軌點火 → 抵達。只有點火階段有尾焰傷害、震動與穿梭機禁飛；滑行期殖民地完全照常，穿梭機可以往返（會追蹤移動中的船）。
 5. **終結巡航（Hellfire）**：船上有 3 具以上運作中的核熱推進器時，控制台可規劃撞擊地表。船不減速、直接撞向目標，生成「衝擊坑荒原」生態群系（`DMSE_ImpactCraterBiome`）與徑向礦脈，並依撞擊規模觸發不同結局文本；4 具以上為行星殺手結局。相關參數可於 Mod 設定（`PlayerConfigSettings`）調整。
 
-平衡常數集中在 `DMSE_TransferFlightTuning`（`1.6/Defs/DMSE_TransferFlightTuning.xml`）。舊版「駕駛台 → 飛行模式選單」的轉移已移除；飛行中的舊存檔讀檔後會直接抵達（撞擊則直接結算）。
+平衡常數集中在 `DMSE_TransferFlightTuning`（`1.7/Defs/DMSE_TransferFlightTuning.xml`）。舊版「駕駛台 → 飛行模式選單」的轉移已移除；飛行中的舊存檔讀檔後會直接抵達（撞擊則直接結算）。
 
 同時提供引力船元件：固體火箭助推器、燃料筒倉、太陽輻射護盾、訊號隱匿裝置（聚變反應爐與燃料筒倉也可作為引力船設施）。
 
@@ -142,21 +152,16 @@ RimWorld 1.7 依序載入 `/`、`1.6`、`1.7`：沿用 1.6 的 Defs / Patches，
 `.source/GravshipExpanded` 為 VGE 相容專案（`VGEFuelHandler`）：把 VGE 的 Astrofuel 儲存槽（PipeSystem `CompResourceStorage`）註冊為轉移燃料來源，以化學燃料當量計（1 Astrofuel = 2）。
 
 ### 建置
-兩個專案都是 SDK 格式的多目標專案，同一份原始碼建置 1.6 與 1.7（需要 .NET 10 SDK）：
-
-| 目標 | 遊戲版本 | 參考 | 輸出 |
-|---|---|---|---|
-| `net472`（VGE 專案為 `net48`） | 1.6 | NuGet `Krafs.Rimworld.Ref 1.6.4871`、`Lib.Harmony 2.4.2` | `1.6/Assemblies/`、`1.6/GravshipExpanded/Assemblies/` |
-| `net10.0`（定義 `RW_1_7`） | 1.7 | 遊戲根目錄的 `Assembly-CSharp.dll`、`UnityStubs.dll`、`Waylith.dll`，NuGet `Lib.Harmony 3.0.0-rc.2` | `1.7/Assemblies/`、`1.7/GravshipExpanded/Assemblies/` |
+兩個專案都是 SDK 格式，只建置 RimWorld 1.7（`net10.0`，定義 `RW_1_7`；需要 .NET 10 SDK）。參考遊戲根目錄的 `Assembly-CSharp.dll`、`UnityStubs.dll`、`Waylith.dll` 與 NuGet `Lib.Harmony 3.0.0-rc.2`，輸出到 `1.7/Assemblies/`、`1.7/GravshipExpanded/Assemblies/`。1.6 的 DLL 是凍結的 Steam 版，不再建置。
 
 ```bash
 dotnet build .source/DMSE/DMSE.csproj -c Release
 dotnet build .source/GravshipExpanded/DMSE_VGE.csproj -c Release
 ```
 
-- 先建置主專案：VGE 專案參考各版本輸出的 `DMSE.dll`。只建一個版本時加上 `-f net472`（VGE 為 `-f net48`）或 `-f net10.0`。
-- 1.7 直接參考遊戲本體的 DLL，預設模組位於 `<RimWorld>/Mods/<本模組>/`；遊戲裝在別處時加 `-p:RimWorldDir=<遊戲目錄>\`。遊戲執行中不要建置（DLL 會被鎖住）。
-- VGE 專案另外參考 `VanillaGravshipExpanded.dll`（預設找 `<RimWorld>/Mods/VanillaGravshipExpanded`，再找 Steam 創意工坊 3609835606；其他位置用 `-p:VGEAssemblies=<VGE>\1.6\Assemblies\`）與 VEF 的 `PipeSystem.dll`（同一 `Mods` 資料夾下的 `VanillaExpandedFramework`）。VGE / VEF 目前只有 1.6 版，1.7 版的相容 DLL 也參考同一份，由 1.7 的相容層載入。
+- 先建置主專案：VGE 專案參考 `1.7/Assemblies/DMSE.dll`。
+- 直接參考遊戲本體的 DLL，預設模組位於 `<RimWorld>/Mods/<本模組>/`；遊戲裝在別處時加 `-p:RimWorldDir=<遊戲目錄>\`。遊戲執行中不要建置（DLL 會被鎖住）。
+- VGE 專案另外參考 `VanillaGravshipExpanded.dll`（預設找 `<RimWorld>/Mods/VanillaGravshipExpanded`，再找 Steam 創意工坊 3609835606；其他位置用 `-p:VGEAssemblies=<VGE>\1.6\Assemblies\`）與 VEF 的 `PipeSystem.dll`（同一 `Mods` 資料夾下的 `VanillaExpandedFramework`）。VGE / VEF 目前只有 1.6 版，由 1.7 的相容層載入。
 - 需要分版本的程式碼用 `#if RW_1_7`。1.7 使用 Harmony 3：補丁的 `__instance` / `__result` 型別必須與目標一致，一個補丁類別失敗會讓 `PatchAll` 中止其後所有補丁。
 - 上傳創意工坊時可勾選「建立資源包」（`Assets.zip`，已被 `.gitignore` 排除），但**不要勾「略過原始貼圖」**：1.6 讀不懂 `Assets.zip`。
 

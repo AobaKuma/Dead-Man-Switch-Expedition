@@ -77,22 +77,14 @@ namespace DMSE
 
         public Skyfaller Skyfaller => skyfaller != null ? skyfaller.InnerListForReading.FirstOrDefault() : null;
 
-        /// <summary>取得目標內部的 pawn（直接持有或包在 ActiveTransporter 內）。</summary>
-        public Pawn ContainedPawn
+        /// <summary>取得目標內部的所有 pawn（直接持有或包在 ActiveTransporter 內；一個空投艙可能載多人）。</summary>
+        public List<Pawn> ContainedPawns
         {
             get
             {
                 Skyfaller f = Skyfaller;
-                if (f == null || !f.innerContainer.Any) { return null; }
-                Thing inner = f.innerContainer.First();
-                if (inner is Pawn p) { return p; }
-                if (inner is ActiveTransporter transporter
-                    && transporter.Contents != null
-                    && transporter.Contents.SingleContainedThing is Pawn p2)
-                {
-                    return p2;
-                }
-                return null;
+                if (f == null || !f.innerContainer.Any) { return new List<Pawn>(); }
+                return BVRDetection.PawnsIn(f.innerContainer.First()).ToList();
             }
         }
 
@@ -114,28 +106,29 @@ namespace DMSE
             }
         }
 
-        /// <summary>末端攔截成功且擲骰通過時呼叫：殺死內部 pawn 並生成殘骸空投（碎片）。</summary>
+        /// <summary>末端攔截成功且擲骰通過時呼叫：殺死內部所有 pawn，屍體以一個殘骸空投（碎片）落下，其餘內容物隨艙體清除。</summary>
         public void SpawnDebris(Map map)
         {
-            Pawn pawn = ContainedPawn;
-            if (pawn == null)
-            {
-                // 無 pawn 的目標（例如導彈）：無屍體殘骸，直接乾淨清除。
-                Discard();
-                return;
-            }
-
-            pawn.Kill(new DamageInfo(DamageDefOf.Blunt, 50f));
-            Corpse corpse = pawn.Corpse ?? pawn.MakeCorpse(null, null);
-            if (corpse == null) { return; }
-
-            if (corpse.holdingOwner != null)
-            {
-                corpse.holdingOwner.Remove(corpse);
-            }
-
+            // 先取出清單：殺死 pawn 會把它在容器中換成屍體。
+            List<Pawn> pawns = ContainedPawns;
             ActiveTransporterInfo info = new ActiveTransporterInfo();
-            if (info.innerContainer.TryAdd(corpse))
+            foreach (Pawn pawn in pawns)
+            {
+                pawn.Kill(new DamageInfo(DamageDefOf.Blunt, 50f));
+                Corpse corpse = pawn.Corpse ?? pawn.MakeCorpse(null, null);
+                if (corpse == null) { continue; }
+
+                if (corpse.holdingOwner != null)
+                {
+                    corpse.holdingOwner.Remove(corpse);
+                }
+                info.innerContainer.TryAdd(corpse);
+            }
+
+            // 無 pawn 的目標（例如導彈）與艙內其餘物品：無殘骸，直接乾淨清除。
+            Discard();
+
+            if (info.innerContainer.Any)
             {
                 DropPodUtility.MakeDropPodAt(position, map, info);
             }
