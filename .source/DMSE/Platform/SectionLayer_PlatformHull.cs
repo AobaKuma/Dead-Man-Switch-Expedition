@@ -16,6 +16,7 @@ namespace DMSE
     /// - 直角 L 形轉角：比照原版只在基礎結構外補，這裡改為只在平台外（虛空）的缺口格補，房間內角維持直角。
     /// 只影響繪製：房間與氣密以正交相鄰判定，斜角相接的船體本來就是封閉的。
     /// </summary>
+    [StaticConstructorOnStartup]
     public class SectionLayer_PlatformHull : SectionLayer
     {
         private enum CornerType
@@ -56,7 +57,8 @@ namespace DMSE
             TexPathPrefix + "AngledGravshipHull_Partial_southeast"
         };
 
-        private static Material[] mats;
+        // 材質必須在主執行緒載入：以 [StaticConstructorOnStartup] 於啟動時建立（必須排在 TexPaths 之後）。
+        private static readonly Material[] mats = LoadMaterials();
 
         private static readonly float CornerAltitude = AltitudeLayer.BuildingOnTop.AltitudeFor();
 
@@ -103,16 +105,18 @@ namespace DMSE
             FinalizeMesh(MeshParts.All);
         }
 
+        private static Material[] LoadMaterials()
+        {
+            Material[] result = new Material[TexPaths.Length];
+            for (int i = 1; i < TexPaths.Length; i++)
+            {
+                result[i] = MaterialPool.MatFrom(TexPaths[i], ShaderDatabase.CutoutOverlay);
+            }
+            return result;
+        }
+
         private static Material GetMaterial(CornerType cornerType)
         {
-            if (mats == null)
-            {
-                mats = new Material[TexPaths.Length];
-                for (int i = 1; i < TexPaths.Length; i++)
-                {
-                    mats[i] = MaterialPool.MatFrom(TexPaths[i], ShaderDatabase.CutoutOverlay);
-                }
-            }
             return mats[(int)cornerType];
         }
 

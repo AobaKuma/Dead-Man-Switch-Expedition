@@ -1,73 +1,86 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    與 DMSE.csproj 相同，同一份原始碼建置兩個遊戲版本：
+      net48    → RimWorld 1.6 → 1.6/GravshipExpanded/Assemblies（VGE 以 .NET Framework 4.8 建置，net472 無法參考）
+      net10.0  → RimWorld 1.7 → 1.7/GravshipExpanded/Assemblies（參考 1.7/Assemblies/DMSE.dll）
+    VGE / VEF 目前只有 1.6 版（.NET Framework），兩個目標都參考同一份；1.7 下由遊戲的相容層載入。
+    VGE 預設找 <RimWorld>/Mods/VanillaGravshipExpanded，找不到時改用 Steam 創意工坊（3609835606）；
+    裝在別處時以 -p:VGEAssemblies=<VGE 的 1.6\Assemblies 資料夾>\ 覆寫。
+    Like DMSE.csproj, one source tree builds both game versions:
+      net48    → RimWorld 1.6 → 1.6/GravshipExpanded/Assemblies (VGE is built for .NET Framework 4.8, so net472 cannot reference it)
+      net10.0  → RimWorld 1.7 → 1.7/GravshipExpanded/Assemblies (references 1.7/Assemblies/DMSE.dll)
+    VGE / VEF only ship 1.6 (.NET Framework) builds so far; both targets reference them, and 1.7 loads them through its compatibility layer.
+    VGE is looked up in <RimWorld>/Mods/VanillaGravshipExpanded, then in the Steam Workshop folder (3609835606);
+    override with -p:VGEAssemblies=<VGE's 1.6\Assemblies folder>\ when it lives elsewhere.
+  -->
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A2B3C4D5-E6F7-4A1B-8C9D-E0F1A2B3C4D5}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <TargetFrameworks>net48;net10.0</TargetFrameworks>
     <RootNamespace>DMSE.VGE</RootNamespace>
     <AssemblyName>DMSE_VGE_Patch</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <LangVersion>10.0</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
     <Deterministic>true</Deterministic>
+    <!-- Properties/AssemblyInfo.cs 已提供組件屬性。Properties/AssemblyInfo.cs already supplies the assembly attributes. -->
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <DebugType>none</DebugType>
+    <!-- 中間檔依目標框架分開，避免兩個目標平行建置時互相覆寫。Keep intermediates per framework so the parallel builds do not collide. -->
+    <IntermediateOutputPath>$(BaseIntermediateOutputPath)$(Configuration)\$(TargetFramework)\</IntermediateOutputPath>
+    <RimWorldDir Condition="'$(RimWorldDir)' == ''">$(MSBuildThisFileDirectory)..\..\..\..\</RimWorldDir>
+    <VGEAssemblies Condition="'$(VGEAssemblies)' == '' And Exists('$(RimWorldDir)Mods\VanillaGravshipExpanded\1.6\Assemblies\VanillaGravshipExpanded.dll')">$(RimWorldDir)Mods\VanillaGravshipExpanded\1.6\Assemblies\</VGEAssemblies>
+    <VGEAssemblies Condition="'$(VGEAssemblies)' == ''">$(RimWorldDir)..\..\workshop\content\294100\3609835606\1.6\Assemblies\</VGEAssemblies>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\..\1.6\GravshipExpanded\Assemblies\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net48'">
+    <OutputPath>$(MSBuildThisFileDirectory)..\..\1.6\GravshipExpanded\Assemblies\</OutputPath>
+    <DMSEAssemblies>$(MSBuildThisFileDirectory)..\..\1.6\Assemblies\</DMSEAssemblies>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\1.6\GravshipExpanded\Assemblies\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net10.0'">
+    <OutputPath>$(MSBuildThisFileDirectory)..\..\1.7\GravshipExpanded\Assemblies\</OutputPath>
+    <DMSEAssemblies>$(MSBuildThisFileDirectory)..\..\1.7\Assemblies\</DMSEAssemblies>
+    <DefineConstants>$(DefineConstants);RW_1_7</DefineConstants>
+    <GenerateDependencyFile>false</GenerateDependencyFile>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="VGEFuelHandler.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4871" />
+    <PackageReference Include="Lib.Harmony" Version="2.4.2" ExcludeAssets="runtime" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>..\DMSE\bin\Debug\0Harmony.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net10.0'">
+    <PackageReference Include="Lib.Harmony" Version="3.0.0-rc.2" ExcludeAssets="runtime" />
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\DMSE\bin\Debug\Assembly-CSharp.dll</HintPath>
+      <HintPath>$(RimWorldDir)Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\DMSE\bin\Debug\UnityEngine.CoreModule.dll</HintPath>
+    <Reference Include="UnityStubs">
+      <HintPath>$(RimWorldDir)UnityStubs.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="UnityEngine.IMGUIModule">
-      <HintPath>..\DMSE\bin\Debug\UnityEngine.IMGUIModule.dll</HintPath>
+    <Reference Include="Waylith">
+      <HintPath>$(RimWorldDir)Waylith.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="UnityEngine.TextRenderingModule">
-      <HintPath>..\DMSE\bin\Debug\UnityEngine.TextRenderingModule.dll</HintPath>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="DMSE">
+      <HintPath>$(DMSEAssemblies)DMSE.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="System" />
     <Reference Include="VanillaGravshipExpanded">
-      <HintPath>d:\SteamLibrary\steamapps\common\RimWorld\Mods\VanillaGravshipExpanded\1.6\Assemblies\VanillaGravshipExpanded.dll</HintPath>
+      <HintPath>$(VGEAssemblies)VanillaGravshipExpanded.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PipeSystem">
-      <HintPath>..\..\..\VanillaExpandedFramework\1.6\Assemblies\PipeSystem.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="DMSE">
-      <HintPath>..\..\1.6\Assemblies\DMSE.dll</HintPath>
+      <HintPath>$(MSBuildThisFileDirectory)..\..\..\VanillaExpandedFramework\1.6\Assemblies\PipeSystem.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
 </Project>

@@ -7,5 +7,22 @@
 		<li IfModActive="CETeam.CombatExtended,CETeam.CombatExtended_steam">1.6/CE</li>
 		<li IfModActive="BreadMo.Cinders">1.6/Cinders</li>
 		<li IfModActive="vanillaexpanded.gravship,vanillaexpanded.gravship_steam">1.6/GravshipExpanded</li>
+		<li IfModActive="vanillaexpanded.gravship,vanillaexpanded.gravship_steam" IfModNotActive="CETeam.CombatExtended,CETeam.CombatExtended_steam">1.6/GravshipExpanded/PointDefence</li>
 	</v1.6>
+	<!--
+		1.7 沿用 1.6 的 Defs / Patches；1.7 與 1.7/GravshipExpanded 只放 .NET 10 組件，列在對應的 1.6 資料夾之後，
+		相同相對路徑的 Assemblies/*.dll 會蓋掉 1.6 的 .NET Framework 版本。
+		Combat Extended 尚無 1.7 版，1.6/CE 與依賴它的 1.6/Cinders（CE 彈藥）暫不載入。
+		1.7 reuses 1.6's Defs / Patches. 1.7 and 1.7/GravshipExpanded only hold .NET 10 assemblies; listed after their 1.6
+		counterparts, each Assemblies/*.dll replaces the .NET Framework build at the same relative path.
+		Combat Extended has no 1.7 release yet, so 1.6/CE and 1.6/Cinders (CE ammo, depends on 1.6/CE) are not loaded.
+	-->
+	<v1.7>
+		<li>/</li>
+		<li>1.6</li>
+		<li>1.7</li>
+		<li IfModActive="vanillaexpanded.gravship,vanillaexpanded.gravship_steam">1.6/GravshipExpanded</li>
+		<li IfModActive="vanillaexpanded.gravship,vanillaexpanded.gravship_steam">1.7/GravshipExpanded</li>
+		<li IfModActive="vanillaexpanded.gravship,vanillaexpanded.gravship_steam" IfModNotActive="CETeam.CombatExtended,CETeam.CombatExtended_steam">1.6/GravshipExpanded/PointDefence</li>
+	</v1.7>
 </loadFolders>

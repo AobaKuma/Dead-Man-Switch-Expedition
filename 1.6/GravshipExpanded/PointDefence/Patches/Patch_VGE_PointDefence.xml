@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+	<!--
+		讓 DMS/DMSE 砲塔加入 VGE 近防體系（VanillaGravshipExpanded.CompPointDefence）。
+		此資料夾只在 VGE 啟用且 CE 未啟用時載入（見 LoadFolders.xml）：
+		CE 會移除這些砲塔的 CompRefuelable，而 VGE 近防在玩家陣營下必須有它。
+
+		- 近防每次攔截嘗試消耗 1 點 CompRefuelable（此處即裝甲砲管耐久）。
+		- DMSE.VGE.ModExtension_PointDefence 由 DMSE_VGE_Patch.dll 讀取：
+		  戰爭電腦（VGE2）改為「原半徑 + warcomputerRadiusBonus」，不再一律壓成 19.9；
+		  非玩家陣營持有時改用 VGE 敵方近防的較低命中公式，且不攔截空投艙。
+	-->
+
+	<!-- ==================== Squall ==================== -->
+	<Operation Class="PatchOperationAdd">
+		<xpath>/Defs/ThingDef[defName="DMSE_Turret_Squall"]/comps</xpath>
+		<value>
+			<li Class="VanillaGravshipExpanded.CompProperties_PointDefence">
+				<interceptionRadius>14.9</interceptionRadius>
+				<interceptionAttemptInterval>15</interceptionAttemptInterval>
+				<blacklistedProjectileDefs>
+					<li>Bullet_HellsphereCannonGun</li>
+					<li>Bullet_InfernoCannon</li>
+					<li>Bullet_Heatspike</li>
+				</blacklistedProjectileDefs>
+			</li>
+		</value>
+	</Operation>
+	<Operation Class="PatchOperationAddModExtension">
+		<xpath>/Defs/ThingDef[defName="DMSE_Turret_Squall"]</xpath>
+		<value>
+			<li Class="DMSE.VGE.ModExtension_PointDefence" />
+		</value>
+	</Operation>
+
+	<!-- ==================== GAU-4 Wing-Back ==================== -->
+	<!-- 與 DMSE 末端攔截（CompTerminalCIWS）並存：兩者共用同一份砲管耐久。 -->
+	<Operation Class="PatchOperationAdd">
+		<xpath>/Defs/ThingDef[defName="DMSE_Turret_Vulcan_WingBack"]/comps</xpath>
+		<value>
+			<li Class="VanillaGravshipExpanded.CompProperties_PointDefence">
+				<interceptionRadius>19.9</interceptionRadius>
+				<interceptionAttemptInterval>15</interceptionAttemptInterval>
+				<blacklistedProjectileDefs>
+					<li>Bullet_HellsphereCannonGun</li>
+					<li>Bullet_InfernoCannon</li>
+					<li>Bullet_Heatspike</li>
+				</blacklistedProjectileDefs>
+			</li>
+		</value>
+	</Operation>
+	<Operation Class="PatchOperationAddModExtension">
+		<xpath>/Defs/ThingDef[defName="DMSE_Turret_Vulcan_WingBack"]</xpath>
+		<value>
+			<li Class="DMSE.VGE.ModExtension_PointDefence" />
+		</value>
+	</Operation>
+
+	<!-- ==================== Dawnblade Striker ==================== -->
+	<!-- 砲管耐久只有 160，攔截間隔放寬到 30 以降低消耗。 -->
+	<Operation Class="PatchOperationAdd">
+		<xpath>/Defs/ThingDef[defName="DMSE_Turret_Dawnblade_Striker"]/comps</xpath>
+		<value>
+			<li Class="VanillaGravshipExpanded.CompProperties_PointDefence">
+				<interceptionRadius>14.9</interceptionRadius>
+				<interceptionAttemptInterval>30</interceptionAttemptInterval>
+				<blacklistedProjectileDefs>
+					<li>Bullet_HellsphereCannonGun</li>
+					<li>Bullet_InfernoCannon</li>
+					<li>Bullet_Heatspike</li>
+				</blacklistedProjectileDefs>
+			</li>
+		</value>
+	</Operation>
+	<Operation Class="PatchOperationAddModExtension">
+		<xpath>/Defs/ThingDef[defName="DMSE_Turret_Dawnblade_Striker"]</xpath>
+		<value>
+			<li Class="DMSE.VGE.ModExtension_PointDefence" />
+		</value>
+	</Operation>
+
+	<!-- ==================== 守門人（DMS 本體） ==================== -->
+	<Operation Class="PatchOperationAdd">
+		<xpath>/Defs/ThingDef[defName="DMS_Turret_GateKeeper"]/comps</xpath>
+		<value>
+			<li Class="VanillaGravshipExpanded.CompProperties_PointDefence">
+				<interceptionRadius>24.9</interceptionRadius>
+				<interceptionAttemptInterval>15</interceptionAttemptInterval>
+				<blacklistedProjectileDefs>
+					<li>Bullet_HellsphereCannonGun</li>
+					<li>Bullet_InfernoCannon</li>
+					<li>Bullet_Heatspike</li>
+				</blacklistedProjectileDefs>
+			</li>
+		</value>
+	</Operation>
+	<Operation Class="PatchOperationAddModExtension">
+		<xpath>/Defs/ThingDef[defName="DMS_Turret_GateKeeper"]</xpath>
+		<value>
+			<li Class="DMSE.VGE.ModExtension_PointDefence" />
+		</value>
+	</Operation>
+
+</Patch>

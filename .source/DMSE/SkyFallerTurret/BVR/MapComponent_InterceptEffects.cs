@@ -10,6 +10,7 @@ namespace DMSE
     /// 地圖特效類：在導彈/空投攔截成功時，於目標上方高空（地圖外）生成一閃光效與音效，
     /// 表現「在地圖外被攔截」。光效以 Graphics.DrawMesh 直接繪製，故可畫在地圖邊界之外。
     /// </summary>
+    [StaticConstructorOnStartup]
     public class MapComponent_InterceptEffects : MapComponent
     {
         private struct Flash
@@ -23,8 +24,9 @@ namespace DMSE
 
         private readonly List<Flash> flashes = new List<Flash>();
 
-        private static Material glowMat;
-        private static MaterialPropertyBlock mpb;
+        // 材質必須在主執行緒載入：以 [StaticConstructorOnStartup] 於啟動時建立。
+        private static readonly Material glowMat = MaterialPool.MatFrom(BaseContent.WhiteTex, ShaderDatabase.MoteGlow, Color.white);
+        private static readonly MaterialPropertyBlock mpb = new MaterialPropertyBlock();
         private static SoundDef defaultSound;
         private static bool resolvedSound;
 
@@ -94,7 +96,6 @@ namespace DMSE
             base.MapComponentUpdate();
             if (flashes.Count == 0) { return; }
 
-            EnsureResources();
             float now = Time.realtimeSinceStartup;
 
             for (int i = flashes.Count - 1; i >= 0; i--)
@@ -114,18 +115,6 @@ namespace DMSE
                 mpb.SetColor(ShaderPropertyIDs.Color, c);
                 Matrix4x4 matrix = Matrix4x4.TRS(f.pos, Quaternion.identity, new Vector3(scale, 1f, scale));
                 Graphics.DrawMesh(MeshPool.plane10, matrix, glowMat, 0, null, 0, mpb);
-            }
-        }
-
-        private static void EnsureResources()
-        {
-            if (glowMat == null)
-            {
-                glowMat = MaterialPool.MatFrom(BaseContent.WhiteTex, ShaderDatabase.MoteGlow,Color.white);
-            }
-            if (mpb == null)
-            {
-                mpb = new MaterialPropertyBlock();
             }
         }
 

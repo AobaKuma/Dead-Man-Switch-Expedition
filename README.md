@@ -9,7 +9,7 @@
 | 項目 | 內容 |
 |---|---|
 | packageId | `Aoba.DeadManSwitch.Expedition` |
-| 版本 | 0.35（支援 RimWorld 1.6） |
+| 版本 | 0.35（支援 RimWorld 1.6、1.7） |
 | 作者 | AobaKuma、Bread Mo、GoGaTio、Mortis |
 | 必要前置 | RimWorld **Odyssey** DLC、[Dead Man Switch (Core)](https://steamcommunity.com/sharedfiles/filedetails/?id=3121742525) |
 | 載入順序 | 於 `Aoba.DeadManSwitch.Core` 之後 |
@@ -29,12 +29,15 @@ _Dead-Man-Switch-Expedition/
 │   ├── CE/                 Combat Extended 相容（彈藥、AmmoSet、裝備 / 砲塔 patch）
 │   ├── Cinders/            BreadMo.Cinders 相容（5x50mm 無殼彈）
 │   └── GravshipExpanded/   Vanilla Gravship Expanded 相容（獨立 DLL + patch）
+├── 1.7/                    只放 RimWorld 1.7 的 .NET 10 組件，Defs / Patches 沿用 1.6
+│   ├── Assemblies/         DMSE.dll（net10.0）
+│   └── GravshipExpanded/   Assemblies/DMSE_VGE_Patch.dll（net10.0）
 ├── Languages/              English / 繁體中文 / 简体中文
 ├── Textures/、Sounds/      美術與音效資源
 ├── docs/                   系統設計文件
 ├── .source/                C# 原始碼（DMSE.sln）
-│   ├── DMSE/               主專案 → 1.6/Assemblies/DMSE.dll
-│   └── GravshipExpanded/   VGE 相容專案 → 1.6/GravshipExpanded/Assemblies/DMSE_VGE_Patch.dll
+│   ├── DMSE/               主專案 → 1.6/Assemblies、1.7/Assemblies 的 DMSE.dll
+│   └── GravshipExpanded/   VGE 相容專案 → 1.6/、1.7/GravshipExpanded/Assemblies 的 DMSE_VGE_Patch.dll
 └── _to_delete/             已遷移至 DMS Core 的舊內容（無人機、超重型 Automatroid、Boss 等），待清除
 ```
 
@@ -45,6 +48,8 @@ _Dead-Man-Switch-Expedition/
 | `1.6/CE` | `CETeam.CombatExtended` |
 | `1.6/Cinders` | `BreadMo.Cinders` |
 | `1.6/GravshipExpanded` | `vanillaexpanded.gravship` |
+
+RimWorld 1.7 依序載入 `/`、`1.6`、`1.7`：沿用 1.6 的 Defs / Patches，`1.7/Assemblies/DMSE.dll` 以相同相對路徑蓋掉 1.6 的 .NET Framework 版本；VGE 相容同理（`1.6/GravshipExpanded` 之後接 `1.7/GravshipExpanded`）。Combat Extended 尚無 1.7 版，1.7 不載入 `1.6/CE` 與依賴它的 `1.6/Cinders`。
 
 ---
 
@@ -137,7 +142,23 @@ _Dead-Man-Switch-Expedition/
 `.source/GravshipExpanded` 為 VGE 相容專案（`VGEFuelHandler`）：把 VGE 的 Astrofuel 儲存槽（PipeSystem `CompResourceStorage`）註冊為轉移燃料來源，以化學燃料當量計（1 Astrofuel = 2）。
 
 ### 建置
-以 Visual Studio 開啟 `.source/DMSE.sln`，參考組件放於 `.source/DMSE/bin/Debug/`（`Assembly-CSharp`、`0Harmony` 等，已被 `.gitignore` 排除）。輸出 DLL 需複製至 `1.6/Assemblies/`（主專案）與 `1.6/GravshipExpanded/Assemblies/`（VGE 專案）。VGE 專案另外參考 `VanillaGravshipExpanded.dll` 與 VEF 的 `PipeSystem.dll`（預設路徑為同一 `Mods` 資料夾下的 `VanillaExpandedFramework`）；VGE 裝在 Workshop 時以 `-p:ReferencePath=<VGE>\1.6\Assemblies` 指定。
+兩個專案都是 SDK 格式的多目標專案，同一份原始碼建置 1.6 與 1.7（需要 .NET 10 SDK）：
+
+| 目標 | 遊戲版本 | 參考 | 輸出 |
+|---|---|---|---|
+| `net472`（VGE 專案為 `net48`） | 1.6 | NuGet `Krafs.Rimworld.Ref 1.6.4871`、`Lib.Harmony 2.4.2` | `1.6/Assemblies/`、`1.6/GravshipExpanded/Assemblies/` |
+| `net10.0`（定義 `RW_1_7`） | 1.7 | 遊戲根目錄的 `Assembly-CSharp.dll`、`UnityStubs.dll`、`Waylith.dll`，NuGet `Lib.Harmony 3.0.0-rc.2` | `1.7/Assemblies/`、`1.7/GravshipExpanded/Assemblies/` |
+
+```bash
+dotnet build .source/DMSE/DMSE.csproj -c Release
+dotnet build .source/GravshipExpanded/DMSE_VGE.csproj -c Release
+```
+
+- 先建置主專案：VGE 專案參考各版本輸出的 `DMSE.dll`。只建一個版本時加上 `-f net472`（VGE 為 `-f net48`）或 `-f net10.0`。
+- 1.7 直接參考遊戲本體的 DLL，預設模組位於 `<RimWorld>/Mods/<本模組>/`；遊戲裝在別處時加 `-p:RimWorldDir=<遊戲目錄>\`。遊戲執行中不要建置（DLL 會被鎖住）。
+- VGE 專案另外參考 `VanillaGravshipExpanded.dll`（預設找 `<RimWorld>/Mods/VanillaGravshipExpanded`，再找 Steam 創意工坊 3609835606；其他位置用 `-p:VGEAssemblies=<VGE>\1.6\Assemblies\`）與 VEF 的 `PipeSystem.dll`（同一 `Mods` 資料夾下的 `VanillaExpandedFramework`）。VGE / VEF 目前只有 1.6 版，1.7 版的相容 DLL 也參考同一份，由 1.7 的相容層載入。
+- 需要分版本的程式碼用 `#if RW_1_7`。1.7 使用 Harmony 3：補丁的 `__instance` / `__result` 型別必須與目標一致，一個補丁類別失敗會讓 `PatchAll` 中止其後所有補丁。
+- 上傳創意工坊時可勾選「建立資源包」（`Assets.zip`，已被 `.gitignore` 排除），但**不要勾「略過原始貼圖」**：1.6 讀不懂 `Assets.zip`。
 
 ---
 

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -95,6 +96,12 @@ namespace DMSE
         /// 冷卻結束後才開始計時；不隨存檔保留，載入後自動重新瞄準。
         /// </summary>
         private int warmupEndTick = -1;
+
+        /// <summary>
+        /// 瞄準中的砲管方位角（0=North/+Z，順時針）；NaN = 不轉向（目標與本地同一 tile）。
+        /// 瞄準開始時計算，與 <see cref="warmupEndTick"/> 一樣不存檔。
+        /// </summary>
+        private float aimAngle = float.NaN;
 
         /// <summary>是否在持續射擊狀態。</summary>
         public bool IsSustainedFiring => targetTileId >= 0;
@@ -207,16 +214,19 @@ namespace DMSE
 
                 // 砲管轉向目標世界方位（瞄準開始時，讓玩家有 4 秒看到砲管旋轉）
                 int srcTileId = parent.Map?.Tile.tileId ?? -1;
-                if (srcTileId >= 0 && srcTileId != targetTileId)
-                {
-                    float angle = ArtilleryStrikeUtility.WorldDirectionAngle(srcTileId, targetTileId);
-                    SetTurretRotation(angle);
-                }
+                aimAngle = srcTileId >= 0 && srcTileId != targetTileId
+                    ? ArtilleryStrikeUtility.WorldDirectionAngle(srcTileId, targetTileId)
+                    : float.NaN;
+                SetTurretRotation(aimAngle);
                 return;
             }
 
-            // 瞄準進行中
-            if (now < warmupEndTick) { return; }
+            // 瞄準進行中：原版 TurretTop 沒有本地目標時會閒置擺動，每 tick 拉回瞄準方位
+            if (now < warmupEndTick)
+            {
+                SetTurretRotation(aimAngle);
+                return;
+            }
 
             // 瞄準完畢 → 開火
             warmupEndTick = -1;
@@ -416,23 +426,21 @@ namespace DMSE
         }
 
         // =====================================================================
-        //  砲管旋轉（反射設定 Building_TurretGun.curRotation）
+        //  砲管旋轉（設定 Building_TurretGun.top 的 TurretTop.CurRotation）
         // =====================================================================
 
-        private static readonly System.Reflection.FieldInfo s_curRotationField =
-            typeof(Building_TurretGun).GetField(
-                "curRotation",
-                System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+        private static readonly AccessTools.FieldRef<Building_TurretGun, TurretTop> TurretTopRef =
+            AccessTools.FieldRefAccess<Building_TurretGun, TurretTop>("top");
 
         /// <summary>
-        /// 將砲管轉向指定方位角（0=North/+Z，90=East/+X）。
-        /// 透過反射存取 <see cref="Building_TurretGun"/> 的私有 curRotation 欄位。
+        /// 將砲管轉向指定方位角（0=North/+Z，90=East/+X，與 <see cref="TurretTop.CurRotation"/> 相同）；NaN 時不動作。
+        /// 砲管朝向存放在 <see cref="Building_TurretGun"/> 的 protected 欄位 top（<see cref="TurretTop"/>）。
         /// </summary>
         private void SetTurretRotation(float angleDeg)
         {
-            if (parent is Building_TurretGun turret)
+            if (!float.IsNaN(angleDeg) && parent is Building_TurretGun turret && TurretTopRef(turret) is TurretTop top)
             {
-                s_curRotationField?.SetValue(turret, angleDeg);
+                top.CurRotation = angleDeg;
             }
         }
 

@@ -93,7 +93,7 @@
     <modExtensions>
       <li Class="DMSE.BVRTargetProps">
         <distanceLevel>1</distanceLevel>
-        <stealthLevel>0.5</stealthLevel>
+        <stealthLevel>0</stealthLevel>
         <speed>15</speed>
       </li>
     </modExtensions>

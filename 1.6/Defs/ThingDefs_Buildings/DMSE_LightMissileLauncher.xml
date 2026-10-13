@@ -92,7 +92,7 @@
     <modExtensions>
       <li Class="DMSE.BVRTargetProps">
         <distanceLevel>1.2</distanceLevel>
-        <stealthLevel>0.8</stealthLevel>
+        <stealthLevel>0</stealthLevel>
         <speed>22</speed>
       </li>
     </modExtensions>
@@ -189,7 +189,7 @@
       <li Class="CompProperties_Flickable" />
       <li Class="CompProperties_Breakdownable" />
       <li Class="DMSE.CompProperties_MissileRailLauncher">
-        <skyfaller>DMSE_SkyFaller_Interceptor</skyfaller>
+        <skyfaller>DMSE_SkyFaller_LightMissile</skyfaller>
         <skyfallerIncoming>DMSE_Incoming_LightMissile</skyfallerIncoming>
         <worldObjectDef>DMSE_WorldObject_LightMissile</worldObjectDef>
         <missileBody>DMSE_MissileBody_Light</missileBody>

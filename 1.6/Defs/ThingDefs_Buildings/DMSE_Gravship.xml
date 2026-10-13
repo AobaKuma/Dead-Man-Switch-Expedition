@@ -248,9 +248,6 @@
       <graphicClass>Graphic_Single</graphicClass>
       <texPath>Things/Building/NuclearThruster/building</texPath>
       <drawSize>(4.8,8)</drawSize>
-      <shadowData>
-        <volume>(1.8, 0.75, 1.8)</volume>
-      </shadowData>
     </graphicData>
     <statBases>
       <MaxHitPoints>1000</MaxHitPoints>
