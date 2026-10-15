@@ -57,8 +57,8 @@ namespace DMSE
             if (e.boosterThrust > 0f)
             {
                 // 助推器只在離軌點火：兩次點火時間不同
-                Row(listing, "DMSE.Transfer.UI.DepartureBurnTime".Translate(), Hours(e.burnHours));
-                Row(listing, "DMSE.Transfer.UI.ArrivalBurnTime".Translate(), Hours(e.arrivalBurnHours));
+                Row(listing, "DMSE.Transfer.Phase.DepartureBurn".Translate(), Hours(e.burnHours));
+                Row(listing, "DMSE.Transfer.Phase.ArrivalBurn".Translate(), Hours(e.arrivalBurnHours));
             }
             else
             {

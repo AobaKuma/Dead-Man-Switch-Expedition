@@ -202,9 +202,9 @@ namespace DMSE
                 // 第一列：彈頭（左半）| 導引（右半）
                 float halfW = r.width * 0.5f;
                 DrawPartLabel(new Rect(r.x,         r.y, halfW, 16f),
-                    "DMSE.MissileInventory.Warhead".Translate(),  showWH,  noneStr, whDiff);
+                    "DMSE.Missile.Cat.Warhead".Translate(),  showWH,  noneStr, whDiff);
                 DrawPartLabel(new Rect(r.x + halfW, r.y, halfW, 16f),
-                    "DMSE.MissileInventory.Guidance".Translate(), showGUD, noneStr, gudDiff);
+                    "DMSE.Missile.Cat.Guidance".Translate(), showGUD, noneStr, gudDiff);
 
                 // 第二列：爆炸半徑 & 傷害（僅繪製一次，有 pending 時橙黃色）
                 GUI.color = isPending ? PendingColor : DimColor;
@@ -221,7 +221,7 @@ namespace DMSE
                 // 攔截彈：固定戰備狀態
                 GUI.color = ReadyColor;
                 Widgets.Label(new Rect(r.x, r.y, r.width, 16f),
-                    "DMSE.MissileInventory.InterceptorReady".Translate());
+                    "DMSE.MissileLauncher.Interceptor.Ready".Translate());
             }
 
             GUI.color = Color.white;

@@ -69,6 +69,7 @@
 		<value>
 			<li>DMSE_FusionCore</li>
 			<li>DMSE_FuelSiloTank</li>
+			<li>DMSE_FuelTankSmall</li>
 			<li>DMSE_SolidRocketThruster</li>
 		</value>
 	</Operation>

@@ -129,6 +129,62 @@
     <uiOrder>2160</uiOrder>
   </ThingDef>
 
+  <!-- 2x2 小型燃料筒倉：燃料筒倉的縮小版，同樣可蓋在岩地上供轉移飛行使用 -->
+  <ThingDef ParentName="FuelTankBase">
+    <defName>DMSE_FuelTankSmall</defName>
+    <label>small chemfuel silo</label>
+    <description>A compact storage tank for liquid fuels. Built from the same layered metal plates and special alloys as the larger silo, it stores pressurized liquefied fuel in a smaller footprint, and supplies it to the thrusters of a gravship or the transfer engines of a ship built from structural piles.</description>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Building/fuelTankSmall</texPath>
+      <drawSize>(3,3)</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>500</MaxHitPoints>
+      <Mass>30</Mass>
+      <Flammability>0</Flammability>
+      <Beauty>-10</Beauty>
+      <WorkToBuild>6000</WorkToBuild>
+    </statBases>
+    <size>(2, 2)</size>
+    <rotatable>false</rotatable>
+    <costList>
+      <Steel>90</Steel>
+      <Plasfiber>40</Plasfiber>
+      <ComponentStamped>2</ComponentStamped>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_OrbitalDynamics</li>
+    </researchPrerequisites>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <comps>
+      <li Class="CompProperties_Refuelable">
+        <fuelCapacity>600</fuelCapacity>
+        <targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>
+        <initialConfigurableTargetFuelLevel>600</initialConfigurableTargetFuelLevel>
+        <fuelFilter>
+          <thingDefs>
+            <li>Chemfuel</li>
+          </thingDefs>
+        </fuelFilter>
+        <fuelLabel>Chemfuel</fuelLabel>
+        <fuelGizmoLabel>Chemfuel</fuelGizmoLabel>
+        <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+        <autoRefuelPercent>1</autoRefuelPercent>
+        <showFuelGizmo>true</showFuelGizmo>
+        <drawOutOfFuelOverlay>false</drawOutOfFuelOverlay>
+        <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+        <canEjectFuel>true</canEjectFuel>
+        <drawFuelGaugeInMap>false</drawFuelGaugeInMap>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>PlaceWorker_BandNode</li>
+    </placeWorkers>
+    <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
+    <uiOrder>2158</uiOrder>
+  </ThingDef>
+
   <ThingDef ParentName="ThrusterBase">
     <defName>DMSE_SolidRocketThruster</defName>
     <label>rocket booster</label>

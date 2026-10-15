@@ -134,8 +134,6 @@
   <DMSE.Transfer.UI.MaxDistance>航程（格）</DMSE.Transfer.UI.MaxDistance>
   <DMSE.Transfer.UI.CannotDepart>无法起飞</DMSE.Transfer.UI.CannotDepart>
   <DMSE.Transfer.UI.BurnTime>单次点火</DMSE.Transfer.UI.BurnTime>
-  <DMSE.Transfer.UI.DepartureBurnTime>离轨点火</DMSE.Transfer.UI.DepartureBurnTime>
-  <DMSE.Transfer.UI.ArrivalBurnTime>入轨点火</DMSE.Transfer.UI.ArrivalBurnTime>
   <DMSE.Transfer.UI.Distance>距离（格）</DMSE.Transfer.UI.Distance>
   <DMSE.Transfer.UI.FuelRequired>燃料需求</DMSE.Transfer.UI.FuelRequired>
   <DMSE.Transfer.UI.CoastTime>滑行</DMSE.Transfer.UI.CoastTime>

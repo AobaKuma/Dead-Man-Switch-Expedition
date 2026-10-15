@@ -63,7 +63,7 @@ namespace DMSE
             else if (Find.FactionManager.FirstFactionOfDef(DMSE_DefOf.DMS_Army) != null)
             {
                 credits = GameVictoryUtility.MakeEndCredits(
-                    time + "\n" + "DMSE.Impact.Ending.FleetFailed.Intro".Translate(),
+                    time + "\n" + "DMSE.Impact.Ending.Intro".Translate(),
                     "DMSE.Impact.Ending.FleetFailed.Outro".Translate(),
                     string.Empty,
                     "DMSE.Impact.Ending.Aboard".Translate(),

@@ -17,7 +17,7 @@
 
   <ScorerLaunch>Launch Missile</ScorerLaunch>
 
-  <ScorerLaunchDesc>Launches the loaded tactical missile. The missile will be able to strike targets outside the large map at long range and retain map visibility for 3 days to assess the strike's effectiveness. Re-launching resets this time.</ScorerLaunchDesc>
+  <ScorerLaunchDesc>Launch the loaded tactical missile at a target beyond this map. The target map stays visible for 2 days to assess damage; launching again resets the timer.</ScorerLaunchDesc>
 
   <DMSE.Letter.HuntdownThreat.Label>Huntdown</DMSE.Letter.HuntdownThreat.Label>
   <DMSE.Letter.HuntdownThreat.Text>(TODO) blablabla, anyway {0} need you dead.</DMSE.Letter.HuntdownThreat.Text>
@@ -75,7 +75,6 @@
   <DMSE.Impact.Ending.Outro>Fortunately, this was not the maximum output the nuclear-thermal engines could produce. After the disaster subsided, most people on the surface survived. Whatever the purpose behind it, this impact will be remembered forever in the history of this world.</DMSE.Impact.Ending.Outro>
   <DMSE.Impact.Ending.Aboard>We may never know whether the crew aboard the gravship escaped at the last moment, or vanished entirely in the impact.</DMSE.Impact.Ending.Aboard>
 
-  <DMSE.Impact.Ending.FleetFailed.Intro>The gravship streaked across the sky with a blazing trail, carrying immense mass into the ground. The horizon turned to light, and violent shockwaves followed, becoming storms and earthquakes that swept across the planet's surface. In a short span, countless lives and landscapes were erased in this world-shattering impact.</DMSE.Impact.Ending.FleetFailed.Intro>
   <DMSE.Impact.Ending.FleetFailed.Outro>After assessing the damage, colonial fleet command could only evacuate surface survivors. The projected terraforming cost forced the fleet to abandon development of this planet. Whatever the purpose behind it, both the fleet and this world will remember this impact forever.</DMSE.Impact.Ending.FleetFailed.Outro>
 
   <DMSE.Impact.Planetkiller.Ending.Intro>The gravship cut across the sky, every thermonuclear engine roaring with overwhelming thrust, before driving its colossal mass into the ground. A wall of rising crust surged along the horizon, and the following superheated shockwave became a sea of fire that swept across the planet's surface.</DMSE.Impact.Planetkiller.Ending.Intro>
@@ -131,7 +130,7 @@
   <DMSE.Missile.NeedResources>Needs (for assembly): {0}</DMSE.Missile.NeedResources>
   <DMSE.Missile.ReadyToAssemble>Resources ready — confirm to begin assembly</DMSE.Missile.ReadyToAssemble>
   <DMSE.Missile.NoResources>No resources available to assemble</DMSE.Missile.NoResources>
-  <DMSE.Missile.EditingSlot>Editing missile 1 of {1} in rack</DMSE.Missile.EditingSlot>
+  <DMSE.Missile.EditingSlot>Editing missile 1 of {0} in rack</DMSE.Missile.EditingSlot>
   <DMSE.Missile.ConfirmAssembly>Queue for assembly</DMSE.Missile.ConfirmAssembly>
   <DMSE.Missile.AssemblyQueued>Assembly queued — colonists will begin shortly</DMSE.Missile.AssemblyQueued>
   <DMSE.Missile.ResetToCurrent>Reset to assembled config</DMSE.Missile.ResetToCurrent>
@@ -153,19 +152,16 @@
   <DMSE.Tab.MissileInventory>Inventory</DMSE.Tab.MissileInventory>
   <DMSE.MissileInventory.Count>Loaded: {0} / {1}</DMSE.MissileInventory.Count>
   <DMSE.MissileInventory.Empty>No missiles loaded.</DMSE.MissileInventory.Empty>
-  <DMSE.MissileInventory.Warhead>Warhead</DMSE.MissileInventory.Warhead>
-  <DMSE.MissileInventory.Guidance>Guidance</DMSE.MissileInventory.Guidance>
   <!-- {0} = blast radius, {1} = damage -->
   <DMSE.MissileInventory.Stats>Blast {0}  ·  Dmg {1}</DMSE.MissileInventory.Stats>
   <DMSE.MissileInventory.Pending>assembly pending</DMSE.MissileInventory.Pending>
-  <DMSE.MissileInventory.InterceptorReady>Ready to fire</DMSE.MissileInventory.InterceptorReady>
 
   <!-- ==================== Ballistic silo (CompMissileLauncher_Ballistic) ==================== -->
   <!-- Gizmo: fire button -->
   <DMSE.MissileLauncher.Ballistic.Fire>Fire Ballistic Missile</DMSE.MissileLauncher.Ballistic.Fire>
   <DMSE.MissileLauncher.Ballistic.FireDesc>Launch the assembled ballistic missile at a world-map target. The missile follows a lofted trajectory and is nearly impossible to intercept once launched.</DMSE.MissileLauncher.Ballistic.FireDesc>
   <!-- Disabled reasons -->
-  <DMSE.MissileLauncher.Ballistic.NotLoaded>Missile not assembled. Configure warhead, guidance, and payload in the Assembly tab, then wait for colonists to deliver materials and complete assembly.</DMSE.MissileLauncher.Ballistic.NotLoaded>
+  <DMSE.MissileLauncher.Ballistic.NotLoaded>Missile not assembled. Set it up in the Assembly tab; colonists will deliver materials and assemble it.</DMSE.MissileLauncher.Ballistic.NotLoaded>
   <!-- Inspect strings -->
   <DMSE.MissileLauncher.Ballistic.Loaded>Ballistic missile: assembled and ready</DMSE.MissileLauncher.Ballistic.Loaded>
   <DMSE.MissileLauncher.Ballistic.LoadedWith>Ballistic missile loaded: {0}</DMSE.MissileLauncher.Ballistic.LoadedWith>
@@ -175,11 +171,10 @@
   <!-- ==================== Artillery strike (CompArtilleryStrike) ==================== -->
   <!-- Gizmo -->
   <DMSE.Artillery.Fire>Fire Artillery</DMSE.Artillery.Fire>
-  <DMSE.Artillery.FireDesc>Select a target on the world map. The howitzer fires a visible departing shell, then tracks it as a world-travel object until it re-enters the destination tile from the correct direction and detonates. Sustained — keeps firing until stopped.</DMSE.Artillery.FireDesc>
+  <DMSE.Artillery.FireDesc>Select a target on the world map. Keeps firing until stopped.</DMSE.Artillery.FireDesc>
   <DMSE.Artillery.Stop>Stop Firing</DMSE.Artillery.Stop>
   <DMSE.Artillery.StopDesc>Halt sustained fire. Current status: {0}</DMSE.Artillery.StopDesc>
   <!-- Disabled / error reasons -->
-  <DMSE.Artillery.NotConfigured>Artillery not configured (missing def reference in XML).</DMSE.Artillery.NotConfigured>
   <DMSE.Artillery.TooClose>Target is too close — minimum range is {0} cells.</DMSE.Artillery.TooClose>
   <DMSE.Artillery.NoFireControl>No fire control radar with a free guidance channel available.</DMSE.Artillery.NoFireControl>
   <DMSE.Artillery.NoAmmo>No shell loaded — sustained fire halted.</DMSE.Artillery.NoAmmo>

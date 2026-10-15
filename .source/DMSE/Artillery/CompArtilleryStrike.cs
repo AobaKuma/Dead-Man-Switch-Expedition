@@ -59,6 +59,22 @@ namespace DMSE
         {
             compClass = typeof(CompArtilleryStrike);
         }
+
+        public override IEnumerable<string> ConfigErrors(ThingDef parentDef)
+        {
+            foreach (string e in base.ConfigErrors(parentDef))
+            {
+                yield return e;
+            }
+            if (departureProjectileDef == null)
+            {
+                yield return "departureProjectileDef is null.";
+            }
+            if (worldObjectDef == null)
+            {
+                yield return "worldObjectDef is null.";
+            }
+        }
     }
 
     // =========================================================================
@@ -313,6 +329,8 @@ namespace DMSE
         //  注意：不檢查冷卻，允許在冷卻中選定目標並排程持續射擊。
         // =====================================================================
 
+        private const string NotConfiguredReason = "Artillery not configured (missing def reference in XML).";
+
         private bool CanFireGizmo(out string reason)
         {
             if (!Active)
@@ -320,14 +338,15 @@ namespace DMSE
                 reason = "DMSE.BVR.DeviceInactive".Translate();
                 return false;
             }
+            // 設定錯誤只會出現在開發階段（載入時已由 ConfigErrors 回報），不翻譯
             if (Props.departureProjectileDef == null || Props.worldObjectDef == null)
             {
-                reason = "DMSE.Artillery.NotConfigured".Translate();
+                reason = NotConfiguredReason;
                 return false;
             }
             if (ResolveProjectileDef() == null)
             {
-                reason = "DMSE.Artillery.NotConfigured".Translate();
+                reason = NotConfiguredReason;
                 return false;
             }
             reason = null;

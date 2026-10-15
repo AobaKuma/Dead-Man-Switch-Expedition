@@ -10,6 +10,15 @@
   <!-- EN: Chemfuel -->
   <DMSE_FuelSiloTank.comps.CompRefuelable.fuelLabel>液态燃料</DMSE_FuelSiloTank.comps.CompRefuelable.fuelLabel>
   
+  <!-- EN: small chemfuel silo -->
+  <DMSE_FuelTankSmall.label>小型液态燃料筒仓</DMSE_FuelTankSmall.label>
+  <!-- EN: A compact storage tank for liquid fuels. Built from the same layered metal plates and special alloys as the larger silo, it stores pressurized liquefied fuel in a smaller footprint, and supplies it to the thrusters of a gravship or the transfer engines of a ship built from structural piles. -->
+  <DMSE_FuelTankSmall.description>一种用於储存液态燃料的小型储槽，采用与大型筒仓相同的多层金属板与特殊合金结构，以较小的占地安全存放加压液化燃料，并为重力船上的推进器或结构桩船舰上的转移引擎供应燃料。</DMSE_FuelTankSmall.description>
+  <!-- EN: Chemfuel -->
+  <DMSE_FuelTankSmall.comps.CompRefuelable.fuelGizmoLabel>化合燃料</DMSE_FuelTankSmall.comps.CompRefuelable.fuelGizmoLabel>
+  <!-- EN: Chemfuel -->
+  <DMSE_FuelTankSmall.comps.CompRefuelable.fuelLabel>液态燃料</DMSE_FuelTankSmall.comps.CompRefuelable.fuelLabel>
+  
   <!-- EN: Fusion reactor -->
   <DMSE_FusionCore.label>聚变反应炉</DMSE_FusionCore.label>
   <!-- EN: A highly mature compact tokamak fusion reactor, commonly found in colonial fleets and ships used in the Enlightened World, has a built-in supercritical carbon dioxide turbine to provide power for its own cycle and ship equipment. However, its most crucial function is to preheat the ship's nuclear thermal propulsion system so that it can reach its maximum design power to move small-mass celestial bodies.\n\nOn a ship built from structural piles, each working fusion reactor supports up to two nuclear thermal thrusters. -->

@@ -7,6 +7,7 @@
 		<value>
 			<li>DMSE_SolidRocketThruster</li>
 			<li>DMSE_FuelSiloTank</li>
+			<li>DMSE_FuelTankSmall</li>
 		</value>
 	</Operation>
 
@@ -15,11 +16,12 @@
 		<value>
 			<li>DMSE_FusionCore</li>
 			<li>DMSE_FuelSiloTank</li>
+			<li>DMSE_FuelTankSmall</li>
 			<li>DMSE_SolidRocketThruster</li>
 		</value>
 	</Operation>
 
-	<!-- 将DMSE燃料储罐转换为VGE的Astrofuel系统 -->
+	<!-- 将DMSE燃料储罐（燃料筒仓与小型燃料筒仓）转换为VGE的Astrofuel系统 -->
 	<Operation Class="PatchOperationSequence">
 		<operations>
 			<!-- 代替label -->
@@ -29,22 +31,28 @@
 					<label>Astrofuel silo</label>
 				</value>
 			</li>
+			<li Class="PatchOperationReplace">
+				<xpath>/Defs/ThingDef[defName="DMSE_FuelTankSmall"]/label</xpath>
+				<value>
+					<label>small astrofuel silo</label>
+				</value>
+			</li>
 
 			<!-- 移除原有的CompRefuelable -->
 			<li Class="PatchOperationRemove">
-				<xpath>/Defs/ThingDef[defName="DMSE_FuelSiloTank"]/comps/li[@Class="CompProperties_Refuelable"]</xpath>
+				<xpath>/Defs/ThingDef[defName="DMSE_FuelSiloTank" or defName="DMSE_FuelTankSmall"]/comps/li[@Class="CompProperties_Refuelable"]</xpath>
 			</li>
 
 			<!-- 比照 VGE 的燃料槽不繼承 FuelTankBase 的 comps：否則會多一個逆重船設施 comp 與原版化學燃料爆炸 comp -->
 			<li Class="PatchOperationAttributeSet">
-				<xpath>/Defs/ThingDef[defName="DMSE_FuelSiloTank"]/comps</xpath>
+				<xpath>/Defs/ThingDef[defName="DMSE_FuelSiloTank" or defName="DMSE_FuelTankSmall"]/comps</xpath>
 				<attribute>Inherit</attribute>
 				<value>False</value>
 			</li>
 
-			<!-- 添加VGE的CompResourceStorage -->
+			<!-- 添加VGE的CompResourceStorage（容量以燃料筒仓为准，小型燃料筒仓另外覆写） -->
 			<li Class="PatchOperationAdd">
-				<xpath>/Defs/ThingDef[defName="DMSE_FuelSiloTank"]/comps</xpath>
+				<xpath>/Defs/ThingDef[defName="DMSE_FuelSiloTank" or defName="DMSE_FuelTankSmall"]/comps</xpath>
 				<value>
 					<li Class="PipeSystem.CompProperties_ResourceStorage">
 						<pipeNet>VGE_AstrofuelNet</pipeNet>
@@ -100,18 +108,24 @@
 					</li>
 				</value>
 			</li>
+			<li Class="PatchOperationReplace">
+				<xpath>/Defs/ThingDef[defName="DMSE_FuelTankSmall"]/comps/li[@Class="PipeSystem.CompProperties_ResourceStorage"]/storageCapacity</xpath>
+				<value>
+					<storageCapacity>600</storageCapacity>
+				</value>
+			</li>
 
 			<!-- 添加building节点和管道相关构建命令 -->
 			<li Class="PatchOperationSequence">
 				<operations>
 					<li Class="PatchOperationAdd">
-						<xpath>/Defs/ThingDef[defName="DMSE_FuelSiloTank"]</xpath>
+						<xpath>/Defs/ThingDef[defName="DMSE_FuelSiloTank" or defName="DMSE_FuelTankSmall"]</xpath>
 						<value>
 							<building />
 						</value>
 					</li>
 					<li Class="PatchOperationAdd">
-						<xpath>/Defs/ThingDef[defName="DMSE_FuelSiloTank"]/building</xpath>
+						<xpath>/Defs/ThingDef[defName="DMSE_FuelSiloTank" or defName="DMSE_FuelTankSmall"]/building</xpath>
 						<value>
 							<relatedBuildCommands>
 								<li>VGE_AstrofuelPipe</li>

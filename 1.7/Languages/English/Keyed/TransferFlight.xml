@@ -134,8 +134,6 @@
   <DMSE.Transfer.UI.MaxDistance>Range (tiles)</DMSE.Transfer.UI.MaxDistance>
   <DMSE.Transfer.UI.CannotDepart>Cannot depart</DMSE.Transfer.UI.CannotDepart>
   <DMSE.Transfer.UI.BurnTime>Each burn</DMSE.Transfer.UI.BurnTime>
-  <DMSE.Transfer.UI.DepartureBurnTime>Departure burn</DMSE.Transfer.UI.DepartureBurnTime>
-  <DMSE.Transfer.UI.ArrivalBurnTime>Arrival burn</DMSE.Transfer.UI.ArrivalBurnTime>
   <DMSE.Transfer.UI.Distance>Distance (tiles)</DMSE.Transfer.UI.Distance>
   <DMSE.Transfer.UI.FuelRequired>Fuel required</DMSE.Transfer.UI.FuelRequired>
   <DMSE.Transfer.UI.CoastTime>Coast</DMSE.Transfer.UI.CoastTime>

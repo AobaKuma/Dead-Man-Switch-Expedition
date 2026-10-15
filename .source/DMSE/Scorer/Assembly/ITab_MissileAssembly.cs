@@ -59,7 +59,7 @@ namespace DMSE
                     IReadOnlyList<Thing> held = rack.HeldThings;
                     if (held != null && held.Count > 0)
                     {
-                        return "DMSE.Missile.EditingSlot".Translate(1, held.Count);
+                        return "DMSE.Missile.EditingSlot".Translate(held.Count);
                     }
                 }
                 return null;

@@ -19,7 +19,7 @@
   <ScorerLaunch>发射导弹</ScorerLaunch>
 
   <!-- EN: Launches the loaded tactical missile. The missile will be able to strike targets outside the large map at long range and retain map visibility for 3 days to assess the strike's effectiveness. Re-launching resets this time. -->
-  <ScorerLaunchDesc>发射装载的战术导弹，导弹将能够远程打击大地图外的目标，并保留3天的地图可见性用于评估打击效果，再次发射可以重置该时间。</ScorerLaunchDesc>
+  <ScorerLaunchDesc>发射已装填的战术导弹，可远程打击地图外的目标；目标地图保留 2 天视野以评估战果，再次发射会重置计时。</ScorerLaunchDesc>
 
   <!-- EN: Huntdown -->
   <DMSE.Letter.HuntdownThreat.Label>追捕</DMSE.Letter.HuntdownThreat.Label>
@@ -105,7 +105,6 @@
   <DMSE.Impact.Ending.Aboard>我们无法得知重力船上的船员们是否在最后一刻逃出生天，又或者彻底地随着撞击烟飞灰灭。</DMSE.Impact.Ending.Aboard>
 
   <!-- EN: The gravship streaked across the sky with a blazing trail, carrying immense mass into the ground. The horizon turned to light, and violent shockwaves followed, becoming storms and earthquakes that swept across the planet's surface. In a short span, countless lives and landscapes were erased in this world-shattering impact. -->
-  <DMSE.Impact.Ending.FleetFailed.Intro>重力船拖着长长的轨迹划过天际，携带着巨大的质量没入大地，地平线上的一切都变成了光，随之而来的是剧烈的冲击波化作风暴与地震席卷了整颗星球的地表，在短时间内无数的生灵与景观在这场惊天动地的碰撞之中烟飞灰灭。</DMSE.Impact.Ending.FleetFailed.Intro>
   <!-- EN: After assessing the damage, colonial fleet command could only evacuate surface survivors. The projected terraforming cost forced the fleet to abandon development of this planet. Whatever the purpose behind it, both the fleet and this world will remember this impact forever. -->
   <DMSE.Impact.Ending.FleetFailed.Outro>殖民舰队本部在评估灾情后只能够撤离地面上幸存的人员，可预估的星球改造成本使得殖民舰队不得不中止对这颗星球的开发。无论其背后的目的如何，殖民舰队与这颗星球的历史都将永远记住这一场撞击。</DMSE.Impact.Ending.FleetFailed.Outro>
 
@@ -162,7 +161,7 @@
   <DMSE.Missile.NeedResources>装配所需：{0}</DMSE.Missile.NeedResources>
   <DMSE.Missile.ReadyToAssemble>资源已备齐——确认后开始装配</DMSE.Missile.ReadyToAssemble>
   <DMSE.Missile.NoResources>没有可用于装配的资源</DMSE.Missile.NoResources>
-  <DMSE.Missile.EditingSlot>正在编辑架上第 1 枚（共 {1} 枚）</DMSE.Missile.EditingSlot>
+  <DMSE.Missile.EditingSlot>正在编辑架上第 1 枚（共 {0} 枚）</DMSE.Missile.EditingSlot>
   <DMSE.Missile.ConfirmAssembly>加入装配队列</DMSE.Missile.ConfirmAssembly>
   <DMSE.Missile.AssemblyQueued>已加入队列——殖民者即将开始装配</DMSE.Missile.AssemblyQueued>
   <DMSE.Missile.ResetToCurrent>还原为已装配设定</DMSE.Missile.ResetToCurrent>
@@ -184,17 +183,14 @@
   <DMSE.Tab.MissileInventory>库存</DMSE.Tab.MissileInventory>
   <DMSE.MissileInventory.Count>已装填：{0} / {1}</DMSE.MissileInventory.Count>
   <DMSE.MissileInventory.Empty>未装填任何导弹。</DMSE.MissileInventory.Empty>
-  <DMSE.MissileInventory.Warhead>弹头</DMSE.MissileInventory.Warhead>
-  <DMSE.MissileInventory.Guidance>导引</DMSE.MissileInventory.Guidance>
   <!-- {0} = 爆炸半径, {1} = 伤害 -->
   <DMSE.MissileInventory.Stats>爆炸 {0}  ·  伤害 {1}</DMSE.MissileInventory.Stats>
   <DMSE.MissileInventory.Pending>装配待定</DMSE.MissileInventory.Pending>
-  <DMSE.MissileInventory.InterceptorReady>可发射</DMSE.MissileInventory.InterceptorReady>
 
   <!-- 弹道发射井（CompMissileLauncher_Ballistic） -->
   <DMSE.MissileLauncher.Ballistic.Fire>发射弹道导弹</DMSE.MissileLauncher.Ballistic.Fire>
   <DMSE.MissileLauncher.Ballistic.FireDesc>向世界地图目标发射已装配的弹道导弹。导弹以抛物线弹道飞行，一旦发射几乎无法被拦截。</DMSE.MissileLauncher.Ballistic.FireDesc>
-  <DMSE.MissileLauncher.Ballistic.NotLoaded>导弹尚未装配。请在「装配」分页设定弹头、导引与酬载，等待殖民者搬运材料并完成装配。</DMSE.MissileLauncher.Ballistic.NotLoaded>
+  <DMSE.MissileLauncher.Ballistic.NotLoaded>导弹尚未装配。请在「装配」分页设定，殖民者会搬运材料完成装配。</DMSE.MissileLauncher.Ballistic.NotLoaded>
   <DMSE.MissileLauncher.Ballistic.Loaded>弹道导弹：已装配，可发射</DMSE.MissileLauncher.Ballistic.Loaded>
   <DMSE.MissileLauncher.Ballistic.LoadedWith>弹道导弹已装填：{0}</DMSE.MissileLauncher.Ballistic.LoadedWith>
   <DMSE.MissileLauncher.Ballistic.AwaitingAssembly>弹道导弹：等待殖民者完成装配</DMSE.MissileLauncher.Ballistic.AwaitingAssembly>
@@ -202,10 +198,9 @@
 
   <!-- 火炮打击（CompArtilleryStrike） -->
   <DMSE.Artillery.Fire>火炮射击</DMSE.Artillery.Fire>
-  <DMSE.Artillery.FireDesc>在大地图上选定目标。榴弹炮发射可见炮弹，并以世界地图航迹物件追踪，直到炮弹从对应方位重新进入目标 Tile 并落地引爆。持续射击——直到停止命令前持续开火。</DMSE.Artillery.FireDesc>
+  <DMSE.Artillery.FireDesc>选择世界地图上的目标持续炮击，直到下令停止。</DMSE.Artillery.FireDesc>
   <DMSE.Artillery.Stop>停止射击</DMSE.Artillery.Stop>
   <DMSE.Artillery.StopDesc>停止持续射击。当前状态：{0}</DMSE.Artillery.StopDesc>
-  <DMSE.Artillery.NotConfigured>火炮尚未配置（XML 缺少 def 引用）。</DMSE.Artillery.NotConfigured>
   <DMSE.Artillery.TooClose>目标距离太近——最小射程为 {0} 格。</DMSE.Artillery.TooClose>
   <DMSE.Artillery.NoFireControl>没有具备空闲引导通道的火控雷达。</DMSE.Artillery.NoFireControl>
   <DMSE.Artillery.NoAmmo>未装填炮弹——持续射击已停止。</DMSE.Artillery.NoAmmo>
