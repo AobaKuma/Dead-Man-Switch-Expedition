@@ -13,7 +13,6 @@
     </prerequisites>
     <researchViewX>2.00</researchViewX>
     <researchViewY>2.50</researchViewY>
-    <generalRules />
   </ResearchProjectDef>
 
   <!-- 雷達基礎：BVR機制的基礎科技。 -->
@@ -28,7 +27,6 @@
     </prerequisites>
     <researchViewX>1.00</researchViewX>
     <researchViewY>0.30</researchViewY>
-    <generalRules />
   </ResearchProjectDef>
 
   <!-- 巡飛彈：大前期可研究的 BVR 武器。 -->
@@ -43,7 +41,6 @@
     </prerequisites>
     <researchViewX>2.00</researchViewX>
     <researchViewY>0.30</researchViewY>
-    <generalRules />
   </ResearchProjectDef>
 
   <ResearchProjectDef ParentName="DMS_BaseTech">
@@ -57,7 +54,6 @@
     </prerequisites>
     <researchViewX>3.00</researchViewX>
     <researchViewY>2.90</researchViewY>
-    <generalRules />
   </ResearchProjectDef>
 
   <ResearchProjectDef ParentName="DMS_BaseTech">
@@ -117,7 +113,6 @@
     </prerequisites>
     <researchViewX>4.00</researchViewX>
     <researchViewY>0.30</researchViewY>
-    <generalRules />
   </ResearchProjectDef>
 
   <!-- 集成電路：解鎖中型導彈進階系統（搜索雷達、火控雷達、SAM 發射架）。 -->
@@ -136,7 +131,6 @@
     </hiddenPrerequisites>
     <researchViewX>5.00</researchViewX>
     <researchViewY>0.30</researchViewY>
-    <generalRules />
   </ResearchProjectDef>
 
   <!-- 戰略系統：解鎖彈道導彈（3x3 垂發）。 -->
@@ -155,7 +149,6 @@
     </hiddenPrerequisites>
     <researchViewX>6.00</researchViewX>
     <researchViewY>0.30</researchViewY>
-    <generalRules />
   </ResearchProjectDef>
 
 </Defs>

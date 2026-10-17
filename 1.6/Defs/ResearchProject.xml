@@ -13,7 +13,6 @@
     </prerequisites> 
     <researchViewX>2.00</researchViewX>
     <researchViewY>2.50</researchViewY>
-    <generalRules/>
   </ResearchProjectDef>
   
   <ResearchProjectDef ParentName="DMS_BaseTech">
@@ -27,7 +26,6 @@
     </prerequisites> 
     <researchViewX>3.00</researchViewX>
     <researchViewY>2.80</researchViewY>
-    <generalRules/>
   </ResearchProjectDef>
   
   <ResearchProjectDef ParentName="DMS_BaseTech">
