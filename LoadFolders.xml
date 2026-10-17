@@ -24,6 +24,8 @@
 	<v1.7>
 		<li>/</li>
 		<li>1.7</li>
+		<li IfModActive="CETeam.CombatExtended,CETeam.CombatExtended_steam">1.7/CE</li>
+		<li IfModActive="BreadMo.Cinders">1.7/Cinders</li>
 		<li IfModActive="vanillaexpanded.gravship,vanillaexpanded.gravship_steam">1.7/GravshipExpanded</li>
 		<li IfModActive="vanillaexpanded.gravship,vanillaexpanded.gravship_steam" IfModNotActive="CETeam.CombatExtended,CETeam.CombatExtended_steam">1.7/GravshipExpanded/PointDefence</li>
 	</v1.7>
