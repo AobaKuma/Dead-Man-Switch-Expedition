@@ -17,7 +17,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .source/DMSE.BVRAcceptance/r
 - The game starts with `-quicktest` (new Crashlanded colony, 250 map) and the
   active mod list as is. The runner deletes its temporary save
   (`DMSE_BVR_Acceptance`) and quits the game when done. Your own saves are untouched.
-- A full run takes about 15 minutes at ultrafast speed. `-Only` takes comma-separated
+- A full run takes about 20 minutes, mostly at ultrafast speed. `-Only` takes comma-separated
   test ids and runs just those (in suite order), which is handy while fixing one test.
 
 ## Output (`<dir>`)
@@ -44,14 +44,19 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .source/DMSE.BVRAcceptance/r
 | S1 | Seeker target rules (anti-radiation, EM, heat, laser, inertial, TV) |
 | S2 | Laser designator: mark position, duration, indestructible, expiry, no weapon tags |
 | S3 | Anti-radiation and EM seekers on a base map generated at arrival, before its power net switched anything on |
-| W1 | World detection at the ring edge, one letter, red track, alert, ETA within 15 ticks, landing without CIWS |
-| W2 | World lock, interceptor launch, channel kept in flight, kill at the meeting tick |
+| W1 | World detection at the ring edge, one letter, red track, alert, coverage ring (selected / always-show), ETA within 15 ticks, landing without CIWS |
+| W2 | World lock, interceptor launch, channel kept in flight, kill at the meeting tick, flash registered |
 | W3 | Forced miss, re-lock while time remains, second kill |
 | W4 | World survivor arrives as a terminal-only wave; CIWS kills it, SAM stays idle |
 | W5 | Radar loss clears detection and locks; the launched interceptor still resolves |
 | W6 | NPC missile base intercepts from stock, hands over to the generated map, resumes after removal; EM seeker hits the phased array |
 | W7 | TV-guided arrival pauses for the player's target |
+| W8 | World airburst: extra rolls kill the companion missile, spare other destinations and tracks outside the radius |
+| W9 | Target moves: reroute within one terminal check, lock restarts, in-flight interceptor misses, re-engagement on the new route |
+| W10 | CIWS off during a terminal wave: wave stays terminal, SAM idle; CIWS resumes when powered |
+| W11 | ETA while paused and at 1×/2×/3× speed, in map and world view |
 | L1 | Save and reload with a detected track and an interceptor in flight |
+| L2 | Save and reload after a reroute, with the old-route interceptor still flying |
 
 ## Test environment
 

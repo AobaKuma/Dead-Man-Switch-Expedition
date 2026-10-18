@@ -198,6 +198,27 @@ namespace DMSE.BVRAcceptance
         // ==================================================================
 
         /// <summary>A surface tile whose surface-equivalent distance from the home tile is within [min, max].</summary>
+        /// <summary>
+        /// A free tile on <paramref name="center"/>'s layer within [min, max] tiles of it; with <paramref name="closestTo"/>
+        /// valid, the one nearest to that tile, otherwise the nearest to <paramref name="center"/>.
+        /// </summary>
+        public static PlanetTile TileNear(PlanetTile center, float min, float max, PlanetTile closestTo, PlanetTile? exclude = null)
+        {
+            PlanetTile best = PlanetTile.Invalid;
+            float bestScore = float.MaxValue;
+            int count = Find.WorldGrid.TilesCount;
+            for (int i = 0; i < count; i++)
+            {
+                PlanetTile t = new PlanetTile(i, center.Layer);
+                if (t == center || (exclude.HasValue && t == exclude.Value)) { continue; }
+                float d = MissileWorldUtility.RangeDistance(center, t);
+                if (d < min || d > max || Find.WorldObjects.AnyWorldObjectAt(t)) { continue; }
+                float score = closestTo.Valid ? MissileWorldUtility.RangeDistance(closestTo, t) : d;
+                if (score < bestScore) { bestScore = score; best = t; }
+            }
+            return best;
+        }
+
         public static PlanetTile TileAtDistance(float min, float max)
         {
             PlanetTile home = Home.Tile;
@@ -286,6 +307,25 @@ namespace DMSE.BVRAcceptance
         // ==================================================================
         //  Reflection helpers for private state
         // ==================================================================
+
+        /// <summary>
+        /// The mod setting "always show BVR coverage", set in memory only (the public setter also writes the settings file).
+        /// </summary>
+        public static bool ShowAllCoverage
+        {
+            get => WorldComponent_BVRNetwork.Current.ShowAllCoverage;
+            set
+            {
+                object settings = typeof(DMSEMod).GetField("Settings", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public)?.GetValue(null);
+                settings?.GetType().GetField("showBVRWorldCoverage")?.SetValue(settings, value);
+            }
+        }
+
+        /// <summary>Private state of the world BVR drawer (ring cache and pending flashes).</summary>
+        public static System.Collections.IDictionary CoverageRings
+            => Field<System.Collections.IDictionary>(Field<object>(WorldComponent_BVRNetwork.Current, "drawer"), "rings");
+        public static System.Collections.ICollection WorldFlashes
+            => Field<System.Collections.ICollection>(Field<object>(WorldComponent_BVRNetwork.Current, "drawer"), "flashes");
 
         public static T Field<T>(object obj, string name)
         {

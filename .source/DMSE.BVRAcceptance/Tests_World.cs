@@ -60,6 +60,22 @@ namespace DMSE.BVRAcceptance
             yield return new WaitFrames(180);
             t.Screenshot("world_detected_track");
             yield return new WaitFrames(3);
+
+            // Coverage ring: drawn for the selected colony, or for every player node with "always show" on.
+            System.Collections.IDictionary rings = CoverageRings;
+            t.Check(rings != null && rings.Count > 0, "the selected colony draws its coverage ring");
+            bool oldShow = ShowAllCoverage;
+            Override(() => ShowAllCoverage = false, () => ShowAllCoverage = oldShow);
+            Find.WorldSelector.ClearSelection();
+            rings?.Clear();
+            yield return new WaitFrames(10);
+            t.Check(rings != null && rings.Count == 0, "no ring with nothing selected and always-show off");
+            ShowAllCoverage = true;
+            yield return new WaitFrames(10);
+            t.Check(rings != null && rings.Count > 0, "always-show draws the player's ring with nothing selected");
+            t.Screenshot("world_always_show_coverage");
+            yield return new WaitFrames(3);
+            ShowAllCoverage = false;
             CameraJumper.TryHideWorld();
             t.allowPause = false;
             yield return new WaitTicks(300);
@@ -130,10 +146,12 @@ namespace DMSE.BVRAcceptance
             CameraJumper.TryHideWorld();
             t.allowPause = false;
 
+            int flashesBefore = WorldFlashes?.Count ?? -1;
             var waitKill = new WaitUntil(() => killed.Seen, due - Find.TickManager.TicksGame + 60);
             yield return waitKill;
             int destroyedAt = killed.FirstTick;
             t.Require(destroyedAt > 0, "track destroyed by the interceptor");
+            t.Check(flashesBefore >= 0 && WorldFlashes.Count > flashesBefore, "the kill adds a flash on the world map");
             t.Check(destroyedAt - due >= 0 && destroyedAt - due <= 1, $"resolved at the meeting tick ({destroyedAt} vs {due})");
             t.Check(interceptor.Destroyed, "interceptor removed after resolving");
             yield return new WaitTicks(30);

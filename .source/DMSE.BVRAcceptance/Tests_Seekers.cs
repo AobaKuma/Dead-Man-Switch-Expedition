@@ -258,7 +258,12 @@ namespace DMSE.BVRAcceptance
                 new AcceptanceTest("W5", "Radar loss during engagement", Tests_World.RadarLossDuringEngagement),
                 new AcceptanceTest("W6", "NPC abstract defense, map handoff, EM seeker", Tests_World.NpcAbstractDefenseAndSeeker),
                 new AcceptanceTest("W7", "TV guidance manual target", Tests_World.TvGuidanceManualTarget),
+                new AcceptanceTest("W8", "World airburst", Tests_WorldEdge.WorldAirburst),
+                new AcceptanceTest("W9", "Moving target: reroute, lock reset, re-engagement", Tests_WorldEdge.TerminalUpdateReroute),
+                new AcceptanceTest("W10", "Terminal CIWS power loss", Tests_WorldEdge.TerminalCiwsPowerLoss),
+                new AcceptanceTest("W11", "ETA at player speeds and view switches", Tests_WorldEdge.EtaAtPlayerSpeeds),
                 new AcceptanceTest("L1", "Save/load mid-engagement", Tests_Seekers.SaveLoadMidEngagement),
+                new AcceptanceTest("L2", "Save/load after a reroute", Tests_WorldEdge.SaveLoadAfterReroute),
             };
         }
     }
