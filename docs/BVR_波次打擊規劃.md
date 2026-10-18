@@ -1,6 +1,6 @@
 # DMSE 波次打擊規劃（飽和打擊介面）— 設計與實作計畫
 
-> 狀態：**P0、P1（自動版）已實作（§15）；P2–P4 未實作**　｜　建立／更新：2026-10-19　｜　分支 `wave-strike`（基於 `main` `44a97c1`）
+> 狀態：**P0、P1（自動版）、P2（人工版）已實作（§15）；P3–P4 未實作**　｜　建立／更新：2026-10-19　｜　分支 `wave-strike`（基於 `main` `44a97c1`）
 >
 > 來源：波次打擊介面的設計討論紀錄，§0 逐條對照。§14 的待決策事項已於 2026-10-19 照建議值定案。
 
@@ -293,8 +293,9 @@ public ScorerProjectile_WorldObject TryLaunchRound(GlobalTargetInfo target, Thin
 ### 8-2. 人工版：彈道計算
 
 - **工作**：`WorkGiver_ComputeFiringSolution`（`WorkGiver_Scanner`，工作類型 `Research`，掃描 `AwaitingComputation` 的指揮台）→ `JobDriver_ComputeFiringSolution`：走到互動格、帶進度條的工作 toil，每 tick 工作量 = `ResearchSpeed`，給智識經驗。比照 `JobDriver_InitiateTransfer` 與原版研究台。
-- **工作量** = `computeWorkBase + computeWorkPerRound × 未解枚數`，跨圖層目標再 × `crossLayerWorkFactor`。進度存在任務上，中斷後可續算；右鍵指揮台可強制指派（Scanner 自動提供）。
-- **增量計算**：Ready 後加入新導彈只補算新枚數的工作量，任務回到 AwaitingComputation；已算好的波次照常可發射（逐枚看 `solved`）。
+- **工作量** = `computeWorkBase + computeWorkPerRound × 枚數`，跨圖層目標再 × `crossLayerWorkFactor`。進度存在任務上，中斷後可續算；右鍵指揮台可強制指派（Scanner 自動提供）。
+- **逐枚解出**（P2 實作）：基礎工作量做完後，依波次順序每多做一枚的量就解出一枚；某一波的待發射導彈都解好就能發射，不必等後面的波次。每解完一波發一則訊息。
+- **增量計算**（延到 P3，隨「執行中調整波次」一起做）：Ready 後加入新導彈只補算新枚數的工作量，任務回到 AwaitingComputation；已算好的波次照常可發射（逐枚看 `solved`）。
 - **警報** `Alert_StrikeComputationPending`：有任務待計算，但沒有能做研究工作的殖民者，或研究工作被全員停用。
 
 ### 8-3. 自動版
@@ -438,7 +439,7 @@ foreach (MissileWorldObject track in Tracks.OrderBy(t => t.TicksToArrival).ToLis
 |---|---|---|
 | **P0 底層**（已實作，§15） | `MissileRoleExtension` 與 XML 標記；`BuildFiringConfig(Thing)`、`TryLaunchRound`、漣波參數；世界選靶平台註冊表；`StrikeReservation` 與 §8-4 各掛點（先用 Debug 動作保留／釋放驗證）；防空依 ETA 排序；Rail 不再誤射攔截彈 | 沒有保留時，單發 Gizmo、SAM、裝配行為與現行一致；保留中的彈不會被 SAM、單發、裝配消耗；ETA 排序與 §2-3 試算有對應 BVRTests；既有 BVRTests、BVRAcceptance 全數通過 |
 | **P1 自動版**（已實作，§15-5） | `CompStrikeConsole`（自動）、世界選靶、`Dialog_StrikePlan` 規劃／執行模式、帳本 `Strike` 分項與導引期、漣波佇列、航跡標記、Gizmo、inspect、三語 Keyed、`DMSE_StrikeCommandCenter` Def | 12 枚混合彈分 3 波：每波不超過通道；4 聯裝平台一波射完 4 枚、冷卻只起算一次；第 2 波在導引期結束後可發；超射程彈不出現在可用區；存讀檔後任務、佇列、通道占用一致 |
-| **P2 人工版** | `requiresComputation`、WorkGiver／JobDriver（研究）、增量計算、`Alert_StrikeComputationPending`、`DMSE_StrikePlanningTable` Def | 確認後導彈立即保留；研究者算完才可發射；中斷後進度保留；計算中的導彈不被 SAM 取用；加彈只補算新枚數 |
+| **P2 人工版**（已實作，§15-6；增量計算延到 P3） | `requiresComputation`、WorkGiver／JobDriver（研究）、增量計算、`Alert_StrikeComputationPending`、`DMSE_StrikePlanningTable` Def | 確認後導彈立即保留；研究者算完才可發射；中斷後進度保留；計算中的導彈不被 SAM 取用；加彈只補算新枚數 |
 | **P3 回饋** | 抵達預覽時間軸與順序警示、「若現在發射」提示、`Alerts_PlayerMissiles` 分組、任務結束彙總訊息（含攔截／命中）、組別展開指定單枚、執行中調整波次（自動分波已在 P1 完成） | §2-3 方案 A 被標警示、方案 B 不警示；彙總數字與實際戰果一致 |
 | **P4 選配** | 定時發射（指定抵達間隔，在建議時機自動發射）、目標移動超過門檻要求重算、威脅評估與誘餌酬載、NPC 陣地改用波次發射 | 各項獨立驗收 |
 
@@ -547,3 +548,27 @@ foreach (MissileWorldObject track in Tracks.OrderBy(t => t.TicksToArrival).ToLis
 | K8 | 規劃視窗（經由視窗自動分波成 4 波×2）與執行視窗都能正常繪製、沒有錯誤；任務結束時執行視窗自動關閉。截圖已目視確認版面 |
 
 **尚未驗證**：玩家實際以滑鼠操作規劃視窗（點選、Shift 加入、刪除波次）只有繪製與自動分波經過驗收；世界選靶游標標籤沒有自動化測試。
+
+### 15-6. P2 人工版（2026-10-19）
+
+**已完成**
+
+- **`CompProperties_StrikeConsole`** 新增 `computeWorkBase`（1500）、`computeWorkPerRound`（400）、`crossLayerWorkFactor`（1.5）；`StrikeMission` 新增 `computeWorkDone`／`computeWorkTotal`（存檔）。
+- **逐枚解出**：`StrikeComputation.TotalWork`／`SolvedCount`。人工版確認後進入 AwaitingComputation，工作量 =（基礎 + 每枚 × 枚數）× 跨圖層倍率；研究者每 tick 貢獻「研究速度」的工作量，基礎做完後依波次順序每多做 400 就解出一枚。發射判定改為逐波看 `solved`：本波都解好就能發射，計算可在任務執行中繼續；每解完一波、全部解完各發一則訊息。自動版不變（到時一次全解）。
+- **工作**：`WorkGiver_ComputeFiringSolution`（工作類型「研究」，`priorityInType` 110，高於一般研究）、`JobDriver_ComputeFiringSolution`（比照原版研究：互動格、研究特效、進度條、智識經驗、座椅舒適；全部解完自行結束，中斷不丟進度）。右鍵指揮台可強制指派。
+- **警報** `Alert_StrikeComputationPending`：有人工版任務待計算，但該地圖沒有能做研究工作的殖民者（未倒地、研究工作已啟用）。
+- **介面**：規劃視窗顯示人工版的計算工作量，以及此地圖最快研究者約需的時間（沒有研究者時說明）；狀態顯示「等待彈道計算（%）」或「執行中；彈道已算 %」；不能發射時說明本波還差多少。開發者模式「Finish firing solutions」也適用人工版。
+- **Def 與翻譯**：`DMSE_StrikePlanningTable`（3×2、不需電力、研究 `DMSE_Ballistics`、最多 3 波／12 枚；貼圖暫用原版簡易研究台），`DMSE_ComputeFiringSolution` 的 JobDef／WorkGiverDef，三語 Keyed（新增 9 鍵）與 DefInjected。
+
+**延到 P3**：增量計算（加入新導彈只補算新枚數）要等「執行中調整波次」一起做。
+
+**驗證**
+
+- 建置 0 警告、0 錯誤。BVRTests **174 項通過**（P2 新增 7 項：總工作量、跨圖層倍率、基礎工作量前不解、逐枚解出、達總量全解並截斷、跨圖層縮放各門檻、每枚工作量為 0 時基礎做完即全解）。
+- 遊戲內驗收新增 K9，完整套件 **34/34 通過、399 項檢查**（W8 本輪通過，診斷訊息顯示雙發同行的另一枚在會合 tick 被空爆擊落，距離 0.00 格）。
+
+| 測試 | 驗證內容 |
+|---|---|
+| K9 | 規劃桌不需電力；確認後保留 4 枚、要求 3100 工作量、計算前不能發射；沒有人能研究時警報指向規劃桌，有人能研究後警報消失；WorkGiver 提供工作；研究者計算，中斷後進度保留；第 1 波先解出並在第 2 波仍在計算時發射（第 1 波約 tick 8817、第 2 波 10167 解出）；工作量達總量、研究者獲得智識經驗、全部解完後工作自行結束 |
+
+**驗收過程的修正**：完整套件在約凌晨 3 點跑到 K9，殖民者在睡覺，單次指派的工作沒有接上；測試改為選清醒可用的研究者，必要時叫醒並在對方改做別的事時重新指派。另外 1.7 的 `SkillRecord.XpTotalEarned` 只計已完成的等級，經驗檢查改為加上 `xpSinceLastLevel`。

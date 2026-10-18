@@ -3,5 +3,7 @@
 
   <DMSE_StrikeCommandCenter.label>打擊指揮中心</DMSE_StrikeCommandCenter.label>
   <DMSE_StrikeCommandCenter.description>協調導彈打擊的自動化火力指揮中心。選定世界目標後，把本地圖發射架上的進攻導彈分配到各波次並逐波發射，讓便宜的導彈先引走敵方攔截彈，保護後面的高價值導彈。每波上限為本地圖火控雷達的空閒導引通道數；每枚升空的導彈會占用一條通道一小段導引期。確認計畫後相關導彈會被保留，並開始一段短暫的自動彈道計算。</DMSE_StrikeCommandCenter.description>
+  <DMSE_StrikePlanningTable.label>打擊規劃桌</DMSE_StrikePlanningTable.label>
+  <DMSE_StrikePlanningTable.description>以標圖桌、彈道表與計算尺人工規劃協同導彈打擊。波次規劃方式與打擊指揮中心相同，但確認計畫後必須由殖民者在此以研究工作完成彈道計算。彈道依波次順序逐枚解出，後面的波次還在計算時就能先發射第 1 波。不需電力，但每波仍受本地圖火控雷達的空閒導引通道限制。</DMSE_StrikePlanningTable.description>
 
 </LanguageData>

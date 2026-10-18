@@ -100,6 +100,14 @@ namespace DMSE
             float y = Header(inRect, "DMSE.Strike.Plan.Title".Translate());
             y = Line(inRect, y, "DMSE.Strike.Plan.Channels".Translate(console.StrikeCapacity, console.StrikeFree,
                 BVRWorldTuningDef.Current.strikeGuidanceTicks.ToStringTicksToPeriod()));
+            if (console.Props.requiresComputation)
+            {
+                float work = console.WorkFor(mission);
+                float speed = StrikeComputation.FastestResearchSpeed(console.parent.Map);
+                string time = speed > 0f ? Mathf.CeilToInt(work / speed).ToStringTicksToPeriod()
+                    : "DMSE.Strike.Plan.NoResearcher".Translate().ToString();
+                y = Line(inRect, y, "DMSE.Strike.Plan.ComputeWork".Translate(Mathf.RoundToInt(work), time));
+            }
             if (SiteWarning) { y = Line(inRect, y, "DMSE.Strike.Plan.SiteWarning".Translate(), WarnColor); }
 
             Rect body = new Rect(inRect.x, y + 4f, inRect.width, inRect.yMax - ButtonHeight - 12f - y);

@@ -40,6 +40,49 @@ namespace DMSE
             || issue == StrikeRoundIssue.Cooldown;
     }
 
+    /// <summary>
+    /// 人工版彈道計算（docs/BVR_波次打擊規劃.md §8-2）：總工作量 = (基礎 + 每枚 × 枚數) × 跨圖層倍率。
+    /// 基礎工作量做完後，依波次順序每多做「每枚」的量就多解一枚，所以第 1 波可以先發射。
+    /// </summary>
+    public static class StrikeComputation
+    {
+        public static float TotalWork(float workBase, float workPerRound, float factor, int rounds)
+        {
+            return Mathf.Max(0f, (workBase + workPerRound * rounds) * Mathf.Max(0.01f, factor));
+        }
+
+        /// <summary>可做研究工作的殖民者（未倒地、研究工作已啟用）。</summary>
+        public static IEnumerable<Pawn> Researchers(Map map)
+        {
+            if (map == null) { yield break; }
+            foreach (Pawn p in map.mapPawns.FreeColonistsSpawned)
+            {
+                if (!p.Downed && p.workSettings != null && !p.WorkTypeIsDisabled(WorkTypeDefOf.Research)
+                    && p.workSettings.WorkIsActive(WorkTypeDefOf.Research))
+                {
+                    yield return p;
+                }
+            }
+        }
+
+        /// <summary>本地圖最快研究者的研究速度；沒有研究者時回傳 0。</summary>
+        public static float FastestResearchSpeed(Map map)
+        {
+            float best = 0f;
+            foreach (Pawn p in Researchers(map)) { best = Mathf.Max(best, p.GetStatValue(StatDefOf.ResearchSpeed)); }
+            return best;
+        }
+
+        /// <summary>完成 <paramref name="done"/> 工作量後，依波次順序已解的枚數。</summary>
+        public static int SolvedCount(float done, float workBase, float workPerRound, float factor, int rounds)
+        {
+            float afterBase = done / Mathf.Max(0.01f, factor) - workBase;
+            if (afterBase < -0.001f) { return 0; }
+            if (workPerRound <= 0f) { return rounds; }
+            return Mathf.Clamp(Mathf.FloorToInt(afterBase / workPerRound + 0.0001f), 0, rounds);
+        }
+    }
+
     /// <summary>波次打擊的候選列舉、設定指紋、飛行時間與自動分波。</summary>
     public static class StrikeRoundUtility
     {

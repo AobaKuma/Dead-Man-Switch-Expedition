@@ -88,4 +88,17 @@
   <DMSE.Strike.Exec.Fire>Fire</DMSE.Strike.Exec.Fire>
   <DMSE.Strike.Exec.FireTip>Shift-click to launch only what the free channels and ready launchers allow; the rest stays in the wave.</DMSE.Strike.Exec.FireTip>
   <DMSE.Strike.Exec.CancelMission>Cancel mission</DMSE.Strike.Exec.CancelMission>
+
+  <!-- Manual planning table (P2) -->
+  <DMSE.Strike.ComputingManual>Firing solutions {0} computed; a researcher must finish this wave at the planning table</DMSE.Strike.ComputingManual>
+  <DMSE.Strike.State.ComputingManual>awaiting firing-solution computation ({0})</DMSE.Strike.State.ComputingManual>
+  <DMSE.Strike.State.ExecutingComputing>in progress; firing solutions {0}</DMSE.Strike.State.ExecutingComputing>
+  <DMSE.Strike.Msg.ConfirmedManual>Strike mission #{0}: {1} missiles in {2} waves reserved; a researcher must compute the firing solutions at the {3}.</DMSE.Strike.Msg.ConfirmedManual>
+  <DMSE.Strike.Msg.WaveSolved>Strike mission #{0}: firing solutions for wave {1} are ready.</DMSE.Strike.Msg.WaveSolved>
+  <DMSE.Strike.Plan.ComputeWork>Computation work: {0} (about {1} for the fastest researcher here)</DMSE.Strike.Plan.ComputeWork>
+  <DMSE.Strike.Plan.NoResearcher>no colonist here can do research</DMSE.Strike.Plan.NoResearcher>
+  <DMSE.Strike.Alert.ComputationPending>Firing solutions waiting</DMSE.Strike.Alert.ComputationPending>
+  <DMSE.Strike.Alert.ComputationPendingDesc>A strike mission is waiting for a researcher to compute its firing solutions at a strike planning table, but no colonist on that map can do research work.
+
+Enable research work for a colonist on that map.</DMSE.Strike.Alert.ComputationPendingDesc>
 </LanguageData>

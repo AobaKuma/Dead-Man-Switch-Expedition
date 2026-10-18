@@ -88,4 +88,17 @@
   <DMSE.Strike.Exec.Fire>发射</DMSE.Strike.Exec.Fire>
   <DMSE.Strike.Exec.FireTip>按住 Shift 点击只发射空闲通道与就绪发射架允许的部分，其余留在本波。</DMSE.Strike.Exec.FireTip>
   <DMSE.Strike.Exec.CancelMission>取消任务</DMSE.Strike.Exec.CancelMission>
+
+  <!-- Manual planning table (P2) -->
+  <DMSE.Strike.ComputingManual>弹道已算 {0}；本波需由研究者在规划桌算完</DMSE.Strike.ComputingManual>
+  <DMSE.Strike.State.ComputingManual>等待弹道计算（{0}）</DMSE.Strike.State.ComputingManual>
+  <DMSE.Strike.State.ExecutingComputing>执行中；弹道已算 {0}</DMSE.Strike.State.ExecutingComputing>
+  <DMSE.Strike.Msg.ConfirmedManual>打击任务 #{0}：已保留 {1} 枚导弹、分 {2} 波，需由研究者在{3}计算弹道。</DMSE.Strike.Msg.ConfirmedManual>
+  <DMSE.Strike.Msg.WaveSolved>打击任务 #{0}：第 {1} 波弹道解完成。</DMSE.Strike.Msg.WaveSolved>
+  <DMSE.Strike.Plan.ComputeWork>计算工作量：{0}（此处最快的研究者约需 {1}）</DMSE.Strike.Plan.ComputeWork>
+  <DMSE.Strike.Plan.NoResearcher>这里没有能做研究的殖民者</DMSE.Strike.Plan.NoResearcher>
+  <DMSE.Strike.Alert.ComputationPending>弹道计算等待中</DMSE.Strike.Alert.ComputationPending>
+  <DMSE.Strike.Alert.ComputationPendingDesc>有打击任务在等研究者到打击规划桌计算弹道，但该地图没有能做研究工作的殖民者。
+
+请为该地图的殖民者启用研究工作。</DMSE.Strike.Alert.ComputationPendingDesc>
 </LanguageData>

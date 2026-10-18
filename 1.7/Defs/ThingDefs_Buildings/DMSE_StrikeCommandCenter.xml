@@ -73,4 +73,69 @@
     </comps>
   </ThingDef>
 
+
+  <!-- ==================== 打擊規劃桌（人工版）====================
+       與打擊指揮中心相同的波次打擊規劃，但確認計畫後需由會研究的殖民者在此完成彈道計算（研究工作）。
+       依波次順序逐枚解出，第 1 波可先發射。不需電力；單波上限同樣是本地圖的火控導引通道。
+       貼圖暫用原版簡易研究台（佔位）。 -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_StrikePlanningTable</defName>
+    <label>strike planning table</label>
+    <description>A plotting table with ballistic tables and slide rules for planning coordinated missile strikes by hand. It plans waves like the strike command center, but once a plan is confirmed a colonist must compute the firing solutions here as research work. Solutions are worked out missile by missile in wave order, so the first wave can be fired while later waves are still being computed. Needs no power, but each wave is still limited by the free guidance channels of this map's fire-control radars.</description>
+    <graphicData>
+      <texPath>Things/Building/Production/ResearchBenchSimple</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(5,4)</drawSize>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.20</staticSunShadowHeight>
+    <fillPercent>0.5</fillPercent>
+    <pathCost>42</pathCost>
+    <canOverlapZones>false</canOverlapZones>
+    <rotatable>true</rotatable>
+    <size>(3,2)</size>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <statBases>
+      <MaxHitPoints>180</MaxHitPoints>
+      <WorkToBuild>4000</WorkToBuild>
+      <Mass>40</Mass>
+      <Flammability>1.0</Flammability>
+    </statBases>
+    <costList>
+      <Steel>80</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </costList>
+    <building>
+      <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+    </building>
+    <researchPrerequisites>
+      <li>DMSE_Ballistics</li>
+    </researchPrerequisites>
+    <designationCategory>DMS_Category</designationCategory>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
+    <comps>
+      <li Class="CompProperties_Forbiddable" />
+      <li Class="DMSE.CompProperties_StrikeConsole">
+        <requiresComputation>true</requiresComputation>
+        <computeWorkBase>1500</computeWorkBase>
+        <computeWorkPerRound>400</computeWorkPerRound>
+        <crossLayerWorkFactor>1.5</crossLayerWorkFactor>
+        <maxWavesPerMission>3</maxWavesPerMission>
+        <maxRoundsPerMission>12</maxRoundsPerMission>
+      </li>
+    </comps>
+  </ThingDef>
+
 </Defs>

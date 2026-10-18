@@ -10,8 +10,17 @@ namespace DMSE
 {
     public class CompProperties_StrikeConsole : CompProperties
     {
-        /// <summary>人工版（P2）：需殖民者完成彈道計算。P1 只有自動版，此欄位保留。</summary>
+        /// <summary>人工版：確認後需由會研究的殖民者在此完成彈道計算（§8-2）。</summary>
         public bool requiresComputation = false;
+
+        /// <summary>人工版的基礎計算工作量（研究速度 1 的 tick 數）。</summary>
+        public float computeWorkBase = 1500f;
+
+        /// <summary>人工版每枚導彈的計算工作量。</summary>
+        public float computeWorkPerRound = 400f;
+
+        /// <summary>目標在另一圖層（地表 ↔ 軌道）時的工作量倍率。</summary>
+        public float crossLayerWorkFactor = 1.5f;
 
         /// <summary>自動版的機器計算時間（tick）；指揮台不可運作時暫停。0 = 確認後立即就緒。</summary>
         public int autoComputeTicks = 300;
@@ -194,19 +203,93 @@ namespace DMSE
 
             int now = Find.TickManager.TicksGame;
             mission = draft;
-            mission.computeDoneTick = now + Mathf.Max(0, Props.autoComputeTicks);
             mission.state = StrikeMissionState.AwaitingComputation;
-            Messages.Message("DMSE.Strike.Msg.Confirmed".Translate(mission.id, mission.RoundCount, mission.waves.Count),
-                parent, MessageTypeDefOf.TaskCompletion, false);
-            if (Props.autoComputeTicks <= 0) { FinishComputation(); }
+            if (Props.requiresComputation)
+            {
+                mission.computeDoneTick = -1;
+                mission.computeWorkDone = 0f;
+                mission.computeWorkTotal = WorkFor(mission);
+                Messages.Message("DMSE.Strike.Msg.ConfirmedManual".Translate(mission.id, mission.RoundCount, mission.waves.Count,
+                    parent.LabelShort), parent, MessageTypeDefOf.TaskCompletion, false);
+                ApplyComputationProgress();
+            }
+            else
+            {
+                mission.computeDoneTick = now + Mathf.Max(0, Props.autoComputeTicks);
+                Messages.Message("DMSE.Strike.Msg.Confirmed".Translate(mission.id, mission.RoundCount, mission.waves.Count),
+                    parent, MessageTypeDefOf.TaskCompletion, false);
+                if (Props.autoComputeTicks <= 0) { FinishComputation(); }
+            }
             return true;
         }
 
+        /// <summary>自動版到時、或開發者模式：全部彈道解完成。</summary>
         private void FinishComputation()
         {
             foreach (StrikeSlot slot in mission.AllSlots) { slot.solved = true; }
-            mission.state = StrikeMissionState.Ready;
+            mission.computeWorkDone = mission.computeWorkTotal;
+            if (mission.state == StrikeMissionState.AwaitingComputation) { mission.state = StrikeMissionState.Ready; }
             Messages.Message("DMSE.Strike.Msg.Ready".Translate(mission.id), parent, MessageTypeDefOf.PositiveEvent, false);
+        }
+
+        // ---------------- 人工彈道計算（§8-2） ----------------
+
+        private bool CrossLayer(StrikeMission m) => !MissileWorldUtility.SameLayer(parent.Map.Tile, m.CurrentTargetTile);
+
+        /// <summary>某計畫的人工計算總工作量。</summary>
+        public float WorkFor(StrikeMission m)
+        {
+            return StrikeComputation.TotalWork(Props.computeWorkBase, Props.computeWorkPerRound,
+                CrossLayer(m) ? Props.crossLayerWorkFactor : 1f, m.RoundCount);
+        }
+
+        /// <summary>人工版且仍有未解的待發射導彈：WorkGiver 會派研究者來計算。</summary>
+        public bool NeedsManualComputation => Props.requiresComputation && mission != null && mission.IsActive
+            && mission.AllSlots.Any(s => s.Open && !s.solved);
+
+        public float ComputeProgress => mission == null || mission.computeWorkTotal <= 0f ? 1f
+            : Mathf.Clamp01(mission.computeWorkDone / mission.computeWorkTotal);
+
+        /// <summary>研究者每 tick 呼叫：累積工作量（研究速度 × tick），依波次順序逐枚解出。</summary>
+        public void AddComputationWork(float amount)
+        {
+            if (!NeedsManualComputation || amount <= 0f) { return; }
+            mission.computeWorkDone = Mathf.Min(mission.computeWorkTotal, mission.computeWorkDone + amount);
+            ApplyComputationProgress();
+        }
+
+        private void ApplyComputationProgress()
+        {
+            int solved = StrikeComputation.SolvedCount(mission.computeWorkDone, Props.computeWorkBase, Props.computeWorkPerRound,
+                CrossLayer(mission) ? Props.crossLayerWorkFactor : 1f, mission.RoundCount);
+            bool wasAllSolved = mission.AllSlots.All(s => s.solved);
+            int index = 0;
+            for (int w = 0; w < mission.waves.Count; w++)
+            {
+                StrikeWave wave = mission.waves[w];
+                bool wasSolved = wave.slots.All(s => s.solved);
+                foreach (StrikeSlot slot in wave.slots)
+                {
+                    if (index < solved) { slot.solved = true; }
+                    index++;
+                }
+                if (!wasSolved && wave.slots.All(s => s.solved) && mission.AllSlots.Any(s => !s.solved))
+                {
+                    Messages.Message("DMSE.Strike.Msg.WaveSolved".Translate(mission.id, w + 1), parent, MessageTypeDefOf.PositiveEvent, false);
+                }
+            }
+            if (!wasAllSolved && mission.AllSlots.All(s => s.solved))
+            {
+                if (mission.state == StrikeMissionState.AwaitingComputation) { mission.state = StrikeMissionState.Ready; }
+                Messages.Message("DMSE.Strike.Msg.Ready".Translate(mission.id), parent, MessageTypeDefOf.PositiveEvent, false);
+            }
+        }
+
+        private string ComputingReason()
+        {
+            return Props.requiresComputation
+                ? "DMSE.Strike.ComputingManual".Translate(ComputeProgress.ToStringPercent())
+                : "DMSE.Strike.Computing".Translate(ComputeTicksLeft.ToStringTicksToPeriod());
         }
 
         /// <summary>每 60 ticks 由地圖管理器呼叫：計算進度、目標丟失。</summary>
@@ -277,16 +360,12 @@ namespace DMSE
         public string CannotFireReason(int index, bool partial)
         {
             if (mission == null || index < 0 || index >= mission.waves.Count) { return "DMSE.Strike.NotReady".Translate(); }
-            if (mission.state != StrikeMissionState.Ready && mission.state != StrikeMissionState.Executing)
-            {
-                return mission.state == StrikeMissionState.AwaitingComputation
-                    ? "DMSE.Strike.Computing".Translate(ComputeTicksLeft.ToStringTicksToPeriod())
-                    : "DMSE.Strike.NotReady".Translate();
-            }
+            if (!mission.IsActive) { return "DMSE.Strike.NotReady".Translate(); }
             if (!Active) { return "DMSE.BVR.DeviceInactive".Translate(); }
             StrikeWave wave = mission.waves[index];
             if (!wave.HasPending) { return "DMSE.Strike.WaveDone".Translate(); }
-            if (wave.slots.Any(s => s.state == StrikeSlotState.Pending && !s.solved)) { return "DMSE.Strike.NotReady".Translate(); }
+            // 人工版逐枚解出：本波的待發射導彈都解好了就能發射，不必等後面的波次
+            if (wave.slots.Any(s => s.state == StrikeSlotState.Pending && !s.solved)) { return ComputingReason(); }
             WaveCheck check = CheckWave(wave);
             if (check.pending == 0) { return null; }   // 全部會被略過：發射即結算
             int free = StrikeFree;
@@ -501,9 +580,14 @@ namespace DMSE
                 switch (mission.state)
                 {
                     case StrikeMissionState.AwaitingComputation:
-                        return "DMSE.Strike.State.Computing".Translate(ComputeTicksLeft.ToStringTicksToPeriod());
+                        return Props.requiresComputation
+                            ? "DMSE.Strike.State.ComputingManual".Translate(ComputeProgress.ToStringPercent())
+                            : "DMSE.Strike.State.Computing".Translate(ComputeTicksLeft.ToStringTicksToPeriod());
                     case StrikeMissionState.Ready: return "DMSE.Strike.State.Ready".Translate();
-                    case StrikeMissionState.Executing: return "DMSE.Strike.State.Executing".Translate();
+                    case StrikeMissionState.Executing:
+                        return NeedsManualComputation
+                            ? "DMSE.Strike.State.ExecutingComputing".Translate(ComputeProgress.ToStringPercent())
+                            : "DMSE.Strike.State.Executing".Translate();
                     default: return mission.state.ToString();
                 }
             }
@@ -575,7 +659,7 @@ namespace DMSE
                     "DMSE.Strike.Console.CancelConfirm".Translate(mission.id), () => CancelMission(), destructive: true)),
             };
 
-            if (DebugSettings.ShowDevGizmos && mission.state == StrikeMissionState.AwaitingComputation)
+            if (DebugSettings.ShowDevGizmos && (NeedsManualComputation || mission.state == StrikeMissionState.AwaitingComputation))
             {
                 yield return new Command_Action
                 {

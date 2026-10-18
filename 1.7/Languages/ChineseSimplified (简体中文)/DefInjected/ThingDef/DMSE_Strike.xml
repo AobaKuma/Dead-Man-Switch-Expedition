@@ -3,5 +3,7 @@
 
   <DMSE_StrikeCommandCenter.label>打击指挥中心</DMSE_StrikeCommandCenter.label>
   <DMSE_StrikeCommandCenter.description>协调导弹打击的自动化火力指挥中心。选定世界目标后，把本地图发射架上的进攻导弹分配到各波次并逐波发射，让便宜的导弹先引走敌方拦截弹，保护后面的高价值导弹。每波上限为本地图火控雷达的空闲引导通道数；每枚升空的导弹会占用一条通道一小段引导期。确认计划后相关导弹会被保留，并开始一段短暂的自动弹道计算。</DMSE_StrikeCommandCenter.description>
+  <DMSE_StrikePlanningTable.label>打击规划桌</DMSE_StrikePlanningTable.label>
+  <DMSE_StrikePlanningTable.description>以标图桌、弹道表与计算尺人工规划协同导弹打击。波次规划方式与打击指挥中心相同，但确认计划后必须由殖民者在此以研究工作完成弹道计算。弹道按波次顺序逐枚解出，后面的波次还在计算时就能先发射第 1 波。不需电力，但每波仍受本地图火控雷达的空闲引导通道限制。</DMSE_StrikePlanningTable.description>
 
 </LanguageData>

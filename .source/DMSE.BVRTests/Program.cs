@@ -352,10 +352,25 @@ static class Test
         Check(fresh.state == StrikeMissionState.Planning && fresh.computeDoneTick == -1 && fresh.NextWaveIndex == -1
             && new StrikeSlot().state == StrikeSlotState.Pending && new StrikeWave().launchedTick == -1, "safe defaults");
     }
+    // Wave-strike P2: manual computation work and missile-by-missile solving in wave order.
+    static void StrikeP2()
+    {
+        Near(StrikeComputation.TotalWork(1500, 400, 1f, 4), 3100, "manual work: base + per missile");
+        Near(StrikeComputation.TotalWork(1500, 400, 1.5f, 4), 4650, "cross-layer work factor");
+        Check(StrikeComputation.SolvedCount(0, 1500, 400, 1f, 4) == 0 && StrikeComputation.SolvedCount(1499, 1500, 400, 1f, 4) == 0,
+            "nothing is solved before the base work");
+        Check(StrikeComputation.SolvedCount(1500, 1500, 400, 1f, 4) == 0 && StrikeComputation.SolvedCount(1900, 1500, 400, 1f, 4) == 1
+            && StrikeComputation.SolvedCount(2300, 1500, 400, 1f, 4) == 2, "each missile's share solves one more in order");
+        Check(StrikeComputation.SolvedCount(3100, 1500, 400, 1f, 4) == 4 && StrikeComputation.SolvedCount(9999, 1500, 400, 1f, 4) == 4,
+            "all solved at the total, clamped beyond it");
+        Check(StrikeComputation.SolvedCount(2849, 1500, 400, 1.5f, 4) == 0 && StrikeComputation.SolvedCount(2850, 1500, 400, 1.5f, 4) == 1,
+            "the cross-layer factor scales every threshold");
+        Check(StrikeComputation.SolvedCount(1500, 1500, 0, 1f, 3) == 3, "with no per-missile work everything is solved after the base");
+    }
     public static void Main()
     {
         Setup();
-        Detection(); Solver(); FireControl(); LedgerAndTerminal(); InventoryAndPersistence(); StrikeP0(); StrikeP1();
+        Detection(); Solver(); FireControl(); LedgerAndTerminal(); InventoryAndPersistence(); StrikeP0(); StrikeP1(); StrikeP2();
         Console.WriteLine($"PASS: {count} BVR checks (real game/DMSE assemblies).");
     }
     class OnlineRadar : CompFireControlRadar { public override bool Active => true; }

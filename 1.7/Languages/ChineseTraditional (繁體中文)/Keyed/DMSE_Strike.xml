@@ -88,4 +88,17 @@
   <DMSE.Strike.Exec.Fire>發射</DMSE.Strike.Exec.Fire>
   <DMSE.Strike.Exec.FireTip>按住 Shift 點擊只發射空閒通道與就緒發射架允許的部分，其餘留在本波。</DMSE.Strike.Exec.FireTip>
   <DMSE.Strike.Exec.CancelMission>取消任務</DMSE.Strike.Exec.CancelMission>
+
+  <!-- Manual planning table (P2) -->
+  <DMSE.Strike.ComputingManual>彈道已算 {0}；本波需由研究者在規劃桌算完</DMSE.Strike.ComputingManual>
+  <DMSE.Strike.State.ComputingManual>等待彈道計算（{0}）</DMSE.Strike.State.ComputingManual>
+  <DMSE.Strike.State.ExecutingComputing>執行中；彈道已算 {0}</DMSE.Strike.State.ExecutingComputing>
+  <DMSE.Strike.Msg.ConfirmedManual>打擊任務 #{0}：已保留 {1} 枚導彈、分 {2} 波，需由研究者在{3}計算彈道。</DMSE.Strike.Msg.ConfirmedManual>
+  <DMSE.Strike.Msg.WaveSolved>打擊任務 #{0}：第 {1} 波彈道解完成。</DMSE.Strike.Msg.WaveSolved>
+  <DMSE.Strike.Plan.ComputeWork>計算工作量：{0}（此處最快的研究者約需 {1}）</DMSE.Strike.Plan.ComputeWork>
+  <DMSE.Strike.Plan.NoResearcher>這裡沒有能做研究的殖民者</DMSE.Strike.Plan.NoResearcher>
+  <DMSE.Strike.Alert.ComputationPending>彈道計算等待中</DMSE.Strike.Alert.ComputationPending>
+  <DMSE.Strike.Alert.ComputationPendingDesc>有打擊任務在等研究者到打擊規劃桌計算彈道，但該地圖沒有能做研究工作的殖民者。
+
+請為該地圖的殖民者啟用研究工作。</DMSE.Strike.Alert.ComputationPendingDesc>
 </LanguageData>

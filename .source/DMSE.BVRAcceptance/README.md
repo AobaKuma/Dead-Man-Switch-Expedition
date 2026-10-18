@@ -63,6 +63,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .source/DMSE.BVRAcceptance/r
 | K6 | Wave strike P1 auto console: candidates (out of range, interceptors excluded), wave limit, confirm reserves 12 missiles, computing blocks firing, ripple launches 30 ticks apart with one cooldown, tracks tagged, channels booked then held for the guidance period, cancel drops queued launches and releases reservations |
 | K7 | Strike mission saved between two ripple launches: mission, slot states, guidance hold, queued launch and reservations restored; queued launch fires after loading; the mission completes after wave 2 |
 | K8 | Strike window draws in planning mode (auto-assign through the window) and execution mode, and closes itself when the mission ends |
+| K9 | Wave strike P2 manual planning table (no power): confirming asks for 3100 work; work giver and pending alert (no researcher); a researcher computes so wave 1 fires before wave 2 is solved; progress survives an interruption; XP; the job ends by itself |
 | L1 | Save and reload with a detected track and an interceptor in flight |
 | L2 | Save and reload after a reroute, with the old-route interceptor still flying |
 

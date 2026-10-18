@@ -107,6 +107,9 @@ namespace DMSE
         public List<StrikeWave> waves = new List<StrikeWave>();
         /// <summary>自動版機器計算完成的 tick。</summary>
         public int computeDoneTick = -1;
+        /// <summary>人工版：已完成／總計的彈道計算工作量（研究速度 × tick）。</summary>
+        public float computeWorkDone;
+        public float computeWorkTotal;
         public int createdTick;
 
         public IEnumerable<StrikeSlot> AllSlots => waves.SelectMany(w => w.slots);
@@ -150,6 +153,8 @@ namespace DMSE
             Scribe_Values.Look(ref state, "state", StrikeMissionState.Planning);
             Scribe_Collections.Look(ref waves, "waves", LookMode.Deep);
             Scribe_Values.Look(ref computeDoneTick, "computeDoneTick", -1);
+            Scribe_Values.Look(ref computeWorkDone, "computeWorkDone");
+            Scribe_Values.Look(ref computeWorkTotal, "computeWorkTotal");
             Scribe_Values.Look(ref createdTick, "createdTick");
             if (Scribe.mode == LoadSaveMode.PostLoadInit && waves == null) { waves = new List<StrikeWave>(); }
         }

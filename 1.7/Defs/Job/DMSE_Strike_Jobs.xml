@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- 波次打擊（人工版）：在打擊規劃桌計算彈道，工作類型「研究」（docs/BVR_波次打擊規劃.md §8-2） -->
+  <JobDef>
+    <defName>DMSE_ComputeFiringSolution</defName>
+    <driverClass>DMSE.JobDriver_ComputeFiringSolution</driverClass>
+    <reportString>computing firing solutions at TargetA.</reportString>
+  </JobDef>
+
+  <WorkGiverDef>
+    <defName>DMSE_ComputeFiringSolution</defName>
+    <label>compute firing solutions</label>
+    <giverClass>DMSE.WorkGiver_ComputeFiringSolution</giverClass>
+    <workType>Research</workType>
+    <verb>compute firing solutions at</verb>
+    <gerund>computing firing solutions at</gerund>
+    <priorityInType>110</priorityInType>
+    <canBeDoneByMechs>false</canBeDoneByMechs>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+</Defs>

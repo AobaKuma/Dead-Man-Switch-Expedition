@@ -7,7 +7,8 @@ rejection, fire-control formulas, per-faction shared channels (artillery/local/w
 terminal-only wave classification, NPC inventory/cooldown/restock and map handoff,
 Scribe save output, missing-state defaults and lock release, plus wave-strike P0
 missile roles, reservations, rail/silo strike rounds and soonest-arrival engagement order, interceptor-ammo
-gating, and wave-strike P1 channel booking, config fingerprints, auto-assign and mission save output.
+gating, wave-strike P1 channel booking, config fingerprints, auto-assign and mission save output,
+and P2 manual computation work and missile-by-missile solving.
 
 Use .NET 10 and supply the game reference directory (Assembly-CSharp.dll,
 UnityStubs.dll and Waylith.dll). Restore dependencies once, then:

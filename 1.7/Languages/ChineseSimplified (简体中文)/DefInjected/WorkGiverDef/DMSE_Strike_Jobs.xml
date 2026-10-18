@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <!-- EN: compute firing solutions -->
+  <DMSE_ComputeFiringSolution.label>计算弹道</DMSE_ComputeFiringSolution.label>
+  <!-- EN: compute firing solutions at -->
+  <DMSE_ComputeFiringSolution.verb>计算弹道于</DMSE_ComputeFiringSolution.verb>
+  <!-- EN: computing firing solutions at -->
+  <DMSE_ComputeFiringSolution.gerund>计算弹道于</DMSE_ComputeFiringSolution.gerund>
+
+</LanguageData>

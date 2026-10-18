@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
 using RimWorld.Planet;
+using UnityEngine;
 using Verse;
+using Verse.AI;
 using static DMSE.BVRAcceptance.BVRFixture;
 
 namespace DMSE.BVRAcceptance
@@ -429,6 +431,95 @@ namespace DMSE.BVRAcceptance
             console.CancelMission();
             yield return new WaitFrames(3);
             t.Check(!Find.WindowStack.IsOpen(exec), "the execution window closes itself when the mission ends");
+        }
+
+        private static ThingDef PlanningTable => ThingDef.Named("DMSE_StrikePlanningTable");
+
+        /// <summary>
+        /// P2 manual planning table: confirming asks for research work; the work giver and the pending alert;
+        /// a researcher computes missile by missile so wave 1 can fire before wave 2 is solved; an interruption
+        /// keeps the progress; the job ends by itself when everything is solved.
+        /// </summary>
+        public static IEnumerable<Wait> ManualPlanningTable(TestContext t)
+        {
+            Thing table = SpawnBuilding(PlanningTable, 20, 20);
+            SpawnBuilding(PhaseArray, 2, 2);
+            Building_MissileRack a = SpawnLoadedLauncher(10, 2, 4);
+            yield return WaitPowered(); yield return new WaitTicks(2);
+            CompStrikeConsole console = table.TryGetComp<CompStrikeConsole>();
+            t.Require(console != null && console.Props.requiresComputation && console.Active && table.TryGetComp<CompPowerTrader>() == null,
+                "the planning table computes by hand and needs no power");
+            PlanetTile target = TileAtDistance(8f, 10f);
+            t.Require(target.Valid, "a target ~9 tiles away exists");
+            var draft = new StrikeMission { targetTile = target, state = StrikeMissionState.Planning };
+            draft.waves.Add(WaveOf(a, 2));
+            var second = new StrikeWave();
+            foreach (Thing round in a.TryGetComp<CompMissileLauncher_Rail>().StrikeRounds.Skip(2).ToList())
+            {
+                second.slots.Add(new StrikeSlot { launcher = a, round = round });
+            }
+            draft.waves.Add(second);
+            t.Require(console.Commit(draft, out string reason), $"plan confirmed ({reason ?? "ok"})");
+            int id = draft.id;
+            t.Check(console.NeedsManualComputation && Mathf.Abs(draft.computeWorkTotal - 3100f) < 0.01f && Planner.ReservedBy(id).Count == 4,
+                $"confirming reserves the missiles and asks for 3100 work (got {draft.computeWorkTotal})");
+            t.Check(console.CannotFireReason(0, false) != null && draft.state == StrikeMissionState.AwaitingComputation, "nothing fires before computation");
+
+            List<Pawn> colonists = Home.mapPawns.FreeColonistsSpawned.ToList();
+            Pawn researcher = colonists.Where(p => !p.WorkTypeIsDisabled(WorkTypeDefOf.Research) && !p.Downed && !p.InMentalState)
+                .OrderByDescending(p => p.Awake()).FirstOrDefault();
+            t.Require(researcher != null, "a colonist who can research");
+            Dictionary<Pawn, int> priorities = colonists.ToDictionary(p => p, p => p.workSettings.GetPriority(WorkTypeDefOf.Research));
+            Override(() => { }, () => { foreach (var kv in priorities) { if (!kv.Key.Destroyed) kv.Key.workSettings.SetPriority(WorkTypeDefOf.Research, kv.Value); } });
+            foreach (Pawn p in colonists) { if (!p.WorkTypeIsDisabled(WorkTypeDefOf.Research)) p.workSettings.SetPriority(WorkTypeDefOf.Research, 0); }
+            AlertReport idle = new Alert_StrikeComputationPending().GetReport();
+            t.Check(idle.active && idle.AllCulprits.Any(c => c.Thing == table), "the alert points at the table while nobody can research");
+            researcher.workSettings.SetPriority(WorkTypeDefOf.Research, 1);
+            t.Check(!new Alert_StrikeComputationPending().GetReport().active, "the alert clears once a colonist can research");
+            var giver = new WorkGiver_ComputeFiringSolution();
+            t.Check(giver.PotentialWorkThingsGlobal(researcher).Contains(table) && giver.JobOnThing(researcher, table) != null,
+                "the work giver offers firing-solution work at the table");
+
+            SkillRecord intellectual = researcher.skills.GetSkill(SkillDefOf.Intellectual);
+            // XpTotalEarned only counts finished levels; add the progress inside the current level.
+            float xpBefore = intellectual.XpTotalEarned + intellectual.xpSinceLastLevel;
+            TickWatch wave1 = AcceptanceDriver.Watch(() => draft.waves[0].slots.All(s => s.solved));
+            TickWatch wave2 = AcceptanceDriver.Watch(() => draft.waves[1].slots.All(s => s.solved));
+            // The suite reaches this test around 3 AM in game: wake the researcher and re-issue the order if needed.
+            void KeepComputing()
+            {
+                if (researcher.CurJobDef == DMSE_StrikeDefOf.DMSE_ComputeFiringSolution || researcher.Downed || !console.NeedsManualComputation) { return; }
+                if (!researcher.Awake()) { RestUtility.WakeUp(researcher); }
+                researcher.jobs.TryTakeOrderedJob(JobMaker.MakeJob(DMSE_StrikeDefOf.DMSE_ComputeFiringSolution, table), JobTag.Misc);
+            }
+            var waitSome = new WaitUntil(() => { KeepComputing(); return draft.computeWorkDone > 800f; }, 6000);
+            yield return waitSome;
+            if (waitSome.TimedOut)
+            {
+                t.Note($"researcher {researcher.LabelShort}: job {researcher.CurJobDef?.defName ?? "none"}, awake {researcher.Awake()}, "
+                    + $"downed {researcher.Downed}, mental {researcher.MentalStateDef?.defName ?? "none"}, at {researcher.Position} (table {table.Position})");
+            }
+            t.Require(!waitSome.TimedOut, "the researcher computes at the table");
+            t.Check(researcher.CurJobDef == DMSE_StrikeDefOf.DMSE_ComputeFiringSolution, "the researcher is doing the firing-solution job");
+            float kept = draft.computeWorkDone;
+            researcher.jobs.EndCurrentJob(Verse.AI.JobCondition.InterruptForced);
+            yield return new WaitTicks(20);
+            t.Check(draft.computeWorkDone >= kept, $"progress is kept after an interruption ({kept:0} -> {draft.computeWorkDone:0})");
+            var waitWave1 = new WaitUntil(() => { KeepComputing(); return wave1.Seen; }, 8000);
+            yield return waitWave1;
+            t.Require(!waitWave1.TimedOut, "wave 1 gets solved");
+            t.Check(console.CannotFireReason(0, false) == null && console.CannotFireReason(1, false) != null,
+                "wave 1 can fire while wave 2 is still being computed");
+            t.Check(console.FireWave(0, false) == 2 && draft.state == StrikeMissionState.Executing, "wave 1 fires during computation");
+            var waitAll = new WaitUntil(() => { KeepComputing(); return !console.NeedsManualComputation; }, 8000);
+            yield return waitAll;
+            t.Require(!waitAll.TimedOut, "computation finishes");
+            t.Check(wave2.FirstTick > wave1.FirstTick, $"wave 2 is solved after wave 1 ({wave1.FirstTick} then {wave2.FirstTick})");
+            t.Check(Mathf.Abs(draft.computeWorkDone - draft.computeWorkTotal) < 0.01f && console.ComputeProgress >= 0.999f, "work done reaches the total");
+            t.Check(intellectual.XpTotalEarned + intellectual.xpSinceLastLevel > xpBefore, "the researcher gains intellectual experience");
+            yield return new WaitTicks(10);
+            t.Check(researcher.CurJobDef != DMSE_StrikeDefOf.DMSE_ComputeFiringSolution, "the job ends by itself when everything is solved");
+            console.CancelMission();
         }
 
         private static ScorerProjectile_WorldObject LaunchAt(Site site, MissileConfig config, string worldObjectDef, ThingDef incoming)
