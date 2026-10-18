@@ -65,6 +65,7 @@
       </li>
       <!-- 複合功能示範：同一棟雷達同時搭載「搜索雷達」與「火控雷達」兩個 ThingComp。 -->
       <li Class="DMSE.CompProperties_SearchRadar">
+        <worldDetectionRange>12</worldDetectionRange>
         <searchDistance>200</searchDistance>
         <powerLevel>2</powerLevel>
         <antiStealthLevel>2</antiStealthLevel>

@@ -1,4 +1,5 @@
 using Verse;
+using UnityEngine;
 
 namespace DMSE
 {
@@ -10,6 +11,15 @@ namespace DMSE
         {
             Settings = GetSettings<PlayerConfigSettings>();
             ImpactCraterUtility.Initialize(Settings);
+        }
+
+        public override void DoSettingsWindowContents(Rect inRect)
+        {
+            var listing = new Listing_Standard();
+            listing.Begin(inRect);
+            listing.CheckboxLabeled("DMSE.BVR.World.ShowCoverage".Translate(), ref Settings.showBVRWorldCoverage,
+                "DMSE.BVR.World.ShowCoverageDesc".Translate());
+            listing.End();
         }
 
         public override string SettingsCategory() => "DMSE";

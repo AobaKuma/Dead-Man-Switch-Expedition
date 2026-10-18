@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <DMSE.BVR.World.Undetected>未侦测</DMSE.BVR.World.Undetected>
+  <DMSE.BVR.World.Detected>已侦测</DMSE.BVR.World.Detected>
+  <DMSE.BVR.World.Locking>火控锁定中</DMSE.BVR.World.Locking>
+  <DMSE.BVR.World.InFlight>拦截弹接近中</DMSE.BVR.World.InFlight>
+  <DMSE.BVR.World.TrackInspect>目的地：{0}\n预计抵达：{1}\n状态：{2}\n已尝试拦截：{3} 次</DMSE.BVR.World.TrackInspect>
+  <DMSE.BVR.World.RadarRange>世界搜索半径：{0} 格（目标修正前）</DMSE.BVR.World.RadarRange>
+  <DMSE.BVR.World.EffectiveRanges>有效半径：巡飞弹 {0}、轻型 {1}、巡航 {2}、弹道 {3} 格</DMSE.BVR.World.EffectiveRanges>
+  <DMSE.BVR.World.DetectedLetter>侦测到来袭导弹</DMSE.BVR.World.DetectedLetter>
+  <DMSE.BVR.World.DetectedLetterText>雷达侦测到 {0} 正接近 {1}。\n\n预计于 {2} 后抵达。世界层防空正尝试接战，漏网导弹抵达后将交由当地末端防御处理。</DMSE.BVR.World.DetectedLetterText>
+  <DMSE.BVR.World.Intercepted>{0} 已被 {1} 拦截。</DMSE.BVR.World.Intercepted>
+  <DMSE.BVR.World.Missed>拦截弹未能命中 {0}。</DMSE.BVR.World.Missed>
+  <DMSE.BVR.World.Evaded>{0} 改变航向，避开了拦截弹。</DMSE.BVR.World.Evaded>
+  <DMSE.BVR.World.InterceptorInspect>目标：{0}\n预计会合：{1}</DMSE.BVR.World.InterceptorInspect>
+  <DMSE.BVR.World.AbstractInspect>防空库存：{0}/{1} 枚拦截弹\n搜索半径：{2} 格；火控通道：{3}</DMSE.BVR.World.AbstractInspect>
+  <DMSE.BVR.World.IncomingAlert>已侦测来袭导弹</DMSE.BVR.World.IncomingAlert>
+  <DMSE.BVR.World.IncomingLabel>来袭导弹：{0}（{1}）</DMSE.BVR.World.IncomingLabel>
+  <DMSE.BVR.World.ClickHint>左／右键循环检视世界导弹航迹。</DMSE.BVR.World.ClickHint>
+  <DMSE.BVR.World.ShowCoverage>显示防空覆盖</DMSE.BVR.World.ShowCoverage>
+  <DMSE.BVR.World.ShowCoverageDesc>在世界地图常驻显示所有玩家雷达覆盖圈。选取据点时一律显示该据点的覆盖圈。圈线以隐身 0、尺寸 1 的目标为准。</DMSE.BVR.World.ShowCoverageDesc>
+  <DMSE.BVR.World.ChannelBreakdown>通道：火炮 {0}、地图内 {1}、世界层 {2}；空闲 {3}</DMSE.BVR.World.ChannelBreakdown>
+  <DMSE.BVR.World.MissileType>导弹类型：{0}</DMSE.BVR.World.MissileType>
+</LanguageData>

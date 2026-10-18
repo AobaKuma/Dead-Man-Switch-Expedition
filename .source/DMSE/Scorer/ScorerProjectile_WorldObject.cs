@@ -1,4 +1,4 @@
-﻿using RimWorld;
+using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
 using Verse;
@@ -17,7 +17,7 @@ namespace DMSE
         // 選中並生成的墜落物定義，用原版的隕石當佔位符
         private const string ProjectileDefName = "MeteoriteIncoming";
 
-        public override Color ExpandingIconColor => base.Faction.Color;
+        public override ThingDef IncomingDef => skyfallerIncoming ?? base.IncomingDef;
 
         // 打擊尚未生成地圖的據點時，生成其地圖供玩家選落點
         protected override bool AllowGenerateTargetMap => true;
@@ -25,7 +25,7 @@ namespace DMSE
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Values.Look(ref this.skyfallerIncoming, "skyfallerIncoming", null);
+            Scribe_Defs.Look(ref skyfallerIncoming, "skyfallerIncoming");
 
             // 舊存檔只存了 tileId（圖層遺失），無從得知原圖層，只能視為地表
             if (Scribe.mode == LoadSaveMode.LoadingVars)
@@ -125,6 +125,7 @@ namespace DMSE
             if (faller is MissileIncoming incoming)
             {
                 incoming.config = config != null ? config.Clone() : null;
+                incoming.worldPhaseDone = true;
                 incoming.attacker = base.Faction; // 玩家的巡航導彈，供敵方 BVR 攔截判定。
                 MissileBVRUtility.TryRegister(incoming, cell);
             }

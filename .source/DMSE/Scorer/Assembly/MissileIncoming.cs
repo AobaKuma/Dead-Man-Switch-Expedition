@@ -14,6 +14,7 @@ namespace DMSE
 
         /// <summary>是否已交由 BVR 處理（避免重複登記攔截）。</summary>
         public bool bvrHandled;
+        public bool worldPhaseDone;
 
         /// <summary>只顯示 def.label 且剔除括號後綴（如「cruise missile (incoming)」→「cruise missile」）。</summary>
         public override string Label
@@ -115,6 +116,7 @@ namespace DMSE
             Scribe_Deep.Look(ref config, "config");
             Scribe_References.Look(ref attacker, "attacker");
             Scribe_Values.Look(ref bvrHandled, "bvrHandled", false);
+            Scribe_Values.Look(ref worldPhaseDone, "worldPhaseDone", false);
             Scribe_Values.Look(ref checkedBvr, "checkedBvr", false);
         }
     }

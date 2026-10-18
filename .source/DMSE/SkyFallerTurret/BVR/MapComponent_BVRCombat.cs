@@ -15,7 +15,8 @@ namespace DMSE
     /// </summary>
     public class MapComponent_BVRCombat : MapComponent
     {
-        public MapComponent_BVRCombat(Map map) : base(map) { }
+        public MapComponent_BVRCombat(Map map) : base(map) { Channels = new BVRChannelLedger(this, map); }
+        public BVRChannelLedger Channels { get; }
 
         public List<BVRWave> Waves
         {
@@ -81,12 +82,22 @@ namespace DMSE
                 return; // 防禦方無運作中的搜索雷達，不攔截。
             }
 
+            AddIncoming(faller, pos, defender, window, false);
+        }
+
+        public void RegisterTerminal(Skyfaller faller, IntVec3 pos, Faction defender)
+        {
+            AddIncoming(faller, pos, defender, TerminalWindowTicks(defender), true);
+        }
+
+        private void AddIncoming(Skyfaller faller, IntVec3 pos, Faction defender, int window, bool terminalOnly)
+        {
             int impactTick = Find.TickManager.TicksGame + window;
 
-            BVRTarget target = new BVRTarget(faller, pos, map, nextTargetId++);
+            BVRTarget target = new BVRTarget(faller, pos, map, nextTargetId++) { terminalOnly = terminalOnly };
 
             // 短時間內（MergeWindowTicks 容差）抵達的目標合併到同一個攔截窗口（同一波次）。
-            BVRWave wave = Waves.Find(w => w.defenderFaction == defender
+            BVRWave wave = Waves.Find(w => w.defenderFaction == defender && w.targets.All(t => t.terminalOnly == terminalOnly)
                 && Mathf.Abs(w.tickToImpact - impactTick) <= BVRTuning.MergeWindowTicks);
             if (wave == null)
             {
@@ -237,7 +248,7 @@ namespace DMSE
                 }
 
                 int terminalWindow = TerminalWindowTicks(wave.defenderFaction);
-                if (timeLeft <= terminalWindow)
+                if (wave.TerminalOnly || timeLeft <= terminalWindow)
                 {
                     // 末端波次先收集，迴圈結束後由 TerminalDefense 統一分配 CIWS。
                     terminalWaves.Add(wave);
@@ -273,7 +284,8 @@ namespace DMSE
             }
             if (capacity <= 0) { return; }
 
-            int engaged = CountEngaged();
+            capacity -= Channels.World(defender);
+            int engaged = CountEngaged(defender);
 
             // 空爆額外攔截命中的目標：先收集、待 foreach 結束後統一移除，
             // 避免在枚舉 wave.targets 期間修改集合（InvalidOperationException）。
@@ -281,6 +293,7 @@ namespace DMSE
 
             foreach (BVRTarget target in wave.targets)
             {
+                if (target.terminalOnly) continue;
                 if (target.midcourseEngagedUntil > now) { continue; } // 已有攔截彈在飛。
                 if (target.lockUntil > now) { continue; }             // 鎖定中（已占用通道）。
 
@@ -348,12 +361,13 @@ namespace DMSE
 
         // 火力通道在「鎖定階段」（lockUntil >= 0）與「攔截彈在飛」（midcourseEngagedUntil > now）期間均占用；
         // 直到攔截彈命中或落空結算後才釋放通道，供雷達重新鎖定下一目標。
-        public int CountEngaged()
+        public int CountEngaged(Faction defender = null)
         {
             int now = Find.TickManager.TicksGame;
             int n = 0;
             foreach (BVRWave w in Waves)
             {
+                if (defender != null && w.defenderFaction != defender) continue;
                 foreach (BVRTarget t in w.targets)
                 {
                     if (t.lockUntil >= 0 || t.midcourseEngagedUntil > now) { n++; }

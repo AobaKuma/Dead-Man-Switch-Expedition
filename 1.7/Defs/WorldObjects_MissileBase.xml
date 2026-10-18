@@ -204,6 +204,18 @@
 
     <!-- 導彈陣地行為元件 -->
     <comps>
+      <!-- Used only while no local map exists. A generated map uses its real radars and missile racks. -->
+      <li Class="DMSE.CompProperties_WorldAirDefense">
+        <worldDetectionRange>12</worldDetectionRange>
+        <antiStealthLevel>2</antiStealthLevel>
+        <fireControlDef>DMSE_PhaseArrayRadar</fireControlDef>
+        <channels>2</channels>
+        <interceptorStock>8</interceptorStock>
+        <restockPerDay>4</restockPerDay>
+        <interceptorBody>DMSE_MissileBody_Light</interceptorBody>
+        <interceptorWarhead>DMSE_Light_Warhead_ContinuousRod</interceptorWarhead>
+        <launchCooldownTicks>240</launchCooldownTicks>
+      </li>
       <li Class="DMSE.CompProperties_MissileBase">
         <missileFireIntervalDays>
           <min>1</min>

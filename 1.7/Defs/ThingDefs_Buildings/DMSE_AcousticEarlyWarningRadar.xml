@@ -70,6 +70,7 @@
       </li>
       <!-- 早期預警：只提供搜索/預警窗口，不具備火控鎖定能力（無 CompProperties_FireControlRadar）。 -->
       <li Class="DMSE.CompProperties_SearchRadar">
+        <worldDetectionRange>8</worldDetectionRange>
         <searchDistance>120</searchDistance>
         <powerLevel>1</powerLevel>
         <antiStealthLevel>0</antiStealthLevel>

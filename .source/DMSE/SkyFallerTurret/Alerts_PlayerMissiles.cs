@@ -1,4 +1,5 @@
 using RimWorld;
+using RimWorld.Planet;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -51,8 +52,13 @@ namespace DMSE
 
         // ── Alert 介面 ────────────────────────────────────────────────────────
 
+        private static List<MissileWorldObject> WorldTargets() => WorldComponent_BVRNetwork.Current?.Tracks
+            .Where(t => t.Attacker == Faction.OfPlayer).OrderBy(t => t.TicksToArrival).ToList()
+            ?? new List<MissileWorldObject>();
+
         public override AlertReport GetReport()
         {
+            if (WorldTargets().Count > 0) return AlertReport.Active;
             // 短路版本：找到第一個匹配即返回，避免建立完整列表。
             foreach (Map map in Find.Maps)
             {
@@ -74,7 +80,14 @@ namespace DMSE
         public override string GetLabel()
         {
             var targets = GetPlayerTargets();
-            if (targets.Count == 0) return base.GetLabel();
+            var world = WorldTargets();
+            if (targets.Count == 0 && world.Count == 0) return base.GetLabel();
+            if (world.Count > 0)
+            {
+                int eta = world[0].TicksToArrival;
+                if (targets.Count > 0) eta = System.Math.Min(eta, targets.Min(t => t.wave.tickToImpact) - Find.TickManager.TicksGame);
+                return "DMSE.Alert.PlayerMissiles.Label".Translate(targets.Count + world.Count, eta.ToStringTicksToPeriod());
+            }
 
             int now = Find.TickManager.TicksGame;
             int earliestTick = targets.Min(t => t.wave.tickToImpact);
@@ -88,10 +101,13 @@ namespace DMSE
         public override TaggedString GetExplanation()
         {
             var targets = GetPlayerTargets();
-            if (targets.Count == 0) return base.GetExplanation();
+            var world = WorldTargets();
+            if (targets.Count == 0 && world.Count == 0) return base.GetExplanation();
 
             int now = Find.TickManager.TicksGame;
             var sb = new StringBuilder();
+            foreach (var track in world)
+                sb.AppendLine(track.Label + "\n" + track.GetInspectString() + "\n");
 
             // ── 按目標地圖分組 ──
             var byMap = new Dictionary<Map, List<(BVRWave wave, BVRTarget target)>>();
@@ -157,18 +173,17 @@ namespace DMSE
         protected override void OnClick()
         {
             var targets = GetPlayerTargets();
-            if (targets.Count == 0) return;
-
-            // 左鍵正向、右鍵反向循環
-            if (Event.current.button == 1)
-                jumpIndex = (jumpIndex - 1 + targets.Count) % targets.Count;
+            var world = WorldTargets();
+            int count = targets.Count + world.Count;
+            if (count == 0) return;
+            jumpIndex = GenMath.PositiveMod(jumpIndex + (Event.current.button == 1 ? -1 : 1), count);
+            if (jumpIndex < world.Count)
+                CameraJumper.TryJump(new GlobalTargetInfo(world[jumpIndex]));
             else
-                jumpIndex = (jumpIndex + 1) % targets.Count;
-
-            jumpIndex = GenMath.PositiveMod(jumpIndex, targets.Count);
-
-            var (_, target, map) = targets[jumpIndex];
-            CameraJumper.TryJump(target.position, map);
+            {
+                var (_, target, map) = targets[jumpIndex - world.Count];
+                CameraJumper.TryJump(target.position, map);
+            }
         }
     }
 }
