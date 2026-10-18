@@ -119,7 +119,17 @@ namespace DMSE
                 GUI.color = Color.white;
             }
 
+            // 被打擊任務保留的導彈／彈道井：任務結束前不可改裝（按鈕停用，數值照常顯示）
+            bool reserved = StrikeReservation.IsReserved(comp.parent);
+            if (reserved)
+            {
+                GUI.color = ColorLibrary.RedReadable;
+                list.Label("DMSE.Strike.ReservedNoEdit".Translate());
+                GUI.color = Color.white;
+            }
+
             list.GapLine(6f);
+            GUI.enabled = !reserved;
 
             // 彈體（建築上鎖定：僅顯示，不可更換）
             list.Label("DMSE.Missile.Body".Translate());
@@ -157,6 +167,7 @@ namespace DMSE
                 }
             }
 
+            GUI.enabled = true;
             list.GapLine(8f);
 
             // 有效數值（待裝配設定）
@@ -197,6 +208,7 @@ namespace DMSE
                 }
 
                 list.Gap(4f);
+                GUI.enabled = !reserved;
 
                 // 確認裝配按鈕（未確認時顯示；確認後轉為提示文字）
                 if (!comp.assemblyConfirmed)
@@ -222,6 +234,7 @@ namespace DMSE
                     comp.assemblyConfirmed = false;
                     comp.RefundDeliveredIfIdle();
                 }
+                GUI.enabled = true;
             }
 
             list.End();

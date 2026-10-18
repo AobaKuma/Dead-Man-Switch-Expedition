@@ -32,6 +32,12 @@ namespace DMSE
             && TargetFaction(t) == Faction.OfPlayer).OrderBy(t => t.TicksToArrival);
         public static Faction TargetFaction(MissileWorldObject track) => track.targetParent?.Faction
             ?? Find.WorldObjects.MapParentAt(track.Destination)?.Faction;
+        /// <summary>
+        /// Engagement order: soonest arrival first (stable, so ties keep creation order). Free channels go to
+        /// the most urgent tracks, which makes decoy waves predictable (docs/BVR_波次打擊規劃.md §11).
+        /// </summary>
+        public static List<T> InEngagementOrder<T>(IEnumerable<T> tracks) where T : IBVRTrack
+            => tracks.OrderBy(t => t.TicksToArrival).ToList();
 
         public override void ExposeData()
         {
@@ -84,7 +90,7 @@ namespace DMSE
             }
             if (now % Mathf.Max(1, BVRWorldTuningDef.Current.scanIntervalTicks) != 0) return;
             RebuildNodes();
-            foreach (MissileWorldObject track in Tracks.ToList()) Scan(track, now);
+            foreach (MissileWorldObject track in InEngagementOrder(Tracks)) Scan(track, now);
         }
         private void Scan(MissileWorldObject track, int now)
         {

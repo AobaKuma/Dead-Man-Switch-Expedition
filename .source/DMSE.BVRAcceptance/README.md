@@ -55,6 +55,10 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .source/DMSE.BVRAcceptance/r
 | W9 | Target moves: reroute within one terminal check, lock restarts, in-flight interceptor misses, re-engagement on the new route |
 | W10 | CIWS off during a terminal wave: wave stays terminal, SAM idle; CIWS resumes when powered |
 | W11 | ETA while paused and at 1×/2×/3× speed, in map and world view |
+| K1 | Wave strike P0: strike rounds skip interceptors; reservation; SAM and single-shot skip reserved missiles; out-of-range refusal; per-round launch, cooldown, ripple continuation |
+| K2 | Reserved missiles offer no assembly work; an assembled ballistic silo is its own round and can be reserved |
+| K3 | World defense gives free channels to the soonest arrivals, not the first-created track |
+| K4 | Plan B decoys (8 light, then 2 cruise timed to arrive last) against an NPC base's abstract stock: no cruise engaged while an earlier decoy waits; logs stock drained before the first arrival |
 | L1 | Save and reload with a detected track and an interceptor in flight |
 | L2 | Save and reload after a reroute, with the old-route interceptor still flying |
 

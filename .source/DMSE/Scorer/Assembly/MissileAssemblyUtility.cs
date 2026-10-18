@@ -59,7 +59,7 @@ namespace DMSE
         /// 從目標 Thing 取得需要裝配的 <see cref="CompMissileConfig"/>。
         /// 若 t 直接帶有 Comp 則回傳之；
         /// 若 t 為 <see cref="Building_MissileRack"/>，則回傳其中第一個
-        /// <c>NeedsAssembly &amp;&amp; assemblyConfirmed</c> 的導彈 Comp。
+        /// <c>NeedsAssembly &amp;&amp; assemblyConfirmed</c>、且未被打擊任務保留（<see cref="StrikeReservation"/>）的導彈 Comp。
         /// 回傳 null 表示此目標目前不需要裝配。
         /// </summary>
         public static CompMissileConfig GetAssemblyComp(Thing t)
@@ -76,7 +76,7 @@ namespace DMSE
                 for (int i = 0; i < held.Count; i++)
                 {
                     CompMissileConfig c = held[i]?.TryGetComp<CompMissileConfig>();
-                    if (c != null && c.NeedsAssembly && c.assemblyConfirmed) { return c; }
+                    if (c != null && c.NeedsAssembly && c.assemblyConfirmed && !StrikeReservation.IsReserved(held[i])) { return c; }
                 }
             }
             return null;

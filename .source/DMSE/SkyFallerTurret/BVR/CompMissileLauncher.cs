@@ -40,12 +40,19 @@ namespace DMSE
         // 彈藥來源：parent 為 Building_MissileRack（容器），攔截彈以實體 Thing 逐枚存放，
         private ThingOwner HeldContainer => (parent as IThingHolder)?.GetDirectlyHeldThings();
 
+        // 輕型發射箱與對地發射軌共用彈艙：被打擊任務保留的導彈（StrikeReservation）不取用。
         private Thing LoadedMissile
         {
             get
             {
                 ThingOwner owner = HeldContainer;
-                return owner != null && owner.Count > 0 ? owner[0] : null;
+                if (owner == null || owner.Count == 0) { return null; }
+                MapComponent_StrikePlanner planner = StrikeReservation.PlannerFor(parent);
+                for (int i = 0; i < owner.Count; i++)
+                {
+                    if (planner == null || !planner.IsReserved(owner[i])) { return owner[i]; }
+                }
+                return null;
             }
         }
 

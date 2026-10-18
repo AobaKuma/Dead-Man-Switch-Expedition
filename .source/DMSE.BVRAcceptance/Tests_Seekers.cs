@@ -262,6 +262,10 @@ namespace DMSE.BVRAcceptance
                 new AcceptanceTest("W9", "Moving target: reroute, lock reset, re-engagement", Tests_WorldEdge.TerminalUpdateReroute),
                 new AcceptanceTest("W10", "Terminal CIWS power loss", Tests_WorldEdge.TerminalCiwsPowerLoss),
                 new AcceptanceTest("W11", "ETA at player speeds and view switches", Tests_WorldEdge.EtaAtPlayerSpeeds),
+                new AcceptanceTest("K1", "Strike rounds, reservation, per-round and ripple launch", Tests_Strike.RoundsReservationAndLaunch),
+                new AcceptanceTest("K2", "Reserved rounds skip assembly; silo as a round", Tests_Strike.ReservedSkipAssembly),
+                new AcceptanceTest("K3", "World defense engages the soonest arrival first", Tests_Strike.SoonestArrivalFirst),
+                new AcceptanceTest("K4", "Decoy waves against NPC abstract stock (plan B)", Tests_Strike.DecoyWavesDrainAbstractStock),
                 new AcceptanceTest("L1", "Save/load mid-engagement", Tests_Seekers.SaveLoadMidEngagement),
                 new AcceptanceTest("L2", "Save/load after a reroute", Tests_WorldEdge.SaveLoadAfterReroute),
             };

@@ -26,7 +26,8 @@ namespace DMSE
                 }
             }
 
-            // 架內 unspawned 導彈：以儲存架本身作為工作目標（架已生成且有 map 位置）
+            // 架內 unspawned 導彈：以儲存架本身作為工作目標（架已生成且有 map 位置）。
+            // 被打擊任務保留的導彈不裝配（GetAssemblyComp 同樣略過），待裝配的變更擱置到保留解除。
             foreach (Building_MissileRack rack in pawn.Map.listerBuildings.AllBuildingsColonistOfClass<Building_MissileRack>())
             {
                 IReadOnlyList<Thing> held = rack.HeldThings;
@@ -34,7 +35,7 @@ namespace DMSE
                 for (int i = 0; i < held.Count; i++)
                 {
                     CompMissileConfig c = held[i]?.TryGetComp<CompMissileConfig>();
-                    if (c != null && c.NeedsAssembly && c.assemblyConfirmed)
+                    if (c != null && c.NeedsAssembly && c.assemblyConfirmed && !StrikeReservation.IsReserved(held[i]))
                     {
                         yield return rack;
                         break; // 一個架只 yield 一次，JobOnThing 會取第一枚待裝配的導彈

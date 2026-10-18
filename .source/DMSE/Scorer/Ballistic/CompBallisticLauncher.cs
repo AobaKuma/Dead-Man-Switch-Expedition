@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using RimWorld;
 using RimWorld.Planet;
 using Verse;
@@ -79,14 +80,24 @@ namespace DMSE
 
         protected override string NoAmmoDisableReason => "DMSE.MissileLauncher.Ballistic.NotLoaded".Translate();
 
-        protected override MissileConfig BuildFiringConfig() => MissileCfg?.config?.Clone();
+        /// <summary>彈藥即發射井本身（已裝配時）。</summary>
+        public override IEnumerable<Thing> StrikeRounds
+        {
+            get
+            {
+                if (isAssembled) { yield return parent; }
+            }
+        }
+
+        public override MissileConfig BuildFiringConfig(Thing round)
+            => round == parent ? MissileCfg?.config?.Clone() : null;
 
         /// <summary>
         /// 發射後重置為未裝填，並清除 config（保留 body），使 config ≠ pending
         /// → NeedsAssembly = true → 殖民者下次必須重新搬運資源並執行製造工作。
         /// pending 保留：玩家不必重新選擇彈頭/導引/酬載，只需等待裝填。
         /// </summary>
-        protected override void ConsumeAmmo()
+        protected override void ConsumeAmmo(Thing round)
         {
             isAssembled = false;
 
@@ -106,7 +117,7 @@ namespace DMSE
             {
                 if (isAssembled)
                 {
-                    MissileConfig c = BuildFiringConfig();
+                    MissileConfig c = BuildFiringConfig(parent);
                     if (c?.body != null)
                     {
                         return "DMSE.MissileLauncher.Ballistic.LoadedWith".Translate(c.body.LabelCap);

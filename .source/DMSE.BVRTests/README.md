@@ -5,7 +5,8 @@ with a minimal game fixture rather than the game/render loop. They cover detecti
 radii and stealth/size modifiers, spherical head-on solutions and late-launch
 rejection, fire-control formulas, per-faction shared channels (artillery/local/world),
 terminal-only wave classification, NPC inventory/cooldown/restock and map handoff,
-Scribe save output, missing-state defaults and lock release.
+Scribe save output, missing-state defaults and lock release, plus wave-strike P0
+missile roles, reservations, rail/silo strike rounds and soonest-arrival engagement order.
 
 Use .NET 10 and supply the game reference directory (Assembly-CSharp.dll,
 UnityStubs.dll and Waylith.dll). Restore dependencies once, then:

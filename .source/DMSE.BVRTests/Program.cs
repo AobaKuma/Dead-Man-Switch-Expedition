@@ -205,10 +205,77 @@ static class Test
             && !loaded.lockNodeTile.Valid, "releasing lock clears every channel owner field");
         Check(loaded.playerNotified && loaded.interceptAttempts == 3, "releasing a lock preserves notification and attempt history");
     }
+    static int nextThingId = 100;
+    // Unique ids as in a real game: Thing.Equals compares id and def.
+    static ThingWithComps Round(ThingDef def) => new ThingWithComps { def = def, thingIDNumber = nextThingId++ };
+    static ThingDef RoleDef(MissileRole? role)
+    {
+        var def = Empty<ThingDef>();
+        Field(def, "stackLimit", 1);
+        if (role.HasValue) def.modExtensions = new List<DefModExtension> { new MissileRoleExtension { role = role.Value } };
+        return def;
+    }
+    // Wave-strike P0 (docs/BVR_波次打擊規劃.md §5-2, §8-4, §11).
+    static void StrikeP0()
+    {
+        ThingDef plain = RoleDef(null), interceptorDef = RoleDef(MissileRole.Interceptor), dualDef = RoleDef(MissileRole.Dual);
+        Check(MissileRoleExtension.RoleOf(plain) == MissileRole.Strike, "unmarked missile defaults to strike");
+        Check(!MissileRoleExtension.CanStrike(Round(interceptorDef)), "interceptor cannot strike");
+        Check(MissileRoleExtension.CanStrike(Round(dualDef)), "dual-role missile can strike");
+        Check(!MissileRoleExtension.CanStrike(null), "no missile, no strike");
+
+        var planner = new MapComponent_StrikePlanner(new Map());
+        var a = Round(plain);
+        var b = Round(plain);
+        Check(planner.OwnerOf(a) == -1 && !planner.IsReserved(a), "rounds start unreserved");
+        Check(planner.TryReserve(a, 1) && planner.OwnerOf(a) == 1, "reserve for mission 1");
+        Check(planner.TryReserve(a, 1), "re-reserving for the same owner succeeds");
+        Check(!planner.TryReserve(a, 2) && planner.OwnerOf(a) == 1, "another mission cannot take a reserved round");
+        Check(planner.TryReserve(b, 2) && planner.ReservedBy(2).Single() == b, "second mission reserves its own round");
+        planner.ReleaseAll(1);
+        Check(!planner.IsReserved(a) && planner.OwnerOf(b) == 2, "releasing one mission keeps the other's rounds");
+        Field(b, "mapIndexOrState", (sbyte)-2);
+        Check(b.Destroyed && !planner.IsReserved(b) && planner.ReservedBy(2).Count == 0, "a destroyed round drops its reservation");
+        Check(!planner.TryReserve(null, 1) && !planner.TryReserve(a, -1), "invalid reservations are rejected");
+
+        // Rail magazine shared with a SAM: interceptors are not strike rounds and never get the platform body.
+        var body = new MissileBodyDef { defName = "TestLightBody" };
+        var rack = new Building_MissileRack { def = plain, thingIDNumber = nextThingId++ };
+        var rail = new CompMissileLauncher_Rail { parent = rack, props = new CompProperties_MissileRailLauncher { missileBody = body } };
+        var interceptor = Round(interceptorDef);
+        var strike = Round(dualDef);
+        Check(!rail.HasAmmo && rail.NextRound == null, "empty rail has no round");
+        rack.GetDirectlyHeldThings().TryAdd(interceptor);
+        Check(!rail.HasAmmo && rail.BuildFiringConfig(interceptor) == null, "an interceptor alone is not rail ammo or a strike config");
+        rack.GetDirectlyHeldThings().TryAdd(strike);
+        Check(rail.StrikeRounds.SequenceEqual(new Thing[] { strike }), "only the strike-capable missile is a strike round");
+        Check(rail.HasAmmo && rail.NextRound == strike, "single-shot uses the first strike round, skipping the interceptor");
+        Check(rail.BuildFiringConfig(strike)?.body == body, "an unconfigured strike round falls back to the platform body");
+        Check(rail.BuildFiringConfig(a) == null, "a round outside the magazine has no config");
+        Check(!rail.OwnsRound(a), "a round outside the magazine is not owned");
+        Check(rail.OwnsRound(strike), "a loaded strike round is owned");
+        Check(rail.SalvoIntervalTicks == 30, "default ripple interval");
+
+        // Ballistic silo: the platform itself is the round once assembled.
+        var silo = Round(plain);
+        var ballistic = new CompMissileLauncher_Ballistic { parent = silo, props = new CompProperties_BallisticLauncher() };
+        Check(!ballistic.StrikeRounds.Any() && ballistic.NextRound == null, "unassembled silo has no round");
+        ballistic.MarkLoaded();
+        Check(ballistic.StrikeRounds.Single() == silo && ballistic.NextRound == silo, "assembled silo is its own round");
+        Check(ballistic.BuildFiringConfig(a) == null, "a silo only fires itself");
+
+        // World defense engagement order: soonest arrival first, ties keep creation order.
+        var far = new FakeTrack { angle = 0.3f, speed = 1f / 30000f };
+        var nearA = new FakeTrack { angle = 0.1f, speed = 1f / 30000f };
+        var fast = new FakeTrack { angle = 0.3f, speed = 1.5f / 30000f };
+        var nearB = new FakeTrack { angle = 0.1f, speed = 1f / 30000f };
+        var order = WorldComponent_BVRNetwork.InEngagementOrder(new[] { far, nearA, fast, nearB });
+        Check(order.SequenceEqual(new[] { nearA, nearB, fast, far }), "engagement order is by arrival time, stable for ties");
+    }
     public static void Main()
     {
         Setup();
-        Detection(); Solver(); FireControl(); LedgerAndTerminal(); InventoryAndPersistence();
+        Detection(); Solver(); FireControl(); LedgerAndTerminal(); InventoryAndPersistence(); StrikeP0();
         Console.WriteLine($"PASS: {count} BVR checks (real game/DMSE assemblies).");
     }
     class OnlineRadar : CompFireControlRadar { public override bool Active => true; }

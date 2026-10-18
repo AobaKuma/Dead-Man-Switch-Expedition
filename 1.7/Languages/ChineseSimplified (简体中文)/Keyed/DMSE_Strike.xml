@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <DMSE.Strike.AllRoundsReserved>在架导弹已全部保留给打击任务</DMSE.Strike.AllRoundsReserved>
+  <DMSE.Strike.ReservedInspect>已保留给打击任务：{0} 枚</DMSE.Strike.ReservedInspect>
+  <DMSE.Strike.ReservedNoEdit>已保留给打击任务：任务结束前无法改装。</DMSE.Strike.ReservedNoEdit>
+</LanguageData>

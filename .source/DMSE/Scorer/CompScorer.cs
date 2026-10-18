@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using RimWorld;
 using RimWorld.Planet;
 using Verse;
@@ -68,12 +69,21 @@ namespace DMSE
         protected override string NoAmmoDisableReason
             => "MissingPartWithLabel".Translate(Refuelable?.Props?.FuelLabel ?? string.Empty);
 
+        /// <summary>彈藥即平台本身（燃料滿時）。</summary>
+        public override IEnumerable<Thing> StrikeRounds
+        {
+            get
+            {
+                if (HasAmmo) { yield return parent; }
+            }
+        }
+
         /// <summary>發射設定來自同一建築上的 CompMissileConfig（可為 null，落點按預設結算）。</summary>
-        protected override MissileConfig BuildFiringConfig()
-            => parent.GetComp<CompMissileConfig>()?.config?.Clone();
+        public override MissileConfig BuildFiringConfig(Thing round)
+            => round == parent ? parent.GetComp<CompMissileConfig>()?.config?.Clone() : null;
 
         /// <summary>消耗全部燃料（一發 = 滿燃料）。</summary>
-        protected override void ConsumeAmmo()
+        protected override void ConsumeAmmo(Thing round)
         {
             CompRefuelable r = Refuelable;
             if (r != null)

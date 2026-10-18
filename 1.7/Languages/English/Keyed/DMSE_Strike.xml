@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <DMSE.Strike.AllRoundsReserved>Every loaded missile is reserved for a strike mission</DMSE.Strike.AllRoundsReserved>
+  <DMSE.Strike.ReservedInspect>Reserved for strike missions: {0}</DMSE.Strike.ReservedInspect>
+  <DMSE.Strike.ReservedNoEdit>Reserved for a strike mission: this missile cannot be refitted until the mission ends.</DMSE.Strike.ReservedNoEdit>
+</LanguageData>

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -86,13 +87,17 @@ namespace DMSE
     /// （<see cref="CompMissileLauncher_Scorer"/>）皆繼承本類。
     ///
     /// 統一內容：
-    ///   - 發射 Gizmo（世界選靶、射程檢查與標示、無彈藥／裝置不可用／冷卻中停用）。
-    ///   - <see cref="Launch"/>：生成離場 skyfaller 與世界旅行物件、掛上發射設定、
-    ///     消耗彈藥（<see cref="ConsumeAmmo"/>）並起算冷卻。
+    ///   - 發射 Gizmo（世界選靶、射程檢查與標示、無彈藥／全數保留／裝置不可用／冷卻中停用）。
+    ///   - <see cref="TryLaunchRound"/>：發射指定彈藥——生成離場 skyfaller 與世界旅行物件、掛上發射設定、
+    ///     消耗該彈藥（<see cref="ConsumeAmmo"/>）並起算冷卻。單發 Gizmo 與波次打擊共用。
     ///   - <see cref="CanTargetTile"/>：預設排除水域與已有非 MapParent 世界物件的 tile，
     ///     三平台選靶規則一致。
+    ///   - 向 <see cref="MapComponent_StrikePlanner"/> 註冊，供波次打擊列舉在架彈藥。
     ///
-    /// 子類只需提供 def 來源、發射設定建構與彈藥消耗方式。
+    /// 「彈藥」（round）：Rail 為容器中可進攻的導彈 Thing；彈道井與 Scorer 為平台本身（已裝填時）。
+    /// 被打擊任務保留的彈藥（<see cref="StrikeReservation"/>）不會被單發 Gizmo 取用。
+    ///
+    /// 子類只需提供 def 來源、彈藥列舉、發射設定建構與彈藥消耗方式。
     /// </summary>
     public abstract class CompMissileLauncher_WorldTargeting : CompMissileLauncher
     {
@@ -108,14 +113,48 @@ namespace DMSE
         /// <summary>離場 skyfaller 生成於建築中心沿朝向的格數偏移（垂直發射為 0）。</summary>
         protected virtual int LaunchForwardCells => 0;
 
-        /// <summary>建構本次發射的設定（應回傳副本）；無法建構時回傳 null。</summary>
-        protected abstract MissileConfig BuildFiringConfig();
+        /// <summary>
+        /// 可供世界打擊的在架彈藥（含被打擊任務保留者）：Rail 為容器中可進攻的導彈；
+        /// 彈道井／Scorer 已裝填時為平台本身。
+        /// </summary>
+        public abstract IEnumerable<Thing> StrikeRounds { get; }
+
+        /// <summary>單發 Gizmo 使用的彈藥：第一枚未被保留的彈藥；沒有時為 null。</summary>
+        public Thing NextRound
+        {
+            get
+            {
+                MapComponent_StrikePlanner planner = StrikeReservation.PlannerFor(parent);
+                foreach (Thing round in StrikeRounds)
+                {
+                    if (planner == null || !planner.IsReserved(round)) { return round; }
+                }
+                return null;
+            }
+        }
+
+        /// <summary>彈藥是否仍在本平台上（可發射）。以參照比較：Thing.Equals 比的是 ID 與 def。</summary>
+        public bool OwnsRound(Thing round)
+        {
+            if (round == null) { return false; }
+            foreach (Thing r in StrikeRounds)
+            {
+                if (ReferenceEquals(r, round)) { return true; }
+            }
+            return false;
+        }
+
+        /// <summary>同一波次內同平台各枚的發射間隔（tick）；0 表示單發平台。</summary>
+        public virtual int SalvoIntervalTicks => 0;
+
+        /// <summary>建構指定彈藥的發射設定（應回傳副本）；彈藥不在本平台或無法建構時回傳 null。</summary>
+        public abstract MissileConfig BuildFiringConfig(Thing round);
 
         /// <summary>發射設定為 null 時是否中止發射（彈道井的重置流程依賴 config 存在）。</summary>
         protected virtual bool RequiresConfig => false;
 
-        /// <summary>發射成功後消耗彈藥（取出實體彈／清空燃料／重置裝配旗標）。</summary>
-        protected abstract void ConsumeAmmo();
+        /// <summary>發射成功後消耗指定彈藥（取出實體彈／清空燃料／重置裝配旗標）。</summary>
+        protected abstract void ConsumeAmmo(Thing round);
 
         /// <summary>發射 Gizmo 的標籤與說明。</summary>
         protected abstract string GizmoLabel { get; }
@@ -124,12 +163,12 @@ namespace DMSE
         /// <summary>無彈藥時 Gizmo 的停用理由。</summary>
         protected abstract string NoAmmoDisableReason { get; }
 
-        /// <summary>已裝填彈藥的射程（世界 tile）；0 = 不限。</summary>
+        /// <summary>下一枚單發彈藥的射程（世界 tile）；0 = 不限。</summary>
         private int LoadedRange
         {
             get
             {
-                MissileConfig c = BuildFiringConfig();
+                MissileConfig c = BuildFiringConfig(NextRound);
                 return c != null ? c.Range : 0;
             }
         }
@@ -184,13 +223,13 @@ namespace DMSE
                         {
                             return false;
                         }
-                        // 跨圖層需導引能力；射程以地表等效格計（跨圖層另加成本）
-                        if (!MissileWorldUtility.CanEngage(BuildFiringConfig(), parent.Map.Tile, t.Tile, 0f, out string reason))
+                        // 選靶期間狀態可能改變（彈被卸除、被保留、斷電…），由 TryLaunchRound 再驗一次；
+                        // 跨圖層需導引能力，射程以地表等效格計（跨圖層另加成本）。
+                        if (TryLaunchRound(t, NextRound, false, out string reason) == null)
                         {
-                            Messages.Message(reason, MessageTypeDefOf.RejectInput, false);
+                            if (!reason.NullOrEmpty()) { Messages.Message(reason, MessageTypeDefOf.RejectInput, false); }
                             return false;
                         }
-                        Launch(t);
                         return true;
                     },
                     canTargetTiles: true,
@@ -211,7 +250,7 @@ namespace DMSE
                             label += "DMSE.MissileLauncher.NoTargetHere".Translate();
                         }
                         // 落點選擇方式：電視制導抵達後手選，其餘依導引頭自動鎖定
-                        string seeker = GuidanceTargetingText(BuildFiringConfig());
+                        string seeker = GuidanceTargetingText(BuildFiringConfig(NextRound));
                         if (!seeker.NullOrEmpty())
                         {
                             if (!label.NullOrEmpty()) { label += "\n"; }
@@ -229,6 +268,11 @@ namespace DMSE
             {
                 command.Disable(NoAmmoDisableReason);
             }
+            else if (NextRound == null)
+            {
+                // 在架彈藥全數被打擊任務保留。
+                command.Disable("DMSE.Strike.AllRoundsReserved".Translate());
+            }
             else if (!Active)
             {
                 // 有彈但斷電／關閉／損壞／暈眩／未操作 → 不可發射。
@@ -243,19 +287,48 @@ namespace DMSE
             yield return command;
         }
 
-        /// <summary>共用發射流程；選靶後由 Gizmo 呼叫。</summary>
-        protected void Launch(GlobalTargetInfo t)
+        /// <summary>
+        /// 發射指定彈藥（docs/BVR_波次打擊規劃.md §7-2）。單發 Gizmo 傳入 <see cref="NextRound"/>；
+        /// 波次打擊傳入保留中的彈藥，本方法不檢查保留。
+        /// <paramref name="salvoContinuation"/> = 同一波次同平台的後續各枚：略過冷卻檢查；
+        /// 每枚發射後都重新起算冷卻，所以冷卻從本平台最後一枚起算。
+        /// 成功回傳世界航跡物件（離場 skyfaller 離開地圖時才加入世界）；失敗回傳 null 並給出原因。
+        /// </summary>
+        public ScorerProjectile_WorldObject TryLaunchRound(GlobalTargetInfo target, Thing round, bool salvoContinuation, out string failReason)
         {
-            // 選靶期間狀態可能改變（彈被卸除、斷電…），發射前再驗一次。
-            if (LaunchSkyfallerDef == null || TravelWorldObjectDef == null || parent.Map == null || !Active)
+            failReason = null;
+            if (LaunchSkyfallerDef == null || TravelWorldObjectDef == null || parent.Map == null)
             {
-                return;
+                failReason = "DMSE.BVR.DeviceInactive".Translate();
+                return null;
+            }
+            if (!OwnsRound(round))
+            {
+                failReason = NoAmmoDisableReason;
+                return null;
+            }
+            if (!Active)
+            {
+                failReason = "DMSE.BVR.DeviceInactive".Translate();
+                return null;
+            }
+            int now = Find.TickManager.TicksGame;
+            if (!salvoContinuation && OnCooldown(now))
+            {
+                failReason = "DMSE.MissileLauncher.LaunchCooldown".Translate(CooldownTicksRemaining(now).ToStringTicksToPeriod());
+                return null;
             }
 
-            MissileConfig config = BuildFiringConfig();
+            MissileConfig config = BuildFiringConfig(round);
             if (RequiresConfig && config == null)
             {
-                return;
+                failReason = NoAmmoDisableReason;
+                return null;
+            }
+            // 移動中的目標可能已出射程；跨圖層需導引能力
+            if (!MissileWorldUtility.CanEngage(config, parent.Map.Tile, target.Tile, 0f, out failReason))
+            {
+                return null;
             }
 
             ScorerProjectile faller = (ScorerProjectile)SkyfallerMaker.SpawnSkyfaller(
@@ -269,13 +342,40 @@ namespace DMSE
             wo.skyfallerIncoming = IncomingSkyfallerDef;
             wo.SetFaction(Faction.OfPlayer);
             wo.Tile = parent.Map.Tile;
-            wo.destinationTile = t.Tile;
-            wo.targetParent = TargetParentAt(t);
+            wo.destinationTile = target.Tile;
+            wo.targetParent = TargetParentAt(target);
             wo.config = config;
             faller.worldObject = wo;
 
-            ConsumeAmmo();
-            StartCooldown(Find.TickManager.TicksGame);
+            ConsumeAmmo(round);
+            StartCooldown(now);
+            return wo;
+        }
+
+        /// <summary>在基底的冷卻／裝填狀態之後，加上被打擊任務保留的彈藥數。</summary>
+        public override string CompInspectStringExtra()
+        {
+            string text = base.CompInspectStringExtra();
+            MapComponent_StrikePlanner planner = StrikeReservation.PlannerFor(parent);
+            int reserved = planner == null ? 0 : StrikeRounds.Count(planner.IsReserved);
+            if (reserved > 0)
+            {
+                string line = "DMSE.Strike.ReservedInspect".Translate(reserved);
+                text = text.NullOrEmpty() ? line : text + "\n" + line;
+            }
+            return text;
+        }
+
+        public override void PostSpawnSetup(bool respawningAfterLoad)
+        {
+            base.PostSpawnSetup(respawningAfterLoad);
+            parent.Map?.GetComponent<MapComponent_StrikePlanner>()?.launchers.Add(this);
+        }
+
+        public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
+        {
+            base.PostDeSpawn(map, mode);
+            map?.GetComponent<MapComponent_StrikePlanner>()?.launchers.Remove(this);
         }
     }
 }
