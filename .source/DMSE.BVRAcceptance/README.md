@@ -7,7 +7,7 @@ this runner covers what needs the full game loop (skyfallers, world objects, pow
 nets, pawns, rendering, Scribe with live references).
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .source/DMSE.BVRAcceptance/run.ps1 -OutDir <dir> [-TimeoutMinutes 45]
+powershell -NoProfile -ExecutionPolicy Bypass -File .source/DMSE.BVRAcceptance/run.ps1 -OutDir <dir> [-TimeoutMinutes 45] [-Only S3,W6]
 ```
 
 - Close RimWorld first (it locks `1.7/Assemblies`). Build `.source/DMSE` first: the
@@ -17,7 +17,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .source/DMSE.BVRAcceptance/r
 - The game starts with `-quicktest` (new Crashlanded colony, 250 map) and the
   active mod list as is. The runner deletes its temporary save
   (`DMSE_BVR_Acceptance`) and quits the game when done. Your own saves are untouched.
-- A full run takes about 15 minutes at ultrafast speed.
+- A full run takes about 15 minutes at ultrafast speed. `-Only` takes comma-separated
+  test ids and runs just those (in suite order), which is handy while fixing one test.
 
 ## Output (`<dir>`)
 
@@ -42,12 +43,13 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .source/DMSE.BVRAcceptance/r
 | M8 | Map waves, world tracks and artillery share one channel ledger |
 | S1 | Seeker target rules (anti-radiation, EM, heat, laser, inertial, TV) |
 | S2 | Laser designator: mark position, duration, indestructible, expiry, no weapon tags |
+| S3 | Anti-radiation and EM seekers on a base map generated at arrival, before its power net switched anything on |
 | W1 | World detection at the ring edge, one letter, red track, alert, ETA within 15 ticks, landing without CIWS |
 | W2 | World lock, interceptor launch, channel kept in flight, kill at the meeting tick |
 | W3 | Forced miss, re-lock while time remains, second kill |
 | W4 | World survivor arrives as a terminal-only wave; CIWS kills it, SAM stays idle |
 | W5 | Radar loss clears detection and locks; the launched interceptor still resolves |
-| W6 | NPC missile base intercepts from stock, hands over to the generated map, resumes after removal |
+| W6 | NPC missile base intercepts from stock, hands over to the generated map, resumes after removal; EM seeker hits the phased array |
 | W7 | TV-guided arrival pauses for the player's target |
 | L1 | Save and reload with a detected track and an interceptor in flight |
 
@@ -62,4 +64,6 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .source/DMSE.BVRAcceptance/r
 
 To add a test, write an `IEnumerable<Wait>` method taking a `TestContext`, then add
 it to `AcceptanceSuite.Build()` in `Tests_Seekers.cs`. Use `TickWatch` for events
-shorter than a frame at ultrafast speed.
+shorter than a frame at ultrafast speed. A site map you generate yourself (not through
+a missile arrival) must be registered in `GameComponent_MissileEngage.times` as
+`OnArrived` does; otherwise vanilla removes the empty map and it stops ticking.

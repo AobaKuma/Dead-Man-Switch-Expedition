@@ -21,50 +21,55 @@ namespace DMSE
         }
 
         /// <summary>裝置目前是否可運作。</summary>
-        public virtual bool Active
+        public virtual bool Active => Operational(countPowerStarting: false);
+
+        /// <summary>
+        /// 給反輻射導引頭判斷雷達是否開機：同 <see cref="Active"/>，但電網正要開啟的裝置也算
+        /// （見 <see cref="GuidanceType.PowerStarting"/>；導彈抵達時才生成的地圖上，雷達在抵達那一 tick 都還沒通電）。
+        /// </summary>
+        public bool ActiveForSeeker => Operational(countPowerStarting: true);
+
+        private bool Operational(bool countPowerStarting)
         {
-            get
+            if (parent == null || !parent.Spawned || parent.Destroyed)
             {
-                if (parent == null || !parent.Spawned || parent.Destroyed)
-                {
-                    return false;
-                }
-
-                CompBreakdownable breakdownable = parent.GetComp<CompBreakdownable>();
-                if (breakdownable != null && breakdownable.BrokenDown)
-                {
-                    return false;
-                }
-
-                CompFlickable flickable = parent.GetComp<CompFlickable>();
-                if (flickable != null && !flickable.SwitchIsOn)
-                {
-                    return false;
-                }
-
-                CompPowerTrader power = parent.GetComp<CompPowerTrader>();
-                if (power != null && !power.PowerOn)
-                {
-                    return false;
-                }
-
-                CompStunnable stunnable = parent.GetComp<CompStunnable>();
-                if (stunnable != null && stunnable.StunHandler != null && stunnable.StunHandler.Stunned)
-                {
-                    return false;
-                }
-
-                // 若掛有 CompMannable（例如需操作員手動操作的旋轉發射架／早期型雷達），
-                // 未有人操作時裝置視為不可運作。與 CompTurretFacingRenderer.DeviceActive 的判定保持一致，
-                // 使「視覺停止轉向」與「實際停止鎖定／發射」同步發生，而非僅視覺表現。
-                CompMannable mannable = parent.GetComp<CompMannable>();
-                if (mannable != null && !mannable.MannedNow)
-                {
-                    return false;
-                }
-
-                return true;
+                return false;
             }
+
+            CompBreakdownable breakdownable = parent.GetComp<CompBreakdownable>();
+            if (breakdownable != null && breakdownable.BrokenDown)
+            {
+                return false;
+            }
+
+            CompFlickable flickable = parent.GetComp<CompFlickable>();
+            if (flickable != null && !flickable.SwitchIsOn)
+            {
+                return false;
+            }
+
+            CompPowerTrader power = parent.GetComp<CompPowerTrader>();
+            if (power != null && !power.PowerOn && !(countPowerStarting && GuidanceType.PowerStarting(power)))
+            {
+                return false;
+            }
+
+            CompStunnable stunnable = parent.GetComp<CompStunnable>();
+            if (stunnable != null && stunnable.StunHandler != null && stunnable.StunHandler.Stunned)
+            {
+                return false;
+            }
+
+            // 若掛有 CompMannable（例如需操作員手動操作的旋轉發射架／早期型雷達），
+            // 未有人操作時裝置視為不可運作。與 CompTurretFacingRenderer.DeviceActive 的判定保持一致，
+            // 使「視覺停止轉向」與「實際停止鎖定／發射」同步發生，而非僅視覺表現。
+            CompMannable mannable = parent.GetComp<CompMannable>();
+            if (mannable != null && !mannable.MannedNow)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

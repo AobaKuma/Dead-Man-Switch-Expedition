@@ -325,12 +325,14 @@ OnArrived（AllowGenerateTargetMap = true：目標據點尚無地圖時會生成
 | 導引頭 | 類別 | 鎖定規則 | 找不到時 | 1.7 部件 |
 |---|---|---|---|---|
 | 慣性 | `GuidanceType_Inertial`（或無導引部件） | 隨機一棟敵對建築 → 隨機一名敵對 Pawn → 地圖中心 | — | 各彈體的慣性導引 |
-| 反輻射 | `GuidanceType_AntiRadiation` | 開機（`Active`）的敵對搜索／火控雷達中 `powerLevel` 最高者，同級比耗電量；`immuneToAntiRadiationSeeker` 的雷達不列入 | 電磁訊號 → 慣性 | 輕型 `DMSE_Light_Guidance_AntiRadiation` |
+| 反輻射 | `GuidanceType_AntiRadiation` | 開機（`ActiveForSeeker`）的敵對搜索／火控雷達中 `powerLevel` 最高者，同級比耗電量；`immuneToAntiRadiationSeeker` 的雷達不列入 | 電磁訊號 → 慣性 | 輕型 `DMSE_Light_Guidance_AntiRadiation` |
 | 熱訊號 | `GuidanceType_HeatSource`（`Infrared` 為舊名別名） | 最熱的室內房間若比室外高出 `minRoomTempAboveOutdoor`（15°C）→ 該房間內一格；否則體型最大的 Pawn（攻擊方與非敵對陣營除外，野生動物也算） | 慣性 | 輕型 `DMSE_Light_Guidance_IR`（熱訊號導引頭） |
-| 電磁訊號 | `GuidanceType_ElectromagneticSignal`（`HighEnergy` 為舊名別名） | 通電中、耗電量（`-PowerOutput`）最大的敵對建築 | 慣性 | 巡航 `DMSE_Guidance_EMSignal` |
+| 電磁訊號 | `GuidanceType_ElectromagneticSignal`（`HighEnergy` 為舊名別名） | 通電中、耗電量（`-PowerOutput`）最大的敵對建築；電網正要開啟的建築以額定耗電計 | 慣性 | 巡航 `DMSE_Guidance_EMSignal` |
 | 電視制導 | `GuidanceType_TV`（`PlayerChoosesTarget = true`） | 玩家發射：抵達後暫停，自由選點；敵方發射：慣性 | — | 巡航 `DMSE_Guidance_Precision`（改名「電視制導」）、巡飛彈內建 |
 | 雷射 | `GuidanceType_Laser` | 目標地圖上攻擊方自己、仍有效的雷射引導點中最近放置者 | 慣性 | 輕型 `DMSE_Light_Guidance_Laser`、巡航 `DMSE_Guidance_Laser`、彈道 `DMSE_Ballistic_Guidance_Laser` |
 | 火控 | `GuidanceType_FireControl` | 慣性（散布較小；主要語意是攔截彈） | — | 彈道 `DMSE_Ballistic_Guidance_FireControl` |
+
+**電網啟動中的建築**：原版電網每 30–200 ticks 才開啟一棟新接上的耗電建築，而導彈打尚未生成地圖的據點時，地圖在抵達那一 tick 才生成，所有建築都還沒通電。`GuidanceType.PowerStarting` 把「開關為開、未故障、電網有可用電源且供得起、無停電事件」的未通電建築視為運作中（與原版 `PowerNet.PowerNetTick` 的開機條件相同）；反輻射用 `CompBVRDevice.ActiveForSeeker`（同 `Active`，但接受啟動中的電力），電磁訊號以額定耗電 `PowerConsumption` 計。人工操作的雷達仍須有人操作才算開機。熱訊號不受影響：新地圖的房間還沒升溫，會打體型最大的 Pawn。
 
 **雷射引導標點**（`.source/DMSE/Scorer/Guidance/LaserDesignator.cs`、`1.7/Defs/ThingDefs_Misc/Weapons/DMSE_LaserDesignator.xml`）：
 
@@ -457,11 +459,11 @@ BVR 是**防禦**，裝配/發射與火砲是**進攻**，但已互相牽動：
 
 ### 2026-10-18：遊戲內自動驗收
 
-新增 `.source/DMSE.BVRAcceptance`（用法見該目錄 README）：以 `-quicktest` 啟動 1.7、在新殖民地自動跑地圖層、導引頭、世界層與存讀檔共 19 項，跑完刪除暫存存檔並關閉遊戲；測試用 DLL 只在執行期間放進 `1.7/Assemblies`。連續三輪 19/19 通過（最後一輪用的是要提交的 Release DLL）。世界層各情境的結果與未測項目見《BVR_世界層偵測攔截重構》§15-4。
+新增 `.source/DMSE.BVRAcceptance`（用法見該目錄 README）：以 `-quicktest` 啟動 1.7、在新殖民地自動跑地圖層、導引頭、世界層與存讀檔，跑完刪除暫存存檔並關閉遊戲；測試用 DLL 只在執行期間放進 `1.7/Assemblies`。最初 19 項連續三輪全數通過；修正下方第 3 點後新增 S3，20/20 通過（Release DLL）。世界層各情境的結果與未測項目見《BVR_世界層偵測攔截重構》§15-4。
 
 1. **【已修正】雷射目標標定器會出現在敵人身上。** `DMSE_Gun_LaserDesignator` 繼承 `BaseHumanMakeableGun` 的 `weaponTags`（`Gun`），劫掠者的武器池會抽到這把無傷害的裝備。改為 `<weaponTags Inherit="False" />`。
 2. **【已修正】世界層覆蓋圈、攔截彈虛線與會合擴散圈看不見。** `BVRWorldDrawer` 的線畫在球面上，被地形網格蓋住；改照原版世界線沿法線外推 0.08，並使用圖層的世界線材質與寬度。
-3. **【未修正，待決定】反輻射、電磁訊號導引頭打剛生成的地圖時退化為慣性。** 兩者要求 `PowerOn`，但地圖在導彈抵達那一 tick 才生成，原版電網要 30–200 ticks 後才開啟耗電建築。打尚未生成地圖的 NPC 據點時，這兩種導引頭等同慣性；熱訊號在新地圖上也只會打最大的 Pawn。
+3. **【已修正】反輻射、電磁訊號導引頭打剛生成的地圖時退化為慣性。** 兩者要求 `PowerOn`，但地圖在導彈抵達那一 tick 才生成，原版電網要 30–200 ticks 後才開啟耗電建築，打尚未生成地圖的 NPC 據點時，這兩種導引頭等同慣性。改為電網正要開啟的建築也算運作中（B-7「電網啟動中的建築」）；新增驗收 S3 在地圖生成當下直接選點，W6 改為必須命中相控陣雷達。熱訊號在新地圖上仍只會打最大的 Pawn（房間還沒升溫，符合「房間夠熱才選房間」）。
 4. 測試過程中確認的原版行為：新接上電網的耗電建築是逐一開啟的（每 30–200 ticks），`DebugSettings.unlimitedPower` 只對已在電網內的建築有效；不在世界畫面時世界物件每 15 ticks 才更新一次。
 
 ### 2026-10-18 第三輪：全面覆核

@@ -86,6 +86,56 @@ namespace DMSE.BVRAcceptance
             t.Check(CruiseConfig("DMSE_Guidance_Precision").HasTerminalGuidance, "TV part still provides terminal guidance");
         }
 
+        /// <summary>
+        /// A missile arriving at a base without a map generates it and picks the impact cell on that same tick,
+        /// before the power net has switched any consumer on (vanilla does that every 30–200 ticks).
+        /// </summary>
+        public static IEnumerable<Wait> SeekersOnFreshMap(TestContext t)
+        {
+            Site site = SpawnMissileBase(8f, 14f);
+            t.Require(site != null, "an NPC missile base spawned");
+            Map map = MissileWorldUtility.ResolveArrivalMap(site.Tile, site, true);   // the call a missile arrival makes
+            t.Require(map != null, "the base map is generated");
+            // OnArrived keeps the map for two days (Patch_ShouldBeRemoved); without it vanilla removes the empty site map.
+            GameComponent_MissileEngage.Comp.times.SetOrAdd(map, Find.TickManager.TicksGame + GenDate.TicksPerDay * 2);
+            Thing radar = map.listerThings.ThingsOfDef(PhaseArray).FirstOrDefault();
+            t.Require(radar != null, "the base has a phased array radar");
+            CompPowerTrader power = radar.TryGetComp<CompPowerTrader>();
+            CompSearchRadar search = radar.TryGetComp<CompSearchRadar>();
+            IntVec3 PickOn(string guidance) => GuidanceType.PickCell(CruiseConfig(guidance), map, Player);
+            string NetState()
+            {
+                PowerNet net = power.PowerNet;
+                if (net == null) { return "radar has no power net"; }
+                string batteries = string.Join(", ", map.listerThings.AllThings
+                    .Select(x => x.TryGetComp<CompPowerBattery>()).Where(b => b != null)
+                    .Select(b => $"{b.StoredEnergy:0.0}{(b.PowerNet == net ? "" : " (other net)")}"));
+                return $"radar net: stored {net.CurrentStoredEnergy():0.0} Wd, gain {net.CurrentEnergyGainRate() / CompPower.WattsToWattDaysPerTick:0} W, "
+                    + $"on {net.powerComps.Count(c => c.PowerOn)}/{net.powerComps.Count} "
+                    + $"[{string.Join(", ", net.powerComps.Select(c => c.parent.def.defName + (c.PowerOn ? "+" : "-")))}]; "
+                    + $"batteries on map: {batteries}; nets on map: {map.powerNetManager.AllNetsListForReading.Count}";
+            }
+
+            t.Check(!power.PowerOn, "the power net has not switched the radar on yet");
+            t.Check(GuidanceType.PowerStarting(power), "the radar counts as starting up");
+            t.Check(!search.Active && search.ActiveForSeeker, "radar is not Active for BVR yet, but is for seekers");
+            t.Check(PickOn("DMSE_Light_Guidance_AntiRadiation") == radar.Position, "anti-radiation locks the radar that is still powering up");
+            t.Check(PickOn("DMSE_Guidance_EMSignal") == radar.Position, "EM seeker locks the biggest nominal draw (phased array, 5 kW)");
+
+            var waitOn = new WaitUntil(() => power.PowerOn, 2000);
+            yield return waitOn;
+            if (waitOn.TimedOut) { t.Note(NetState()); }
+            t.Check(!waitOn.TimedOut, "the power net switches the radar on");
+            t.Check(PickOn("DMSE_Light_Guidance_AntiRadiation") == radar.Position, "same anti-radiation pick once powered");
+            t.Check(PickOn("DMSE_Guidance_EMSignal") == radar.Position, "same EM pick once powered");
+
+            SetFlick(radar, false);
+            yield return new WaitTicks(3);
+            t.Check(!power.PowerOn && !GuidanceType.PowerStarting(power), "a switched-off radar is neither on nor starting");
+            t.Check(PickOn("DMSE_Light_Guidance_AntiRadiation") != radar.Position, "anti-radiation ignores the switched-off radar");
+            t.Check(PickOn("DMSE_Guidance_EMSignal") != radar.Position, "EM seeker ignores the switched-off radar");
+        }
+
         public static IEnumerable<Wait> LaserDesignatorMarkLifecycle(TestContext t)
         {
             Pawn colonist = Home.mapPawns.FreeColonistsSpawned.FirstOrDefault();
@@ -200,6 +250,7 @@ namespace DMSE.BVRAcceptance
                 new AcceptanceTest("M8", "Shared fire-control channels (local + world)", Tests_Map.SharedChannels),
                 new AcceptanceTest("S1", "Seeker target selection", Tests_Seekers.SeekerTargetSelection),
                 new AcceptanceTest("S2", "Laser designator mark lifecycle", Tests_Seekers.LaserDesignatorMarkLifecycle),
+                new AcceptanceTest("S3", "Seekers on a map generated at arrival", Tests_Seekers.SeekersOnFreshMap),
                 new AcceptanceTest("W1", "World detection, ETA, landing without CIWS", Tests_World.DetectionEtaAndLanding),
                 new AcceptanceTest("W2", "World interception hit", Tests_World.WorldInterceptHit),
                 new AcceptanceTest("W3", "World interception miss and re-lock", Tests_World.WorldInterceptMissThenRelock),

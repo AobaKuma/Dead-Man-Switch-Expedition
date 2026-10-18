@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace DMSE
@@ -118,12 +119,32 @@ namespace DMSE
             return best != null ? best.Position : IntVec3.Invalid;
         }
 
-        /// <summary>建築目前的耗電量（瓦）；未通電或為發電設施時為 0。</summary>
+        /// <summary>
+        /// 建築目前的耗電量（瓦）；未通電或為發電設施時為 0。
+        /// 電網正要開啟的建築（<see cref="PowerStarting"/>）以額定耗電計。
+        /// </summary>
         public static float PowerDraw(Building b)
         {
             CompPowerTrader power = b.TryGetComp<CompPowerTrader>();
-            if (power == null || !power.PowerOn) { return 0f; }
-            return power.PowerOutput < 0f ? -power.PowerOutput : 0f;
+            if (power == null) { return 0f; }
+            if (power.PowerOn) { return power.PowerOutput < 0f ? -power.PowerOutput : 0f; }
+            return PowerStarting(power) ? Mathf.Max(0f, power.Props.PowerConsumption) : 0f;
+        }
+
+        /// <summary>
+        /// 尚未通電、但電網正要開啟它：開關為開、未故障、電網有可用電源且供得起（與原版 <c>PowerNet.PowerNetTick</c> 的開機條件相同）。
+        /// 原版電網每 30–200 ticks 才開啟一棟耗電建築，導彈抵達時才生成的地圖在抵達那一 tick 全部建築都處於此狀態；
+        /// 導引頭把它們視為運作中，否則反輻射／電磁訊號打未生成地圖的據點時必然退化為慣性。
+        /// </summary>
+        public static bool PowerStarting(CompPowerTrader power)
+        {
+            if (power.PowerOn) { return false; }
+            PowerNet net = power.PowerNet;
+            if (net == null || !net.HasActivePowerSource || !net.CanPowerNow(power)) { return false; }
+            ThingWithComps parent = power.parent;
+            Map map = parent.MapHeld;
+            if (map == null || map.gameConditionManager.ElectricityDisabled(map)) { return false; }
+            return FlickUtility.WantsToBeOn(parent) && !parent.IsBrokenDown();
         }
     }
 
@@ -145,7 +166,7 @@ namespace DMSE
 
     // ============================================================
     //  反輻射（Anti-Radiation）
-    //  鎖定開機（Active）的敵對雷達建築中功率等級最高者；同級再比耗電量。
+    //  鎖定開機（ActiveForSeeker：Active，或電網正要開啟）的敵對雷達建築中功率等級最高者；同級再比耗電量。
     //  標記 immuneToAntiRadiationSeeker 的雷達（純被動聲學預警）不列入。
     //  找不到則退化為電磁訊號，再找不到由 PickCell 退化為慣性。
     // ============================================================
@@ -179,12 +200,12 @@ namespace DMSE
         {
             int level = -1;
             CompSearchRadar sr = b.TryGetComp<CompSearchRadar>();
-            if (sr != null && sr.Active && !sr.Props.immuneToAntiRadiationSeeker)
+            if (sr != null && sr.ActiveForSeeker && !sr.Props.immuneToAntiRadiationSeeker)
             {
                 level = sr.Props.powerLevel;
             }
             CompFireControlRadar fc = b.TryGetComp<CompFireControlRadar>();
-            if (fc != null && fc.Active && !fc.Props.immuneToAntiRadiationSeeker && fc.Props.powerLevel > level)
+            if (fc != null && fc.ActiveForSeeker && !fc.Props.immuneToAntiRadiationSeeker && fc.Props.powerLevel > level)
             {
                 level = fc.Props.powerLevel;
             }

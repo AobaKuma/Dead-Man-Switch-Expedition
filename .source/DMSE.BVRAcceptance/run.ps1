@@ -8,13 +8,14 @@
      takes screenshots, deletes its temporary save and quits the game.
   4. Removes the DLL again (also when the game crashes or times out) and copies the screenshots into OutDir.
 
-  Usage:  powershell -ExecutionPolicy Bypass -File .source/DMSE.BVRAcceptance/run.ps1 -OutDir <dir> [-TimeoutMinutes 45]
+  Usage:  powershell -ExecutionPolicy Bypass -File .source/DMSE.BVRAcceptance/run.ps1 -OutDir <dir> [-TimeoutMinutes 45] [-Only S3,W6]
   RimWorld must not be running (it locks 1.7/Assemblies). The active mod list is used as is.
 #>
 param(
     [Parameter(Mandatory = $true)][string]$OutDir,
     [int]$TimeoutMinutes = 45,
-    [string]$GameExe = ''
+    [string]$GameExe = '',
+    [string]$Only = ''   # comma-separated test ids, e.g. 'S3,W6'; empty runs every test
 )
 
 $ErrorActionPreference = 'Stop'
@@ -35,6 +36,7 @@ $started = Get-Date
 
 try {
     $gameArgs = @('-quicktest', "-dmse-bvr-acceptance=$OutDir")
+    if ($Only -ne '') { $gameArgs += "-dmse-bvr-only=$Only" }
     $proc = Start-Process -FilePath $GameExe -ArgumentList $gameArgs -WorkingDirectory (Split-Path $GameExe) -PassThru
     Write-Output "RimWorld started (pid $($proc.Id)); waiting up to $TimeoutMinutes min..."
     # Wait for every RimWorld process (the launcher may hand over to a child or be restarted through Steam).

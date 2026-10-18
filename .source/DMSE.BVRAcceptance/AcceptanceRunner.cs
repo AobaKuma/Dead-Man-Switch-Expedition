@@ -160,6 +160,8 @@ namespace DMSE.BVRAcceptance
     public static class AcceptanceDriver
     {
         public const string ArgKey = "dmse-bvr-acceptance";
+        /// <summary>Optional comma-separated test ids to run (e.g. <c>-dmse-bvr-only=S3,W6</c>).</summary>
+        public const string OnlyArgKey = "dmse-bvr-only";
 
         private static bool? enabled;
         private static string outDir;
@@ -262,6 +264,11 @@ namespace DMSE.BVRAcceptance
                 {
                     BVRFixture.PrepareGameOnce();
                     tests = AcceptanceSuite.Build();
+                    if (GenCommandLine.TryGetCommandLineArg(OnlyArgKey, out string only) && !only.NullOrEmpty())
+                    {
+                        HashSet<string> ids = new HashSet<string>(only.Split(',').Select(s => s.Trim()));
+                        tests = tests.Where(x => ids.Contains(x.id)).ToList();
+                    }
                     Log($"Running {tests.Count} acceptance tests.");
                 }
                 else

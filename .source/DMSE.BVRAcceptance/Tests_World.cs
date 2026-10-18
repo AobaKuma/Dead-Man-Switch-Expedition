@@ -276,13 +276,10 @@ namespace DMSE.BVRAcceptance
             List<IntVec3> landing = baseBvr.Waves.SelectMany(w => w.targets).Select(x => x.position)
                 .Concat(baseMap.listerThings.ThingsOfDef(CruiseIncoming).Select(x => x.Position)).ToList();
             t.Check(landing.Count > 0, "the missile is on the base map (falling or held for terminal defense)");
-            // Power nets on a freshly generated map may not be up yet at the arrival tick; then EM falls back to inertial.
-            HashSet<IntVec3> hostile = new HashSet<IntVec3>(GuidanceType.HostileBuildings(baseMap, Player).Select(b => b.Position));
-            t.Check(landing.Any(c => c == expected || hostile.Contains(c)),
-                "EM seeker hit the highest-draw building or (if nothing was powered yet) an inertial hostile building");
-            t.Note(expected.IsValid && landing.Contains(expected)
-                ? $"EM seeker locked the highest-draw building at {expected}"
-                : $"EM seeker fell back to inertial (highest draw now {expected}, landing {string.Join(",", landing)})");
+            // The map was generated at the arrival tick, before its power net switched anything on (see S3).
+            Thing radar = baseMap.listerThings.ThingsOfDef(PhaseArray).FirstOrDefault();
+            t.Check(radar != null && expected == radar.Position, $"the phased array is the biggest power draw on the base ({expected})");
+            t.Check(landing.Contains(expected), $"EM seeker locked it on arrival (landing {string.Join(",", landing)})");
 
             Current.Game.DeinitAndRemoveMap(baseMap, false);
             yield return WaitPowered(); yield return new WaitTicks(2);
