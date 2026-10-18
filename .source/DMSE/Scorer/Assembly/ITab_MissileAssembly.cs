@@ -172,6 +172,9 @@ namespace DMSE
             {
                 list.Label("DMSE.Missile.Stat.Range".Translate(cfg.Range));
             }
+            list.Label(cfg.HasTerminalGuidance
+                ? "DMSE.Missile.Stat.TerminalGuidance".Translate(cfg.TerminalUpdates)
+                : "DMSE.Missile.Stat.NoTerminalGuidance".Translate());
 
             // 裝配狀態 + 確認／還原按鈕
             if (comp.NeedsAssembly)

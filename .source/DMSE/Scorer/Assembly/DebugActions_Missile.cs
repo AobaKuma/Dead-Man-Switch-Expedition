@@ -21,7 +21,7 @@ namespace DMSE
             PlanetTile dest = map.Tile;
             PlanetTile source = OffsetTile(dest, 6);
 
-            IncomingMissileUtility.Launch(source, dest, BuildEnemyConfig(), attacker);
+            IncomingMissileUtility.Launch(source, dest, BuildEnemyConfig(), attacker, target: map.Parent);
             Messages.Message("DMSE: incoming missile launched" + (attacker != null ? " from " + attacker.Name : ""),
                 MessageTypeDefOf.NeutralEvent, false);
         }

@@ -22,6 +22,8 @@
     <baseWorldSpeedFactor>1.5</baseWorldSpeedFactor>
     <!-- 射程：150 * 3 * 0.1 = 45 格（洲際範圍） -->
     <baseRange>0</baseRange>
+    <!-- 具導引能力時，飛行中可更新終端位置的次數（重返大氣前的有限中段修正） -->
+    <terminalUpdates>2</terminalUpdates>
     <baseFuel>150</baseFuel>
     <baseSpecificImpulse>3</baseSpecificImpulse>
     <rangePerFuelImpulse>0.1</rangePerFuelImpulse>

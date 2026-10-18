@@ -120,8 +120,12 @@
   <DMSE.Missile.Stat.Fuel>Fuel: {0}</DMSE.Missile.Stat.Fuel>
   <DMSE.Missile.Stat.Impulse>Specific impulse: {0}</DMSE.Missile.Stat.Impulse>
   <DMSE.Missile.Stat.Range>Range: {0} tiles</DMSE.Missile.Stat.Range>
+  <DMSE.Missile.Stat.TerminalGuidance>Guided: can update its target position {0} time(s) in flight and strike across orbital layers</DMSE.Missile.Stat.TerminalGuidance>
+  <DMSE.Missile.Stat.NoTerminalGuidance>Unguided: cannot track moving targets or strike across orbital layers</DMSE.Missile.Stat.NoTerminalGuidance>
   <DMSE.MissileLauncher.OutOfRange>Target is beyond missile range ({0} tiles).</DMSE.MissileLauncher.OutOfRange>
   <DMSE.MissileLauncher.RangeLabel>{0} / {1} tiles</DMSE.MissileLauncher.RangeLabel>
+  <DMSE.MissileLauncher.NoTargetHere>No target at this location — the missile will be wasted</DMSE.MissileLauncher.NoTargetHere>
+  <DMSE.Missile.CrossLayerNeedsGuidance>Striking across orbital layers requires a guided missile. Inertial guidance and unguided munitions cannot.</DMSE.Missile.CrossLayerNeedsGuidance>
   <DMSE.Missile.Cat.Warhead>Warhead</DMSE.Missile.Cat.Warhead>
   <DMSE.Missile.Cat.Guidance>Guidance</DMSE.Missile.Cat.Guidance>
   <DMSE.Missile.Cat.Propulsion>Propulsion</DMSE.Missile.Cat.Propulsion>
@@ -141,6 +145,9 @@
   <DMSE.MissileLauncher.Interceptor.Ready>Ready to fire</DMSE.MissileLauncher.Interceptor.Ready>
   <DMSE.Missile.IncomingLetter>Incoming missile</DMSE.Missile.IncomingLetter>
   <DMSE.Missile.IncomingLetterDesc>A missile launched by {0} is inbound and will strike the colony shortly.</DMSE.Missile.IncomingLetterDesc>
+  <DMSE.Missile.Missed>Our missile found no target and was wasted.</DMSE.Missile.Missed>
+  <DMSE.Missile.IncomingMissed>A missile launched by {0} lost its target and missed.</DMSE.Missile.IncomingMissed>
+  <DMSE.Missile.TerminalUpdatesRemaining>Terminal updates remaining: {0} / {1}</DMSE.Missile.TerminalUpdatesRemaining>
 
   <DMSE_MissileDecayedAway>{0} has degraded beyond use and fallen apart.</DMSE_MissileDecayedAway>
   <DMSE_MissileDecaySheltered>Sheltered: durability stable</DMSE_MissileDecaySheltered>
@@ -178,6 +185,8 @@
   <DMSE.Artillery.TooClose>Target is too close — minimum range is {0} cells.</DMSE.Artillery.TooClose>
   <DMSE.Artillery.NoFireControl>No fire control radar with a free guidance channel available.</DMSE.Artillery.NoFireControl>
   <DMSE.Artillery.NoAmmo>No shell loaded — sustained fire halted.</DMSE.Artillery.NoAmmo>
+  <DMSE.Artillery.CrossLayer>Artillery shells are unguided and cannot strike across orbital layers.</DMSE.Artillery.CrossLayer>
+  <DMSE.Artillery.Missed>The artillery salvo found no target and was wasted.</DMSE.Artillery.Missed>
   <DMSE.Artillery.NoBarrel>Barrel worn out — sustained fire halted. Replace the reinforced barrel.</DMSE.Artillery.NoBarrel>
   <DMSE.BVR.DeviceInactive>Device is inactive (no power, broken down, or switched off).</DMSE.BVR.DeviceInactive>
   <!-- State strings (used in StopDesc) -->

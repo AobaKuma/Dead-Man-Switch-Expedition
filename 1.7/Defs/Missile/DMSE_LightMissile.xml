@@ -20,6 +20,8 @@
     <baseWorldSpeedFactor>0.75</baseWorldSpeedFactor>
     <!-- 射程：70 * 2.5 * 0.1 = 17.5 格（巡飛彈 ~12，中型 ~30） -->
     <baseRange>0</baseRange>
+    <!-- 具導引能力時，飛行中可更新終端位置的次數（單次修正） -->
+    <terminalUpdates>1</terminalUpdates>
     <baseFuel>70</baseFuel>
     <baseSpecificImpulse>2.5</baseSpecificImpulse>
     <rangePerFuelImpulse>0.1</rangePerFuelImpulse>

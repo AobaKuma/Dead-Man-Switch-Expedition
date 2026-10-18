@@ -25,6 +25,12 @@ namespace DMSE
         /// <returns>目標格；回傳 <see cref="IntVec3.Invalid"/> 時由呼叫端退化為預設慣性邏輯。</returns>
         public abstract IntVec3 PickTarget(float N, Map map, Faction attacker);
 
+        /// <summary>
+        /// 是否具備導引能力：可跨圖層打擊，並可依彈體的 terminalUpdates 追蹤移動目標。
+        /// 慣性制導覆寫為 false。
+        /// </summary>
+        public virtual bool TerminalGuidance => true;
+
         /// <summary>可選的 Def 驗證。</summary>
         public virtual IEnumerable<string> ConfigErrors(MissilePartDef parent)
         {
@@ -78,6 +84,9 @@ namespace DMSE
     // ============================================================
     public class GuidanceType_Inertial : GuidanceType
     {
+        // 慣性制導無法跨圖層打擊，也無法追蹤移動目標
+        public override bool TerminalGuidance => false;
+
         public override IntVec3 PickTarget(float N, Map map, Faction attacker)
         {
             return InertialTarget(map, attacker);

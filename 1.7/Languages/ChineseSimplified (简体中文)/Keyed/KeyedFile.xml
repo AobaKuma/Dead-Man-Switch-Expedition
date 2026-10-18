@@ -151,8 +151,12 @@
   <DMSE.Missile.Stat.Fuel>燃料量：{0}</DMSE.Missile.Stat.Fuel>
   <DMSE.Missile.Stat.Impulse>比冲（推进效率）：{0}</DMSE.Missile.Stat.Impulse>
   <DMSE.Missile.Stat.Range>射程：{0} 格</DMSE.Missile.Stat.Range>
+  <DMSE.Missile.Stat.TerminalGuidance>具备制导能力：飞行中可更新目标位置 {0} 次，可跨图层打击</DMSE.Missile.Stat.TerminalGuidance>
+  <DMSE.Missile.Stat.NoTerminalGuidance>无制导能力：无法追踪移动目标，也无法跨图层打击</DMSE.Missile.Stat.NoTerminalGuidance>
   <DMSE.MissileLauncher.OutOfRange>目标超出导弹射程（{0} 格）。</DMSE.MissileLauncher.OutOfRange>
   <DMSE.MissileLauncher.RangeLabel>{0} / {1} 格</DMSE.MissileLauncher.RangeLabel>
+  <DMSE.MissileLauncher.NoTargetHere>此处没有目标——导弹将会落空</DMSE.MissileLauncher.NoTargetHere>
+  <DMSE.Missile.CrossLayerNeedsGuidance>跨图层打击需要具备制导能力的导弹；惯性制导与无制导弹药无法做到。</DMSE.Missile.CrossLayerNeedsGuidance>
   <DMSE.Missile.Cat.Warhead>弹头</DMSE.Missile.Cat.Warhead>
   <DMSE.Missile.Cat.Guidance>导引</DMSE.Missile.Cat.Guidance>
   <DMSE.Missile.Cat.Propulsion>推进／射程</DMSE.Missile.Cat.Propulsion>
@@ -172,6 +176,9 @@
   <DMSE.MissileLauncher.Interceptor.Ready>可发射</DMSE.MissileLauncher.Interceptor.Ready>
   <DMSE.Missile.IncomingLetter>导弹来袭</DMSE.Missile.IncomingLetter>
   <DMSE.Missile.IncomingLetterDesc>{0} 发射的导弹正在接近，即将打击殖民地。</DMSE.Missile.IncomingLetterDesc>
+  <DMSE.Missile.Missed>我方导弹找不到目标，已落空。</DMSE.Missile.Missed>
+  <DMSE.Missile.IncomingMissed>{0} 发射的导弹失去目标，已落空。</DMSE.Missile.IncomingMissed>
+  <DMSE.Missile.TerminalUpdatesRemaining>剩余终端更新：{0} / {1}</DMSE.Missile.TerminalUpdatesRemaining>
 
   <DMSE_MissileDecayedAway>{0} 已劣化至无法使用而解体。</DMSE_MissileDecayedAway>
   <DMSE_MissileDecaySheltered>已庇护：耐久稳定</DMSE_MissileDecaySheltered>
@@ -204,6 +211,8 @@
   <DMSE.Artillery.TooClose>目标距离太近——最小射程为 {0} 格。</DMSE.Artillery.TooClose>
   <DMSE.Artillery.NoFireControl>没有具备空闲引导通道的火控雷达。</DMSE.Artillery.NoFireControl>
   <DMSE.Artillery.NoAmmo>未装填炮弹——持续射击已停止。</DMSE.Artillery.NoAmmo>
+  <DMSE.Artillery.CrossLayer>炮弹没有制导能力，无法跨图层打击。</DMSE.Artillery.CrossLayer>
+  <DMSE.Artillery.Missed>炮击找不到目标，已落空。</DMSE.Artillery.Missed>
   <DMSE.Artillery.NoBarrel>炮管已磨损——持续射击已停止，请更换强化炮管。</DMSE.Artillery.NoBarrel>
   <DMSE.BVR.DeviceInactive>装置不可用（无电、损坏或已关闭）。</DMSE.BVR.DeviceInactive>
   <!-- 状态字符串（用于 StopDesc） -->

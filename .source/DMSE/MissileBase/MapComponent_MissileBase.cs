@@ -154,9 +154,6 @@ namespace DMSE
             WorldObjectComp_MissileBase wc = WorldComp;
             int range = wc?.Props.range ?? 20;
 
-            List<MapParent> targets = FindPlayerTargetsInRange(source, range);
-            if (targets.NullOrEmpty()) return;
-
             // 4. 為每個空閒通道射出一枚導彈
             for (int i = 0; i < freeChannels; i++)
             {
@@ -169,11 +166,14 @@ namespace DMSE
                     break;
                 }
 
-                // 取出並消耗該枚導彈
+                // 先看這枚導彈打得到哪些目標（跨圖層需導引能力），再決定是否消耗
                 ThingOwner container = rack.GetDirectlyHeldThings();
                 MissileConfig cfg = ExtractConfigFromMissile(missile, wc);
 
                 if (cfg == null) break; // 無有效彈體定義，跳出
+
+                List<MapParent> targets = FindPlayerTargetsInRange(source, range, cfg);
+                if (targets.NullOrEmpty()) break; // 這枚導彈沒有可打的目標，保留在架上
 
                 container.Remove(missile);
                 missile.Destroy();
@@ -186,7 +186,8 @@ namespace DMSE
                     target.Tile,
                     cfg,
                     source.Faction,
-                    worldObjectDef: wc?.Props.incomingWorldObjectDef);
+                    worldObjectDef: wc?.Props.incomingWorldObjectDef,
+                    target: target);
 
                 if (wo != null)
                 {
@@ -271,8 +272,11 @@ namespace DMSE
             return body != null ? new MissileConfig(body) : null;
         }
 
-        /// <summary>找出射程內所有具有地圖且屬於玩家陣營的 <see cref="MapParent"/>。</summary>
-        private List<MapParent> FindPlayerTargetsInRange(MapParent source, int range)
+        /// <summary>
+        /// 找出這枚導彈打得到、具有地圖且屬於玩家陣營的 <see cref="MapParent"/>：
+        /// 射程不超過陣地射程與導彈射程；跨圖層需導彈具備導引能力。
+        /// </summary>
+        private List<MapParent> FindPlayerTargetsInRange(MapParent source, int range, MissileConfig cfg)
         {
             List<MapParent> result = new List<MapParent>();
             foreach (WorldObject wo in Find.WorldObjects.AllWorldObjects)
@@ -280,11 +284,7 @@ namespace DMSE
                 if (!(wo is MapParent mp)) continue;
                 if (!mp.HasMap) continue;
                 if (mp.Faction == null || !mp.Faction.IsPlayer) continue;
-                if (range > 0)
-                {
-                    float dist = Find.WorldGrid.ApproxDistanceInTiles(source.Tile, mp.Tile);
-                    if (dist > range) continue;
-                }
+                if (!MissileWorldUtility.CanEngage(cfg, source.Tile, mp.Tile, range, out _)) continue;
                 result.Add(mp);
             }
             return result;
