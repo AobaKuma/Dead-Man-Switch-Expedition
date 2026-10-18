@@ -78,7 +78,7 @@
 
 - **NPC 導彈陣地**（`DMSE_MissileBase` Site，`.source/DMSE/MissileBase/`）：
   - 地圖未生成：`WorldObjectComp_MissileBase` 每 1–2 天（`missileFireIntervalDays`）對射程 20 tile 內隨機一個玩家地圖發射一枚，設定為 `missileBody` 的空白 config（留空時取 `DefDatabase` 第一個 `MissileBodyDef`，取決於載入順序，建議在 XML 明確指定）；15–30 天後陣地轉移（站點消失）。
-  - 地圖已生成：改由 `MapComponent_MissileBase` 每 500 ticks 推進。發射通道數為地圖上敵方運作中火控雷達的 `maxTargets` 總和，每個空閒通道從找到的第一個有彈的敵方 `Building_MissileRack` 取一枚導彈（用該彈的 config）發射；`WorldObject_IncomingMissile` 銷毀（抵達）後釋放通道。陣地結構（FFF `LaunchSite_A`）放置相控陣雷達、4 座 `DMSE_Building_Scorer`、2 座輕型導彈發射箱（含 SAM）與 WingBack CIWS，彈架由 `MissileAutoFillUtility` 依陣營科技等級自動填彈。輕型發射箱的彈藥同時是陣地 SAM 的攔截彈與對外打擊的彈源。
+  - 地圖已生成：改由 `MapComponent_MissileBase` 每 500 ticks 推進。發射通道數為地圖上敵方運作中火控雷達的 `maxTargets` 總和，每個空閒通道從找到的第一個存有可發射導彈（帶 `CompMissileConfig`）的敵方 `Building_MissileRack` 取一枚導彈（用該彈的 config）發射；`WorldObject_IncomingMissile` 銷毀（抵達）後釋放通道。玩家觀察中且敵方世界選靶發射器（`CompMissileLauncher_WorldTargeting`）全數被摧毀時，陣地消失。陣地結構（FFF `LaunchSite_A`）放置相控陣雷達、4 座 `DMSE_Building_Scorer`、2 座輕型導彈發射箱（含 SAM）與 WingBack CIWS，彈架由 `MissileAutoFillUtility` 依陣營科技等級自動填彈。輕型發射箱的彈藥同時是陣地 SAM 的攔截彈與對外打擊的彈源。
 - **Debug**：`Enemy missile strike (incoming, world)` 走世界航跡；`single`／`volley x5` 直接生成於指定格。
 
 ### A-4. 預警窗口與波次合併
@@ -133,7 +133,8 @@ window = Σ(各運作中防禦方搜索雷達的貢獻) × distanceLevel ÷ targ
    │
    ├─ timeLeft ≤ 末端窗口  →  末端（TerminalDefense）
    │     • 末端窗口 = 防禦方運作中 CIWS 的最大 terminalWindowTicks；沒有 CIWS 則為 0（全程中過程）
-   │     • 每具 CIWS 獨立節奏：冷卻完＋有彈料 → 對該波次 targets[0] 開始一輪連射
+   │     • 每具 CIWS 獨立節奏、每 tick 只處理一次：冷卻完＋有彈料 → 對己方末端波次中
+   │           tickToImpact 最早者的 targets[0] 開始一輪連射；連射中跨所有末端波次以 burstTargetId 找目標
    │           整輪鎖定同一目標；每發間隔 ticksBetweenShots、耗 fuelPerShot（CompRefuelable，
    │           例如裝甲砲管耐久；無 Refuelable 則無限）；目標消失或斷料 → 中止本輪、不判定
    │           視覺：砲塔轉向天空格（提前量 + 線性掃射 + 依迫近度下移瞄準高度）、槍口閃光、曳光彈
@@ -144,7 +145,6 @@ window = Σ(各運作中防禦方搜索雷達的貢獻) × distanceLevel ÷ targ
    │                      ※ 無 pawn 的目標（如導彈）不產生殘骸，等同乾淨清除
    │                 未過 → 乾淨消滅
    │     • 判定（或中止）後進入 cooldownTicks
-   │     ※ 已知缺陷：多個波次同時處於末端時會互相中斷連射，見 F 第三輪第 1 點
    │
    └─ timeLeft ≤ 0  →  ResolveWave：未被攔截的目標真正落地（TryDrop incoming skyfaller），
          發送 wave.signal；wave.lord（由 Patch_QuestPart_Bossgroup 為 Boss 群波次設定）
@@ -410,12 +410,15 @@ BVR 是**防禦**，裝配/發射與火砲是**進攻**，但已互相牽動：
 
 ### 2026-10-18 第三輪：全面覆核
 
-**新發現（未修正，僅記錄）**
+**新發現（第 1、2、4 點已於同日修正，編譯通過、尚未進遊戲驗證；第 3 點仍未修正）**
 
-1. **CIWS 在多個波次同時處於末端時會中斷連射，且總是先打較晚登記的波次。** `MapComponentTick` 由 `Waves` 尾端往前處理，每個處於末端的波次都各自呼叫 `TerminalDefense` → `ciws.TryEngage(wave)`；但連射狀態（`burstShotsLeft`/`burstTargetId`/`nextShotTick`）每具 CIWS 只有一份，不分波次。若 CIWS 正在打 `Waves[0]` 的目標而 `Waves[1]` 也進入末端，下一發到時會先以 `Waves[1]` 呼叫 `FireBurstShot`，在該波次找不到 `burstTargetId` → `EndBurst`：本輪作廢、不擲骰、進冷卻；之後的新連射也一律先開在 `Waves[1]`。結果是較早進入末端（通常也較早落地）的波次分不到 CIWS 火力，直到後面的波次清空為止。觸發條件：兩個同防禦方波次的落地時間相差超過 `MergeWindowTicks`（600）但小於末端窗口（WingBack 為 1800），例如兩批空投相隔 10–30 秒抵達。修正方向：每具 CIWS 每 tick 只處理一次；連射中跨波次以 `burstTargetId` 找目標；新連射選 `tickToImpact` 最早的波次。
-2. **【1.7 迴歸】導彈陣地的「發射器全滅 → 陣地摧毀」永遠不會觸發。** `MapComponent_MissileBase.GetEnemyLaunchersCached` 以 `CompMissileLauncher_Scorer` 辨識發射器，但 1.7 的 `DMSE_Building_Scorer` 已改掛 `CompProperties_MissileRailLauncher`（1.6 仍是 `CompPropertiesScorer`），1.7 已無 Def 使用 `CompMissileLauncher_Scorer`。快取恆為空 → `hasEverHadLaunchers` 永遠 false → 不會呼叫 `OnBaseDestroyed`；`EnsureCrewLord` 的集結點也一律退回地圖中心。修正方向：改判 `CompMissileLauncher_WorldTargeting`（或基類 `CompMissileLauncher`），並同步更新該類別的 XML 註解。
+1. **【已修正】CIWS 在多個波次同時處於末端時會中斷連射，且總是先打較晚登記的波次。** `MapComponentTick` 由 `Waves` 尾端往前處理，每個處於末端的波次都各自呼叫 `TerminalDefense` → `ciws.TryEngage(wave)`；但連射狀態（`burstShotsLeft`/`burstTargetId`/`nextShotTick`）每具 CIWS 只有一份，不分波次。若 CIWS 正在打 `Waves[0]` 的目標而 `Waves[1]` 也進入末端，下一發到時會先以 `Waves[1]` 呼叫 `FireBurstShot`，在該波次找不到 `burstTargetId` → `EndBurst`：本輪作廢、不擲骰、進冷卻；之後的新連射也一律先開在 `Waves[1]`。結果是較早進入末端（通常也較早落地）的波次分不到 CIWS 火力，直到後面的波次清空為止。觸發條件：兩個同防禦方波次的落地時間相差超過 `MergeWindowTicks`（600）但小於末端窗口（WingBack 為 1800），例如兩批空投相隔 10–30 秒抵達。修正方向：每具 CIWS 每 tick 只處理一次；連射中跨波次以 `burstTargetId` 找目標；新連射選 `tickToImpact` 最早的波次。
+   - 修正：`MapComponentTick` 先收集末端波次，迴圈後 `TerminalDefense` 對每具 CIWS 只呼叫一次 `TryEngage(terminalWaves)`；連射中以 `burstTargetId` 跨該防禦方所有末端波次找目標，新連射選 `tickToImpact` 最早的波次；存檔欄位不變。
+2. **【已修正】【1.7 迴歸】導彈陣地的「發射器全滅 → 陣地摧毀」永遠不會觸發。** `MapComponent_MissileBase.GetEnemyLaunchersCached` 以 `CompMissileLauncher_Scorer` 辨識發射器，但 1.7 的 `DMSE_Building_Scorer` 已改掛 `CompProperties_MissileRailLauncher`（1.6 仍是 `CompPropertiesScorer`），1.7 已無 Def 使用 `CompMissileLauncher_Scorer`。快取恆為空 → `hasEverHadLaunchers` 永遠 false → 不會呼叫 `OnBaseDestroyed`；`EnsureCrewLord` 的集結點也一律退回地圖中心。修正方向：改判 `CompMissileLauncher_WorldTargeting`（或基類 `CompMissileLauncher`），並同步更新該類別的 XML 註解。
+   - 修正：改以 `CompMissileLauncher_WorldTargeting` 辨識（涵蓋 `_Rail`/`_Ballistic`/`_Scorer`，`LaunchSite_A` 的 Scorer 與輕型導彈發射箱都算在內），類別 XML 註解同步更新。
 3. **【低】火砲傷害歸因沒有生效。** `ArtilleryShellRequest.attackerFaction` 有存檔，但 `SpawnShell` 以 `launcher: null` 發射，該欄位實際沒被用到。1.7 尚無火砲 Def，影響有限。
-4. **【低，潛在】導彈陣地取到「沒有 `CompMissileConfig` 的導彈」時會 NRE。** `TryFireFromOnMap` 先取第一個有彈的敵方彈架，再找架內第一枚帶 `CompMissileConfig` 的導彈；若該架只放了不帶此 comp 的彈（如 `DMSE_InterceptorMissile`），`missile` 為 null，`ExtractConfigFromMissile` 會退回預設設定，但接著的 `missile.Destroy()` 拋 NullReferenceException。現行 `LaunchSite_A` 只放輕型導彈與 Moskit（兩者都有此 comp），所以目前不會觸發。
+4. **【已修正】【低，潛在】導彈陣地取到「沒有 `CompMissileConfig` 的導彈」時會 NRE。** `TryFireFromOnMap` 先取第一個有彈的敵方彈架，再找架內第一枚帶 `CompMissileConfig` 的導彈；若該架只放了不帶此 comp 的彈（如 `DMSE_InterceptorMissile`），`missile` 為 null，`ExtractConfigFromMissile` 會退回預設設定，但接著的 `missile.Destroy()` 拋 NullReferenceException。現行 `LaunchSite_A` 只放輕型導彈與 Moskit（兩者都有此 comp），所以目前不會觸發。
+   - 修正：`FindRackWithMissiles` 只回傳存有帶 `CompMissileConfig` 導彈的彈架並一併回傳該枚導彈；只放攔截彈的彈架直接跳過，不消耗任何東西。
 
 **07-06 之後已修正（2026-10-13 提交，本輪已覆核程式碼）**
 
@@ -456,9 +459,9 @@ BVR 是**防禦**，裝配/發射與火砲是**進攻**，但已互相牽動：
 3. **多人空投艙**：含多名 pawn + 物品的空投艙被 CIWS 擊落且擲中碎片 → 所有 pawn 死亡、屍體以單一殘骸空投落下、無報錯。
 4. **人工操作**：早期火控雷達/旋轉發射架無人操作時不鎖定、不發射、砲塔頭不追蹤；下令操作後操作員先自行補彈至滿再就位，彈打光時自動回去取彈。
 5. **BVR 導彈**：敵方（或 Debug `Enemy missile salvo`）發射導彈 → 生成時即進入 BVR → 隱身/速度高的彈體窗口短、命中率低；**空爆回歸**：以多彈波次 + 空爆攔截彈齊射，確認一彈多殺、不拋例外、空波次正常清除。
-6. **CIWS 多波次**（驗證 F 第三輪第 1 點）：讓兩批來襲相隔約 15–25 秒抵達，觀察 CIWS 是否中斷連射、先落地的波次是否無人攔截。
+6. **CIWS 多波次**（F 第三輪第 1 點的修正）：讓兩批來襲相隔約 15–25 秒抵達，確認 CIWS 不再中斷連射、先落地的波次優先被攔截。
 7. **攻防互換**：玩家對有雷達的敵方基地發射導彈/空投 → 被敵方防空攔截，`Alerts_PlayerMissiles` 正確追蹤；反輻射導引頭優先打玩家雷達、早期預警雷達（豁免）不被選中。
-8. **導彈陣地**：未生成地圖時定期來襲；進入地圖後發射數受敵方火控通道限制；摧毀全部發射器後陣地是否消失（1.7 預期**不會**，見 F 第三輪第 2 點）。
+8. **導彈陣地**：未生成地圖時定期來襲；進入地圖後發射數受敵方火控通道限制；摧毀全部發射器後陣地消失、收到摧毀信件（F 第三輪第 2 點的修正）。
 9. **裝配**：ITab 改部件 → 缺料紅字 → 按「確認裝配」→ 小人搬料 → 施工 → config 生效；更換/移除部件部分退還；儲存架內導彈可就地裝配；彈道井裝配後可發射、發射後需重新裝配。
 10. **發射**：各平台裝填 → 世界選靶受射程限制 → 玩家選落點 → 依彈頭/酬載結算；增程件與酬載係數影響射程。
 11. **火砲**（需自備測試 Def）：選世界目標 → 冷卻 → 瞄準轉向 → 離場投射物飛向對應邊緣 → 世界航跡 → 從發射地一側飛入、散佈生效；`requiresFireControlChannel` 時佔用並釋放火控通道；砲彈不觸發 BVR。

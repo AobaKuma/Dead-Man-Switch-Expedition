@@ -1,4 +1,5 @@
 using RimWorld;
+using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 using Verse.Sound;
@@ -75,8 +76,11 @@ namespace DMSE
             }
         }
 
-        /// <summary>每 tick 由 <see cref="MapComponent_BVRCombat"/> 呼叫，管理連射節奏。</summary>
-        public void TryEngage(BVRWave wave, int now)
+        /// <summary>
+        /// 每 tick 由 <see cref="MapComponent_BVRCombat"/> 呼叫一次，管理連射節奏。
+        /// <paramref name="terminalWaves"/> 為本 tick 所有處於末端窗口的波次（含其他防禦方的，於此過濾）。
+        /// </summary>
+        public void TryEngage(List<BVRWave> terminalWaves, int now)
         {
             if (!Active) { return; }
 
@@ -84,23 +88,51 @@ namespace DMSE
             if (burstShotsLeft > 0)
             {
                 AimTopAt(lastAim);
-                if (now >= nextShotTick) { FireBurstShot(wave, now); }
+                if (now >= nextShotTick) { FireBurstShot(terminalWaves, now); }
                 return;
             }
 
-            // 冷卻完畢、有目標且有燃料：開始新一輪連射。
-            if (now >= cooldownUntil && wave.targets.Count > 0 && HasFuel)
+            if (now < cooldownUntil || !HasFuel) { return; }
+
+            // 冷卻完畢且有燃料：對最早落地的己方末端波次開始新一輪連射。
+            BVRWave soonest = null;
+            for (int i = 0; i < terminalWaves.Count; i++)
             {
-                burstShotsLeft = Props.shotsPerBurst;
-                burstTargetId = wave.targets[0].id;
-                FireBurstShot(wave, now);
+                BVRWave w = terminalWaves[i];
+                if (w.defenderFaction != parent.Faction || w.targets.Count == 0) { continue; }
+                if (soonest == null || w.tickToImpact < soonest.tickToImpact) { soonest = w; }
             }
+            if (soonest == null) { return; }
+
+            burstShotsLeft = Props.shotsPerBurst;
+            burstTargetId = soonest.targets[0].id;
+            FireBurstShot(terminalWaves, now);
         }
 
-        private void FireBurstShot(BVRWave wave, int now)
+        /// <summary>在己方末端波次中找出本輪連射鎖定的目標及其所屬波次；找不到回傳 null。</summary>
+        private BVRTarget FindBurstTarget(List<BVRWave> terminalWaves, out BVRWave wave)
+        {
+            for (int i = 0; i < terminalWaves.Count; i++)
+            {
+                BVRWave w = terminalWaves[i];
+                if (w.defenderFaction != parent.Faction) { continue; }
+                for (int j = 0; j < w.targets.Count; j++)
+                {
+                    if (w.targets[j].id == burstTargetId)
+                    {
+                        wave = w;
+                        return w.targets[j];
+                    }
+                }
+            }
+            wave = null;
+            return null;
+        }
+
+        private void FireBurstShot(List<BVRWave> terminalWaves, int now)
         {
             // 整輪連射鎖定同一目標；若鎖定目標已消失（被他人攔下或落地），中止本輪、不判定。
-            BVRTarget target = wave.targets.Find(t => t.id == burstTargetId);
+            BVRTarget target = FindBurstTarget(terminalWaves, out BVRWave wave);
             if (target == null) { EndBurst(now); return; }
 
             // 燃料耗盡：中止本輪、不判定。

@@ -222,6 +222,7 @@ namespace DMSE
             if (Waves.Count == 0) { return; }
 
             int now = Find.TickManager.TicksGame;
+            terminalWaves.Clear();
 
             for (int i = Waves.Count - 1; i >= 0; i--)
             {
@@ -238,18 +239,20 @@ namespace DMSE
                 int terminalWindow = TerminalWindowTicks(wave.defenderFaction);
                 if (timeLeft <= terminalWindow)
                 {
-                    TerminalDefense(wave, now);
+                    // 末端波次先收集，迴圈結束後由 TerminalDefense 統一分配 CIWS。
+                    terminalWaves.Add(wave);
+                    continue;
                 }
-                else
-                {
-                    MidcourseDefense(wave, timeLeft, terminalWindow, now);
-                }
+
+                MidcourseDefense(wave, timeLeft, terminalWindow, now);
 
                 if (wave.targets.Count == 0)
                 {
                     Waves.RemoveAt(i);
                 }
             }
+
+            TerminalDefense(now);
         }
 
         // ---- 階段二：火控雷達 + 導彈發射裝置 ----
@@ -416,14 +419,23 @@ namespace DMSE
         }
 
         // ---- 階段三：末端 CIWS ----
-        private void TerminalDefense(BVRWave wave, int now)
+        // 每具 CIWS 每 tick 只處理一次，並看到本 tick 所有處於末端的波次：
+        // 連射中跨波次以 burstTargetId 找目標，新連射優先打最早落地的波次。
+        // （逐波次呼叫會讓後處理的波次中斷前一波次的連射，見文件 F 第三輪第 1 點。）
+        private void TerminalDefense(int now)
         {
+            if (terminalWaves.Count == 0) { return; }
+
             foreach (CompTerminalCIWS ciws in ciwsTurrets)
             {
-                if (wave.targets.Count == 0) { break; }
-                if (ciws.parent.Faction != wave.defenderFaction) { continue; }
-                ciws.TryEngage(wave, now);
+                ciws.TryEngage(terminalWaves, now);
             }
+
+            for (int i = 0; i < terminalWaves.Count; i++)
+            {
+                if (terminalWaves[i].targets.Count == 0) { Waves.Remove(terminalWaves[i]); }
+            }
+            terminalWaves.Clear();
         }
 
         // ---- 落地結算 ----
@@ -451,6 +463,9 @@ namespace DMSE
 
         private List<BVRWave> waves = new List<BVRWave>();
         private int nextTargetId;
+
+        // 每 tick 重建的末端波次清單（不存檔）。
+        private readonly List<BVRWave> terminalWaves = new List<BVRWave>();
     }
 
     /// <summary>系統的可調平衡常數（集中於此方便調整）。</summary>

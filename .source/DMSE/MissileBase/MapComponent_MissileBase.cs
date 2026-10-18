@@ -16,7 +16,8 @@ namespace DMSE
     ///      導彈落地或被攔截（<see cref="WorldObject.Destroyed"/>）後通道自動釋放。<br/>
     ///    ‧ 彈藥來源：地圖上敵方 <see cref="Building_MissileRack"/>；耗盡後停止射擊直到補給。<br/>
     /// 2. 指派 <see cref="LordJob_MissileCrewDuty"/> 給地圖內的敵方 Pawn。<br/>
-    /// 3. 偵測「保留觀察狀態 + 所有 NPC 雷達（CompMissileLauncher_Scorer）不可用」→ 哨站摧毀。
+    /// 3. 偵測「保留觀察狀態 + 所有敵方世界選靶發射器（<see cref="CompMissileLauncher_WorldTargeting"/>：
+    ///    Rail / Ballistic / Scorer）皆已摧毀」→ 哨站摧毀。
     /// </summary>
     public class MapComponent_MissileBase : MapComponent
     {
@@ -159,18 +160,17 @@ namespace DMSE
             // 4. 為每個空閒通道射出一枚導彈
             for (int i = 0; i < freeChannels; i++)
             {
-                Building_MissileRack rack = FindRackWithMissiles();
+                Building_MissileRack rack = FindRackWithMissiles(out Thing missile);
                 if (rack == null)
                 {
                     // 無可用導彈，停止嘗試
                     if (Prefs.DevMode)
-                        Log.Message("[DMSE MissileBase] 所有 MissileRack 均已耗盡，等待補給。");
+                        Log.Message("[DMSE MissileBase] 所有 MissileRack 均無可發射導彈，等待補給。");
                     break;
                 }
 
-                // 取出並消耗第一枚導彈
+                // 取出並消耗該枚導彈
                 ThingOwner container = rack.GetDirectlyHeldThings();
-                Thing missile = container.FirstOrDefault(t => t.def.HasComp(typeof(CompMissileConfig)));
                 MissileConfig cfg = ExtractConfigFromMissile(missile, wc);
 
                 if (cfg == null) break; // 無有效彈體定義，跳出
@@ -227,18 +227,24 @@ namespace DMSE
         }
 
         /// <summary>
-        /// 找到第一個屬於敵方、未摧毀且有導彈庫存的 <see cref="Building_MissileRack"/>。
+        /// 找到第一個屬於敵方、未摧毀且存有可發射導彈（帶 <see cref="CompMissileConfig"/>）的
+        /// <see cref="Building_MissileRack"/>，並以 <paramref name="missile"/> 回傳該枚導彈。<br/>
+        /// 只存放不帶此 comp 之彈（如攔截彈）的彈架會被跳過，不消耗任何東西。
         /// </summary>
-        private Building_MissileRack FindRackWithMissiles()
+        private Building_MissileRack FindRackWithMissiles(out Thing missile)
         {
+            missile = null;
             Faction enemy = map.ParentFaction;
             if (enemy == null) return null;
 
             foreach (Building b in map.listerBuildings.allBuildingsNonColonist)
             {
                 if (b.Faction != enemy || b.Destroyed) continue;
-                if (b is Building_MissileRack rack && rack.StoredCount > 0)
-                    return rack;
+                if (!(b is Building_MissileRack rack) || rack.StoredCount <= 0) continue;
+
+                missile = rack.GetDirectlyHeldThings()
+                    .FirstOrDefault(t => t.def.HasComp(typeof(CompMissileConfig)));
+                if (missile != null) return rack;
             }
             return null;
         }
@@ -345,7 +351,8 @@ namespace DMSE
                 {
                     if (b.Faction != enemy) continue;
                     if (b.Destroyed) continue;
-                    if (b.TryGetComp<CompMissileLauncher_Scorer>() == null) continue;
+                    // 以世界選靶基類辨識：1.7 的 DMSE_Building_Scorer 掛的是 _Rail 而非 _Scorer。
+                    if (b.TryGetComp<CompMissileLauncher_WorldTargeting>() == null) continue;
                     cachedEnemyLaunchers.Add(b);
                 }
             }
