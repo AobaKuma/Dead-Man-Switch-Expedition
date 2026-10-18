@@ -1,6 +1,7 @@
 # DMSE 遠程作戰系統 — 應用流程與實作說明
 
 > 最後校對：2026-10-18（依 `.source/DMSE` 現行程式碼與 `1.7/Defs` 全面覆核；`1.6/` 已凍結為 Workshop 版，不在本文範圍）
+> 同日併入 9c3f5c5：跨圖層打擊、終端更新（逃逸區）、落空規則與世界 tile 圖層修正（A-3、B-4～B-6、C、F、G）
 
 本文整理三套同屬「超視距作戰」的系統：
 
@@ -77,8 +78,8 @@
 **敵方導彈的來源**：
 
 - **NPC 導彈陣地**（`DMSE_MissileBase` Site，`.source/DMSE/MissileBase/`）：
-  - 地圖未生成：`WorldObjectComp_MissileBase` 每 1–2 天（`missileFireIntervalDays`）對射程 20 tile 內隨機一個玩家地圖發射一枚，設定為 `missileBody` 的空白 config（留空時取 `DefDatabase` 第一個 `MissileBodyDef`，取決於載入順序，建議在 XML 明確指定）；15–30 天後陣地轉移（站點消失）。
-  - 地圖已生成：改由 `MapComponent_MissileBase` 每 500 ticks 推進。發射通道數為地圖上敵方運作中火控雷達的 `maxTargets` 總和，每個空閒通道從找到的第一個存有可發射導彈（帶 `CompMissileConfig`）的敵方 `Building_MissileRack` 取一枚導彈（用該彈的 config）發射；`WorldObject_IncomingMissile` 銷毀（抵達）後釋放通道。玩家觀察中且敵方世界選靶發射器（`CompMissileLauncher_WorldTargeting`）全數被摧毀時，陣地消失。陣地結構（FFF `LaunchSite_A`）放置相控陣雷達、4 座 `DMSE_Building_Scorer`、2 座輕型導彈發射箱（含 SAM）與 WingBack CIWS，彈架由 `MissileAutoFillUtility` 依陣營科技等級自動填彈。輕型發射箱的彈藥同時是陣地 SAM 的攔截彈與對外打擊的彈源。
+  - 地圖未生成：`WorldObjectComp_MissileBase` 每 1–2 天（`missileFireIntervalDays`）對這枚導彈打得到的玩家地圖（`MissileWorldUtility.CanEngage`：陣地射程 20 與導彈射程取小，跨圖層需導引能力）隨機選一個發射，設定為 `missileBody` 的空白 config（留空時取 `DefDatabase` 第一個 `MissileBodyDef`，取決於載入順序，建議在 XML 明確指定）；15–30 天後陣地轉移（站點消失）。
+  - 地圖已生成：改由 `MapComponent_MissileBase` 每 500 ticks 推進。發射通道數為地圖上敵方運作中火控雷達的 `maxTargets` 總和，每個空閒通道從找到的第一個存有可發射導彈（帶 `CompMissileConfig`）的敵方 `Building_MissileRack` 取一枚導彈（用該彈的 config），先以同一套 `CanEngage` 篩出它打得到的玩家地圖，沒有目標就保留在架上不消耗；發射時把目標據點設為 `targetParent`（供終端更新追蹤），`WorldObject_IncomingMissile` 銷毀（抵達或落空）後釋放通道。玩家觀察中且敵方世界選靶發射器（`CompMissileLauncher_WorldTargeting`）全數被摧毀時，陣地消失。陣地結構（FFF `LaunchSite_A`）放置相控陣雷達、4 座 `DMSE_Building_Scorer`、2 座輕型導彈發射箱（含 SAM）與 WingBack CIWS，彈架由 `MissileAutoFillUtility` 依陣營科技等級自動填彈。輕型發射箱的彈藥同時是陣地 SAM 的攔截彈與對外打擊的彈源。
 - **Debug**：`Enemy missile strike (incoming, world)` 走世界航跡；`single`／`volley x5` 直接生成於指定格。
 
 ### A-4. 預警窗口與波次合併
@@ -264,34 +265,49 @@ CompBVRDevice
 
 1.7 世界選靶平台：`DMSE_Building_Scorer`（巡航，Rail）、`DMSE_Building_LightMissileLauncher`／`DMSE_Building_LightMissileVLS`（輕型，Rail）、`DMSE_Building_LoiteringLauncher`（巡飛彈，Rail）、`DMSE_Building_BallisticSilo`（Ballistic）。
 
+兩種導彈世界航跡（玩家的 `ScorerProjectile_WorldObject`、敵方的 `WorldObject_IncomingMissile`）共用基底 `MissileWorldObject`（`.source/DMSE/Scorer/`）：Slerp 飛行（每 tick 0.00025 弧度 × `WorldSpeedFactor`）、鎖定目標 `targetParent`、終端更新與落空（B-6）、存檔。抵達時以 `MissileWorldUtility.ResolveArrivalMap` 解析目標地圖，再呼叫子類的 `OnArrived(map)`；`map == null` 即落空。
+
 **玩家發射**：
 
 ```
 發射 Gizmo（無彈／不可運作／冷卻中停用）→ 世界選靶
    • CanTargetTile：排除水域與已有非 MapParent 世界物件的 tile
-   • 射程（config.Range，0 = 不限）以 ApproxDistanceInTiles 強制檢查，游標旁顯示距離/射程
+   • MissileWorldUtility.CanEngage：射程以地表等效格計（跨圖層 +10 格），跨圖層需導引能力
+   • 游標旁顯示「距離/射程」；該處沒有據點時提示「將會落空」
    ▼
 Launch（發射前再驗一次 Active）
    • 生成離場 ScorerProjectile skyfaller（建築前方 LaunchForwardCells 格、沿建築朝向）
-   • 建 ScorerProjectile_WorldObject（陣營 = 玩家、config 副本、落點 skyfaller def）
+   • 建 ScorerProjectile_WorldObject（陣營 = 玩家、config 副本、落點 skyfaller def、
+     targetParent = 點到的 MapParent 或該 tile 上的 MapParent）
    • ConsumeAmmo + 起算冷卻
    ▼
-ScorerProjectile.LeaveMap → 世界物件加入世界，Slerp 飛行（步進 0.00025 × WorldSpeedFactor / 距離）
+ScorerProjectile.LeaveMap → 世界物件加入世界 → 飛行（目標移動時依 B-6 改飛）
    ▼
-Arrived：目標 tile 上有非敵對陣營的世界物件 → 該陣營轉敵對
-   • GetOrGenerateMap（無地圖時生成 Camp）；GameComponent_MissileEngage 讓該地圖 2 天內不被移除
-     （Patch_ShouldBeRemoved）
+OnArrived（AllowGenerateTargetMap = true：目標據點尚無地圖時會生成）
+   • map == null → 「未命中」訊息、銷毀
+   • 目標據點的陣營非敵對 → 轉敵對
+   • GameComponent_MissileEngage 讓該地圖 2 天內不被移除（Patch_ShouldBeRemoved）
    • 遊戲暫停、鏡頭切到目標地圖，玩家選落點格（取消 → 地圖中心）
    • SpawnIncoming：生成 MissileIncoming（config 副本、attacker = 玩家）→ 同步 TryRegister（敵方 BVR）
 ```
 
-**敵方發射**（陣地、Debug）：`IncomingMissileUtility.Launch` → `WorldObject_IncomingMissile` Slerp 飛行 → `Arrive`：`GetOrGenerateMap` → 依 `guidanceType.PickTarget` 自動選格（無效則慣性）→ 生成 `MissileIncoming` → 同步 `TryRegister`；落點為玩家家園時發威脅信件。
+**敵方發射**（陣地、Debug）：`IncomingMissileUtility.Launch(…, target)` → `WorldObject_IncomingMissile` 飛行 → `OnArrived`（`AllowGenerateTargetMap = false`：只打既有地圖）：落空時若目標是玩家據點發訊息；命中則依 `guidanceType.PickTarget` 自動選格（無效則慣性）→ 生成 `MissileIncoming` → 同步 `TryRegister`；落點為玩家家園時發威脅信件。
 
 **落點結算**（`MissileIncoming.Impact`，先過目標地圖 BVR，見 A-3）：Scatter ≥ 1 時隨機偏移落點 → 主彈體爆炸 → `warheadEffect.Apply` → `payloadEffect.Apply`（或舊式酬載數值欄位後備）→ 爆炸閃光（`WeatherEvent_MissileFlash`）。無有效 config 時以 5 格 Bomb 後備爆炸。
 
 ### B-5. 射程模型（燃料 × 比衝）
 
 射程由「彈體燃料量 × 推進比衝」決定，再加上部件與戰鬥部的固定加成、乘上酬載係數。範例：100 燃料 × 比衝 3 × 0.1 = **30 格**；換增程馬達（比衝 +2）→ **50 格**；N=5 的增程燃油戰鬥部再 **+10 格**；改掛空爆鎢芯酬載則整體 **×0.75**。ITab 與發射選靶皆即時可見並強制生效。
+
+距離一律以**地表等效格**計算（`MissileWorldUtility.RangeDistance`：兩點球面夾角以地表格大小換算），跨圖層另加 `CrossLayerRangeCost = 10` 格。不使用原版 `WorldGrid.ApproxDistanceInTiles(PlanetTile, PlanetTile)`：它以第一個 tile 的圖層解讀第二個 tile 的編號，跨圖層時結果錯誤（軌道層讀地表編號還會越界報錯）。同圖層的地表距離與舊算法完全相同；軌道對軌道的距離會比舊算法大（軌道格較大，舊算法以軌道格計數）。
+
+### B-6. 跨圖層打擊與終端更新（逃逸區）
+
+- **導引能力** `MissileConfig.HasTerminalGuidance`：導引槽部件的 `ProvidesTerminalGuidance`。有 `guidanceType` 時看 `GuidanceType.TerminalGuidance`（慣性制導 = false，其餘 = true）；沒有 `guidanceType` 的部件看 XML 欄位 `terminalGuidance`（精確導引頭 `DMSE_Guidance_Precision` 設為 true）。未裝導引部件，或彈體沒有導引槽（巡飛彈），都算無導引能力。
+- **跨圖層打擊**（地表 ↔ 軌道）：必須具導引能力，且射程涵蓋含跨圖層成本的距離。玩家選靶、敵方陣地選目標都套用；火砲無導引，一律不可跨圖層。
+- **終端更新**：世界航跡鎖定 `targetParent`，每 60 tick 檢查一次；目標換了 tile 時，具導引能力的導彈可從當下位置改飛新位置。次數上限 = 彈體 `terminalUpdates`（輕型 1、巡航 3、彈道 2），且「已飛航程 + 新航段」不得超過射程。次數用完或燃料不足就沿最後位置飛行，抵達時目標已不在即落空——這就是**逃逸區**：目標在導彈用完更新次數後再移動，或移出剩餘射程，就能躲掉。
+- 世界航跡的檢視字串顯示剩餘更新次數；ITab 裝配面板顯示導引能力與更新次數。
+- **落空**：抵達時目標不在，或打擊的 tile 上沒有地圖也沒有據點 → 銷毀並發訊息。玩家選靶時，若該處沒有目標，游標旁會提示「將會落空」。
 
 ---
 
@@ -305,7 +321,7 @@ Arrived：目標 tile 上有非敵對陣營的世界物件 → 該陣營轉敵�
 |---|---|---|
 | 火砲核心 | `CompArtilleryStrike`（**繼承 `CompBVRDevice`**，不註冊） | 世界選靶 Gizmo、持續射擊狀態機、彈藥與砲管檢查、砲管轉向、（選配）佔用火控通道 |
 | 離場投射物 | `Projectile_ArtilleryDeparture` | 從建築以 `Projectile` 弧線（`flyOverhead`）飛到朝目標方位的出口邊緣格；`Impact` 時建立世界航跡並 Vanish |
-| 世界航跡 | `WorldObject_ArtilleryStrike` | 世界地圖 Slerp 飛行（步進 `projectile.speed / 10 × 0.00025 / 距離`）；抵達時 `GetOrGenerateMap`、排程齊射、自毀 |
+| 世界航跡 | `WorldObject_ArtilleryStrike` | 世界地圖 Slerp 飛行（步進 `projectile.speed / 10 × 0.00025 / 距離`）；抵達時 `ResolveArrivalMap`（沒有地圖也沒有據點即落空）、排程齊射、自毀 |
 | 地圖排程器 | `MapComponent_ArtilleryStrikes` | 持有 `List<ArtilleryShellRequest>`（Deep 序列化），每 tick 輪詢 `fireTick` 到時者生成砲彈 |
 | 排程資料 | `ArtilleryShellRequest` | `fireTick`、`targetCell`、`entryEdgeCell`、`projectileDef`、`attackerFaction`、`scatterRadius` |
 | 靜態工具 | `ArtilleryStrikeUtility` | `WorldDirectionAngle`（球面切平面方位角，0 = 北、順時針）、`EdgeCellFromAngle`、`CalcEntryEdgeCell`、`QueueSalvo`、`SpawnShell` |
@@ -316,8 +332,8 @@ Arrived：目標 tile 上有非敵對陣營的世界物件 → 該陣營轉敵�
 
 ```
 玩家點擊「開火」Gizmo（需 Active、def 齊全、有砲彈；冷卻中也可先選靶）
-   │   世界選靶：任何有效 tile（無射程、最小距離限制）
-   │   targetTileId = 該 tile → 進入持續射擊；Gizmo 換成「停止」並顯示冷卻/瞄準/就緒狀態
+   │   世界選靶：同圖層的任何有效 tile（無射程、最小距離限制；其他圖層拒絕）
+   │   targetTile = 該 tile → 進入持續射擊；Gizmo 換成「停止」並顯示冷卻/瞄準/就緒狀態
    ▼
 每 tick CompTick
    ├─ 火控通道到期（channelReleaseTick）→ ReleaseArtilleryChannel
@@ -340,7 +356,7 @@ FireSingleShot
    ▼
 Projectile_ArtilleryDeparture.Impact（抵達出口格）→ 建立 WorldObject_ArtilleryStrike（Tile = 本地圖）→ Vanish
    ▼
-世界 Slerp 飛行 → Arrived：GetOrGenerateMap(Camp) → QueueSalvo → 鏡頭 Pan 至落點 → 自毀
+世界 Slerp 飛行 → Arrived：ResolveArrivalMap（落空 → 訊息、自毀）→ QueueSalvo → 鏡頭 Pan 至落點 → 自毀
    │   • 進入邊 = WorldDirectionAngle(目標 → 發射地)，即從發射地那一側飛入；沿邊座標取 targetCell 分量
    │   • salvoCount 發依 salvoIntervalTicks 錯開推入 MapComponent_ArtilleryStrikes
    ▼
@@ -357,7 +373,8 @@ Projectile_Explosive 命中結算（原版彈道/爆炸邏輯）
 - **與 BVR 共用火控通道**：火控雷達設 `supportsArtilleryGuidance` 才能引導砲擊。`FindAvailableRadar` 挑同陣營、運作中、`FreeArtilleryChannels` 最多者；`FreeArtilleryChannels = maxTargets − 已借給火砲 − 依容量比例分攤的 BVR 占用（無條件進位）`。反過來，`MidcourseDefense` 計算容量時扣除各雷達的 `OccupiedArtilleryChannels`。
 - **落彈是 `Projectile` 而非 Skyfaller**：砲彈從邊緣格水平飛入，走原版投射物邏輯，因此 **BVR 不會攔截砲彈**（只攔 skyfaller）。
 - **與導彈鏈的差異**：離場用 `Projectile` 弧線（`ScorerProjectile` skyfaller 從建築正上方升起，視覺不像砲擊）；抵達時不開玩家選靶，直接打目標地圖中心 ± 散佈。
-- **存檔**：冷卻、`targetTileId`、`channelReleaseTick`、借用的雷達（以 Thing 參照存檔）都會保存；`warmupEndTick`/`aimAngle` 不存，讀檔後從冷卻結束重新瞄準。離場投射物序列化建立世界航跡所需的全部資料；世界航跡的 `PlanetTile` 以 int 分別序列化（同 `ScorerProjectile_WorldObject`）；在途齊射由 `ArtilleryShellRequest` 全值序列化。
+- **不可跨圖層、找不到目標即落空**：砲彈無導引，選靶時拒絕其他圖層的 tile；抵達時目標 tile 沒有地圖也沒有據點則落空並發訊息，不生成營地地圖（有據點但尚無地圖時會生成）。
+- **存檔**：冷卻、`targetTile`、`channelReleaseTick`、借用的雷達（以 Thing 參照存檔）都會保存；`warmupEndTick`/`aimAngle` 不存，讀檔後從冷卻結束重新瞄準。離場投射物序列化建立世界航跡所需的全部資料；目標與世界航跡的 `PlanetTile` 以 `Scribe_Values` 完整保存「tileId,layerId」（舊存檔的 int 欄位仍可讀，但只能視為地表）；在途齊射由 `ArtilleryShellRequest` 全值序列化。
 
 ---
 
@@ -438,6 +455,17 @@ BVR 是**防禦**，裝配/發射與火砲是**進攻**，但已互相牽動：
 - 移除失效引用：`docs/導彈四階分級架構.md`（07-06 已刪除，四階分級摘要併入 B-1）、`docs/artillery-expansion-plan.md`（repo 中不存在）。
 - `README.md` 的 BVR／發射器摘要同步改用現行類名；CIWS 一欄移除「85 式多用途速射系統」（那是 Dawnblade Striker 的砲，沒有 `CompTerminalCIWS`）。
 
+### 2026-10-18：世界 tile 圖層與跨圖層打擊（9c3f5c5，已修正）
+
+1. **【已修正】存讀檔後軌道目標變地表。** `ScorerProjectile_WorldObject`、`WorldObject_ArtilleryStrike` 只存 `tileId`，再以 `new PlanetTile(int)`（圖層 0）還原。原註解稱 `Scribe_Values` 無法序列化 `PlanetTile`，實際上原版已註冊解析器（`tileId,layerId`），`WorldObject_IncomingMissile` 也一直直接使用。改為完整保存，舊欄位保留讀取。
+2. **【已修正】火砲永遠打地表。** `CompArtilleryStrike` 以 int 存目標（`PlanetTile` 隱式轉 int 會丟失圖層），`Projectile_ArtilleryDeparture` 再以地表重建；找目標地圖也只比對編號。全部改用 `PlanetTile`。
+3. **【已修正】跨圖層距離錯誤。** 玩家發射器射程、導彈陣地選目標原本用原版 `ApproxDistanceInTiles(PlanetTile, PlanetTile)`，跨圖層時為錯誤值（可能越界報錯），等於隨機決定是否打軌道據點。改用 `MissileWorldUtility.RangeDistance` 並套用 B-6 規則。穿梭機封鎖（`Patch_MissileBaseShuttleBlock`）改為只計同圖層的陣地。
+4. **【已修正】目標不在時生成垃圾地圖。** 三個抵達點原本呼叫 `GetOrGenerateMap(..., Camp)`，目標撤走或移動時會在該 tile（包含軌道）建營地並生成地圖。改為 `ResolveArrivalMap`：只取既有地圖或既有據點，否則落空。
+5. **【新功能】終端更新與逃逸區**（B-6），為轉移飛行的移動船體預作準備。
+6. 導彈陣地地圖內射擊：先以該枚導彈的導引能力與射程篩選目標，沒有可打目標的導彈保留在架上，不消耗。
+7. 已知未修：`ImpactCraterUtility`（撞擊飛行）也以 `ApproxDistanceInTiles(PlanetTile, PlanetTile)` 量測到據點的距離，有同樣的跨圖層問題，留待轉移飛行改版時處理。
+8. 合併進 main 時（947c93d），文件衝突整份取用了第三輪改寫的版本，本段與 B-5、B-6、G 第 13–15 項是之後補回的。
+
 ### 2026-07-06 第二輪：已修正
 
 1. **【已修正】空爆額外攔截在枚舉中修改集合。** 原 `ApplyExtraInterceptRolls` 在 `MidcourseDefense` 的 `foreach (target in wave.targets)` 進行中直接 `RemoveTarget`（修改 `wave.targets`、必要時連 `Waves` 一起移除），會拋 `InvalidOperationException`。修正：命中的目標 id 先收集到 `airburstKills`（`ref List<int>`，跨多次空爆去重），待 foreach 結束後於 `MidcourseDefense` 尾端統一 `Discard()` + 從 `wave.targets` 移除；**刻意不移除空波次本身**——空波次交由 `MapComponentTick` 迴圈尾端既有的 `targets.Count == 0` 檢查處理，索引 `i` 因此始終有效（一併化解原審查第 2 點的索引錯位疑慮）。
@@ -465,4 +493,7 @@ BVR 是**防禦**，裝配/發射與火砲是**進攻**，但已互相牽動：
 9. **裝配**：ITab 改部件 → 缺料紅字 → 按「確認裝配」→ 小人搬料 → 施工 → config 生效；更換/移除部件部分退還；儲存架內導彈可就地裝配；彈道井裝配後可發射、發射後需重新裝配。
 10. **發射**：各平台裝填 → 世界選靶受射程限制 → 玩家選落點 → 依彈頭/酬載結算；增程件與酬載係數影響射程。
 11. **火砲**（需自備測試 Def）：選世界目標 → 冷卻 → 瞄準轉向 → 離場投射物飛向對應邊緣 → 世界航跡 → 從發射地一側飛入、散佈生效；`requiresFireControlChannel` 時佔用並釋放火控通道；砲彈不觸發 BVR。
-12. **存讀檔**：BVR 波次/目標/CIWS 連射狀態、導彈 config/pending/delivered/assemblyConfirmed、各發射器冷卻、彈道井裝填旗標、火砲持續射擊目標與在途齊射皆正確還原。
+12. **存讀檔**：BVR 波次/目標/CIWS 連射狀態、導彈 config/pending/delivered/assemblyConfirmed、各發射器冷卻、彈道井裝填旗標、火砲持續射擊目標與在途齊射皆正確還原；**在途導彈/砲擊的目標圖層（軌道）讀檔後不變**，終端更新剩餘次數保留。
+13. **跨圖層**：地表陣地只有慣性制導彈時不攻擊軌道據點；換成具導引能力且射程足夠的導彈才會攻擊。玩家從軌道選地表目標：慣性/無導引彈被拒並顯示原因，導引彈可發射；火砲選其他圖層被拒。軌道地圖存在導彈陣地時，穿梭機不再跳紅字。
+14. **逃逸區**：導彈飛行中移動目標（之後的轉移飛行船，或以 Debug 改動目標 MapParent 的 Tile）→ 導彈在更新次數內改飛新位置（檢視字串的次數遞減）；次數用完後再移動 → 抵達時落空並發訊息。
+15. **落空**：玩家對空白 tile 發射 → 游標提示將落空，抵達時落空且不生成地圖；敵方導彈在途時玩家放棄該據點 → 落空，不生成營地。
