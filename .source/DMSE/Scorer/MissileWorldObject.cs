@@ -14,7 +14,7 @@ namespace DMSE
     /// （<see cref="MissileConfig.TerminalUpdates"/>），且改飛後的總航程不得超過射程。
     /// 次數用完或燃料不足時沿最後位置飛行，抵達時目標不在就落空。
     /// </summary>
-    public abstract class MissileWorldObject : WorldObject
+    public abstract class MissileWorldObject : WorldObject, IBVRTrack
     {
         public MissileConfig config;
         public PlanetTile destinationTile = PlanetTile.Invalid;
@@ -41,6 +41,8 @@ namespace DMSE
         /// <summary>抵達。<paramref name="map"/> 為 null 表示落空；實作需自行 <see cref="WorldObject.Destroy"/>。</summary>
         protected abstract void OnArrived(Map map);
 
+        public int RouteRevision => terminalUpdatesUsed;
+
         public int TerminalUpdatesRemaining
         {
             get
@@ -61,7 +63,7 @@ namespace DMSE
 
         protected Vector3 End => MissileWorldUtility.TileCenter(destinationTile);
 
-        public override Vector3 DrawPos => Vector3.Slerp(Start, End, traveledPct);
+        public override Vector3 DrawPos => PositionAt(0);
 
         public override bool ExpandingIconFlipHorizontal
             => GenWorldUI.WorldToUIPosition(Start).x > GenWorldUI.WorldToUIPosition(End).x;
@@ -79,18 +81,35 @@ namespace DMSE
             }
         }
 
-        private float TraveledPctStepPerTick
+        private int lastMotionTick = -1;
+        private BVRTrackState bvrState = new BVRTrackState();
+        public WorldObject Self => this;
+        public Faction Attacker => Faction;
+        public PlanetTile Origin => initialTile;
+        public PlanetTile Destination => destinationTile;
+        public MissileConfig Config => config;
+        public BVRTrackState State => bvrState ??= new BVRTrackState();
+        public virtual ThingDef IncomingDef => config?.body?.incomingSkyfaller;
+        public BVRTargetProps TargetProps => IncomingDef?.GetModExtension<BVRTargetProps>() ?? BVRTargetProps.Default;
+        public float AngularSpeed => MissileWorldMotion.AngularSpeed(config);
+        private float TraveledPctStepPerTick => AngularSpeed / Mathf.Max(0.0000001f,
+            GenMath.SphericalDistance(Start.normalized, End.normalized));
+        private float CurrentProgress => Mathf.Clamp01(traveledPct + TraveledPctStepPerTick *
+            (lastMotionTick < 0 ? 0 : Mathf.Max(0, Find.TickManager.TicksGame - lastMotionTick)));
+        public int TicksToArrival => Mathf.Max(0, Mathf.CeilToInt((1f - CurrentProgress) / TraveledPctStepPerTick));
+        public Vector3 PositionAt(int ticksAhead) => Vector3.Slerp(Start, End,
+            Mathf.Clamp01(CurrentProgress + Mathf.Max(0, ticksAhead) * TraveledPctStepPerTick));
+        public override Color ExpandingIconColor => State.detectedByFaction == Faction.OfPlayer
+            ? Color.red : Faction?.Color ?? Color.white;
+        public void Notify_Intercepted(Faction by)
         {
-            get
-            {
-                Vector3 start = Start;
-                Vector3 end = End;
-                if (start == end) { return 1f; }
-                float num = GenMath.SphericalDistance(start.normalized, end.normalized);
-                if (num == 0f) { return 1f; }
-                float speedFactor = config != null ? config.WorldSpeedFactor : 1f;
-                return (0.00025f * speedFactor) / num;
-            }
+            if (Destroyed) return;
+            if (by == Faction.OfPlayer || Attacker == Faction.OfPlayer)
+                Messages.Message("DMSE.BVR.World.Intercepted".Translate(Label, by?.Name ?? "?"),
+                    new GlobalTargetInfo(destinationTile), by == Faction.OfPlayer ? MessageTypeDefOf.PositiveEvent
+                        : MessageTypeDefOf.NegativeEvent, historical: false);
+            WorldComponent_BVRNetwork.Current?.AddFlash(PositionAt(0));
+            Destroy();
         }
 
         private float CurrentLegLength
@@ -106,6 +125,7 @@ namespace DMSE
         {
             base.PostAdd();
             initialTile = Tile;
+            lastMotionTick = Find.TickManager.TicksGame;
         }
 
         protected override void TickInterval(int delta)
@@ -113,14 +133,18 @@ namespace DMSE
             base.TickInterval(delta);
             if (arrived) { return; }
 
-            ticksUntilTerminalCheck -= delta;
+            int now = Find.TickManager.TicksGame;
+            int elapsed = lastMotionTick < 0 ? delta : Mathf.Max(0, now - lastMotionTick);
+            // Commit elapsed movement before a terminal update starts a new leg.
+            traveledPct = Mathf.Clamp01(traveledPct + TraveledPctStepPerTick * elapsed);
+            lastMotionTick = now;
+            ticksUntilTerminalCheck -= elapsed;
             if (ticksUntilTerminalCheck <= 0)
             {
                 ticksUntilTerminalCheck = MissileWorldUtility.TerminalCheckIntervalTicks;
                 TryTerminalUpdate();
             }
 
-            traveledPct += TraveledPctStepPerTick * delta;
             if (traveledPct >= 1f)
             {
                 traveledPct = 1f;
@@ -138,7 +162,7 @@ namespace DMSE
             if (!targetTile.Valid || targetTile == destinationTile) { return; }
             if (TerminalUpdatesRemaining <= 0) { return; }
 
-            Vector3 here = DrawPos;
+            Vector3 here = Vector3.Slerp(Start, End, traveledPct);
             float spent = rangeSpent + CurrentLegLength * traveledPct;
             float newLeg = MissileWorldUtility.SurfaceTilesBetween(here, MissileWorldUtility.TileCenter(targetTile));
             if (!MissileWorldUtility.SameLayer(destinationTile, targetTile))
@@ -170,6 +194,11 @@ namespace DMSE
                 if (!text.NullOrEmpty()) { text += "\n"; }
                 text += "DMSE.Missile.TerminalUpdatesRemaining".Translate(TerminalUpdatesRemaining, config.TerminalUpdates);
             }
+            if (!text.NullOrEmpty()) text += "\n";
+            text += "DMSE.BVR.World.MissileType".Translate(config?.body?.LabelCap ?? Label) + "\n";
+            string destination = targetParent?.Label ?? Find.WorldObjects.MapParentAt(destinationTile)?.Label;
+            text += "DMSE.BVR.World.TrackInspect".Translate(destination ?? destinationTile.ToString(),
+                TicksToArrival.ToStringTicksToPeriod(), State.StatusKey.Translate(), State.interceptAttempts);
             return text;
         }
 
@@ -180,6 +209,13 @@ namespace DMSE
             Scribe_Values.Look(ref initialTile, "initialTile", PlanetTile.Invalid);
             Scribe_Values.Look(ref traveledPct, "traveledPct", 0f);
             Scribe_Values.Look(ref arrived, "arrived", false);
+            Scribe_Values.Look(ref lastMotionTick, "lastMotionTick", -1);
+            Scribe_Deep.Look(ref bvrState, "bvrState");
+            if (Scribe.mode == LoadSaveMode.PostLoadInit)
+            {
+                bvrState ??= new BVRTrackState();
+                if (lastMotionTick < 0) lastMotionTick = Find.TickManager.TicksGame;
+            }
             Scribe_Deep.Look(ref config, "config");
             Scribe_References.Look(ref targetParent, "targetParent");
             Scribe_Values.Look(ref hasLegStart, "hasLegStart", false);

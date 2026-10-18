@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <RimWorldDir Condition="'$(RimWorldDir)' == ''">$(RIMWORLD_DIR)/</RimWorldDir>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../DMSE/DMSE.csproj" />
+    <Reference Include="Assembly-CSharp"><HintPath>$(RimWorldDir)Assembly-CSharp.dll</HintPath><Private>true</Private></Reference>
+    <Reference Include="UnityStubs"><HintPath>$(RimWorldDir)UnityStubs.dll</HintPath><Private>true</Private></Reference>
+    <Reference Include="Waylith"><HintPath>$(RimWorldDir)Waylith.dll</HintPath><Private>true</Private></Reference>
+  </ItemGroup>
+</Project>

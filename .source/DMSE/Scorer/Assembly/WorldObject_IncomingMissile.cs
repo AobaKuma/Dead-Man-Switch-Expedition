@@ -17,7 +17,7 @@ namespace DMSE
     {
         public ThingDef incomingSkyfaller;
 
-        public override Color ExpandingIconColor => base.Faction != null ? base.Faction.Color : Color.white;
+        public override ThingDef IncomingDef => incomingSkyfaller ?? base.IncomingDef;
 
         protected override bool AllowGenerateTargetMap => false;
 
@@ -45,6 +45,7 @@ namespace DMSE
                 if (faller is MissileIncoming incoming)
                 {
                     incoming.config = config != null ? config.Clone() : null;
+                    incoming.worldPhaseDone = true;
                     incoming.attacker = base.Faction;
                     if (Prefs.DevMode)
                     {
@@ -54,7 +55,7 @@ namespace DMSE
                     MissileBVRUtility.TryRegister(incoming, cell);
                 }
 
-                if (map.IsPlayerHome)
+                if (map.IsPlayerHome && !State.playerNotified)
                 {
                     Find.LetterStack.ReceiveLetter(
                         "DMSE.Missile.IncomingLetter".Translate(),

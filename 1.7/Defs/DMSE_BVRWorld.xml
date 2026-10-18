@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- P0–P3 point-defense tuning. All missiles (including the player's) use this time scale. -->
+  <DMSE.BVRWorldTuningDef>
+    <defName>DMSE_BVRWorldTuning</defName>
+    <ticksPerTileAtSpeed1>150</ticksPerTileAtSpeed1>
+    <interceptorSpeedMultiplier>3</interceptorSpeedMultiplier>
+    <stealthDetectFactor>0.4</stealthDetectFactor>
+    <antiStealthRangeBonusPerLevel>0.25</antiStealthRangeBonusPerLevel>
+    <maxAntiStealthRangeMultiplier>1.5</maxAntiStealthRangeMultiplier>
+    <minInterceptMarginTicks>60</minInterceptMarginTicks>
+    <airburstRadiusTiles>1</airburstRadiusTiles>
+    <scanIntervalTicks>15</scanIntervalTicks>
+  </DMSE.BVRWorldTuningDef>
+
+  <WorldObjectDef>
+    <defName>DMSE_Interceptor</defName>
+    <label>interceptor missile</label>
+    <description>A surface-to-air interceptor heading toward a predicted meeting point.</description>
+    <worldObjectClass>DMSE.WorldObject_Interceptor</worldObjectClass>
+    <texture>UI/DMSE/BVR/Interceptor</texture>
+    <expandingIconTexture>UI/DMSE/BVR/Interceptor</expandingIconTexture>
+    <rotateGraphicWhenTraveling>true</rotateGraphicWhenTraveling>
+    <useDynamicDrawer>true</useDynamicDrawer>
+    <expandingIcon>true</expandingIcon>
+    <expandingIconPriority>110</expandingIconPriority>
+    <fullyExpandedInSpace>true</fullyExpandedInSpace>
+    <validLaunchTarget>false</validLaunchTarget>
+    <canHaveFaction>true</canHaveFaction>
+    <saved>true</saved>
+    <selectable>true</selectable>
+  </WorldObjectDef>
+</Defs>

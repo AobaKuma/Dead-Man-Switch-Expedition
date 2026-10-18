@@ -11,6 +11,7 @@ namespace DMSE
     {
         public int tickToImpact;
         public List<BVRTarget> targets = new List<BVRTarget>();
+        public bool TerminalOnly => targets.Count > 0 && targets.All(t => t.terminalOnly);
         public Lord lord;
         public List<string> signal = new List<string>();
 
@@ -45,6 +46,7 @@ namespace DMSE
     public class BVRTarget : IExposable, IThingHolder
     {
         public int id;
+        public bool terminalOnly;
         public ThingOwner<Skyfaller> skyfaller;
         public IntVec3 position;
         public Map map;
@@ -151,6 +153,7 @@ namespace DMSE
         public void ExposeData()
         {
             Scribe_Values.Look(ref id, "id");
+            Scribe_Values.Look(ref terminalOnly, "terminalOnly");
             Scribe_References.Look(ref map, "map");
             Scribe_Values.Look(ref position, "position");
             Scribe_Deep.Look(ref skyfaller, "skyfaller", this);

@@ -72,19 +72,22 @@ namespace DMSE
 
         /// <summary>依導引時間、目標速度與隱身對衝計算單發攔截彈的命中率。</summary>
         public float ComputeHitChance(BVRTarget target, int guideTimeLeft)
+            => ComputeHitChance(Props, target, guideTimeLeft);
+
+        public static float ComputeHitChance(CompProperties_FireControlRadar settings, BVRTarget target, int guideTimeLeft)
         {
-            float guide = Mathf.Clamp01(guideTimeLeft / Mathf.Max(1f, Props.guidanceAccuracyTime));
-            float chance = Props.maxHitChance * guide;
+            float guide = Mathf.Clamp01(guideTimeLeft / Mathf.Max(1f, settings.guidanceAccuracyTime));
+            float chance = settings.maxHitChance * guide;
 
             // 速度：越快越難命中。
             float speedFactor = Mathf.Clamp(1f - Mathf.Max(0f, target.speed - SpeedRef) * SpeedPenaltyPerUnit, MinSpeedFactor, 1f);
             chance *= speedFactor;
 
             // 隱身對衝：powerLevel 抵銷 stealthLevel，每超出 1 級以 stealthMissFactor 遞減。
-            int stealthGap = Mathf.Max(0, target.stealthLevel - Props.powerLevel);
+            int stealthGap = Mathf.Max(0, target.stealthLevel - settings.powerLevel);
             if (stealthGap > 0)
             {
-                chance *= Mathf.Pow(Props.stealthMissFactor, stealthGap);
+                chance *= Mathf.Pow(settings.stealthMissFactor, stealthGap);
             }
 
             return Mathf.Clamp01(chance);
@@ -92,10 +95,13 @@ namespace DMSE
 
         /// <summary>新目標計入火力通道後所需的鎖定時間（ticks）：基礎時間受隱身對衝與速度延長。</summary>
         public int LockOnTicksFor(BVRTarget target)
+            => LockOnTicksFor(Props, target);
+
+        public static int LockOnTicksFor(CompProperties_FireControlRadar settings, BVRTarget target)
         {
-            int stealthGap = Mathf.Max(0, target.stealthLevel - Props.powerLevel);
+            int stealthGap = Mathf.Max(0, target.stealthLevel - settings.powerLevel);
             float mult = 1f + 0.5f * stealthGap + Mathf.Max(0f, target.speed - SpeedRef) / 60f;
-            return Mathf.Max(1, Mathf.RoundToInt(Props.lockOnTicks * mult));
+            return Mathf.Max(1, Mathf.RoundToInt(settings.lockOnTicks * mult));
         }
 
         public override string CompInspectStringExtra()
@@ -130,7 +136,7 @@ namespace DMSE
 
         /// <summary>
         /// 目前可用於砲擊引導的空閒火力通道數。
-        /// = maxTargets − 已預留砲擊通道 − 當前 BVR 波次已佔用通道（全域估算）。
+        /// 同時受本雷達的砲擊預留與同陣營共用帳本限制（砲擊、地圖內波次、世界航跡）。
         /// 若 supportsArtilleryGuidance = false 或裝置離線，固定為 0。
         /// </summary>
         public int FreeArtilleryChannels
@@ -139,36 +145,10 @@ namespace DMSE
             {
                 if (!Active || !Props.supportsArtilleryGuidance) { return 0; }
 
-                // BVR 中過程攔截佔用的通道是全域計算的，無法精確歸屬到單一雷達。
-                // 以「全域已佔用數 × 本雷達份額」做保守估算，避免重複授權。
-                int bvrGlobalEngaged = 0;
-                Map map = parent.MapHeld;
-                if (map != null)
-                {
-                    MapComponent_BVRCombat mgr = map.GetComponent<MapComponent_BVRCombat>();
-                    if (mgr != null)
-                    {
-                        // 本雷達在全域容量中所占的比例（以防禦方為單位），
-                        // 用來估算其應承擔的 BVR 佔用數。
-                        int totalCapacity = 0;
-                        foreach (CompFireControlRadar fc in mgr.fireControlRadars)
-                        {
-                            if (fc.Active && fc.parent.Faction == parent.Faction)
-                            {
-                                totalCapacity += fc.Props.maxTargets;
-                            }
-                        }
-                        if (totalCapacity > 0)
-                        {
-                            int globalEngaged = mgr.CountEngaged();
-                            // 以整數四捨五入分攤（保守：Ceil 使估算偏高，減少雙重授權風險）
-                            bvrGlobalEngaged = Mathf.CeilToInt(
-                                (float)globalEngaged * Props.maxTargets / totalCapacity);
-                        }
-                    }
-                }
-
-                return Mathf.Max(0, Props.maxTargets - reservedArtilleryChannels - bvrGlobalEngaged);
+                MapComponent_BVRCombat manager = Manager;
+                return manager == null ? 0 : Mathf.Min(
+                    Mathf.Max(0, Props.maxTargets - reservedArtilleryChannels),
+                    manager.Channels.Free(parent.Faction));
             }
         }
 

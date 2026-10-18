@@ -89,6 +89,8 @@ _Dead-Man-Switch-Expedition/
 
 發射平台共用抽象基類 `CompMissileLauncher`（冷卻、有彈判定）；世界選靶平台再繼承 `CompMissileLauncher_WorldTargeting`，分為 `CompMissileLauncher_Rail`（實體導彈容器）、`CompMissileLauncher_Ballistic`（發射井，就地裝配）、`CompMissileLauncher_Scorer`（CompRefuelable 裝填，1.7 無 Def 使用）。反輻射導引頭會自動鎖定敵方運作中的雷達，與 BVR 構成電子對抗閉環。
 
+世界導彈的偵測與 SAM 中過程攔截現由世界層處理：雷達覆蓋圈 → 火控鎖定 → 實體攔截彈升空 → 世界會合，漏網彈抵達後只交給 CIWS。玩家導彈也會受到未生成地圖的敵方導彈陣地抽象防空攔截。速度與平衡數值集中在 `1.7/Defs/DMSE_BVRWorld.xml`（預設 150 ticks/格）；覆蓋圈預設選取據點時顯示，可用世界 Gizmo 或 Mod 設定改為常駐。空投／舊地圖內波次保留原流程，與世界航跡、火砲共用通道。P0–P3 程式與自動檢查已完成，遊戲內驗收待進行；細節見 [BVR 重構與驗收記錄](docs/BVR_世界層偵測攔截重構.md)。
+
 ### 3. 超視距火砲（Artillery）
 `CompArtilleryStrike` 選靶後建立世界航跡，抵達時排程齊射，砲彈以 `Projectile` 從地圖邊緣飛入落點。程式碼已完成；建築 Def（`DMSE_ArtillerySystem.disabled`）**目前停用**。
 

@@ -1,0 +1,36 @@
+using System.Linq;
+using RimWorld;
+using RimWorld.Planet;
+using UnityEngine;
+using Verse;
+
+namespace DMSE
+{
+    public class BVRNode
+    {
+        public MapParent parent;
+        public Faction faction;
+        public MapComponent_BVRCombat local;
+        public WorldObjectComp_AirDefense abstractDefense;
+        public PlanetTile Tile => parent.Tile; // Moving ships must use the current tile.
+        public Vector3 Center => MissileWorldUtility.TileCenter(Tile);
+        public float DetectionRange(BVRTargetProps target)
+        {
+            if (abstractDefense != null)
+                return MissileWorldMotion.DetectionRange(abstractDefense.Props.worldDetectionRange, abstractDefense.Props.antiStealthLevel, target);
+            float range = 0;
+            foreach (var r in local.searchRadars)
+                if (r.Active && r.parent.Faction == faction)
+                    range = Mathf.Max(range, MissileWorldMotion.DetectionRange(r.Props.worldDetectionRange, r.Props.antiStealthLevel, target));
+            return range;
+        }
+        public int FreeChannels => local != null ? local.Channels.Free(faction)
+            : Mathf.Max(0, abstractDefense.Props.channels - (WorldComponent_BVRNetwork.Current?.CountEngaged(parent, faction) ?? 0));
+        public CompFireControlRadar BestRadar(BVRTarget target, int eta) => local?.fireControlRadars
+            .Where(fc => fc.Active && fc.parent.Faction == faction && eta <= fc.Props.maxRangeTicks)
+            .OrderByDescending(fc => fc.ComputeHitChance(target, eta)).FirstOrDefault();
+        public CompMissileLauncher_Interceptor ReadyLauncher(int now) => local?.launchers
+            .Where(l => l.parent.Faction == faction && l.ReadyToFire(now))
+            .OrderBy(l => l.CooldownUntil).FirstOrDefault();
+    }
+}

@@ -9,6 +9,8 @@ namespace DMSE
         /// <summary>搜索距離：越大偵測範圍越廣、預警窗口越長。</summary>
         public int searchDistance = 100;
 
+        public float worldDetectionRange = 8f;
+
         /// <summary>功率等級：放大預警窗口（對應設計圖 Σ(搜索距離 × 功率)）。</summary>
         public int powerLevel = 1;
 
@@ -49,10 +51,23 @@ namespace DMSE
             if (m != null) { m.searchRadars.Remove(this); }
         }
 
+        public float EffectiveWorldRange(BVRTargetProps target)
+            => MissileWorldMotion.DetectionRange(Props.worldDetectionRange, Props.antiStealthLevel, target);
+
+        private string RangeFor(string defName)
+        {
+            ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail(defName);
+            return EffectiveWorldRange(def?.GetModExtension<BVRTargetProps>() ?? BVRTargetProps.Default).ToString("0.#");
+        }
+
         public override string CompInspectStringExtra()
         {
-            return "DMSE.BVR.SearchRadar".Translate(Props.searchDistance, Props.antiStealthLevel,
-                Active ? "DMSE.BVR.Online".Translate() : "DMSE.BVR.Offline".Translate());
+            return "DMSE.BVR.World.RadarRange".Translate(Props.worldDetectionRange) + "\n"
+                + "DMSE.BVR.World.EffectiveRanges".Translate(RangeFor("DMSE_Incoming_Loiter"),
+                    RangeFor("DMSE_Incoming_LightMissile"), RangeFor("DMSE_Incoming_CruiseMissile"),
+                    RangeFor("DMSE_Incoming_BallisticMissile")) + "\n"
+                + "DMSE.BVR.SearchRadar".Translate(Props.searchDistance, Props.antiStealthLevel,
+                    Active ? "DMSE.BVR.Online".Translate() : "DMSE.BVR.Offline".Translate());
         }
     }
 }

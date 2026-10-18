@@ -89,9 +89,12 @@ namespace DMSE
             else if (totalChannels > 0)
             {
                 sb.AppendLine("DMSE.Alert.BVRStatus.FireControl.Occupied".Translate(
-                    comp.CountEngaged(), totalChannels));
+                    comp.Channels.Occupied(Faction.OfPlayer), totalChannels));
             }
 
+            sb.AppendLine("DMSE.BVR.World.ChannelBreakdown".Translate(
+                comp.Channels.Artillery(Faction.OfPlayer), comp.Channels.Local(Faction.OfPlayer),
+                comp.Channels.World(Faction.OfPlayer), comp.Channels.Free(Faction.OfPlayer)));
             return sb.ToString().TrimEnd();
         }
     }

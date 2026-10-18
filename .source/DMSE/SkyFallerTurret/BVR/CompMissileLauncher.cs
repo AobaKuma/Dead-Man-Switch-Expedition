@@ -24,8 +24,8 @@ namespace DMSE
     /// <summary>
     /// 防空攔截彈旋轉發射架：<see cref="CompMissileLauncher"/> 家族中負責地圖內超視距攔截的成員。
     /// 與 <see cref="CompMissileLauncher_Ballistic"/>／<see cref="CompMissileLauncher_Rail"/> 不同，
-    /// 本類別不投射至世界地圖，而是由 <see cref="MapComponent_BVRCombat"/> 依火控雷達鎖定結果
-    /// 呼叫 <see cref="FireInterceptor"/> 生成地圖內攔截彈。
+    /// 世界航跡由 WorldComponent_BVRNetwork 呼叫 FireWorldInterceptor：消耗實體彈、生成純視覺升空彈，
+    /// 世界物件接手會合結算；空投與舊波次仍由 MapComponent_BVRCombat 呼叫 FireInterceptor。
     /// </summary>
     public class CompMissileLauncher_Interceptor : CompMissileLauncher
     {
@@ -64,7 +64,7 @@ namespace DMSE
         }
 
         public bool ReadyToFire(int now)
-            => Active && !OnCooldown(now) && Props.interceptorSkyfaller != null;
+            => Active && HasAmmo && !OnCooldown(now) && Props.interceptorSkyfaller != null;
 
         public void FireInterceptor(BVRTarget target, float hitChance, int now)
         {
@@ -87,6 +87,14 @@ namespace DMSE
             // 消耗實體彈藥（與 CompMissileLauncher_Rail 相同）。
             HeldContainer?.Remove(missile);
             missile.Destroy(DestroyMode.Vanish);
+        }
+
+        /// <summary>Consume a real missile and launch a visual-only skyfaller; world scheduling owns the roll.</summary>
+        public bool FireWorldInterceptor(int now)
+        {
+            if (!ReadyToFire(now) || parent.Map == null) return false;
+            FireInterceptor(new BVRTarget { id = -1 }, 0f, now);
+            return true;
         }
 
         protected override string LoadedStatusText => "DMSE.MissileLauncher.Interceptor.Ready".Translate();

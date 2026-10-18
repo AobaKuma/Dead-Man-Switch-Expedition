@@ -1,4 +1,5 @@
 using RimWorld;
+using System.Linq;
 using Verse;
 
 namespace DMSE
@@ -19,7 +20,12 @@ namespace DMSE
             MapComponent_BVRCombat comp = map != null ? map.GetComponent<MapComponent_BVRCombat>() : null;
             if (comp == null) { return false; }
 
-            Faction defender = comp.ResolveDefender(missile.attacker);
+            // Terminal defense does not require a surviving search radar.
+            Faction defender = missile.worldPhaseDone
+                ? comp.ciwsTurrets.Where(c => c.Active && c.parent.Faction != null
+                    && missile.attacker != null && c.parent.Faction.HostileTo(missile.attacker))
+                    .OrderByDescending(c => c.parent.Faction.IsPlayer).Select(c => c.parent.Faction).FirstOrDefault()
+                : comp.ResolveDefender(missile.attacker);
             if (defender == null)
             {
                 if (Prefs.DevMode)
@@ -33,7 +39,8 @@ namespace DMSE
 
             missile.bvrHandled = true;
             missile.DeSpawn();
-            comp.RegisterIncoming(missile, pos, defender);
+            if (missile.worldPhaseDone) comp.RegisterTerminal(missile, pos, defender);
+            else comp.RegisterIncoming(missile, pos, defender);
 
             if (Prefs.DevMode)
             {

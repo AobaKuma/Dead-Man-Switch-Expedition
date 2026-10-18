@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <DMSE.BVR.World.Undetected>Undetected</DMSE.BVR.World.Undetected>
+  <DMSE.BVR.World.Detected>Detected</DMSE.BVR.World.Detected>
+  <DMSE.BVR.World.Locking>Fire-control lock</DMSE.BVR.World.Locking>
+  <DMSE.BVR.World.InFlight>Interceptor inbound</DMSE.BVR.World.InFlight>
+  <DMSE.BVR.World.TrackInspect>Destination: {0}\nETA: {1}\nStatus: {2}\nIntercept attempts: {3}</DMSE.BVR.World.TrackInspect>
+  <DMSE.BVR.World.RadarRange>World search radius: {0} tiles (before target modifiers)</DMSE.BVR.World.RadarRange>
+  <DMSE.BVR.World.EffectiveRanges>Effective radius: loitering {0}, light {1}, cruise {2}, ballistic {3} tiles</DMSE.BVR.World.EffectiveRanges>
+  <DMSE.BVR.World.DetectedLetter>Incoming missile detected</DMSE.BVR.World.DetectedLetter>
+  <DMSE.BVR.World.DetectedLetterText>Radar has detected {0} approaching {1}.\n\nEstimated arrival: {2}. World air defense is attempting to engage; any surviving missile will face local terminal defenses.</DMSE.BVR.World.DetectedLetterText>
+  <DMSE.BVR.World.Intercepted>{0} was intercepted by {1}.</DMSE.BVR.World.Intercepted>
+  <DMSE.BVR.World.Missed>An interceptor missed {0}.</DMSE.BVR.World.Missed>
+  <DMSE.BVR.World.Evaded>{0} changed course and evaded the interceptor.</DMSE.BVR.World.Evaded>
+  <DMSE.BVR.World.InterceptorInspect>Target: {0}\nTime to intercept: {1}</DMSE.BVR.World.InterceptorInspect>
+  <DMSE.BVR.World.AbstractInspect>Air defense: {0}/{1} interceptors\nSearch radius: {2} tiles; fire-control channels: {3}</DMSE.BVR.World.AbstractInspect>
+  <DMSE.BVR.World.IncomingAlert>Detected incoming missiles</DMSE.BVR.World.IncomingAlert>
+  <DMSE.BVR.World.IncomingLabel>Incoming missiles: {0} ({1})</DMSE.BVR.World.IncomingLabel>
+  <DMSE.BVR.World.ClickHint>Left/right click to cycle between world missile tracks.</DMSE.BVR.World.ClickHint>
+  <DMSE.BVR.World.ShowCoverage>Show air-defense coverage</DMSE.BVR.World.ShowCoverage>
+  <DMSE.BVR.World.ShowCoverageDesc>Always display all player radar coverage circles on the world map. Selected sites always show their own coverage. Circles assume an unstealthed target of size 1.</DMSE.BVR.World.ShowCoverageDesc>
+  <DMSE.BVR.World.ChannelBreakdown>Channels: artillery {0}, local {1}, world {2}; free {3}</DMSE.BVR.World.ChannelBreakdown>
+  <DMSE.BVR.World.MissileType>Missile type: {0}</DMSE.BVR.World.MissileType>
+</LanguageData>
