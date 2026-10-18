@@ -1,6 +1,6 @@
 # DMSE 波次打擊規劃（飽和打擊介面）— 設計與實作計畫
 
-> 狀態：**P0 已實作（§15）；P1–P4 未實作**　｜　建立／更新：2026-10-19　｜　基於 `main` `4cdad53`（世界層 BVR P0–P3 已合併）
+> 狀態：**P0、P1（自動版）已實作（§15）；P2–P4 未實作**　｜　建立／更新：2026-10-19　｜　分支 `wave-strike`（基於 `main` `44a97c1`）
 >
 > 來源：波次打擊介面的設計討論紀錄，§0 逐條對照。§14 的待決策事項已於 2026-10-19 照建議值定案。
 
@@ -145,8 +145,9 @@ public class StrikeSlot : IExposable
 - **`MapComponent_StrikePlanner`**（每地圖一個）持有：
   - 指揮台與世界選靶平台的註冊表（比照 BVR 裝置在 `PostSpawnSetup`／`PostDeSpawn` 自行註冊）；
   - 保留索引（`Dictionary<Thing, int>`：彈藥 → 任務 id；彈道井以平台本身為彈藥，不另設索引），不存檔，讀檔後由各指揮台的任務重建；
-  - 進攻導引通道占用（`List<int> releaseTicks`，存檔）；
-  - 漣波發射佇列（`(slot, fireTick)`，存檔）。
+  - 進攻導引通道占用（`StrikeGuidanceHold`：陣營 + 釋放 tick，存檔）；
+  - 漣波發射佇列（`StrikeQueuedLaunch`：指揮台參照 + 任務 id + 波次／槽位索引 + 發射 tick + 是否漣波續射，存檔）。排隊中的每一枚也計入導引通道占用，按下發射時就訂好通道，漣波途中不會被防空鎖定搶走。
+  - P1 實作：`StrikeSlot` 另有 `track`（升空後的世界航跡，存檔時已結束者清空）與 `skipReason`；`StrikeMission` 另有 `targetedSite`（選靶時有據點，用來判斷目標丟失）。彈道井／Scorer 的 `round` 是平台本身，沒有另設索引。
 - 容器內的導彈雖然 unspawned，仍以 `ThingOwner` 深度存檔，`Scribe_References` 可正常回連；被摧毀或離開容器的，在下一次驗證時判定失效。
 
 ### 4-2. 候選導彈（不存檔）
@@ -366,7 +367,7 @@ public ScorerProjectile_WorldObject TryLaunchRound(GlobalTargetInfo target, Thin
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-- **分配**：點右側某波設為「選取中」；左側點一組加一枚、Shift 加整組（超過單波上限時截斷）；右側 [−] 移除。組別可展開，指定特定平台的特定一枚。
+- **分配**：點右側某波設為「選取中」；左側點一組加一枚、Shift 加整組（超過單波上限時截斷）；右側 [−] 移除。組別展開、指定特定平台的特定一枚延到 P3（P1 加入時優先挑現在就能發射的那幾枚）。
 - **自動分波**：依價值由低到高填滿各波，最高價值的放最後一波；每波 ≤ 通道容量，波數 ≤ `maxWavesPerMission`。
 - **抵達預覽**：假設各波以最短間隔（導引期與平台冷卻取大）接續發射，畫出升空與抵達時間；抵達順序與波次順序不一致時警示（§2-3 方案 A）。
 - **底部**：人工版的計算工作量，以及以目前最快研究者的 `ResearchSpeed` 估算的所需時間。
@@ -389,7 +390,7 @@ public ScorerProjectile_WorldObject TryLaunchRound(GlobalTargetInfo target, Thin
 
 - 每波顯示發射與戰果彙總（依 §7-3 的航跡標記），在飛的波次顯示 ETA 區間。
 - 「若現在發射」即時計算本波抵達時間與相對其他波次的順序，並給建議最早發射時間（讓本波晚於前一波 `arrivalSpacingTicks`，建議 60）。
-- **調整波次**：回到規劃介面，但只能在已保留（且已解）的導彈之間調動，不需重算；加入新導彈觸發增量計算（§8-2）。
+- **調整波次**（延到 P3）：回到規劃介面，但只能在已保留（且已解）的導彈之間調動，不需重算；加入新導彈觸發增量計算（§8-2）。P1 要改計畫只能取消任務重新規劃。
 - 執行模式不強制暫停，玩家需要邊看邊等時機。
 
 ### 10-4. 其他回饋
@@ -436,9 +437,9 @@ foreach (MissileWorldObject track in Tracks.OrderBy(t => t.TicksToArrival).ToLis
 | 期 | 內容 | 驗收 |
 |---|---|---|
 | **P0 底層**（已實作，§15） | `MissileRoleExtension` 與 XML 標記；`BuildFiringConfig(Thing)`、`TryLaunchRound`、漣波參數；世界選靶平台註冊表；`StrikeReservation` 與 §8-4 各掛點（先用 Debug 動作保留／釋放驗證）；防空依 ETA 排序；Rail 不再誤射攔截彈 | 沒有保留時，單發 Gizmo、SAM、裝配行為與現行一致；保留中的彈不會被 SAM、單發、裝配消耗；ETA 排序與 §2-3 試算有對應 BVRTests；既有 BVRTests、BVRAcceptance 全數通過 |
-| **P1 自動版** | `CompStrikeConsole`（自動）、世界選靶、`Dialog_StrikePlan` 規劃／執行模式、帳本 `Strike` 分項與導引期、漣波佇列、航跡標記、Gizmo、inspect、三語 Keyed、`DMSE_StrikeCommandCenter` Def | 12 枚混合彈分 3 波：每波不超過通道；4 聯裝平台一波射完 4 枚、冷卻只起算一次；第 2 波在導引期結束後可發；超射程彈不出現在可用區；存讀檔後任務、佇列、通道占用一致 |
+| **P1 自動版**（已實作，§15-5） | `CompStrikeConsole`（自動）、世界選靶、`Dialog_StrikePlan` 規劃／執行模式、帳本 `Strike` 分項與導引期、漣波佇列、航跡標記、Gizmo、inspect、三語 Keyed、`DMSE_StrikeCommandCenter` Def | 12 枚混合彈分 3 波：每波不超過通道；4 聯裝平台一波射完 4 枚、冷卻只起算一次；第 2 波在導引期結束後可發；超射程彈不出現在可用區；存讀檔後任務、佇列、通道占用一致 |
 | **P2 人工版** | `requiresComputation`、WorkGiver／JobDriver（研究）、增量計算、`Alert_StrikeComputationPending`、`DMSE_StrikePlanningTable` Def | 確認後導彈立即保留；研究者算完才可發射；中斷後進度保留；計算中的導彈不被 SAM 取用；加彈只補算新枚數 |
-| **P3 回饋** | 抵達預覽時間軸與順序警示、「若現在發射」提示、自動分波、`Alerts_PlayerMissiles` 分組、任務結束彙總訊息 | §2-3 方案 A 被標警示、方案 B 不警示；彙總數字與實際戰果一致 |
+| **P3 回饋** | 抵達預覽時間軸與順序警示、「若現在發射」提示、`Alerts_PlayerMissiles` 分組、任務結束彙總訊息（含攔截／命中）、組別展開指定單枚、執行中調整波次（自動分波已在 P1 完成） | §2-3 方案 A 被標警示、方案 B 不警示；彙總數字與實際戰果一致 |
 | **P4 選配** | 定時發射（指定抵達間隔，在建議時機自動發射）、目標移動超過門檻要求重算、威脅評估與誘餌酬載、NPC 陣地改用波次發射 | 各項獨立驗收 |
 
 **驗證方式**：純邏輯（候選篩選、通道帳、ETA 排序、工作量）放 `.source/DMSE.BVRTests`；遊戲內流程在 `.source/DMSE.BVRAcceptance` 新增 `Tests_Strike.cs`：建立平台與指揮台 → 以 API 建任務 → 逐波發射 → 檢查通道、冷卻、航跡標記與攔截結果。
@@ -518,3 +519,31 @@ foreach (MissileWorldObject track in Tracks.OrderBy(t => t.TicksToArrival).ToLis
 2. **沒有攔截彈時，節點仍會鎖定並一直占著通道**：鎖定不檢查有無可用的 SAM，鎖定完成後只是等待發射器。抽象節點影響不大；但 P1 進攻導引與防空共用通道帳本，玩家自己的 SAM 打光時，來襲航跡會把火控通道占滿，導致波次發不出去。
    **決定並已實作（2026-10-19）：沒彈不鎖、打光即放**，世界層與地圖內中過程一致。`MapComponent_BVRCombat.HasInterceptorAmmo(faction)`：任一 Active 的 SAM（有未保留彈藥、通電、有人操作；裝填冷卻中也算）；抽象節點看庫存 > 0（`BVRNode.HasInterceptorAmmo`）。沒有時：新目標不鎖定，鎖定中或已完成但未發射的鎖定釋放；已在飛的攔截彈不受影響。被打擊任務保留的導彈不算可用攔截彈。
    驗證：BVRTests 新增 5 項（SAM 可運作才算有彈且只算本陣營、抽象節點庫存歸零即無彈、地圖節點讀取 SAM），共 **152 項通過**；驗收新增 K5（沒彈時世界航跡與空投都不鎖、保留彈不算、射出最後一枚後另一個待發射的鎖定立即釋放）；M8 與 K3 原本靠「沒有 SAM 也會鎖定」讓鎖定停住，改用一座有彈但長時間裝填中的 SAM（`BVRFixture.HoldInReload`）。完整套件 **30/30 通過、327 項檢查**。
+
+### 15-5. P1 自動版（2026-10-19）
+
+**已完成**
+
+- **資料**：`StrikeMission`／`StrikeWave`／`StrikeSlot`（存在指揮台上，§4-1）；`MapComponent_StrikePlanner` 新增任務 id 配發、導引期 `StrikeGuidanceHold`、漣波佇列 `StrikeQueuedLaunch`（皆存檔），以及指揮台註冊表。保留索引照舊不存檔，指揮台在 `PostSpawnSetup` 依任務重建。
+- **通道帳本**：`BVRChannelLedger.Strike`（排隊中 + 導引期內的打擊導彈）併入 `Occupied`；`StrikeCapacity`（只算 `supportsStrikeGuidance` 的火控雷達）與 `StrikeFree = min(Free, StrikeCapacity − Strike)`。導引期 `strikeGuidanceTicks` = 600，放在 `DMSE_BVRWorldTuning`。狀態警報的通道分項多了「打擊導引」。
+- **`CompStrikeConsole`**（繼承 `CompBVRDevice` 的可運作判定）：世界選靶（游標旁顯示距離、「射程內 n／在架 m」、無據點提示；沒有任何導彈打得到時拒絕）→ 規劃視窗 → `Commit` 保留全部導彈、記下設定指紋、進入機器計算（`autoComputeTicks` 300，斷電時暫停）→ 就緒後逐波 `FireWave`。發射前逐枚重驗：彈藥不在、改裝過、超出射程即略過；平台斷電或冷卻中、通道不足時整波不發（Shift 部分發射則留在本波）。佇列到時 `ExecuteQueued` 以 `TryLaunchRound` 發射並掛上任務標記；排隊期間出現的暫時性問題讓該枚退回待發射。全部發射或略過後任務結束、釋放保留；目標消失或指揮台被移除時任務取消。
+- **`Dialog_StrikePlan`**：規劃模式（暫停）左側候選依「彈體 · 導引 · 彈頭／酬載」分組，顯示數量、飛行時間、射程餘裕、單價，黃色為目前無法立即發射；不可用者摺疊附原因；右側波次（上限＝打擊通道容量，可新增／刪除波次、[−] 移除）；自動分波；確認鈕在草稿不合法時停用並顯示原因。目標為尚未生成地圖的非玩家據點時顯示 §15-4 決定 1 的提示。執行模式（不暫停）逐波顯示待發射／發射中／已發射與在飛／略過（滑鼠提示略過原因），發射鈕的提示說明不能發射的原因；任務結束時視窗自動關閉。
+- **Gizmo**：規劃波次打擊／開啟打擊計畫／發射第 k 波（Shift 部分發射）／取消打擊任務（確認對話框）；開發者模式「Finish firing solutions」。檢視字串顯示打擊通道與任務狀態。
+- **航跡標記**：`ScorerProjectile_WorldObject.strikeMissionId`／`strikeWave`（預設 -1）。
+- **Def 與翻譯**：`DMSE_StrikeCommandCenter`（3×2、耗電 400、研究 `DMSE_IntegratedCircuits`；貼圖暫用原版通訊台），三語 Keyed `DMSE_Strike.xml`（73 鍵）與 DefInjected。
+
+**與設計的差異（延到 P3）**：組別展開、指定特定平台的特定一枚；執行中調整波次；抵達時間軸與順序警示。P1 的漣波第一枚在按下發射的下一個 tick 升空，之後每 30 ticks 一枚。
+
+**驗證**
+
+- 建置 0 警告、0 錯誤；`check_bvr_world.py` 通過。
+- BVRTests **167 項通過**（P1 新增 15 項：只算支援打擊的雷達、排隊與導引期共用通道、取消佇列釋放通道、陣營隔離、導引期準時結束、設定指紋不受部件順序影響但能發現改裝、自動分波、任務輔助屬性、任務 Scribe 輸出與預設值）。
+- 遊戲內驗收新增 K6–K8，完整套件 **33 項中 32 項通過、367 項檢查**；唯一失敗的 W8（世界層空爆）單獨重跑通過，前兩次完整執行也都通過，屬間歇性失敗，已在 W8 加上診斷訊息，原因尚未查明。
+
+| 測試 | 驗證內容 |
+|---|---|
+| K6 | 兩座相控陣給 4 條打擊通道；12 枚輕型導彈在射程內、巡飛彈（射程 12）標為超出射程、攔截彈不列入；5 枚的波次被拒；確認後 12 枚保留、單發 Gizmo 停用、計算中不能發射、第二個任務被拒；就緒後第 1 波 4 枚：按下即訂滿 4 條通道、第 2 波因通道不足被拒、4 聯裝平台每 30 ticks 一枚、冷卻從最後一枚起算、航跡帶任務與波次標記；導引期結束後通道才全部釋放、第 2 波可發；第 2 波發射途中取消：佇列停止、保留釋放、第 3 波導彈恢復可單發 |
+| K7 | 第 1 波兩枚之間存檔並讀檔：任務、波次與狀態還原，存檔中的佇列在原定的 +30 tick 發射，存檔前的導引期照常到期，第 2 波的保留重建；之後發射第 2 波，任務結束並釋放保留 |
+| K8 | 規劃視窗（經由視窗自動分波成 4 波×2）與執行視窗都能正常繪製、沒有錯誤；任務結束時執行視窗自動關閉。截圖已目視確認版面 |
+
+**尚未驗證**：玩家實際以滑鼠操作規劃視窗（點選、Shift 加入、刪除波次）只有繪製與自動分波經過驗收；世界選靶游標標籤沒有自動化測試。

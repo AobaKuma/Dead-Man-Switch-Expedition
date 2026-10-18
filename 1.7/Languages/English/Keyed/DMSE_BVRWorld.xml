@@ -19,6 +19,6 @@
   <DMSE.BVR.World.ClickHint>Left/right click to cycle between world missile tracks.</DMSE.BVR.World.ClickHint>
   <DMSE.BVR.World.ShowCoverage>Show air-defense coverage</DMSE.BVR.World.ShowCoverage>
   <DMSE.BVR.World.ShowCoverageDesc>Always display all player radar coverage circles on the world map. Selected sites always show their own coverage. Circles assume an unstealthed target of size 1.</DMSE.BVR.World.ShowCoverageDesc>
-  <DMSE.BVR.World.ChannelBreakdown>Channels: artillery {0}, local {1}, world {2}; free {3}</DMSE.BVR.World.ChannelBreakdown>
+  <DMSE.BVR.World.ChannelBreakdown>Channels: artillery {0}, local {1}, world {2}, strike {3}; free {4}</DMSE.BVR.World.ChannelBreakdown>
   <DMSE.BVR.World.MissileType>Missile type: {0}</DMSE.BVR.World.MissileType>
 </LanguageData>

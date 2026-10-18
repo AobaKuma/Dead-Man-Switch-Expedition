@@ -1,6 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
+  <!-- 保留（P0） -->
   <DMSE.Strike.AllRoundsReserved>在架導彈已全數保留給打擊任務</DMSE.Strike.AllRoundsReserved>
   <DMSE.Strike.ReservedInspect>已保留給打擊任務：{0} 枚</DMSE.Strike.ReservedInspect>
   <DMSE.Strike.ReservedNoEdit>已保留給打擊任務：任務結束前無法改裝。</DMSE.Strike.ReservedNoEdit>
+
+  <!-- 指揮台 Gizmo -->
+  <DMSE.Strike.Console.Plan>規劃波次打擊</DMSE.Strike.Console.Plan>
+  <DMSE.Strike.Console.PlanDesc>選定世界目標，再把本地圖發射架上的進攻導彈分配到各波次。每波上限為本地圖火控雷達的空閒導引通道數。</DMSE.Strike.Console.PlanDesc>
+  <DMSE.Strike.Console.Open>開啟打擊計畫</DMSE.Strike.Console.Open>
+  <DMSE.Strike.Console.OpenDesc>顯示目前打擊任務的各波次並發射。</DMSE.Strike.Console.OpenDesc>
+  <DMSE.Strike.Console.FireWave>發射第 {0} 波</DMSE.Strike.Console.FireWave>
+  <DMSE.Strike.Console.FireWaveDesc>立即發射下一波。按住 Shift 點擊只發射空閒通道與就緒發射架允許的部分，其餘留在本波。</DMSE.Strike.Console.FireWaveDesc>
+  <DMSE.Strike.Console.Cancel>取消打擊任務</DMSE.Strike.Console.Cancel>
+  <DMSE.Strike.Console.CancelDesc>取消目前的打擊任務。已升空的導彈照常飛行，其餘導彈釋放。</DMSE.Strike.Console.CancelDesc>
+  <DMSE.Strike.Console.CancelConfirm>要取消打擊任務 #{0} 嗎？尚未發射的導彈會被釋放。</DMSE.Strike.Console.CancelConfirm>
+
+  <!-- 選靶與規劃限制 -->
+  <DMSE.Strike.NoFireControl>本地圖沒有能導引打擊導彈的運作中火控雷達</DMSE.Strike.NoFireControl>
+  <DMSE.Strike.NoStrikeRounds>本地圖沒有已裝填的進攻導彈</DMSE.Strike.NoStrikeRounds>
+  <DMSE.Strike.NoRoundReaches>沒有任何在架進攻導彈打得到這個目標</DMSE.Strike.NoRoundReaches>
+  <DMSE.Strike.TargetLabel.Distance>距離：{0} 格</DMSE.Strike.TargetLabel.Distance>
+  <DMSE.Strike.TargetLabel.Reach>射程內：{0}／在架 {1}</DMSE.Strike.TargetLabel.Reach>
+  <DMSE.Strike.NoRoundsAssigned>至少要把一枚導彈分配到波次</DMSE.Strike.NoRoundsAssigned>
+  <DMSE.Strike.TooManyRounds>每個任務最多 {0} 枚導彈</DMSE.Strike.TooManyRounds>
+  <DMSE.Strike.TooManyWaves>每個任務最多 {0} 波</DMSE.Strike.TooManyWaves>
+  <DMSE.Strike.WaveOverCap>第 {0} 波有 {1} 枚，導引上限為 {2}</DMSE.Strike.WaveOverCap>
+  <DMSE.Strike.RoundTaken>有導彈已被其他打擊任務保留</DMSE.Strike.RoundTaken>
+  <DMSE.Strike.RoundUnavailable>有導彈已不在架上，或已打不到目標</DMSE.Strike.RoundUnavailable>
+
+  <!-- 發射限制與略過 -->
+  <DMSE.Strike.NotReady>彈道解尚未完成</DMSE.Strike.NotReady>
+  <DMSE.Strike.Computing>彈道計算中（剩餘 {0}）</DMSE.Strike.Computing>
+  <DMSE.Strike.WaveDone>本波已沒有待發射的導彈</DMSE.Strike.WaveDone>
+  <DMSE.Strike.NotEnoughChannels>導引通道不足：空閒 {0}，需要 {1}</DMSE.Strike.NotEnoughChannels>
+  <DMSE.Strike.NotEnoughChannelsRelease>導引通道不足：空閒 {0}，需要 {1}；下一條在 {2} 後釋放</DMSE.Strike.NotEnoughChannelsRelease>
+  <DMSE.Strike.PlatformsNotReady>{0} 座發射架未就緒（斷電、關閉、無人操作或裝填中）</DMSE.Strike.PlatformsNotReady>
+  <DMSE.Strike.Skip.RoundGone>導彈已不在發射架上</DMSE.Strike.Skip.RoundGone>
+  <DMSE.Strike.Skip.Refitted>導彈已被改裝</DMSE.Strike.Skip.Refitted>
+
+  <!-- 狀態與檢視 -->
+  <DMSE.Strike.State.Computing>彈道計算中（剩餘 {0}）</DMSE.Strike.State.Computing>
+  <DMSE.Strike.State.Ready>可發射</DMSE.Strike.State.Ready>
+  <DMSE.Strike.State.Executing>執行中</DMSE.Strike.State.Executing>
+  <DMSE.Strike.Inspect.Channels>打擊導引通道：空閒 {0}／{1}</DMSE.Strike.Inspect.Channels>
+  <DMSE.Strike.Inspect.Mission>打擊任務 #{0}（{1}）：{2}，已發射 {3}/{4}</DMSE.Strike.Inspect.Mission>
+
+  <!-- 訊息 -->
+  <DMSE.Strike.Msg.Confirmed>打擊任務 #{0}：已保留 {1} 枚導彈、分 {2} 波，彈道計算中。</DMSE.Strike.Msg.Confirmed>
+  <DMSE.Strike.Msg.Ready>打擊任務 #{0}：彈道解完成，可以發射。</DMSE.Strike.Msg.Ready>
+  <DMSE.Strike.Msg.WaveFired>打擊任務 #{0} 第 {1} 波：發射 {2} 枚，略過 {3} 枚。</DMSE.Strike.Msg.WaveFired>
+  <DMSE.Strike.Msg.Skipped>打擊任務 #{0}：{1} 已略過（{2}）。</DMSE.Strike.Msg.Skipped>
+  <DMSE.Strike.Msg.Deferred>打擊任務 #{0}：{1} 暫時無法發射，留在第 {2} 波。</DMSE.Strike.Msg.Deferred>
+  <DMSE.Strike.Msg.Completed>打擊任務 #{0} 結束：發射 {1} 枚，略過 {2} 枚。</DMSE.Strike.Msg.Completed>
+  <DMSE.Strike.Msg.Cancelled>打擊任務 #{0} 已取消，尚未發射的導彈已釋放。</DMSE.Strike.Msg.Cancelled>
+  <DMSE.Strike.Msg.TargetLost>打擊任務 #{0} 已取消：目標已不存在。</DMSE.Strike.Msg.TargetLost>
+  <DMSE.Strike.Msg.ConsoleLost>打擊任務 #{0} 已取消：打擊指揮中心已被移除。</DMSE.Strike.Msg.ConsoleLost>
+
+  <!-- 規劃視窗 -->
+  <DMSE.Strike.Plan.Title>波次打擊規劃</DMSE.Strike.Plan.Title>
+  <DMSE.Strike.Plan.Target>目標：{0}（{1} 格）</DMSE.Strike.Plan.Target>
+  <DMSE.Strike.Plan.Channels>導引通道：{0}（空閒 {1}）· 單波上限 {0} · 導引期 {2}</DMSE.Strike.Plan.Channels>
+  <DMSE.Strike.Plan.SiteWarning>此據點尚未生成地圖。第一枚抵達的導彈會生成地圖，據點自己的防空（SAM 照常滿彈）隨即接手攔截還在飛的導彈。</DMSE.Strike.Plan.SiteWarning>
+  <DMSE.Strike.Plan.Available>可用導彈：{0}</DMSE.Strike.Plan.Available>
+  <DMSE.Strike.Plan.AddHint>點一列加一枚到選取中的波次；按住 Shift 點擊加到滿。黃色列目前無法立即發射，發射時會再檢查。</DMSE.Strike.Plan.AddHint>
+  <DMSE.Strike.Plan.Unavailable>不可用 {0}：{1}</DMSE.Strike.Plan.Unavailable>
+  <DMSE.Strike.Plan.ReservedElsewhere>另有 {0} 枚已保留給其他打擊任務</DMSE.Strike.Plan.ReservedElsewhere>
+  <DMSE.Strike.Plan.NotReadyTag>目前無法發射：</DMSE.Strike.Plan.NotReadyTag>
+  <DMSE.Strike.Plan.Flight>飛行 {0}</DMSE.Strike.Plan.Flight>
+  <DMSE.Strike.Plan.Margin>射程 +{0}</DMSE.Strike.Plan.Margin>
+  <DMSE.Strike.Plan.Wave>第 {0} 波   {1}/{2}</DMSE.Strike.Plan.Wave>
+  <DMSE.Strike.Plan.AddWave>＋新增波次</DMSE.Strike.Plan.AddWave>
+  <DMSE.Strike.Plan.AutoAssign>自動分波</DMSE.Strike.Plan.AutoAssign>
+  <DMSE.Strike.Plan.AutoAssignDesc>從最便宜的導彈開始依序填滿各波，最高價值的導彈會落在最後一波。</DMSE.Strike.Plan.AutoAssignDesc>
+  <DMSE.Strike.Plan.Clear>清空</DMSE.Strike.Plan.Clear>
+  <DMSE.Strike.Plan.Confirm>確認計畫</DMSE.Strike.Plan.Confirm>
+
+  <!-- 執行視窗 -->
+  <DMSE.Strike.Exec.Title>波次打擊 #{0}</DMSE.Strike.Exec.Title>
+  <DMSE.Strike.Exec.State>狀態：{0}</DMSE.Strike.Exec.State>
+  <DMSE.Strike.Exec.NextRelease>（下一條通道在 {0} 後釋放）</DMSE.Strike.Exec.NextRelease>
+  <DMSE.Strike.Exec.Wave>第 {0} 波：{1}</DMSE.Strike.Exec.Wave>
+  <DMSE.Strike.Exec.WavePending>待發射 {0}</DMSE.Strike.Exec.WavePending>
+  <DMSE.Strike.Exec.WaveQueued>發射中 {0}</DMSE.Strike.Exec.WaveQueued>
+  <DMSE.Strike.Exec.WaveLaunched>已發射 {0}/{1}，在飛 {2}</DMSE.Strike.Exec.WaveLaunched>
+  <DMSE.Strike.Exec.WaveSkipped>略過 {0}</DMSE.Strike.Exec.WaveSkipped>
+  <DMSE.Strike.Exec.Fire>發射</DMSE.Strike.Exec.Fire>
+  <DMSE.Strike.Exec.FireTip>按住 Shift 點擊只發射空閒通道與就緒發射架允許的部分，其餘留在本波。</DMSE.Strike.Exec.FireTip>
+  <DMSE.Strike.Exec.CancelMission>取消任務</DMSE.Strike.Exec.CancelMission>
 </LanguageData>

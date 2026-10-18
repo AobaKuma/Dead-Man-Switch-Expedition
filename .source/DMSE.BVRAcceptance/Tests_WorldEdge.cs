@@ -53,6 +53,9 @@ namespace DMSE.BVRAcceptance
             float radius = BVRWorldTuningDef.Current.airburstRadiusTiles;
             float otherDist = MissileWorldUtility.SurfaceTilesBetween(other.PositionAt(0), interceptor.end);
             float lateDist = MissileWorldUtility.SurfaceTilesBetween(late.PositionAt(0), interceptor.end);
+            // Diagnostics for an intermittent failure seen once (2026-10-19): where the twin was and when it died.
+            t.Note($"twin killed at {twinKilled.FirstTick} (due {due}), {MissileWorldUtility.SurfaceTilesBetween(twin.PositionAt(0), interceptor.end):0.00} tiles "
+                + $"from the burst, same destination {twin.Destination == interceptor.targetDestination}, route revision {twin.RouteRevision}");
             t.Check(twinKilled.FirstTick == due, "the airburst also kills the missile flying with it");
             t.Check(otherDist <= radius, $"the missile bound elsewhere is inside the burst radius ({otherDist:0.00} ≤ {radius})");
             t.Check(!other.Destroyed, "the burst spares a missile bound for another tile");

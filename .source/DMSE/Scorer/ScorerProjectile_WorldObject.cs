@@ -14,6 +14,10 @@ namespace DMSE
     {
         public ThingDef skyfallerIncoming;
 
+        /// <summary>波次打擊的任務 id 與波次（0 起算）；-1 表示不是波次打擊發射的。</summary>
+        public int strikeMissionId = -1;
+        public int strikeWave = -1;
+
         // 選中並生成的墜落物定義，用原版的隕石當佔位符
         private const string ProjectileDefName = "MeteoriteIncoming";
 
@@ -26,6 +30,8 @@ namespace DMSE
         {
             base.ExposeData();
             Scribe_Defs.Look(ref skyfallerIncoming, "skyfallerIncoming");
+            Scribe_Values.Look(ref strikeMissionId, "strikeMissionId", -1);
+            Scribe_Values.Look(ref strikeWave, "strikeWave", -1);
 
             // 舊存檔只存了 tileId（圖層遺失），無從得知原圖層，只能視為地表
             if (Scribe.mode == LoadSaveMode.LoadingVars)

@@ -11,6 +11,8 @@
     <minInterceptMarginTicks>60</minInterceptMarginTicks>
     <airburstRadiusTiles>1</airburstRadiusTiles>
     <scanIntervalTicks>15</scanIntervalTicks>
+    <!-- 波次打擊：每枚進攻導彈升空後占用火控通道的導引期（ticks），也是波次的最短間隔。 -->
+    <strikeGuidanceTicks>600</strikeGuidanceTicks>
   </DMSE.BVRWorldTuningDef>
 
   <WorldObjectDef>

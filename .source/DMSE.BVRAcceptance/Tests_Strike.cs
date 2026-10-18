@@ -208,6 +208,229 @@ namespace DMSE.BVRAcceptance
             Planner.ReleaseAll(DebugOwner);
         }
 
+        // ------------------------------------------------------------------
+        //  P1: auto strike console
+        // ------------------------------------------------------------------
+
+        private static ThingDef StrikeCenter => ThingDef.Named("DMSE_StrikeCommandCenter");
+        private static ThingDef LoiterLauncher => ThingDef.Named("DMSE_Building_LoiteringLauncher");
+        private static ThingDef Termite => ThingDef.Named("DMSE_Missile_Termite");
+
+        private static StrikeWave WaveOf(Building_MissileRack rack, int take = int.MaxValue)
+        {
+            var wave = new StrikeWave();
+            foreach (Thing round in rack.TryGetComp<CompMissileLauncher_Rail>().StrikeRounds.Take(take).ToList())
+            {
+                wave.slots.Add(new StrikeSlot { launcher = rack, round = round });
+            }
+            return wave;
+        }
+
+        public static IEnumerable<Wait> AutoConsoleWaves(TestContext t)
+        {
+            Thing centerThing = SpawnBuilding(StrikeCenter, 20, 20);
+            SpawnBuilding(PhaseArray, 2, 2);
+            SpawnBuilding(PhaseArray, 2, 8);
+            Building_MissileRack a = SpawnLoadedLauncher(10, 2, 4);
+            Building_MissileRack b = SpawnLoadedLauncher(14, 2, 4);
+            Building_MissileRack c = SpawnLoadedLauncher(18, 2, 4);
+            Building_MissileRack samOnly = (Building_MissileRack)SpawnBuilding(LightLauncher, 22, 2);
+            Load(samOnly, InterceptorItem);
+            Building_MissileRack loiter = (Building_MissileRack)SpawnBuilding(LoiterLauncher, 26, 2);
+            Thing termite = Load(loiter, Termite);
+            yield return WaitPowered(); yield return new WaitTicks(2);
+            CompStrikeConsole console = centerThing.TryGetComp<CompStrikeConsole>();
+            t.Require(console != null && console.Active && Planner.consoles.Contains(console), "the command center has an active, registered strike console");
+            t.Check(console.StrikeCapacity == 4 && console.StrikeFree == 4, $"two phased arrays give 4 strike channels (got {console.StrikeCapacity})");
+            t.Check(console.CannotPlanReason() == null, "the console can plan");
+
+            PlanetTile target = TileAtDistance(13.5f, 15f);
+            t.Require(target.Valid, "a target tile ~14 tiles away exists");
+            List<StrikeCandidate> candidates = StrikeRoundUtility.Candidates(Home, target, -1, out int elsewhere);
+            int loiterRange = loiter.TryGetComp<CompMissileLauncher_Rail>().BuildFiringConfig(termite)?.Range ?? 0;
+            t.Note($"loitering range {loiterRange}, target {MissileWorldUtility.RangeDistance(Home.Tile, target):0.0} tiles");
+            t.Check(candidates.Count(x => x.Assignable && x.round.def == LightMissileItem) == 12 && elsewhere == 0, "12 light missiles are in range");
+            t.Check(candidates.Any(x => x.round == termite && x.issue == StrikeRoundIssue.OutOfRange), "the loitering munition is listed as out of range");
+            t.Check(!candidates.Any(x => x.round.def == InterceptorItem), "interceptors are not listed");
+            t.Check(candidates.Where(x => x.Assignable).All(x => x.flightTicks > 2500 && x.groupLabel.Contains(LightBody.LabelCap)),
+                "candidates carry flight time and a light-missile group label");
+
+            var draft = new StrikeMission { targetTile = target, state = StrikeMissionState.Planning };
+            draft.waves.Add(WaveOf(a));
+            draft.waves.Add(WaveOf(b));
+            draft.waves.Add(WaveOf(c));
+            var over = new StrikeMission { targetTile = target };
+            over.waves.Add(WaveOf(a));
+            over.waves[0].slots.Add(new StrikeSlot { launcher = b, round = b.HeldThings[0] });
+            t.Check(console.ValidateDraft(over) == "DMSE.Strike.WaveOverCap".Translate(1, 5, 4).ToString(), "a wave above the guidance limit is refused");
+            t.Check(console.ValidateDraft(draft) == null, "three waves of four are valid");
+            t.Require(console.Commit(draft, out string commitReason), $"the plan is confirmed ({commitReason ?? "ok"})");
+            int id = draft.id;
+            t.Check(console.mission == draft && draft.state == StrikeMissionState.AwaitingComputation && id >= 1, "the mission is computing");
+            t.Check(Planner.ReservedBy(id).Count == 12, "all 12 missiles are reserved");
+            Command single = FireGizmo(a.TryGetComp<CompMissileLauncher_Rail>());
+            t.Check(single != null && single.Disabled, "the launcher's single-shot gizmo is disabled while its missiles are reserved");
+            var another = new StrikeMission { targetTile = target };
+            another.waves.Add(WaveOf(c, 1));
+            t.Check(console.CannotFireReason(0, false) != null && !console.Commit(another, out _), "nothing fires while computing; a second plan is refused");
+
+            var waitReady = new WaitUntil(() => draft.state == StrikeMissionState.Ready, 900);
+            yield return waitReady;
+            t.Require(!waitReady.TimedOut, "firing solutions finish");
+
+            int fired = Find.TickManager.TicksGame;
+            t.Check(console.FireWave(0, false) == 4, "wave 1 queues all four missiles");
+            t.Check(console.StrikeFree == 0 && HomeBVR.Channels.Strike(Player) == 4, "queued missiles book all four channels at once");
+            t.Check(console.CannotFireReason(1, false) == "DMSE.Strike.NotEnoughChannels".Translate(0, 4).ToString(),
+                "wave 2 is refused for lack of guidance channels");
+            var waitRipple = new WaitUntil(() => a.StoredCount == 0, 300);
+            yield return waitRipple;
+            t.Require(!waitRipple.TimedOut, "the four-cell launcher fires all four missiles");
+            List<int> launches = draft.waves[0].slots.Select(s => s.launchTick).OrderBy(x => x).ToList();
+            t.Check(launches[0] - fired <= 2 && launches.Zip(launches.Skip(1), (x, y) => y - x).All(d => d == 30),
+                $"ripple launches 30 ticks apart ({string.Join(",", launches.Select(x => x - fired))})");
+            CompMissileLauncher_Rail railA = a.TryGetComp<CompMissileLauncher_Rail>();
+            t.Check(railA.CooldownUntil == launches.Last() + 450, "the launcher's cooldown starts after its last ripple round");
+            t.Check(draft.waves[0].slots.All(s => s.state == StrikeSlotState.Launched && s.track != null
+                && s.track.strikeMissionId == id && s.track.strikeWave == 0), "each world track is tagged with mission and wave");
+            t.Check(HomeBVR.Channels.Strike(Player) == 4 && draft.state == StrikeMissionState.Executing, "launched missiles hold their channels in the guidance period");
+
+            var waitFree = new WaitUntil(() => console.StrikeFree >= 4, 1200);
+            yield return waitFree;
+            int freed = Find.TickManager.TicksGame;
+            t.Require(!waitFree.TimedOut, "guidance channels free up");
+            t.Check(freed >= launches.Last() + BVRWorldTuningDef.Current.strikeGuidanceTicks,
+                $"all channels free only after the guidance period ({freed - launches.Last()} ticks after the last launch)");
+            t.Check(console.CannotFireReason(1, false) == null && console.FireWave(1, false) == 4, "wave 2 fires once the channels are free");
+            var waitHalf = new WaitUntil(() => b.StoredCount <= 2, 200);
+            yield return waitHalf;
+            console.CancelMission();
+            int left = b.StoredCount;
+            t.Check(console.mission == null && Planner.ReservedBy(id).Count == 0 && Planner.QueuedCount(id) == 0,
+                "cancelling clears the mission, its reservations and its queued launches");
+            yield return new WaitTicks(90);
+            t.Check(b.StoredCount == left && left > 0, $"queued launches stop on cancel ({left} left in launcher B)");
+            t.Check(c.TryGetComp<CompMissileLauncher_Rail>().NextRound != null, "wave 3 missiles are released for single shots");
+        }
+
+        public static IEnumerable<Wait> StrikeSaveLoadAndCompletion(TestContext t)
+        {
+            Thing centerThing = SpawnBuilding(StrikeCenter, 20, 20);
+            SpawnBuilding(PhaseArray, 2, 2);
+            Building_MissileRack a = SpawnLoadedLauncher(10, 2, 4);
+            yield return WaitPowered(); yield return new WaitTicks(2);
+            CompStrikeConsole console = centerThing.TryGetComp<CompStrikeConsole>();
+            PlanetTile target = TileAtDistance(8f, 10f);
+            t.Require(console != null && target.Valid, "console and target");
+            var draft = new StrikeMission { targetTile = target, state = StrikeMissionState.Planning };
+            draft.waves.Add(WaveOf(a, 2));
+            var second = new StrikeWave();
+            foreach (Thing round in a.TryGetComp<CompMissileLauncher_Rail>().StrikeRounds.Skip(2).ToList())
+            {
+                second.slots.Add(new StrikeSlot { launcher = a, round = round });
+            }
+            draft.waves.Add(second);
+            t.Require(console.Commit(draft, out string reason), $"plan confirmed ({reason ?? "ok"})");
+            int id = draft.id;
+            yield return new WaitUntil(() => draft.state == StrikeMissionState.Ready, 900);
+            t.Require(draft.state == StrikeMissionState.Ready, "ready");
+
+            // Save between the two ripple launches of wave 1: one hold and one queued launch must survive.
+            t.allowPause = true;
+            Find.TickManager.CurTimeSpeed = TimeSpeed.Normal;
+            t.Check(console.FireWave(0, false) == 2, "wave 1 queues two missiles");
+            var waitFirst = new WaitUntil(() => a.StoredCount == 3, 60);
+            yield return waitFirst;
+            Find.TickManager.CurTimeSpeed = TimeSpeed.Paused;
+            t.Require(!waitFirst.TimedOut && Planner.QueuedCount(id) == 1, "first round launched, second still queued");
+            t.Check(HomeBVR.Channels.Strike(Player) == 2, "one guidance hold and one queued launch book both channels");
+            int firstLaunch = draft.waves[0].slots.Max(s => s.launchTick);
+            RememberEnemyForReload();
+            Game before = Current.Game;
+            GameDataSaveLoader.SaveGame(TestSaveName);
+            yield return new WaitFrames(10);
+            GameDataSaveLoader.LoadGame(TestSaveName);
+            yield return new WaitUntil(() => Current.Game != before && Current.ProgramState == ProgramState.Playing, 999999);
+            yield return new WaitFrames(5);
+            t.allowPause = false;
+
+            Thing center = Home.listerThings.ThingsOfDef(StrikeCenter).FirstOrDefault();
+            Building_MissileRack rack = Home.listerThings.AllThings.OfType<Building_MissileRack>().FirstOrDefault(r => r.def == LightLauncher);
+            foreach (Thing th in Home.listerThings.AllThings.Where(x => x.def == StrikeCenter || x.def == PhaseArray || x.def == LightLauncher).ToList()) { Track(th); }
+            console = center?.TryGetComp<CompStrikeConsole>();
+            t.Require(console?.mission != null && rack != null, "console, mission and launcher restored");
+            StrikeMission m = console.mission;
+            t.Check(m.id == id && m.state == StrikeMissionState.Executing && m.waves.Count == 2, "mission id, state and waves restored");
+            // The game may run a few dozen ticks while loading settles, so the queued launch can already have fired.
+            var waitSecond = new WaitUntil(() => rack.StoredCount == 2, 120);
+            yield return waitSecond;
+            List<int> wave1 = m.waves[0].slots.Select(s => s.launchTick).OrderBy(x => x).ToList();
+            t.Check(!waitSecond.TimedOut && m.waves[0].slots.All(s => s.state == StrikeSlotState.Launched) && wave1[1] == firstLaunch + 30,
+                $"the queued launch restored from the save fires on its scheduled tick (+{wave1[1] - firstLaunch})");
+            t.Check(HomeBVR.Channels.Strike(Player) == 2 && console.StrikeFree == 0, "the saved guidance hold and the new one book both channels");
+            t.Check(Planner.ReservedBy(id).Count == 2 && rack.TryGetComp<CompMissileLauncher_Rail>().NextRound == null,
+                "reservations rebuilt for wave 2's missiles");
+
+            var waitFree = new WaitUntil(() => console.StrikeFree >= 2, 1500);
+            yield return waitFree;
+            t.Check(!waitFree.TimedOut && Find.TickManager.TicksGame >= firstLaunch + BVRWorldTuningDef.Current.strikeGuidanceTicks,
+                "the saved guidance hold expires on schedule");
+            var waitCooldown = new WaitUntil(() => console.CannotFireReason(1, false) == null, 900);
+            yield return waitCooldown;
+            t.Require(!waitCooldown.TimedOut, "wave 2 becomes fireable once channels and launcher are ready");
+            t.Check(console.FireWave(1, false) == 2, "wave 2 queues its two missiles");
+            var waitDone = new WaitUntil(() => console.mission == null, 200);
+            yield return waitDone;
+            t.Check(!waitDone.TimedOut && rack.StoredCount == 0, "the mission completes once every missile is launched");
+            t.Check(Planner.ReservedBy(id).Count == 0 && console.CannotPlanReason() != null, "reservations are released; with no missiles left the console cannot plan");
+        }
+
+        /// <summary>
+        /// Draws the strike window in both modes (the runner closes force-paused windows every frame, so the
+        /// planning window is opened with those flags cleared). Auto-assign runs through the window itself.
+        /// Drawing errors land in Player.log.
+        /// </summary>
+        public static IEnumerable<Wait> StrikeDialogRenders(TestContext t)
+        {
+            Thing centerThing = SpawnBuilding(StrikeCenter, 20, 20);
+            SpawnBuilding(PhaseArray, 2, 2);
+            SpawnLoadedLauncher(10, 2, 4);
+            SpawnLoadedLauncher(14, 2, 4);
+            Building_MissileRack loiter = (Building_MissileRack)SpawnBuilding(LoiterLauncher, 26, 2);
+            Load(loiter, Termite);
+            yield return WaitPowered(); yield return new WaitTicks(2);
+            CompStrikeConsole console = centerThing.TryGetComp<CompStrikeConsole>();
+            PlanetTile target = TileAtDistance(13.5f, 15f);
+            t.Require(console != null && target.Valid, "console and target");
+
+            var draft = new StrikeMission { targetTile = target, state = StrikeMissionState.Planning };
+            draft.waves.Add(new StrikeWave());
+            var plan = new Dialog_StrikePlan(console, draft) { forcePause = false, absorbInputAroundWindow = false };
+            Find.WindowStack.Add(plan);
+            typeof(Dialog_StrikePlan).GetMethod("AutoAssign", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
+                .Invoke(plan, new object[] { console.StrikeCapacity });
+            yield return new WaitFrames(10);
+            t.Check(Find.WindowStack.IsOpen(plan), "the planning window stays open while drawing");
+            t.Check(draft.waves.Count == 4 && draft.waves.All(w => w.slots.Count == 2), "auto-assign makes four waves of two (two channels)");
+            t.Screenshot("strike_plan");
+            yield return new WaitFrames(3);
+            plan.Close(doCloseSound: false);
+            t.Require(console.Commit(draft, out string reason), $"plan confirmed ({reason ?? "ok"})");
+
+            var exec = new Dialog_StrikePlan(console, console.mission);
+            Find.WindowStack.Add(exec);
+            yield return new WaitUntil(() => draft.state == StrikeMissionState.Ready, 900);
+            console.TryFireFromUI(0, partial: false);
+            yield return new WaitTicks(60);
+            t.Check(Find.WindowStack.IsOpen(exec) && draft.waves[0].slots.All(s => s.state == StrikeSlotState.Launched),
+                "the execution window stays open while wave 1 launches");
+            t.Screenshot("strike_exec");
+            yield return new WaitFrames(3);
+            console.CancelMission();
+            yield return new WaitFrames(3);
+            t.Check(!Find.WindowStack.IsOpen(exec), "the execution window closes itself when the mission ends");
+        }
+
         private static ScorerProjectile_WorldObject LaunchAt(Site site, MissileConfig config, string worldObjectDef, ThingDef incoming)
         {
             var wo = (ScorerProjectile_WorldObject)WorldObjectMaker.MakeWorldObject(DefDatabase<WorldObjectDef>.GetNamed(worldObjectDef));

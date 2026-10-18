@@ -267,6 +267,9 @@ namespace DMSE.BVRAcceptance
                 new AcceptanceTest("K3", "World defense engages the soonest arrival first", Tests_Strike.SoonestArrivalFirst),
                 new AcceptanceTest("K4", "Decoy waves against NPC abstract stock (plan B)", Tests_Strike.DecoyWavesDrainAbstractStock),
                 new AcceptanceTest("K5", "No interceptor ammo, no lock; release when the last one is fired", Tests_Strike.NoAmmoNoLock),
+                new AcceptanceTest("K6", "Auto strike console: plan, reserve, compute, ripple waves, guidance period, cancel", Tests_Strike.AutoConsoleWaves),
+                new AcceptanceTest("K7", "Strike mission save/load mid-ripple, then completion", Tests_Strike.StrikeSaveLoadAndCompletion),
+                new AcceptanceTest("K8", "Strike window draws in planning and execution modes", Tests_Strike.StrikeDialogRenders),
                 new AcceptanceTest("L1", "Save/load mid-engagement", Tests_Seekers.SaveLoadMidEngagement),
                 new AcceptanceTest("L2", "Save/load after a reroute", Tests_WorldEdge.SaveLoadAfterReroute),
             };

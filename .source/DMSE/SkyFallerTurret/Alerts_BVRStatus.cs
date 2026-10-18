@@ -94,7 +94,7 @@ namespace DMSE
 
             sb.AppendLine("DMSE.BVR.World.ChannelBreakdown".Translate(
                 comp.Channels.Artillery(Faction.OfPlayer), comp.Channels.Local(Faction.OfPlayer),
-                comp.Channels.World(Faction.OfPlayer), comp.Channels.Free(Faction.OfPlayer)));
+                comp.Channels.World(Faction.OfPlayer), comp.Channels.Strike(Faction.OfPlayer), comp.Channels.Free(Faction.OfPlayer)));
             return sb.ToString().TrimEnd();
         }
     }

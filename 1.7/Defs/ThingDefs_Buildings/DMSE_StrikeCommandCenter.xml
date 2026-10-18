@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ==================== 打擊指揮中心（自動版）====================
+       波次打擊規劃（docs/BVR_波次打擊規劃.md）：選定世界目標後，把本地圖在架的進攻導彈分配到各波次，
+       逐波發射。單波上限 = 本地圖可用的火控導引通道；確認計畫後導彈被保留，機器計算彈道後即可發射。
+       貼圖暫用原版通訊台（佔位）。 -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_StrikeCommandCenter</defName>
+    <label>strike command center</label>
+    <description>An automated fire-direction center for coordinated missile strikes. Pick a world target, assign the strike missiles loaded on this map's launchers to waves, and fire them wave by wave so cheap missiles can draw enemy interceptors away from the valuable ones. Each wave is limited by the free guidance channels of this map's fire-control radars; every launched missile holds a channel for a short guidance period. Confirming a plan reserves its missiles and starts a short automatic firing-solution computation.</description>
+    <graphicData>
+      <texPath>Things/Building/Misc/CommsConsole</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(5,4)</drawSize>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+      <shadowData>
+        <volume>(3,0.5,2)</volume>
+      </shadowData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <castEdgeShadows>true</castEdgeShadows>
+    <fillPercent>0.5</fillPercent>
+    <pathCost>42</pathCost>
+    <canOverlapZones>false</canOverlapZones>
+    <rotatable>true</rotatable>
+    <size>(3,2)</size>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,2)</interactionCellOffset>
+    <statBases>
+      <MaxHitPoints>250</MaxHitPoints>
+      <WorkToBuild>12000</WorkToBuild>
+      <Mass>120</Mass>
+      <Flammability>0.5</Flammability>
+    </statBases>
+    <costList>
+      <Steel>150</Steel>
+      <DMSE_TantastenAlloy>20</DMSE_TantastenAlloy>
+      <ComponentIndustrial>8</ComponentIndustrial>
+      <ComponentSpacer>2</ComponentSpacer>
+    </costList>
+    <building>
+      <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+    </building>
+    <researchPrerequisites>
+      <li>DMSE_IntegratedCircuits</li>
+    </researchPrerequisites>
+    <designationCategory>DMS_Category</designationCategory>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
+    <comps>
+      <li Class="CompProperties_Forbiddable" />
+      <li Class="CompProperties_Breakdownable" />
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>400</basePowerConsumption>
+      </li>
+      <li Class="DMSE.CompProperties_StrikeConsole">
+        <autoComputeTicks>300</autoComputeTicks>
+        <maxWavesPerMission>5</maxWavesPerMission>
+        <maxRoundsPerMission>20</maxRoundsPerMission>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

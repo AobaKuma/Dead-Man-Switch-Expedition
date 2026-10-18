@@ -289,10 +289,73 @@ static class Test
         Check(stock.TryConsume(Find.TickManager.TicksGame) && !node.HasInterceptorAmmo, "an abstract node with no stock left is not armed");
         Check(new BVRNode { parent = site, faction = defender, local = manager }.HasInterceptorAmmo, "a map node reads its SAMs");
     }
+    // Wave-strike P1: shared channel booking, config fingerprint, auto-assign, mission helpers and save output.
+    static void StrikeP1()
+    {
+        Tick(100000);
+        var side = Faction(false);
+        var map = new Map();
+        var planner = new MapComponent_StrikePlanner(map);
+        map.components.Add(planner);
+        var manager = new MapComponent_BVRCombat(map);
+        manager.fireControlRadars.Add(new OnlineRadar { props = new CompProperties_FireControlRadar { maxTargets = 3 }, parent = Parent(side) });
+        manager.fireControlRadars.Add(new OnlineRadar { props = new CompProperties_FireControlRadar { maxTargets = 2, supportsStrikeGuidance = false }, parent = Parent(side) });
+        Check(manager.Channels.Capacity(side) == 5 && manager.Channels.StrikeCapacity(side) == 3, "strike capacity counts only strike-capable radars");
+        Check(manager.Channels.StrikeFree(side) == 3, "all strike channels free at start");
+        planner.AddGuidanceHold(side, 100600);
+        planner.Enqueue(new StrikeQueuedLaunch { console = Parent(side), missionId = 1, fireTick = 100030 });
+        Check(manager.Channels.Strike(side) == 2 && manager.Channels.Free(side) == 3 && manager.Channels.StrikeFree(side) == 1,
+            "queued and guided strike missiles book shared channels");
+        Check(planner.TicksUntilNextRelease(side) == 600 && planner.QueuedCount(1) == 1, "next guidance release and queue count");
+        planner.DropQueued(1);
+        Check(manager.Channels.Strike(side) == 1 && planner.QueuedCount(1) == 0, "dropping a mission's queue frees its booked channels");
+        Check(manager.Channels.Strike(Faction(false)) == 0, "another faction's strike use is separate");
+        Tick(100600);
+        Check(manager.Channels.Strike(side) == 0 && planner.TicksUntilNextRelease(side) == -1, "the guidance period ends on time");
+
+        var body = new MissileBodyDef { defName = "HashBody" };
+        var warhead = new MissilePartDef { defName = "HashWarhead", category = MissilePartCategory.Warhead };
+        var seeker = new MissilePartDef { defName = "HashSeeker", category = MissilePartCategory.Guidance };
+        var c1 = new MissileConfig(body); c1.parts.Add(warhead); c1.parts.Add(seeker);
+        var c2 = new MissileConfig(body); c2.parts.Add(seeker); c2.parts.Add(warhead);
+        Check(StrikeRoundUtility.ConfigHash(c1) == StrikeRoundUtility.ConfigHash(c2), "config fingerprint ignores part order");
+        Check(StrikeRoundUtility.ConfigHash(c1) != StrikeRoundUtility.ConfigHash(new MissileConfig(body)), "config fingerprint sees a refit");
+
+        var plan = StrikeRoundUtility.AutoAssign(10, 4, 5);
+        Check(plan.Select(w => w.Count).SequenceEqual(new[] { 4, 4, 2 }) && plan[2].SequenceEqual(new[] { 8, 9 }),
+            "auto-assign fills from the cheapest; the most valuable land in the last wave");
+        Check(StrikeRoundUtility.AutoAssign(10, 4, 2).Sum(w => w.Count) == 8, "rounds beyond the wave limit are left out");
+        Check(StrikeRoundUtility.AutoAssign(3, 0, 5).Count == 0 && StrikeRoundUtility.AutoAssign(0, 4, 5).Count == 0, "degenerate auto-assign inputs");
+
+        var mission = new StrikeMission { id = 7, state = StrikeMissionState.Executing };
+        var first = new StrikeWave { launchedTick = 100 };
+        first.slots.Add(new StrikeSlot { state = StrikeSlotState.Launched, solved = true });
+        var second = new StrikeWave();
+        second.slots.Add(new StrikeSlot { state = StrikeSlotState.Pending, solved = true, configHash = 42 });
+        second.slots.Add(new StrikeSlot { state = StrikeSlotState.Skipped, skipReason = "gone" });
+        mission.waves.Add(first);
+        mission.waves.Add(second);
+        Check(mission.NextWaveIndex == 1 && mission.RoundCount == 3 && mission.AllSlots.Count(x => x.Open) == 1,
+            "next wave, round count and open slots");
+        string path = Path.Combine(Path.GetTempPath(), "dmse-strike-" + Guid.NewGuid() + ".xml");
+        Scribe.saver.InitSaving(path, "Strike");
+        mission.ExposeData();
+        Scribe.saver.FinalizeSaving();
+        var saved = XDocument.Load(path).Root;
+        File.Delete(path);
+        var savedSlots = saved.Descendants("slots").SelectMany(x => x.Elements("li")).ToList();
+        Check(saved.Element("id")?.Value == "7" && saved.Element("state")?.Value == "Executing"
+            && saved.Element("waves")?.Elements("li").Count() == 2 && savedSlots.Count == 3
+            && savedSlots[1].Element("configHash")?.Value == "42" && savedSlots[2].Element("skipReason")?.Value == "gone",
+            "real Scribe saving keeps mission, waves and slot states");
+        var fresh = new StrikeMission();
+        Check(fresh.state == StrikeMissionState.Planning && fresh.computeDoneTick == -1 && fresh.NextWaveIndex == -1
+            && new StrikeSlot().state == StrikeSlotState.Pending && new StrikeWave().launchedTick == -1, "safe defaults");
+    }
     public static void Main()
     {
         Setup();
-        Detection(); Solver(); FireControl(); LedgerAndTerminal(); InventoryAndPersistence(); StrikeP0();
+        Detection(); Solver(); FireControl(); LedgerAndTerminal(); InventoryAndPersistence(); StrikeP0(); StrikeP1();
         Console.WriteLine($"PASS: {count} BVR checks (real game/DMSE assemblies).");
     }
     class OnlineRadar : CompFireControlRadar { public override bool Active => true; }

@@ -1,6 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
+  <!-- 保留（P0） -->
   <DMSE.Strike.AllRoundsReserved>在架导弹已全部保留给打击任务</DMSE.Strike.AllRoundsReserved>
   <DMSE.Strike.ReservedInspect>已保留给打击任务：{0} 枚</DMSE.Strike.ReservedInspect>
   <DMSE.Strike.ReservedNoEdit>已保留给打击任务：任务结束前无法改装。</DMSE.Strike.ReservedNoEdit>
+
+  <!-- 指挥台 Gizmo -->
+  <DMSE.Strike.Console.Plan>规划波次打击</DMSE.Strike.Console.Plan>
+  <DMSE.Strike.Console.PlanDesc>选定世界目标，再把本地图发射架上的进攻导弹分配到各波次。每波上限为本地图火控雷达的空闲引导通道数。</DMSE.Strike.Console.PlanDesc>
+  <DMSE.Strike.Console.Open>打开打击计划</DMSE.Strike.Console.Open>
+  <DMSE.Strike.Console.OpenDesc>显示当前打击任务的各波次并发射。</DMSE.Strike.Console.OpenDesc>
+  <DMSE.Strike.Console.FireWave>发射第 {0} 波</DMSE.Strike.Console.FireWave>
+  <DMSE.Strike.Console.FireWaveDesc>立即发射下一波。按住 Shift 点击只发射空闲通道与就绪发射架允许的部分，其余留在本波。</DMSE.Strike.Console.FireWaveDesc>
+  <DMSE.Strike.Console.Cancel>取消打击任务</DMSE.Strike.Console.Cancel>
+  <DMSE.Strike.Console.CancelDesc>取消当前的打击任务。已升空的导弹照常飞行，其余导弹释放。</DMSE.Strike.Console.CancelDesc>
+  <DMSE.Strike.Console.CancelConfirm>要取消打击任务 #{0} 吗？尚未发射的导弹会被释放。</DMSE.Strike.Console.CancelConfirm>
+
+  <!-- 选靶与规划限制 -->
+  <DMSE.Strike.NoFireControl>本地图没有能引导打击导弹的运作中火控雷达</DMSE.Strike.NoFireControl>
+  <DMSE.Strike.NoStrikeRounds>本地图没有已装填的进攻导弹</DMSE.Strike.NoStrikeRounds>
+  <DMSE.Strike.NoRoundReaches>没有任何在架进攻导弹打得到这个目标</DMSE.Strike.NoRoundReaches>
+  <DMSE.Strike.TargetLabel.Distance>距离：{0} 格</DMSE.Strike.TargetLabel.Distance>
+  <DMSE.Strike.TargetLabel.Reach>射程内：{0}／在架 {1}</DMSE.Strike.TargetLabel.Reach>
+  <DMSE.Strike.NoRoundsAssigned>至少要把一枚导弹分配到波次</DMSE.Strike.NoRoundsAssigned>
+  <DMSE.Strike.TooManyRounds>每个任务最多 {0} 枚导弹</DMSE.Strike.TooManyRounds>
+  <DMSE.Strike.TooManyWaves>每个任务最多 {0} 波</DMSE.Strike.TooManyWaves>
+  <DMSE.Strike.WaveOverCap>第 {0} 波有 {1} 枚，引导上限为 {2}</DMSE.Strike.WaveOverCap>
+  <DMSE.Strike.RoundTaken>有导弹已被其他打击任务保留</DMSE.Strike.RoundTaken>
+  <DMSE.Strike.RoundUnavailable>有导弹已不在架上，或已打不到目标</DMSE.Strike.RoundUnavailable>
+
+  <!-- 发射限制与略过 -->
+  <DMSE.Strike.NotReady>弹道解尚未完成</DMSE.Strike.NotReady>
+  <DMSE.Strike.Computing>弹道计算中（剩余 {0}）</DMSE.Strike.Computing>
+  <DMSE.Strike.WaveDone>本波已没有待发射的导弹</DMSE.Strike.WaveDone>
+  <DMSE.Strike.NotEnoughChannels>引导通道不足：空闲 {0}，需要 {1}</DMSE.Strike.NotEnoughChannels>
+  <DMSE.Strike.NotEnoughChannelsRelease>引导通道不足：空闲 {0}，需要 {1}；下一条在 {2} 后释放</DMSE.Strike.NotEnoughChannelsRelease>
+  <DMSE.Strike.PlatformsNotReady>{0} 座发射架未就绪（断电、关闭、无人操作或装填中）</DMSE.Strike.PlatformsNotReady>
+  <DMSE.Strike.Skip.RoundGone>导弹已不在发射架上</DMSE.Strike.Skip.RoundGone>
+  <DMSE.Strike.Skip.Refitted>导弹已被改装</DMSE.Strike.Skip.Refitted>
+
+  <!-- 状态与检视 -->
+  <DMSE.Strike.State.Computing>弹道计算中（剩余 {0}）</DMSE.Strike.State.Computing>
+  <DMSE.Strike.State.Ready>可发射</DMSE.Strike.State.Ready>
+  <DMSE.Strike.State.Executing>执行中</DMSE.Strike.State.Executing>
+  <DMSE.Strike.Inspect.Channels>打击引导通道：空闲 {0}／{1}</DMSE.Strike.Inspect.Channels>
+  <DMSE.Strike.Inspect.Mission>打击任务 #{0}（{1}）：{2}，已发射 {3}/{4}</DMSE.Strike.Inspect.Mission>
+
+  <!-- 消息 -->
+  <DMSE.Strike.Msg.Confirmed>打击任务 #{0}：已保留 {1} 枚导弹、分 {2} 波，弹道计算中。</DMSE.Strike.Msg.Confirmed>
+  <DMSE.Strike.Msg.Ready>打击任务 #{0}：弹道解完成，可以发射。</DMSE.Strike.Msg.Ready>
+  <DMSE.Strike.Msg.WaveFired>打击任务 #{0} 第 {1} 波：发射 {2} 枚，略过 {3} 枚。</DMSE.Strike.Msg.WaveFired>
+  <DMSE.Strike.Msg.Skipped>打击任务 #{0}：{1} 已略过（{2}）。</DMSE.Strike.Msg.Skipped>
+  <DMSE.Strike.Msg.Deferred>打击任务 #{0}：{1} 暂时无法发射，留在第 {2} 波。</DMSE.Strike.Msg.Deferred>
+  <DMSE.Strike.Msg.Completed>打击任务 #{0} 结束：发射 {1} 枚，略过 {2} 枚。</DMSE.Strike.Msg.Completed>
+  <DMSE.Strike.Msg.Cancelled>打击任务 #{0} 已取消，尚未发射的导弹已释放。</DMSE.Strike.Msg.Cancelled>
+  <DMSE.Strike.Msg.TargetLost>打击任务 #{0} 已取消：目标已不存在。</DMSE.Strike.Msg.TargetLost>
+  <DMSE.Strike.Msg.ConsoleLost>打击任务 #{0} 已取消：打击指挥中心已被移除。</DMSE.Strike.Msg.ConsoleLost>
+
+  <!-- 规划窗口 -->
+  <DMSE.Strike.Plan.Title>波次打击规划</DMSE.Strike.Plan.Title>
+  <DMSE.Strike.Plan.Target>目标：{0}（{1} 格）</DMSE.Strike.Plan.Target>
+  <DMSE.Strike.Plan.Channels>引导通道：{0}（空闲 {1}）· 单波上限 {0} · 引导期 {2}</DMSE.Strike.Plan.Channels>
+  <DMSE.Strike.Plan.SiteWarning>此据点尚未生成地图。第一枚抵达的导弹会生成地图，据点自己的防空（SAM 照常满弹）随即接手拦截还在飞的导弹。</DMSE.Strike.Plan.SiteWarning>
+  <DMSE.Strike.Plan.Available>可用导弹：{0}</DMSE.Strike.Plan.Available>
+  <DMSE.Strike.Plan.AddHint>点一行加一枚到选中的波次；按住 Shift 点击加到满。黄色行目前无法立即发射，发射时会再检查。</DMSE.Strike.Plan.AddHint>
+  <DMSE.Strike.Plan.Unavailable>不可用 {0}：{1}</DMSE.Strike.Plan.Unavailable>
+  <DMSE.Strike.Plan.ReservedElsewhere>另有 {0} 枚已保留给其他打击任务</DMSE.Strike.Plan.ReservedElsewhere>
+  <DMSE.Strike.Plan.NotReadyTag>目前无法发射：</DMSE.Strike.Plan.NotReadyTag>
+  <DMSE.Strike.Plan.Flight>飞行 {0}</DMSE.Strike.Plan.Flight>
+  <DMSE.Strike.Plan.Margin>射程 +{0}</DMSE.Strike.Plan.Margin>
+  <DMSE.Strike.Plan.Wave>第 {0} 波   {1}/{2}</DMSE.Strike.Plan.Wave>
+  <DMSE.Strike.Plan.AddWave>＋新增波次</DMSE.Strike.Plan.AddWave>
+  <DMSE.Strike.Plan.AutoAssign>自动分波</DMSE.Strike.Plan.AutoAssign>
+  <DMSE.Strike.Plan.AutoAssignDesc>从最便宜的导弹开始依次填满各波，最高价值的导弹会落在最后一波。</DMSE.Strike.Plan.AutoAssignDesc>
+  <DMSE.Strike.Plan.Clear>清空</DMSE.Strike.Plan.Clear>
+  <DMSE.Strike.Plan.Confirm>确认计划</DMSE.Strike.Plan.Confirm>
+
+  <!-- 执行窗口 -->
+  <DMSE.Strike.Exec.Title>波次打击 #{0}</DMSE.Strike.Exec.Title>
+  <DMSE.Strike.Exec.State>状态：{0}</DMSE.Strike.Exec.State>
+  <DMSE.Strike.Exec.NextRelease>（下一条通道在 {0} 后释放）</DMSE.Strike.Exec.NextRelease>
+  <DMSE.Strike.Exec.Wave>第 {0} 波：{1}</DMSE.Strike.Exec.Wave>
+  <DMSE.Strike.Exec.WavePending>待发射 {0}</DMSE.Strike.Exec.WavePending>
+  <DMSE.Strike.Exec.WaveQueued>发射中 {0}</DMSE.Strike.Exec.WaveQueued>
+  <DMSE.Strike.Exec.WaveLaunched>已发射 {0}/{1}，在飞 {2}</DMSE.Strike.Exec.WaveLaunched>
+  <DMSE.Strike.Exec.WaveSkipped>略过 {0}</DMSE.Strike.Exec.WaveSkipped>
+  <DMSE.Strike.Exec.Fire>发射</DMSE.Strike.Exec.Fire>
+  <DMSE.Strike.Exec.FireTip>按住 Shift 点击只发射空闲通道与就绪发射架允许的部分，其余留在本波。</DMSE.Strike.Exec.FireTip>
+  <DMSE.Strike.Exec.CancelMission>取消任务</DMSE.Strike.Exec.CancelMission>
 </LanguageData>

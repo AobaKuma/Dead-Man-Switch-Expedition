@@ -19,6 +19,6 @@
   <DMSE.BVR.World.ClickHint>左／右键循环检视世界导弹航迹。</DMSE.BVR.World.ClickHint>
   <DMSE.BVR.World.ShowCoverage>显示防空覆盖</DMSE.BVR.World.ShowCoverage>
   <DMSE.BVR.World.ShowCoverageDesc>在世界地图常驻显示所有玩家雷达覆盖圈。选取据点时一律显示该据点的覆盖圈。圈线以隐身 0、尺寸 1 的目标为准。</DMSE.BVR.World.ShowCoverageDesc>
-  <DMSE.BVR.World.ChannelBreakdown>通道：火炮 {0}、地图内 {1}、世界层 {2}；空闲 {3}</DMSE.BVR.World.ChannelBreakdown>
+  <DMSE.BVR.World.ChannelBreakdown>通道：火炮 {0}、地图内 {1}、世界层 {2}、打击引导 {3}；空闲 {4}</DMSE.BVR.World.ChannelBreakdown>
   <DMSE.BVR.World.MissileType>导弹类型：{0}</DMSE.BVR.World.MissileType>
 </LanguageData>

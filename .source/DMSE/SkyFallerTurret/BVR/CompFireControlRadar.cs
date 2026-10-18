@@ -41,6 +41,12 @@ namespace DMSE
         /// </summary>
         public bool supportsArtilleryGuidance = false;
 
+        /// <summary>
+        /// 是否可為波次打擊提供導引通道（docs/BVR_波次打擊規劃.md §6-1）。進攻導彈升空後占用一條通道一段導引期，
+        /// 與防空、砲擊共用同一份額度。保留給日後只能防空的雷達。
+        /// </summary>
+        public bool supportsStrikeGuidance = true;
+
         public CompProperties_FireControlRadar()
         {
             compClass = typeof(CompFireControlRadar);

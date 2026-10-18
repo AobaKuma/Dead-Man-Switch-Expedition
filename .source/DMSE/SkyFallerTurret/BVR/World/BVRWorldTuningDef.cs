@@ -13,13 +13,15 @@ namespace DMSE
         public int minInterceptMarginTicks = 60;
         public float airburstRadiusTiles = 1f;
         public int scanIntervalTicks = 15;
+        /// <summary>Strike guidance period: a launched strike missile holds a fire-control channel this long.</summary>
+        public int strikeGuidanceTicks = 600;
         public static BVRWorldTuningDef Current => DefDatabase<BVRWorldTuningDef>.GetNamedSilentFail("DMSE_BVRWorldTuning") ?? fallback;
         private static readonly BVRWorldTuningDef fallback = new BVRWorldTuningDef();
         public override IEnumerable<string> ConfigErrors()
         {
             foreach (string error in base.ConfigErrors()) yield return error;
             if (ticksPerTileAtSpeed1 <= 0 || interceptorSpeedMultiplier <= 0 || scanIntervalTicks < 1
-                || minInterceptMarginTicks < 0 || airburstRadiusTiles < 0)
+                || minInterceptMarginTicks < 0 || airburstRadiusTiles < 0 || strikeGuidanceTicks < 0)
                 yield return "BVR motion, interval and range values must be positive (margin/radius may be zero).";
         }
     }

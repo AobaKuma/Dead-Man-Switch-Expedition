@@ -19,6 +19,6 @@
   <DMSE.BVR.World.ClickHint>左／右鍵循環檢視世界導彈航跡。</DMSE.BVR.World.ClickHint>
   <DMSE.BVR.World.ShowCoverage>顯示防空覆蓋</DMSE.BVR.World.ShowCoverage>
   <DMSE.BVR.World.ShowCoverageDesc>在世界地圖常駐顯示所有玩家雷達覆蓋圈。選取據點時一律顯示該據點的覆蓋圈。圈線以隱身 0、尺寸 1 的目標為準。</DMSE.BVR.World.ShowCoverageDesc>
-  <DMSE.BVR.World.ChannelBreakdown>通道：火砲 {0}、地圖內 {1}、世界層 {2}；空閒 {3}</DMSE.BVR.World.ChannelBreakdown>
+  <DMSE.BVR.World.ChannelBreakdown>通道：火砲 {0}、地圖內 {1}、世界層 {2}、打擊導引 {3}；空閒 {4}</DMSE.BVR.World.ChannelBreakdown>
   <DMSE.BVR.World.MissileType>導彈類型：{0}</DMSE.BVR.World.MissileType>
 </LanguageData>

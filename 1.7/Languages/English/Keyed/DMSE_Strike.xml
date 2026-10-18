@@ -1,6 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
+  <!-- Reservation (P0) -->
   <DMSE.Strike.AllRoundsReserved>Every loaded missile is reserved for a strike mission</DMSE.Strike.AllRoundsReserved>
   <DMSE.Strike.ReservedInspect>Reserved for strike missions: {0}</DMSE.Strike.ReservedInspect>
   <DMSE.Strike.ReservedNoEdit>Reserved for a strike mission: this missile cannot be refitted until the mission ends.</DMSE.Strike.ReservedNoEdit>
+
+  <!-- Console gizmos -->
+  <DMSE.Strike.Console.Plan>Plan wave strike</DMSE.Strike.Console.Plan>
+  <DMSE.Strike.Console.PlanDesc>Pick a world target, then assign the strike missiles loaded on this map's launchers to waves. Each wave is limited by the free guidance channels of this map's fire-control radars.</DMSE.Strike.Console.PlanDesc>
+  <DMSE.Strike.Console.Open>Open strike plan</DMSE.Strike.Console.Open>
+  <DMSE.Strike.Console.OpenDesc>Show the waves of the current strike mission and fire them.</DMSE.Strike.Console.OpenDesc>
+  <DMSE.Strike.Console.FireWave>Fire wave {0}</DMSE.Strike.Console.FireWave>
+  <DMSE.Strike.Console.FireWaveDesc>Launch the next wave now. Shift-click to launch only what the free channels and ready launchers allow; the rest stays in the wave.</DMSE.Strike.Console.FireWaveDesc>
+  <DMSE.Strike.Console.Cancel>Cancel strike mission</DMSE.Strike.Console.Cancel>
+  <DMSE.Strike.Console.CancelDesc>Cancel the current strike mission. Missiles already launched keep flying; the rest are released.</DMSE.Strike.Console.CancelDesc>
+  <DMSE.Strike.Console.CancelConfirm>Cancel strike mission #{0}? Missiles not yet launched are released.</DMSE.Strike.Console.CancelConfirm>
+
+  <!-- Targeting and planning blockers -->
+  <DMSE.Strike.NoFireControl>No working fire-control radar on this map can guide strike missiles</DMSE.Strike.NoFireControl>
+  <DMSE.Strike.NoStrikeRounds>No strike missile is loaded on this map</DMSE.Strike.NoStrikeRounds>
+  <DMSE.Strike.NoRoundReaches>No loaded strike missile can reach this target</DMSE.Strike.NoRoundReaches>
+  <DMSE.Strike.TargetLabel.Distance>Distance: {0} tiles</DMSE.Strike.TargetLabel.Distance>
+  <DMSE.Strike.TargetLabel.Reach>In range: {0} of {1} loaded</DMSE.Strike.TargetLabel.Reach>
+  <DMSE.Strike.NoRoundsAssigned>Assign at least one missile to a wave</DMSE.Strike.NoRoundsAssigned>
+  <DMSE.Strike.TooManyRounds>At most {0} missiles per mission</DMSE.Strike.TooManyRounds>
+  <DMSE.Strike.TooManyWaves>At most {0} waves per mission</DMSE.Strike.TooManyWaves>
+  <DMSE.Strike.WaveOverCap>Wave {0} has {1} missiles; the guidance limit is {2}</DMSE.Strike.WaveOverCap>
+  <DMSE.Strike.RoundTaken>A missile is already reserved by another strike mission</DMSE.Strike.RoundTaken>
+  <DMSE.Strike.RoundUnavailable>A missile is no longer loaded or can no longer reach the target</DMSE.Strike.RoundUnavailable>
+
+  <!-- Firing blockers and skips -->
+  <DMSE.Strike.NotReady>Firing solutions are not ready</DMSE.Strike.NotReady>
+  <DMSE.Strike.Computing>Computing firing solutions ({0} left)</DMSE.Strike.Computing>
+  <DMSE.Strike.WaveDone>This wave has nothing left to launch</DMSE.Strike.WaveDone>
+  <DMSE.Strike.NotEnoughChannels>Not enough guidance channels: {0} free, {1} needed</DMSE.Strike.NotEnoughChannels>
+  <DMSE.Strike.NotEnoughChannelsRelease>Not enough guidance channels: {0} free, {1} needed; the next one frees in {2}</DMSE.Strike.NotEnoughChannelsRelease>
+  <DMSE.Strike.PlatformsNotReady>{0} launcher(s) not ready (unpowered, switched off, unmanned or reloading)</DMSE.Strike.PlatformsNotReady>
+  <DMSE.Strike.Skip.RoundGone>the missile is no longer in its launcher</DMSE.Strike.Skip.RoundGone>
+  <DMSE.Strike.Skip.Refitted>the missile was refitted</DMSE.Strike.Skip.Refitted>
+
+  <!-- States and inspect -->
+  <DMSE.Strike.State.Computing>computing firing solutions ({0} left)</DMSE.Strike.State.Computing>
+  <DMSE.Strike.State.Ready>ready to fire</DMSE.Strike.State.Ready>
+  <DMSE.Strike.State.Executing>in progress</DMSE.Strike.State.Executing>
+  <DMSE.Strike.Inspect.Channels>Strike guidance channels: {0} free of {1}</DMSE.Strike.Inspect.Channels>
+  <DMSE.Strike.Inspect.Mission>Strike mission #{0} on {1}: {2}, launched {3}/{4}</DMSE.Strike.Inspect.Mission>
+
+  <!-- Messages -->
+  <DMSE.Strike.Msg.Confirmed>Strike mission #{0}: {1} missiles in {2} waves reserved; computing firing solutions.</DMSE.Strike.Msg.Confirmed>
+  <DMSE.Strike.Msg.Ready>Strike mission #{0}: firing solutions ready.</DMSE.Strike.Msg.Ready>
+  <DMSE.Strike.Msg.WaveFired>Strike mission #{0}, wave {1}: {2} launching, {3} skipped.</DMSE.Strike.Msg.WaveFired>
+  <DMSE.Strike.Msg.Skipped>Strike mission #{0}: {1} skipped ({2}).</DMSE.Strike.Msg.Skipped>
+  <DMSE.Strike.Msg.Deferred>Strike mission #{0}: {1} could not launch yet and stays in wave {2}.</DMSE.Strike.Msg.Deferred>
+  <DMSE.Strike.Msg.Completed>Strike mission #{0} complete: {1} launched, {2} skipped.</DMSE.Strike.Msg.Completed>
+  <DMSE.Strike.Msg.Cancelled>Strike mission #{0} cancelled; missiles not yet launched are released.</DMSE.Strike.Msg.Cancelled>
+  <DMSE.Strike.Msg.TargetLost>Strike mission #{0} cancelled: the target is gone.</DMSE.Strike.Msg.TargetLost>
+  <DMSE.Strike.Msg.ConsoleLost>Strike mission #{0} cancelled: its strike command center was removed.</DMSE.Strike.Msg.ConsoleLost>
+
+  <!-- Planning window -->
+  <DMSE.Strike.Plan.Title>Wave strike plan</DMSE.Strike.Plan.Title>
+  <DMSE.Strike.Plan.Target>Target: {0} ({1} tiles)</DMSE.Strike.Plan.Target>
+  <DMSE.Strike.Plan.Channels>Guidance channels: {0} (free {1}) · wave limit {0} · guidance period {2}</DMSE.Strike.Plan.Channels>
+  <DMSE.Strike.Plan.SiteWarning>This site has no map yet. The first missile to arrive generates it, and the site's own air defense, with fully loaded SAMs, then engages the missiles still in flight.</DMSE.Strike.Plan.SiteWarning>
+  <DMSE.Strike.Plan.Available>Available missiles: {0}</DMSE.Strike.Plan.Available>
+  <DMSE.Strike.Plan.AddHint>Click a row to add one to the selected wave; shift-click to add as many as fit. Yellow rows are not ready right now and are checked again at launch.</DMSE.Strike.Plan.AddHint>
+  <DMSE.Strike.Plan.Unavailable>Unavailable {0}: {1}</DMSE.Strike.Plan.Unavailable>
+  <DMSE.Strike.Plan.ReservedElsewhere>{0} more reserved by other strike missions</DMSE.Strike.Plan.ReservedElsewhere>
+  <DMSE.Strike.Plan.NotReadyTag>Not ready now:</DMSE.Strike.Plan.NotReadyTag>
+  <DMSE.Strike.Plan.Flight>flight {0}</DMSE.Strike.Plan.Flight>
+  <DMSE.Strike.Plan.Margin>range +{0}</DMSE.Strike.Plan.Margin>
+  <DMSE.Strike.Plan.Wave>Wave {0}   {1}/{2}</DMSE.Strike.Plan.Wave>
+  <DMSE.Strike.Plan.AddWave>+ Add wave</DMSE.Strike.Plan.AddWave>
+  <DMSE.Strike.Plan.AutoAssign>Auto-assign</DMSE.Strike.Plan.AutoAssign>
+  <DMSE.Strike.Plan.AutoAssignDesc>Fill waves starting with the cheapest missiles, so the most valuable ones end up in the last wave.</DMSE.Strike.Plan.AutoAssignDesc>
+  <DMSE.Strike.Plan.Clear>Clear</DMSE.Strike.Plan.Clear>
+  <DMSE.Strike.Plan.Confirm>Confirm plan</DMSE.Strike.Plan.Confirm>
+
+  <!-- Execution window -->
+  <DMSE.Strike.Exec.Title>Wave strike #{0}</DMSE.Strike.Exec.Title>
+  <DMSE.Strike.Exec.State>Status: {0}</DMSE.Strike.Exec.State>
+  <DMSE.Strike.Exec.NextRelease>(next channel frees in {0})</DMSE.Strike.Exec.NextRelease>
+  <DMSE.Strike.Exec.Wave>Wave {0}: {1}</DMSE.Strike.Exec.Wave>
+  <DMSE.Strike.Exec.WavePending>waiting {0}</DMSE.Strike.Exec.WavePending>
+  <DMSE.Strike.Exec.WaveQueued>launching {0}</DMSE.Strike.Exec.WaveQueued>
+  <DMSE.Strike.Exec.WaveLaunched>launched {0}/{1}, {2} in flight</DMSE.Strike.Exec.WaveLaunched>
+  <DMSE.Strike.Exec.WaveSkipped>skipped {0}</DMSE.Strike.Exec.WaveSkipped>
+  <DMSE.Strike.Exec.Fire>Fire</DMSE.Strike.Exec.Fire>
+  <DMSE.Strike.Exec.FireTip>Shift-click to launch only what the free channels and ready launchers allow; the rest stays in the wave.</DMSE.Strike.Exec.FireTip>
+  <DMSE.Strike.Exec.CancelMission>Cancel mission</DMSE.Strike.Exec.CancelMission>
 </LanguageData>
