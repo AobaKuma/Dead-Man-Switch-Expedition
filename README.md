@@ -66,14 +66,14 @@ _Dead-Man-Switch-Expedition/
 ## 核心系統
 
 ### 1. 超視距攔截系統（BVR）
-偵測並攔截敵方來襲空投與導彈的多層防空鏈。所有裝置皆為 `ThingComp`，繼承 `CompBVRDevice`，共用電力 / 損壞 / 開關的可用性判定，並向 `MapComponent_BVRCombat` 註冊。
+偵測並攔截敵方來襲空投與導彈的多層防空鏈。所有裝置皆為 `ThingComp`，繼承 `CompBVRDevice`，共用電力 / 損壞 / 開關 / 擊暈 / 操作員的可用性判定；雷達、SAM、CIWS 向 `MapComponent_BVRCombat` 註冊。
 
 | 角色 | Comp | 建築 |
 |---|---|---|
 | 搜索雷達（決定預警窗口） | `CompSearchRadar` | 早期預警雷達（聲學，被動）、相控陣雷達 |
-| 火控雷達（火力通道、鎖定、命中率） | `CompFireControlRadar` | 早期火控雷達 |
-| 中過程攔截（SAM） | `CompMissileLauncher` | 導彈架 + 實體攔截彈 |
-| 末端攔截（CIWS） | `CompTerminalCIWS` | GAU-4 "Wing-Back"、85 式多用途速射系統 |
+| 火控雷達（火力通道、鎖定、命中率） | `CompFireControlRadar` | 早期火控雷達（需人操作）、相控陣雷達 |
+| 中過程攔截（SAM） | `CompMissileLauncher_Interceptor` | 旋轉導彈發射架（需人操作）、輕型導彈容器；彈藥為容器中的實體導彈 |
+| 末端攔截（CIWS） | `CompTerminalCIWS` | GAU-4 "Wing-Back" |
 
 流程：**偵測 → 波次合併 → 火控鎖定 → SAM 中過程攔截 → CIWS 末端連射 → 未攔截者落地**。攔截判定考慮隱身 / 反隱身、目標速度、戰鬥部加成（連續桿、空爆）。防禦為陣營相對：玩家攻擊有雷達的敵方基地時，己方導彈同樣會被攔截。
 
@@ -87,7 +87,7 @@ _Dead-Man-Switch-Expedition/
 | 巡航導彈（Cruise） | HE / AP / EMP | 慣性 / 精確 | 集束 / EMP | Scorer MLS、旋轉發射器、巡航導彈架 |
 | 彈道導彈（Ballistic） | 熱核 / 空爆 / 鎢芯穿甲 | 慣性 / 火控 | 無 / 集束 / 反粒子 | 彈道導彈發射井 |
 
-發射器實作三型：`CompScorer`（CompRefuelable 裝填）、`CompMissileRailLauncher`（實體導彈容器）、`CompBallisticLauncher`（發射井）。反輻射導引頭會自動鎖定敵方運作中的雷達，與 BVR 構成電子對抗閉環。
+發射平台共用抽象基類 `CompMissileLauncher`（冷卻、有彈判定）；世界選靶平台再繼承 `CompMissileLauncher_WorldTargeting`，分為 `CompMissileLauncher_Rail`（實體導彈容器）、`CompMissileLauncher_Ballistic`（發射井，就地裝配）、`CompMissileLauncher_Scorer`（CompRefuelable 裝填，1.7 無 Def 使用）。反輻射導引頭會自動鎖定敵方運作中的雷達，與 BVR 構成電子對抗閉環。
 
 ### 3. 超視距火砲（Artillery）
 `CompArtilleryStrike` 選靶後建立世界航跡，抵達時排程齊射，砲彈以 `Projectile` 從地圖邊緣飛入落點。程式碼已完成；建築 Def（`DMSE_ArtillerySystem.disabled`）**目前停用**。
@@ -132,7 +132,7 @@ _Dead-Man-Switch-Expedition/
 
 | 目錄 | 內容 |
 |---|---|
-| `SkyFallerTurret/BVR/` | BVR 核心：`CompBVRDevice`、雷達、SAM、CIWS、`MapComponent_BVRCombat`、攔截特效 |
+| `SkyFallerTurret/BVR/` | BVR 核心：`CompBVRDevice`、雷達、SAM（`CompMissileLauncher_Interceptor`、人工操作裝填）、CIWS、`MapComponent_BVRCombat`、攔截特效 |
 | `SkyFallerTurret/` | `InterceptProjectile`、空投偵測 patch、BVR 警報 |
 | `Scorer/Assembly/` | 導彈 Def / Config / 部件效果、ITab、裝配與裝填 Job、`MissileIncoming`、`WorldObject_IncomingMissile` |
 | `Scorer/`、`Scorer/Ballistic/` | 三型發射器 Comp、離場 / 世界航跡投射物、冷熱發射特效 |
