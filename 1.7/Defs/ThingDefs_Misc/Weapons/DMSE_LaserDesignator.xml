@@ -66,6 +66,8 @@
       <drawSize>1.2</drawSize>
     </graphicData>
     <soundInteract>Interact_Autopistol</soundInteract>
+    <!-- BaseHumanMakeableGun 會帶 weaponTags「Gun」，使用該標籤的敵人會拿標定器當武器；清空它。 -->
+    <weaponTags Inherit="False" />
     <statBases>
       <WorkToMake>9000</WorkToMake>
       <Mass>1.5</Mass>

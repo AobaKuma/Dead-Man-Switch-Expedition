@@ -10,6 +10,16 @@ namespace DMSE
     /// <summary>Cached small circles; no world-grid flood fills or shared radius-ring cache.</summary>
     public class BVRWorldDrawer
     {
+        // Lines exactly on the sphere are hidden by the terrain mesh; vanilla world paths and radius rings
+        // (WorldPath.DrawPath, GenDraw.DrawWorldRadiusRing) lift every point by 0.08 and draw rings at 5x width.
+        private const float Lift = 0.08f;
+
+        private static void Line(Vector3 a, Vector3 b, Material material, float width)
+            => GenDraw.DrawWorldLineBetween(a + a.normalized * Lift, b + b.normalized * Lift, material, width);
+
+        private static Material RingMaterial(PlanetTile tile)
+            => tile.LayerDef.isSpace ? tile.LayerDef.WorldLineMaterialHighVis : tile.LayerDef.WorldLineMaterial;
+
         private class Ring { public Vector3 center; public float range; public Vector3[] points; }
         private readonly Dictionary<(MapParent, Faction), Ring> rings = new Dictionary<(MapParent, Faction), Ring>();
         private readonly List<(Vector3 point, float until)> flashes = new List<(Vector3, float)>();
@@ -29,17 +39,21 @@ namespace DMSE
                     ring = MakeRing(node.Center, range);
                     rings[key] = ring;
                 }
+                Material material = RingMaterial(node.Tile);
+                float width = 5f * node.Tile.LayerDef.lineWidthFactor;
                 for (int i = 0; i < ring.points.Length; i++)
-                    GenDraw.DrawWorldLineBetween(ring.points[i], ring.points[(i + 1) % ring.points.Length]);
+                    Line(ring.points[i], ring.points[(i + 1) % ring.points.Length], material, width);
             }
             foreach (var stale in rings.Keys.Where(k => !live.Contains(k)).ToList()) rings.Remove(stale);
             foreach (var interceptor in Find.WorldObjects.AllWorldObjects.OfType<WorldObject_Interceptor>())
             {
                 // Dashes follow the spherical path, not a chord through the planet.
                 Vector3 here = interceptor.DrawPos;
+                Material material = RingMaterial(interceptor.Tile);
+                float width = 3f * interceptor.Tile.LayerDef.lineWidthFactor;
                 for (int i = 0; i < 16; i += 2)
-                    GenDraw.DrawWorldLineBetween(Vector3.Slerp(here, interceptor.end, i / 16f),
-                        Vector3.Slerp(here, interceptor.end, (i + 1) / 16f));
+                    Line(Vector3.Slerp(here, interceptor.end, i / 16f),
+                        Vector3.Slerp(here, interceptor.end, (i + 1) / 16f), material, width);
             }
             for (int f = flashes.Count - 1; f >= 0; f--)
             {
@@ -48,7 +62,8 @@ namespace DMSE
                 float radius = (1f - (flash.until - Time.realtimeSinceStartup)) * 0.7f + 0.15f;
                 Ring ring = MakeRing(flash.point, radius);
                 for (int i = 0; i < ring.points.Length; i++)
-                    GenDraw.DrawWorldLineBetween(ring.points[i], ring.points[(i + 1) % ring.points.Length]);
+                    Line(ring.points[i], ring.points[(i + 1) % ring.points.Length],
+                        Find.WorldGrid.Surface.Def.WorldLineMaterialHighVis, 3f);
             }
         }
         private static Ring MakeRing(Vector3 center, float range)
