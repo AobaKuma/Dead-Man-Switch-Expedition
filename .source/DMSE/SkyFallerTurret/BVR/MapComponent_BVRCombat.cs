@@ -52,6 +52,19 @@ namespace DMSE
         /// 決定有資格攔截此空投的「防禦方」：擁有運作中搜索雷達、且與空投內容物敵對的陣營。
         /// 玩家優先；找不到回傳 null（不攔截）。
         /// </summary>
+        /// <summary>
+        /// 防禦方是否有可用的攔截彈：任一可運作（有未保留彈藥、通電、有人操作）的 SAM，裝填冷卻中也算。
+        /// 沒有時中過程不鎖定、已有的鎖定也釋放，避免空占火力通道（docs/BVR_波次打擊規劃.md §15-4）。
+        /// </summary>
+        public bool HasInterceptorAmmo(Faction defender)
+        {
+            foreach (CompMissileLauncher_Interceptor l in launchers)
+            {
+                if (l.parent.Faction == defender && l.Props.interceptorSkyfaller != null && l.Active) { return true; }
+            }
+            return false;
+        }
+
         public Faction ResolveDefender(Faction dropFaction)
         {
             if (dropFaction == null) { return null; }
@@ -286,6 +299,7 @@ namespace DMSE
 
             capacity -= Channels.World(defender);
             int engaged = CountEngaged(defender);
+            bool armed = HasInterceptorAmmo(defender);
 
             // 空爆額外攔截命中的目標：先收集、待 foreach 結束後統一移除，
             // 避免在枚舉 wave.targets 期間修改集合（InvalidOperationException）。
@@ -295,6 +309,12 @@ namespace DMSE
             {
                 if (target.terminalOnly) continue;
                 if (target.midcourseEngagedUntil > now) { continue; } // 已有攔截彈在飛。
+                if (!armed)
+                {
+                    // 沒有可用的攔截彈：不鎖定，已有的鎖定也釋放，不空占火力通道。
+                    target.lockUntil = -1;
+                    continue;
+                }
                 if (target.lockUntil > now) { continue; }             // 鎖定中（已占用通道）。
 
                 if (target.lockUntil >= 0)

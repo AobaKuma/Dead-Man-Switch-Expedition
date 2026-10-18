@@ -119,10 +119,11 @@ window = Σ(各運作中防禦方搜索雷達的貢獻) × distanceLevel ÷ targ
    │     • 火力通道容量 = Σ 防禦方運作中火控雷達的 max(0, maxTargets − OccupiedArtilleryChannels)
    │                       （共用池；僅計 timeLeft ≤ maxRangeTicks 的雷達；已借給火砲的通道先扣除）
    │     • 占用數 CountEngaged = 全部波次中 lockUntil ≥ 0 或攔截彈在飛的目標數
-   │     ① 鎖定：未鎖定的新目標，若占用 < 容量 → 選命中率最高的火控雷達開始鎖定
+   │     ① 鎖定：未鎖定的新目標，若占用 < 容量，且防禦方有可用攔截彈（任一 Active 的 SAM，冷卻中也算）
+   │           → 選命中率最高的火控雷達開始鎖定；沒有可用攔截彈時不鎖定，已有的鎖定也釋放（2026-10-19）
    │           lockUntil = now + lockOnTicks × (1 + 0.5×隱身差 + max(0, speed−15)/60)
    │     ② 發射：鎖定完成（lockUntil ≤ now）→ 最佳火控雷達 + 冷卻最早結束的就緒 SAM
-   │           就緒 = Active（含有彈、有人操作）且不在冷卻；沒有就緒 SAM 時目標保持鎖定、續占通道
+   │           就緒 = Active（含有彈、有人操作）且不在冷卻；SAM 只是冷卻中時目標保持鎖定、續占通道
    │           命中率 = maxHitChance × clamp01((timeLeft − 末端窗口) / guidanceAccuracyTime)
    │                    × 速度係數（>15 每單位 −1.2%，下限 0.2）
    │                    × stealthMissFactor^(stealthLevel − powerLevel)₊

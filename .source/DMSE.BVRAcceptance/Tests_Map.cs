@@ -243,12 +243,14 @@ namespace DMSE.BVRAcceptance
         public static IEnumerable<Wait> SharedChannels(TestContext t)
         {
             Thing radar = SpawnBuilding(PhaseArray, 2, 2);
+            Building_MissileRack sam = SpawnLoadedLauncher(10, 2, 4);
             yield return WaitPowered(); yield return new WaitTicks(2);
             CompFireControlRadar fc = radar.TryGetComp<CompFireControlRadar>();
             int capacity = HomeBVR.Channels.Capacity(Player);
             t.Require(capacity == 2, $"phased array provides 2 channels (got {capacity})");
+            t.Require(HoldInReload(sam), "the SAM is armed but reloading");
 
-            // Two pods far enough apart to form two waves; both lock (no launcher, so locks persist).
+            // Two pods far enough apart to form two waves; both lock (the SAM never becomes ready, so locks persist).
             DropEnemyPod(1);
             yield return new WaitTicks(650);
             DropEnemyPod(1, at: new IntVec3(Pad.maxX + 8, 0, Pad.CenterCell.z + 6));

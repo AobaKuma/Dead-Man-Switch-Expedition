@@ -134,6 +134,18 @@ namespace DMSE.BVRAcceptance
             return rack;
         }
 
+        /// <summary>
+        /// Locks need interceptor ammo (an Active SAM). For tests that want locks to stay pending, fire one
+        /// interceptor with a very long reload: the SAM stays armed but never becomes ready. Call once powered.
+        /// </summary>
+        public static bool HoldInReload(Building_MissileRack rack)
+        {
+            CompMissileLauncher_Interceptor sam = rack.TryGetComp<CompMissileLauncher_Interceptor>();
+            int old = sam.Props.reloadCooldownTicks;
+            Override(() => sam.Props.reloadCooldownTicks = 1000000, () => sam.Props.reloadCooldownTicks = old);
+            return sam.FireWorldInterceptor(Find.TickManager.TicksGame);
+        }
+
         public static Pawn MakeEnemyPawn()
         {
             PawnKindDef kind = Enemy.def.basicMemberKind ?? Enemy.RandomPawnKind();

@@ -271,6 +271,23 @@ static class Test
         var nearB = new FakeTrack { angle = 0.1f, speed = 1f / 30000f };
         var order = WorldComponent_BVRNetwork.InEngagementOrder(new[] { far, nearA, fast, nearB });
         Check(order.SequenceEqual(new[] { nearA, nearB, fast, far }), "engagement order is by arrival time, stable for ties");
+
+        // §15-4 finding 2: locking needs interceptor ammo (an Active SAM, reloading included, or abstract stock).
+        var defender = Faction(false);
+        var manager = new MapComponent_BVRCombat(new Map());
+        var sam = new ArmedLauncher { parent = Parent(defender), props = new CompProperties_MissileLauncher { interceptorSkyfaller = Empty<ThingDef>() } };
+        manager.launchers.Add(sam);
+        Check(!manager.HasInterceptorAmmo(defender), "an inactive or empty SAM gives no interceptor ammo");
+        sam.armed = true;
+        Check(manager.HasInterceptorAmmo(defender) && !manager.HasInterceptorAmmo(Faction(false)), "an active SAM arms only its own faction");
+        var site = new MapParent { def = new WorldObjectDef { canHaveFaction = true } };
+        site.SetFaction(defender);
+        var stock = new WorldObjectComp_AirDefense { parent = site,
+            props = new CompProperties_WorldAirDefense { interceptorStock = 1, restockPerDay = 0, launchCooldownTicks = 0 } };
+        var node = new BVRNode { parent = site, faction = defender, abstractDefense = stock };
+        Check(node.HasInterceptorAmmo, "an abstract node with stock is armed");
+        Check(stock.TryConsume(Find.TickManager.TicksGame) && !node.HasInterceptorAmmo, "an abstract node with no stock left is not armed");
+        Check(new BVRNode { parent = site, faction = defender, local = manager }.HasInterceptorAmmo, "a map node reads its SAMs");
     }
     public static void Main()
     {
@@ -279,6 +296,7 @@ static class Test
         Console.WriteLine($"PASS: {count} BVR checks (real game/DMSE assemblies).");
     }
     class OnlineRadar : CompFireControlRadar { public override bool Active => true; }
+    class ArmedLauncher : CompMissileLauncher_Interceptor { public bool armed; public override bool Active => armed; }
     class OnlineCIWS : CompTerminalCIWS { public bool online = true; public override bool Active => online; }
     class FakeTrack : IBVRTrack
     {

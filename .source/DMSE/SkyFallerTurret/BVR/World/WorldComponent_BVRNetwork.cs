@@ -135,13 +135,20 @@ namespace DMSE
                 state.ClearLock();
                 return;
             }
+            // No interceptor that can fire now or after reloading: do not lock, and drop any lock (frees the channel).
+            bool armed = node.HasInterceptorAmmo;
             if (state.lockUntil < 0)
             {
-                if (state.detectedByFaction != node.faction || node.FreeChannels <= 0) return;
+                if (!armed || state.detectedByFaction != node.faction || node.FreeChannels <= 0) return;
                 state.lockUntil = now + CompFireControlRadar.LockOnTicksFor(settings, target);
                 state.lockNode = node.parent;
                 state.lockFaction = node.faction;
                 state.lockNodeTile = node.Tile;
+                return;
+            }
+            if (!armed)
+            {
+                state.ClearLock();
                 return;
             }
             if (state.lockUntil > now) return;

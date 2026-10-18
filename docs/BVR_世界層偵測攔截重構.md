@@ -198,6 +198,7 @@ R_eff = worldDetectionRange × distanceLevel × 隱身係數
 ### 6-1. 鎖定
 
 - 條件：航跡已被節點偵測、節點有空閒火控通道、`ETA ≤ maxRangeTicks`（**沿用現有 XML 欄位**，意義仍是「剩餘時間多少以內才能導引」）。
+- 2026-10-19 起另需節點有可用攔截彈（`BVRNode.HasInterceptorAmmo`：任一 Active 的 SAM，冷卻中也算；抽象節點看庫存 > 0）；沒有時不鎖定，已有的鎖定也釋放（[波次打擊規劃 §15-4](BVR_波次打擊規劃.md#15-4-發現與決定)）。
 - `lockUntil = now + fc.LockOnTicksFor(track)`：沿用現行公式（隱身差、速度）。航跡速度用 `BVRTargetProps.speed`，與世界速度分開，平衡上互不影響。
 
 ### 6-2. 會合求解（點防禦封閉解）

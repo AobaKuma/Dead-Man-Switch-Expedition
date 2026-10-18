@@ -132,11 +132,13 @@ namespace DMSE.BVRAcceptance
         public static IEnumerable<Wait> SoonestArrivalFirst(TestContext t)
         {
             SpawnBuilding(PhaseArray, 2, 2);
+            Building_MissileRack sam = SpawnLoadedLauncher(10, 2, 4);
             yield return WaitPowered(); yield return new WaitTicks(2);
             PlanetTile farSource = TileAtDistance(11.5f, 12.5f);
             PlanetTile nearSource = TileAtDistance(7.5f, 8.5f);
             t.Require(farSource.Valid && nearSource.Valid, "source tiles at ~12 and ~8 tiles exist");
             t.Require(HomeBVR.Channels.Free(Player) == 2, "two free fire-control channels");
+            t.Require(HoldInReload(sam), "the SAM is armed but reloading, so locks stay pending");
 
             // Same tick, so the next scan sees all three; the first-created track arrives last.
             WorldObject_IncomingMissile late = LaunchEnemyMissile(farSource);
@@ -151,6 +153,59 @@ namespace DMSE.BVRAcceptance
             t.Check(soonA.State.lockUntil >= 0 && soonB.State.lockUntil >= 0, "the two soonest arrivals hold the two channels");
             t.Check(late.State.lockUntil < 0 && late.State.detectedByFaction == Player, "the latest arrival is detected but waits for a channel");
             t.Check(HomeBVR.Channels.Free(Player) == 0, "both channels are booked");
+        }
+
+        /// <summary>
+        /// §15-4 finding 2: a node without interceptor ammo does not lock (world track or map wave); a reserved
+        /// missile does not count; once the last interceptor is fired, the other pending lock is released.
+        /// </summary>
+        public static IEnumerable<Wait> NoAmmoNoLock(TestContext t)
+        {
+            SpawnBuilding(PhaseArray, 2, 2);
+            Building_MissileRack rack = (Building_MissileRack)SpawnBuilding(LightLauncher, 10, 2);
+            yield return WaitPowered(); yield return new WaitTicks(2);
+            t.Check(!HomeBVR.HasInterceptorAmmo(Player), "an empty SAM gives no interceptor ammo");
+            PlanetTile source = TileAtDistance(14f, 16f);
+            t.Require(source.Valid, "a tile ~15 tiles away exists");
+            WorldObject_IncomingMissile wo = LaunchEnemyMissile(source);
+            DropEnemyPod(1);
+            int fcRange = PhaseArray.GetCompProperties<CompProperties_FireControlRadar>().maxRangeTicks;
+            BVRWave wave = null;
+            var waitRange = new WaitUntil(() =>
+            {
+                wave = HomeBVR.Waves.FirstOrDefault(w => !w.TerminalOnly);
+                return wave != null && wave.tickToImpact - Find.TickManager.TicksGame < fcRange - 30;
+            }, 2000);
+            yield return waitRange;
+            t.Require(!waitRange.TimedOut && wave.targets.Count == 1, "the pod is a map wave inside fire-control range");
+            BVRTarget pod = wave.targets[0];
+            yield return new WaitTicks(40);
+            t.Check(wo.State.detectedByFaction == Player && wo.State.lockUntil < 0, "the world track is detected but not locked without interceptors");
+            t.Check(pod.lockUntil < 0, "the map wave is not locked without interceptors");
+            t.Check(HomeBVR.Channels.Free(Player) == 2, "no channel is held");
+
+            Thing missile = Load(rack, LightMissileItem);
+            Planner.TryReserve(missile, DebugOwner);
+            yield return new WaitTicks(40);
+            t.Check(!HomeBVR.HasInterceptorAmmo(Player) && wo.State.lockUntil < 0 && pod.lockUntil < 0,
+                "a missile reserved for a strike does not arm the SAM");
+
+            Planner.Release(missile);
+            var waitLocks = new WaitUntil(() => wo.State.lockUntil >= 0 && pod.lockUntil >= 0, 120);
+            yield return waitLocks;
+            t.Require(!waitLocks.TimedOut, "with one interceptor loaded, both targets lock");
+            t.Check(HomeBVR.Channels.Free(Player) == 0, "both channels are booked");
+
+            var waitFired = new WaitUntil(() => rack.StoredCount == 0, 400);
+            yield return waitFired;
+            t.Require(!waitFired.TimedOut, "the SAM fires its only interceptor");
+            bool worldEngaged = wo.State.interceptor != null;
+            var waitRelease = new WaitUntil(() => worldEngaged ? pod.lockUntil < 0 : wo.State.lockUntil < 0, 60);
+            yield return waitRelease;
+            t.Note($"the interceptor went to the {(worldEngaged ? "world track" : "map wave")}");
+            t.Check(!waitRelease.TimedOut, "the other target's pending lock is released once the last interceptor is gone");
+            t.Check(HomeBVR.Channels.Free(Player) == 1, "only the in-flight interceptor still holds a channel");
+            Planner.ReleaseAll(DebugOwner);
         }
 
         private static ScorerProjectile_WorldObject LaunchAt(Site site, MissileConfig config, string worldObjectDef, ThingDef incoming)

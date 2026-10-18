@@ -24,6 +24,9 @@ namespace DMSE
                     range = Mathf.Max(range, MissileWorldMotion.DetectionRange(r.Props.worldDetectionRange, r.Props.antiStealthLevel, target));
             return range;
         }
+        /// <summary>Any interceptor that can fire now or after reloading; locking without one would only hold a channel.</summary>
+        public bool HasInterceptorAmmo => local != null ? local.HasInterceptorAmmo(faction)
+            : abstractDefense.Available && abstractDefense.Stock > 0;
         public int FreeChannels => local != null ? local.Channels.Free(faction)
             : Mathf.Max(0, abstractDefense.Props.channels - (WorldComponent_BVRNetwork.Current?.CountEngaged(parent, faction) ?? 0));
         public CompFireControlRadar BestRadar(BVRTarget target, int eta) => local?.fireControlRadars
