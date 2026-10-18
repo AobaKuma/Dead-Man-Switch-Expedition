@@ -145,6 +145,15 @@ namespace DMSE
             return t.WorldObject as MapParent ?? Find.WorldObjects.MapParentAt(t.Tile);
         }
 
+        /// <summary>選靶游標上的落點方式說明：「{導引}：抵達後手動選擇落點」或「{導引}：自動鎖定」。</summary>
+        public static string GuidanceTargetingText(MissileConfig config)
+        {
+            if (config == null) { return null; }
+            return (config.PlayerChoosesTarget
+                    ? "DMSE.Guidance.ManualTarget"
+                    : "DMSE.Guidance.AutoTarget").Translate(config.TargetingLabel);
+        }
+
         /// <summary>選靶驗證：預設排除水域與已有非 MapParent 世界物件的 tile。</summary>
         protected virtual bool CanTargetTile(GlobalTargetInfo t)
         {
@@ -200,6 +209,13 @@ namespace DMSE
                         {
                             if (!label.NullOrEmpty()) { label += "\n"; }
                             label += "DMSE.MissileLauncher.NoTargetHere".Translate();
+                        }
+                        // 落點選擇方式：電視制導抵達後手選，其餘依導引頭自動鎖定
+                        string seeker = GuidanceTargetingText(BuildFiringConfig());
+                        if (!seeker.NullOrEmpty())
+                        {
+                            if (!label.NullOrEmpty()) { label += "\n"; }
+                            label += seeker;
                         }
                         return label;
                     },

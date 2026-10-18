@@ -87,13 +87,46 @@
 
   <DMSE.MissilePartDef>
     <defName>DMSE_Guidance_Precision</defName>
-    <label>precision guidance</label>
-    <description>Terminal homing seeker. Greatly tightens impact dispersion.</description>
+    <label>TV guidance</label>
+    <description>An operator-guided TV seeker with a datalink back to the launch site. When the missile reaches the target map, the game pauses and you choose the impact point freely. Greatly tightens impact dispersion. Enemy-launched TV missiles have no operator and fall back to inertial targeting.</description>
     <category>Guidance</category>
     <compatibleBodies><li>DMSE_MissileBody_Cruise</li></compatibleBodies>
+    <!-- 電視制導：玩家發射時抵達後手動選點；具導引能力（可跨圖層、可追蹤移動目標） -->
+    <guidanceType Class="DMSE.GuidanceType_TV" />
     <scatterOffset>-2.5</scatterOffset>
-    <!-- 無 guidanceType 但具導引能力：可跨圖層打擊、可追蹤移動目標 -->
-    <terminalGuidance>true</terminalGuidance>
+    <researchPrerequisites>
+      <li>DMSE_IntegratedCircuits</li>
+    </researchPrerequisites>
+    <costList>
+      <ComponentIndustrial>3</ComponentIndustrial>
+      <ComponentSpacer>1</ComponentSpacer>
+    </costList>
+  </DMSE.MissilePartDef>
+
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Guidance_EMSignal</defName>
+    <label>electromagnetic-signal seeker</label>
+    <description>Passive seeker that homes on electromagnetic emissions from power lines and machinery. Locks onto the powered enemy building drawing the most electricity on the target map. Falls back to inertial targeting if nothing is powered.</description>
+    <category>Guidance</category>
+    <compatibleBodies><li>DMSE_MissileBody_Cruise</li></compatibleBodies>
+    <guidanceType Class="DMSE.GuidanceType_ElectromagneticSignal" />
+    <scatterOffset>-1.5</scatterOffset>
+    <researchPrerequisites>
+      <li>DMSE_RadarBasis</li>
+    </researchPrerequisites>
+    <costList>
+      <ComponentIndustrial>3</ComponentIndustrial>
+    </costList>
+  </DMSE.MissilePartDef>
+
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Guidance_Laser</defName>
+    <label>laser seeker</label>
+    <description>Semi-active laser seeker. Locks onto the most recent laser designation your faction has painted on the target map with a laser target designator. Falls back to inertial targeting if there is none.</description>
+    <category>Guidance</category>
+    <compatibleBodies><li>DMSE_MissileBody_Cruise</li></compatibleBodies>
+    <guidanceType Class="DMSE.GuidanceType_Laser" />
+    <scatterOffset>-2.5</scatterOffset>
     <researchPrerequisites>
       <li>DMSE_IntegratedCircuits</li>
     </researchPrerequisites>

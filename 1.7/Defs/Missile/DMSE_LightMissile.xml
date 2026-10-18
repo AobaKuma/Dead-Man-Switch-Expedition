@@ -98,11 +98,13 @@
   <!-- 紅外制導：優先攻擊殖民者；散布降低。 -->
   <DMSE.MissilePartDef>
     <defName>DMSE_Light_Guidance_IR</defName>
-    <label>infrared seeker</label>
-    <description>A passive infrared seeker that homes on body heat. Targets the nearest colonist if any are present; falls back to inertial targeting otherwise.</description>
+    <label>heat-signature seeker</label>
+    <description>A passive infrared seeker that homes on the strongest heat signature. Locks onto the hottest indoor room if it is at least 15°C warmer than outside; otherwise the largest creature on the map. Falls back to inertial targeting if neither is found.</description>
     <category>Guidance</category>
     <compatibleBodies><li>DMSE_MissileBody_Light</li></compatibleBodies>
-    <guidanceType Class="DMSE.GuidanceType_Infrared" />
+    <guidanceType Class="DMSE.GuidanceType_HeatSource">
+      <minRoomTempAboveOutdoor>15</minRoomTempAboveOutdoor>
+    </guidanceType>
     <scatterOffset>-1.5</scatterOffset>
     <costList>
       <ComponentIndustrial>2</ComponentIndustrial>
@@ -113,11 +115,27 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_Light_Guidance_AntiRadiation</defName>
     <label>anti-radiation seeker</label>
-    <description>Homes on active radar emissions. Prioritises the most powerful search or fire-control radar on the target map, then falls back to high-energy targeting.</description>
+    <description>Homes on active radar emissions. Locks onto the switched-on enemy radar with the highest power level on the target map; passive acoustic arrays are invisible to it. Falls back to the building drawing the most power, then to inertial targeting.</description>
     <category>Guidance</category>
     <compatibleBodies><li>DMSE_MissileBody_Light</li></compatibleBodies>
     <guidanceType Class="DMSE.GuidanceType_AntiRadiation" />
     <scatterOffset>-1</scatterOffset>
+    <costList>
+      <ComponentIndustrial>3</ComponentIndustrial>
+    </costList>
+  </DMSE.MissilePartDef>
+
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Light_Guidance_Laser</defName>
+    <label>laser seeker</label>
+    <description>Semi-active laser seeker. Locks onto the most recent laser designation your faction has painted on the target map with a laser target designator. Falls back to inertial targeting if there is none.</description>
+    <category>Guidance</category>
+    <compatibleBodies><li>DMSE_MissileBody_Light</li></compatibleBodies>
+    <guidanceType Class="DMSE.GuidanceType_Laser" />
+    <scatterOffset>-1.5</scatterOffset>
+    <researchPrerequisites>
+      <li>DMSE_IntegratedCircuits</li>
+    </researchPrerequisites>
     <costList>
       <ComponentIndustrial>3</ComponentIndustrial>
     </costList>

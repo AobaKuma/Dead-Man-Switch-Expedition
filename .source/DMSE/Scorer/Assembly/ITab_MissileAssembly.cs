@@ -20,7 +20,7 @@ namespace DMSE
     /// </summary>
     public class ITab_MissileAssembly : ITab
     {
-        private static readonly Vector2 WinSize = new Vector2(440f, 520f);
+        private static readonly Vector2 WinSize = new Vector2(440f, 560f);
 
         /// <summary>
         /// 取得當前選取物的 <see cref="CompMissileConfig"/>。
@@ -175,6 +175,7 @@ namespace DMSE
             list.Label(cfg.HasTerminalGuidance
                 ? "DMSE.Missile.Stat.TerminalGuidance".Translate(cfg.TerminalUpdates)
                 : "DMSE.Missile.Stat.NoTerminalGuidance".Translate());
+            list.Label(CompMissileLauncher_WorldTargeting.GuidanceTargetingText(cfg));
 
             // 裝配狀態 + 確認／還原按鈕
             if (comp.NeedsAssembly)

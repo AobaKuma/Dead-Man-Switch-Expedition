@@ -124,6 +124,23 @@
     </researchPrerequisites>
   </DMSE.MissilePartDef>
 
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Ballistic_Guidance_Laser</defName>
+    <label>laser terminal seeker</label>
+    <description>Semi-active laser seeker for the re-entry vehicle. Locks onto the most recent laser designation your faction has painted on the target map with a laser target designator. Falls back to inertial targeting if there is none.</description>
+    <category>Guidance</category>
+    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li></compatibleBodies>
+    <guidanceType Class="DMSE.GuidanceType_Laser" />
+    <scatterOffset>-3</scatterOffset>
+    <costList>
+      <ComponentSpacer>2</ComponentSpacer>
+      <ComponentStamped>4</ComponentStamped>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_IntegratedCircuits</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
   <!-- == Payload == -->
 
   <!-- 空酬載：僅主彈頭。 -->

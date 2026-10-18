@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ==================== 雷射引導標點 ====================
+       由雷射標定器（下方裝備）或 DMSE.CompProperties_AbilityLaserDesignate 能力在落點生成。
+       同陣營的雷射制導導彈（DMSE.GuidanceType_Laser）抵達該地圖時鎖定最近放置的標點。
+       Ethereal：不會被攻擊、搬運或拆除；useHitPoints=false 亦不受爆炸傷害；存在時間到自動消失。 -->
+  <ThingDef>
+    <defName>DMSE_LaserDesignatorMark</defName>
+    <label>laser designation</label>
+    <description>A target point painted by a laser designator. Laser-guided missiles fired by the same faction home on the most recent designation on the target map. It cannot be damaged and fades on its own after a while.</description>
+    <thingClass>DMSE.LaserDesignatorMark</thingClass>
+    <category>Ethereal</category>
+    <altitudeLayer>MoteOverhead</altitudeLayer>
+    <drawerType>RealtimeOnly</drawerType>
+    <tickerType>Normal</tickerType>
+    <useHitPoints>false</useHitPoints>
+    <selectable>true</selectable>
+    <rotatable>false</rotatable>
+    <graphicData>
+      <texPath>UI/Overlays/TargetHighlight_Square</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>MoteGlow</shaderType>
+      <color>(1, 0.2, 0.15)</color>
+      <drawSize>(1.4, 1.4)</drawSize>
+    </graphicData>
+  </ThingDef>
+
+  <!-- ==================== 雷射標定彈 ====================
+       雷射標定器射出的標定光束：不造成傷害，命中處生成屬於射手陣營的標點。 -->
+  <ThingDef ParentName="BaseBullet">
+    <defName>DMSE_Bullet_LaserDesignator</defName>
+    <label>designation beam</label>
+    <thingClass>DMSE.Projectile_LaserDesignator</thingClass>
+    <graphicData>
+      <texPath>Things/Projectile/Bullet_Big</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>TransparentPostLight</shaderType>
+      <color>(1, 0.25, 0.2)</color>
+    </graphicData>
+    <projectile>
+      <damageDef>Bullet</damageDef>
+      <damageAmountBase>0</damageAmountBase>
+      <speed>300</speed>
+    </projectile>
+    <modExtensions>
+      <li Class="DMSE.ModExtension_LaserDesignator">
+        <markDef>DMSE_LaserDesignatorMark</markDef>
+        <!-- 標點存在時間：5000 ticks = 2 遊戲小時 -->
+        <lifespanTicks>5000</lifespanTicks>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- ==================== 雷射標定器（裝備） ====================
+       可對地面或目標射出標定光束；不傷人，AI 不會拿它當武器（ai_IsWeapon=false）。
+       不掛 weaponTags，不會出現在任何陣營的生成武器池。
+       貼圖暫用 C95 手槍（Things/Weapons/DMS_C95Caseless）。 -->
+  <ThingDef ParentName="BaseHumanMakeableGun">
+    <defName>DMSE_Gun_LaserDesignator</defName>
+    <label>laser target designator</label>
+    <description>A handheld laser designator. Painting a spot on the ground or a target leaves a laser designation there for a couple of hours; laser-guided missiles fired by your colony lock onto the most recent designation on the target map. It deals no damage.</description>
+    <graphicData>
+      <texPath>Things/Weapons/DMS_C95Caseless</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>1.2</drawSize>
+    </graphicData>
+    <soundInteract>Interact_Autopistol</soundInteract>
+    <statBases>
+      <WorkToMake>9000</WorkToMake>
+      <Mass>1.5</Mass>
+      <AccuracyTouch>0.95</AccuracyTouch>
+      <AccuracyShort>0.92</AccuracyShort>
+      <AccuracyMedium>0.88</AccuracyMedium>
+      <AccuracyLong>0.82</AccuracyLong>
+      <RangedWeapon_Cooldown>1.5</RangedWeapon_Cooldown>
+    </statBases>
+    <costList>
+      <DMSE_TantastenAlloy>10</DMSE_TantastenAlloy>
+      <DMSE_Graphene>10</DMSE_Graphene>
+      <ComponentIndustrial>3</ComponentIndustrial>
+    </costList>
+    <recipeMaker>
+      <recipeUsers Inherit="False">
+        <li>DMS_TableMachinePrinter</li>
+      </recipeUsers>
+      <researchPrerequisite>DMSE_IntegratedCircuits</researchPrerequisite>
+    </recipeMaker>
+    <verbs>
+      <li>
+        <verbClass>Verb_Shoot</verbClass>
+        <label>designate</label>
+        <hasStandardCommand>true</hasStandardCommand>
+        <defaultProjectile>DMSE_Bullet_LaserDesignator</defaultProjectile>
+        <warmupTime>2.5</warmupTime>
+        <range>49.9</range>
+        <soundCast>Shot_ChargeRifle</soundCast>
+        <muzzleFlashScale>0</muzzleFlashScale>
+        <ai_IsWeapon>false</ai_IsWeapon>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+      </li>
+    </verbs>
+    <tools>
+      <li>
+        <label>grip</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>2</cooldownTime>
+      </li>
+    </tools>
+  </ThingDef>
+
+</Defs>

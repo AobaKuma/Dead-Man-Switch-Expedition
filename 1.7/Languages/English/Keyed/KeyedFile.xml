@@ -147,6 +147,16 @@
   <DMSE.Missile.IncomingLetterDesc>A missile launched by {0} is inbound and will strike the colony shortly.</DMSE.Missile.IncomingLetterDesc>
   <DMSE.Missile.Missed>Our missile found no target and was wasted.</DMSE.Missile.Missed>
   <DMSE.Missile.IncomingMissed>A missile launched by {0} lost its target and missed.</DMSE.Missile.IncomingMissed>
+
+  <!-- 導引頭選目標 -->
+  <DMSE.Missile.SeekerLocked>{0} locked onto a target. The missile is coming down.</DMSE.Missile.SeekerLocked>
+  <DMSE.Guidance.Inertial>inertial guidance</DMSE.Guidance.Inertial>
+  <DMSE.Guidance.ManualTarget>{0}: you choose the impact point on arrival</DMSE.Guidance.ManualTarget>
+  <DMSE.Guidance.AutoTarget>{0}: locks a target automatically on arrival</DMSE.Guidance.AutoTarget>
+  <DMSE.LaserMark.Inspect>Designated by: {0}\nExpires in: {1}</DMSE.LaserMark.Inspect>
+  <DMSE.LaserMark.InspectPermanent>Designated by: {0}</DMSE.LaserMark.InspectPermanent>
+  <DMSE.LaserMark.Placed>Laser designation placed. It expires in {0}.</DMSE.LaserMark.Placed>
+  <DMSE.LaserMark.PlacedPermanent>Laser designation placed.</DMSE.LaserMark.PlacedPermanent>
   <DMSE.Missile.TerminalUpdatesRemaining>Terminal updates remaining: {0} / {1}</DMSE.Missile.TerminalUpdatesRemaining>
 
   <DMSE_MissileDecayedAway>{0} has degraded beyond use and fallen apart.</DMSE_MissileDecayedAway>

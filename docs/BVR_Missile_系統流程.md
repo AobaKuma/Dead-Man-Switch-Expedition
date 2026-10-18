@@ -185,7 +185,7 @@ window = Σ(各運作中防禦方搜索雷達的貢獻) × distanceLevel ÷ targ
 - **隱身雙層對衝**：搜索段對衝 `antiStealthLevel`（影響預警窗口）；火控段對衝 `powerLevel`（影響命中率與鎖定時間）。目標 `speed` 只影響火控段。
 - **陣營相對防禦**（非玩家專屬）：以 `ResolveDefender` 找「擁有運作中搜索雷達、且與來襲方敵對」的陣營作防禦方（玩家優先），整波次只由該陣營裝置參與。玩家空投/導彈突擊敵方基地時**會被敵方防空攔截**（`Alerts_PlayerMissiles` 追蹤己方被攔截彈藥）；自家空投不被自家雷達攔截。
 - **人工操作裝置**：早期火控雷達與旋轉發射架掛 `CompMannable`，無人操作時 `Active=false`，不鎖定、不發射、砲塔頭不追蹤。
-- **電子對抗閉環**：敵方導彈可裝反輻射導引頭（`GuidanceType_AntiRadiation`），在落點地圖的**玩家建築**中挑運作中、`powerLevel` 最高的搜索／火控雷達；找不到退化為高能反應，再退化為慣性。雷達可設 `immuneToAntiRadiationSeeker = true` 豁免（1.7 的早期預警雷達即是）。
+- **電子對抗閉環**：導彈可裝反輻射導引頭（`GuidanceType_AntiRadiation`），在落點地圖的**敵對建築**中挑開機、`powerLevel` 最高的搜索／火控雷達（玩家打敵方雷達、敵方打玩家雷達都適用）；找不到退化為電磁訊號，再退化為慣性（B-7）。雷達可設 `immuneToAntiRadiationSeeker = true` 豁免（1.7 的早期預警雷達即是）。
 - **VGE 近防相容層**（`1.7/GravshipExpanded/PointDefence`，僅載入 VGE 時）：為 WingBack 等砲塔加上 VGE 的 `CompPointDefence`，與 `CompTerminalCIWS` 並存且共用砲管耐久；`PointDefenceCompat` 調整半徑加成、非玩家持有時改用 VGE 敵方命中公式並不攔空投。這一層與 BVR 的波次/通道完全不相通。
 - **存檔**：波次/目標經 `ExposeData` 深度持久化；CIWS 連射狀態（`burstShotsLeft`/`nextShotTick`/`burstTargetId`）與各發射器冷卻亦持久化（各平台沿用各自的 Scribe 鍵以維持舊檔相容）。
 
@@ -204,7 +204,8 @@ window = Σ(各運作中防禦方搜索雷達的貢獻) × distanceLevel ÷ targ
   - 數值修正：`explosionRadiusOffset`、`damageDefOverride`、`damageAmountOffset`、`scatterOffset`、`worldSpeedFactorOffset`、`specificImpulseOffset`、`fuelOffset`、`rangeOffset`；舊式酬載欄位（`payloadExplosionRadius` 等）作後備
   - **行為類**（XML `Class=` 指定子類）：
     - `warheadEffect`（8 種）：`ContinuousRod`（攔截 +N×5%）、`ExtendedFuel`（射程 +N×2）、`Airburst`（攔截額外 floor(N/5) 擲骰；對地 N 半徑爆炸）、`TungstenPenetrator`（坍塌厚岩頂）、`Incendiary`、`EMP`、`AnimalBerserk`、`BerserkPulse`
-    - `guidanceType`（7 種）：`Inertial`、`HighEnergy`、`HeatSource`、`AntiRadiation`、`Infrared`、`TV`、`FireControl`。只在敵方來襲路徑（`WorldObject_IncomingMissile`）決定落點；`TV`／`FireControl` 在此路徑退化為慣性
+    - `guidanceType`：`Inertial`、`AntiRadiation`、`HeatSource`（舊名 `Infrared`）、`ElectromagneticSignal`（舊名 `HighEnergy`）、`TV`、`Laser`、`FireControl`。決定導彈抵達後的落點，玩家與敵方發射都適用；只有 `TV` 在玩家發射時改為手動選點（見 B-7）
+  - 彈體另有 `builtInGuidance`：沒有導引部件時用來選目標（1.7 巡飛彈為電視制導），不提供導引能力
     - `payloadEffect`（8 種）：`None`、`HighExplosive`、`Cluster`、`Defoliant`、`FireFoam`、`Antiparticle`、`ToxicGas`、`AirburstTungsten`（射程 ×0.75）
   - 限制：`compatibleBodies`、`researchPrerequisites`、`costList`
 
@@ -212,7 +213,7 @@ window = Σ(各運作中防禦方搜索雷達的貢獻) × distanceLevel ÷ targ
 
 | 彈體 | 分級／發射方式 | 自定義位置 | N | 燃料×比衝 | 槽位 |
 |---|---|---|---|---|---|
-| `DMSE_MissileBody_Loiter` 巡飛彈 | Loitering／Tilt | None | 5 | 60×2 | 無 |
+| `DMSE_MissileBody_Loiter` 巡飛彈 | Loitering／Tilt | None | 5 | 60×2 | 無（內建電視制導） |
 | `DMSE_MissileBody_Light` 輕型導彈 | Light／Both | Item | 3 | 70×2.5 | 彈頭/導引/酬載 |
 | `DMSE_MissileBody_Cruise` 巡航導彈 | Medium／Both | Item | 5 | 100×3 | 彈頭/導引/推進/酬載 |
 | `DMSE_MissileBody_Ballistic` 彈道導彈 | Ballistic／Vertical | Launcher | 8 | 150×3 | 彈頭/導引/酬載 |
@@ -287,11 +288,15 @@ OnArrived（AllowGenerateTargetMap = true：目標據點尚無地圖時會生成
    • map == null → 「未命中」訊息、銷毀
    • 目標據點的陣營非敵對 → 轉敵對
    • GameComponent_MissileEngage 讓該地圖 2 天內不被移除（Patch_ShouldBeRemoved）
-   • 遊戲暫停、鏡頭切到目標地圖，玩家選落點格（取消 → 地圖中心）
+   • 依導引頭決定落點（B-7）：
+       電視制導（config.PlayerChoosesTarget）→ 遊戲暫停、鏡頭切到目標地圖，玩家選落點格（取消 → 地圖中心）
+       其餘導引頭與慣性 → GuidanceType.PickCell 自動鎖定，不暫停，發訊息「{導引}已鎖定目標」
    • SpawnIncoming：生成 MissileIncoming（config 副本、attacker = 玩家）→ 同步 TryRegister（敵方 BVR）
 ```
 
-**敵方發射**（陣地、Debug）：`IncomingMissileUtility.Launch(…, target)` → `WorldObject_IncomingMissile` 飛行 → `OnArrived`（`AllowGenerateTargetMap = false`：只打既有地圖）：落空時若目標是玩家據點發訊息；命中則依 `guidanceType.PickTarget` 自動選格（無效則慣性）→ 生成 `MissileIncoming` → 同步 `TryRegister`；落點為玩家家園時發威脅信件。
+選靶游標與 ITab 裝配面板都會顯示落點方式（「{導引}：抵達後由你選擇落點」或「抵達後自動鎖定目標」）。
+
+**敵方發射**（陣地、Debug）：`IncomingMissileUtility.Launch(…, target)` → `WorldObject_IncomingMissile` 飛行 → `OnArrived`（`AllowGenerateTargetMap = false`：只打既有地圖）：落空時若目標是玩家據點發訊息；命中則以 `GuidanceType.PickCell` 自動選格（敵方的電視制導沒有操作員，退化為慣性）→ 生成 `MissileIncoming` → 同步 `TryRegister`；落點為玩家家園時發威脅信件。
 
 **落點結算**（`MissileIncoming.Impact`，先過目標地圖 BVR，見 A-3）：Scatter ≥ 1 時隨機偏移落點 → 主彈體爆炸 → `warheadEffect.Apply` → `payloadEffect.Apply`（或舊式酬載數值欄位後備）→ 爆炸閃光（`WeatherEvent_MissileFlash`）。無有效 config 時以 5 格 Bomb 後備爆炸。
 
@@ -303,11 +308,34 @@ OnArrived（AllowGenerateTargetMap = true：目標據點尚無地圖時會生成
 
 ### B-6. 跨圖層打擊與終端更新（逃逸區）
 
-- **導引能力** `MissileConfig.HasTerminalGuidance`：導引槽部件的 `ProvidesTerminalGuidance`。有 `guidanceType` 時看 `GuidanceType.TerminalGuidance`（慣性制導 = false，其餘 = true）；沒有 `guidanceType` 的部件看 XML 欄位 `terminalGuidance`（精確導引頭 `DMSE_Guidance_Precision` 設為 true）。未裝導引部件，或彈體沒有導引槽（巡飛彈），都算無導引能力。
+- **導引能力** `MissileConfig.HasTerminalGuidance`：導引槽部件的 `ProvidesTerminalGuidance`。有 `guidanceType` 時看 `GuidanceType.TerminalGuidance`（慣性制導 = false，其餘 = true）；沒有 `guidanceType` 的部件看 XML 欄位 `terminalGuidance`（1.7 的導引部件都已指定 `guidanceType`，巡航的慣性導引例外，視為無導引能力）。未裝導引部件，或彈體沒有導引槽（巡飛彈），都算無導引能力；彈體的 `builtInGuidance`（B-7）只影響選目標，不提供導引能力。
 - **跨圖層打擊**（地表 ↔ 軌道）：必須具導引能力，且射程涵蓋含跨圖層成本的距離。玩家選靶、敵方陣地選目標都套用；火砲無導引，一律不可跨圖層。
 - **終端更新**：世界航跡鎖定 `targetParent`，每 60 tick 檢查一次；目標換了 tile 時，具導引能力的導彈可從當下位置改飛新位置。次數上限 = 彈體 `terminalUpdates`（輕型 1、巡航 3、彈道 2），且「已飛航程 + 新航段」不得超過射程。次數用完或燃料不足就沿最後位置飛行，抵達時目標已不在即落空——這就是**逃逸區**：目標在導彈用完更新次數後再移動，或移出剩餘射程，就能躲掉。
 - 世界航跡的檢視字串顯示剩餘更新次數；ITab 裝配面板顯示導引能力與更新次數。
 - **落空**：抵達時目標不在，或打擊的 tile 上沒有地圖也沒有據點 → 銷毀並發訊息。玩家選靶時，若該處沒有目標，游標旁會提示「將會落空」。
+
+### B-7. 導引頭與目標選擇
+
+導彈抵達目標地圖後，`GuidanceType.PickCell(config, map, attacker)` 依 `MissileConfig.TargetingGuidance`（導引部件的 `guidanceType`，沒有時用彈體的 `builtInGuidance`）選落點；導引頭找不到目標時退化為慣性。玩家與敵方發射都套用同一套規則，唯一例外是電視制導：玩家發射時改為手動選點。
+
+「敵對」= 有陣營、不是攻擊方、且與攻擊方敵對（`GuidanceType.IsHostileTarget`）；建築同時檢查玩家與非玩家建築，所以玩家打敵方據點、敵方打玩家都適用。
+
+| 導引頭 | 類別 | 鎖定規則 | 找不到時 | 1.7 部件 |
+|---|---|---|---|---|
+| 慣性 | `GuidanceType_Inertial`（或無導引部件） | 隨機一棟敵對建築 → 隨機一名敵對 Pawn → 地圖中心 | — | 各彈體的慣性導引 |
+| 反輻射 | `GuidanceType_AntiRadiation` | 開機（`Active`）的敵對搜索／火控雷達中 `powerLevel` 最高者，同級比耗電量；`immuneToAntiRadiationSeeker` 的雷達不列入 | 電磁訊號 → 慣性 | 輕型 `DMSE_Light_Guidance_AntiRadiation` |
+| 熱訊號 | `GuidanceType_HeatSource`（`Infrared` 為舊名別名） | 最熱的室內房間若比室外高出 `minRoomTempAboveOutdoor`（15°C）→ 該房間內一格；否則體型最大的 Pawn（攻擊方與非敵對陣營除外，野生動物也算） | 慣性 | 輕型 `DMSE_Light_Guidance_IR`（熱訊號導引頭） |
+| 電磁訊號 | `GuidanceType_ElectromagneticSignal`（`HighEnergy` 為舊名別名） | 通電中、耗電量（`-PowerOutput`）最大的敵對建築 | 慣性 | 巡航 `DMSE_Guidance_EMSignal` |
+| 電視制導 | `GuidanceType_TV`（`PlayerChoosesTarget = true`） | 玩家發射：抵達後暫停，自由選點；敵方發射：慣性 | — | 巡航 `DMSE_Guidance_Precision`（改名「電視制導」）、巡飛彈內建 |
+| 雷射 | `GuidanceType_Laser` | 目標地圖上攻擊方自己、仍有效的雷射引導點中最近放置者 | 慣性 | 輕型 `DMSE_Light_Guidance_Laser`、巡航 `DMSE_Guidance_Laser`、彈道 `DMSE_Ballistic_Guidance_Laser` |
+| 火控 | `GuidanceType_FireControl` | 慣性（散布較小；主要語意是攔截彈） | — | 彈道 `DMSE_Ballistic_Guidance_FireControl` |
+
+**雷射引導標點**（`.source/DMSE/Scorer/Guidance/LaserDesignator.cs`、`1.7/Defs/ThingDefs_Misc/Weapons/DMSE_LaserDesignator.xml`）：
+
+- `DMSE_LaserDesignatorMark`（`LaserDesignatorMark`）：Ethereal、`useHitPoints = false`，不會被攻擊、搬運、拆除或炸毀；記錄標定方陣營 `owner`、放置 tick 與失效 tick，到時自動消失（預設 5000 ticks = 2 遊戲小時）。以原版 `UI/Overlays/TargetHighlight_Square` 染紅並脈動顯示；檢視字串顯示標定方與剩餘時間。
+- **裝備**：`DMSE_Gun_LaserDesignator`（雷射目標標定器，機械印表機製作，研究「積體電路」）。射出 `DMSE_Bullet_LaserDesignator`（`Projectile_LaserDesignator`），不造成傷害，命中處生成屬於射手陣營的標點；被護盾擋下則不生成。`ai_IsWeapon = false`、沒有 `weaponTags`：AI 不會拿它當武器，也不會出現在陣營武器池。標點 def 與存在時間由彈頭的 `ModExtension_LaserDesignator` 設定。貼圖暫用 C95 手槍。
+- **能力**：`CompProperties_AbilityLaserDesignate`（`CompAbilityEffect_LaserDesignate`）可掛在任何 AbilityDef 上，對目標格施放即生成屬於施放者陣營的標點；目前**沒有隨附 AbilityDef**，需要時在 XML 定義並賦予（植入物、服裝等），能力的 `verbProperties.targetParams.canTargetLocations` 要設為 true。
+- 用法：先派人到目標地圖標定，再從基地發射雷射制導導彈；導彈抵達時標點必須仍有效。
 
 ---
 
@@ -407,7 +435,7 @@ BVR 是**防禦**，裝配/發射與火砲是**進攻**，但已互相牽動：
 `CompMissileLauncher`（抽象基類 + `CompMissileLauncher_WorldTargeting`）、`Building_MissileRack`（含 `MissileRackExtension`）、`CompMissileRackRenderer`
 
 **導彈裝配/發射（`.source/DMSE/Scorer/`）**
-`Assembly/MissileDefs`、`Assembly/MissileConfig`、`Assembly/CompMissileConfig`、`Assembly/WarheadEffect`、`Assembly/PayloadEffect`、`Assembly/GuidanceType`、`Assembly/MissileLauncherExtension`（含 `MissileTaxonomy`）、`Assembly/ITab_MissileAssembly`、`Assembly/ITab_MissileInventory`、`Assembly/MissileAssemblyUtility`（含 `DMSE_MissileJobDefOf`）、`Assembly/WorkGiver_AssembleMissile`、`Assembly/JobDriver_DeliverMissileResource`、`Assembly/JobDriver_AssembleMissile`、`Assembly/WorkGiver_LoadMissileLauncher`、`Assembly/JobDriver_LoadMissileLauncher`、`Assembly/Patch_Refuel_CarryConfig`、`CompScorer`（`CompMissileLauncher_Scorer`）、`CompMissileRailLauncher`（`CompMissileLauncher_Rail`）、`Ballistic/CompBallisticLauncher`（`CompMissileLauncher_Ballistic`）、`Ballistic/WorkGiver_AssembleBallisticSilo`、`Ballistic/JobDriver_AssembleBallisticSilo`、`ScorerProjectile`、`ScorerProjectile_WorldObject`、`GameComponent_MissileEngage`、`Patch_ShouldBeRemoved`、`CompEffecterColdLaunch`、`CompEffecterHotLaunch`
+`Assembly/MissileDefs`、`Assembly/MissileConfig`、`Assembly/CompMissileConfig`、`Assembly/WarheadEffect`、`Assembly/PayloadEffect`、`Assembly/GuidanceType`、`Assembly/MissileLauncherExtension`（含 `MissileTaxonomy`）、`Assembly/ITab_MissileAssembly`、`Assembly/ITab_MissileInventory`、`Assembly/MissileAssemblyUtility`（含 `DMSE_MissileJobDefOf`）、`Assembly/WorkGiver_AssembleMissile`、`Assembly/JobDriver_DeliverMissileResource`、`Assembly/JobDriver_AssembleMissile`、`Assembly/WorkGiver_LoadMissileLauncher`、`Assembly/JobDriver_LoadMissileLauncher`、`Assembly/Patch_Refuel_CarryConfig`、`CompScorer`（`CompMissileLauncher_Scorer`）、`CompMissileRailLauncher`（`CompMissileLauncher_Rail`）、`Ballistic/CompBallisticLauncher`（`CompMissileLauncher_Ballistic`）、`Ballistic/WorkGiver_AssembleBallisticSilo`、`Ballistic/JobDriver_AssembleBallisticSilo`、`ScorerProjectile`、`ScorerProjectile_WorldObject`、`MissileWorldObject`、`MissileWorldUtility`、`Guidance/LaserDesignator`（標點、標定彈、標定能力 Comp）、`GameComponent_MissileEngage`、`Patch_ShouldBeRemoved`、`CompEffecterColdLaunch`、`CompEffecterHotLaunch`
 
 **NPC 導彈陣地（`.source/DMSE/MissileBase/`）**
 `WorldObjectComp_MissileBase`、`MapComponent_MissileBase`、`MissileAutoFillUtility`、`SitePartWorker_MissileBase`、`GenStep_MissileBaseCrew`、`GenStep_MissileBaseFog`、`LordJob_MissileCrewDuty`、`Patch_MissileBaseReentry`、`Patch_MissileBaseShuttleBlock`、`DebugActions_MissileBase`
@@ -419,7 +447,7 @@ BVR 是**防禦**，裝配/發射與火砲是**進攻**，但已互相牽動：
 `PointDefenceCompat`（含 `ModExtension_PointDefence` 與 `CompPointDefence` 補丁）
 
 **Defs（`1.7/`）**
-`Defs/ThingDefs_Buildings/`：`DMSE_AcousticEarlyWarningRadar.xml`、`DMSE_EarlyFireControlRadar.xml`、`DMSE_Misc.xml`（相控陣雷達）、`DMSE_RotaryMissileLauncher.xml`、`DMSE_LightMissileLauncher.xml`、`DMSE_Security.xml`（CIWS）、`DMSE_Security_Missile.xml`（巡航發射器/攔截彈 skyfaller/巡航落點導彈/來襲導彈世界物件）、`DMSE_LoiteringLauncher.xml`、`DMSE_BallisticSilo.xml`、`DMSE_MissileRack.xml`（儲存架）、`DMSE_LauncherBases.xml`（發射平台建造限制）；`Defs/ThingDefs_Items/DMSE_Manufactured.xml`（導彈物品 + ITab）；`Defs/Missile/DMSE_MissileAssembly.xml`（巡航彈體+部件）、`DMSE_LightMissile.xml`、`DMSE_BallisticMissile.xml`、`DMSE_LoiteringMunition.xml`、`DMSE_MissileAssembly_Jobs.xml`（JobDef + WorkGiverDef）；`Defs/WorldObjects_MissileBase.xml`（導彈陣地）；`GravshipExpanded/PointDefence/Patches/Patch_VGE_PointDefence.xml`
+`Defs/ThingDefs_Buildings/`：`DMSE_AcousticEarlyWarningRadar.xml`、`DMSE_EarlyFireControlRadar.xml`、`DMSE_Misc.xml`（相控陣雷達）、`DMSE_RotaryMissileLauncher.xml`、`DMSE_LightMissileLauncher.xml`、`DMSE_Security.xml`（CIWS）、`DMSE_Security_Missile.xml`（巡航發射器/攔截彈 skyfaller/巡航落點導彈/來襲導彈世界物件）、`DMSE_LoiteringLauncher.xml`、`DMSE_BallisticSilo.xml`、`DMSE_MissileRack.xml`（儲存架）、`DMSE_LauncherBases.xml`（發射平台建造限制）；`Defs/ThingDefs_Misc/Weapons/DMSE_LaserDesignator.xml`（雷射引導標點、標定彈、雷射目標標定器）；`Defs/ThingDefs_Items/DMSE_Manufactured.xml`（導彈物品 + ITab）；`Defs/Missile/DMSE_MissileAssembly.xml`（巡航彈體+部件）、`DMSE_LightMissile.xml`、`DMSE_BallisticMissile.xml`、`DMSE_LoiteringMunition.xml`、`DMSE_MissileAssembly_Jobs.xml`（JobDef + WorkGiverDef）；`Defs/WorldObjects_MissileBase.xml`（導彈陣地）；`GravshipExpanded/PointDefence/Patches/Patch_VGE_PointDefence.xml`
 
 ---
 
@@ -454,6 +482,15 @@ BVR 是**防禦**，裝配/發射與火砲是**進攻**，但已互相牽動：
 - 新增 1.7 Def 配置與數值試算、敵方導彈來源（NPC 導彈陣地）、VGE 近防相容層。
 - 移除失效引用：`docs/導彈四階分級架構.md`（07-06 已刪除，四階分級摘要併入 B-1）、`docs/artillery-expansion-plan.md`（repo 中不存在）。
 - `README.md` 的 BVR／發射器摘要同步改用現行類名；CIWS 一欄移除「85 式多用途速射系統」（那是 Dawnblade Striker 的砲，沒有 `CompTerminalCIWS`）。
+
+### 2026-10-18：導引頭選目標機制（新功能）
+
+1. 落點選擇統一由 `GuidanceType.PickCell` 決定，玩家與敵方發射共用。玩家導彈只有電視制導（含巡飛彈內建）會暫停讓玩家選點，其餘導引頭與慣性一律自動鎖定（B-4、B-7）。過去玩家導彈不論導引頭都手動選點，導引頭只影響敵方。
+2. 鎖定規則重寫：反輻射改看全部敵對建築（原本只看玩家建築），後備從「發電量最大」改為電磁訊號（耗電量最大）；熱訊號以房間溫差門檻決定打房間或體型最大的 Pawn（原本先打 Pawn）；新增電磁訊號與雷射制導；慣性改為打隨機敵對建築（原本以 `allBuildingsColonist` 判斷，玩家發射時幾乎找不到目標）。
+3. 內容調整：`DMSE_Guidance_Precision` 改為電視制導並改名（defName 不變，舊存檔的導彈照常載入）；`DMSE_Light_Guidance_IR` 改用熱訊號邏輯並改名「熱訊號導引頭」；新增 4 個導引部件（輕型雷射、巡航電磁訊號、巡航雷射、彈道雷射）；巡飛彈加 `builtInGuidance = TV`，維持手動選點。
+4. 新增雷射引導標點、雷射標定彈、雷射目標標定器（裝備）與標定能力 Comp（未隨附 AbilityDef）。標定器貼圖暫用 C95 手槍。
+5. `GuidanceType_Infrared`／`GuidanceType_HighEnergy` 保留為舊名別名，行為分別等同熱訊號與電磁訊號。
+6. 驗證：1.7 編譯 0 警告 0 錯誤；所有異動 XML 可解析；新 Keyed 鍵在三語齊全、DefInjected 的 defName 皆存在。**尚未進遊戲實測**。
 
 ### 2026-10-18：世界 tile 圖層與跨圖層打擊（9c3f5c5，已修正）
 
@@ -497,3 +534,7 @@ BVR 是**防禦**，裝配/發射與火砲是**進攻**，但已互相牽動：
 13. **跨圖層**：地表陣地只有慣性制導彈時不攻擊軌道據點；換成具導引能力且射程足夠的導彈才會攻擊。玩家從軌道選地表目標：慣性/無導引彈被拒並顯示原因，導引彈可發射；火砲選其他圖層被拒。軌道地圖存在導彈陣地時，穿梭機不再跳紅字。
 14. **逃逸區**：導彈飛行中移動目標（之後的轉移飛行船，或以 Debug 改動目標 MapParent 的 Tile）→ 導彈在更新次數內改飛新位置（檢視字串的次數遞減）；次數用完後再移動 → 抵達時落空並發訊息。
 15. **落空**：玩家對空白 tile 發射 → 游標提示將落空，抵達時落空且不生成地圖；敵方導彈在途時玩家放棄該據點 → 落空，不生成營地。
+16. **導引頭選目標（玩家）**：選靶游標與 ITab 顯示落點方式；電視制導巡航彈與巡飛彈抵達後暫停手選；反輻射彈打敵方開機中功率最高的雷達；熱訊號彈在有暖氣房間的據點打房間、否則打最大的生物；電磁訊號彈打耗電最多的建築；慣性彈打隨機敵對建築，且不暫停遊戲、發「已鎖定目標」訊息。
+17. **導引頭選目標（敵方）**：導彈陣地以反輻射／熱訊號彈打玩家據點時落點符合規則；早期預警雷達（豁免）不被反輻射選中；敵方電視制導彈退化為慣性。
+18. **雷射標點**：小人裝備雷射目標標定器、征召後對地面標定 → 出現紅色脈動標點，檢視字串顯示剩餘時間、到時消失；爆炸與攻擊不會打掉它；雷射制導導彈鎖定最近一個我方標點，沒有標點時退化為慣性；敵方標點不會被我方導彈鎖定。
+19. **舊存檔**：在途的精確導引巡航彈（現為電視制導）讀檔後照常飛行，抵達時改為手動選點。

@@ -178,6 +178,16 @@
   <DMSE.Missile.IncomingLetterDesc>{0} 发射的导弹正在接近，即将打击殖民地。</DMSE.Missile.IncomingLetterDesc>
   <DMSE.Missile.Missed>我方导弹找不到目标，已落空。</DMSE.Missile.Missed>
   <DMSE.Missile.IncomingMissed>{0} 发射的导弹失去目标，已落空。</DMSE.Missile.IncomingMissed>
+
+  <!-- 导引头选目标 -->
+  <DMSE.Missile.SeekerLocked>{0}已锁定目标，导弹正在落下。</DMSE.Missile.SeekerLocked>
+  <DMSE.Guidance.Inertial>惯性导引</DMSE.Guidance.Inertial>
+  <DMSE.Guidance.ManualTarget>{0}：抵达后由你选择落点</DMSE.Guidance.ManualTarget>
+  <DMSE.Guidance.AutoTarget>{0}：抵达后自动锁定目标</DMSE.Guidance.AutoTarget>
+  <DMSE.LaserMark.Inspect>标定方：{0}\n剩余时间：{1}</DMSE.LaserMark.Inspect>
+  <DMSE.LaserMark.InspectPermanent>标定方：{0}</DMSE.LaserMark.InspectPermanent>
+  <DMSE.LaserMark.Placed>已标定激光引导点，{0}后失效。</DMSE.LaserMark.Placed>
+  <DMSE.LaserMark.PlacedPermanent>已标定激光引导点。</DMSE.LaserMark.PlacedPermanent>
   <DMSE.Missile.TerminalUpdatesRemaining>剩余终端更新：{0} / {1}</DMSE.Missile.TerminalUpdatesRemaining>
 
   <DMSE_MissileDecayedAway>{0} 已劣化至无法使用而解体。</DMSE_MissileDecayedAway>

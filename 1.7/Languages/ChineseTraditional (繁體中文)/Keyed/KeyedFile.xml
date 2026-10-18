@@ -178,6 +178,16 @@
   <DMSE.Missile.IncomingLetterDesc>{0} 發射的導彈正在接近，即將打擊殖民地。</DMSE.Missile.IncomingLetterDesc>
   <DMSE.Missile.Missed>我方導彈找不到目標，已落空。</DMSE.Missile.Missed>
   <DMSE.Missile.IncomingMissed>{0} 發射的導彈失去目標，已落空。</DMSE.Missile.IncomingMissed>
+
+  <!-- 導引頭選目標 -->
+  <DMSE.Missile.SeekerLocked>{0}已鎖定目標，導彈正在落下。</DMSE.Missile.SeekerLocked>
+  <DMSE.Guidance.Inertial>慣性導引</DMSE.Guidance.Inertial>
+  <DMSE.Guidance.ManualTarget>{0}：抵達後由你選擇落點</DMSE.Guidance.ManualTarget>
+  <DMSE.Guidance.AutoTarget>{0}：抵達後自動鎖定目標</DMSE.Guidance.AutoTarget>
+  <DMSE.LaserMark.Inspect>標定方：{0}\n剩餘時間：{1}</DMSE.LaserMark.Inspect>
+  <DMSE.LaserMark.InspectPermanent>標定方：{0}</DMSE.LaserMark.InspectPermanent>
+  <DMSE.LaserMark.Placed>已標定雷射引導點，{0}後失效。</DMSE.LaserMark.Placed>
+  <DMSE.LaserMark.PlacedPermanent>已標定雷射引導點。</DMSE.LaserMark.PlacedPermanent>
   <DMSE.Missile.TerminalUpdatesRemaining>剩餘終端更新：{0} / {1}</DMSE.Missile.TerminalUpdatesRemaining>
 
   <DMSE_MissileDecayedAway>{0} 已劣化至無法使用而解體。</DMSE_MissileDecayedAway>

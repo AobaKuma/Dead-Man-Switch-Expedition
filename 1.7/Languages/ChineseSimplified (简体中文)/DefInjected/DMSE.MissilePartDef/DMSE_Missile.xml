@@ -9,8 +9,12 @@
   <DMSE_Warhead_EMP.description>在大范围内瘫痪机械体并震晕目标，不造成致命爆炸。</DMSE_Warhead_EMP.description>
   <DMSE_Guidance_Inertial.label>惯性导引</DMSE_Guidance_Inertial.label>
   <DMSE_Guidance_Inertial.description>基础导引。精度一般。</DMSE_Guidance_Inertial.description>
-  <DMSE_Guidance_Precision.label>精确导引</DMSE_Guidance_Precision.label>
-  <DMSE_Guidance_Precision.description>末端寻标导引头。大幅收敛落点散布。</DMSE_Guidance_Precision.description>
+  <DMSE_Guidance_Precision.label>电视制导</DMSE_Guidance_Precision.label>
+  <DMSE_Guidance_Precision.description>由操作员通过数据链导引的电视导引头。导弹抵达目标地图时游戏暂停，由你自由选择落点。大幅收敛落点散布。敌方发射的电视制导弹没有操作员，会退回惯性导引。</DMSE_Guidance_Precision.description>
+  <DMSE_Guidance_EMSignal.label>电磁信号导引头</DMSE_Guidance_EMSignal.label>
+  <DMSE_Guidance_EMSignal.description>追踪电线与机械设备电磁辐射的被动导引头。锁定目标地图上耗电量最大的运作中敌方建筑；没有通电建筑时退回惯性导引。</DMSE_Guidance_EMSignal.description>
+  <DMSE_Guidance_Laser.label>激光导引头</DMSE_Guidance_Laser.label>
+  <DMSE_Guidance_Laser.description>半主动激光导引头。锁定我方以激光标定器在目标地图上最近一次标定的激光引导点；没有标定点时退回惯性导引。</DMSE_Guidance_Laser.description>
   <DMSE_Propulsion_Standard.label>标准发动机</DMSE_Propulsion_Standard.label>
   <DMSE_Propulsion_Standard.description>基础固态燃料发动机。</DMSE_Propulsion_Standard.description>
   <DMSE_Propulsion_Booster.label>增推发动机</DMSE_Propulsion_Booster.label>
@@ -27,10 +31,12 @@
   <DMSE_Light_Warhead_ContinuousRod.description>一圈在引爆时向外展开的钢杆，针对空中目标将破片密度最大化。作为防空拦截弹使用时提供拦截命中率加成。</DMSE_Light_Warhead_ContinuousRod.description>
   <DMSE_Light_Guidance_Inertial.label>惯性导引</DMSE_Light_Guidance_Inertial.label>
   <DMSE_Light_Guidance_Inertial.description>基础捷联式惯性参考单元。没有导引头，依靠预先设定的飞行路径。散布不变。</DMSE_Light_Guidance_Inertial.description>
-  <DMSE_Light_Guidance_IR.label>红外线导引头</DMSE_Light_Guidance_IR.label>
-  <DMSE_Light_Guidance_IR.description>追踪体热的被动红外线导引头。若目标地图上有殖民者，则锁定最近的一名；否则退回惯性导引。</DMSE_Light_Guidance_IR.description>
+  <DMSE_Light_Guidance_IR.label>热信号导引头</DMSE_Light_Guidance_IR.label>
+  <DMSE_Light_Guidance_IR.description>追踪最强热信号的被动红外线导引头。最热的室内房间比室外高出 15°C 以上时锁定该房间，否则锁定地图上体型最大的生物；两者都找不到时退回惯性导引。</DMSE_Light_Guidance_IR.description>
   <DMSE_Light_Guidance_AntiRadiation.label>反辐射导引头</DMSE_Light_Guidance_AntiRadiation.label>
-  <DMSE_Light_Guidance_AntiRadiation.description>追踪主动雷达信号。优先锁定目标地图上功率最高的搜索或火控雷达，其次退回高能量目标。</DMSE_Light_Guidance_AntiRadiation.description>
+  <DMSE_Light_Guidance_AntiRadiation.description>追踪主动雷达信号。锁定目标地图上开机中、功率等级最高的敌方雷达；被动式声学阵列不会被它发现。找不到雷达时改锁耗电量最大的建筑，再退回惯性导引。</DMSE_Light_Guidance_AntiRadiation.description>
+  <DMSE_Light_Guidance_Laser.label>激光导引头</DMSE_Light_Guidance_Laser.label>
+  <DMSE_Light_Guidance_Laser.description>半主动激光导引头。锁定我方以激光标定器在目标地图上最近一次标定的激光引导点；没有标定点时退回惯性导引。</DMSE_Light_Guidance_Laser.description>
   <DMSE_Light_Payload_None.label>无酬载</DMSE_Light_Payload_None.label>
   <DMSE_Light_Payload_None.description>没有次级酬载。导弹完全依靠主弹头的引爆。</DMSE_Light_Payload_None.description>
   <DMSE_Light_Payload_HighExplosive.label>高爆酬载</DMSE_Light_Payload_HighExplosive.label>
@@ -47,6 +53,8 @@
   <DMSE_Ballistic_Guidance_Inertial.description>捷联式惯性参考单元。在热核当量下，高精度并非必要。</DMSE_Ballistic_Guidance_Inertial.description>
   <DMSE_Ballistic_Guidance_FireControl.label>火控导引</DMSE_Ballistic_Guidance_FireControl.label>
   <DMSE_Ballistic_Guidance_FireControl.description>由殖民地火控雷达网络辅助的末端导引。大幅收敛落点散布，适合精确打击。</DMSE_Ballistic_Guidance_FireControl.description>
+  <DMSE_Ballistic_Guidance_Laser.label>激光末端导引头</DMSE_Ballistic_Guidance_Laser.label>
+  <DMSE_Ballistic_Guidance_Laser.description>再入载具用的半主动激光导引头。锁定我方以激光标定器在目标地图上最近一次标定的激光引导点；没有标定点时退回惯性导引。</DMSE_Ballistic_Guidance_Laser.description>
   <DMSE_Ballistic_Payload_None.label>无酬载</DMSE_Ballistic_Payload_None.label>
   <DMSE_Ballistic_Payload_None.description>没有次级酬载。对弹道打击而言，主弹头通常已经足够。</DMSE_Ballistic_Payload_None.description>
   <DMSE_Ballistic_Payload_Cluster.label>集束酬载</DMSE_Ballistic_Payload_Cluster.label>

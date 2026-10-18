@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <DMSE_LaserDesignatorMark.label>激光引导点</DMSE_LaserDesignatorMark.label>
+  <DMSE_LaserDesignatorMark.description>以激光标定器照射出的目标点。同阵营发射的激光制导导弹会锁定目标地图上最近一次标定的引导点。无法被破坏，一段时间后自动消失。</DMSE_LaserDesignatorMark.description>
+
+  <DMSE_Bullet_LaserDesignator.label>标定光束</DMSE_Bullet_LaserDesignator.label>
+
+  <DMSE_Gun_LaserDesignator.label>激光目标标定器</DMSE_Gun_LaserDesignator.label>
+  <DMSE_Gun_LaserDesignator.description>手持式激光标定器。照射地面或目标后，该处会留下约两个小时的激光引导点；你的殖民地发射的激光制导导弹会锁定目标地图上最近一次标定的引导点。不造成伤害。</DMSE_Gun_LaserDesignator.description>
+  <DMSE_Gun_LaserDesignator.verbs.Verb_Shoot.label>标定</DMSE_Gun_LaserDesignator.verbs.Verb_Shoot.label>
+  <DMSE_Gun_LaserDesignator.tools.grip.label>握把</DMSE_Gun_LaserDesignator.tools.grip.label>
+
+</LanguageData>

@@ -8,11 +8,14 @@ namespace DMSE
     /// <summary>
     /// 導引頭行為的抽象基底類別。
     /// 在 MissilePartDef.guidanceType 欄位中以 XML Class 屬性指定子類別，例如：
-    /// <c>&lt;guidanceType Class="DMSE.GuidanceType_TV" /&gt;</c>
+    /// <c>&lt;guidanceType Class="DMSE.GuidanceType_TV" /&gt;</c>；
+    /// 沒有導引槽的彈體可用 <see cref="MissileBodyDef.builtInGuidance"/> 指定選目標方式。
     ///
-    /// 由 WorldObject_IncomingMissile.PickTargetCell() 呼叫以選擇落點格。
-    /// 玩家發射（Scorer 流程）時玩家已在世界地圖選靶，目前不重新選格。
-    /// 電視制導在敵方使用時退化為慣性制導（由子類別負責處理）。
+    /// 導彈抵達目標地圖時決定落點（<see cref="PickCell"/>）：
+    ///   - 敵方與玩家發射一律由 <see cref="PickTarget"/> 自動鎖定；
+    ///   - 唯一例外是 <see cref="PlayerChoosesTarget"/> 為 true 的導引頭（電視制導）：玩家發射時暫停遊戲讓玩家選點，
+    ///     敵方發射時退化為慣性。
+    /// 找不到符合的目標時回傳 <see cref="IntVec3.Invalid"/>，由 <see cref="PickCell"/> 退化為慣性邏輯。
     /// </summary>
     public abstract class GuidanceType
     {
@@ -31,56 +34,103 @@ namespace DMSE
         /// </summary>
         public virtual bool TerminalGuidance => true;
 
+        /// <summary>玩家發射時是否由玩家手動選擇落點（電視制導）。其餘導引頭一律自動鎖定。</summary>
+        public virtual bool PlayerChoosesTarget => false;
+
         /// <summary>可選的 Def 驗證。</summary>
         public virtual IEnumerable<string> ConfigErrors(MissilePartDef parent)
         {
             yield break;
         }
 
-        // ---- 共用靜態輔助 ----
+        // ---- 落點選擇入口 ----
 
-        /// <summary>標準慣性制導：隨機敵對建築，次選隨機 Pawn，最後取地圖中心。</summary>
+        /// <summary>
+        /// 依導彈設定的導引頭（<see cref="MissileConfig.TargetingGuidance"/>）在目標地圖上自動選擇落點；
+        /// 導引頭找不到目標或沒有導引頭時退化為慣性制導。
+        /// </summary>
+        public static IntVec3 PickCell(MissileConfig config, Map map, Faction attacker)
+        {
+            float N = config?.PayloadCapacity ?? 5f;
+            GuidanceType guidance = config?.TargetingGuidance;
+            if (guidance != null)
+            {
+                IntVec3 result = guidance.PickTarget(N, map, attacker);
+                if (result.IsValid && result.InBounds(map)) { return result; }
+            }
+            return InertialTarget(map, attacker);
+        }
+
+        // ---- 共用：目標篩選 ----
+
+        /// <summary>
+        /// 是否為攻擊方的打擊對象：有陣營、不是攻擊方本身，且與攻擊方敵對。
+        /// 攻擊方未知時，任何有陣營者都算。
+        /// </summary>
+        public static bool IsHostileTarget(Faction owner, Faction attacker)
+        {
+            if (owner == null) { return false; }
+            if (attacker == null) { return true; }
+            return owner != attacker && owner.HostileTo(attacker);
+        }
+
+        /// <summary>目標地圖上屬於攻擊方敵人的建築（玩家與非玩家建築都會檢查）。</summary>
+        public static IEnumerable<Building> HostileBuildings(Map map, Faction attacker)
+        {
+            List<Building> colonist = map.listerBuildings.allBuildingsColonist;
+            for (int i = 0; i < colonist.Count; i++)
+            {
+                if (IsHostileTarget(colonist[i].Faction, attacker)) { yield return colonist[i]; }
+            }
+            List<Building> others = map.listerBuildings.allBuildingsNonColonist;
+            for (int i = 0; i < others.Count; i++)
+            {
+                if (IsHostileTarget(others[i].Faction, attacker)) { yield return others[i]; }
+            }
+        }
+
+        /// <summary>標準慣性制導：隨機一棟敵對建築，次選隨機一名敵對 Pawn，最後取地圖中心。</summary>
         public static IntVec3 InertialTarget(Map map, Faction attacker)
         {
-            // 建築：優先選玩家陣營（或非攻擊方）的建築
-            List<Building> buildings = map.listerBuildings.allBuildingsColonist;
-            if (attacker != null && !attacker.IsPlayer)
+            if (HostileBuildings(map, attacker).TryRandomElement(out Building building))
             {
-                // 攻擊方非玩家 → 打玩家建築
-                if (buildings != null && buildings.Count > 0)
-                {
-                    return buildings.RandomElement().Position;
-                }
+                return building.Position;
             }
-            else
+            if (map.mapPawns.AllPawnsSpawned
+                .Where(p => !p.Dead && IsHostileTarget(p.Faction, attacker))
+                .TryRandomElement(out Pawn pawn))
             {
-                // 攻擊方是玩家（或未知）→ 打非玩家建築
-                List<Building> enemyBuildings = map.listerBuildings.allBuildingsColonist
-                    .Where(b => b.Faction != null && b.Faction != attacker)
-                    .ToList();
-                if (enemyBuildings.Count > 0) { return enemyBuildings.RandomElement().Position; }
+                return pawn.Position;
             }
-
-            // 次選殖民者 Pawn
-            if (buildings != null && buildings.Count > 0)
-            {
-                return buildings.RandomElement().Position;
-            }
-
-            List<Pawn> pawns = map.mapPawns.FreeColonistsSpawned;
-            if (pawns != null && pawns.Count > 0)
-            {
-                return pawns.RandomElement().Position;
-            }
-
             return map.Center;
+        }
+
+        /// <summary>電磁訊號：耗電量最大的運作中敵對建築；沒有則回傳 Invalid。</summary>
+        public static IntVec3 HighestPowerDrawTarget(Map map, Faction attacker)
+        {
+            Building best = null;
+            float bestDraw = 0f;
+            foreach (Building b in HostileBuildings(map, attacker))
+            {
+                float draw = PowerDraw(b);
+                if (draw > bestDraw) { bestDraw = draw; best = b; }
+            }
+            return best != null ? best.Position : IntVec3.Invalid;
+        }
+
+        /// <summary>建築目前的耗電量（瓦）；未通電或為發電設施時為 0。</summary>
+        public static float PowerDraw(Building b)
+        {
+            CompPowerTrader power = b.TryGetComp<CompPowerTrader>();
+            if (power == null || !power.PowerOn) { return 0f; }
+            return power.PowerOutput < 0f ? -power.PowerOutput : 0f;
         }
     }
 
     // ============================================================
     //  慣性制導（Inertial）
-    //  默認：隨機敵對建築，Scatter 由 config.Scatter 決定（可為正值）。
-    //  此為所有無導引部件時的後備行為，通常不需要顯式指定。
+    //  隨機一棟敵對建築，散布由 config.Scatter 決定。
+    //  也是沒有導引部件、導引頭找不到目標時的後備行為。
     // ============================================================
     public class GuidanceType_Inertial : GuidanceType
     {
@@ -94,72 +144,10 @@ namespace DMSE
     }
 
     // ============================================================
-    //  高能反應制導（High Energy Reactive）
-    //  尋找地圖中發電量最大的敵對建築；找不到則慣性。
-    // ============================================================
-    public class GuidanceType_HighEnergy : GuidanceType
-    {
-        public override IntVec3 PickTarget(float N, Map map, Faction attacker)
-        {
-            Building best = null;
-            float bestPower = float.MinValue;
-
-            foreach (Building b in map.listerBuildings.allBuildingsColonist)
-            {
-                if (attacker != null && b.Faction == attacker) { continue; }
-                CompPowerTrader power = b.TryGetComp<CompPowerTrader>();
-                if (power == null || !power.PowerOn) { continue; }
-                float output = power.PowerOutput;
-                if (output > bestPower) { bestPower = output; best = b; }
-            }
-
-            return best != null ? best.Position : InertialTarget(map, attacker);
-        }
-    }
-
-    // ============================================================
-    //  熱源制導（Heat Source）
-    //  體型最大的 Pawn；次選最熱的 Room；找不到則慣性。
-    // ============================================================
-    public class GuidanceType_HeatSource : GuidanceType
-    {
-        public override IntVec3 PickTarget(float N, Map map, Faction attacker)
-        {
-            // 體型最大的非攻擊方 Pawn
-            Pawn biggestPawn = null;
-            float biggestSize = -1f;
-            foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
-            {
-                if (p.Dead) { continue; }
-                if (attacker != null && p.Faction == attacker) { continue; }
-                float sz = p.BodySize;
-                if (sz > biggestSize) { biggestSize = sz; biggestPawn = p; }
-            }
-            if (biggestPawn != null) { return biggestPawn.Position; }
-
-            // 最熱的 Room
-            Room hottestRoom = null;
-            float hottestTemp = float.MinValue;
-            foreach (Room room in map.regionGrid.AllRooms)
-            {
-                if (room.PsychologicallyOutdoors) { continue; }
-                float temp = room.Temperature;
-                if (temp > hottestTemp) { hottestTemp = temp; hottestRoom = room; }
-            }
-            if (hottestRoom != null)
-            {
-                IntVec3 roomCell = hottestRoom.Cells.RandomElement();
-                if (roomCell.IsValid) { return roomCell; }
-            }
-
-            return InertialTarget(map, attacker);
-        }
-    }
-
-    // ============================================================
     //  反輻射（Anti-Radiation）
-    //  尋找地圖中處於作用狀態的雷達建築（CompSearchRadar/CompFireControlRadar），
-    //  以功率排序優先；找不到則高能反應制導，再找不到則慣性。
+    //  鎖定開機（Active）的敵對雷達建築中功率等級最高者；同級再比耗電量。
+    //  標記 immuneToAntiRadiationSeeker 的雷達（純被動聲學預警）不列入。
+    //  找不到則退化為電磁訊號，再找不到由 PickCell 退化為慣性。
     // ============================================================
     public class GuidanceType_AntiRadiation : GuidanceType
     {
@@ -167,77 +155,154 @@ namespace DMSE
         {
             Building bestRadar = null;
             int bestPower = -1;
+            float bestDraw = -1f;
 
-            foreach (Building b in map.listerBuildings.AllBuildingsColonistOfClass<Building>())
+            foreach (Building b in HostileBuildings(map, attacker))
             {
-                if (attacker != null && b.Faction == attacker) { continue; }
-
-                // 搜索雷達（標記為免疫者不列入候選，例如純被動聲學早期預警裝置）
-                CompSearchRadar sr = b.TryGetComp<CompSearchRadar>();
-                if (sr != null && sr.Active && !sr.Props.immuneToAntiRadiationSeeker)
+                int power = RadarPowerLevel(b);
+                if (power < 0) { continue; }
+                float draw = PowerDraw(b);
+                if (power > bestPower || (power == bestPower && draw > bestDraw))
                 {
-                    int p = sr.Props.powerLevel;
-                    if (p > bestPower) { bestPower = p; bestRadar = b; }
-                    continue;
-                }
-                // 火控雷達（同樣尊重免疫標記）
-                CompFireControlRadar fc = b.TryGetComp<CompFireControlRadar>();
-                if (fc != null && fc.Active && !fc.Props.immuneToAntiRadiationSeeker)
-                {
-                    int p = fc.Props.powerLevel;
-                    if (p > bestPower) { bestPower = p; bestRadar = b; }
+                    bestPower = power;
+                    bestDraw = draw;
+                    bestRadar = b;
                 }
             }
 
             if (bestRadar != null) { return bestRadar.Position; }
+            return HighestPowerDrawTarget(map, attacker);
+        }
 
-            // 退化到高能反應
-            return new GuidanceType_HighEnergy().PickTarget(N, map, attacker);
+        /// <summary>建築上開機且未豁免的雷達中最高的功率等級；沒有則 -1。</summary>
+        private static int RadarPowerLevel(Building b)
+        {
+            int level = -1;
+            CompSearchRadar sr = b.TryGetComp<CompSearchRadar>();
+            if (sr != null && sr.Active && !sr.Props.immuneToAntiRadiationSeeker)
+            {
+                level = sr.Props.powerLevel;
+            }
+            CompFireControlRadar fc = b.TryGetComp<CompFireControlRadar>();
+            if (fc != null && fc.Active && !fc.Props.immuneToAntiRadiationSeeker && fc.Props.powerLevel > level)
+            {
+                level = fc.Props.powerLevel;
+            }
+            return level;
         }
     }
 
     // ============================================================
-    //  紅外制導（Infrared）
-    //  若落點地圖上有玩家殖民者，呈電視制導（讓玩家選）；
-    //  否則呈慣性制導。但敵方使用此制導時，無法讓玩家選，直接慣性。
+    //  熱訊號（Heat Source）
+    //  最熱的室內房間比室外高出 minRoomTempAboveOutdoor 度以上 → 打該房間；
+    //  否則打體型最大的 Pawn（不分陣營，攻擊方與其盟友除外，野生動物也會被鎖定）；
+    //  都沒有則退化為慣性。
     // ============================================================
-    public class GuidanceType_Infrared : GuidanceType
+    public class GuidanceType_HeatSource : GuidanceType
+    {
+        /// <summary>房間需比室外溫度高出多少度（°C）才會被選為目標。</summary>
+        public float minRoomTempAboveOutdoor = 15f;
+
+        public override IntVec3 PickTarget(float N, Map map, Faction attacker)
+        {
+            IntVec3 room = HottestRoomCell(map);
+            if (room.IsValid) { return room; }
+
+            Pawn biggest = null;
+            float biggestSize = -1f;
+            foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
+            {
+                if (p.Dead) { continue; }
+                if (attacker != null && p.Faction != null && !IsHostileTarget(p.Faction, attacker)) { continue; }
+                if (p.BodySize > biggestSize) { biggestSize = p.BodySize; biggest = p; }
+            }
+            return biggest != null ? biggest.Position : IntVec3.Invalid;
+        }
+
+        private IntVec3 HottestRoomCell(Map map)
+        {
+            float threshold = map.mapTemperature.OutdoorTemp + minRoomTempAboveOutdoor;
+            Room hottest = null;
+            float hottestTemp = float.MinValue;
+            foreach (Room room in map.regionGrid.AllRooms)
+            {
+                if (room.PsychologicallyOutdoors || room.UsesOutdoorTemperature) { continue; }
+                float temp = room.Temperature;
+                if (temp >= threshold && temp > hottestTemp)
+                {
+                    hottestTemp = temp;
+                    hottest = room;
+                }
+            }
+            if (hottest == null) { return IntVec3.Invalid; }
+
+            if (hottest.Cells.Where(c => c.Standable(map)).TryRandomElement(out IntVec3 cell))
+            {
+                return cell;
+            }
+            return hottest.Cells.FirstOrFallback(IntVec3.Invalid);
+        }
+    }
+
+    // ============================================================
+    //  紅外制導（Infrared）— 舊類別名，行為同熱訊號導引頭。
+    // ============================================================
+    public class GuidanceType_Infrared : GuidanceType_HeatSource
+    {
+    }
+
+    // ============================================================
+    //  電磁訊號（Electromagnetic Signal）
+    //  鎖定耗電量最大的運作中敵對建築；找不到則退化為慣性。
+    // ============================================================
+    public class GuidanceType_ElectromagneticSignal : GuidanceType
     {
         public override IntVec3 PickTarget(float N, Map map, Faction attacker)
         {
-            // 非玩家攻擊方 → 若地圖有殖民者，退化為慣性（敵方無法操縱電視制導）
-            // 注意：玩家發射的 IncomingMissile 路徑不走此方法；此處僅處理敵方來襲。
-            bool hasColonist = map.mapPawns.FreeColonistsSpawned.Count > 0;
-            if (hasColonist)
-            {
-                // 打最近的殖民者（代替真正的「電視制導選點」）
-                Pawn target = map.mapPawns.FreeColonistsSpawned
-                    .MinBy(p => p.Position.DistanceToSquared(map.Center));
-                if (target != null) { return target.Position; }
-            }
-            return InertialTarget(map, attacker);
+            return HighestPowerDrawTarget(map, attacker);
         }
+    }
+
+    // ============================================================
+    //  高能反應制導（High Energy）— 舊類別名，行為同電磁訊號導引頭。
+    // ============================================================
+    public class GuidanceType_HighEnergy : GuidanceType_ElectromagneticSignal
+    {
     }
 
     // ============================================================
     //  電視制導（TV Guided）
-    //  玩家控制時由 Scorer 流程處理（已在外部選格）。
-    //  敵方使用時退化為慣性制導。
+    //  玩家發射時，抵達後暫停遊戲由玩家自由選擇落點。
+    //  敵方使用時無人操作，退化為慣性制導。
     // ============================================================
     public class GuidanceType_TV : GuidanceType
     {
+        public override bool PlayerChoosesTarget => true;
+
         public override IntVec3 PickTarget(float N, Map map, Faction attacker)
         {
-            // 此路徑只由 WorldObject_IncomingMissile（敵方來襲）呼叫 → 退化慣性。
             return InertialTarget(map, attacker);
+        }
+    }
+
+    // ============================================================
+    //  雷射制導（Laser Guided）
+    //  鎖定目標地圖上攻擊方自己的雷射引導標點（LaserDesignatorMark），多個時取最近放置的；
+    //  沒有標點則退化為慣性。
+    // ============================================================
+    public class GuidanceType_Laser : GuidanceType
+    {
+        public override IntVec3 PickTarget(float N, Map map, Faction attacker)
+        {
+            LaserDesignatorMark mark = LaserDesignatorUtility.LatestMarkFor(map, attacker);
+            return mark != null ? mark.Position : IntVec3.Invalid;
         }
     }
 
     // ============================================================
     //  火控雷達制導（Fire Control Radar）
-    //  在 WorldObject_IncomingMissile 路徑退化為慣性。
-    //  此制導的主要語意是「此導彈作為 BVR 攔截彈使用」，
-    //  對應的攔截邏輯由 CompMissileLauncher_Interceptor 驅動，不影響落點選擇。
+    //  主要語意是「此導彈作為 BVR 攔截彈使用」，攔截邏輯由 CompMissileLauncher_Interceptor 驅動；
+    //  對地打擊時以慣性選格（散布較小）。
     // ============================================================
     public class GuidanceType_FireControl : GuidanceType
     {

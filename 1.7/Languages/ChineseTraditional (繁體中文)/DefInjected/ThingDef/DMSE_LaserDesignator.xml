@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <DMSE_LaserDesignatorMark.label>雷射引導點</DMSE_LaserDesignatorMark.label>
+  <DMSE_LaserDesignatorMark.description>以雷射標定器照射出的目標點。同陣營發射的雷射制導導彈會鎖定目標地圖上最近一次標定的引導點。無法被破壞，一段時間後自動消失。</DMSE_LaserDesignatorMark.description>
+
+  <DMSE_Bullet_LaserDesignator.label>標定光束</DMSE_Bullet_LaserDesignator.label>
+
+  <DMSE_Gun_LaserDesignator.label>雷射目標標定器</DMSE_Gun_LaserDesignator.label>
+  <DMSE_Gun_LaserDesignator.description>手持式雷射標定器。照射地面或目標後，該處會留下約兩個小時的雷射引導點；你的殖民地發射的雷射制導導彈會鎖定目標地圖上最近一次標定的引導點。不造成傷害。</DMSE_Gun_LaserDesignator.description>
+  <DMSE_Gun_LaserDesignator.verbs.Verb_Shoot.label>標定</DMSE_Gun_LaserDesignator.verbs.Verb_Shoot.label>
+  <DMSE_Gun_LaserDesignator.tools.grip.label>握把</DMSE_Gun_LaserDesignator.tools.grip.label>
+
+</LanguageData>

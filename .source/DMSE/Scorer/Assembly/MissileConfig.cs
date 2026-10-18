@@ -107,6 +107,28 @@ namespace DMSE
         /// <summary>飛行中可更新終端位置的次數（由彈體決定；無導引能力為 0）。</summary>
         public int TerminalUpdates => HasTerminalGuidance && body != null ? Mathf.Max(0, body.terminalUpdates) : 0;
 
+        /// <summary>
+        /// 決定落點的導引頭：導引槽部件的 <see cref="MissilePartDef.guidanceType"/>，沒有時用彈體內建的
+        /// <see cref="MissileBodyDef.builtInGuidance"/>；都沒有為 null（慣性）。只影響選目標，不影響導引能力。
+        /// </summary>
+        public GuidanceType TargetingGuidance
+            => PartFor(MissilePartCategory.Guidance)?.guidanceType ?? body?.builtInGuidance;
+
+        /// <summary>玩家發射時是否在抵達後由玩家手動選擇落點（電視制導）。</summary>
+        public bool PlayerChoosesTarget => TargetingGuidance?.PlayerChoosesTarget ?? false;
+
+        /// <summary>決定落點方式的名稱：導引部件、彈體（內建導引），或「慣性」。</summary>
+        public string TargetingLabel
+        {
+            get
+            {
+                MissilePartDef part = PartFor(MissilePartCategory.Guidance);
+                if (part != null) { return part.LabelCap; }
+                if (body?.builtInGuidance != null) { return body.LabelCap; }
+                return "DMSE.Guidance.Inertial".Translate();
+            }
+        }
+
         private float Base(System.Func<MissileBodyDef, float> sel) => body != null ? sel(body) : 0f;
 
         private float SumF(System.Func<MissilePartDef, float> sel)

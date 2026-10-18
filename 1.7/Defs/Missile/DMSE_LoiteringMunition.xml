@@ -21,6 +21,8 @@
     <rangePerFuelImpulse>0.1</rangePerFuelImpulse>
     <incomingSkyfaller>DMSE_Incoming_Loiter</incomingSkyfaller>
     <!-- 無 slots：不可自定義。 -->
+    <!-- 巡飛彈由操作員以影像選點：抵達後手動選擇落點（只影響選目標，不提供跨圖層與終端更新）。 -->
+    <builtInGuidance Class="DMSE.GuidanceType_TV" />
   </DMSE.MissileBodyDef>
 
 </Defs>

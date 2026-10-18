@@ -93,6 +93,12 @@ namespace DMSE
         /// <summary>此彈體開放的裝配槽位。</summary>
         public List<MissilePartCategory> slots = new List<MissilePartCategory>();
 
+        /// <summary>
+        /// 彈體內建的選目標方式（XML Class 指定 <see cref="GuidanceType"/> 子類），沒有裝導引部件時使用，
+        /// 例如巡飛彈以電視制導由操作員選點。只影響落點選擇，不提供導引能力（跨圖層、終端更新）。
+        /// </summary>
+        public GuidanceType builtInGuidance;
+
         /// <summary>抵達目標後生成的 incoming skyfaller（thingClass 應為 DMSE.MissileIncoming）。</summary>
         public ThingDef incomingSkyfaller;
 
@@ -150,9 +156,9 @@ namespace DMSE
         public WarheadEffect warheadEffect;
 
         /// <summary>
-        /// 導引頭行為（Guidance slot 專用）。決定來襲導彈的落點選擇邏輯。
-        /// 支援 7 種子類別：Inertial、HighEnergy、HeatSource、AntiRadiation、
-        /// Infrared、TV、FireControl。
+        /// 導引頭行為（Guidance slot 專用）。決定導彈抵達後的落點（玩家與敵方發射皆適用，
+        /// 電視制導在玩家發射時改為手動選點）。子類別：Inertial、AntiRadiation、HeatSource（舊名 Infrared）、
+        /// ElectromagneticSignal（舊名 HighEnergy）、TV、Laser、FireControl。
         /// </summary>
         public GuidanceType guidanceType;
 

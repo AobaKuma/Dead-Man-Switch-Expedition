@@ -9,7 +9,7 @@ namespace DMSE
 {
     /// <summary>
     /// 通用「來襲導彈」世界地圖物件。飛行、存檔與終端更新見 <see cref="MissileWorldObject"/>；
-    /// 抵達時自動選擇落點並生成 <see cref="MissileIncoming"/>（不開啟玩家選靶）。
+    /// 抵達時依導引頭自動選擇落點（<see cref="GuidanceType.PickCell"/>）並生成 <see cref="MissileIncoming"/>（不開啟玩家選靶）。
     /// 任何陣營皆可發射；攜帶攻擊方陣營與裝配設定，作為 BVR 攔截的航跡/識別來源。
     /// 目標已離開（且終端更新追不上）或不存在時落空，不生成地圖。
     /// </summary>
@@ -40,7 +40,7 @@ namespace DMSE
 
             if (def != null)
             {
-                IntVec3 cell = PickTargetCell(map);
+                IntVec3 cell = GuidanceType.PickCell(config, map, base.Faction);
                 Skyfaller faller = SkyfallerMaker.SpawnSkyfaller(def, cell, map);
                 if (faller is MissileIncoming incoming)
                 {
@@ -65,25 +65,6 @@ namespace DMSE
             }
 
             Destroy();
-        }
-
-        /// <summary>
-        /// 選擇落點格：依導引頭類別委派，找不到有效格時退化為慣性邏輯。
-        /// </summary>
-        private IntVec3 PickTargetCell(Map map)
-        {
-            float N = config?.PayloadCapacity ?? 5f;
-            MissilePartDef guidancePart = config?.PartFor(MissilePartCategory.Guidance);
-            GuidanceType guidance = guidancePart?.guidanceType;
-
-            if (guidance != null)
-            {
-                IntVec3 result = guidance.PickTarget(N, map, base.Faction);
-                if (result.IsValid && result.InBounds(map)) { return result; }
-            }
-
-            // 後備慣性邏輯
-            return GuidanceType.InertialTarget(map, base.Faction);
         }
 
         public override void ExposeData()

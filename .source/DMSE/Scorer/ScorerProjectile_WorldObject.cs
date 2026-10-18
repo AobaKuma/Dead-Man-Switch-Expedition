@@ -6,8 +6,9 @@ using Verse;
 namespace DMSE
 {
     /// <summary>
-    /// 玩家發射的導彈世界航跡。飛行、存檔與終端更新見 <see cref="MissileWorldObject"/>；
-    /// 抵達目標地圖後暫停遊戲，由玩家在當地選擇落點。
+    /// 玩家發射的導彈世界航跡。飛行、存檔與終端更新見 <see cref="MissileWorldObject"/>。
+    /// 抵達目標地圖後依導引頭決定落點：電視制導（<see cref="MissileConfig.PlayerChoosesTarget"/>）暫停遊戲由玩家選點，
+    /// 其餘導引頭與慣性制導由 <see cref="GuidanceType.PickCell"/> 自動鎖定。
     /// </summary>
     public class ScorerProjectile_WorldObject : MissileWorldObject
     {
@@ -61,6 +62,21 @@ namespace DMSE
                 f.TryAffectGoodwillWith(Faction.OfPlayer, f.GoodwillToMakeHostile(Faction.OfPlayer), true);
             }
             Current.Game.GetComponent<GameComponent_MissileEngage>().times.SetOrAdd(map, Find.TickManager.TicksGame + (GenDate.TicksPerDay * 2));
+
+            ThingDef def = skyfallerIncoming ?? ThingDef.Named(ProjectileDefName);
+
+            // 只有電視制導由玩家手動選點；其餘導引頭（含慣性）依導引頭規則自動鎖定，不暫停遊戲。
+            if (config == null || !config.PlayerChoosesTarget)
+            {
+                IntVec3 cell = GuidanceType.PickCell(config, map, base.Faction);
+                SpawnIncoming(def, cell, map);
+                Messages.Message(
+                    "DMSE.Missile.SeekerLocked".Translate(config != null ? config.TargetingLabel : "DMSE.Guidance.Inertial".Translate().ToString()),
+                    new TargetInfo(cell, map), MessageTypeDefOf.NeutralEvent, historical: false);
+                Destroy();
+                return;
+            }
+
             Find.TickManager.CurTimeSpeed = TimeSpeed.Paused;
 
             if (Find.CurrentMap == map)
@@ -71,8 +87,6 @@ namespace DMSE
             {
                 CameraJumper.TryJump(map.Center, map, CameraJumper.MovementMode.Cut);
             }
-
-            ThingDef def = skyfallerIncoming ?? ThingDef.Named(ProjectileDefName);
 
             bool launch = false;
             Find.Targeter.BeginTargeting(
