@@ -24,6 +24,12 @@ namespace DMSE
                     range = Mathf.Max(range, MissileWorldMotion.DetectionRange(r.Props.worldDetectionRange, r.Props.antiStealthLevel, target));
             return range;
         }
+        /// <summary>
+        /// Threat assessment: when channels are short, engage the largest radar signature first (decoy payloads exploit it).
+        /// Abstract nodes use their XML flag; map nodes of non-player factions from the Spacer tech level up.
+        /// </summary>
+        public bool ThreatAssessment => abstractDefense != null ? abstractDefense.Props.threatAssessment
+            : faction != null && !faction.IsPlayer && faction.def.techLevel >= TechLevel.Spacer;
         /// <summary>Any interceptor that can fire now or after reloading; locking without one would only hold a channel.</summary>
         public bool HasInterceptorAmmo => local != null ? local.HasInterceptorAmmo(faction)
             : abstractDefense.Available && abstractDefense.Stock > 0;

@@ -128,6 +128,12 @@ namespace DMSE
         /// <summary>裝配此部件所需資源。</summary>
         public List<ThingDefCountClass> costList;
 
+        /// <summary>
+        /// 雷達截面倍率（P4 誘餌酬載）：乘在世界航跡的 <see cref="BVRTargetProps.distanceLevel"/> 上，
+        /// 讓便宜的導彈看起來像大彈——更早被偵測，具威脅評估的防空會優先接戰它。
+        /// </summary>
+        public float signatureFactor = 1f;
+
         // 數值修正（加算；guidance 的 scatterOffset 可為負以收緊散布）
         public float explosionRadiusOffset = 0f;
         public DamageDef damageDefOverride;       // 彈頭：覆寫傷害型別

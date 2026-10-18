@@ -98,6 +98,45 @@ namespace DMSE
         }
     }
 
+    /// <summary>有打擊任務的下一波現在就能整波發射（docs/BVR_波次打擊規劃.md §10-4）。</summary>
+    public class Alert_StrikeWaveReady : Alert
+    {
+        private readonly List<Thing> culprits = new List<Thing>();
+        private readonly List<string> lines = new List<string>();
+
+        public Alert_StrikeWaveReady()
+        {
+            defaultLabel = "DMSE.Strike.Alert.WaveReady".Translate();
+            defaultPriority = AlertPriority.Medium;
+        }
+
+        public override AlertReport GetReport()
+        {
+            culprits.Clear();
+            lines.Clear();
+            if (DMSEMod.Settings != null && !DMSEMod.Settings.strikeWaveReadyAlert) { return AlertReport.Inactive; }
+            foreach (Map map in Find.Maps)
+            {
+                MapComponent_StrikePlanner planner = map.GetComponent<MapComponent_StrikePlanner>();
+                if (planner == null) { continue; }
+                foreach (CompStrikeConsole console in planner.consoles)
+                {
+                    if (console.parent.Faction != Faction.OfPlayer || console.mission == null) { continue; }
+                    int next = console.mission.NextWaveIndex;
+                    if (next < 0 || console.CannotFireReason(next, partial: false) != null) { continue; }
+                    culprits.Add(console.parent);
+                    lines.Add("DMSE.Strike.Alert.WaveReadyLine".Translate(console.mission.id, next + 1, console.mission.TargetLabel));
+                }
+            }
+            return AlertReport.CulpritsAre(culprits);
+        }
+
+        public override TaggedString GetExplanation()
+        {
+            return "DMSE.Strike.Alert.WaveReadyDesc".Translate() + "\n\n" + string.Join("\n", lines);
+        }
+    }
+
     /// <summary>有人工版任務在等彈道計算，但該地圖沒有能做研究工作的殖民者。</summary>
     public class Alert_StrikeComputationPending : Alert
     {

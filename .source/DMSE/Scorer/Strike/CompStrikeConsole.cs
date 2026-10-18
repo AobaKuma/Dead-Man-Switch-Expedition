@@ -204,14 +204,18 @@ namespace DMSE
             int now = Find.TickManager.TicksGame;
             mission = draft;
             mission.state = StrikeMissionState.AwaitingComputation;
+            mission.solutionTile = mission.CurrentTargetTile;
             if (Props.requiresComputation)
             {
+                float factor = CrossLayer(mission) ? Props.crossLayerWorkFactor : 1f;
                 mission.computeDoneTick = -1;
                 mission.computeWorkDone = 0f;
-                mission.computeWorkTotal = WorkFor(mission);
+                mission.computeBaseLeft = Props.computeWorkBase * factor;
+                mission.computeCredit = 0f;
+                mission.computePerRound = Props.computeWorkPerRound * factor;
                 Messages.Message("DMSE.Strike.Msg.ConfirmedManual".Translate(mission.id, mission.RoundCount, mission.waves.Count,
                     parent.LabelShort), parent, MessageTypeDefOf.TaskCompletion, false);
-                ApplyComputationProgress();
+                ApplyComputationProgress(0f);
             }
             else
             {
@@ -227,7 +231,8 @@ namespace DMSE
         private void FinishComputation()
         {
             foreach (StrikeSlot slot in mission.AllSlots) { slot.solved = true; }
-            mission.computeWorkDone = mission.computeWorkTotal;
+            mission.computeBaseLeft = 0f;
+            mission.computeCredit = 0f;
             if (mission.state == StrikeMissionState.AwaitingComputation) { mission.state = StrikeMissionState.Ready; }
             Messages.Message("DMSE.Strike.Msg.Ready".Translate(mission.id), parent, MessageTypeDefOf.PositiveEvent, false);
         }
@@ -247,38 +252,44 @@ namespace DMSE
         public bool NeedsManualComputation => Props.requiresComputation && mission != null && mission.IsActive
             && mission.AllSlots.Any(s => s.Open && !s.solved);
 
-        public float ComputeProgress => mission == null || mission.computeWorkTotal <= 0f ? 1f
-            : Mathf.Clamp01(mission.computeWorkDone / mission.computeWorkTotal);
+        public float ComputeProgress
+        {
+            get
+            {
+                if (mission == null) { return 1f; }
+                float total = mission.ComputeWorkTotal;
+                return total <= 0f ? 1f : Mathf.Clamp01(mission.computeWorkDone / total);
+            }
+        }
 
         /// <summary>研究者每 tick 呼叫：累積工作量（研究速度 × tick），依波次順序逐枚解出。</summary>
         public void AddComputationWork(float amount)
         {
             if (!NeedsManualComputation || amount <= 0f) { return; }
-            mission.computeWorkDone = Mathf.Min(mission.computeWorkTotal, mission.computeWorkDone + amount);
-            ApplyComputationProgress();
+            mission.computeWorkDone += amount;
+            ApplyComputationProgress(amount);
         }
 
-        private void ApplyComputationProgress()
+        /// <summary>投入工作量並依波次順序解出導彈；amount = 0 時只把已累積的工作量用在新加入的導彈上。</summary>
+        private void ApplyComputationProgress(float amount)
         {
-            int solved = StrikeComputation.SolvedCount(mission.computeWorkDone, Props.computeWorkBase, Props.computeWorkPerRound,
-                CrossLayer(mission) ? Props.crossLayerWorkFactor : 1f, mission.RoundCount);
-            bool wasAllSolved = mission.AllSlots.All(s => s.solved);
-            int index = 0;
+            List<StrikeSlot> unsolved = mission.UnsolvedOpen.ToList();
+            if (unsolved.Count == 0) { return; }
+            int solved = StrikeComputation.Advance(ref mission.computeBaseLeft, ref mission.computeCredit, amount,
+                mission.computePerRound, unsolved.Count);
+            if (solved == 0) { return; }
+            HashSet<StrikeWave> pendingBefore = new HashSet<StrikeWave>(mission.waves.Where(w => w.slots.Any(s => s.Open && !s.solved)));
+            for (int i = 0; i < solved; i++) { unsolved[i].solved = true; }
+            bool allSolved = !mission.UnsolvedOpen.Any();
             for (int w = 0; w < mission.waves.Count; w++)
             {
                 StrikeWave wave = mission.waves[w];
-                bool wasSolved = wave.slots.All(s => s.solved);
-                foreach (StrikeSlot slot in wave.slots)
-                {
-                    if (index < solved) { slot.solved = true; }
-                    index++;
-                }
-                if (!wasSolved && wave.slots.All(s => s.solved) && mission.AllSlots.Any(s => !s.solved))
+                if (!allSolved && pendingBefore.Contains(wave) && !wave.slots.Any(s => s.Open && !s.solved))
                 {
                     Messages.Message("DMSE.Strike.Msg.WaveSolved".Translate(mission.id, w + 1), parent, MessageTypeDefOf.PositiveEvent, false);
                 }
             }
-            if (!wasAllSolved && mission.AllSlots.All(s => s.solved))
+            if (allSolved)
             {
                 if (mission.state == StrikeMissionState.AwaitingComputation) { mission.state = StrikeMissionState.Ready; }
                 Messages.Message("DMSE.Strike.Msg.Ready".Translate(mission.id), parent, MessageTypeDefOf.PositiveEvent, false);
@@ -301,14 +312,216 @@ namespace DMSE
                 CancelMission("DMSE.Strike.Msg.TargetLost");
                 return;
             }
-            if (mission.state == StrikeMissionState.AwaitingComputation && !Props.requiresComputation)
+            CheckTargetMoved(now);
+            // 自動版：確認或調整波次後有未解的導彈就倒數（斷電時暫停）
+            if (!Props.requiresComputation && mission.IsActive && mission.UnsolvedOpen.Any())
             {
-                if (!Active) { mission.computeDoneTick += 60; }   // 斷電時計算暫停
+                if (!Active) { mission.computeDoneTick += 60; }
                 else if (now >= mission.computeDoneTick) { FinishComputation(); }
             }
+            TryAutoFire();
         }
 
         public int ComputeTicksLeft => mission == null ? 0 : Mathf.Max(0, mission.computeDoneTick - Find.TickManager.TicksGame);
+
+        /// <summary>
+        /// 目標移動超過 <see cref="BVRWorldTuningDef.strikeRecomputeMoveTiles"/> 格：尚未發射的導彈彈道解作廢，
+        /// 自動版重新倒數、人工版需研究者再算（P4）。
+        /// </summary>
+        private void CheckTargetMoved(int now)
+        {
+            if (!mission.IsActive) { return; }
+            PlanetTile current = mission.CurrentTargetTile;
+            if (!mission.solutionTile.Valid) { mission.solutionTile = current; return; }
+            float threshold = BVRWorldTuningDef.Current.strikeRecomputeMoveTiles;
+            if (threshold <= 0f || !current.Valid || current == mission.solutionTile) { return; }
+            float moved = MissileWorldUtility.RangeDistance(mission.solutionTile, current);
+            if (moved < threshold) { return; }
+            List<StrikeSlot> stale = mission.AllSlots.Where(s => s.state == StrikeSlotState.Pending && s.solved).ToList();
+            mission.solutionTile = current;
+            if (stale.Count == 0) { return; }
+            foreach (StrikeSlot slot in stale) { slot.solved = false; }
+            if (!Props.requiresComputation) { mission.computeDoneTick = now + Mathf.Max(0, Props.autoComputeTicks); }
+            if (mission.state == StrikeMissionState.Ready) { mission.state = StrikeMissionState.AwaitingComputation; }
+            Messages.Message("DMSE.Strike.Msg.TargetMoved".Translate(mission.id, Mathf.RoundToInt(moved), stale.Count), parent,
+                MessageTypeDefOf.CautionInput, false);
+        }
+
+        /// <summary>
+        /// 定時發射（P4，§14-12）：下一波勾選了定時發射、現在就能整波發射，且依時間軸它會在前面各波最晚抵達之後
+        /// （再加 <see cref="BVRWorldTuningDef.strikeArrivalSpacingTicks"/>）抵達時，自動發射。
+        /// </summary>
+        private void TryAutoFire()
+        {
+            if (mission == null || !mission.IsActive) { return; }
+            int next = mission.NextWaveIndex;
+            if (next < 0 || !mission.waves[next].autoFire || CannotFireReason(next, partial: false) != null) { return; }
+            List<StrikePlanWave> plan = PlanTimeline(mission, mission.waves);
+            int latest = -1;
+            for (int i = 0; i < next; i++) { latest = Mathf.Max(latest, plan[i].arriveMax); }
+            StrikePlanWave p = plan[next];
+            if (latest >= 0 && p.arriveMin >= 0 && p.arriveMin < latest + BVRWorldTuningDef.Current.strikeArrivalSpacingTicks) { return; }
+            Messages.Message("DMSE.Strike.Msg.AutoFire".Translate(mission.id, next + 1), parent, MessageTypeDefOf.NeutralEvent, false);
+            FireWave(next, partial: false);
+        }
+
+        // ==================================================================
+        //  時間軸（§2-3、§10-2、§10-3）
+        // ==================================================================
+
+        /// <summary>
+        /// 估算各波最快的發射時刻與抵達區間：待發射的依通道與平台冷卻排程，已發射且仍在飛的取其實際 ETA。
+        /// 用於規劃視窗的抵達預覽與執行視窗的「現在發射」提示。
+        /// </summary>
+        public List<StrikePlanWave> PlanTimeline(StrikeMission m, List<StrikeWave> waves)
+        {
+            int now = Find.TickManager.TicksGame;
+            PlanetTile from = parent.Map.Tile;
+            PlanetTile to = m.CurrentTargetTile;
+            var input = new List<List<StrikePlanSlot>>();
+            foreach (StrikeWave wave in waves)
+            {
+                var list = new List<StrikePlanSlot>();
+                foreach (StrikeSlot slot in wave.slots)
+                {
+                    if (slot.state == StrikeSlotState.Skipped) { continue; }
+                    CompMissileLauncher_WorldTargeting launcher = slot.LauncherComp;
+                    if (slot.state == StrikeSlotState.Launched)
+                    {
+                        // 離場 skyfaller 還在地圖上時航跡尚未開始移動：抵達要從它離開地圖的時刻起算
+                        int departs = slot.track != null && !slot.track.Spawned
+                            ? Mathf.Max(now, slot.launchTick + (launcher?.DepartureTicks ?? 0)) : now;
+                        list.Add(new StrikePlanSlot { launched = true, arrivalTick = slot.InFlight ? departs + slot.track.TicksToArrival : -1 });
+                        continue;
+                    }
+                    // 升空後離場 skyfaller 飛出地圖才出現世界航跡，所以飛行時間要加上離場時間
+                    int flight = launcher != null
+                        ? launcher.DepartureTicks + StrikeRoundUtility.FlightTicks(launcher.BuildFiringConfig(slot.round), from, to) : 0;
+                    if (slot.state == StrikeSlotState.Queued)
+                    {
+                        list.Add(new StrikePlanSlot { launched = true, arrivalTick = now + 1 + flight });
+                        continue;
+                    }
+                    list.Add(new StrikePlanSlot
+                    {
+                        launcher = slot.launcher,
+                        flightTicks = flight,
+                        salvoInterval = launcher?.SalvoIntervalTicks ?? 0,
+                        launchCooldown = launcher?.CooldownTicksAfterLaunch ?? 0,
+                        readyTick = now + (launcher?.CooldownTicksRemaining(now) ?? 0),
+                    });
+                }
+                input.Add(list);
+            }
+            BVRWorldTuningDef tuning = BVRWorldTuningDef.Current;
+            IEnumerable<int> holds = Planner?.GuidanceReleaseTicks(Side) ?? Enumerable.Empty<int>();
+            return StrikeTimeline.Simulate(input, Mathf.Max(1, StrikeCapacity), tuning.strikeGuidanceTicks,
+                tuning.strikeArrivalSpacingTicks, now, holds);
+        }
+
+        // ==================================================================
+        //  執行中調整波次（§10-3）
+        // ==================================================================
+
+        /// <summary>能否開始調整波次；發射佇列有東西時不行（佇列以波次／槽位索引指向導彈）。</summary>
+        public string CannotAdjustReason()
+        {
+            if (mission == null || !mission.IsActive) { return "DMSE.Strike.NotReady".Translate(); }
+            if ((Planner?.QueuedCount(mission.id) ?? 0) > 0) { return "DMSE.Strike.Adjust.Launching".Translate(); }
+            return null;
+        }
+
+        /// <summary>調整用的波次副本：槽位物件沿用（已發射、略過的固定不動），波次清單是新的。</summary>
+        public List<StrikeWave> AdjustmentCopy()
+        {
+            return mission.waves.Select(w => new StrikeWave { launchedTick = w.launchedTick, autoFire = w.autoFire, slots = new List<StrikeSlot>(w.slots) }).ToList();
+        }
+
+        public string ValidateAdjustment(List<StrikeWave> waves)
+        {
+            if (mission == null) { return "DMSE.Strike.NotReady".Translate(); }
+            int cap = Mathf.Max(1, StrikeCapacity);
+            List<StrikeSlot> all = waves.SelectMany(w => w.slots).ToList();
+            if (mission.AllSlots.Any(s => !s.Open && !all.Contains(s))) { return "DMSE.Strike.Adjust.FixedRemoved".Translate(); }
+            if (all.Count > Props.maxRoundsPerMission) { return "DMSE.Strike.TooManyRounds".Translate(Props.maxRoundsPerMission); }
+            if (waves.Count(w => w.slots.Count > 0) > Props.maxWavesPerMission) { return "DMSE.Strike.TooManyWaves".Translate(Props.maxWavesPerMission); }
+            if (all.Where(s => s.round != null).GroupBy(s => s.round).Any(g => g.Count() > 1)) { return "DMSE.Strike.RoundTaken".Translate(); }
+            for (int i = 0; i < waves.Count; i++)
+            {
+                int pending = waves[i].slots.Count(s => s.state == StrikeSlotState.Pending);
+                if (pending > cap) { return "DMSE.Strike.WaveOverCap".Translate(i + 1, pending, cap); }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 套用調整：保留新加入的導彈、釋放被移除的；在波次間移動的導彈沿用原本的彈道解，新加入的需要計算
+        /// （人工版只增加剩餘工作量，自動版重新倒數）。
+        /// </summary>
+        public bool ApplyAdjustment(List<StrikeWave> waves, out string reason)
+        {
+            reason = CannotAdjustReason() ?? ValidateAdjustment(waves);
+            MapComponent_StrikePlanner planner = Planner;
+            if (reason == null && planner == null) { reason = "DMSE.BVR.DeviceInactive".Translate(); }
+            if (reason != null) { return false; }
+
+            int now = Find.TickManager.TicksGame;
+            PlanetTile from = parent.Map.Tile;
+            var previous = new Dictionary<Thing, StrikeSlot>();
+            foreach (StrikeSlot slot in mission.AllSlots.Where(s => s.state == StrikeSlotState.Pending && s.round != null)) { previous[slot.round] = slot; }
+            var kept = new HashSet<Thing>();
+            var added = new List<Thing>();
+            foreach (StrikeSlot slot in waves.SelectMany(w => w.slots))
+            {
+                if (slot.state != StrikeSlotState.Pending) { continue; }
+                if (slot.round != null && previous.TryGetValue(slot.round, out StrikeSlot old))
+                {
+                    if (!ReferenceEquals(old, slot))
+                    {
+                        slot.solved = old.solved;
+                        slot.configHash = old.configHash;
+                    }
+                    kept.Add(slot.round);
+                    continue;
+                }
+                CompMissileLauncher_WorldTargeting launcher = slot.LauncherComp;
+                MissileConfig config = launcher?.BuildFiringConfig(slot.round);
+                if (launcher == null || !launcher.OwnsRound(slot.round)
+                    || !MissileWorldUtility.CanEngage(config, from, mission.CurrentTargetTile, 0f, out _))
+                {
+                    reason = "DMSE.Strike.RoundUnavailable".Translate();
+                }
+                else if (!planner.TryReserve(slot.round, mission.id))
+                {
+                    reason = "DMSE.Strike.RoundTaken".Translate();
+                }
+                if (reason != null)
+                {
+                    foreach (Thing round in added) { planner.Release(round); }
+                    return false;
+                }
+                slot.configHash = StrikeRoundUtility.ConfigHash(config);
+                slot.solved = false;
+                added.Add(slot.round);
+            }
+            foreach (KeyValuePair<Thing, StrikeSlot> kv in previous)
+            {
+                if (!kept.Contains(kv.Key)) { planner.Release(kv.Key); }
+            }
+
+            mission.waves = waves.Where(w => w.slots.Count > 0).ToList();
+            bool unsolved = mission.UnsolvedOpen.Any();
+            if (Props.requiresComputation) { ApplyComputationProgress(0f); }
+            else if (unsolved) { mission.computeDoneTick = now + Mathf.Max(0, Props.autoComputeTicks); }
+            if (!mission.AllSlots.Any(s => !s.Open))
+            {
+                mission.state = mission.UnsolvedOpen.Any() ? StrikeMissionState.AwaitingComputation : StrikeMissionState.Ready;
+            }
+            Messages.Message("DMSE.Strike.Msg.Adjusted".Translate(mission.id, mission.RoundCount, mission.waves.Count, added.Count),
+                parent, MessageTypeDefOf.TaskCompletion, false);
+            TryFinish();
+            return true;
+        }
 
         // ==================================================================
         //  發射
@@ -494,6 +707,8 @@ namespace DMSE
                 track.strikeMissionId = mission.id;
                 track.strikeWave = launch.wave;
                 planner.AddGuidanceHold(Side, now + BVRWorldTuningDef.Current.strikeGuidanceTicks);
+                WorldComponent_StrikeReports.Current?.RecordLaunch(mission.id, launch.wave, mission.TargetLabel,
+                    parent.Map?.Parent?.LabelCap ?? parent.LabelShort);
             }
             else
             {
@@ -512,6 +727,7 @@ namespace DMSE
             int skipped = mission.AllSlots.Count(s => s.state == StrikeSlotState.Skipped);
             mission.state = StrikeMissionState.Completed;
             Planner?.ReleaseAll(mission.id);
+            WorldComponent_StrikeReports.Current?.Close(mission.id);
             Messages.Message("DMSE.Strike.Msg.Completed".Translate(mission.id, launched, skipped), parent,
                 MessageTypeDefOf.TaskCompletion, false);
             mission = null;
@@ -524,6 +740,7 @@ namespace DMSE
             MapComponent_StrikePlanner planner = Planner;
             planner?.DropQueued(mission.id);
             planner?.ReleaseAll(mission.id);
+            WorldComponent_StrikeReports.Current?.Close(mission.id);
             mission.state = StrikeMissionState.Cancelled;
             if (!messageKey.NullOrEmpty())
             {
@@ -561,6 +778,7 @@ namespace DMSE
             {
                 planner?.DropQueued(mission.id);
                 planner?.ReleaseAll(mission.id);
+                WorldComponent_StrikeReports.Current?.Close(mission.id);
                 Messages.Message("DMSE.Strike.Msg.ConsoleLost".Translate(mission.id), MessageTypeDefOf.NegativeEvent, false);
                 mission = null;
             }

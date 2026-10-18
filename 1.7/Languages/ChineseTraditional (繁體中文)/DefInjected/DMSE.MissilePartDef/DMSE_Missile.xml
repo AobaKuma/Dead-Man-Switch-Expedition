@@ -41,6 +41,8 @@
   <DMSE_Light_Payload_None.description>沒有次級酬載。導彈完全依靠主彈頭的引爆。</DMSE_Light_Payload_None.description>
   <DMSE_Light_Payload_HighExplosive.label>高爆酬載</DMSE_Light_Payload_HighExplosive.label>
   <DMSE_Light_Payload_HighExplosive.description>在主彈頭之後引爆的次級高爆裝藥，擴大傷害半徑。</DMSE_Light_Payload_HighExplosive.description>
+  <DMSE_Light_Payload_Decoy.label>誘餌酬載</DMSE_Light_Payload_Decoy.label>
+  <DMSE_Light_Payload_Decoy.description>以雷達反射器與訊號增強器取代次級裝藥。在敵方雷達上，這枚導彈看起來是實際的兩倍大：更早被偵測，依體積評估威脅的防空也會優先接戰它。不造成額外傷害。</DMSE_Light_Payload_Decoy.description>
   <DMSE_Light_Payload_ToxicGas.label>毒氣酬載</DMSE_Light_Payload_ToxicGas.label>
   <DMSE_Light_Payload_ToxicGas.description>在範圍內散布毒氣雲，於爆炸後長時間滯留，阻絕無防護步兵進入該區域。</DMSE_Light_Payload_ToxicGas.description>
   <DMSE_Ballistic_Warhead_Thermonuclear.label>熱核彈頭</DMSE_Ballistic_Warhead_Thermonuclear.label>

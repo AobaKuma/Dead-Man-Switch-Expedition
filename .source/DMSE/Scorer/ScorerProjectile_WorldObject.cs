@@ -51,8 +51,14 @@ namespace DMSE
             }
         }
 
+        protected override void OnIntercepted(Faction by)
+        {
+            WorldComponent_StrikeReports.Report(strikeMissionId, strikeWave, StrikeOutcome.Intercepted);
+        }
+
         protected override void OnArrived(Map map)
         {
+            WorldComponent_StrikeReports.Report(strikeMissionId, strikeWave, map == null ? StrikeOutcome.Missed : StrikeOutcome.Arrived);
             if (map == null)
             {
                 Messages.Message("DMSE.Missile.Missed".Translate(), new GlobalTargetInfo(destinationTile),
@@ -133,6 +139,8 @@ namespace DMSE
                 incoming.config = config != null ? config.Clone() : null;
                 incoming.worldPhaseDone = true;
                 incoming.attacker = base.Faction; // 玩家的巡航導彈，供敵方 BVR 攔截判定。
+                incoming.strikeMissionId = strikeMissionId;
+                incoming.strikeWave = strikeWave;
                 MissileBVRUtility.TryRegister(incoming, cell);
             }
         }

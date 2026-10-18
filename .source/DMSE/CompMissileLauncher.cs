@@ -32,6 +32,9 @@ namespace DMSE
         /// <summary>本次發射後的冷卻時長（tick），由各平台自其 Props 對應欄位提供。</summary>
         protected abstract int LaunchCooldownTicks { get; }
 
+        /// <summary>每次發射後的冷卻時長（供波次打擊的時間軸估算）。</summary>
+        public int CooldownTicksAfterLaunch => LaunchCooldownTicks;
+
         /// <summary>Scribe 存檔用的欄位名稱；各平台沿用各自舊有名稱以維持存檔相容。</summary>
         protected virtual string CooldownScribeKey => "missileLauncherCooldownUntil";
 
@@ -112,6 +115,16 @@ namespace DMSE
 
         /// <summary>離場 skyfaller 生成於建築中心沿朝向的格數偏移（垂直發射為 0）。</summary>
         protected virtual int LaunchForwardCells => 0;
+
+        /// <summary>升空到世界航跡出現的時間：反向（離場）skyfaller 離開地圖前的 tick 數。時間軸估算用。</summary>
+        public int DepartureTicks
+        {
+            get
+            {
+                SkyfallerProperties sf = LaunchSkyfallerDef?.skyfaller;
+                return sf != null && sf.reversed ? UnityEngine.Mathf.RoundToInt(sf.ticksToDiscardInReverse.Average) : 0;
+            }
+        }
 
         /// <summary>
         /// 可供世界打擊的在架彈藥（含被打擊任務保留者）：Rail 為容器中可進攻的導彈；

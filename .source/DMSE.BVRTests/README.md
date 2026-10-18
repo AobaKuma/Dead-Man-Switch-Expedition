@@ -8,7 +8,9 @@ terminal-only wave classification, NPC inventory/cooldown/restock and map handof
 Scribe save output, missing-state defaults and lock release, plus wave-strike P0
 missile roles, reservations, rail/silo strike rounds and soonest-arrival engagement order, interceptor-ammo
 gating, wave-strike P1 channel booking, config fingerprints, auto-assign and mission save output,
-and P2 manual computation work and missile-by-missile solving.
+P2 manual computation work and missile-by-missile solving (with P3 incremental additions), the P3 arrival
+timeline (order warnings, suggested delays, ripple and cooldown timing, channel holds, in-flight ETAs), and P4
+decoy signature factors and threat-assessment engagement order.
 
 Use .NET 10 and supply the game reference directory (Assembly-CSharp.dll,
 UnityStubs.dll and Waylith.dll). Restore dependencies once, then:

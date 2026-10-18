@@ -18,6 +18,8 @@ namespace DMSE
         public MissileBodyDef interceptorBody;
         public MissilePartDef interceptorWarhead;
         public int launchCooldownTicks = 240;
+        /// <summary>威脅評估（P4）：通道不足時先接戰雷達截面最大的航跡（誘餌酬載會吸引它），否則先到先打。</summary>
+        public bool threatAssessment = false;
         public CompProperties_WorldAirDefense() { compClass = typeof(WorldObjectComp_AirDefense); }
         public override IEnumerable<string> ConfigErrors(WorldObjectDef parentDef)
         {

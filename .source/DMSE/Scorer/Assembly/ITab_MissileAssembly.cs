@@ -183,6 +183,10 @@ namespace DMSE
             {
                 list.Label("DMSE.Missile.Stat.Range".Translate(cfg.Range));
             }
+            if (!Mathf.Approximately(cfg.SignatureFactor, 1f))
+            {
+                list.Label("DMSE.Missile.Stat.Signature".Translate(cfg.SignatureFactor.ToString("0.#")));
+            }
             list.Label(cfg.HasTerminalGuidance
                 ? "DMSE.Missile.Stat.TerminalGuidance".Translate(cfg.TerminalUpdates)
                 : "DMSE.Missile.Stat.NoTerminalGuidance".Translate());

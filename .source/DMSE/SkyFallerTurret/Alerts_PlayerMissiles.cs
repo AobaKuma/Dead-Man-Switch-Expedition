@@ -77,6 +77,17 @@ namespace DMSE
             return AlertReport.Inactive;
         }
 
+        /// <summary>一個打擊波次的摘要：枚數、ETA 區間、被偵測與被接戰的枚數。</summary>
+        public static string StrikeWaveLine(List<ScorerProjectile_WorldObject> tracks)
+        {
+            ScorerProjectile_WorldObject first = tracks[0];
+            int detected = tracks.Count(t => t.State.detectedByFaction != null);
+            int engaged = tracks.Count(t => t.State.lockUntil >= 0 || t.State.interceptor != null);
+            return "DMSE.Strike.Alert.WaveLine".Translate(first.strikeMissionId, first.strikeWave + 1, tracks.Count,
+                tracks.Min(t => t.TicksToArrival).ToStringTicksToPeriod(), tracks.Max(t => t.TicksToArrival).ToStringTicksToPeriod(),
+                detected, engaged);
+        }
+
         public override string GetLabel()
         {
             var targets = GetPlayerTargets();
@@ -106,7 +117,13 @@ namespace DMSE
 
             int now = Find.TickManager.TicksGame;
             var sb = new StringBuilder();
-            foreach (var track in world)
+            // 波次打擊的導彈依任務／波次彙整成一行，其餘航跡逐一列出
+            foreach (var group in world.OfType<ScorerProjectile_WorldObject>().Where(t => t.strikeMissionId >= 0)
+                .GroupBy(t => (t.strikeMissionId, t.strikeWave)).OrderBy(g => g.Min(t => t.TicksToArrival)))
+            {
+                sb.AppendLine(StrikeWaveLine(group.ToList()));
+            }
+            foreach (var track in world.Where(t => !(t is ScorerProjectile_WorldObject s && s.strikeMissionId >= 0)))
                 sb.AppendLine(track.Label + "\n" + track.GetInspectString() + "\n");
 
             // ── 按目標地圖分組 ──

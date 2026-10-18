@@ -13,6 +13,10 @@
     <scanIntervalTicks>15</scanIntervalTicks>
     <!-- 波次打擊：每枚進攻導彈升空後占用火控通道的導引期（ticks），也是波次的最短間隔。 -->
     <strikeGuidanceTicks>600</strikeGuidanceTicks>
+    <!-- 波次打擊：某波會比前一波早到時，建議讓它晚於前一波最晚抵達這麼多 ticks。 -->
+    <strikeArrivalSpacingTicks>60</strikeArrivalSpacingTicks>
+    <!-- 波次打擊：目標移動超過這麼多格後，尚未發射的導彈需重新計算彈道（0 = 不重算）。 -->
+    <strikeRecomputeMoveTiles>5</strikeRecomputeMoveTiles>
   </DMSE.BVRWorldTuningDef>
 
   <WorldObjectDef>

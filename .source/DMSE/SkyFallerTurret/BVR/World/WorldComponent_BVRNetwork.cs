@@ -38,6 +38,14 @@ namespace DMSE
         /// </summary>
         public static List<T> InEngagementOrder<T>(IEnumerable<T> tracks) where T : IBVRTrack
             => tracks.OrderBy(t => t.TicksToArrival).ToList();
+        /// <summary>
+        /// With threat assessment (P4) a node engages the largest signature first; <paramref name="priority"/> returns
+        /// that signature for tracks heading to such a node and 0 otherwise. Ties fall back to soonest arrival.
+        /// </summary>
+        public static List<T> InEngagementOrder<T>(IEnumerable<T> tracks, System.Func<T, float> priority) where T : IBVRTrack
+            => tracks.OrderByDescending(priority).ThenBy(t => t.TicksToArrival).ToList();
+        private BVRNode NodeFor(MissileWorldObject track) => nodes.Where(n => n.Tile == track.Destination && n.faction.HostileTo(track.Attacker))
+            .OrderByDescending(n => n.faction.IsPlayer).FirstOrDefault();
 
         public override void ExposeData()
         {
@@ -90,7 +98,8 @@ namespace DMSE
             }
             if (now % Mathf.Max(1, BVRWorldTuningDef.Current.scanIntervalTicks) != 0) return;
             RebuildNodes();
-            foreach (MissileWorldObject track in InEngagementOrder(Tracks)) Scan(track, now);
+            foreach (MissileWorldObject track in InEngagementOrder(Tracks,
+                t => NodeFor(t)?.ThreatAssessment == true ? t.TargetProps.distanceLevel : 0f)) Scan(track, now);
         }
         private void Scan(MissileWorldObject track, int now)
         {
@@ -100,8 +109,7 @@ namespace DMSE
                 state.ClearLock();
                 state.lastKnownDestination = track.Destination;
             }
-            BVRNode node = nodes.Where(n => n.Tile == track.Destination && n.faction.HostileTo(track.Attacker))
-                .OrderByDescending(n => n.faction.IsPlayer).FirstOrDefault();
+            BVRNode node = NodeFor(track);
             if (node == null)
             {
                 state.ClearLock();

@@ -352,25 +352,101 @@ static class Test
         Check(fresh.state == StrikeMissionState.Planning && fresh.computeDoneTick == -1 && fresh.NextWaveIndex == -1
             && new StrikeSlot().state == StrikeSlotState.Pending && new StrikeWave().launchedTick == -1, "safe defaults");
     }
-    // Wave-strike P2: manual computation work and missile-by-missile solving in wave order.
+    // Wave-strike P2/P3: manual computation work, missile-by-missile solving, incremental additions.
     static void StrikeP2()
     {
         Near(StrikeComputation.TotalWork(1500, 400, 1f, 4), 3100, "manual work: base + per missile");
         Near(StrikeComputation.TotalWork(1500, 400, 1.5f, 4), 4650, "cross-layer work factor");
-        Check(StrikeComputation.SolvedCount(0, 1500, 400, 1f, 4) == 0 && StrikeComputation.SolvedCount(1499, 1500, 400, 1f, 4) == 0,
-            "nothing is solved before the base work");
-        Check(StrikeComputation.SolvedCount(1500, 1500, 400, 1f, 4) == 0 && StrikeComputation.SolvedCount(1900, 1500, 400, 1f, 4) == 1
-            && StrikeComputation.SolvedCount(2300, 1500, 400, 1f, 4) == 2, "each missile's share solves one more in order");
-        Check(StrikeComputation.SolvedCount(3100, 1500, 400, 1f, 4) == 4 && StrikeComputation.SolvedCount(9999, 1500, 400, 1f, 4) == 4,
-            "all solved at the total, clamped beyond it");
-        Check(StrikeComputation.SolvedCount(2849, 1500, 400, 1.5f, 4) == 0 && StrikeComputation.SolvedCount(2850, 1500, 400, 1.5f, 4) == 1,
-            "the cross-layer factor scales every threshold");
-        Check(StrikeComputation.SolvedCount(1500, 1500, 0, 1f, 3) == 3, "with no per-missile work everything is solved after the base");
+        float baseLeft = 1500f, credit = 0f;
+        Near(StrikeComputation.Remaining(baseLeft, credit, 400, 4), 3100, "remaining work at the start");
+        Check(StrikeComputation.Advance(ref baseLeft, ref credit, 1499, 400, 4) == 0 && Math.Abs(baseLeft - 1) < 0.01f,
+            "work fills the base first");
+        Check(StrikeComputation.Advance(ref baseLeft, ref credit, 1, 400, 4) == 0 && baseLeft == 0 && credit == 0,
+            "finishing the base solves nothing yet");
+        Check(StrikeComputation.Advance(ref baseLeft, ref credit, 400, 400, 4) == 1, "each missile's share solves one");
+        Check(StrikeComputation.Advance(ref baseLeft, ref credit, 600, 400, 3) == 1 && Math.Abs(credit - 200) < 0.01f,
+            "leftover work carries over as credit");
+        Near(StrikeComputation.Remaining(baseLeft, credit, 400, 3), 1000, "remaining work after solving two of four plus credit");
+        Near(StrikeComputation.Remaining(baseLeft, credit, 400, 5), 1800, "adding missiles only adds their share (incremental)");
+        Check(StrikeComputation.Advance(ref baseLeft, ref credit, 9999, 400, 2) == 2, "solving stops at the unsolved count");
+        float b2 = 1500f, c2 = 0f;
+        Check(StrikeComputation.Advance(ref b2, ref c2, 1500, 0, 3) == 3, "with no per-missile work everything is solved after the base");
+    }
+    static StrikePlanSlot PlanSlot(object launcher, int flight, int salvo = 30, int cooldown = 450, int ready = 0)
+        => new StrikePlanSlot { launcher = launcher, flightTicks = flight, salvoInterval = salvo, launchCooldown = cooldown, readyTick = ready };
+    // Wave-strike P3: arrival timeline and order warnings (docs §2-3 plan A/B).
+    static void StrikeP3()
+    {
+        List<StrikePlanSlot> Wave(int count, int flight) => Enumerable.Range(0, count).Select(_ => PlanSlot(new object(), flight)).ToList();
+        var planA = StrikeTimeline.Simulate(new List<List<StrikePlanSlot>> { Wave(4, 3000), Wave(4, 3000), Wave(2, 2250) },
+            4, 600, 60, 0, new int[0]);
+        Check(planA[0].fireTick == 0 && planA[0].arriveMin == 3001 && planA[0].arriveMax == 3001, "wave 1 fires at once and arrives together");
+        Check(planA[1].fireTick == 601 && planA[1].arriveMin == 3602, "wave 2 waits for the guidance period to free four channels");
+        Check(planA[2].fireTick == 1202 && planA[2].arriveMin == 3453, "faster wave 3 fires last but arrives at 3453");
+        Check(planA[2].earlierThan == 1 && planA[2].suggestedDelay == 209 && planA[1].earlierThan == -1,
+            "plan A: wave 3 is flagged as arriving before wave 2, with the delay that fixes it");
+        var planB = StrikeTimeline.Simulate(new List<List<StrikePlanSlot>> { Wave(4, 3000), Wave(4, 3000), Wave(2, 2500) },
+            4, 600, 60, 0, new int[0]);
+        Check(planB.All(p => p.earlierThan == -1), "plan B: slower last wave keeps the order");
+
+        object rail = new object();
+        var ripple = StrikeTimeline.Simulate(new List<List<StrikePlanSlot>>
+        {
+            Enumerable.Range(0, 4).Select(_ => PlanSlot(rail, 1000)).ToList(),
+            new List<StrikePlanSlot> { PlanSlot(rail, 1000) },
+        }, 8, 600, 60, 0, new int[0]);
+        Check(ripple[0].arriveMin == 1001 && ripple[0].arriveMax == 1091, "one launcher ripples four rounds 30 ticks apart");
+        Check(ripple[1].fireTick == 541, "the same launcher fires again only after its cooldown from the last round");
+
+        var over = StrikeTimeline.Simulate(new List<List<StrikePlanSlot>> { Wave(5, 1000) }, 4, 600, 60, 0, new int[0]);
+        Check(over[0].overCapacity && over[0].fireTick == -1, "a wave above the channel capacity never fires");
+        var busy = StrikeTimeline.Simulate(new List<List<StrikePlanSlot>> { Wave(2, 1000) }, 2, 600, 60, 0, new[] { 500, 300 });
+        Check(busy[0].fireTick == 500, "channels held by earlier launches delay the wave until both free up");
+        var flying = StrikeTimeline.Simulate(new List<List<StrikePlanSlot>>
+        {
+            new List<StrikePlanSlot> { new StrikePlanSlot { launched = true, arrivalTick = 2000 }, new StrikePlanSlot { launched = true, arrivalTick = -1 } },
+            Wave(1, 1500),
+        }, 4, 600, 60, 100, new int[0]);
+        Check(flying[0].arriveMin == 2000 && flying[0].fireTick == -1 && flying[1].fireTick == 100 && flying[1].earlierThan == 0
+            && flying[1].suggestedDelay == 2000 + 60 - 1601, "in-flight missiles count by their ETA; finished ones are ignored");
+    }
+    // Wave-strike P4: decoy signature and threat-assessment engagement order.
+    static void StrikeP4()
+    {
+        var body = new MissileBodyDef { defName = "DecoyBody" };
+        var decoy = new MissilePartDef { defName = "Decoy", category = MissilePartCategory.Payload, signatureFactor = 2f };
+        var flare = new MissilePartDef { defName = "Flare", category = MissilePartCategory.Guidance, signatureFactor = 1.5f };
+        var plain = new MissileConfig(body);
+        var both = new MissileConfig(body); both.parts.Add(decoy); both.parts.Add(flare);
+        Near(plain.SignatureFactor, 1f, "no decoy part: signature x1");
+        Near(both.SignatureFactor, 3f, "signature factors multiply");
+
+        var incoming = Empty<ThingDef>();
+        var baseProps = new BVRTargetProps { distanceLevel = 1.2f, stealthLevel = 1, speed = 22 };
+        incoming.modExtensions = new List<DefModExtension> { baseProps };
+        var normal = new WorldObject_IncomingMissile { incomingSkyfaller = incoming, config = plain };
+        var withDecoy = new WorldObject_IncomingMissile { incomingSkyfaller = incoming, config = new MissileConfig(body) };
+        withDecoy.config.parts.Add(decoy);
+        Check(ReferenceEquals(normal.TargetProps, baseProps), "a plain missile uses its skyfaller's BVR properties");
+        Check(Math.Abs(withDecoy.TargetProps.distanceLevel - 2.4f) < 0.001f && withDecoy.TargetProps.stealthLevel == 1
+            && Math.Abs(withDecoy.TargetProps.speed - 22f) < 0.001f, "a decoy payload doubles the radar size only");
+        Near(MissileWorldMotion.DetectionRange(12, 2, withDecoy.TargetProps), 2f * MissileWorldMotion.DetectionRange(12, 2, normal.TargetProps),
+            "a decoy is detected twice as far out");
+
+        var soon = new FakeTrack { angle = 0.1f, speed = 1f / 30000f };
+        var bigLate = new FakeTrack { angle = 0.3f, speed = 1f / 30000f };
+        var smallLate = new FakeTrack { angle = 0.2f, speed = 1f / 30000f };
+        var size = new Dictionary<FakeTrack, float> { { soon, 1.2f }, { bigLate, 2.4f }, { smallLate, 1.2f } };
+        var tracks = new[] { soon, bigLate, smallLate };
+        Check(WorldComponent_BVRNetwork.InEngagementOrder(tracks, t => size[t]).SequenceEqual(new[] { bigLate, soon, smallLate }),
+            "threat assessment engages the largest signature first, then the soonest arrival");
+        Check(WorldComponent_BVRNetwork.InEngagementOrder(tracks, t => 0f).SequenceEqual(new[] { soon, smallLate, bigLate }),
+            "without threat assessment the order is soonest arrival first");
     }
     public static void Main()
     {
         Setup();
-        Detection(); Solver(); FireControl(); LedgerAndTerminal(); InventoryAndPersistence(); StrikeP0(); StrikeP1(); StrikeP2();
+        Detection(); Solver(); FireControl(); LedgerAndTerminal(); InventoryAndPersistence(); StrikeP0(); StrikeP1(); StrikeP2(); StrikeP3(); StrikeP4();
         Console.WriteLine($"PASS: {count} BVR checks (real game/DMSE assemblies).");
     }
     class OnlineRadar : CompFireControlRadar { public override bool Active => true; }

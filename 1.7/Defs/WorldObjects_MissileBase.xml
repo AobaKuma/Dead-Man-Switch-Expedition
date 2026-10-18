@@ -217,10 +217,15 @@
         <launchCooldownTicks>240</launchCooldownTicks>
       </li>
       <li Class="DMSE.CompProperties_MissileBase">
+        <!-- 波次打擊 P4：地圖未生成時每次齊射 2–3 枚，間隔拉長到 2–4 天（平均每日枚數約與舊設定相當）。 -->
         <missileFireIntervalDays>
-          <min>1</min>
-          <max>2</max>
+          <min>2</min>
+          <max>4</max>
         </missileFireIntervalDays>
+        <missilesPerSalvo>
+          <min>2</min>
+          <max>3</max>
+        </missilesPerSalvo>
         <range>20</range>
         <relocationDays>
           <min>15</min>

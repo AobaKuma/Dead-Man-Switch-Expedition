@@ -41,6 +41,8 @@
   <DMSE_Light_Payload_None.description>没有次级酬载。导弹完全依靠主弹头的引爆。</DMSE_Light_Payload_None.description>
   <DMSE_Light_Payload_HighExplosive.label>高爆酬载</DMSE_Light_Payload_HighExplosive.label>
   <DMSE_Light_Payload_HighExplosive.description>在主弹头之后引爆的次级高爆装药，扩大伤害半径。</DMSE_Light_Payload_HighExplosive.description>
+  <DMSE_Light_Payload_Decoy.label>诱饵酬载</DMSE_Light_Payload_Decoy.label>
+  <DMSE_Light_Payload_Decoy.description>以雷达反射器与信号增强器取代次级装药。在敌方雷达上，这枚导弹看起来是实际的两倍大：更早被侦测，按体积评估威胁的防空也会优先接战它。不造成额外伤害。</DMSE_Light_Payload_Decoy.description>
   <DMSE_Light_Payload_ToxicGas.label>毒气酬载</DMSE_Light_Payload_ToxicGas.label>
   <DMSE_Light_Payload_ToxicGas.description>在范围内散布毒气云，于爆炸后长时间滞留，阻绝无防护步兵进入该区域。</DMSE_Light_Payload_ToxicGas.description>
   <DMSE_Ballistic_Warhead_Thermonuclear.label>热核弹头</DMSE_Ballistic_Warhead_Thermonuclear.label>

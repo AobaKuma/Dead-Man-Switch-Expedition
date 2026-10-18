@@ -140,6 +140,9 @@ namespace DMSE
             // 1. 釋放已結束的通道
             CleanEngagedChannels();
 
+            // 波次（P4）：上一波的導彈全部結束（抵達或被攔截）才發射下一整波
+            if ((WorldComp?.Props.fireInWaves ?? true) && engagedChannels.Count > 0) return;
+
             // 2. 計算可用通道
             int totalChannels = CountFireChannels();
             if (totalChannels <= 0) return;

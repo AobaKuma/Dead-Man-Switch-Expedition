@@ -167,6 +167,22 @@
     </costList>
   </DMSE.MissilePartDef>
 
+  <!-- 誘餌酬載（波次打擊 P4）：雷達反射器與訊號增強器取代次級裝藥，雷達截面 ×2：
+       更早被偵測，具威脅評估的防空會優先接戰它。不造成額外傷害。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Light_Payload_Decoy</defName>
+    <label>decoy payload</label>
+    <description>Radar reflectors and a signal augmenter in place of a secondary charge. On enemy radar the missile looks twice its size: it is detected earlier, and air defenses that rank threats by size engage it first. It does no extra damage.</description>
+    <category>Payload</category>
+    <compatibleBodies><li>DMSE_MissileBody_Light</li></compatibleBodies>
+    <payloadEffect Class="DMSE.PayloadEffect_None" />
+    <signatureFactor>2</signatureFactor>
+    <costList>
+      <Steel>10</Steel>
+      <ComponentIndustrial>1</ComponentIndustrial>
+    </costList>
+  </DMSE.MissilePartDef>
+
   <!-- 毒氣酬載：N 半徑釋放毒氣。 -->
   <DMSE.MissilePartDef>
     <defName>DMSE_Light_Payload_ToxicGas</defName>

@@ -42,7 +42,8 @@ namespace DMSE
 
     /// <summary>
     /// 人工版彈道計算（docs/BVR_波次打擊規劃.md §8-2）：總工作量 = (基礎 + 每枚 × 枚數) × 跨圖層倍率。
-    /// 基礎工作量做完後，依波次順序每多做「每枚」的量就多解一枚，所以第 1 波可以先發射。
+    /// 先做基礎工作量，之後依波次順序每累積「每枚」的量就解出一枚，所以第 1 波可以先發射；
+    /// 調整波次加入的導彈只增加剩餘工作量（增量計算）。
     /// </summary>
     public static class StrikeComputation
     {
@@ -73,13 +74,31 @@ namespace DMSE
             return best;
         }
 
-        /// <summary>完成 <paramref name="done"/> 工作量後，依波次順序已解的枚數。</summary>
-        public static int SolvedCount(float done, float workBase, float workPerRound, float factor, int rounds)
+        /// <summary>
+        /// 投入 <paramref name="amount"/> 工作量：先填基礎，剩下的累積成 credit，每滿一枚的量就解出一枚。
+        /// 回傳這次解出的枚數（不超過 <paramref name="unsolved"/>）。
+        /// </summary>
+        public static int Advance(ref float baseLeft, ref float credit, float amount, float perRound, int unsolved)
         {
-            float afterBase = done / Mathf.Max(0.01f, factor) - workBase;
-            if (afterBase < -0.001f) { return 0; }
-            if (workPerRound <= 0f) { return rounds; }
-            return Mathf.Clamp(Mathf.FloorToInt(afterBase / workPerRound + 0.0001f), 0, rounds);
+            amount = Mathf.Max(0f, amount);
+            float toBase = Mathf.Min(baseLeft, amount);
+            baseLeft -= toBase;
+            credit += amount - toBase;
+            if (baseLeft > 0.001f) { return 0; }
+            baseLeft = 0f;
+            int solved = 0;
+            while (solved < unsolved && (perRound <= 0f || credit >= perRound - 0.001f))
+            {
+                credit = Mathf.Max(0f, credit - Mathf.Max(0f, perRound));
+                solved++;
+            }
+            return solved;
+        }
+
+        /// <summary>還需要的工作量。</summary>
+        public static float Remaining(float baseLeft, float credit, float perRound, int unsolved)
+        {
+            return Mathf.Max(0f, baseLeft) + Mathf.Max(0f, perRound * unsolved - credit);
         }
     }
 
@@ -124,7 +143,7 @@ namespace DMSE
                 round = round,
                 config = config,
                 distance = MissileWorldUtility.RangeDistance(from, target),
-                flightTicks = FlightTicks(config, from, target),
+                flightTicks = launcher.DepartureTicks + FlightTicks(config, from, target),
                 groupKey = GroupKey(config, round),
                 groupLabel = GroupLabel(config, round),
                 value = RoundValue(round, config),

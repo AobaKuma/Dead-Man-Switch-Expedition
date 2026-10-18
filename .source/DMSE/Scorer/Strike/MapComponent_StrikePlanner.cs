@@ -62,7 +62,8 @@ namespace DMSE
 
         public MapComponent_StrikePlanner(Map map) : base(map) { }
 
-        public int NewMissionId() => nextMissionId++;
+        /// <summary>任務 id 由世界層配發（全域唯一，戰果帳與航跡標記都用它）；沒有世界時退回本地計數。</summary>
+        public int NewMissionId() => WorldComponent_StrikeReports.Current?.NewMissionId() ?? nextMissionId++;
 
         // ---------------- 保留 ----------------
 
@@ -132,6 +133,15 @@ namespace DMSE
                 if (best < 0 || left < best) { best = left; }
             }
             return best;
+        }
+
+        /// <summary>某陣營仍在導引期內的釋放 tick（時間軸估算用）；排隊中的視為立即升空。</summary>
+        public IEnumerable<int> GuidanceReleaseTicks(Faction faction)
+        {
+            int now = Find.TickManager.TicksGame;
+            int guidance = BVRWorldTuningDef.Current.strikeGuidanceTicks;
+            foreach (StrikeGuidanceHold h in holds) { if (h.faction == faction && h.releaseTick > now) { yield return h.releaseTick; } }
+            foreach (StrikeQueuedLaunch q in queue) { if (q.console != null && q.console.Faction == faction) { yield return System.Math.Max(now, q.fireTick) + guidance; } }
         }
 
         public void AddGuidanceHold(Faction faction, int releaseTick)

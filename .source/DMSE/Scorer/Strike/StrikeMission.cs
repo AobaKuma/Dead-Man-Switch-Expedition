@@ -78,6 +78,8 @@ namespace DMSE
         public List<StrikeSlot> slots = new List<StrikeSlot>();
         /// <summary>首次發射的 tick；-1 = 尚未發射。</summary>
         public int launchedTick = -1;
+        /// <summary>定時發射（P4）：輪到本波時自動發射，但要等到它會在前面各波之後抵達。</summary>
+        public bool autoFire;
 
         public int Count(StrikeSlotState state) => slots.Count(s => s.state == state);
         public bool Open => slots.Any(s => s.Open);
@@ -87,6 +89,7 @@ namespace DMSE
         {
             Scribe_Collections.Look(ref slots, "slots", LookMode.Deep);
             Scribe_Values.Look(ref launchedTick, "launchedTick", -1);
+            Scribe_Values.Look(ref autoFire, "autoFire");
             if (Scribe.mode == LoadSaveMode.PostLoadInit && slots == null) { slots = new List<StrikeSlot>(); }
         }
     }
@@ -107,9 +110,21 @@ namespace DMSE
         public List<StrikeWave> waves = new List<StrikeWave>();
         /// <summary>自動版機器計算完成的 tick。</summary>
         public int computeDoneTick = -1;
-        /// <summary>人工版：已完成／總計的彈道計算工作量（研究速度 × tick）。</summary>
+        /// <summary>目前彈道解所對應的目標位置；目標移動太遠時需重算（P4）。</summary>
+        public PlanetTile solutionTile = PlanetTile.Invalid;
+        /// <summary>人工版：已投入的彈道計算工作量（研究速度 × tick），只供顯示。</summary>
         public float computeWorkDone;
-        public float computeWorkTotal;
+        /// <summary>人工版：尚未完成的基礎工作量、已累積但還不夠解出下一枚的工作量、每枚所需工作量（皆已乘上跨圖層倍率）。</summary>
+        public float computeBaseLeft;
+        public float computeCredit;
+        public float computePerRound;
+
+        /// <summary>尚未發射且尚未解出的導彈（依波次順序）。</summary>
+        public IEnumerable<StrikeSlot> UnsolvedOpen => AllSlots.Where(s => s.Open && !s.solved);
+
+        /// <summary>人工版總工作量 = 已投入 + 剩餘；加入或移除導彈時自動跟著變。</summary>
+        public float ComputeWorkTotal => computeWorkDone
+            + StrikeComputation.Remaining(computeBaseLeft, computeCredit, computePerRound, UnsolvedOpen.Count());
         public int createdTick;
 
         public IEnumerable<StrikeSlot> AllSlots => waves.SelectMany(w => w.slots);
@@ -153,8 +168,11 @@ namespace DMSE
             Scribe_Values.Look(ref state, "state", StrikeMissionState.Planning);
             Scribe_Collections.Look(ref waves, "waves", LookMode.Deep);
             Scribe_Values.Look(ref computeDoneTick, "computeDoneTick", -1);
+            Scribe_Values.Look(ref solutionTile, "solutionTile", PlanetTile.Invalid);
             Scribe_Values.Look(ref computeWorkDone, "computeWorkDone");
-            Scribe_Values.Look(ref computeWorkTotal, "computeWorkTotal");
+            Scribe_Values.Look(ref computeBaseLeft, "computeBaseLeft");
+            Scribe_Values.Look(ref computeCredit, "computeCredit");
+            Scribe_Values.Look(ref computePerRound, "computePerRound");
             Scribe_Values.Look(ref createdTick, "createdTick");
             if (Scribe.mode == LoadSaveMode.PostLoadInit && waves == null) { waves = new List<StrikeWave>(); }
         }

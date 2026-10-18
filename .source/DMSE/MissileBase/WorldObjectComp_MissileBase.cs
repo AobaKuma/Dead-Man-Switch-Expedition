@@ -14,6 +14,12 @@ namespace DMSE
         /// <summary>每次發射間隔（天數）。未生成地圖時使用；地圖生成後由 MapComponent_MissileBase 接管。</summary>
         public IntRange missileFireIntervalDays = new IntRange(1, 2);
 
+        /// <summary>波次（P4）：地圖未生成時每次開火同時射向同一目標的枚數。</summary>
+        public IntRange missilesPerSalvo = new IntRange(1, 1);
+
+        /// <summary>波次（P4）：地圖已生成時，等上一波全部結束（通道全空）才整波發射，而不是有空通道就補射。</summary>
+        public bool fireInWaves = true;
+
         /// <summary>射程（世界 tile）。0 = 無限。</summary>
         public int range = 20;
 
@@ -138,26 +144,31 @@ namespace DMSE
 
         // ──────────────── 射擊 ────────────────
 
-        private void TryFireAtPlayerColonies()
+        /// <summary>對一個打得到的玩家據點同時發射一波（<see cref="CompProperties_MissileBase.missilesPerSalvo"/> 枚）；回傳發射數。</summary>
+        public int TryFireAtPlayerColonies()
         {
             MissileConfig cfg = BuildFireConfig();
-            if (cfg == null) return;
+            if (cfg == null) return 0;
 
             List<MapParent> targets = FindTargetsInRange(cfg);
-            if (targets.NullOrEmpty()) return;
+            if (targets.NullOrEmpty()) return 0;
 
             MapParent target = targets.RandomElement();
-
-            IncomingMissileUtility.Launch(
-                parent.Tile,
-                target.Tile,
-                cfg,
-                parent.Faction,
-                worldObjectDef: Props.incomingWorldObjectDef,
-                target: target);
+            int count = Mathf.Max(1, Props.missilesPerSalvo.RandomInRange);
+            for (int i = 0; i < count; i++)
+            {
+                IncomingMissileUtility.Launch(
+                    parent.Tile,
+                    target.Tile,
+                    BuildFireConfig(),
+                    parent.Faction,
+                    worldObjectDef: Props.incomingWorldObjectDef,
+                    target: target);
+            }
 
             if (Prefs.DevMode)
-                Log.Message($"[DMSE MissileBase] 世界層發射：{parent.Tile} → {target.Tile}");
+                Log.Message($"[DMSE MissileBase] 世界層齊射 {count} 枚：{parent.Tile} → {target.Tile}");
+            return count;
         }
 
         /// <summary>

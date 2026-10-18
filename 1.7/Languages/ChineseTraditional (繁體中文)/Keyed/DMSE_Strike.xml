@@ -101,4 +101,39 @@
   <DMSE.Strike.Alert.ComputationPendingDesc>有打擊任務在等研究者到打擊規劃桌計算彈道，但該地圖沒有能做研究工作的殖民者。
 
 請為該地圖的殖民者啟用研究工作。</DMSE.Strike.Alert.ComputationPendingDesc>
+
+  <!-- P3: adjust waves, timeline, reports, alerts -->
+  <DMSE.Strike.Adjust.Title>調整波次：打擊任務 #{0}</DMSE.Strike.Adjust.Title>
+  <DMSE.Strike.Adjust.Button>調整波次</DMSE.Strike.Adjust.Button>
+  <DMSE.Strike.Adjust.Apply>套用</DMSE.Strike.Adjust.Apply>
+  <DMSE.Strike.Adjust.Cancel>取消調整</DMSE.Strike.Adjust.Cancel>
+  <DMSE.Strike.Adjust.ClearPending>清空待發射</DMSE.Strike.Adjust.ClearPending>
+  <DMSE.Strike.Adjust.Launching>導彈發射中，請等漣波發射結束</DMSE.Strike.Adjust.Launching>
+  <DMSE.Strike.Adjust.FixedRemoved>已發射或已略過的導彈不能移除</DMSE.Strike.Adjust.FixedRemoved>
+  <DMSE.Strike.Msg.Adjusted>打擊任務 #{0} 已調整：{1} 枚、{2} 波（新增 {3} 枚）。</DMSE.Strike.Msg.Adjusted>
+  <DMSE.Strike.Slot.Launched>已發射</DMSE.Strike.Slot.Launched>
+  <DMSE.Strike.Slot.Queued>發射中</DMSE.Strike.Slot.Queued>
+  <DMSE.Strike.Slot.Skipped>已略過</DMSE.Strike.Slot.Skipped>
+  <DMSE.Strike.Plan.Now>立即</DMSE.Strike.Plan.Now>
+  <DMSE.Strike.Plan.Arrival>升空 {0} · 抵達 {1}–{2}</DMSE.Strike.Plan.Arrival>
+  <DMSE.Strike.Plan.ArrivalFlying>在飛 · 抵達 {0}–{1}</DMSE.Strike.Plan.ArrivalFlying>
+  <DMSE.Strike.Plan.EarlyWarning>會早於第 {0} 波抵達；建議延後約 {1}</DMSE.Strike.Plan.EarlyWarning>
+  <DMSE.Strike.Plan.TimelineTip>假設每一波在導引通道與發射架允許時立即發射的預估時間軸。短豎線是升空，色塊是抵達區間。黃色色塊表示會比前面的波次早到，得不到那一波誘餌的掩護。</DMSE.Strike.Plan.TimelineTip>
+  <DMSE.Strike.Alert.WaveLine>打擊任務 #{0} 第 {1} 波：在飛 {2} 枚，{3}–{4} 後抵達；被偵測 {5}，被接戰 {6}</DMSE.Strike.Alert.WaveLine>
+  <DMSE.Strike.Alert.WaveReady>打擊波次可發射</DMSE.Strike.Alert.WaveReady>
+  <DMSE.Strike.Alert.WaveReadyDesc>以下打擊任務現在就能發射下一波。可在模組設定中關閉此警報。</DMSE.Strike.Alert.WaveReadyDesc>
+  <DMSE.Strike.Alert.WaveReadyLine>打擊任務 #{0}：第 {1} 波（{2}）</DMSE.Strike.Alert.WaveReadyLine>
+  <DMSE.Strike.Report.Label>打擊任務 #{0} 戰果</DMSE.Strike.Report.Label>
+  <DMSE.Strike.Report.Header>打擊任務 #{0}（目標 {1}，自 {2} 發射）：</DMSE.Strike.Report.Header>
+  <DMSE.Strike.Report.Wave>第 {0} 波：發射 {1} 枚——飛行中被攔截 {2}、命中 {3}、在目標上空被擊落 {4}、落空 {5}</DMSE.Strike.Report.Wave>
+  <DMSE.Strike.Report.Unknown>另有 {0} 枚已抵達，但結果不明。</DMSE.Strike.Report.Unknown>
+  <DMSE.Strike.Settings.WaveReadyAlert>打擊波次可發射警報</DMSE.Strike.Settings.WaveReadyAlert>
+  <DMSE.Strike.Settings.WaveReadyAlertDesc>打擊任務的下一波可以發射時顯示警報。</DMSE.Strike.Settings.WaveReadyAlertDesc>
+
+  <!-- P4: timed launch, target-move recompute, decoy signature -->
+  <DMSE.Strike.Plan.AutoFire>定時</DMSE.Strike.Plan.AutoFire>
+  <DMSE.Strike.Plan.AutoFireTip>定時發射：輪到本波時自動發射，但要等到它會在前面各波之後（再隔一小段）抵達。</DMSE.Strike.Plan.AutoFireTip>
+  <DMSE.Strike.Msg.AutoFire>打擊任務 #{0}：第 {1} 波定時發射。</DMSE.Strike.Msg.AutoFire>
+  <DMSE.Strike.Msg.TargetMoved>打擊任務 #{0}：目標移動了 {1} 格，{2} 枚尚未發射的導彈需重新計算彈道。</DMSE.Strike.Msg.TargetMoved>
+  <DMSE.Missile.Stat.Signature>雷達截面：×{0}</DMSE.Missile.Stat.Signature>
 </LanguageData>

@@ -90,7 +90,27 @@ namespace DMSE
         public MissileConfig Config => config;
         public BVRTrackState State => bvrState ??= new BVRTrackState();
         public virtual ThingDef IncomingDef => config?.body?.incomingSkyfaller;
-        public BVRTargetProps TargetProps => IncomingDef?.GetModExtension<BVRTargetProps>() ?? BVRTargetProps.Default;
+        private BVRTargetProps signatureProps;
+        /// <summary>落點 skyfaller 的 BVR 屬性；裝了誘餌酬載時雷達截面（distanceLevel）依 <see cref="MissileConfig.SignatureFactor"/> 放大。</summary>
+        public BVRTargetProps TargetProps
+        {
+            get
+            {
+                BVRTargetProps baseProps = IncomingDef?.GetModExtension<BVRTargetProps>() ?? BVRTargetProps.Default;
+                float factor = config?.SignatureFactor ?? 1f;
+                if (Mathf.Approximately(factor, 1f)) { return baseProps; }
+                if (signatureProps == null || signatureProps.stealthLevel != baseProps.stealthLevel)
+                {
+                    signatureProps = new BVRTargetProps
+                    {
+                        distanceLevel = baseProps.distanceLevel * factor,
+                        stealthLevel = baseProps.stealthLevel,
+                        speed = baseProps.speed,
+                    };
+                }
+                return signatureProps;
+            }
+        }
         public float AngularSpeed => MissileWorldMotion.AngularSpeed(config);
         private float TraveledPctStepPerTick => AngularSpeed / Mathf.Max(0.0000001f,
             GenMath.SphericalDistance(Start.normalized, End.normalized));
@@ -109,8 +129,12 @@ namespace DMSE
                     new GlobalTargetInfo(destinationTile), by == Faction.OfPlayer ? MessageTypeDefOf.PositiveEvent
                         : MessageTypeDefOf.NegativeEvent, historical: false);
             WorldComponent_BVRNetwork.Current?.AddFlash(PositionAt(0));
+            OnIntercepted(by);
             Destroy();
         }
+
+        /// <summary>被世界層防空擊落前呼叫（子類記錄戰果用）。</summary>
+        protected virtual void OnIntercepted(Faction by) { }
 
         private float CurrentLegLength
         {

@@ -16,6 +16,11 @@ namespace DMSE
         public bool bvrHandled;
         public bool worldPhaseDone;
 
+        /// <summary>波次打擊的任務 id 與波次（-1 = 非波次打擊）；落地記為命中，未落地就被銷毀記為末端擊落。</summary>
+        public int strikeMissionId = -1;
+        public int strikeWave = -1;
+        private bool strikeReported;
+
         /// <summary>只顯示 def.label 且剔除括號後綴（如「cruise missile (incoming)」→「cruise missile」）。</summary>
         public override string Label
         {
@@ -44,8 +49,23 @@ namespace DMSE
             base.Tick();
         }
 
+        public override void Destroy(DestroyMode mode = DestroyMode.Vanish)
+        {
+            if (!strikeReported && strikeMissionId >= 0)
+            {
+                strikeReported = true;
+                WorldComponent_StrikeReports.Report(strikeMissionId, strikeWave, StrikeOutcome.TerminalKilled);
+            }
+            base.Destroy(mode);
+        }
+
         protected override void Impact()
         {
+            if (!strikeReported && strikeMissionId >= 0)
+            {
+                strikeReported = true;
+                WorldComponent_StrikeReports.Report(strikeMissionId, strikeWave, StrikeOutcome.Hit);
+            }
             Map map = Map;
             IntVec3 center = Position;
 
@@ -117,6 +137,9 @@ namespace DMSE
             Scribe_References.Look(ref attacker, "attacker");
             Scribe_Values.Look(ref bvrHandled, "bvrHandled", false);
             Scribe_Values.Look(ref worldPhaseDone, "worldPhaseDone", false);
+            Scribe_Values.Look(ref strikeMissionId, "strikeMissionId", -1);
+            Scribe_Values.Look(ref strikeWave, "strikeWave", -1);
+            Scribe_Values.Look(ref strikeReported, "strikeReported", false);
             Scribe_Values.Look(ref checkedBvr, "checkedBvr", false);
         }
     }

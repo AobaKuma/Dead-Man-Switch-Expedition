@@ -64,6 +64,17 @@ namespace DMSE
         /// </summary>
         public float PayloadCapacity => body != null ? body.payloadCapacity : 5f;
 
+        /// <summary>各部件雷達截面倍率的乘積（誘餌酬載）。</summary>
+        public float SignatureFactor
+        {
+            get
+            {
+                float f = 1f;
+                for (int i = 0; i < parts.Count; i++) { if (parts[i] != null) { f *= Mathf.Max(0.01f, parts[i].signatureFactor); } }
+                return f;
+            }
+        }
+
         /// <summary>
         /// 射程（世界 tile）= 燃料×比衝×係數 + 固定加成 + 戰鬥部增程格數，
         /// 最終乘以載荷係數（AirburstTungsten 減 25%）。0 = 不限。
