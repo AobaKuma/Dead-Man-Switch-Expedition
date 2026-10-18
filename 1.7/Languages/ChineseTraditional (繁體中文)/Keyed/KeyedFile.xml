@@ -151,8 +151,12 @@
   <DMSE.Missile.Stat.Fuel>燃料量：{0}</DMSE.Missile.Stat.Fuel>
   <DMSE.Missile.Stat.Impulse>比衝（推進效率）：{0}</DMSE.Missile.Stat.Impulse>
   <DMSE.Missile.Stat.Range>射程：{0} 格</DMSE.Missile.Stat.Range>
+  <DMSE.Missile.Stat.TerminalGuidance>具導引能力：飛行中可更新目標位置 {0} 次，可跨圖層打擊</DMSE.Missile.Stat.TerminalGuidance>
+  <DMSE.Missile.Stat.NoTerminalGuidance>無導引能力：無法追蹤移動目標，也無法跨圖層打擊</DMSE.Missile.Stat.NoTerminalGuidance>
   <DMSE.MissileLauncher.OutOfRange>目標超出導彈射程（{0} 格）。</DMSE.MissileLauncher.OutOfRange>
   <DMSE.MissileLauncher.RangeLabel>{0} / {1} 格</DMSE.MissileLauncher.RangeLabel>
+  <DMSE.MissileLauncher.NoTargetHere>此處沒有目標——導彈將會落空</DMSE.MissileLauncher.NoTargetHere>
+  <DMSE.Missile.CrossLayerNeedsGuidance>跨圖層打擊需要具導引能力的導彈；慣性制導與無導引彈藥無法做到。</DMSE.Missile.CrossLayerNeedsGuidance>
   <DMSE.Missile.Cat.Warhead>彈頭</DMSE.Missile.Cat.Warhead>
   <DMSE.Missile.Cat.Guidance>導引</DMSE.Missile.Cat.Guidance>
   <DMSE.Missile.Cat.Propulsion>推進／射程</DMSE.Missile.Cat.Propulsion>
@@ -172,6 +176,9 @@
   <DMSE.MissileLauncher.Interceptor.Ready>可發射</DMSE.MissileLauncher.Interceptor.Ready>
   <DMSE.Missile.IncomingLetter>導彈來襲</DMSE.Missile.IncomingLetter>
   <DMSE.Missile.IncomingLetterDesc>{0} 發射的導彈正在接近，即將打擊殖民地。</DMSE.Missile.IncomingLetterDesc>
+  <DMSE.Missile.Missed>我方導彈找不到目標，已落空。</DMSE.Missile.Missed>
+  <DMSE.Missile.IncomingMissed>{0} 發射的導彈失去目標，已落空。</DMSE.Missile.IncomingMissed>
+  <DMSE.Missile.TerminalUpdatesRemaining>剩餘終端更新：{0} / {1}</DMSE.Missile.TerminalUpdatesRemaining>
 
   <DMSE_MissileDecayedAway>{0} 已劣化至無法使用而解體。</DMSE_MissileDecayedAway>
   <DMSE_MissileDecaySheltered>已庇護：耐久穩定</DMSE_MissileDecaySheltered>
@@ -204,6 +211,8 @@
   <DMSE.Artillery.TooClose>目標距離太近——最小射程為 {0} 格。</DMSE.Artillery.TooClose>
   <DMSE.Artillery.NoFireControl>沒有具備空閒引導通道的火控雷達。</DMSE.Artillery.NoFireControl>
   <DMSE.Artillery.NoAmmo>未裝填砲彈——持續射擊已停止。</DMSE.Artillery.NoAmmo>
+  <DMSE.Artillery.CrossLayer>砲彈沒有導引能力，無法跨圖層打擊。</DMSE.Artillery.CrossLayer>
+  <DMSE.Artillery.Missed>砲擊找不到目標，已落空。</DMSE.Artillery.Missed>
   <DMSE.Artillery.NoBarrel>砲管已耗損——持續射擊已停止，請更換強化砲管。</DMSE.Artillery.NoBarrel>
   <DMSE.BVR.DeviceInactive>裝置不可用（無電、損壞或已關閉）。</DMSE.BVR.DeviceInactive>
   <!-- 狀態字串（用於 StopDesc） -->

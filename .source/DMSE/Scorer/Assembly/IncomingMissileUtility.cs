@@ -4,7 +4,10 @@ using Verse;
 
 namespace DMSE
 {
-    /// <summary>建立並發射一枚通用「來襲導彈」世界物件。</summary>
+    /// <summary>
+    /// 建立並發射一枚通用「來襲導彈」世界物件。
+    /// <paramref name="target"/>：鎖定的目標（供終端更新追蹤）；null 表示打擊固定 tile。
+    /// </summary>
     public static class IncomingMissileUtility
     {
         public const string DefaultWorldObjectDef = "DMSE_WorldObject_IncomingMissile";
@@ -16,7 +19,8 @@ namespace DMSE
             MissileConfig config,
             Faction attacker,
             ThingDef incomingDef = null,
-            WorldObjectDef worldObjectDef = null)
+            WorldObjectDef worldObjectDef = null,
+            MapParent target = null)
         {
             WorldObjectDef woDef = worldObjectDef
                 ?? DefDatabase<WorldObjectDef>.GetNamedSilentFail(DefaultWorldObjectDef);
@@ -30,6 +34,7 @@ namespace DMSE
             wo.Tile = source;
             wo.destinationTile = destination;
             wo.config = config;
+            wo.targetParent = target;
             wo.incomingSkyfaller = incomingDef
                 ?? (config != null && config.body != null ? config.body.incomingSkyfaller : null)
                 ?? DefDatabase<ThingDef>.GetNamedSilentFail(DefaultIncomingDef);

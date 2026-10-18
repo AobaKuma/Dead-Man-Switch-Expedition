@@ -8,85 +8,37 @@ using Verse;
 namespace DMSE
 {
     /// <summary>
-    /// 通用「來襲導彈」世界地圖物件。以巡航導彈的 WorldObject 旅行/繪製邏輯為基礎，
-    /// 但抵達時自動選擇落點並生成 <see cref="MissileIncoming"/>（不開啟玩家選靶）。
-    /// 任何陣營皆可發射；攜帶攻擊方陣營與裝配設定，作為日後 BVR 攔截的航跡/識別來源。
+    /// 通用「來襲導彈」世界地圖物件。飛行、存檔與終端更新見 <see cref="MissileWorldObject"/>；
+    /// 抵達時自動選擇落點並生成 <see cref="MissileIncoming"/>（不開啟玩家選靶）。
+    /// 任何陣營皆可發射；攜帶攻擊方陣營與裝配設定，作為 BVR 攔截的航跡/識別來源。
+    /// 目標已離開（且終端更新追不上）或不存在時落空，不生成地圖。
     /// </summary>
-    public class WorldObject_IncomingMissile : WorldObject
+    public class WorldObject_IncomingMissile : MissileWorldObject
     {
-        public MissileConfig config;
         public ThingDef incomingSkyfaller;
-        public PlanetTile destinationTile = PlanetTile.Invalid;
-
-        private PlanetTile initialTile = PlanetTile.Invalid;
-        private float traveledPct;
-        private bool arrived;
-
-        private Vector3 Start => Find.WorldGrid.GetTileCenter(initialTile);
-        private Vector3 End => Find.WorldGrid.GetTileCenter(destinationTile);
-
-        public override Vector3 DrawPos => Vector3.Slerp(Start, End, traveledPct);
-
-        public override bool ExpandingIconFlipHorizontal
-            => GenWorldUI.WorldToUIPosition(Start).x > GenWorldUI.WorldToUIPosition(End).x;
 
         public override Color ExpandingIconColor => base.Faction != null ? base.Faction.Color : Color.white;
 
-        public override float ExpandingIconRotation
+        protected override bool AllowGenerateTargetMap => false;
+
+        protected override void OnArrived(Map map)
         {
-            get
+            if (map == null)
             {
-                if (!def.rotateGraphicWhenTraveling) { return base.ExpandingIconRotation; }
-                Vector2 a = GenWorldUI.WorldToUIPosition(Start);
-                Vector2 b = GenWorldUI.WorldToUIPosition(End);
-                float num = Mathf.Atan2(b.y - a.y, b.x - a.x) * 57.29578f;
-                if (num > 180f) { num -= 180f; }
-                return num + 90f;
+                if (targetParent != null && targetParent.Faction == Faction.OfPlayer)
+                {
+                    Messages.Message("DMSE.Missile.IncomingMissed".Translate(base.Faction != null ? base.Faction.Name : "?"),
+                        new GlobalTargetInfo(destinationTile), MessageTypeDefOf.PositiveEvent, historical: false);
+                }
+                Destroy();
+                return;
             }
-        }
 
-        private float TraveledPctStepPerTick
-        {
-            get
-            {
-                Vector3 start = Start;
-                Vector3 end = End;
-                if (start == end) { return 1f; }
-                float num = GenMath.SphericalDistance(start.normalized, end.normalized);
-                if (num == 0f) { return 1f; }
-                float speedFactor = config != null ? config.WorldSpeedFactor : 1f;
-                return (0.00025f * speedFactor) / num;
-            }
-        }
-
-        public override void PostAdd()
-        {
-            base.PostAdd();
-            initialTile = base.Tile;
-        }
-
-        protected override void TickInterval(int delta)
-        {
-            base.TickInterval(delta);
-            traveledPct += TraveledPctStepPerTick * delta;
-            if (traveledPct >= 1f)
-            {
-                traveledPct = 1f;
-                Arrive();
-            }
-        }
-
-        private void Arrive()
-        {
-            if (arrived) { return; }
-            arrived = true;
-
-            Map map = GetOrGenerateMapUtility.GetOrGenerateMap(destinationTile, WorldObjectDefOf.Camp);
             ThingDef def = incomingSkyfaller
                 ?? (config != null && config.body != null ? config.body.incomingSkyfaller : null)
                 ?? DefDatabase<ThingDef>.GetNamedSilentFail("DMSE_Incoming_CruiseMissile");
 
-            if (map != null && def != null)
+            if (def != null)
             {
                 IntVec3 cell = PickTargetCell(map);
                 Skyfaller faller = SkyfallerMaker.SpawnSkyfaller(def, cell, map);
@@ -137,12 +89,7 @@ namespace DMSE
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Values.Look(ref destinationTile, "destinationTile", PlanetTile.Invalid);
-            Scribe_Values.Look(ref initialTile, "initialTile", PlanetTile.Invalid);
-            Scribe_Values.Look(ref traveledPct, "traveledPct", 0f);
-            Scribe_Values.Look(ref arrived, "arrived", false);
             Scribe_Defs.Look(ref incomingSkyfaller, "incomingSkyfaller");
-            Scribe_Deep.Look(ref config, "config");
         }
     }
 }

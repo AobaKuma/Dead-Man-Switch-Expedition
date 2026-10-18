@@ -16,6 +16,8 @@
     <baseScatter>3</baseScatter>
     <baseWorldSpeedFactor>1</baseWorldSpeedFactor>
     <baseRange>0</baseRange>
+    <!-- 具導引能力時，飛行中可更新終端位置的次數（資料鏈可多次修正） -->
+    <terminalUpdates>3</terminalUpdates>
     <baseFuel>100</baseFuel>
     <baseSpecificImpulse>3</baseSpecificImpulse>
     <rangePerFuelImpulse>0.1</rangePerFuelImpulse>
@@ -90,6 +92,8 @@
     <category>Guidance</category>
     <compatibleBodies><li>DMSE_MissileBody_Cruise</li></compatibleBodies>
     <scatterOffset>-2.5</scatterOffset>
+    <!-- 無 guidanceType 但具導引能力：可跨圖層打擊、可追蹤移動目標 -->
+    <terminalGuidance>true</terminalGuidance>
     <researchPrerequisites>
       <li>DMSE_IntegratedCircuits</li>
     </researchPrerequisites>

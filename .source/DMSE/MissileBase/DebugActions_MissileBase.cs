@@ -71,7 +71,7 @@ namespace DMSE
 
             WorldObject nearestBase = Find.WorldObjects.AllWorldObjects
                 .Where(wo => wo.GetComponent<WorldObjectComp_MissileBase>() != null)
-                .OrderBy(wo => Find.WorldGrid.ApproxDistanceInTiles(map.Tile, wo.Tile))
+                .OrderBy(wo => MissileWorldUtility.RangeDistance(map.Tile, wo.Tile))
                 .FirstOrDefault();
 
             if (nearestBase == null)
@@ -89,7 +89,7 @@ namespace DMSE
                 return;
             }
 
-            IncomingMissileUtility.Launch(nearestBase.Tile, map.Tile, cfg, nearestBase.Faction);
+            IncomingMissileUtility.Launch(nearestBase.Tile, map.Tile, cfg, nearestBase.Faction, target: map.Parent);
             Messages.Message(
                 $"DMSE: 來自 tile {nearestBase.Tile} 的導彈已發射。",
                 MessageTypeDefOf.ThreatBig, false);

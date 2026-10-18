@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using RimWorld;
 using RimWorld.Planet;
+using UnityEngine;
 using Verse;
 
 namespace DMSE
@@ -135,7 +136,13 @@ namespace DMSE
 
         private int DistanceToTile(GlobalTargetInfo t)
         {
-            return (int)Find.WorldGrid.ApproxDistanceInTiles(parent.Map.Tile, t.Tile);
+            return Mathf.RoundToInt(MissileWorldUtility.RangeDistance(parent.Map.Tile, t.Tile));
+        }
+
+        /// <summary>選靶處的目標：點到的 MapParent，或該 tile 上的 MapParent；沒有則為 null（抵達時落空）。</summary>
+        private static MapParent TargetParentAt(GlobalTargetInfo t)
+        {
+            return t.WorldObject as MapParent ?? Find.WorldObjects.MapParentAt(t.Tile);
         }
 
         /// <summary>選靶驗證：預設排除水域與已有非 MapParent 世界物件的 tile。</summary>
@@ -168,13 +175,10 @@ namespace DMSE
                         {
                             return false;
                         }
-                        int range = LoadedRange;
-                        if (range > 0 && DistanceToTile(t) > range)
+                        // 跨圖層需導引能力；射程以地表等效格計（跨圖層另加成本）
+                        if (!MissileWorldUtility.CanEngage(BuildFiringConfig(), parent.Map.Tile, t.Tile, 0f, out string reason))
                         {
-                            Messages.Message(
-                                "DMSE.MissileLauncher.OutOfRange".Translate(range),
-                                MessageTypeDefOf.RejectInput,
-                                false);
+                            Messages.Message(reason, MessageTypeDefOf.RejectInput, false);
                             return false;
                         }
                         Launch(t);
@@ -186,9 +190,18 @@ namespace DMSE
                     onUpdate: null,
                     extraLabelGetter: t =>
                     {
+                        string label = string.Empty;
                         int range = LoadedRange;
-                        if (range <= 0) { return string.Empty; }
-                        return "DMSE.MissileLauncher.RangeLabel".Translate(DistanceToTile(t), range);
+                        if (range > 0)
+                        {
+                            label = "DMSE.MissileLauncher.RangeLabel".Translate(DistanceToTile(t), range);
+                        }
+                        if (t.IsValid && TargetParentAt(t) == null)
+                        {
+                            if (!label.NullOrEmpty()) { label += "\n"; }
+                            label += "DMSE.MissileLauncher.NoTargetHere".Translate();
+                        }
+                        return label;
                     },
                     canSelectTarget: null,
                     originForClosest: null,
@@ -241,6 +254,7 @@ namespace DMSE
             wo.SetFaction(Faction.OfPlayer);
             wo.Tile = parent.Map.Tile;
             wo.destinationTile = t.Tile;
+            wo.targetParent = TargetParentAt(t);
             wo.config = config;
             faller.worldObject = wo;
 

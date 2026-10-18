@@ -1,6 +1,7 @@
 # DMSE 遠程作戰系統 — 應用流程與實作說明
 
 > 最後校對：2026-07-06（依 `.source/DMSE` 現行程式碼全面覆核）
+> 2026-10-18 更新：跨圖層打擊、終端更新（逃逸區）、落空規則與世界 tile 圖層修正（B-4～B-6、C-3、F、G）
 
 本文整理三套同屬「超視距作戰」的系統：
 
@@ -165,11 +166,21 @@ WorkGiver_AssembleMissile（Crafting 工種；只掃 item 類別）
 - `CompMissileRailLauncher` — 發射軌：彈藥為容器中實體導彈（`Building_MissileRack`），發射時取實體。
 - `CompBallisticLauncher` — 彈道發射井。
 
-共同流程：世界選靶（受 `Range` 強制限制）→ 離場 skyfaller + `ScorerProjectile_WorldObject`／`WorldObject_IncomingMissile`（攜 config、旅速 × `WorldSpeedFactor`）→ 抵達：玩家發射開當地選落點、敵方發射由 `guidanceType` 自動選格 → 生成 `MissileIncoming` →（先過目標地圖 BVR 攔截，見 A-3）→ `Impact` 動態結算：Scatter 偏移 → 主彈體爆炸 → `warheadEffect.Apply` → `payloadEffect.Apply`（或舊式 payload 數值欄位後備）→ 爆炸閃光（`WeatherEvent_MissileFlash`）。
+共同流程：世界選靶（`MissileWorldUtility.CanEngage`：受 `Range` 限制，跨圖層需導引能力，見 B-6）→ 離場 skyfaller + 世界航跡（`ScorerProjectile_WorldObject`／`WorldObject_IncomingMissile`，共用基底 `MissileWorldObject`；攜 config、鎖定目標 `targetParent`、旅速 × `WorldSpeedFactor`）→ 飛行中依 B-6 追蹤移動目標 → 抵達（`MissileWorldUtility.ResolveArrivalMap`）：目標不在，或該 tile 沒有地圖也沒有據點即**落空**（不再生成營地地圖）；命中時玩家發射開當地選落點、敵方發射由 `guidanceType` 自動選格 → 生成 `MissileIncoming` →（先過目標地圖 BVR 攔截，見 A-3）→ `Impact` 動態結算：Scatter 偏移 → 主彈體爆炸 → `warheadEffect.Apply` → `payloadEffect.Apply`（或舊式 payload 數值欄位後備）→ 爆炸閃光（`WeatherEvent_MissileFlash`）。
 
 ### B-5. 射程模型（燃料 × 比衝）
 
 射程由「彈體燃料量 × 推進比衝」決定。範例：100 燃料 × 比衝 3 × 0.1 = **30 格**；換增程馬達（比衝 +2）→ **50 格**。ITab 與發射選靶皆即時可見並強制生效。
+
+距離一律以**地表等效格**計算（`MissileWorldUtility.RangeDistance`：兩點球面夾角以地表格大小換算），跨圖層另加 `CrossLayerRangeCost = 10` 格。不使用原版 `WorldGrid.ApproxDistanceInTiles(PlanetTile, PlanetTile)`：它以第一個 tile 的圖層解讀第二個 tile 的編號，跨圖層時結果錯誤（軌道層讀地表編號還會越界報錯）。同圖層的地表距離與舊算法完全相同；軌道對軌道的距離會比舊算法大（軌道格較大，舊算法以軌道格計數）。
+
+### B-6. 跨圖層打擊與終端更新（逃逸區）
+
+- **導引能力** `MissileConfig.HasTerminalGuidance`：導引槽部件的 `ProvidesTerminalGuidance`。有 `guidanceType` 時看 `GuidanceType.TerminalGuidance`（慣性制導 = false，其餘 = true）；沒有 `guidanceType` 的部件看 XML 欄位 `terminalGuidance`（精確導引頭 `DMSE_Guidance_Precision` 設為 true）。未裝導引部件，或彈體沒有導引槽（巡飛彈），都算無導引能力。
+- **跨圖層打擊**（地表 ↔ 軌道）：必須具導引能力，且射程涵蓋含跨圖層成本的距離。玩家選靶、敵方陣地選目標都套用；火砲無導引，一律不可跨圖層。
+- **終端更新**：世界航跡鎖定 `targetParent`，每 60 tick 檢查一次；目標換了 tile 時，具導引能力的導彈可從當下位置改飛新位置。次數上限 = 彈體 `terminalUpdates`（輕型 1、巡航 3、彈道 2），且「已飛航程 + 新航段」不得超過射程。次數用完或燃料不足就沿最後位置飛行，抵達時目標已不在即落空——這就是**逃逸區**：目標在導彈用完更新次數後再移動，或移出剩餘射程，就能躲掉。
+- 世界航跡的檢視字串顯示剩餘更新次數；ITab 裝配面板顯示導引能力與更新次數。
+- **落空**：抵達時目標不在，或打擊的 tile 上沒有地圖也沒有據點 → 銷毀並發訊息。玩家選靶時，若該處沒有目標，游標旁會提示「將會落空」。
 
 ---
 
@@ -221,7 +232,8 @@ Projectile_Explosive 命中結算（原版彈道/爆炸邏輯）
 
 - **落彈是 `Projectile` 而非 Skyfaller**：與導彈（`MissileIncoming` skyfaller 直落）本質不同——砲彈從邊緣格水平飛入，走原版投射物邏輯，因此**現行 BVR 系統不會攔截砲彈**（BVR 只攔 skyfaller）。擴展規劃中的 `CompABMInterceptor` 即為此缺口而設。
 - **與 Scorer 導彈鏈的差異**：抵達時不開玩家選靶（直接用 `targetCell`）；重用 `ScorerProjectile` 作離場視覺。
-- **存檔安全**：在途齊射由 `ArtilleryShellRequest` 全值序列化；世界航跡的 `PlanetTile` 以 int 分別序列化（同 `ScorerProjectile_WorldObject` 做法）。
+- **存檔安全**：在途齊射由 `ArtilleryShellRequest` 全值序列化；目標與世界航跡的 `PlanetTile` 以 `Scribe_Values` 完整保存「tileId,layerId」（舊存檔的 int 欄位仍可讀，但只能視為地表）。
+- **不可跨圖層、找不到目標即落空**：砲彈無導引，選靶時拒絕其他圖層的 tile；抵達時目標 tile 沒有地圖或據點則落空，不生成營地地圖。
 
 ---
 
@@ -260,6 +272,18 @@ Projectile_Explosive 命中結算（原版彈道/爆炸邏輯）
 
 ## F. 審查發現與修正記錄
 
+### 2026-10-18：世界 tile 圖層與跨圖層打擊（已修正）
+
+1. **【已修正】存讀檔後軌道目標變地表。** `ScorerProjectile_WorldObject`、`WorldObject_ArtilleryStrike` 只存 `tileId`，再以 `new PlanetTile(int)`（圖層 0）還原。原註解稱 `Scribe_Values` 無法序列化 `PlanetTile`，實際上原版已註冊解析器（`tileId,layerId`），`WorldObject_IncomingMissile` 也一直直接使用。改為完整保存，舊欄位保留讀取。
+2. **【已修正】火砲永遠打地表。** `CompArtilleryStrike` 以 int 存目標（`PlanetTile` 隱式轉 int 會丟失圖層），`Projectile_ArtilleryDeparture` 再以地表重建；找目標地圖也只比對編號。全部改用 `PlanetTile`。
+3. **【已修正】跨圖層距離錯誤。** 玩家發射器射程、導彈陣地選目標原本用原版 `ApproxDistanceInTiles(PlanetTile, PlanetTile)`，跨圖層時為錯誤值（可能越界報錯），等於隨機決定是否打軌道據點。改用 `MissileWorldUtility.RangeDistance` 並套用 B-6 規則。穿梭機封鎖（`Patch_MissileBaseShuttleBlock`）改為只計同圖層的陣地。
+4. **【已修正】目標不在時生成垃圾地圖。** 三個抵達點原本呼叫 `GetOrGenerateMap(..., Camp)`，目標撤走或移動時會在該 tile（包含軌道）建營地並生成地圖。改為 `ResolveArrivalMap`：只取既有地圖或既有據點，否則落空。
+5. **【新功能】終端更新與逃逸區**（B-6），為轉移飛行的移動船體預作準備。
+6. 導彈陣地地圖內射擊：先以該枚導彈的導引能力與射程篩選目標，沒有可打目標的導彈保留在架上，不消耗。
+7. 已知未修：`ImpactCraterUtility`（撞擊飛行）也以 `ApproxDistanceInTiles(PlanetTile, PlanetTile)` 量測到據點的距離，有同樣的跨圖層問題，留待轉移飛行改版時處理。
+8. 只改 1.7 開發版（原始碼、`1.7/Defs/Missile`、`1.7/Languages`）；1.6 凍結版不動。編譯驗證：沙箱沒有 1.7 遊戲本體的 DLL，改以 NuGet 的 Roslyn（`Microsoft.Net.Compilers.Toolset` 4.14）在 Mono 上、對 1.6 參考組件（`.source/DMSE/bin/Debug`）編譯整個原始碼，0 錯誤；**`1.7/Assemblies/DMSE.dll` 需在有 1.7 遊戲的環境以 `DMSE.csproj` 重建**，尚未進遊戲實測。
+
+
 ### 2026-07-06 第二輪：已修正
 
 1. **【已修正】空爆額外攔截在枚舉中修改集合。** 原 `ApplyExtraInterceptRolls` 在 `MidcourseDefense` 的 `foreach (target in wave.targets)` 進行中直接 `RemoveTarget`（修改 `wave.targets`、必要時連 `Waves` 一起移除），會拋 `InvalidOperationException`。修正：命中的目標 id 先收集到 `airburstKills`（`ref List<int>`，跨多次空爆去重），待 foreach 結束後於 `MidcourseDefense` 尾端統一 `Discard()` + 從 `wave.targets` 移除；**刻意不移除空波次本身**——空波次交由 `MapComponentTick` 迴圈尾端既有的 `targets.Count == 0` 檢查處理，索引 `i` 因此始終有效（一併化解原審查第 2 點的索引錯位疑慮）。
@@ -276,11 +300,14 @@ Projectile_Explosive 命中結算（原版彈道/爆炸邏輯）
 
 ## G. 測試檢查清單
 
-1. **編譯**：Visual Studio 開 `DMSE.csproj` 建置（沙箱無工具鏈）。
+1. **編譯**：以 `DMSE.csproj` 建置 1.7（需遊戲本體 DLL，見專案檔說明）。
 2. **BVR 空投**：建搜索雷達→敵方空投出現預警窗口→火控鎖定（觀察通道占用警報）→SAM 消耗實體攔截彈、中過程攔截（地圖外閃光、無碎片）→末端 CIWS 連射（整輪一次判定；命中後機率碎片、耗砲管耐久）→未攔截者落地入 lord。無雷達時照常落地。
 3. **BVR 導彈**：敵方（或 Debug `RegisterSalvo`）發射導彈→首 tick 進入 BVR→隱身/速度高的彈體窗口短、命中率低；**空爆回歸**：以 `RegisterSalvo` 生成多彈波次、裝空爆攔截彈齊射，確認一彈多殺且不再拋例外、空波次正常清除。
 4. **攻防互換**：玩家對有雷達的敵方基地發射導彈/空投→被敵方防空攔截，`Alerts_PlayerMissiles` 正確追蹤；反輻射導引頭優先打雷達、豁免建築不被選中。
 5. **裝配**：ITab 改部件→缺料紅字→小人搬料→施工→config 生效；更換/移除部件部分退還。
 6. **發射**：三型平台裝填→世界選靶受射程限制→落點依彈頭/酬載/導引結算；增程件提升射程。
 7. **火砲**：Gizmo 選靶（minRange 內拒絕）→世界航跡→齊射依 salvoIntervalTicks 錯開、從目標側邊緣飛入→散佈半徑生效、傷害歸因攻擊方；砲彈不觸發 BVR 攔截；在途齊射存讀檔正確還原。
-8. **存讀檔**：BVR 波次/目標/CIWS 連射狀態、導彈 config/pending/delivered、發射器冷卻與已裝填設定、火砲冷卻/在途齊射皆正確還原。
+8. **存讀檔**：BVR 波次/目標/CIWS 連射狀態、導彈 config/pending/delivered、發射器冷卻與已裝填設定、火砲冷卻/在途齊射皆正確還原；**在途導彈/砲擊的目標圖層（軌道）讀檔後不變**，終端更新剩餘次數保留。
+9. **跨圖層**：地表陣地只有慣性制導彈時不攻擊軌道據點；換成具導引能力且射程足夠的導彈才會攻擊。玩家從軌道選地表目標：慣性/無導引彈被拒並顯示原因，導引彈可發射；火砲選其他圖層被拒。軌道地圖存在導彈陣地時，穿梭機不再跳紅字。
+10. **逃逸區**：導彈飛行中移動目標（之後的轉移飛行船，或以 Debug 改動目標 MapParent 的 Tile）→ 導彈在更新次數內改飛新位置（檢視字串的次數遞減）；次數用完後再移動 → 抵達時落空並發訊息。
+11. **落空**：玩家對空白 tile 發射 → 游標提示將落空，抵達時落空且不生成地圖；敵方導彈在途時玩家放棄該據點 → 落空，不生成營地。

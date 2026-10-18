@@ -20,6 +20,8 @@ namespace DMSE
             foreach (WorldObject wo in Find.WorldObjects.AllWorldObjects)
             {
                 if (wo.GetComponent<WorldObjectComp_MissileBase>() == null) continue;
+                // 只封鎖同一圖層：跨圖層時原版距離函式會以錯誤圖層解讀 tile 編號
+                if (!MissileWorldUtility.SameLayer(tile, wo.Tile)) continue;
                 float dist = Find.WorldGrid.ApproxDistanceInTiles(tile, wo.Tile);
                 if (dist <= BlockRadius) return true;
             }

@@ -21,18 +21,18 @@ namespace DMSE
         // =====================================================================
 
         /// <summary>
-        /// 計算從 <paramref name="srcTileId"/> 到 <paramref name="destTileId"/> 的
+        /// 計算從 <paramref name="src"/> 到 <paramref name="dest"/> 的
         /// 球面切線方位角（RimWorld 慣例：0 = North/+Z，90 = East/+X，
         /// 180 = South，270 = West）。
         ///
         /// 使用球面切平面投影，不依賴螢幕空間，在任何世界位置均穩定。
         /// 切平面的 East 軸 = Cross(星球北極, 法線)；North 軸 = Cross(法線, East)。
         /// </summary>
-        public static float WorldDirectionAngle(int srcTileId, int destTileId)
+        public static float WorldDirectionAngle(PlanetTile src, PlanetTile dest)
         {
             WorldGrid grid   = Find.WorldGrid;
-            Vector3   srcPos = grid.GetTileCenter(new PlanetTile(srcTileId));
-            Vector3   dstPos = grid.GetTileCenter(new PlanetTile(destTileId));
+            Vector3   srcPos = grid.GetTileCenter(src);
+            Vector3   dstPos = grid.GetTileCenter(dest);
 
             // 切平面上的方向向量（投影到 src 的法線切平面）
             Vector3 dir     = dstPos - srcPos;
@@ -79,17 +79,17 @@ namespace DMSE
         // =====================================================================
 
         /// <summary>
-        /// 根據世界射擊方向（<paramref name="srcTileId"/> → <paramref name="destTileId"/>）
+        /// 根據世界射擊方向（<paramref name="src"/> → <paramref name="dest"/>）
         /// 決定砲彈從 <paramref name="map"/> 的哪條邊緣進入。
         ///
         /// 砲彈從來源方向飛來，因此進入邊緣 = 地圖上朝向來源 tile 的那一側
         /// （即 dest→src 的方位角，與出發方向相反）。
         /// 邊緣格的沿邊座標使用目標格的對應分量，確保砲彈飛向正確位置。
         /// </summary>
-        public static IntVec3 CalcEntryEdgeCell(Map map, IntVec3 target, int srcTileId, int destTileId)
+        public static IntVec3 CalcEntryEdgeCell(Map map, IntVec3 target, PlanetTile src, PlanetTile dest)
         {
             // 砲彈從 src 飛來 → 進入邊緣朝向 src，即 dest→src 方向
-            float angle = WorldDirectionAngle(destTileId, srcTileId);
+            float angle = WorldDirectionAngle(dest, src);
             return EdgeCellFromAngle(map, angle, target.x, target.z);
         }
 
@@ -112,7 +112,7 @@ namespace DMSE
 
             // 用球面方向計算進入邊緣（src.InitialTile = 發射地，src.destinationTile = 目標地）
             IntVec3 entryEdgeCell = CalcEntryEdgeCell(
-                map, src.targetCell, src.InitialTile.tileId, src.destinationTile.tileId);
+                map, src.targetCell, src.InitialTile, src.destinationTile);
 
             for (int i = 0; i < src.salvoCount; i++)
             {

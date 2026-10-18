@@ -140,25 +140,31 @@ namespace DMSE
 
         private void TryFireAtPlayerColonies()
         {
-            List<MapParent> targets = FindTargetsInRange();
+            MissileConfig cfg = BuildFireConfig();
+            if (cfg == null) return;
+
+            List<MapParent> targets = FindTargetsInRange(cfg);
             if (targets.NullOrEmpty()) return;
 
             MapParent target = targets.RandomElement();
-            MissileConfig cfg = BuildFireConfig();
-            if (cfg == null) return;
 
             IncomingMissileUtility.Launch(
                 parent.Tile,
                 target.Tile,
                 cfg,
                 parent.Faction,
-                worldObjectDef: Props.incomingWorldObjectDef);
+                worldObjectDef: Props.incomingWorldObjectDef,
+                target: target);
 
             if (Prefs.DevMode)
                 Log.Message($"[DMSE MissileBase] 世界層發射：{parent.Tile} → {target.Tile}");
         }
 
-        private List<MapParent> FindTargetsInRange()
+        /// <summary>
+        /// 找出這枚導彈打得到的玩家地圖：射程不超過陣地射程與導彈射程；
+        /// 跨圖層（例：軌道上的據點或轉移飛行中的船）需導彈具備導引能力。
+        /// </summary>
+        private List<MapParent> FindTargetsInRange(MissileConfig cfg)
         {
             List<MapParent> result = new List<MapParent>();
             foreach (WorldObject wo in Find.WorldObjects.AllWorldObjects)
@@ -166,11 +172,7 @@ namespace DMSE
                 if (!(wo is MapParent mp)) continue;
                 if (!mp.HasMap) continue;
                 if (mp.Faction == null || !mp.Faction.IsPlayer) continue;
-                if (Props.range > 0)
-                {
-                    float dist = Find.WorldGrid.ApproxDistanceInTiles(parent.Tile, mp.Tile);
-                    if (dist > Props.range) continue;
-                }
+                if (!MissileWorldUtility.CanEngage(cfg, parent.Tile, mp.Tile, Props.range, out _)) continue;
                 result.Add(mp);
             }
             return result;
@@ -188,7 +190,7 @@ namespace DMSE
 
         private void OnRelocation()
         {
-            if (FindTargetsInRange().Any())
+            if (FindTargetsInRange(BuildFireConfig()).Any())
             {
                 Find.LetterStack.ReceiveLetter(
                     "DMSE.MissileBase.Relocated".Translate(),

@@ -146,10 +146,12 @@ namespace DMSE
                 return;
             }
 
-            Map map = GetOrGenerateMapUtility.GetOrGenerateMap(destinationTile, WorldObjectDefOf.Camp);
+            // 目標 tile 上沒有地圖或據點 → 落空（不在空格上生成營地地圖）
+            Map map = MissileWorldUtility.ResolveArrivalMap(destinationTile, null, allowGenerateMap: true);
             if (map == null)
             {
-                Log.Error($"[DMSE Artillery] 無法取得或生成目標 tile {destinationTile} 的地圖。");
+                Messages.Message("DMSE.Artillery.Missed".Translate(), new GlobalTargetInfo(destinationTile),
+                    MessageTypeDefOf.NeutralEvent, historical: false);
                 Destroy();
                 return;
             }
@@ -174,15 +176,24 @@ namespace DMSE
         {
             base.ExposeData();
 
-            // PlanetTile 以 int 分別序列化（同 ScorerProjectile_WorldObject 的做法）
-            int destId = destinationTile.tileId;
-            int initId = initialTile.tileId;
-            Scribe_Values.Look(ref destId, "destTileId",   -1);
-            Scribe_Values.Look(ref initId, "initTileId",   -1);
+            // PlanetTile 以「tileId,layerId」完整序列化（原版已註冊解析器）
+            Scribe_Values.Look(ref destinationTile, "destinationTile", PlanetTile.Invalid);
+            Scribe_Values.Look(ref initialTile,     "initialTile",     PlanetTile.Invalid);
             if (Scribe.mode == LoadSaveMode.LoadingVars)
             {
-                destinationTile = destId >= 0 ? new PlanetTile(destId) : PlanetTile.Invalid;
-                initialTile     = initId >= 0 ? new PlanetTile(initId) : PlanetTile.Invalid;
+                // 舊存檔只存 tileId（圖層遺失），只能視為地表
+                if (!destinationTile.Valid)
+                {
+                    int legacyDest = -1;
+                    Scribe_Values.Look(ref legacyDest, "destTileId", -1);
+                    if (legacyDest >= 0) { destinationTile = new PlanetTile(legacyDest); }
+                }
+                if (!initialTile.Valid)
+                {
+                    int legacyInit = -1;
+                    Scribe_Values.Look(ref legacyInit, "initTileId", -1);
+                    if (legacyInit >= 0) { initialTile = new PlanetTile(legacyInit); }
+                }
             }
 
             Scribe_Values.Look(ref traveledPct,       "traveledPct",       0f);

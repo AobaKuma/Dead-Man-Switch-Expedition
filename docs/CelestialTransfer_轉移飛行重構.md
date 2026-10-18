@@ -830,6 +830,21 @@ footprint 上限約 30 樁 × 169 格 ≈ 5000 格，與一艘大型逆重船同
 | 飛往移動中的船的穿梭機抵達 | 原版 `TransportersArrivalAction_LandInSpecificCell.StillValid` 會檢查 `mapParent.Tile != destinationTile` → 船移動後判定失效；`TravellingTransporters.Arrived` 的退路也是比對 `maps[i].Tile == destinationTile` | prefix `TravellingTransporters.TickInterval`：若 `arrivalAction` 指向的 `mapParent` 是飛行中的 `WorldObject_TransferShip`，每次把 `destinationTile` 同步為 `ship.Tile`（追蹤導航）。落點格 `cell` 屬船體地圖座標，船移動不影響 |
 | 點火階段有穿梭機抵達 | v1 允許降落（避免無限盤旋）；之後可改為延後到 Coast | 同上 prefix 可加延後邏輯 |
 
+### 8-1. 導彈與火砲（2026-10-18 已實作）
+
+規則與實作見 `docs/BVR_Missile_系統流程.md` 的 B-5、B-6、C-3。對轉移飛行的影響：
+
+| 情境 | 結果 |
+|---|---|
+| 地表敵方導彈陣地攻擊軌道上的船 | 只有**具導引能力**且射程涵蓋「地表等效距離 + 跨圖層 10 格」的導彈會選它為目標；慣性制導、無導引彈體不會 |
+| 敵方導彈飛向移動中的船 | 導彈鎖定船的 `MapParent`，每 60 tick 檢查；船換 tile（§6-4：每次 `TickInterval` 依顯示位置更新）時，在彈體 `terminalUpdates` 次數與剩餘射程內改飛新位置。次數用完或燃料不足後船再移動，導彈抵達時落空——**逃逸區**：越長的滑行段、越常換 tile，越容易甩掉導彈 |
+| 導彈抵達時船已不在 | 落空並發訊息，不在空 tile 上生成營地地圖（舊版會生成） |
+| 從船上發射導彈 | 射程以船的**當前** `Tile` 計算；打地表需要具導引能力的導彈 |
+| 從船上發射火砲 | 不可跨圖層（砲彈無導引）；打自己地圖時目標是發射當下的 tile，船移動後抵達則落空 |
+| 攔截系統（BVR） | 雷達、發射器隨分離搬到船體地圖時重新登記，飛行中照常運作 |
+
+`WorldObject_TransferShip` 只要照 §6-4 持續更新 `Tile`，導彈追蹤就會自動生效，不需要額外 patch。
+
 ---
 
 ## 9. 撞擊飛行（Hellfire）移植

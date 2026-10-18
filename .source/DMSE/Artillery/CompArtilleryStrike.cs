@@ -87,7 +87,7 @@ namespace DMSE
     ///
     /// 持續射擊工作流程：
     ///   1. 玩家點擊「開火」Gizmo → 切換至世界地圖，選擇目標 Tile。
-    ///   2. 進入持續射擊狀態（targetTileId 設為選定 tile）。
+    ///   2. 進入持續射擊狀態（targetTile 設為選定 tile）。
     ///   3. 每個 tick 推進射擊狀態機：
     ///      a. 若在裝填冷卻中 → 等待；
     ///      b. 冷卻結束後開始瞄準計時（warmupTicks）；
@@ -104,8 +104,8 @@ namespace DMSE
         private int cooldownUntil;
 
         // ---- 持續射擊狀態 ----
-        /// <summary>目標世界 tile ID；-1 = 閒置（未在持續射擊）。</summary>
-        private int targetTileId = -1;
+        /// <summary>目標世界 tile（含圖層）；Invalid = 閒置（未在持續射擊）。</summary>
+        private PlanetTile targetTile = PlanetTile.Invalid;
 
         /// <summary>
         /// 瞄準結束的 tick；-1 = 尚未開始瞄準（冷卻中或剛重置）。
@@ -120,7 +120,7 @@ namespace DMSE
         private float aimAngle = float.NaN;
 
         /// <summary>是否在持續射擊狀態。</summary>
-        public bool IsSustainedFiring => targetTileId >= 0;
+        public bool IsSustainedFiring => targetTile.Valid;
 
         // ---- 火力通道 ----
         private CompFireControlRadar reservedRadar;
@@ -136,7 +136,14 @@ namespace DMSE
             base.PostExposeData();
 
             Scribe_Values.Look(ref cooldownUntil,      "artilleryCooldownUntil", 0);
-            Scribe_Values.Look(ref targetTileId,        "artilleryTargetTileId",  -1);
+            Scribe_Values.Look(ref targetTile,          "artilleryTargetTile",    PlanetTile.Invalid);
+            if (Scribe.mode == LoadSaveMode.LoadingVars && !targetTile.Valid)
+            {
+                // 舊存檔只存 tileId（圖層遺失），只能視為地表
+                int legacyTileId = -1;
+                Scribe_Values.Look(ref legacyTileId, "artilleryTargetTileId", -1);
+                if (legacyTileId >= 0) { targetTile = new PlanetTile(legacyTileId); }
+            }
             Scribe_Values.Look(ref channelReleaseTick,  "channelReleaseTick",     -1);
             // warmupEndTick 不序列化：載入後自動從冷卻結束時重新開始瞄準
 
@@ -229,9 +236,9 @@ namespace DMSE
                 warmupEndTick = now + Props.warmupTicks;
 
                 // 砲管轉向目標世界方位（瞄準開始時，讓玩家有 4 秒看到砲管旋轉）
-                int srcTileId = parent.Map?.Tile.tileId ?? -1;
-                aimAngle = srcTileId >= 0 && srcTileId != targetTileId
-                    ? ArtilleryStrikeUtility.WorldDirectionAngle(srcTileId, targetTileId)
+                PlanetTile srcTile = parent.Map?.Tile ?? PlanetTile.Invalid;
+                aimAngle = srcTile.Valid && srcTile != targetTile
+                    ? ArtilleryStrikeUtility.WorldDirectionAngle(srcTile, targetTile)
                     : float.NaN;
                 SetTurretRotation(aimAngle);
                 return;
@@ -246,7 +253,7 @@ namespace DMSE
 
             // 瞄準完畢 → 開火
             warmupEndTick = -1;
-            FireSingleShot(targetTileId);
+            FireSingleShot(targetTile);
         }
 
         // =====================================================================
@@ -255,7 +262,7 @@ namespace DMSE
 
         private void StopSustainedFire()
         {
-            targetTileId  = -1;
+            targetTile    = PlanetTile.Invalid;
             warmupEndTick = -1;
         }
 
@@ -410,7 +417,7 @@ namespace DMSE
 
         private bool ChooseWorldTarget(GlobalTargetInfo target)
         {
-            if (!target.IsValid || target.Tile < 0)
+            if (!target.IsValid || !target.Tile.Valid)
             {
                 Messages.Message(
                     "MessageTransportPodsDestinationIsInvalid".Translate(),
@@ -418,8 +425,17 @@ namespace DMSE
                 return false;
             }
 
+            // 砲彈無導引，不能跨圖層（地表 ↔ 軌道）
+            if (parent.Map != null && !MissileWorldUtility.SameLayer(parent.Map.Tile, target.Tile))
+            {
+                Messages.Message(
+                    "DMSE.Artillery.CrossLayer".Translate(),
+                    MessageTypeDefOf.RejectInput, historical: false);
+                return false;
+            }
+
             // 設定持續射擊目標；狀態機在下一個 tick 開始瞄準流程
-            targetTileId  = target.Tile;
+            targetTile    = target.Tile;
             warmupEndTick = -1;
             return true;
         }
@@ -428,18 +444,18 @@ namespace DMSE
         //  邊緣格計算（球面切線框架，不依賴螢幕空間）
         // =====================================================================
 
-        private IntVec3 CalcExitEdgeCell(int destTileId)
+        private IntVec3 CalcExitEdgeCell(PlanetTile destTile)
         {
-            Map map       = parent.Map;
-            int srcTileId = map.Tile.tileId;
+            Map map            = parent.Map;
+            PlanetTile srcTile = map.Tile;
 
-            if (srcTileId == destTileId)
+            if (srcTile == destTile)
             {
                 return new IntVec3(
                     Mathf.Clamp(parent.Position.x, 1, map.Size.x - 2), 0, map.Size.z - 1);
             }
 
-            float angle = ArtilleryStrikeUtility.WorldDirectionAngle(srcTileId, destTileId);
+            float angle = ArtilleryStrikeUtility.WorldDirectionAngle(srcTile, destTile);
             return ArtilleryStrikeUtility.EdgeCellFromAngle(
                 map, angle, parent.Position.x, parent.Position.z);
         }
@@ -463,9 +479,9 @@ namespace DMSE
             }
         }
 
-        private static IntVec3 GetMapCenterCell(int tileId)
+        private static IntVec3 GetMapCenterCell(PlanetTile tile)
         {
-            Map existing = Find.Maps.FirstOrDefault(m => m.Tile.tileId == tileId);
+            Map existing = Current.Game.FindMap(tile);
             if (existing != null)
             {
                 return new IntVec3(existing.Size.x / 2, 0, existing.Size.z / 2);
@@ -477,7 +493,7 @@ namespace DMSE
         //  單次開火（由狀態機呼叫，不再重複確認冷卻）
         // =====================================================================
 
-        private void FireSingleShot(int destTileId)
+        private void FireSingleShot(PlanetTile destTile)
         {
             ThingDef projDef = ResolveProjectileDef();
             if (projDef == null) { StopSustainedFire(); return; }
@@ -487,14 +503,14 @@ namespace DMSE
             parent.GetComp<CompRefuelable>()?.ConsumeFuel(1f);
 
             // 生成離場投射物，朝對應方位邊緣格飛去
-            IntVec3 edgeCell = CalcExitEdgeCell(destTileId);
+            IntVec3 edgeCell = CalcExitEdgeCell(destTile);
 
             Projectile_ArtilleryDeparture departure =
                 (Projectile_ArtilleryDeparture)GenSpawn.Spawn(
                     Props.departureProjectileDef, parent.Position, parent.Map);
 
-            departure.destTileId                  = destTileId;
-            departure.artilleryTargetCell         = GetMapCenterCell(destTileId);
+            departure.destTile                    = destTile;
+            departure.artilleryTargetCell         = GetMapCenterCell(destTile);
             departure.artilleryProjectileDef      = projDef;
             departure.artilleryAttackerFaction    = parent.Faction;
             departure.artilleryScatterRadius      = Props.scatterRadius;

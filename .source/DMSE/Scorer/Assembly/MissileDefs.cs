@@ -68,6 +68,12 @@ namespace DMSE
         public float baseWorldSpeedFactor = 1f;  // 世界地圖旅行速度倍率
         public int baseRange = 0;                // 額外固定射程加成（世界 tile）
 
+        /// <summary>
+        /// 具導引能力時，飛行中可更新終端位置（追蹤移動目標）的次數。
+        /// 次數用完後沿最後位置飛行，目標若已離開即落空（逃逸區）。無導引能力時不生效。
+        /// </summary>
+        public int terminalUpdates = 0;
+
         // 燃料與推進效率（決定射程）
         public float baseFuel = 100f;            // 彈體基礎燃料量
         public float baseSpecificImpulse = 3f;   // 基礎比衝（推進效率）
@@ -156,6 +162,15 @@ namespace DMSE
         /// Antiparticle、ToxicGas、AirburstTungsten。
         /// </summary>
         public PayloadEffect payloadEffect;
+
+        /// <summary>
+        /// 沒有指定 <see cref="guidanceType"/> 的導引部件是否仍具導引能力（例：精確導引頭）。
+        /// 有 guidanceType 時以 <see cref="GuidanceType.TerminalGuidance"/> 為準。
+        /// </summary>
+        public bool terminalGuidance = false;
+
+        /// <summary>此部件是否提供導引能力：可跨圖層打擊、可依彈體次數更新終端位置。</summary>
+        public bool ProvidesTerminalGuidance => guidanceType != null ? guidanceType.TerminalGuidance : terminalGuidance;
 
         /// <summary>相容彈體；null/空 = 相容所有具有此槽位的彈體。</summary>
         public List<MissileBodyDef> compatibleBodies;

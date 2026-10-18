@@ -29,8 +29,8 @@ namespace DMSE
         //  由 CompArtilleryStrike.LaunchToTile 在 Launch() 前設定
         // =====================================================================
 
-        /// <summary>目標 tile ID（世界地圖）。-1 = 未設定。</summary>
-        public int destTileId = -1;
+        /// <summary>目標 tile（世界地圖，含圖層）。Invalid = 未設定。</summary>
+        public PlanetTile destTile = PlanetTile.Invalid;
 
         /// <summary>目標地圖上的落彈格（地圖中心，散佈在 SpawnShell 時套用）。</summary>
         public IntVec3 artilleryTargetCell;
@@ -61,7 +61,14 @@ namespace DMSE
         {
             base.ExposeData();
 
-            Scribe_Values.Look(ref destTileId,              "destTileId",              -1);
+            Scribe_Values.Look(ref destTile,                "destTile",                PlanetTile.Invalid);
+            if (Scribe.mode == LoadSaveMode.LoadingVars && !destTile.Valid)
+            {
+                // 舊存檔只存 tileId（圖層遺失），只能視為地表
+                int legacyTileId = -1;
+                Scribe_Values.Look(ref legacyTileId, "destTileId", -1);
+                if (legacyTileId >= 0) { destTile = new PlanetTile(legacyTileId); }
+            }
             Scribe_Values.Look(ref artilleryTargetCell,     "artilleryTargetCell",     default);
             Scribe_Defs.Look(ref artilleryProjectileDef,    "artilleryProjectileDef");
             Scribe_References.Look(ref artilleryAttackerFaction, "artilleryAttackerFaction");
@@ -78,7 +85,7 @@ namespace DMSE
         protected override void Impact(Thing hitThing, bool blockedByShield = false)
         {
             // 驗證必要資料
-            if (destTileId < 0 || artilleryWorldObjectDef == null || artilleryProjectileDef == null)
+            if (!destTile.Valid || artilleryWorldObjectDef == null || artilleryProjectileDef == null)
             {
                 Log.Error("[DMSE Artillery] Projectile_ArtilleryDeparture 抵達邊緣時缺少必要資料，已取消。");
                 Destroy(DestroyMode.Vanish);
@@ -97,7 +104,7 @@ namespace DMSE
 
             // 出發 tile = 本投射物所在地圖的世界 tile
             wo.Tile            = Map.Tile;
-            wo.destinationTile = new PlanetTile(destTileId);
+            wo.destinationTile = destTile;
 
             if (artilleryAttackerFaction != null)
             {
