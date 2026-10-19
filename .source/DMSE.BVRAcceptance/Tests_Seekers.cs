@@ -277,6 +277,7 @@ namespace DMSE.BVRAcceptance
                 new AcceptanceTest("K13", "Firing solutions are recomputed after a large target move", Tests_Strike.RecomputeOnTargetMove),
                 new AcceptanceTest("K14", "Decoy payload and threat assessment", Tests_Strike.DecoyThreatAssessment),
                 new AcceptanceTest("K15", "NPC missile base salvo", Tests_Strike.NpcSalvo),
+                new AcceptanceTest("G1", "God-mode instant missile assembly", Tests_Assembly.GodModeInstantAssembly),
                 new AcceptanceTest("L1", "Save/load mid-engagement", Tests_Seekers.SaveLoadMidEngagement),
                 new AcceptanceTest("L2", "Save/load after a reroute", Tests_WorldEdge.SaveLoadAfterReroute),
             };

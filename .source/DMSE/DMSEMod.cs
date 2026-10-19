@@ -21,6 +21,8 @@ namespace DMSE
                 "DMSE.BVR.World.ShowCoverageDesc".Translate());
             listing.CheckboxLabeled("DMSE.Strike.Settings.WaveReadyAlert".Translate(), ref Settings.strikeWaveReadyAlert,
                 "DMSE.Strike.Settings.WaveReadyAlertDesc".Translate());
+            listing.CheckboxLabeled("DMSE.Missile.Settings.GodModeInstantAssembly".Translate(), ref Settings.godModeInstantAssembly,
+                "DMSE.Missile.Settings.GodModeInstantAssemblyDesc".Translate());
             listing.End();
         }
 

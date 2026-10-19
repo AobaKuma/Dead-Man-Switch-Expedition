@@ -146,6 +146,19 @@ namespace DMSE
             assemblyConfirmed = false;
         }
 
+        /// <summary>
+        /// 上帝模式免費裝配：直接套用 pending，不消耗資源；已搬運的資源原樣退回。
+        /// 移除的部件不退還（否則反覆裝上、拆下就能憑空產生資源）。
+        /// </summary>
+        public void ApplyAssemblyFree()
+        {
+            EnsureInit();
+            SpawnResources(delivered);
+            delivered.Clear();
+            config = pending.Clone();
+            assemblyConfirmed = false;
+        }
+
         /// <summary>pending 已回到與 config 相同卻仍有搬運資源時，把資源退回（取消裝配）。</summary>
         public void RefundDeliveredIfIdle()
         {

@@ -109,6 +109,8 @@ namespace DMSE
                 // 清除已搬運資源（彈體已發射消耗）
                 cfg.delivered.Clear();
             }
+            // 上帝模式即時裝配：立即重新裝填（打擊任務保留中的發射井由地圖掃描補上）
+            MissileAssemblyUtility.TryInstantAssemble(parent);
         }
 
         protected override string LoadedStatusText

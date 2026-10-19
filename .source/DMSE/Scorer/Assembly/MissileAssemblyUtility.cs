@@ -83,6 +83,41 @@ namespace DMSE
         }
 
         /// <summary>
+        /// 上帝模式且開啟 Mod 設定「上帝模式即時裝配」：裝配立即完成，不耗資源、不需研究、不需確認或小人工作。
+        /// </summary>
+        public static bool GodModeInstant => DebugSettings.godMode && (DMSEMod.Settings?.godModeInstantAssembly ?? false);
+
+        /// <summary>
+        /// 上帝模式即時裝配：t（導彈物品、彈道井）或儲存架內所有待裝配的導彈立即套用設定，彈道井同時標記為已裝填。
+        /// 被打擊任務保留者略過（保留中不可改裝）。回傳是否有導彈被裝配。
+        /// </summary>
+        public static bool TryInstantAssemble(Thing t)
+        {
+            if (t == null || !GodModeInstant) { return false; }
+            if (t is Building_MissileRack rack)
+            {
+                bool any = false;
+                IReadOnlyList<Thing> held = rack.HeldThings;
+                if (held != null)
+                {
+                    for (int i = 0; i < held.Count; i++) { any |= InstantAssembleOne(held[i]); }
+                }
+                return any;
+            }
+            return InstantAssembleOne(t);
+        }
+
+        private static bool InstantAssembleOne(Thing t)
+        {
+            CompMissileConfig comp = t?.TryGetComp<CompMissileConfig>();
+            if (comp == null || !comp.NeedsAssembly || StrikeReservation.IsReserved(t)) { return false; }
+            comp.ApplyAssemblyFree();
+            CompMissileLauncher_Ballistic silo = t.TryGetComp<CompMissileLauncher_Ballistic>();
+            if (silo != null && !silo.IsLoaded) { silo.MarkLoaded(); }
+            return true;
+        }
+
+        /// <summary>
         /// 取得可用於生成資源的位置（Map + 座標）。
         /// 若 comp.parent 未生成，沿 ParentHolder 鏈找到最近的已生成建築。
         /// </summary>

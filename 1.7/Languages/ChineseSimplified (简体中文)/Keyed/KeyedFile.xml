@@ -143,6 +143,9 @@
   <DMSE.Missile.Body>导弹弹体</DMSE.Missile.Body>
   <DMSE.Missile.None>无</DMSE.Missile.None>
   <DMSE.Missile.Locked>未解锁</DMSE.Missile.Locked>
+  <DMSE.Missile.GodModeInstant>上帝模式：变更立即装配完成，不耗资源、不需研究。</DMSE.Missile.GodModeInstant>
+  <DMSE.Missile.Settings.GodModeInstantAssembly>上帝模式：导弹即时装配</DMSE.Missile.Settings.GodModeInstantAssembly>
+  <DMSE.Missile.Settings.GodModeInstantAssemblyDesc>开启上帝模式时，导弹与弹道导弹发射井的装配立即完成：不需确认、搬运或装配工作，也不消耗资源；部件不需研究即可选用。移除的部件不退还资源。</DMSE.Missile.Settings.GodModeInstantAssemblyDesc>
   <DMSE.Missile.Stats>待装配数值（装配后生效）</DMSE.Missile.Stats>
   <DMSE.Missile.Stat.Radius>爆炸半径：{0}</DMSE.Missile.Stat.Radius>
   <DMSE.Missile.Stat.Damage>弹头：{0}（{1}）</DMSE.Missile.Stat.Damage>

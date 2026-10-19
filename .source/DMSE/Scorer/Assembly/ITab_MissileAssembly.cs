@@ -119,6 +119,15 @@ namespace DMSE
                 GUI.color = Color.white;
             }
 
+            // 上帝模式即時裝配：變更立即套用，不耗資源、不需研究
+            bool instant = MissileAssemblyUtility.GodModeInstant;
+            if (instant)
+            {
+                GUI.color = Color.gray;
+                list.Label("DMSE.Missile.GodModeInstant".Translate());
+                GUI.color = Color.white;
+            }
+
             // 被打擊任務保留的導彈／彈道井：任務結束前不可改裝（按鈕停用，數值照常顯示）
             bool reserved = StrikeReservation.IsReserved(comp.parent);
             if (reserved)
@@ -242,6 +251,8 @@ namespace DMSE
             }
 
             list.End();
+
+            if (instant) { MissileAssemblyUtility.TryInstantAssemble(SelThing); }
         }
 
         private void DrawSlot(Listing_Standard list, CompMissileConfig comp, MissileConfig cfg, MissilePartCategory cat)
@@ -267,7 +278,7 @@ namespace DMSE
                     if (part.category != cat || !part.CompatibleWith(cfg.body)) { continue; }
                     MissilePartDef p = part;
                     string label = p.LabelCap + CostSuffix(p);
-                    if (!p.ResearchSatisfied)
+                    if (!p.ResearchSatisfied && !MissileAssemblyUtility.GodModeInstant)
                     {
                         opts.Add(new FloatMenuOption(label + " (" + "DMSE.Missile.Locked".Translate() + ")", null));
                     }

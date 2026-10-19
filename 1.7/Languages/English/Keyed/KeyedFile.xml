@@ -112,6 +112,9 @@
   <DMSE.Missile.Body>Missile body</DMSE.Missile.Body>
   <DMSE.Missile.None>None</DMSE.Missile.None>
   <DMSE.Missile.Locked>locked</DMSE.Missile.Locked>
+  <DMSE.Missile.GodModeInstant>God mode: changes are assembled at once, free and without research.</DMSE.Missile.GodModeInstant>
+  <DMSE.Missile.Settings.GodModeInstantAssembly>God mode: instant missile assembly</DMSE.Missile.Settings.GodModeInstantAssembly>
+  <DMSE.Missile.Settings.GodModeInstantAssemblyDesc>While god mode is on, missile and ballistic silo refits finish immediately: no confirmation, hauling or assembly work, and no resources are used. Parts are available without research. Removed parts are not refunded.</DMSE.Missile.Settings.GodModeInstantAssemblyDesc>
   <DMSE.Missile.Stats>Pending stats (after assembly)</DMSE.Missile.Stats>
   <DMSE.Missile.Stat.Radius>Blast radius: {0}</DMSE.Missile.Stat.Radius>
   <DMSE.Missile.Stat.Damage>Warhead: {0} ({1})</DMSE.Missile.Stat.Damage>

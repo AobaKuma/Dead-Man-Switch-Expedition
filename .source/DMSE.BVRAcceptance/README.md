@@ -70,6 +70,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .source/DMSE.BVRAcceptance/r
 | K13 | Wave strike P4: a 2-tile target move keeps the firing solutions; a 6–7-tile move voids them, blocks the wave and the auto console recomputes |
 | K14 | Wave strike P4: a decoy payload doubles the radar size; with one channel a threat-assessing base locks the decoy first, a soonest-first base the plain missile |
 | K15 | Wave strike P4: an unloaded NPC missile base fires a three-missile salvo at one colony |
+| G1 | God-mode instant assembly setting: off (or outside god mode) leaves refits pending; on, rack missiles and a silo are assembled with no confirmation, hauling or resources (removed parts refund nothing), a reserved missile waits until released, and the silo reloads right after firing |
 | L1 | Save and reload with a detected track and an interceptor in flight |
 | L2 | Save and reload after a reroute, with the old-route interceptor still flying |
 
