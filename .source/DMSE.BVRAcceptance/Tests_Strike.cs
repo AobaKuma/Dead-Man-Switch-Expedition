@@ -405,7 +405,7 @@ namespace DMSE.BVRAcceptance
             PlanetTile target = TileAtDistance(13.5f, 15f);
             t.Require(console != null && target.Valid, "console and target");
 
-            var draft = new StrikeMission { targetTile = target, state = StrikeMissionState.Planning };
+            var draft = new StrikeMission { targetTile = target, state = StrikeMissionState.Planning, name = StrikeMissionNamer.RandomName() };
             draft.waves.Add(new StrikeWave());
             var plan = new Dialog_StrikePlan(console, draft) { forcePause = false, absorbInputAroundWindow = false };
             Find.WindowStack.Add(plan);
@@ -416,6 +416,13 @@ namespace DMSE.BVRAcceptance
             t.Check(draft.waves.Count == 4 && draft.waves.All(w => w.slots.Count == 2), "auto-assign makes four waves of two (two channels)");
             t.Screenshot("strike_plan");
             yield return new WaitFrames(3);
+            var rename = new Dialog_RenameStrikeMission(draft) { forcePause = false, absorbInputAroundWindow = false };
+            Find.WindowStack.Add(rename);
+            yield return new WaitFrames(10);
+            t.Check(Find.WindowStack.IsOpen(rename), "the rename window draws over the planning window");
+            t.Screenshot("strike_rename");
+            yield return new WaitFrames(3);
+            rename.Close(doCloseSound: false);
             plan.Close(doCloseSound: false);
             t.Require(console.Commit(draft, out string reason), $"plan confirmed ({reason ?? "ok"})");
 
@@ -635,7 +642,8 @@ namespace DMSE.BVRAcceptance
             silo.TryGetComp<CompMissileLauncher_Ballistic>().MarkLoaded();
             PlanetTile target = TileAtDistance(8.5f, 9.5f);
             t.Require(console != null && target.Valid, "console and a target ~9 tiles away");
-            var draft = new StrikeMission { targetTile = target, state = StrikeMissionState.Planning };
+            var draft = new StrikeMission { targetTile = target, state = StrikeMissionState.Planning, name = StrikeMissionNamer.RandomName() };
+            t.Check(!draft.name.NullOrEmpty() && draft.Label == draft.name, $"a new mission gets a random name ({draft.name})");
             draft.waves.Add(WaveOf(a));
             draft.waves.Add(new StrikeWave { slots = { new StrikeSlot { launcher = silo as ThingWithComps, round = silo } } });
             List<StrikePlanWave> plan = console.PlanTimeline(draft, draft.waves);
@@ -645,6 +653,8 @@ namespace DMSE.BVRAcceptance
             t.Require(console.Commit(draft, out string reason), $"plan confirmed ({reason ?? "ok"})");
             int id = draft.id;
             t.Check(id >= 1000 && WorldComponent_StrikeReports.Current != null, "mission ids come from the world ledger");
+            var rolls = Enumerable.Range(0, 20).Select(_ => StrikeMissionNamer.RandomName()).ToList();
+            t.Check(rolls.All(n => !n.NullOrEmpty() && n != draft.name), "random names avoid the name of an active mission");
             yield return new WaitUntil(() => draft.state == StrikeMissionState.Ready, 900);
             AlertReport ready = new Alert_StrikeWaveReady().GetReport();
             t.Check(ready.active && ready.AllCulprits.Any(x => x.Thing == centerThing), "the wave-ready alert points at the console");
@@ -657,6 +667,12 @@ namespace DMSE.BVRAcceptance
             t.Check(explanation.Contains(expected), "the player-missile alert groups the wave into one line");
             StrikeReport report = WorldComponent_StrikeReports.Current.ReportFor(id);
             t.Check(report != null && report.launched.Sum() == 2 && !report.closed, "launches are recorded");
+            t.Check(report.Label == draft.name && expected.Contains(draft.name), "the report and the alert line use the mission name");
+            const string renamed = "Operation Acceptance";
+            draft.RenamableLabel = renamed;
+            t.Check(draft.Label == renamed && report.Label == renamed
+                && Alerts_PlayerMissiles.StrikeWaveLine(draft.waves[0].slots.Select(s => s.track).ToList()).Contains(renamed),
+                "renaming updates the report and the in-flight alert line");
             yield return new WaitUntil(() => console.CannotFireReason(1, false) == null, 1500);
             t.Check(console.FireWave(1, false) == 1, "wave 2 fires");
             yield return new WaitUntil(() => console.mission == null, 200);
@@ -665,7 +681,7 @@ namespace DMSE.BVRAcceptance
             var waitLetter = new WaitUntil(() => WorldComponent_StrikeReports.Current.ReportFor(id) == null, 6000);
             yield return waitLetter;
             t.Check(!waitLetter.TimedOut, "the report resolves once every missile has a result");
-            string label = "DMSE.Strike.Report.Label".Translate(id).ToString();
+            string label = "DMSE.Strike.Report.Label".Translate(renamed).ToString();
             t.Check(Find.LetterStack.LettersListForReading.Any(l => l.Label.ToString() == label), "a results letter arrives");
             t.Note($"report: launched {report.launched.Sum()}, missed {report.missed.Sum()}, hit {report.hit.Sum()}, shot down {report.terminalKilled.Sum()}, intercepted {report.intercepted.Sum()}");
             t.Check(report.missed.Sum() == 3 && report.Unresolved == 0, "the three launched missiles miss the empty tile");

@@ -106,8 +106,13 @@ namespace DMSE
         private float Header(Rect inRect, string title)
         {
             Text.Font = GameFont.Medium;
-            Widgets.Label(new Rect(inRect.x, inRect.y, inRect.width, 34f), title);
+            float titleWidth = Mathf.Min(Text.CalcSize(title).x, inRect.width - 70f);
+            Widgets.Label(new Rect(inRect.x, inRect.y, titleWidth, 34f), title.Truncate(titleWidth));
             Text.Font = GameFont.Small;
+            // 任務隨時可重新命名（視窗內可擲隨機名稱）
+            Rect renameRect = new Rect(inRect.x + titleWidth + 6f, inRect.y + 5f, 24f, 24f);
+            if (Widgets.ButtonImage(renameRect, TexButton.Rename)) { Find.WindowStack.Add(new Dialog_RenameStrikeMission(mission)); }
+            TooltipHandler.TipRegion(renameRect, "DMSE.Strike.RenameTip".Translate());
             float y = inRect.y + 36f;
             return Line(inRect, y, "DMSE.Strike.Plan.Target".Translate(mission.TargetLabel, Distance.ToString("0.#")));
         }
@@ -121,7 +126,7 @@ namespace DMSE
         private void DoComposing(Rect inRect)
         {
             int cap = Mathf.Max(1, console.StrikeCapacity);
-            float y = Header(inRect, Editing ? "DMSE.Strike.Adjust.Title".Translate(mission.id) : "DMSE.Strike.Plan.Title".Translate());
+            float y = Header(inRect, Editing ? "DMSE.Strike.Adjust.Title".Translate(mission.Label) : "DMSE.Strike.Plan.Title".Translate(mission.Label));
             y = Line(inRect, y, "DMSE.Strike.Plan.Channels".Translate(console.StrikeCapacity, console.StrikeFree,
                 BVRWorldTuningDef.Current.strikeGuidanceTicks.ToStringTicksToPeriod()));
             if (Planning && console.Props.requiresComputation)
@@ -346,10 +351,18 @@ namespace DMSE
                 Rect titleRect = new Rect(head.x + 4f, head.y, autoLeft - head.x - 8f, head.height);
                 Text.Anchor = TextAnchor.MiddleLeft;
                 int pending = PendingCount(wave);
+                string title = "DMSE.Strike.Plan.WaveTitle".Translate(i + 1);
+                float titleWidth = Mathf.Min(Text.CalcSize(title).x, titleRect.width);
                 GUI.color = pending > cap ? ColorLibrary.RedReadable : WaveColors[i % WaveColors.Length];
-                Widgets.Label(titleRect, "DMSE.Strike.Plan.Wave".Translate(i + 1, pending, cap).ToString().Truncate(titleRect.width));
+                Widgets.Label(new Rect(titleRect.x, titleRect.y, titleWidth, titleRect.height), title.Truncate(titleWidth));
                 GUI.color = Color.white;
                 Text.Anchor = TextAnchor.UpperLeft;
+                // 已全部發射的波次（調整模式）不再占用通道，不畫方格
+                if (pending > 0 || !hasFixed)
+                {
+                    DrawChannelCells(new Rect(titleRect.x + titleWidth + 8f, head.y + 7f, titleRect.width - titleWidth - 8f, 16f), pending, cap);
+                    TooltipHandler.TipRegion(titleRect, "DMSE.Strike.Plan.WaveChannelsTip".Translate(pending, cap));
+                }
                 if (Waves.Count > 1 && !hasFixed && Widgets.ButtonImage(deleteRect, TexButton.Delete)) { remove = i; }
                 else if (Widgets.ButtonInvisible(titleRect)) { selectedWave = i; }
                 y += 30f;
@@ -530,7 +543,7 @@ namespace DMSE
 
         private void DoExecution(Rect inRect)
         {
-            float y = Header(inRect, "DMSE.Strike.Exec.Title".Translate(mission.id));
+            float y = Header(inRect, "DMSE.Strike.Exec.Title".Translate(mission.Label));
             y = Line(inRect, y, "DMSE.Strike.Exec.State".Translate(console.StateLabel));
             string channels = "DMSE.Strike.Inspect.Channels".Translate(console.StrikeFree, console.StrikeCapacity);
             int release = console.parent.Map.GetComponent<MapComponent_StrikePlanner>()?.TicksUntilNextRelease(console.parent.Faction) ?? -1;
@@ -556,7 +569,7 @@ namespace DMSE
             if (Widgets.ButtonText(new Rect(bottom.x, bottom.y, 150f, ButtonHeight), "DMSE.Strike.Exec.CancelMission".Translate()))
             {
                 Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(
-                    "DMSE.Strike.Console.CancelConfirm".Translate(mission.id), () => console.CancelMission(), destructive: true));
+                    "DMSE.Strike.Console.CancelConfirm".Translate(mission.Label), () => console.CancelMission(), destructive: true));
             }
             Rect adjust = new Rect(bottom.x + 158f, bottom.y, 150f, ButtonHeight);
             string cannotAdjust = console.CannotAdjustReason();
@@ -567,6 +580,39 @@ namespace DMSE
             }
             if (cannotAdjust != null) { TooltipHandler.TipRegion(adjust, cannotAdjust); }
             if (Widgets.ButtonText(new Rect(bottom.xMax - 120f, bottom.y, 120f, ButtonHeight), "CloseButton".Translate())) { Close(); }
+        }
+
+        private static readonly Color ChannelEmptyColor = new Color(0.3f, 0.3f, 0.3f, 1f);
+
+        /// <summary>
+        /// 仿原版機械師頻寬 Gizmo 的方格：黃色＝本波占用的導引通道，灰色＝空閒，紅色＝超出容量。
+        /// 方格依可用寬度縮小（太小就只顯示數字），後面附上「占用/容量」小字。
+        /// </summary>
+        private static void DrawChannelCells(Rect rect, int used, int capacity)
+        {
+            int cells = Mathf.Max(used, capacity);
+            if (cells <= 0 || rect.width <= 0f) { return; }
+            string count = used + "/" + capacity;
+            Text.Font = GameFont.Tiny;
+            float countWidth = Text.CalcSize(count).x + 4f;
+            float cell = Mathf.Min(rect.height, (rect.width - countWidth - 6f) / cells);
+            float x = rect.x;
+            if (cell >= 6f)
+            {
+                float pad = cell >= 10f ? 2f : 1f;
+                for (int k = 0; k < cells; k++)
+                {
+                    Rect r = new Rect(x + k * cell, rect.y + (rect.height - cell) / 2f, cell, cell).ContractedBy(pad);
+                    Widgets.DrawRectFast(r, k >= used ? ChannelEmptyColor : k < capacity ? ColorLibrary.Yellow : ColorLibrary.Red);
+                }
+                x += cells * cell + 6f;
+            }
+            Text.Anchor = TextAnchor.MiddleLeft;
+            GUI.color = used > capacity ? ColorLibrary.RedReadable : Color.gray;
+            Widgets.Label(new Rect(x, rect.y - 4f, Mathf.Min(countWidth, rect.xMax - x), rect.height + 8f), count);
+            GUI.color = Color.white;
+            Text.Anchor = TextAnchor.UpperLeft;
+            Text.Font = GameFont.Small;
         }
 
         private static float AutoFireToggleWidth

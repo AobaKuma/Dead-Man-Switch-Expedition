@@ -26,6 +26,8 @@ namespace DMSE
     public class StrikeReport : IExposable
     {
         public int missionId;
+        /// <summary>任務名稱（發射時記下，改名時更新）；空白時用「打擊任務 #id」。</summary>
+        public string missionLabel;
         public string targetLabel;
         public string originLabel;
         public bool closed;
@@ -64,10 +66,12 @@ namespace DMSE
 
         public int Unresolved => System.Math.Max(0, Sum(launched) - Resolved);
 
+        public string Label => missionLabel.NullOrEmpty() ? StrikeMission.DefaultLabel(missionId) : missionLabel;
+
         public string Summary()
         {
             var sb = new StringBuilder();
-            sb.Append("DMSE.Strike.Report.Header".Translate(missionId, targetLabel ?? "?", originLabel ?? "?"));
+            sb.Append("DMSE.Strike.Report.Header".Translate(Label, targetLabel ?? "?", originLabel ?? "?"));
             for (int w = 0; w < launched.Count; w++)
             {
                 if (launched[w] == 0) { continue; }
@@ -86,6 +90,7 @@ namespace DMSE
         public void ExposeData()
         {
             Scribe_Values.Look(ref missionId, "missionId");
+            Scribe_Values.Look(ref missionLabel, "missionLabel");
             Scribe_Values.Look(ref targetLabel, "targetLabel");
             Scribe_Values.Look(ref originLabel, "originLabel");
             Scribe_Values.Look(ref closed, "closed");
@@ -135,10 +140,14 @@ namespace DMSE
             return report;
         }
 
+        /// <summary>任務的稱呼：有戰果帳（第一枚發射後）就用帳上的名稱。供只知道任務 id 的航跡使用。</summary>
+        public static string MissionLabel(int missionId) => Current?.ReportFor(missionId)?.Label ?? StrikeMission.DefaultLabel(missionId);
+
         /// <summary>第一枚發射時建立戰果帳。</summary>
-        public void RecordLaunch(int missionId, int wave, string targetLabel, string originLabel)
+        public void RecordLaunch(int missionId, int wave, string targetLabel, string originLabel, string missionLabel = null)
         {
             StrikeReport report = GetOrCreate(missionId);
+            if (!missionLabel.NullOrEmpty()) { report.missionLabel = missionLabel; }
             report.targetLabel ??= targetLabel;
             report.originLabel ??= originLabel;
             Record(missionId, wave, StrikeOutcome.Launched);
@@ -179,7 +188,7 @@ namespace DMSE
                     || (report.Unresolved == report.ArrivedPending && now - report.lastEventTick >= StaleTicks);
                 if (!done) { continue; }
                 reports.Remove(report);
-                Find.LetterStack.ReceiveLetter("DMSE.Strike.Report.Label".Translate(report.missionId), report.Summary(),
+                Find.LetterStack.ReceiveLetter("DMSE.Strike.Report.Label".Translate(report.Label), report.Summary(),
                     LetterDefOf.NeutralEvent);
             }
         }

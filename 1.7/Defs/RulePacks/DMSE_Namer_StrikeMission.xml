@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- 打擊任務的隨機名稱（StrikeMissionNamer）。 -->
+  <RulePackDef>
+    <defName>DMSE_NamerStrikeMission</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name->Operation [first] [second]</li>
+        <li>first->Iron</li>
+        <li>first->Crimson</li>
+        <li>first->Silent</li>
+        <li>first->Broken</li>
+        <li>first->Falling</li>
+        <li>first->Black</li>
+        <li>first->Thunder</li>
+        <li>first->Frozen</li>
+        <li>first->Burning</li>
+        <li>first->Pale</li>
+        <li>first->Last</li>
+        <li>first->Hollow</li>
+        <li>first->Bright</li>
+        <li>first->Ashen</li>
+        <li>first->Distant</li>
+        <li>first->Sudden</li>
+        <li>first->Northern</li>
+        <li>first->Rolling</li>
+        <li>second->Rain</li>
+        <li>second->Hammer</li>
+        <li>second->Lance</li>
+        <li>second->Dawn</li>
+        <li>second->Tempest</li>
+        <li>second->Spear</li>
+        <li>second->Harvest</li>
+        <li>second->Veil</li>
+        <li>second->Anvil</li>
+        <li>second->Gale</li>
+        <li>second->Comet</li>
+        <li>second->Requiem</li>
+        <li>second->Curtain</li>
+        <li>second->Arrow</li>
+        <li>second->Tide</li>
+        <li>second->Ember</li>
+        <li>second->Sky</li>
+        <li>second->Verdict</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+</Defs>

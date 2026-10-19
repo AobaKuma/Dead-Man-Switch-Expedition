@@ -83,7 +83,7 @@ namespace DMSE
             ScorerProjectile_WorldObject first = tracks[0];
             int detected = tracks.Count(t => t.State.detectedByFaction != null);
             int engaged = tracks.Count(t => t.State.lockUntil >= 0 || t.State.interceptor != null);
-            return "DMSE.Strike.Alert.WaveLine".Translate(first.strikeMissionId, first.strikeWave + 1, tracks.Count,
+            return "DMSE.Strike.Alert.WaveLine".Translate(WorldComponent_StrikeReports.MissionLabel(first.strikeMissionId), first.strikeWave + 1, tracks.Count,
                 tracks.Min(t => t.TicksToArrival).ToStringTicksToPeriod(), tracks.Max(t => t.TicksToArrival).ToStringTicksToPeriod(),
                 detected, engaged);
         }

@@ -98,9 +98,11 @@ namespace DMSE
     /// 打擊任務：一個目標、若干波次。任務存在指揮台（<see cref="CompStrikeConsole"/>）上，
     /// 保留索引不存檔，讀檔後由任務重建（<see cref="MapComponent_StrikePlanner"/>）。
     /// </summary>
-    public class StrikeMission : IExposable
+    public class StrikeMission : IExposable, IRenameable
     {
         public int id;
+        /// <summary>任務名稱（玩家命名或隨機產生）；空白時稱「打擊任務 #id」。</summary>
+        public string name;
         public PlanetTile targetTile = PlanetTile.Invalid;
         /// <summary>選靶處的據點；null 表示打擊固定 tile（抵達時可能落空）。</summary>
         public MapParent targetParent;
@@ -139,6 +141,27 @@ namespace DMSE
 
         public string TargetLabel => targetParent != null && !targetParent.Destroyed ? targetParent.LabelCap : targetTile.ToString();
 
+        /// <summary>訊息、視窗標題、警報與戰果信裡稱呼這個任務的名稱。</summary>
+        public string Label => name.NullOrEmpty() ? DefaultLabel(id) : name;
+
+        public static string DefaultLabel(int missionId) => "DMSE.Strike.MissionDefault".Translate(missionId);
+
+        /// <summary>原版重新命名視窗用。改名時同步戰果帳，在飛導彈的警報與之後的戰果信會用新名稱。</summary>
+        public string RenamableLabel
+        {
+            get => name ?? string.Empty;
+            set
+            {
+                name = value?.Trim();
+                StrikeReport report = WorldComponent_StrikeReports.Current?.ReportFor(id);
+                if (report != null) { report.missionLabel = Label; }
+            }
+        }
+
+        public string BaseLabel => Label;
+
+        public string InspectLabel => Label;
+
         /// <summary>目標據點已不存在（選靶時有據點，之後被摧毀或撤離）。</summary>
         public bool TargetLost => targetedSite && (targetParent == null || targetParent.Destroyed);
 
@@ -162,6 +185,7 @@ namespace DMSE
         {
             if (Scribe.mode == LoadSaveMode.Saving && targetParent != null && targetParent.Destroyed) { targetParent = null; }
             Scribe_Values.Look(ref id, "id");
+            Scribe_Values.Look(ref name, "name");
             Scribe_Values.Look(ref targetTile, "targetTile", PlanetTile.Invalid);
             Scribe_References.Look(ref targetParent, "targetParent");
             Scribe_Values.Look(ref targetedSite, "targetedSite");

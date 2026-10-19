@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <DMSE_NamerStrikeMission.rulePack.rulesStrings>
+    <li>r_name->「[first][second]」行動</li>
+    <li>first->鐵</li>
+    <li>first->赤</li>
+    <li>first->寂</li>
+    <li>first->碎</li>
+    <li>first->墜</li>
+    <li>first->玄</li>
+    <li>first->雷</li>
+    <li>first->霜</li>
+    <li>first->焰</li>
+    <li>first->蒼</li>
+    <li>first->終</li>
+    <li>first->夜</li>
+    <li>first->曙</li>
+    <li>first->燼</li>
+    <li>first->遠</li>
+    <li>first->怒</li>
+    <li>first->疾</li>
+    <li>first->星</li>
+    <li>second->雨</li>
+    <li>second->錘</li>
+    <li>second->槍</li>
+    <li>second->曉</li>
+    <li>second->嵐</li>
+    <li>second->矛</li>
+    <li>second->鐮</li>
+    <li>second->幕</li>
+    <li>second->砧</li>
+    <li>second->風</li>
+    <li>second->彗</li>
+    <li>second->歌</li>
+    <li>second->簾</li>
+    <li>second->箭</li>
+    <li>second->潮</li>
+    <li>second->火</li>
+    <li>second->穹</li>
+    <li>second->判</li>
+  </DMSE_NamerStrikeMission.rulePack.rulesStrings>
+
+</LanguageData>

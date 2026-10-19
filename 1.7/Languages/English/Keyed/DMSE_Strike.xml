@@ -14,7 +14,7 @@
   <DMSE.Strike.Console.FireWaveDesc>Launch the next wave now. Shift-click to launch only what the free channels and ready launchers allow; the rest stays in the wave.</DMSE.Strike.Console.FireWaveDesc>
   <DMSE.Strike.Console.Cancel>Cancel strike mission</DMSE.Strike.Console.Cancel>
   <DMSE.Strike.Console.CancelDesc>Cancel the current strike mission. Missiles already launched keep flying; the rest are released.</DMSE.Strike.Console.CancelDesc>
-  <DMSE.Strike.Console.CancelConfirm>Cancel strike mission #{0}? Missiles not yet launched are released.</DMSE.Strike.Console.CancelConfirm>
+  <DMSE.Strike.Console.CancelConfirm>Cancel {0}? Missiles not yet launched are released.</DMSE.Strike.Console.CancelConfirm>
 
   <!-- Targeting and planning blockers -->
   <DMSE.Strike.NoFireControl>No working fire-control radar on this map can guide strike missiles</DMSE.Strike.NoFireControl>
@@ -44,21 +44,21 @@
   <DMSE.Strike.State.Ready>ready to fire</DMSE.Strike.State.Ready>
   <DMSE.Strike.State.Executing>in progress</DMSE.Strike.State.Executing>
   <DMSE.Strike.Inspect.Channels>Strike guidance channels: {0} free of {1}</DMSE.Strike.Inspect.Channels>
-  <DMSE.Strike.Inspect.Mission>Strike mission #{0} on {1}: {2}, launched {3}/{4}</DMSE.Strike.Inspect.Mission>
+  <DMSE.Strike.Inspect.Mission>{0} on {1}: {2}, launched {3}/{4}</DMSE.Strike.Inspect.Mission>
 
   <!-- Messages -->
-  <DMSE.Strike.Msg.Confirmed>Strike mission #{0}: {1} missiles in {2} waves reserved; computing firing solutions.</DMSE.Strike.Msg.Confirmed>
-  <DMSE.Strike.Msg.Ready>Strike mission #{0}: firing solutions ready.</DMSE.Strike.Msg.Ready>
-  <DMSE.Strike.Msg.WaveFired>Strike mission #{0}, wave {1}: {2} launching, {3} skipped.</DMSE.Strike.Msg.WaveFired>
-  <DMSE.Strike.Msg.Skipped>Strike mission #{0}: {1} skipped ({2}).</DMSE.Strike.Msg.Skipped>
-  <DMSE.Strike.Msg.Deferred>Strike mission #{0}: {1} could not launch yet and stays in wave {2}.</DMSE.Strike.Msg.Deferred>
-  <DMSE.Strike.Msg.Completed>Strike mission #{0} complete: {1} launched, {2} skipped.</DMSE.Strike.Msg.Completed>
-  <DMSE.Strike.Msg.Cancelled>Strike mission #{0} cancelled; missiles not yet launched are released.</DMSE.Strike.Msg.Cancelled>
-  <DMSE.Strike.Msg.TargetLost>Strike mission #{0} cancelled: the target is gone.</DMSE.Strike.Msg.TargetLost>
-  <DMSE.Strike.Msg.ConsoleLost>Strike mission #{0} cancelled: its strike command center was removed.</DMSE.Strike.Msg.ConsoleLost>
+  <DMSE.Strike.Msg.Confirmed>{0}: {1} missiles in {2} waves reserved; computing firing solutions.</DMSE.Strike.Msg.Confirmed>
+  <DMSE.Strike.Msg.Ready>{0}: firing solutions ready.</DMSE.Strike.Msg.Ready>
+  <DMSE.Strike.Msg.WaveFired>{0}, wave {1}: {2} launching, {3} skipped.</DMSE.Strike.Msg.WaveFired>
+  <DMSE.Strike.Msg.Skipped>{0}: {1} skipped ({2}).</DMSE.Strike.Msg.Skipped>
+  <DMSE.Strike.Msg.Deferred>{0}: {1} could not launch yet and stays in wave {2}.</DMSE.Strike.Msg.Deferred>
+  <DMSE.Strike.Msg.Completed>{0} complete: {1} launched, {2} skipped.</DMSE.Strike.Msg.Completed>
+  <DMSE.Strike.Msg.Cancelled>{0} cancelled; missiles not yet launched are released.</DMSE.Strike.Msg.Cancelled>
+  <DMSE.Strike.Msg.TargetLost>{0} cancelled: the target is gone.</DMSE.Strike.Msg.TargetLost>
+  <DMSE.Strike.Msg.ConsoleLost>{0} cancelled: its strike command center was removed.</DMSE.Strike.Msg.ConsoleLost>
 
   <!-- Planning window -->
-  <DMSE.Strike.Plan.Title>Wave strike plan</DMSE.Strike.Plan.Title>
+  <DMSE.Strike.Plan.Title>Wave strike plan: {0}</DMSE.Strike.Plan.Title>
   <DMSE.Strike.Plan.Target>Target: {0} ({1} tiles)</DMSE.Strike.Plan.Target>
   <DMSE.Strike.Plan.Channels>Guidance channels: {0} (free {1}) · wave limit {0} · guidance period {2}</DMSE.Strike.Plan.Channels>
   <DMSE.Strike.Plan.SiteWarning>This site has no map yet. The first missile to arrive generates it, and the site's own air defense, with fully loaded SAMs, then engages the missiles still in flight.</DMSE.Strike.Plan.SiteWarning>
@@ -69,7 +69,8 @@
   <DMSE.Strike.Plan.NotReadyTag>Not ready now:</DMSE.Strike.Plan.NotReadyTag>
   <DMSE.Strike.Plan.Flight>flight {0}</DMSE.Strike.Plan.Flight>
   <DMSE.Strike.Plan.Margin>range +{0}</DMSE.Strike.Plan.Margin>
-  <DMSE.Strike.Plan.Wave>Wave {0}   {1}/{2}</DMSE.Strike.Plan.Wave>
+  <DMSE.Strike.Plan.WaveTitle>Wave {0}</DMSE.Strike.Plan.WaveTitle>
+  <DMSE.Strike.Plan.WaveChannelsTip>Uses {0} of {1} strike guidance channels (yellow). A wave fires only when every missile in it gets a free channel; red cells are over capacity.</DMSE.Strike.Plan.WaveChannelsTip>
   <DMSE.Strike.Plan.AddWave>+ Add wave</DMSE.Strike.Plan.AddWave>
   <DMSE.Strike.Plan.AutoAssign>Auto-assign</DMSE.Strike.Plan.AutoAssign>
   <DMSE.Strike.Plan.AutoAssignDesc>Fill waves starting with the cheapest missiles, so the most valuable ones end up in the last wave.</DMSE.Strike.Plan.AutoAssignDesc>
@@ -77,7 +78,7 @@
   <DMSE.Strike.Plan.Confirm>Confirm plan</DMSE.Strike.Plan.Confirm>
 
   <!-- Execution window -->
-  <DMSE.Strike.Exec.Title>Wave strike #{0}</DMSE.Strike.Exec.Title>
+  <DMSE.Strike.Exec.Title>Wave strike: {0}</DMSE.Strike.Exec.Title>
   <DMSE.Strike.Exec.State>Status: {0}</DMSE.Strike.Exec.State>
   <DMSE.Strike.Exec.NextRelease>(next channel frees in {0})</DMSE.Strike.Exec.NextRelease>
   <DMSE.Strike.Exec.Wave>Wave {0}: {1}</DMSE.Strike.Exec.Wave>
@@ -93,8 +94,8 @@
   <DMSE.Strike.ComputingManual>Firing solutions {0} computed; a researcher must finish this wave at the planning table</DMSE.Strike.ComputingManual>
   <DMSE.Strike.State.ComputingManual>awaiting firing-solution computation ({0})</DMSE.Strike.State.ComputingManual>
   <DMSE.Strike.State.ExecutingComputing>in progress; firing solutions {0}</DMSE.Strike.State.ExecutingComputing>
-  <DMSE.Strike.Msg.ConfirmedManual>Strike mission #{0}: {1} missiles in {2} waves reserved; a researcher must compute the firing solutions at the {3}.</DMSE.Strike.Msg.ConfirmedManual>
-  <DMSE.Strike.Msg.WaveSolved>Strike mission #{0}: firing solutions for wave {1} are ready.</DMSE.Strike.Msg.WaveSolved>
+  <DMSE.Strike.Msg.ConfirmedManual>{0}: {1} missiles in {2} waves reserved; a researcher must compute the firing solutions at the {3}.</DMSE.Strike.Msg.ConfirmedManual>
+  <DMSE.Strike.Msg.WaveSolved>{0}: firing solutions for wave {1} are ready.</DMSE.Strike.Msg.WaveSolved>
   <DMSE.Strike.Plan.ComputeWork>Computation work: {0} (about {1} for the fastest researcher here)</DMSE.Strike.Plan.ComputeWork>
   <DMSE.Strike.Plan.NoResearcher>no colonist here can do research</DMSE.Strike.Plan.NoResearcher>
   <DMSE.Strike.Alert.ComputationPending>Firing solutions waiting</DMSE.Strike.Alert.ComputationPending>
@@ -103,14 +104,14 @@
 Enable research work for a colonist on that map.</DMSE.Strike.Alert.ComputationPendingDesc>
 
   <!-- P3: adjust waves, timeline, reports, alerts -->
-  <DMSE.Strike.Adjust.Title>Adjust waves: strike mission #{0}</DMSE.Strike.Adjust.Title>
+  <DMSE.Strike.Adjust.Title>Adjust waves: {0}</DMSE.Strike.Adjust.Title>
   <DMSE.Strike.Adjust.Button>Adjust waves</DMSE.Strike.Adjust.Button>
   <DMSE.Strike.Adjust.Apply>Apply</DMSE.Strike.Adjust.Apply>
   <DMSE.Strike.Adjust.Cancel>Cancel adjustment</DMSE.Strike.Adjust.Cancel>
   <DMSE.Strike.Adjust.ClearPending>Clear unlaunched</DMSE.Strike.Adjust.ClearPending>
   <DMSE.Strike.Adjust.Launching>Missiles are launching; wait for the ripple to finish</DMSE.Strike.Adjust.Launching>
   <DMSE.Strike.Adjust.FixedRemoved>Launched or skipped missiles cannot be removed</DMSE.Strike.Adjust.FixedRemoved>
-  <DMSE.Strike.Msg.Adjusted>Strike mission #{0} adjusted: {1} missiles in {2} waves ({3} added).</DMSE.Strike.Msg.Adjusted>
+  <DMSE.Strike.Msg.Adjusted>{0} adjusted: {1} missiles in {2} waves ({3} added).</DMSE.Strike.Msg.Adjusted>
   <DMSE.Strike.Slot.Launched>launched</DMSE.Strike.Slot.Launched>
   <DMSE.Strike.Slot.Queued>launching</DMSE.Strike.Slot.Queued>
   <DMSE.Strike.Slot.Skipped>skipped</DMSE.Strike.Slot.Skipped>
@@ -119,12 +120,12 @@ Enable research work for a colonist on that map.</DMSE.Strike.Alert.ComputationP
   <DMSE.Strike.Plan.ArrivalFlying>in flight · arrive {0}–{1}</DMSE.Strike.Plan.ArrivalFlying>
   <DMSE.Strike.Plan.EarlyWarning>Arrives before wave {0}; delay it by about {1}</DMSE.Strike.Plan.EarlyWarning>
   <DMSE.Strike.Plan.TimelineTip>Estimated timeline if every wave fires as soon as guidance channels and launchers allow. Ticks mark launches, bars mark arrival windows. A yellow bar arrives before an earlier wave, so it would not be covered by that wave's decoys.</DMSE.Strike.Plan.TimelineTip>
-  <DMSE.Strike.Alert.WaveLine>Strike mission #{0}, wave {1}: {2} in flight, arriving in {3}–{4}; detected {5}, engaged {6}</DMSE.Strike.Alert.WaveLine>
+  <DMSE.Strike.Alert.WaveLine>{0}, wave {1}: {2} in flight, arriving in {3}–{4}; detected {5}, engaged {6}</DMSE.Strike.Alert.WaveLine>
   <DMSE.Strike.Alert.WaveReady>Strike wave ready</DMSE.Strike.Alert.WaveReady>
   <DMSE.Strike.Alert.WaveReadyDesc>These strike missions can fire their next wave now. This alert can be turned off in the mod settings.</DMSE.Strike.Alert.WaveReadyDesc>
-  <DMSE.Strike.Alert.WaveReadyLine>Strike mission #{0}: wave {1} on {2}</DMSE.Strike.Alert.WaveReadyLine>
-  <DMSE.Strike.Report.Label>Strike mission #{0} results</DMSE.Strike.Report.Label>
-  <DMSE.Strike.Report.Header>Strike mission #{0} on {1}, launched from {2}:</DMSE.Strike.Report.Header>
+  <DMSE.Strike.Alert.WaveReadyLine>{0}: wave {1} on {2}</DMSE.Strike.Alert.WaveReadyLine>
+  <DMSE.Strike.Report.Label>{0} results</DMSE.Strike.Report.Label>
+  <DMSE.Strike.Report.Header>{0} on {1}, launched from {2}:</DMSE.Strike.Report.Header>
   <DMSE.Strike.Report.Wave>Wave {0}: {1} launched — {2} intercepted in flight, {3} hit, {4} shot down at the target, {5} missed</DMSE.Strike.Report.Wave>
   <DMSE.Strike.Report.Unknown>{0} arrived but their result is unknown.</DMSE.Strike.Report.Unknown>
   <DMSE.Strike.Settings.WaveReadyAlert>Strike wave ready alert</DMSE.Strike.Settings.WaveReadyAlert>
@@ -133,7 +134,11 @@ Enable research work for a colonist on that map.</DMSE.Strike.Alert.ComputationP
   <!-- P4: timed launch, target-move recompute, decoy signature -->
   <DMSE.Strike.Plan.AutoFire>Timed</DMSE.Strike.Plan.AutoFire>
   <DMSE.Strike.Plan.AutoFireTip>Timed launch: fire this wave automatically when its turn comes, but only once it would arrive after the earlier waves (plus a short gap).</DMSE.Strike.Plan.AutoFireTip>
-  <DMSE.Strike.Msg.AutoFire>Strike mission #{0}: timed launch of wave {1}.</DMSE.Strike.Msg.AutoFire>
-  <DMSE.Strike.Msg.TargetMoved>Strike mission #{0}: the target moved {1} tiles; {2} unlaunched missiles need new firing solutions.</DMSE.Strike.Msg.TargetMoved>
+  <DMSE.Strike.Msg.AutoFire>{0}: timed launch of wave {1}.</DMSE.Strike.Msg.AutoFire>
+  <DMSE.Strike.Msg.TargetMoved>{0}: the target moved {1} tiles; {2} unlaunched missiles need new firing solutions.</DMSE.Strike.Msg.TargetMoved>
   <DMSE.Missile.Stat.Signature>Radar signature: ×{0}</DMSE.Missile.Stat.Signature>
+
+  <!-- Mission names -->
+  <DMSE.Strike.MissionDefault>Strike mission #{0}</DMSE.Strike.MissionDefault>
+  <DMSE.Strike.RenameTip>Rename this strike mission (you can roll a random name).</DMSE.Strike.RenameTip>
 </LanguageData>

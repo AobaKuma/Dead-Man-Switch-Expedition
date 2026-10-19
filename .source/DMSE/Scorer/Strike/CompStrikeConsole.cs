@@ -140,6 +140,7 @@ namespace DMSE
                 targetedSite = site != null,
                 state = StrikeMissionState.Planning,
                 createdTick = Find.TickManager.TicksGame,
+                name = StrikeMissionNamer.RandomName(),
             };
             draft.waves.Add(new StrikeWave());
             CameraJumper.TryJump(parent);
@@ -213,14 +214,14 @@ namespace DMSE
                 mission.computeBaseLeft = Props.computeWorkBase * factor;
                 mission.computeCredit = 0f;
                 mission.computePerRound = Props.computeWorkPerRound * factor;
-                Messages.Message("DMSE.Strike.Msg.ConfirmedManual".Translate(mission.id, mission.RoundCount, mission.waves.Count,
+                Messages.Message("DMSE.Strike.Msg.ConfirmedManual".Translate(mission.Label, mission.RoundCount, mission.waves.Count,
                     parent.LabelShort), parent, MessageTypeDefOf.TaskCompletion, false);
                 ApplyComputationProgress(0f);
             }
             else
             {
                 mission.computeDoneTick = now + Mathf.Max(0, Props.autoComputeTicks);
-                Messages.Message("DMSE.Strike.Msg.Confirmed".Translate(mission.id, mission.RoundCount, mission.waves.Count),
+                Messages.Message("DMSE.Strike.Msg.Confirmed".Translate(mission.Label, mission.RoundCount, mission.waves.Count),
                     parent, MessageTypeDefOf.TaskCompletion, false);
                 if (Props.autoComputeTicks <= 0) { FinishComputation(); }
             }
@@ -234,7 +235,7 @@ namespace DMSE
             mission.computeBaseLeft = 0f;
             mission.computeCredit = 0f;
             if (mission.state == StrikeMissionState.AwaitingComputation) { mission.state = StrikeMissionState.Ready; }
-            Messages.Message("DMSE.Strike.Msg.Ready".Translate(mission.id), parent, MessageTypeDefOf.PositiveEvent, false);
+            Messages.Message("DMSE.Strike.Msg.Ready".Translate(mission.Label), parent, MessageTypeDefOf.PositiveEvent, false);
         }
 
         // ---------------- 人工彈道計算（§8-2） ----------------
@@ -286,13 +287,13 @@ namespace DMSE
                 StrikeWave wave = mission.waves[w];
                 if (!allSolved && pendingBefore.Contains(wave) && !wave.slots.Any(s => s.Open && !s.solved))
                 {
-                    Messages.Message("DMSE.Strike.Msg.WaveSolved".Translate(mission.id, w + 1), parent, MessageTypeDefOf.PositiveEvent, false);
+                    Messages.Message("DMSE.Strike.Msg.WaveSolved".Translate(mission.Label, w + 1), parent, MessageTypeDefOf.PositiveEvent, false);
                 }
             }
             if (allSolved)
             {
                 if (mission.state == StrikeMissionState.AwaitingComputation) { mission.state = StrikeMissionState.Ready; }
-                Messages.Message("DMSE.Strike.Msg.Ready".Translate(mission.id), parent, MessageTypeDefOf.PositiveEvent, false);
+                Messages.Message("DMSE.Strike.Msg.Ready".Translate(mission.Label), parent, MessageTypeDefOf.PositiveEvent, false);
             }
         }
 
@@ -343,7 +344,7 @@ namespace DMSE
             foreach (StrikeSlot slot in stale) { slot.solved = false; }
             if (!Props.requiresComputation) { mission.computeDoneTick = now + Mathf.Max(0, Props.autoComputeTicks); }
             if (mission.state == StrikeMissionState.Ready) { mission.state = StrikeMissionState.AwaitingComputation; }
-            Messages.Message("DMSE.Strike.Msg.TargetMoved".Translate(mission.id, Mathf.RoundToInt(moved), stale.Count), parent,
+            Messages.Message("DMSE.Strike.Msg.TargetMoved".Translate(mission.Label, Mathf.RoundToInt(moved), stale.Count), parent,
                 MessageTypeDefOf.CautionInput, false);
         }
 
@@ -361,7 +362,7 @@ namespace DMSE
             for (int i = 0; i < next; i++) { latest = Mathf.Max(latest, plan[i].arriveMax); }
             StrikePlanWave p = plan[next];
             if (latest >= 0 && p.arriveMin >= 0 && p.arriveMin < latest + BVRWorldTuningDef.Current.strikeArrivalSpacingTicks) { return; }
-            Messages.Message("DMSE.Strike.Msg.AutoFire".Translate(mission.id, next + 1), parent, MessageTypeDefOf.NeutralEvent, false);
+            Messages.Message("DMSE.Strike.Msg.AutoFire".Translate(mission.Label, next + 1), parent, MessageTypeDefOf.NeutralEvent, false);
             FireWave(next, partial: false);
         }
 
@@ -517,7 +518,7 @@ namespace DMSE
             {
                 mission.state = mission.UnsolvedOpen.Any() ? StrikeMissionState.AwaitingComputation : StrikeMissionState.Ready;
             }
-            Messages.Message("DMSE.Strike.Msg.Adjusted".Translate(mission.id, mission.RoundCount, mission.waves.Count, added.Count),
+            Messages.Message("DMSE.Strike.Msg.Adjusted".Translate(mission.Label, mission.RoundCount, mission.waves.Count, added.Count),
                 parent, MessageTypeDefOf.TaskCompletion, false);
             TryFinish();
             return true;
@@ -649,7 +650,7 @@ namespace DMSE
                 if (wave.launchedTick < 0) { wave.launchedTick = now; }
                 mission.state = StrikeMissionState.Executing;
             }
-            Messages.Message("DMSE.Strike.Msg.WaveFired".Translate(mission.id, index + 1, queued, skipped), parent,
+            Messages.Message("DMSE.Strike.Msg.WaveFired".Translate(mission.Label, index + 1, queued, skipped), parent,
                 MessageTypeDefOf.NeutralEvent, false);
             TryFinish();
             return queued;
@@ -690,7 +691,7 @@ namespace DMSE
             {
                 // 暫時性問題（排隊期間斷電、被單發搶先進入冷卻）：留在本波等待補射
                 slot.state = StrikeSlotState.Pending;
-                Messages.Message("DMSE.Strike.Msg.Deferred".Translate(mission.id, slot.round.LabelShort, launch.wave + 1),
+                Messages.Message("DMSE.Strike.Msg.Deferred".Translate(mission.Label, slot.round.LabelShort, launch.wave + 1),
                     parent, MessageTypeDefOf.RejectInput, false);
                 return;
             }
@@ -708,12 +709,12 @@ namespace DMSE
                 track.strikeWave = launch.wave;
                 planner.AddGuidanceHold(Side, now + BVRWorldTuningDef.Current.strikeGuidanceTicks);
                 WorldComponent_StrikeReports.Current?.RecordLaunch(mission.id, launch.wave, mission.TargetLabel,
-                    parent.Map?.Parent?.LabelCap ?? parent.LabelShort);
+                    parent.Map?.Parent?.LabelCap ?? parent.LabelShort, mission.Label);
             }
             else
             {
                 Skip(slot, reason ?? "DMSE.Strike.Skip.RoundGone".Translate(), planner);
-                Messages.Message("DMSE.Strike.Msg.Skipped".Translate(mission.id, slot.round?.LabelShort ?? "?", slot.skipReason),
+                Messages.Message("DMSE.Strike.Msg.Skipped".Translate(mission.Label, slot.round?.LabelShort ?? "?", slot.skipReason),
                     parent, MessageTypeDefOf.RejectInput, false);
             }
             TryFinish();
@@ -728,7 +729,7 @@ namespace DMSE
             mission.state = StrikeMissionState.Completed;
             Planner?.ReleaseAll(mission.id);
             WorldComponent_StrikeReports.Current?.Close(mission.id);
-            Messages.Message("DMSE.Strike.Msg.Completed".Translate(mission.id, launched, skipped), parent,
+            Messages.Message("DMSE.Strike.Msg.Completed".Translate(mission.Label, launched, skipped), parent,
                 MessageTypeDefOf.TaskCompletion, false);
             mission = null;
         }
@@ -744,7 +745,7 @@ namespace DMSE
             mission.state = StrikeMissionState.Cancelled;
             if (!messageKey.NullOrEmpty())
             {
-                Messages.Message(messageKey.Translate(mission.id), parent, MessageTypeDefOf.NeutralEvent, false);
+                Messages.Message(messageKey.Translate(mission.Label), parent, MessageTypeDefOf.NeutralEvent, false);
             }
             mission = null;
         }
@@ -779,7 +780,7 @@ namespace DMSE
                 planner?.DropQueued(mission.id);
                 planner?.ReleaseAll(mission.id);
                 WorldComponent_StrikeReports.Current?.Close(mission.id);
-                Messages.Message("DMSE.Strike.Msg.ConsoleLost".Translate(mission.id), MessageTypeDefOf.NegativeEvent, false);
+                Messages.Message("DMSE.Strike.Msg.ConsoleLost".Translate(mission.Label), MessageTypeDefOf.NegativeEvent, false);
                 mission = null;
             }
         }
@@ -819,7 +820,7 @@ namespace DMSE
             if (mission != null)
             {
                 sb.AppendLine();
-                sb.Append("DMSE.Strike.Inspect.Mission".Translate(mission.id, mission.TargetLabel, StateLabel,
+                sb.Append("DMSE.Strike.Inspect.Mission".Translate(mission.Label, mission.TargetLabel, StateLabel,
                     mission.AllSlots.Count(s => s.state == StrikeSlotState.Launched), mission.RoundCount));
             }
             return sb.ToString();
@@ -874,7 +875,7 @@ namespace DMSE
                 defaultDesc = "DMSE.Strike.Console.CancelDesc".Translate(),
                 icon = StrikeTextures.Cancel,
                 action = () => Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(
-                    "DMSE.Strike.Console.CancelConfirm".Translate(mission.id), () => CancelMission(), destructive: true)),
+                    "DMSE.Strike.Console.CancelConfirm".Translate(mission.Label), () => CancelMission(), destructive: true)),
             };
 
             if (DebugSettings.ShowDevGizmos && (NeedsManualComputation || mission.state == StrikeMissionState.AwaitingComputation))

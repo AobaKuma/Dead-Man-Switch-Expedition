@@ -14,7 +14,7 @@
   <DMSE.Strike.Console.FireWaveDesc>立即发射下一波。按住 Shift 点击只发射空闲通道与就绪发射架允许的部分，其余留在本波。</DMSE.Strike.Console.FireWaveDesc>
   <DMSE.Strike.Console.Cancel>取消打击任务</DMSE.Strike.Console.Cancel>
   <DMSE.Strike.Console.CancelDesc>取消当前的打击任务。已升空的导弹照常飞行，其余导弹释放。</DMSE.Strike.Console.CancelDesc>
-  <DMSE.Strike.Console.CancelConfirm>要取消打击任务 #{0} 吗？尚未发射的导弹会被释放。</DMSE.Strike.Console.CancelConfirm>
+  <DMSE.Strike.Console.CancelConfirm>要取消 {0} 吗？尚未发射的导弹会被释放。</DMSE.Strike.Console.CancelConfirm>
 
   <!-- 选靶与规划限制 -->
   <DMSE.Strike.NoFireControl>本地图没有能引导打击导弹的运作中火控雷达</DMSE.Strike.NoFireControl>
@@ -44,21 +44,21 @@
   <DMSE.Strike.State.Ready>可发射</DMSE.Strike.State.Ready>
   <DMSE.Strike.State.Executing>执行中</DMSE.Strike.State.Executing>
   <DMSE.Strike.Inspect.Channels>打击引导通道：空闲 {0}／{1}</DMSE.Strike.Inspect.Channels>
-  <DMSE.Strike.Inspect.Mission>打击任务 #{0}（{1}）：{2}，已发射 {3}/{4}</DMSE.Strike.Inspect.Mission>
+  <DMSE.Strike.Inspect.Mission>{0}（{1}）：{2}，已发射 {3}/{4}</DMSE.Strike.Inspect.Mission>
 
   <!-- 消息 -->
-  <DMSE.Strike.Msg.Confirmed>打击任务 #{0}：已保留 {1} 枚导弹、分 {2} 波，弹道计算中。</DMSE.Strike.Msg.Confirmed>
-  <DMSE.Strike.Msg.Ready>打击任务 #{0}：弹道解完成，可以发射。</DMSE.Strike.Msg.Ready>
-  <DMSE.Strike.Msg.WaveFired>打击任务 #{0} 第 {1} 波：发射 {2} 枚，略过 {3} 枚。</DMSE.Strike.Msg.WaveFired>
-  <DMSE.Strike.Msg.Skipped>打击任务 #{0}：{1} 已略过（{2}）。</DMSE.Strike.Msg.Skipped>
-  <DMSE.Strike.Msg.Deferred>打击任务 #{0}：{1} 暂时无法发射，留在第 {2} 波。</DMSE.Strike.Msg.Deferred>
-  <DMSE.Strike.Msg.Completed>打击任务 #{0} 结束：发射 {1} 枚，略过 {2} 枚。</DMSE.Strike.Msg.Completed>
-  <DMSE.Strike.Msg.Cancelled>打击任务 #{0} 已取消，尚未发射的导弹已释放。</DMSE.Strike.Msg.Cancelled>
-  <DMSE.Strike.Msg.TargetLost>打击任务 #{0} 已取消：目标已不存在。</DMSE.Strike.Msg.TargetLost>
-  <DMSE.Strike.Msg.ConsoleLost>打击任务 #{0} 已取消：打击指挥中心已被移除。</DMSE.Strike.Msg.ConsoleLost>
+  <DMSE.Strike.Msg.Confirmed>{0}：已保留 {1} 枚导弹、分 {2} 波，弹道计算中。</DMSE.Strike.Msg.Confirmed>
+  <DMSE.Strike.Msg.Ready>{0}：弹道解完成，可以发射。</DMSE.Strike.Msg.Ready>
+  <DMSE.Strike.Msg.WaveFired>{0} 第 {1} 波：发射 {2} 枚，略过 {3} 枚。</DMSE.Strike.Msg.WaveFired>
+  <DMSE.Strike.Msg.Skipped>{0}：{1} 已略过（{2}）。</DMSE.Strike.Msg.Skipped>
+  <DMSE.Strike.Msg.Deferred>{0}：{1} 暂时无法发射，留在第 {2} 波。</DMSE.Strike.Msg.Deferred>
+  <DMSE.Strike.Msg.Completed>{0} 结束：发射 {1} 枚，略过 {2} 枚。</DMSE.Strike.Msg.Completed>
+  <DMSE.Strike.Msg.Cancelled>{0} 已取消，尚未发射的导弹已释放。</DMSE.Strike.Msg.Cancelled>
+  <DMSE.Strike.Msg.TargetLost>{0} 已取消：目标已不存在。</DMSE.Strike.Msg.TargetLost>
+  <DMSE.Strike.Msg.ConsoleLost>{0} 已取消：打击指挥中心已被移除。</DMSE.Strike.Msg.ConsoleLost>
 
   <!-- 规划窗口 -->
-  <DMSE.Strike.Plan.Title>波次打击规划</DMSE.Strike.Plan.Title>
+  <DMSE.Strike.Plan.Title>波次打击规划：{0}</DMSE.Strike.Plan.Title>
   <DMSE.Strike.Plan.Target>目标：{0}（{1} 格）</DMSE.Strike.Plan.Target>
   <DMSE.Strike.Plan.Channels>引导通道：{0}（空闲 {1}）· 单波上限 {0} · 引导期 {2}</DMSE.Strike.Plan.Channels>
   <DMSE.Strike.Plan.SiteWarning>此据点尚未生成地图。第一枚抵达的导弹会生成地图，据点自己的防空（SAM 照常满弹）随即接手拦截还在飞的导弹。</DMSE.Strike.Plan.SiteWarning>
@@ -69,7 +69,8 @@
   <DMSE.Strike.Plan.NotReadyTag>目前无法发射：</DMSE.Strike.Plan.NotReadyTag>
   <DMSE.Strike.Plan.Flight>飞行 {0}</DMSE.Strike.Plan.Flight>
   <DMSE.Strike.Plan.Margin>射程 +{0}</DMSE.Strike.Plan.Margin>
-  <DMSE.Strike.Plan.Wave>第 {0} 波   {1}/{2}</DMSE.Strike.Plan.Wave>
+  <DMSE.Strike.Plan.WaveTitle>第 {0} 波</DMSE.Strike.Plan.WaveTitle>
+  <DMSE.Strike.Plan.WaveChannelsTip>占用 {1} 条打击导引通道中的 {0} 条（黄色）。整波每一枚都分到空闲通道才能发射；红色表示超出容量。</DMSE.Strike.Plan.WaveChannelsTip>
   <DMSE.Strike.Plan.AddWave>＋新增波次</DMSE.Strike.Plan.AddWave>
   <DMSE.Strike.Plan.AutoAssign>自动分波</DMSE.Strike.Plan.AutoAssign>
   <DMSE.Strike.Plan.AutoAssignDesc>从最便宜的导弹开始依次填满各波，最高价值的导弹会落在最后一波。</DMSE.Strike.Plan.AutoAssignDesc>
@@ -77,7 +78,7 @@
   <DMSE.Strike.Plan.Confirm>确认计划</DMSE.Strike.Plan.Confirm>
 
   <!-- 执行窗口 -->
-  <DMSE.Strike.Exec.Title>波次打击 #{0}</DMSE.Strike.Exec.Title>
+  <DMSE.Strike.Exec.Title>波次打击：{0}</DMSE.Strike.Exec.Title>
   <DMSE.Strike.Exec.State>状态：{0}</DMSE.Strike.Exec.State>
   <DMSE.Strike.Exec.NextRelease>（下一条通道在 {0} 后释放）</DMSE.Strike.Exec.NextRelease>
   <DMSE.Strike.Exec.Wave>第 {0} 波：{1}</DMSE.Strike.Exec.Wave>
@@ -93,8 +94,8 @@
   <DMSE.Strike.ComputingManual>弹道已算 {0}；本波需由研究者在规划桌算完</DMSE.Strike.ComputingManual>
   <DMSE.Strike.State.ComputingManual>等待弹道计算（{0}）</DMSE.Strike.State.ComputingManual>
   <DMSE.Strike.State.ExecutingComputing>执行中；弹道已算 {0}</DMSE.Strike.State.ExecutingComputing>
-  <DMSE.Strike.Msg.ConfirmedManual>打击任务 #{0}：已保留 {1} 枚导弹、分 {2} 波，需由研究者在{3}计算弹道。</DMSE.Strike.Msg.ConfirmedManual>
-  <DMSE.Strike.Msg.WaveSolved>打击任务 #{0}：第 {1} 波弹道解完成。</DMSE.Strike.Msg.WaveSolved>
+  <DMSE.Strike.Msg.ConfirmedManual>{0}：已保留 {1} 枚导弹、分 {2} 波，需由研究者在{3}计算弹道。</DMSE.Strike.Msg.ConfirmedManual>
+  <DMSE.Strike.Msg.WaveSolved>{0}：第 {1} 波弹道解完成。</DMSE.Strike.Msg.WaveSolved>
   <DMSE.Strike.Plan.ComputeWork>计算工作量：{0}（此处最快的研究者约需 {1}）</DMSE.Strike.Plan.ComputeWork>
   <DMSE.Strike.Plan.NoResearcher>这里没有能做研究的殖民者</DMSE.Strike.Plan.NoResearcher>
   <DMSE.Strike.Alert.ComputationPending>弹道计算等待中</DMSE.Strike.Alert.ComputationPending>
@@ -103,14 +104,14 @@
 请为该地图的殖民者启用研究工作。</DMSE.Strike.Alert.ComputationPendingDesc>
 
   <!-- P3: adjust waves, timeline, reports, alerts -->
-  <DMSE.Strike.Adjust.Title>调整波次：打击任务 #{0}</DMSE.Strike.Adjust.Title>
+  <DMSE.Strike.Adjust.Title>调整波次：{0}</DMSE.Strike.Adjust.Title>
   <DMSE.Strike.Adjust.Button>调整波次</DMSE.Strike.Adjust.Button>
   <DMSE.Strike.Adjust.Apply>应用</DMSE.Strike.Adjust.Apply>
   <DMSE.Strike.Adjust.Cancel>取消调整</DMSE.Strike.Adjust.Cancel>
   <DMSE.Strike.Adjust.ClearPending>清空待发射</DMSE.Strike.Adjust.ClearPending>
   <DMSE.Strike.Adjust.Launching>导弹发射中，请等涟波发射结束</DMSE.Strike.Adjust.Launching>
   <DMSE.Strike.Adjust.FixedRemoved>已发射或已略过的导弹不能移除</DMSE.Strike.Adjust.FixedRemoved>
-  <DMSE.Strike.Msg.Adjusted>打击任务 #{0} 已调整：{1} 枚、{2} 波（新增 {3} 枚）。</DMSE.Strike.Msg.Adjusted>
+  <DMSE.Strike.Msg.Adjusted>{0} 已调整：{1} 枚、{2} 波（新增 {3} 枚）。</DMSE.Strike.Msg.Adjusted>
   <DMSE.Strike.Slot.Launched>已发射</DMSE.Strike.Slot.Launched>
   <DMSE.Strike.Slot.Queued>发射中</DMSE.Strike.Slot.Queued>
   <DMSE.Strike.Slot.Skipped>已略过</DMSE.Strike.Slot.Skipped>
@@ -119,12 +120,12 @@
   <DMSE.Strike.Plan.ArrivalFlying>在飞 · 抵达 {0}–{1}</DMSE.Strike.Plan.ArrivalFlying>
   <DMSE.Strike.Plan.EarlyWarning>会早于第 {0} 波抵达；建议延后约 {1}</DMSE.Strike.Plan.EarlyWarning>
   <DMSE.Strike.Plan.TimelineTip>假设每一波在引导通道与发射架允许时立即发射的预估时间轴。短竖线是升空，色块是抵达区间。黄色色块表示会比前面的波次早到，得不到那一波诱饵的掩护。</DMSE.Strike.Plan.TimelineTip>
-  <DMSE.Strike.Alert.WaveLine>打击任务 #{0} 第 {1} 波：在飞 {2} 枚，{3}–{4} 后抵达；被侦测 {5}，被接战 {6}</DMSE.Strike.Alert.WaveLine>
+  <DMSE.Strike.Alert.WaveLine>{0} 第 {1} 波：在飞 {2} 枚，{3}–{4} 后抵达；被侦测 {5}，被接战 {6}</DMSE.Strike.Alert.WaveLine>
   <DMSE.Strike.Alert.WaveReady>打击波次可发射</DMSE.Strike.Alert.WaveReady>
   <DMSE.Strike.Alert.WaveReadyDesc>以下打击任务现在就能发射下一波。可在模组设置中关闭此警报。</DMSE.Strike.Alert.WaveReadyDesc>
-  <DMSE.Strike.Alert.WaveReadyLine>打击任务 #{0}：第 {1} 波（{2}）</DMSE.Strike.Alert.WaveReadyLine>
-  <DMSE.Strike.Report.Label>打击任务 #{0} 战果</DMSE.Strike.Report.Label>
-  <DMSE.Strike.Report.Header>打击任务 #{0}（目标 {1}，自 {2} 发射）：</DMSE.Strike.Report.Header>
+  <DMSE.Strike.Alert.WaveReadyLine>{0}：第 {1} 波（{2}）</DMSE.Strike.Alert.WaveReadyLine>
+  <DMSE.Strike.Report.Label>{0} 战果</DMSE.Strike.Report.Label>
+  <DMSE.Strike.Report.Header>{0}（目标 {1}，自 {2} 发射）：</DMSE.Strike.Report.Header>
   <DMSE.Strike.Report.Wave>第 {0} 波：发射 {1} 枚——飞行中被拦截 {2}、命中 {3}、在目标上空被击落 {4}、落空 {5}</DMSE.Strike.Report.Wave>
   <DMSE.Strike.Report.Unknown>另有 {0} 枚已抵达，但结果不明。</DMSE.Strike.Report.Unknown>
   <DMSE.Strike.Settings.WaveReadyAlert>打击波次可发射警报</DMSE.Strike.Settings.WaveReadyAlert>
@@ -133,7 +134,11 @@
   <!-- P4: timed launch, target-move recompute, decoy signature -->
   <DMSE.Strike.Plan.AutoFire>定时</DMSE.Strike.Plan.AutoFire>
   <DMSE.Strike.Plan.AutoFireTip>定时发射：轮到本波时自动发射，但要等到它会在前面各波之后（再隔一小段）抵达。</DMSE.Strike.Plan.AutoFireTip>
-  <DMSE.Strike.Msg.AutoFire>打击任务 #{0}：第 {1} 波定时发射。</DMSE.Strike.Msg.AutoFire>
-  <DMSE.Strike.Msg.TargetMoved>打击任务 #{0}：目标移动了 {1} 格，{2} 枚尚未发射的导弹需重新计算弹道。</DMSE.Strike.Msg.TargetMoved>
+  <DMSE.Strike.Msg.AutoFire>{0}：第 {1} 波定时发射。</DMSE.Strike.Msg.AutoFire>
+  <DMSE.Strike.Msg.TargetMoved>{0}：目标移动了 {1} 格，{2} 枚尚未发射的导弹需重新计算弹道。</DMSE.Strike.Msg.TargetMoved>
   <DMSE.Missile.Stat.Signature>雷达截面：×{0}</DMSE.Missile.Stat.Signature>
+
+  <!-- Mission names -->
+  <DMSE.Strike.MissionDefault>打击任务 #{0}</DMSE.Strike.MissionDefault>
+  <DMSE.Strike.RenameTip>重新命名这个打击任务（可掷随机名称）。</DMSE.Strike.RenameTip>
 </LanguageData>

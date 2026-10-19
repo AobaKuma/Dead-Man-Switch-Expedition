@@ -10,6 +10,7 @@ namespace DMSE
     public static class DMSE_StrikeDefOf
     {
         public static JobDef DMSE_ComputeFiringSolution;
+        public static RulePackDef DMSE_NamerStrikeMission;
 
         static DMSE_StrikeDefOf()
         {
@@ -125,7 +126,7 @@ namespace DMSE
                     int next = console.mission.NextWaveIndex;
                     if (next < 0 || console.CannotFireReason(next, partial: false) != null) { continue; }
                     culprits.Add(console.parent);
-                    lines.Add("DMSE.Strike.Alert.WaveReadyLine".Translate(console.mission.id, next + 1, console.mission.TargetLabel));
+                    lines.Add("DMSE.Strike.Alert.WaveReadyLine".Translate(console.mission.Label, next + 1, console.mission.TargetLabel));
                 }
             }
             return AlertReport.CulpritsAre(culprits);
