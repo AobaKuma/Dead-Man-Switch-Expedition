@@ -162,21 +162,76 @@ namespace DMSE
     //  狂暴脈衝（Berserk Pulse）
     //  N 半徑內所有生物進入狂暴狀態（不含玩家陣營可選）。
     // ============================================================
-    public class WarheadEffect_BerserkPulse : WarheadEffect
+    // ============================================================
+    //  溫壓（Thermobaric / MAC）
+    //  小半徑但近距離燒傷＋點燃；密閉空間（房間）效果最明顯。
+    //  不做額外爆炸（主彈體已爆炸），避免同一次命中判兩次。
+    // ============================================================
+    public class WarheadEffect_Thermobaric : WarheadEffect
     {
-        /// <summary>是否也令玩家的殖民者進入狂暴（預設 false）。</summary>
-        public bool affectsColonists = false;
+        /// <summary>半徑內每個 Pawn 受到的燒傷量。</summary>
+        public int pawnDamage = 90;
+
+        /// <summary>每格點燃的機率。</summary>
+        public float igniteChance = 0.6f;
 
         public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
         {
             if (map == null || !center.InBounds(map)) { return; }
-            float radius = N;
+
+            float radius = Mathf.Max(1.5f, N * 0.5f);
             foreach (Pawn pawn in map.mapPawns.AllPawnsSpawned)
             {
-                if (pawn.Dead) { continue; }
-                if (!affectsColonists && pawn.Faction != null && pawn.Faction.IsPlayer) { continue; }
-                if (!pawn.Position.InHorDistOf(center, radius)) { continue; }
-                pawn.mindState?.mentalStateHandler?.TryStartMentalState(MentalStateDefOf.Berserk, forced: true);
+                if (pawn.Dead || !pawn.Position.InHorDistOf(center, radius)) { continue; }
+                pawn.TakeDamage(new DamageInfo(DamageDefOf.Burn, pawnDamage, 0.3f));
+            }
+
+            int cells = Mathf.Max(1, Mathf.RoundToInt(radius));
+            foreach (IntVec3 cell in GenRadial.RadialCellsAround(center, cells, true))
+            {
+                if (!cell.InBounds(map)) { continue; }
+                if (Rand.Chance(igniteChance))
+                {
+                    FireUtility.TryStartFireIn(cell, map, Rand.Range(0.4f, 1f), null);
+                }
+            }
+        }
+    }
+
+    // ============================================================
+    //  動能刀刃（Kinetic Blades，R-9X 型）
+    //  近乎無爆炸：只對最近的 Pawn 施加切割傷害；傷害隨 N 略增。
+    // ============================================================
+    public class WarheadEffect_KineticBlades : WarheadEffect
+    {
+        /// <summary>每片刀刃的基礎切割傷害。</summary>
+        public int damagePerBlade = 35;
+
+        /// <summary>最多命中幾個目標（每次命中消耗一片刀刃）。</summary>
+        public int maxTargets = 3;
+
+        public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
+        {
+            if (map == null || !center.InBounds(map)) { return; }
+
+            int blades = Mathf.Clamp(Mathf.RoundToInt(N * 0.5f) + 1, 1, Mathf.Max(1, maxTargets));
+
+            // 只打最近的一個 Pawn：刀刃是精確殺傷，不是區域壓制。
+            Pawn nearest = null;
+            float best = float.MaxValue;
+            foreach (Pawn pawn in map.mapPawns.AllPawnsSpawned)
+            {
+                if (pawn.Dead || !pawn.Position.InHorDistOf(center, 3f)) { continue; }
+                float distance = (pawn.Position - center).LengthHorizontalSquared;
+                if (distance < best) { best = distance; nearest = pawn; }
+            }
+            if (nearest == null) { return; }
+
+            int damage = damagePerBlade + Mathf.RoundToInt(N * 2f);
+            for (int i = 0; i < blades; i++)
+            {
+                nearest.TakeDamage(new DamageInfo(DamageDefOf.Cut, damage, 0.6f));
+                if (nearest.Dead) { break; }
             }
         }
     }

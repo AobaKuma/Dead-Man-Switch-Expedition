@@ -17,6 +17,13 @@ namespace DMSE
         /// <summary>飛行速度：越快越難被攔截（降低火控命中率、延長鎖定時間）。</summary>
         public float speed = 15f;
 
+        /// <summary>
+        /// 飛行高度（公尺）。雷達視距與預警窗口依此縮放：
+        /// 低空（掠海／貼地）較晚被發現、窗口短；高空（彈道、軌道）較早被發現、窗口長。
+        /// 預設 1000 = 中性，既有 Def 未指定時行為不變。
+        /// </summary>
+        public float altitude = 1000f;
+
         public static readonly BVRTargetProps Default = new BVRTargetProps();
     }
 }

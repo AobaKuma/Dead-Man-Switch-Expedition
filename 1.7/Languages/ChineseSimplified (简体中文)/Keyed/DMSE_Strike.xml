@@ -137,6 +137,7 @@
   <DMSE.Strike.Msg.AutoFire>{0}：第 {1} 波定时发射。</DMSE.Strike.Msg.AutoFire>
   <DMSE.Strike.Msg.TargetMoved>{0}：目标移动了 {1} 格，{2} 枚尚未发射的导弹需重新计算弹道。</DMSE.Strike.Msg.TargetMoved>
   <DMSE.Missile.Stat.Signature>雷达截面：×{0}</DMSE.Missile.Stat.Signature>
+  <DMSE.Missile.Stat.Chaff>箔条：{0} 发（干扰强度 {1}）</DMSE.Missile.Stat.Chaff>
 
   <!-- Mission names -->
   <DMSE.Strike.MissionDefault>打击任务 #{0}</DMSE.Strike.MissionDefault>

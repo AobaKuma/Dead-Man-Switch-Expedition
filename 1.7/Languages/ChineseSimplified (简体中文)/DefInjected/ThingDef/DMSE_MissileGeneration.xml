@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <DMSE_Incoming_LegacyBallisticMissile.label>老式弹道导弹（来袭）</DMSE_Incoming_LegacyBallisticMissile.label>
+  <DMSE_Incoming_LegacyLoiter.label>老式巡飞弹（来袭）</DMSE_Incoming_LegacyLoiter.label>
+  <DMSE_Incoming_LegacyInterceptor.label>老式防空导弹（来袭）</DMSE_Incoming_LegacyInterceptor.label>
+  <DMSE_Incoming_AdvancedLightMissile.label>先进通用导弹（来袭）</DMSE_Incoming_AdvancedLightMissile.label>
+  <DMSE_Incoming_AdvancedBallisticMissile.label>先进弹道导弹（来袭）</DMSE_Incoming_AdvancedBallisticMissile.label>
+  <DMSE_Incoming_AdvancedCruiseMissile.label>先进巡航导弹（来袭）</DMSE_Incoming_AdvancedCruiseMissile.label>
+
+</LanguageData>

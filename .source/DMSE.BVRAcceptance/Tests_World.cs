@@ -35,7 +35,8 @@ namespace DMSE.BVRAcceptance
                 "flight time follows 150 ticks per tile at speed 1");
 
             yield return new WaitTicks(20);
-            t.Check(wo.State.detectedByFaction == null, "track outside the coverage ring is undetected");
+            // Datalink / settlement nodes may see it first; the player's ring must still be outside it.
+            t.Check(wo.State.detectedByFaction != Player, "track outside the coverage ring is not detected by the player");
 
             float detectedAt = -1f;
             var waitDetect = new WaitUntil(() =>
@@ -247,7 +248,8 @@ namespace DMSE.BVRAcceptance
 
             SetFlick(radar, false);
             yield return new WaitTicks(20);
-            t.Check(wo.State.detectedByFaction == null, "losing every search radar clears detection");
+            // With datalink / settlement defenses another faction may still see it, but the player no longer does.
+            t.Check(wo.State.detectedByFaction != Faction.OfPlayer, "losing every player search radar clears player detection");
             t.Check(wo.State.lockUntil < 0, "no lock without fire control");
             TickWatch killed = AcceptanceDriver.Watch(() => wo.Destroyed);
             var waitKill = new WaitUntil(() => killed.Seen, due - Find.TickManager.TicksGame + 60);

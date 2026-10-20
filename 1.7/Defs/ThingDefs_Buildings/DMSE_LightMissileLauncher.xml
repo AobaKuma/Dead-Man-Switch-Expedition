@@ -94,6 +94,8 @@
         <distanceLevel>1.2</distanceLevel>
         <stealthLevel>0</stealthLevel>
         <speed>22</speed>
+        <!-- 基準高度：既有彈種維持中性（1000 = 係數 1），高度差異留給世代化彈體。 -->
+        <altitude>1000</altitude>
       </li>
     </modExtensions>
   </ThingDef>
@@ -150,6 +152,7 @@
         <filter>
           <thingDefs>
             <li>DMSE_LightMissile</li>
+            <li>DMSE_Missile_AdvancedLight</li>
           </thingDefs>
         </filter>
       </fixedStorageSettings>
@@ -158,6 +161,7 @@
         <filter>
           <thingDefs>
             <li>DMSE_LightMissile</li>
+            <li>DMSE_Missile_AdvancedLight</li>
           </thingDefs>
         </filter>
       </defaultStorageSettings>
@@ -246,6 +250,7 @@
         <filter>
           <thingDefs>
             <li>DMSE_LightMissile</li>
+            <li>DMSE_Missile_AdvancedLight</li>
           </thingDefs>
         </filter>
       </fixedStorageSettings>
@@ -254,6 +259,7 @@
         <filter>
           <thingDefs>
             <li>DMSE_LightMissile</li>
+            <li>DMSE_Missile_AdvancedLight</li>
           </thingDefs>
         </filter>
       </defaultStorageSettings>

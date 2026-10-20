@@ -38,6 +38,12 @@ namespace DMSE
         /// <summary>玩家發射時是否由玩家手動選擇落點（電視制導）。其餘導引頭一律自動鎖定。</summary>
         public virtual bool PlayerChoosesTarget => false;
 
+        /// <summary>此導引頭額外提供的終端位置更新次數（反艦的主動雷達比一般導引頭更常修正）。</summary>
+        public virtual int ExtraTerminalUpdates => 0;
+
+        /// <summary>是否以世界層移動目標為對象（反艦）：航跡會縮短終端檢查間隔。</summary>
+        public virtual bool TracksMobileTargets => false;
+
         /// <summary>可選的 Def 驗證。</summary>
         public virtual IEnumerable<string> ConfigErrors(MissilePartDef parent)
         {
@@ -115,6 +121,18 @@ namespace DMSE
             {
                 float draw = PowerDraw(b);
                 if (draw > bestDraw) { bestDraw = draw; best = b; }
+            }
+            return best != null ? best.Position : IntVec3.Invalid;
+        }
+
+        /// <summary>耐久最高的敵對建築（主動雷達／反艦導引頭用）；沒有則回傳 Invalid。</summary>
+        public static IntVec3 ToughestHostileBuilding(Map map, Faction attacker)
+        {
+            Building best = null;
+            float bestHp = -1f;
+            foreach (Building b in HostileBuildings(map, attacker))
+            {
+                if (b.MaxHitPoints > bestHp) { bestHp = b.MaxHitPoints; best = b; }
             }
             return best != null ? best.Position : IntVec3.Invalid;
         }
@@ -330,6 +348,46 @@ namespace DMSE
         public override IntVec3 PickTarget(float N, Map map, Faction attacker)
         {
             return InertialTarget(map, attacker);
+        }
+    }
+
+    // ============================================================
+    //  主動雷達（Active Radar / MMW）
+    //  射後不理：鎖定敵對建築中耐久最高者（同級不定），找不到則由 PickCell 退化為慣性。
+    //  與反輻射（打雷達）、電磁訊號（打耗電）區隔：這是「看起來最大最硬的那棟」。
+    // ============================================================
+    public class GuidanceType_ActiveRadar : GuidanceType
+    {
+        public override IntVec3 PickTarget(float N, Map map, Faction attacker)
+        {
+            return ToughestHostileBuilding(map, attacker);
+        }
+    }
+
+    // ============================================================
+    //  反艦主動雷達（Anti-Ship）
+    //  對「移動中的大地圖目標」：艦上打最硬的敵對建築（引擎／艦橋），沒有建築則打最大的敵對 Pawn。
+    //  世界層由 MissileConfig.TracksMobileTargets 驅動更密集的終端修正，次數額外 +2。
+    // ============================================================
+    public class GuidanceType_AntiShip : GuidanceType
+    {
+        public override int ExtraTerminalUpdates => 2;
+
+        public override bool TracksMobileTargets => true;
+
+        public override IntVec3 PickTarget(float N, Map map, Faction attacker)
+        {
+            IntVec3 building = ToughestHostileBuilding(map, attacker);
+            if (building.IsValid) { return building; }
+
+            Pawn biggest = null;
+            float biggestSize = -1f;
+            foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
+            {
+                if (p.Dead || !IsHostileTarget(p.Faction, attacker)) { continue; }
+                if (p.BodySize > biggestSize) { biggestSize = p.BodySize; biggest = p; }
+            }
+            return biggest != null ? biggest.Position : IntVec3.Invalid;
         }
     }
 }

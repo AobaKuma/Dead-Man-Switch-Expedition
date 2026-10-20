@@ -21,6 +21,24 @@ namespace DMSE
             this.body = body;
         }
 
+        /// <summary>
+        /// 建立一個帶有彈體預設零件（<see cref="MissileBodyDef.defaultParts"/>）的設定。
+        /// 只收與該彈體相容、且彈體確實有該槽位的部件；同類別取第一個。
+        /// </summary>
+        public static MissileConfig NewWithDefaults(MissileBodyDef body)
+        {
+            MissileConfig c = new MissileConfig(body);
+            if (body?.defaultParts == null) { return c; }
+            for (int i = 0; i < body.defaultParts.Count; i++)
+            {
+                MissilePartDef p = body.defaultParts[i];
+                if (p == null || !p.CompatibleWith(body)) { continue; }
+                if (c.PartFor(p.category) != null) { continue; }
+                c.parts.Add(p);
+            }
+            return c;
+        }
+
         public MissilePartDef PartFor(MissilePartCategory cat)
         {
             for (int i = 0; i < parts.Count; i++)
@@ -75,6 +93,28 @@ namespace DMSE
             }
         }
 
+        /// <summary>各部件電子干擾強度的最大值（箔條／干擾絲）。</summary>
+        public float JamStrength
+        {
+            get
+            {
+                float v = 0f;
+                for (int i = 0; i < parts.Count; i++) { if (parts[i] != null) { v = Mathf.Max(v, parts[i].jamStrength); } }
+                return Mathf.Clamp01(v);
+            }
+        }
+
+        /// <summary>箔條／干擾絲總次數（各部件相加，飛行中只減不增）。</summary>
+        public int ChaffCharges
+        {
+            get
+            {
+                int v = 0;
+                for (int i = 0; i < parts.Count; i++) { if (parts[i] != null) { v += Mathf.Max(0, parts[i].chaffCharges); } }
+                return v;
+            }
+        }
+
         /// <summary>
         /// 射程（世界 tile）= 燃料×比衝×係數 + 固定加成 + 戰鬥部增程格數，
         /// 最終乘以載荷係數（AirburstTungsten 減 25%）。0 = 不限。
@@ -115,8 +155,13 @@ namespace DMSE
             }
         }
 
-        /// <summary>飛行中可更新終端位置的次數（由彈體決定；無導引能力為 0）。</summary>
-        public int TerminalUpdates => HasTerminalGuidance && body != null ? Mathf.Max(0, body.terminalUpdates) : 0;
+        /// <summary>飛行中可更新終端位置的次數（由彈體決定，加上導引頭加成；無導引能力為 0）。</summary>
+        public int TerminalUpdates => HasTerminalGuidance && body != null
+            ? Mathf.Max(0, body.terminalUpdates + (TargetingGuidance?.ExtraTerminalUpdates ?? 0))
+            : 0;
+
+        /// <summary>導引頭是否以移動目標為對象（反艦）：航跡會更頻繁地重新瞄準。</summary>
+        public bool TracksMobileTargets => TargetingGuidance?.TracksMobileTargets ?? false;
 
         /// <summary>
         /// 決定落點的導引頭：導引槽部件的 <see cref="MissilePartDef.guidanceType"/>，沒有時用彈體內建的

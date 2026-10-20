@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <DMSE_Building_BallisticRack.label>弹道导弹发射架</DMSE_Building_BallisticRack.label>
+  <DMSE_Building_BallisticRack.description>一座 2x2 的开放式弹道导弹垂直发射架。弹体没有物品形态：小人会直接用原料在架上装配，完成后整枚导弹会直立架中、清楚可见。以开火指令对世界地图目标发射。\n\n发射后架子会空下来，直到装配好下一枚。可在装配分页切换老式、现役与先进弹道弹体。\n\n不可安装于重力船甲板。</DMSE_Building_BallisticRack.description>
+
+</LanguageData>

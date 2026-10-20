@@ -1,0 +1,42 @@
+﻿id	result	title	detail
+M0	PASS	Environment and defs	17 checks
+M1	PASS	Device registration and Active	7 checks
+M2	PASS	Manned fire-control radar	5 checks
+M3	PASS	Drop pod capture, window, landing	7 checks
+M4	PASS	Map midcourse SAM intercept	9 checks
+M5	PASS	CIWS terminal intercept with multi-pawn debris	8 checks
+M6	PASS	CIWS multi-wave priority	6 checks
+M7	PASS	No radar: pod lands	3 checks
+M8	PASS	Shared fire-control channels (local + world)	9 checks
+S1	PASS	Seeker target selection	16 checks
+S2	PASS	Laser designator mark lifecycle	10 checks
+S3	PASS	Seekers on a map generated at arrival	14 checks
+W1	PASS	World detection, ETA, landing without CIWS	19 checks
+W2	PASS	World interception hit	17 checks
+W3	PASS	World interception miss and re-lock	8 checks
+W4	PASS	Terminal-only handoff with CIWS	9 checks
+W5	PASS	Radar loss during engagement	5 checks
+W6	PASS	NPC abstract defense, map handoff, EM seeker	16 checks
+W7	PASS	TV guidance manual target	7 checks
+W8	PASS	World airburst	12 checks
+W9	PASS	Moving target: reroute, lock reset, re-engagement	18 checks
+W10	PASS	Terminal CIWS power loss	8 checks
+W11	PASS	ETA at player speeds and view switches	8 checks
+K1	PASS	Strike rounds, reservation, per-round and ripple launch	24 checks
+K2	PASS	Reserved rounds skip assembly; silo as a round	12 checks
+K3	PASS	World defense engages the soonest arrival first	8 checks
+K4	PASS	Decoy waves against NPC abstract stock (plan B)	5 checks
+K5	PASS	No interceptor ammo, no lock; release when the last one is fired	12 checks
+K6	PASS	Auto strike console: plan, reserve, compute, ripple waves, guidance period, cancel	30 checks
+K7	PASS	Strike mission save/load mid-ripple, then completion	16 checks
+K8	PASS	Strike window draws in planning and execution modes	8 checks
+K9	PASS	Manual planning table: research work, wave-by-wave solving, alert	20 checks
+K10	PASS	Adjust waves during execution; incremental computation	19 checks
+K11	PASS	Arrival timeline, wave-ready alert, alert grouping, results letter	20 checks
+K12	PASS	Timed launch waits to land after the earlier wave	6 checks
+K13	PASS	Firing solutions are recomputed after a large target move	8 checks
+K14	PASS	Decoy payload and threat assessment	6 checks
+K15	PASS	NPC missile base salvo	3 checks
+G1	PASS	God-mode instant missile assembly	15 checks
+L1	PASS	Save/load mid-engagement	13 checks
+L2	PASS	Save/load after a reroute	15 checks

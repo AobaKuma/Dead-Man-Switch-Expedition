@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
 
   <!-- NPC Missile Base -->
@@ -110,6 +110,7 @@
 
   <DMSE.Missile.Tab>Assembly</DMSE.Missile.Tab>
   <DMSE.Missile.Body>Missile body</DMSE.Missile.Body>
+  <DMSE.Missile.BodyFixed>fixed by the launch platform</DMSE.Missile.BodyFixed>
   <DMSE.Missile.None>None</DMSE.Missile.None>
   <DMSE.Missile.Locked>locked</DMSE.Missile.Locked>
   <DMSE.Missile.GodModeInstant>God mode: changes are assembled at once, free and without research.</DMSE.Missile.GodModeInstant>

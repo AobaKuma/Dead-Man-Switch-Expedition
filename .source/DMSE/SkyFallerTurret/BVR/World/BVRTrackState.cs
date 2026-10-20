@@ -16,6 +16,15 @@ namespace DMSE
         public WorldObject_Interceptor interceptor;
         public int interceptAttempts;
         public PlanetTile lastKnownDestination = PlanetTile.Invalid;
+
+        /// <summary>箔條／干擾絲剩餘次數；-1 = 尚未初始化（第一次掃描時由導彈設定填入）。</summary>
+        public int chaffLeft = -1;
+
+        /// <summary>箔條成功斷鎖後，防空重新鎖定的延遲截止 tick。</summary>
+        public int lockDelayUntil;
+
+        /// <summary>已觸發的干擾次數（含失敗），僅供檢視與測試。</summary>
+        public int jamCount;
         public void ClearLock()
         {
             lockUntil = -1;
@@ -38,6 +47,9 @@ namespace DMSE
             Scribe_References.Look(ref interceptor, "interceptor");
             Scribe_Values.Look(ref interceptAttempts, "interceptAttempts");
             Scribe_Values.Look(ref lastKnownDestination, "lastKnownDestination", PlanetTile.Invalid);
+            Scribe_Values.Look(ref chaffLeft, "chaffLeft", -1);
+            Scribe_Values.Look(ref lockDelayUntil, "lockDelayUntil", 0);
+            Scribe_Values.Look(ref jamCount, "jamCount", 0);
         }
     }
 }

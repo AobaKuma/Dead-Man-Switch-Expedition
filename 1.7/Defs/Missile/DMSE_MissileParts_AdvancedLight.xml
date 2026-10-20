@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ==================================================================
+       先進通用導彈（地獄火級）部件
+       Advanced general-purpose missile (Hellfire-class) parts.
+
+       這個彈體在 1.7 先前只有定義、沒有任何相容部件（ITab 四個槽位全空）。
+       本檔補齊三槽（Warhead / Guidance / Payload），並依 Hellfire 家族的真實構型分家：
+         - AGM-114K 串聯成型裝藥（HEAT）→ 半徑小、傷害高
+         - AGM-114M 破片殺傷                → 半徑大、傷害中
+         - AGM-114N 溫壓（MAC）             → 近距離點燃＋燒傷
+         - 破片套筒                          → 以 AirburstTungsten 表示
+         - 導引：慣性（最便宜）、影像紅外（IIR）、半決策雷射（SAL）
+       數值以現役輕型／巡航部件為基準；每個部件都可用單一欄位微調。
+       ================================================================== -->
+
+  <!-- == Warhead == -->
+
+  <!-- 串聯成型裝藥：小半徑、高傷害，對點目標（載具、砲塔、機械體）。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_AdvLight_Warhead_HEAT</defName>
+    <label>tandem shaped-charge warhead</label>
+    <description>A tandem high-explosive anti-tank charge in the class of the AGM-114K. The precursor charge defeats reactive armour and the main jet carries the damage inside the target, so the blast radius is small but the damage is concentrated.</description>
+    <category>Warhead</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_AdvancedLight</li>
+    </compatibleBodies>
+    <explosionRadiusOffset>-1.5</explosionRadiusOffset>
+    <damageAmountOffset>150</damageAmountOffset>
+    <damageDefOverride>Bomb</damageDefOverride>
+    <costList>
+      <Steel>40</Steel>
+      <DMSE_TantastenAlloy>6</DMSE_TantastenAlloy>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_IntegratedCircuits</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
+  <!-- 破片殺傷：大一點的半徑，傷害居中，通用於步兵與輕建築。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_AdvLight_Warhead_BlastFrag</defName>
+    <label>blast-fragmentation warhead</label>
+    <description>A blast-fragmentation charge in the class of the AGM-114M: a heavier case and a pre-fragmented sleeve trade penetration for a wider lethal radius against infantry and light structures.</description>
+    <category>Warhead</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_AdvancedLight</li>
+    </compatibleBodies>
+    <explosionRadiusOffset>1.5</explosionRadiusOffset>
+    <damageAmountOffset>60</damageAmountOffset>
+    <damageDefOverride>Bomb</damageDefOverride>
+    <costList>
+      <Steel>30</Steel>
+      <Chemfuel>25</Chemfuel>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_IntegratedCircuits</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
+  <!-- 溫壓（MAC）：小半徑、燒傷與點燃，密閉空間特別有效。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_AdvLight_Warhead_Thermobaric</defName>
+    <label>thermobaric warhead</label>
+    <description>A metal augmented charge in the class of the AGM-114N. The fuel cloud burns rather than fragments: a small blast, but searing burns and fires that are far worse inside a room or bunker than in the open.</description>
+    <category>Warhead</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_AdvancedLight</li>
+    </compatibleBodies>
+    <explosionRadiusOffset>0.5</explosionRadiusOffset>
+    <damageAmountOffset>80</damageAmountOffset>
+    <damageDefOverride>Bomb</damageDefOverride>
+    <warheadEffect Class="DMSE.WarheadEffect_Thermobaric">
+      <pawnDamage>90</pawnDamage>
+      <igniteChance>0.6</igniteChance>
+    </warheadEffect>
+    <costList>
+      <Steel>25</Steel>
+      <Chemfuel>35</Chemfuel>
+      <DMSE_TantastenAlloy>8</DMSE_TantastenAlloy>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_IntegratedCircuits</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
+  <!-- 動能刀刃（R-9X）：近乎無爆炸，只殺一個目標。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_AdvLight_Warhead_Kinetic</defName>
+    <label>kinetic blade warhead</label>
+    <description>An inert mass with pop-out blades in the class of the AGM-114R9X. There is almost no explosive filler: the round kills the creature it hits and leaves the surroundings largely intact, at the cost of any real blast effect.</description>
+    <category>Warhead</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_AdvancedLight</li>
+    </compatibleBodies>
+    <explosionRadiusOffset>-4</explosionRadiusOffset>
+    <damageAmountOffset>-80</damageAmountOffset>
+    <damageDefOverride>Bomb</damageDefOverride>
+    <warheadEffect Class="DMSE.WarheadEffect_KineticBlades">
+      <damagePerBlade>35</damagePerBlade>
+      <maxTargets>3</maxTargets>
+    </warheadEffect>
+    <costList>
+      <Steel>20</Steel>
+      <DMSE_TantastenAlloy>10</DMSE_TantastenAlloy>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_IntegratedCircuits</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
+  <!-- == Guidance == -->
+
+  <DMSE.MissilePartDef>
+    <defName>DMSE_AdvLight_Guidance_Inertial</defName>
+    <label>inertial guidance</label>
+    <description>A cheap strap-down inertial unit. No seeker, no terminal guidance and no cross-layer reach — but it costs nothing and still hits the target building the operator selected.</description>
+    <category>Guidance</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_AdvancedLight</li>
+    </compatibleBodies>
+    <guidanceType Class="DMSE.GuidanceType_Inertial" />
+    <scatterOffset>1</scatterOffset>
+  </DMSE.MissilePartDef>
+
+  <!-- 影像紅外（IIR）：熱目標優先，散布收斂。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_AdvLight_Guidance_IIR</defName>
+    <label>imaging infra-red seeker</label>
+    <description>An imaging infra-red seeker that locks the hottest enclosed room if it is at least 15°C above the outdoors, and otherwise the largest creature on the target map. Fire-and-forget: no operator, no line of sight and no laser needed.</description>
+    <category>Guidance</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_AdvancedLight</li>
+    </compatibleBodies>
+    <guidanceType Class="DMSE.GuidanceType_HeatSource">
+      <minRoomTempAboveOutdoor>15</minRoomTempAboveOutdoor>
+    </guidanceType>
+    <scatterOffset>-1</scatterOffset>
+    <costList>
+      <ComponentIndustrial>3</ComponentIndustrial>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_IntegratedCircuits</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
+  <!-- 半主動雷射（SAL）：鎖定我方標定點，散布最緊。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_AdvLight_Guidance_Laser</defName>
+    <label>semi-active laser seeker</label>
+    <description>A semi-active laser seeker that homes on the most recent laser designation your faction has painted on the target map. The tightest dispersion of any seeker in this class, but there has to be a designator on the ground.</description>
+    <category>Guidance</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_AdvancedLight</li>
+    </compatibleBodies>
+    <guidanceType Class="DMSE.GuidanceType_Laser" />
+    <scatterOffset>-2</scatterOffset>
+    <costList>
+      <ComponentIndustrial>3</ComponentIndustrial>
+      <ComponentSpacer>1</ComponentSpacer>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_IntegratedCircuits</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
+  <!-- 主動毫米波雷達（MMW）：射後不理，鎖耐久最高的敵對建築。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_AdvLight_Guidance_MMW</defName>
+    <label>millimetre-wave radar seeker</label>
+    <description>A fire-and-forget millimetre-wave radar seeker in the class of the AGM-114L Longbow. It locks the toughest hostile building on the target map by itself — no designator, no operator and no clear weather required.</description>
+    <category>Guidance</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_AdvancedLight</li>
+    </compatibleBodies>
+    <guidanceType Class="DMSE.GuidanceType_ActiveRadar" />
+    <scatterOffset>-2</scatterOffset>
+    <costList>
+      <ComponentIndustrial>3</ComponentIndustrial>
+      <ComponentSpacer>1</ComponentSpacer>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_IntegratedCircuits</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
+  <!-- == Payload == -->
+
+  <DMSE.MissilePartDef>
+    <defName>DMSE_AdvLight_Payload_None</defName>
+    <label>no payload</label>
+    <description>No secondary charge. The warhead alone has to be enough, which keeps the missile light and the range long.</description>
+    <category>Payload</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_AdvancedLight</li>
+    </compatibleBodies>
+    <payloadEffect Class="DMSE.PayloadEffect_None" />
+  </DMSE.MissilePartDef>
+
+  <DMSE.MissilePartDef>
+    <defName>DMSE_AdvLight_Payload_HE</defName>
+    <label>secondary high-explosive charge</label>
+    <description>A small secondary charge that detonates after the warhead, widening the damage radius a little.</description>
+    <category>Payload</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_AdvancedLight</li>
+    </compatibleBodies>
+    <payloadEffect Class="DMSE.PayloadEffect_HighExplosive">
+      <damageAmount>80</damageAmount>
+    </payloadEffect>
+    <costList>
+      <Steel>20</Steel>
+      <Chemfuel>20</Chemfuel>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_Ballistics</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
+  <!-- 破片套筒：以空爆鎢芯表示；代價是整體射程 ×0.75。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_AdvLight_Payload_FragSleeve</defName>
+    <label>fragmentation sleeve</label>
+    <description>An external pre-fragmented sleeve wrapped around the warhead. It sprays dense fragments over the impact area, badly wounding exposed infantry, but the extra mass costs a quarter of the missile's range.</description>
+    <category>Payload</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_AdvancedLight</li>
+    </compatibleBodies>
+    <payloadEffect Class="DMSE.PayloadEffect_AirburstTungsten">
+      <damagePerHit>9</damagePerHit>
+      <armorPenetration>0.4</armorPenetration>
+    </payloadEffect>
+    <costList>
+      <Steel>20</Steel>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_IntegratedCircuits</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
+  <!-- 箔條／干擾絲：有限次的主動干擾，不是傷害型酬載。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_AdvLight_Payload_Chaff</defName>
+    <label>chaff dispenser</label>
+    <description>A dispenser of chaff bundles and radar-absorbing streamers. When an enemy fire-control radar locks this missile, the dispenser can break the lock once per bundle; the bundles are a limited, one-way resource and do not make the missile quieter before the first lock.</description>
+    <category>Payload</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_AdvancedLight</li>
+    </compatibleBodies>
+    <payloadEffect Class="DMSE.PayloadEffect_None" />
+    <jamStrength>0.25</jamStrength>
+    <chaffCharges>2</chaffCharges>
+    <costList>
+      <Steel>15</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_IntegratedCircuits</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
+</Defs>

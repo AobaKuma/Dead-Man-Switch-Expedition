@@ -127,6 +127,9 @@ namespace DMSE
                     Find.TickManager.TicksGame + 1,
                     wave.tickToImpact - BVRTuning.WindowPenaltyPerExtraTarget);
             }
+
+            // P4 空投虛擬航跡：若開啟 Tuning 開關，另外建立一條世界層幽靈航跡（導彈有自己的航跡，不重複）。
+            WorldComponent_BVRNetwork.Current?.TrySpawnDropPodTrack(map, wave, target, faller);
         }
 
         /// <summary>
@@ -202,6 +205,8 @@ namespace DMSE
             }
 
             window *= Mathf.Max(0.01f, tp.distanceLevel);
+            // 高度：低空（掠海／貼地）較晚被發現，預警窗口縮短；高空彈道目標窗口拉長。
+            window *= MissileWorldMotion.AltitudeFactor(tp.altitude);
             window /= Mathf.Max(1, targetCount);
             return Mathf.RoundToInt(window);
         }

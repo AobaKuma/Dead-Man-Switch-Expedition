@@ -75,23 +75,41 @@ namespace DMSE
         }
 
         /// <summary>
-        /// 彈體欄位是否應鎖定（不允許更換彈體）。
-        /// 以下情況鎖定：
-        ///   - SelThing 是建築（儲存架或彈道發射井）：彈體由架設計決定，不可更換。
-        ///   - SelThing 的 CompMissileConfig.defaultBody 非 null：有明確指定預設彈體。
+        /// 此選取物身上的 <see cref="CompProperties_MissileConfig"/>（沒有則為 null）。
         /// </summary>
-        private bool IsBodyLocked
+        private CompProperties_MissileConfig ConfigProps
+            => SelThing?.def?.comps?.OfType<CompProperties_MissileConfig>().FirstOrDefault();
+
+        /// <summary>
+        /// 此選取物是否可由玩家選擇彈體。
+        /// 只有「沒有物品型態、直接在建築上裝配」的平台才開放（<see cref="MissileCustomizeLocation.Launcher"/>，
+        /// 目前即彈道導彈發射井）；導彈物品與儲存架的彈體由 def 的 defaultBody 固定。
+        /// </summary>
+        private bool CanChooseBody
         {
             get
             {
-                if (SelThing == null) { return false; }
-                // 任何建築（儲存架、彈道發射井）均鎖定彈體
-                if (SelThing is Building) { return true; }
-                // 物品若有固定 defaultBody 亦鎖定
-                CompProperties_MissileConfig props = (SelThing.def.comps?
-                    .OfType<CompProperties_MissileConfig>()
-                    .FirstOrDefault());
-                return props?.defaultBody != null;
+                if (!(SelThing is Building)) { return false; }
+                MissileBodyDef anchor = ConfigProps?.defaultBody;
+                return anchor != null && anchor.customizeLocation == MissileCustomizeLocation.Launcher;
+            }
+        }
+
+        /// <summary>
+        /// 可選彈體：同分級、同為 Launcher 型，且發射方式相容於平台的預設彈體。
+        /// 以 <see cref="CompProperties_MissileConfig.defaultBody"/> 當平台分級錨點，
+        /// 所以換過彈體後選單仍穩定。
+        /// </summary>
+        private IEnumerable<MissileBodyDef> SelectableBodies()
+        {
+            MissileBodyDef anchor = ConfigProps?.defaultBody;
+            if (anchor == null) { yield break; }
+            foreach (MissileBodyDef b in DefDatabase<MissileBodyDef>.AllDefsListForReading)
+            {
+                if (b.customizeLocation != MissileCustomizeLocation.Launcher) { continue; }
+                if (b.sizeClass != anchor.sizeClass) { continue; }
+                if (!MissileTaxonomy.LaunchModeCompatible(b.launchMode, anchor.launchMode)) { continue; }
+                yield return b;
             }
         }
 
@@ -140,30 +158,37 @@ namespace DMSE
             list.GapLine(6f);
             GUI.enabled = !reserved;
 
-            // 彈體（建築上鎖定：僅顯示，不可更換）
+            // 彈體：發射井（Launcher 型，無物品型態）可切換；物品／儲存架唯讀。
             list.Label("DMSE.Missile.Body".Translate());
-            if (IsBodyLocked)
+            TaggedString bodyLabel = cfg.body != null
+                ? cfg.body.LabelCap
+                : "DMSE.Missile.None".Translate();
+            if (CanChooseBody)
             {
-                // 顯示灰色不可點選的彈體名稱
-                GUI.color = Color.gray;
-                list.Label(cfg.body != null ? cfg.body.LabelCap : (TaggedString)"DMSE.Missile.None".Translate());
-                GUI.color = Color.white;
-            }
-            else if (list.ButtonText(cfg.body != null ? cfg.body.LabelCap : (TaggedString)"DMSE.Missile.None".Translate()))
-            {
-                List<FloatMenuOption> opts = new List<FloatMenuOption>();
-                foreach (MissileBodyDef b in DefDatabase<MissileBodyDef>.AllDefsListForReading)
+                if (list.ButtonText(bodyLabel))
                 {
-                    MissileBodyDef bl = b;
-                    opts.Add(new FloatMenuOption(bl.LabelCap, delegate
+                    List<FloatMenuOption> opts = new List<FloatMenuOption>();
+                    foreach (MissileBodyDef b in SelectableBodies())
                     {
-                        cfg.body = bl;
-                        cfg.PruneIncompatible();
-                        comp.assemblyConfirmed = false;
-                        comp.RefundDeliveredIfIdle();
-                    }));
+                        MissileBodyDef bl = b;
+                        opts.Add(new FloatMenuOption(bl.LabelCap, delegate
+                        {
+                            cfg.body = bl;
+                            cfg.PruneIncompatible();
+                            comp.assemblyConfirmed = false;
+                            comp.RefundDeliveredIfIdle();
+                        }));
+                    }
+                    if (opts.Any()) { Find.WindowStack.Add(new FloatMenu(opts)); }
                 }
-                if (opts.Any()) { Find.WindowStack.Add(new FloatMenu(opts)); }
+            }
+            else
+            {
+                // 唯讀：彈體由物品 def／平台決定
+                string bodyFixed = "DMSE.Missile.BodyFixed".Translate();
+                GUI.color = Color.gray;
+                list.Label(bodyLabel + " (" + bodyFixed + ")");
+                GUI.color = Color.white;
             }
             list.Gap(8f);
 
@@ -195,6 +220,10 @@ namespace DMSE
             if (!Mathf.Approximately(cfg.SignatureFactor, 1f))
             {
                 list.Label("DMSE.Missile.Stat.Signature".Translate(cfg.SignatureFactor.ToString("0.#")));
+            }
+            if (cfg.ChaffCharges > 0)
+            {
+                list.Label("DMSE.Missile.Stat.Chaff".Translate(cfg.ChaffCharges, cfg.JamStrength.ToString("0.##")));
             }
             list.Label(cfg.HasTerminalGuidance
                 ? "DMSE.Missile.Stat.TerminalGuidance".Translate(cfg.TerminalUpdates)

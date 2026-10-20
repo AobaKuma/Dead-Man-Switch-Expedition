@@ -1,0 +1,40 @@
+﻿[t=      1] Game ready (map 0, tile 4684,0).
+[t=      1] Enemy faction: 頓都布安
+[t=      1] Test pad (20,20,59,59) on map size (250, 1, 250); safe impact cell (235, 0, 235).
+[t=      1] Running 4 acceptance tests.
+[t=    240] 
+[t=    240] === D1: Datalink and area defense (crossing target)
+[t=    444]     ok:   a source and a destination away from home exist
+[t=    774]     ok:   the track survives long enough to be engaged
+[t=    774]     ok:   the track keeps its own destination
+[t=    774]     FAIL: the home radar engages a track that only crosses its coverage (area defense)
+[t=    774] --- D1: FAIL (the home radar engages a track that only crosses its coverage (area defense))
+[t=    804] 
+[t=    804] === D2: Synthetic settlement air defense and radar suppression
+[t=    834]     ok:   a plain enemy settlement gets a synthetic defense
+[t=    834]     ok:   the synthetic defense is available with stock
+[t=    834]     ok:   the synthetic defense has a detection range
+[t=    834]     ok:   an anti-radiation strike takes two interceptors
+[t=    834]     ok:   the strike suppresses the radar for a day
+[t=    834]     ok:   a suppressed node cannot launch
+[t=    834] --- D2: PASS (6 checks)
+[t=    864] 
+[t=    864] === D3: Undetected tracks are hidden
+[t=    894]     ok:   an undetected hostile track is hidden
+[t=    894]     ok:   a detected track becomes visible
+[t=    894] --- D3: PASS (2 checks)
+[t=    924] 
+[t=    924] === D4: Drop-pod ghost track and abstract-node degradation
+[t=    924]     ok:   the drop-pod ghost def exists
+[t=    954]     ok:   the ghost uses its own arrival tick
+[t=    954]     ok:   the ghost starts near the ring edge
+[t=    954]     ok:   the ghost ends near the map tile
+[t=    984]     ok:   an ungenerated enemy site is an abstract node
+[t=    984]     ok:   degrading an abstract node removes stock and the radar
+[t=    984] --- D4: PASS (6 checks)
+[t=   1014] 
+[t=   1014] === SUMMARY: 3/4 passed
+[t=   1014] FAIL  D1  Datalink and area defense (crossing target)  -- the home radar engages a track that only crosses its coverage (area defense)
+[t=   1014] PASS  D2  Synthetic settlement air defense and radar suppression  -- 6 checks
+[t=   1014] PASS  D3  Undetected tracks are hidden  -- 2 checks
+[t=   1014] PASS  D4  Drop-pod ghost track and abstract-node degradation  -- 6 checks

@@ -21,6 +21,9 @@ namespace DMSE
         /// <summary>導引頭檢查目標位置的間隔（tick）。</summary>
         public const int TerminalCheckIntervalTicks = 60;
 
+        /// <summary>反艦（追蹤移動目標）導引頭的檢查間隔：更密集地重新瞄準移動中的目標。</summary>
+        public const int MobileTerminalCheckIntervalTicks = 20;
+
         public static bool SameLayer(PlanetTile a, PlanetTile b)
         {
             return a.Valid && b.Valid && a.Layer == b.Layer;

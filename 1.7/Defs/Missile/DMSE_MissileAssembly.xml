@@ -28,6 +28,13 @@
       <li>Propulsion</li>
       <li>Payload</li>
     </slots>
+    <!-- 建造時自帶：材料已含在物品 costList 內。 -->
+    <defaultParts>
+      <li>DMSE_Warhead_HE</li>
+      <li>DMSE_Guidance_Inertial</li>
+      <li>DMSE_Propulsion_Standard</li>
+      <li>DMSE_Payload_None</li>
+    </defaultParts>
   </DMSE.MissileBodyDef>
 
   <!-- ==================== 彈頭 Warhead ==================== -->
@@ -120,6 +127,23 @@
   </DMSE.MissilePartDef>
 
   <DMSE.MissilePartDef>
+    <defName>DMSE_Guidance_AntiShip</defName>
+    <label>anti-ship radar seeker</label>
+    <description>An active radar seeker built for moving targets — ships and any other mobile base on the world map. It keeps re-aiming while the target keeps moving and does so more often than a normal seeker; the missile still misses if the target leaves its remaining range.</description>
+    <category>Guidance</category>
+    <compatibleBodies><li>DMSE_MissileBody_Cruise</li></compatibleBodies>
+    <guidanceType Class="DMSE.GuidanceType_AntiShip" />
+    <scatterOffset>-2</scatterOffset>
+    <researchPrerequisites>
+      <li>DMSE_IntegratedCircuits</li>
+    </researchPrerequisites>
+    <costList>
+      <ComponentIndustrial>5</ComponentIndustrial>
+      <ComponentSpacer>1</ComponentSpacer>
+    </costList>
+  </DMSE.MissilePartDef>
+
+  <DMSE.MissilePartDef>
     <defName>DMSE_Guidance_Laser</defName>
     <label>laser seeker</label>
     <description>Semi-active laser seeker. Locks onto the most recent laser designation your faction has painted on the target map with a laser target designator. Falls back to inertial targeting if there is none.</description>
@@ -173,6 +197,15 @@
       <Steel>25</Steel>
       <Chemfuel>15</Chemfuel>
     </costList>
+  </DMSE.MissilePartDef>
+
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Payload_None</defName>
+    <label>no payload</label>
+    <description>No secondary payload. The warhead alone has to be enough, which keeps the Scorer airframe light and its range long.</description>
+    <category>Payload</category>
+    <compatibleBodies><li>DMSE_MissileBody_Cruise</li></compatibleBodies>
+    <payloadEffect Class="DMSE.PayloadEffect_None" />
   </DMSE.MissilePartDef>
 
   <DMSE.MissilePartDef>

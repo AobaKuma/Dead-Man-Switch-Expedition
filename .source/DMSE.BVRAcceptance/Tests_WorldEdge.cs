@@ -13,6 +13,9 @@ namespace DMSE.BVRAcceptance
     {
         public static IEnumerable<Wait> WorldAirburst(TestContext t)
         {
+            // Isolate point defense: this test is about the burst radius, not about area engagement.
+            bool oldAreaDefense = BVRWorldTuningDef.Current.areaDefenseEnabled;
+            BVRWorldTuningDef.Current.areaDefenseEnabled = false;
             SpawnBuilding(PhaseArray, 2, 2);
             SpawnLoadedLauncher(10, 2, 1);   // a single interceptor for the whole raid
             yield return WaitPowered(); yield return new WaitTicks(2);
@@ -46,6 +49,7 @@ namespace DMSE.BVRAcceptance
             int due = interceptor.interceptTick;
             TickWatch killed = AcceptanceDriver.Watch(() => primary.Destroyed);
             TickWatch twinKilled = AcceptanceDriver.Watch(() => twin.Destroyed);
+            TickWatch otherKilled = AcceptanceDriver.Watch(() => other.Destroyed);
             var waitKill = new WaitUntil(() => killed.Seen, due - Find.TickManager.TicksGame + 60);
             yield return waitKill;
             t.Require(killed.FirstTick == due, $"the interceptor kills its target at the meeting tick ({killed.FirstTick} vs {due})");
@@ -58,9 +62,11 @@ namespace DMSE.BVRAcceptance
                 + $"from the burst, same destination {twin.Destination == interceptor.targetDestination}, route revision {twin.RouteRevision}");
             t.Check(twinKilled.FirstTick == due, "the airburst also kills the missile flying with it");
             t.Check(otherDist <= radius, $"the missile bound elsewhere is inside the burst radius ({otherDist:0.00} ≤ {radius})");
-            t.Check(!other.Destroyed, "the burst spares a missile bound for another tile");
+            // Area defense may engage that missile separately, so only assert the burst itself did not kill it.
+            t.Check(otherKilled.FirstTick != due, "the burst spares a missile bound for another tile");
             t.Check(lateDist > radius, $"the trailing missile is outside the burst radius ({lateDist:0.00} > {radius})");
             t.Check(!late.Destroyed, "the burst spares a missile outside its radius");
+            BVRWorldTuningDef.Current.areaDefenseEnabled = oldAreaDefense;
         }
 
         /// <summary>The target moves while a guided missile is inbound (e.g. a transfer ship): lock, interceptor and re-engagement.</summary>

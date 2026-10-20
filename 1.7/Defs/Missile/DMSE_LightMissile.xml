@@ -31,6 +31,12 @@
       <li>Guidance</li>
       <li>Payload</li>
     </slots>
+    <!-- 建造時自帶：材料已含在物品 costList 內。 -->
+    <defaultParts>
+      <li>DMSE_Light_Warhead_HE</li>
+      <li>DMSE_Light_Guidance_Inertial</li>
+      <li>DMSE_Light_Payload_None</li>
+    </defaultParts>
   </DMSE.MissileBodyDef>
 
   <!-- ==================== 輕型導彈 部件 Defs ====================
@@ -194,6 +200,22 @@
     <costList>
       <Steel>10</Steel>
       <Chemfuel>10</Chemfuel>
+    </costList>
+  </DMSE.MissilePartDef>
+
+  <!-- 箔條／干擾絲：只有一發，最便宜的斷鎖手段。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Light_Payload_Chaff</defName>
+    <label>chaff dispenser</label>
+    <description>A single chaff bundle and a handful of radar-absorbing streamers. One chance to break an enemy fire-control lock, then the dispenser is empty for the rest of the flight.</description>
+    <category>Payload</category>
+    <compatibleBodies><li>DMSE_MissileBody_Light</li></compatibleBodies>
+    <payloadEffect Class="DMSE.PayloadEffect_None" />
+    <jamStrength>0.2</jamStrength>
+    <chaffCharges>1</chaffCharges>
+    <costList>
+      <Steel>10</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
     </costList>
   </DMSE.MissilePartDef>
 

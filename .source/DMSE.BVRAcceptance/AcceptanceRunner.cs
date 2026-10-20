@@ -386,7 +386,8 @@ namespace DMSE.BVRAcceptance
                 {
                     if (w is Dialog_MessageBox || w is Dialog_NodeTree || w.forcePause || w.absorbInputAroundWindow)
                     {
-                        Log($"closing window {w.GetType().Name}");
+                        string detail = w is Dialog_MessageBox box ? " [" + box.text + "]" : string.Empty;
+                        Log($"closing window {w.GetType().Name}{detail}");
                         Find.WindowStack.TryRemove(w, doCloseSound: false);
                     }
                 }

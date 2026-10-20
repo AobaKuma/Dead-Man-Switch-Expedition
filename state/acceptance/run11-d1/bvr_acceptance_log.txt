@@ -1,0 +1,17 @@
+﻿[t=      1] Game ready (map 0, tile 112948,0).
+[t=      1] Enemy faction: 咕永的聯合王國
+[t=      1] Test pad (20,20,59,59) on map size (250, 1, 250); safe impact cell (235, 0, 235).
+[t=      1] Running 1 acceptance tests.
+[t=    239] 
+[t=    239] === D1: Datalink and area defense (crossing target)
+[t=    456]     ok:   a source and a destination away from home exist
+[t=    622]     ok:   the track survives long enough to be engaged
+[t=    622]     note: lockNode=null launchNode=卡拉里斯 home=殖民地 detected=殖民地
+[t=    622]     ok:   the track keeps its own destination
+[t=    622]     ok:   a track crossing an envelope is intercepted
+[t=    622]     ok:   the intercept came from a node the track was not heading to (area defense)
+[t=    622]     ok:   the intercepting node is hostile to the attacker
+[t=    622] --- D1: PASS (6 checks)
+[t=    652] 
+[t=    652] === SUMMARY: 1/1 passed
+[t=    652] PASS  D1  Datalink and area defense (crossing target)  -- 6 checks

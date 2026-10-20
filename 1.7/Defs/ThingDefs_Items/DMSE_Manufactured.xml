@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Defs>
   <ThingDef ParentName="ResourceBase" Name="DMSE_ResourceBase" Abstract="true">
     <tradeability>Sellable</tradeability>
@@ -206,14 +206,14 @@
     <tickerType>Rare</tickerType>
     <statBases>
       <MaxHitPoints>100</MaxHitPoints>
-      <MarketValue>2500</MarketValue>
+      <MarketValue>2900</MarketValue>
       <Mass>500</Mass>
       <Flammability>0.5</Flammability>
       <DeteriorationRate>10.0</DeteriorationRate>
     </statBases>
     <costList>
-      <Chemfuel>250</Chemfuel>
-      <Steel>125</Steel>
+      <Chemfuel>270</Chemfuel>
+      <Steel>155</Steel>
       <DMSE_TantastenAlloy>15</DMSE_TantastenAlloy>
       <ComponentStamped>10</ComponentStamped>
       <ComponentSpacer>1</ComponentSpacer>
@@ -342,14 +342,14 @@
     <tickerType>Rare</tickerType>
     <statBases>
       <MaxHitPoints>100</MaxHitPoints>
-      <MarketValue>1200</MarketValue>
+      <MarketValue>1450</MarketValue>
       <Mass>200</Mass>
       <Flammability>0.5</Flammability>
       <DeteriorationRate>10.0</DeteriorationRate>
     </statBases>
     <costList>
-      <Chemfuel>150</Chemfuel>
-      <Steel>80</Steel>
+      <Chemfuel>165</Chemfuel>
+      <Steel>100</Steel>
       <DMSE_TantastenAlloy>8</DMSE_TantastenAlloy>
       <ComponentStamped>6</ComponentStamped>
     </costList>

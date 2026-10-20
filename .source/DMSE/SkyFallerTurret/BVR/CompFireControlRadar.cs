@@ -96,6 +96,12 @@ namespace DMSE
                 chance *= Mathf.Pow(settings.stealthMissFactor, stealthGap);
             }
 
+            // 電子干擾（箔條／干擾絲）：地圖層只折減命中率，斷鎖在世界層處理。
+            if (target.jamStrength > 0f)
+            {
+                chance *= 1f - Mathf.Clamp01(BVRWorldTuningDef.Current.chaffMapHitPenalty * target.jamStrength);
+            }
+
             return Mathf.Clamp01(chance);
         }
 

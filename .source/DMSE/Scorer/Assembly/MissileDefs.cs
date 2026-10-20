@@ -94,6 +94,13 @@ namespace DMSE
         public List<MissilePartCategory> slots = new List<MissilePartCategory>();
 
         /// <summary>
+        /// 建造時自帶的預設零件。新造的導彈（物品或發射井）會直接套用這組零件，
+        /// 建造價格已包含它們的材料；之後重新裝配才需再搬料。
+        /// 只取 CompatibleWith(body) 成立者，同類別取第一個。
+        /// </summary>
+        public List<MissilePartDef> defaultParts;
+
+        /// <summary>
         /// 彈體內建的選目標方式（XML Class 指定 <see cref="GuidanceType"/> 子類），沒有裝導引部件時使用，
         /// 例如巡飛彈以電視制導由操作員選點。只影響落點選擇，不提供導引能力（跨圖層、終端更新）。
         /// </summary>
@@ -131,8 +138,18 @@ namespace DMSE
         /// <summary>
         /// 雷達截面倍率（P4 誘餌酬載）：乘在世界航跡的 <see cref="BVRTargetProps.distanceLevel"/> 上，
         /// 讓便宜的導彈看起來像大彈——更早被偵測，具威脅評估的防空會優先接戰它。
+        /// 小於 1 者為突防誘餌（較晚被偵測）。
         /// </summary>
         public float signatureFactor = 1f;
+
+        /// <summary>
+        /// 電子干擾強度（0–1）：箔條／干擾絲每次觸發時的斷鎖機率係數。
+        /// 與 <see cref="signatureFactor"/> 不同：這是主動、有限次、只影響鎖定的手段。
+        /// </summary>
+        public float jamStrength = 0f;
+
+        /// <summary>箔條／干擾絲的攜帶次數（發射時裝填、飛行中不補充）。</summary>
+        public int chaffCharges = 0;
 
         // 數值修正（加算；guidance 的 scatterOffset 可為負以收緊散布）
         public float explosionRadiusOffset = 0f;

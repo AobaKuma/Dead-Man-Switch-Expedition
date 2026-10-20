@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ==================================================================
+       先進導彈物品（讓 AdvancedLight / AdvancedCruise 兩個彈體可取得）
+       Advanced missile items so the two previously unreachable bodies can be built.
+
+       每個物品的 costList 已包含「預設零件」的材料（見彈體 def 的 defaultParts）：
+       建造完成時 CompMissileConfig 會直接帶入預設零件，不需要再搬一次料。
+       The cost lists already include the materials of the default parts declared
+       on the body defs, so a freshly built missile is ready to fire.
+       ================================================================== -->
+
+  <ThingDef ParentName="DMSE_ResourceBase">
+    <defName>DMSE_Missile_AdvancedLight</defName>
+    <label>advanced general-purpose missile</label>
+    <description>A Hellfire-class multi-role airframe with modern seekers and tight dispersion. Comes off the printer already loaded with a tandem shaped-charge warhead and an inertial unit; swap the loadout in the assembly tab if you want something else.</description>
+    <descriptionHyperlinks>
+      <ThingDef>DMSE_Building_LightMissileLauncher</ThingDef>
+      <ThingDef>DMSE_Building_LightMissileVLS</ThingDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Things/Missile/Grison/skyFaller</texPath>
+      <drawSize>(2.5,2.5)</drawSize>
+      <drawOffset>(0,0,1)</drawOffset>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>1</stackLimit>
+    <tickerType>Rare</tickerType>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <MarketValue>1900</MarketValue>
+      <Mass>220</Mass>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>10.0</DeteriorationRate>
+    </statBases>
+    <costList>
+      <Steel>140</Steel>
+      <Chemfuel>170</Chemfuel>
+      <DMSE_TantastenAlloy>18</DMSE_TantastenAlloy>
+      <ComponentStamped>8</ComponentStamped>
+    </costList>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <effectWorking>Smith</effectWorking>
+      <soundWorking>Recipe_Smith</soundWorking>
+      <recipeUsers Inherit="False">
+        <li>DMS_TableMachinePrinter</li>
+      </recipeUsers>
+      <researchPrerequisite>DMSE_IntegratedCircuits</researchPrerequisite>
+      <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
+    </recipeMaker>
+    <modExtensions>
+      <!-- 對地與防空兩用：可列入世界打擊，未被打擊任務保留時也可被同容器的 SAM 取用。 -->
+      <li Class="DMSE.MissileRoleExtension">
+        <role>Dual</role>
+      </li>
+    </modExtensions>
+    <comps>
+      <li Class="DMSE.CompProperties_Renameable" />
+      <li Class="DMSE.CompProperties_MissileConfig">
+        <defaultBody>DMSE_MissileBody_AdvancedLight</defaultBody>
+      </li>
+      <li Class="DMSE.CompProperties_DurabilityDecay">
+        <hitPointsPerDay>5</hitPointsPerDay>
+        <destroyWhenDepleted>true</destroyWhenDepleted>
+        <shelterBuildings>
+          <li>DMSE_Building_LightMissileLauncher</li>
+          <li>DMSE_Building_LightMissileVLS</li>
+          <li>DMSE_MissileRack</li>
+        </shelterBuildings>
+      </li>
+    </comps>
+    <inspectorTabs>
+      <li>DMSE.ITab_MissileAssembly</li>
+    </inspectorTabs>
+  </ThingDef>
+
+  <ThingDef ParentName="DMSE_ResourceBase">
+    <defName>DMSE_Missile_AdvancedCruise</defName>
+    <label>advanced cruise missile</label>
+    <description>A Tomahawk-class low-observable cruise missile: terrain-following, datalinked and far more accurate than the Scorer chassis it supersedes. It is delivered with a penetrating unitary warhead, terrain-matching guidance and a turbofan already fitted.</description>
+    <descriptionHyperlinks>
+      <ThingDef>DMSE_Building_Scorer</ThingDef>
+      <ThingDef>DMSE_CruiseMissileRack</ThingDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Things/Missile/Moskit/skyFaller</texPath>
+      <drawSize>(4,4)</drawSize>
+      <drawOffset>(0,0,1.5)</drawOffset>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>1</stackLimit>
+    <tickerType>Rare</tickerType>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <MarketValue>3800</MarketValue>
+      <Mass>500</Mass>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>10.0</DeteriorationRate>
+    </statBases>
+    <costList>
+      <Steel>215</Steel>
+      <Chemfuel>330</Chemfuel>
+      <DMSE_TantastenAlloy>42</DMSE_TantastenAlloy>
+      <ComponentStamped>12</ComponentStamped>
+      <ComponentSpacer>2</ComponentSpacer>
+      <ComponentIndustrial>4</ComponentIndustrial>
+    </costList>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <effectWorking>Smith</effectWorking>
+      <soundWorking>Recipe_Smith</soundWorking>
+      <recipeUsers Inherit="False">
+        <li>DMS_TableMachinePrinter</li>
+      </recipeUsers>
+      <researchPrerequisite>DMSE_IntegratedCircuits</researchPrerequisite>
+      <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
+    </recipeMaker>
+    <modExtensions>
+      <li Class="DMSE.MissileRoleExtension">
+        <role>Strike</role>
+      </li>
+    </modExtensions>
+    <comps>
+      <li Class="DMSE.CompProperties_Renameable" />
+      <li Class="DMSE.CompProperties_MissileConfig">
+        <defaultBody>DMSE_MissileBody_AdvancedCruise</defaultBody>
+      </li>
+      <li Class="DMSE.CompProperties_DurabilityDecay">
+        <hitPointsPerDay>5</hitPointsPerDay>
+        <destroyWhenDepleted>true</destroyWhenDepleted>
+        <shelterBuildings>
+          <li>DMSE_Building_Scorer</li>
+          <li>DMSE_CruiseMissileRack</li>
+          <li>DMSE_MissileRack</li>
+        </shelterBuildings>
+      </li>
+    </comps>
+    <inspectorTabs>
+      <li>DMSE.ITab_MissileAssembly</li>
+    </inspectorTabs>
+  </ThingDef>
+
+</Defs>

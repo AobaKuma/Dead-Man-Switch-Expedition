@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ==================================================================
+       先進巡航導彈（戰斧級）部件
+       Advanced cruise missile (Tomahawk-class) parts.
+
+       這個彈體在 1.7 先前只有定義、沒有任何相容部件。本檔補齊四槽：
+         - Warhead：WDU-36 級單一高爆／深穿透
+         - Guidance：TERCOM/DSMAC 地形比對（低散布、無終端）、雙向資料鏈（飛行中改靶）
+         - Propulsion：渦輪扇、增程渦輪扇、固態助推
+         - Payload：空、誘餌、集束子彈藥（BLU-97 級）、石墨纖維（電網攻擊）
+       數值以現役巡航部件為基準；射程 = 燃料 × 比衝 × 0.1。
+       ================================================================== -->
+
+  <!-- == Warhead == -->
+
+  <DMSE.MissilePartDef>
+    <defName>DMSE_AdvCruise_Warhead_Unitary</defName>
+    <label>unitary penetrating warhead</label>
+    <description>A WDU-36-class unitary charge: a lighter, tougher case with more explosive efficiency than the old Scorer warhead, and enough penetration to open a roof before it detonates.</description>
+    <category>Warhead</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_AdvancedCruise</li>
+    </compatibleBodies>
+    <explosionRadiusOffset>1.5</explosionRadiusOffset>
+    <damageAmountOffset>110</damageAmountOffset>
+    <damageDefOverride>Bomb</damageDefOverride>
+    <costList>
+      <Steel>40</Steel>
+      <Chemfuel>30</Chemfuel>
+      <DMSE_TantastenAlloy>6</DMSE_TantastenAlloy>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_IntegratedCircuits</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
+  <DMSE.MissilePartDef>
+    <defName>DMSE_AdvCruise_Warhead_Penetrator</defName>
+    <label>hard-target penetrator</label>
+    <description>A dense tungsten penetrator that punches through thick roofs and overhead mountain before detonating inside, in the bunker-buster role the Tomahawk family also carries. Underground shelters stop being protection.</description>
+    <category>Warhead</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_AdvancedCruise</li>
+    </compatibleBodies>
+    <explosionRadiusOffset>-1</explosionRadiusOffset>
+    <damageAmountOffset>60</damageAmountOffset>
+    <damageDefOverride>Bomb</damageDefOverride>
+    <warheadEffect Class="DMSE.WarheadEffect_TungstenPenetrator">
+      <damageAmount>200</damageAmount>
+    </warheadEffect>
+    <costList>
+      <Steel>30</Steel>
+      <DMSE_TantastenAlloy>20</DMSE_TantastenAlloy>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_IntegratedCircuits</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
+  <!-- == Guidance == -->
+
+  <!-- TERCOM/DSMAC：貼地飛行、比對地形，散布極小，但沒有終端導引能力。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_AdvCruise_Guidance_TerrainMatch</defName>
+    <label>terrain-matching guidance</label>
+    <description>Terrain contour matching and scene matching in the TERCOM/DSMAC tradition: the missile flies a survey-grade route and corrects itself against the ground, giving very tight dispersion. It cannot be re-targeted in flight and has no terminal guidance at all — a target that moves away is simply missed.</description>
+    <category>Guidance</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_AdvancedCruise</li>
+    </compatibleBodies>
+    <guidanceType Class="DMSE.GuidanceType_Inertial" />
+    <scatterOffset>-2</scatterOffset>
+    <costList>
+      <ComponentIndustrial>4</ComponentIndustrial>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_RadarBasis</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
+  <!-- 雙向資料鏈：飛行中改靶＋終端，玩家選點。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_AdvCruise_Guidance_Datalink</defName>
+    <label>two-way datalink</label>
+    <description>A satellite datalink of the Block IV kind: the missile can be re-targeted while in flight and even loiter, and when it reaches the target map the game pauses and you pick the impact point yourself. The most accurate option, and the only one that lets a moving target be chased mid-flight.</description>
+    <category>Guidance</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_AdvancedCruise</li>
+    </compatibleBodies>
+    <guidanceType Class="DMSE.GuidanceType_TV" />
+    <scatterOffset>-2.5</scatterOffset>
+    <costList>
+      <ComponentIndustrial>3</ComponentIndustrial>
+      <ComponentSpacer>1</ComponentSpacer>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_IntegratedCircuits</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
+  <!-- 反艦主動雷達：對移動目標的專用導引頭。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_AdvCruise_Guidance_AntiShip</defName>
+    <label>anti-ship radar seeker</label>
+    <description>An active radar seeker built for moving targets — ships and any other mobile base on the world map. It keeps re-aiming while the target keeps moving and does so more often than a normal seeker; the missile still misses if the target leaves its remaining range.</description>
+    <category>Guidance</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_AdvancedCruise</li>
+    </compatibleBodies>
+    <guidanceType Class="DMSE.GuidanceType_AntiShip" />
+    <scatterOffset>-2.5</scatterOffset>
+    <costList>
+      <ComponentIndustrial>5</ComponentIndustrial>
+      <ComponentSpacer>2</ComponentSpacer>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_IntegratedCircuits</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
+  <!-- == Propulsion == -->
+
+  <DMSE.MissilePartDef>
+    <defName>DMSE_AdvCruise_Propulsion_Turbofan</defName>
+    <label>turbofan sustainer</label>
+    <description>A small turbofan in the F107 class, burning liquid fuel at altitude. Far more efficient than a rocket motor and much quieter on radar than a booster, at the cost of speed.</description>
+    <category>Propulsion</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_AdvancedCruise</li>
+    </compatibleBodies>
+    <specificImpulseOffset>0.8</specificImpulseOffset>
+    <worldSpeedFactorOffset>0.1</worldSpeedFactorOffset>
+    <costList>
+      <Steel>25</Steel>
+      <Chemfuel>30</Chemfuel>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_Ballistics</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
+  <DMSE.MissilePartDef>
+    <defName>DMSE_AdvCruise_Propulsion_TurbofanER</defName>
+    <label>extended-range turbofan</label>
+    <description>A fuel-optimised turbofan with a larger tank. The longest reach of any cruise configuration, but the slowest to arrive and the most expensive to build.</description>
+    <category>Propulsion</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_AdvancedCruise</li>
+    </compatibleBodies>
+    <specificImpulseOffset>1.2</specificImpulseOffset>
+    <fuelOffset>10</fuelOffset>
+    <worldSpeedFactorOffset>0.15</worldSpeedFactorOffset>
+    <costList>
+      <Steel>40</Steel>
+      <Chemfuel>50</Chemfuel>
+      <ComponentSpacer>1</ComponentSpacer>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_IntegratedCircuits</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
+  <DMSE.MissilePartDef>
+    <defName>DMSE_AdvCruise_Propulsion_Booster</defName>
+    <label>solid rocket booster</label>
+    <description>A jettisonable solid booster that shoves the missile to speed and then burns out. Very fast and very obvious: range suffers because the booster case and propellant eat into the airframe budget.</description>
+    <category>Propulsion</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_AdvancedCruise</li>
+    </compatibleBodies>
+    <specificImpulseOffset>-0.6</specificImpulseOffset>
+    <fuelOffset>-15</fuelOffset>
+    <worldSpeedFactorOffset>0.5</worldSpeedFactorOffset>
+    <costList>
+      <Steel>20</Steel>
+      <Chemfuel>40</Chemfuel>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_Ballistics</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
+  <!-- == Payload == -->
+
+  <DMSE.MissilePartDef>
+    <defName>DMSE_AdvCruise_Payload_None</defName>
+    <label>no payload</label>
+    <description>No secondary payload. The unitary warhead and the fuel tank get the whole airframe.</description>
+    <category>Payload</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_AdvancedCruise</li>
+    </compatibleBodies>
+    <payloadEffect Class="DMSE.PayloadEffect_None" />
+  </DMSE.MissilePartDef>
+
+  <DMSE.MissilePartDef>
+    <defName>DMSE_AdvCruise_Payload_Submunition</defName>
+    <label>submunition dispenser</label>
+    <description>A dispenser of combined-effects bomblets in the TLAM-D tradition: the missile opens up over the target and scatters a cluster of small charges across the area instead of one concentrated blast.</description>
+    <category>Payload</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_AdvancedCruise</li>
+    </compatibleBodies>
+    <payloadEffect Class="DMSE.PayloadEffect_Cluster">
+      <subDamageAmount>90</subDamageAmount>
+      <countOverride>6</countOverride>
+    </payloadEffect>
+    <costList>
+      <Steel>40</Steel>
+      <Chemfuel>40</Chemfuel>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_IntegratedCircuits</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
+  <DMSE.MissilePartDef>
+    <defName>DMSE_AdvCruise_Payload_Graphite</defName>
+    <label>graphite filament payload</label>
+    <description>A carbon-fibre payload in the Kit-2 tradition: instead of blast, it shorts out the electrical grid around the impact, disabling powered buildings and stunning mechanoids over a wide radius.</description>
+    <category>Payload</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_AdvancedCruise</li>
+    </compatibleBodies>
+    <payloadEffect Class="DMSE.PayloadEffect_EMP">
+      <empDamage>150</empDamage>
+    </payloadEffect>
+    <costList>
+      <Steel>20</Steel>
+      <ComponentIndustrial>6</ComponentIndustrial>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_IntegratedCircuits</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
+  <DMSE.MissilePartDef>
+    <defName>DMSE_AdvCruise_Payload_Decoy</defName>
+    <label>decoy payload</label>
+    <description>Radar reflectors and a signal augmenter in place of a secondary charge. On enemy radar the missile looks twice its size: it is detected earlier, and air defences that rank threats by size engage it first. It does no extra damage.</description>
+    <category>Payload</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_AdvancedCruise</li>
+    </compatibleBodies>
+    <payloadEffect Class="DMSE.PayloadEffect_None" />
+    <signatureFactor>2</signatureFactor>
+    <costList>
+      <Steel>15</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_Ballistics</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
+  <!-- 箔條／干擾絲（巡航版）：次數較多、強度較高。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_AdvCruise_Payload_Chaff</defName>
+    <label>chaff dispenser</label>
+    <description>A heavier chaff and streamer dispenser for the cruise airframe. Each bundle can break an enemy fire-control lock; there are more bundles than the light dispenser carries, but they are still expended one by one and never reloaded in flight.</description>
+    <category>Payload</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_AdvancedCruise</li>
+    </compatibleBodies>
+    <payloadEffect Class="DMSE.PayloadEffect_None" />
+    <jamStrength>0.35</jamStrength>
+    <chaffCharges>3</chaffCharges>
+    <costList>
+      <Steel>20</Steel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_IntegratedCircuits</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
+</Defs>

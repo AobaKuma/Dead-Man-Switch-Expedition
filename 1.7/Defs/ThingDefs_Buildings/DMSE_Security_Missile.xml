@@ -46,6 +46,7 @@
                 <filter>
                     <thingDefs>
                         <li>DMSE_Missile_Moskit</li>
+                        <li>DMSE_Missile_AdvancedCruise</li>
                     </thingDefs>
                 </filter>
             </fixedStorageSettings>
@@ -54,6 +55,7 @@
                 <filter>
                     <thingDefs>
                         <li>DMSE_Missile_Moskit</li>
+                        <li>DMSE_Missile_AdvancedCruise</li>
                     </thingDefs>
                 </filter>
             </defaultStorageSettings>
@@ -231,6 +233,8 @@
                 <distanceLevel>1.5</distanceLevel>
                 <stealthLevel>1</stealthLevel>
                 <speed>30</speed>
+                <!-- 基準高度：既有彈種維持中性（1000 = 係數 1），高度差異留給世代化彈體。 -->
+                <altitude>1000</altitude>
             </li>
         </modExtensions>
     </ThingDef>

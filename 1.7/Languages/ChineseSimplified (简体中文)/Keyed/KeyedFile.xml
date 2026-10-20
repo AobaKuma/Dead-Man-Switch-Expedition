@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
 
   <!-- NPC 导弹阵地 -->
@@ -141,6 +141,7 @@
 
   <DMSE.Missile.Tab>装配</DMSE.Missile.Tab>
   <DMSE.Missile.Body>导弹弹体</DMSE.Missile.Body>
+  <DMSE.Missile.BodyFixed>由发射平台固定</DMSE.Missile.BodyFixed>
   <DMSE.Missile.None>无</DMSE.Missile.None>
   <DMSE.Missile.Locked>未解锁</DMSE.Missile.Locked>
   <DMSE.Missile.GodModeInstant>上帝模式：变更立即装配完成，不耗资源、不需研究。</DMSE.Missile.GodModeInstant>

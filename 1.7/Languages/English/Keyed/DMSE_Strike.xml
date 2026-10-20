@@ -137,6 +137,7 @@ Enable research work for a colonist on that map.</DMSE.Strike.Alert.ComputationP
   <DMSE.Strike.Msg.AutoFire>{0}: timed launch of wave {1}.</DMSE.Strike.Msg.AutoFire>
   <DMSE.Strike.Msg.TargetMoved>{0}: the target moved {1} tiles; {2} unlaunched missiles need new firing solutions.</DMSE.Strike.Msg.TargetMoved>
   <DMSE.Missile.Stat.Signature>Radar signature: ×{0}</DMSE.Missile.Stat.Signature>
+  <DMSE.Missile.Stat.Chaff>Chaff: {0} charges (jam strength {1})</DMSE.Missile.Stat.Chaff>
 
   <!-- Mission names -->
   <DMSE.Strike.MissionDefault>Strike mission #{0}</DMSE.Strike.MissionDefault>

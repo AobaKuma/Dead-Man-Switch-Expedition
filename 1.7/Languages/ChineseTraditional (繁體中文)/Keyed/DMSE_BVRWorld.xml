@@ -12,6 +12,8 @@
   <DMSE.BVR.World.Intercepted>{0} 已被 {1} 攔截。</DMSE.BVR.World.Intercepted>
   <DMSE.BVR.World.Missed>攔截彈未能命中 {0}。</DMSE.BVR.World.Missed>
   <DMSE.BVR.World.Evaded>{0} 改變航向，避開了攔截彈。</DMSE.BVR.World.Evaded>
+  <DMSE.BVR.World.Chaff>{0} 施放箔條／干擾絲，打斷了火控鎖定。</DMSE.BVR.World.Chaff>
+  <DMSE.BVR.World.AbstractStrike>{0} 命中 {1} 的防空節點：庫存受損、雷達被壓制。</DMSE.BVR.World.AbstractStrike>
   <DMSE.BVR.World.InterceptorInspect>目標：{0}\n預計會合：{1}</DMSE.BVR.World.InterceptorInspect>
   <DMSE.BVR.World.AbstractInspect>防空庫存：{0}/{1} 枚攔截彈\n搜索半徑：{2} 格；火控通道：{3}</DMSE.BVR.World.AbstractInspect>
   <DMSE.BVR.World.IncomingAlert>已偵測來襲導彈</DMSE.BVR.World.IncomingAlert>

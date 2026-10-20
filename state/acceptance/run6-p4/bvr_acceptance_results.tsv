@@ -1,0 +1,12 @@
+﻿id	result	title	detail
+M0	PASS	Environment and defs	17 checks
+M3	PASS	Drop pod capture, window, landing	7 checks
+M4	PASS	Map midcourse SAM intercept	9 checks
+M7	PASS	No radar: pod lands	3 checks
+W1	PASS	World detection, ETA, landing without CIWS	19 checks
+W2	PASS	World interception hit	17 checks
+W6	PASS	NPC abstract defense, map handoff, EM seeker	16 checks
+W9	PASS	Moving target: reroute, lock reset, re-engagement	18 checks
+K2	PASS	Reserved rounds skip assembly; silo as a round	12 checks
+G1	PASS	God-mode instant missile assembly	15 checks
+L1	PASS	Save/load mid-engagement	13 checks

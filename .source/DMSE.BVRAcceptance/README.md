@@ -55,6 +55,10 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .source/DMSE.BVRAcceptance/r
 | W9 | Target moves: reroute within one terminal check, lock restarts, in-flight interceptor misses, re-engagement on the new route |
 | W10 | CIWS off during a terminal wave: wave stays terminal, SAM idle; CIWS resumes when powered |
 | W11 | ETA while paused and at 1×/2×/3× speed, in map and world view |
+| D1 | Datalink and area defense: a track crossing a node's envelope (not heading to it) is intercepted by a node it was not aimed at |
+| D2 | Synthetic settlement air defense: a plain enemy settlement gets one by tech level; an anti-radiation strike takes stock and the radar down |
+| D3 | Undetected hostile tracks are hidden and unselectable until a radar sees them |
+| D4 | Drop-pod ghost track interpolates from the ring edge; degrading a real abstract node removes stock and suppresses the radar |
 | K1 | Wave strike P0: strike rounds skip interceptors; reservation; SAM and single-shot skip reserved missiles; out-of-range refusal; per-round launch, cooldown, ripple continuation |
 | K2 | Reserved missiles offer no assembly work; an assembled ballistic silo is its own round and can be reserved |
 | K3 | World defense gives free channels to the soonest arrivals, not the first-created track |

@@ -95,6 +95,8 @@
         <distanceLevel>1</distanceLevel>
         <stealthLevel>0</stealthLevel>
         <speed>15</speed>
+        <!-- 巡飛彈低空飛行：較晚被雷達發現，預警窗口較短。 -->
+        <altitude>1000</altitude>
       </li>
     </modExtensions>
   </ThingDef>

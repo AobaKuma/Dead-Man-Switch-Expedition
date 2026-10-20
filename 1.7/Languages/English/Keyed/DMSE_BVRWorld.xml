@@ -12,6 +12,8 @@
   <DMSE.BVR.World.Intercepted>{0} was intercepted by {1}.</DMSE.BVR.World.Intercepted>
   <DMSE.BVR.World.Missed>An interceptor missed {0}.</DMSE.BVR.World.Missed>
   <DMSE.BVR.World.Evaded>{0} changed course and evaded the interceptor.</DMSE.BVR.World.Evaded>
+  <DMSE.BVR.World.Chaff>{0} dispensed chaff and broke the fire-control lock.</DMSE.BVR.World.Chaff>
+  <DMSE.BVR.World.AbstractStrike>{0} hit the air-defense node at {1}: stocks damaged, radar suppressed.</DMSE.BVR.World.AbstractStrike>
   <DMSE.BVR.World.InterceptorInspect>Target: {0}\nTime to intercept: {1}</DMSE.BVR.World.InterceptorInspect>
   <DMSE.BVR.World.AbstractInspect>Air defense: {0}/{1} interceptors\nSearch radius: {2} tiles; fire-control channels: {3}</DMSE.BVR.World.AbstractInspect>
   <DMSE.BVR.World.IncomingAlert>Detected incoming missiles</DMSE.BVR.World.IncomingAlert>

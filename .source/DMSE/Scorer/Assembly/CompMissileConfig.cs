@@ -37,6 +37,13 @@ namespace DMSE
         // 已搬運到此導彈、尚未消耗的資源。
         public Dictionary<ThingDef, int> delivered = new Dictionary<ThingDef, int>();
 
+        /// <summary>
+        /// 彈體預設零件是否已播種。只在「建立」時播種一次（<see cref="PostPostMake"/>）。
+        /// 序列化預設 true：舊存檔讀入後視為已播種（不會白送零件），
+        /// 玩家刻意拆空的導彈也不會在開啟 ITab 時自己長回來。
+        /// </summary>
+        public bool defaultsSeeded = true;
+
         public CompProperties_MissileConfig Props => (CompProperties_MissileConfig)props;
 
         public void EnsureInit()
@@ -49,6 +56,20 @@ namespace DMSE
             if (pending == null) { pending = new MissileConfig(); }
             if (pending.body == null) { pending.CopyFrom(config); }
             if (delivered == null) { delivered = new Dictionary<ThingDef, int>(); }
+
+            // 建立時播種預設零件：建造價格已包含它們的材料，所以 config 與 pending 同步、
+            // NeedsAssembly 為 false → 一造好就能發射。之後重新裝配才需再搬料。
+            if (!defaultsSeeded)
+            {
+                defaultsSeeded = true;
+                if (config.parts == null || config.parts.Count == 0)
+                {
+                    MissileConfig seeded = MissileConfig.NewWithDefaults(config.body);
+                    config.parts = seeded.parts;
+                    pending.body = config.body;
+                    pending.parts = new List<MissilePartDef>(seeded.parts);
+                }
+            }
         }
 
         // ---- 裝配狀態 ----
@@ -203,6 +224,8 @@ namespace DMSE
         public override void PostPostMake()
         {
             base.PostPostMake();
+            // 播種只在建立時發生；PostExposeData 讀檔不會重播（欄位預設 true）。
+            defaultsSeeded = false;
             EnsureInit();
         }
 
@@ -247,6 +270,7 @@ namespace DMSE
             Scribe_Deep.Look(ref pending, "pending");
             Scribe_Collections.Look(ref delivered, "delivered", LookMode.Def, LookMode.Value);
             Scribe_Values.Look(ref assemblyConfirmed, "assemblyConfirmed", false);
+            Scribe_Values.Look(ref defaultsSeeded, "defaultsSeeded", true);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 if (config == null) { config = new MissileConfig(); }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <DMSE_Missile_AdvancedLight.label>先進通用導彈</DMSE_Missile_AdvancedLight.label>
+  <DMSE_Missile_AdvancedLight.description>地獄火級的多用途彈體，具備現代導引頭與極小的散布。離開印表機時已裝好串聯成型裝藥彈頭與慣性導引；想要別的配置就到裝配頁籤更換。</DMSE_Missile_AdvancedLight.description>
+  <DMSE_Missile_AdvancedCruise.label>先進巡航導彈</DMSE_Missile_AdvancedCruise.label>
+  <DMSE_Missile_AdvancedCruise.description>戰斧級的低可觀測巡航導彈：地形跟隨、資料鏈導引，比它所取代的射門手彈體精準得多。出廠時已裝好穿透彈頭、地形比對導引與渦輪扇。</DMSE_Missile_AdvancedCruise.description>
+
+</LanguageData>

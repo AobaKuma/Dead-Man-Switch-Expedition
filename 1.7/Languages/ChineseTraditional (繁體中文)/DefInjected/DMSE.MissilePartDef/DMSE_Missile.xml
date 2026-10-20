@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
 
   <DMSE_Warhead_HE.label>高爆彈頭</DMSE_Warhead_HE.label>
@@ -63,5 +63,73 @@
   <DMSE_Ballistic_Payload_Cluster.description>在廣大區域內釋放大量子彈藥。以爆炸集中度換取覆蓋面積。</DMSE_Ballistic_Payload_Cluster.description>
   <DMSE_Ballistic_Payload_Antiparticle.label>反粒子酬載</DMSE_Ballistic_Payload_Antiparticle.label>
   <DMSE_Ballistic_Payload_Antiparticle.description>次級反粒子爆發，將範圍內的一切汽化。現有最具破壞力的次級酬載。</DMSE_Ballistic_Payload_Antiparticle.description>
+  <DMSE_AdvLight_Warhead_HEAT.label>串聯成型裝藥彈頭</DMSE_AdvLight_Warhead_HEAT.label>
+  <DMSE_AdvLight_Warhead_HEAT.description>依 AGM-114K 設計的串聯破甲彈頭：先驅裝藥破壞反應裝甲，主射流在目標內部造成傷害。爆炸半徑小，但傷害集中。</DMSE_AdvLight_Warhead_HEAT.description>
+  <DMSE_AdvLight_Warhead_BlastFrag.label>破片殺傷彈頭</DMSE_AdvLight_Warhead_BlastFrag.label>
+  <DMSE_AdvLight_Warhead_BlastFrag.description>依 AGM-114M 設計：較厚的彈殼與預製破片套筒換來更大的殺傷半徑，對步兵與輕型結構特別有效。</DMSE_AdvLight_Warhead_BlastFrag.description>
+  <DMSE_AdvLight_Warhead_Thermobaric.label>溫壓彈頭</DMSE_AdvLight_Warhead_Thermobaric.label>
+  <DMSE_AdvLight_Warhead_Thermobaric.description>依 AGM-114N 設計的金屬增效裝藥：燃料雲以燃燒取代破片，爆炸半徑不大，但近距離的燒傷與引燃在室內或掩體中遠比開闊地致命。</DMSE_AdvLight_Warhead_Thermobaric.description>
+  <DMSE_AdvLight_Warhead_Kinetic.label>動能刀刃彈頭</DMSE_AdvLight_Warhead_Kinetic.label>
+  <DMSE_AdvLight_Warhead_Kinetic.description>依 AGM-114R9X 設計的惰性彈體與彈出刀刃：幾乎沒有炸藥，只殺死命中的生物，對周圍破壞極小，代價是毫無爆破效果。</DMSE_AdvLight_Warhead_Kinetic.description>
+  <DMSE_AdvLight_Guidance_Inertial.label>慣性導引</DMSE_AdvLight_Guidance_Inertial.label>
+  <DMSE_AdvLight_Guidance_Inertial.description>便宜的死鎖式慣性單元。沒有導引頭、沒有終端導引、也不能跨圖層，但不需要額外資源，仍會命中操作者選定的建築。</DMSE_AdvLight_Guidance_Inertial.description>
+  <DMSE_AdvLight_Guidance_IIR.label>影像紅外線導引頭</DMSE_AdvLight_Guidance_IIR.label>
+  <DMSE_AdvLight_Guidance_IIR.description>鎖定比室外高 15°C 以上最熱的密閉房間，否則鎖定目標地圖上體型最大的生物。射後不理：不需要操作員、視線或雷射標定。</DMSE_AdvLight_Guidance_IIR.description>
+  <DMSE_AdvLight_Guidance_Laser.label>半主動雷射導引頭</DMSE_AdvLight_Guidance_Laser.label>
+  <DMSE_AdvLight_Guidance_Laser.description>鎖定我方在目標地圖上最近一次標定的雷射點，是此級別中散布最小的導引頭，但地面必須有人標定。</DMSE_AdvLight_Guidance_Laser.description>
+  <DMSE_AdvLight_Guidance_MMW.label>毫米波雷達導引頭</DMSE_AdvLight_Guidance_MMW.label>
+  <DMSE_AdvLight_Guidance_MMW.description>依 AGM-114L 長弓設計的射後不理雷達導引頭：自行鎖定目標地圖上耐久最高的敵對建築，不需要標定、操作員或好天氣。</DMSE_AdvLight_Guidance_MMW.description>
+  <DMSE_AdvLight_Payload_None.label>無酬載</DMSE_AdvLight_Payload_None.label>
+  <DMSE_AdvLight_Payload_None.description>沒有次級裝藥。彈頭本身必須夠用，換來更輕的彈體與更遠的射程。</DMSE_AdvLight_Payload_None.description>
+  <DMSE_AdvLight_Payload_HE.label>次級高爆裝藥</DMSE_AdvLight_Payload_HE.label>
+  <DMSE_AdvLight_Payload_HE.description>在主彈頭之後引爆的小型次級裝藥，稍微擴大傷害半徑。</DMSE_AdvLight_Payload_HE.description>
+  <DMSE_AdvLight_Payload_FragSleeve.label>破片套筒</DMSE_AdvLight_Payload_FragSleeve.label>
+  <DMSE_AdvLight_Payload_FragSleeve.description>包在彈頭外的預製破片套筒，在落點噴出密集破片，對暴露步兵造成嚴重殺傷；額外重量讓射程減少四分之一。</DMSE_AdvLight_Payload_FragSleeve.description>
+  <DMSE_AdvLight_Payload_Chaff.label>箔條投放器</DMSE_AdvLight_Payload_Chaff.label>
+  <DMSE_AdvLight_Payload_Chaff.description>箔條束與雷達吸收絲的投放器。敵方火控雷達鎖定這枚導彈時，每束箔條可打斷一次鎖定；箔條是有限、一次性的資源，第一次被鎖定之前不會讓導彈更難被發現。</DMSE_AdvLight_Payload_Chaff.description>
+  <DMSE_AdvCruise_Warhead_Unitary.label>單一穿透彈頭</DMSE_AdvCruise_Warhead_Unitary.label>
+  <DMSE_AdvCruise_Warhead_Unitary.description>WDU-36 級單一裝藥：更輕、更堅固的外殼與更高的裝藥效率，足以在引爆前穿開屋頂。</DMSE_AdvCruise_Warhead_Unitary.description>
+  <DMSE_AdvCruise_Warhead_Penetrator.label>硬目標穿透彈頭</DMSE_AdvCruise_Warhead_Penetrator.label>
+  <DMSE_AdvCruise_Warhead_Penetrator.description>高密度鎢芯，能貫穿厚岩頂與山體後在內部引爆，扮演戰斧家族也有的鑽地角色；地下掩體不再是保護。</DMSE_AdvCruise_Warhead_Penetrator.description>
+  <DMSE_AdvCruise_Guidance_TerrainMatch.label>地形比對導引</DMSE_AdvCruise_Guidance_TerrainMatch.label>
+  <DMSE_AdvCruise_Guidance_TerrainMatch.description>TERCOM/DSMAC 傳統的地形等高線與場景比對：導彈沿測繪航線貼地飛行並不斷修正，散布極小。無法飛行中改靶，也沒有任何終端導引——目標移動就只是落空。</DMSE_AdvCruise_Guidance_TerrainMatch.description>
+  <DMSE_AdvCruise_Guidance_Datalink.label>雙向資料鏈</DMSE_AdvCruise_Guidance_Datalink.label>
+  <DMSE_AdvCruise_Guidance_Datalink.description>Block IV 級的衛星資料鏈：導彈可在飛行中改靶甚至盤旋，抵達目標地圖時遊戲暫停、由你選擇落點。最精準的選項，也是唯一能追擊移動目標的選項。</DMSE_AdvCruise_Guidance_Datalink.description>
+  <DMSE_AdvCruise_Guidance_AntiShip.label>反艦雷達導引頭</DMSE_AdvCruise_Guidance_AntiShip.label>
+  <DMSE_AdvCruise_Guidance_AntiShip.description>為移動目標（艦艇與世界地圖上其他移動據點）設計的主動雷達導引頭。目標持續移動時會不斷重新瞄準，且比一般導引頭更頻繁；目標離開剩餘射程仍會落空。</DMSE_AdvCruise_Guidance_AntiShip.description>
+  <DMSE_AdvCruise_Propulsion_Turbofan.label>渦輪扇續航引擎</DMSE_AdvCruise_Propulsion_Turbofan.label>
+  <DMSE_AdvCruise_Propulsion_Turbofan.description>F107 級小型渦輪扇，以液態燃料在高空巡航。效率遠優於火箭，雷達特徵也比助推器安靜，代價是速度。</DMSE_AdvCruise_Propulsion_Turbofan.description>
+  <DMSE_AdvCruise_Propulsion_TurbofanER.label>增程渦輪扇</DMSE_AdvCruise_Propulsion_TurbofanER.label>
+  <DMSE_AdvCruise_Propulsion_TurbofanER.description>燃料最佳化的渦輪扇與更大的油箱：射程最遠，但最慢抵達、造價最高。</DMSE_AdvCruise_Propulsion_TurbofanER.description>
+  <DMSE_AdvCruise_Propulsion_Booster.label>固態火箭助推器</DMSE_AdvCruise_Propulsion_Booster.label>
+  <DMSE_AdvCruise_Propulsion_Booster.description>可拋棄的固態助推器，把導彈推到速度後燒盡。非常快、也非常顯眼：助推器殼體與推進劑佔用彈體預算，射程因此下降。</DMSE_AdvCruise_Propulsion_Booster.description>
+  <DMSE_AdvCruise_Payload_None.label>無酬載</DMSE_AdvCruise_Payload_None.label>
+  <DMSE_AdvCruise_Payload_None.description>沒有次級酬載。單一彈頭與油箱用盡整個彈體。</DMSE_AdvCruise_Payload_None.description>
+  <DMSE_AdvCruise_Payload_Submunition.label>子彈藥投放器</DMSE_AdvCruise_Payload_Submunition.label>
+  <DMSE_AdvCruise_Payload_Submunition.description>TLAM-D 傳統的綜合效應子彈藥：導彈在目標上方張開，散佈一群小型裝藥，以覆蓋面積換取集中爆炸。</DMSE_AdvCruise_Payload_Submunition.description>
+  <DMSE_AdvCruise_Payload_Graphite.label>石墨纖維酬載</DMSE_AdvCruise_Payload_Graphite.label>
+  <DMSE_AdvCruise_Payload_Graphite.description>Kit-2 傳統的碳纖維酬載：不靠爆炸，而是在落點周圍短路電網，大範圍癱瘓通電建築並震暈機械體。</DMSE_AdvCruise_Payload_Graphite.description>
+  <DMSE_AdvCruise_Payload_Decoy.label>誘餌酬載</DMSE_AdvCruise_Payload_Decoy.label>
+  <DMSE_AdvCruise_Payload_Decoy.description>以雷達反射器與訊號增強器取代次級裝藥。在敵方雷達上看起來是兩倍大：更早被偵測，依體積評估威脅的防空也會優先接戰。不造成額外傷害。</DMSE_AdvCruise_Payload_Decoy.description>
+  <DMSE_AdvCruise_Payload_Chaff.label>箔條投放器</DMSE_AdvCruise_Payload_Chaff.label>
+  <DMSE_AdvCruise_Payload_Chaff.description>巡航彈體用的重型箔條與干擾絲投放器。每束箔條可打斷一次敵方火控鎖定；攜帶量比輕型投放器多，但仍是一次性、飛行中不補充。</DMSE_AdvCruise_Payload_Chaff.description>
+  <DMSE_AdvBallistic_Warhead_LowYield.label>低當量彈頭</DMSE_AdvBallistic_Warhead_LowYield.label>
+  <DMSE_AdvBallistic_Warhead_LowYield.description>W78/W87 級戰略彈頭的低當量版本：爆炸半徑與傷害都小一截，但便宜得多、警戒時也更安全。</DMSE_AdvBallistic_Warhead_LowYield.description>
+  <DMSE_AdvBallistic_Guidance_Stellar.label>星光慣性導引</DMSE_AdvBallistic_Guidance_Stellar.label>
+  <DMSE_AdvBallistic_Guidance_Stellar.description>NS-50 傳統的星光修正慣性平台：以星象追蹤器修正滑翔期間的陀螺漂移，把散布壓到近乎為零。仍是純彈道路徑、沒有終端導引頭，目標移動依然會落空。</DMSE_AdvBallistic_Guidance_Stellar.description>
+  <DMSE_AdvBallistic_Payload_Penaids.label>突防誘餌</DMSE_AdvBallistic_Payload_Penaids.label>
+  <DMSE_AdvBallistic_Payload_Penaids.description>隨重返載具釋放的箔條、雷達誘餌與低可觀測罩：這枚導彈在敵方雷達上看起來小得多，較晚被發現、被接戰的時間也更短。</DMSE_AdvBallistic_Payload_Penaids.description>
+  <DMSE_AdvBallistic_Payload_MIRV.label>多彈頭重返載具</DMSE_AdvBallistic_Payload_MIRV.label>
+  <DMSE_AdvBallistic_Payload_MIRV.description>在終端階段前釋放多枚獨立重返載具的母艙。本實作保留單一落點，把子裝藥散佈在周圍——真正的多目標母艙需要不同的落點模型。</DMSE_AdvBallistic_Payload_MIRV.description>
+  <DMSE_LegacyBallistic_Warhead_Amatol.label>阿馬托炸藥彈頭</DMSE_LegacyBallistic_Warhead_Amatol.label>
+  <DMSE_LegacyBallistic_Warhead_Amatol.description>V1 式 850 公斤阿馬托炸藥：簡單、穩定、爆破效果好的填充物，用工業材料就能便宜量產。沒有特殊效果，就是一個大洞。</DMSE_LegacyBallistic_Warhead_Amatol.description>
+  <DMSE_LegacyBallistic_Warhead_Trialen.label>特里亞倫炸藥彈頭</DMSE_LegacyBallistic_Warhead_Trialen.label>
+  <DMSE_LegacyBallistic_Warhead_Trialen.description>阿馬托供應不足時使用的後期特里亞倫填充物：在爆破之外加入燒夷成分，落點周圍會起火。略貴，但沒有更準。</DMSE_LegacyBallistic_Warhead_Trialen.description>
+  <DMSE_Payload_None.label>無酬載</DMSE_Payload_None.label>
+  <DMSE_Payload_None.description>沒有次級酬載。彈頭本身必須夠用，換來輕盈的射門手彈體與更遠的射程。</DMSE_Payload_None.description>
+  <DMSE_Guidance_AntiShip.label>反艦雷達導引頭</DMSE_Guidance_AntiShip.label>
+  <DMSE_Guidance_AntiShip.description>為移動目標（艦艇與世界地圖上其他移動據點）設計的主動雷達導引頭。目標持續移動時會不斷重新瞄準，且比一般導引頭更頻繁；目標離開剩餘射程仍會落空。</DMSE_Guidance_AntiShip.description>
+  <DMSE_Light_Payload_Chaff.label>箔條投放器</DMSE_Light_Payload_Chaff.label>
+  <DMSE_Light_Payload_Chaff.description>單束箔條與少量雷達吸收絲：只有一次打斷敵方火控鎖定的機會，之後整段飛行都不再有。</DMSE_Light_Payload_Chaff.description>
 
 </LanguageData>

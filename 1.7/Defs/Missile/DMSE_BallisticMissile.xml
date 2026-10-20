@@ -38,7 +38,10 @@
   </DMSE.MissileBodyDef>
 
   <!-- ==================== 彈道導彈 部件 Defs ====================
-       所有部件均使用新式 Class 欄位；成本反映大型彈體的物料需求。 -->
+       所有部件均使用新式 Class 欄位；成本反映大型彈體的物料需求。
+       本檔所有部件的 compatibleBodies 均同時列出三種同階彈道彈體：
+       現役 DMSE_MissileBody_Ballistic、老式 DMSE_MissileBody_LegacyBallistic（V1）、
+       先進 DMSE_MissileBody_AdvancedBallistic（民兵三型）——發射井可切換彈體，部件共用。 -->
 
   <!-- == Warhead == -->
 
@@ -48,7 +51,7 @@
     <label>thermonuclear warhead</label>
     <description>A massive blast warhead with thermonuclear yield. No special effects — the explosion radius and damage speak for themselves.</description>
     <category>Warhead</category>
-    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
     <explosionRadiusOffset>5</explosionRadiusOffset>
     <damageAmountOffset>200</damageAmountOffset>
     <damageDefOverride>Bomb</damageDefOverride>
@@ -66,7 +69,7 @@
     <label>airburst warhead</label>
     <description>Detonates above the target for maximum fragment coverage. When used as an interceptor, gains extra engagement rolls per engagement window.</description>
     <category>Warhead</category>
-    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
     <warheadEffect Class="DMSE.WarheadEffect_Airburst">
       <groundDamageAmount>120</groundDamageAmount>
     </warheadEffect>
@@ -83,7 +86,7 @@
     <label>tungsten penetrator</label>
     <description>A dense tungsten rod that punches through thick roofs before detonating inside, making underground shelters no protection.</description>
     <category>Warhead</category>
-    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
     <warheadEffect Class="DMSE.WarheadEffect_TungstenPenetrator">
       <damageAmount>200</damageAmount>
     </warheadEffect>
@@ -101,7 +104,7 @@
     <label>inertial guidance</label>
     <description>Strap-down inertial reference unit. High accuracy is unnecessary at thermonuclear yield.</description>
     <category>Guidance</category>
-    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
     <guidanceType Class="DMSE.GuidanceType_Inertial" />
     <scatterOffset>0</scatterOffset>
   </DMSE.MissilePartDef>
@@ -112,7 +115,7 @@
     <label>fire-control guidance</label>
     <description>Terminal guidance aided by the colony's fire-control radar network. Significantly tightens impact dispersion for precision strikes.</description>
     <category>Guidance</category>
-    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
     <guidanceType Class="DMSE.GuidanceType_FireControl" />
     <scatterOffset>-3</scatterOffset>
     <costList>
@@ -129,7 +132,7 @@
     <label>laser terminal seeker</label>
     <description>Semi-active laser seeker for the re-entry vehicle. Locks onto the most recent laser designation your faction has painted on the target map with a laser target designator. Falls back to inertial targeting if there is none.</description>
     <category>Guidance</category>
-    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
     <guidanceType Class="DMSE.GuidanceType_Laser" />
     <scatterOffset>-3</scatterOffset>
     <costList>
@@ -149,7 +152,7 @@
     <label>no payload</label>
     <description>No secondary payload. The primary warhead alone is typically sufficient for a ballistic strike.</description>
     <category>Payload</category>
-    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
     <payloadEffect Class="DMSE.PayloadEffect_None" />
   </DMSE.MissilePartDef>
 
@@ -159,7 +162,7 @@
     <label>cluster payload</label>
     <description>Releases a cloud of sub-munitions across a wide area. Trades blast concentration for area coverage.</description>
     <category>Payload</category>
-    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
     <payloadEffect Class="DMSE.PayloadEffect_Cluster">
       <subDamageAmount>80</subDamageAmount>
     </payloadEffect>
@@ -175,7 +178,7 @@
     <label>antiparticle payload</label>
     <description>A secondary antiparticle burst that vaporises everything in range. The most destructive secondary payload available.</description>
     <category>Payload</category>
-    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
     <payloadEffect Class="DMSE.PayloadEffect_Antiparticle">
       <damageAmount>300</damageAmount>
     </payloadEffect>

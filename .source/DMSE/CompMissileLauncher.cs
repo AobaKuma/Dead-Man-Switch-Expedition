@@ -209,6 +209,13 @@ namespace DMSE
         /// <summary>選靶驗證：預設排除水域與已有非 MapParent 世界物件的 tile。</summary>
         protected virtual bool CanTargetTile(GlobalTargetInfo t)
         {
+            // 反艦：移動中的據點（艦艇）可能停在海上，移動目標不受水域限制。
+            if (t.WorldObject is MapParent mobileTarget
+                && WorldComponent_BVRNetwork.Current != null
+                && WorldComponent_BVRNetwork.Current.IsMobileTarget(mobileTarget))
+            {
+                return true;
+            }
             if (t.Tile.Tile.PrimaryBiome.isWaterBiome)
             {
                 return false;
@@ -352,7 +359,8 @@ namespace DMSE
             faller.angle = faller.Rotation.AsAngle;
 
             ScorerProjectile_WorldObject wo = (ScorerProjectile_WorldObject)WorldObjectMaker.MakeWorldObject(TravelWorldObjectDef);
-            wo.skyfallerIncoming = IncomingSkyfallerDef;
+            // 落點視覺／BVR 目標特性以彈體為準（同一平台可換彈體）；平台指定的 skyfallerIncoming 僅作後備。
+            wo.skyfallerIncoming = config?.body?.incomingSkyfaller ?? IncomingSkyfallerDef;
             wo.SetFaction(Faction.OfPlayer);
             wo.Tile = parent.Map.Tile;
             wo.destinationTile = target.Tile;

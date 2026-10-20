@@ -17,6 +17,19 @@
     <strikeArrivalSpacingTicks>60</strikeArrivalSpacingTicks>
     <!-- 波次打擊：目標移動超過這麼多格後，尚未發射的導彈需重新計算彈道（0 = 不重算）。 -->
     <strikeRecomputeMoveTiles>5</strikeRecomputeMoveTiles>
+    <!-- 高度：以雷達視距近似（sqrt(高度/參考高度)），縮放偵測距離與預警窗口。 -->
+    <altitudeRefMeters>1000</altitudeRefMeters>
+    <minAltitudeFactor>0.6</minAltitudeFactor>
+    <maxAltitudeFactor>1.3</maxAltitudeFactor>
+    <!-- 箔條／干擾絲：斷鎖機率 = chaffBreakChance × 部件 jamStrength；成功後延遲重新鎖定。 -->
+    <chaffBreakChance>0.5</chaffBreakChance>
+    <chaffLockDelayTicks>300</chaffLockDelayTicks>
+    <!-- 地圖層（末端）干擾對命中率的折扣：命中率 × (1 − 此值 × jamStrength)。 -->
+    <chaffMapHitPenalty>0.3</chaffMapHitPenalty>
+    <!-- P4：空投也建立世界層虛擬航跡（開啟後地圖內只保留末端 CIWS）。預設關閉以維持既有空投流程。 -->
+    <podsUseWorldTracks>false</podsUseWorldTracks>
+    <!-- P4：區域防禦（節點可攔截飛越自己覆蓋範圍、目標是同陣營其他據點的航跡）。 -->
+    <areaDefenseEnabled>true</areaDefenseEnabled>
   </DMSE.BVRWorldTuningDef>
 
   <WorldObjectDef>
@@ -31,6 +44,23 @@
     <expandingIcon>true</expandingIcon>
     <expandingIconPriority>110</expandingIconPriority>
     <fullyExpandedInSpace>true</fullyExpandedInSpace>
+    <validLaunchTarget>false</validLaunchTarget>
+    <canHaveFaction>true</canHaveFaction>
+    <saved>true</saved>
+    <selectable>true</selectable>
+  </WorldObjectDef>
+
+  <!-- P4：空投的世界層幽靈航跡（載荷仍留在目標地圖的波次裡，被攔截時同步移除）。 -->
+  <WorldObjectDef>
+    <defName>DMSE_DropPodTrack</defName>
+    <label>incoming drop pods</label>
+    <description>Hostile drop pods tracked by world radar on their way in.</description>
+    <worldObjectClass>DMSE.WorldObject_DropPodTrack</worldObjectClass>
+    <texture>UI/DMSE/BVR/Interceptor</texture>
+    <expandingIconTexture>UI/DMSE/BVR/Interceptor</expandingIconTexture>
+    <expandingIcon>true</expandingIcon>
+    <expandingIconPriority>55</expandingIconPriority>
+    <useDynamicDrawer>true</useDynamicDrawer>
     <validLaunchTarget>false</validLaunchTarget>
     <canHaveFaction>true</canHaveFaction>
     <saved>true</saved>

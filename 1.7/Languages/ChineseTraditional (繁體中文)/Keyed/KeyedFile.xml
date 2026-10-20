@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
 
   <!-- NPC 導彈陣地 (WorldObjectComp_MissileBase) -->
@@ -141,6 +141,7 @@
 
   <DMSE.Missile.Tab>裝配</DMSE.Missile.Tab>
   <DMSE.Missile.Body>導彈彈體</DMSE.Missile.Body>
+  <DMSE.Missile.BodyFixed>由發射平台固定</DMSE.Missile.BodyFixed>
   <DMSE.Missile.None>無</DMSE.Missile.None>
   <DMSE.Missile.Locked>未解鎖</DMSE.Missile.Locked>
   <DMSE.Missile.GodModeInstant>上帝模式：變更立即裝配完成，不耗資源、不需研究。</DMSE.Missile.GodModeInstant>

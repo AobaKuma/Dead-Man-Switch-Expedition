@@ -130,6 +130,7 @@
         <filter>
           <thingDefs>
             <li>DMSE_InterceptorMissile</li>
+            <li>DMSE_Missile_AdvancedLight</li>
           </thingDefs>
         </filter>
       </fixedStorageSettings>
@@ -138,6 +139,7 @@
         <filter>
           <thingDefs>
             <li>DMSE_InterceptorMissile</li>
+            <li>DMSE_Missile_AdvancedLight</li>
           </thingDefs>
         </filter>
       </defaultStorageSettings>
@@ -265,6 +267,7 @@
         <filter>
           <thingDefs>
             <li>DMSE_Missile_Moskit</li>
+            <li>DMSE_Missile_AdvancedCruise</li>
           </thingDefs>
         </filter>
       </fixedStorageSettings>
@@ -273,6 +276,7 @@
         <filter>
           <thingDefs>
             <li>DMSE_Missile_Moskit</li>
+            <li>DMSE_Missile_AdvancedCruise</li>
           </thingDefs>
         </filter>
       </defaultStorageSettings>

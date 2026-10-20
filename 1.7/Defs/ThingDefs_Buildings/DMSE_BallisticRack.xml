@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ==================== 彈道導彈 發射架（2x2 垂直發射）====================
+       與 3x3 發射井同樣是「無物品型態、就地裝配」的彈道平台：
+       CompMissileConfig 直接掛在建築上（defaultBody = 彈道導彈彈體），
+       WorkGiver_AssembleBallisticSilo / JobDriver_AssembleBallisticSilo 會自動掃到本建築。
+
+       與發射井的差異只在視覺與規模：
+         - 開放式發射架：已裝配完成（CompMissileLauncher_Ballistic.IsLoaded）時，
+           DMSE.CompMissileBodyRenderer 會在架中央畫出直立彈體（貼圖取自該彈體的 incomingSkyfaller），
+           所以換彈體（老式 V1／現役／先進民兵三型）時架上的彈體也跟著換。
+         - 未建造彈體、搬料中、施工中、發射完等待重新裝配時，只看得到空架子。
+         - 不可旋轉（垂直發射唯一朝向），禁止建於重力船 substructure（繼承自 DMSE_VerticalLauncherBase）。
+         - 裝配分頁沿用 ITab_MissileAssembly；因為 defaultBody.customizeLocation = Launcher，
+           本建築的彈體欄位可切換（見 ITab_MissileAssembly.CanChooseBody）。 -->
+  <ThingDef ParentName="DMSE_VerticalLauncherBase">
+    <defName>DMSE_Building_BallisticRack</defName>
+    <label>ballistic missile launch rack</label>
+    <description>An open 2x2 vertical launch rack for ballistic missiles. The airframe has no item form: colonists assemble it directly into the cradle from raw materials, and the finished missile stands upright in the frame where you can see it. Launch via the fire command at a world map target.\n\nLaunch it and the rack is empty again until a new missile is assembled. Swap between the legacy, current and advanced ballistic airframes from the assembly tab.\n\nCannot be installed on gravship decks.</description>
+    <graphicData>
+      <texPath>Things/Building/BallisticRack/building</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2.3,2.3)</drawSize>
+    </graphicData>
+    <size>(2,2)</size>
+    <pathCost>70</pathCost>
+    <fillPercent>0.6</fillPercent>
+    <staticSunShadowHeight>0.15</staticSunShadowHeight>
+    <constructEffect>ConstructMetal</constructEffect>
+    <statBases>
+      <MaxHitPoints>500</MaxHitPoints>
+      <WorkToBuild>12000</WorkToBuild>
+      <Flammability>0.0</Flammability>
+    </statBases>
+    <!-- 發射架本身不帶彈體：建造完畢是空架，裝配完成後才畫出直立彈體。 -->
+    <costList>
+      <Steel>220</Steel>
+      <DMSE_TantastenAlloy>30</DMSE_TantastenAlloy>
+      <ComponentStamped>12</ComponentStamped>
+      <ComponentSpacer>2</ComponentSpacer>
+    </costList>
+    <comps>
+      <!-- 待機功耗：架體液壓與溫控，較發射井低。 -->
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>600</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Breakdownable" />
+      <!-- 彈道導彈的裝配設定（彈體 + 彈頭/導引/酬載）直接存於建築本身。 -->
+      <li Class="DMSE.CompProperties_MissileConfig">
+        <defaultBody>DMSE_MissileBody_Ballistic</defaultBody>
+      </li>
+      <!-- 發射控制：在世界地圖選靶並點火；離場/落點 skyfaller 與發射井共用。 -->
+      <li Class="DMSE.CompProperties_BallisticLauncher">
+        <skyfaller>DMSE_SkyFaller_BallisticMissile</skyfaller>
+        <skyfallerIncoming>DMSE_Incoming_BallisticMissile</skyfallerIncoming>
+        <worldObjectDef>DMSE_WorldObject_BallisticMissile</worldObjectDef>
+        <launchCooldownTicks>2400</launchCooldownTicks>
+        <launchForwardCells>0</launchForwardCells>
+      </li>
+      <!-- 架上彈體渲染：只在已裝配完成時把該彈體的直立彈體畫在架子中央。 -->
+      <li Class="DMSE.CompProperties_MissileBodyRenderer">
+        <drawSize>(2.2, 2.2)</drawSize>
+      </li>
+    </comps>
+    <inspectorTabs>
+      <li>DMSE.ITab_MissileAssembly</li>
+    </inspectorTabs>
+    <researchPrerequisites>
+      <li>DMSE_StrategicSystems</li>
+    </researchPrerequisites>
+  </ThingDef>
+
+</Defs>

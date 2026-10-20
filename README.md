@@ -78,14 +78,45 @@ _Dead-Man-Switch-Expedition/
 流程：**偵測 → 波次合併 → 火控鎖定 → SAM 中過程攔截 → CIWS 末端連射 → 未攔截者落地**。攔截判定考慮隱身 / 反隱身、目標速度、戰鬥部加成（連續桿、空爆）。防禦為陣營相對：玩家攻擊有雷達的敵方基地時，己方導彈同樣會被攔截。
 
 ### 2. 導彈自定義裝配系統
-玩家在導彈物品的 ITab 中選擇彈體與部件（戰鬥部 / 導引 / 推進 / 酬載），由小人搬料、施工裝配（Crafting 工種）。射程由 `燃料 × 比衝` 決定，發射時於世界地圖選靶並強制受射程限制。
+玩家在導彈物品的 ITab 中選擇部件（戰鬥部 / 導引 / 推進 / 酬載），由小人搬料、施工裝配（Crafting 工種）；彈體由發射平台或物品 def 的 `defaultBody` 固定，物品端不可更換。彈道導彈沒有物品型態，所以在**彈道導彈發射井／發射架**的裝配分頁選彈體（老式 V1 / 現役 / 先進民兵三型，三者共用同一組部件）。射程由 `燃料 × 比衝` 決定，發射時於世界地圖選靶並強制受射程限制。
 
-| 彈體 | 戰鬥部 | 導引 | 酬載 | 發射平台 |
-|---|---|---|---|---|
-| 巡飛彈（Loiter） | — | — | — | 巡飛彈發射軌 |
-| 輕型導彈（Light） | HE / 燃燒 / 連續桿 | 慣性 / 紅外 / 反輻射 | 無 / 高爆 / 毒氣 | 輕型導彈容器、VLS 發射單元 |
-| 巡航導彈（Cruise） | HE / AP / EMP | 慣性 / 精確 | 集束 / EMP | Scorer MLS、旋轉發射器、巡航導彈架 |
-| 彈道導彈（Ballistic） | 熱核 / 空爆 / 鎢芯穿甲 | 慣性 / 火控 | 無 / 集束 / 反粒子 | 彈道導彈發射井 |
+彈道平台有兩種外觀：3x3 封閉式**發射井**（`DMSE_Building_BallisticSilo`），以及 2x2 開放式**發射架**（`DMSE_Building_BallisticRack`）。發射架在彈體裝配完成後會在架中央畫出該型號的直立彈體（換彈體就換圖）；未建造彈體、搬料／施工中、發射後等待重新裝配時，只看得到空架子。
+
+| 彈體 | 戰鬥部 | 導引 | 推進 | 酬載 | 建造時自帶 | 發射平台 |
+|---|---|---|---|---|---|---|
+| 巡飛彈（Loiter） | — | 內建電視 | — | — | 固定構型 | 巡飛彈發射軌 |
+| 輕型導彈（Light） | HE / 燃燒 / 連續桿 | 慣性 / 紅外 / 反輻射 / 雷射 | — | 無 / 高爆 / 誘餌 / 毒氣 / 箔條 | HE＋慣性＋無 | 輕型導彈容器、VLS 發射單元 |
+| 巡航導彈（Cruise） | HE / AP / EMP | 慣性 / 電視 / 電磁 / 雷射 / 反艦 | 標準 / 增程 | 無 / 集束 / EMP | HE＋慣性＋標準＋無 | Scorer MLS、旋轉發射器、巡航導彈架 |
+| 彈道導彈（Ballistic） | 熱核 / 空爆 / 鎢芯穿甲 | 慣性 / 火控 / 雷射 | — | 無 / 集束 / 反粒子 | 熱核＋慣性＋無 | 彈道導彈發射井、彈道導彈發射架 |
+| 老式彈道（LegacyBallistic，V1） | 阿馬托 / 特里亞倫 / 同現役彈道部件 | 同現役彈道部件 | — | 同現役彈道部件 | 阿馬托＋慣性＋無 | 發射井 / 發射架（就地切換） |
+| 先進彈道（AdvancedBallistic，民兵三型） | 熱核 / 低當量 / 空爆 / 鎢芯 | 慣性 / 星光 / 火控 / 雷射 | — | 無 / 突防誘餌 / 分導 / 集束 / 反粒子 | 低當量＋星光＋無 | 發射井 / 發射架（就地切換） |
+| 先進通用（AdvancedLight，地獄火） | 串聯成型 / 破片 / 溫壓 / 動能刀刃 | 慣性 / 影像紅外 / 雷射 / 毫米波 | — | 無 / 高爆 / 破片套筒 / 箔條 | HEAT＋慣性＋無 | 輕型容器、VLS、飛彈架（`DMSE_Missile_AdvancedLight`） |
+| 先進巡航（AdvancedCruise，戰斧） | 單一穿透 / 深穿透 | 地形比對 / 雙向資料鏈 / 反艦 | 渦輪扇 / 增程渦輪扇 / 助推 | 無 / 子彈藥 / 石墨 / 誘餌 / 箔條 | 深穿透＋地形比對＋渦輪扇＋無 | Scorer、巡航導彈架（`DMSE_Missile_AdvancedCruise`） |
+
+**建造時自帶零件**：**物品型態**的彈體在 `MissileBodyDef.defaultParts` 宣告一組預設零件，新造的導彈物品會直接套用（`MissileConfig.NewWithDefaults()`）；零件材料已併入該物品的 `costList` 與 `MarketValue`。**發射井／發射架建造完成時是空的**（不帶彈體），彈道三種彈體都在井上裝配、材料依所選零件另計。之後換部件或發射後重新裝填也要另外收費。舊存檔不會白送零件（`CompMissileConfig.defaultsSeeded` 讀檔時視為已播種）。
+
+**世界層 P4**：
+- **數據鏈**：同陣營任一節點看到航跡，全陣營都能接戰（不必是目的地節點自己看到）。
+- **區域防禦**：節點可攔截「飛越自己覆蓋範圍」的航跡；目的地節點優先，其餘用通用會合求解（`BVRInterceptSolver.TrySolveGeneral`，對交叉目標二分求解）。
+- **一般據點自動防空**：沒有專屬防空元件的敵方據點，依科技等級取得合成防空（Industrial 6 格／1 通道／2 發；Spacer 以上 8 格／2 通道／4 發），庫存與冷卻持久化。
+- **空投虛擬航跡**：`podsUseWorldTracks` 開啟時，空投在世界層也有一條幽靈航跡（從覆蓋圈邊緣飛入、世界層可攔截），地圖內只留末端 CIWS；預設關閉。
+- **未偵測航跡隱藏**：敵方航跡在被玩家雷達偵測前不顯示、不可選取（`HiddenByRules` patch ＋ `Draw`／`ExpandingIcon`／`SelectableNow` 覆寫）。
+- **反輻射削弱抽象節點**：反輻射彈命中尚未生成地圖的防空節點時，打掉 2 發庫存並壓制雷達一天，不生成地圖。
+
+**高度與反應時間**：來襲目標的 `BVRTargetProps.altitude` 以雷達視距近似（`sqrt(高度/1000)`，夾在 0.6–1.3）縮放偵測距離與預警窗口。既有四種來襲目標維持 1000（中性，不影響既有平衡）；差異加在世代化彈體上——地獄火 150 m、戰斧 50 m 極低空（更晚被發現），V2／民兵三 30000–100000 m（更早被發現）。速度仍只影響鎖定時間與命中率。
+
+**反艦**：`GuidanceType_AntiShip` 針對移動中的世界地圖據點（轉移艦、會搬遷的陣地）：終端檢查間隔 60→20 ticks、額外 2 次修正，目標離開剩餘射程仍會落空。目標移動由世界層每 60 ticks 觀測 tile 變化推導，不 patch 原版。
+
+**箔條／干擾絲**：`jamStrength`／`chaffCharges` 為有限次的主動干擾。世界層在敵方火控鎖定時擲斷鎖機率（成功則延後重新鎖定），地圖層只折減命中率；發射時裝填、飛行中不補充。
+
+其餘仍**未接線**（設計上為無槽固定構型）：`DMSE_MissileBody_LegacyLoiter`（V2）、`DMSE_MissileBody_LegacyInterceptor`（萊茵女兒）。
+
+內容驗證（不啟動遊戲）：
+```bash
+python .source/Tools/check_missile_content.py .   # 槽位覆蓋、預設零件、建造成本、收納、高度、Class 參照、翻譯
+python .source/Tools/check_bvr_world.py .
+dotnet run --project .source/DMSE.BVRTests/DMSE.BVRTests.csproj -c Release --no-restore -p:RimWorldDir=<RimWorld>/
+```
 
 發射平台共用抽象基類 `CompMissileLauncher`（冷卻、有彈判定）；世界選靶平台再繼承 `CompMissileLauncher_WorldTargeting`，分為 `CompMissileLauncher_Rail`（實體導彈容器）、`CompMissileLauncher_Ballistic`（發射井，就地裝配）、`CompMissileLauncher_Scorer`（CompRefuelable 裝填，1.7 無 Def 使用）。反輻射導引頭會自動鎖定敵方運作中的雷達，與 BVR 構成電子對抗閉環。
 

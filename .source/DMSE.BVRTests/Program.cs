@@ -284,7 +284,7 @@ static class Test
         site.SetFaction(defender);
         var stock = new WorldObjectComp_AirDefense { parent = site,
             props = new CompProperties_WorldAirDefense { interceptorStock = 1, restockPerDay = 0, launchCooldownTicks = 0 } };
-        var node = new BVRNode { parent = site, faction = defender, abstractDefense = stock };
+        var node = new BVRNode { parent = site, faction = defender, defense = new WorldAirDefenseAdapter(stock) };
         Check(node.HasInterceptorAmmo, "an abstract node with stock is armed");
         Check(stock.TryConsume(Find.TickManager.TicksGame) && !node.HasInterceptorAmmo, "an abstract node with no stock left is not armed");
         Check(new BVRNode { parent = site, faction = defender, local = manager }.HasInterceptorAmmo, "a map node reads its SAMs");
@@ -444,10 +444,78 @@ static class Test
         Check(WorldComponent_BVRNetwork.InEngagementOrder(tracks, t => 0f).SequenceEqual(new[] { soon, smallLate, bigLate }),
             "without threat assessment the order is soonest arrival first");
     }
+    // Missile content: default parts, jam/chaff aggregation, anti-ship terminal updates, altitude factors.
+    static void MissileContent()
+    {
+        var body = new MissileBodyDef { defName = "ContentBody", terminalUpdates = 3 };
+        body.slots.Add(MissilePartCategory.Warhead);
+        body.slots.Add(MissilePartCategory.Guidance);
+        body.slots.Add(MissilePartCategory.Payload);
+        var warhead = new MissilePartDef { defName = "W", category = MissilePartCategory.Warhead };
+        var guidance = new MissilePartDef { defName = "G", category = MissilePartCategory.Guidance };
+        var payload = new MissilePartDef { defName = "P", category = MissilePartCategory.Payload, jamStrength = 0.35f, chaffCharges = 3 };
+        var spare = new MissilePartDef { defName = "P2", category = MissilePartCategory.Payload, jamStrength = 0.2f, chaffCharges = 1 };
+        body.defaultParts = new List<MissilePartDef> { warhead, guidance, payload, spare };
+
+        var cfg = MissileConfig.NewWithDefaults(body);
+        Check(cfg.parts.Count == 3, "default parts cover each slot once");
+        Check(cfg.PartFor(MissilePartCategory.Warhead) == warhead && cfg.PartFor(MissilePartCategory.Payload) == payload,
+            "the first part of a category wins");
+        Near(cfg.JamStrength, 0.35f, "jam strength takes the strongest part");
+        Check(cfg.ChaffCharges == 3, "default payload carries its own chaff charges");
+        var twoPayloads = new MissileConfig(body);
+        twoPayloads.parts.Add(payload);
+        twoPayloads.parts.Add(spare);
+        Check(twoPayloads.ChaffCharges == 4, "chaff charges add up across parts");
+
+        spare.compatibleBodies = new List<MissileBodyDef> { new MissileBodyDef { defName = "OtherBody" } };
+        var filtered = MissileConfig.NewWithDefaults(body);
+        Check(filtered.PartFor(MissilePartCategory.Payload) == payload, "incompatible defaults are dropped");
+
+        var antiShip = new MissilePartDef
+        {
+            defName = "AS",
+            category = MissilePartCategory.Guidance,
+            guidanceType = new GuidanceType_AntiShip(),
+        };
+        var armed = new MissileConfig(body);
+        armed.parts.Add(antiShip);
+        Check(armed.TracksMobileTargets, "an anti-ship seeker tracks mobile targets");
+        Check(armed.TerminalUpdates == 5, "an anti-ship seeker adds two terminal updates");
+        Check(!cfg.HasTerminalGuidance && cfg.TerminalUpdates == 0, "no seeker part means no terminal updates");
+
+        Near(MissileWorldMotion.AltitudeFactor(1000f), 1f, "1000 m is neutral");
+        Check(MissileWorldMotion.AltitudeFactor(100f) < MissileWorldMotion.AltitudeFactor(1000f), "low altitude shortens detection");
+        Check(MissileWorldMotion.AltitudeFactor(100000f) > MissileWorldMotion.AltitudeFactor(1000f), "high altitude lengthens detection");
+        Near(MissileWorldMotion.AltitudeFactor(1f), 0.6f, "low altitude clamp");
+        Near(MissileWorldMotion.AltitudeFactor(1000000f), 1.3f, "high altitude clamp");
+
+        var low = new BVRTargetProps { altitude = 100f };
+        var high = new BVRTargetProps { altitude = 100000f };
+        Check(MissileWorldMotion.DetectionRange(12, 2, low) < MissileWorldMotion.DetectionRange(12, 2, high),
+            "altitude scales the world detection range");
+    }
+    // P4 area defense: the general meeting solver must handle a target crossing the node's envelope.
+    static void AreaDefense()
+    {
+        var track = new LineTrack { a = new Vector3(100, 0, 0), b = new Vector3(0, 0, 100), eta = 3000 };
+        var origin = new Vector3(70, 70, 0);
+        float speed = track.AngularSpeed * 1.5f;
+        Check(BVRInterceptSolver.TrySolveGeneral(track, origin, speed, out int ticks, out Vector3 point),
+            "the area-defense solver finds a meeting point for a crossing target");
+        Check(ticks > 0 && ticks < track.TicksToArrival, "the meeting happens before the target arrives");
+        Near(GenMath.SphericalDistance(origin.normalized, point.normalized) / ticks, speed,
+            "the meeting point matches the interceptor speed", 0.01f);
+        Check(!BVRInterceptSolver.TrySolveGeneral(track, origin, track.AngularSpeed * 0.05f, out _, out _),
+            "a much slower interceptor cannot reach a crossing target");
+        Near(track.AngularSpeed, GenMath.SphericalDistance(track.a.normalized, track.b.normalized) / 3000f,
+            "the line track speed matches its path");
+    }
     public static void Main()
     {
         Setup();
         Detection(); Solver(); FireControl(); LedgerAndTerminal(); InventoryAndPersistence(); StrikeP0(); StrikeP1(); StrikeP2(); StrikeP3(); StrikeP4();
+        MissileContent(); AreaDefense();
         Console.WriteLine($"PASS: {count} BVR checks (real game/DMSE assemblies).");
     }
     class OnlineRadar : CompFireControlRadar { public override bool Active => true; }
@@ -469,6 +537,23 @@ static class Test
             float a = Math.Min(angle, speed * ticksAhead);
             return new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a)) * 100;
         }
+        public BVRTrackState State { get; } = new BVRTrackState();
+        public void Notify_Intercepted(Faction by) { }
+    }
+    class LineTrack : IBVRTrack
+    {
+        public Vector3 a, b;
+        public int eta = 1000;
+        public WorldObject Self => null;
+        public Faction Attacker => null;
+        public PlanetTile Origin => PlanetTile.Invalid;
+        public PlanetTile Destination => PlanetTile.Invalid;
+        public BVRTargetProps TargetProps => BVRTargetProps.Default;
+        public MissileConfig Config => null;
+        public float AngularSpeed => GenMath.SphericalDistance(a.normalized, b.normalized) / Mathf.Max(1, eta);
+        public int TicksToArrival => eta;
+        public Vector3 PositionAt(int ticksAhead)
+            => Vector3.Slerp(a, b, Mathf.Clamp01(ticksAhead / (float)Mathf.Max(1, eta)));
         public BVRTrackState State { get; } = new BVRTrackState();
         public void Notify_Intercepted(Faction by) { }
     }

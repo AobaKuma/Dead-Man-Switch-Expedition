@@ -43,6 +43,33 @@ namespace DMSE
 
         public int RouteRevision => terminalUpdatesUsed;
 
+        /// <summary>目的地 tile；虛擬航跡（空投）會覆寫成自己的目標 tile。</summary>
+        public virtual PlanetTile Destination => destinationTile;
+
+        /// <summary>
+        /// 玩家是否看得到這條航跡（P4）：自己的彈一定看得到；敵方航跡要被我方雷達偵測到才顯示，
+        /// 未偵測的敵方航跡在世界地圖上隱藏、不可選取。
+        /// </summary>
+        public virtual bool VisibleToPlayer
+        {
+            get
+            {
+                Faction player = Faction.OfPlayer;
+                if (player == null) { return true; }
+                if (Faction == player || Attacker == player) { return true; }
+                return State.detectedByFaction == player;
+            }
+        }
+
+        public override bool SelectableNow => VisibleToPlayer && base.SelectableNow;
+
+        public override void Draw()
+        {
+            if (VisibleToPlayer) { base.Draw(); }
+        }
+
+        public override Texture2D ExpandingIcon => VisibleToPlayer ? base.ExpandingIcon : null;
+
         public int TerminalUpdatesRemaining
         {
             get
@@ -86,7 +113,6 @@ namespace DMSE
         public WorldObject Self => this;
         public Faction Attacker => Faction;
         public PlanetTile Origin => initialTile;
-        public PlanetTile Destination => destinationTile;
         public MissileConfig Config => config;
         public BVRTrackState State => bvrState ??= new BVRTrackState();
         public virtual ThingDef IncomingDef => config?.body?.incomingSkyfaller;
@@ -111,13 +137,13 @@ namespace DMSE
                 return signatureProps;
             }
         }
-        public float AngularSpeed => MissileWorldMotion.AngularSpeed(config);
+        public virtual float AngularSpeed => MissileWorldMotion.AngularSpeed(config);
         private float TraveledPctStepPerTick => AngularSpeed / Mathf.Max(0.0000001f,
             GenMath.SphericalDistance(Start.normalized, End.normalized));
         private float CurrentProgress => Mathf.Clamp01(traveledPct + TraveledPctStepPerTick *
             (lastMotionTick < 0 ? 0 : Mathf.Max(0, Find.TickManager.TicksGame - lastMotionTick)));
-        public int TicksToArrival => Mathf.Max(0, Mathf.CeilToInt((1f - CurrentProgress) / TraveledPctStepPerTick));
-        public Vector3 PositionAt(int ticksAhead) => Vector3.Slerp(Start, End,
+        public virtual int TicksToArrival => Mathf.Max(0, Mathf.CeilToInt((1f - CurrentProgress) / TraveledPctStepPerTick));
+        public virtual Vector3 PositionAt(int ticksAhead) => Vector3.Slerp(Start, End,
             Mathf.Clamp01(CurrentProgress + Mathf.Max(0, ticksAhead) * TraveledPctStepPerTick));
         public override Color ExpandingIconColor => State.detectedByFaction == Faction.OfPlayer
             ? Color.red : Faction?.Color ?? Color.white;
@@ -165,7 +191,10 @@ namespace DMSE
             ticksUntilTerminalCheck -= elapsed;
             if (ticksUntilTerminalCheck <= 0)
             {
-                ticksUntilTerminalCheck = MissileWorldUtility.TerminalCheckIntervalTicks;
+                // 反艦導引頭追蹤移動目標，檢查得更勤（20 ticks），一般導引頭維持 60 ticks。
+                ticksUntilTerminalCheck = config != null && config.TracksMobileTargets
+                    ? MissileWorldUtility.MobileTerminalCheckIntervalTicks
+                    : MissileWorldUtility.TerminalCheckIntervalTicks;
                 TryTerminalUpdate();
             }
 
@@ -173,7 +202,10 @@ namespace DMSE
             {
                 traveledPct = 1f;
                 arrived = true;
-                OnArrived(MissileWorldUtility.ResolveArrivalMap(destinationTile, targetParent, AllowGenerateTargetMap));
+                if (!TryStrikeAbstractNode())
+                {
+                    OnArrived(MissileWorldUtility.ResolveArrivalMap(destinationTile, targetParent, AllowGenerateTargetMap));
+                }
             }
         }
 
@@ -224,6 +256,45 @@ namespace DMSE
             text += "DMSE.BVR.World.TrackInspect".Translate(destination ?? destinationTile.ToString(),
                 TicksToArrival.ToStringTicksToPeriod(), State.StatusKey.Translate(), State.interceptAttempts);
             return text;
+        }
+
+        /// <summary>
+        /// P4：反輻射彈命中「尚未生成地圖的抽象防空節點」時，直接削弱該節點（打掉庫存、壓制雷達一天），
+        /// 不生成目標地圖。回傳 true 表示已在此結算，呼叫端不再走一般抵達流程。
+        /// </summary>
+        protected virtual bool TryStrikeAbstractNode()
+        {
+            if (!(config?.TargetingGuidance is GuidanceType_AntiRadiation)) { return false; }
+            MapParent parent = targetParent ?? Find.WorldObjects.MapParentAt(destinationTile);
+            if (parent == null || parent.Destroyed) { return false; }
+            int now = Find.TickManager.TicksGame;
+
+            WorldObjectComp_AirDefense comp = parent.GetComponent<WorldObjectComp_AirDefense>();
+            if (comp != null && comp.Available)
+            {
+                comp.Degrade(now);
+                ReportAbstractStrike(parent);
+                return true;
+            }
+            IBVRDefense synthetic = WorldComponent_SettlementDefense.Current?.DefenseFor(parent);
+            if (synthetic != null && synthetic.Available)
+            {
+                synthetic.Degrade(now);
+                ReportAbstractStrike(parent);
+                return true;
+            }
+            return false;
+        }
+
+        private void ReportAbstractStrike(MapParent parent)
+        {
+            if (Attacker == Faction.OfPlayer || Faction == Faction.OfPlayer)
+            {
+                Messages.Message("DMSE.BVR.World.AbstractStrike".Translate(Label, parent.Label),
+                    new GlobalTargetInfo(parent), MessageTypeDefOf.PositiveEvent, historical: false);
+            }
+            WorldComponent_BVRNetwork.Current?.AddFlash(PositionAt(0));
+            Destroy();
         }
 
         public override void ExposeData()

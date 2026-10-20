@@ -112,7 +112,7 @@ namespace DMSE
             }
             if (Props.missileBody != null)
             {
-                return new MissileConfig(Props.missileBody);
+                return MissileConfig.NewWithDefaults(Props.missileBody);
             }
             return null;
         }

@@ -20,6 +20,8 @@ namespace DMSE
         public int launchCooldownTicks = 240;
         /// <summary>威脅評估（P4）：通道不足時先接戰雷達截面最大的航跡（誘餌酬載會吸引它），否則先到先打。</summary>
         public bool threatAssessment = false;
+        /// <summary>最低陣營科技等級；Undefined 表示不設限（DMSE 自己的導彈陣地維持不設限）。</summary>
+        public TechLevel minTechLevel = TechLevel.Undefined;
         public CompProperties_WorldAirDefense() { compClass = typeof(WorldObjectComp_AirDefense); }
         public override IEnumerable<string> ConfigErrors(WorldObjectDef parentDef)
         {
@@ -36,8 +38,13 @@ namespace DMSE
         private float stock = -1;
         private int lastRestockTick = -1;
         private int cooldownUntil;
+        private int radarDownUntil;
         public CompProperties_WorldAirDefense Props => (CompProperties_WorldAirDefense)props;
-        public bool Available => parent is MapParent mp && !mp.HasMap && !parent.Destroyed && parent.Faction != null;
+        public bool Available => parent is MapParent mp && !mp.HasMap && !parent.Destroyed && parent.Faction != null
+            && !parent.Faction.IsPlayer
+            && (parent.Faction.def == null || parent.Faction.def.techLevel >= Props.minTechLevel);
+        /// <summary>反輻射打擊後雷達壓制期間：偵測歸零，但攔截彈庫存仍可被其他（有雷達的）節點資料鏈帶動。</summary>
+        public bool RadarOnline => Find.TickManager.TicksGame >= radarDownUntil;
         public CompProperties_FireControlRadar FireControl => Props.fireControlDef?.comps?.OfType<CompProperties_FireControlRadar>().FirstOrDefault();
         public int Stock { get { Refresh(); return Mathf.FloorToInt(stock); } }
         public void Refresh()
@@ -65,6 +72,17 @@ namespace DMSE
             cooldownUntil = now + Props.launchCooldownTicks;
             return true;
         }
+
+        /// <summary>
+        /// 反輻射彈命中抽象節點（P4）：打掉兩發庫存並壓制雷達一天，不生成地圖。
+        /// </summary>
+        public void Degrade(int now)
+        {
+            Refresh();
+            stock = Mathf.Max(0, stock - 2);
+            radarDownUntil = now + GenDate.TicksPerDay;
+            cooldownUntil = Mathf.Max(cooldownUntil, now + 600);
+        }
         public override void CompTick() { base.CompTick(); Refresh(); }
         public override string CompInspectStringExtra() => Available
             ? "DMSE.BVR.World.AbstractInspect".Translate(Stock, Props.interceptorStock, Props.worldDetectionRange, Props.channels) : null;
@@ -74,6 +92,7 @@ namespace DMSE
             Scribe_Values.Look(ref stock, "bvrStock", -1f);
             Scribe_Values.Look(ref lastRestockTick, "bvrRestockTick", -1);
             Scribe_Values.Look(ref cooldownUntil, "bvrCooldownUntil");
+            Scribe_Values.Look(ref radarDownUntil, "bvrRadarDownUntil");
         }
     }
 }

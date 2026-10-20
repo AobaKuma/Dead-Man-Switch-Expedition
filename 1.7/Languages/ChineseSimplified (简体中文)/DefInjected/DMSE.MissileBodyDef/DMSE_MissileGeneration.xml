@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <DMSE_MissileBody_LegacyBallistic.label>老式弹道导弹弹体</DMSE_MissileBody_LegacyBallistic.label>
+  <DMSE_MissileBody_LegacyBallistic.description>一款以 V1 为蓝本的第一代弹道弹体：粗制的脉冲喷射弹身、钟表式惯性自动驾驶仪，完全没有终端修正。它既慢又极不精准，大半质量都花在结构上，但在真正的战略体系问世之前很久，就能用工业材料在发射井里装配出来。</DMSE_MissileBody_LegacyBallistic.description>
+
+  <DMSE_MissileBody_LegacyLoiter.label>老式巡飞弹弹体</DMSE_MissileBody_LegacyLoiter.label>
+  <DMSE_MissileBody_LegacyLoiter.description>一款以 V2 为蓝本的第一代火箭弹身。轨道发射、无线电指令导引，携带沉重的单一战斗部——比后来取代它的折叠翼弹药打得更重、飞得更快，代价是精准度。没有什么可配置的：造好、推上发射轨、发射。</DMSE_MissileBody_LegacyLoiter.description>
+
+  <DMSE_MissileBody_LegacyInterceptor.label>老式防空导弹弹体</DMSE_MissileBody_LegacyInterceptor.label>
+  <DMSE_MissileBody_LegacyInterceptor.description>一款第一代导引防空火箭：四片特大尾翼加上无线电指令链路。它慢、腿短、精度勉强，但在高射炮还靠肉眼瞄准的年代，它已是真正的导引拦截弹。以战备弹形式装入发射器弹舱，不逐目标装配。</DMSE_MissileBody_LegacyInterceptor.description>
+
+  <DMSE_MissileBody_AdvancedLight.label>先进通用导弹弹体</DMSE_MissileBody_AdvancedLight.label>
+  <DMSE_MissileBody_AdvancedLight.description>一款地狱火级的小型多用途弹体。轻到可由单兵与载具挂架携带，却具备现代导引头、极小的散布，以及老式轻型导弹从未达到的弹头重量比。三个装配槽：弹头、导引与载荷。</DMSE_MissileBody_AdvancedLight.description>
+
+  <DMSE_MissileBody_AdvancedBallistic.label>先进弹道导弹弹体</DMSE_MissileBody_AdvancedBallistic.label>
+  <DMSE_MissileBody_AdvancedBallistic.description>一款民兵三型级的现代井射战略弹体。分级、轻量且精准导引，把弹头抛到大气层边缘，能把战斗部送到指定建筑而不是指定街区。直接在发射井内装配，弹体本身不会以物品形式存在。</DMSE_MissileBody_AdvancedBallistic.description>
+
+  <DMSE_MissileBody_AdvancedCruise.label>先进巡航导弹弹体</DMSE_MissileBody_AdvancedCruise.label>
+  <DMSE_MissileBody_AdvancedCruise.description>一款战斧级的现代低可观测巡航导弹弹体。地形跟随、数据链导引，比它所取代的“射门手”弹体精准得多，并具备完整的四槽：弹头、导引、推进与载荷。</DMSE_MissileBody_AdvancedCruise.description>
+
+</LanguageData>

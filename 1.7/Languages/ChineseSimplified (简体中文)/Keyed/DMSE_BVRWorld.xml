@@ -12,6 +12,8 @@
   <DMSE.BVR.World.Intercepted>{0} 已被 {1} 拦截。</DMSE.BVR.World.Intercepted>
   <DMSE.BVR.World.Missed>拦截弹未能命中 {0}。</DMSE.BVR.World.Missed>
   <DMSE.BVR.World.Evaded>{0} 改变航向，避开了拦截弹。</DMSE.BVR.World.Evaded>
+  <DMSE.BVR.World.Chaff>{0} 施放箔条／干扰丝，打断了火控锁定。</DMSE.BVR.World.Chaff>
+  <DMSE.BVR.World.AbstractStrike>{0} 命中 {1} 的防空节点：库存受损、雷达被压制。</DMSE.BVR.World.AbstractStrike>
   <DMSE.BVR.World.InterceptorInspect>目标：{0}\n预计会合：{1}</DMSE.BVR.World.InterceptorInspect>
   <DMSE.BVR.World.AbstractInspect>防空库存：{0}/{1} 枚拦截弹\n搜索半径：{2} 格；火控通道：{3}</DMSE.BVR.World.AbstractInspect>
   <DMSE.BVR.World.IncomingAlert>已侦测来袭导弹</DMSE.BVR.World.IncomingAlert>

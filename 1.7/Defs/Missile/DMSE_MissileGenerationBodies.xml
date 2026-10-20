@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ==================================================================
+       ==================== 世代化彈體（老式／先進）====================
+       ==================================================================
+       在同一套「四階 sizeClass」下，為每一階補上一個「老式」與一個「先進」彈體，
+       中間夾著原本的現役彈體（Ballistic / Cruise / Light / Loiter）。
+
+       命名對照（彈體 defName ← 現實參考型號 ← 對應發射平台）：
+         DMSE_MissileBody_LegacyBallistic    ← V1（Fi 103）      ← 彈道導彈發射井
+         DMSE_MissileBody_LegacyLoiter       ← V2（A4）          ← 巡飛彈掛架／發射軌
+         DMSE_MissileBody_LegacyInterceptor  ← 萊茵女兒（Rheintochter）← 巡飛彈掛架下的防空攔截彈
+         DMSE_MissileBody_AdvancedLight      ← 地獄火（AGM-114） ← 輕型導彈
+         DMSE_MissileBody_AdvancedBallistic  ← 民兵三型（LGM-30G）← 彈道導彈發射井
+         DMSE_MissileBody_AdvancedCruise     ← 戰斧（BGM-109）   ← 中型導彈
+
+       世代只影響數值與成本，不新增 MissileSizeClass 列舉值：
+       發射平台相容性仍由 MissileTaxonomy.PlatformAccepts() 以 sizeClass + launchMode
+       判定，因此老式／先進彈體可直接被同階既有平台接受，無需改 C# 或重建 DLL。
+
+       本檔同時提供每個彈體專屬的 incoming skyfaller（落點視覺），
+       貼圖為佔位符：1.7/Textures/Things/Missile/<型號>/skyFaller_incoming.png。
+       離場 skyfaller 由發射平台（CompProperties_MissileRailLauncher.skyfaller）
+       指定，不在彈體上；接線平台時再補該型號的 skyFaller 貼圖。
+
+       目前的可達路徑（ITab 只讓「defaultBody.customizeLocation == Launcher」的建築換彈體）：
+         - Ballistic 三種（LegacyBallistic／Ballistic／AdvancedBallistic）都可在彈道導彈發射井
+           的彈體選單切換，DMSE_BallisticMissile.xml 的 9 個部件已同時列入這三種彈體。
+         - AdvancedLight 由 DMSE_Missile_AdvancedLight（輕型發射箱／VLS／飛彈架）使用，
+           部件見 DMSE_MissileParts_AdvancedLight.xml。
+         - AdvancedCruise 由 DMSE_Missile_AdvancedCruise（Scorer／巡航飛彈架）使用，
+           部件見 DMSE_MissileParts_AdvancedCruise.xml。
+         - LegacyLoiter／LegacyInterceptor 仍沒有任何物品或平台引用，屬尚未接線的內容；
+           兩者都設計成無槽的固定構型，接線方式是把對應物品／平台的 missileBody 指過來。
+         - 只有**物品型態**的彈體（AdvancedLight／AdvancedCruise）帶 defaultParts：該物品建造時自帶一組零件，
+           材料已含在它的 costList；彈道三種彈體在發射井上裝配，井／架建造完成是空的。
+       ================================================================== -->
+
+
+  <!-- ══════════════════════════════════════════════════════════════
+       一、老式彈道導彈（V1）— 彈道階，發射井內直接裝配
+       ══════════════════════════════════════════════════════════════ -->
+  <DMSE.MissileBodyDef>
+    <defName>DMSE_MissileBody_LegacyBallistic</defName>
+    <label>legacy ballistic missile body</label>
+    <description>A first-generation ballistic airframe in the mould of the V-1: a crude pulsejet bus with a clockwork inertial autopilot and no terminal correction at all. It is slow, wildly inaccurate, and devotes most of its mass to structure, but it can be built in a silo out of industrial stock long before real strategic systems exist.</description>
+    <sizeClass>Ballistic</sizeClass>
+    <!-- 與現役彈道彈體相同：只能垂直發射、在發射架上直接裝配（無物品型態） -->
+    <launchMode>Vertical</launchMode>
+    <customizeLocation>Launcher</customizeLocation>
+    <!-- N = 5：老式裝藥效率差，效果強度低於現役彈道（N=8）與先進彈道（N=9） -->
+    <payloadCapacity>5</payloadCapacity>
+    <baseExplosionRadius>6</baseExplosionRadius>
+    <baseDamageDef>Bomb</baseDamageDef>
+    <baseDamageAmount>150</baseDamageAmount>
+    <!-- 散布極大：純慣性、無終端修正，本來就是面殺傷武器 -->
+    <baseScatter>7</baseScatter>
+    <baseWorldSpeedFactor>0.9</baseWorldSpeedFactor>
+    <!-- 射程：120 * 1.8 * 0.1 = 21.6 → 22 格（現役 45、先進 58） -->
+    <baseRange>0</baseRange>
+    <!-- 無導引能力：飛行中不做任何終端位置更新 -->
+    <terminalUpdates>0</terminalUpdates>
+    <baseFuel>120</baseFuel>
+    <baseSpecificImpulse>1.8</baseSpecificImpulse>
+    <rangePerFuelImpulse>0.1</rangePerFuelImpulse>
+    <!-- 裝配工作量：零件少、工藝粗，遠低於現役（3600） -->
+    <assembleWorkAmount>1800</assembleWorkAmount>
+    <incomingSkyfaller>DMSE_Incoming_LegacyBallisticMissile</incomingSkyfaller>
+    <slots>
+      <li>Warhead</li>
+      <li>Guidance</li>
+      <li>Payload</li>
+    </slots>
+  </DMSE.MissileBodyDef>
+
+
+  <!-- ══════════════════════════════════════════════════════════════
+       二、老式巡飛彈（V2）— 巡飛階，傾斜發射軌
+       ══════════════════════════════════════════════════════════════ -->
+  <DMSE.MissileBodyDef>
+    <defName>DMSE_MissileBody_LegacyLoiter</defName>
+    <label>legacy loitering munition</label>
+    <description>A first-generation rocket bus in the spirit of the V-2. Rail-launched, radio-commanded and carrying a heavy unitary warhead, it hits harder and flies faster than the fold-out munitions that replace it, at the cost of accuracy. There is nothing to configure: it is built, hauled onto the rail, and fired.</description>
+    <sizeClass>Loitering</sizeClass>
+    <launchMode>Tilt</launchMode>
+    <!-- 與現役巡飛彈相同：無裝配槽，固定構型 -->
+    <customizeLocation>None</customizeLocation>
+    <baseExplosionRadius>4</baseExplosionRadius>
+    <baseDamageDef>Bomb</baseDamageDef>
+    <baseDamageAmount>90</baseDamageAmount>
+    <baseScatter>6</baseScatter>
+    <baseWorldSpeedFactor>0.75</baseWorldSpeedFactor>
+    <!-- 射程：55 * 2.2 * 0.1 = 12.1 → 12 格（與現役巡飛彈同級） -->
+    <baseRange>0</baseRange>
+    <baseFuel>55</baseFuel>
+    <baseSpecificImpulse>2.2</baseSpecificImpulse>
+    <rangePerFuelImpulse>0.1</rangePerFuelImpulse>
+    <incomingSkyfaller>DMSE_Incoming_LegacyLoiter</incomingSkyfaller>
+    <!-- 無 slots：不可自定義。 -->
+    <!-- 無導引部件，但仍由操作員以無線電指令選點（與現役巡飛彈的電視制導同一個流程，
+         只影響選目標，不提供跨圖層與終端更新）。 -->
+    <builtInGuidance Class="DMSE.GuidanceType_TV" />
+  </DMSE.MissileBodyDef>
+
+
+  <!-- ══════════════════════════════════════════════════════════════
+       三、老式防空飛彈（萊茵女兒）— 輕型階，掛架下的防空攔截彈
+       ══════════════════════════════════════════════════════════════ -->
+  <DMSE.MissileBodyDef>
+    <defName>DMSE_MissileBody_LegacyInterceptor</defName>
+    <label>legacy surface-to-air interceptor</label>
+    <description>A first-generation guided flak rocket built around four oversized fins and a radio command link. It is slow, short-legged and only marginally accurate, but it is a genuine guided interceptor in an age when anti-aircraft fire is still aimed by eye. Loaded into a launcher's ready magazine rather than assembled per target.</description>
+    <!-- 沿用輕型階：與輕型導彈發射箱／彈架的 sizeClass 相容，可直接當攔截彈用 -->
+    <sizeClass>Light</sizeClass>
+    <!-- 輕型平台有傾斜發射箱也有垂直發射單元 -->
+    <launchMode>Both</launchMode>
+    <!-- 戰備彈：不裝配、不逐目標配置（與 DMSE_InterceptorMissile 相同） -->
+    <customizeLocation>None</customizeLocation>
+    <baseExplosionRadius>3</baseExplosionRadius>
+    <baseDamageDef>Bomb</baseDamageDef>
+    <baseDamageAmount>55</baseDamageAmount>
+    <baseScatter>5</baseScatter>
+    <baseWorldSpeedFactor>0.7</baseWorldSpeedFactor>
+    <!-- 射程：50 * 2 * 0.1 = 10 格 -->
+    <baseRange>0</baseRange>
+    <baseFuel>50</baseFuel>
+    <baseSpecificImpulse>2</baseSpecificImpulse>
+    <rangePerFuelImpulse>0.1</rangePerFuelImpulse>
+    <incomingSkyfaller>DMSE_Incoming_LegacyInterceptor</incomingSkyfaller>
+    <!-- 無 slots：固定構型（連續桿／破片戰鬥部）。沒有導引槽也沒有 builtInGuidance，
+         MissileConfig.HasTerminalGuidance 恆為 false，故不設 terminalUpdates。 -->
+  </DMSE.MissileBodyDef>
+
+
+  <!-- ══════════════════════════════════════════════════════════════
+       四、先進通用導彈（地獄火）— 輕型階
+       ══════════════════════════════════════════════════════════════ -->
+  <DMSE.MissileBodyDef>
+    <defName>DMSE_MissileBody_AdvancedLight</defName>
+    <label>advanced general-purpose missile body</label>
+    <description>A compact multi-role airframe in the class of the Hellfire. Light enough for man-portable and vehicle racks, but with modern seekers, tight dispersion and a payload fraction the older light missiles never managed. Three assembly slots: warhead, guidance and payload.</description>
+    <sizeClass>Light</sizeClass>
+    <launchMode>Both</launchMode>
+    <customizeLocation>Item</customizeLocation>
+    <!-- N = 4：高於現役輕型（N=3），低於中型（N=6） -->
+    <payloadCapacity>4</payloadCapacity>
+    <baseExplosionRadius>4.5</baseExplosionRadius>
+    <baseDamageDef>Bomb</baseDamageDef>
+    <baseDamageAmount>100</baseDamageAmount>
+    <baseScatter>2</baseScatter>
+    <baseWorldSpeedFactor>0.9</baseWorldSpeedFactor>
+    <!-- 射程：80 * 2.8 * 0.1 = 22.4 → 22 格（現役輕型 17.5） -->
+    <baseRange>0</baseRange>
+    <terminalUpdates>2</terminalUpdates>
+    <baseFuel>80</baseFuel>
+    <baseSpecificImpulse>2.8</baseSpecificImpulse>
+    <rangePerFuelImpulse>0.1</rangePerFuelImpulse>
+    <assembleWorkAmount>900</assembleWorkAmount>
+    <incomingSkyfaller>DMSE_Incoming_AdvancedLightMissile</incomingSkyfaller>
+    <slots>
+      <li>Warhead</li>
+      <li>Guidance</li>
+      <li>Payload</li>
+    </slots>
+    <!-- 建造時自帶：材料已含在物品 costList 內。 -->
+    <defaultParts>
+      <li>DMSE_AdvLight_Warhead_HEAT</li>
+      <li>DMSE_AdvLight_Guidance_Inertial</li>
+      <li>DMSE_AdvLight_Payload_None</li>
+    </defaultParts>
+  </DMSE.MissileBodyDef>
+
+
+  <!-- ══════════════════════════════════════════════════════════════
+       五、先進彈道導彈（民兵三型）— 彈道階，發射井內直接裝配
+       ══════════════════════════════════════════════════════════════ -->
+  <DMSE.MissileBodyDef>
+    <defName>DMSE_MissileBody_AdvancedBallistic</defName>
+    <label>advanced ballistic missile body</label>
+    <description>A modern silo-based strategic airframe in the class of the Minuteman III. Staged, lightweight and precisely guided, it lofts its bus to the edge of the atmosphere and puts a warhead on a specific building rather than a district. Assembled directly in the silo; the airframe never exists as an item.</description>
+    <sizeClass>Ballistic</sizeClass>
+    <launchMode>Vertical</launchMode>
+    <customizeLocation>Launcher</customizeLocation>
+    <!-- N = 9：全模組最高效果強度 -->
+    <payloadCapacity>9</payloadCapacity>
+    <baseExplosionRadius>9</baseExplosionRadius>
+    <baseDamageDef>Bomb</baseDamageDef>
+    <baseDamageAmount>240</baseDamageAmount>
+    <baseScatter>4</baseScatter>
+    <baseWorldSpeedFactor>1.7</baseWorldSpeedFactor>
+    <!-- 射程：180 * 3.2 * 0.1 = 57.6 → 58 格 -->
+    <baseRange>0</baseRange>
+    <terminalUpdates>3</terminalUpdates>
+    <baseFuel>180</baseFuel>
+    <baseSpecificImpulse>3.2</baseSpecificImpulse>
+    <rangePerFuelImpulse>0.1</rangePerFuelImpulse>
+    <assembleWorkAmount>4200</assembleWorkAmount>
+    <incomingSkyfaller>DMSE_Incoming_AdvancedBallisticMissile</incomingSkyfaller>
+    <slots>
+      <li>Warhead</li>
+      <li>Guidance</li>
+      <li>Payload</li>
+    </slots>
+  </DMSE.MissileBodyDef>
+
+
+  <!-- ══════════════════════════════════════════════════════════════
+       六、先進巡航導彈（戰斧）— 中型階
+       ══════════════════════════════════════════════════════════════ -->
+  <DMSE.MissileBodyDef>
+    <defName>DMSE_MissileBody_AdvancedCruise</defName>
+    <label>advanced cruise missile body</label>
+    <description>A modern low-observable cruise missile airframe in the class of the Tomahawk. Terrain-following, datalinked and far more accurate than the Scorer chassis it supersedes, with the full four slots: warhead, guidance, propulsion and payload.</description>
+    <sizeClass>Medium</sizeClass>
+    <launchMode>Both</launchMode>
+    <customizeLocation>Item</customizeLocation>
+    <!-- N = 6：高於現役中型（N=5） -->
+    <payloadCapacity>6</payloadCapacity>
+    <baseExplosionRadius>6.5</baseExplosionRadius>
+    <baseDamageDef>Bomb</baseDamageDef>
+    <baseDamageAmount>130</baseDamageAmount>
+    <baseScatter>2</baseScatter>
+    <baseWorldSpeedFactor>1.15</baseWorldSpeedFactor>
+    <!-- 射程：115 * 3.4 * 0.1 = 39.1 → 39 格（現役中型 30） -->
+    <baseRange>0</baseRange>
+    <terminalUpdates>4</terminalUpdates>
+    <baseFuel>115</baseFuel>
+    <baseSpecificImpulse>3.4</baseSpecificImpulse>
+    <rangePerFuelImpulse>0.1</rangePerFuelImpulse>
+    <assembleWorkAmount>900</assembleWorkAmount>
+    <incomingSkyfaller>DMSE_Incoming_AdvancedCruiseMissile</incomingSkyfaller>
+    <slots>
+      <li>Warhead</li>
+      <li>Guidance</li>
+      <li>Propulsion</li>
+      <li>Payload</li>
+    </slots>
+    <!-- 建造時自帶：材料已含在物品 costList 內。 -->
+    <defaultParts>
+      <li>DMSE_AdvCruise_Warhead_Penetrator</li>
+      <li>DMSE_AdvCruise_Guidance_TerrainMatch</li>
+      <li>DMSE_AdvCruise_Propulsion_Turbofan</li>
+      <li>DMSE_AdvCruise_Payload_None</li>
+    </defaultParts>
+  </DMSE.MissileBodyDef>
+
+
+  <!-- ==================================================================
+       落點 incoming skyfaller（每個新彈體一個）
+       與既有 DMSE_Incoming_LightMissile / DMSE_Incoming_BallisticMissile 同格式：
+       thingClass = DMSE.MissileIncoming，爆炸由落點的 MissileConfig 動態套用，
+       故不設固定 explosionRadius/explosionDamage；
+       BVRTargetProps 描述世界層雷達特性（世代越新＝越快、越難偵測）。
+       ================================================================== -->
+
+  <!-- V1：慢、雷達截面大、無隱身 → 很早就被偵測，但飛行速度低 -->
+  <ThingDef ParentName="SkyfallerBase">
+    <defName>DMSE_Incoming_LegacyBallisticMissile</defName>
+    <label>legacy ballistic missile (incoming)</label>
+    <thingClass>DMSE.MissileIncoming</thingClass>
+    <graphicData>
+      <texPath>Things/Missile/V1/skyFaller_incoming</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>4</drawSize>
+    </graphicData>
+    <size>(1,1)</size>
+    <skyfaller>
+      <shadowSize>(3, 3)</shadowSize>
+      <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
+      <speed>1</speed>
+    </skyfaller>
+    <modExtensions>
+      <li Class="DMSE.BVRTargetProps">
+        <distanceLevel>2.2</distanceLevel>
+        <stealthLevel>0</stealthLevel>
+        <speed>25</speed>
+        <altitude>800</altitude>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- V2：比現役巡飛彈稍快、同樣無隱身 -->
+  <ThingDef ParentName="SkyfallerBase">
+    <defName>DMSE_Incoming_LegacyLoiter</defName>
+    <label>legacy loitering munition (incoming)</label>
+    <thingClass>DMSE.MissileIncoming</thingClass>
+    <graphicData>
+      <texPath>Things/Missile/V2/skyFaller_incoming</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>3</drawSize>
+    </graphicData>
+    <size>(1,1)</size>
+    <skyfaller>
+      <shadowSize>(2, 2)</shadowSize>
+      <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
+      <speed>1</speed>
+    </skyfaller>
+    <modExtensions>
+      <li Class="DMSE.BVRTargetProps">
+        <distanceLevel>1.2</distanceLevel>
+        <stealthLevel>0</stealthLevel>
+        <speed>20</speed>
+        <altitude>30000</altitude>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- 萊茵女兒：小彈體、無隱身、中速 -->
+  <ThingDef ParentName="SkyfallerBase">
+    <defName>DMSE_Incoming_LegacyInterceptor</defName>
+    <label>legacy interceptor (incoming)</label>
+    <thingClass>DMSE.MissileIncoming</thingClass>
+    <graphicData>
+      <texPath>Things/Missile/Rheintochter/skyFaller_incoming</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>2</drawSize>
+    </graphicData>
+    <size>(1,1)</size>
+    <skyfaller>
+      <shadowSize>(1.5, 1.5)</shadowSize>
+      <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
+      <speed>1</speed>
+    </skyfaller>
+    <modExtensions>
+      <li Class="DMSE.BVRTargetProps">
+        <distanceLevel>1</distanceLevel>
+        <stealthLevel>0</stealthLevel>
+        <speed>18</speed>
+        <altitude>5000</altitude>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- 地獄火：小、快、無隱身 -->
+  <ThingDef ParentName="SkyfallerBase">
+    <defName>DMSE_Incoming_AdvancedLightMissile</defName>
+    <label>advanced light missile (incoming)</label>
+    <thingClass>DMSE.MissileIncoming</thingClass>
+    <graphicData>
+      <texPath>Things/Missile/Hellfire/skyFaller_incoming</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>2.5</drawSize>
+    </graphicData>
+    <size>(1,1)</size>
+    <skyfaller>
+      <shadowSize>(2, 2)</shadowSize>
+      <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
+      <speed>1</speed>
+    </skyfaller>
+    <modExtensions>
+      <li Class="DMSE.BVRTargetProps">
+        <distanceLevel>1.2</distanceLevel>
+        <stealthLevel>0</stealthLevel>
+        <speed>24</speed>
+        <altitude>150</altitude>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- 民兵三型：極高速再入（等離子鞘使雷達可見），窗口最短 -->
+  <ThingDef ParentName="SkyfallerBase">
+    <defName>DMSE_Incoming_AdvancedBallisticMissile</defName>
+    <label>advanced ballistic missile (incoming)</label>
+    <thingClass>DMSE.MissileIncoming</thingClass>
+    <graphicData>
+      <texPath>Things/Missile/Minuteman/skyFaller_incoming</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>6</drawSize>
+    </graphicData>
+    <size>(1,1)</size>
+    <skyfaller>
+      <shadowSize>(4, 4)</shadowSize>
+      <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
+      <speed>1</speed>
+    </skyfaller>
+    <modExtensions>
+      <li Class="DMSE.BVRTargetProps">
+        <distanceLevel>2</distanceLevel>
+        <stealthLevel>2</stealthLevel>
+        <speed>95</speed>
+        <altitude>100000</altitude>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- 戰斧：低可觀測、亞音速，較晚被偵測 -->
+  <ThingDef ParentName="SkyfallerBase">
+    <defName>DMSE_Incoming_AdvancedCruiseMissile</defName>
+    <label>advanced cruise missile (incoming)</label>
+    <thingClass>DMSE.MissileIncoming</thingClass>
+    <graphicData>
+      <texPath>Things/Missile/Tomahawk/skyFaller_incoming</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>4</drawSize>
+    </graphicData>
+    <size>(1,1)</size>
+    <skyfaller>
+      <shadowSize>(3, 3)</shadowSize>
+      <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
+      <speed>1</speed>
+    </skyfaller>
+    <modExtensions>
+      <li Class="DMSE.BVRTargetProps">
+        <distanceLevel>1.8</distanceLevel>
+        <stealthLevel>2</stealthLevel>
+        <speed>28</speed>
+        <altitude>50</altitude>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

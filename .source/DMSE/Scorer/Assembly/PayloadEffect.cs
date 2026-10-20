@@ -60,11 +60,14 @@ namespace DMSE
     {
         public int subDamageAmount = 40;
 
+        /// <summary>固定子彈藥數量；0 = 沿用 floor(N/4)。用於「固定 6 枚 BLU-97」這類真實配置。</summary>
+        public int countOverride = 0;
+
         public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
         {
             if (map == null || !center.InBounds(map)) { return; }
-            int count = Mathf.Max(1, Mathf.FloorToInt(N / 4f));
-            float subRadius = Mathf.Max(1f, N / 4f);
+            int count = countOverride > 0 ? countOverride : Mathf.Max(1, Mathf.FloorToInt(N / 4f));
+            float subRadius = Mathf.Max(1f, countOverride > 0 ? N / 6f : N / 4f);
             int spreadRadius = Mathf.Max(1, Mathf.RoundToInt(N));
             for (int i = 0; i < count; i++)
             {
@@ -172,6 +175,21 @@ namespace DMSE
                 if (!cell.InBounds(map)) { continue; }
                 GasUtility.AddGas(cell, map, GasType.ToxGas, gasAmountPerCell);
             }
+        }
+    }
+
+    // ============================================================
+    //  電磁脈衝酬載（EMP）
+    //  N 半徑 EMP 爆炸：癱瘓電子設備、震暈機械體。石墨纖維彈頭用。
+    // ============================================================
+    public class PayloadEffect_EMP : PayloadEffect
+    {
+        public int empDamage = 150;
+
+        public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
+        {
+            if (map == null || !center.InBounds(map)) { return; }
+            GenExplosion.DoExplosion(center, map, N, DamageDefOf.EMP, null, empDamage);
         }
     }
 

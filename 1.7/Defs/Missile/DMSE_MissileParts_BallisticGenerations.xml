@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ==================================================================
+       敶?銝誨?其辣嚗? V1 嚗??曉蝴 嚗??脫??萎???
+       Generation parts for the three ballistic airframes.
+
+       ?曉蝴銝車敶?敶??梁 DMSE_BallisticMissile.xml ??9 ?隞塚?
+       ?祆??芾???隞??撅研??嚗?         - V1嚗egacyBallistic嚗??輸收???寥?鈭怎?伐?靘踹????葉蝑?         - 瘞銝?嚗dvancedBallistic嚗?雿????扼??脰?擗?撠?       ================================================================== -->
+
+  <!-- ??????????????????????????????????????????????????????????????
+       銝???脣???瘞銝?嚗?       ?????????????????????????????????????????????????????????????? -->
+
+  <!-- 雿???哨????摰喲撠??迎??雿??拙???銝??Ｕ?-->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_AdvBallistic_Warhead_LowYield</defName>
+    <label>low-yield warhead</label>
+    <description>A reduced-yield strategic warhead of the W78/W87 class scaled down for tactical use. Smaller blast and less damage than the full thermonuclear package, but far cheaper and safer to keep on alert.</description>
+    <category>Warhead</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_AdvancedBallistic</li>
+    </compatibleBodies>
+    <explosionRadiusOffset>-3</explosionRadiusOffset>
+    <damageAmountOffset>-80</damageAmountOffset>
+    <damageDefOverride>Bomb</damageDefOverride>
+    <costList>
+      <Steel>50</Steel>
+      <Chemfuel>40</Chemfuel>
+      <DMSE_TantastenAlloy>8</DMSE_TantastenAlloy>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_StrategicSystems</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
+  <!-- ????改?CEP 蝝移摨佗?雿??∠?蝡臬?撘?銝頝典?撅扎?餈賜宏?璅???-->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_AdvBallistic_Guidance_Stellar</defName>
+    <label>stellar-inertial guidance</label>
+    <description>A stellar-updated inertial platform in the NS-50 tradition: star trackers trim the drift of the gyros during the coast, cutting dispersion to almost nothing. It is still a ballistic path with no terminal seeker, so a target that moves is still missed.</description>
+    <category>Guidance</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_AdvancedBallistic</li>
+    </compatibleBodies>
+    <guidanceType Class="DMSE.GuidanceType_Inertial" />
+    <scatterOffset>-4</scatterOffset>
+    <costList>
+      <ComponentSpacer>2</ComponentSpacer>
+      <ComponentStamped>3</ComponentStamped>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_StrategicSystems</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
+  <!-- 蝒隤?嚗????0.75嚗??◤?菜葫??-->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_AdvBallistic_Payload_Penaids</defName>
+    <label>penetration aids</label>
+    <description>Chaff, radar decoys and a low-observable shroud released with the re-entry vehicle. The missile shows up as a much smaller target on the way in, so enemy radars pick it up later and have less time to engage it.</description>
+    <category>Payload</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_AdvancedBallistic</li>
+    </compatibleBodies>
+    <payloadEffect Class="DMSE.PayloadEffect_None" />
+    <signatureFactor>0.75</signatureFactor>
+    <costList>
+      <Steel>30</Steel>
+      <ComponentIndustrial>8</ComponentIndustrial>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_StrategicSystems</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
+  <!-- ??嚗?甈⊥?箏???敶嚗誑???銵函內嚗????格??祕??嚗?-->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_AdvBallistic_Payload_MIRV</defName>
+    <label>multiple re-entry vehicles</label>
+    <description>A bus of several independent re-entry vehicles released before the terminal phase. This implementation keeps one impact point and spreads the sub-charges around it ??a true multiple-target bus would need a different impact model.</description>
+    <category>Payload</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_AdvancedBallistic</li>
+    </compatibleBodies>
+    <payloadEffect Class="DMSE.PayloadEffect_Cluster">
+      <subDamageAmount>150</subDamageAmount>
+    </payloadEffect>
+    <costList>
+      <DMSE_TantastenAlloy>40</DMSE_TantastenAlloy>
+      <ComponentSpacer>4</ComponentSpacer>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_StrategicSystems</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
+  <!-- ??????????????????????????????????????????????????????????????
+       鈭?敶?嚗1嚗?       ?????????????????????????????????????????????????????????????? -->
+
+  <DMSE.MissilePartDef>
+    <defName>DMSE_LegacyBallistic_Warhead_Amatol</defName>
+    <label>Amatol warhead</label>
+    <description>Eight hundred and fifty kilograms of Amatol in the V-1 mould: a simple, stable, blast-effective filler that is cheap enough to build out of industrial stock. No special effects ??just a large hole.</description>
+    <category>Warhead</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_LegacyBallistic</li>
+    </compatibleBodies>
+    <explosionRadiusOffset>1</explosionRadiusOffset>
+    <damageAmountOffset>100</damageAmountOffset>
+    <damageDefOverride>Bomb</damageDefOverride>
+    <costList>
+      <Steel>20</Steel>
+      <Chemfuel>30</Chemfuel>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_LoiteringMunitions</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
+  <DMSE.MissilePartDef>
+    <defName>DMSE_LegacyBallistic_Warhead_Trialen</defName>
+    <label>Trialen warhead</label>
+    <description>The later Trialen filler used when supplies of Amatol ran short: it adds an incendiary component to the blast, so the impact starts fires around the crater. Slightly more expensive and no more accurate.</description>
+    <category>Warhead</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_LegacyBallistic</li>
+    </compatibleBodies>
+    <explosionRadiusOffset>1.5</explosionRadiusOffset>
+    <damageAmountOffset>130</damageAmountOffset>
+    <damageDefOverride>Bomb</damageDefOverride>
+    <warheadEffect Class="DMSE.WarheadEffect_Incendiary" />
+    <costList>
+      <Steel>25</Steel>
+      <Chemfuel>45</Chemfuel>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_Ballistics</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
+</Defs>

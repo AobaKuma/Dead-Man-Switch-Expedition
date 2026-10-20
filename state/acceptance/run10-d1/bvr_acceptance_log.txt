@@ -1,0 +1,15 @@
+﻿[t=      1] Game ready (map 0, tile 81552,0).
+[t=      1] Enemy faction: 啫貝-水
+[t=      1] Test pad (20,20,59,59) on map size (250, 1, 250); safe impact cell (235, 0, 235).
+[t=      1] Running 1 acceptance tests.
+[t=    238] 
+[t=    238] === D1: Datalink and area defense (crossing target)
+[t=    448]     ok:   a source and a destination away from home exist
+[t=    600]     ok:   the track survives long enough to be engaged
+[t=    600]     note: lockNode=null launchNode=春斯歷 home=殖民地 detected=殖民地
+[t=    600]     ok:   the track keeps its own destination
+[t=    600]     FAIL: the home radar engages a track that only crosses its coverage (area defense)
+[t=    600] --- D1: FAIL (the home radar engages a track that only crosses its coverage (area defense))
+[t=    630] 
+[t=    630] === SUMMARY: 0/1 passed
+[t=    630] FAIL  D1  Datalink and area defense (crossing target)  -- the home radar engages a track that only crosses its coverage (area defense)

@@ -1,0 +1,32 @@
+﻿[t=      1] Game ready (map 0, tile 72973,0).
+[t=      1] Enemy faction: 維特健原咆哮
+[t=      1] Test pad (20,20,59,59) on map size (250, 1, 250); safe impact cell (235, 0, 235).
+[t=      1] Running 1 acceptance tests.
+[t=      1] 
+[t=      1] === W1: World detection, ETA, landing without CIWS
+[t=    235]     ok:   a tile ~30 tiles away exists
+[t=    235]     note: start distance 30.13 tiles, predicted flight 4520 ticks
+[t=    235]     ok:   phased array range vs cruise missile is 22.5 tiles (got 22.50)
+[t=    235]     ok:   flight time follows 150 ticks per tile at speed 1
+[t=    262]     ok:   track outside the coverage ring is not detected by the player
+[t=   1380]     ok:   track becomes detected
+[t=   1380]     ok:   detected at 22.50 tiles (ring 22.50)
+[t=   1380]     ok:   one detection letter
+[t=   1380]     ok:   detected enemy track is drawn red
+[t=   1380]     ok:   world incoming alert is active
+[t=   1380]     screenshot: DMSE_BVR_W1_world_detected_track.png
+[t=   1380]     ok:   the selected colony draws its coverage ring
+[t=   1380]     ok:   no ring with nothing selected and always-show off
+[t=   1380]     ok:   always-show draws the player's ring with nothing selected
+[t=   1380]     screenshot: DMSE_BVR_W1_world_always_show_coverage.png
+[t=   1680]     ok:   detection letter is not repeated
+[t=   4756]     ok:   track arrives
+[t=   4756]     ok:   arrival 4755 within 15 ticks of predicted 4755 (map view)
+[t=   4756]     ok:   arrived missile becomes an incoming skyfaller on the home map
+[t=   4756]     ok:   without CIWS the arrival is not held for terminal defense
+[t=   4756]     ok:   incoming is marked worldPhaseDone
+[t=   4756]     ok:   laser seeker steered the impact to the designated cell
+[t=   4756] --- W1: PASS (19 checks)
+[t=   4775] 
+[t=   4775] === SUMMARY: 1/1 passed
+[t=   4775] PASS  W1  World detection, ETA, landing without CIWS  -- 19 checks

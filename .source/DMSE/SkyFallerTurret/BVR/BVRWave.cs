@@ -55,6 +55,9 @@ namespace DMSE
         public int stealthLevel;
         public float speed = 15f;
 
+        /// <summary>電子干擾強度（0–1，來自導彈的箔條部件）：只折減地圖層的命中率。</summary>
+        public float jamStrength;
+
         // 中過程狀態：在此 tick 之前已有攔截彈在飛，避免重複指派（占用一個火力通道）。
         public int midcourseEngagedUntil = -1;
 
@@ -75,6 +78,9 @@ namespace DMSE
                 ? faller.def.GetModExtension<BVRTargetProps>() : null) ?? BVRTargetProps.Default;
             this.stealthLevel = tp.stealthLevel;
             this.speed = tp.speed;
+            this.jamStrength = faller is MissileIncoming incoming && incoming.config != null
+                ? incoming.config.JamStrength
+                : 0f;
         }
 
         public Skyfaller Skyfaller => skyfaller != null ? skyfaller.InnerListForReading.FirstOrDefault() : null;
@@ -159,6 +165,7 @@ namespace DMSE
             Scribe_Deep.Look(ref skyfaller, "skyfaller", this);
             Scribe_Values.Look(ref stealthLevel, "stealthLevel", 0);
             Scribe_Values.Look(ref speed, "speed", 15f);
+            Scribe_Values.Look(ref jamStrength, "jamStrength", 0f);
             Scribe_Values.Look(ref midcourseEngagedUntil, "midcourseEngagedUntil", -1);
             Scribe_Values.Look(ref lockUntil, "lockUntil", -1);
         }

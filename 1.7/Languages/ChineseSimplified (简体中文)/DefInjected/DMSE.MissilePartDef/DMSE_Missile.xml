@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
 
   <DMSE_Warhead_HE.label>高爆弹头</DMSE_Warhead_HE.label>
@@ -63,5 +63,73 @@
   <DMSE_Ballistic_Payload_Cluster.description>在广大区域内释放大量子弹药。以爆炸集中度换取覆盖面积。</DMSE_Ballistic_Payload_Cluster.description>
   <DMSE_Ballistic_Payload_Antiparticle.label>反粒子酬载</DMSE_Ballistic_Payload_Antiparticle.label>
   <DMSE_Ballistic_Payload_Antiparticle.description>次级反粒子爆发，将范围内的一切汽化。现有最具破坏力的次级酬载。</DMSE_Ballistic_Payload_Antiparticle.description>
+  <DMSE_AdvLight_Warhead_HEAT.label>串联成型装药弹头</DMSE_AdvLight_Warhead_HEAT.label>
+  <DMSE_AdvLight_Warhead_HEAT.description>依 AGM-114K 设计的串联破甲弹头：前驱装药破坏反应装甲，主射流在目标内部造成伤害。爆炸半径小，但伤害集中。</DMSE_AdvLight_Warhead_HEAT.description>
+  <DMSE_AdvLight_Warhead_BlastFrag.label>破片杀伤弹头</DMSE_AdvLight_Warhead_BlastFrag.label>
+  <DMSE_AdvLight_Warhead_BlastFrag.description>依 AGM-114M 设计：较厚的弹壳与预制破片套筒换来更大的杀伤半径，对步兵与轻型结构特别有效。</DMSE_AdvLight_Warhead_BlastFrag.description>
+  <DMSE_AdvLight_Warhead_Thermobaric.label>温压弹头</DMSE_AdvLight_Warhead_Thermobaric.label>
+  <DMSE_AdvLight_Warhead_Thermobaric.description>依 AGM-114N 设计的金属增效装药：燃料云以燃烧取代破片，爆炸半径不大，但近距离的烧伤与引燃在室内或掩体中远比开阔地致命。</DMSE_AdvLight_Warhead_Thermobaric.description>
+  <DMSE_AdvLight_Warhead_Kinetic.label>动能刀刃弹头</DMSE_AdvLight_Warhead_Kinetic.label>
+  <DMSE_AdvLight_Warhead_Kinetic.description>依 AGM-114R9X 设计的惰性弹体与弹出刀刃：几乎没有炸药，只杀死命中的生物，对周围破坏极小，代价是毫无爆破效果。</DMSE_AdvLight_Warhead_Kinetic.description>
+  <DMSE_AdvLight_Guidance_Inertial.label>惯性导引</DMSE_AdvLight_Guidance_Inertial.label>
+  <DMSE_AdvLight_Guidance_Inertial.description>便宜的捷联式惯性单元。没有导引头、没有终端导引、也不能跨图层，但不需要额外资源，仍会命中操作者选定的建筑。</DMSE_AdvLight_Guidance_Inertial.description>
+  <DMSE_AdvLight_Guidance_IIR.label>成像红外导引头</DMSE_AdvLight_Guidance_IIR.label>
+  <DMSE_AdvLight_Guidance_IIR.description>锁定比室外高 15°C 以上最热的密闭房间，否则锁定目标地图上体型最大的生物。射后不理：不需要操作员、视线或激光标定。</DMSE_AdvLight_Guidance_IIR.description>
+  <DMSE_AdvLight_Guidance_Laser.label>半主动激光导引头</DMSE_AdvLight_Guidance_Laser.label>
+  <DMSE_AdvLight_Guidance_Laser.description>锁定我方在目标地图上最近一次标定的激光点，是此级别中散布最小的导引头，但地面必须有人标定。</DMSE_AdvLight_Guidance_Laser.description>
+  <DMSE_AdvLight_Guidance_MMW.label>毫米波雷达导引头</DMSE_AdvLight_Guidance_MMW.label>
+  <DMSE_AdvLight_Guidance_MMW.description>依 AGM-114L 长弓设计的射后不理雷达导引头：自行锁定目标地图上耐久最高的敌对建筑，不需要标定、操作员或好天气。</DMSE_AdvLight_Guidance_MMW.description>
+  <DMSE_AdvLight_Payload_None.label>无酬载</DMSE_AdvLight_Payload_None.label>
+  <DMSE_AdvLight_Payload_None.description>没有次级装药。弹头本身必须够用，换来更轻的弹体与更远的射程。</DMSE_AdvLight_Payload_None.description>
+  <DMSE_AdvLight_Payload_HE.label>次级高爆装药</DMSE_AdvLight_Payload_HE.label>
+  <DMSE_AdvLight_Payload_HE.description>在主弹头之后引爆的小型次级装药，稍微扩大伤害半径。</DMSE_AdvLight_Payload_HE.description>
+  <DMSE_AdvLight_Payload_FragSleeve.label>破片套筒</DMSE_AdvLight_Payload_FragSleeve.label>
+  <DMSE_AdvLight_Payload_FragSleeve.description>包在弹头外的预制破片套筒，在落点喷出密集破片，对暴露步兵造成严重杀伤；额外重量让射程减少四分之一。</DMSE_AdvLight_Payload_FragSleeve.description>
+  <DMSE_AdvLight_Payload_Chaff.label>箔条投放器</DMSE_AdvLight_Payload_Chaff.label>
+  <DMSE_AdvLight_Payload_Chaff.description>箔条束与雷达吸收丝的投放器。敌方火控雷达锁定这枚导弹时，每束箔条可打断一次锁定；箔条是有限、一次性的资源，第一次被锁定之前不会让导弹更难被发现。</DMSE_AdvLight_Payload_Chaff.description>
+  <DMSE_AdvCruise_Warhead_Unitary.label>单一穿透弹头</DMSE_AdvCruise_Warhead_Unitary.label>
+  <DMSE_AdvCruise_Warhead_Unitary.description>WDU-36 级单一装药：更轻、更坚固的外壳与更高的装药效率，足以在引爆前穿开屋顶。</DMSE_AdvCruise_Warhead_Unitary.description>
+  <DMSE_AdvCruise_Warhead_Penetrator.label>硬目标穿透弹头</DMSE_AdvCruise_Warhead_Penetrator.label>
+  <DMSE_AdvCruise_Warhead_Penetrator.description>高密度钨芯，能贯穿厚岩顶与山体后在内部引爆，扮演战斧家族也有的钻地角色；地下掩体不再是保护。</DMSE_AdvCruise_Warhead_Penetrator.description>
+  <DMSE_AdvCruise_Guidance_TerrainMatch.label>地形比对导引</DMSE_AdvCruise_Guidance_TerrainMatch.label>
+  <DMSE_AdvCruise_Guidance_TerrainMatch.description>TERCOM/DSMAC 传统的地形等高线与场景比对：导弹沿测绘航线贴地飞行并不断修正，散布极小。无法飞行中改靶，也没有任何终端导引——目标移动就只是落空。</DMSE_AdvCruise_Guidance_TerrainMatch.description>
+  <DMSE_AdvCruise_Guidance_Datalink.label>双向数据链</DMSE_AdvCruise_Guidance_Datalink.label>
+  <DMSE_AdvCruise_Guidance_Datalink.description>Block IV 级的卫星数据链：导弹可在飞行中改靶甚至盘旋，抵达目标地图时游戏暂停、由你选择落点。最精准的选项，也是唯一能追击移动目标的选项。</DMSE_AdvCruise_Guidance_Datalink.description>
+  <DMSE_AdvCruise_Guidance_AntiShip.label>反舰雷达导引头</DMSE_AdvCruise_Guidance_AntiShip.label>
+  <DMSE_AdvCruise_Guidance_AntiShip.description>为移动目标（舰艇与世界地图上其他移动据点）设计的主动雷达导引头。目标持续移动时会不断重新瞄准，且比一般导引头更频繁；目标离开剩余射程仍会落空。</DMSE_AdvCruise_Guidance_AntiShip.description>
+  <DMSE_AdvCruise_Propulsion_Turbofan.label>涡轮扇续航引擎</DMSE_AdvCruise_Propulsion_Turbofan.label>
+  <DMSE_AdvCruise_Propulsion_Turbofan.description>F107 级小型涡轮扇，以液态燃料在高空巡航。效率远优于火箭，雷达特征也比助推器安静，代价是速度。</DMSE_AdvCruise_Propulsion_Turbofan.description>
+  <DMSE_AdvCruise_Propulsion_TurbofanER.label>增程涡轮扇</DMSE_AdvCruise_Propulsion_TurbofanER.label>
+  <DMSE_AdvCruise_Propulsion_TurbofanER.description>燃料最佳化的涡轮扇与更大的油箱：射程最远，但最慢抵达、造价最高。</DMSE_AdvCruise_Propulsion_TurbofanER.description>
+  <DMSE_AdvCruise_Propulsion_Booster.label>固态火箭助推器</DMSE_AdvCruise_Propulsion_Booster.label>
+  <DMSE_AdvCruise_Propulsion_Booster.description>可抛弃的固态助推器，把导弹推到速度后烧尽。非常快、也非常显眼：助推器壳体与推进剂占用弹体预算，射程因此下降。</DMSE_AdvCruise_Propulsion_Booster.description>
+  <DMSE_AdvCruise_Payload_None.label>无酬载</DMSE_AdvCruise_Payload_None.label>
+  <DMSE_AdvCruise_Payload_None.description>没有次级酬载。单一弹头与油箱用尽整个弹体。</DMSE_AdvCruise_Payload_None.description>
+  <DMSE_AdvCruise_Payload_Submunition.label>子弹药投放器</DMSE_AdvCruise_Payload_Submunition.label>
+  <DMSE_AdvCruise_Payload_Submunition.description>TLAM-D 传统的综合效应子弹药：导弹在目标上方张开，散布一群小型装药，以覆盖面积换取集中爆炸。</DMSE_AdvCruise_Payload_Submunition.description>
+  <DMSE_AdvCruise_Payload_Graphite.label>石墨纤维酬载</DMSE_AdvCruise_Payload_Graphite.label>
+  <DMSE_AdvCruise_Payload_Graphite.description>Kit-2 传统的碳纤维酬载：不靠爆炸，而是在落点周围短路电网，大范围瘫痪通电建筑并震晕机械体。</DMSE_AdvCruise_Payload_Graphite.description>
+  <DMSE_AdvCruise_Payload_Decoy.label>诱饵酬载</DMSE_AdvCruise_Payload_Decoy.label>
+  <DMSE_AdvCruise_Payload_Decoy.description>以雷达反射器与信号增强器取代次级装药。在敌方雷达上看起来是两倍大：更早被侦测，依体积评估威胁的防空也会优先接战。不造成额外伤害。</DMSE_AdvCruise_Payload_Decoy.description>
+  <DMSE_AdvCruise_Payload_Chaff.label>箔条投放器</DMSE_AdvCruise_Payload_Chaff.label>
+  <DMSE_AdvCruise_Payload_Chaff.description>巡航弹体用的重型箔条与干扰丝投放器。每束箔条可打断一次敌方火控锁定；携带量比轻型投放器多，但仍是一次性、飞行中不补充。</DMSE_AdvCruise_Payload_Chaff.description>
+  <DMSE_AdvBallistic_Warhead_LowYield.label>低当量弹头</DMSE_AdvBallistic_Warhead_LowYield.label>
+  <DMSE_AdvBallistic_Warhead_LowYield.description>W78/W87 级战略弹头的低当量版本：爆炸半径与伤害都小一截，但便宜得多、警戒时也更安全。</DMSE_AdvBallistic_Warhead_LowYield.description>
+  <DMSE_AdvBallistic_Guidance_Stellar.label>星光惯性导引</DMSE_AdvBallistic_Guidance_Stellar.label>
+  <DMSE_AdvBallistic_Guidance_Stellar.description>NS-50 传统的星光修正惯性平台：以星象追踪器修正滑翔期间的陀螺漂移，把散布压到近乎为零。仍是纯弹道路径、没有终端导引头，目标移动依然会落空。</DMSE_AdvBallistic_Guidance_Stellar.description>
+  <DMSE_AdvBallistic_Payload_Penaids.label>突防诱饵</DMSE_AdvBallistic_Payload_Penaids.label>
+  <DMSE_AdvBallistic_Payload_Penaids.description>随重返载具释放的箔条、雷达诱饵与低可观测罩：这枚导弹在敌方雷达上看起来小得多，较晚被发现、被接战的时间也更短。</DMSE_AdvBallistic_Payload_Penaids.description>
+  <DMSE_AdvBallistic_Payload_MIRV.label>多弹头重返载具</DMSE_AdvBallistic_Payload_MIRV.label>
+  <DMSE_AdvBallistic_Payload_MIRV.description>在终端阶段前释放多枚独立重返载具的母舱。本实现保留单一落点，把子弹药散布在周围——真正的多目标母舱需要不同的落点模型。</DMSE_AdvBallistic_Payload_MIRV.description>
+  <DMSE_LegacyBallistic_Warhead_Amatol.label>阿马托炸药弹头</DMSE_LegacyBallistic_Warhead_Amatol.label>
+  <DMSE_LegacyBallistic_Warhead_Amatol.description>V1 式 850 公斤阿马托炸药：简单、稳定、爆破效果好的填充物，用工业材料就能便宜量产。没有特殊效果，就是一个大洞。</DMSE_LegacyBallistic_Warhead_Amatol.description>
+  <DMSE_LegacyBallistic_Warhead_Trialen.label>特里亚伦炸药弹头</DMSE_LegacyBallistic_Warhead_Trialen.label>
+  <DMSE_LegacyBallistic_Warhead_Trialen.description>阿马托供应不足时使用的后期特里亚伦填充物：在爆破之外加入燃烧成分，落点周围会起火。略贵，但没有更准。</DMSE_LegacyBallistic_Warhead_Trialen.description>
+  <DMSE_Payload_None.label>无酬载</DMSE_Payload_None.label>
+  <DMSE_Payload_None.description>没有次级酬载。弹头本身必须够用，换来轻盈的射门手弹体与更远的射程。</DMSE_Payload_None.description>
+  <DMSE_Guidance_AntiShip.label>反舰雷达导引头</DMSE_Guidance_AntiShip.label>
+  <DMSE_Guidance_AntiShip.description>为移动目标（舰艇与世界地图上其他移动据点）设计的主动雷达导引头。目标持续移动时会不断重新瞄准，且比一般导引头更频繁；目标离开剩余射程仍会落空。</DMSE_Guidance_AntiShip.description>
+  <DMSE_Light_Payload_Chaff.label>箔条投放器</DMSE_Light_Payload_Chaff.label>
+  <DMSE_Light_Payload_Chaff.description>单束箔条与少量雷达吸收丝：只有一次打断敌方火控锁定的机会，之后整段飞行都不再有。</DMSE_Light_Payload_Chaff.description>
 
 </LanguageData>

@@ -1,6 +1,6 @@
 # DMSE BVR 世界層偵測與攔截重構 — 規劃
 
-> 狀態：**P0–P3 已實作；遊戲內自動驗收 25/25 通過，部分情境未測（§15-4）**　｜　更新：2026-10-18　｜　基於最新 `main` `e0b6005`（含已合併的跨圖層航跡與新的導引頭／雷射指示器）。P4 保留為選配，未實作。
+> 狀態：**P0–P4 已實作（區域防禦／數據鏈／據點自動防空／空投虛擬航跡／隱藏未偵測航跡／反輻射削弱抽象節點）**；遊戲內自動驗收 41/41 通過，部分情境未測（§15-4）　｜　更新：2026-10-20　｜　基於最新 `main` `e0b6005`（含已合併的跨圖層航跡與新的導引頭／雷射指示器）。
 >
 > §14 的 v1 決策採各列建議：全部導彈 150 ticks/格、點防禦、僅導彈陣地具抽象防空、空投維持舊流程、選取覆蓋圈加常駐開關、世界航跡抵達後只跑末端。§15 記錄實作、驗證與未測項目；§15-4 標為未測或部分的情境仍未實測。
 
@@ -396,6 +396,7 @@ t*  = d / (ω_t + ω_i)                         （會合時刻，相對 now）
 | **P2 世界層攔截 + 末端交接** | 鎖定、`BVRInterceptSolver`（點防禦）、`WorldObject_Interceptor`、通道帳本、`InterceptProjectile` 純視覺模式、`MissileIncoming.worldPhaseDone` 與末端登記、空爆額外擲骰、`Alerts_PlayerMissiles` 擴充 | 世界上看得到攔截彈飛出與會合；命中的導彈不再抵達；漏網的抵達後只經 CIWS；SAM 彈藥與冷卻正確扣除；空投仍走舊流程且與世界層共用通道不超額 |
 | **P3 抽象防空** | `WorldObjectComp_AirDefense`、`DMSE_MissileBase` 套用、庫存補充、地圖生成時交接 | 玩家打未生成地圖的導彈陣地時，在世界上被攔截；陣地地圖生成後改用實體裝置 |
 | **P4 擴充（選配）** | 區域防禦與數據鏈（同陣營節點共享偵測）、通用會合求解、劫掠空投轉為虛擬航跡（從偵測半徑邊緣以空投速度飛入，讓地圖內中過程完全退場）、火砲/運輸艙航跡、未偵測航跡隱藏、反輻射彈削弱抽象節點 | 各項獨立驗收 |
+| **P5 高度・反艦・干擾（2026-10 已實作）** | `BVRTargetProps.altitude`＋`MissileWorldMotion.AltitudeFactor`（偵測距離與地圖預警窗口）、`GuidanceType_AntiShip`（`ExtraTerminalUpdates +2`、`TracksMobileTargets`→終端檢查 20 ticks）、`WorldComponent_BVRNetwork` 的移動目標登錄（每 60 ticks 取樣 `MapParent` tile）、箔條 `jamStrength`／`chaffCharges`（世界層斷鎖、地圖層命中率折減） | `check_missile_content.py`、`DMSE.BVRTests`（高度係數、預設零件、干擾聚合）、實機驗收見 §15 |
 
 **檔案（預估）**
 
@@ -448,9 +449,23 @@ t*  = d / (ω_t + ω_i)                         （會合時刻，相對 now）
 
 重跑指令與測試限制見 `.source/DMSE.BVRTests/README.md`。XML 檢查只需 Python 標準函式庫。
 
-### 15-4. 遊戲內驗收（2026-10-18，自動驗收 25/25 通過）
+### 15-4. 遊戲內驗收（2026-10-18 建置；2026-10-20 回歸 41/41 通過）
 
 以 `.source/DMSE.BVRAcceptance` 在 1.7 實機跑完整遊戲迴圈（quicktest 新殖民地、Ultrafast），最初 19 項 185 個檢查連續三輪全數通過；修正導引頭（發現 3）後新增 S3，20 項 200 個檢查再次全數通過；之後補上空爆、移動目標、末端 CIWS 斷電、各倍速與改飛後存讀檔（W8–W11、L2）及 W1／W2 的覆蓋圈與擴散圈檢查，25 項 265 個檢查全數通過（Release DLL）；用法與各項內容見該目錄 README。測試關閉說書人事件並開啟 `unlimitedPower`，部分攔截以強制命中／落空驗證時序，實際命中率只記錄為備註。
+
+**2026-10-20 追加（導彈部件擴充 → P4 世界層擴充後回歸）**：同一套驗收跑 **45 項 498 個檢查，全數通過**（含新增的 D1–D4）。首輪失敗與修正：
+
+| 測試 | 首輪失敗原因 | 修正 |
+|---|---|---|
+| M8／W1／W2 | 既有四種來襲目標被設了低空高度，偵測半徑 ×0.6，導致世界導彈在圈外、W1 的 22.5 格基準變成 13.5 | 既有來襲目標的 `altitude` 回到 1000（中性），高度差異只留給世代化彈體 |
+| K2／G1 | 曾把發射井也當成「建造自帶零件」，測試仍假設新建的井是空的 | **預設零件只給物品型態彈體**；井／架建造完成是空的，材料在裝配時另計（成本已還原） |
+| W1／W5 | 數據鏈與據點自動防空讓其他陣營也可能偵測到航跡，測試卻要求 `detectedByFaction == null` | 改為驗證「玩家自己不再偵測到」（`!= Faction.OfPlayer`） |
+| W8 | 區域防禦會另外接戰飛往其他 tile 的航跡，測試假設它一定會存活 | 測試期間關閉 `areaDefenseEnabled`，只驗證空爆本身不殺它（改看死亡 tick ≠ 會合 tick） |
+| D1 | 一般據點自動防空會先攔截，測試假設只有玩家會接戰 | 改為驗證「攔截來自非目的地的節點」且該節點敵對攻擊方 |
+
+> 新開關：`DMSE_BVRWorldTuning.areaDefenseEnabled`（預設 true）、`podsUseWorldTracks`（預設 false）。
+
+另：K7／L1／L2 需要寫入遊戲的 `Saves` 資料夾，在受限沙箱下會出現 `UnauthorizedAccessException`，需以完整檔案權限執行驗收。
 
 | 情境 | 預期 | 結果 |
 |---|---|---|
@@ -478,4 +493,16 @@ t*  = d / (ω_t + ω_i)                         （會合時刻，相對 now）
 
 可利用開發者工具「Enemy missile strike (incoming, world)」與「Spawn NPC Missile Base (near player)／Missile Base: Fire at player NOW」手動重現；原有直接生成地圖內波次工具仍走完整後備流程。
 
-**本次未包含**：P4 區域防禦、數據鏈、空投虛擬航跡、一般據點自動防空、未偵測航跡隱藏及抽象節點反輻射削弱。
+**2026-10-20 追加 P4（已實作）**：
+
+| 項目 | 實作 |
+|---|---|
+| 數據鏈 | `WorldComponent_BVRNetwork.DetectorFor`：任一敵對節點看到即算偵測，同陣營節點都能接戰（不必是目的地節點） |
+| 區域防禦 | `BVRNode.CanEngage`＝航跡以本節點為目的地或飛越其覆蓋範圍；`NodeFor` 目的地節點優先、其餘取最近可用節點 |
+| 通用會合求解 | `BVRInterceptSolver.TrySolveGeneral`：對 `g(t)=角度(節點, 航跡(t)) − ω_i·t` 在 `[0, ETA]` 二分；點防禦仍用原本的對頭解（維持既有會合 tick） |
+| 一般據點自動防空 | `WorldComponent_SettlementDefense`：無專屬防空元件的敵方無地圖據點，依科技等級取得合成防空（Industrial 6 格／1 通道／2 發；Spacer 8 格／2 通道／4 發），狀態持久化 |
+| 空投虛擬航跡 | `WorldObject_DropPodTrack`＋`TrySpawnDropPodTrack`：空投在世界層多一條幽靈航跡（由覆蓋圈邊緣飛入，被攔截時同步移除地圖波次目標）；`podsUseWorldTracks` 預設關閉 |
+| 未偵測航跡隱藏 | `Patch_HiddenTracks`（`ExpandableWorldObjectsUtility.HiddenByRules`）＋`MissileWorldObject.VisibleToPlayer`／`Draw`／`ExpandingIcon`／`SelectableNow` |
+| 反輻射削弱抽象節點 | `MissileWorldObject.TryStrikeAbstractNode`：反輻射彈命中未生成地圖的防空節點時打掉 2 發庫存、壓制雷達一天，不生成地圖 |
+
+> 仍維持的先前取捨：空投預設仍走地圖內流程（虛擬航跡需開啟 Tuning）；`Gravship` 飛行中本體無地圖，不列為打擊目標。
