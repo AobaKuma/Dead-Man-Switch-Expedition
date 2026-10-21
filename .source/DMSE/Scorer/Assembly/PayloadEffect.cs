@@ -48,7 +48,7 @@ namespace DMSE
         public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
         {
             if (map == null || !center.InBounds(map)) { return; }
-            GenExplosion.DoExplosion(center, map, N, DamageDefOf.Bomb, null, damageAmount);
+            GenExplosion.DoExplosion(center, map, N, DamageDefOf.Bomb, MissileImpactUtility.Instigator, damageAmount);
         }
     }
 
@@ -72,7 +72,7 @@ namespace DMSE
             for (int i = 0; i < count; i++)
             {
                 IntVec3 c = CellFinder.RandomClosewalkCellNear(center, map, spreadRadius);
-                GenExplosion.DoExplosion(c, map, subRadius, DamageDefOf.Bomb, null, subDamageAmount);
+                GenExplosion.DoExplosion(c, map, subRadius, DamageDefOf.Bomb, MissileImpactUtility.Instigator, subDamageAmount);
             }
         }
     }
@@ -153,7 +153,7 @@ namespace DMSE
         public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
         {
             if (map == null || !center.InBounds(map)) { return; }
-            GenExplosion.DoExplosion(center, map, N, DamageDefOf.Vaporize, null, damageAmount);
+            GenExplosion.DoExplosion(center, map, N, DamageDefOf.Vaporize, MissileImpactUtility.Instigator, damageAmount);
         }
     }
 
@@ -189,7 +189,7 @@ namespace DMSE
         public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
         {
             if (map == null || !center.InBounds(map)) { return; }
-            GenExplosion.DoExplosion(center, map, N, DamageDefOf.EMP, null, empDamage);
+            GenExplosion.DoExplosion(center, map, N, DamageDefOf.EMP, MissileImpactUtility.Instigator, empDamage);
         }
     }
 
@@ -220,7 +220,7 @@ namespace DMSE
                         DamageDefOf.Stab,
                         damagePerHit,
                         armorPenetration,
-                        instigator: null,
+                        instigator: MissileImpactUtility.Instigator,
                         hitPart: null,
                         weapon: null);
                     pawn.TakeDamage(dinfo);

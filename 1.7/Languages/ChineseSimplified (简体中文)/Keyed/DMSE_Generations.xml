@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <DMSE.ManPortableSAM.Fire>发射防空导弹</DMSE.ManPortableSAM.Fire>
+  <DMSE.ManPortableSAM.FireDesc>锁定雷达网正在本地图追踪的来袭威胁，并对它发射一枚轻型防空导弹。锁定期间装备者会站在原地；不占用火控通道。\n\n携带导弹：{0}</DMSE.ManPortableSAM.FireDesc>
+  <DMSE.ManPortableSAM.NoAmmo>背包里没有{0}。</DMSE.ManPortableSAM.NoAmmo>
+  <DMSE.ManPortableSAM.NoTargets>射程内没有雷达正在追踪的来袭威胁。</DMSE.ManPortableSAM.NoTargets>
+  <DMSE.ManPortableSAM.NotReady>装备者目前无法发射。</DMSE.ManPortableSAM.NotReady>
+  <DMSE.ManPortableSAM.TargetLost>目标已消失或已被其他拦截弹接战。</DMSE.ManPortableSAM.TargetLost>
+  <DMSE.ManPortableSAM.TargetOption>{0}（{1}后抵达，命中率 {2}）</DMSE.ManPortableSAM.TargetOption>
+</LanguageData>

@@ -4,8 +4,12 @@ using Verse;
 
 namespace DMSE
 {
-    /// <summary>抵達落點的導彈。依攜帶的 <see cref="MissileConfig"/> 套用彈頭、命中偏移與特殊酬載。</summary>
-    public class MissileIncoming : Skyfaller
+    /// <summary>
+    /// 抵達落點的導彈（舊 skyfaller 版，已由 <see cref="Projectile_MissileIncoming"/> 取代）。
+    /// 保留給舊存檔：落地 def 已改為 Projectile，讀檔時若遇到飛行中或被 BVR 收起的舊導彈，
+    /// 轉換成新 Projectile 繼續（<see cref="ConvertToProjectile"/>；docs/Missile_Skyfaller轉Projectile_計畫.md §9）。
+    /// </summary>
+    public class MissileIncoming : Skyfaller, IIncomingMissile
     {
         public MissileConfig config;
 
@@ -21,21 +25,64 @@ namespace DMSE
         public int strikeWave = -1;
         private bool strikeReported;
 
+        public MissileConfig Config { get => config; set => config = value; }
+        public Faction Attacker { get => attacker; set => attacker = value; }
+        public bool BvrHandled { get => bvrHandled; set => bvrHandled = value; }
+        public bool WorldPhaseDone { get => worldPhaseDone; set => worldPhaseDone = value; }
+        public int StrikeMissionId { get => strikeMissionId; set => strikeMissionId = value; }
+        public int StrikeWave { get => strikeWave; set => strikeWave = value; }
+
         /// <summary>只顯示 def.label 且剔除括號後綴（如「cruise missile (incoming)」→「cruise missile」）。</summary>
-        public override string Label
-        {
-            get
-            {
-                string l = def.label;
-                int paren = l.IndexOf(" (", System.StringComparison.Ordinal);
-                return paren >= 0 ? l.Substring(0, paren) : l;
-            }
-        }
+        public override string Label => MissileImpactUtility.StripSuffix(def.label);
 
         private bool checkedBvr;
 
+        /// <summary>落地 def 已不是 skyfaller（已轉為 Projectile）：這個物件來自舊存檔，需要轉換。</summary>
+        private bool Obsolete => def.skyfaller == null;
+
+        /// <summary>
+        /// 建立帶相同設定的新 <see cref="Projectile_MissileIncoming"/>（未生成；同一 def）。
+        /// 舊存檔沒有世界航跡方位，轉換後照原本垂直墜落。
+        /// </summary>
+        public Projectile_MissileIncoming ConvertToProjectile()
+        {
+            if (!typeof(Projectile_MissileIncoming).IsAssignableFrom(def.thingClass)) { return null; }
+            Projectile_MissileIncoming p = (Projectile_MissileIncoming)ThingMaker.MakeThing(def);
+            p.config = config;
+            p.attacker = attacker;
+            p.bvrHandled = bvrHandled;
+            p.worldPhaseDone = worldPhaseDone;
+            p.strikeMissionId = strikeReported ? -1 : strikeMissionId;
+            p.strikeWave = strikeWave;
+            return p;
+        }
+
+        public override Vector3 DrawPos => Obsolete ? Position.ToVector3Shifted() : base.DrawPos;
+
+        protected override void DrawAt(Vector3 drawLoc, bool flip = false)
+        {
+            if (Obsolete) { return; }
+            base.DrawAt(drawLoc, flip);
+        }
+
         protected override void Tick()
         {
+            if (Obsolete)
+            {
+                // 舊存檔：以新 Projectile 在同一落點重新墜落（不再登記 BVR：讀檔前已處理過）。
+                Map map = Map;
+                IntVec3 cell = Position;
+                Projectile_MissileIncoming replacement = ConvertToProjectile();
+                strikeReported = true; // 回報交給替代物件
+                Destroy(DestroyMode.Vanish);
+                if (replacement != null)
+                {
+                    replacement.bvrHandled = true;
+                    GenSpawn.Spawn(replacement, cell, map);
+                }
+                return;
+            }
+
             // 首次 tick 時（此時呼叫端已設好 attacker/config）嘗試交給 BVR 攔截。
             if (!checkedBvr)
             {
@@ -66,67 +113,7 @@ namespace DMSE
                 strikeReported = true;
                 WorldComponent_StrikeReports.Report(strikeMissionId, strikeWave, StrikeOutcome.Hit);
             }
-            Map map = Map;
-            IntVec3 center = Position;
-
-            if (config != null && config.Valid)
-            {
-                float N = config.PayloadCapacity;
-
-                // 命中偏移（導引精度）
-                if (config.Scatter >= 1f)
-                {
-                    center = CellFinder.RandomClosewalkCellNear(Position, map, Mathf.RoundToInt(config.Scatter));
-                }
-
-                // 主彈體爆炸（Body explosion：基礎參數 + Warhead 數值修正）
-                GenExplosion.DoExplosion(center, map, config.ExplosionRadius, config.DamageDef, null, config.DamageAmount);
-
-                // 戰鬥部特效（WarheadEffect class）
-                MissilePartDef warheadPart = config.PartFor(MissilePartCategory.Warhead);
-                warheadPart?.warheadEffect?.Apply(N, center, map, attacker);
-
-                // 載荷效果（PayloadEffect class）
-                MissilePartDef payloadPart = config.PartFor(MissilePartCategory.Payload);
-                if (payloadPart?.payloadEffect != null)
-                {
-                    payloadPart.payloadEffect.Apply(N, center, map, attacker);
-                }
-                else if (payloadPart != null)
-                {
-                    // 向後相容：舊式數值欄位（payloadExplosionRadius 等）仍可使用。
-                    if (payloadPart.payloadExplosionRadius > 0f && payloadPart.payloadDamageDef != null)
-                    {
-                        GenExplosion.DoExplosion(center, map, payloadPart.payloadExplosionRadius,
-                            payloadPart.payloadDamageDef, null,
-                            payloadPart.payloadDamageAmount > 0 ? payloadPart.payloadDamageAmount : -1);
-                    }
-                    if (payloadPart.payloadSpawnThing != null && Rand.Chance(payloadPart.payloadSpawnChance))
-                    {
-                        int spawnN = Mathf.Max(1, payloadPart.payloadSpawnCount);
-                        int spread = Mathf.Max(1, Mathf.RoundToInt(config.ExplosionRadius));
-                        for (int i = 0; i < spawnN; i++)
-                        {
-                            IntVec3 c = CellFinder.RandomClosewalkCellNear(center, map, spread);
-                            GenSpawn.Spawn(payloadPart.payloadSpawnThing, c, map);
-                        }
-                    }
-                }
-            }
-            else
-            {
-                // 無設定時的後備爆炸。
-                GenExplosion.DoExplosion(center, map, 5f, DamageDefOf.Bomb, null);
-            }
-
-            // 爆炸閃光：強度與導彈威力（爆炸半徑）成正比。
-            if (map != null && map.weatherManager != null && map.weatherManager.eventHandler != null)
-            {
-                float radius = config != null && config.Valid ? config.ExplosionRadius : 5f;
-                Vector2 shadow = new Vector2(Rand.Range(-4f, 4f), Rand.Range(-4f, 0f));
-                map.weatherManager.eventHandler.AddEvent(new WeatherEvent_MissileFlash(map, radius / 1f, shadow));
-            }
-
+            MissileImpactUtility.Detonate(config, Position, Map, attacker);
             base.Impact();
         }
 
@@ -141,6 +128,11 @@ namespace DMSE
             Scribe_Values.Look(ref strikeWave, "strikeWave", -1);
             Scribe_Values.Look(ref strikeReported, "strikeReported", false);
             Scribe_Values.Look(ref checkedBvr, "checkedBvr", false);
+            if (Scribe.mode == LoadSaveMode.PostLoadInit && innerContainer == null)
+            {
+                // 存檔缺 innerContainer 節點時 Scribe_Deep 會把它讀成 null，Skyfaller.Destroy 會因此出錯（轉換流程要先 Destroy）。
+                innerContainer = new ThingOwner<Thing>(this);
+            }
         }
     }
 }

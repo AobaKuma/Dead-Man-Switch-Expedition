@@ -21,8 +21,19 @@ namespace DMSE.BVRAcceptance
         public static ThingDef EarlyFireControl => ThingDef.Named("DMSE_EarlyFireControlRadar");
         public static ThingDef LightLauncher => ThingDef.Named("DMSE_Building_LightMissileLauncher");
         public static ThingDef WingBack => ThingDef.Named("DMSE_Turret_Vulcan_WingBack");
-        public static ThingDef LightMissileItem => ThingDef.Named("DMSE_LightMissile");
+        public static ThingDef LightMissileItem => ThingDef.Named("DMSE_Missile_Grison");
         public static ThingDef InterceptorSkyfaller => ThingDef.Named("DMSE_SkyFaller_Interceptor");
+
+        /// <summary>
+        /// The interceptor in flight at <paramref name="targetId"/> (-1 = visual-only world launch), old skyfaller or
+        /// the interceptor body's own launch projectile (docs/Missile_Skyfaller轉Projectile_計畫.md).
+        /// </summary>
+        public static IInterceptorShot InterceptorShotAt(int targetId)
+            => Home.listerThings.AllThings.OfType<IInterceptorShot>().FirstOrDefault(p => p.TargetId == targetId);
+
+        /// <summary>Strike missiles still climbing out of the home map (old ScorerProjectile or a body launch projectile).</summary>
+        public static int DepartingMissiles
+            => Home.listerThings.AllThings.Count(x => x is ScorerProjectile || x is Projectile_MissileLaunch { worldObject: not null });
         public static ThingDef CruiseIncoming => ThingDef.Named("DMSE_Incoming_CruiseMissile");
         public static MissileBodyDef CruiseBody => DefDatabase<MissileBodyDef>.GetNamed("DMSE_MissileBody_Cruise");
         public static MissileBodyDef BallisticBody => DefDatabase<MissileBodyDef>.GetNamed("DMSE_MissileBody_Ballistic");
@@ -197,6 +208,50 @@ namespace DMSE.BVRAcceptance
         {
             apply();
             restoreActions.Add(restore);
+        }
+
+        /// <summary>
+        /// The mechanics suite (M/S/W/D/K/G/L) was written against the pre-generation values: a 2-channel phased array,
+        /// a 2-channel early fire-control radar and a 2-channel NPC missile base. Pin them for those tests so their numeric
+        /// assertions keep testing the ledger mechanics; the T tests (Tests_Generations) check the shipped values
+        /// (docs/三代裝備體系_實作計畫.md §7, §14-2).
+        /// </summary>
+        public static void PinLegacyRadarValues()
+        {
+            CaptureShippedRadarValues();
+            Override(() => SetRadarValues(2, 2, 2), UseShippedRadarValues);
+        }
+
+        /// <summary>
+        /// Put the shipped radar values back. Restore actions are dropped when a test reloads the game, so T tests call
+        /// this themselves instead of trusting the previous test's cleanup.
+        /// </summary>
+        public static void UseShippedRadarValues()
+        {
+            CaptureShippedRadarValues();
+            SetRadarValues(shippedPhaseArray, shippedEarlyFc, shippedNpcBase);
+        }
+
+        private static int shippedPhaseArray = -1, shippedEarlyFc = -1, shippedNpcBase = -1;
+
+        private static CompProperties_FireControlRadar PhaseArrayFc => PhaseArray.GetCompProperties<CompProperties_FireControlRadar>();
+        private static CompProperties_FireControlRadar EarlyFc => EarlyFireControl.GetCompProperties<CompProperties_FireControlRadar>();
+        private static CompProperties_WorldAirDefense NpcBaseDefense => DefDatabase<WorldObjectDef>.GetNamed("DMSE_MissileBase").comps
+            .OfType<CompProperties_WorldAirDefense>().First();
+
+        private static void CaptureShippedRadarValues()
+        {
+            if (shippedPhaseArray >= 0) { return; }
+            shippedPhaseArray = PhaseArrayFc.maxTargets;
+            shippedEarlyFc = EarlyFc.maxTargets;
+            shippedNpcBase = NpcBaseDefense.channels;
+        }
+
+        private static void SetRadarValues(int phaseArray, int earlyFc, int npcBase)
+        {
+            PhaseArrayFc.maxTargets = phaseArray;
+            EarlyFc.maxTargets = earlyFc;
+            NpcBaseDefense.channels = npcBase;
         }
 
         public static void SetFlick(Thing t, bool on)
@@ -384,7 +439,7 @@ namespace DMSE.BVRAcceptance
                 if (t.Destroyed) { continue; }
                 if (t is Pawn p && p.Faction == Enemy) { p.Destroy(DestroyMode.Vanish); continue; }
                 if (t is Corpse c && c.InnerPawn?.Faction == Enemy) { c.Destroy(DestroyMode.Vanish); continue; }
-                if (t is Skyfaller || t is LaserDesignatorMark && t != enemySafeMark) { t.Destroy(DestroyMode.Vanish); continue; }
+                if (t is Skyfaller || t is Projectile_MissileBase || t is LaserDesignatorMark && t != enemySafeMark) { t.Destroy(DestroyMode.Vanish); continue; }
                 if (t is Projectile) { t.Destroy(DestroyMode.Vanish); }
             }
 

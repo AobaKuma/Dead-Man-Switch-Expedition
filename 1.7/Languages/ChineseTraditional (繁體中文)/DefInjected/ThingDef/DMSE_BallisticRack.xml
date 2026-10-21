@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
 
-  <DMSE_Building_BallisticRack.label>彈道導彈發射架</DMSE_Building_BallisticRack.label>
-  <DMSE_Building_BallisticRack.description>一座 2x2 的開放式彈道導彈垂直發射架。彈體沒有物品型態：小人會直接用原料在架上裝配，完成後整枚導彈會直立架中、清楚可見。以開火指令對世界地圖目標發射。\n\n發射後架子會空下來，直到裝配好下一枚。可在裝配分頁切換老式、現役與先進彈道彈體。\n\n不可安裝於重力船甲板。</DMSE_Building_BallisticRack.description>
+  <DMSE_Building_BallisticRack.label>塔式發射架</DMSE_Building_BallisticRack.label>
+  <DMSE_Building_BallisticRack.description>一座把彈道導彈垂直架在桁架上的老式發射塔，結構簡單、造價低廉卻沒有任何導流或抑爆設計，點火時尾焰與衝擊波朝四周掃開、點燃鄰近的草地並震傷來不及走遠的人，因此它適合把便宜的彈體丟到很遠的地方，不適合蓋在自家倉庫旁邊。\n\n彈體沒有物品型態：小人會用原料直接在塔上裝配。可在裝配頁籤切換彈體；較新的彈體需要各自的研究。\n\n無法安裝於重力船甲板上。</DMSE_Building_BallisticRack.description>
 
 </LanguageData>

@@ -8,14 +8,17 @@
      takes screenshots, deletes its temporary save and quits the game.
   4. Removes the DLL again (also when the game crashes or times out) and copies the screenshots into OutDir.
 
-  Usage:  powershell -ExecutionPolicy Bypass -File .source/DMSE.BVRAcceptance/run.ps1 -OutDir <dir> [-TimeoutMinutes 45] [-Only S3,W6]
-  RimWorld must not be running (it locks 1.7/Assemblies). The active mod list is used as is.
+  Usage:  powershell -ExecutionPolicy Bypass -File .source/DMSE.BVRAcceptance/run.ps1 -OutDir <dir> [-TimeoutMinutes 45] [-Only S3,W6] [-SaveDataFolder <dir>]
+  RimWorld must not be running (it locks 1.7/Assemblies). The active mod list is used as is, unless -SaveDataFolder points
+  the game at another save-data folder (RimWorld's -savedatafolder): copy your Config folder there and edit its
+  ModsConfig.xml to run with a different mod list without touching your own.
 #>
 param(
     [Parameter(Mandatory = $true)][string]$OutDir,
     [int]$TimeoutMinutes = 45,
     [string]$GameExe = '',
-    [string]$Only = ''   # comma-separated test ids, e.g. 'S3,W6'; empty runs every test
+    [string]$Only = '',   # comma-separated test ids, e.g. 'S3,W6'; empty runs every test
+    [string]$SaveDataFolder = ''   # optional RimWorld -savedatafolder (own Config/ModsConfig.xml)
 )
 
 $ErrorActionPreference = 'Stop'
@@ -37,6 +40,7 @@ $started = Get-Date
 try {
     $gameArgs = @('-quicktest', "-dmse-bvr-acceptance=$OutDir")
     if ($Only -ne '') { $gameArgs += "-dmse-bvr-only=$Only" }
+    if ($SaveDataFolder -ne '') { $gameArgs += "-savedatafolder=$SaveDataFolder" }
     $proc = Start-Process -FilePath $GameExe -ArgumentList $gameArgs -WorkingDirectory (Split-Path $GameExe) -PassThru
     Write-Output "RimWorld started (pid $($proc.Id)); waiting up to $TimeoutMinutes min..."
     # Wait for every RimWorld process (the launcher may hand over to a child or be restarted through Steam).
@@ -63,6 +67,7 @@ if (Test-Path $list) {
     foreach ($shot in Get-Content $list) { if (Test-Path $shot) { Move-Item $shot $OutDir -Force } }
 }
 $playerLog = Join-Path $env:USERPROFILE 'AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Logs\Player.log'
+if ($SaveDataFolder -ne '' -and (Test-Path (Join-Path $SaveDataFolder 'Logs\Player.log'))) { $playerLog = Join-Path $SaveDataFolder 'Logs\Player.log' }
 if (Test-Path $playerLog) {
     $log = Get-Item $playerLog
     if ($log.LastWriteTime -ge $started) { Copy-Item $playerLog (Join-Path $OutDir 'Player.log') -Force }

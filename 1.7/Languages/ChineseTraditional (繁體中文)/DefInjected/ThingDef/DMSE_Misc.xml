@@ -4,7 +4,7 @@
   <!-- EN: phased-array radar -->
   <DMSE_PhaseArrayRadar.label>相控陣雷達</DMSE_PhaseArrayRadar.label>
   <!-- EN: A multi-purpose radar used for early warning and fire control targeting, typically installed on ships or military bases to track moving objects in the surrounding space. It can effectively identify the trajectories of suborbital objects such as droppods and predict their descent locations in advance; however, it is extremely power-intensive. -->
-  <DMSE_PhaseArrayRadar.description>一種用於預警與火控瞄準的多用途雷達，通常被安裝於艦船或軍事基地追蹤周圍空間內的活動物體。能夠有效識別空降艙等亞軌道飛行物體的軌跡並提前預測其下落位置，能夠為基地的預警及提前部署提供寶貴的反應時間，然而十分消耗電力。</DMSE_PhaseArrayRadar.description>
+  <DMSE_PhaseArrayRadar.description>一座集搜索與火控於一身的相控陣雷達，固定陣面、電子掃描與二十多個同時追蹤的目標通道讓它能同時引導二十多枚導彈攻防、成為整個防空網的大腦，代價是它吃掉一個基地相當比例的電力，而且造價足以讓任何一個殖民地心疼。</DMSE_PhaseArrayRadar.description>
   
   <!-- EN: solar shielding device -->
   <DMSE_SolarShield.label>耀班盾</DMSE_SolarShield.label>

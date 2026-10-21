@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
-  <!-- 巡飛彈彈藥（物品型態）。會隨時間劣化，需存放於巡飛彈儲存架或裝填於發射架內。
-       無 CompMissileConfig / ITab：不可自定義（customizeLocation=None）。
+  <!-- 反艦巡飛彈「白蟻」（物品型態）。會隨時間劣化，需存放於巡飛彈儲存架或裝填於發射架內。
+       無 CompMissileConfig / ITab：不可自定義（customizeLocation=None），以 MissileItemExtension 宣告彈體，
+       讓同一條發射軌也能裝 V1（DMSE_Missile_LegacyLoiter，DMSE_GenerationMissiles.xml）。
        渲染：裝填於發射架後由 CompMissileRackRenderer 依建築朝向繪製折翼彈體（Termite 折疊貼圖）。 -->
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_Missile_Termite</defName>
-    <label>loitering munition</label>
-    <description>A folding-wing loitering munition awaiting loading onto a launch rail. Its airframe slowly degrades in the open; store it on a loitering-munition rack to keep it serviceable.</description>
+    <label>anti-ship loitering munition</label>
+    <description>A folding-wing anti-ship loitering munition that skims the sea on a small turbojet and uses a passive radar and infrared seeker to find a hull in the terminal phase, slow and modestly armed but cheap, launchable from a ground rail, and inclined to go after moving ships, which is enough against an opponent without an Aegis system.</description>
     <descriptionHyperlinks>
       <ThingDef>DMSE_Building_LoiteringLauncher</ThingDef>
+      <ThingDef>DMSE_Building_RotaryLauncher</ThingDef>
       <ThingDef>DMSE_LoiteringRack</ThingDef>
     </descriptionHyperlinks>
     <graphicData>
@@ -25,15 +27,15 @@
     <useHitPoints>true</useHitPoints>
     <statBases>
       <MaxHitPoints>60</MaxHitPoints>
-      <MarketValue>700</MarketValue>
+      <MarketValue>900</MarketValue>
       <Mass>120</Mass>
       <Flammability>0.5</Flammability>
       <DeteriorationRate>10.0</DeteriorationRate>
     </statBases>
     <costList>
-      <Chemfuel>80</Chemfuel>
-      <Steel>60</Steel>
-      <ComponentIndustrial>2</ComponentIndustrial>
+      <Chemfuel>90</Chemfuel>
+      <Steel>70</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
     </costList>
     <recipeMaker>
       <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -43,9 +45,14 @@
       <recipeUsers Inherit="False">
         <li>DMS_TableMachinePrinter</li>
       </recipeUsers>
-      <researchPrerequisite>DMSE_LoiteringMunitions</researchPrerequisite>
+      <researchPrerequisite>DMSE_AntishipMissiles</researchPrerequisite>
       <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
     </recipeMaker>
+    <modExtensions>
+      <li Class="DMSE.MissileItemExtension">
+        <body>DMSE_MissileBody_Loiter</body>
+      </li>
+    </modExtensions>
     <comps>
       <!-- 未存放於庇護建築（儲存架/發射架）內時緩慢扣耐久；歸零後摧毀。5 HP/日 ≒ 12 日（60 HP）。 -->
       <li Class="DMSE.CompProperties_DurabilityDecay">
@@ -54,6 +61,7 @@
         <shelterBuildings>
           <li>DMSE_LoiteringRack</li>
           <li>DMSE_Building_LoiteringLauncher</li>
+          <li>DMSE_Building_RotaryLauncher</li>
         </shelterBuildings>
       </li>
     </comps>

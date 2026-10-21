@@ -73,23 +73,23 @@
   </ThingDef>
 
   <!-- ==================== 輕型導彈 落點 incoming skyfaller ==================== -->
-  <ThingDef ParentName="SkyfallerBase">
+  <ThingDef ParentName="DMSE_MissileIncomingProjectileBase">
     <defName>DMSE_Incoming_LightMissile</defName>
     <label>light missile (incoming)</label>
-    <thingClass>DMSE.MissileIncoming</thingClass>
+    <thingClass>DMSE.Projectile_MissileIncoming</thingClass>
     <graphicData>
       <texPath>Things/Missile/Grison/skyFaller</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>2.5</drawSize>
     </graphicData>
     <size>(1,1)</size>
-    <skyfaller>
-      <shadowSize>(2, 2)</shadowSize>
-      <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
-      <speed>1</speed>
-    </skyfaller>
     <!-- BVR 特性：輕型導彈比巡航快，但比彈道慢；隱身適中。 -->
     <modExtensions>
+      <li Class="DMSE.MissileFlightExtension">
+        <shadowSize>(2, 2)</shadowSize>
+        <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
+        <speed>1</speed>
+      </li>
       <li Class="DMSE.BVRTargetProps">
         <distanceLevel>1.2</distanceLevel>
         <stealthLevel>0</stealthLevel>
@@ -118,13 +118,14 @@
     <validLaunchTarget>false</validLaunchTarget>
   </WorldObjectDef>
 
-  <!-- ==================== 輕型導彈 傾斜發射軌（1x3）====================
+  <!-- ==================== 傾斜發射箱（1x3，中登）====================
        參考 DMSE_Building_LoiteringLauncher 結構，提升成本以反映更高技術層次。
-       容量 1 枚，需 DMSE_Ballistics 解鎖。 -->
+       容量 4 枚輕型導彈，需 DMSE_Ballistics 解鎖。對地發射軌與 SAM 共用彈艙：
+       用途過濾（MissileRoleExtension）讓攔截彈只被 SAM 取用、對地彈只被對地發射。 -->
   <ThingDef ParentName="DMSE_TiltLauncherBase">
     <defName>DMSE_Building_LightMissileLauncher</defName>
-    <label>light missile container</label>
-    <description>A tilt-launch container holding up four light missile. Faster and more capable than a loitering munition, supporting customisable warhead, guidance, and payload configurations.</description>
+    <label>tilt-launch container</label>
+    <description>A tilt-launch box holding four light missiles whose lid doubles as the launch rail, loading and firing automatically at the cost of hydraulics and power while four cells share one box to give decent salvo weight in a small footprint.\n\nStrike missiles are launched at targets beyond the local map; surface-to-air and dual-role missiles are also fired by the fire-control network as interceptors.</description>
     <thingClass>DMSE.Building_MissileRack</thingClass>
     <graphicData>
       <texPath>Things/Building/MissileLauncher4X/building</texPath>
@@ -151,8 +152,12 @@
       <fixedStorageSettings>
         <filter>
           <thingDefs>
-            <li>DMSE_LightMissile</li>
+            <li>DMSE_Missile_Grison</li>
             <li>DMSE_Missile_AdvancedLight</li>
+            <li>DMSE_Missile_AdvancedCruise</li>
+            <li>DMSE_Missile_Stinger</li>
+            <li>DMSE_Missile_Maverick</li>
+            <li>DMSE_Missile_Sparrow</li>
           </thingDefs>
         </filter>
       </fixedStorageSettings>
@@ -160,8 +165,12 @@
         <priority>Important</priority>
         <filter>
           <thingDefs>
-            <li>DMSE_LightMissile</li>
+            <li>DMSE_Missile_Grison</li>
             <li>DMSE_Missile_AdvancedLight</li>
+            <li>DMSE_Missile_AdvancedCruise</li>
+            <li>DMSE_Missile_Stinger</li>
+            <li>DMSE_Missile_Maverick</li>
+            <li>DMSE_Missile_Sparrow</li>
           </thingDefs>
         </filter>
       </defaultStorageSettings>
@@ -216,13 +225,13 @@
     </researchPrerequisites>
   </ThingDef>
 
-  <!-- ==================== 輕型導彈 垂直發射單元（1x1）====================
-       單格 VLS 單元，適合密集部署或空間受限場合。
-       不可旋轉（垂直朝向），禁止建於重力船 substructure。 -->
+  <!-- ==================== 小型垂直發射井（1x1，四單元，小登）====================
+       單格四單元 VLS，適合密集部署或空間受限場合；垂直發射一律吃電（200 W）。
+       不可旋轉（垂直朝向），禁止建於重力船 substructure。需 DMSE_IntegratedCircuits。 -->
   <ThingDef ParentName="DMSE_VerticalLauncherBase">
     <defName>DMSE_Building_LightMissileVLS</defName>
-    <label>light missile VLS cell</label>
-    <description>A single-cell vertical launch system for light missiles. Compact footprint allows dense battery deployment. Cannot be installed on gravship decks.</description>
+    <label>light vertical launch cell</label>
+    <description>A 1x1 vertical launcher with four cells flush with the ground and sized only for light missiles, compact enough to ring a base's perimeter at the cost of loading each cell separately, with every opening hatch telling the enemy that something is here.\n\nCannot be installed on gravship decks.</description>
     <thingClass>DMSE.Building_MissileRack</thingClass>
     <graphicData>
       <!-- 暫借 1x1 貼圖；建議後期替換為獨立 VLS 頂蓋貼圖。 -->
@@ -249,8 +258,12 @@
       <fixedStorageSettings>
         <filter>
           <thingDefs>
-            <li>DMSE_LightMissile</li>
+            <li>DMSE_Missile_Grison</li>
             <li>DMSE_Missile_AdvancedLight</li>
+            <li>DMSE_Missile_AdvancedCruise</li>
+            <li>DMSE_Missile_Stinger</li>
+            <li>DMSE_Missile_Maverick</li>
+            <li>DMSE_Missile_Sparrow</li>
           </thingDefs>
         </filter>
       </fixedStorageSettings>
@@ -258,8 +271,12 @@
         <priority>Important</priority>
         <filter>
           <thingDefs>
-            <li>DMSE_LightMissile</li>
+            <li>DMSE_Missile_Grison</li>
             <li>DMSE_Missile_AdvancedLight</li>
+            <li>DMSE_Missile_AdvancedCruise</li>
+            <li>DMSE_Missile_Stinger</li>
+            <li>DMSE_Missile_Maverick</li>
+            <li>DMSE_Missile_Sparrow</li>
           </thingDefs>
         </filter>
       </defaultStorageSettings>
@@ -268,10 +285,17 @@
       <li Class="DMSE.MissileLauncherExtension">
         <sizeClass>Light</sizeClass>
         <launchMode>Vertical</launchMode>
-        <capacity>1</capacity>
+        <capacity>4</capacity>
+        <!-- 封閉井蓋：不畫彈體 -->
+        <renderStoredBody>false</renderStoredBody>
       </li>
     </modExtensions>
     <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>200</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable" />
       <li Class="DMSE.CompProperties_MissileRackRenderer">
         <maxStored>1</maxStored>
         <useNativeDrawSize>true</useNativeDrawSize>
@@ -287,6 +311,12 @@
         <launchCooldownTicks>450</launchCooldownTicks>
         <launchForwardCells>1</launchForwardCells>
       </li>
+      <!-- 垂直發射的攔截彈：攔截／兩用彈由火控雷達指派。 -->
+      <li Class="DMSE.CompProperties_MissileLauncher">
+        <interceptorSkyfaller>DMSE_SkyFaller_Interceptor</interceptorSkyfaller>
+        <reloadCooldownTicks>240</reloadCooldownTicks>
+        <interceptorTravelTicks>300</interceptorTravelTicks>
+      </li>
     </comps>
     <inspectorTabs>
       <li>RimWorld.ITab_Storage</li>
@@ -294,7 +324,7 @@
       <li>DMSE.ITab_MissileAssembly</li>
     </inspectorTabs>
     <researchPrerequisites>
-      <li>DMSE_Ballistics</li>
+      <li>DMSE_IntegratedCircuits</li>
     </researchPrerequisites>
   </ThingDef>
 

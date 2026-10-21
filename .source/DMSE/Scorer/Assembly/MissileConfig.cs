@@ -143,17 +143,22 @@ namespace DMSE
         public bool Valid => body != null;
 
         /// <summary>
-        /// 是否具備導引能力（導引槽部件提供終端導引）。慣性制導、未裝導引部件、
-        /// 或沒有導引槽的彈體為 false：無法跨圖層打擊，也無法追蹤移動目標。
+        /// 是否具備導引能力（導引槽部件提供終端導引，或彈體的內建導引標了 <see cref="MissileBodyDef.builtInTerminalGuidance"/>）。
+        /// 慣性制導、未裝導引部件、或只有選點用內建導引的彈體為 false：無法跨圖層打擊，也無法追蹤移動目標。
         /// </summary>
         public bool HasTerminalGuidance
         {
             get
             {
                 MissilePartDef guidance = PartFor(MissilePartCategory.Guidance);
-                return guidance != null && guidance.ProvidesTerminalGuidance;
+                if (guidance != null) { return guidance.ProvidesTerminalGuidance; }
+                return body != null && body.builtInTerminalGuidance
+                    && body.builtInGuidance != null && body.builtInGuidance.TerminalGuidance;
             }
         }
+
+        /// <summary>作為攔截彈時的命中率係數（彈體決定；沒有彈體為 1）。</summary>
+        public float InterceptHitFactor => body != null ? Mathf.Max(0f, body.interceptHitFactor) : 1f;
 
         /// <summary>飛行中可更新終端位置的次數（由彈體決定，加上導引頭加成；無導引能力為 0）。</summary>
         public int TerminalUpdates => HasTerminalGuidance && body != null

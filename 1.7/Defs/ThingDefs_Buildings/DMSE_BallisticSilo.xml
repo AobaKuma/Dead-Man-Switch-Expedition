@@ -72,23 +72,23 @@
   </ThingDef>
 
   <!-- ==================== 彈道導彈 落點 incoming skyfaller ==================== -->
-  <ThingDef ParentName="SkyfallerBase">
+  <ThingDef ParentName="DMSE_MissileIncomingProjectileBase">
     <defName>DMSE_Incoming_BallisticMissile</defName>
     <label>ballistic missile (incoming)</label>
-    <thingClass>DMSE.MissileIncoming</thingClass>
+    <thingClass>DMSE.Projectile_MissileIncoming</thingClass>
     <graphicData>
       <texPath>Things/Missile/Moskit/skyFaller_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>5</drawSize>
     </graphicData>
     <size>(1,1)</size>
-    <skyfaller>
-      <shadowSize>(4, 4)</shadowSize>
-      <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
-      <!-- 彈道導彈速度極快，窗口極短，幾乎無法攔截 -->
-      <speed>1</speed>
-    </skyfaller>
     <modExtensions>
+      <li Class="DMSE.MissileFlightExtension">
+        <shadowSize>(4, 4)</shadowSize>
+        <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
+        <!-- 彈道導彈速度極快，窗口極短，幾乎無法攔截 -->
+        <speed>1</speed>
+      </li>
       <li Class="DMSE.BVRTargetProps">
         <!-- 彈道：高速（難以攔截）、低隱身（再入大氣層產生等離子鞘，雷達可見） -->
         <distanceLevel>2</distanceLevel>
@@ -117,15 +117,16 @@
     <validLaunchTarget>false</validLaunchTarget>
   </WorldObjectDef>
 
-  <!-- ==================== 彈道導彈 發射井（3x3 垂發）====================
+  <!-- ==================== 戰略導彈發射井（3x3 垂發，小登）====================
+       封閉抑爆：沒有 CompLaunchBackblast，發射不波及周圍（與 2x2 塔式發射架的取捨）。
        不可旋轉（垂直朝向唯一），禁止建於重力船 substructure（繼承自 DMSE_VerticalLauncherBase）。
        建築本身持有 CompMissileConfig（直接在架上自定義、裝配）及 CompMissileLauncher_Ballistic（發射控制）。
        ITab_MissileAssembly 讓玩家選擇彈頭/導引/酬載，WorkGiver_AssembleBallisticSilo 分派小人裝配。
        需 DMSE_StrategicSystems 解鎖。 -->
   <ThingDef ParentName="DMSE_VerticalLauncherBase">
     <defName>DMSE_Building_BallisticSilo</defName>
-    <label>ballistic missile silo</label>
-    <description>A 3x3 missile silo for ballistic weapons. Unlike cruise missiles, the ballistic airframe is assembled directly in the silo by colonists consuming raw materials; once built, launch via the fire command at a world map target.\n\nCannot be installed on gravship decks.</description>
+    <label>strategic missile silo</label>
+    <description>A semi-buried strategic missile silo whose heavy concrete hatches, layered shock absorption and blast suppression keep a launch from spilling onto its surroundings, among the most expensive and toughest structures a base can build and existing for a single missile.\n\nThe ballistic airframe is assembled directly in the silo by colonists consuming raw materials; once built, launch via the fire command at a world map target.\n\nCannot be installed on gravship decks.</description>
     <graphicData>
       <texPath>Things/Building/MissileSilo</texPath>
       <graphicClass>Graphic_Single</graphicClass>

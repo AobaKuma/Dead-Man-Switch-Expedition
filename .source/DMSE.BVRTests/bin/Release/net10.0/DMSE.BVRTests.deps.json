@@ -1,0 +1,692 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "DMSE.BVRTests/1.0.0": {
+        "dependencies": {
+          "DMSE": "1.0.0",
+          "Assembly-CSharp": "1.7.9789.37269",
+          "UnityStubs": "1.0.0.0",
+          "Waylith": "1.0.0.0"
+        },
+        "runtime": {
+          "DMSE.BVRTests.dll": {}
+        }
+      },
+      "DMSE/1.0.0": {
+        "runtime": {
+          "DMSE.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Assembly-CSharp/1.7.9789.37269": {
+        "runtime": {
+          "Assembly-CSharp.dll": {
+            "assemblyVersion": "1.7.9789.37269",
+            "fileVersion": "1.7.9789.37269"
+          }
+        }
+      },
+      "UnityStubs/1.0.0.0": {
+        "runtime": {
+          "UnityStubs.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Waylith/1.0.0.0": {
+        "runtime": {
+          "Waylith.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "com.rlabrecque.steamworks.net/0.0.0.0": {
+        "runtime": {
+          "com.rlabrecque.steamworks.net.dll": {
+            "assemblyVersion": "0.0.0.0",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "Brutal.Core.Logging/2026.9.0.0": {
+        "runtime": {
+          "Brutal.Core.Logging.dll": {
+            "assemblyVersion": "2026.9.0.0",
+            "fileVersion": "2026.9.0.0"
+          }
+        }
+      },
+      "Waylith.AssetBake/1.0.0.0": {
+        "runtime": {
+          "Waylith.AssetBake.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "ISharpZipLib/1.0.0.0": {
+        "runtime": {
+          "ISharpZipLib.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Brutal.Vulkan/2026.9.0.0": {
+        "runtime": {
+          "Brutal.Vulkan.dll": {
+            "assemblyVersion": "2026.9.0.0",
+            "fileVersion": "2026.9.0.0"
+          }
+        }
+      },
+      "Waylith.UnityCompat/1.0.0.0": {
+        "runtime": {
+          "Waylith.UnityCompat.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "AssetsTools.NET/3.0.0.0": {
+        "runtime": {
+          "AssetsTools.NET.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.0.0"
+          }
+        }
+      },
+      "AssetsTools.NET.Texture/1.0.0.0": {
+        "runtime": {
+          "AssetsTools.NET.Texture.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Microsoft.Extensions.Logging.Abstractions/10.0.0.0": {
+        "runtime": {
+          "Microsoft.Extensions.Logging.Abstractions.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.52411"
+          }
+        }
+      },
+      "Fmod5Sharp/3.1.0.0": {
+        "runtime": {
+          "Fmod5Sharp.dll": {
+            "assemblyVersion": "3.1.0.0",
+            "fileVersion": "3.1.0.0"
+          }
+        }
+      },
+      "Waylith.VideoDecode/1.0.0.0": {
+        "runtime": {
+          "Waylith.VideoDecode.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Brutal.Glfw/2026.9.0.0": {
+        "runtime": {
+          "Brutal.Glfw.dll": {
+            "assemblyVersion": "2026.9.0.0",
+            "fileVersion": "2026.9.0.0"
+          }
+        }
+      },
+      "Brutal.Core.Numerics/2026.9.0.0": {
+        "runtime": {
+          "Brutal.Core.Numerics.dll": {
+            "assemblyVersion": "2026.9.0.0",
+            "fileVersion": "2026.9.0.0"
+          }
+        }
+      },
+      "Brutal.Core.Collections/2026.9.0.0": {
+        "runtime": {
+          "Brutal.Core.Collections.dll": {
+            "assemblyVersion": "2026.9.0.0",
+            "fileVersion": "2026.9.0.0"
+          }
+        }
+      },
+      "Brutal.Vulkan.Abstractions/2026.9.0.0": {
+        "runtime": {
+          "Brutal.Vulkan.Abstractions.dll": {
+            "assemblyVersion": "2026.9.0.0",
+            "fileVersion": "2026.9.0.0"
+          }
+        }
+      },
+      "Brutal.Core.Common/2026.9.0.0": {
+        "runtime": {
+          "Brutal.Core.Common.dll": {
+            "assemblyVersion": "2026.9.0.0",
+            "fileVersion": "2026.9.0.0"
+          }
+        }
+      },
+      "Brutal.Stb/2026.9.0.0": {
+        "runtime": {
+          "Brutal.Stb.dll": {
+            "assemblyVersion": "2026.9.0.0",
+            "fileVersion": "2026.9.0.0"
+          }
+        }
+      },
+      "Brutal.Vulkan.Vma/2026.9.0.0": {
+        "runtime": {
+          "Brutal.Vulkan.Vma.dll": {
+            "assemblyVersion": "2026.9.0.0",
+            "fileVersion": "2026.9.0.0"
+          }
+        }
+      },
+      "Brutal.Texture/2026.9.0.0": {
+        "runtime": {
+          "Brutal.Texture.dll": {
+            "assemblyVersion": "2026.9.0.0",
+            "fileVersion": "2026.9.0.0"
+          }
+        }
+      },
+      "PsdSharp/1.2.0.0": {
+        "runtime": {
+          "PsdSharp.dll": {
+            "assemblyVersion": "1.2.0.0",
+            "fileVersion": "1.2.0.0"
+          }
+        }
+      },
+      "Brutal.Slang/2026.9.0.0": {
+        "runtime": {
+          "Brutal.Slang.dll": {
+            "assemblyVersion": "2026.9.0.0",
+            "fileVersion": "2026.9.0.0"
+          }
+        }
+      },
+      "Brutal.Core.Strings/2026.9.0.0": {
+        "runtime": {
+          "Brutal.Core.Strings.dll": {
+            "assemblyVersion": "2026.9.0.0",
+            "fileVersion": "2026.9.0.0"
+          }
+        }
+      },
+      "Microsoft.Extensions.Logging.Console/10.0.0.0": {
+        "runtime": {
+          "Microsoft.Extensions.Logging.Console.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.52411"
+          }
+        }
+      },
+      "Brutal.Core.Memory/2026.9.0.0": {
+        "runtime": {
+          "Brutal.Core.Memory.dll": {
+            "assemblyVersion": "2026.9.0.0",
+            "fileVersion": "2026.9.0.0"
+          }
+        }
+      },
+      "ZstdSharp/0.8.8.0": {
+        "runtime": {
+          "ZstdSharp.dll": {
+            "assemblyVersion": "0.8.8.0",
+            "fileVersion": "0.8.8.0"
+          }
+        }
+      },
+      "K4os.Compression.LZ4.Streams/1.3.8.0": {
+        "runtime": {
+          "K4os.Compression.LZ4.Streams.dll": {
+            "assemblyVersion": "1.3.8.0",
+            "fileVersion": "1.3.8.0"
+          }
+        }
+      },
+      "K4os.Compression.LZ4/1.3.8.0": {
+        "runtime": {
+          "K4os.Compression.LZ4.dll": {
+            "assemblyVersion": "1.3.8.0",
+            "fileVersion": "1.3.8.0"
+          }
+        }
+      },
+      "System.IO.Hashing/10.0.0.13": {
+        "runtime": {
+          "System.IO.Hashing.dll": {
+            "assemblyVersion": "10.0.0.13",
+            "fileVersion": "10.0.1326.50504"
+          }
+        }
+      },
+      "Microsoft.Extensions.Logging/10.0.0.0": {
+        "runtime": {
+          "Microsoft.Extensions.Logging.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.52411"
+          }
+        }
+      },
+      "Microsoft.Extensions.ObjectPool/11.0.0.0": {
+        "runtime": {
+          "Microsoft.Extensions.ObjectPool.dll": {
+            "assemblyVersion": "11.0.0.0",
+            "fileVersion": "11.0.26.30315"
+          }
+        }
+      },
+      "CommunityToolkit.HighPerformance/8.4.0.0": {
+        "runtime": {
+          "CommunityToolkit.HighPerformance.dll": {
+            "assemblyVersion": "8.4.0.0",
+            "fileVersion": "8.4.2.1"
+          }
+        }
+      },
+      "AssetRipper.TextureDecoder/1.3.0.0": {
+        "runtime": {
+          "AssetRipper.TextureDecoder.dll": {
+            "assemblyVersion": "1.3.0.0",
+            "fileVersion": "1.3.0.0"
+          }
+        }
+      },
+      "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.0.0": {
+        "runtime": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.52411"
+          }
+        }
+      },
+      "NAudio.Core/2.2.1.0": {
+        "runtime": {
+          "NAudio.Core.dll": {
+            "assemblyVersion": "2.2.1.0",
+            "fileVersion": "2.2.1.0"
+          }
+        }
+      },
+      "OggVorbisEncoder/1.2.2.0": {
+        "runtime": {
+          "OggVorbisEncoder.dll": {
+            "assemblyVersion": "1.2.2.0",
+            "fileVersion": "1.2.2.0"
+          }
+        }
+      },
+      "Brutal.Ktx/2026.9.0.0": {
+        "runtime": {
+          "Brutal.Ktx.dll": {
+            "assemblyVersion": "2026.9.0.0",
+            "fileVersion": "2026.9.0.0"
+          }
+        }
+      },
+      "Brutal.Gli/2026.9.0.0": {
+        "runtime": {
+          "Brutal.Gli.dll": {
+            "assemblyVersion": "2026.9.0.0",
+            "fileVersion": "2026.9.0.0"
+          }
+        }
+      },
+      "Brutal.Interop/2026.9.0.0": {
+        "runtime": {
+          "Brutal.Interop.dll": {
+            "assemblyVersion": "2026.9.0.0",
+            "fileVersion": "2026.9.0.0"
+          }
+        }
+      },
+      "Microsoft.Extensions.Configuration.Abstractions/10.0.0.0": {
+        "runtime": {
+          "Microsoft.Extensions.Configuration.Abstractions.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.52411"
+          }
+        }
+      },
+      "Microsoft.Extensions.Configuration.Binder/10.0.0.0": {
+        "runtime": {
+          "Microsoft.Extensions.Configuration.Binder.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.52411"
+          }
+        }
+      },
+      "Microsoft.Extensions.Configuration/10.0.0.0": {
+        "runtime": {
+          "Microsoft.Extensions.Configuration.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.52411"
+          }
+        }
+      },
+      "Microsoft.Extensions.Options/10.0.0.0": {
+        "runtime": {
+          "Microsoft.Extensions.Options.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.52411"
+          }
+        }
+      },
+      "Microsoft.Extensions.Logging.Configuration/10.0.0.0": {
+        "runtime": {
+          "Microsoft.Extensions.Logging.Configuration.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.52411"
+          }
+        }
+      },
+      "Microsoft.Extensions.Primitives/10.0.0.0": {
+        "runtime": {
+          "Microsoft.Extensions.Primitives.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.52411"
+          }
+        }
+      },
+      "Microsoft.Extensions.Options.ConfigurationExtensions/10.0.0.0": {
+        "runtime": {
+          "Microsoft.Extensions.Options.ConfigurationExtensions.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.52411"
+          }
+        }
+      },
+      "K4os.Hash.xxHash/1.0.8.0": {
+        "runtime": {
+          "K4os.Hash.xxHash.dll": {
+            "assemblyVersion": "1.0.8.0",
+            "fileVersion": "1.0.8.0"
+          }
+        }
+      },
+      "Microsoft.Extensions.DependencyInjection/10.0.0.0": {
+        "runtime": {
+          "Microsoft.Extensions.DependencyInjection.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.52411"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "DMSE.BVRTests/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "DMSE/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Assembly-CSharp/1.7.9789.37269": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "UnityStubs/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Waylith/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "com.rlabrecque.steamworks.net/0.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Brutal.Core.Logging/2026.9.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Waylith.AssetBake/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ISharpZipLib/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Brutal.Vulkan/2026.9.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Waylith.UnityCompat/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "AssetsTools.NET/3.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "AssetsTools.NET.Texture/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.Extensions.Logging.Abstractions/10.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Fmod5Sharp/3.1.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Waylith.VideoDecode/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Brutal.Glfw/2026.9.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Brutal.Core.Numerics/2026.9.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Brutal.Core.Collections/2026.9.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Brutal.Vulkan.Abstractions/2026.9.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Brutal.Core.Common/2026.9.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Brutal.Stb/2026.9.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Brutal.Vulkan.Vma/2026.9.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Brutal.Texture/2026.9.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "PsdSharp/1.2.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Brutal.Slang/2026.9.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Brutal.Core.Strings/2026.9.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.Extensions.Logging.Console/10.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Brutal.Core.Memory/2026.9.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ZstdSharp/0.8.8.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "K4os.Compression.LZ4.Streams/1.3.8.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "K4os.Compression.LZ4/1.3.8.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "System.IO.Hashing/10.0.0.13": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.Extensions.Logging/10.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.Extensions.ObjectPool/11.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CommunityToolkit.HighPerformance/8.4.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "AssetRipper.TextureDecoder/1.3.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "NAudio.Core/2.2.1.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "OggVorbisEncoder/1.2.2.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Brutal.Ktx/2026.9.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Brutal.Gli/2026.9.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Brutal.Interop/2026.9.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.Extensions.Configuration.Abstractions/10.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.Extensions.Configuration.Binder/10.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.Extensions.Configuration/10.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.Extensions.Options/10.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.Extensions.Logging.Configuration/10.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.Extensions.Primitives/10.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.Extensions.Options.ConfigurationExtensions/10.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "K4os.Hash.xxHash/1.0.8.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.Extensions.DependencyInjection/10.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

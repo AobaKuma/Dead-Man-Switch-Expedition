@@ -1,28 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
-  <!-- ==================== 巡飛彈 彈體 ==================== -->
-  <!-- 第一階：軌道傾斜發射、最前期 BVR、無自定義。隱身與速度皆不理想（低 WorldSpeedFactor）。 -->
+  <!-- ==================== 反艦巡飛彈（白蟻）彈體 ====================
+       第一階（中登）：軌道傾斜發射、無自定義。速度與隱身不理想（低 WorldSpeedFactor），
+       但內建反艦主動雷達導引：自動選點、具導引能力（可跨圖層、可追蹤移動據點）。
+       終端修正 = terminalUpdates 1 + GuidanceType_AntiShip 額外 2 = 3 次。
+       老式巡飛彈（V1）見 DMSE_MissileGenerationBodies.xml 的 DMSE_MissileBody_LegacyLoiter。 -->
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_Loiter</defName>
-    <label>loitering munition</label>
-    <description>An early rail-launched loitering munition. Slow and easy to detect, but it can strike beyond visual range long before proper cruise missiles are available.</description>
+    <label>anti-ship loitering munition</label>
+    <description>A folding-wing anti-ship loitering munition that skims on a small turbojet and finds a hull with its own radar seeker in the terminal phase. Slow and easy to detect, but it picks its own impact point, keeps chasing a moving target and can strike across layers.</description>
     <sizeClass>Loitering</sizeClass>
     <launchMode>Tilt</launchMode>
     <customizeLocation>None</customizeLocation>
     <baseExplosionRadius>3</baseExplosionRadius>
     <baseDamageDef>Bomb</baseDamageDef>
-    <baseDamageAmount>60</baseDamageAmount>
+    <baseDamageAmount>70</baseDamageAmount>
     <baseScatter>4</baseScatter>
-    <baseWorldSpeedFactor>0.55</baseWorldSpeedFactor>
+    <baseWorldSpeedFactor>0.65</baseWorldSpeedFactor>
+    <!-- 射程：70 * 2.4 * 0.1 = 16.8 → 17 格 -->
     <baseRange>0</baseRange>
-    <baseFuel>60</baseFuel>
-    <baseSpecificImpulse>2</baseSpecificImpulse>
+    <terminalUpdates>1</terminalUpdates>
+    <baseFuel>70</baseFuel>
+    <baseSpecificImpulse>2.4</baseSpecificImpulse>
     <rangePerFuelImpulse>0.1</rangePerFuelImpulse>
     <incomingSkyfaller>DMSE_Incoming_Loiter</incomingSkyfaller>
+    <launchProjectile>DMSE_Launch_Loiter</launchProjectile>
     <!-- 無 slots：不可自定義。 -->
-    <!-- 巡飛彈由操作員以影像選點：抵達後手動選擇落點（只影響選目標，不提供跨圖層與終端更新）。 -->
-    <builtInGuidance Class="DMSE.GuidanceType_TV" />
+    <!-- 內建反艦導引：自動鎖定最硬的敵對建築（艦上的引擎／艦橋），並提供導引能力。 -->
+    <builtInGuidance Class="DMSE.GuidanceType_AntiShip" />
+    <builtInTerminalGuidance>true</builtInTerminalGuidance>
   </DMSE.MissileBodyDef>
 
 </Defs>

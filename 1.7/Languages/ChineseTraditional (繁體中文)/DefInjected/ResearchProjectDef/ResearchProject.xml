@@ -4,7 +4,7 @@
   <!-- EN: Aerospace Applications -->
   <DMSE_Aerospace.label>航太應用</DMSE_Aerospace.label>
   <!-- EN: By scaling up Tantasteel and graphene production and exploring the key applications of these specialty materials in aerospace and microelectronics, this research unlocks nuclear thermal propulsion engines and orbital electronic-warfare stealth equipment for gravships and orbital starships. -->
-  <DMSE_Aerospace.description>透過規模化的生產鉭鎢合金與石墨烯並發掘這些特種材料在航空航天領與微電子等領域中的關鍵應用。\n\n透過該研究解鎖應用於重力船與軌道星艦上的熱核推進引擎與軌道電子戰隱蔽設備。</DMSE_Aerospace.description>
+  <DMSE_Aerospace.description>透過規模化的生產鉭鎢合金與石墨烯並發掘這些特種材料在航空航天領與微電子等領域中的關鍵應用。\n\n透過該研究解鎖應用於重力船與軌道星艦上的熱核推進引擎與軌道電子戰隱蔽設備，以及相控陣雷達與先進防空砲。</DMSE_Aerospace.description>
   
   <!-- EN: Carbon synthesis -->
   <DMSE_Carbohydrate.label>碳合成</DMSE_Carbohydrate.label>
@@ -28,13 +28,16 @@
   
 
   <DMSE_RadarBasis.label>雷達</DMSE_RadarBasis.label>
-  <DMSE_LoiteringMunitions.label>遊蕩彈藥</DMSE_LoiteringMunitions.label>
-  <DMSE_LoiteringMunitions.description>軌道發射的摺疊翼遊蕩彈藥為早期殖民地提供了粗糙的超視距打擊能力。速度慢且容易被偵測，但遠早於正規巡弋導彈便可投入使用。\n\n透過該研究解鎖遊蕩彈藥、其傾斜發射軌與儲存架。</DMSE_LoiteringMunitions.description>
+  <DMSE_LoiteringMunitions.label>巡飛彈</DMSE_LoiteringMunitions.label>
+  <DMSE_LoiteringMunitions.description>軌道發射的脈衝噴射巡飛彈為早期殖民地提供了粗糙的超視距打擊能力。速度慢且容易被偵測，但遠早於正規巡航導彈便可投入使用。\n\n透過該研究解鎖老式巡飛彈、軌道發射架與巡飛彈儲存架。</DMSE_LoiteringMunitions.description>
   <DMSE_Ballistics.label>彈道學</DMSE_Ballistics.label>
-  <DMSE_Ballistics.description>對大氣層內導彈飛行動力學、固態燃料分級與末端導引的系統性研究。將火箭發動機與導引頭小型化以配合可快速再裝填的發射筒，開啟了新一級的戰場火力。\n\n透過該研究解鎖輕型導彈、其傾斜發射軌與單聯裝垂直發射器。</DMSE_Ballistics.description>
+  <DMSE_Ballistics.description>對大氣層內導彈飛行動力學、液態與固態燃料分級以及發射結構的系統性研究。第一代彈道火箭、手操旋轉發射架與砲組操作的高射砲，讓殖民地在沒有電子工業的情況下也能擁有遠程火力。\n\n透過該研究解鎖塔式發射架與老式彈道導彈、旋轉發射架、老式防空砲、傾斜發射箱與導彈儲存架。</DMSE_Ballistics.description>
   <DMSE_IntegratedCircuits.label>積體電路</DMSE_IntegratedCircuits.label>
-  <DMSE_IntegratedCircuits.description>高密度積體電子技術使小型化的相控陣訊號處理與捷聯式慣性參考單元得以緊湊到足以裝入導彈彈體內。其成果是一套由搜索雷達、火控雷達與地對空導彈防禦組成的超視距作戰網路。\n\n透過該研究解鎖搜索雷達、火控雷達與防空導彈發射架。</DMSE_IntegratedCircuits.description>
+  <DMSE_IntegratedCircuits.description>高密度積體電子技術使小型化的訊號處理與捷聯式慣性參考單元得以緊湊到足以裝入導彈彈體內。其成果是一套由搜索雷達、多通道火控雷達與地對空導彈防禦組成的超視距作戰網路。\n\n透過該研究解鎖搜索雷達、火控雷達、野戰防空砲、防空導彈發射架、防空導彈發射具、小型垂直發射井，以及輕型防空導彈、野戰防空導彈、對地攻擊導彈、先進通用導彈、攔截導彈與戰術彈道導彈。</DMSE_IntegratedCircuits.description>
   <DMSE_StrategicSystems.label>戰略系統</DMSE_StrategicSystems.label>
-  <DMSE_StrategicSystems.description>對再入物理、高能推進劑化學與星光慣性導引的掌握，使彈道導彈能將其酬載拋射至大氣層邊緣。彈道弧線能突破大多數的點防禦，並允許以任何已裝配的彈頭組態進行極遠距離的打擊。\n\n透過該研究解鎖彈道導彈發射井及其裝配介面。</DMSE_StrategicSystems.description>
+  <DMSE_StrategicSystems.description>對再入物理、高能推進劑化學與星光慣性導引的掌握，使彈道導彈能將其酬載拋射至大氣層邊緣，同一套電子技術也帶來新一代低可觀測與半主動導引的導彈。彈道弧線能突破大多數的點防禦，並允許以任何已裝配的彈頭組態進行極遠距離的打擊。\n\n透過該研究解鎖戰略導彈發射井、垂直發射井、現役與戰略彈道導彈、熱核彈頭，以及先進防空導彈與亞音速巡航導彈。</DMSE_StrategicSystems.description>
 
+  <DMSE_RadarBasis.description>延續上一場大型工業戰爭風格的早期偵測與火控：聆聽引擎聲的混凝土聲學反射鏡、一次只能導引一枚攔截彈的手搖火控雷達，以及第一代導引攔截火箭。\n\n透過該研究解鎖被動聲學雷達、老式火控雷達與老式攔截巡飛彈。</DMSE_RadarBasis.description>
+  <DMSE_AntishipMissiles.label>反艦導彈</DMSE_AntishipMissiles.label>
+  <DMSE_AntishipMissiles.description>能持續對移動船體重新瞄準的主動雷達導引頭、掠海飛行剖面與衝壓推進，讓導彈成為對付船隻與世界地圖上所有移動據點的武器。\n\n透過該研究解鎖反艦巡飛彈、超音速反艦導彈與傾斜發射管；搭配戰略系統研究亦可解鎖高超音速反艦導彈。</DMSE_AntishipMissiles.description>
 </LanguageData>

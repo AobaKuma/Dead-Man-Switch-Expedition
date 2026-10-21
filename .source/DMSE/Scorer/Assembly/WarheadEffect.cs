@@ -80,7 +80,7 @@ namespace DMSE
         public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
         {
             if (map == null || !center.InBounds(map)) { return; }
-            GenExplosion.DoExplosion(center, map, N, DamageDefOf.Bomb, null, groundDamageAmount);
+            GenExplosion.DoExplosion(center, map, N, DamageDefOf.Bomb, MissileImpactUtility.Instigator, groundDamageAmount);
         }
     }
 
@@ -104,7 +104,7 @@ namespace DMSE
                 map.roofGrid.SetRoof(center, null);
                 RoofCollapserImmediate.DropRoofInCells(center, map);
             }
-            GenExplosion.DoExplosion(center, map, 2f, DamageDefOf.Bomb, null, damageAmount);
+            GenExplosion.DoExplosion(center, map, 2f, DamageDefOf.Bomb, MissileImpactUtility.Instigator, damageAmount);
         }
     }
 
@@ -121,7 +121,7 @@ namespace DMSE
             foreach (IntVec3 cell in GenRadial.RadialCellsAround(center, radius, true))
             {
                 if (!cell.InBounds(map)) { continue; }
-                FireUtility.TryStartFireIn(cell, map, Rand.Range(0.4f, 1.2f), null);
+                FireUtility.TryStartFireIn(cell, map, Rand.Range(0.4f, 1.2f), MissileImpactUtility.Instigator);
             }
         }
     }
@@ -137,7 +137,7 @@ namespace DMSE
         public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
         {
             if (map == null || !center.InBounds(map)) { return; }
-            GenExplosion.DoExplosion(center, map, N, DamageDefOf.EMP, null, empDamage);
+            GenExplosion.DoExplosion(center, map, N, DamageDefOf.EMP, MissileImpactUtility.Instigator, empDamage);
         }
     }
 
@@ -183,7 +183,7 @@ namespace DMSE
             foreach (Pawn pawn in map.mapPawns.AllPawnsSpawned)
             {
                 if (pawn.Dead || !pawn.Position.InHorDistOf(center, radius)) { continue; }
-                pawn.TakeDamage(new DamageInfo(DamageDefOf.Burn, pawnDamage, 0.3f));
+                pawn.TakeDamage(new DamageInfo(DamageDefOf.Burn, pawnDamage, 0.3f, -1f, MissileImpactUtility.Instigator));
             }
 
             int cells = Mathf.Max(1, Mathf.RoundToInt(radius));
@@ -192,7 +192,7 @@ namespace DMSE
                 if (!cell.InBounds(map)) { continue; }
                 if (Rand.Chance(igniteChance))
                 {
-                    FireUtility.TryStartFireIn(cell, map, Rand.Range(0.4f, 1f), null);
+                    FireUtility.TryStartFireIn(cell, map, Rand.Range(0.4f, 1f), MissileImpactUtility.Instigator);
                 }
             }
         }
@@ -230,7 +230,7 @@ namespace DMSE
             int damage = damagePerBlade + Mathf.RoundToInt(N * 2f);
             for (int i = 0; i < blades; i++)
             {
-                nearest.TakeDamage(new DamageInfo(DamageDefOf.Cut, damage, 0.6f));
+                nearest.TakeDamage(new DamageInfo(DamageDefOf.Cut, damage, 0.6f, -1f, MissileImpactUtility.Instigator));
                 if (nearest.Dead) { break; }
             }
         }

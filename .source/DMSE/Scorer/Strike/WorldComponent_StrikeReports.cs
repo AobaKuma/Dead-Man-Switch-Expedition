@@ -20,6 +20,8 @@ namespace DMSE
         Hit,
         /// <summary>抵達後在地圖內被擊落（末端 CIWS 等）。</summary>
         TerminalKilled,
+        /// <summary>在目標地圖被高角護盾擋下（碰觸點引爆，不算命中）。</summary>
+        ShieldBlocked,
     }
 
     /// <summary>一個打擊任務的戰果統計（逐波）。</summary>
@@ -38,8 +40,9 @@ namespace DMSE
         public List<int> arrived = new List<int>();
         public List<int> hit = new List<int>();
         public List<int> terminalKilled = new List<int>();
+        public List<int> shieldBlocked = new List<int>();
 
-        private IEnumerable<List<int>> Lists => new[] { launched, intercepted, missed, arrived, hit, terminalKilled };
+        private IEnumerable<List<int>> Lists => new[] { launched, intercepted, missed, arrived, hit, terminalKilled, shieldBlocked };
 
         public void Record(int wave, StrikeOutcome outcome)
         {
@@ -53,16 +56,17 @@ namespace DMSE
                 case StrikeOutcome.Arrived: arrived[wave]++; break;
                 case StrikeOutcome.Hit: hit[wave]++; break;
                 case StrikeOutcome.TerminalKilled: terminalKilled[wave]++; break;
+                case StrikeOutcome.ShieldBlocked: shieldBlocked[wave]++; break;
             }
         }
 
         private static int Sum(List<int> list) => list.Sum();
 
-        /// <summary>已有最終結局（攔截、落空、命中、末端擊落）的枚數。</summary>
-        public int Resolved => Sum(intercepted) + Sum(missed) + Sum(hit) + Sum(terminalKilled);
+        /// <summary>已有最終結局（攔截、落空、命中、末端擊落、護盾擋下）的枚數。</summary>
+        public int Resolved => Sum(intercepted) + Sum(missed) + Sum(hit) + Sum(terminalKilled) + Sum(shieldBlocked);
 
         /// <summary>已抵達但還沒有命中／擊落結果的枚數。</summary>
-        public int ArrivedPending => System.Math.Max(0, Sum(arrived) - Sum(hit) - Sum(terminalKilled));
+        public int ArrivedPending => System.Math.Max(0, Sum(arrived) - Sum(hit) - Sum(terminalKilled) - Sum(shieldBlocked));
 
         public int Unresolved => System.Math.Max(0, Sum(launched) - Resolved);
 
@@ -77,6 +81,10 @@ namespace DMSE
                 if (launched[w] == 0) { continue; }
                 sb.AppendLine();
                 sb.Append("DMSE.Strike.Report.Wave".Translate(w + 1, launched[w], intercepted[w], hit[w], terminalKilled[w], missed[w]));
+                if (w < shieldBlocked.Count && shieldBlocked[w] > 0)
+                {
+                    sb.Append("DMSE.Strike.Report.WaveShieldBlocked".Translate(shieldBlocked[w]));
+                }
             }
             int unknown = Unresolved;
             if (unknown > 0)
@@ -101,10 +109,11 @@ namespace DMSE
             Scribe_Collections.Look(ref arrived, "arrived", LookMode.Value);
             Scribe_Collections.Look(ref hit, "hit", LookMode.Value);
             Scribe_Collections.Look(ref terminalKilled, "terminalKilled", LookMode.Value);
+            Scribe_Collections.Look(ref shieldBlocked, "shieldBlocked", LookMode.Value);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 launched ??= new List<int>(); intercepted ??= new List<int>(); missed ??= new List<int>();
-                arrived ??= new List<int>(); hit ??= new List<int>(); terminalKilled ??= new List<int>();
+                arrived ??= new List<int>(); hit ??= new List<int>(); terminalKilled ??= new List<int>(); shieldBlocked ??= new List<int>();
             }
         }
     }

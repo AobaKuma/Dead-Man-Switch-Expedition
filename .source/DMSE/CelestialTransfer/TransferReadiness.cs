@@ -181,7 +181,8 @@ namespace DMSE
                 for (int j = 0; j < things.Count; j++)
                 {
                     Thing t = things[j];
-                    if (!t.def.bringAlongOnGravship && !(t is Mote) && !(t is Skyfaller) && t.def.category != ThingCategory.Ethereal)
+                    // 飛行中的導彈（Skyfaller 或 Projectile）不算留在甲板上的物品。
+                    if (!t.def.bringAlongOnGravship && !(t is Mote) && !(t is Skyfaller) && !(t is Projectile) && t.def.category != ThingCategory.Ethereal)
                     {
                         notCarried.Add(t);
                     }

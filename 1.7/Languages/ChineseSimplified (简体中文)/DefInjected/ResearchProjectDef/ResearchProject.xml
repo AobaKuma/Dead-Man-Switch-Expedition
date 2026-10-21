@@ -4,7 +4,7 @@
   <!-- EN: Aerospace Applications -->
   <DMSE_Aerospace.label>航太应用</DMSE_Aerospace.label>
   <!-- EN: By scaling up Tantasteel and graphene production and exploring the key applications of these specialty materials in aerospace and microelectronics, this research unlocks nuclear thermal propulsion engines and orbital electronic-warfare stealth equipment for gravships and orbital starships. -->
-  <DMSE_Aerospace.description>透过规模化的生产钽钨合金与石墨烯并发掘这些特种材料在航空航天领与微电子等领域中的关键应用。\n\n透过该研究解锁应用於重力船与轨道星舰上的热核推进引擎与轨道电子战隐蔽设备。</DMSE_Aerospace.description>
+  <DMSE_Aerospace.description>透过规模化的生产钽钨合金与石墨烯并发掘这些特种材料在航空航天领与微电子等领域中的关键应用。\n\n透过该研究解锁应用於重力船与轨道星舰上的热核推进引擎与轨道电子战隐蔽设备，以及相控阵雷达与先进防空炮。</DMSE_Aerospace.description>
   
   <!-- EN: Carbon synthesis -->
   <DMSE_Carbohydrate.label>碳合成</DMSE_Carbohydrate.label>
@@ -29,12 +29,15 @@
 
   <DMSE_RadarBasis.label>雷达</DMSE_RadarBasis.label>
   <DMSE_LoiteringMunitions.label>巡飞弹</DMSE_LoiteringMunitions.label>
-  <DMSE_LoiteringMunitions.description>轨道发射的折叠翼巡飞弹为早期殖民地提供了粗糙的超视距打击能力。速度慢且容易被侦测，但远早于正规巡弋导弹便可投入使用。\n\n透过该研究解锁巡飞弹、其倾斜发射轨与储存架。</DMSE_LoiteringMunitions.description>
+  <DMSE_LoiteringMunitions.description>轨道发射的脉冲喷射巡飞弹为早期殖民地提供了粗糙的超视距打击能力。速度慢且容易被侦测，但远早于正规巡航导弹便可投入使用。\n\n透过该研究解锁老式巡飞弹、轨道发射架与巡飞弹储存架。</DMSE_LoiteringMunitions.description>
   <DMSE_Ballistics.label>弹道学</DMSE_Ballistics.label>
-  <DMSE_Ballistics.description>对大气层内导弹飞行动力学、固态燃料分级与末端导引的系统性研究。将火箭发动机与导引头小型化以配合可快速再装填的发射筒，开启了新一级的战场火力。\n\n透过该研究解锁轻型导弹、其倾斜发射轨与单联装垂直发射器。</DMSE_Ballistics.description>
+  <DMSE_Ballistics.description>对大气层内导弹飞行动力学、液态与固态燃料分级以及发射结构的系统性研究。第一代弹道火箭、手操旋转发射架与炮组操作的高射炮，让殖民地在没有电子工业的情况下也能拥有远程火力。\n\n透过该研究解锁塔式发射架与老式弹道导弹、旋转发射架、老式防空炮、倾斜发射箱与导弹储存架。</DMSE_Ballistics.description>
   <DMSE_IntegratedCircuits.label>集成电路</DMSE_IntegratedCircuits.label>
-  <DMSE_IntegratedCircuits.description>高密度积体电子技术使小型化的相控阵信号处理与捷联式惯性参考单元得以紧凑到足以装入导弹弹体内。其成果是一套由搜索雷达、火控雷达与地对空导弹防御组成的超视距作战网络。\n\n透过该研究解锁搜索雷达、火控雷达与防空导弹发射架。</DMSE_IntegratedCircuits.description>
+  <DMSE_IntegratedCircuits.description>高密度集成电子技术使小型化的信号处理与捷联式惯性参考单元得以紧凑到足以装入导弹弹体内。其成果是一套由搜索雷达、多通道火控雷达与地对空导弹防御组成的超视距作战网络。\n\n透过该研究解锁搜索雷达、火控雷达、野战防空炮、防空导弹发射架、防空导弹发射具、小型垂直发射井，以及轻型防空导弹、野战防空导弹、对地攻击导弹、先进通用导弹、拦截导弹与战术弹道导弹。</DMSE_IntegratedCircuits.description>
   <DMSE_StrategicSystems.label>战略系统</DMSE_StrategicSystems.label>
-  <DMSE_StrategicSystems.description>对再入物理、高能推进剂化学与星光惯性导引的掌握，使弹道导弹能将其酬载抛射至大气层边缘。弹道弧线能突破大多数的点防御，并允许以任何已装配的弹头组态进行极远距离的打击。\n\n透过该研究解锁弹道导弹发射井及其装配界面。</DMSE_StrategicSystems.description>
+  <DMSE_StrategicSystems.description>对再入物理、高能推进剂化学与星光惯性导引的掌握，使弹道导弹能将其酬载抛射至大气层边缘，同一套电子技术也带来新一代低可观测与半主动导引的导弹。弹道弧线能突破大多数的点防御，并允许以任何已装配的弹头组态进行极远距离的打击。\n\n透过该研究解锁战略导弹发射井、垂直发射井、现役与战略弹道导弹、热核弹头，以及先进防空导弹与亚音速巡航导弹。</DMSE_StrategicSystems.description>
 
+  <DMSE_RadarBasis.description>延续上一场大型工业战争风格的早期侦测与火控：聆听引擎声的混凝土声学反射镜、一次只能导引一枚拦截弹的手摇火控雷达，以及第一代导引拦截火箭。\n\n透过该研究解锁被动声学雷达、老式火控雷达与老式拦截巡飞弹。</DMSE_RadarBasis.description>
+  <DMSE_AntishipMissiles.label>反舰导弹</DMSE_AntishipMissiles.label>
+  <DMSE_AntishipMissiles.description>能持续对移动船体重新瞄准的主动雷达导引头、掠海飞行剖面与冲压推进，让导弹成为对付船只与世界地图上所有移动据点的武器。\n\n透过该研究解锁反舰巡飞弹、超音速反舰导弹与倾斜发射管；搭配战略系统研究亦可解锁高超音速反舰导弹。</DMSE_AntishipMissiles.description>
 </LanguageData>

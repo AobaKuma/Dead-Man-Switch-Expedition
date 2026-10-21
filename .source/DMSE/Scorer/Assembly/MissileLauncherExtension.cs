@@ -55,14 +55,17 @@ namespace DMSE
             return bodyMode == platformMode;
         }
 
-        /// <summary>此平台（含 MissileLauncherExtension）能否裝填／儲存此彈體：分級需相符且發射方式相容。</summary>
+        /// <summary>
+        /// 此平台（含 MissileLauncherExtension）能否裝填／儲存此彈體：分級（含 extraSizeClasses）需相符且發射方式相容。
+        /// 執行期實際能裝什麼由建築的 storage filter 決定；本判定供內容檢查與 UI 對照，兩者應一致。
+        /// </summary>
         public static bool PlatformAccepts(MissileLauncherExtension ext, MissileBodyDef body)
         {
             if (ext == null || body == null)
             {
                 return false;
             }
-            if (ext.sizeClass != body.sizeClass)
+            if (!ext.AcceptsSizeClass(body.sizeClass))
             {
                 return false;
             }

@@ -192,6 +192,9 @@ namespace DMSE.BVRAcceptance
             }
         }
 
+        /// <summary>Output folder of this run (tests write extra TSV files here).</summary>
+        public static string OutDir => outDir;
+
         public static void Log(string line)
         {
             string stamped = Current.Game != null && Find.TickManager != null
@@ -298,6 +301,9 @@ namespace DMSE.BVRAcceptance
                 Log($"=== {test.id}: {test.title}");
                 try
                 {
+                    // Mechanics tests keep the radar values they were written against; T tests use the shipped ones.
+                    if (test.id.StartsWith("T")) { BVRFixture.UseShippedRadarValues(); }
+                    else { BVRFixture.PinLegacyRadarValues(); }
                     routine = test.body(ctx).GetEnumerator();
                 }
                 catch (Exception ex)

@@ -6,4 +6,16 @@
   <DMSE_Missile_AdvancedCruise.label>先進巡航導彈</DMSE_Missile_AdvancedCruise.label>
   <DMSE_Missile_AdvancedCruise.description>戰斧級的低可觀測巡航導彈：地形跟隨、資料鏈導引，比它所取代的射門手彈體精準得多。出廠時已裝好穿透彈頭、地形比對導引與渦輪扇。</DMSE_Missile_AdvancedCruise.description>
 
+  <DMSE_Missile_LegacyLoiter.label>老式巡飛彈</DMSE_Missile_LegacyLoiter.label>
+  <DMSE_Missile_LegacyLoiter.description>一具以脈衝噴射引擎推進的早期巡飛彈，方盒狀彈體與粗短的平直翼由鐘錶式慣性自動駕駛儀帶著沿預設航向飛完全程，慢得讓雷達操作員有時間泡杯茶、落點偏差幾十公尺都算正常；但它只需要鋼板、燃料與一具簡單的噴射管就能從傾斜軌道送上天空，在更好的東西出現之前，這就是「超視距打擊」的全部意思。</DMSE_Missile_LegacyLoiter.description>
+  <DMSE_Missile_Rheintochter.label>老式攔截巡飛彈</DMSE_Missile_Rheintochter.label>
+  <DMSE_Missile_Rheintochter.description>一款第一代導引攔截巡飛彈，四片特大尾翼與一具無線電指令鏈路搭配一具只能勉強追上轟炸機的固體引擎，發射後在目標空域盤旋等待、再由導引員用肉眼與操縱桿把它「開」向來襲目標，命中率低得令人沮喪，但在高射砲仍靠曳光彈與祈禱的年代，這已經是真正的導引攔截手段。</DMSE_Missile_Rheintochter.description>
+  <DMSE_Missile_Stinger.label>輕型防空導彈</DMSE_Missile_Stinger.label>
+  <DMSE_Missile_Stinger.description>一款可由單兵攜帶的紅外導引防空導彈，發射管、瞄準具與一枚小彈全重不到二十公斤，射程短、彈頭小，對高速或大機動目標命中率有限，卻讓每一個步兵班都擁有「不用等雷達」的防空手段，而且可以塞進任何一個有空間的彈艙。</DMSE_Missile_Stinger.description>
+  <DMSE_Missile_Maverick.label>對地攻擊導彈</DMSE_Missile_Maverick.label>
+  <DMSE_Missile_Maverick.description>一款電視／紅外導引的輕型對地攻擊導彈，原本掛在攻擊機翼下、現在被搬進發射箱裡，彈體小、射程中等，但導引頭能在飛行末段讓操作員「看著目標打」，對點狀目標與裝甲車輛特別有效，因此它不適合拿來拆基地，卻很適合把某個具體的東西從地圖上刪掉。</DMSE_Missile_Maverick.description>
+  <DMSE_Missile_Sparrow.label>先進防空導彈</DMSE_Missile_Sparrow.label>
+  <DMSE_Missile_Sparrow.description>一款半主動雷達導引的中程防空導彈，彈體細長、翼面小巧，能在劇烈機動中持續接收母雷達的照射訊號，比刺針飛得更快、更遠、更準，代價是需要一具持續照射目標的火控雷達，因此它從來不是一個人的武器。</DMSE_Missile_Sparrow.description>
+  <DMSE_Missile_Yj.label>高超音速反艦導彈</DMSE_Missile_Yj.label>
+  <DMSE_Missile_Yj.description>一款以固體火箭助推、衝壓引擎巡航的高超音速反艦導彈，終端速度超過五馬赫並具備有限的機動變軌能力，以極低的彈道貼海飛行、留給防禦方的反應時間只有幾十秒，造價與維護費用同樣驚人，通常只留給最值得的目標。</DMSE_Missile_Yj.description>
 </LanguageData>

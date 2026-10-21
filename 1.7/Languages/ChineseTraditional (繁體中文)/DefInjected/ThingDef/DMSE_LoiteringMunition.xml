@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
 
-  <DMSE_Missile_Termite.label>遊蕩彈藥</DMSE_Missile_Termite.label>
-  <DMSE_Missile_Termite.description>一枚等待裝上發射軌的摺疊翼遊蕩彈藥。其彈體在露天環境下會緩慢劣化；請存放於遊蕩彈藥儲存架以維持可用狀態。</DMSE_Missile_Termite.description>
+  <DMSE_Missile_Termite.label>反艦巡飛彈</DMSE_Missile_Termite.label>
+  <DMSE_Missile_Termite.description>一款折疊翼的反艦巡飛彈，以小型渦輪噴射引擎貼海飛行，靠被動雷達與紅外複合導引頭在最後階段自行尋找艦影，飛得慢、彈頭不大，但勝在便宜、可以從地面軌道發射，而且會優先咬住移動中的船隻，對沒有神盾系統的對手而言這就夠了。</DMSE_Missile_Termite.description>
 
 </LanguageData>

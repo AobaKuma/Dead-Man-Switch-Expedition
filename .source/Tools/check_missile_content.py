@@ -8,7 +8,13 @@ Checks:
   4. every missile item can be stored somewhere (storage filter or NPC autofill candidate);
   5. every BVR target extension declares a sane altitude;
   6. every "Class=DMSE.*" reference exists in .source;
-  7. zh-TW and zh-CN DefInjected files have a label for every new part and item.
+  7. zh-TW and zh-CN DefInjected files have a label for every new part and item;
+  8. every missile in a launch platform's fixed storage filter has a body the platform's
+     sizeClass / extraSizeClasses and launchMode accept (MissileTaxonomy.PlatformAccepts);
+  9. every body and item reference (defaultBody, MissileItemExtension.body, defaultParts,
+     incomingSkyfaller, researchPrerequisites) resolves;
+ 10. every body has its own launchProjectile (DMSE.Projectile_MissileLaunch, reversed MissileFlightExtension,
+     existing texture, hot/cold launch effect, translated label).
 """
 import re
 import sys
@@ -67,6 +73,16 @@ bodies = {name: node for name, entries in defs.items()
           for node, _ in entries if tag(node) == 'DMSE.MissileBodyDef'}
 parts = {name: node for name, entries in defs.items()
          for node, _ in entries if tag(node) == 'DMSE.MissilePartDef'}
+things = {name: node for name, entries in defs.items()
+          for node, _ in entries if tag(node) in ('ThingDef', 'DMSE.ThingDef')}
+
+
+def item_body(node):
+    """Body a missile item declares: CompMissileConfig.defaultBody, else MissileItemExtension.body."""
+    body = node.findtext("comps/li[@Class='DMSE.CompProperties_MissileConfig']/defaultBody")
+    if body:
+        return body
+    return node.findtext("modExtensions/li[@Class='DMSE.MissileItemExtension']/body")
 
 # ---- 1. slot coverage -------------------------------------------------------
 for name, body in bodies.items():
@@ -146,16 +162,13 @@ for path in (root / '1.7/Defs').rglob('*.xml'):
     for block in re.findall(r'<candidates>(.*?)</candidates>', text, re.S):
         storable.update(re.findall(r'<li>([\w.]+)</li>', block))
 
-for name, entries in defs.items():
-    for node, _ in entries:
-        if tag(node) not in ('ThingDef', 'DMSE.ThingDef'):
-            continue
-        if node.find("comps/li[@Class='DMSE.CompProperties_MissileConfig']") is None:
-            continue
-        # Buildings (launchers) hold their own round; only item missiles need a storage home.
-        if node.findtext('stackLimit') is None:
-            continue
-        require(name in storable, f'{name}: no storage filter or autofill candidate accepts this missile')
+for name, node in things.items():
+    if item_body(node) is None:
+        continue
+    # Buildings (launchers) hold their own round; only item missiles need a storage home.
+    if node.findtext('stackLimit') is None:
+        continue
+    require(name in storable, f'{name}: no storage filter or autofill candidate accepts this missile')
 
 # ---- 5. altitude ------------------------------------------------------------
 altitude_defs = 0
@@ -198,16 +211,132 @@ expected_keys = set()
 for name in parts:
     expected_keys.add(f'{name}.label')
     expected_keys.add(f'{name}.description')
-for name, entries in defs.items():
-    for node, _ in entries:
-        if tag(node) in ('ThingDef', 'DMSE.ThingDef') and \
-                node.find("comps/li[@Class='DMSE.CompProperties_MissileConfig']") is not None:
-            expected_keys.add(f'{name}.label')
-            expected_keys.add(f'{name}.description')
+for name in bodies:
+    expected_keys.add(f'{name}.label')
+    expected_keys.add(f'{name}.description')
+for name, node in things.items():
+    is_platform = node.find("modExtensions/li[@Class='DMSE.MissileLauncherExtension']") is not None
+    if item_body(node) is not None or is_platform:
+        expected_keys.add(f'{name}.label')
+        expected_keys.add(f'{name}.description')
 
 for language, keys in translated.items():
     missing = sorted(expected_keys - keys)
     require(not missing, f'{language}: missing translation keys {missing}')
+
+# ---- 8. platform filters vs size class --------------------------------------
+SIZE_ORDER = ['Loitering', 'Light', 'Medium', 'Ballistic']
+for name, node in things.items():
+    ext = node.find("modExtensions/li[@Class='DMSE.MissileLauncherExtension']")
+    if ext is None:
+        continue
+    accepted = {ext.findtext('sizeClass') or 'Medium'}
+    accepted.update(li.text for li in ext.findall('extraSizeClasses/li') if li.text)
+    mode = ext.findtext('launchMode') or 'Tilt'
+    require(mode in ('Tilt', 'Vertical'), f'{name}: platform launchMode must be Tilt or Vertical, not {mode}')
+    for size in accepted:
+        require(size in SIZE_ORDER, f'{name}: unknown size class {size}')
+    for li in node.findall('building/fixedStorageSettings/filter/thingDefs/li'):
+        item = things.get(li.text)
+        if item is None:
+            errors.append(f'{name}: storage filter lists unknown ThingDef {li.text}')
+            continue
+        body_name = item_body(item)
+        if body_name is None:
+            continue  # generic rounds without a body (e.g. the interceptor missile)
+        body = bodies.get(body_name)
+        if body is None:
+            continue  # reported by rule 9
+        size = body.findtext('sizeClass') or 'Medium'
+        body_mode = body.findtext('launchMode') or 'Both'
+        require(size in accepted,
+                f'{name}: holds {li.text} ({size}) but accepts only {sorted(accepted)}; add extraSizeClasses')
+        require(body_mode in ('Both', mode),
+                f'{name}: holds {li.text} (launchMode {body_mode}) on a {mode} platform')
+
+# ---- 9. references resolve --------------------------------------------------
+# RimWorld rejects ThingDef names that end in a digit ("ends with a numerical digit" config error).
+for name in things:
+    require(not name[-1].isdigit(), f'{name}: ThingDef defName must not end with a digit')
+research = {name for name, entries in defs.items() for node, _ in entries if tag(node) == 'ResearchProjectDef'}
+for name, node in things.items():
+    body = item_body(node)
+    if body is not None:
+        require(body in bodies, f'{name}: missile body {body} does not exist')
+for name, body in bodies.items():
+    incoming = body.findtext('incomingSkyfaller')
+    require(incoming in things, f'{name}: incomingSkyfaller {incoming} does not exist')
+    if incoming in things:
+        # docs/Missile_Skyfaller轉Projectile_計畫.md §8.4: incoming missiles are Projectiles that fall (not reversed).
+        require(things[incoming].findtext('thingClass') == 'DMSE.Projectile_MissileIncoming',
+                f'{incoming}: thingClass must be DMSE.Projectile_MissileIncoming')
+        fall = things[incoming].find("modExtensions/li[@Class='DMSE.MissileFlightExtension']")
+        require(fall is not None, f'{incoming}: DMSE.MissileFlightExtension missing (run .source/Tools/gen_missile_launch_defs.py)')
+        if fall is not None:
+            require((fall.findtext('reversed') or 'false').strip().lower() != 'true', f'{incoming}: flight must not be reversed')
+        require(things[incoming].find('skyfaller') is None, f'{incoming}: leftover <skyfaller> block')
+    for li in body.findall('researchPrerequisites/li'):
+        require(li.text in research, f'{name}: research {li.text} does not exist')
+for name, part in parts.items():
+    for li in part.findall('compatibleBodies/li'):
+        require(li.text in bodies, f'{name}: compatible body {li.text} does not exist')
+    for li in part.findall('researchPrerequisites/li'):
+        require(li.text in research, f'{name}: research {li.text} does not exist')
+
+# ---- 10. every body launches its own Projectile ------------------------------
+# docs/Missile_Skyfaller轉Projectile_計畫.md: launch look and exhaust follow the body, not the platform.
+abstract_things = {}
+for path in (root / '1.7/Defs').rglob('*.xml'):
+    try:
+        for node in parse(path):
+            if node.tag == 'ThingDef' and node.get('Name'):
+                abstract_things[node.get('Name')] = node
+    except ET.ParseError:
+        pass  # reported above
+
+
+def inherited(node, path):
+    """findtext through the ParentName chain (Name="..." abstract parents included)."""
+    seen = set()
+    while node is not None:
+        value = node.findtext(path)
+        if value is not None:
+            return value
+        parent = node.get('ParentName')
+        if not parent or parent in seen:
+            return None
+        seen.add(parent)
+        node = abstract_things.get(parent)
+    return None
+
+
+texture_roots = [root / '1.7/Textures', root / 'Textures']
+launch_classes = ('DMSE.CompProperties_EffecterHotLaunch', 'DMSE.CompProperties_EffecterColdLaunch')
+for name, body in bodies.items():
+    launch = body.findtext('launchProjectile')
+    require(launch is not None, f'{name}: launchProjectile missing (run .source/Tools/gen_missile_launch_defs.py)')
+    if launch is None:
+        continue
+    node = things.get(launch)
+    require(node is not None, f'{name}: launchProjectile {launch} does not exist')
+    if node is None:
+        continue
+    require(inherited(node, 'thingClass') == 'DMSE.Projectile_MissileLaunch',
+            f'{launch}: thingClass must be DMSE.Projectile_MissileLaunch')
+    require(inherited(node, 'category') == 'Projectile', f'{launch}: category must be Projectile')
+    flight = node.find("modExtensions/li[@Class='DMSE.MissileFlightExtension']")
+    require(flight is not None, f'{launch}: DMSE.MissileFlightExtension missing')
+    if flight is not None:
+        require((flight.findtext('reversed') or '').strip().lower() == 'true', f'{launch}: flight must be reversed (ascent)')
+        discard = (flight.findtext('ticksToDiscardInReverse') or '0').split('~')[0].strip()
+        require(discard.isdigit() and int(discard) > 0, f'{launch}: ticksToDiscardInReverse must be > 0')
+    tex = node.findtext('graphicData/texPath')
+    require(tex is not None and any((r / (tex + '.png')).exists() for r in texture_roots),
+            f'{launch}: texture {tex} not found')
+    require(any(node.find(f"comps/li[@Class='{c}']") is not None for c in launch_classes),
+            f'{launch}: needs a hot or cold launch effect comp')
+    for language in languages:
+        require(f'{launch}.label' in translated[language], f'{language}: missing {launch}.label')
 
 if errors:
     print('\n'.join('ERROR: ' + error for error in errors))

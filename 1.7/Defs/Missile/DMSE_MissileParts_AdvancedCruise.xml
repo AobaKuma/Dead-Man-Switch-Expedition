@@ -65,7 +65,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvCruise_Guidance_TerrainMatch</defName>
     <label>terrain-matching guidance</label>
-    <description>Terrain contour matching and scene matching in the TERCOM/DSMAC tradition: the missile flies a survey-grade route and corrects itself against the ground, giving very tight dispersion. It cannot be re-targeted in flight and has no terminal guidance at all — a target that moves away is simply missed.</description>
+    <description>Terrain contour matching and scene matching in the TERCOM/DSMAC tradition: the missile flies a survey-grade route and corrects itself against the ground, giving very tight dispersion. It cannot be re-targeted in flight and has no terminal guidance at all, so a target that moves away is simply missed.</description>
     <category>Guidance</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedCruise</li>
@@ -104,7 +104,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvCruise_Guidance_AntiShip</defName>
     <label>anti-ship radar seeker</label>
-    <description>An active radar seeker built for moving targets — ships and any other mobile base on the world map. It keeps re-aiming while the target keeps moving and does so more often than a normal seeker; the missile still misses if the target leaves its remaining range.</description>
+    <description>An active radar seeker built for moving targets: ships and any other mobile base on the world map. It keeps re-aiming while the target keeps moving and does so more often than a normal seeker; the missile still misses if the target leaves its remaining range.</description>
     <category>Guidance</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedCruise</li>

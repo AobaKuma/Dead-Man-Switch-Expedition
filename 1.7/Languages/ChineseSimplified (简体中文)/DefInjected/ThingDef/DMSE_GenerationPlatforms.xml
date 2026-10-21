@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <DMSE_Building_RotaryLauncher.label>旋转发射架</DMSE_Building_RotaryLauncher.label>
+  <DMSE_Building_RotaryLauncher.description>一座可 360 度旋转的老式发射架，轨道由手摇与脚踏控制，能发射早期的巡飞弹与轻型导弹，转向速度取决于摇柄转得多快、装填则需逐枚上轨，廉价可靠且完全不需要电子设备，代价是它必须由操作员全程在场。</DMSE_Building_RotaryLauncher.description>
+  <DMSE_Building_MediumTube.label>倾斜发射管</DMSE_Building_MediumTube.label>
+  <DMSE_Building_MediumTube.description>一具单管的中型导弹倾斜发射管，以冷发射把弹体抛出管口再点火、避免尾焰烧蚀甲板，一次只能装一枚、重新装填需整枚更换，射程与弹头都比轻型导弹大上一截，代价是它几乎只能放在固定阵地或船上。</DMSE_Building_MediumTube.description>
+  <DMSE_Building_FieldAirDefense.label>野战防空炮</DMSE_Building_FieldAirDefense.label>
+  <DMSE_Building_FieldAirDefense.description>一座弹炮一体的野战防空系统，两门 30 毫米机炮、四枚短程防空导弹与一具搜索／追踪雷达全挤在同一个炮塔里，能在雷达导引下先射导弹、再用机炮补漏，是行进间防空的最后一道防线，但雷达耗电、弹药消耗惊人，而且一开机就等于向全世界的反辐射导引头打招呼。\n\n需要操作员；机炮以钢材作为弹药。</DMSE_Building_FieldAirDefense.description>
+  <DMSE_Building_FieldAirDefense.comps.CompRefuelable.fuelLabel>机炮弹</DMSE_Building_FieldAirDefense.comps.CompRefuelable.fuelLabel>
+  <DMSE_Building_FieldAirDefense.comps.CompRefuelable.fuelGizmoLabel>机炮弹</DMSE_Building_FieldAirDefense.comps.CompRefuelable.fuelGizmoLabel>
+  <DMSE_Building_FieldAirDefense.comps.CompRefuelable.outOfFuelMessage>机炮无法开火：没有弹药。</DMSE_Building_FieldAirDefense.comps.CompRefuelable.outOfFuelMessage>
+  <DMSE_SearchRadar.label>搜索雷达</DMSE_SearchRadar.label>
+  <DMSE_SearchRadar.description>一座主动式搜索雷达，以旋转天线持续扫描天空、为整个防空网提供目标的方位、距离与航向，不像火控雷达那样能直接引导拦截，但没有它、火控雷达就只是瞎子手中的望远镜，而它耗电可观，开机后方圆数十公里内的反辐射导引头都会知道这座阵地在哪里。</DMSE_SearchRadar.description>
+  <DMSE_FireControlRadar.label>火控雷达</DMSE_FireControlRadar.label>
+  <DMSE_FireControlRadar.description>一座专职的火控雷达，能同时追踪并导引四个目标，把搜索雷达传来的粗略航迹细化成射击诸元再分配给拦截弹，精度与反应速度都远胜早期型号，但需要稳定的电力与良好的散热，而且一旦被反辐射导弹盯上，它自己就是最贵的靶子。</DMSE_FireControlRadar.description>
+  <DMSE_Building_MediumVLS.label>垂直发射井</DMSE_Building_MediumVLS.label>
+  <DMSE_Building_MediumVLS.description>一座 2x2 的四单元垂直发射井，可容纳中型导弹，发射时弹体被燃气弹射出发射筒再点火、井盖与导流槽能承受反复发射，让中型导弹也能像小型弹一样密集部署，代价是建造与维护费用。\n\n无法安装于重力船甲板上。</DMSE_Building_MediumVLS.description>
+</LanguageData>

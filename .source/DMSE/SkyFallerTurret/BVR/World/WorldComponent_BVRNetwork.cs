@@ -255,6 +255,7 @@ namespace DMSE
             var warhead = config?.PartFor(MissilePartCategory.Warhead);
             float payload = config?.PayloadCapacity ?? 0;
             float chance = Mathf.Clamp01(CompFireControlRadar.ComputeHitChance(settings, target, eta)
+                * (config?.InterceptHitFactor ?? 1f)
                 + (warhead?.warheadEffect?.InterceptBonus(payload) ?? 0));
             if (launcher != null ? !launcher.FireWorldInterceptor(now) : !node.TryConsumeDefense(now)) return;
             var interceptor = (WorldObject_Interceptor)WorldObjectMaker.MakeWorldObject(def);
@@ -282,11 +283,11 @@ namespace DMSE
         /// P4 空投虛擬航跡：把地圖波次中的空投也表示成一條世界層航跡，讓世界雷達與攔截彈能提前接戰。
         /// 由 Tuning 的 <see cref="BVRWorldTuningDef.podsUseWorldTracks"/> 開啟；導彈本來就有自己的航跡，不重複建立。
         /// </summary>
-        public void TrySpawnDropPodTrack(Map map, BVRWave wave, BVRTarget target, Skyfaller faller)
+        public void TrySpawnDropPodTrack(Map map, BVRWave wave, BVRTarget target, Thing faller)
         {
             if (!BVRWorldTuningDef.Current.podsUseWorldTracks) { return; }
             if (map == null || wave == null || target == null || faller == null) { return; }
-            if (faller is MissileIncoming) { return; }
+            if (faller is IIncomingMissile || !(faller is Skyfaller)) { return; }
             Faction defender = wave.defenderFaction;
             if (defender == null) { return; }
 

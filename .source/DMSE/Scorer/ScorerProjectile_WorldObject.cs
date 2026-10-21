@@ -14,6 +14,12 @@ namespace DMSE
     {
         public ThingDef skyfallerIncoming;
 
+        /// <summary>
+        /// 發射建築：落地爆炸的傷害歸因（docs/Missile_Skyfaller轉Projectile_計畫.md §7）。
+        /// 建築被拆除或摧毀後為 null（存檔不保留已摧毀的參照），落地爆炸改為無 instigator。
+        /// </summary>
+        public Thing launcherThing;
+
         /// <summary>波次打擊的任務 id 與波次（0 起算）；-1 表示不是波次打擊發射的。</summary>
         public int strikeMissionId = -1;
         public int strikeWave = -1;
@@ -30,6 +36,8 @@ namespace DMSE
         {
             base.ExposeData();
             Scribe_Defs.Look(ref skyfallerIncoming, "skyfallerIncoming");
+            if (Scribe.mode == LoadSaveMode.Saving && launcherThing != null && launcherThing.Destroyed) { launcherThing = null; }
+            Scribe_References.Look(ref launcherThing, "launcherThing");
             Scribe_Values.Look(ref strikeMissionId, "strikeMissionId", -1);
             Scribe_Values.Look(ref strikeWave, "strikeWave", -1);
 
@@ -130,18 +138,19 @@ namespace DMSE
             Destroy();
         }
 
-        /// <summary>生成落點導彈，並把裝配設定交給 MissileIncoming。</summary>
+        /// <summary>生成落點導彈（從世界航跡最後一段的方向飛入地圖），並把裝配設定交給它。</summary>
         private void SpawnIncoming(ThingDef def, IntVec3 cell, Map map)
         {
-            Skyfaller faller = SkyfallerMaker.SpawnSkyfaller(def, cell, map);
-            if (faller is MissileIncoming incoming)
+            Thing thing = MissileProjectileMaker.SpawnIncoming(def, cell, map, ArrivalHeading);
+            if (thing is IIncomingMissile incoming)
             {
-                incoming.config = config != null ? config.Clone() : null;
-                incoming.worldPhaseDone = true;
-                incoming.attacker = base.Faction; // 玩家的巡航導彈，供敵方 BVR 攔截判定。
-                incoming.strikeMissionId = strikeMissionId;
-                incoming.strikeWave = strikeWave;
-                MissileBVRUtility.TryRegister(incoming, cell);
+                incoming.Config = config != null ? config.Clone() : null;
+                incoming.WorldPhaseDone = true;
+                incoming.Attacker = base.Faction; // 玩家的巡航導彈，供敵方 BVR 攔截判定。
+                incoming.StrikeMissionId = strikeMissionId;
+                incoming.StrikeWave = strikeWave;
+                (thing as Projectile_MissileIncoming)?.SetLauncher(launcherThing); // 傷害歸因於發射建築
+                MissileBVRUtility.TryRegister(thing, cell);
             }
         }
     }

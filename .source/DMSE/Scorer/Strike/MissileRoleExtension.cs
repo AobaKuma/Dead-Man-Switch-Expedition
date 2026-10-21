@@ -2,7 +2,10 @@ using Verse;
 
 namespace DMSE
 {
-    /// <summary>導彈物品的用途。只影響世界打擊（對地發射軌、波次打擊）；SAM 取彈仍由建築的儲存篩選決定。</summary>
+    /// <summary>
+    /// 導彈物品的用途：決定對地發射軌／波次打擊（<see cref="MissileRoleExtension.CanStrike"/>）與
+    /// SAM 攔截器（<see cref="MissileRoleExtension.CanIntercept"/>）各自能取用哪些在架導彈。
+    /// </summary>
     public enum MissileRole
     {
         /// <summary>對地打擊彈（預設；巡航、巡飛彈）。</summary>
@@ -30,6 +33,15 @@ namespace DMSE
         public static bool CanStrike(Thing missile)
         {
             return missile != null && RoleOf(missile.def) != MissileRole.Interceptor;
+        }
+
+        /// <summary>
+        /// 此導彈可否被 SAM 當攔截彈射出：只有攔截彈與兩用彈。發射箱可能同時放著對地彈（戰斧、白蟻），
+        /// 它們不能被攔截器取走。
+        /// </summary>
+        public static bool CanIntercept(Thing missile)
+        {
+            return missile != null && RoleOf(missile.def) != MissileRole.Strike;
         }
     }
 }

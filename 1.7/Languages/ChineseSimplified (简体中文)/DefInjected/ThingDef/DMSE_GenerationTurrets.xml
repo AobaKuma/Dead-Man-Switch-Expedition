@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <DMSE_Turret_LegacyFlak.label>老式防空炮</DMSE_Turret_LegacyFlak.label>
+  <DMSE_Turret_LegacyFlak.description>一门牵引式 88 毫米等级的高射炮，配备脚架、光学瞄准具与一组受过训练的炮手，靠人工装填与人工计算提前量，对低空慢速目标仍有一定威胁、对高速目标则基本靠运气，没有雷达、没有电力、没有伺服机构，只有炮管、弹药与人。\n\n需要炮手。以钢制炮弹对地面目标开火，也会拦截进入最后进场阶段的来袭导弹。</DMSE_Turret_LegacyFlak.description>
+  <DMSE_Turret_LegacyFlak.comps.CompRefuelable.fuelLabel>88毫米炮弹</DMSE_Turret_LegacyFlak.comps.CompRefuelable.fuelLabel>
+  <DMSE_Turret_LegacyFlak.comps.CompRefuelable.fuelGizmoLabel>88毫米炮弹</DMSE_Turret_LegacyFlak.comps.CompRefuelable.fuelGizmoLabel>
+  <DMSE_Turret_LegacyFlak.comps.CompRefuelable.outOfFuelMessage>无法开火：没有炮弹。</DMSE_Turret_LegacyFlak.comps.CompRefuelable.outOfFuelMessage>
+  <DMSE_Gun_LegacyFlak.label>88毫米高射炮</DMSE_Gun_LegacyFlak.label>
+  <DMSE_Gun_LegacyFlak.description>一门以人工装填的牵引式 88 毫米等级高射炮。</DMSE_Gun_LegacyFlak.description>
+  <DMSE_Bullet_LegacyFlak.label>88毫米炮弹</DMSE_Bullet_LegacyFlak.label>
+  <DMSE_Bullet_LegacyFlak_CIWS.label>88毫米炮弹</DMSE_Bullet_LegacyFlak_CIWS.label>
+  <DMSE_Turret_Millennium.label>先进防空炮</DMSE_Turret_Millennium.label>
+  <DMSE_Turret_Millennium.description>一门 35 毫米的现代化防空炮，配备可编程空爆弹、雷达与光电追踪以及一套能同时接战多目标的火控系统，拦截率高得惊人，代价是惊人的耗电与弹药消耗，每一次接战都像把一整箱白银倒进天空。\n\n以钢材制作的空爆弹开火；每一轮末端防御连射都会烧掉数十发。</DMSE_Turret_Millennium.description>
+  <DMSE_Turret_Millennium.comps.CompRefuelable.fuelLabel>35毫米空爆弹</DMSE_Turret_Millennium.comps.CompRefuelable.fuelLabel>
+  <DMSE_Turret_Millennium.comps.CompRefuelable.fuelGizmoLabel>35毫米弹药</DMSE_Turret_Millennium.comps.CompRefuelable.fuelGizmoLabel>
+  <DMSE_Turret_Millennium.comps.CompRefuelable.outOfFuelMessage>无法开火：没有弹药。</DMSE_Turret_Millennium.comps.CompRefuelable.outOfFuelMessage>
+  <DMSE_Gun_Millennium.label>35毫米转膛炮</DMSE_Gun_Millennium.label>
+  <DMSE_Gun_Millennium.description>一门发射可编程空爆弹的 35 毫米转膛炮。</DMSE_Gun_Millennium.description>
+  <DMSE_Bullet_Millennium.label>35毫米空爆弹</DMSE_Bullet_Millennium.label>
+</LanguageData>

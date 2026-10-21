@@ -1,17 +1,21 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
   <!-- ==================================================================
-       敶?銝誨?其辣嚗? V1 嚗??曉蝴 嚗??脫??萎???
-       Generation parts for the three ballistic airframes.
+       世代化彈道部件（V2 老式／民兵三型先進）
+       Generation parts for the ballistic airframes.
 
-       ?曉蝴銝車敶?敶??梁 DMSE_BallisticMissile.xml ??9 ?隞塚?
-       ?祆??芾???隞??撅研??嚗?         - V1嚗egacyBallistic嚗??輸收???寥?鈭怎?伐?靘踹????葉蝑?         - 瘞銝?嚗dvancedBallistic嚗?雿????扼??脰?擗?撠?       ================================================================== -->
+       三個彈道彈體（V2、現役、民兵三型）共用的 9 個部件放在
+       DMSE_BallisticMissile.xml；本檔只放「某一世代專屬」的部件：
+         - V2（LegacyBallistic）：阿馬托／特里亞倫炸藥，工業材料即可量產。
+         - 先進（AdvancedBallistic）：低當量、星光慣性、突防誘餌、分導。
+       ================================================================== -->
 
-  <!-- ??????????????????????????????????????????????????????????????
-       銝???脣???瘞銝?嚗?       ?????????????????????????????????????????????????????????????? -->
+  <!-- ══════════════════════════════════════════════════════════════
+       一、先進彈道（民兵三型）專屬部件
+       ══════════════════════════════════════════════════════════════ -->
 
-  <!-- 雿???哨????摰喲撠??迎??雿??拙???銝??Ｕ?-->
+  <!-- 低當量彈頭：W78／W87 級戰略彈頭的戰術縮小版；爆炸半徑與傷害小於全當量，但便宜、安全性高。 -->
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvBallistic_Warhead_LowYield</defName>
     <label>low-yield warhead</label>
@@ -33,7 +37,7 @@
     </researchPrerequisites>
   </DMSE.MissilePartDef>
 
-  <!-- ????改?CEP 蝝移摨佗?雿??∠?蝡臬?撘?銝頝典?撅扎?餈賜宏?璅???-->
+  <!-- 星光慣性導航：以星象追蹤修正陀螺漂移，散布 -4；仍是純彈道路徑，目標移動就會落空。 -->
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvBallistic_Guidance_Stellar</defName>
     <label>stellar-inertial guidance</label>
@@ -53,7 +57,7 @@
     </researchPrerequisites>
   </DMSE.MissilePartDef>
 
-  <!-- 蝒隤?嚗????0.75嚗??◤?菜葫??-->
+  <!-- 突防誘餌：釋放箔條、雷達誘餌與低可觀測外罩，訊號係數 0.75（更晚被偵測）。 -->
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvBallistic_Payload_Penaids</defName>
     <label>penetration aids</label>
@@ -73,11 +77,12 @@
     </researchPrerequisites>
   </DMSE.MissilePartDef>
 
-  <!-- ??嚗?甈⊥?箏???敶嚗誑???銵函內嚗????格??祕??嚗?-->
+  <!-- 多彈頭：在大氣層外釋放多枚獨立再入載具；目前實作為單一落點周圍散布子彈藥
+       （真正的多目標需要不同的落點模型）。 -->
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvBallistic_Payload_MIRV</defName>
     <label>multiple re-entry vehicles</label>
-    <description>A bus of several independent re-entry vehicles released before the terminal phase. This implementation keeps one impact point and spreads the sub-charges around it ??a true multiple-target bus would need a different impact model.</description>
+    <description>A bus of several independent re-entry vehicles released before the terminal phase. This implementation keeps one impact point and spreads the sub-charges around it; a true multiple-target bus would need a different impact model.</description>
     <category>Payload</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedBallistic</li>
@@ -94,13 +99,15 @@
     </researchPrerequisites>
   </DMSE.MissilePartDef>
 
-  <!-- ??????????????????????????????????????????????????????????????
-       鈭?敶?嚗1嚗?       ?????????????????????????????????????????????????????????????? -->
+  <!-- ══════════════════════════════════════════════════════════════
+       二、老式彈道（V2）專屬部件
+       ══════════════════════════════════════════════════════════════ -->
 
+  <!-- 阿馬托炸藥：二戰式 850 公斤填充物，簡單、穩定、爆破效果好，工業材料即可便宜量產。 -->
   <DMSE.MissilePartDef>
     <defName>DMSE_LegacyBallistic_Warhead_Amatol</defName>
     <label>Amatol warhead</label>
-    <description>Eight hundred and fifty kilograms of Amatol in the V-1 mould: a simple, stable, blast-effective filler that is cheap enough to build out of industrial stock. No special effects ??just a large hole.</description>
+    <description>Eight hundred and fifty kilograms of Amatol, a Second World War blast filler: simple, stable and cheap enough to build out of industrial stock. No special effects, just a large hole.</description>
     <category>Warhead</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_LegacyBallistic</li>
@@ -117,6 +124,7 @@
     </researchPrerequisites>
   </DMSE.MissilePartDef>
 
+  <!-- 特里亞倫炸藥：阿馬托供應不足時的替代品，加入燃燒成分，落點周圍會起火；略貴，但沒有更準。 -->
   <DMSE.MissilePartDef>
     <defName>DMSE_LegacyBallistic_Warhead_Trialen</defName>
     <label>Trialen warhead</label>

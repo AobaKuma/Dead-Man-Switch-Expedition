@@ -40,7 +40,8 @@ namespace DMSE
         // 彈藥來源：parent 為 Building_MissileRack（容器），攔截彈以實體 Thing 逐枚存放，
         private ThingOwner HeldContainer => (parent as IThingHolder)?.GetDirectlyHeldThings();
 
-        // 輕型發射箱與對地發射軌共用彈艙：被打擊任務保留的導彈（StrikeReservation）不取用。
+        // 輕型發射箱與對地發射軌共用彈艙：只取攔截／兩用彈（對地彈不能當攔截彈射掉），
+        // 且被打擊任務保留的導彈（StrikeReservation）不取用。
         private Thing LoadedMissile
         {
             get
@@ -50,6 +51,7 @@ namespace DMSE
                 MapComponent_StrikePlanner planner = StrikeReservation.PlannerFor(parent);
                 for (int i = 0; i < owner.Count; i++)
                 {
+                    if (!MissileRoleExtension.CanIntercept(owner[i])) { continue; }
                     if (planner == null || !planner.IsReserved(owner[i])) { return owner[i]; }
                 }
                 return null;
@@ -59,15 +61,12 @@ namespace DMSE
         public override bool HasAmmo => LoadedMissile != null;
 
         /// <summary>
-        /// 取得已裝填攔截彈的 MissileConfig，供 BVR 系統讀取戰鬥部加成。
-        /// 裝填物無 CompMissileConfig 時回傳 null。
+        /// 取得已裝填攔截彈的 MissileConfig，供 BVR 系統讀取戰鬥部加成與彈體攔截係數。
+        /// 物品的 CompMissileConfig 優先，其次是 <see cref="MissileItemExtension"/> 宣告的彈體；都沒有回傳 null。
         /// </summary>
         public MissileConfig GetLoadedMissileConfig()
         {
-            Thing missile = LoadedMissile;
-            if (missile == null) { return null; }
-            CompMissileConfig comp = missile.TryGetComp<CompMissileConfig>();
-            return comp?.config;
+            return MissileItemExtension.ConfigFor(LoadedMissile);
         }
 
         public bool ReadyToFire(int now)
@@ -81,19 +80,18 @@ namespace DMSE
             Thing missile = LoadedMissile;
             if (missile == null) { return; }
 
-            InterceptProjectile p = (InterceptProjectile)SkyfallerMaker.SpawnSkyfaller(
-                Props.interceptorSkyfaller, parent.Position, parent.Map);
+            // 升空外觀與尾焰隨裝填的攔截彈彈體；彈體沒有 launchProjectile 時退回平台的 interceptorSkyfaller。
             // 發射方向與發射器建築朝向一致（同巡航導彈）。
-            p.Rotation = parent.Rotation;
-            p.angle = p.Rotation.AsAngle;
-            p.targetId = target.id;
-            p.hitChance = hitChance;
+            ThingDef launchDef = MissileItemExtension.BodyOf(missile)?.launchProjectile ?? Props.interceptorSkyfaller;
+            MissileProjectileMaker.LaunchInterceptor(launchDef, parent.Position, parent.Map, parent.Rotation, parent, target.id, hitChance);
 
             StartCooldown(now);
 
             // 消耗實體彈藥（與 CompMissileLauncher_Rail 相同）。
             HeldContainer?.Remove(missile);
             missile.Destroy(DestroyMode.Vanish);
+
+            CompLaunchBackblast.TryTrigger(parent);
         }
 
         /// <summary>Consume a real missile and launch a visual-only skyfaller; world scheduling owns the roll.</summary>

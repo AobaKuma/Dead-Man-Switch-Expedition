@@ -22,13 +22,15 @@ namespace DMSE
         }
 
         // 判定目標內部是否有符合的 boss pawn。
-        public static bool IsOk(ThingOwner<Skyfaller> faller, List<Pawn> p)
+        public static bool IsOk(ThingOwner<Thing> faller, List<Pawn> p)
         {
             if (faller == null || !faller.Any)
             {
                 return false;
             }
-            Thing innerThing = faller.InnerListForReading.First().innerContainer.FirstOrDefault();
+            // 只有空投艙 skyfaller 有內容物；導彈 Projectile 沒有。
+            if (!(faller.InnerListForReading.First() is Skyfaller pod)) { return false; }
+            Thing innerThing = pod.innerContainer.FirstOrDefault();
             return BVRDetection.PawnsIn(innerThing).Any(p.Contains);
         }
     }

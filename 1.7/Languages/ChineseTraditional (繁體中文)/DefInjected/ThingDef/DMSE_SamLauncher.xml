@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <DMSE_Weapon_SamLauncher.label>防空導彈發射具</DMSE_Weapon_SamLauncher.label>
+  <DMSE_Weapon_SamLauncher.description>一具肩射式的防空導彈發射具，發射筒、握把、簡易敵我識別天線與一具與頭盔顯示器連動的瞄準具讓單兵也能對超視距目標發射攔截彈，但操作者必須站在原地完成鎖定，發射後還得自己背著空筒跑路。\n\n彈藥是裝備者背包裡的輕型防空導彈。防空指令可接戰雷達網已在本地圖追蹤到的來襲威脅，不需要火控通道。</DMSE_Weapon_SamLauncher.description>
+  <DMSE_Weapon_SamLauncher.tools.tube.label>發射筒</DMSE_Weapon_SamLauncher.tools.tube.label>
+  <DMSE_Projectile_Stinger.label>輕型防空導彈</DMSE_Projectile_Stinger.label>
+</LanguageData>

@@ -98,7 +98,7 @@ namespace DMSE
         /// <summary>
         /// 可選彈體：同分級、同為 Launcher 型，且發射方式相容於平台的預設彈體。
         /// 以 <see cref="CompProperties_MissileConfig.defaultBody"/> 當平台分級錨點，
-        /// 所以換過彈體後選單仍穩定。
+        /// 所以換過彈體後選單仍穩定。研究門檻（<see cref="MissileBodyDef.researchPrerequisites"/>）在選單上顯示為鎖定。
         /// </summary>
         private IEnumerable<MissileBodyDef> SelectableBodies()
         {
@@ -171,6 +171,12 @@ namespace DMSE
                     foreach (MissileBodyDef b in SelectableBodies())
                     {
                         MissileBodyDef bl = b;
+                        // 未研究的彈體顯示為鎖定（上帝模式即時裝配不受研究限制，與部件選單一致）。
+                        if (bl != cfg.body && !bl.ResearchSatisfied && !MissileAssemblyUtility.GodModeInstant)
+                        {
+                            opts.Add(new FloatMenuOption(bl.LabelCap + " (" + "DMSE.Missile.Locked".Translate() + ")", null));
+                            continue;
+                        }
                         opts.Add(new FloatMenuOption(bl.LabelCap, delegate
                         {
                             cfg.body = bl;

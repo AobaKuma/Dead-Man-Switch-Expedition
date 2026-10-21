@@ -51,10 +51,10 @@ int c = Random.Range(8,20);
             for (int i = 0; i < c  && incomingDef != null; i++)
             {
                 IntVec3 cell = DropCellFinder.RandomDropSpot(map);
-                if (SkyfallerMaker.SpawnSkyfaller(incomingDef, cell, map) is MissileIncoming mi)
+                if (MissileProjectileMaker.SpawnIncoming(incomingDef, cell, map) is IIncomingMissile mi)
                 {
-                    mi.config = BuildEnemyConfig();
-                    mi.attacker = attacker;
+                    mi.Config = BuildEnemyConfig();
+                    mi.Attacker = attacker;
                 }
             }
             Messages.Message("DMSE: missile salvo x" + count + " (no active defender radar — impacts directly)",
@@ -104,10 +104,10 @@ int c = Random.Range(8,20);
                 return;
             }
 
-            Skyfaller faller = SkyfallerMaker.SpawnSkyfaller(def, cell, map);
-            if (faller is MissileIncoming incoming)
+            Thing faller = MissileProjectileMaker.SpawnIncoming(def, cell, map);
+            if (faller is IIncomingMissile incoming)
             {
-                incoming.config = cfg;
+                incoming.Config = cfg;
             }
         }
 

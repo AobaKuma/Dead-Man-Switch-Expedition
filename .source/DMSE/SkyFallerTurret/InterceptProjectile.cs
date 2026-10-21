@@ -8,16 +8,42 @@ namespace DMSE
     /// 中過程攔截彈（視覺 skyfaller）。離場時依 <see cref="hitChance"/> 擲骰：
     /// 成功則乾淨擊毀目標（不生成殘骸）；無論成敗都釋放占用的火力通道。
     /// </summary>
-    public class InterceptProjectile : Skyfaller, ILaunchTarget
+    public class InterceptProjectile : Skyfaller, IMissileFlight, IInterceptorShot
     {
         public int targetId = -1;
         public float hitChance = 0.9f;
+
+        public int TargetId => targetId;
+        public float HitChance { get => hitChance; set => hitChance = value; }
 
         public Vector3 trueDrawPos = Vector3.zero;
         public float trueRotation = 0f;
 
         public Vector3 LaunchDrawPos => trueDrawPos;
         public float LaunchRotation => trueRotation;
+        public Vector3 VisualPos => DrawPos;
+        public IntVec3 GroundCell => Position;
+        public int AscentTicks => ticksToDiscard;
+        public float EffectSpeed(float evaluate) => def.skyfaller.speedCurve.Evaluate(evaluate);
+        public float EffectEvaluate(int ticksSinceSpawn, int ignitionDelayTicks) => (float)ticksSinceSpawn / (float)(ticksToDiscard + ignitionDelayTicks);
+
+        /// <summary>依目前時間軸計算 <see cref="DrawAt"/> 會得到的位置與朝向（供 <see cref="MissileFlightTrace"/> 比對）。</summary>
+        public void ComputeLaunchPose(out Vector3 pos, out float rotation)
+        {
+            pos = DrawPos;
+            GetDrawPositionAndRotation(ref pos, out float extraRotation);
+            rotation = Rotation.AsAngle + extraRotation;
+        }
+
+        protected override void Tick()
+        {
+            base.Tick();
+            if (MissileFlightTrace.Active)
+            {
+                ComputeLaunchPose(out Vector3 pos, out float rot);
+                MissileFlightTrace.RecordTick(this, ticksToImpact, pos, rot);
+            }
+        }
 
         protected override void DrawAt(Vector3 drawLoc, bool flip = false)
         {

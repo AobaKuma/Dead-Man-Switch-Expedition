@@ -209,7 +209,8 @@
         <worldDetectionRange>12</worldDetectionRange>
         <antiStealthLevel>2</antiStealthLevel>
         <fireControlDef>DMSE_PhaseArrayRadar</fireControlDef>
-        <channels>2</channels>
+        <!-- 三代裝備體系 D-1：玩家相控陣 24 通道後，NPC 抽象防空 2 → 4 通道（docs/三代裝備體系_實作計畫.md §7-3）。 -->
+        <channels>4</channels>
         <interceptorStock>8</interceptorStock>
         <restockPerDay>4</restockPerDay>
         <interceptorBody>DMSE_MissileBody_Light</interceptorBody>

@@ -11,4 +11,5 @@
   <DMSE_ManMissileLauncher.reportString>正在操作导弹发射器。</DMSE_ManMissileLauncher.reportString>
   <DMSE_AssembleBallisticSilo.reportString>正在TargetA中装配弹道导弹。</DMSE_AssembleBallisticSilo.reportString>
 
+  <DMSE_FireManPortableSAM.reportString>正在瞄准防空导弹。</DMSE_FireManPortableSAM.reportString>
 </LanguageData>

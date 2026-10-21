@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <DMSE_Weapon_SamLauncher.label>防空导弹发射具</DMSE_Weapon_SamLauncher.label>
+  <DMSE_Weapon_SamLauncher.description>一具肩射式的防空导弹发射具，发射筒、握把、简易敌我识别天线与一具与头盔显示器联动的瞄准具让单兵也能对超视距目标发射拦截弹，但操作者必须站在原地完成锁定，发射后还得自己背着空筒跑路。\n\n弹药是装备者背包里的轻型防空导弹。防空指令可接战雷达网已在本地图追踪到的来袭威胁，不需要火控通道。</DMSE_Weapon_SamLauncher.description>
+  <DMSE_Weapon_SamLauncher.tools.tube.label>发射筒</DMSE_Weapon_SamLauncher.tools.tube.label>
+  <DMSE_Projectile_Stinger.label>轻型防空导弹</DMSE_Projectile_Stinger.label>
+</LanguageData>

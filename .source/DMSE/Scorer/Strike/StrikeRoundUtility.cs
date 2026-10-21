@@ -143,7 +143,7 @@ namespace DMSE
                 round = round,
                 config = config,
                 distance = MissileWorldUtility.RangeDistance(from, target),
-                flightTicks = launcher.DepartureTicks + FlightTicks(config, from, target),
+                flightTicks = launcher.DepartureTicksFor(config, target) + FlightTicks(config, from, target),
                 groupKey = GroupKey(config, round),
                 groupLabel = GroupLabel(config, round),
                 value = RoundValue(round, config),

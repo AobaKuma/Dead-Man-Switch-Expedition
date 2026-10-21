@@ -80,8 +80,8 @@ namespace DMSE.BVRAcceptance
             t.Check(CruiseConfig("DMSE_Guidance_Precision").PlayerChoosesTarget, "TV guidance: player chooses");
             t.Check(!CruiseConfig("DMSE_Guidance_EMSignal").PlayerChoosesTarget, "EM seeker: automatic");
             t.Check(!CruiseConfig("DMSE_Guidance_Inertial").PlayerChoosesTarget, "inertial: automatic");
-            MissileConfig loiter = new MissileConfig(DefDatabase<MissileBodyDef>.GetNamed("DMSE_MissileBody_Loiter"));
-            t.Check(loiter.PlayerChoosesTarget, "loitering munition (built-in TV) lets the player choose");
+            MissileConfig loiter = new MissileConfig(DefDatabase<MissileBodyDef>.GetNamed("DMSE_MissileBody_LegacyLoiter"));
+            t.Check(loiter.PlayerChoosesTarget, "legacy loitering munition (built-in TV) lets the player choose");
             t.Check(!loiter.HasTerminalGuidance, "built-in TV gives no terminal guidance");
             t.Check(CruiseConfig("DMSE_Guidance_Precision").HasTerminalGuidance, "TV part still provides terminal guidance");
         }
@@ -236,6 +236,17 @@ namespace DMSE.BVRAcceptance
     public static class AcceptanceSuite
     {
         public static List<AcceptanceTest> Build()
+        {
+            List<AcceptanceTest> tests = Mechanics();
+            // Three-generation equipment (Tests_Generations) runs before the save/load tests.
+            tests.InsertRange(tests.FindIndex(x => x.id == "L1"), Tests_Generations.Tests());
+            // Skyfaller → Projectile migration parity (docs/Missile_Skyfaller轉Projectile_計畫.md §8.6).
+            tests.InsertRange(tests.FindIndex(x => x.id == "L1"), Tests_MissileFlight.Tests());
+            tests.Add(Tests_MissileFlight.OldSaveTest()); // reloads the game: last
+            return tests;
+        }
+
+        private static List<AcceptanceTest> Mechanics()
         {
             return new List<AcceptanceTest>
             {

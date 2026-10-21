@@ -87,7 +87,7 @@ namespace DMSE
         /// <summary>
         /// 由 <see cref="Patch_MakeDropPodAt"/> 呼叫：登記一個被偵測到的敵對空投，並依搜索雷達計算預警窗口。
         /// </summary>
-        public void RegisterIncoming(Skyfaller faller, IntVec3 pos, Faction defender)
+        public void RegisterIncoming(Thing faller, IntVec3 pos, Faction defender)
         {
             int window = ComputeWarningWindow(faller, 1, defender);
             if (window < 0)
@@ -98,12 +98,12 @@ namespace DMSE
             AddIncoming(faller, pos, defender, window, false);
         }
 
-        public void RegisterTerminal(Skyfaller faller, IntVec3 pos, Faction defender)
+        public void RegisterTerminal(Thing faller, IntVec3 pos, Faction defender)
         {
             AddIncoming(faller, pos, defender, TerminalWindowTicks(defender), true);
         }
 
-        private void AddIncoming(Skyfaller faller, IntVec3 pos, Faction defender, int window, bool terminalOnly)
+        private void AddIncoming(Thing faller, IntVec3 pos, Faction defender, int window, bool terminalOnly)
         {
             int impactTick = Find.TickManager.TicksGame + window;
 
@@ -141,7 +141,7 @@ namespace DMSE
             if (incomingDef == null || count <= 0 || defender == null || map == null) { return false; }
 
             // 以一枚樣本（帶 def 的 BVRTargetProps）計算單枚窗口。
-            MissileIncoming first = SkyfallerMaker.MakeSkyfaller(incomingDef) as MissileIncoming;
+            Thing first = MissileProjectileMaker.MakeIncoming(incomingDef);
             if (first == null) { return false; }
 
             int window = ComputeWarningWindow(first, 1, defender);
@@ -156,13 +156,13 @@ namespace DMSE
 
             for (int i = 0; i < count; i++)
             {
-                MissileIncoming mi = i == 0 ? first : SkyfallerMaker.MakeSkyfaller(incomingDef) as MissileIncoming;
-                if (mi == null) { continue; }
-                mi.config = config != null ? config.Clone() : null;
-                mi.attacker = attacker;
-                mi.bvrHandled = true; // 重投時不再重複登記。
+                Thing thing = i == 0 ? first : MissileProjectileMaker.MakeIncoming(incomingDef);
+                if (!(thing is IIncomingMissile mi)) { continue; }
+                mi.Config = config != null ? config.Clone() : null;
+                mi.Attacker = attacker;
+                mi.BvrHandled = true; // 重投時不再重複登記。
                 IntVec3 pos = DropCellFinder.RandomDropSpot(map);
-                wave.targets.Add(new BVRTarget(mi, pos, map, nextTargetId++));
+                wave.targets.Add(new BVRTarget(thing, pos, map, nextTargetId++));
             }
 
             Waves.Add(wave);
@@ -173,7 +173,7 @@ namespace DMSE
         /// 計算預警/攔截窗口（ticks）。窗口 ∝ Σ(搜索距離 × 功率)，再依目標綜合距離等級放大、目標數量縮短，
         /// 並在反隱身不足時打折。回傳 -1 表示沒有運作中的搜索雷達。
         /// </summary>
-        public int ComputeWarningWindow(Skyfaller faller, int targetCount, Faction defender)
+        public int ComputeWarningWindow(Thing faller, int targetCount, Faction defender)
         {
             List<CompSearchRadar> active = searchRadars.Where(r => r.Active && r.parent.Faction == defender).ToList();
             if (active.Count == 0)
@@ -329,11 +329,12 @@ namespace DMSE
                     CompMissileLauncher_Interceptor launcher = SelectReadyLauncher(now, defender);
                     if (fcReady != null && launcher != null)
                     {
-                        // 基礎命中率
-                        float hitChance = fcReady.ComputeHitChance(target, timeLeft - terminalWindow);
+                        // 基礎命中率 × 攔截彈彈體係數（老式攔截彈較低、半主動彈較高）
+                        MissileConfig interceptorConfig = launcher.GetLoadedMissileConfig();
+                        float hitChance = Mathf.Clamp01(fcReady.ComputeHitChance(target, timeLeft - terminalWindow)
+                            * (interceptorConfig?.InterceptHitFactor ?? 1f));
 
                         // 讀取攔截彈的戰鬥部加成（ContinuousRod / Airburst 等）
-                        MissileConfig interceptorConfig = launcher.GetLoadedMissileConfig();
                         float N = interceptorConfig?.PayloadCapacity ?? 0f;
                         MissilePartDef wh = interceptorConfig?.PartFor(MissilePartCategory.Warhead);
                         if (wh?.warheadEffect != null)

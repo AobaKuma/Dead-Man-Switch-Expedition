@@ -73,10 +73,10 @@
   </ThingDef>
 
   <!-- ==================== 巡飛彈 落點 incoming skyfaller ==================== -->
-  <ThingDef ParentName="SkyfallerBase">
+  <ThingDef ParentName="DMSE_MissileIncomingProjectileBase">
     <defName>DMSE_Incoming_Loiter</defName>
     <label>loitering munition (incoming)</label>
-    <thingClass>DMSE.MissileIncoming</thingClass>
+    <thingClass>DMSE.Projectile_MissileIncoming</thingClass>
     <graphicData>
       <texPath>Things/Missile/Termite/missile_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -84,13 +84,13 @@
     </graphicData>
     <size>(1,1)</size>
     <!-- 爆炸效果由 MissileConfig 於落點動態套用，故此處不設固定 explosionRadius/explosionDamage。 -->
-    <skyfaller>
-      <shadowSize>(2, 2)</shadowSize>
-      <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
-      <speed>1</speed>
-    </skyfaller>
     <!-- BVR 攔截特性：巡飛彈速度慢、隱身差 → 容易被偵測（高 distanceLevel、低 stealthLevel）。 -->
     <modExtensions>
+      <li Class="DMSE.MissileFlightExtension">
+        <shadowSize>(2, 2)</shadowSize>
+        <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
+        <speed>1</speed>
+      </li>
       <li Class="DMSE.BVRTargetProps">
         <distanceLevel>1</distanceLevel>
         <stealthLevel>0</stealthLevel>
@@ -119,13 +119,16 @@
     <validLaunchTarget>false</validLaunchTarget>
   </WorldObjectDef>
 
-  <!-- ==================== 巡飛彈 發射架（1x3 傾斜軌） ====================
+  <!-- ==================== 軌道發射架（1x3 傾斜軌，中登） ====================
        彈藥以實體 Thing 存於容器（Building_MissileRack，容量 1），由 CompMissileRackRenderer
-       依建築朝向渲染；CompMissileLauncher_Rail 提供 Scorer 式發射。 -->
+       依建築朝向渲染。兩種發射 Comp 共用同一枚彈：
+         - CompMissileLauncher_Rail：對地發射 V1／白蟻（物品以 MissileItemExtension 宣告彈體）；
+         - CompMissileLauncher_Interceptor：萊茵女兒（MissileRole.Interceptor）由火控雷達指派攔截。
+       用途過濾（MissileRoleExtension）保證對地彈不會被攔截器射掉、攔截彈不會被對地射出。 -->
   <ThingDef ParentName="DMSE_TiltLauncherBase">
     <defName>DMSE_Building_LoiteringLauncher</defName>
-    <label>loitering munition rail</label>
-    <description>A tilt-launch rail for a single loitering munition. A colonist hauls a munition onto the rail; from there it can be launched at targets beyond the local map. The loaded munition is rendered along the rail according to the building's facing.</description>
+    <label>launch rail</label>
+    <description>A tilt rail for a single loitering munition, with no power and no servos, only a rail, a set of stops and a single round waiting to launch, cheap enough to line a perimeter with and fragile enough that one shell ends the whole rail.\n\nStrike munitions are launched at targets beyond the local map; an interceptor loitering munition on the rail is fired by the fire-control network instead.</description>
     <thingClass>DMSE.Building_MissileRack</thingClass>
     <graphicData>
       <texPath>Things/Building/MissileLauncher/building</texPath>
@@ -156,6 +159,8 @@
         <filter>
           <thingDefs>
             <li>DMSE_Missile_Termite</li>
+            <li>DMSE_Missile_LegacyLoiter</li>
+            <li>DMSE_Missile_Rheintochter</li>
           </thingDefs>
         </filter>
       </fixedStorageSettings>
@@ -164,6 +169,8 @@
         <filter>
           <thingDefs>
             <li>DMSE_Missile_Termite</li>
+            <li>DMSE_Missile_LegacyLoiter</li>
+            <li>DMSE_Missile_Rheintochter</li>
           </thingDefs>
         </filter>
       </defaultStorageSettings>
@@ -191,6 +198,12 @@
         <missileBody>DMSE_MissileBody_Loiter</missileBody>
         <launchCooldownTicks>600</launchCooldownTicks>
         <launchForwardCells>2</launchForwardCells>
+      </li>
+      <!-- 攔截：只取攔截用途的彈（萊茵女兒），由火控雷達指派。 -->
+      <li Class="DMSE.CompProperties_MissileLauncher">
+        <interceptorSkyfaller>DMSE_SkyFaller_Interceptor</interceptorSkyfaller>
+        <reloadCooldownTicks>600</reloadCooldownTicks>
+        <interceptorTravelTicks>240</interceptorTravelTicks>
       </li>
     </comps>
     <inspectorTabs>

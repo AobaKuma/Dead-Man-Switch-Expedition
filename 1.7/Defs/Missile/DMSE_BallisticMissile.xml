@@ -29,7 +29,12 @@
     <rangePerFuelImpulse>0.1</rangePerFuelImpulse>
     <!-- 裝配工作量：遠多於中型 -->
     <assembleWorkAmount>3600</assembleWorkAmount>
+    <!-- 現役彈道彈體屬戰略系統：塔式發射架（DMSE_Ballistics）只能裝 V2，研究後才能換成本彈體 -->
+    <researchPrerequisites>
+      <li>DMSE_StrategicSystems</li>
+    </researchPrerequisites>
     <incomingSkyfaller>DMSE_Incoming_BallisticMissile</incomingSkyfaller>
+    <launchProjectile>DMSE_Launch_Ballistic</launchProjectile>
     <slots>
       <li>Warhead</li>
       <li>Guidance</li>
@@ -39,9 +44,10 @@
 
   <!-- ==================== 彈道導彈 部件 Defs ====================
        所有部件均使用新式 Class 欄位；成本反映大型彈體的物料需求。
-       本檔所有部件的 compatibleBodies 均同時列出三種同階彈道彈體：
-       現役 DMSE_MissileBody_Ballistic、老式 DMSE_MissileBody_LegacyBallistic（V1）、
-       先進 DMSE_MissileBody_AdvancedBallistic（民兵三型）——發射井可切換彈體，部件共用。 -->
+       本檔所有部件的 compatibleBodies 均同時列出四種同階彈道彈體：
+       現役 DMSE_MissileBody_Ballistic、老式 DMSE_MissileBody_LegacyBallistic（V2）、
+       戰術 DMSE_MissileBody_Tochka（圓點U）、先進 DMSE_MissileBody_AdvancedBallistic（民兵三型）
+       ——塔式發射架與發射井可切換彈體，部件共用。 -->
 
   <!-- == Warhead == -->
 
@@ -49,9 +55,9 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_Ballistic_Warhead_Thermonuclear</defName>
     <label>thermonuclear warhead</label>
-    <description>A massive blast warhead with thermonuclear yield. No special effects — the explosion radius and damage speak for themselves.</description>
+    <description>A massive blast warhead with thermonuclear yield. No special effects: the explosion radius and damage speak for themselves.</description>
     <category>Warhead</category>
-    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_Tochka</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
     <explosionRadiusOffset>5</explosionRadiusOffset>
     <damageAmountOffset>200</damageAmountOffset>
     <damageDefOverride>Bomb</damageDefOverride>
@@ -61,6 +67,9 @@
       <DMSE_TantastenAlloy>20</DMSE_TantastenAlloy>
       <ComponentSpacer>2</ComponentSpacer>
     </costList>
+    <researchPrerequisites>
+      <li>DMSE_StrategicSystems</li>
+    </researchPrerequisites>
   </DMSE.MissilePartDef>
 
   <!-- 空爆戰鬥部：額外 floor(N/5)=1 次攔截擲骰 + N 半徑地面爆炸（用於反彈道攔截）。 -->
@@ -69,7 +78,7 @@
     <label>airburst warhead</label>
     <description>Detonates above the target for maximum fragment coverage. When used as an interceptor, gains extra engagement rolls per engagement window.</description>
     <category>Warhead</category>
-    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_Tochka</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
     <warheadEffect Class="DMSE.WarheadEffect_Airburst">
       <groundDamageAmount>120</groundDamageAmount>
     </warheadEffect>
@@ -86,7 +95,7 @@
     <label>tungsten penetrator</label>
     <description>A dense tungsten rod that punches through thick roofs before detonating inside, making underground shelters no protection.</description>
     <category>Warhead</category>
-    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_Tochka</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
     <warheadEffect Class="DMSE.WarheadEffect_TungstenPenetrator">
       <damageAmount>200</damageAmount>
     </warheadEffect>
@@ -104,7 +113,7 @@
     <label>inertial guidance</label>
     <description>Strap-down inertial reference unit. High accuracy is unnecessary at thermonuclear yield.</description>
     <category>Guidance</category>
-    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_Tochka</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
     <guidanceType Class="DMSE.GuidanceType_Inertial" />
     <scatterOffset>0</scatterOffset>
   </DMSE.MissilePartDef>
@@ -115,7 +124,7 @@
     <label>fire-control guidance</label>
     <description>Terminal guidance aided by the colony's fire-control radar network. Significantly tightens impact dispersion for precision strikes.</description>
     <category>Guidance</category>
-    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_Tochka</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
     <guidanceType Class="DMSE.GuidanceType_FireControl" />
     <scatterOffset>-3</scatterOffset>
     <costList>
@@ -132,7 +141,7 @@
     <label>laser terminal seeker</label>
     <description>Semi-active laser seeker for the re-entry vehicle. Locks onto the most recent laser designation your faction has painted on the target map with a laser target designator. Falls back to inertial targeting if there is none.</description>
     <category>Guidance</category>
-    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_Tochka</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
     <guidanceType Class="DMSE.GuidanceType_Laser" />
     <scatterOffset>-3</scatterOffset>
     <costList>
@@ -152,7 +161,7 @@
     <label>no payload</label>
     <description>No secondary payload. The primary warhead alone is typically sufficient for a ballistic strike.</description>
     <category>Payload</category>
-    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_Tochka</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
     <payloadEffect Class="DMSE.PayloadEffect_None" />
   </DMSE.MissilePartDef>
 
@@ -162,7 +171,7 @@
     <label>cluster payload</label>
     <description>Releases a cloud of sub-munitions across a wide area. Trades blast concentration for area coverage.</description>
     <category>Payload</category>
-    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_Tochka</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
     <payloadEffect Class="DMSE.PayloadEffect_Cluster">
       <subDamageAmount>80</subDamageAmount>
     </payloadEffect>
@@ -178,7 +187,7 @@
     <label>antiparticle payload</label>
     <description>A secondary antiparticle burst that vaporises everything in range. The most destructive secondary payload available.</description>
     <category>Payload</category>
-    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_Tochka</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
     <payloadEffect Class="DMSE.PayloadEffect_Antiparticle">
       <damageAmount>300</damageAmount>
     </payloadEffect>

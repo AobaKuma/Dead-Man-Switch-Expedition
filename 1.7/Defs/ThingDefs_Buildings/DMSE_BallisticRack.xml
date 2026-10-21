@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
-  <!-- ==================== 彈道導彈 發射架（2x2 垂直發射）====================
-       與 3x3 發射井同樣是「無物品型態、就地裝配」的彈道平台：
-       CompMissileConfig 直接掛在建築上（defaultBody = 彈道導彈彈體），
-       WorkGiver_AssembleBallisticSilo / JobDriver_AssembleBallisticSilo 會自動掃到本建築。
+  <!-- ==================== 塔式發射架（2x2 垂直發射，老資歷）====================
+       與 3x3 戰略導彈發射井同樣是「無物品型態、就地裝配」的彈道平台：
+       CompMissileConfig 直接掛在建築上，WorkGiver_AssembleBallisticSilo / JobDriver_AssembleBallisticSilo
+       會自動掃到本建築。
 
-       與發射井的差異只在視覺與規模：
-         - 開放式發射架：已裝配完成（CompMissileLauncher_Ballistic.IsLoaded）時，
+       與發射井的差異（docs/三代裝備體系_實作計畫.md §5-1、§8-2）：
+         - 開放式桁架塔：已裝配完成（CompMissileLauncher_Ballistic.IsLoaded）時，
            DMSE.CompMissileBodyRenderer 會在架中央畫出直立彈體（貼圖取自該彈體的 incomingSkyfaller），
-           所以換彈體（老式 V1／現役／先進民兵三型）時架上的彈體也跟著換。
-         - 未建造彈體、搬料中、施工中、發射完等待重新裝配時，只看得到空架子。
-         - 不可旋轉（垂直發射唯一朝向），禁止建於重力船 substructure（繼承自 DMSE_VerticalLauncherBase）。
-         - 裝配分頁沿用 ITab_MissileAssembly；因為 defaultBody.customizeLocation = Launcher，
-           本建築的彈體欄位可切換（見 ITab_MissileAssembly.CanChooseBody）。 -->
+           桁架頂層（overlay）畫在彈體之上，未裝彈時只看得到空塔。
+         - 沒有導流與抑爆：發射時 DMSE.CompLaunchBackblast 對半徑 3.5 格的 Pawn 造成火焰傷害與震懾、
+           點燃可燃物；不傷建築（含塔本身）。
+         - 預設彈體是老式彈道（V2，DMSE_Ballistics）；圓點U、現役、民兵三型要各自的研究
+           （MissileBodyDef.researchPrerequisites，ITab_MissileAssembly 的彈體選單顯示為鎖定）。
+         - 不可旋轉（垂直發射唯一朝向），禁止建於重力船 substructure（繼承自 DMSE_VerticalLauncherBase）。 -->
   <ThingDef ParentName="DMSE_VerticalLauncherBase">
     <defName>DMSE_Building_BallisticRack</defName>
-    <label>ballistic missile launch rack</label>
-    <description>An open 2x2 vertical launch rack for ballistic missiles. The airframe has no item form: colonists assemble it directly into the cradle from raw materials, and the finished missile stands upright in the frame where you can see it. Launch via the fire command at a world map target.\n\nLaunch it and the rack is empty again until a new missile is assembled. Swap between the legacy, current and advanced ballistic airframes from the assembly tab.\n\nCannot be installed on gravship decks.</description>
+    <label>ballistic launch tower</label>
+    <description>An old launch tower that stands a ballistic missile upright in a truss frame, simple and cheap but with no flame trench and no blast suppression, so that at ignition the exhaust and shockwave sweep outward to set nearby grass alight and injure anyone who did not walk far enough; it is good for throwing cheap airframes a long way and bad for building next to your own warehouse.\n\nThe airframe has no item form: colonists assemble it on the tower from raw materials. Swap airframes from the assembly tab; newer ones need their own research.\n\nCannot be installed on gravship decks.</description>
     <graphicData>
       <texPath>Things/Building/BallisticRack/building</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(2.3,2.3)</drawSize>
+      <drawSize>(4,4)</drawSize>
     </graphicData>
-    <size>(2,2)</size>
+    <uiIconPath>Things/Building/BallisticRack/icon</uiIconPath>
+    <size>(3,3)</size>
     <pathCost>70</pathCost>
     <fillPercent>0.6</fillPercent>
     <staticSunShadowHeight>0.15</staticSunShadowHeight>
@@ -48,9 +50,9 @@
       </li>
       <li Class="CompProperties_Flickable" />
       <li Class="CompProperties_Breakdownable" />
-      <!-- 彈道導彈的裝配設定（彈體 + 彈頭/導引/酬載）直接存於建築本身。 -->
+      <!-- 彈道導彈的裝配設定（彈體 + 彈頭/導引/酬載）直接存於建築本身；預設老式彈道（V2）。 -->
       <li Class="DMSE.CompProperties_MissileConfig">
-        <defaultBody>DMSE_MissileBody_Ballistic</defaultBody>
+        <defaultBody>DMSE_MissileBody_LegacyBallistic</defaultBody>
       </li>
       <!-- 發射控制：在世界地圖選靶並點火；離場/落點 skyfaller 與發射井共用。 -->
       <li Class="DMSE.CompProperties_BallisticLauncher">
@@ -60,16 +62,32 @@
         <launchCooldownTicks>2400</launchCooldownTicks>
         <launchForwardCells>0</launchForwardCells>
       </li>
-      <!-- 架上彈體渲染：只在已裝配完成時把該彈體的直立彈體畫在架子中央。 -->
+      <!-- 發射時的尾焰與衝擊波：燒傷、震懾、點火；不傷建築。 -->
+      <li Class="DMSE.CompProperties_LaunchBackblast">
+        <radius>9</radius>
+        <damageAmount>18</damageAmount>
+        <igniteChance>0.8</igniteChance>
+        <stunTicks>60</stunTicks>
+        <affectsBuildings>false</affectsBuildings>
+        <effecter>DMS_LaunchDust_Recoilless</effecter>
+      </li>
+      <!-- 架上彈體渲染：桁架（overlay）永遠畫在底座之上；已裝配完成時，直立彈體疊在桁架中央 -->
       <li Class="DMSE.CompProperties_MissileBodyRenderer">
-        <drawSize>(2.2, 2.2)</drawSize>
+        <drawSize>(8,8)</drawSize>
+        <drawOffset>(0, 0, 4.0)</drawOffset>
+        <overlay>
+          <texPath>Things/Building/BallisticRack/building_top</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>(3,9)</drawSize>
+          <drawOffset>(0,0,2.99)</drawOffset>
+        </overlay>
       </li>
     </comps>
     <inspectorTabs>
       <li>DMSE.ITab_MissileAssembly</li>
     </inspectorTabs>
     <researchPrerequisites>
-      <li>DMSE_StrategicSystems</li>
+      <li>DMSE_Ballistics</li>
     </researchPrerequisites>
   </ThingDef>
 

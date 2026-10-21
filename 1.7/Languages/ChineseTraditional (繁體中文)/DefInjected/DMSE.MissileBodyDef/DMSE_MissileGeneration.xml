@@ -1,14 +1,14 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
 
   <DMSE_MissileBody_LegacyBallistic.label>老式彈道導彈彈體</DMSE_MissileBody_LegacyBallistic.label>
-  <DMSE_MissileBody_LegacyBallistic.description>一款以 V1 為藍本的第一代彈道彈體：粗製的脈衝噴射彈身、鐘錶式慣性自動駕駛儀，完全沒有終端修正。它既慢又極不精準，大半質量都花在結構上，但在真正的戰略體系問世之前很久，就能用工業材料在發射井裡裝配出來。</DMSE_MissileBody_LegacyBallistic.description>
+  <DMSE_MissileBody_LegacyBallistic.description>一款以 V2 為藍本的第一代液態燃料彈道火箭，機械式慣性平台加上無線電橫向修正卻沒有真正的終端導引，準備緩慢、精度以街區計、大半質量都花在結構與推進劑上，但在真正的戰略體系問世之前很久，就能用工業材料在塔式發射架或發射井裡裝配出來。</DMSE_MissileBody_LegacyBallistic.description>
 
   <DMSE_MissileBody_LegacyLoiter.label>老式巡飛彈彈體</DMSE_MissileBody_LegacyLoiter.label>
-  <DMSE_MissileBody_LegacyLoiter.description>一款以 V2 為藍本的第一代火箭彈身。軌道發射、無線電指令導引，攜帶沉重的單一戰鬥部——比後來取代它的折疊翼彈藥打得更重、飛得更快，代價是精準度。沒有什麼可配置的：造好、推上發射軌、發射。</DMSE_MissileBody_LegacyLoiter.description>
+  <DMSE_MissileBody_LegacyLoiter.description>一款以 V1 為藍本的第一代脈衝噴射巡飛彈，方盒狀彈身與粗短的平直翼由鐘錶式慣性自動駕駛儀帶著沿預設航向飛完全程，慢、容易被偵測、落點偏差以街區計，卻只需要鋼板、燃料與一具簡單的噴射管就能從傾斜軌道送上天空，而且沒有什麼可配置的：造好、上軌、發射。</DMSE_MissileBody_LegacyLoiter.description>
 
-  <DMSE_MissileBody_LegacyInterceptor.label>老式防空飛彈彈體</DMSE_MissileBody_LegacyInterceptor.label>
-  <DMSE_MissileBody_LegacyInterceptor.description>一款第一代導引防空火箭：四片特大尾翼加上無線電指令鏈路。它慢、腿短、精度勉強，但在高射炮還靠肉眼瞄準的年代，它已是真正的導引攔截彈。以戰備彈形式裝入發射器彈艙，不逐目標裝配。</DMSE_MissileBody_LegacyInterceptor.description>
+  <DMSE_MissileBody_LegacyInterceptor.label>老式攔截巡飛彈彈體</DMSE_MissileBody_LegacyInterceptor.label>
+  <DMSE_MissileBody_LegacyInterceptor.description>一款第一代導引攔截巡飛彈，四片特大尾翼與一具無線電指令鏈路讓它在發射後能於目標空域盤旋等待，再由導引員以肉眼與操縱桿把它「開」向來襲目標，速度慢、腿短、精度勉強，但在高射砲還靠肉眼瞄準的年代，它已是真正的導引攔截手段，而且以固定構型出廠、不逐目標裝配。</DMSE_MissileBody_LegacyInterceptor.description>
 
   <DMSE_MissileBody_AdvancedLight.label>先進通用導彈彈體</DMSE_MissileBody_AdvancedLight.label>
   <DMSE_MissileBody_AdvancedLight.description>一款地獄火級的小型多用途彈體。輕到可由單兵與載具掛架攜帶，卻具備現代導引頭、極小的散布，以及老式輕型導彈從未達到的彈頭重量比。三個裝配槽：彈頭、導引與酬載。</DMSE_MissileBody_AdvancedLight.description>
@@ -19,4 +19,16 @@
   <DMSE_MissileBody_AdvancedCruise.label>先進巡航導彈彈體</DMSE_MissileBody_AdvancedCruise.label>
   <DMSE_MissileBody_AdvancedCruise.description>一款戰斧級的現代低可觀測巡航導彈彈體。地形跟隨、資料鏈導引，比它所取代的「射門手」彈體精準得多，並具備完整的四槽：彈頭、導引、推進與酬載。</DMSE_MissileBody_AdvancedCruise.description>
 
+  <DMSE_MissileBody_Stinger.label>輕型防空導彈彈體</DMSE_MissileBody_Stinger.label>
+  <DMSE_MissileBody_Stinger.description>一款纖細的單兵紅外防空彈體，只有彈頭與導引兩個裝配槽。射程短、彈頭小，作為攔截彈時命中率略遜於正規防空彈，但小到能塞進任何彈艙或士兵的背包。</DMSE_MissileBody_Stinger.description>
+  <DMSE_MissileBody_Maverick.label>對地攻擊導彈彈體</DMSE_MissileBody_Maverick.label>
+  <DMSE_MissileBody_Maverick.description>一款小牛級的輕型對地攻擊彈體，為了把較重的彈頭準確送上某個點狀目標而設計。三個裝配槽：彈頭、導引與酬載。</DMSE_MissileBody_Maverick.description>
+  <DMSE_MissileBody_Sparrow.label>先進防空導彈彈體</DMSE_MissileBody_Sparrow.label>
+  <DMSE_MissileBody_Sparrow.description>一款細長的半主動雷達導引彈體，能在劇烈機動中持續接收照射雷達的訊號。作為攔截彈時命中率明顯高於舊型彈。三個裝配槽：彈頭、導引與酬載。</DMSE_MissileBody_Sparrow.description>
+  <DMSE_MissileBody_Moskit.label>超音速反艦導彈彈體</DMSE_MissileBody_Moskit.label>
+  <DMSE_MissileBody_Moskit.description>一款以衝壓引擎推進的超音速彈體，發射後先爬升再貼海俯衝，把近防系統的反應時間壓縮到幾秒。四個裝配槽：彈頭、導引、推進與酬載；出廠時裝有反艦雷達導引頭。</DMSE_MissileBody_Moskit.description>
+  <DMSE_MissileBody_Yj.label>高超音速反艦導彈彈體</DMSE_MissileBody_Yj.label>
+  <DMSE_MissileBody_Yj.description>一款固體火箭助推、衝壓引擎巡航的高超音速彈體，雷達截面小、終端彈道極低，留給防禦方的反應時間只有幾十秒。四個裝配槽：彈頭、導引、推進與酬載；出廠時裝有反艦雷達導引頭。</DMSE_MissileBody_Yj.description>
+  <DMSE_MissileBody_Tochka.label>戰術彈道導彈彈體</DMSE_MissileBody_Tochka.label>
+  <DMSE_MissileBody_Tochka.description>一款固體燃料的戰術彈道彈體，射程足以跨過整個戰區、彈頭種類齊全，比第一代火箭更準、準備也快得多，但遠不及戰略系統。直接在發射塔或發射井上裝配，彈體本身不會以物品形式存在。</DMSE_MissileBody_Tochka.description>
 </LanguageData>

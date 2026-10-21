@@ -26,6 +26,7 @@
     <baseSpecificImpulse>2.5</baseSpecificImpulse>
     <rangePerFuelImpulse>0.1</rangePerFuelImpulse>
     <incomingSkyfaller>DMSE_Incoming_LightMissile</incomingSkyfaller>
+    <launchProjectile>DMSE_Launch_Light</launchProjectile>
     <slots>
       <li>Warhead</li>
       <li>Guidance</li>
@@ -50,7 +51,7 @@
     <label>light HE warhead</label>
     <description>A compact high-explosive warhead scaled for light missiles. Standard blast, no special effects.</description>
     <category>Warhead</category>
-    <compatibleBodies><li>DMSE_MissileBody_Light</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Light</li><li>DMSE_MissileBody_Stinger</li><li>DMSE_MissileBody_Maverick</li><li>DMSE_MissileBody_Sparrow</li></compatibleBodies>
     <explosionRadiusOffset>1</explosionRadiusOffset>
     <damageAmountOffset>30</damageAmountOffset>
     <damageDefOverride>Bomb</damageDefOverride>
@@ -66,7 +67,7 @@
     <label>incendiary warhead</label>
     <description>Scatters burning thermite on impact. Ignites all cells within N radius regardless of line of sight.</description>
     <category>Warhead</category>
-    <compatibleBodies><li>DMSE_MissileBody_Light</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Light</li><li>DMSE_MissileBody_Stinger</li><li>DMSE_MissileBody_Maverick</li><li>DMSE_MissileBody_Sparrow</li></compatibleBodies>
     <warheadEffect Class="DMSE.WarheadEffect_Incendiary" />
     <costList>
       <Steel>15</Steel>
@@ -80,7 +81,7 @@
     <label>continuous rod warhead</label>
     <description>A ring of steel rods that expand on detonation, maximising fragment density against aerial targets. Provides an intercept hit-chance bonus when used as a SAM round.</description>
     <category>Warhead</category>
-    <compatibleBodies><li>DMSE_MissileBody_Light</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Light</li><li>DMSE_MissileBody_Stinger</li><li>DMSE_MissileBody_Maverick</li><li>DMSE_MissileBody_Sparrow</li></compatibleBodies>
     <warheadEffect Class="DMSE.WarheadEffect_ContinuousRod" />
     <costList>
       <Steel>30</Steel>
@@ -96,18 +97,18 @@
     <label>inertial guidance</label>
     <description>Baseline strap-down inertial reference unit. No seekers; relies on pre-programmed flight path. Scatter unchanged.</description>
     <category>Guidance</category>
-    <compatibleBodies><li>DMSE_MissileBody_Light</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Light</li><li>DMSE_MissileBody_Stinger</li><li>DMSE_MissileBody_Maverick</li><li>DMSE_MissileBody_Sparrow</li></compatibleBodies>
     <guidanceType Class="DMSE.GuidanceType_Inertial" />
     <scatterOffset>0</scatterOffset>
   </DMSE.MissilePartDef>
 
-  <!-- 紅外制導：優先攻擊殖民者；散布降低。 -->
+  <!-- 紅外制導：優先攻擊熱源；散布降低。 -->
   <DMSE.MissilePartDef>
     <defName>DMSE_Light_Guidance_IR</defName>
     <label>heat-signature seeker</label>
     <description>A passive infrared seeker that homes on the strongest heat signature. Locks onto the hottest indoor room if it is at least 15°C warmer than outside; otherwise the largest creature on the map. Falls back to inertial targeting if neither is found.</description>
     <category>Guidance</category>
-    <compatibleBodies><li>DMSE_MissileBody_Light</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Light</li><li>DMSE_MissileBody_Stinger</li><li>DMSE_MissileBody_Maverick</li><li>DMSE_MissileBody_Sparrow</li></compatibleBodies>
     <guidanceType Class="DMSE.GuidanceType_HeatSource">
       <minRoomTempAboveOutdoor>15</minRoomTempAboveOutdoor>
     </guidanceType>
@@ -123,7 +124,7 @@
     <label>anti-radiation seeker</label>
     <description>Homes on active radar emissions. Locks onto the switched-on enemy radar with the highest power level on the target map; passive acoustic arrays are invisible to it. Falls back to the building drawing the most power, then to inertial targeting.</description>
     <category>Guidance</category>
-    <compatibleBodies><li>DMSE_MissileBody_Light</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Light</li><li>DMSE_MissileBody_Stinger</li><li>DMSE_MissileBody_Maverick</li><li>DMSE_MissileBody_Sparrow</li></compatibleBodies>
     <guidanceType Class="DMSE.GuidanceType_AntiRadiation" />
     <scatterOffset>-1</scatterOffset>
     <costList>
@@ -136,7 +137,7 @@
     <label>laser seeker</label>
     <description>Semi-active laser seeker. Locks onto the most recent laser designation your faction has painted on the target map with a laser target designator. Falls back to inertial targeting if there is none.</description>
     <category>Guidance</category>
-    <compatibleBodies><li>DMSE_MissileBody_Light</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Light</li><li>DMSE_MissileBody_Stinger</li><li>DMSE_MissileBody_Maverick</li><li>DMSE_MissileBody_Sparrow</li></compatibleBodies>
     <guidanceType Class="DMSE.GuidanceType_Laser" />
     <scatterOffset>-1.5</scatterOffset>
     <researchPrerequisites>
@@ -144,6 +145,25 @@
     </researchPrerequisites>
     <costList>
       <ComponentIndustrial>3</ComponentIndustrial>
+    </costList>
+  </DMSE.MissilePartDef>
+
+  <!-- 半主動雷達導引（麻雀預設）：追蹤火控雷達照射的回波；作為攔截彈的主要語意由 CompMissileLauncher_Interceptor 驅動，
+       對地打擊時以慣性選格（散布較小）。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Light_Guidance_SemiActive</defName>
+    <label>semi-active radar seeker</label>
+    <description>A semi-active radar seeker that homes on the echo of a fire-control radar illuminating the target. Built for interception; against ground targets it falls back to inertial targeting with tight dispersion.</description>
+    <category>Guidance</category>
+    <compatibleBodies><li>DMSE_MissileBody_Sparrow</li></compatibleBodies>
+    <guidanceType Class="DMSE.GuidanceType_FireControl" />
+    <scatterOffset>-1.5</scatterOffset>
+    <researchPrerequisites>
+      <li>DMSE_StrategicSystems</li>
+    </researchPrerequisites>
+    <costList>
+      <ComponentIndustrial>4</ComponentIndustrial>
+      <ComponentSpacer>1</ComponentSpacer>
     </costList>
   </DMSE.MissilePartDef>
 
@@ -155,7 +175,7 @@
     <label>no payload</label>
     <description>No secondary payload. The missile relies entirely on its primary warhead detonation.</description>
     <category>Payload</category>
-    <compatibleBodies><li>DMSE_MissileBody_Light</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Light</li><li>DMSE_MissileBody_Maverick</li><li>DMSE_MissileBody_Sparrow</li></compatibleBodies>
     <payloadEffect Class="DMSE.PayloadEffect_None" />
   </DMSE.MissilePartDef>
 
@@ -165,7 +185,7 @@
     <label>HE payload</label>
     <description>A secondary high-explosive charge that detonates after the primary warhead, extending the damage radius.</description>
     <category>Payload</category>
-    <compatibleBodies><li>DMSE_MissileBody_Light</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Light</li><li>DMSE_MissileBody_Maverick</li><li>DMSE_MissileBody_Sparrow</li></compatibleBodies>
     <payloadEffect Class="DMSE.PayloadEffect_HighExplosive" />
     <costList>
       <Steel>15</Steel>
@@ -180,7 +200,7 @@
     <label>decoy payload</label>
     <description>Radar reflectors and a signal augmenter in place of a secondary charge. On enemy radar the missile looks twice its size: it is detected earlier, and air defenses that rank threats by size engage it first. It does no extra damage.</description>
     <category>Payload</category>
-    <compatibleBodies><li>DMSE_MissileBody_Light</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Light</li><li>DMSE_MissileBody_Maverick</li><li>DMSE_MissileBody_Sparrow</li></compatibleBodies>
     <payloadEffect Class="DMSE.PayloadEffect_None" />
     <signatureFactor>2</signatureFactor>
     <costList>
@@ -195,7 +215,7 @@
     <label>toxic gas payload</label>
     <description>Disperses a cloud of toxic gas across N tiles, persisting long after the blast to deny area to unprotected infantry.</description>
     <category>Payload</category>
-    <compatibleBodies><li>DMSE_MissileBody_Light</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Light</li><li>DMSE_MissileBody_Maverick</li><li>DMSE_MissileBody_Sparrow</li></compatibleBodies>
     <payloadEffect Class="DMSE.PayloadEffect_ToxicGas" />
     <costList>
       <Steel>10</Steel>
@@ -209,7 +229,7 @@
     <label>chaff dispenser</label>
     <description>A single chaff bundle and a handful of radar-absorbing streamers. One chance to break an enemy fire-control lock, then the dispenser is empty for the rest of the flight.</description>
     <category>Payload</category>
-    <compatibleBodies><li>DMSE_MissileBody_Light</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Light</li><li>DMSE_MissileBody_Maverick</li><li>DMSE_MissileBody_Sparrow</li></compatibleBodies>
     <payloadEffect Class="DMSE.PayloadEffect_None" />
     <jamStrength>0.2</jamStrength>
     <chaffCharges>1</chaffCharges>

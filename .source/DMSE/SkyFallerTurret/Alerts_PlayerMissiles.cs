@@ -40,8 +40,8 @@ namespace DMSE
 
                     foreach (BVRTarget target in wave.targets)
                     {
-                        // 確認是玩家發射的 MissileIncoming
-                        if (target.Skyfaller is MissileIncoming mi && mi.attacker?.IsPlayer == true)
+                        // 確認是玩家發射的導彈（IIncomingMissile）
+                        if (target.Missile is IIncomingMissile mi && mi.Attacker?.IsPlayer == true)
                             result.Add((wave, target, map));
                     }
                 }
@@ -69,7 +69,7 @@ namespace DMSE
                     if (wave.defenderFaction == null || wave.defenderFaction.IsPlayer) continue;
                     foreach (BVRTarget target in wave.targets)
                     {
-                        if (target.Skyfaller is MissileIncoming mi && mi.attacker?.IsPlayer == true)
+                        if (target.Missile is IIncomingMissile mi && mi.Attacker?.IsPlayer == true)
                             return AlertReport.Active;
                     }
                 }
@@ -169,8 +169,8 @@ namespace DMSE
                             statusKey = "DMSE.Alert.Pods.Status.Unengaged";
 
                         // 導彈名稱
-                        string missileLabel = target.Skyfaller?.Label
-                            ?? target.Skyfaller?.def?.label
+                        string missileLabel = target.Payload?.Label
+                            ?? target.Payload?.def?.label
                             ?? "?";
 
                         sb.AppendLine("DMSE.Alert.PlayerMissiles.Target".Translate(

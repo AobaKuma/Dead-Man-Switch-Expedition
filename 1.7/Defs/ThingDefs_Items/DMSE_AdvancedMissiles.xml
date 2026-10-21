@@ -18,9 +18,10 @@
     <descriptionHyperlinks>
       <ThingDef>DMSE_Building_LightMissileLauncher</ThingDef>
       <ThingDef>DMSE_Building_LightMissileVLS</ThingDef>
+      <ThingDef>DMSE_Building_RotaryLauncher</ThingDef>
     </descriptionHyperlinks>
     <graphicData>
-      <texPath>Things/Missile/Grison/skyFaller</texPath>
+      <texPath>Things/Missile/Hellfire/ammo</texPath>
       <drawSize>(2.5,2.5)</drawSize>
       <drawOffset>(0,0,1)</drawOffset>
       <graphicClass>Graphic_Single</graphicClass>
@@ -70,6 +71,7 @@
         <shelterBuildings>
           <li>DMSE_Building_LightMissileLauncher</li>
           <li>DMSE_Building_LightMissileVLS</li>
+          <li>DMSE_Building_RotaryLauncher</li>
           <li>DMSE_MissileRack</li>
         </shelterBuildings>
       </li>
@@ -86,11 +88,13 @@
     <descriptionHyperlinks>
       <ThingDef>DMSE_Building_Scorer</ThingDef>
       <ThingDef>DMSE_CruiseMissileRack</ThingDef>
+      <ThingDef>DMSE_Building_LightMissileLauncher</ThingDef>
+      <ThingDef>DMSE_Building_LightMissileVLS</ThingDef>
     </descriptionHyperlinks>
     <graphicData>
-      <texPath>Things/Missile/Moskit/skyFaller</texPath>
-      <drawSize>(4,4)</drawSize>
-      <drawOffset>(0,0,1.5)</drawOffset>
+      <texPath>Things/Missile/Tomahawk/ammo</texPath>
+      <drawSize>(3,3)</drawSize>
+      <drawOffset>(0,0,1)</drawOffset>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <soundInteract>Metal_Drop</soundInteract>
@@ -120,7 +124,7 @@
       <recipeUsers Inherit="False">
         <li>DMS_TableMachinePrinter</li>
       </recipeUsers>
-      <researchPrerequisite>DMSE_IntegratedCircuits</researchPrerequisite>
+      <researchPrerequisite>DMSE_StrategicSystems</researchPrerequisite>
       <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
     </recipeMaker>
     <modExtensions>
@@ -140,6 +144,8 @@
           <li>DMSE_Building_Scorer</li>
           <li>DMSE_CruiseMissileRack</li>
           <li>DMSE_MissileRack</li>
+          <li>DMSE_Building_LightMissileLauncher</li>
+          <li>DMSE_Building_LightMissileVLS</li>
         </shelterBuildings>
       </li>
     </comps>

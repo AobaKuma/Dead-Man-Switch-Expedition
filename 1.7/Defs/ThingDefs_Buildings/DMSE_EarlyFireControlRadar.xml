@@ -4,8 +4,8 @@
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_EarlyFireControlRadar</defName>
     <label>early fire control radar</label>
-    <!-- 早期型號的火控雷達，仍需由一名操作員手動操作方能運作。鎖定速度較慢、可靠度較低，但能讓殖民地在集成電路技術成熟前就獲得初步的超視距攔截及打擊能力。 -->
-    <description>An early fire control radar that still requires a manual operator to function. Compared to later phased-array systems it locks on more slowly and less reliably, but it lets a colony field rudimentary beyond-visual-range intercept capability before integrated circuit technology matures.</description>
+    <!-- 老資歷：仍得靠人手操作的早期火控雷達，一次只能導引一枚攔截彈（1 火力通道），鎖定慢、精度差。 -->
+    <description>An early fire-control radar that still needs a human operator to slew the dish onto the target with handwheels and an optical sight before reading the firing solution to the launcher, guiding only one interceptor at a time with slow locks and poor accuracy yet letting a colony put interceptors beyond the horizon long before integrated circuits mature.</description>
     <graphicData>
       <texPath>Things/Building/FacilityBase</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -78,9 +78,9 @@
           <li>Orbit</li>
         </planetLayerWhitelist>
       </li>
-      <!-- 提供兩個火力通道，鎖定與精準時間皆遜於後期相控陣雷達。 -->
+      <!-- 只提供一個火力通道（三代裝備體系：老式火控 1、火控雷達 4、相控陣 24），鎖定與精準時間皆遜於後期雷達。 -->
       <li Class="DMSE.CompProperties_FireControlRadar">
-        <maxTargets>2</maxTargets>
+        <maxTargets>1</maxTargets>
         <powerLevel>1</powerLevel>
         <guidanceAccuracyTime>900</guidanceAccuracyTime>
         <maxRangeTicks>4000</maxRangeTicks>

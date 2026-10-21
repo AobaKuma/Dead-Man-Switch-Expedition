@@ -104,10 +104,13 @@ namespace DMSE
     /// </summary>
     public abstract class CompMissileLauncher_WorldTargeting : CompMissileLauncher
     {
-        /// <summary>離場 skyfaller def（thingClass 應為 <see cref="ScorerProjectile"/>）。</summary>
+        /// <summary>
+        /// 平台預設的離場 def（thingClass 為 <see cref="ScorerProjectile"/>）：只在彈體沒有
+        /// <see cref="MissileBodyDef.launchProjectile"/> 時使用（見 <see cref="LaunchDefFor"/>）。
+        /// </summary>
         protected abstract ThingDef LaunchSkyfallerDef { get; }
 
-        /// <summary>落點 incoming skyfaller def（thingClass 應為 <see cref="MissileIncoming"/>）。</summary>
+        /// <summary>平台預設的落點 def（thingClass 應為 <see cref="Projectile_MissileIncoming"/>）：彈體沒有 incomingSkyfaller 時使用。</summary>
         protected abstract ThingDef IncomingSkyfallerDef { get; }
 
         /// <summary>世界旅行物件 def（worldObjectClass 應為 <see cref="ScorerProjectile_WorldObject"/>）。</summary>
@@ -116,14 +119,24 @@ namespace DMSE
         /// <summary>離場 skyfaller 生成於建築中心沿朝向的格數偏移（垂直發射為 0）。</summary>
         protected virtual int LaunchForwardCells => 0;
 
-        /// <summary>升空到世界航跡出現的時間：反向（離場）skyfaller 離開地圖前的 tick 數。時間軸估算用。</summary>
-        public int DepartureTicks
+        /// <summary>升空到世界航跡出現的時間（平台預設離場 def）。時間軸估算用；知道彈藥時用 <see cref="DepartureTicksFor"/>。</summary>
+        public int DepartureTicks => MissileProjectileMaker.DepartureTicksOf(LaunchSkyfallerDef);
+
+        /// <summary>以此設定發射時實際使用的離場 def：彈體的發射 Projectile 優先，沒有時退回平台的 skyfaller。</summary>
+        public ThingDef LaunchDefFor(MissileConfig config) => config?.body?.launchProjectile ?? LaunchSkyfallerDef;
+
+        /// <summary>離場彈的生成格（建築中心沿朝向偏移 <see cref="LaunchForwardCells"/>）。</summary>
+        private IntVec3 LaunchCell => parent.Position + (parent.Rotation.AsIntVec3 * LaunchForwardCells);
+
+        /// <summary>
+        /// 以此設定朝 <paramref name="target"/> 發射時，升空到世界航跡出現的 tick 數：
+        /// 升空後沿出發方位飛出地圖邊緣（§8.3），用與實際飛行相同的模擬計算。
+        /// </summary>
+        public int DepartureTicksFor(MissileConfig config, PlanetTile target)
         {
-            get
-            {
-                SkyfallerProperties sf = LaunchSkyfallerDef?.skyfaller;
-                return sf != null && sf.reversed ? UnityEngine.Mathf.RoundToInt(sf.ticksToDiscardInReverse.Average) : 0;
-            }
+            if (parent.Map == null) { return MissileProjectileMaker.DepartureTicksOf(LaunchDefFor(config)); }
+            return MissileProjectileMaker.DepartureTicksOf(LaunchDefFor(config), LaunchCell, parent.Map.Size, parent.Rotation,
+                MissileProjectileMaker.DepartureHeading(parent.Map.Tile, target));
         }
 
         /// <summary>
@@ -317,7 +330,7 @@ namespace DMSE
         public ScorerProjectile_WorldObject TryLaunchRound(GlobalTargetInfo target, Thing round, bool salvoContinuation, out string failReason)
         {
             failReason = null;
-            if (LaunchSkyfallerDef == null || TravelWorldObjectDef == null || parent.Map == null)
+            if (TravelWorldObjectDef == null || parent.Map == null)
             {
                 failReason = "DMSE.BVR.DeviceInactive".Translate();
                 return null;
@@ -345,18 +358,17 @@ namespace DMSE
                 failReason = NoAmmoDisableReason;
                 return null;
             }
+            ThingDef launchDef = LaunchDefFor(config);
+            if (launchDef == null)
+            {
+                failReason = "DMSE.BVR.DeviceInactive".Translate();
+                return null;
+            }
             // 移動中的目標可能已出射程；跨圖層需導引能力
             if (!MissileWorldUtility.CanEngage(config, parent.Map.Tile, target.Tile, 0f, out failReason))
             {
                 return null;
             }
-
-            ScorerProjectile faller = (ScorerProjectile)SkyfallerMaker.SpawnSkyfaller(
-                LaunchSkyfallerDef,
-                parent.Position + (parent.Rotation.AsIntVec3 * LaunchForwardCells),
-                parent.Map);
-            faller.Rotation = parent.Rotation;
-            faller.angle = faller.Rotation.AsAngle;
 
             ScorerProjectile_WorldObject wo = (ScorerProjectile_WorldObject)WorldObjectMaker.MakeWorldObject(TravelWorldObjectDef);
             // 落點視覺／BVR 目標特性以彈體為準（同一平台可換彈體）；平台指定的 skyfallerIncoming 僅作後備。
@@ -366,10 +378,15 @@ namespace DMSE
             wo.destinationTile = target.Tile;
             wo.targetParent = TargetParentAt(target);
             wo.config = config;
-            faller.worldObject = wo;
+            wo.launcherThing = parent; // 落地爆炸歸因於本發射建築（被攔截時不歸因）
+            // 升空外觀與尾焰隨彈體（launchProjectile）；彈體沒有設定時退回平台的離場 skyfaller。
+            // 升空後沿世界航跡的出發方位飛出地圖邊緣（跨圖層沒有水平方位時照原本升空後消失）。
+            MissileProjectileMaker.LaunchDeparture(launchDef, LaunchCell, parent.Map, parent.Rotation, parent, wo,
+                MissileProjectileMaker.DepartureHeading(parent.Map.Tile, target.Tile));
 
             ConsumeAmmo(round);
             StartCooldown(now);
+            CompLaunchBackblast.TryTrigger(parent);
             return wo;
         }
 

@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ==================================================================
+       三代裝備體系的新導彈物品（docs/三代裝備體系_實作計畫.md §4、§11-1）
+       Missile items added by the three-generation equipment plan.
+
+       - 固定構型（V1、萊茵女兒）沒有 CompMissileConfig，以 DMSE.MissileItemExtension 宣告彈體，
+         讓同一條發射軌可以裝不同型號。
+       - 有槽位的（刺針、小牛、麻雀、鷹擊）用 CompMissileConfig；costList 已含彈體預設零件的材料。
+       - 用途（MissileRoleExtension）：攔截彈只會被 SAM 取用；對地彈只會被對地發射軌與波次打擊取用。
+       ================================================================== -->
+
+  <!-- ==================== 老式巡飛彈「V1」==================== -->
+  <ThingDef ParentName="DMSE_ResourceBase">
+    <defName>DMSE_Missile_LegacyLoiter</defName>
+    <label>legacy loitering munition</label>
+    <description>An early pulsejet-powered loitering munition whose boxy airframe and stubby straight wings are carried along a preset heading by a clockwork inertial autopilot, slow enough to give a radar operator time to make tea and inaccurate enough that a miss of tens of metres is normal, yet simple enough to need only steel, fuel and a simple jet tube to be thrown into the sky from a tilt rail; before anything better exists, this is what beyond-visual-range strike means.</description>
+    <descriptionHyperlinks>
+      <ThingDef>DMSE_Building_LoiteringLauncher</ThingDef>
+      <ThingDef>DMSE_Building_RotaryLauncher</ThingDef>
+      <ThingDef>DMSE_LoiteringRack</ThingDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Things/Missile/V1/ammo</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2.5,2.5)</drawSize>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>1</stackLimit>
+    <tickerType>Rare</tickerType>
+    <useHitPoints>true</useHitPoints>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>700</MarketValue>
+      <Mass>120</Mass>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>10.0</DeteriorationRate>
+    </statBases>
+    <costList>
+      <Steel>70</Steel>
+      <Chemfuel>90</Chemfuel>
+      <ComponentIndustrial>1</ComponentIndustrial>
+    </costList>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <effectWorking>Smith</effectWorking>
+      <soundWorking>Recipe_Smith</soundWorking>
+      <recipeUsers Inherit="False">
+        <li>DMS_TableMachinePrinter</li>
+      </recipeUsers>
+      <researchPrerequisite>DMSE_LoiteringMunitions</researchPrerequisite>
+      <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
+    </recipeMaker>
+    <modExtensions>
+      <li Class="DMSE.MissileItemExtension">
+        <body>DMSE_MissileBody_LegacyLoiter</body>
+      </li>
+      <li Class="DMSE.MissileRoleExtension">
+        <role>Strike</role>
+      </li>
+    </modExtensions>
+    <comps>
+      <li Class="DMSE.CompProperties_DurabilityDecay">
+        <hitPointsPerDay>5</hitPointsPerDay>
+        <destroyWhenDepleted>true</destroyWhenDepleted>
+        <shelterBuildings>
+          <li>DMSE_LoiteringRack</li>
+          <li>DMSE_Building_LoiteringLauncher</li>
+          <li>DMSE_Building_RotaryLauncher</li>
+        </shelterBuildings>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ==================== 老式攔截巡飛彈「萊茵女兒」==================== -->
+  <ThingDef ParentName="DMSE_ResourceBase">
+    <defName>DMSE_Missile_Rheintochter</defName>
+    <label>legacy interceptor loitering munition</label>
+    <description>A first-generation guided interceptor loitering munition whose four oversized fins and radio command link are paired with a solid motor that can barely catch a bomber, launched to circle over the target area and then flown onto an incoming aircraft by an operator with naked eyes and a joystick at a dispiriting hit rate; in an age when flak still relies on tracers and prayer, it is a genuine guided interceptor.</description>
+    <descriptionHyperlinks>
+      <ThingDef>DMSE_Building_LoiteringLauncher</ThingDef>
+      <ThingDef>DMSE_Building_RotaryLauncher</ThingDef>
+      <ThingDef>DMSE_EarlyFireControlRadar</ThingDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Things/Missile/Rheintochter/skyFaller</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2.5,2.5)</drawSize>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>1</stackLimit>
+    <tickerType>Rare</tickerType>
+    <useHitPoints>true</useHitPoints>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>500</MarketValue>
+      <Mass>60</Mass>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>10.0</DeteriorationRate>
+    </statBases>
+    <costList>
+      <Steel>40</Steel>
+      <Chemfuel>50</Chemfuel>
+      <ComponentIndustrial>1</ComponentIndustrial>
+    </costList>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <effectWorking>Smith</effectWorking>
+      <soundWorking>Recipe_Smith</soundWorking>
+      <recipeUsers Inherit="False">
+        <li>DMS_TableMachinePrinter</li>
+      </recipeUsers>
+      <researchPrerequisite>DMSE_RadarBasis</researchPrerequisite>
+      <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
+    </recipeMaker>
+    <modExtensions>
+      <li Class="DMSE.MissileItemExtension">
+        <body>DMSE_MissileBody_LegacyInterceptor</body>
+      </li>
+      <!-- 只作攔截彈：發射軌的對地射擊不會取用它。 -->
+      <li Class="DMSE.MissileRoleExtension">
+        <role>Interceptor</role>
+      </li>
+    </modExtensions>
+    <comps>
+      <li Class="DMSE.CompProperties_Renameable" />
+      <li Class="DMSE.CompProperties_DurabilityDecay">
+        <hitPointsPerDay>5</hitPointsPerDay>
+        <destroyWhenDepleted>true</destroyWhenDepleted>
+        <shelterBuildings>
+          <li>DMSE_LoiteringRack</li>
+          <li>DMSE_Building_LoiteringLauncher</li>
+          <li>DMSE_Building_RotaryLauncher</li>
+        </shelterBuildings>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ==================== 輕型防空導彈「刺針」====================
+       攔截彈，也是單兵防空導彈發射具（DMSE_Weapon_SamLauncher）放在背包裡的彈藥：質量刻意壓低。 -->
+  <ThingDef ParentName="DMSE_ResourceBase">
+    <defName>DMSE_Missile_Stinger</defName>
+    <label>light surface-to-air missile</label>
+    <description>A man-portable infrared-guided surface-to-air missile whose launch tube, sight and small round weigh under twenty kilograms all up, short-ranged and light-headed against fast or manoeuvring targets yet giving every infantry squad an air-defence option that does not wait for a radar and fits into any magazine with room to spare.</description>
+    <descriptionHyperlinks>
+      <ThingDef>DMSE_Weapon_SamLauncher</ThingDef>
+      <ThingDef>DMSE_Building_RotaryMissileLauncher</ThingDef>
+      <ThingDef>DMSE_Building_FieldAirDefense</ThingDef>
+      <ThingDef>DMSE_Building_LightMissileLauncher</ThingDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Things/Weapons/DMSE_Projectile_Stinger</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.6,1.6)</drawSize>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>1</stackLimit>
+    <tickerType>Rare</tickerType>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <MarketValue>800</MarketValue>
+      <Mass>15</Mass>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>10.0</DeteriorationRate>
+    </statBases>
+    <costList>
+      <Steel>30</Steel>
+      <Chemfuel>30</Chemfuel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+    </costList>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <effectWorking>Smith</effectWorking>
+      <soundWorking>Recipe_Smith</soundWorking>
+      <recipeUsers Inherit="False">
+        <li>DMS_TableMachinePrinter</li>
+      </recipeUsers>
+      <researchPrerequisite>DMSE_IntegratedCircuits</researchPrerequisite>
+      <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
+    </recipeMaker>
+    <modExtensions>
+      <li Class="DMSE.MissileRoleExtension">
+        <role>Interceptor</role>
+      </li>
+    </modExtensions>
+    <comps>
+      <li Class="DMSE.CompProperties_Renameable" />
+      <li Class="DMSE.CompProperties_MissileConfig">
+        <defaultBody>DMSE_MissileBody_Stinger</defaultBody>
+      </li>
+      <li Class="DMSE.CompProperties_DurabilityDecay">
+        <hitPointsPerDay>5</hitPointsPerDay>
+        <destroyWhenDepleted>true</destroyWhenDepleted>
+        <shelterBuildings>
+          <li>DMSE_MissileRack</li>
+          <li>DMSE_Building_LightMissileLauncher</li>
+          <li>DMSE_Building_LightMissileVLS</li>
+          <li>DMSE_Building_RotaryLauncher</li>
+          <li>DMSE_Building_RotaryMissileLauncher</li>
+          <li>DMSE_Building_FieldAirDefense</li>
+        </shelterBuildings>
+      </li>
+    </comps>
+    <inspectorTabs>
+      <li>DMSE.ITab_MissileAssembly</li>
+    </inspectorTabs>
+  </ThingDef>
+
+  <!-- ==================== 對地攻擊導彈「小牛」==================== -->
+  <ThingDef ParentName="DMSE_ResourceBase">
+    <defName>DMSE_Missile_Maverick</defName>
+    <label>ground-attack missile</label>
+    <description>A television and infrared-guided light ground-attack missile, once hung under an attack aircraft's wing and now loaded into launch boxes, small and medium-ranged but with a seeker that lets an operator fly it onto the target in the terminal phase, making it deadly against point targets and armoured vehicles and better suited to deleting one specific thing from the map than to demolishing a base.</description>
+    <descriptionHyperlinks>
+      <ThingDef>DMSE_Building_LightMissileLauncher</ThingDef>
+      <ThingDef>DMSE_Building_LightMissileVLS</ThingDef>
+      <ThingDef>DMSE_Building_RotaryLauncher</ThingDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Things/Missile/AGM65/ammo</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2.5,2.5)</drawSize>
+      <drawOffset>(0,0,1)</drawOffset>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>1</stackLimit>
+    <tickerType>Rare</tickerType>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <MarketValue>1700</MarketValue>
+      <Mass>210</Mass>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>10.0</DeteriorationRate>
+    </statBases>
+    <costList>
+      <Steel>120</Steel>
+      <Chemfuel>140</Chemfuel>
+      <DMSE_TantastenAlloy>6</DMSE_TantastenAlloy>
+      <ComponentIndustrial>4</ComponentIndustrial>
+    </costList>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <effectWorking>Smith</effectWorking>
+      <soundWorking>Recipe_Smith</soundWorking>
+      <recipeUsers Inherit="False">
+        <li>DMS_TableMachinePrinter</li>
+      </recipeUsers>
+      <researchPrerequisite>DMSE_IntegratedCircuits</researchPrerequisite>
+      <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
+    </recipeMaker>
+    <modExtensions>
+      <li Class="DMSE.MissileRoleExtension">
+        <role>Strike</role>
+      </li>
+    </modExtensions>
+    <comps>
+      <li Class="DMSE.CompProperties_Renameable" />
+      <li Class="DMSE.CompProperties_MissileConfig">
+        <defaultBody>DMSE_MissileBody_Maverick</defaultBody>
+      </li>
+      <li Class="DMSE.CompProperties_DurabilityDecay">
+        <hitPointsPerDay>5</hitPointsPerDay>
+        <destroyWhenDepleted>true</destroyWhenDepleted>
+        <shelterBuildings>
+          <li>DMSE_MissileRack</li>
+          <li>DMSE_Building_LightMissileLauncher</li>
+          <li>DMSE_Building_LightMissileVLS</li>
+          <li>DMSE_Building_RotaryLauncher</li>
+        </shelterBuildings>
+      </li>
+    </comps>
+    <inspectorTabs>
+      <li>DMSE.ITab_MissileAssembly</li>
+    </inspectorTabs>
+  </ThingDef>
+
+  <!-- ==================== 先進防空導彈「麻雀」==================== -->
+  <ThingDef ParentName="DMSE_ResourceBase">
+    <defName>DMSE_Missile_Sparrow</defName>
+    <label>advanced surface-to-air missile</label>
+    <description>A semi-active radar-homing medium-range surface-to-air missile, slender with small fins and able to keep receiving the illuminator's signal through hard manoeuvres, faster, longer-legged and more accurate than a Stinger at the price of a fire-control radar that must keep illuminating the target, which is to say it was never a one-man weapon.</description>
+    <descriptionHyperlinks>
+      <ThingDef>DMSE_Building_RotaryMissileLauncher</ThingDef>
+      <ThingDef>DMSE_Building_LightMissileLauncher</ThingDef>
+      <ThingDef>DMSE_Building_LightMissileVLS</ThingDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Things/Missile/Aim120/ammo</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2.5,2.5)</drawSize>
+      <drawOffset>(0,0,1)</drawOffset>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>1</stackLimit>
+    <tickerType>Rare</tickerType>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <MarketValue>2600</MarketValue>
+      <Mass>230</Mass>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>10.0</DeteriorationRate>
+    </statBases>
+    <costList>
+      <Steel>120</Steel>
+      <Chemfuel>150</Chemfuel>
+      <DMSE_TantastenAlloy>12</DMSE_TantastenAlloy>
+      <ComponentIndustrial>4</ComponentIndustrial>
+      <ComponentSpacer>1</ComponentSpacer>
+    </costList>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <effectWorking>Smith</effectWorking>
+      <soundWorking>Recipe_Smith</soundWorking>
+      <recipeUsers Inherit="False">
+        <li>DMS_TableMachinePrinter</li>
+      </recipeUsers>
+      <researchPrerequisite>DMSE_StrategicSystems</researchPrerequisite>
+      <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
+    </recipeMaker>
+    <modExtensions>
+      <li Class="DMSE.MissileRoleExtension">
+        <role>Interceptor</role>
+      </li>
+    </modExtensions>
+    <comps>
+      <li Class="DMSE.CompProperties_Renameable" />
+      <li Class="DMSE.CompProperties_MissileConfig">
+        <defaultBody>DMSE_MissileBody_Sparrow</defaultBody>
+      </li>
+      <li Class="DMSE.CompProperties_DurabilityDecay">
+        <hitPointsPerDay>5</hitPointsPerDay>
+        <destroyWhenDepleted>true</destroyWhenDepleted>
+        <shelterBuildings>
+          <li>DMSE_MissileRack</li>
+          <li>DMSE_Building_LightMissileLauncher</li>
+          <li>DMSE_Building_LightMissileVLS</li>
+          <li>DMSE_Building_RotaryLauncher</li>
+          <li>DMSE_Building_RotaryMissileLauncher</li>
+        </shelterBuildings>
+      </li>
+    </comps>
+    <inspectorTabs>
+      <li>DMSE.ITab_MissileAssembly</li>
+    </inspectorTabs>
+  </ThingDef>
+
+  <!-- ==================== 高超音速反艦導彈「鷹擊」==================== -->
+  <ThingDef ParentName="DMSE_ResourceBase">
+    <defName>DMSE_Missile_Yj</defName>
+    <label>hypersonic anti-ship missile</label>
+    <description>A hypersonic anti-ship missile boosted by a solid rocket and cruised by a ramjet, with a terminal speed above Mach 5 and limited manoeuvring on an extremely low sea-skimming trajectory that leaves a defender tens of seconds to react, its cost and upkeep just as extreme and therefore reserved for targets that deserve it.</description>
+    <descriptionHyperlinks>
+      <ThingDef>DMSE_Building_MediumTube</ThingDef>
+      <ThingDef>DMSE_Building_MediumVLS</ThingDef>
+      <ThingDef>DMSE_Building_Scorer</ThingDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Things/Missile/Moskit/skyFaller</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(4,4)</drawSize>
+      <drawOffset>(0,0,1.5)</drawOffset>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>1</stackLimit>
+    <tickerType>Rare</tickerType>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <MarketValue>6500</MarketValue>
+      <Mass>600</Mass>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>10.0</DeteriorationRate>
+    </statBases>
+    <costList>
+      <Steel>250</Steel>
+      <Chemfuel>380</Chemfuel>
+      <DMSE_TantastenAlloy>40</DMSE_TantastenAlloy>
+      <ComponentStamped>12</ComponentStamped>
+      <ComponentSpacer>4</ComponentSpacer>
+      <ComponentIndustrial>5</ComponentIndustrial>
+    </costList>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <effectWorking>Smith</effectWorking>
+      <soundWorking>Recipe_Smith</soundWorking>
+      <recipeUsers Inherit="False">
+        <li>DMS_TableMachinePrinter</li>
+      </recipeUsers>
+      <researchPrerequisites>
+        <li>DMSE_AntishipMissiles</li>
+        <li>DMSE_StrategicSystems</li>
+      </researchPrerequisites>
+      <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
+    </recipeMaker>
+    <modExtensions>
+      <li Class="DMSE.MissileRoleExtension">
+        <role>Strike</role>
+      </li>
+    </modExtensions>
+    <comps>
+      <li Class="DMSE.CompProperties_Renameable" />
+      <li Class="DMSE.CompProperties_MissileConfig">
+        <defaultBody>DMSE_MissileBody_Yj</defaultBody>
+      </li>
+      <li Class="DMSE.CompProperties_DurabilityDecay">
+        <hitPointsPerDay>5</hitPointsPerDay>
+        <destroyWhenDepleted>true</destroyWhenDepleted>
+        <shelterBuildings>
+          <li>DMSE_CruiseMissileRack</li>
+          <li>DMSE_MissileRack</li>
+          <li>DMSE_Building_Scorer</li>
+          <li>DMSE_Building_MediumTube</li>
+          <li>DMSE_Building_MediumVLS</li>
+        </shelterBuildings>
+      </li>
+    </comps>
+    <inspectorTabs>
+      <li>DMSE.ITab_MissileAssembly</li>
+    </inspectorTabs>
+  </ThingDef>
+
+</Defs>

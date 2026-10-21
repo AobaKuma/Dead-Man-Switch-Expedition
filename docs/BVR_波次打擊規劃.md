@@ -76,6 +76,8 @@
 
 所以窗口要在發射前就算出每一波的**抵達時間與抵達順序**，並在執行模式提示「現在發射會比第 k 波早到」（§10-3）。
 
+> **2026-10-21 三代裝備體系後的通道數**（[三代裝備體系_實作計畫.md](三代裝備體系_實作計畫.md) §7）：老式火控 1、火控雷達 4、野戰防空砲 2、相控陣 **24**；導彈陣地抽象防空 2 → **4** 通道。上表的試算保留「相控陣 2 ＋早期火控 2 ＝ 4」的舊假設，因為它說明的是抵達順序；以新數值計，相控陣＋兩座火控雷達＝32 通道，單波上限 32，瓶頸完全落在發射平台數量與陣地庫存（8 枚、每日補 4）上：陣地 4 通道、冷卻 240 時，8 枚庫存約在第一波抵達前就會被 8 枚誘餌耗盡。遊戲內驗收（K 系列）仍以舊值釘住相控陣與早期火控（`BVRFixture.PinLegacyRadarValues`），新值由 T4 驗證。
+
 ---
 
 ## 3. 架構總覽
@@ -192,7 +194,7 @@ public struct StrikeRound
 ```
 
 - `DMSE_InterceptorMissile` = `Interceptor`：不列入候選，也不再能被 Rail 以平台 `missileBody` 補設定後射出（順手修正 §1 的誤射路徑；若原本是刻意設計，改標 `Dual` 即可保留）。
-- `DMSE_LightMissile` = `Dual`：可進攻，未保留時也可被 SAM 取用（現行行為）。
+- `DMSE_Missile_Grison` = `Dual`：可進攻，未保留時也可被 SAM 取用（現行行為；原名 `DMSE_LightMissile`）。
 - 未掛擴充 = `Strike`（巡航、巡飛彈）。
 - 不用「戰鬥部是連續桿就算攔截彈」之類的推論：玩家可能故意裝連續桿打地面，規則要可預測。
 - 角色只管世界打擊；SAM 取彈仍由建築的儲存篩選決定（旋轉發射架照舊可把巡飛彈當攔截彈）。
@@ -351,7 +353,7 @@ public ScorerProjectile_WorldObject TryLaunchRound(GlobalTargetInfo target, Thin
 
 ```
 ┌ 波次打擊規劃 ── 目標：海盜導彈陣地（15.2 格）── 狀態：規劃中 ─────────────────────┐
-│ 導引通道 4（相控陣 2、早期火控 2）   單波上限 4   導引期 600 ticks                │
+│ 導引通道 4（相控陣 2、早期火控 2；舊值示意）   單波上限 4   導引期 600 ticks        │
 ├──────────────────────────────────┬───────────────────────────────┤
 │ 可用導彈 11        [彈體▼][導引▼] 排序：價值▲ │ ▼ 第 1 波  4/4    飛行 3000            │
 │ ▸ 輕型・慣性・高爆      ×8  3000t  餘裕+12 $1.2k │     輕型・慣性・高爆 ×4        [−]     │
@@ -478,7 +480,7 @@ foreach (MissileWorldObject track in Tracks.OrderBy(t => t.TicksToArrival).ToLis
 
 ### 15-1. P0 已完成
 
-- **導彈角色**：`MissileRoleExtension`（`Strike`／`Interceptor`／`Dual`）；`DMSE_InterceptorMissile` 標為 `Interceptor`、`DMSE_LightMissile` 標為 `Dual`，其餘未標者為 `Strike`。只影響世界打擊。
+- **導彈角色**：`MissileRoleExtension`（`Strike`／`Interceptor`／`Dual`）；`DMSE_InterceptorMissile` 標為 `Interceptor`、`DMSE_Missile_Grison` 標為 `Dual`，其餘未標者為 `Strike`。只影響世界打擊。
 - **平台彈藥 API**（`CompMissileLauncher_WorldTargeting`）：`StrikeRounds`（含保留中者）、`NextRound`（第一枚未保留）、`OwnsRound`（參照比較；`Thing.Equals` 比的是 ID 與 def）、公開的 `BuildFiringConfig(Thing)`、`TryLaunchRound(target, round, salvoContinuation, out failReason)`、`SalvoIntervalTicks`（Rail 新欄位 `salvoIntervalTicks`，預設 30）。彈道井與 Scorer 以平台本身為彈藥。原 `Launch` 已移除；單發 Gizmo 改走 `TryLaunchRound`，選靶途中狀態改變時會留在選靶畫面並顯示原因（以前是靜默關閉）。
 - **Rail 修正**：攔截彈不再被補成輕型導彈射出；Rail 的 `HasAmmo` 只計可進攻的導彈，所以只裝攔截彈的輕型發射箱，對地 Gizmo 會顯示「未裝填導彈」。
 - **`MapComponent_StrikePlanner`**：世界選靶平台註冊表與保留索引（`Dictionary<Thing, int>`，不存檔；開發者模式的手動保留讀檔後即消失）。`StrikeReservation` 為查詢入口。

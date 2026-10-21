@@ -46,7 +46,7 @@
   <DMSE_Light_Payload_ToxicGas.label>毒氣酬載</DMSE_Light_Payload_ToxicGas.label>
   <DMSE_Light_Payload_ToxicGas.description>在範圍內散布毒氣雲，於爆炸後長時間滯留，阻絕無防護步兵進入該區域。</DMSE_Light_Payload_ToxicGas.description>
   <DMSE_Ballistic_Warhead_Thermonuclear.label>熱核彈頭</DMSE_Ballistic_Warhead_Thermonuclear.label>
-  <DMSE_Ballistic_Warhead_Thermonuclear.description>具備熱核當量的大型爆破彈頭。沒有特殊效果——爆炸半徑與傷害本身就足以說明一切。</DMSE_Ballistic_Warhead_Thermonuclear.description>
+  <DMSE_Ballistic_Warhead_Thermonuclear.description>具備熱核當量的大型爆破彈頭。沒有特殊效果，爆炸半徑與傷害本身就足以說明一切。</DMSE_Ballistic_Warhead_Thermonuclear.description>
   <DMSE_Ballistic_Warhead_Airburst.label>空爆彈頭</DMSE_Ballistic_Warhead_Airburst.label>
   <DMSE_Ballistic_Warhead_Airburst.description>在目標上方引爆以取得最大破片覆蓋範圍。作為攔截彈使用時，每個接戰窗口可獲得額外的接戰判定次數。</DMSE_Ballistic_Warhead_Airburst.description>
   <DMSE_Ballistic_Warhead_TungstenPenetrator.label>鎢合金穿透彈頭</DMSE_Ballistic_Warhead_TungstenPenetrator.label>
@@ -92,7 +92,7 @@
   <DMSE_AdvCruise_Warhead_Penetrator.label>硬目標穿透彈頭</DMSE_AdvCruise_Warhead_Penetrator.label>
   <DMSE_AdvCruise_Warhead_Penetrator.description>高密度鎢芯，能貫穿厚岩頂與山體後在內部引爆，扮演戰斧家族也有的鑽地角色；地下掩體不再是保護。</DMSE_AdvCruise_Warhead_Penetrator.description>
   <DMSE_AdvCruise_Guidance_TerrainMatch.label>地形比對導引</DMSE_AdvCruise_Guidance_TerrainMatch.label>
-  <DMSE_AdvCruise_Guidance_TerrainMatch.description>TERCOM/DSMAC 傳統的地形等高線與場景比對：導彈沿測繪航線貼地飛行並不斷修正，散布極小。無法飛行中改靶，也沒有任何終端導引——目標移動就只是落空。</DMSE_AdvCruise_Guidance_TerrainMatch.description>
+  <DMSE_AdvCruise_Guidance_TerrainMatch.description>TERCOM/DSMAC 傳統的地形等高線與場景比對：導彈沿測繪航線貼地飛行並不斷修正，散布極小。無法飛行中改靶，也沒有任何終端導引，目標移動就只是落空。</DMSE_AdvCruise_Guidance_TerrainMatch.description>
   <DMSE_AdvCruise_Guidance_Datalink.label>雙向資料鏈</DMSE_AdvCruise_Guidance_Datalink.label>
   <DMSE_AdvCruise_Guidance_Datalink.description>Block IV 級的衛星資料鏈：導彈可在飛行中改靶甚至盤旋，抵達目標地圖時遊戲暫停、由你選擇落點。最精準的選項，也是唯一能追擊移動目標的選項。</DMSE_AdvCruise_Guidance_Datalink.description>
   <DMSE_AdvCruise_Guidance_AntiShip.label>反艦雷達導引頭</DMSE_AdvCruise_Guidance_AntiShip.label>
@@ -120,9 +120,9 @@
   <DMSE_AdvBallistic_Payload_Penaids.label>突防誘餌</DMSE_AdvBallistic_Payload_Penaids.label>
   <DMSE_AdvBallistic_Payload_Penaids.description>隨重返載具釋放的箔條、雷達誘餌與低可觀測罩：這枚導彈在敵方雷達上看起來小得多，較晚被發現、被接戰的時間也更短。</DMSE_AdvBallistic_Payload_Penaids.description>
   <DMSE_AdvBallistic_Payload_MIRV.label>多彈頭重返載具</DMSE_AdvBallistic_Payload_MIRV.label>
-  <DMSE_AdvBallistic_Payload_MIRV.description>在終端階段前釋放多枚獨立重返載具的母艙。本實作保留單一落點，把子裝藥散佈在周圍——真正的多目標母艙需要不同的落點模型。</DMSE_AdvBallistic_Payload_MIRV.description>
+  <DMSE_AdvBallistic_Payload_MIRV.description>在終端階段前釋放多枚獨立重返載具的母艙。本實作保留單一落點，把子裝藥散佈在周圍，真正的多目標母艙需要不同的落點模型。</DMSE_AdvBallistic_Payload_MIRV.description>
   <DMSE_LegacyBallistic_Warhead_Amatol.label>阿馬托炸藥彈頭</DMSE_LegacyBallistic_Warhead_Amatol.label>
-  <DMSE_LegacyBallistic_Warhead_Amatol.description>V1 式 850 公斤阿馬托炸藥：簡單、穩定、爆破效果好的填充物，用工業材料就能便宜量產。沒有特殊效果，就是一個大洞。</DMSE_LegacyBallistic_Warhead_Amatol.description>
+  <DMSE_LegacyBallistic_Warhead_Amatol.description>二戰式 850 公斤阿馬托炸藥：簡單、穩定、爆破效果好的填充物，用工業材料就能便宜量產。沒有特殊效果，就是一個大洞。</DMSE_LegacyBallistic_Warhead_Amatol.description>
   <DMSE_LegacyBallistic_Warhead_Trialen.label>特里亞倫炸藥彈頭</DMSE_LegacyBallistic_Warhead_Trialen.label>
   <DMSE_LegacyBallistic_Warhead_Trialen.description>阿馬托供應不足時使用的後期特里亞倫填充物：在爆破之外加入燒夷成分，落點周圍會起火。略貴，但沒有更準。</DMSE_LegacyBallistic_Warhead_Trialen.description>
   <DMSE_Payload_None.label>無酬載</DMSE_Payload_None.label>
@@ -132,4 +132,6 @@
   <DMSE_Light_Payload_Chaff.label>箔條投放器</DMSE_Light_Payload_Chaff.label>
   <DMSE_Light_Payload_Chaff.description>單束箔條與少量雷達吸收絲：只有一次打斷敵方火控鎖定的機會，之後整段飛行都不再有。</DMSE_Light_Payload_Chaff.description>
 
+  <DMSE_Light_Guidance_SemiActive.label>半主動雷達導引頭</DMSE_Light_Guidance_SemiActive.label>
+  <DMSE_Light_Guidance_SemiActive.description>追蹤火控雷達照射目標所產生回波的半主動雷達導引頭。專為攔截而設計；對地打擊時退化為散布較小的慣性選點。</DMSE_Light_Guidance_SemiActive.description>
 </LanguageData>

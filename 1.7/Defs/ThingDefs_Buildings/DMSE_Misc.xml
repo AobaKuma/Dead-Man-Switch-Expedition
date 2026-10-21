@@ -3,8 +3,8 @@
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_PhaseArrayRadar</defName>
     <label>phased-array radar</label>
-    <!-- 一種用於預警與火控瞄準的多用途雷達，通常被安裝於艦船或軍事基地追蹤周圍空間內的活動物體。能夠有效識別如dropPod等亞軌道飛行物體的軌跡並提前預測其下落位置，然而十分消耗電力。 -->
-    <description>A multi-purpose radar used for early warning and fire control targeting, typically installed on ships or military bases to track moving objects in the surrounding space. It can effectively identify the trajectories of suborbital objects such as droppods and predict their descent locations in advance; however, it is extremely power-intensive.</description>
+    <!-- 小登：集搜索與火控於一身的相控陣雷達，24 個火力通道（docs/三代裝備體系_實作計畫.md §7-3），9000 W。 -->
+    <description>A phased-array radar that combines search and fire control in a fixed face with electronic scanning and more than twenty simultaneous target channels, guiding over twenty missiles at once in attack or defence and acting as the brain of the whole air-defence net at the price of a large share of a base's power and a cost that makes any colony wince.</description>
     <graphicData>
       <texPath>Things/Building/PhaseArrayRadar</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -34,10 +34,10 @@
     </statBases>
     <size>(3,3)</size>
     <costList>
-      <DMSE_TantastenAlloy>150</DMSE_TantastenAlloy>
-      <DMSE_Graphene>100</DMSE_Graphene>
-      <ComponentSpacer>12</ComponentSpacer>
-      <DMSE_Nitrogallium>10</DMSE_Nitrogallium>
+      <DMSE_TantastenAlloy>300</DMSE_TantastenAlloy>
+      <DMSE_Graphene>200</DMSE_Graphene>
+      <ComponentSpacer>24</ComponentSpacer>
+      <DMSE_Nitrogallium>20</DMSE_Nitrogallium>
     </costList>
     <building>
       <destroySound>BuildingDestroyed_Metal_Small</destroySound>
@@ -60,7 +60,7 @@
       <li Class="CompProperties_Flickable" />
       <li Class="CompProperties_Power">
         <compClass>CompPowerTrader</compClass>
-        <basePowerConsumption>5000</basePowerConsumption>
+        <basePowerConsumption>9000</basePowerConsumption>
         <transmitsPower>true</transmitsPower>
       </li>
       <!-- 複合功能示範：同一棟雷達同時搭載「搜索雷達」與「火控雷達」兩個 ThingComp。 -->
@@ -71,8 +71,9 @@
         <antiStealthLevel>2</antiStealthLevel>
         <ticksPerDistance>4</ticksPerDistance>
       </li>
+      <!-- 24 個火力通道：與砲擊引導、地圖波次、世界航跡、打擊導引共用同一本帳（BVRChannelLedger）。 -->
       <li Class="DMSE.CompProperties_FireControlRadar">
-        <maxTargets>2</maxTargets>
+        <maxTargets>24</maxTargets>
         <powerLevel>2</powerLevel>
         <guidanceAccuracyTime>600</guidanceAccuracyTime>
         <maxRangeTicks>6000</maxRangeTicks>

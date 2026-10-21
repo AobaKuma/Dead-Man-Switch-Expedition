@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!-- 三代裝備體系：單兵防空導彈發射具（DMSE.CompEquippable_ManPortableSAM） -->
+  <DMSE.ManPortableSAM.Fire>fire SAM</DMSE.ManPortableSAM.Fire>
+  <DMSE.ManPortableSAM.FireDesc>Lock onto an incoming threat that your radar network is tracking on this map and fire a light surface-to-air missile at it. The wielder stands still while locking on; no fire-control channel is used.\n\nMissiles carried: {0}</DMSE.ManPortableSAM.FireDesc>
+  <DMSE.ManPortableSAM.NoAmmo>No {0} in the inventory.</DMSE.ManPortableSAM.NoAmmo>
+  <DMSE.ManPortableSAM.NoTargets>No radar-tracked incoming threat in range.</DMSE.ManPortableSAM.NoTargets>
+  <DMSE.ManPortableSAM.NotReady>The wielder cannot fire right now.</DMSE.ManPortableSAM.NotReady>
+  <DMSE.ManPortableSAM.TargetLost>The target is gone or already engaged by another interceptor.</DMSE.ManPortableSAM.TargetLost>
+  <DMSE.ManPortableSAM.TargetOption>{0} (arrives in {1}, hit chance {2})</DMSE.ManPortableSAM.TargetOption>
+
+</LanguageData>

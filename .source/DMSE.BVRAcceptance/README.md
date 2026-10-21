@@ -75,14 +75,36 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .source/DMSE.BVRAcceptance/r
 | K14 | Wave strike P4: a decoy payload doubles the radar size; with one channel a threat-assessing base locks the decoy first, a soonest-first base the plain missile |
 | K15 | Wave strike P4: an unloaded NPC missile base fires a three-missile salvo at one colony |
 | G1 | God-mode instant assembly setting: off (or outside god mode) leaves refits pending; on, rack missiles and a silo are assembled with no confirmation, hauling or resources (removed parts refund nothing), a reserved missile waits until released, and the silo reloads right after firing |
+| T1 | Three-generation (docs/三代裝備體系_實作計畫.md §14-2): the launch tower starts with V2; its backblast burns and stuns an animal two cells away and starts fires, but leaves the tower and a wall unharmed; the strategic silo hurts nobody |
+| T2 | Rotary launch rail: Loitering + Light storage and taxonomy; unmanned it neither strikes nor intercepts; V1 and Termite fly their own airframes (MissileItemExtension); the SAM never takes them; a Rheintochter arms only the SAM (hit factor 0.6); the launch rail splits roles the same way |
+| T3 | The SAM skips a strike-only Tomahawk in a tilt container and fires the SA-19 next to it |
+| T4 | Shipped channels (phased array 24, fire control 4, early 1, field air defence 2; manning adds them), 9000 W phased array, search radar, unpowered acoustic radar, 4-round SAM launcher and light VLS |
+| T5 | Termite built-in anti-ship guidance (automatic, 3 terminal updates, mobile targets) vs V1 built-in TV; default-part ranges of every new body; ballistic body and thermonuclear research gates; anti-ship research and recipes |
+| T6 | Interceptor hit factors per round, and the ×1.25 Sparrow factor in a real map-layer shot |
+| T7 | Millennium works unmanned, Flak 37 only manned; the Millennium stops three pods and burns 24 rounds per burst |
+| T8 | Man-portable SAM: gizmo and ground shot disabled without missiles; engageable tracks; direct fire uses one missile and starts the cooldown; the ordered aiming job fires the second |
+| F1 | Skyfaller → Projectile migration (docs/Missile_Skyfaller轉Projectile_計畫.md §8.6): every ascent def × 4 rotations, an old skyfaller and a runtime `Projectile_MissileBase` twin spawned on the same cell; timeline, pose, ignition tick and exhaust inputs equal tick for tick. Full trace in `missile_flight_trace.tsv` |
+| F2 | Old/new ascent screenshots at 10/30/60 ticks (light E, ballistic N, cruise W, SAM E) for visual comparison |
+| F3 | Entry heading equals the world track's arrival tangent (120 sampled tile pairs, within 2°) and maps to the same edge as `PlanetLayer.GetRotFromTo`; a sideways reroute changes the heading to the last leg's |
+| F4 | Every missile body has its own launch projectile (`MissileBodyDef.launchProjectile`): texture loads, ascent flight, launch effect ignites and exhausts, launchers pick it over the platform skyfaller; the four bodies copied from a platform skyfaller replay it tick for tick in 4 rotations |
+| F5 | Departure cruise (plan §8.3): every body × 5 world headings × 4 rotations hands off mid-ascent, turns smoothly (no step/direction jump), flies out of the edge the heading points at with nose and motion on the heading, cruise speed follows speedCurve(progress)/speedCurve(handoff), exhaust stays lit with a held progress, and `DepartureTicksOf` equals the real flight |
+| F6 | Screenshots of an east-launched light missile turning to a north-west heading |
+| F7 | Incoming missiles (plan §8.4): every incoming def × 5 headings starts off-map, enters through the edge the heading points at, flies straight on the heading with the nose on it and reaches the target (disarmed just before impact); without a heading the old fall is unchanged; a BVR terminal hold respawns the missile with its heading |
+| F8 | Screenshots of an advanced cruise missile arriving from the north-east |
+| F9 | High-angle shields (plan §6, Royalty `ShieldGeneratorMortar`): an enemy missile without a launcher is stopped on the ring on its approach side, the shield loses HP, the strike report counts "stopped by shields"; the player's own shield lets a player missile through; an enemy shield stops a player missile with a launcher and that explosion is not attributed; a ground (bullet) shield never stops missiles |
+| F10 | Launcher attribution (plan §7): the impact explosion is logged against the launching building on the same map and on a generated enemy base map; hitting a neutral faction's pawn costs goodwill; a destroyed launcher leaves no instigator |
 | L1 | Save and reload with a detected track and an interceptor in flight |
 | L2 | Save and reload after a reroute, with the old-route interceptor still flying |
+| L3 | Old saves (plan §9): a save whose incoming missiles are rewritten to the skyfaller-era `DMSE.MissileIncoming` class loads cleanly; the flying one continues as a `Projectile_MissileIncoming` on its target with config, attacker and strike id; the BVR-held one is converted on load; old departure and interceptor skyfallers still finish. Last in the suite (it reloads); a third-party crash on an earlier reload can cut it, run it alone with `-Only L3` |
 
 ## Test environment
 
 - Storyteller incidents are off and `DebugSettings.unlimitedPower` is on. Buildings
   still wait for their power net to switch them on (`BVRFixture.WaitPowered`).
 - Tests build on a cleared, paved pad and clean up after themselves (`CleanupAfterTest`).
+- The mechanics tests (every id not starting with `T`) pin the radar values they were written against: phased array
+  and early fire-control radar 2 channels each, NPC missile base 2 channels (`BVRFixture.PinLegacyRadarValues`).
+  T tests restore the shipped values first (24 / 1 / 4), also after a test reloaded the game.
 - Enemy world missiles use laser guidance with a permanent enemy mark on a far corner
   of the map, so arrivals never hit the test buildings.
 - Some timings use forced hit/miss rolls; real hit chances are only logged as notes.

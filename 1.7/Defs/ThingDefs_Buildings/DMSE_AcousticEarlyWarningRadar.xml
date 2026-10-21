@@ -3,9 +3,9 @@
 
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_AcousticEarlyWarningRadar</defName>
-    <label>early warning radar</label>
-    <!-- 一種前雷達時代的巨型混凝土聲學反射鏡，藉由收集遠方來襲飛行器的引擎噪音達成早期預警。由於全程被動聆聽、不發射任何電磁波，反輻射導引頭無法將其鎖定為目標。偵測距離與精準度皆遜於真正的雷達，且完全無法辨識隱身目標。 -->
-    <description>A pre-radar-era concrete acoustic mirror that provides early warning by passively collecting the engine noise of distant incoming aircraft. Because it never emits any electromagnetic signal, anti-radiation seeker heads cannot lock onto it as a target. Its detection range and precision are inferior to true radar, and it cannot identify stealth targets at all.</description>
+    <label>passive acoustic radar</label>
+    <!-- 老資歷：一座雷達時代之前的混凝土聲學反射鏡，不用電、不發射電磁波、免疫反輻射；探測距離短、對隱身與高速目標幾乎全盲。 -->
+    <description>A pre-radar concrete acoustic mirror that passively gathers the engine noise of distant aircraft without emitting any electromagnetic signal or drawing power, leaving anti-radiation seekers nothing to lock onto at the cost of short range, vague bearings and near-blindness to stealthy or fast targets; what it provides is not fire control but an early and imprecise warning that something is coming.</description>
     <graphicData>
       <texPath>Things/Building/AcousticMirror/building</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
@@ -62,12 +62,7 @@
       <li Class="CompProperties_Forbiddable" />
       <li Class="CompProperties_Breakdownable" />
       <li Class="CompProperties_Flickable" />
-      <li Class="CompProperties_Power">
-        <compClass>CompPowerTrader</compClass>
-        <!-- 純被動聲學裝置，僅需少量電力驅動聆聽陣列與訊號處理，遠低於主動雷達。 -->
-        <basePowerConsumption>150</basePowerConsumption>
-        <transmitsPower>true</transmitsPower>
-      </li>
+      <!-- 不用電：純混凝土反射鏡與聽音員，沒有 CompPowerTrader（CompBVRDevice.Active 對無電力 Comp 的建築不檢查電力）。 -->
       <!-- 早期預警：只提供搜索/預警窗口，不具備火控鎖定能力（無 CompProperties_FireControlRadar）。 -->
       <li Class="DMSE.CompProperties_SearchRadar">
         <worldDetectionRange>8</worldDetectionRange>
@@ -80,7 +75,6 @@
       </li>
     </comps>
     <placeWorkers>
-      <li>PlaceWorker_BandNode</li>
       <li>DMSE.PlaceWorker_NoAdjacentSameLayer</li>
     </placeWorkers>
   </ThingDef>

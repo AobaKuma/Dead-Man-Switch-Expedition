@@ -511,9 +511,53 @@ static class Test
         Near(track.AngularSpeed, GenMath.SphericalDistance(track.a.normalized, track.b.normalized) / 3000f,
             "the line track speed matches its path");
     }
+    // Skyfaller → Projectile migration (docs/Missile_Skyfaller轉Projectile_計畫.md §5): headings, edge points, skyfaller angle.
+    static void MissileMapEntry()
+    {
+        foreach (var (h, x, z) in new[] { (0f, 0f, 1f), (90f, 1f, 0f), (180f, 0f, -1f), (270f, -1f, 0f) })
+        {
+            Vector3 v = MissileMapEntryUtility.HeadingVector(h);
+            Near(v.x, x, $"heading {h} x"); Near(v.z, z, $"heading {h} z");
+        }
+        foreach (float h in new[] { 0f, 12.5f, 45f, 133f, 180f, 222f, 300f, 359f })
+        {
+            Near(MissileMapEntryUtility.HeadingOf(MissileMapEntryUtility.HeadingVector(h)), h, $"heading round trip {h}", 0.01f);
+
+            // A skyfaller with the converted angle sits on the heading side of its target (it flies in from there).
+            Vector3 center = new Vector3(100f, 0f, 100f);
+            Vector3 drawn = SkyfallerDrawPosUtility.DrawPos_Accelerate(center, 100, MissileMapEntryUtility.SkyfallerAngleForHeading(h), 1f);
+            Near(MissileMapEntryUtility.HeadingOf(drawn - center), h, $"skyfaller angle matches heading {h}", 0.01f);
+        }
+
+        IntVec3 size = new IntVec3(250, 1, 250);
+        Vector3 mid = new Vector3(125f, 0f, 125f);
+        Vector3 n = MissileMapEntryUtility.EdgePoint(size, mid, 0f);
+        Check(Math.Abs(n.x - 125f) < 0.01f && Math.Abs(n.z - 250f) < 0.01f, "north ray exits the +Z edge above the start");
+        Vector3 e = MissileMapEntryUtility.EdgePoint(size, mid, 90f);
+        Check(Math.Abs(e.x - 250f) < 0.01f && Math.Abs(e.z - 125f) < 0.01f, "east ray exits the +X edge");
+        Vector3 ne = MissileMapEntryUtility.EdgePoint(size, mid, 45f);
+        Check(Math.Abs(ne.x - 250f) < 0.01f && Math.Abs(ne.z - 250f) < 0.01f, "45° ray exits the north-east corner, not the middle of a side");
+        foreach (var (from, h) in new[] { (new Vector3(10f, 0f, 200f), 300f), (new Vector3(240f, 0f, 30f), 170f), (new Vector3(60f, 0f, 60f), 215f), (mid, 359.5f) })
+        {
+            Vector3 p = MissileMapEntryUtility.EdgePoint(size, from, h);
+            bool onEdge = Math.Abs(p.x) < 0.01f || Math.Abs(p.x - 250f) < 0.01f || Math.Abs(p.z) < 0.01f || Math.Abs(p.z - 250f) < 0.01f;
+            Check(onEdge, $"edge point {p} lies on the map border (heading {h})");
+            Near(MissileMapEntryUtility.HeadingOf(p - from), h, $"edge point keeps the true heading {h}", 0.01f);
+            Vector3 inside = MissileMapEntryUtility.InsetFromEdge(size, p);
+            Check(inside.x >= 0.5f && inside.x <= 249.5f && inside.z >= 0.5f && inside.z <= 249.5f, "inset edge point is inside the map");
+        }
+
+        foreach (var (h, rot) in new[] { (44.9f, Rot4.North), (45f, Rot4.East), (134.9f, Rot4.East), (135f, Rot4.South),
+                                          (224.9f, Rot4.South), (225f, Rot4.West), (314.9f, Rot4.West), (315f, Rot4.North), (-10f, Rot4.North) })
+        {
+            Check(MissileMapEntryUtility.EdgeRot(h) == rot, $"heading {h} maps to the {rot} edge like PlanetLayer.GetRotFromTo");
+        }
+    }
+
     public static void Main()
     {
         Setup();
+        MissileMapEntry();
         Detection(); Solver(); FireControl(); LedgerAndTerminal(); InventoryAndPersistence(); StrikeP0(); StrikeP1(); StrikeP2(); StrikeP3(); StrikeP4();
         MissileContent(); AreaDefense();
         Console.WriteLine($"PASS: {count} BVR checks (real game/DMSE assemblies).");

@@ -6,8 +6,9 @@
     CompTurretFacingRenderer 逐幀朝向目標平滑轉動；掛載中的攔截彈會隨砲塔頭一起旋轉
     （CompTurretFacingRenderer.drawLoadedAmmo），視覺上呈現「彈藥掛在旋轉發射軌上」。
 
-    雙聯裝：容器容量 2，並以 ammoSlotOffsets 指定左右兩個掛載槽位，容器內第 i 枚彈藥
-    對應第 i 個槽位，兩枚會一起隨砲塔頭旋轉（多彈頭渲染）。
+    四聯裝（三代裝備體系：防空導彈發射架）：容器容量 4，並以 ammoSlotOffsets 指定四個掛載槽位，
+    容器內第 i 枚彈藥對應第 i 個槽位，四枚會一起隨砲塔頭旋轉（多彈頭渲染）。
+    只收攔截／兩用彈（攔截彈、SA-19、刺針、麻雀）；需 DMSE_IntegratedCircuits（彈藥同節點）。
 
     需要操作員手動操作方能運作（CompMannable）：未有人操作時，CompTurretFacingRenderer.DeviceActive
     會判定為 false，停止追蹤轉向；CompMissileLauncher.Active 亦繼承自 CompBVRDevice 的運作判定，
@@ -15,9 +16,9 @@
   -->
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_Building_RotaryMissileLauncher</defName>
-    <label>rotary missile launcher</label>
-    <!-- 一款可 360 度旋轉的中程防空發射架，砲塔頭與彈藥掛架隨追蹤目標平滑轉向，需人力操作方能運作。 -->
-    <description>A surface-to-air launcher with a fully rotating turret. Unlike fixed tilt/vertical racks, its launch rail continuously slews to face the current threat, but it requires a manual operator to function.</description>
+    <label>SAM launcher</label>
+    <!-- 中登：四聯裝防空導彈發射架，手動瞄準與發射，沒有自己的雷達、靠火控雷達指派目標。 -->
+    <description>A four-round surface-to-air launcher on a rotating base, aimed and fired by a single operator, with no radar of its own and dependent on a fire-control radar to hand it a target, so that all the operator does is pull the trigger when the lamp lights and pray the seeker holds.</description>
     <thingClass>DMSE.Building_MissileRack</thingClass>
     <category>Building</category>
     <graphicData>
@@ -60,7 +61,9 @@
         <filter>
           <thingDefs>
             <li>DMSE_InterceptorMissile</li>
-            <li>DMSE_Missile_Termite</li>
+            <li>DMSE_Missile_Grison</li>
+            <li>DMSE_Missile_Stinger</li>
+            <li>DMSE_Missile_Sparrow</li>
           </thingDefs>
         </filter>
       </fixedStorageSettings>
@@ -69,7 +72,9 @@
         <filter>
           <thingDefs>
             <li>DMSE_InterceptorMissile</li>
-            <li>DMSE_Missile_Termite</li>
+            <li>DMSE_Missile_Grison</li>
+            <li>DMSE_Missile_Stinger</li>
+            <li>DMSE_Missile_Sparrow</li>
           </thingDefs>
         </filter>
       </defaultStorageSettings>
@@ -78,7 +83,7 @@
       </buildingTags>
     </building>
     <researchPrerequisites>
-      <li>DMSE_Ballistics</li>
+      <li>DMSE_IntegratedCircuits</li>
     </researchPrerequisites>
     <designationCategory>DMS_Category</designationCategory>
     <minifiedDef>MinifiedThing</minifiedDef>
@@ -86,12 +91,12 @@
     <thingCategories>
       <li>BuildingsMisc</li>
     </thingCategories>
-    <!-- 四階分類：輕量級、傾斜發射（旋轉發射架不佔用 Vertical 語意）、彈容 2（雙聯裝，對應下方 ammoSlotOffsets 兩槽）。 -->
+    <!-- 四階分類：輕量級、傾斜發射（旋轉發射架不佔用 Vertical 語意）、彈容 4（四聯裝，對應下方 ammoSlotOffsets 四槽）。 -->
     <modExtensions>
       <li Class="DMSE.MissileLauncherExtension">
         <sizeClass>Light</sizeClass>
         <launchMode>Tilt</launchMode>
-        <capacity>1</capacity>
+        <capacity>4</capacity>
         <renderStoredBody>false</renderStoredBody>
       </li>
       <!-- 敵方陣地生成時自動填充：Industrial 以上派系填入攔截彈。 -->
@@ -102,7 +107,6 @@
             <minTechLevel>Industrial</minTechLevel>
             <candidates>
               <li>DMSE_InterceptorMissile</li>
-              <li>DMSE_Missile_Termite</li>
             </candidates>
           </li>
         </fillRules>
@@ -125,7 +129,7 @@
       <!-- 發射：受火控雷達指派目標，取出容器中的攔截彈作為彈藥。 -->
       <li Class="DMSE.CompProperties_MissileLauncher">
         <interceptorSkyfaller>DMSE_SkyFaller_Interceptor</interceptorSkyfaller>
-        <reloadCooldownTicks>200</reloadCooldownTicks>
+        <reloadCooldownTicks>240</reloadCooldownTicks>
         <interceptorTravelTicks>180</interceptorTravelTicks>
       </li>
       <li Class="DMSE.CompProperties_TurretFacingRenderer">
@@ -135,7 +139,10 @@
         <rotationSpeedDegPerTick>2</rotationSpeedDegPerTick>
         <drawLoadedAmmo>true</drawLoadedAmmo>
         <ammoSlotOffsets>
-          <li>(0,0,0.45)</li>
+          <li>(-0.45,0,0.45)</li>
+          <li>(0.45,0,0.45)</li>
+          <li>(-0.15,0,0.6)</li>
+          <li>(0.15,0,0.6)</li>
         </ammoSlotOffsets>
         <ammoAltitudeOffset>0.005</ammoAltitudeOffset>
       </li>

@@ -115,7 +115,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvLight_Guidance_Inertial</defName>
     <label>inertial guidance</label>
-    <description>A cheap strap-down inertial unit. No seeker, no terminal guidance and no cross-layer reach — but it costs nothing and still hits the target building the operator selected.</description>
+    <description>A cheap strap-down inertial unit. No seeker, no terminal guidance and no cross-layer reach, but it costs nothing and still hits the target building the operator selected.</description>
     <category>Guidance</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedLight</li>
@@ -169,7 +169,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvLight_Guidance_MMW</defName>
     <label>millimetre-wave radar seeker</label>
-    <description>A fire-and-forget millimetre-wave radar seeker in the class of the AGM-114L Longbow. It locks the toughest hostile building on the target map by itself — no designator, no operator and no clear weather required.</description>
+    <description>A fire-and-forget millimetre-wave radar seeker in the class of the AGM-114L Longbow. It locks the toughest hostile building on the target map by itself, with no designator, no operator and no clear weather required.</description>
     <category>Guidance</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedLight</li>

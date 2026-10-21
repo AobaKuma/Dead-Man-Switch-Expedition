@@ -20,6 +20,12 @@ namespace DMSE
         /// <summary>額外旋轉角度（度，繞 Y 軸）。垂直發射架不旋轉，預設 0。</summary>
         public float rotation = 0f;
 
+        /// <summary>
+        /// 選配：平台的上層結構（例如塔式發射架的桁架），畫在建築本體之上、彈體之下，未裝彈時也會畫，
+        /// 所以裝填完成的彈體一定看得見。drawOffset 以格為單位、相對建築中心；y 分量不使用。
+        /// </summary>
+        public GraphicData overlay;
+
         public CompProperties_MissileBodyRenderer()
         {
             compClass = typeof(CompMissileBodyRenderer);
@@ -58,26 +64,60 @@ namespace DMSE
             return graphic != null;
         }
 
+        private Graphic overlayGraphic;
+
+        private Graphic OverlayGraphic
+        {
+            get
+            {
+                if (overlayGraphic == null && Props.overlay != null)
+                {
+                    overlayGraphic = Props.overlay.GraphicColoredFor(parent);
+                }
+                return overlayGraphic;
+            }
+        }
+
+        public override void Notify_DefsHotReloaded()
+        {
+            base.Notify_DefsHotReloaded();
+            overlayGraphic = null;
+        }
+
         public override void PostDraw()
         {
             base.PostDraw();
 
-            if (!TryGetBodyGraphic(out Graphic graphic)) { return; }
-
-            // 貼圖一律以北向（彈頭朝上）繪製：垂直發射架不可旋轉，彈體也是立著朝上。
             float y = AltitudeLayer.BuildingOnTop.AltitudeFor() + Props.altitudeOffset;
-            Vector3 pos = parent.DrawPos + Props.drawOffset;
-            pos.y = y;
 
-            Vector3 scale = new Vector3(Props.drawSize.x, 1f, Props.drawSize.y);
-            Quaternion quat = Quaternion.Euler(0f, Props.rotation, 0f);
-            Matrix4x4 matrix = Matrix4x4.TRS(pos, quat, scale);
+            // 上層結構（桁架）先畫，彈體疊在它上面：裝填完成的彈體一定看得見。
+            Graphic top = OverlayGraphic;
+            if (top != null)
+            {
+                Vector3 offset = Props.overlay.drawOffset;
+                Vector3 topPos = parent.DrawPos + new Vector3(offset.x, 0f, offset.z);
+                topPos.y = y;
+                Vector2 size = Props.overlay.drawSize;
+                Matrix4x4 topMatrix = Matrix4x4.TRS(topPos, Quaternion.identity, new Vector3(size.x, 1f, size.y));
+                Graphics.DrawMesh(MeshPool.GridPlane(Vector2.one), topMatrix, top.MatAt(Rot4.North, parent), 0);
+            }
 
-            Graphics.DrawMesh(
-                MeshPool.GridPlane(Vector2.one),
-                matrix,
-                graphic.MatAt(Rot4.North, parent),
-                0);
+            if (TryGetBodyGraphic(out Graphic graphic))
+            {
+                // 貼圖一律以北向（彈頭朝上）繪製：垂直發射架不可旋轉，彈體也是立著朝上。
+                Vector3 pos = parent.DrawPos + Props.drawOffset;
+                pos.y = y + 0.01f;
+
+                Vector3 scale = new Vector3(Props.drawSize.x, 1f, Props.drawSize.y);
+                Quaternion quat = Quaternion.Euler(0f, Props.rotation, 0f);
+                Matrix4x4 matrix = Matrix4x4.TRS(pos, quat, scale);
+
+                Graphics.DrawMesh(
+                    MeshPool.GridPlane(Vector2.one),
+                    matrix,
+                    graphic.MatAt(Rot4.North, parent),
+                    0);
+            }
         }
     }
 }

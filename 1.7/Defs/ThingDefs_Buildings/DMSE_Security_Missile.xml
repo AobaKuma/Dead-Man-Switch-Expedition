@@ -47,6 +47,7 @@
                     <thingDefs>
                         <li>DMSE_Missile_Moskit</li>
                         <li>DMSE_Missile_AdvancedCruise</li>
+                        <li>DMSE_Missile_Yj</li>
                     </thingDefs>
                 </filter>
             </fixedStorageSettings>
@@ -56,6 +57,7 @@
                     <thingDefs>
                         <li>DMSE_Missile_Moskit</li>
                         <li>DMSE_Missile_AdvancedCruise</li>
+                        <li>DMSE_Missile_Yj</li>
                     </thingDefs>
                 </filter>
             </defaultStorageSettings>
@@ -63,10 +65,14 @@
         <soundImpactDefault>BulletImpact_Ground</soundImpactDefault>
         <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
         <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
-        <!-- 四階分類：中型階、傾斜發射、彈容 1。作為平台分類架構的具體範本。 -->
+        <!-- 四階分類：中型階、傾斜發射、彈容 1。作為平台分類架構的具體範本。
+             戰斧（DMSE_MissileBody_AdvancedCruise）已改列輕型階，艦載 Scorer 仍收：extraSizeClasses 加 Light。 -->
         <modExtensions>
             <li Class="DMSE.MissileLauncherExtension">
                 <sizeClass>Medium</sizeClass>
+                <extraSizeClasses>
+                    <li>Light</li>
+                </extraSizeClasses>
                 <launchMode>Tilt</launchMode>
                 <capacity>1</capacity>
             </li>
@@ -210,10 +216,10 @@
         <validLaunchTarget>false</validLaunchTarget>
     </WorldObjectDef>
 
-    <ThingDef ParentName="SkyfallerBase">
+    <ThingDef ParentName="DMSE_MissileIncomingProjectileBase">
         <defName>DMSE_Incoming_CruiseMissile</defName>
         <label>cruise missile (incoming)</label>
-        <thingClass>DMSE.MissileIncoming</thingClass>
+        <thingClass>DMSE.Projectile_MissileIncoming</thingClass>
         <graphicData>
             <texPath>Things/Missile/Moskit/skyFaller_incoming</texPath>
             <graphicClass>Graphic_Single</graphicClass>
@@ -221,14 +227,14 @@
         </graphicData>
         <size>(1,1)</size>
         <!-- 爆炸效果改由導彈裝配設定（MissileConfig）於落點動態套用，故此處不設固定 explosionRadius/explosionDamage。 -->
-        <skyfaller>
-            <shadowSize>(3, 3)</shadowSize>
-            <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
-            <speed>1</speed>
-        </skyfaller>
         <!-- BVR 攔截特性：巡航導彈有完整世界航跡，可較早偵測（窗口需大於末端窗口，
              中過程 SAM 與末端 CIWS 才會依序作用）；仍需一定反隱身才能完整偵測。 -->
         <modExtensions>
+          <li Class="DMSE.MissileFlightExtension">
+            <shadowSize>(3, 3)</shadowSize>
+            <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
+            <speed>1</speed>
+          </li>
             <li Class="DMSE.BVRTargetProps">
                 <distanceLevel>1.5</distanceLevel>
                 <stealthLevel>1</stealthLevel>

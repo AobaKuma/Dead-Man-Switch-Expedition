@@ -90,6 +90,24 @@ namespace DMSE
 
         protected Vector3 End => MissileWorldUtility.TileCenter(destinationTile);
 
+        /// <summary>
+        /// 抵達時的進入方位（docs/Missile_Skyfaller轉Projectile_計畫.md §5）：世界航跡「最後一段」在目標點、指向該段起點的方位，
+        /// 落地導彈從這個方向的地圖邊緣飛入。有終端更新時用改飛後的那一段（<see cref="Start"/> 已是改飛點）。
+        /// 跨圖層或幾乎同點時沒有水平方位，回傳 null（照原本墜落）。
+        /// </summary>
+        public float? ArrivalHeading
+        {
+            get
+            {
+                if (!destinationTile.Valid) { return null; }
+                PlanetTile from = initialTile.Valid ? initialTile : Tile;
+                Vector3 start = Start;
+                Vector3 end = End;
+                if (!from.Valid || !MissileMapEntryUtility.HasHorizontalHeading(from.Layer, destinationTile.Layer, start, end)) { return null; }
+                return MissileMapEntryUtility.EntryHeading(destinationTile.Layer, start, end);
+            }
+        }
+
         public override Vector3 DrawPos => PositionAt(0);
 
         public override bool ExpandingIconFlipHorizontal

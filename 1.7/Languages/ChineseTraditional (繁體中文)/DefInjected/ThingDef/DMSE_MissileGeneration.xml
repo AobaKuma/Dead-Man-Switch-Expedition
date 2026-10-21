@@ -1,11 +1,17 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
 
   <DMSE_Incoming_LegacyBallisticMissile.label>老式彈道導彈（來襲）</DMSE_Incoming_LegacyBallisticMissile.label>
   <DMSE_Incoming_LegacyLoiter.label>老式巡飛彈（來襲）</DMSE_Incoming_LegacyLoiter.label>
-  <DMSE_Incoming_LegacyInterceptor.label>老式防空飛彈（來襲）</DMSE_Incoming_LegacyInterceptor.label>
+  <DMSE_Incoming_LegacyInterceptor.label>老式攔截巡飛彈（來襲）</DMSE_Incoming_LegacyInterceptor.label>
   <DMSE_Incoming_AdvancedLightMissile.label>先進通用導彈（來襲）</DMSE_Incoming_AdvancedLightMissile.label>
   <DMSE_Incoming_AdvancedBallisticMissile.label>先進彈道導彈（來襲）</DMSE_Incoming_AdvancedBallisticMissile.label>
   <DMSE_Incoming_AdvancedCruiseMissile.label>先進巡航導彈（來襲）</DMSE_Incoming_AdvancedCruiseMissile.label>
 
+  <DMSE_Incoming_Stinger.label>輕型防空導彈（來襲）</DMSE_Incoming_Stinger.label>
+  <DMSE_Incoming_Maverick.label>對地攻擊導彈（來襲）</DMSE_Incoming_Maverick.label>
+  <DMSE_Incoming_Sparrow.label>先進防空導彈（來襲）</DMSE_Incoming_Sparrow.label>
+  <DMSE_Incoming_Moskit.label>超音速反艦導彈（來襲）</DMSE_Incoming_Moskit.label>
+  <DMSE_Incoming_Yj.label>高超音速反艦導彈（來襲）</DMSE_Incoming_Yj.label>
+  <DMSE_Incoming_Tochka.label>戰術彈道導彈（來襲）</DMSE_Incoming_Tochka.label>
 </LanguageData>

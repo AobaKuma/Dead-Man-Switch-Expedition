@@ -391,13 +391,14 @@ namespace DMSE
                     {
                         // 離場 skyfaller 還在地圖上時航跡尚未開始移動：抵達要從它離開地圖的時刻起算
                         int departs = slot.track != null && !slot.track.Spawned
-                            ? Mathf.Max(now, slot.launchTick + (launcher?.DepartureTicks ?? 0)) : now;
+                            ? Mathf.Max(now, slot.launchTick + (launcher?.DepartureTicksFor(slot.track.config, slot.track.destinationTile) ?? 0)) : now;
                         list.Add(new StrikePlanSlot { launched = true, arrivalTick = slot.InFlight ? departs + slot.track.TicksToArrival : -1 });
                         continue;
                     }
                     // 升空後離場 skyfaller 飛出地圖才出現世界航跡，所以飛行時間要加上離場時間
+                    MissileConfig slotConfig = launcher?.BuildFiringConfig(slot.round);
                     int flight = launcher != null
-                        ? launcher.DepartureTicks + StrikeRoundUtility.FlightTicks(launcher.BuildFiringConfig(slot.round), from, to) : 0;
+                        ? launcher.DepartureTicksFor(slotConfig, to) + StrikeRoundUtility.FlightTicks(slotConfig, from, to) : 0;
                     if (slot.state == StrikeSlotState.Queued)
                     {
                         list.Add(new StrikePlanSlot { launched = true, arrivalTick = now + 1 + flight });

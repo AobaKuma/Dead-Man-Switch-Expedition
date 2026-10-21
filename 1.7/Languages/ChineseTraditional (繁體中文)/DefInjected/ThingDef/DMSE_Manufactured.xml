@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
   
   <!-- EN: Carbohydrate -->
@@ -29,11 +29,11 @@
   <DMSE_TantastenAlloy.description>由鉭與鎢組成的特殊合金材料，具備高硬度、耐磨、耐蝕與高達3080°C的超高熔點，廣泛用於火箭引擎的噴嘴與高性能軍用機甲的脈衝推進器。\n\n鉭元素在小行星中以微量形式存在，可透過真空岩採礦提取；其加工與生產需在真空環境中進行，避免氮氧等氣體污染。因此能大規模製造並應用此材料的世界通常都擁有環繞軌道的大型工業平台。</DMSE_TantastenAlloy.description>
   
 
-  <DMSE_Missile_Moskit.label>高超音速巡弋導彈</DMSE_Missile_Moskit.label>
-  <DMSE_Missile_Moskit.description>一枚等待裝填的戰術巡弋導彈。</DMSE_Missile_Moskit.description>
+  <DMSE_Missile_Moskit.label>超音速反艦導彈</DMSE_Missile_Moskit.label>
+  <DMSE_Missile_Moskit.description>一款以衝壓引擎推進的超音速反艦導彈，發射後先爬升、再貼海俯衝，終端速度足以讓近防系統的反應時間壓縮到幾秒，彈體大、燃料兇、導引頭複雜，價格是巡飛彈的數倍，但一枚就足以讓一艘護衛艦失去戰鬥力。</DMSE_Missile_Moskit.description>
   <DMSE_InterceptorMissile.label>攔截彈</DMSE_InterceptorMissile.label>
   <DMSE_InterceptorMissile.description>一枚可立即發射的地對空攔截彈。裝填至防空導彈發射架的內部彈艙後，每次接戰消耗一枚，用於在超視距作戰的中段飛行階段摧毀來襲威脅。</DMSE_InterceptorMissile.description>
-  <DMSE_LightMissile.label>輕型導彈</DMSE_LightMissile.label>
-  <DMSE_LightMissile.description>一枚具備可自訂彈頭、導引與酬載槽的緊湊單級導彈。比遊蕩彈藥更快、射程更遠，但比完整的巡弋導彈更輕、更便宜。</DMSE_LightMissile.description>
+  <DMSE_Missile_Grison.label>野戰防空導彈</DMSE_Missile_Grison.label>
+  <DMSE_Missile_Grison.description>一款彈砲一體系統使用的短程防空導彈，以無線電指令導引、與同軸機砲共用一具雷達與一具光電瞄準具，操作員不必一直盯著天空，但雷達一開機就像在黑暗中點了一盞燈，反輻射導引頭最喜歡這種目標。</DMSE_Missile_Grison.description>
 
 </LanguageData>

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
 
-  <DMSE_Missile_Termite.label>巡飞弹</DMSE_Missile_Termite.label>
-  <DMSE_Missile_Termite.description>一枚等待装上发射轨的折叠翼巡飞弹。其弹体在露天环境下会缓慢劣化；请存放于巡飞弹储存架以维持可用状态。</DMSE_Missile_Termite.description>
+  <DMSE_Missile_Termite.label>反舰巡飞弹</DMSE_Missile_Termite.label>
+  <DMSE_Missile_Termite.description>一款折叠翼的反舰巡飞弹，以小型涡轮喷气引擎贴海飞行，靠被动雷达与红外复合导引头在最后阶段自行寻找舰影，飞得慢、弹头不大，但胜在便宜、可以从地面轨道发射，而且会优先咬住移动中的船只，对没有神盾系统的对手而言这就够了。</DMSE_Missile_Termite.description>
 
 </LanguageData>

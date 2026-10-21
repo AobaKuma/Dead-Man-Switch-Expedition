@@ -15,7 +15,7 @@ namespace DMSE.BVRAcceptance
         {
             t.Require(Enemy != null && Enemy.HostileTo(Player), "a hostile humanlike faction exists");
             foreach (string d in new[] { "DMSE_PhaseArrayRadar", "DMSE_AcousticEarlyWarningRadar", "DMSE_EarlyFireControlRadar",
-                "DMSE_Building_LightMissileLauncher", "DMSE_Turret_Vulcan_WingBack", "DMSE_LightMissile",
+                "DMSE_Building_LightMissileLauncher", "DMSE_Turret_Vulcan_WingBack", "DMSE_Missile_Grison",
                 "DMSE_SkyFaller_Interceptor", "DMSE_Incoming_CruiseMissile", "DMSE_LaserDesignatorMark",
                 "DMSE_Bullet_LaserDesignator", "DMSE_Gun_LaserDesignator" })
             {
@@ -25,7 +25,11 @@ namespace DMSE.BVRAcceptance
             t.Check(DefDatabase<WorldObjectDef>.GetNamedSilentFail("DMSE_MissileBase") != null, "WorldObjectDef DMSE_MissileBase loaded");
             t.Check(WorldComponent_BVRNetwork.Current != null, "WorldComponent_BVRNetwork present");
             t.Check(HomeBVR != null, "MapComponent_BVRCombat present on home map");
-            t.Check(Find.TickManager.TicksGame > 0, "game is ticking");
+            // The first test can start on the first unpaused frame (TicksGame still 0); give the game one tick.
+            int start = Find.TickManager.TicksGame;
+            var waitTick = new WaitUntil(() => Find.TickManager.TicksGame > start, 600);
+            yield return waitTick;
+            t.Check(!waitTick.TimedOut && Find.TickManager.TicksGame > 0, "game is ticking");
             yield return WaitPowered(); yield return new WaitTicks(2);
         }
 
@@ -103,18 +107,13 @@ namespace DMSE.BVRAcceptance
             yield return waitLock;
             t.Check(!waitLock.TimedOut, "fire-control radar locks the pod");
 
-            InterceptProjectile shot = null;
-            var waitShot = new WaitUntil(() =>
-            {
-                shot = Home.listerThings.ThingsOfDef(InterceptorSkyfaller).OfType<InterceptProjectile>()
-                    .FirstOrDefault(p => p.targetId == target.id);
-                return shot != null;
-            }, 2000);
+            IInterceptorShot shot = null;
+            var waitShot = new WaitUntil(() => (shot = InterceptorShotAt(target.id)) != null, 2000);
             yield return waitShot;
             t.Require(!waitShot.TimedOut, "SAM launches an interceptor at the locked pod");
             t.Check(launcher.StoredCount == 3, $"one interceptor missile consumed (stored {launcher.StoredCount})");
             t.Check(sam.OnCooldown(Find.TickManager.TicksGame), "launcher enters reload cooldown");
-            shot.hitChance = 1f;
+            shot.HitChance = 1f;
 
             var waitKill = new WaitUntil(() => HomeBVR.Waves.Count == 0, 2000);
             yield return waitKill;

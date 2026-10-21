@@ -1,0 +1,662 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ==================================================================
+       三代裝備體系的新平台（docs/三代裝備體系_實作計畫.md §5、§10 P2）
+       New platforms of the three-generation equipment plan. 全部由既有 Comp 組成，不需新 C#：
+         - 旋轉發射架（老資歷）：手操、Loitering＋Light、對地軌＋攔截兩種發射 Comp 共用一枚彈；
+         - 傾斜發射管（中登）：1x3 單管中型；
+         - 野戰防空砲（中登）：手操、彈砲一體——搜索＋2 通道火控＋4 枚攔截彈＋機砲 CIWS；
+         - 搜索雷達、火控雷達（中登）；
+         - 垂直發射井 2x2（小登）。
+       貼圖暫借既有建築（計畫 §13-4）。
+       ================================================================== -->
+
+  <!-- ==================== 旋轉發射架（2x2，老資歷）====================
+       需要操作員：CompMannableMissileLauncher 讓操作者自己搬彈上軌（DMSE_ManMissileLauncher），
+       無人時 CompBVRDevice.Active = false → 不能對地發射、也不能攔截。
+       能裝的彈由 storage filter 決定（巡飛階 V1／白蟻／萊茵女兒＋輕型階）；用途決定誰射它：
+       對地彈走 CompMissileLauncher_Rail，攔截／兩用彈走 CompMissileLauncher_Interceptor。 -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_Building_RotaryLauncher</defName>
+    <label>rotary launch rail</label>
+    <description>An old 360-degree launcher whose rail is turned by hand crank and foot pedal, able to fire early loitering munitions and light missiles with a slew rate that depends on how fast the crank is turned and a reload that takes one round at a time, cheap, reliable and completely free of electronics at the cost of needing an operator at all times.</description>
+    <thingClass>DMSE.Building_MissileRack</thingClass>
+    <category>Building</category>
+    <graphicData>
+      <texPath>Things/Building/turretBase</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2.8,2.8)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <rotatable>false</rotatable>
+    <passability>PassThroughOnly</passability>
+    <castEdgeShadows>false</castEdgeShadows>
+    <fillPercent>0.36</fillPercent>
+    <canOverlapZones>false</canOverlapZones>
+    <pathCost>50</pathCost>
+    <tickerType>Normal</tickerType>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <selectable>true</selectable>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
+    <statBases>
+      <MaxHitPoints>180</MaxHitPoints>
+      <WorkToBuild>5000</WorkToBuild>
+      <Mass>120</Mass>
+      <Flammability>0.25</Flammability>
+    </statBases>
+    <size>(2,2)</size>
+    <costList>
+      <Steel>100</Steel>
+      <ComponentIndustrial>6</ComponentIndustrial>
+    </costList>
+    <building>
+      <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+      <maxItemsInCell>1</maxItemsInCell>
+      <ignoreStoredThingsBeauty>true</ignoreStoredThingsBeauty>
+      <fixedStorageSettings>
+        <filter>
+          <thingDefs>
+            <li>DMSE_Missile_LegacyLoiter</li>
+            <li>DMSE_Missile_Termite</li>
+            <li>DMSE_Missile_Rheintochter</li>
+            <li>DMSE_Missile_Grison</li>
+            <li>DMSE_Missile_Stinger</li>
+            <li>DMSE_Missile_Maverick</li>
+            <li>DMSE_Missile_Sparrow</li>
+            <li>DMSE_Missile_AdvancedLight</li>
+          </thingDefs>
+        </filter>
+      </fixedStorageSettings>
+      <defaultStorageSettings>
+        <priority>Important</priority>
+        <filter>
+          <thingDefs>
+            <li>DMSE_Missile_LegacyLoiter</li>
+            <li>DMSE_Missile_Termite</li>
+            <li>DMSE_Missile_Rheintochter</li>
+            <li>DMSE_Missile_Grison</li>
+            <li>DMSE_Missile_Stinger</li>
+            <li>DMSE_Missile_Maverick</li>
+            <li>DMSE_Missile_Sparrow</li>
+            <li>DMSE_Missile_AdvancedLight</li>
+          </thingDefs>
+        </filter>
+      </defaultStorageSettings>
+    </building>
+    <researchPrerequisites>
+      <li>DMSE_Ballistics</li>
+    </researchPrerequisites>
+    <designationCategory>DMS_Category</designationCategory>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
+    <modExtensions>
+      <li Class="DMSE.MissileLauncherExtension">
+        <sizeClass>Loitering</sizeClass>
+        <extraSizeClasses>
+          <li>Light</li>
+        </extraSizeClasses>
+        <launchMode>Tilt</launchMode>
+        <capacity>1</capacity>
+        <renderStoredBody>false</renderStoredBody>
+      </li>
+    </modExtensions>
+    <comps>
+      <li Class="CompProperties_Forbiddable" />
+      <li Class="CompProperties_Mannable">
+        <compClass>DMSE.CompMannableMissileLauncher</compClass>
+        <planetLayerWhitelist>
+          <li>Surface</li>
+          <li>Orbit</li>
+        </planetLayerWhitelist>
+      </li>
+      <!-- 對地：V1／白蟻／小牛等（物品自帶彈體，平台 missileBody 只是後備）。 -->
+      <li Class="DMSE.CompProperties_MissileRailLauncher">
+        <skyfaller>DMSE_SkyFaller_Loiter</skyfaller>
+        <skyfallerIncoming>DMSE_Incoming_LegacyLoiter</skyfallerIncoming>
+        <worldObjectDef>DMSE_WorldObject_Loiter</worldObjectDef>
+        <missileBody>DMSE_MissileBody_LegacyLoiter</missileBody>
+        <launchCooldownTicks>600</launchCooldownTicks>
+        <launchForwardCells>0</launchForwardCells>
+      </li>
+      <!-- 攔截：萊茵女兒、刺針、SA-19、麻雀、地獄火（攔截／兩用彈）。 -->
+      <li Class="DMSE.CompProperties_MissileLauncher">
+        <interceptorSkyfaller>DMSE_SkyFaller_Interceptor</interceptorSkyfaller>
+        <reloadCooldownTicks>600</reloadCooldownTicks>
+        <interceptorTravelTicks>240</interceptorTravelTicks>
+      </li>
+      <li Class="DMSE.CompProperties_TurretFacingRenderer">
+        <texPath>Things/Building/slideLauncher</texPath>
+        <drawSize>(2.8,2.8)</drawSize>
+        <altitudeOffset>0.01</altitudeOffset>
+        <rotationSpeedDegPerTick>1</rotationSpeedDegPerTick>
+        <drawLoadedAmmo>true</drawLoadedAmmo>
+        <ammoSlotOffsets>
+          <li>(0,0,0.3)</li>
+        </ammoSlotOffsets>
+        <ammoAltitudeOffset>0.005</ammoAltitudeOffset>
+      </li>
+    </comps>
+    <inspectorTabs>
+      <li>RimWorld.ITab_Storage</li>
+      <li>DMSE.ITab_MissileInventory</li>
+      <li>DMSE.ITab_MissileAssembly</li>
+    </inspectorTabs>
+    <placeWorkers>
+      <li>DMSE.PlaceWorker_NoAdjacentSameLayer</li>
+    </placeWorkers>
+  </ThingDef>
+
+  <!-- ==================== 傾斜發射管（1x3，中登）====================
+       單管中型導彈（白蛉、鷹擊），冷發射；封閉管不畫彈體。 -->
+  <ThingDef ParentName="DMSE_TiltLauncherBase">
+    <defName>DMSE_Building_MediumTube</defName>
+    <label>tilt launch tube</label>
+    <description>A single-cell tilt launch tube for medium missiles that cold-launches the round out of the tube before ignition to spare the deck from exhaust, one round at a time and reloaded as a complete round, with range and warhead a step above light missiles at the price of being practically fixed to a site or a ship.</description>
+    <thingClass>DMSE.Building_MissileRack</thingClass>
+    <graphicData>
+      <texPath>Things/Building/MissileLauncher/building</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,4)</drawSize>
+      <drawOffset>(0,0.00875,0)</drawOffset>
+      <drawOffsetEast>(0,0.00875,0.35)</drawOffsetEast>
+      <drawOffsetWest>(0,0.00875,0.35)</drawOffsetWest>
+    </graphicData>
+    <size>(1,3)</size>
+    <pathCost>80</pathCost>
+    <fillPercent>0.6</fillPercent>
+    <staticSunShadowHeight>0.1</staticSunShadowHeight>
+    <constructEffect>ConstructMetal</constructEffect>
+    <statBases>
+      <MaxHitPoints>320</MaxHitPoints>
+      <WorkToBuild>7000</WorkToBuild>
+      <Flammability>0.05</Flammability>
+    </statBases>
+    <costList>
+      <Steel>180</Steel>
+      <ComponentIndustrial>8</ComponentIndustrial>
+      <ComponentSpacer>1</ComponentSpacer>
+    </costList>
+    <building>
+      <maxItemsInCell>1</maxItemsInCell>
+      <ignoreStoredThingsBeauty>true</ignoreStoredThingsBeauty>
+      <fixedStorageSettings>
+        <filter>
+          <thingDefs>
+            <li>DMSE_Missile_Moskit</li>
+            <li>DMSE_Missile_Yj</li>
+          </thingDefs>
+        </filter>
+      </fixedStorageSettings>
+      <defaultStorageSettings>
+        <priority>Important</priority>
+        <filter>
+          <thingDefs>
+            <li>DMSE_Missile_Moskit</li>
+            <li>DMSE_Missile_Yj</li>
+          </thingDefs>
+        </filter>
+      </defaultStorageSettings>
+    </building>
+    <modExtensions>
+      <li Class="DMSE.MissileLauncherExtension">
+        <sizeClass>Medium</sizeClass>
+        <launchMode>Tilt</launchMode>
+        <capacity>1</capacity>
+        <renderStoredBody>false</renderStoredBody>
+      </li>
+    </modExtensions>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>200</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Breakdownable" />
+      <li Class="DMSE.CompProperties_MissileRailLauncher">
+        <skyfaller>DMSE_SkyFaller_CruiseMissile</skyfaller>
+        <skyfallerIncoming>DMSE_Incoming_Moskit</skyfallerIncoming>
+        <worldObjectDef>DMSE_WorldObject_CruiseMissile</worldObjectDef>
+        <missileBody>DMSE_MissileBody_Moskit</missileBody>
+        <launchCooldownTicks>600</launchCooldownTicks>
+        <launchForwardCells>2</launchForwardCells>
+      </li>
+    </comps>
+    <inspectorTabs>
+      <li>RimWorld.ITab_Storage</li>
+      <li>DMSE.ITab_MissileInventory</li>
+      <li>DMSE.ITab_MissileAssembly</li>
+    </inspectorTabs>
+    <researchPrerequisites>
+      <li>DMSE_AntishipMissiles</li>
+    </researchPrerequisites>
+  </ThingDef>
+
+  <!-- ==================== 野戰防空砲（3x3，中登，彈砲一體）====================
+       一個操作員同時讓所有裝置運作（CompBVRDevice.Active 對 CompMannable 的判定）：
+         搜索雷達（短程）＋火控雷達（2 通道）＋攔截發射器（4 枚 SA-19／刺針／攔截彈）＋機砲 CIWS（鋼製機砲彈）。
+       雷達開機即是反輻射導引頭的目標。 -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_Building_FieldAirDefense</defName>
+    <label>field air-defence system</label>
+    <description>A gun-missile field air-defence system with two 30 mm cannon, four short-range missiles and a search and track radar packed into one turret that fires missiles under radar guidance and then uses the guns to mop up, the last line of mobile air defence, though the radar draws heavily, ammunition disappears at a frightening rate and switching it on greets every anti-radiation seeker in the world.\n\nNeeds an operator; the cannon uses steel as ammunition.</description>
+    <thingClass>DMSE.Building_MissileRack</thingClass>
+    <category>Building</category>
+    <graphicData>
+      <texPath>Things/Building/turretBase</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(4,4)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <rotatable>false</rotatable>
+    <passability>PassThroughOnly</passability>
+    <castEdgeShadows>false</castEdgeShadows>
+    <fillPercent>0.5</fillPercent>
+    <canOverlapZones>false</canOverlapZones>
+    <pathCost>50</pathCost>
+    <tickerType>Normal</tickerType>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,-2)</interactionCellOffset>
+    <selectable>true</selectable>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
+    <statBases>
+      <MaxHitPoints>450</MaxHitPoints>
+      <WorkToBuild>14000</WorkToBuild>
+      <Mass>400</Mass>
+      <Flammability>0.25</Flammability>
+    </statBases>
+    <size>(3,3)</size>
+    <costList>
+      <Steel>300</Steel>
+      <DMSE_TantastenAlloy>40</DMSE_TantastenAlloy>
+      <ComponentIndustrial>12</ComponentIndustrial>
+      <ComponentSpacer>2</ComponentSpacer>
+    </costList>
+    <building>
+      <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+      <maxItemsInCell>1</maxItemsInCell>
+      <ignoreStoredThingsBeauty>true</ignoreStoredThingsBeauty>
+      <fixedStorageSettings>
+        <filter>
+          <thingDefs>
+            <li>DMSE_Missile_Grison</li>
+            <li>DMSE_Missile_Stinger</li>
+            <li>DMSE_InterceptorMissile</li>
+          </thingDefs>
+        </filter>
+      </fixedStorageSettings>
+      <defaultStorageSettings>
+        <priority>Important</priority>
+        <filter>
+          <thingDefs>
+            <li>DMSE_Missile_Grison</li>
+            <li>DMSE_Missile_Stinger</li>
+            <li>DMSE_InterceptorMissile</li>
+          </thingDefs>
+        </filter>
+      </defaultStorageSettings>
+      <buildingTags>
+        <li>DMSE_InterceptRadar</li>
+      </buildingTags>
+    </building>
+    <researchPrerequisites>
+      <li>DMSE_IntegratedCircuits</li>
+    </researchPrerequisites>
+    <designationCategory>DMS_Category</designationCategory>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+    <modExtensions>
+      <li Class="DMSE.MissileLauncherExtension">
+        <sizeClass>Light</sizeClass>
+        <launchMode>Tilt</launchMode>
+        <capacity>4</capacity>
+        <renderStoredBody>false</renderStoredBody>
+      </li>
+    </modExtensions>
+    <comps>
+      <li Class="CompProperties_Forbiddable" />
+      <li Class="CompProperties_Breakdownable" />
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>800</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Mannable">
+        <compClass>DMSE.CompMannableMissileLauncher</compClass>
+        <planetLayerWhitelist>
+          <li>Surface</li>
+          <li>Orbit</li>
+        </planetLayerWhitelist>
+      </li>
+      <!-- 搜索／追蹤雷達：短程、低功率，主要給自己的防空網提供航跡。 -->
+      <li Class="DMSE.CompProperties_SearchRadar">
+        <worldDetectionRange>4</worldDetectionRange>
+        <searchDistance>100</searchDistance>
+        <powerLevel>1</powerLevel>
+        <antiStealthLevel>0</antiStealthLevel>
+        <ticksPerDistance>8</ticksPerDistance>
+      </li>
+      <!-- 2 個火力通道，加入全陣營共用帳本。 -->
+      <li Class="DMSE.CompProperties_FireControlRadar">
+        <maxTargets>2</maxTargets>
+        <powerLevel>1</powerLevel>
+        <guidanceAccuracyTime>700</guidanceAccuracyTime>
+        <maxRangeTicks>3000</maxRangeTicks>
+        <maxHitChance>0.8</maxHitChance>
+        <stealthMissFactor>0.6</stealthMissFactor>
+        <lockOnTicks>150</lockOnTicks>
+      </li>
+      <li Class="DMSE.CompProperties_MissileLauncher">
+        <interceptorSkyfaller>DMSE_SkyFaller_Interceptor</interceptorSkyfaller>
+        <reloadCooldownTicks>240</reloadCooldownTicks>
+        <interceptorTravelTicks>180</interceptorTravelTicks>
+      </li>
+      <!-- 機砲彈：鋼，1 鋼 = 4 發；CIWS 每發消耗 1。 -->
+      <li Class="CompProperties_Refuelable">
+        <fuelLabel>Cannon rounds</fuelLabel>
+        <fuelGizmoLabel>Cannon rounds</fuelGizmoLabel>
+        <outOfFuelMessage>Cannot fire the cannon: no rounds.</outOfFuelMessage>
+        <fuelFilter>
+          <thingDefs>
+            <li>Steel</li>
+          </thingDefs>
+        </fuelFilter>
+        <fuelCapacity>200</fuelCapacity>
+        <fuelMultiplier>4</fuelMultiplier>
+        <initialFuelPercent>0.5</initialFuelPercent>
+        <showFuelGizmo>true</showFuelGizmo>
+        <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+        <initialAllowAutoRefuel>true</initialAllowAutoRefuel>
+        <autoRefuelPercent>0.5</autoRefuelPercent>
+      </li>
+      <li Class="DMSE.CompProperties_TerminalCIWS">
+        <projectile>DMSE_Bullet_Vulcan_WingBack_CIWS</projectile>
+        <terminalWindowTicks>1800</terminalWindowTicks>
+        <cooldownTicks>60</cooldownTicks>
+        <ticksBetweenShots>5</ticksBetweenShots>
+        <shotsPerBurst>8</shotsPerBurst>
+        <interceptChance>0.35</interceptChance>
+        <debrisChance>0.3</debrisChance>
+        <aimLeadCells>4</aimLeadCells>
+        <aimSweepCells>5</aimSweepCells>
+        <fuelPerShot>1</fuelPerShot>
+      </li>
+      <li Class="DMSE.CompProperties_TurretFacingRenderer">
+        <texPath>Things/Building/slideLauncher</texPath>
+        <drawSize>(4,4)</drawSize>
+        <altitudeOffset>0.01</altitudeOffset>
+        <rotationSpeedDegPerTick>3</rotationSpeedDegPerTick>
+        <drawLoadedAmmo>true</drawLoadedAmmo>
+        <ammoSlotOffsets>
+          <li>(-0.45,0,0.45)</li>
+          <li>(0.45,0,0.45)</li>
+          <li>(-0.15,0,0.6)</li>
+          <li>(0.15,0,0.6)</li>
+        </ammoSlotOffsets>
+        <ammoAltitudeOffset>0.005</ammoAltitudeOffset>
+      </li>
+    </comps>
+    <inspectorTabs>
+      <li>RimWorld.ITab_Storage</li>
+      <li>DMSE.ITab_MissileInventory</li>
+    </inspectorTabs>
+    <placeWorkers>
+      <li>DMSE.PlaceWorker_NoAdjacentSameLayer</li>
+    </placeWorkers>
+  </ThingDef>
+
+  <!-- ==================== 搜索雷達（4x4，中登）====================
+       純搜索、2500 W、反隱身 1；不提供火力通道。 -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_SearchRadar</defName>
+    <label>search radar</label>
+    <description>An active search radar whose rotating antenna sweeps the sky to feed bearings, ranges and headings to the whole air-defence net, unable to guide an intercept the way a fire-control radar can but leaving that radar a telescope in a blind man's hands without it, and drawing heavily while telling every anti-radiation seeker for tens of kilometres where the battery is.</description>
+    <graphicData>
+      <texPath>Things/Building/FacilityBase</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(5.2,5.2)</drawSize>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <rotatable>false</rotatable>
+    <passability>PassThroughOnly</passability>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.3</staticSunShadowHeight>
+    <fillPercent>0.8</fillPercent>
+    <canOverlapZones>false</canOverlapZones>
+    <pathCost>42</pathCost>
+    <tickerType>Normal</tickerType>
+    <statBases>
+      <MaxHitPoints>350</MaxHitPoints>
+      <WorkToBuild>18000</WorkToBuild>
+      <Mass>300</Mass>
+      <Flammability>0.25</Flammability>
+    </statBases>
+    <size>(4,4)</size>
+    <costList>
+      <Steel>150</Steel>
+      <DMSE_TantastenAlloy>60</DMSE_TantastenAlloy>
+      <ComponentIndustrial>12</ComponentIndustrial>
+      <ComponentSpacer>4</ComponentSpacer>
+    </costList>
+    <building>
+      <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+      <buildingTags>
+        <li>DMSE_InterceptRadar</li>
+      </buildingTags>
+    </building>
+    <researchPrerequisites>
+      <li>DMSE_IntegratedCircuits</li>
+    </researchPrerequisites>
+    <designationCategory>DMS_Category</designationCategory>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+    <comps>
+      <li Class="CompProperties_Forbiddable" />
+      <li Class="CompProperties_Breakdownable" />
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>2500</basePowerConsumption>
+        <transmitsPower>true</transmitsPower>
+      </li>
+      <li Class="DMSE.CompProperties_SearchRadar">
+        <worldDetectionRange>12</worldDetectionRange>
+        <searchDistance>200</searchDistance>
+        <powerLevel>1</powerLevel>
+        <antiStealthLevel>1</antiStealthLevel>
+        <ticksPerDistance>8</ticksPerDistance>
+      </li>
+      <!-- 純視覺：旋轉天線（閒置擺動調成近乎連續轉動）。 -->
+      <li Class="DMSE.CompProperties_TurretFacingRenderer">
+        <texPath>Things/Building/Radar_EarlyFC</texPath>
+        <drawSize>(6.5,6.5)</drawSize>
+        <altitudeOffset>0.01</altitudeOffset>
+        <rotationSpeedDegPerTick>3</rotationSpeedDegPerTick>
+        <idleTurnDegreesPerTick>1.5</idleTurnDegreesPerTick>
+        <idleTurnDuration>600</idleTurnDuration>
+        <idleTurnIntervalMin>1</idleTurnIntervalMin>
+        <idleTurnIntervalMax>2</idleTurnIntervalMax>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ==================== 火控雷達（3x3，中登）====================
+       純火控、4 個火力通道、1500 W；自動運作（不需操作員）。 -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_FireControlRadar</defName>
+    <label>fire control radar</label>
+    <description>A dedicated fire-control radar able to track and guide four targets at once, refining the coarse tracks from a search radar into firing solutions and assigning them to interceptors with far more accuracy and responsiveness than the early sets, though it needs steady power and good cooling and becomes the most expensive target on the map once an anti-radiation missile has it.</description>
+    <graphicData>
+      <texPath>Things/Building/FacilityBase</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(4,4)</drawSize>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <rotatable>false</rotatable>
+    <passability>PassThroughOnly</passability>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.3</staticSunShadowHeight>
+    <fillPercent>0.8</fillPercent>
+    <canOverlapZones>false</canOverlapZones>
+    <pathCost>42</pathCost>
+    <tickerType>Normal</tickerType>
+    <statBases>
+      <MaxHitPoints>320</MaxHitPoints>
+      <WorkToBuild>16000</WorkToBuild>
+      <Mass>250</Mass>
+      <Flammability>0.25</Flammability>
+    </statBases>
+    <size>(3,3)</size>
+    <costList>
+      <Steel>180</Steel>
+      <DMSE_TantastenAlloy>80</DMSE_TantastenAlloy>
+      <ComponentIndustrial>12</ComponentIndustrial>
+      <ComponentSpacer>4</ComponentSpacer>
+    </costList>
+    <building>
+      <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+      <buildingTags>
+        <li>DMSE_InterceptRadar</li>
+      </buildingTags>
+    </building>
+    <researchPrerequisites>
+      <li>DMSE_IntegratedCircuits</li>
+    </researchPrerequisites>
+    <designationCategory>DMS_Category</designationCategory>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
+    <comps>
+      <li Class="CompProperties_Forbiddable" />
+      <li Class="CompProperties_Breakdownable" />
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>1500</basePowerConsumption>
+        <transmitsPower>true</transmitsPower>
+      </li>
+      <li Class="DMSE.CompProperties_FireControlRadar">
+        <maxTargets>4</maxTargets>
+        <powerLevel>1</powerLevel>
+        <guidanceAccuracyTime>700</guidanceAccuracyTime>
+        <maxRangeTicks>5000</maxRangeTicks>
+        <maxHitChance>0.85</maxHitChance>
+        <stealthMissFactor>0.55</stealthMissFactor>
+        <lockOnTicks>150</lockOnTicks>
+        <supportsArtilleryGuidance>true</supportsArtilleryGuidance>
+      </li>
+      <li Class="DMSE.CompProperties_TurretFacingRenderer">
+        <texPath>Things/Building/Radar_EarlyFC</texPath>
+        <drawSize>(5,5)</drawSize>
+        <altitudeOffset>0.01</altitudeOffset>
+        <rotationSpeedDegPerTick>4</rotationSpeedDegPerTick>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ==================== 垂直發射井（2x2，四單元，小登）====================
+       中型導彈（白蛉、鷹擊）四單元垂直冷發射；封閉井蓋不畫彈體。 -->
+  <ThingDef ParentName="DMSE_VerticalLauncherBase">
+    <defName>DMSE_Building_MediumVLS</defName>
+    <label>vertical launch silo</label>
+    <description>A 2x2 vertical launcher with four cells sized for medium missiles, gas-ejecting each round from its tube before ignition through hatches and a flame trench built for repeated launches, letting medium missiles be deployed as densely as light ones at the cost of construction and upkeep.\n\nCannot be installed on gravship decks.</description>
+    <thingClass>DMSE.Building_MissileRack</thingClass>
+    <graphicData>
+      <texPath>Things/Building/MissileSilo</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2.4,2.4)</drawSize>
+    </graphicData>
+    <size>(2,2)</size>
+    <pathCost>70</pathCost>
+    <fillPercent>0.6</fillPercent>
+    <staticSunShadowHeight>0.15</staticSunShadowHeight>
+    <constructEffect>ConstructMetal</constructEffect>
+    <statBases>
+      <MaxHitPoints>450</MaxHitPoints>
+      <WorkToBuild>12000</WorkToBuild>
+      <Flammability>0.0</Flammability>
+    </statBases>
+    <costList>
+      <Steel>200</Steel>
+      <DMSE_TantastenAlloy>40</DMSE_TantastenAlloy>
+      <ComponentIndustrial>8</ComponentIndustrial>
+      <ComponentSpacer>2</ComponentSpacer>
+    </costList>
+    <building>
+      <maxItemsInCell>1</maxItemsInCell>
+      <ignoreStoredThingsBeauty>true</ignoreStoredThingsBeauty>
+      <fixedStorageSettings>
+        <filter>
+          <thingDefs>
+            <li>DMSE_Missile_Moskit</li>
+            <li>DMSE_Missile_Yj</li>
+          </thingDefs>
+        </filter>
+      </fixedStorageSettings>
+      <defaultStorageSettings>
+        <priority>Important</priority>
+        <filter>
+          <thingDefs>
+            <li>DMSE_Missile_Moskit</li>
+            <li>DMSE_Missile_Yj</li>
+          </thingDefs>
+        </filter>
+      </defaultStorageSettings>
+    </building>
+    <modExtensions>
+      <li Class="DMSE.MissileLauncherExtension">
+        <sizeClass>Medium</sizeClass>
+        <launchMode>Vertical</launchMode>
+        <capacity>4</capacity>
+        <renderStoredBody>false</renderStoredBody>
+      </li>
+    </modExtensions>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>600</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Breakdownable" />
+      <li Class="DMSE.CompProperties_MissileRailLauncher">
+        <skyfaller>DMSE_SkyFaller_BallisticMissile</skyfaller>
+        <skyfallerIncoming>DMSE_Incoming_Moskit</skyfallerIncoming>
+        <worldObjectDef>DMSE_WorldObject_CruiseMissile</worldObjectDef>
+        <missileBody>DMSE_MissileBody_Moskit</missileBody>
+        <launchCooldownTicks>600</launchCooldownTicks>
+        <launchForwardCells>0</launchForwardCells>
+      </li>
+    </comps>
+    <inspectorTabs>
+      <li>RimWorld.ITab_Storage</li>
+      <li>DMSE.ITab_MissileInventory</li>
+      <li>DMSE.ITab_MissileAssembly</li>
+    </inspectorTabs>
+    <researchPrerequisites>
+      <li>DMSE_StrategicSystems</li>
+    </researchPrerequisites>
+  </ThingDef>
+
+</Defs>

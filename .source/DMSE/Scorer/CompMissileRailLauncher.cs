@@ -96,7 +96,8 @@ namespace DMSE
         protected override string NoAmmoDisableReason => "DMSE.MissileLauncher.Rail.NoMissileLoaded".Translate();
 
         /// <summary>
-        /// 建立發射設定：優先採用導彈物品自身的 CompMissileConfig，否則由 Props.missileBody 生成（巡飛彈）。
+        /// 建立發射設定：優先採用導彈物品自身的 CompMissileConfig，其次是物品宣告的彈體
+        /// （<see cref="MissileItemExtension"/>，V1／白蟻等固定構型彈），最後才由 Props.missileBody 生成。
         /// 攔截彈不會被補成對地設定。
         /// </summary>
         public override MissileConfig BuildFiringConfig(Thing round)
@@ -105,10 +106,10 @@ namespace DMSE
             {
                 return null;
             }
-            CompMissileConfig cfg = round.TryGetComp<CompMissileConfig>();
-            if (cfg != null && cfg.config != null && cfg.config.Valid)
+            MissileConfig own = MissileItemExtension.ConfigFor(round);
+            if (own != null)
             {
-                return cfg.config.Clone();
+                return own;
             }
             if (Props.missileBody != null)
             {

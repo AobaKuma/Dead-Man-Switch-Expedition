@@ -86,7 +86,7 @@ namespace DMSE.BVRAcceptance
             ScorerProjectile_WorldObject ripple = rail.TryLaunchRound(new GlobalTargetInfo(near), b, true, out string reason3);
             t.Check(ripple != null && b.Destroyed && rack.StoredCount == 1, $"a ripple continuation ignores the cooldown ({reason3 ?? "ok"})");
             t.Check(rail.CooldownUntil == Find.TickManager.TicksGame + 450, "the cooldown restarts from the last ripple round");
-            t.Check(Home.listerThings.AllThings.OfType<ScorerProjectile>().Count() >= 2, "both launches spawn departure skyfallers");
+            t.Check(DepartingMissiles >= 2, "both launches spawn departing missiles");
             Planner.ReleaseAll(DebugOwner);
         }
 
@@ -216,7 +216,9 @@ namespace DMSE.BVRAcceptance
 
         private static ThingDef StrikeCenter => ThingDef.Named("DMSE_StrikeCommandCenter");
         private static ThingDef LoiterLauncher => ThingDef.Named("DMSE_Building_LoiteringLauncher");
-        private static ThingDef Termite => ThingDef.Named("DMSE_Missile_Termite");
+        // The short-range loitering munition with built-in TV guidance (12 tiles). The Termite became an anti-ship
+        // munition with 17 tiles of range and automatic targeting, so it no longer fits these checks.
+        private static ThingDef Termite => ThingDef.Named("DMSE_Missile_LegacyLoiter");
 
         private static StrikeWave WaveOf(Building_MissileRack rack, int take = int.MaxValue)
         {
@@ -690,11 +692,11 @@ namespace DMSE.BVRAcceptance
             int fake = WorldComponent_StrikeReports.Current.NewMissionId();
             for (int i = 0; i < 3; i++) { WorldComponent_StrikeReports.Current.RecordLaunch(fake, i, "test", "test"); }
             StrikeReport outcomes = WorldComponent_StrikeReports.Current.ReportFor(fake);
-            var hitMissile = (MissileIncoming)SkyfallerMaker.SpawnSkyfaller(ThingDef.Named("DMSE_Incoming_LightMissile"), SafeImpactCell, Home);
+            var hitMissile = (Projectile_MissileIncoming)MissileProjectileMaker.SpawnIncoming(ThingDef.Named("DMSE_Incoming_LightMissile"), SafeImpactCell, Home);
             hitMissile.config = new MissileConfig(LightBody);
             hitMissile.attacker = Player;
             hitMissile.strikeMissionId = fake; hitMissile.strikeWave = 0; hitMissile.bvrHandled = true;
-            var killMissile = (MissileIncoming)SkyfallerMaker.SpawnSkyfaller(ThingDef.Named("DMSE_Incoming_LightMissile"), SafeImpactCell, Home);
+            var killMissile = (Projectile_MissileIncoming)MissileProjectileMaker.SpawnIncoming(ThingDef.Named("DMSE_Incoming_LightMissile"), SafeImpactCell, Home);
             killMissile.strikeMissionId = fake; killMissile.strikeWave = 1; killMissile.bvrHandled = true;
             killMissile.Destroy();
             ScorerProjectile_WorldObject flying = LaunchPlayerMissile(target, null, CruiseConfig());

@@ -186,11 +186,15 @@
     </statBases>
   </ThingDef>
 
+  <!-- 超音速反艦導彈「白蛉」：預設彈體 DMSE_MissileBody_Moskit（反艦導引）。
+       舊存檔中已存在的物品仍保留原本的 DMSE_MissileBody_Cruise 設定，照舊能飛。 -->
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_Missile_Moskit</defName>
-    <label>hyper-sonic cruise missile</label>
-    <description>A tactical cruise missile awaiting loading.</description>
+    <label>supersonic anti-ship missile</label>
+    <description>A ramjet-powered supersonic anti-ship missile that climbs after launch before diving to skim the sea with a terminal speed that compresses a close-in defence system's reaction time to seconds, big, thirsty and complicated at several times the price of a loitering munition, yet one round is enough to take a frigate out of the fight.</description>
     <descriptionHyperlinks>
+      <ThingDef>DMSE_Building_MediumTube</ThingDef>
+      <ThingDef>DMSE_Building_MediumVLS</ThingDef>
       <ThingDef>DMSE_Building_Scorer</ThingDef>
     </descriptionHyperlinks>
     <graphicData>
@@ -206,17 +210,19 @@
     <tickerType>Rare</tickerType>
     <statBases>
       <MaxHitPoints>100</MaxHitPoints>
-      <MarketValue>2900</MarketValue>
+      <MarketValue>3200</MarketValue>
       <Mass>500</Mass>
       <Flammability>0.5</Flammability>
       <DeteriorationRate>10.0</DeteriorationRate>
     </statBases>
+    <!-- 含預設零件：HE 彈頭（鋼 30、化學燃料 20）＋反艦導引（工業零件 5、太空零件 1）。 -->
     <costList>
       <Chemfuel>270</Chemfuel>
       <Steel>155</Steel>
       <DMSE_TantastenAlloy>15</DMSE_TantastenAlloy>
       <ComponentStamped>10</ComponentStamped>
       <ComponentSpacer>1</ComponentSpacer>
+      <ComponentIndustrial>5</ComponentIndustrial>
     </costList>
     <recipeMaker>
       <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -226,14 +232,14 @@
       <recipeUsers Inherit="False">
         <li>DMS_TableMachinePrinter</li>
       </recipeUsers>
-      <researchPrerequisite>DMSE_Ballistics</researchPrerequisite>
+      <researchPrerequisite>DMSE_AntishipMissiles</researchPrerequisite>
       <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
     </recipeMaker>
     <comps>
       <!-- 允許玩家為每枚導彈設定自訂名稱；重命名按鈕顯示於 ITab_MissileInventory 各列右側。 -->
       <li Class="DMSE.CompProperties_Renameable" />
       <li Class="DMSE.CompProperties_MissileConfig">
-        <defaultBody>DMSE_MissileBody_Cruise</defaultBody>
+        <defaultBody>DMSE_MissileBody_Moskit</defaultBody>
       </li>
       <!-- 未存放於庇護建築內時緩慢扣耐久；歸零後摧毀。5 HP/日 ≒ 20 日（100 HP）。 -->
       <li Class="DMSE.CompProperties_DurabilityDecay">
@@ -242,7 +248,10 @@
         <!-- 存入導彈儲存架或發射平台容器即視為受庇護、停止劣化。 -->
         <shelterBuildings>
           <li>DMSE_MissileRack</li>
+          <li>DMSE_CruiseMissileRack</li>
           <li>DMSE_Building_Scorer</li>
+          <li>DMSE_Building_MediumTube</li>
+          <li>DMSE_Building_MediumVLS</li>
         </shelterBuildings>
       </li>
     </comps>
@@ -259,7 +268,8 @@
     <label>interceptor missile</label>
     <description>A ready-to-fire surface-to-air interceptor round. Loaded into a SAM launcher's internal container, it is expended one per engagement to destroy incoming threats during the midcourse phase of beyond-visual-range combat.</description>
     <descriptionHyperlinks>
-      <ThingDef>DMSE_Building_LightMissileLauncher</ThingDef>
+      <ThingDef>DMSE_Building_RotaryMissileLauncher</ThingDef>
+      <ThingDef>DMSE_Building_FieldAirDefense</ThingDef>
     </descriptionHyperlinks>
     <graphicData>
       <texPath>Things/Missile/Grison/ammo</texPath>
@@ -314,19 +324,24 @@
         <shelterBuildings>
           <li>DMSE_MissileRack</li>
           <li>DMSE_Building_LightMissileLauncher</li>
+          <li>DMSE_Building_RotaryMissileLauncher</li>
+          <li>DMSE_Building_FieldAirDefense</li>
         </shelterBuildings>
       </li>
     </comps>
   </ThingDef>
 
-  <!-- ==================== 輕型導彈（彈體物品）====================
-       第二階可定制導彈；比巡弋飛彈輕便廉價，配備三槽（Warhead/Guidance/Payload）。
+  <!-- ==================== 野戰防空導彈 SA-19（彈體物品）====================
+       原名 DMSE_LightMissile，對應 SA-19 彈砲一體系統的短程防空導彈；
+       沿用 Light 彈體與三槽（Warhead/Guidance/Payload），可自訂配置。
        未存入庇護建築時緩慢劣化；ITab_MissileAssembly 供玩家配置各槽。 -->
   <ThingDef ParentName="DMSE_ResourceBase">
-    <defName>DMSE_LightMissile</defName>
-    <label>light missile</label>
-    <description>A compact single-stage missile with customisable warhead, guidance, and payload slots. Faster and longer-ranged than a loitering munition, but lighter and cheaper than a full cruise missile.</description>
+    <defName>DMSE_Missile_Grison</defName>
+    <label>field air-defence missile</label>
+    <description>A short-range surface-to-air missile for gun-missile air-defence systems, steered by radio command and sharing a radar and an electro-optical sight with a coaxial cannon, so that the crew need not watch the sky constantly even as the radar, once switched on, becomes a lamp in the dark that anti-radiation seekers love.</description>
     <descriptionHyperlinks>
+      <ThingDef>DMSE_Building_FieldAirDefense</ThingDef>
+      <ThingDef>DMSE_Building_RotaryMissileLauncher</ThingDef>
       <ThingDef>DMSE_Building_LightMissileLauncher</ThingDef>
       <ThingDef>DMSE_Building_LightMissileVLS</ThingDef>
     </descriptionHyperlinks>
@@ -361,7 +376,7 @@
       <recipeUsers Inherit="False">
         <li>DMS_TableMachinePrinter</li>
       </recipeUsers>
-      <researchPrerequisite>DMSE_Ballistics</researchPrerequisite>
+      <researchPrerequisite>DMSE_IntegratedCircuits</researchPrerequisite>
       <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
     </recipeMaker>
     <modExtensions>
@@ -379,8 +394,12 @@
         <hitPointsPerDay>5</hitPointsPerDay>
         <destroyWhenDepleted>true</destroyWhenDepleted>
         <shelterBuildings>
+          <li>DMSE_MissileRack</li>
           <li>DMSE_Building_LightMissileLauncher</li>
           <li>DMSE_Building_LightMissileVLS</li>
+          <li>DMSE_Building_RotaryLauncher</li>
+          <li>DMSE_Building_RotaryMissileLauncher</li>
+          <li>DMSE_Building_FieldAirDefense</li>
         </shelterBuildings>
       </li>
     </comps>

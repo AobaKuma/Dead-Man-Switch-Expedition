@@ -42,12 +42,16 @@ namespace DMSE
         }
     }
 
-    /// <summary>單一被攔截目標：持有被臨時收起的 incoming skyfaller，並記錄攔截狀態。</summary>
+    /// <summary>
+    /// 單一被攔截目標：持有被臨時收起的來襲物（敵方空投艙 skyfaller，或導彈 <see cref="IIncomingMissile"/>），並記錄攔截狀態。
+    /// 未被攔截時以 TryDrop 在落點重新生成；導彈與空投艙的 SpawnSetup 都會重新開始墜落。
+    /// </summary>
     public class BVRTarget : IExposable, IThingHolder
     {
         public int id;
         public bool terminalOnly;
-        public ThingOwner<Skyfaller> skyfaller;
+        /// <summary>持有的來襲物（存檔鍵沿用 "skyfaller"；ThingOwner 存檔不記泛型參數，舊檔可直接讀入）。</summary>
+        public ThingOwner<Thing> skyfaller;
         public IntVec3 position;
         public Map map;
 
@@ -66,24 +70,31 @@ namespace DMSE
 
         public BVRTarget() { }
 
-        public BVRTarget(Skyfaller faller, IntVec3 pos, Map map, int id)
+        public BVRTarget(Thing faller, IntVec3 pos, Map map, int id)
         {
             this.id = id;
             this.map = map;
             this.position = pos;
-            this.skyfaller = new ThingOwner<Skyfaller>(this);
+            this.skyfaller = new ThingOwner<Thing>(this);
             this.skyfaller.TryAdd(faller);
 
             BVRTargetProps tp = (faller != null && faller.def != null
                 ? faller.def.GetModExtension<BVRTargetProps>() : null) ?? BVRTargetProps.Default;
             this.stealthLevel = tp.stealthLevel;
             this.speed = tp.speed;
-            this.jamStrength = faller is MissileIncoming incoming && incoming.config != null
-                ? incoming.config.JamStrength
+            this.jamStrength = faller is IIncomingMissile incoming && incoming.Config != null
+                ? incoming.Config.JamStrength
                 : 0f;
         }
 
-        public Skyfaller Skyfaller => skyfaller != null ? skyfaller.InnerListForReading.FirstOrDefault() : null;
+        /// <summary>持有的來襲物（空投艙或導彈）。</summary>
+        public Thing Payload => skyfaller != null ? skyfaller.InnerListForReading.FirstOrDefault() : null;
+
+        /// <summary>持有的導彈；空投艙時為 null。</summary>
+        public IIncomingMissile Missile => Payload as IIncomingMissile;
+
+        /// <summary>持有的空投艙 skyfaller；導彈 Projectile 時為 null。</summary>
+        public Skyfaller Skyfaller => Payload as Skyfaller;
 
         /// <summary>取得目標內部的所有 pawn（直接持有或包在 ActiveTransporter 內；一個空投艙可能載多人）。</summary>
         public List<Pawn> ContainedPawns
@@ -96,10 +107,10 @@ namespace DMSE
             }
         }
 
-        /// <summary>未被攔截：讓內部 skyfaller 真正落地。</summary>
+        /// <summary>未被攔截：讓持有的來襲物在落點重新生成並開始墜落。</summary>
         public void Resolve(BVRWave wave)
         {
-            Skyfaller f = Skyfaller;
+            Thing f = Payload;
             if (f == null || map == null) { return; }
 
             if (skyfaller.TryDrop(f, position, map, ThingPlaceMode.Direct, out Thing dropped))
@@ -142,7 +153,7 @@ namespace DMSE
             }
         }
 
-        /// <summary>清掉持有的 skyfaller（攔截成功、不落地、不留殘骸）。</summary>
+        /// <summary>清掉持有的來襲物（攔截成功、不落地、不留殘骸）。</summary>
         public void Discard()
         {
             if (skyfaller != null)
@@ -163,6 +174,16 @@ namespace DMSE
             Scribe_References.Look(ref map, "map");
             Scribe_Values.Look(ref position, "position");
             Scribe_Deep.Look(ref skyfaller, "skyfaller", this);
+            if (Scribe.mode == LoadSaveMode.PostLoadInit && skyfaller != null)
+            {
+                // 舊存檔：被收起的舊 skyfaller 導彈換成新 Projectile（落地 def 已改為 Projectile）。
+                if (Payload is MissileIncoming legacy && legacy.def.skyfaller == null)
+                {
+                    Projectile_MissileIncoming replacement = legacy.ConvertToProjectile();
+                    skyfaller.Remove(legacy);
+                    if (replacement != null) { skyfaller.TryAdd(replacement); }
+                }
+            }
             Scribe_Values.Look(ref stealthLevel, "stealthLevel", 0);
             Scribe_Values.Look(ref speed, "speed", 15f);
             Scribe_Values.Look(ref jamStrength, "jamStrength", 0f);

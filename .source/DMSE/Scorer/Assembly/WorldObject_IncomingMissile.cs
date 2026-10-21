@@ -41,18 +41,19 @@ namespace DMSE
             if (def != null)
             {
                 IntVec3 cell = GuidanceType.PickCell(config, map, base.Faction);
-                Skyfaller faller = SkyfallerMaker.SpawnSkyfaller(def, cell, map);
-                if (faller is MissileIncoming incoming)
+                // 從世界航跡最後一段的方向飛入地圖。
+                Thing thing = MissileProjectileMaker.SpawnIncoming(def, cell, map, ArrivalHeading);
+                if (thing is IIncomingMissile incoming)
                 {
-                    incoming.config = config != null ? config.Clone() : null;
-                    incoming.worldPhaseDone = true;
-                    incoming.attacker = base.Faction;
+                    incoming.Config = config != null ? config.Clone() : null;
+                    incoming.WorldPhaseDone = true;
+                    incoming.Attacker = base.Faction;
                     if (Prefs.DevMode)
                     {
                         Log.Message($"[DMSE BVR] 來襲導彈抵達落點 {cell}（攻擊方={(base.Faction != null ? base.Faction.Name : "null")}），嘗試交給 BVR。");
                     }
                     // 同步交給 BVR（不依賴首-tick 時序）。
-                    MissileBVRUtility.TryRegister(incoming, cell);
+                    MissileBVRUtility.TryRegister(thing, cell);
                 }
 
                 if (map.IsPlayerHome && !State.playerNotified)

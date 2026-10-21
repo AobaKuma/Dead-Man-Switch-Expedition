@@ -127,6 +127,7 @@
   <DMSE.Strike.Report.Label>{0} 战果</DMSE.Strike.Report.Label>
   <DMSE.Strike.Report.Header>{0}（目标 {1}，自 {2} 发射）：</DMSE.Strike.Report.Header>
   <DMSE.Strike.Report.Wave>第 {0} 波：发射 {1} 枚——飞行中被拦截 {2}、命中 {3}、在目标上空被击落 {4}、落空 {5}</DMSE.Strike.Report.Wave>
+  <DMSE.Strike.Report.WaveShieldBlocked>、被护盾挡下 {0}</DMSE.Strike.Report.WaveShieldBlocked>
   <DMSE.Strike.Report.Unknown>另有 {0} 枚已抵达，但结果不明。</DMSE.Strike.Report.Unknown>
   <DMSE.Strike.Settings.WaveReadyAlert>打击波次可发射警报</DMSE.Strike.Settings.WaveReadyAlert>
   <DMSE.Strike.Settings.WaveReadyAlertDesc>打击任务的下一波可以发射时显示警报。</DMSE.Strike.Settings.WaveReadyAlertDesc>

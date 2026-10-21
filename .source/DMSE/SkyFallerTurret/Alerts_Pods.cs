@@ -70,7 +70,7 @@ namespace DMSE
                 else if (t.lockUntil > now)              { statusKey = "DMSE.Alert.Pods.Status.Locking"; }
                 else                                     { statusKey = "DMSE.Alert.Pods.Status.Unengaged"; }
 
-                Skyfaller faller = t.Skyfaller;
+                Thing faller = t.Payload;
                 string label = (faller?.def?.label).NullOrEmpty() ? "?" : faller.def.label;
 
                 sb.AppendLine("DMSE.Alert.Pods.Target".Translate(label, statusKey.Translate()));

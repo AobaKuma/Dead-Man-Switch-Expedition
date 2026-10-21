@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
 
-  <DMSE_Building_BallisticRack.label>弹道导弹发射架</DMSE_Building_BallisticRack.label>
-  <DMSE_Building_BallisticRack.description>一座 2x2 的开放式弹道导弹垂直发射架。弹体没有物品形态：小人会直接用原料在架上装配，完成后整枚导弹会直立架中、清楚可见。以开火指令对世界地图目标发射。\n\n发射后架子会空下来，直到装配好下一枚。可在装配分页切换老式、现役与先进弹道弹体。\n\n不可安装于重力船甲板。</DMSE_Building_BallisticRack.description>
+  <DMSE_Building_BallisticRack.label>塔式发射架</DMSE_Building_BallisticRack.label>
+  <DMSE_Building_BallisticRack.description>一座把弹道导弹垂直架在桁架上的老式发射塔，结构简单、造价低廉却没有任何导流或抑爆设计，点火时尾焰与冲击波朝四周扫开、点燃邻近的草地并震伤来不及走远的人，因此它适合把便宜的弹体丢到很远的地方，不适合盖在自家仓库旁边。\n\n弹体没有物品形态：小人会用原料直接在塔上装配。可在装配页签切换弹体；较新的弹体需要各自的研究。\n\n无法安装于重力船甲板上。</DMSE_Building_BallisticRack.description>
 
 </LanguageData>

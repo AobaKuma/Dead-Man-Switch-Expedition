@@ -91,7 +91,9 @@ namespace DMSE.BVRAcceptance
             bool incoming = Home.listerThings.ThingsOfDef(CruiseIncoming).Any();
             t.Check(incoming, "arrived missile becomes an incoming skyfaller on the home map");
             t.Check(HomeBVR.Waves.Count == 0, "without CIWS the arrival is not held for terminal defense");
-            MissileIncoming mi = Home.listerThings.ThingsOfDef(CruiseIncoming).OfType<MissileIncoming>().FirstOrDefault();
+            Projectile_MissileIncoming mi = Home.listerThings.ThingsOfDef(CruiseIncoming).OfType<Projectile_MissileIncoming>().FirstOrDefault();
+            t.Check(mi != null && mi.HasEntryHeading,
+                $"the arrival flies in from the map edge along the track's last leg (heading {(mi != null && mi.HasEntryHeading ? mi.EntryHeading.ToString("0.#") : "none")})");
             if (mi != null)
             {
                 t.Check(mi.worldPhaseDone, "incoming is marked worldPhaseDone");
@@ -128,8 +130,7 @@ namespace DMSE.BVRAcceptance
             t.Check(interceptor.Faction == Player, "interceptor belongs to the player");
             t.Check(interceptor.interceptTick > now && interceptor.interceptTick < now + wo.TicksToArrival,
                 "meeting happens before the missile arrives");
-            t.Check(Home.listerThings.ThingsOfDef(InterceptorSkyfaller).OfType<InterceptProjectile>().Any(p => p.targetId == -1),
-                "visual-only launch skyfaller on the map");
+            t.Check(InterceptorShotAt(-1) != null, "visual-only interceptor launch on the map");
             t.Check(HomeBVR.Channels.World(Player) == 1, "the in-flight interceptor keeps its channel");
             t.Note($"hit chance {interceptor.hitChance:0.00}, meeting in {interceptor.interceptTick - now} ticks");
             interceptor.hitChance = 1f;

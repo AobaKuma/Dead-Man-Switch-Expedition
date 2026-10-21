@@ -41,6 +41,8 @@
         <filter>
           <thingDefs>
             <li>DMSE_Missile_Termite</li>
+            <li>DMSE_Missile_LegacyLoiter</li>
+            <li>DMSE_Missile_Rheintochter</li>
           </thingDefs>
         </filter>
       </fixedStorageSettings>
@@ -49,6 +51,8 @@
         <filter>
           <thingDefs>
             <li>DMSE_Missile_Termite</li>
+            <li>DMSE_Missile_LegacyLoiter</li>
+            <li>DMSE_Missile_Rheintochter</li>
           </thingDefs>
         </filter>
       </defaultStorageSettings>
@@ -131,6 +135,10 @@
           <thingDefs>
             <li>DMSE_InterceptorMissile</li>
             <li>DMSE_Missile_AdvancedLight</li>
+            <li>DMSE_Missile_Grison</li>
+            <li>DMSE_Missile_Stinger</li>
+            <li>DMSE_Missile_Maverick</li>
+            <li>DMSE_Missile_Sparrow</li>
           </thingDefs>
         </filter>
       </fixedStorageSettings>
@@ -140,6 +148,10 @@
           <thingDefs>
             <li>DMSE_InterceptorMissile</li>
             <li>DMSE_Missile_AdvancedLight</li>
+            <li>DMSE_Missile_Grison</li>
+            <li>DMSE_Missile_Stinger</li>
+            <li>DMSE_Missile_Maverick</li>
+            <li>DMSE_Missile_Sparrow</li>
           </thingDefs>
         </filter>
       </defaultStorageSettings>
@@ -268,6 +280,7 @@
           <thingDefs>
             <li>DMSE_Missile_Moskit</li>
             <li>DMSE_Missile_AdvancedCruise</li>
+            <li>DMSE_Missile_Yj</li>
           </thingDefs>
         </filter>
       </fixedStorageSettings>
@@ -277,6 +290,7 @@
           <thingDefs>
             <li>DMSE_Missile_Moskit</li>
             <li>DMSE_Missile_AdvancedCruise</li>
+            <li>DMSE_Missile_Yj</li>
           </thingDefs>
         </filter>
       </defaultStorageSettings>

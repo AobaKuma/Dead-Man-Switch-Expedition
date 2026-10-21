@@ -25,6 +25,16 @@ namespace DMSE
         /// <summary>導彈尺寸分級（量級）：用於裝配相容性判定（不影響渲染）。</summary>
         public MissileSizeClass sizeClass = MissileSizeClass.Medium;
 
+        /// <summary>
+        /// 額外接受的分級（例如旋轉發射架同時吃巡飛彈與輕型導彈）。實際能裝什麼仍由建築的 storage filter 決定；
+        /// 本欄讓 filter 與分級可以對照檢查（<see cref="MissileTaxonomy.PlatformAccepts(MissileLauncherExtension, MissileBodyDef)"/>）。
+        /// </summary>
+        public List<MissileSizeClass> extraSizeClasses;
+
+        /// <summary>此平台的分級（主分級或 <see cref="extraSizeClasses"/>）是否包含 <paramref name="size"/>。</summary>
+        public bool AcceptsSizeClass(MissileSizeClass size)
+            => size == sizeClass || (extraSizeClasses != null && extraSizeClasses.Contains(size));
+
         /// <summary>發射方式：用於裝配相容性判定（不影響渲染）。Tilt 或 Vertical；不應為 Both（平台限制）。</summary>
         public MissileLaunchMode launchMode = MissileLaunchMode.Tilt;
 

@@ -22,6 +22,7 @@
     <baseSpecificImpulse>3</baseSpecificImpulse>
     <rangePerFuelImpulse>0.1</rangePerFuelImpulse>
     <incomingSkyfaller>DMSE_Incoming_CruiseMissile</incomingSkyfaller>
+    <launchProjectile>DMSE_Launch_Cruise</launchProjectile>
     <slots>
       <li>Warhead</li>
       <li>Guidance</li>
@@ -43,7 +44,7 @@
     <label>high-explosive warhead</label>
     <description>A large blast warhead. Wide radius, high damage.</description>
     <category>Warhead</category>
-    <compatibleBodies><li>DMSE_MissileBody_Cruise</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Cruise</li><li>DMSE_MissileBody_Moskit</li><li>DMSE_MissileBody_Yj</li></compatibleBodies>
     <explosionRadiusOffset>2</explosionRadiusOffset>
     <damageAmountOffset>60</damageAmountOffset>
     <damageDefOverride>Bomb</damageDefOverride>
@@ -58,7 +59,7 @@
     <label>armor-piercing warhead</label>
     <description>A focused penetrator. Smaller radius but far higher damage.</description>
     <category>Warhead</category>
-    <compatibleBodies><li>DMSE_MissileBody_Cruise</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Cruise</li><li>DMSE_MissileBody_Moskit</li><li>DMSE_MissileBody_Yj</li></compatibleBodies>
     <explosionRadiusOffset>-2</explosionRadiusOffset>
     <damageAmountOffset>140</damageAmountOffset>
     <damageDefOverride>Bomb</damageDefOverride>
@@ -73,7 +74,7 @@
     <label>EMP warhead</label>
     <description>Disables mechanoids and stuns targets in a wide area without lethal blast.</description>
     <category>Warhead</category>
-    <compatibleBodies><li>DMSE_MissileBody_Cruise</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Cruise</li><li>DMSE_MissileBody_Moskit</li><li>DMSE_MissileBody_Yj</li></compatibleBodies>
     <explosionRadiusOffset>1</explosionRadiusOffset>
     <damageDefOverride>EMP</damageDefOverride>
     <costList>
@@ -88,7 +89,7 @@
     <label>inertial guidance</label>
     <description>Baseline guidance. Average accuracy.</description>
     <category>Guidance</category>
-    <compatibleBodies><li>DMSE_MissileBody_Cruise</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Cruise</li><li>DMSE_MissileBody_Moskit</li><li>DMSE_MissileBody_Yj</li></compatibleBodies>
     <scatterOffset>0</scatterOffset>
   </DMSE.MissilePartDef>
 
@@ -97,7 +98,7 @@
     <label>TV guidance</label>
     <description>An operator-guided TV seeker with a datalink back to the launch site. When the missile reaches the target map, the game pauses and you choose the impact point freely. Greatly tightens impact dispersion. Enemy-launched TV missiles have no operator and fall back to inertial targeting.</description>
     <category>Guidance</category>
-    <compatibleBodies><li>DMSE_MissileBody_Cruise</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Cruise</li><li>DMSE_MissileBody_Moskit</li><li>DMSE_MissileBody_Yj</li></compatibleBodies>
     <!-- 電視制導：玩家發射時抵達後手動選點；具導引能力（可跨圖層、可追蹤移動目標） -->
     <guidanceType Class="DMSE.GuidanceType_TV" />
     <scatterOffset>-2.5</scatterOffset>
@@ -115,7 +116,7 @@
     <label>electromagnetic-signal seeker</label>
     <description>Passive seeker that homes on electromagnetic emissions from power lines and machinery. Locks onto the powered enemy building drawing the most electricity on the target map. Falls back to inertial targeting if nothing is powered.</description>
     <category>Guidance</category>
-    <compatibleBodies><li>DMSE_MissileBody_Cruise</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Cruise</li><li>DMSE_MissileBody_Moskit</li><li>DMSE_MissileBody_Yj</li></compatibleBodies>
     <guidanceType Class="DMSE.GuidanceType_ElectromagneticSignal" />
     <scatterOffset>-1.5</scatterOffset>
     <researchPrerequisites>
@@ -129,9 +130,9 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_Guidance_AntiShip</defName>
     <label>anti-ship radar seeker</label>
-    <description>An active radar seeker built for moving targets — ships and any other mobile base on the world map. It keeps re-aiming while the target keeps moving and does so more often than a normal seeker; the missile still misses if the target leaves its remaining range.</description>
+    <description>An active radar seeker built for moving targets: ships and any other mobile base on the world map. It keeps re-aiming while the target keeps moving and does so more often than a normal seeker; the missile still misses if the target leaves its remaining range.</description>
     <category>Guidance</category>
-    <compatibleBodies><li>DMSE_MissileBody_Cruise</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Cruise</li><li>DMSE_MissileBody_Moskit</li><li>DMSE_MissileBody_Yj</li></compatibleBodies>
     <guidanceType Class="DMSE.GuidanceType_AntiShip" />
     <scatterOffset>-2</scatterOffset>
     <researchPrerequisites>
@@ -148,7 +149,7 @@
     <label>laser seeker</label>
     <description>Semi-active laser seeker. Locks onto the most recent laser designation your faction has painted on the target map with a laser target designator. Falls back to inertial targeting if there is none.</description>
     <category>Guidance</category>
-    <compatibleBodies><li>DMSE_MissileBody_Cruise</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Cruise</li><li>DMSE_MissileBody_Moskit</li><li>DMSE_MissileBody_Yj</li></compatibleBodies>
     <guidanceType Class="DMSE.GuidanceType_Laser" />
     <scatterOffset>-2.5</scatterOffset>
     <researchPrerequisites>
@@ -166,7 +167,7 @@
     <label>standard motor</label>
     <description>Baseline solid-fuel motor.</description>
     <category>Propulsion</category>
-    <compatibleBodies><li>DMSE_MissileBody_Cruise</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Cruise</li><li>DMSE_MissileBody_Moskit</li><li>DMSE_MissileBody_Yj</li></compatibleBodies>
   </DMSE.MissilePartDef>
 
   <DMSE.MissilePartDef>
@@ -174,7 +175,7 @@
     <label>boosted motor</label>
     <description>A higher-impulse motor that reaches the target faster and extends range.</description>
     <category>Propulsion</category>
-    <compatibleBodies><li>DMSE_MissileBody_Cruise</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Cruise</li><li>DMSE_MissileBody_Moskit</li><li>DMSE_MissileBody_Yj</li></compatibleBodies>
     <worldSpeedFactorOffset>0.6</worldSpeedFactorOffset>
     <specificImpulseOffset>2</specificImpulseOffset>
     <costList>
@@ -189,7 +190,7 @@
     <label>cluster submunitions</label>
     <description>Releases a secondary blast across the impact area.</description>
     <category>Payload</category>
-    <compatibleBodies><li>DMSE_MissileBody_Cruise</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Cruise</li><li>DMSE_MissileBody_Moskit</li><li>DMSE_MissileBody_Yj</li></compatibleBodies>
     <payloadExplosionRadius>4</payloadExplosionRadius>
     <payloadDamageDef>Bomb</payloadDamageDef>
     <payloadDamageAmount>40</payloadDamageAmount>
@@ -204,7 +205,7 @@
     <label>no payload</label>
     <description>No secondary payload. The warhead alone has to be enough, which keeps the Scorer airframe light and its range long.</description>
     <category>Payload</category>
-    <compatibleBodies><li>DMSE_MissileBody_Cruise</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Cruise</li><li>DMSE_MissileBody_Moskit</li><li>DMSE_MissileBody_Yj</li></compatibleBodies>
     <payloadEffect Class="DMSE.PayloadEffect_None" />
   </DMSE.MissilePartDef>
 
@@ -213,7 +214,7 @@
     <label>EMP submunitions</label>
     <description>A secondary EMP burst that stuns and disables electronics around the impact.</description>
     <category>Payload</category>
-    <compatibleBodies><li>DMSE_MissileBody_Cruise</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_Cruise</li><li>DMSE_MissileBody_Moskit</li><li>DMSE_MissileBody_Yj</li></compatibleBodies>
     <payloadExplosionRadius>5</payloadExplosionRadius>
     <payloadDamageDef>EMP</payloadDamageDef>
     <costList>

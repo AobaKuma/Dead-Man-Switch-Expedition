@@ -28,14 +28,16 @@ namespace DMSE
         public SimpleCurve SmokeCurve;
     }
 
-    /// <summary>發射特效共用基類：依發射目標的繪製位置噴出排氣火焰與煙霧。</summary>
+    /// <summary>
+    /// 發射特效共用基類：依發射目標的繪製位置噴出排氣火焰與煙霧。
+    /// 飛行狀態一律經 <see cref="IMissileFlight"/> 取得，舊 Skyfaller 導彈與新 Projectile 導彈共用同一套公式。
+    /// </summary>
     public abstract class CompEffecterLaunch : ThingComp
     {
         protected int ticksSinceSpawn = 0;
         protected bool hasIgnited;
         protected Effecter effecter;
-        protected Skyfaller skyfaller;
-        protected ILaunchTarget launchTarget;
+        protected IMissileFlight flight;
 
         public CompProperties_EffecterLaunch Props => (CompProperties_EffecterLaunch)props;
 
@@ -48,14 +50,13 @@ namespace DMSE
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
-            skyfaller = parent as Skyfaller;
-            launchTarget = parent as ILaunchTarget;
+            flight = parent as IMissileFlight;
         }
 
         protected virtual bool ShouldShowEffecter()
         {
-            if (skyfaller != null && launchTarget != null && parent.Spawned
-                && skyfaller.DrawPos.InBounds(parent.Map) && ticksSinceSpawn >= IgnitionDelayTicks)
+            if (flight != null && parent.Spawned
+                && flight.VisualPos.InBounds(parent.Map) && ticksSinceSpawn >= IgnitionDelayTicks)
             {
                 return parent.MapHeld == Find.CurrentMap;
             }
@@ -71,18 +72,18 @@ namespace DMSE
                 if (!hasIgnited)
                 {
                     hasIgnited = true;
-                    Props.launchEffectTrigger?.Spawn(skyfaller.DrawPos.ToIntVec3(), parent.Map).Trigger(skyfaller, skyfaller);
-                    Props.ignitionSound?.PlayOneShot(new TargetInfo(launchTarget.LaunchDrawPos.ToIntVec3(), parent.Map));
+                    Props.launchEffectTrigger?.Spawn(flight.VisualPos.ToIntVec3(), parent.Map).Trigger(parent, parent);
+                    Props.ignitionSound?.PlayOneShot(new TargetInfo(flight.LaunchDrawPos.ToIntVec3(), parent.Map));
+                    MissileFlightTrace.RecordIgnition(parent);
                 }
                 if (effecter == null)
                 {
                     effecter = Props.effecterDef?.Spawn(parent, parent.Map);
                 }
-                effecter?.EffectTick(skyfaller, skyfaller);
+                effecter?.EffectTick(parent, parent);
 
-                float evaluate = (float)ticksSinceSpawn / (float)(skyfaller.ticksToDiscard + IgnitionDelayTicks);
-                ThrowExhaust(launchTarget.LaunchDrawPos, launchTarget.LaunchRotation, evaluate,
-                    skyfaller.def.skyfaller.speedCurve.Evaluate(evaluate));
+                float evaluate = flight.EffectEvaluate(ticksSinceSpawn, IgnitionDelayTicks);
+                ThrowExhaust(flight.LaunchDrawPos, flight.LaunchRotation, evaluate, flight.EffectSpeed(evaluate));
             }
             else
             {
@@ -93,9 +94,10 @@ namespace DMSE
 
         public void ThrowExhaust(Vector3 drawPos, float rotation, float evaluate, float speed)
         {
+            MissileFlightTrace.RecordExhaust(parent, drawPos, rotation, evaluate, speed);
             var offset = new Vector3(Mathf.Sin(rotation * Mathf.Deg2Rad), 0, Mathf.Cos(rotation * Mathf.Deg2Rad)) * Props.offsetY;
 
-            if (!skyfaller.Position.ShouldSpawnMotesAt(parent.MapHeld))
+            if (!flight.GroundCell.ShouldSpawnMotesAt(parent.MapHeld))
             {
                 return;
             }

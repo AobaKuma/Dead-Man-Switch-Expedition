@@ -102,12 +102,50 @@ namespace DMSE
 
         /// <summary>
         /// 彈體內建的選目標方式（XML Class 指定 <see cref="GuidanceType"/> 子類），沒有裝導引部件時使用，
-        /// 例如巡飛彈以電視制導由操作員選點。只影響落點選擇，不提供導引能力（跨圖層、終端更新）。
+        /// 例如巡飛彈以電視制導由操作員選點。預設只影響落點選擇，不提供導引能力（跨圖層、終端更新）；
+        /// 見 <see cref="builtInTerminalGuidance"/>。
         /// </summary>
         public GuidanceType builtInGuidance;
 
+        /// <summary>
+        /// 內建導引是否也提供導引能力（可跨圖層、可依 <see cref="terminalUpdates"/> 追蹤移動目標），
+        /// 例如反艦巡飛彈的內建主動雷達。只在沒有導引部件、且 <see cref="builtInGuidance"/> 本身具導引能力時生效。
+        /// </summary>
+        public bool builtInTerminalGuidance = false;
+
+        /// <summary>
+        /// 作為攔截彈時的命中率係數：乘在火控雷達算出的中過程命中率上（地圖層與世界層皆同）。
+        /// 老式攔截彈 &lt; 1，先進半主動彈 &gt; 1。
+        /// </summary>
+        public float interceptHitFactor = 1f;
+
+        /// <summary>
+        /// 在發射架上選用此彈體所需的研究（只對 <see cref="MissileCustomizeLocation.Launcher"/> 型彈體有意義：
+        /// 物品型彈體由配方的研究擋住）。
+        /// </summary>
+        public List<ResearchProjectDef> researchPrerequisites;
+
+        public bool ResearchSatisfied
+        {
+            get
+            {
+                if (researchPrerequisites == null) { return true; }
+                for (int i = 0; i < researchPrerequisites.Count; i++)
+                {
+                    if (!researchPrerequisites[i].IsFinished) { return false; }
+                }
+                return true;
+            }
+        }
+
         /// <summary>抵達目標後生成的 incoming skyfaller（thingClass 應為 DMSE.MissileIncoming）。</summary>
         public ThingDef incomingSkyfaller;
+
+        /// <summary>
+        /// 此彈體的發射 Projectile（thingClass 應為 <see cref="Projectile_MissileLaunch"/>）：升空外觀與發射尾焰隨彈體而定，
+        /// 對地發射與當作攔截彈發射都用它。沒有時退回平台的 skyfaller / interceptorSkyfaller。
+        /// </summary>
+        public ThingDef launchProjectile;
 
         public string uiIconPath;
 

@@ -15,11 +15,11 @@
     <researchViewY>2.50</researchViewY>
   </ResearchProjectDef>
 
-  <!-- 雷達基礎：BVR機制的基礎科技。 -->
+  <!-- 雷達基礎：BVR機制的基礎科技（老資歷：被動聲學雷達、老式火控雷達、萊茵女兒）。 -->
   <ResearchProjectDef ParentName="DMS_BaseTech">
     <defName>DMSE_RadarBasis</defName>
     <label>Radar</label>
-    <description>TODO</description>
+    <description>Early detection and fire control in the style of the last great industrial war: concrete acoustic mirrors that listen for engines, a hand-cranked fire-control set that guides one interceptor at a time, and the first guided interceptor rockets.\n\nThis research unlocks the passive acoustic radar, the early fire control radar and the legacy interceptor loitering munition.</description>
     <baseCost>1000</baseCost>
     <requiredResearchBuilding Inherit="False" />
     <prerequisites>
@@ -33,7 +33,7 @@
   <ResearchProjectDef ParentName="DMS_BaseTech">
     <defName>DMSE_LoiteringMunitions</defName>
     <label>loitering munition</label>
-    <description>Rail-launched folding-wing loitering munitions give an early colony a crude beyond-visual-range strike capability. Slow and easy to detect, but available long before proper cruise missiles.\n\nThis research unlocks the loitering munition, its tilt-launch rail, and a storage rack.</description>
+    <description>Rail-launched pulsejet loitering munitions give an early colony a crude beyond-visual-range strike capability. Slow and easy to detect, but available long before proper cruise missiles.\n\nThis research unlocks the legacy loitering munition, the launch rail and a loitering munition rack.</description>
     <baseCost>1000</baseCost>
     <requiredResearchBuilding Inherit="False" />
     <prerequisites>
@@ -89,7 +89,7 @@
   <ResearchProjectDef ParentName="DMS_BaseTech">
     <defName>DMSE_Aerospace</defName>
     <label>Aerospace Applications</label>
-    <description>By scaling up Tantasteel and graphene production and exploring the key applications of these specialty materials in aerospace and microelectronics, this research unlocks nuclear thermal propulsion engines and orbital electronic-warfare stealth equipment for gravships and orbital starships.</description>
+    <description>By scaling up Tantasteel and graphene production and exploring the key applications of these specialty materials in aerospace and microelectronics, this research unlocks nuclear thermal propulsion engines and orbital electronic-warfare stealth equipment for gravships and orbital starships, as well as the phased-array radar and the advanced air-defence gun.</description>
     <baseCost>1500</baseCost>
     <requiredResearchBuilding Inherit="False" />
     <techLevel>Industrial</techLevel>
@@ -104,7 +104,7 @@
   <ResearchProjectDef ParentName="DMS_BaseTech">
     <defName>DMSE_Ballistics</defName>
     <label>ballistics</label>
-    <description>Systematic study of in-atmosphere missile flight dynamics, solid-fuel staging, and terminal guidance. Miniaturising rocket motors and seekers for rapid-reload tube launchers opens a new tier of battlefield fires.\n\nThis research unlocks the light missile, its tilt-launch rail, and a vertical single-cell launcher.</description>
+    <description>Systematic study of in-atmosphere missile flight dynamics, liquid- and solid-fuel staging and launch structures. The first ballistic rockets, manned rotary launchers and crew-served flak give a colony long-range fires without any electronics industry.\n\nThis research unlocks the ballistic launch tower and the legacy ballistic missile, the rotary launch rail, the legacy flak gun, the tilt-launch container and a missile rack.</description>
     <baseCost>4000</baseCost>
     <requiredResearchBuilding Inherit="False" />
     <techLevel>Industrial</techLevel>
@@ -119,7 +119,7 @@
   <ResearchProjectDef ParentName="DMS_BaseTech">
     <defName>DMSE_IntegratedCircuits</defName>
     <label>integrated circuits</label>
-    <description>High-density integrated electronics allow miniaturised phased-array signal processing and strapdown inertial reference units compact enough to fit inside a missile airframe. The result is a beyond-visual-range combat network with search radar, fire-control radar, and surface-to-air missile defence.\n\nThis research unlocks the search radar, fire-control radar, and the SAM launcher.</description>
+    <description>High-density integrated electronics allow miniaturised signal processing and strapdown inertial reference units compact enough to fit inside a missile airframe. The result is a beyond-visual-range combat network with search radar, multi-channel fire-control radar and surface-to-air missile defence.\n\nThis research unlocks the search radar, the fire control radar, the field air-defence system, the SAM launcher, the man-portable SAM launcher, the light vertical launch cell, the light surface-to-air, field air-defence, ground-attack and advanced general-purpose missiles, the interceptor missile and the tactical ballistic missile.</description>
     <baseCost>4000</baseCost>
     <requiredResearchBuilding Inherit="False" />
     <techLevel>Industrial</techLevel>
@@ -137,7 +137,7 @@
   <ResearchProjectDef ParentName="DMS_BaseTech">
     <defName>DMSE_StrategicSystems</defName>
     <label>strategic systems</label>
-    <description>Mastery of re-entry physics, high-energy propellant chemistry, and stellar-inertial guidance enables ballistic missiles that loft their payload to the edge of the atmosphere. The ballistic arc defeats most point defences and allows strikes at extreme range with any assembled warhead configuration.\n\nThis research unlocks the ballistic missile silo and its assembly interface.</description>
+    <description>Mastery of re-entry physics, high-energy propellant chemistry, and stellar-inertial guidance enables ballistic missiles that loft their payload to the edge of the atmosphere, and the same electronics give a new generation of low-observable and semi-active missiles. The ballistic arc defeats most point defences and allows strikes at extreme range with any assembled warhead configuration.\n\nThis research unlocks the strategic missile silo, the vertical launch silo, the current and strategic ballistic missiles, the thermonuclear warhead, and the advanced surface-to-air and subsonic cruise missiles.</description>
     <baseCost>6000</baseCost>
     <requiredResearchBuilding Inherit="False" />
     <techLevel>Industrial</techLevel>
@@ -149,6 +149,21 @@
     </hiddenPrerequisites>
     <researchViewX>6.00</researchViewX>
     <researchViewY>0.30</researchViewY>
+  </ResearchProjectDef>
+
+  <!-- 反艦導彈（三代裝備體系 §9-2）：白蟻、白蛉、傾斜發射管；鷹擊另需戰略系統。 -->
+  <ResearchProjectDef ParentName="DMS_BaseTech">
+    <defName>DMSE_AntishipMissiles</defName>
+    <label>anti-ship missiles</label>
+    <description>Active radar seekers that keep re-aiming at a moving hull, sea-skimming flight profiles and ramjet propulsion turn missiles into weapons against ships and every other base that moves across the world map.\n\nThis research unlocks the anti-ship loitering munition, the supersonic anti-ship missile and the tilt launch tube; with strategic systems it also unlocks the hypersonic anti-ship missile.</description>
+    <baseCost>3500</baseCost>
+    <requiredResearchBuilding Inherit="False" />
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>DMSE_IntegratedCircuits</li>
+    </prerequisites>
+    <researchViewX>6.00</researchViewX>
+    <researchViewY>1.00</researchViewY>
   </ResearchProjectDef>
 
 </Defs>

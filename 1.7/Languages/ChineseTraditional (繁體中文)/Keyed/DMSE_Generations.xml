@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <DMSE.ManPortableSAM.Fire>發射防空導彈</DMSE.ManPortableSAM.Fire>
+  <DMSE.ManPortableSAM.FireDesc>鎖定雷達網正在本地圖追蹤的來襲威脅，並對它發射一枚輕型防空導彈。鎖定期間裝備者會站在原地；不占用火控通道。\n\n攜帶導彈：{0}</DMSE.ManPortableSAM.FireDesc>
+  <DMSE.ManPortableSAM.NoAmmo>背包裡沒有{0}。</DMSE.ManPortableSAM.NoAmmo>
+  <DMSE.ManPortableSAM.NoTargets>射程內沒有雷達正在追蹤的來襲威脅。</DMSE.ManPortableSAM.NoTargets>
+  <DMSE.ManPortableSAM.NotReady>裝備者目前無法發射。</DMSE.ManPortableSAM.NotReady>
+  <DMSE.ManPortableSAM.TargetLost>目標已消失或已被其他攔截彈接戰。</DMSE.ManPortableSAM.TargetLost>
+  <DMSE.ManPortableSAM.TargetOption>{0}（{1}後抵達，命中率 {2}）</DMSE.ManPortableSAM.TargetOption>
+</LanguageData>
