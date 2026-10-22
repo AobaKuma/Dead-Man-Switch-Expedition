@@ -94,9 +94,10 @@
       <damageData>
         <rect>(0,0.6,4,2.8)</rect>
       </damageData>
+      <drawRotated>false</drawRotated>
     </graphicData>
     <castEdgeShadows>true</castEdgeShadows>
-    <rotatable>false</rotatable>
+    <rotatable>true</rotatable>
     <altitudeLayer>Building</altitudeLayer>
     <passability>PassThroughOnly</passability>
     <pathCost>50</pathCost>

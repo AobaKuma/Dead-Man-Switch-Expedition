@@ -27,12 +27,13 @@
       <texPath>Things/Building/turretBase_Green</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(4,4)</drawSize>
+      <drawRotated>false</drawRotated>
     </graphicData>
     <altitudeLayer>Building</altitudeLayer>
     <!-- 必須為 MapMeshAndRealTime：CompProperties_TurretFacingRenderer 透過 PostDraw 逐幀繪製砲塔頭與掛載彈藥，
          繼承自 BuildingBase 的預設 drawerType（MapMeshOnly）不會逐幀呼叫 DrawAt，此 Comp 將永遠不會出現。 -->
     <drawerType>MapMeshAndRealTime</drawerType>
-    <rotatable>false</rotatable>
+    <rotatable>true</rotatable>
     <passability>PassThroughOnly</passability>
     <castEdgeShadows>false</castEdgeShadows>
     <fillPercent>0.36</fillPercent>

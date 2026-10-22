@@ -28,10 +28,11 @@
       <texPath>Things/Building/turretBase</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(4,4)</drawSize>
+      <drawRotated>false</drawRotated>
     </graphicData>
     <altitudeLayer>Building</altitudeLayer>
     <drawerType>MapMeshAndRealTime</drawerType>
-    <rotatable>false</rotatable>
+    <rotatable>true</rotatable>
     <passability>PassThroughOnly</passability>
     <castEdgeShadows>false</castEdgeShadows>
     <fillPercent>0.36</fillPercent>
@@ -175,10 +176,11 @@
       <texPath>Things/Turrets/DMS_Base_Tunguska_GateKeeper</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(4,4)</drawSize>
+      <drawRotated>false</drawRotated>
     </graphicData>
     <altitudeLayer>Building</altitudeLayer>
     <drawerType>MapMeshAndRealTime</drawerType>
-    <rotatable>false</rotatable>
+    <rotatable>true</rotatable>
     <passability>PassThroughOnly</passability>
     <castEdgeShadows>false</castEdgeShadows>
     <fillPercent>0.5</fillPercent>
@@ -398,10 +400,11 @@
         <cornerBL>Damage/Corner</cornerBL>
         <cornerBR>Damage/Corner</cornerBR>
       </damageData>
+      <drawRotated>false</drawRotated>
     </graphicData>
     <altitudeLayer>Building</altitudeLayer>
     <drawerType>MapMeshAndRealTime</drawerType>
-    <rotatable>false</rotatable>
+    <rotatable>true</rotatable>
     <passability>PassThroughOnly</passability>
     <castEdgeShadows>true</castEdgeShadows>
     <staticSunShadowHeight>0.3</staticSunShadowHeight>
@@ -479,10 +482,11 @@
         <cornerBL>Damage/Corner</cornerBL>
         <cornerBR>Damage/Corner</cornerBR>
       </damageData>
+      <drawRotated>false</drawRotated>
     </graphicData>
     <altitudeLayer>Building</altitudeLayer>
     <drawerType>MapMeshAndRealTime</drawerType>
-    <rotatable>false</rotatable>
+    <rotatable>true</rotatable>
     <passability>PassThroughOnly</passability>
     <castEdgeShadows>true</castEdgeShadows>
     <staticSunShadowHeight>0.3</staticSunShadowHeight>

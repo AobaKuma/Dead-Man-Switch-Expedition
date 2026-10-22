@@ -17,6 +17,7 @@
         <cornerBL>Damage/Corner</cornerBL>
         <cornerBR>Damage/Corner</cornerBR>
       </damageData>
+      <drawRotated>false</drawRotated>
     </graphicData>
     <altitudeLayer>Building</altitudeLayer>
     <!-- 必須為 MapMeshAndRealTime（或 RealtimeOnly）：CompProperties_TurretFacingRenderer 是透過
@@ -24,7 +25,7 @@
          繼承自 BuildingBase 的預設 drawerType 是 MapMeshOnly（本體烘進靜態地圖網格、不逐幀呼叫 DrawAt），
          若未覆寫，此 Comp 的渲染永遠不會出現。 -->
     <drawerType>MapMeshAndRealTime</drawerType>
-    <rotatable>false</rotatable>
+    <rotatable>true</rotatable>
     <passability>PassThroughOnly</passability>
     <castEdgeShadows>true</castEdgeShadows>
     <staticSunShadowHeight>0.3</staticSunShadowHeight>

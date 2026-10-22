@@ -251,7 +251,9 @@
         <cornerBL>Damage/Corner</cornerBL>
         <cornerBR>Damage/Corner</cornerBR>
       </damageData>
+      <drawRotated>false</drawRotated>
     </graphicData>
+    <rotatable>true</rotatable>
     <designationCategory>DMS_Category</designationCategory>
     <costList>
       <Steel>300</Steel>
