@@ -8,7 +8,7 @@
   <DMSE_Warhead_EMP.label>EMP 弹头</DMSE_Warhead_EMP.label>
   <DMSE_Warhead_EMP.description>在大范围内瘫痪机械体并震晕目标，不造成致命爆炸。</DMSE_Warhead_EMP.description>
   <DMSE_Guidance_Inertial.label>惯性导引</DMSE_Guidance_Inertial.label>
-  <DMSE_Guidance_Inertial.description>基础导引。精度一般。</DMSE_Guidance_Inertial.description>
+  <DMSE_Guidance_Inertial.description>不锁定建筑或单位；选点以地图中心为均值，呈圆形正态分布，限制于地图内切圆内。</DMSE_Guidance_Inertial.description>
   <DMSE_Guidance_Precision.label>电视制导</DMSE_Guidance_Precision.label>
   <DMSE_Guidance_Precision.description>由操作员通过数据链导引的电视导引头。导弹抵达目标地图时游戏暂停，由你自由选择落点。大幅收敛落点散布。敌方发射的电视制导弹没有操作员，会退回惯性导引。</DMSE_Guidance_Precision.description>
   <DMSE_Guidance_EMSignal.label>电磁信号导引头</DMSE_Guidance_EMSignal.label>
@@ -30,7 +30,7 @@
   <DMSE_Light_Warhead_ContinuousRod.label>连续杆弹头</DMSE_Light_Warhead_ContinuousRod.label>
   <DMSE_Light_Warhead_ContinuousRod.description>一圈在引爆时向外展开的钢杆，针对空中目标将破片密度最大化。作为防空拦截弹使用时提供拦截命中率加成。</DMSE_Light_Warhead_ContinuousRod.description>
   <DMSE_Light_Guidance_Inertial.label>惯性导引</DMSE_Light_Guidance_Inertial.label>
-  <DMSE_Light_Guidance_Inertial.description>基础捷联式惯性参考单元。没有导引头，依靠预先设定的飞行路径。散布不变。</DMSE_Light_Guidance_Inertial.description>
+  <DMSE_Light_Guidance_Inertial.description>基础捷联式惯性参考单元。没有导引头，依靠预先设定的飞行路径。散布不变。 选点以地图中心为均值，呈圆形正态分布，限制于地图内切圆内；不锁定建筑或单位。</DMSE_Light_Guidance_Inertial.description>
   <DMSE_Light_Guidance_IR.label>热信号导引头</DMSE_Light_Guidance_IR.label>
   <DMSE_Light_Guidance_IR.description>追踪最强热信号的被动红外线导引头。最热的室内房间比室外高出 15°C 以上时锁定该房间，否则锁定地图上体型最大的生物；两者都找不到时退回惯性导引。</DMSE_Light_Guidance_IR.description>
   <DMSE_Light_Guidance_AntiRadiation.label>反辐射导引头</DMSE_Light_Guidance_AntiRadiation.label>
@@ -52,7 +52,7 @@
   <DMSE_Ballistic_Warhead_TungstenPenetrator.label>钨合金穿透弹头</DMSE_Ballistic_Warhead_TungstenPenetrator.label>
   <DMSE_Ballistic_Warhead_TungstenPenetrator.description>一根高密度钨棒，能在引爆前贯穿厚重的屋顶并在内部引爆，使地下掩体形同虚设。</DMSE_Ballistic_Warhead_TungstenPenetrator.description>
   <DMSE_Ballistic_Guidance_Inertial.label>惯性导引</DMSE_Ballistic_Guidance_Inertial.label>
-  <DMSE_Ballistic_Guidance_Inertial.description>捷联式惯性参考单元。在热核当量下，高精度并非必要。</DMSE_Ballistic_Guidance_Inertial.description>
+  <DMSE_Ballistic_Guidance_Inertial.description>捷联式惯性参考单元。在热核当量下，高精度并非必要。 选点以地图中心为均值，呈圆形正态分布，限制于地图内切圆内；不锁定建筑或单位。</DMSE_Ballistic_Guidance_Inertial.description>
   <DMSE_Ballistic_Guidance_FireControl.label>火控导引</DMSE_Ballistic_Guidance_FireControl.label>
   <DMSE_Ballistic_Guidance_FireControl.description>由殖民地火控雷达网络辅助的末端导引。大幅收敛落点散布，适合精确打击。</DMSE_Ballistic_Guidance_FireControl.description>
   <DMSE_Ballistic_Guidance_Laser.label>激光末端导引头</DMSE_Ballistic_Guidance_Laser.label>
@@ -72,13 +72,13 @@
   <DMSE_AdvLight_Warhead_Kinetic.label>动能刀刃弹头</DMSE_AdvLight_Warhead_Kinetic.label>
   <DMSE_AdvLight_Warhead_Kinetic.description>依 AGM-114R9X 设计的惰性弹体与弹出刀刃：几乎没有炸药，只杀死命中的生物，对周围破坏极小，代价是毫无爆破效果。</DMSE_AdvLight_Warhead_Kinetic.description>
   <DMSE_AdvLight_Guidance_Inertial.label>惯性导引</DMSE_AdvLight_Guidance_Inertial.label>
-  <DMSE_AdvLight_Guidance_Inertial.description>便宜的捷联式惯性单元。没有导引头、没有终端导引、也不能跨图层，但不需要额外资源，仍会命中操作者选定的建筑。</DMSE_AdvLight_Guidance_Inertial.description>
+  <DMSE_AdvLight_Guidance_Inertial.description>不锁定建筑或单位；选点以地图中心为均值，呈圆形正态分布，限制于地图内切圆内。</DMSE_AdvLight_Guidance_Inertial.description>
   <DMSE_AdvLight_Guidance_IIR.label>成像红外导引头</DMSE_AdvLight_Guidance_IIR.label>
   <DMSE_AdvLight_Guidance_IIR.description>锁定比室外高 15°C 以上最热的密闭房间，否则锁定目标地图上体型最大的生物。射后不理：不需要操作员、视线或激光标定。</DMSE_AdvLight_Guidance_IIR.description>
   <DMSE_AdvLight_Guidance_Laser.label>半主动激光导引头</DMSE_AdvLight_Guidance_Laser.label>
   <DMSE_AdvLight_Guidance_Laser.description>锁定我方在目标地图上最近一次标定的激光点，是此级别中散布最小的导引头，但地面必须有人标定。</DMSE_AdvLight_Guidance_Laser.description>
   <DMSE_AdvLight_Guidance_MMW.label>毫米波雷达导引头</DMSE_AdvLight_Guidance_MMW.label>
-  <DMSE_AdvLight_Guidance_MMW.description>依 AGM-114L 长弓设计的射后不理雷达导引头：自行锁定目标地图上耐久最高的敌对建筑，不需要标定、操作员或好天气。</DMSE_AdvLight_Guidance_MMW.description>
+  <DMSE_AdvLight_Guidance_MMW.description>发射后不管的毫米波雷达寻标器：优先锁定占地面积最大的敌对建筑，其次锁定体型最大的敌对生物，无目标时退回惯性散布。</DMSE_AdvLight_Guidance_MMW.description>
   <DMSE_AdvLight_Payload_None.label>无酬载</DMSE_AdvLight_Payload_None.label>
   <DMSE_AdvLight_Payload_None.description>没有次级装药。弹头本身必须够用，换来更轻的弹体与更远的射程。</DMSE_AdvLight_Payload_None.description>
   <DMSE_AdvLight_Payload_HE.label>次级高爆装药</DMSE_AdvLight_Payload_HE.label>
@@ -92,7 +92,7 @@
   <DMSE_AdvCruise_Warhead_Penetrator.label>硬目标穿透弹头</DMSE_AdvCruise_Warhead_Penetrator.label>
   <DMSE_AdvCruise_Warhead_Penetrator.description>高密度钨芯，能贯穿厚岩顶与山体后在内部引爆，扮演战斧家族也有的钻地角色；地下掩体不再是保护。</DMSE_AdvCruise_Warhead_Penetrator.description>
   <DMSE_AdvCruise_Guidance_TerrainMatch.label>地形比对导引</DMSE_AdvCruise_Guidance_TerrainMatch.label>
-  <DMSE_AdvCruise_Guidance_TerrainMatch.description>TERCOM/DSMAC 传统的地形等高线与场景比对：导弹沿测绘航线贴地飞行并不断修正，散布极小。无法飞行中改靶，也没有任何终端导引，目标移动就只是落空。</DMSE_AdvCruise_Guidance_TerrainMatch.description>
+  <DMSE_AdvCruise_Guidance_TerrainMatch.description>TERCOM/DSMAC 传统的地形等高线与场景比对：导弹沿测绘航线贴地飞行并不断修正，散布极小。无法飞行中改靶，也没有任何终端导引，目标移动就只是落空。 选点以地图中心为均值，呈圆形正态分布，限制于地图内切圆内；不锁定建筑或单位。</DMSE_AdvCruise_Guidance_TerrainMatch.description>
   <DMSE_AdvCruise_Guidance_Datalink.label>双向数据链</DMSE_AdvCruise_Guidance_Datalink.label>
   <DMSE_AdvCruise_Guidance_Datalink.description>Block IV 级的卫星数据链：导弹可在飞行中改靶甚至盘旋，抵达目标地图时游戏暂停、由你选择落点。最精准的选项，也是唯一能追击移动目标的选项。</DMSE_AdvCruise_Guidance_Datalink.description>
   <DMSE_AdvCruise_Guidance_AntiShip.label>反舰雷达导引头</DMSE_AdvCruise_Guidance_AntiShip.label>
@@ -116,7 +116,7 @@
   <DMSE_AdvBallistic_Warhead_LowYield.label>低当量弹头</DMSE_AdvBallistic_Warhead_LowYield.label>
   <DMSE_AdvBallistic_Warhead_LowYield.description>W78/W87 级战略弹头的低当量版本：爆炸半径与伤害都小一截，但便宜得多、警戒时也更安全。</DMSE_AdvBallistic_Warhead_LowYield.description>
   <DMSE_AdvBallistic_Guidance_Stellar.label>星光惯性导引</DMSE_AdvBallistic_Guidance_Stellar.label>
-  <DMSE_AdvBallistic_Guidance_Stellar.description>NS-50 传统的星光修正惯性平台：以星象追踪器修正滑翔期间的陀螺漂移，把散布压到近乎为零。仍是纯弹道路径、没有终端导引头，目标移动依然会落空。</DMSE_AdvBallistic_Guidance_Stellar.description>
+  <DMSE_AdvBallistic_Guidance_Stellar.description>NS-50 传统的星光修正惯性平台：以星象追踪器修正滑翔期间的陀螺漂移，把散布压到近乎为零。仍是纯弹道路径、没有终端导引头，目标移动依然会落空。 选点以地图中心为均值，呈圆形正态分布，限制于地图内切圆内；不锁定建筑或单位。</DMSE_AdvBallistic_Guidance_Stellar.description>
   <DMSE_AdvBallistic_Payload_Penaids.label>突防诱饵</DMSE_AdvBallistic_Payload_Penaids.label>
   <DMSE_AdvBallistic_Payload_Penaids.description>随重返载具释放的箔条、雷达诱饵与低可观测罩：这枚导弹在敌方雷达上看起来小得多，较晚被发现、被接战的时间也更短。</DMSE_AdvBallistic_Payload_Penaids.description>
   <DMSE_AdvBallistic_Payload_MIRV.label>多弹头重返载具</DMSE_AdvBallistic_Payload_MIRV.label>
@@ -134,4 +134,6 @@
 
   <DMSE_Light_Guidance_SemiActive.label>半主动雷达导引头</DMSE_Light_Guidance_SemiActive.label>
   <DMSE_Light_Guidance_SemiActive.description>追踪火控雷达照射目标所产生回波的半主动雷达导引头。专为拦截而设计；对地打击时退化为散布较小的惯性选点。</DMSE_Light_Guidance_SemiActive.description>
+  <DMSE_Guidance_ActiveRadar.label>主动雷达寻标器</DMSE_Guidance_ActiveRadar.label>
+  <DMSE_Guidance_ActiveRadar.description>发射后不管的主动雷达寻标器。优先锁定占地面积最大的敌对建筑；没有敌对建筑时，锁定体型最大的敌对生物。无目标时退回地图中心的惯性散布，提供末端制导。</DMSE_Guidance_ActiveRadar.description>
 </LanguageData>

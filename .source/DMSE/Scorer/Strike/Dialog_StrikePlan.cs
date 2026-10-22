@@ -16,10 +16,10 @@ namespace DMSE
     public class Dialog_StrikePlan : Window
     {
         private const float RowHeight = 28f;
-        private const float ButtonHeight = 34f;
+        private const float ButtonHeight = DMSEUI.ButtonHeight;
         private const float TimelineRow = 14f;
-        private static readonly Color WarnColor = new Color(1f, 0.85f, 0.35f);
-        private static readonly Color FixedColor = new Color(0.65f, 0.65f, 0.65f);
+        private static readonly Color WarnColor = DMSEUI.Warning;
+        private static readonly Color FixedColor = DMSEUI.Muted;
         private static readonly Color[] WaveColors =
         {
             new Color(0.45f, 0.75f, 1f), new Color(0.55f, 0.9f, 0.55f), new Color(1f, 0.7f, 0.4f),
@@ -35,6 +35,7 @@ namespace DMSE
         private int reservedElsewhere;
         private int selectedWave;
         private bool showUnavailable;
+        private bool allowPartialFire;
         private Vector2 leftScroll, rightScroll, execScroll;
         private float leftHeight, rightHeight, execHeight;
 
@@ -141,10 +142,19 @@ namespace DMSE
 
             List<StrikePlanWave> plan = console.PlanTimeline(mission, Waves);
             float timeline = TimelineHeight(Waves.Count);
-            Rect body = new Rect(inRect.x, y + 4f, inRect.width, inRect.yMax - ButtonHeight - 16f - timeline - y);
+            // §2.1 / §3.6: validation gets its own full-width, wrapping region.
+            string invalid = Editing ? console.ValidateAdjustment(Waves) : console.ValidateDraft(mission);
+            float errorHeight = invalid == null ? 0f : Text.CalcHeight(invalid, inRect.width) + DMSEUI.Gap;
+            Rect body = new Rect(inRect.x, y + 4f, inRect.width, inRect.yMax - ButtonHeight - 16f - timeline - y - errorHeight);
             DrawCandidates(body.LeftPart(0.48f), cap);
             DrawWaves(body.RightPart(0.5f), cap, plan);
             DrawTimeline(new Rect(inRect.x, body.yMax + 4f, inRect.width, timeline), plan);
+            if (invalid != null)
+            {
+                GUI.color = DMSEUI.Error;
+                Widgets.Label(new Rect(inRect.x, inRect.yMax - ButtonHeight - errorHeight, inRect.width, errorHeight), invalid);
+                GUI.color = Color.white;
+            }
             DrawComposingButtons(new Rect(inRect.x, inRect.yMax - ButtonHeight, inRect.width, ButtonHeight), cap);
         }
 
@@ -159,14 +169,27 @@ namespace DMSE
             List<StrikeCandidate> unavailable = candidates.Where(c => !c.Assignable).ToList();
 
             float y = Line(inner, inner.y, "DMSE.Strike.Plan.Available".Translate(available.Count));
-            Text.Font = GameFont.Tiny;
-            y = Line(inner, y, "DMSE.Strike.Plan.AddHint".Translate(), Color.gray);
-            Text.Font = GameFont.Small;
+            y = Line(inner, y, "DMSE.UI.AddToWave".Translate(selectedWave + 1));
+            if (available.Count > 0)
+            {
+                Text.Font = GameFont.Tiny;
+                y = Line(inner, y, "DMSE.Strike.Plan.AddHint".Translate(), DMSEUI.Muted);
+                Text.Font = GameFont.Small;
+            }
 
             Rect outRect = new Rect(inner.x, y, inner.width, inner.yMax - y);
             Rect view = new Rect(0f, 0f, outRect.width - 16f, Mathf.Max(leftHeight, outRect.height));
             Widgets.BeginScrollView(outRect, ref leftScroll, view);
             float cy = 0f;
+            if (available.Count == 0)
+            {
+                string key = candidates.Count == 0 && reservedElsewhere == 0 ? "DMSE.UI.NoMissiles"
+                    : candidates.Any(c => c.Assignable) ? "DMSE.UI.AllAssigned" : "DMSE.UI.NoAvailableMissiles";
+                string empty = key.Translate();
+                float height = Text.CalcHeight(empty, view.width);
+                Widgets.Label(new Rect(0f, cy, view.width, height), empty);
+                cy += height + DMSEUI.SectionGap;
+            }
             foreach (IGrouping<string, StrikeCandidate> group in available.GroupBy(c => c.groupKey).OrderBy(g => g.Min(c => c.value)))
             {
                 List<StrikeCandidate> list = group.ToList();
@@ -210,7 +233,7 @@ namespace DMSE
                 Rect head = new Rect(0f, cy, view.width, RowHeight);
                 Widgets.DrawHighlightIfMouseover(head);
                 string summary = string.Join(", ", unavailable.GroupBy(c => c.issueText).Select(g => g.Key + " ×" + g.Count()));
-                GUI.color = Color.gray;
+                GUI.color = DMSEUI.Muted;
                 Widgets.Label(head, ((showUnavailable ? "▾ " : "▸ ")
                     + "DMSE.Strike.Plan.Unavailable".Translate(unavailable.Count, summary)).Truncate(head.width));
                 GUI.color = Color.white;
@@ -222,7 +245,7 @@ namespace DMSE
                     {
                         StrikeCandidate first = group.First();
                         Rect row = new Rect(12f, cy, view.width - 12f, RowHeight);
-                        GUI.color = Color.gray;
+                        GUI.color = DMSEUI.Muted;
                         Widgets.Label(row, (first.groupLabel + " ×" + group.Count() + " — " + first.issueText).Truncate(row.width));
                         GUI.color = Color.white;
                         cy += RowHeight;
@@ -232,7 +255,7 @@ namespace DMSE
             if (reservedElsewhere > 0)
             {
                 cy += 6f;
-                GUI.color = Color.gray;
+                GUI.color = DMSEUI.Muted;
                 Widgets.Label(new Rect(0f, cy, view.width, RowHeight), "DMSE.Strike.Plan.ReservedElsewhere".Translate(reservedElsewhere));
                 GUI.color = Color.white;
                 cy += RowHeight;
@@ -261,7 +284,8 @@ namespace DMSE
             Widgets.Label(valueRect, first.value.ToStringMoney());
             Text.Anchor = TextAnchor.UpperLeft;
 
-            string tip = first.groupLabel + "\n" + "DMSE.Strike.Plan.Flight".Translate(first.flightTicks.ToStringTicksToPeriod());
+            string tip = first.groupLabel + "\n" + "DMSE.Strike.Plan.Flight".Translate(first.flightTicks.ToStringTicksToPeriod())
+                + "\n" + "DMSE.Strike.ChannelCost".Translate(first.config?.StrikeChannelCost ?? 1);
             foreach (string issue in list.Where(c => c.issue != StrikeRoundIssue.None).Select(c => c.issueText).Distinct())
             {
                 tip += "\n" + "DMSE.Strike.Plan.NotReadyTag".Translate() + " " + issue;
@@ -277,19 +301,31 @@ namespace DMSE
             selectedWave = Mathf.Clamp(selectedWave, 0, Waves.Count - 1);
             StrikeWave wave = Waves[selectedWave];
             int total = Waves.Sum(w => w.slots.Count);
-            int room = Mathf.Min(cap - PendingCount(wave), console.Props.maxRoundsPerMission - total);
-            if (room <= 0)
+            int freeChannels = cap - StrikeRoundUtility.PendingChannels(wave);
+            int room = console.Props.maxRoundsPerMission - total;
+            if (room <= 0 || freeChannels <= 0)
             {
-                Messages.Message(PendingCount(wave) >= cap
-                    ? "DMSE.Strike.WaveOverCap".Translate(selectedWave + 1, PendingCount(wave), cap)
+                Messages.Message(freeChannels <= 0
+                    ? "DMSE.Strike.WaveOverCap".Translate(selectedWave + 1, StrikeRoundUtility.PendingChannels(wave), cap)
                     : "DMSE.Strike.TooManyRounds".Translate(console.Props.maxRoundsPerMission), MessageTypeDefOf.RejectInput, false);
                 return;
             }
-            foreach (StrikeCandidate c in list.OrderBy(c => c.issue == StrikeRoundIssue.None ? 0 : 1).Take(Mathf.Min(count, room)))
+            int added = 0;
+            foreach (StrikeCandidate c in list.OrderBy(c => c.issue == StrikeRoundIssue.None ? 0 : 1))
             {
+                if (added >= count || added >= room) { break; }
+                int cost = c.config?.StrikeChannelCost ?? 1;
+                if (cost > freeChannels) { continue; }
                 wave.slots.Add(new StrikeSlot { launcher = c.launcher.parent, round = c.round });
+                freeChannels -= cost;
+                added++;
             }
-            SoundDefOf.Tick_High.PlayOneShotOnCamera();
+            if (added > 0) { SoundDefOf.Tick_High.PlayOneShotOnCamera(); }
+            else
+            {
+                Messages.Message("DMSE.Strike.WaveOverCap".Translate(selectedWave + 1,
+                    StrikeRoundUtility.PendingChannels(wave) + (list[0].config?.StrikeChannelCost ?? 1), cap), MessageTypeDefOf.RejectInput, false);
+            }
         }
 
         private string SlotGroupLabel(StrikeSlot s)
@@ -350,7 +386,7 @@ namespace DMSE
                     ? deleteRect.x : DrawAutoFireToggle(deleteRect.x - 6f, head.y + 3f, wave);
                 Rect titleRect = new Rect(head.x + 4f, head.y, autoLeft - head.x - 8f, head.height);
                 Text.Anchor = TextAnchor.MiddleLeft;
-                int pending = PendingCount(wave);
+                int pending = StrikeRoundUtility.PendingChannels(wave);
                 string title = "DMSE.Strike.Plan.WaveTitle".Translate(i + 1);
                 float titleWidth = Mathf.Min(Text.CalcSize(title).x, titleRect.width);
                 GUI.color = pending > cap ? ColorLibrary.RedReadable : WaveColors[i % WaveColors.Length];
@@ -372,7 +408,7 @@ namespace DMSE
                 {
                     Text.Font = GameFont.Tiny;
                     float h = Text.CalcHeight(arrival, view.width - 8f);
-                    GUI.color = warn ? WarnColor : Color.gray;
+                    GUI.color = warn ? WarnColor : DMSEUI.Muted;
                     Widgets.Label(new Rect(8f, y, view.width - 8f, h), arrival);
                     GUI.color = Color.white;
                     Text.Font = GameFont.Small;
@@ -443,12 +479,12 @@ namespace DMSE
                 Color color = p.earlierThan >= 0 ? WarnColor : WaveColors[i % WaveColors.Length];
                 if (p.fireTick >= 0)
                 {
-                    Widgets.DrawBoxSolid(new Rect(X(p.fireTick), y + TimelineRow / 2f - 0.5f, Mathf.Max(1f, X(p.arriveMin) - X(p.fireTick)), 1f), Color.gray);
-                    Widgets.DrawBoxSolid(new Rect(X(p.fireTick) - 1f, y + 3f, 2f, TimelineRow - 6f), Color.gray);
+                    Widgets.DrawBoxSolid(new Rect(X(p.fireTick), y + TimelineRow / 2f - 0.5f, Mathf.Max(1f, X(p.arriveMin) - X(p.fireTick)), 1f), DMSEUI.Muted);
+                    Widgets.DrawBoxSolid(new Rect(X(p.fireTick) - 1f, y + 3f, 2f, TimelineRow - 6f), DMSEUI.Muted);
                 }
                 Widgets.DrawBoxSolid(new Rect(X(p.arriveMin), y + 2f, Mathf.Max(3f, X(p.arriveMax) - X(p.arriveMin)), TimelineRow - 4f), color);
             }
-            GUI.color = Color.gray;
+            GUI.color = DMSEUI.Muted;
             Widgets.Label(new Rect(track.x, track.yMax, 120f, 12f), "DMSE.Strike.Plan.Now".Translate());
             Text.Anchor = TextAnchor.UpperRight;
             Widgets.Label(new Rect(track.xMax - 160f, track.yMax, 160f, 12f), "+" + (end - now).ToStringTicksToPeriod());
@@ -462,7 +498,7 @@ namespace DMSE
         {
             List<StrikeCandidate> pool = candidates.Where(c => c.Assignable)
                 .OrderBy(c => c.value).ThenBy(c => c.issue == StrikeRoundIssue.None ? 0 : 1).ToList();
-            List<List<int>> plan = StrikeRoundUtility.AutoAssign(Mathf.Min(pool.Count, console.Props.maxRoundsPerMission),
+            List<List<int>> plan = StrikeRoundUtility.AutoAssign(pool.Take(console.Props.maxRoundsPerMission).Select(c => c.config?.StrikeChannelCost ?? 1).ToList(),
                 cap, console.Props.maxWavesPerMission);
             mission.waves.Clear();
             foreach (List<int> indices in plan)
@@ -481,12 +517,12 @@ namespace DMSE
             if (Planning)
             {
                 Rect auto = new Rect(x, rect.y, 150f, ButtonHeight);
-                if (Widgets.ButtonText(auto, "DMSE.Strike.Plan.AutoAssign".Translate())) { AutoAssign(cap); }
+                if (Widgets.ButtonText(auto, "DMSE.Strike.Plan.AutoAssign".Translate(), drawBackground: false)) { AutoAssign(cap); }
                 TooltipHandler.TipRegion(auto, "DMSE.Strike.Plan.AutoAssignDesc".Translate());
                 x = auto.xMax + 8f;
             }
             Rect clear = new Rect(x, rect.y, Editing ? 150f : 100f, ButtonHeight);
-            if (Widgets.ButtonText(clear, Editing ? "DMSE.Strike.Adjust.ClearPending".Translate() : "DMSE.Strike.Plan.Clear".Translate()))
+            if (Widgets.ButtonText(clear, Editing ? "DMSE.Strike.Adjust.ClearPending".Translate() : "DMSE.Strike.Plan.Clear".Translate(), drawBackground: false))
             {
                 if (Editing)
                 {
@@ -503,16 +539,7 @@ namespace DMSE
             Rect confirm = new Rect(rect.xMax - 160f, rect.y, 160f, ButtonHeight);
             Rect cancel = new Rect(confirm.x - 168f, rect.y, 160f, ButtonHeight);
             string invalid = Editing ? console.ValidateAdjustment(Waves) : console.ValidateDraft(mission);
-            if (invalid != null)
-            {
-                Rect error = new Rect(clear.xMax + 8f, rect.y, cancel.x - clear.xMax - 16f, ButtonHeight);
-                Text.Anchor = TextAnchor.MiddleRight;
-                GUI.color = ColorLibrary.RedReadable;
-                Widgets.Label(error, invalid.Truncate(error.width));
-                GUI.color = Color.white;
-                Text.Anchor = TextAnchor.UpperLeft;
-            }
-            if (Widgets.ButtonText(cancel, Editing ? "DMSE.Strike.Adjust.Cancel".Translate() : "CancelButton".Translate()))
+            if (Widgets.ButtonText(cancel, Editing ? "DMSE.Strike.Adjust.Cancel".Translate() : "CancelButton".Translate(), drawBackground: false))
             {
                 Close();
                 if (Editing) { Find.WindowStack.Add(new Dialog_StrikePlan(console, mission)); }
@@ -549,6 +576,10 @@ namespace DMSE
             int release = console.parent.Map.GetComponent<MapComponent_StrikePlanner>()?.TicksUntilNextRelease(console.parent.Faction) ?? -1;
             if (release > 0) { channels += "  " + "DMSE.Strike.Exec.NextRelease".Translate(release.ToStringTicksToPeriod()); }
             y = Line(inRect, y, channels);
+            string partialLabel = "DMSE.UI.AllowPartialFire".Translate();
+            float partialHeight = Mathf.Max(28f, Text.CalcHeight(partialLabel, inRect.width - 34f));
+            Widgets.CheckboxLabeled(new Rect(inRect.x, y, inRect.width, partialHeight), partialLabel, ref allowPartialFire);
+            y += partialHeight + DMSEUI.Gap;
 
             List<StrikePlanWave> plan = console.PlanTimeline(mission, mission.waves);
             float timeline = TimelineHeight(mission.waves.Count);
@@ -608,7 +639,7 @@ namespace DMSE
                 x += cells * cell + 6f;
             }
             Text.Anchor = TextAnchor.MiddleLeft;
-            GUI.color = used > capacity ? ColorLibrary.RedReadable : Color.gray;
+            GUI.color = used > capacity ? ColorLibrary.RedReadable : DMSEUI.Muted;
             Widgets.Label(new Rect(x, rect.y - 4f, Mathf.Min(countWidth, rect.xMax - x), rect.height + 8f), count);
             GUI.color = Color.white;
             Text.Anchor = TextAnchor.UpperLeft;
@@ -638,7 +669,7 @@ namespace DMSE
             Rect box = new Rect(right - 24f, y, 24f, 24f);
             Rect labelRect = new Rect(box.x - labelWidth - 2f, y, labelWidth, 24f);
             Text.Anchor = TextAnchor.MiddleRight;
-            GUI.color = wave.autoFire ? Color.white : Color.gray;
+            GUI.color = wave.autoFire ? Color.white : DMSEUI.Muted;
             Widgets.Label(labelRect, label);
             GUI.color = Color.white;
             Text.Anchor = TextAnchor.UpperLeft;
@@ -675,7 +706,7 @@ namespace DMSE
             if (!arrival.NullOrEmpty())
             {
                 Text.Font = GameFont.Tiny;
-                GUI.color = warn ? WarnColor : Color.gray;
+                GUI.color = warn ? WarnColor : DMSEUI.Muted;
                 Widgets.Label(new Rect(text.x, text.y + 44f, text.width, 22f), arrival.Truncate(text.width));
                 GUI.color = Color.white;
                 Text.Font = GameFont.Small;
@@ -688,11 +719,12 @@ namespace DMSE
             DrawAutoFireToggle(fireRect.x - 6f, fireRect.y + 5f, wave);
             string full = console.CannotFireReason(index, partial: false);
             string partialReason = console.CannotFireReason(index, partial: true);
-            if (Widgets.ButtonText(fireRect, "DMSE.Strike.Exec.Fire".Translate(), active: full == null || partialReason == null))
+            bool partial = allowPartialFire || Event.current.shift;
+            if (Widgets.ButtonText(fireRect, "DMSE.Strike.Exec.Fire".Translate(), active: (partial ? partialReason : full) == null))
             {
-                console.TryFireFromUI(index, Event.current.shift);
+                console.TryFireFromUI(index, partial);
             }
-            TooltipHandler.TipRegion(fireRect, (full ?? string.Empty) + (full != null ? "\n\n" : string.Empty)
+            TooltipHandler.TipRegion(fireRect, ((partial ? partialReason : full) ?? string.Empty) + "\n\n"
                 + "DMSE.Strike.Exec.FireTip".Translate());
         }
     }

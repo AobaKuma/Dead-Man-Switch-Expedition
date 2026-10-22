@@ -65,7 +65,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvCruise_Guidance_TerrainMatch</defName>
     <label>terrain-matching guidance</label>
-    <description>Terrain contour matching and scene matching in the TERCOM/DSMAC tradition: the missile flies a survey-grade route and corrects itself against the ground, giving very tight dispersion. It cannot be re-targeted in flight and has no terminal guidance at all, so a target that moves away is simply missed.</description>
+    <description>Terrain contour matching and scene matching in the TERCOM/DSMAC tradition: the missile flies a survey-grade route and corrects itself against the ground, giving very tight dispersion. It cannot be re-targeted in flight and has no terminal guidance at all, so a target that moves away is simply missed. Aim points follow a circular normal distribution around the target map center; it does not lock buildings or units.</description>
     <category>Guidance</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedCruise</li>

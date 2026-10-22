@@ -62,6 +62,7 @@
         <filter>
           <thingDefs>
             <li>DMSE_Missile_LegacyLoiter</li>
+            <li>DMSE_Missile_Shahed</li>
             <li>DMSE_Missile_Termite</li>
             <li>DMSE_Missile_Rheintochter</li>
             <li>DMSE_Missile_Grison</li>
@@ -77,6 +78,7 @@
         <filter>
           <thingDefs>
             <li>DMSE_Missile_LegacyLoiter</li>
+            <li>DMSE_Missile_Shahed</li>
             <li>DMSE_Missile_Termite</li>
             <li>DMSE_Missile_Rheintochter</li>
             <li>DMSE_Missile_Grison</li>
@@ -89,7 +91,7 @@
       </defaultStorageSettings>
     </building>
     <researchPrerequisites>
-      <li>DMSE_Ballistics</li>
+      <li>DMSE_RadarBasis</li>
     </researchPrerequisites>
     <designationCategory>DMS_Category</designationCategory>
     <minifiedDef>MinifiedThing</minifiedDef>
@@ -662,7 +664,6 @@
       <fixedStorageSettings>
         <filter>
           <thingDefs>
-            <li>DMSE_Missile_Moskit</li>
             <li>DMSE_Missile_Yj</li>
           </thingDefs>
         </filter>
@@ -671,7 +672,6 @@
         <priority>Important</priority>
         <filter>
           <thingDefs>
-            <li>DMSE_Missile_Moskit</li>
             <li>DMSE_Missile_Yj</li>
           </thingDefs>
         </filter>
@@ -703,9 +703,9 @@
       </li>
       <li Class="DMSE.CompProperties_MissileRailLauncher">
         <skyfaller>DMSE_SkyFaller_BallisticMissile</skyfaller>
-        <skyfallerIncoming>DMSE_Incoming_Moskit</skyfallerIncoming>
+        <skyfallerIncoming>DMSE_Incoming_Yj</skyfallerIncoming>
         <worldObjectDef>DMSE_WorldObject_CruiseMissile</worldObjectDef>
-        <missileBody>DMSE_MissileBody_Moskit</missileBody>
+        <missileBody>DMSE_MissileBody_Yj</missileBody>
         <launchCooldownTicks>600</launchCooldownTicks>
         <launchForwardCells>0</launchForwardCells>
       </li>

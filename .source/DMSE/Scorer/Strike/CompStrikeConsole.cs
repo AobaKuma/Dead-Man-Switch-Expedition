@@ -160,9 +160,9 @@ namespace DMSE
             }
             for (int i = 0; i < draft.waves.Count; i++)
             {
-                if (draft.waves[i].slots.Count > cap)
+                if (StrikeRoundUtility.PendingChannels(draft.waves[i]) > cap)
                 {
-                    return "DMSE.Strike.WaveOverCap".Translate(i + 1, draft.waves[i].slots.Count, cap);
+                    return "DMSE.Strike.WaveOverCap".Translate(i + 1, StrikeRoundUtility.PendingChannels(draft.waves[i]), cap);
                 }
             }
             return null;
@@ -408,6 +408,7 @@ namespace DMSE
                     {
                         launcher = slot.launcher,
                         flightTicks = flight,
+                        channelCost = slotConfig?.StrikeChannelCost ?? 1,
                         salvoInterval = launcher?.SalvoIntervalTicks ?? 0,
                         launchCooldown = launcher?.CooldownTicksAfterLaunch ?? 0,
                         readyTick = now + (launcher?.CooldownTicksRemaining(now) ?? 0),
@@ -450,7 +451,7 @@ namespace DMSE
             if (all.Where(s => s.round != null).GroupBy(s => s.round).Any(g => g.Count() > 1)) { return "DMSE.Strike.RoundTaken".Translate(); }
             for (int i = 0; i < waves.Count; i++)
             {
-                int pending = waves[i].slots.Count(s => s.state == StrikeSlotState.Pending);
+                int pending = StrikeRoundUtility.PendingChannels(waves[i]);
                 if (pending > cap) { return "DMSE.Strike.WaveOverCap".Translate(i + 1, pending, cap); }
             }
             return null;
@@ -547,6 +548,8 @@ namespace DMSE
             public int pending;      // 待發射且沒有永久性問題
             public int skip;         // 發射時會被略過
             public int ready;        // 平台現在就能發射（含同平台漣波續射）
+            public int channels;
+            public int minReadyCost;
             public int blockedPlatforms;
         }
 
@@ -564,7 +567,13 @@ namespace DMSE
                 {
                     if (PermanentProblem(slot, launcher) != null) { check.skip++; continue; }
                     check.pending++;
-                    if (platformReady) { check.ready++; }
+                    int cost = StrikeRoundUtility.ChannelCost(slot);
+                    check.channels += cost;
+                    if (platformReady)
+                    {
+                        check.ready++;
+                        check.minReadyCost = check.minReadyCost == 0 ? cost : Mathf.Min(check.minReadyCost, cost);
+                    }
                     else if (!counted) { check.blockedPlatforms++; counted = true; }
                 }
             }
@@ -586,9 +595,9 @@ namespace DMSE
             int free = StrikeFree;
             if (partial)
             {
-                if (check.ready > 0 && free > 0) { return null; }
+                if (check.ready > 0 && free >= check.minReadyCost) { return null; }
             }
-            else if (check.ready == check.pending && free >= check.pending)
+            else if (check.ready == check.pending && free >= check.channels)
             {
                 return null;
             }
@@ -598,13 +607,13 @@ namespace DMSE
             }
             int release = Planner?.TicksUntilNextRelease(Side) ?? -1;
             return release > 0
-                ? "DMSE.Strike.NotEnoughChannelsRelease".Translate(free, check.pending, release.ToStringTicksToPeriod())
-                : "DMSE.Strike.NotEnoughChannels".Translate(free, check.pending);
+                ? "DMSE.Strike.NotEnoughChannelsRelease".Translate(free, partial && check.ready > 0 ? check.minReadyCost : check.channels, release.ToStringTicksToPeriod())
+                : "DMSE.Strike.NotEnoughChannels".Translate(free, partial && check.ready > 0 ? check.minReadyCost : check.channels);
         }
 
         /// <summary>
         /// 發射第 <paramref name="index"/> 波（§7）：永久性問題的導彈略過；其餘依平台分組排入漣波佇列，
-        /// 同平台各枚相隔 <see cref="CompMissileLauncher_WorldTargeting.SalvoIntervalTicks"/>，每枚占用一條導引通道。
+        /// 同平台各枚相隔 <see cref="CompMissileLauncher_WorldTargeting.SalvoIntervalTicks"/>，每枚依發射配置占用導引通道。
         /// 部分發射時，平台未就緒或通道不足的導彈留在本波等待補射。回傳排入佇列的枚數。
         /// </summary>
         public int FireWave(int index, bool partial)
@@ -630,7 +639,8 @@ namespace DMSE
                         skipped++;
                         continue;
                     }
-                    if (!launcher.Active || (salvo == 0 && launcher.OnCooldown(now)) || free <= 0) { continue; }
+                    int cost = StrikeRoundUtility.ChannelCost(slot);
+                    if (!launcher.Active || (salvo == 0 && launcher.OnCooldown(now)) || free < cost) { continue; }
                     planner.Enqueue(new StrikeQueuedLaunch
                     {
                         console = parent,
@@ -638,11 +648,12 @@ namespace DMSE
                         wave = index,
                         slot = wave.slots.IndexOf(slot),
                         fireTick = start + salvo * launcher.SalvoIntervalTicks,
+                        channelCost = cost,
                         salvoContinuation = salvo > 0,
                     });
                     slot.state = StrikeSlotState.Queued;
                     salvo++;
-                    free--;
+                    free -= cost;
                     queued++;
                 }
             }
@@ -698,7 +709,7 @@ namespace DMSE
             }
             string reason = null;
             ScorerProjectile_WorldObject track = launcher != null
-                ? launcher.TryLaunchRound(mission.Target, slot.round, launch.salvoContinuation, out reason)
+                ? launcher.TryLaunchQueuedRound(mission.Target, slot.round, launch.salvoContinuation, out reason)
                 : null;
             if (track != null)
             {
@@ -708,7 +719,7 @@ namespace DMSE
                 slot.launchTick = now;
                 track.strikeMissionId = mission.id;
                 track.strikeWave = launch.wave;
-                planner.AddGuidanceHold(Side, now + BVRWorldTuningDef.Current.strikeGuidanceTicks);
+                planner.AddGuidanceHold(Side, now + BVRWorldTuningDef.Current.strikeGuidanceTicks, launch.channelCost);
                 WorldComponent_StrikeReports.Current?.RecordLaunch(mission.id, launch.wave, mission.TargetLabel,
                     parent.Map?.Parent?.LabelCap ?? parent.LabelShort, mission.Label);
             }

@@ -111,7 +111,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_Ballistic_Guidance_Inertial</defName>
     <label>inertial guidance</label>
-    <description>Strap-down inertial reference unit. High accuracy is unnecessary at thermonuclear yield.</description>
+    <description>Strap-down inertial reference unit. High accuracy is unnecessary at thermonuclear yield. Aim points follow a circular normal distribution around the target map center; it does not lock buildings or units.</description>
     <category>Guidance</category>
     <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_Tochka</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
     <guidanceType Class="DMSE.GuidanceType_Inertial" />

@@ -9,9 +9,9 @@ namespace DMSE
     /// <summary>ITab 與確認視窗共用的轉移資訊繪製。</summary>
     public static class TransferUIUtility
     {
-        private static readonly Color ErrorColor = ColorLibrary.RedReadable;
+        private static readonly Color ErrorColor = DMSEUI.Error;
 
-        private static readonly Color WarningColor = new Color(1f, 0.85f, 0.35f);
+        private static readonly Color WarningColor = DMSEUI.Warning;
 
         private static readonly Dictionary<string, int> jumpIndex = new Dictionary<string, int>();
 
@@ -29,17 +29,30 @@ namespace DMSE
 
         public static void Row(Listing_Standard listing, string label, string value, Color? valueColor = null)
         {
-            Rect rect = listing.GetRect(Text.LineHeight);
-            Widgets.Label(rect.LeftPart(0.6f), label);
-            Color old = GUI.color;
-            if (valueColor.HasValue)
+            DMSEUI.ValueRow(listing, label, value, valueColor);
+        }
+
+        // §2.1: decisions precede engineering details; readiness is not color-only.
+        public static void DrawReadiness(Listing_Standard listing, List<TransferIssue> issues)
+        {
+            int errors = 0;
+            foreach (TransferIssue issue in issues) { if (issue.IsError) { errors++; } }
+            GUI.color = errors > 0 ? ErrorColor : (issues.Count > 0 ? WarningColor : DMSEUI.Success);
+            listing.Label((errors > 0 ? "DMSE.UI.TransferBlocked" : "DMSE.UI.TransferReady")
+                .Translate(errors, issues.Count - errors));
+            GUI.color = Color.white;
+        }
+
+        public static void DrawSummary(Listing_Standard listing, TransferEstimate e)
+        {
+            Row(listing, "DMSE.Transfer.UI.MaxDistance".Translate(), e.maxDistance >= 0 ? e.maxDistance.ToString() : "DMSE.Transfer.UI.CannotDepart".Translate().ToString());
+            Row(listing, (e.HasDestination ? "DMSE.UI.FuelRequiredAvailable" : "DMSE.Transfer.UI.FuelAvailable").Translate(), e.HasDestination
+                ? e.fuelRequired.ToString("0") + " / " + e.fuelAvailable.ToString("0")
+                : e.fuelAvailable.ToString("0"), e.EnoughFuel ? (Color?)null : ErrorColor);
+            if (e.HasDestination)
             {
-                GUI.color = valueColor.Value;
+                Row(listing, "DMSE.Transfer.UI.TotalTime".Translate(), Hours(e.totalHours));
             }
-            Text.Anchor = TextAnchor.UpperRight;
-            Widgets.Label(rect.RightPart(0.4f), value);
-            Text.Anchor = TextAnchor.UpperLeft;
-            GUI.color = old;
         }
 
         /// <summary>推進與燃料估算；e.HasDestination 時另顯示燃料需求與時間。</summary>
@@ -78,7 +91,7 @@ namespace DMSE
         {
             if (issues.Count == 0)
             {
-                GUI.color = new Color(0.55f, 0.9f, 0.55f);
+                GUI.color = DMSEUI.Success;
                 listing.Label("DMSE.Transfer.UI.NoIssues".Translate());
                 GUI.color = Color.white;
                 return;
@@ -88,6 +101,7 @@ namespace DMSE
             {
                 TransferIssue issue = issues[i];
                 string text = (issue.IsError ? "DMSE.Transfer.UI.ErrorPrefix" : "DMSE.Transfer.UI.WarningPrefix").Translate() + " " + issue.text;
+                if (issue.targets.Count > 0) { text += "  [" + "DMSE.UI.Locate".Translate() + "]"; }
                 float height = Text.CalcHeight(text, width);
                 Rect rect = listing.GetRect(height);
                 if (issue.targets.Count > 0)

@@ -245,7 +245,7 @@ namespace DMSE
             Command_Action command = new Command_Action
             {
                 defaultLabel = GizmoLabel,
-                defaultDesc = GizmoDesc,
+                defaultDesc = GizmoDesc + "\n\n" + "DMSE.Strike.ChannelCost".Translate(BuildFiringConfig(NextRound)?.StrikeChannelCost ?? 1),
                 icon = CompLaunchable.LaunchCommandTex,
                 action = () =>
                 {
@@ -297,37 +297,51 @@ namespace DMSE
                 }
             };
 
-            if (!HasAmmo)
-            {
-                command.Disable(NoAmmoDisableReason);
-            }
-            else if (NextRound == null)
-            {
-                // 在架彈藥全數被打擊任務保留。
-                command.Disable("DMSE.Strike.AllRoundsReserved".Translate());
-            }
-            else if (!Active)
-            {
-                // 有彈但斷電／關閉／損壞／暈眩／未操作 → 不可發射。
-                command.Disable("DMSE.BVR.DeviceInactive".Translate());
-            }
-            int cooldownLeft = CooldownTicksRemaining(Find.TickManager.TicksGame);
-            if (cooldownLeft > 0)
-            {
-                command.Disable("DMSE.MissileLauncher.LaunchCooldown".Translate(cooldownLeft.ToStringTicksToPeriod()));
-            }
+            string disabledReason = SingleLaunchDisabledReason();
+            if (disabledReason != null) { command.Disable(disabledReason); }
 
             yield return command;
         }
 
+        /// <summary>Single-shot UI eligibility; the launch path rechecks this after target selection.</summary>
+        public string SingleLaunchDisabledReason()
+        {
+            if (!HasAmmo) { return NoAmmoDisableReason; }
+            Thing round = NextRound;
+            if (round == null) { return "DMSE.Strike.AllRoundsReserved".Translate(); }
+            if (parent.Map == null || !Active || TravelWorldObjectDef == null) { return "DMSE.BVR.DeviceInactive".Translate(); }
+            int left = CooldownTicksRemaining(Find.TickManager.TicksGame);
+            if (left > 0) { return "DMSE.MissileLauncher.LaunchCooldown".Translate(left.ToStringTicksToPeriod()); }
+            MissileConfig config = BuildFiringConfig(round);
+            if (RequiresConfig && config == null) { return NoAmmoDisableReason; }
+            if (LaunchDefFor(config) == null) { return "DMSE.BVR.DeviceInactive".Translate(); }
+            return GuidanceUnavailableReason(config);
+        }
+
+        private string GuidanceUnavailableReason(MissileConfig config)
+        {
+            int cost = config?.StrikeChannelCost ?? 1;
+            int free = parent.Map?.GetComponent<MapComponent_BVRCombat>()?.Channels.StrikeFree(parent.Faction) ?? 0;
+            if (parent.Map?.GetComponent<MapComponent_StrikePlanner>() == null) { free = 0; }
+            return free >= cost ? null : "DMSE.Strike.NotEnoughChannels".Translate(free, cost).ToString();
+        }
+
         /// <summary>
         /// 發射指定彈藥（docs/BVR_波次打擊規劃.md §7-2）。單發 Gizmo 傳入 <see cref="NextRound"/>；
-        /// 波次打擊傳入保留中的彈藥，本方法不檢查保留。
+        /// 單發會驗證保留與可用通道；波次打擊由專用佇列入口使用已預約的通道。
         /// <paramref name="salvoContinuation"/> = 同一波次同平台的後續各枚：略過冷卻檢查；
         /// 每枚發射後都重新起算冷卻，所以冷卻從本平台最後一枚起算。
         /// 成功回傳世界航跡物件（離場 skyfaller 離開地圖時才加入世界）；失敗回傳 null 並給出原因。
         /// </summary>
         public ScorerProjectile_WorldObject TryLaunchRound(GlobalTargetInfo target, Thing round, bool salvoContinuation, out string failReason)
+            => TryLaunchRoundCore(target, round, salvoContinuation, false, out failReason);
+
+        // Only the strike queue may reuse channels already booked by FireWave.
+        internal ScorerProjectile_WorldObject TryLaunchQueuedRound(GlobalTargetInfo target, Thing round, bool salvoContinuation, out string failReason)
+            => TryLaunchRoundCore(target, round, salvoContinuation, true, out failReason);
+
+        private ScorerProjectile_WorldObject TryLaunchRoundCore(GlobalTargetInfo target, Thing round, bool salvoContinuation,
+            bool channelsBooked, out string failReason)
         {
             failReason = null;
             if (TravelWorldObjectDef == null || parent.Map == null)
@@ -358,6 +372,17 @@ namespace DMSE
                 failReason = NoAmmoDisableReason;
                 return null;
             }
+            if (!channelsBooked)
+            {
+                MapComponent_StrikePlanner planner = parent.Map.GetComponent<MapComponent_StrikePlanner>();
+                if (planner != null && planner.IsReserved(round))
+                {
+                    failReason = "DMSE.Strike.AllRoundsReserved".Translate();
+                    return null;
+                }
+                failReason = GuidanceUnavailableReason(config);
+                if (failReason != null) { return null; }
+            }
             ThingDef launchDef = LaunchDefFor(config);
             if (launchDef == null)
             {
@@ -381,6 +406,11 @@ namespace DMSE
             wo.launcherThing = parent; // 落地爆炸歸因於本發射建築（被攔截時不歸因）
             wo.launchSpawnTick = LaunchDeparture(wo, launchDef, target.Tile);
 
+            if (!channelsBooked)
+            {
+                parent.Map.GetComponent<MapComponent_StrikePlanner>().AddGuidanceHold(parent.Faction,
+                    now + BVRWorldTuningDef.Current.strikeGuidanceTicks, config?.StrikeChannelCost ?? 1);
+            }
             ConsumeAmmo(round);
             StartCooldown(now);
             return wo;

@@ -45,6 +45,19 @@ static class Test
     }
     static void Setup()
     {
+        LanguageDatabase.activeLanguage = new LoadedLanguage("English");
+        Field(LanguageDatabase.activeLanguage, "workerInt", new LanguageWorker_English());
+        Field(LanguageDatabase.activeLanguage, "dataIsLoaded", true);
+        foreach (string file in Directory.GetFiles("1.7/Languages/English/Keyed", "*.xml"))
+        {
+            foreach (XElement entry in XDocument.Load(file).Root.Elements())
+            {
+                string key = entry.Name.LocalName;
+                LanguageDatabase.activeLanguage.keyedReplacements[key] = new LoadedLanguage.KeyedReplacement { key = key, value = entry.Value };
+            }
+        }
+        LanguageDatabase.activeLanguage.keyedReplacements["PeriodSeconds"] =
+            new LoadedLanguage.KeyedReplacement { key = "PeriodSeconds", value = "{0} seconds" };
         var game = Empty<Game>();
         Current.Game = game;
         clock = Empty<TickManager>();
@@ -313,6 +326,79 @@ static class Test
         Tick(100600);
         Check(manager.Channels.Strike(side) == 0 && planner.TicksUntilNextRelease(side) == -1, "the guidance period ends on time");
 
+        Tick(101000);
+        planner.AddGuidanceHold(side, 101600, 2);
+        planner.Enqueue(new StrikeQueuedLaunch { console = Parent(side), missionId = 2, fireTick = 101030, channelCost = 3 });
+        Check(planner.GuidanceOccupied(side) == 5 && manager.Channels.StrikeFree(side) == 0, "weighted queue and flight holds share the full channel pool");
+        Check(planner.GuidanceReleaseTicks(side).Count() == 5, "timeline receives a release tick for every occupied channel");
+        planner.DropQueued(2);
+        Check(planner.GuidanceOccupied(side) == 2, "cancelling a TV ballistic queue releases all three booked channels");
+        Tick(101600);
+        Check(planner.GuidanceOccupied(side) == 0, "weighted guidance hold releases all channels at its deadline");
+        Check(new StrikeQueuedLaunch().channelCost == 1 && new StrikeGuidanceHold().channelCost == 1,
+            "legacy reservations retain their one-channel default");
+
+        var ordinary = new MissileConfig(new MissileBodyDef { sizeClass = MissileSizeClass.Medium });
+        var ballistic = new MissileConfig(new MissileBodyDef { sizeClass = MissileSizeClass.Ballistic });
+        var tv = new MissilePartDef { category = MissilePartCategory.Guidance, guidanceType = new GuidanceType_TV() };
+        Check(ordinary.StrikeChannelCost == 1 && ballistic.StrikeChannelCost == 2, "ordinary and ballistic base channel costs");
+        ordinary.parts.Add(tv); ballistic.parts.Add(tv);
+        Check(ordinary.StrikeChannelCost == 2 && ballistic.StrikeChannelCost == 3, "TV adds one channel to either base cost");
+        var builtInTV = new MissileConfig(new MissileBodyDef { sizeClass = MissileSizeClass.Ballistic, builtInGuidance = new GuidanceType_TV() });
+        Check(builtInTV.StrikeChannelCost == 3, "built-in TV uses the same channel surcharge");
+        builtInTV.parts.Add(new MissilePartDef { category = MissilePartCategory.Guidance, guidanceType = new GuidanceType_Laser() });
+        Check(builtInTV.StrikeChannelCost == 2, "an installed non-TV seeker overrides built-in TV for channel cost");
+        var weighted = StrikeRoundUtility.AutoAssign(new[] { 1, 2, 3, 1, 2 }, 4, 5);
+        Check(weighted.Select(w => string.Join(",", w)).SequenceEqual(new[] { "0,1", "2,3", "4" }), "auto assignment packs weighted costs without splitting missiles");
+        Check(StrikeRoundUtility.AutoAssign(new[] { 3, 1, 2 }, 2, 5).SelectMany(w => w).SequenceEqual(new[] { 1, 2 }),
+            "auto assignment leaves individually unaffordable missiles out");
+        Check(StrikeRoundUtility.AutoAssign(new[] { 2, 2, 2 }, 2, 2).Count == 2, "weighted auto assignment respects the wave limit");
+
+        // A real map/component ledger backs the exact eligibility method used by the launch Gizmo.
+        map.components.Add(manager);
+        Current.Game.Maps.Add(map);
+        var launchParent = Parent(side);
+        Field(launchParent, "mapIndexOrState", (sbyte)(Current.Game.Maps.Count - 1));
+        var manual = new ManualLauncher { parent = launchParent, config = ballistic };
+        Check(manual.SingleLaunchDisabledReason() == null, "single TV ballistic shot is enabled with three free guidance channels");
+        planner.AddGuidanceHold(side, 102000, 1);
+        string unavailableChannels = manual.SingleLaunchDisabledReason();
+        Check(unavailableChannels != null, "single TV ballistic shot is disabled when only two channels are free");
+        Check(manual.TryLaunchRound(GlobalTargetInfo.Invalid, launchParent, false, out string channelFailure) == null
+            && channelFailure == unavailableChannels && manual.ammo,
+            "actual launch rechecks channels after target selection and leaves ammo untouched on failure");
+        manual.config = new MissileConfig(new MissileBodyDef { sizeClass = MissileSizeClass.Ballistic });
+        Check(manual.SingleLaunchDisabledReason() == null, "ordinary ballistic shot fits two remaining channels");
+        manual.online = false;
+        Check(manual.SingleLaunchDisabledReason() != null, "single shot is disabled on an inactive platform");
+        manual.online = true;
+        Field(manual, "cooldownUntil", 102000);
+        Check(manual.SingleLaunchDisabledReason() != null, "single shot is disabled during cooldown");
+        Field(manual, "cooldownUntil", 0);
+        manual.ammo = false;
+        Check(manual.SingleLaunchDisabledReason() != null, "single shot is disabled without ammunition");
+        manual.ammo = true;
+        planner.TryReserve(launchParent, 9);
+        Check(manual.SingleLaunchDisabledReason() != null, "single shot cannot use ammunition reserved by a strike mission");
+        planner.Release(launchParent);
+        Tick(102000);
+        manager.fireControlRadars.Clear();
+        Check(manual.SingleLaunchDisabledReason() != null, "single shot is disabled without an active strike-capable fire-control radar");
+        Current.Game.Maps.Remove(map);
+        Field(launchParent, "mapIndexOrState", (sbyte)-2);
+
+        string channelSave = Path.Combine(Path.GetTempPath(), "dmse-strike-channel-cost.xml");
+        var holdSave = new StrikeGuidanceHold { channelCost = 3, releaseTick = 103000 };
+        var queueSave = new StrikeQueuedLaunch { channelCost = 2, fireTick = 102030 };
+        Scribe.saver.InitSaving(channelSave, "Channels");
+        Scribe_Deep.Look(ref holdSave, "hold");
+        Scribe_Deep.Look(ref queueSave, "queued");
+        Scribe.saver.FinalizeSaving();
+        var channelXml = XDocument.Load(channelSave);
+        Check(channelXml.Descendants("channelCost").Select(e => e.Value).SequenceEqual(new[] { "3", "2" }),
+            "real Scribe save output preserves weighted guidance and queue costs");
+        File.Delete(channelSave);
+
         var body = new MissileBodyDef { defName = "HashBody" };
         var warhead = new MissilePartDef { defName = "HashWarhead", category = MissilePartCategory.Warhead };
         var seeker = new MissilePartDef { defName = "HashSeeker", category = MissilePartCategory.Guidance };
@@ -403,6 +489,20 @@ static class Test
         Check(over[0].overCapacity && over[0].fireTick == -1, "a wave above the channel capacity never fires");
         var busy = StrikeTimeline.Simulate(new List<List<StrikePlanSlot>> { Wave(2, 1000) }, 2, 600, 60, 0, new[] { 500, 300 });
         Check(busy[0].fireTick == 500, "channels held by earlier launches delay the wave until both free up");
+        var heavy = PlanSlot(new object(), 1000); heavy.channelCost = 3;
+        var weightedTimeline = StrikeTimeline.Simulate(new List<List<StrikePlanSlot>>
+        {
+            new List<StrikePlanSlot> { heavy }, new List<StrikePlanSlot> { heavy }
+        }, 4, 600, 60, 0, new int[0]);
+        Check(weightedTimeline[0].fireTick == 0 && weightedTimeline[1].fireTick == 601,
+            "a TV ballistic launch holds three channels until guidance ends");
+        var weightedOver = StrikeTimeline.Simulate(new List<List<StrikePlanSlot>> { new List<StrikePlanSlot> { heavy } },
+            2, 600, 60, 0, new int[0]);
+        Check(weightedOver[0].overCapacity && weightedOver[0].fireTick == -1, "one costly missile can exceed wave channel capacity");
+        var weightedBusy = StrikeTimeline.Simulate(new List<List<StrikePlanSlot>> { new List<StrikePlanSlot> { heavy } },
+            4, 600, 60, 0, new[] { 300, 500 });
+        Check(weightedBusy[0].fireTick == 300, "weighted wave waits for enough channels rather than just one free channel");
+
         var flying = StrikeTimeline.Simulate(new List<List<StrikePlanSlot>>
         {
             new List<StrikePlanSlot> { new StrikePlanSlot { launched = true, arrivalTick = 2000 }, new StrikePlanSlot { launched = true, arrivalTick = -1 } },
@@ -603,14 +703,148 @@ static class Test
         Check(aim.z < origin.z && aim.x == origin.x, "CIWS older missiles use flight angle when entry heading is absent");
     }
 
+    static void InertialDistribution()
+    {
+        Rand.PushState(19871022);
+        try
+        {
+            foreach (IntVec3 size in new[] { new IntVec3(301, 1, 301), new IntVec3(41, 1, 201) })
+            {
+                int cx = size.x / 2, cz = size.z / 2;
+                int radius = Math.Min(Math.Min(cx, size.x - 1 - cx), Math.Min(cz, size.z - 1 - cz));
+                double sx = 0, sz = 0, square = 0;
+                int samples = 12000, inner = 0;
+                for (int i = 0; i < samples; i++)
+                {
+                    IntVec3 cell = GuidanceType.InertialTarget(size);
+                    int x = cell.x - cx, z = cell.z - cz, r2 = x * x + z * z;
+                    if (cell.x < 0 || cell.x >= size.x || cell.z < 0 || cell.z >= size.z || r2 > radius * radius)
+                        throw new Exception("inertial sample escaped the map's inscribed circle");
+                    sx += x; sz += z; square += r2;
+                    if (r2 <= radius * radius / 4f) inner++;
+                }
+                Check(Math.Abs(sx / samples) < 1.5 && Math.Abs(sz / samples) < 1.5,
+                    "inertial distribution is centered on square and rectangular maps");
+                double normalizedVariance = square / samples / (radius * radius);
+                Check(normalizedVariance > 0.19 && normalizedVariance < 0.24,
+                    "inertial variance matches a circularly truncated Gaussian, not uniform scatter");
+                Check(inner > samples * 0.65 && inner < samples * 0.72,
+                    "inertial samples concentrate near the center");
+            }
+            Check(GuidanceType.InertialTarget(new IntVec3(1, 1, 1)) == IntVec3.Zero,
+                "single-cell map has a valid inertial target");
+            Check(!new GuidanceType_Inertial().TerminalGuidance && new GuidanceType_ActiveRadar().TerminalGuidance,
+                "active radar provides terminal guidance; inertial does not");
+        }
+        finally { Rand.PopState(); }
+    }
+
+    static void ShahedGuidanceOptions()
+    {
+        XElement root = XDocument.Load("1.7/Defs/Missile/DMSE_Shahed.xml").Root;
+        XElement Node(string name) => root.Elements().Single(x => (string)x.Element("defName") == name);
+        XElement bodyXml = Node("DMSE_MissileBody_Shahed");
+        var body = new MissileBodyDef
+        {
+            defName = (string)bodyXml.Element("defName"),
+            sizeClass = Enum.Parse<MissileSizeClass>((string)bodyXml.Element("sizeClass")),
+            builtInGuidance = (GuidanceType)Activator.CreateInstance(typeof(GuidanceType).Assembly.GetType(
+                (string)bodyXml.Element("builtInGuidance").Attribute("Class"), true)),
+            terminalUpdates = (int)bodyXml.Element("terminalUpdates"),
+            slots = bodyXml.Element("slots").Elements("li").Select(x => Enum.Parse<MissilePartCategory>(x.Value)).ToList()
+        };
+        var advanced = new ThingDef { defName = "ComponentSpacer" };
+        MissilePartDef Part(string name)
+        {
+            XElement xml = Node(name);
+            var part = new MissilePartDef
+            {
+                defName = name,
+                category = Enum.Parse<MissilePartCategory>((string)xml.Element("category")),
+                compatibleBodies = new List<MissileBodyDef> { body },
+                guidanceType = (GuidanceType)Activator.CreateInstance(typeof(GuidanceType).Assembly.GetType(
+                    (string)xml.Element("guidanceType").Attribute("Class"), true))
+            };
+            if (xml.Element("costList") != null)
+            {
+                XElement cost = xml.Element("costList").Elements().Single();
+                Check(cost.Name.LocalName == advanced.defName, "Shahed TV upgrade uses an advanced component");
+                part.costList = new List<ThingDefCountClass> { new ThingDefCountClass(advanced, (int)cost) };
+            }
+            return part;
+        }
+        body.defaultParts = bodyXml.Element("defaultParts").Elements("li").Select(x => Part(x.Value)).ToList();
+        MissileConfig cfg = MissileConfig.NewWithDefaults(body);
+        Check(cfg.TargetingGuidance is GuidanceType_Inertial && !cfg.PlayerChoosesTarget && !cfg.HasTerminalGuidance,
+            "manufactured Shahed starts with inertial guidance, not free TV");
+        Check(cfg.StrikeChannelCost == 1, "inertial Shahed occupies one channel");
+        var pending = cfg.Clone();
+        pending.SetPart(MissilePartCategory.Guidance, Part("DMSE_Shahed_Guidance_TV"));
+        var comp = new CompMissileConfig { config = cfg, pending = pending };
+        var required = comp.TotalRequired();
+        Check(required.Count == 1 && required.TryGetValue(advanced, out int amount) && amount == 1,
+            "switching Shahed to TV requires exactly one advanced component");
+        Check(pending.PlayerChoosesTarget && pending.StrikeChannelCost == 2,
+            "TV Shahed permits manual selection and occupies two channels");
+        Check(pending.TerminalUpdates == 0 && !pending.TracksMobileTargets,
+            "TV upgrade does not give Shahed moving-base tracking");
+        pending.SetPart(MissilePartCategory.Guidance, null);
+        Check(pending.TargetingGuidance is GuidanceType_Inertial && pending.StrikeChannelCost == 1,
+            "removing the TV module restores inertial targeting and releases the surcharge");
+    }
+
+    static void ShortBoosterEffects()
+    {
+        XElement launch = XDocument.Load("1.7/Defs/Missile/DMSE_MissileLaunchProjectiles.xml").Root.Elements()
+            .Single(x => (string)x.Element("defName") == "DMSE_Launch_Shahed");
+        XElement effect = launch.Element("comps").Elements("li")
+            .Single(x => (string)x.Attribute("Class") == "DMSE.CompProperties_EffecterHotLaunch");
+        var props = new CompProperties_EffecterHotLaunch
+        {
+            burnDurationTicks = (int)effect.Element("burnDurationTicks"),
+            effectScale = (float)effect.Element("effectScale")
+        };
+        Check(props.IsBurning(0, 0) && props.IsBurning(29, 0) && !props.IsBurning(30, 0)
+            && !props.IsBurning(300, 0), "short booster ends after 30 ticks, including cruise");
+        Check(!props.IsBurning(9, 10) && props.IsBurning(10, 10) && props.IsBurning(39, 10)
+            && !props.IsBurning(40, 10), "booster duration starts at ignition, respecting cold-launch delay");
+        Near(props.effectScale, 0.35f, "long-range loitering munition effect scale");
+        var unchanged = new CompProperties_EffecterHotLaunch();
+        Check(unchanged.IsBurning(3000, 0) && unchanged.effectScale == 1f,
+            "other missiles retain unlimited exhaust and original effect size");
+        props.burnDurationTicks = 0;
+        Check(!props.IsBurning(0, 0), "zero-duration booster is disabled");
+    }
+
     public static void Main()
     {
         Setup();
+        InertialDistribution();
+        ShahedGuidanceOptions();
+        ShortBoosterEffects();
         CiwsAimDirections();
         MissileMapEntry();
         Detection(); Solver(); FireControl(); LedgerAndTerminal(); InventoryAndPersistence(); StrikeP0(); StrikeP1(); StrikeP2(); StrikeP3(); StrikeP4();
         MissileContent(); AreaDefense();
         Console.WriteLine($"PASS: {count} BVR checks (real game/DMSE assemblies).");
+    }
+    class ManualLauncher : CompMissileLauncher_WorldTargeting
+    {
+        public bool online = true, ammo = true;
+        public MissileConfig config;
+        public override bool Active => online;
+        public override bool HasAmmo => ammo;
+        protected override int LaunchCooldownTicks => 60;
+        protected override string LoadedStatusText => "loaded";
+        protected override ThingDef LaunchSkyfallerDef => parent.def;
+        protected override ThingDef IncomingSkyfallerDef => parent.def;
+        protected override WorldObjectDef TravelWorldObjectDef => new WorldObjectDef();
+        public override IEnumerable<Thing> StrikeRounds => ammo ? new[] { parent } : Enumerable.Empty<Thing>();
+        public override MissileConfig BuildFiringConfig(Thing round) => config;
+        protected override void ConsumeAmmo(Thing round) { ammo = false; }
+        protected override string GizmoLabel => "launch";
+        protected override string GizmoDesc => "launch";
+        protected override string NoAmmoDisableReason => "no ammo";
     }
     class OnlineRadar : CompFireControlRadar { public override bool Active => true; }
     class ArmedLauncher : CompMissileLauncher_Interceptor { public bool armed; public override bool Active => armed; }

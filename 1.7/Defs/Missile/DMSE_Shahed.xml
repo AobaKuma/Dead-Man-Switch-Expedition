@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <DMSE.MissileBodyDef>
+    <defName>DMSE_MissileBody_Shahed</defName>
+    <label>long-range loitering munition</label>
+    <description>A low-cost delta-wing one-way attack drone with a piston engine. Long range, slow flight and a small warhead. Delivered with inertial guidance: aim points follow a circular normal distribution around the map center. One guidance slot accepts an optional TV guidance module costing one advanced component; TV lets the player select an impact point and occupies one additional fire-control channel. No in-flight target tracking.</description>
+    <sizeClass>Loitering</sizeClass>
+    <launchMode>Tilt</launchMode>
+    <customizeLocation>Item</customizeLocation>
+    <baseExplosionRadius>2.5</baseExplosionRadius>
+    <baseDamageDef>Bomb</baseDamageDef>
+    <baseDamageAmount>55</baseDamageAmount>
+    <baseScatter>2</baseScatter>
+    <baseWorldSpeedFactor>0.25</baseWorldSpeedFactor>
+    <baseRange>0</baseRange>
+    <baseFuel>50</baseFuel>
+    <baseSpecificImpulse>12</baseSpecificImpulse>
+    <rangePerFuelImpulse>0.1</rangePerFuelImpulse>
+    <incomingSkyfaller>DMSE_Incoming_Shahed</incomingSkyfaller>
+    <launchProjectile>DMSE_Launch_Shahed</launchProjectile>
+    <builtInGuidance Class="DMSE.GuidanceType_Inertial" />
+    <terminalUpdates>0</terminalUpdates>
+    <builtInTerminalGuidance>false</builtInTerminalGuidance>
+    <slots>
+      <li>Guidance</li>
+    </slots>
+    <defaultParts>
+      <li>DMSE_Shahed_Guidance_Inertial</li>
+    </defaultParts>
+  </DMSE.MissileBodyDef>
+  <ThingDef ParentName="DMSE_ResourceBase">
+    <defName>DMSE_Missile_Shahed</defName>
+    <label>long-range loitering munition</label>
+    <description>A cheap, rail-launched delta-wing attack drone with a pusher propeller. Reaches distant targets with a small high-explosive warhead, but is slow and vulnerable to air defence. Delivered with inertial guidance and map-center circular normal dispersion. Fit an optional TV guidance module for one advanced component to choose an impact point; TV occupies two fire-control channels instead of one. Requires loitering munitions and microelectronics basics to manufacture.</description>
+    <descriptionHyperlinks>
+      <ThingDef>DMSE_Building_LoiteringLauncher</ThingDef>
+      <ThingDef>DMSE_Building_RotaryLauncher</ThingDef>
+      <ThingDef>DMSE_LoiteringRack</ThingDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Things/Missile/Shahed/ammo</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2.5,2.5)</drawSize>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>1</stackLimit>
+    <tickerType>Rare</tickerType>
+    <useHitPoints>true</useHitPoints>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <MarketValue>650</MarketValue>
+      <Mass>200</Mass>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>10.0</DeteriorationRate>
+    </statBases>
+    <costList>
+      <Steel>45</Steel>
+      <Cloth>20</Cloth>
+      <Chemfuel>50</Chemfuel>
+      <ComponentStamped>4</ComponentStamped>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </costList>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <effectWorking>Smith</effectWorking>
+      <soundWorking>Recipe_Smith</soundWorking>
+      <recipeUsers Inherit="False">
+        <li>DMS_TableMachinePrinter</li>
+      </recipeUsers>
+      <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
+      <researchPrerequisites>
+        <li>DMSE_LoiteringMunitions</li>
+        <li>MicroelectronicsBasics</li>
+      </researchPrerequisites>
+    </recipeMaker>
+    <modExtensions>
+      <li Class="DMSE.MissileItemExtension">
+        <body>DMSE_MissileBody_Shahed</body>
+      </li>
+      <li Class="DMSE.MissileRoleExtension">
+        <role>Strike</role>
+      </li>
+    </modExtensions>
+    <comps>
+      <li Class="DMSE.CompProperties_DurabilityDecay">
+        <hitPointsPerDay>2</hitPointsPerDay>
+        <destroyWhenDepleted>true</destroyWhenDepleted>
+        <shelterBuildings>
+          <li>DMSE_LoiteringRack</li>
+          <li>DMSE_Building_LoiteringLauncher</li>
+          <li>DMSE_Building_RotaryLauncher</li>
+        </shelterBuildings>
+      </li>
+      <li Class="DMSE.CompProperties_MissileConfig">
+        <defaultBody>DMSE_MissileBody_Shahed</defaultBody>
+      </li>
+    </comps>
+    <inspectorTabs>
+      <li>DMSE.ITab_MissileAssembly</li>
+    </inspectorTabs>
+  </ThingDef>
+  <ThingDef ParentName="DMSE_MissileIncomingProjectileBase">
+    <defName>DMSE_Incoming_Shahed</defName>
+    <label>long-range loitering munition (incoming)</label>
+    <thingClass>DMSE.Projectile_MissileIncoming</thingClass>
+    <graphicData>
+      <texPath>Things/Missile/Shahed/skyFaller_incoming</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>3</drawSize>
+    </graphicData>
+    <size>(1,1)</size>
+    <modExtensions>
+      <li Class="DMSE.MissileFlightExtension">
+        <shadowSize>(2, 2)</shadowSize>
+        <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
+        <speed>1</speed>
+      </li>
+      <li Class="DMSE.BVRTargetProps">
+        <distanceLevel>0.8</distanceLevel>
+        <stealthLevel>0</stealthLevel>
+        <speed>7</speed>
+        <altitude>300</altitude>
+      </li>
+    </modExtensions>
+  </ThingDef>
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Shahed_Guidance_Inertial</defName>
+    <label>inertial guidance</label>
+    <description>Standard long-range loitering munition inertial navigation. No target recognition or terminal guidance. Aim points follow a circular normal distribution around the map center. Uses one fire-control channel.</description>
+    <category>Guidance</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_Shahed</li>
+    </compatibleBodies>
+    <guidanceType Class="DMSE.GuidanceType_Inertial" />
+  </DMSE.MissilePartDef>
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Shahed_Guidance_TV</defName>
+    <label>TV guidance</label>
+    <description>Optional long-range loitering munition TV guidance module. Lets the player choose the impact point when the drone reaches the target map. Costs one advanced component and occupies one additional fire-control channel (two in total). Enemy-launched TV drones fall back to inertial targeting.</description>
+    <category>Guidance</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_Shahed</li>
+    </compatibleBodies>
+    <guidanceType Class="DMSE.GuidanceType_TV" />
+    <costList>
+      <ComponentSpacer>1</ComponentSpacer>
+    </costList>
+  </DMSE.MissilePartDef>
+</Defs>

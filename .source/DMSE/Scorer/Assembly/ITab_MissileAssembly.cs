@@ -21,6 +21,10 @@ namespace DMSE
     public class ITab_MissileAssembly : ITab
     {
         private static readonly Vector2 WinSize = new Vector2(440f, 560f);
+        private Vector2 scrollPos;
+        private float lastHeight;
+        private Thing lastThing;
+        private bool showStats;
 
         /// <summary>
         /// 取得當前選取物的 <see cref="CompMissileConfig"/>。
@@ -119,20 +123,44 @@ namespace DMSE
             if (comp == null) { return; }
             comp.EnsureInit();
             MissileConfig cfg = comp.pending;
+            bool reserved = StrikeReservation.IsReserved(comp.parent);
 
             Rect rect = new Rect(0f, 0f, WinSize.x, WinSize.y).ContractedBy(12f);
+            // §2.1 / §3.3: configuration scrolls; the decision stays visible.
+            if (lastThing != comp.parent)
+            {
+                lastThing = comp.parent;
+                scrollPos = Vector2.zero;
+                lastHeight = 0f;
+                showStats = false;
+            }
+            // §2.1: a short resource/status summary stays with the action, even when scrolled.
+            string footerStatus = reserved ? "DMSE.Strike.ReservedNoEdit".Translate().ToString()
+                : !comp.NeedsAssembly ? "DMSE.UI.ActiveConfig".Translate().ToString()
+                : comp.assemblyConfirmed ? "DMSE.Missile.AssemblyQueued".Translate().ToString()
+                : "DMSE.UI.PendingConfig".Translate().ToString();
+            Rect footer = new Rect(rect.x, rect.yMax - DMSEUI.ButtonHeight, rect.width, DMSEUI.ButtonHeight);
+            Rect content = new Rect(rect.x, rect.y, rect.width, rect.height - DMSEUI.ButtonHeight - DMSEUI.SectionGap - Text.LineHeight - DMSEUI.Gap);
+            Rect view = new Rect(0f, 0f, content.width - DMSEUI.ScrollbarWidth, Mathf.Max(lastHeight, content.height));
+            Widgets.BeginScrollView(content, ref scrollPos, view);
             Listing_Standard list = new Listing_Standard();
-            list.Begin(rect);
+            list.Begin(new Rect(0f, 0f, view.width, 99999f));
 
             Text.Font = GameFont.Medium;
             list.Label("DMSE.Missile.Tab".Translate());
             Text.Font = GameFont.Small;
 
+            GUI.color = comp.NeedsAssembly ? DMSEUI.Warning : DMSEUI.Success;
+            list.Label((comp.NeedsAssembly
+                ? (comp.assemblyConfirmed ? "DMSE.Missile.AssemblyQueued" : "DMSE.UI.PendingConfig")
+                : "DMSE.UI.ActiveConfig").Translate());
+            GUI.color = Color.white;
+
             // 儲存架模式：顯示正在編輯哪枚導彈
             string rackLabel = RackIndexLabel;
             if (rackLabel != null)
             {
-                GUI.color = Color.gray;
+                GUI.color = DMSEUI.Muted;
                 list.Label(rackLabel);
                 GUI.color = Color.white;
             }
@@ -141,13 +169,12 @@ namespace DMSE
             bool instant = MissileAssemblyUtility.GodModeInstant;
             if (instant)
             {
-                GUI.color = Color.gray;
+                GUI.color = DMSEUI.Muted;
                 list.Label("DMSE.Missile.GodModeInstant".Translate());
                 GUI.color = Color.white;
             }
 
             // 被打擊任務保留的導彈／彈道井：任務結束前不可改裝（按鈕停用，數值照常顯示）
-            bool reserved = StrikeReservation.IsReserved(comp.parent);
             if (reserved)
             {
                 GUI.color = ColorLibrary.RedReadable;
@@ -192,7 +219,7 @@ namespace DMSE
             {
                 // 唯讀：彈體由物品 def／平台決定
                 string bodyFixed = "DMSE.Missile.BodyFixed".Translate();
-                GUI.color = Color.gray;
+                GUI.color = DMSEUI.Muted;
                 list.Label(bodyLabel + " (" + bodyFixed + ")");
                 GUI.color = Color.white;
             }
@@ -211,30 +238,41 @@ namespace DMSE
             list.GapLine(8f);
 
             // 有效數值（待裝配設定）
-            list.Label("DMSE.Missile.Stats".Translate());
-            list.Label("DMSE.Missile.Stat.Radius".Translate(cfg.ExplosionRadius.ToString("0.#")));
-            list.Label("DMSE.Missile.Stat.Damage".Translate(
-                cfg.DamageDef != null ? cfg.DamageDef.LabelCap : (TaggedString)"-", cfg.DamageAmount));
-            list.Label("DMSE.Missile.Stat.Scatter".Translate(cfg.Scatter.ToString("0.#")));
-            list.Label("DMSE.Missile.Stat.Speed".Translate(cfg.WorldSpeedFactor.ToString("0.##")));
-            list.Label("DMSE.Missile.Stat.Fuel".Translate(cfg.Fuel.ToString("0")));
-            list.Label("DMSE.Missile.Stat.Impulse".Translate(cfg.SpecificImpulse.ToString("0.#")));
-            if (cfg.Range > 0)
+            // §2.1: keep the decision metrics visible; detailed specifications are optional.
+            if (comp.NeedsAssembly) { list.Label("DMSE.UI.Comparison".Translate()); }
+            DMSEUI.ValueRow(list, "DMSE.UI.RangeChange".Translate(), comp.NeedsAssembly
+                ? comp.config.Range + " → " + cfg.Range : cfg.Range.ToString());
+            DMSEUI.ValueRow(list, "DMSE.UI.DamageChange".Translate(), comp.NeedsAssembly
+                ? comp.config.DamageAmount + " → " + cfg.DamageAmount : cfg.DamageAmount.ToString());
+            list.Gap(DMSEUI.Gap);
+            if (list.ButtonText((showStats ? "DMSE.UI.HideStats" : "DMSE.UI.ShowStats").Translate())) { showStats = !showStats; }
+            if (showStats)
             {
-                list.Label("DMSE.Missile.Stat.Range".Translate(cfg.Range));
+                list.Label("DMSE.Missile.Stats".Translate());
+                list.Label("DMSE.Missile.Stat.Radius".Translate(cfg.ExplosionRadius.ToString("0.#")));
+                list.Label("DMSE.Missile.Stat.Damage".Translate(
+                    cfg.DamageDef != null ? cfg.DamageDef.LabelCap : (TaggedString)"-", cfg.DamageAmount));
+                list.Label("DMSE.Missile.Stat.Scatter".Translate(cfg.Scatter.ToString("0.#")));
+                list.Label("DMSE.Missile.Stat.Speed".Translate(cfg.WorldSpeedFactor.ToString("0.##")));
+                list.Label("DMSE.Missile.Stat.Fuel".Translate(cfg.Fuel.ToString("0")));
+                list.Label("DMSE.Missile.Stat.Impulse".Translate(cfg.SpecificImpulse.ToString("0.#")));
+                if (cfg.Range > 0)
+                {
+                    list.Label("DMSE.Missile.Stat.Range".Translate(cfg.Range));
+                }
+                if (!Mathf.Approximately(cfg.SignatureFactor, 1f))
+                {
+                    list.Label("DMSE.Missile.Stat.Signature".Translate(cfg.SignatureFactor.ToString("0.#")));
+                }
+                if (cfg.ChaffCharges > 0)
+                {
+                    list.Label("DMSE.Missile.Stat.Chaff".Translate(cfg.ChaffCharges, cfg.JamStrength.ToString("0.##")));
+                }
+                list.Label(cfg.HasTerminalGuidance
+                    ? "DMSE.Missile.Stat.TerminalGuidance".Translate(cfg.TerminalUpdates)
+                    : "DMSE.Missile.Stat.NoTerminalGuidance".Translate());
+                list.Label(CompMissileLauncher_WorldTargeting.GuidanceTargetingText(cfg));
             }
-            if (!Mathf.Approximately(cfg.SignatureFactor, 1f))
-            {
-                list.Label("DMSE.Missile.Stat.Signature".Translate(cfg.SignatureFactor.ToString("0.#")));
-            }
-            if (cfg.ChaffCharges > 0)
-            {
-                list.Label("DMSE.Missile.Stat.Chaff".Translate(cfg.ChaffCharges, cfg.JamStrength.ToString("0.##")));
-            }
-            list.Label(cfg.HasTerminalGuidance
-                ? "DMSE.Missile.Stat.TerminalGuidance".Translate(cfg.TerminalUpdates)
-                : "DMSE.Missile.Stat.NoTerminalGuidance".Translate());
-            list.Label(CompMissileLauncher_WorldTargeting.GuidanceTargetingText(cfg));
 
             // 裝配狀態 + 確認／還原按鈕
             if (comp.NeedsAssembly)
@@ -246,46 +284,53 @@ namespace DMSE
                     string costStr = string.Join(", ", need.Select(kv => kv.Key.label + " x" + kv.Value));
                     GUI.color = ColorLibrary.RedReadable;
                     list.Label("DMSE.Missile.NeedResources".Translate(costStr));
+                    if (!reserved) { footerStatus = "DMSE.Missile.NeedResources".Translate(costStr); }
                     GUI.color = Color.white;
                 }
                 else
                 {
-                    GUI.color = Color.yellow;
+                    GUI.color = DMSEUI.Warning;
                     list.Label("DMSE.Missile.ReadyToAssemble".Translate());
+                    if (!reserved && !comp.assemblyConfirmed) { footerStatus = "DMSE.Missile.ReadyToAssemble".Translate(); }
                     GUI.color = Color.white;
                 }
+            }
 
-                list.Gap(4f);
-                GUI.enabled = !reserved;
+            lastHeight = list.CurHeight + DMSEUI.Gap;
+            list.End();
+            Widgets.EndScrollView();
 
-                // 確認裝配按鈕（未確認時顯示；確認後轉為提示文字）
-                if (!comp.assemblyConfirmed)
-                {
-                    if (list.ButtonText("DMSE.Missile.ConfirmAssembly".Translate()))
-                    {
-                        comp.assemblyConfirmed = true;
-                    }
-                }
-                else
-                {
-                    GUI.color = Color.green;
-                    list.Label("DMSE.Missile.AssemblyQueued".Translate());
-                    GUI.color = Color.white;
-                }
-
-                list.Gap(4f);
-
-                // 還原為已裝配設定
-                if (list.ButtonText("DMSE.Missile.ResetToCurrent".Translate()))
+            // §2.8: one primary action; reverting is a quiet secondary action.
+            Rect statusRect = new Rect(rect.x, footer.y - Text.LineHeight - DMSEUI.Gap, rect.width, Text.LineHeight);
+            GUI.color = reserved ? DMSEUI.Error : comp.NeedsAssembly ? DMSEUI.Warning : DMSEUI.Success;
+            Widgets.Label(statusRect, footerStatus.Truncate(statusRect.width));
+            TooltipHandler.TipRegion(statusRect, footerStatus);
+            GUI.color = Color.white;
+            Widgets.DrawLineHorizontal(rect.x, statusRect.y - DMSEUI.Gap, rect.width);
+            if (comp.NeedsAssembly)
+            {
+                float half = (footer.width - DMSEUI.Gap) / 2f;
+                Rect reset = new Rect(footer.x, footer.y, half, footer.height);
+                Rect confirm = new Rect(reset.xMax + DMSEUI.Gap, footer.y, half, footer.height);
+                if (Widgets.ButtonText(reset, "DMSE.Missile.ResetToCurrent".Translate(), drawBackground: false, active: !reserved))
                 {
                     comp.pending.CopyFrom(comp.config);
                     comp.assemblyConfirmed = false;
                     comp.RefundDeliveredIfIdle();
                 }
-                GUI.enabled = true;
+                if (Widgets.ButtonText(confirm, (comp.assemblyConfirmed ? "DMSE.Missile.AssemblyQueued" : "DMSE.Missile.ConfirmAssembly").Translate(),
+                    active: !reserved && !comp.assemblyConfirmed))
+                {
+                    comp.assemblyConfirmed = true;
+                }
+                if (reserved) { TooltipHandler.TipRegion(footer, "DMSE.Strike.ReservedNoEdit".Translate()); }
             }
-
-            list.End();
+            else
+            {
+                GUI.color = DMSEUI.Success;
+                Widgets.Label(footer, "DMSE.UI.ActiveConfig".Translate());
+                GUI.color = Color.white;
+            }
 
             if (instant) { MissileAssemblyUtility.TryInstantAssemble(SelThing); }
         }
@@ -293,11 +338,16 @@ namespace DMSE
         private void DrawSlot(Listing_Standard list, CompMissileConfig comp, MissileConfig cfg, MissilePartCategory cat)
         {
             MissilePartDef cur = cfg.PartFor(cat);
-            Rect row = list.GetRect(28f);
+            string categoryLabel = ("DMSE.Missile.Cat." + cat).Translate();
+            string partLabel = cur != null ? cur.LabelCap.ToString() : "DMSE.Missile.None".Translate().ToString();
+            float height = Mathf.Max(28f, Text.CalcHeight(categoryLabel, list.ColumnWidth * 0.38f),
+                Text.CalcHeight(partLabel, list.ColumnWidth * 0.60f - DMSEUI.Gap) + DMSEUI.Gap);
+            Rect row = list.GetRect(height);
             Rect labelRect = row.LeftPart(0.38f);
             Rect btnRect = row.RightPart(0.60f);
 
-            Widgets.Label(labelRect, ("DMSE.Missile.Cat." + cat).Translate());
+            Widgets.Label(labelRect, categoryLabel);
+            TooltipHandler.TipRegion(btnRect, partLabel);
             if (Widgets.ButtonText(btnRect, cur != null ? cur.LabelCap : (TaggedString)"DMSE.Missile.None".Translate()))
             {
                 List<FloatMenuOption> opts = new List<FloatMenuOption>();

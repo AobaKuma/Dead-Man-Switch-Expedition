@@ -1,7 +1,7 @@
 # BVR checks (RimWorld 1.7)
 
 These run the production DMSE assembly against the real 1.7 reference assemblies,
-with a minimal game fixture rather than the game/render loop. They cover detection
+with a minimal game fixture rather than the game/render loop. They also verify map-center inertial Gaussian sampling on square, rectangular and single-cell maps. They cover detection
 radii and stealth/size modifiers, spherical head-on solutions and late-launch
 rejection, fire-control formulas, per-faction shared channels (artillery/local/world),
 terminal-only wave classification, NPC inventory/cooldown/restock and map handoff,

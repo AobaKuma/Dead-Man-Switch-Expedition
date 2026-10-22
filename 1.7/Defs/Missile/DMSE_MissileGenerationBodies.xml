@@ -389,7 +389,7 @@
     <label>supersonic anti-ship missile body</label>
     <description>A ramjet-powered supersonic airframe that climbs after launch and dives to skim the sea, compressing a close-in defence's reaction time to seconds. Four assembly slots: warhead, guidance, propulsion and payload; it leaves the printer with an anti-ship radar seeker.</description>
     <sizeClass>Medium</sizeClass>
-    <launchMode>Both</launchMode>
+    <launchMode>Tilt</launchMode>
     <customizeLocation>Item</customizeLocation>
     <payloadCapacity>5</payloadCapacity>
     <baseExplosionRadius>6</baseExplosionRadius>
@@ -431,19 +431,19 @@
     <sizeClass>Medium</sizeClass>
     <launchMode>Both</launchMode>
     <customizeLocation>Item</customizeLocation>
-    <payloadCapacity>6</payloadCapacity>
-    <baseExplosionRadius>6.5</baseExplosionRadius>
+    <payloadCapacity>15</payloadCapacity>
+    <baseExplosionRadius>18</baseExplosionRadius>
     <baseDamageDef>Bomb</baseDamageDef>
-    <baseDamageAmount>160</baseDamageAmount>
-    <baseScatter>2</baseScatter>
-    <baseWorldSpeedFactor>1.8</baseWorldSpeedFactor>
-    <!-- 射程：120 * 4.25 * 0.1 = 51 格 -->
+    <baseDamageAmount>420</baseDamageAmount>
+    <baseScatter>1</baseScatter>
+    <baseWorldSpeedFactor>4.05</baseWorldSpeedFactor>
+    <!-- 射程：300 * 3.6 * 0.1 = 108 格 -->
     <baseRange>0</baseRange>
-    <terminalUpdates>4</terminalUpdates>
-    <baseFuel>120</baseFuel>
-    <baseSpecificImpulse>4.25</baseSpecificImpulse>
+    <terminalUpdates>9</terminalUpdates>
+    <baseFuel>300</baseFuel>
+    <baseSpecificImpulse>3.6</baseSpecificImpulse>
     <rangePerFuelImpulse>0.1</rangePerFuelImpulse>
-    <assembleWorkAmount>1500</assembleWorkAmount>
+    <assembleWorkAmount>3600</assembleWorkAmount>
     <incomingSkyfaller>DMSE_Incoming_Yj</incomingSkyfaller>
     <launchProjectile>DMSE_Launch_Yj</launchProjectile>
     <slots>
@@ -765,13 +765,13 @@
     </modExtensions>
   </ThingDef>
 
-  <!-- 鷹擊：高超音速掠海、隱身 2（貼圖暫借白蛉） -->
+  <!-- 鷹擊：高超音速掠海、隱身 3（YJ20） -->
   <ThingDef ParentName="DMSE_MissileIncomingProjectileBase">
     <defName>DMSE_Incoming_Yj</defName>
     <label>hypersonic anti-ship missile (incoming)</label>
     <thingClass>DMSE.Projectile_MissileIncoming</thingClass>
     <graphicData>
-      <texPath>Things/Missile/Moskit/skyFaller_incoming</texPath>
+      <texPath>Things/Missile/YJ20/skyFaller_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>4.5</drawSize>
     </graphicData>
@@ -784,8 +784,8 @@
       </li>
       <li Class="DMSE.BVRTargetProps">
         <distanceLevel>1.6</distanceLevel>
-        <stealthLevel>2</stealthLevel>
-        <speed>70</speed>
+        <stealthLevel>3</stealthLevel>
+        <speed>135</speed>
         <altitude>50</altitude>
       </li>
     </modExtensions>

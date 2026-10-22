@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -19,9 +20,9 @@ namespace DMSE
         private const float IconLeft    = 4f;
         private const float ContentLeft = IconLeft + IconSize + 6f; // 38f
 
-        private static readonly Color DimColor     = new Color(0.65f, 0.65f, 0.65f);
-        private static readonly Color PendingColor = new Color(1f,    0.80f, 0.25f);
-        private static readonly Color ReadyColor   = new Color(0.55f, 0.90f, 0.55f);
+        private static readonly Color DimColor     = DMSEUI.Muted;
+        private static readonly Color PendingColor = DMSEUI.Warning;
+        private static readonly Color ReadyColor   = DMSEUI.Success;
 
         // ── 狀態 ────────────────────────────────────────────────────
         private Vector2 scrollPos;
@@ -58,7 +59,7 @@ namespace DMSE
             Text.Font = GameFont.Small;
 
             // 容量副標題
-            GUI.color = Color.gray;
+            GUI.color = DMSEUI.Muted;
             Widgets.Label(new Rect(outerRect.x, outerRect.y + 30f, outerRect.width, 20f),
                 "DMSE.MissileInventory.Count".Translate(missiles.Count, rack.MaxStored));
             GUI.color = Color.white;
@@ -82,7 +83,7 @@ namespace DMSE
 
             if (missiles.Count == 0)
             {
-                GUI.color   = Color.gray;
+                GUI.color   = DMSEUI.Muted;
                 Text.Anchor = TextAnchor.MiddleCenter;
                 Widgets.Label(new Rect(0f, 0f, viewRect.width, 36f),
                     "DMSE.MissileInventory.Empty".Translate());
@@ -117,7 +118,9 @@ namespace DMSE
 
         private void DrawRow(Thing missile, float width, ref float curY, int index)
         {
-            Rect row = new Rect(0f, curY, width, RowHeight);
+            bool pending = missile.TryGetComp<CompMissileConfig>()?.NeedsAssembly == true;
+            float height = RowHeight + (pending ? 20f : 0f);
+            Rect row = new Rect(0f, curY, width, height);
 
             // 背景：選中 / hover
             if (index % 2 == 1) { Widgets.DrawAltRect(row); }
@@ -125,7 +128,7 @@ namespace DMSE
             Widgets.DrawHighlightIfMouseover(row);
 
             // 圖示（原版 28 × 28，垂直置中）
-            float iconY = curY + (RowHeight - IconSize) * 0.5f;
+            float iconY = curY + (height - IconSize) * 0.5f;
             Widgets.ThingIcon(new Rect(IconLeft, iconY, IconSize, IconSize), missile);
 
             // ── 名稱 + 重命名按鈕 ──────────────────────────────────
@@ -141,6 +144,7 @@ namespace DMSE
             GUI.color   = Color.white;
             Widgets.Label(new Rect(ContentLeft, curY, nameW, 20f),
                 displayName.CapitalizeFirst().Truncate(nameW));
+            TooltipHandler.TipRegion(new Rect(ContentLeft, curY, nameW, 20f), displayName);
             Text.Anchor = TextAnchor.UpperLeft;
 
             if (rnComp != null)
@@ -154,7 +158,7 @@ namespace DMSE
             }
 
             // ── 統計摘要（名稱佔 20px，剩餘給兩行 stats）──────────
-            DrawStats(new Rect(ContentLeft, curY + 20f, contentW, RowHeight - 20f), missile);
+            DrawStats(new Rect(ContentLeft, curY + 20f, contentW, height - 20f), missile);
 
             // ── 點選整列 → SelectLater ─────────────────────────────
             // ButtonInvisible 在所有子控件之後：ButtonImage（rename）先消耗事件，故無衝突
@@ -163,7 +167,7 @@ namespace DMSE
                 thingToSelect = missile;
             }
 
-            curY += RowHeight;
+            curY += height;
         }
 
         // ── 統計顯示 ────────────────────────────────────────────────
@@ -181,40 +185,43 @@ namespace DMSE
 
                 TaggedString noneStr = "DMSE.Missile.None".Translate();
 
-                // 判斷彈頭 / 導引的 pending 差異
-                MissilePartDef activeWH  = active.PartFor(MissilePartCategory.Warhead);
-                MissilePartDef activeGUD = active.PartFor(MissilePartCategory.Guidance);
-                MissilePartDef showWH    = activeWH;
-                MissilePartDef showGUD   = activeGUD;
-                bool           whDiff    = false;
-                bool           gudDiff   = false;
-
-                if (isPending)
-                {
-                    MissilePartDef pWH  = cfg.pending.PartFor(MissilePartCategory.Warhead);
-                    MissilePartDef pGUD = cfg.pending.PartFor(MissilePartCategory.Guidance);
-                    whDiff  = pWH  != activeWH;
-                    gudDiff = pGUD != activeGUD;
-                    if (whDiff)  { showWH  = pWH; }
-                    if (gudDiff) { showGUD = pGUD; }
-                }
-
+                // §2.1 / §3.6: every visible stat describes the active configuration.
+                MissilePartDef showWH = active.PartFor(MissilePartCategory.Warhead);
+                MissilePartDef showGUD = active.PartFor(MissilePartCategory.Guidance);
                 // 第一列：彈頭（左半）| 導引（右半）
                 float halfW = r.width * 0.5f;
                 DrawPartLabel(new Rect(r.x,         r.y, halfW, 16f),
-                    "DMSE.Missile.Cat.Warhead".Translate(),  showWH,  noneStr, whDiff);
+                    "DMSE.Missile.Cat.Warhead".Translate(),  showWH,  noneStr);
                 DrawPartLabel(new Rect(r.x + halfW, r.y, halfW, 16f),
-                    "DMSE.Missile.Cat.Guidance".Translate(), showGUD, noneStr, gudDiff);
+                    "DMSE.Missile.Cat.Guidance".Translate(), showGUD, noneStr);
 
-                // 第二列：爆炸半徑 & 傷害（僅繪製一次，有 pending 時橙黃色）
-                GUI.color = isPending ? PendingColor : DimColor;
+                // 第二列：生效中的爆炸半徑與傷害；待裝配狀態另列。
+                GUI.color = DimColor;
                 string statsLine = "DMSE.MissileInventory.Stats"
                     .Translate(active.ExplosionRadius.ToString("0.#"), active.DamageAmount);
                 if (isPending)
                 {
-                    statsLine += "  [" + "DMSE.MissileInventory.Pending".Translate() + "]";
+                    GUI.color = PendingColor;
+                    Rect pendingRect = new Rect(r.x, r.y + 34f, r.width, 20f);
+                    Widgets.Label(pendingRect, "DMSE.UI.PendingConfig".Translate().ToString().Truncate(r.width));
+                    GUI.color = DimColor;
+                    string tip = "DMSE.UI.ActiveConfig".Translate() + "\n" +
+                        "DMSE.MissileInventory.Stats".Translate(active.ExplosionRadius.ToString("0.#"), active.DamageAmount)
+                        + "\n\n" + "DMSE.UI.PendingConfig".Translate() + "\n"
+                        + "DMSE.Missile.Body".Translate() + ": "
+                        + (active.body?.LabelCap.ToString() ?? noneStr.ToString()) + " → "
+                        + (cfg.pending.body?.LabelCap.ToString() ?? noneStr.ToString()) + "\n"
+                        + string.Join("\n", (cfg.pending.body?.slots ?? new List<MissilePartCategory>()).Union(active.body?.slots ?? new List<MissilePartCategory>()).Select(cat =>
+                            ("DMSE.Missile.Cat." + cat).Translate() + ": "
+                            + (active.PartFor(cat)?.LabelCap.ToString() ?? noneStr.ToString()) + " → "
+                            + (cfg.pending.PartFor(cat)?.LabelCap.ToString() ?? noneStr.ToString())))
+                        + "\n" + "DMSE.MissileInventory.Stats".Translate(cfg.pending.ExplosionRadius.ToString("0.#"), cfg.pending.DamageAmount);
+                    TooltipHandler.TipRegion(new Rect(r.x, r.y + 34f, r.width, 20f), tip);
                 }
-                Widgets.Label(new Rect(r.x, r.y + 17f, r.width, 16f), statsLine);
+                statsLine = "DMSE.UI.ActiveConfig".Translate() + ": " + statsLine;
+                Rect statsRect = new Rect(r.x, r.y + 17f, r.width, 16f);
+                Widgets.Label(statsRect, statsLine.Truncate(r.width));
+                TooltipHandler.TipRegion(statsRect, statsLine);
             }
             else
             {
@@ -229,16 +236,17 @@ namespace DMSE
         }
 
         /// <summary>
-        /// 繪製單個部件標籤，差異欄位橙黃並加 " *"，否則顯示暗灰。
+        /// 繪製目前生效的部件標籤；待裝配差異在獨立狀態列顯示。
         /// 若超出寬度則截短並加省略號。
         /// </summary>
         private static void DrawPartLabel(Rect r, TaggedString prefix,
-            MissilePartDef part, TaggedString noneStr, bool changed)
+            MissilePartDef part, TaggedString noneStr)
         {
-            GUI.color = changed ? PendingColor : DimColor;
+            GUI.color = DimColor;
             string val   = part != null ? part.LabelCap.ToString() : noneStr.ToString();
-            string label = prefix + ": " + val + (changed ? " *" : "");
+            string label = prefix + ": " + val;
             Widgets.Label(r, label.Truncate(r.width));
+            TooltipHandler.TipRegion(r, label);
         }
     }
 }

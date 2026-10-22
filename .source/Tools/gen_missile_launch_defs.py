@@ -32,6 +32,7 @@ SPECS = [
     # Three-generation bodies: own texture, flight of the closest family, effect by how the real missile leaves its launcher.
     ("LegacyBallistic",   "DMSE_SkyFaller_BallisticMissile", "Things/Missile/V2/skyFaller_incoming",        ("hot", 1.2)),   # V2 lifts off its pad
     ("LegacyLoiter",      "DMSE_SkyFaller_Loiter",           "Things/Missile/V1/skyFaller_incoming",        ("hot", 0.7)),   # V1 off its ramp
+    ("Shahed",            "DMSE_SkyFaller_Loiter",           "Things/Missile/Shahed/skyFaller_incoming",    ("hot", 0.5)),   # rail booster
     ("LegacyInterceptor", "DMSE_SkyFaller_Interceptor",      "Things/Missile/Rheintochter/skyFaller",       ("hot", 1.0)),   # boosted SAM
     ("AdvancedLight",     "DMSE_SkyFaller_LightMissile",     "Things/Missile/Hellfire/skyFaller_incoming",  ("hot", 0.75)),  # small rail missile
     ("AdvancedBallistic", "DMSE_SkyFaller_BallisticMissile", "Things/Missile/Minuteman/skyFaller_incoming", ("cold", 20)),   # silo ejection
@@ -40,9 +41,13 @@ SPECS = [
     ("Maverick",          "DMSE_SkyFaller_LightMissile",     "Things/Missile/AGM65/skyFaller",              ("hot", 0.85)),
     ("Sparrow",           "DMSE_SkyFaller_Interceptor",      "Things/Missile/Aim120/skyFaller",             ("hot", 1.0)),
     ("Moskit",            "DMSE_SkyFaller_CruiseMissile",    "Things/Missile/Moskit/skyFaller",             ("hot", 1.0)),   # booster
-    ("Yj",                "DMSE_SkyFaller_CruiseMissile",    "Things/Missile/Moskit/skyFaller",             ("hot", 1.1)),
+    ("Yj",                "DMSE_SkyFaller_CruiseMissile",    "Things/Missile/YJ20/skyFaller",             ("hot", 1.1)),
     ("Tochka",            "DMSE_SkyFaller_BallisticMissile", "Things/Missile/Minuteman/skyFaller_incoming", ("hot", 1.1)),   # off a launcher vehicle
 ]
+
+LAUNCH_EFFECT_OVERRIDES = {
+    "Shahed": {"burnDurationTicks": "30", "effectScale": "0.35"},
+}
 
 SHARED_COMP_TAGS = ["ignitionSound", "ExhaustFleck", "ExhaustCurve", "SmokeFleck", "SmokeCurve", "launchEffectTrigger", "offsetY", "effecterDef"]
 
@@ -242,6 +247,10 @@ def main():
         labels[name] = incoming_name
         flight = child(template, "skyfaller")
         comp = comp_xml(template, effect)
+        if comp:
+            extra = "".join("<%s>%s</%s>\n" % (key, value, key)
+                            for key, value in LAUNCH_EFFECT_OVERRIDES.get(suffix, {}).items())
+            comp = comp.removesuffix("</li>") + extra + "</li>"
         note = ("copy of %s" % template_name) if tex is None else ("%s flight, %s" % (template_name, "%s launch %s" % effect if effect else "template launch"))
         parts.append("  <!-- %s: %s -->" % (body_name, note))
         parts.append('  <ThingDef ParentName="DMSE_MissileLaunchProjectileBase">')

@@ -1036,7 +1036,7 @@
     <defName>DMSE_Launch_Yj</defName>
     <label>hypersonic anti-ship missile (launching)</label>
     <graphicData>
-      <texPath>Things/Missile/Moskit/skyFaller</texPath>
+      <texPath>Things/Missile/YJ20/skyFaller</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>4.5</drawSize>
     </graphicData>
@@ -1171,5 +1171,81 @@
       </li>
     </comps>
   </ThingDef>
+
+  <!-- Shahed-136: rail booster launch, propeller-powered cruise. -->
+  <ThingDef ParentName="DMSE_MissileLaunchProjectileBase">
+    <defName>DMSE_Launch_Shahed</defName>
+    <label>long-range loitering munition (launching)</label>
+    <graphicData>
+      <texPath>Things/Missile/Shahed/skyFaller_incoming</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>3</drawSize>
+    </graphicData>
+    <modExtensions>
+      <li Class="DMSE.MissileFlightExtension">
+        <movementType>Accelerate</movementType>
+        <reversed>true</reversed>
+        <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
+        <shadowSize>(1.5, 1.5)</shadowSize>
+        <ticksToDiscardInReverse>300</ticksToDiscardInReverse>
+        <ticksToImpactRange>0</ticksToImpactRange>
+        <anticipationSound>DropPod_Leaving</anticipationSound>
+        <anticipationSoundTicks>-1</anticipationSoundTicks>
+        <speedCurve>
+          <points>
+            <li>(0,0.3)</li>
+            <li>(0.2,0.2)</li>
+            <li>(0.5,0.5)</li>
+            <li>(1,1)</li>
+          </points>
+        </speedCurve>
+        <rotationCurve>
+          <points>
+            <li>(0,-10)</li>
+            <li>(0.30,-25)</li>
+            <li>(0.6,-5)</li>
+            <li>(1,0)</li>
+          </points>
+        </rotationCurve>
+        <zPositionCurve>
+          <points>
+            <li>(0,0)</li>
+            <li>(0.05,2)</li>
+            <li>(0.3,1)</li>
+            <li>(1,10)</li>
+          </points>
+        </zPositionCurve>
+      </li>
+    </modExtensions>
+    <comps>
+      <li Class="DMSE.CompProperties_EffecterHotLaunch">
+        <launchBlastScale>0.5</launchBlastScale>
+        <burnDurationTicks>30</burnDurationTicks>
+        <effectScale>0.35</effectScale>
+        <ignitionSound>DMSE_Missile_Flight</ignitionSound>
+        <ExhaustFleck>DMS_Fleck_RocketFlame</ExhaustFleck>
+        <ExhaustCurve>
+          <points>
+            <li>(0,2)</li>
+            <li>(0.1,5)</li>
+            <li>(0.5,3)</li>
+            <li>(0.9,2)</li>
+          </points>
+        </ExhaustCurve>
+        <SmokeFleck>Smoke</SmokeFleck>
+        <SmokeCurve>
+          <points>
+            <li>(0,3)</li>
+            <li>(0.5,2)</li>
+            <li>(1,1)</li>
+          </points>
+        </SmokeCurve>
+        <launchEffectTrigger>DMS_LaunchDust_Recoilless</launchEffectTrigger>
+      </li>
+    </comps>
+  </ThingDef>
+
+
+
 
 </Defs>

@@ -41,7 +41,10 @@ namespace DMSE
         public override void DoWindowContents(Rect inRect)
         {
             const float ButtonHeight = 38f;
-            Rect contentRect = new Rect(inRect.x, inRect.y, inRect.width, inRect.height - ButtonHeight - 10f);
+            bool blocked = TransferReadiness.AnyError(issues);
+            string blockedText = "DMSE.Transfer.Dialog.ConfirmBlocked".Translate();
+            float noticeHeight = blocked ? Text.CalcHeight(blockedText, inRect.width) + DMSEUI.Gap : 0f;
+            Rect contentRect = new Rect(inRect.x, inRect.y, inRect.width, inRect.height - ButtonHeight - DMSEUI.SectionGap - noticeHeight);
             GlobalTargetInfo pendingJump = GlobalTargetInfo.Invalid;
 
             Rect viewRect = new Rect(0f, 0f, contentRect.width - 16f, Mathf.Max(lastHeight, contentRect.height));
@@ -78,37 +81,49 @@ namespace DMSE
             }
             listing.GapLine();
 
+            TransferUIUtility.DrawReadiness(listing, issues);
             if (survey != null)
             {
-                TransferUIUtility.DrawEstimate(listing, TransferEstimate.For(survey, plan.distance, plan.isImpact), survey.network.piles.Count);
-                listing.GapLine();
+                TransferUIUtility.DrawSummary(listing, TransferEstimate.For(survey, plan.distance, plan.isImpact));
+                listing.Gap(DMSEUI.SectionGap);
             }
-
             TransferUIUtility.Header(listing, "DMSE.Transfer.UI.IssuesHeader".Translate());
             TransferUIUtility.DrawIssues(listing, issues, ref pendingJump);
+            if (survey != null)
+            {
+                listing.Gap(DMSEUI.SectionGap);
+                TransferUIUtility.Header(listing, "DMSE.UI.EngineeringDetails".Translate());
+                TransferUIUtility.DrawEstimate(listing, TransferEstimate.For(survey, plan.distance, plan.isImpact), survey.network.piles.Count);
+            }
 
             lastHeight = listing.CurHeight + 10f;
             listing.End();
             Widgets.EndScrollView();
 
+            if (blocked)
+            {
+                GUI.color = DMSEUI.Error;
+                Widgets.Label(new Rect(inRect.x, contentRect.yMax + DMSEUI.Gap, inRect.width, noticeHeight), blockedText);
+                GUI.color = Color.white;
+            }
+            // §2.8: reselect/cancel are secondary; confirmation keeps its background.
             float buttonWidth = (inRect.width - 20f) / 3f;
             float y = inRect.yMax - ButtonHeight;
-            if (Widgets.ButtonText(new Rect(inRect.x, y, buttonWidth, ButtonHeight), "DMSE.Transfer.Dialog.Reselect".Translate()))
+            if (Widgets.ButtonText(new Rect(inRect.x, y, buttonWidth, ButtonHeight), "DMSE.Transfer.Dialog.Reselect".Translate(), drawBackground: false))
             {
                 Close();
                 TransferPlanningUtility.Reselect(console, plan);
             }
-            if (Widgets.ButtonText(new Rect(inRect.x + buttonWidth + 10f, y, buttonWidth, ButtonHeight), "CancelButton".Translate()))
+            if (Widgets.ButtonText(new Rect(inRect.x + buttonWidth + 10f, y, buttonWidth, ButtonHeight), "CancelButton".Translate(), drawBackground: false))
             {
                 Close();
                 ReturnToMap();
             }
-            bool blocked = TransferReadiness.AnyError(issues);
             Rect confirmRect = new Rect(inRect.x + (buttonWidth + 10f) * 2f, y, buttonWidth, ButtonHeight);
             string confirmLabel = (plan.isImpact ? "DMSE.Transfer.Dialog.ConfirmImpact" : "DMSE.Transfer.Dialog.Confirm").Translate();
             if (blocked)
             {
-                GUI.color = Color.gray;
+                GUI.color = DMSEUI.Muted;
                 Widgets.ButtonText(confirmRect, confirmLabel, active: false);
                 GUI.color = Color.white;
                 TooltipHandler.TipRegion(confirmRect, "DMSE.Transfer.Dialog.ConfirmBlocked".Translate());

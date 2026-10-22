@@ -96,20 +96,53 @@ namespace DMSE
             }
         }
 
-        /// <summary>標準慣性制導：隨機一棟敵對建築，次選隨機一名敵對 Pawn，最後取地圖中心。</summary>
+        /// <summary>慣性制導不鎖敵：以地圖中心為均值，在內切圓中取二維截斷正態分布。</summary>
         public static IntVec3 InertialTarget(Map map, Faction attacker)
         {
-            if (HostileBuildings(map, attacker).TryRandomElement(out Building building))
+            return InertialTarget(map.Size);
+        }
+
+        /// <summary>圓半徑為中心到最近邊界的距離；各軸標準差為半徑的三分之一。</summary>
+        public static IntVec3 InertialTarget(IntVec3 mapSize)
+        {
+            IntVec3 center = new IntVec3(mapSize.x / 2, 0, mapSize.z / 2);
+            int radius = Mathf.Min(Mathf.Min(center.x, mapSize.x - 1 - center.x),
+                Mathf.Min(center.z, mapSize.z - 1 - center.z));
+            if (radius <= 0) { return center; }
+            float sigma = radius / 3f;
+            // Reject outside the circle instead of clamping, which would pile hits onto its edge.
+            for (int i = 0; i < 128; i++)
             {
-                return building.Position;
+                int x = Mathf.RoundToInt(Rand.Gaussian(0f, sigma));
+                int z = Mathf.RoundToInt(Rand.Gaussian(0f, sigma));
+                if ((double)x * x + (double)z * z <= (double)radius * radius)
+                {
+                    return new IntVec3(center.x + x, 0, center.z + z);
+                }
             }
-            if (map.mapPawns.AllPawnsSpawned
-                .Where(p => !p.Dead && IsHostileTarget(p.Faction, attacker))
-                .TryRandomElement(out Pawn pawn))
+            return center;
+        }
+
+        /// <summary>主動雷達依占地面積鎖定最大敵對建築；沒有建築時鎖定體型最大的敵對單位。</summary>
+        public static IntVec3 LargestHostileTarget(Map map, Faction attacker)
+        {
+            Building largest = null;
+            int largestArea = -1;
+            foreach (Building b in HostileBuildings(map, attacker))
             {
-                return pawn.Position;
+                int area = b.def.size.x * b.def.size.z;
+                if (area > largestArea) { largestArea = area; largest = b; }
             }
-            return map.Center;
+            if (largest != null) { return largest.Position; }
+
+            Pawn biggest = null;
+            float biggestSize = -1f;
+            foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
+            {
+                if (p.Dead || !IsHostileTarget(p.Faction, attacker)) { continue; }
+                if (p.BodySize > biggestSize) { biggestSize = p.BodySize; biggest = p; }
+            }
+            return biggest != null ? biggest.Position : IntVec3.Invalid;
         }
 
         /// <summary>電磁訊號：耗電量最大的運作中敵對建築；沒有則回傳 Invalid。</summary>
@@ -125,7 +158,7 @@ namespace DMSE
             return best != null ? best.Position : IntVec3.Invalid;
         }
 
-        /// <summary>耐久最高的敵對建築（主動雷達／反艦導引頭用）；沒有則回傳 Invalid。</summary>
+        /// <summary>耐久最高的敵對建築（反艦導引頭用）；沒有則回傳 Invalid。</summary>
         public static IntVec3 ToughestHostileBuilding(Map map, Faction attacker)
         {
             Building best = null;
@@ -168,7 +201,7 @@ namespace DMSE
 
     // ============================================================
     //  慣性制導（Inertial）
-    //  隨機一棟敵對建築，散布由 config.Scatter 決定。
+    //  地圖中心的圓形截斷正態分布，不搜尋建築或單位。
     //  也是沒有導引部件、導引頭找不到目標時的後備行為。
     // ============================================================
     public class GuidanceType_Inertial : GuidanceType
@@ -353,14 +386,14 @@ namespace DMSE
 
     // ============================================================
     //  主動雷達（Active Radar / MMW）
-    //  射後不理：鎖定敵對建築中耐久最高者（同級不定），找不到則由 PickCell 退化為慣性。
-    //  與反輻射（打雷達）、電磁訊號（打耗電）區隔：這是「看起來最大最硬的那棟」。
+    //  射後不理：鎖定占地最大的敵對建築，其次為體型最大的敵對單位；找不到則退化為慣性。
+    //  與反輻射（打雷達）、電磁訊號（打耗電）、反艦（打耐久）區隔。
     // ============================================================
     public class GuidanceType_ActiveRadar : GuidanceType
     {
         public override IntVec3 PickTarget(float N, Map map, Faction attacker)
         {
-            return ToughestHostileBuilding(map, attacker);
+            return LargestHostileTarget(map, attacker);
         }
     }
 

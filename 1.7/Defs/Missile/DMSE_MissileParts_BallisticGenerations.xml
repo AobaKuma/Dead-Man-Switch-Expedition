@@ -41,7 +41,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvBallistic_Guidance_Stellar</defName>
     <label>stellar-inertial guidance</label>
-    <description>A stellar-updated inertial platform in the NS-50 tradition: star trackers trim the drift of the gyros during the coast, cutting dispersion to almost nothing. It is still a ballistic path with no terminal seeker, so a target that moves is still missed.</description>
+    <description>A stellar-updated inertial platform in the NS-50 tradition: star trackers trim the drift of the gyros during the coast, cutting dispersion to almost nothing. It is still a ballistic path with no terminal seeker, so a target that moves is still missed. Aim points follow a circular normal distribution around the target map center; it does not lock buildings or units.</description>
     <category>Guidance</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedBallistic</li>

@@ -118,7 +118,7 @@
       <destroySound>BuildingDestroyed_Metal_Small</destroySound>
     </building>
     <researchPrerequisites>
-      <li>DMSE_Ballistics</li>
+      <li>DMSE_LoiteringMunitions</li>
     </researchPrerequisites>
     <designationCategory>DMS_Category</designationCategory>
     <minifiedDef>MinifiedThing</minifiedDef>

@@ -17,6 +17,8 @@ namespace DMSE
         private Vector2 scrollPos;
 
         private float lastHeight;
+        private bool showDetails;
+        private Thing lastConsole;
 
         private CompTransferConsole Console => SelThing?.TryGetComp<CompTransferConsole>();
 
@@ -34,6 +36,13 @@ namespace DMSE
             if (console == null)
             {
                 return;
+            }
+            if (lastConsole != console.parent)
+            {
+                lastConsole = console.parent;
+                scrollPos = Vector2.zero;
+                lastHeight = 0f;
+                showDetails = false;
             }
             GlobalTargetInfo pendingJump = GlobalTargetInfo.Invalid;
 
@@ -66,12 +75,8 @@ namespace DMSE
             {
                 TransferShipSurvey survey = net.Survey;
                 DrawShipName(listing, console);
-                DrawNetwork(listing, net, ref pendingJump);
-                listing.GapLine();
-                DrawPropulsion(listing, survey, ref pendingJump);
-                listing.GapLine();
-                DrawFuel(listing, survey, ref pendingJump);
-                listing.GapLine();
+                TransferUIUtility.DrawReadiness(listing, console.Issues);
+                listing.Gap(DMSEUI.Gap);
 
                 TransferPlan plan = console.State == TransferConsoleState.Idle ? null : console.plan;
                 string planHeader;
@@ -88,7 +93,8 @@ namespace DMSE
                 {
                     listing.Label("DMSE.Transfer.UI.ParkedAtNeighbor".Translate());
                 }
-                TransferUIUtility.DrawEstimate(listing, TransferEstimate.For(survey, plan != null ? plan.distance : -1, plan != null && plan.isImpact), net.piles.Count);
+                TransferEstimate estimate = TransferEstimate.For(survey, plan != null ? plan.distance : -1, plan != null && plan.isImpact);
+                TransferUIUtility.DrawSummary(listing, estimate);
                 if (plan == null || !plan.isImpact)
                 {
                     // 轉移後安全期（以本船船體範圍估算；實際以抵達時船體地圖上的格數計算）
@@ -99,6 +105,19 @@ namespace DMSE
 
                 TransferUIUtility.Header(listing, "DMSE.Transfer.UI.IssuesHeader".Translate());
                 TransferUIUtility.DrawIssues(listing, console.Issues, ref pendingJump);
+                listing.Gap(DMSEUI.SectionGap);
+                if (listing.ButtonText((showDetails ? "DMSE.UI.HideDetails" : "DMSE.UI.ShowDetails").Translate())) { showDetails = !showDetails; }
+                if (showDetails)
+                {
+                    listing.Gap(DMSEUI.Gap);
+                    DrawNetwork(listing, net, ref pendingJump);
+                    listing.Gap(DMSEUI.SectionGap);
+                    DrawPropulsion(listing, survey, ref pendingJump);
+                    listing.Gap(DMSEUI.SectionGap);
+                    DrawFuel(listing, survey, ref pendingJump);
+                    listing.Gap(DMSEUI.SectionGap);
+                    TransferUIUtility.DrawEstimate(listing, estimate, net.piles.Count);
+                }
             }
 
             lastHeight = listing.CurHeight + 10f;
@@ -121,7 +140,7 @@ namespace DMSE
             Rect labelRect = new Rect(rect.x, rect.y, rect.width - btnRect.width - 4f, rect.height);
             if (name.NullOrEmpty())
             {
-                GUI.color = Color.gray;
+                GUI.color = DMSEUI.Muted;
                 Widgets.Label(labelRect, "DMSE.Transfer.Console.Unnamed".Translate());
                 GUI.color = Color.white;
             }
@@ -203,7 +222,12 @@ namespace DMSE
 
         private static void ClickableCount(Listing_Standard listing, string label, List<Thing> things, ref GlobalTargetInfo pendingJump)
         {
-            if (ClickableRow(listing, label, things.Count.ToString(), things.Count > 0 ? new Color(1f, 0.85f, 0.35f) : (Color?)null) && things.Count > 0)
+            if (things.Count == 0)
+            {
+                TransferUIUtility.Row(listing, label, "0");
+                return;
+            }
+            if (ClickableRow(listing, label, things.Count.ToString(), DMSEUI.Warning))
             {
                 pendingJump = things[0];
             }
@@ -211,18 +235,9 @@ namespace DMSE
 
         private static bool ClickableRow(Listing_Standard listing, string label, string value, Color? valueColor)
         {
-            Rect rect = listing.GetRect(Text.LineHeight);
+            Rect rect = DMSEUI.ValueRow(listing, label, value, valueColor);
             Widgets.DrawHighlightIfMouseover(rect);
-            Widgets.Label(rect.LeftPart(0.6f), label);
-            Color old = GUI.color;
-            if (valueColor.HasValue)
-            {
-                GUI.color = valueColor.Value;
-            }
-            Text.Anchor = TextAnchor.UpperRight;
-            Widgets.Label(rect.RightPart(0.4f), value);
-            Text.Anchor = TextAnchor.UpperLeft;
-            GUI.color = old;
+            TooltipHandler.TipRegion(rect, "DMSE.UI.Locate".Translate());
             return Widgets.ButtonInvisible(rect);
         }
     }

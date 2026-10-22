@@ -95,7 +95,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_Light_Guidance_Inertial</defName>
     <label>inertial guidance</label>
-    <description>Baseline strap-down inertial reference unit. No seekers; relies on pre-programmed flight path. Scatter unchanged.</description>
+    <description>Baseline strap-down inertial reference unit. No seekers; relies on pre-programmed flight path. Scatter unchanged. Aim points follow a circular normal distribution around the target map center; it does not lock buildings or units.</description>
     <category>Guidance</category>
     <compatibleBodies><li>DMSE_MissileBody_Light</li><li>DMSE_MissileBody_Stinger</li><li>DMSE_MissileBody_Maverick</li><li>DMSE_MissileBody_Sparrow</li></compatibleBodies>
     <guidanceType Class="DMSE.GuidanceType_Inertial" />

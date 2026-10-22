@@ -220,22 +220,37 @@ namespace DMSE
             return value;
         }
 
+        /// <summary>Channels required by the currently loaded firing configuration.</summary>
+        public static int ChannelCost(StrikeSlot slot) => slot.LauncherComp?.BuildFiringConfig(slot.round)?.StrikeChannelCost ?? 1;
+
+        public static int PendingChannels(StrikeWave wave) => wave.slots
+            .Where(s => s.state == StrikeSlotState.Pending).Sum(ChannelCost);
+
         /// <summary>
         /// 自動分波（§10-2）：候選已依價值由低到高排序，依序填滿各波，最高價值的落在最後一波。
         /// 回傳每波的候選索引；超出 <paramref name="maxWaves"/> × <paramref name="cap"/> 的不分配。
         /// </summary>
         public static List<List<int>> AutoAssign(int count, int cap, int maxWaves)
+            => AutoAssign(Enumerable.Repeat(1, System.Math.Max(0, count)).ToList(), cap, maxWaves);
+
+        /// <summary>Fill waves in candidate order without splitting a missile's channel requirement.</summary>
+        public static List<List<int>> AutoAssign(IReadOnlyList<int> costs, int cap, int maxWaves)
         {
             var waves = new List<List<int>>();
             if (cap <= 0 || maxWaves <= 0) { return waves; }
-            for (int i = 0; i < count; i++)
+            int used = 0;
+            for (int i = 0; i < costs.Count; i++)
             {
-                if (i % cap == 0)
+                int cost = System.Math.Max(1, costs[i]);
+                if (cost > cap) { continue; }
+                if (waves.Count == 0 || used + cost > cap)
                 {
                     if (waves.Count >= maxWaves) { break; }
                     waves.Add(new List<int>());
+                    used = 0;
                 }
                 waves[waves.Count - 1].Add(i);
+                used += cost;
             }
             return waves;
         }

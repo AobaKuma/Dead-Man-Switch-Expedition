@@ -20,6 +20,17 @@ namespace DMSE
     {
         public float offsetY = -1.5f;
         public int delayTicks = 10;              // 點火前延遲（冷射的彈射段；熱射為 0）
+        /// <summary>助推尾焰持續 ticks（自點火起）；-1 保留全程噴焰，0 停用。</summary>
+        public int burnDurationTicks = -1;
+        /// <summary>火焰與煙霧尺寸倍率，套用於隨機變動之後。</summary>
+        public float effectScale = 1f;
+
+        public bool IsBurning(int ticksSinceSpawn, int ignitionDelayTicks)
+        {
+            int elapsed = ticksSinceSpawn - ignitionDelayTicks;
+            return elapsed >= 0 && (burnDurationTicks < 0 || elapsed < burnDurationTicks);
+        }
+
         public SoundDef ignitionSound;
         public EffecterDef launchEffectTrigger;  // 點火瞬間的發射特效
         public FleckDef ExhaustFleck;
@@ -56,7 +67,7 @@ namespace DMSE
         protected virtual bool ShouldShowEffecter()
         {
             if (flight != null && parent.Spawned
-                && flight.VisualPos.InBounds(parent.Map) && ticksSinceSpawn >= IgnitionDelayTicks)
+                && flight.VisualPos.InBounds(parent.Map) && Props.IsBurning(ticksSinceSpawn, IgnitionDelayTicks))
             {
                 return parent.MapHeld == Find.CurrentMap;
             }
@@ -115,7 +126,7 @@ namespace DMSE
 
                 if (Props.ExhaustFleck != null)
                 {
-                    float actualScale = Rand.Gaussian(exhaustBaseScale, 1) * timeFactor;
+                    float actualScale = Rand.Gaussian(exhaustBaseScale, 1) * timeFactor * Props.effectScale;
                     FleckCreationData exhaustData = FleckMaker.GetDataStatic(drawPos + offset, parent.Map, Props.ExhaustFleck);
                     exhaustData.scale = actualScale;
                     exhaustData.velocityAngle = rotation + randomFactor * 5;
@@ -142,7 +153,7 @@ namespace DMSE
                     {
                         float angleOffset = randomFactor * timeFactor * 180f - 180f;
                         float angleFactor = 1f - (Mathf.Abs(angleOffset) / 180f);
-                        smokeData.scale = Rand.Gaussian(smokeBaseScale, 2f) * (angleFactor + timeFactor);
+                        smokeData.scale = Rand.Gaussian(smokeBaseScale, 2f) * (angleFactor + timeFactor) * Props.effectScale;
                         smokeData.velocityAngle = rotation + (angleOffset) + (Rand.Gaussian(0, 20) * timeFactor);
                         smokeData.velocitySpeed = (smokeBaseScale - smokeData.scale) * (angleFactor + timeFactor);
                         smokeData.rotationRate = smokeData.velocitySpeed;

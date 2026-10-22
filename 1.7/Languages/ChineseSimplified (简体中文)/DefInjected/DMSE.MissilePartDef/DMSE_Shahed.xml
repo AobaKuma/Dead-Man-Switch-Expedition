@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <DMSE_Shahed_Guidance_Inertial.label>惯性制导</DMSE_Shahed_Guidance_Inertial.label>
+  <DMSE_Shahed_Guidance_Inertial.description>远程巡飞弹的默认惯性导航。不锁敌，不提供末端制导；以地图中心为均值作圆形正态选点。占用 1 个火控通道。</DMSE_Shahed_Guidance_Inertial.description>
+  <DMSE_Shahed_Guidance_TV.label>电视制导</DMSE_Shahed_Guidance_TV.label>
+  <DMSE_Shahed_Guidance_TV.description>远程巡飞弹的选配电视制导模块。消耗 1 个高级零部件，抵达目标地图时由玩家手动选择落点。额外占用 1 个火控通道，合计 2 个。敌方发射时退回惯性选点。</DMSE_Shahed_Guidance_TV.description>
+</LanguageData>

@@ -226,7 +226,7 @@ public struct StrikeRound
 
 ### 6-2. 占用多久
 
-每枚導彈升空即占 1 通道，`strikeGuidanceTicks`（Tuning，建議 600）後釋放，之後交給彈上導引頭。
+每枚導彈的基礎需求為 1 通道，彈道導彈改為 2 通道；TV 導引頭在基礎需求上額外加 1（一般 TV 為 2、彈道 TV 為 3）。排入發射佇列即預約全部所需通道，升空後持續占用，`strikeGuidanceTicks`（Tuning，建議 600）後釋放，之後交給彈上導引頭。
 
 | 方案 | 說明 | 問題 |
 |---|---|---|
@@ -267,7 +267,7 @@ public ScorerProjectile_WorldObject TryLaunchRound(GlobalTargetInfo target, Thin
     bool salvoContinuation, out string failReason);   // 失敗回傳 null 並給出原因
 ```
 
-  Rail 發射指定的 Thing 而非 `owner[0]`；彈道井與 Scorer 的彈藥是平台本身。發射前重驗平台可運作、彈藥仍在、冷卻（`salvoContinuation = true` 時略過）、設定與射程（`CanEngage`）；每枚發射後都重新起算冷卻，所以冷卻從本平台最後一枚起算。原本的 `Launch(GlobalTargetInfo)` 已移除，單發 Gizmo 改呼叫 `TryLaunchRound(t, NextRound, false, …)`。本方法不檢查保留（波次打擊要發射的正是保留中的彈藥）。
+  Rail 發射指定的 Thing 而非 `owner[0]`；彈道井與 Scorer 的彈藥是平台本身。發射前重驗平台可運作、彈藥仍在、冷卻（`salvoContinuation = true` 時略過）、設定與射程（`CanEngage`）；每枚發射後都重新起算冷卻，所以冷卻從本平台最後一枚起算。原本的 `Launch(GlobalTargetInfo)` 已移除，單發 Gizmo 改呼叫 `TryLaunchRound(t, NextRound, false, …)`。單發入口會檢查保留及可用火控通道，成功發射後建立導引期占用；波次打擊經專用佇列入口沿用已預約通道，不重複扣除。
 
 ### 7-3. 航跡標記
 

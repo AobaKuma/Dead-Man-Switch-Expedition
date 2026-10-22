@@ -5,16 +5,18 @@ using Verse;
 
 namespace DMSE
 {
-    /// <summary>一枚已升空打擊導彈的導引期：期間占用發射方地圖的一條火控通道。</summary>
+    /// <summary>一枚已升空打擊導彈的導引期：期間占用發射方地圖的指定數量火控通道。</summary>
     public class StrikeGuidanceHold : IExposable
     {
         public Faction faction;
         public int releaseTick;
+        public int channelCost = 1;
 
         public void ExposeData()
         {
             Scribe_References.Look(ref faction, "faction");
             Scribe_Values.Look(ref releaseTick, "releaseTick");
+            Scribe_Values.Look(ref channelCost, "channelCost", 1);
         }
     }
 
@@ -26,6 +28,7 @@ namespace DMSE
         public int wave;
         public int slot;
         public int fireTick;
+        public int channelCost = 1;
         /// <summary>同一波次同平台的後續各枚：略過冷卻檢查。</summary>
         public bool salvoContinuation;
 
@@ -36,6 +39,7 @@ namespace DMSE
             Scribe_Values.Look(ref wave, "wave");
             Scribe_Values.Look(ref slot, "slot");
             Scribe_Values.Look(ref fireTick, "fireTick");
+            Scribe_Values.Look(ref channelCost, "channelCost", 1);
             Scribe_Values.Look(ref salvoContinuation, "salvoContinuation");
         }
     }
@@ -112,13 +116,13 @@ namespace DMSE
 
         // ---------------- 導引通道 ----------------
 
-        /// <summary>某陣營排在佇列中（已訂通道）與仍在導引期內的打擊導彈數。</summary>
+        /// <summary>某陣營排在佇列中（已訂通道）與仍在導引期內的打擊通道數。</summary>
         public int GuidanceOccupied(Faction faction)
         {
             if (faction == null) { return 0; }
             int now = Find.TickManager.TicksGame;
-            return holds.Count(h => h.faction == faction && h.releaseTick > now)
-                + queue.Count(q => q.console != null && q.console.Faction == faction);
+            return holds.Where(h => h.faction == faction && h.releaseTick > now).Sum(h => System.Math.Max(1, h.channelCost))
+                + queue.Where(q => q.console != null && q.console.Faction == faction).Sum(q => System.Math.Max(1, q.channelCost));
         }
 
         /// <summary>最早一條導引期結束的剩餘 tick；沒有導引中的導彈時回傳 -1。</summary>
@@ -140,13 +144,13 @@ namespace DMSE
         {
             int now = Find.TickManager.TicksGame;
             int guidance = BVRWorldTuningDef.Current.strikeGuidanceTicks;
-            foreach (StrikeGuidanceHold h in holds) { if (h.faction == faction && h.releaseTick > now) { yield return h.releaseTick; } }
-            foreach (StrikeQueuedLaunch q in queue) { if (q.console != null && q.console.Faction == faction) { yield return System.Math.Max(now, q.fireTick) + guidance; } }
+            foreach (StrikeGuidanceHold h in holds) { if (h.faction == faction && h.releaseTick > now) { for (int c = 0; c < System.Math.Max(1, h.channelCost); c++) { yield return h.releaseTick; } } }
+            foreach (StrikeQueuedLaunch q in queue) { if (q.console != null && q.console.Faction == faction) { for (int c = 0; c < System.Math.Max(1, q.channelCost); c++) { yield return System.Math.Max(now, q.fireTick) + guidance; } } }
         }
 
-        public void AddGuidanceHold(Faction faction, int releaseTick)
+        public void AddGuidanceHold(Faction faction, int releaseTick, int channelCost = 1)
         {
-            holds.Add(new StrikeGuidanceHold { faction = faction, releaseTick = releaseTick });
+            holds.Add(new StrikeGuidanceHold { faction = faction, releaseTick = releaseTick, channelCost = System.Math.Max(1, channelCost) });
         }
 
         // ---------------- 發射佇列 ----------------

@@ -25,7 +25,7 @@
   <DMSE.Strike.NoRoundsAssigned>Assign at least one missile to a wave</DMSE.Strike.NoRoundsAssigned>
   <DMSE.Strike.TooManyRounds>At most {0} missiles per mission</DMSE.Strike.TooManyRounds>
   <DMSE.Strike.TooManyWaves>At most {0} waves per mission</DMSE.Strike.TooManyWaves>
-  <DMSE.Strike.WaveOverCap>Wave {0} has {1} missiles; the guidance limit is {2}</DMSE.Strike.WaveOverCap>
+  <DMSE.Strike.WaveOverCap>Wave {0} requires {1} guidance channels; capacity is {2}</DMSE.Strike.WaveOverCap>
   <DMSE.Strike.RoundTaken>A missile is already reserved by another strike mission</DMSE.Strike.RoundTaken>
   <DMSE.Strike.RoundUnavailable>A missile is no longer loaded or can no longer reach the target</DMSE.Strike.RoundUnavailable>
 
@@ -70,7 +70,7 @@
   <DMSE.Strike.Plan.Flight>flight {0}</DMSE.Strike.Plan.Flight>
   <DMSE.Strike.Plan.Margin>range +{0}</DMSE.Strike.Plan.Margin>
   <DMSE.Strike.Plan.WaveTitle>Wave {0}</DMSE.Strike.Plan.WaveTitle>
-  <DMSE.Strike.Plan.WaveChannelsTip>Uses {0} of {1} strike guidance channels (yellow). A wave fires only when every missile in it gets a free channel; red cells are over capacity.</DMSE.Strike.Plan.WaveChannelsTip>
+  <DMSE.Strike.Plan.WaveChannelsTip>Uses {0} of {1} strike guidance channels. Ordinary missiles cost 1; ballistic missiles cost 2; TV adds 1. A wave needs enough channels for all its pending missiles.</DMSE.Strike.Plan.WaveChannelsTip>
   <DMSE.Strike.Plan.AddWave>+ Add wave</DMSE.Strike.Plan.AddWave>
   <DMSE.Strike.Plan.AutoAssign>Auto-assign</DMSE.Strike.Plan.AutoAssign>
   <DMSE.Strike.Plan.AutoAssignDesc>Fill waves starting with the cheapest missiles, so the most valuable ones end up in the last wave.</DMSE.Strike.Plan.AutoAssignDesc>
@@ -143,4 +143,5 @@ Enable research work for a colonist on that map.</DMSE.Strike.Alert.ComputationP
   <!-- Mission names -->
   <DMSE.Strike.MissionDefault>Strike mission #{0}</DMSE.Strike.MissionDefault>
   <DMSE.Strike.RenameTip>Rename this strike mission (you can roll a random name).</DMSE.Strike.RenameTip>
+  <DMSE.Strike.ChannelCost>Guidance channels per missile: {0}</DMSE.Strike.ChannelCost>
 </LanguageData>

@@ -25,7 +25,7 @@
   <DMSE.Strike.NoRoundsAssigned>至少要把一枚導彈分配到波次</DMSE.Strike.NoRoundsAssigned>
   <DMSE.Strike.TooManyRounds>每個任務最多 {0} 枚導彈</DMSE.Strike.TooManyRounds>
   <DMSE.Strike.TooManyWaves>每個任務最多 {0} 波</DMSE.Strike.TooManyWaves>
-  <DMSE.Strike.WaveOverCap>第 {0} 波有 {1} 枚，導引上限為 {2}</DMSE.Strike.WaveOverCap>
+  <DMSE.Strike.WaveOverCap>第 {0} 波需要 {1} 條導引通道；容量為 {2}</DMSE.Strike.WaveOverCap>
   <DMSE.Strike.RoundTaken>有導彈已被其他打擊任務保留</DMSE.Strike.RoundTaken>
   <DMSE.Strike.RoundUnavailable>有導彈已不在架上，或已打不到目標</DMSE.Strike.RoundUnavailable>
 
@@ -70,7 +70,7 @@
   <DMSE.Strike.Plan.Flight>飛行 {0}</DMSE.Strike.Plan.Flight>
   <DMSE.Strike.Plan.Margin>射程 +{0}</DMSE.Strike.Plan.Margin>
   <DMSE.Strike.Plan.WaveTitle>第 {0} 波</DMSE.Strike.Plan.WaveTitle>
-  <DMSE.Strike.Plan.WaveChannelsTip>占用 {1} 條打擊導引通道中的 {0} 條（黃色）。整波每一枚都分到空閒通道才能發射；紅色表示超出容量。</DMSE.Strike.Plan.WaveChannelsTip>
+  <DMSE.Strike.Plan.WaveChannelsTip>占用 {0}／{1} 條打擊導引通道。一般導彈需 1 條、彈道導彈需 2 條；TV 導引額外加 1。整波發射需容納所有待發導彈。</DMSE.Strike.Plan.WaveChannelsTip>
   <DMSE.Strike.Plan.AddWave>＋新增波次</DMSE.Strike.Plan.AddWave>
   <DMSE.Strike.Plan.AutoAssign>自動分波</DMSE.Strike.Plan.AutoAssign>
   <DMSE.Strike.Plan.AutoAssignDesc>從最便宜的導彈開始依序填滿各波，最高價值的導彈會落在最後一波。</DMSE.Strike.Plan.AutoAssignDesc>
@@ -143,4 +143,5 @@
   <!-- Mission names -->
   <DMSE.Strike.MissionDefault>打擊任務 #{0}</DMSE.Strike.MissionDefault>
   <DMSE.Strike.RenameTip>重新命名這個打擊任務（可擲隨機名稱）。</DMSE.Strike.RenameTip>
+  <DMSE.Strike.ChannelCost>每枚導彈需求：{0} 條導引通道</DMSE.Strike.ChannelCost>
 </LanguageData>

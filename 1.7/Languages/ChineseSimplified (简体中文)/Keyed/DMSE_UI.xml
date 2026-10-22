@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <DMSE.UI.ActiveConfig>当前生效</DMSE.UI.ActiveConfig>
+  <DMSE.UI.PendingConfig>待装配配置（尚未生效）</DMSE.UI.PendingConfig>
+  <DMSE.UI.DamageChange>伤害</DMSE.UI.DamageChange>
+  <DMSE.UI.TransferBlocked>无法出发：{0} 项阻挡、{1} 项警告</DMSE.UI.TransferBlocked>
+  <DMSE.UI.TransferReady>整备检查通过 · {1} 项警告</DMSE.UI.TransferReady>
+  <DMSE.UI.FuelRequiredAvailable>燃料：需求／可用</DMSE.UI.FuelRequiredAvailable>
+  <DMSE.UI.Locate>定位</DMSE.UI.Locate>
+  <DMSE.UI.ShowDetails>▸ 展开工程与设备明细</DMSE.UI.ShowDetails>
+  <DMSE.UI.HideDetails>▾ 收起工程与设备明细</DMSE.UI.HideDetails>
+  <DMSE.UI.EngineeringDetails>工程明细</DMSE.UI.EngineeringDetails>
+  <DMSE.UI.AddToWave>加入第 {0} 波</DMSE.UI.AddToWave>
+  <DMSE.UI.NoMissiles>没有候选导弹。请先将兼容的导弹装入发射器。</DMSE.UI.NoMissiles>
+  <DMSE.UI.AllAssigned>可用导弹均已分配。选择波次查看内容，或移除导弹后重新分配。</DMSE.UI.AllAssigned>
+  <DMSE.UI.NoAvailableMissiles>当前没有可分配的导弹。请查看下方不可用原因；部分导弹可能被其他任务保留。</DMSE.UI.NoAvailableMissiles>
+  <DMSE.UI.AllowPartialFire>允许部分发射：仅发射当前就绪的导弹（亦可 Shift 点击）</DMSE.UI.AllowPartialFire>
+  <DMSE.UI.ShowStats>▸ 展开装配后完整性能</DMSE.UI.ShowStats>
+  <DMSE.UI.HideStats>▾ 收起完整性能</DMSE.UI.HideStats>
+  <DMSE.UI.RangeChange>射程</DMSE.UI.RangeChange>
+  <DMSE.UI.Comparison>当前生效 → 装配后</DMSE.UI.Comparison>
+</LanguageData>

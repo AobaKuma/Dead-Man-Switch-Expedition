@@ -71,10 +71,27 @@ namespace DMSE.BVRAcceptance
             yield return new WaitTicks(2);
             t.Check(Pick("DMSE_Guidance_Laser") == a, "another faction's newer mark is ignored");
 
-            // Inertial and TV (enemy) pick a hostile building or pawn.
-            HashSet<IntVec3> hostile = new HashSet<IntVec3>(GuidanceType.HostileBuildings(Home, Enemy).Select(x => x.Position));
-            t.Check(hostile.Contains(Pick("DMSE_Guidance_Inertial")), "inertial hits a hostile building");
-            t.Check(hostile.Contains(Pick("DMSE_Guidance_Precision")), "enemy TV missile falls back to inertial");
+            // Active radar prioritizes physical footprint, independently of HP or power draw.
+            int maxArea = GuidanceType.HostileBuildings(Home, Enemy).Max(x => x.def.size.x * x.def.size.z);
+            IntVec3 activeRadar = Pick("DMSE_Guidance_ActiveRadar");
+            t.Check(GuidanceType.HostileBuildings(Home, Enemy).Any(x =>
+                x.def.size.x * x.def.size.z == maxArea && x.Position == activeRadar),
+                "active radar locks the largest hostile building by footprint");
+            t.Check(Pick("DMSE_AdvLight_Guidance_MMW") == activeRadar,
+                "MMW and general active radar use the same size-based targeting");
+
+            // Inertial and unattended TV use the map-center Gaussian, regardless of enemy positions.
+            Rand.PushState(742);
+            IntVec3 inertial = Pick("DMSE_Guidance_Inertial");
+            Rand.PopState();
+            Rand.PushState(742);
+            IntVec3 tvFallback = Pick("DMSE_Guidance_Precision");
+            Rand.PopState();
+            t.Check(inertial == tvFallback, "enemy TV missile uses the same inertial distribution");
+            int radius = Mathf.Min(Mathf.Min(Home.Center.x, Home.Size.x - 1 - Home.Center.x),
+                Mathf.Min(Home.Center.z, Home.Size.z - 1 - Home.Center.z));
+            t.Check(inertial.InBounds(Home) && (inertial - Home.Center).LengthHorizontalSquared <= radius * radius,
+                "inertial target lies inside the map-center circle");
 
             // Who chooses the target.
             t.Check(CruiseConfig("DMSE_Guidance_Precision").PlayerChoosesTarget, "TV guidance: player chooses");

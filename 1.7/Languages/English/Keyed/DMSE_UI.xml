@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <DMSE.UI.ActiveConfig>Currently active</DMSE.UI.ActiveConfig>
+  <DMSE.UI.PendingConfig>Pending assembly — not yet active</DMSE.UI.PendingConfig>
+  <DMSE.UI.DamageChange>Damage</DMSE.UI.DamageChange>
+  <DMSE.UI.TransferBlocked>Departure blocked: {0} errors, {1} warnings</DMSE.UI.TransferBlocked>
+  <DMSE.UI.TransferReady>Readiness checks passed · {1} warnings</DMSE.UI.TransferReady>
+  <DMSE.UI.FuelRequiredAvailable>Fuel: required / available</DMSE.UI.FuelRequiredAvailable>
+  <DMSE.UI.Locate>Locate</DMSE.UI.Locate>
+  <DMSE.UI.ShowDetails>▸ Engineering and equipment details</DMSE.UI.ShowDetails>
+  <DMSE.UI.HideDetails>▾ Hide engineering and equipment details</DMSE.UI.HideDetails>
+  <DMSE.UI.EngineeringDetails>Engineering details</DMSE.UI.EngineeringDetails>
+  <DMSE.UI.AddToWave>Adding to wave {0}</DMSE.UI.AddToWave>
+  <DMSE.UI.NoMissiles>No missile candidates. Load compatible missiles into launchers to begin.</DMSE.UI.NoMissiles>
+  <DMSE.UI.AllAssigned>All available missiles are assigned. Select a wave to review its contents, or remove missiles to reassign them.</DMSE.UI.AllAssigned>
+  <DMSE.UI.NoAvailableMissiles>No missiles can be assigned. Review unavailable missiles below; some may be reserved by another mission.</DMSE.UI.NoAvailableMissiles>
+  <DMSE.UI.AllowPartialFire>Allow partial launch: fire only missiles that are ready (also Shift-click)</DMSE.UI.AllowPartialFire>
+  <DMSE.UI.ShowStats>▸ Full performance after assembly</DMSE.UI.ShowStats>
+  <DMSE.UI.HideStats>▾ Hide full performance</DMSE.UI.HideStats>
+  <DMSE.UI.RangeChange>Range</DMSE.UI.RangeChange>
+  <DMSE.UI.Comparison>Currently active → after assembly</DMSE.UI.Comparison>
+</LanguageData>

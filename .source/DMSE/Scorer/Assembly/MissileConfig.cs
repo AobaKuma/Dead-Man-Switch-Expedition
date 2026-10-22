@@ -175,6 +175,10 @@ namespace DMSE
         public GuidanceType TargetingGuidance
             => PartFor(MissilePartCategory.Guidance)?.guidanceType ?? body?.builtInGuidance;
 
+        /// <summary>Strike fire-control cost: ballistic base 2, other bodies base 1; TV adds one.</summary>
+        public int StrikeChannelCost => (body?.sizeClass == MissileSizeClass.Ballistic ? 2 : 1)
+            + (TargetingGuidance is GuidanceType_TV ? 1 : 0);
+
         /// <summary>玩家發射時是否在抵達後由玩家手動選擇落點（電視制導）。</summary>
         public bool PlayerChoosesTarget => TargetingGuidance?.PlayerChoosesTarget ?? false;
 

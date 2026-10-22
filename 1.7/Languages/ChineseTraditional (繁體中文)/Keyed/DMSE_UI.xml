@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <DMSE.UI.ActiveConfig>目前生效</DMSE.UI.ActiveConfig>
+  <DMSE.UI.PendingConfig>待裝配配置（尚未生效）</DMSE.UI.PendingConfig>
+  <DMSE.UI.DamageChange>傷害</DMSE.UI.DamageChange>
+  <DMSE.UI.TransferBlocked>無法出發：{0} 項阻擋、{1} 項警告</DMSE.UI.TransferBlocked>
+  <DMSE.UI.TransferReady>整備檢查通過 · {1} 項警告</DMSE.UI.TransferReady>
+  <DMSE.UI.FuelRequiredAvailable>燃料：需求／可用</DMSE.UI.FuelRequiredAvailable>
+  <DMSE.UI.Locate>定位</DMSE.UI.Locate>
+  <DMSE.UI.ShowDetails>▸ 展開工程與設備明細</DMSE.UI.ShowDetails>
+  <DMSE.UI.HideDetails>▾ 收合工程與設備明細</DMSE.UI.HideDetails>
+  <DMSE.UI.EngineeringDetails>工程明細</DMSE.UI.EngineeringDetails>
+  <DMSE.UI.AddToWave>加入第 {0} 波</DMSE.UI.AddToWave>
+  <DMSE.UI.NoMissiles>沒有候選導彈。請先將相容的導彈裝入發射器。</DMSE.UI.NoMissiles>
+  <DMSE.UI.AllAssigned>可用導彈均已分配。選擇波次檢視內容，或移除導彈後重新分配。</DMSE.UI.AllAssigned>
+  <DMSE.UI.NoAvailableMissiles>目前沒有可分配的導彈。請查看下方不可用原因；部分導彈可能被其他任務保留。</DMSE.UI.NoAvailableMissiles>
+  <DMSE.UI.AllowPartialFire>允許部分發射：僅發射目前就緒的導彈（亦可 Shift 點擊）</DMSE.UI.AllowPartialFire>
+  <DMSE.UI.ShowStats>▸ 展開裝配後完整性能</DMSE.UI.ShowStats>
+  <DMSE.UI.HideStats>▾ 收合完整性能</DMSE.UI.HideStats>
+  <DMSE.UI.RangeChange>射程</DMSE.UI.RangeChange>
+  <DMSE.UI.Comparison>目前生效 → 裝配後</DMSE.UI.Comparison>
+</LanguageData>

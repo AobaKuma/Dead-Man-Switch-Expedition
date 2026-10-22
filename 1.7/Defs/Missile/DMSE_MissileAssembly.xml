@@ -87,10 +87,28 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_Guidance_Inertial</defName>
     <label>inertial guidance</label>
-    <description>Baseline guidance. Average accuracy.</description>
+    <description>Inertial navigation without target recognition. Aim points follow a circular normal distribution around the target map center, bounded by the map's inscribed circle. Does not lock buildings or units and provides no terminal guidance.</description>
     <category>Guidance</category>
     <compatibleBodies><li>DMSE_MissileBody_Cruise</li><li>DMSE_MissileBody_Moskit</li><li>DMSE_MissileBody_Yj</li></compatibleBodies>
+    <guidanceType Class="DMSE.GuidanceType_Inertial" />
     <scatterOffset>0</scatterOffset>
+  </DMSE.MissilePartDef>
+
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Guidance_ActiveRadar</defName>
+    <label>active radar seeker</label>
+    <description>A fire-and-forget active radar seeker. Locks the hostile building with the largest footprint; if no hostile buildings exist, locks the largest hostile creature by body size. Falls back to map-center inertial dispersion when no target is found. Provides terminal guidance.</description>
+    <category>Guidance</category>
+    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_Light</li><li>DMSE_MissileBody_Cruise</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_AdvancedLight</li><li>DMSE_MissileBody_AdvancedBallistic</li><li>DMSE_MissileBody_AdvancedCruise</li><li>DMSE_MissileBody_Stinger</li><li>DMSE_MissileBody_Maverick</li><li>DMSE_MissileBody_Sparrow</li><li>DMSE_MissileBody_Moskit</li><li>DMSE_MissileBody_Yj</li><li>DMSE_MissileBody_Tochka</li></compatibleBodies>
+    <guidanceType Class="DMSE.GuidanceType_ActiveRadar" />
+    <scatterOffset>-1.5</scatterOffset>
+    <researchPrerequisites>
+      <li>DMSE_IntegratedCircuits</li>
+    </researchPrerequisites>
+    <costList>
+      <ComponentIndustrial>4</ComponentIndustrial>
+      <ComponentSpacer>1</ComponentSpacer>
+    </costList>
   </DMSE.MissilePartDef>
 
   <DMSE.MissilePartDef>

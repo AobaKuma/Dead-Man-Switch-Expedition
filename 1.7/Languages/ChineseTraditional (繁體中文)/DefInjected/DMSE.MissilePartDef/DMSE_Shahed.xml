@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <DMSE_Shahed_Guidance_Inertial.label>慣性制導</DMSE_Shahed_Guidance_Inertial.label>
+  <DMSE_Shahed_Guidance_Inertial.description>長程巡飛彈的預設慣性導航。不鎖敵，不提供終端導引；以地圖中心為均值作圓形正態選點。占用 1 個火控通道。</DMSE_Shahed_Guidance_Inertial.description>
+  <DMSE_Shahed_Guidance_TV.label>電視制導</DMSE_Shahed_Guidance_TV.label>
+  <DMSE_Shahed_Guidance_TV.description>長程巡飛彈的選配電視制導模組。消耗 1 個高級零件，抵達目標地圖時由玩家手動選擇落點。額外占用 1 個火控通道，合計 2 個。敵方發射時退回慣性選點。</DMSE_Shahed_Guidance_TV.description>
+</LanguageData>

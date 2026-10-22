@@ -51,7 +51,7 @@
       <recipeUsers Inherit="False">
         <li>DMS_TableMachinePrinter</li>
       </recipeUsers>
-      <researchPrerequisite>DMSE_LoiteringMunitions</researchPrerequisite>
+      <researchPrerequisite>DMSE_RadarBasis</researchPrerequisite>
       <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
     </recipeMaker>
     <modExtensions>
@@ -366,7 +366,7 @@
       <ThingDef>DMSE_Building_Scorer</ThingDef>
     </descriptionHyperlinks>
     <graphicData>
-      <texPath>Things/Missile/Moskit/skyFaller</texPath>
+      <texPath>Things/Missile/YJ20/skyFaller</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(4,4)</drawSize>
       <drawOffset>(0,0,1.5)</drawOffset>
@@ -376,18 +376,18 @@
     <stackLimit>1</stackLimit>
     <tickerType>Rare</tickerType>
     <statBases>
-      <MaxHitPoints>100</MaxHitPoints>
-      <MarketValue>6500</MarketValue>
-      <Mass>600</Mass>
+      <MaxHitPoints>300</MaxHitPoints>
+      <MarketValue>9600</MarketValue>
+      <Mass>1500</Mass>
       <Flammability>0.5</Flammability>
       <DeteriorationRate>10.0</DeteriorationRate>
     </statBases>
     <costList>
-      <Steel>250</Steel>
-      <Chemfuel>380</Chemfuel>
-      <DMSE_TantastenAlloy>40</DMSE_TantastenAlloy>
-      <ComponentStamped>12</ComponentStamped>
-      <ComponentSpacer>4</ComponentSpacer>
+      <Steel>90</Steel>
+      <Chemfuel>270</Chemfuel>
+      <DMSE_TantastenAlloy>80</DMSE_TantastenAlloy>
+      <DMSE_Graphene>35</DMSE_Graphene>
+      <ComponentStamped>10</ComponentStamped>
       <ComponentIndustrial>5</ComponentIndustrial>
     </costList>
     <recipeMaker>

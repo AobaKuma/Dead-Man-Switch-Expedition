@@ -9,6 +9,8 @@ namespace DMSE
         /// <summary>發射平台（同一平台的各枚依漣波間隔接續，並共用冷卻）。</summary>
         public object launcher;
         public int flightTicks;
+        public int channelCost;
+        public int Channels => System.Math.Max(1, channelCost);
         public int salvoInterval;
         public int launchCooldown;
         /// <summary>平台冷卻結束的 tick。</summary>
@@ -27,7 +29,7 @@ namespace DMSE
         public int arriveMax = -1;
         /// <summary>本波最早抵達會比這一波（索引）的最晚抵達還早；-1 表示順序正常。</summary>
         public int earlierThan = -1;
-        /// <summary>本波待發射枚數超過導引通道容量，永遠無法整波發射。</summary>
+        /// <summary>本波待發射導彈所需通道超過容量，永遠無法整波發射。</summary>
         public bool overCapacity;
         /// <summary>讓本波排在前面各波之後抵達，需要再延後的 tick 數。</summary>
         public int suggestedDelay;
@@ -60,7 +62,7 @@ namespace DMSE
                 var arrivals = new List<int>();
                 foreach (StrikePlanSlot slot in waves[k].Where(s => s.launched && s.arrivalTick >= 0)) { arrivals.Add(slot.arrivalTick); }
                 List<StrikePlanSlot> pending = waves[k].Where(s => !s.launched).ToList();
-                if (pending.Count > capacity) { plan.overCapacity = true; }
+                if (pending.Sum(s => s.Channels) > capacity) { plan.overCapacity = true; }
                 else if (pending.Count > 0)
                 {
                     var launchers = pending.Select(s => s.launcher).Distinct().ToList();
@@ -71,7 +73,7 @@ namespace DMSE
                     foreach (int t in times)
                     {
                         int free = capacity - holds.Count(h => h.start <= t && t < h.end);
-                        if (free >= pending.Count && launchers.All(l => l == null || !ready.TryGetValue(l, out int r) || r <= t))
+                        if (free >= pending.Sum(s => s.Channels) && launchers.All(l => l == null || !ready.TryGetValue(l, out int r) || r <= t))
                         {
                             fire = t;
                             break;
@@ -85,7 +87,7 @@ namespace DMSE
                         {
                             int launch = fire + 1 + j * slot.salvoInterval;
                             arrivals.Add(launch + slot.flightTicks);
-                            holds.Add((fire, launch + guidanceTicks));
+                            for (int c = 0; c < slot.Channels; c++) { holds.Add((fire, launch + guidanceTicks)); }
                             last = launch;
                             j++;
                         }

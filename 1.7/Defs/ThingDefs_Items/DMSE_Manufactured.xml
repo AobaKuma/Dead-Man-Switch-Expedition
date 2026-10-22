@@ -194,7 +194,6 @@
     <description>A ramjet-powered supersonic anti-ship missile that climbs after launch before diving to skim the sea with a terminal speed that compresses a close-in defence system's reaction time to seconds, big, thirsty and complicated at several times the price of a loitering munition, yet one round is enough to take a frigate out of the fight.</description>
     <descriptionHyperlinks>
       <ThingDef>DMSE_Building_MediumTube</ThingDef>
-      <ThingDef>DMSE_Building_MediumVLS</ThingDef>
       <ThingDef>DMSE_Building_Scorer</ThingDef>
     </descriptionHyperlinks>
     <graphicData>
@@ -232,7 +231,10 @@
       <recipeUsers Inherit="False">
         <li>DMS_TableMachinePrinter</li>
       </recipeUsers>
-      <researchPrerequisite>DMSE_AntishipMissiles</researchPrerequisite>
+      <researchPrerequisites>
+        <li>DMSE_AntishipMissiles</li>
+        <li>DMSE_IntegratedCircuits</li>
+      </researchPrerequisites>
       <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
     </recipeMaker>
     <comps>
@@ -251,7 +253,6 @@
           <li>DMSE_CruiseMissileRack</li>
           <li>DMSE_Building_Scorer</li>
           <li>DMSE_Building_MediumTube</li>
-          <li>DMSE_Building_MediumVLS</li>
         </shelterBuildings>
       </li>
     </comps>

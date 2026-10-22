@@ -19,7 +19,7 @@
   <ResearchProjectDef ParentName="DMS_BaseTech">
     <defName>DMSE_RadarBasis</defName>
     <label>Radar</label>
-    <description>Early detection and fire control in the style of the last great industrial war: concrete acoustic mirrors that listen for engines, a hand-cranked fire-control set that guides one interceptor at a time, and the first guided interceptor rockets.\n\nThis research unlocks the passive acoustic radar, the early fire control radar and the legacy interceptor loitering munition.</description>
+    <description>Early detection and fire control in the style of the last great industrial war: concrete acoustic mirrors that listen for engines, a hand-cranked fire-control set that guides one interceptor at a time, and the first guided interceptor rockets.\n\nThis research unlocks the passive acoustic radar, the early fire control radar, the rotary launch rail, the legacy loitering munition and the legacy interceptor loitering munition.</description>
     <baseCost>1000</baseCost>
     <requiredResearchBuilding Inherit="False" />
     <prerequisites>
@@ -33,7 +33,7 @@
   <ResearchProjectDef ParentName="DMS_BaseTech">
     <defName>DMSE_LoiteringMunitions</defName>
     <label>loitering munition</label>
-    <description>Rail-launched pulsejet loitering munitions give an early colony a crude beyond-visual-range strike capability. Slow and easy to detect, but available long before proper cruise missiles.\n\nThis research unlocks the legacy loitering munition, the launch rail and a loitering munition rack.</description>
+    <description>Rail-launched pulsejet loitering munitions give an early colony a crude beyond-visual-range strike capability. Slow and easy to detect, but available long before proper cruise missiles.\n\nThis research unlocks the launch rail, the loitering munition rack and the strike planning table. With microelectronics basics, it also unlocks the long-range loitering munition.</description>
     <baseCost>1000</baseCost>
     <requiredResearchBuilding Inherit="False" />
     <prerequisites>
@@ -104,7 +104,7 @@
   <ResearchProjectDef ParentName="DMS_BaseTech">
     <defName>DMSE_Ballistics</defName>
     <label>ballistics</label>
-    <description>Systematic study of in-atmosphere missile flight dynamics, liquid- and solid-fuel staging and launch structures. The first ballistic rockets, manned rotary launchers and crew-served flak give a colony long-range fires without any electronics industry.\n\nThis research unlocks the ballistic launch tower and the legacy ballistic missile, the rotary launch rail, the legacy flak gun, the tilt-launch container and a missile rack.</description>
+    <description>Systematic study of in-atmosphere missile flight dynamics, liquid- and solid-fuel staging and launch structures. The first ballistic rockets, manned rotary launchers and crew-served flak give a colony long-range fires without any electronics industry.\n\nThis research unlocks the ballistic launch tower and the legacy ballistic missile, the legacy flak gun, the tilt-launch container and a missile rack.</description>
     <baseCost>4000</baseCost>
     <requiredResearchBuilding Inherit="False" />
     <techLevel>Industrial</techLevel>
@@ -155,15 +155,15 @@
   <ResearchProjectDef ParentName="DMS_BaseTech">
     <defName>DMSE_AntishipMissiles</defName>
     <label>anti-ship missiles</label>
-    <description>Active radar seekers that keep re-aiming at a moving hull, sea-skimming flight profiles and ramjet propulsion turn missiles into weapons against ships and every other base that moves across the world map.\n\nThis research unlocks the anti-ship loitering munition, the supersonic anti-ship missile and the tilt launch tube; with strategic systems it also unlocks the hypersonic anti-ship missile.</description>
+    <description>Active radar seekers that keep re-aiming at a moving target, sea-skimming flight profiles and ramjet propulsion turn missiles into weapons against ships and every other base that moves across the world map.\n\nThis research unlocks the anti-ship loitering munition and the tilt launch tube; integrated circuits are also required for the supersonic anti-ship missile, and strategic systems for the hypersonic anti-ship missile.</description>
     <baseCost>3500</baseCost>
     <requiredResearchBuilding Inherit="False" />
     <techLevel>Industrial</techLevel>
     <prerequisites>
-      <li>DMSE_IntegratedCircuits</li>
+      <li>DMSE_LoiteringMunitions</li>
     </prerequisites>
-    <researchViewX>6.00</researchViewX>
-    <researchViewY>1.00</researchViewY>
+    <researchViewX>3.00</researchViewX>
+    <researchViewY>0.80</researchViewY>
   </ResearchProjectDef>
 
 </Defs>

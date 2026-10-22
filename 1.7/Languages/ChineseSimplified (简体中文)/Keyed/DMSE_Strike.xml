@@ -25,7 +25,7 @@
   <DMSE.Strike.NoRoundsAssigned>至少要把一枚导弹分配到波次</DMSE.Strike.NoRoundsAssigned>
   <DMSE.Strike.TooManyRounds>每个任务最多 {0} 枚导弹</DMSE.Strike.TooManyRounds>
   <DMSE.Strike.TooManyWaves>每个任务最多 {0} 波</DMSE.Strike.TooManyWaves>
-  <DMSE.Strike.WaveOverCap>第 {0} 波有 {1} 枚，引导上限为 {2}</DMSE.Strike.WaveOverCap>
+  <DMSE.Strike.WaveOverCap>第 {0} 波需要 {1} 条导引通道；容量为 {2}</DMSE.Strike.WaveOverCap>
   <DMSE.Strike.RoundTaken>有导弹已被其他打击任务保留</DMSE.Strike.RoundTaken>
   <DMSE.Strike.RoundUnavailable>有导弹已不在架上，或已打不到目标</DMSE.Strike.RoundUnavailable>
 
@@ -70,7 +70,7 @@
   <DMSE.Strike.Plan.Flight>飞行 {0}</DMSE.Strike.Plan.Flight>
   <DMSE.Strike.Plan.Margin>射程 +{0}</DMSE.Strike.Plan.Margin>
   <DMSE.Strike.Plan.WaveTitle>第 {0} 波</DMSE.Strike.Plan.WaveTitle>
-  <DMSE.Strike.Plan.WaveChannelsTip>占用 {1} 条打击导引通道中的 {0} 条（黄色）。整波每一枚都分到空闲通道才能发射；红色表示超出容量。</DMSE.Strike.Plan.WaveChannelsTip>
+  <DMSE.Strike.Plan.WaveChannelsTip>占用 {0}／{1} 条打击导引通道。普通导弹需 1 条、弹道导弹需 2 条；TV 导引额外加 1。整波发射需容纳所有待发导弹。</DMSE.Strike.Plan.WaveChannelsTip>
   <DMSE.Strike.Plan.AddWave>＋新增波次</DMSE.Strike.Plan.AddWave>
   <DMSE.Strike.Plan.AutoAssign>自动分波</DMSE.Strike.Plan.AutoAssign>
   <DMSE.Strike.Plan.AutoAssignDesc>从最便宜的导弹开始依次填满各波，最高价值的导弹会落在最后一波。</DMSE.Strike.Plan.AutoAssignDesc>
@@ -143,4 +143,5 @@
   <!-- Mission names -->
   <DMSE.Strike.MissionDefault>打击任务 #{0}</DMSE.Strike.MissionDefault>
   <DMSE.Strike.RenameTip>重新命名这个打击任务（可掷随机名称）。</DMSE.Strike.RenameTip>
+  <DMSE.Strike.ChannelCost>每枚导弹需求：{0} 条导引通道</DMSE.Strike.ChannelCost>
 </LanguageData>
