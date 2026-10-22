@@ -5,7 +5,7 @@
        三代裝備體系的新平台（docs/三代裝備體系_實作計畫.md §5、§10 P2）
        New platforms of the three-generation equipment plan. 全部由既有 Comp 組成，不需新 C#：
          - 旋轉發射架（老資歷）：手操、Loitering＋Light、對地軌＋攔截兩種發射 Comp 共用一枚彈；
-         - 傾斜發射管（中登）：1x3 單管中型；
+         - 中型傾斜發射統一使用 Scorer MLS；
          - 野戰防空砲（中登）：全自動、彈砲一體——搜索＋2 通道火控＋4 枚攔截彈＋機砲 CIWS；
          - 搜索雷達、火控雷達（中登）；
          - 垂直發射井 2x2（小登）。
@@ -156,90 +156,7 @@
     </placeWorkers>
   </ThingDef>
 
-  <!-- ==================== 傾斜發射管（1x3，中登）====================
-       單管中型導彈（白蛉、鷹擊），冷發射；封閉管不畫彈體。 -->
-  <ThingDef ParentName="DMSE_TiltLauncherBase">
-    <defName>DMSE_Building_MediumTube</defName>
-    <label>tilt launch tube</label>
-    <description>A single-cell tilt launch tube for medium missiles that cold-launches the round out of the tube before ignition to spare the deck from exhaust, one round at a time and reloaded as a complete round, with range and warhead a step above light missiles at the price of being practically fixed to a site or a ship.</description>
-    <thingClass>DMSE.Building_MissileRack</thingClass>
-    <graphicData>
-      <texPath>Things/Building/MissileLauncher/building</texPath>
-      <graphicClass>Graphic_Multi</graphicClass>
-      <drawSize>(2,4)</drawSize>
-      <drawOffset>(0,0.00875,0)</drawOffset>
-      <drawOffsetEast>(0,0.00875,0.35)</drawOffsetEast>
-      <drawOffsetWest>(0,0.00875,0.35)</drawOffsetWest>
-    </graphicData>
-    <size>(1,3)</size>
-    <pathCost>80</pathCost>
-    <fillPercent>0.6</fillPercent>
-    <staticSunShadowHeight>0.1</staticSunShadowHeight>
-    <constructEffect>ConstructMetal</constructEffect>
-    <statBases>
-      <MaxHitPoints>320</MaxHitPoints>
-      <WorkToBuild>7000</WorkToBuild>
-      <Flammability>0.05</Flammability>
-    </statBases>
-    <costList>
-      <Steel>180</Steel>
-      <ComponentIndustrial>8</ComponentIndustrial>
-      <ComponentSpacer>1</ComponentSpacer>
-    </costList>
-    <building>
-      <maxItemsInCell>1</maxItemsInCell>
-      <ignoreStoredThingsBeauty>true</ignoreStoredThingsBeauty>
-      <fixedStorageSettings>
-        <filter>
-          <thingDefs>
-            <li>DMSE_Missile_Moskit</li>
-            <li>DMSE_Missile_Yj</li>
-          </thingDefs>
-        </filter>
-      </fixedStorageSettings>
-      <defaultStorageSettings>
-        <priority>Important</priority>
-        <filter>
-          <thingDefs>
-            <li>DMSE_Missile_Moskit</li>
-            <li>DMSE_Missile_Yj</li>
-          </thingDefs>
-        </filter>
-      </defaultStorageSettings>
-    </building>
-    <modExtensions>
-      <li Class="DMSE.MissileLauncherExtension">
-        <sizeClass>Medium</sizeClass>
-        <launchMode>Tilt</launchMode>
-        <capacity>1</capacity>
-        <renderStoredBody>false</renderStoredBody>
-      </li>
-    </modExtensions>
-    <comps>
-      <li Class="CompProperties_Power">
-        <compClass>CompPowerTrader</compClass>
-        <basePowerConsumption>200</basePowerConsumption>
-      </li>
-      <li Class="CompProperties_Flickable" />
-      <li Class="CompProperties_Breakdownable" />
-      <li Class="DMSE.CompProperties_MissileRailLauncher">
-        <skyfaller>DMSE_SkyFaller_CruiseMissile</skyfaller>
-        <skyfallerIncoming>DMSE_Incoming_Moskit</skyfallerIncoming>
-        <worldObjectDef>DMSE_WorldObject_CruiseMissile</worldObjectDef>
-        <missileBody>DMSE_MissileBody_Moskit</missileBody>
-        <launchCooldownTicks>600</launchCooldownTicks>
-        <launchForwardCells>2</launchForwardCells>
-      </li>
-    </comps>
-    <inspectorTabs>
-      <li>RimWorld.ITab_Storage</li>
-      <li>DMSE.ITab_MissileInventory</li>
-      <li>DMSE.ITab_MissileAssembly</li>
-    </inspectorTabs>
-    <researchPrerequisites>
-      <li>DMSE_AntishipMissiles</li>
-    </researchPrerequisites>
-  </ThingDef>
+
 
   <!-- ==================== 野戰防空砲（3x3，中登，彈砲一體）====================
        全自動：不掛 CompMannable，通電＋開啟即讓所有裝置運作（CompBVRDevice.Active）：

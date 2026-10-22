@@ -193,7 +193,6 @@
     <label>supersonic anti-ship missile</label>
     <description>A ramjet-powered supersonic anti-ship missile that climbs after launch before diving to skim the sea with a terminal speed that compresses a close-in defence system's reaction time to seconds, big, thirsty and complicated at several times the price of a loitering munition, yet one round is enough to take a frigate out of the fight.</description>
     <descriptionHyperlinks>
-      <ThingDef>DMSE_Building_MediumTube</ThingDef>
       <ThingDef>DMSE_Building_Scorer</ThingDef>
     </descriptionHyperlinks>
     <graphicData>
@@ -252,7 +251,6 @@
           <li>DMSE_MissileRack</li>
           <li>DMSE_CruiseMissileRack</li>
           <li>DMSE_Building_Scorer</li>
-          <li>DMSE_Building_MediumTube</li>
         </shelterBuildings>
       </li>
     </comps>

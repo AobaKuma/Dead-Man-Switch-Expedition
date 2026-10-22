@@ -361,7 +361,6 @@
     <label>hypersonic anti-ship missile</label>
     <description>A hypersonic anti-ship missile boosted by a solid rocket and cruised by a ramjet, with a terminal speed above Mach 5 and limited manoeuvring on an extremely low sea-skimming trajectory that leaves a defender tens of seconds to react, its cost and upkeep just as extreme and therefore reserved for targets that deserve it.</description>
     <descriptionHyperlinks>
-      <ThingDef>DMSE_Building_MediumTube</ThingDef>
       <ThingDef>DMSE_Building_MediumVLS</ThingDef>
       <ThingDef>DMSE_Building_Scorer</ThingDef>
     </descriptionHyperlinks>
@@ -421,7 +420,6 @@
           <li>DMSE_CruiseMissileRack</li>
           <li>DMSE_MissileRack</li>
           <li>DMSE_Building_Scorer</li>
-          <li>DMSE_Building_MediumTube</li>
           <li>DMSE_Building_MediumVLS</li>
         </shelterBuildings>
       </li>

@@ -30,7 +30,7 @@ namespace DMSE.BVRAcceptance
         private static ThingDef SearchRadar => Def("DMSE_SearchRadar");
         private static ThingDef FireControlRadar => Def("DMSE_FireControlRadar");
         private static ThingDef Millennium => Def("DMSE_Turret_Millennium");
-        private static ThingDef Flak37 => Def("DMSE_Turret_LegacyFlak");
+        private static ThingDef Flak43 => Def("DMSE_Turret_LegacyFlak");
         private static ThingDef SamLauncher => Def("DMSE_Apparel_SamLauncher");
 
         private static ThingDef V1 => Def("DMSE_Missile_LegacyLoiter");
@@ -391,24 +391,30 @@ namespace DMSE.BVRAcceptance
         }
 
         // ------------------------------------------------------------------
-        //  T7: Millennium and Flak 37
+        //  T7: Millennium and Flak 43
         // ------------------------------------------------------------------
 
         public static IEnumerable<Wait> AirDefenceGuns(TestContext t)
         {
             SpawnBuilding(AcousticRadar, 2, 2);
             Thing mill = SpawnBuilding(Millennium, 14, 4);
-            Thing flak = SpawnBuilding(Flak37, 24, 4);
+            Thing flak = SpawnBuilding(Flak43, 24, 4);
             yield return WaitPowered(); yield return new WaitTicks(2);
             CompTerminalCIWS millCiws = mill.TryGetComp<CompTerminalCIWS>();
             CompTerminalCIWS flakCiws = flak.TryGetComp<CompTerminalCIWS>();
             t.Require(millCiws != null && flakCiws != null && mill is Building_TurretGun && flak is Building_TurretGun,
                 "both guns are turrets with terminal CIWS");
+            t.Check(Flak43.researchPrerequisites.Contains(ResearchProjectDef.Named("DMSE_RadarBasis"))
+                && Flak43.researchPrerequisites.Contains(ResearchProjectDef.Named("GasOperation"))
+                && !Flak43.researchPrerequisites.Contains(ResearchProjectDef.Named("DMSE_Ballistics")),
+                "the Flak 43 requires Radar and gas operation, not ballistics");
+            t.Check(flakCiws.Props.shotsPerBurst == 8 && flakCiws.Props.ticksBetweenShots == 14,
+                "the Flak 43 fires eight-round clips at the autocannon cadence");
             t.Check(millCiws.Active, "the Millennium works unmanned");
-            t.Check(!flakCiws.Active, "the Flak 37 does nothing without a gunner");
+            t.Check(!flakCiws.Active, "the Flak 43 does nothing without a gunner");
             Pawn colonist = Colonist;
             flak.TryGetComp<CompMannable>().ManForATick(colonist);
-            t.Check(flakCiws.Active, "manned, the Flak 37 engages");
+            t.Check(flakCiws.Active, "manned, the Flak 43 engages");
             Find.CameraDriver.SetRootPosAndSize((mill.TrueCenter() + flak.TrueCenter()) / 2f, 16f);
             yield return new WaitFrames(30);
             t.Screenshot("air_defence_guns");
@@ -579,7 +585,7 @@ namespace DMSE.BVRAcceptance
             yield return new AcceptanceTest("T4", "Shipped channel counts and new radars", ChannelsAndRadars);
             yield return new AcceptanceTest("T5", "Built-in anti-ship guidance, ranges, research gates", GuidanceRangesAndResearch);
             yield return new AcceptanceTest("T6", "Interceptor hit factors", InterceptHitFactors);
-            yield return new AcceptanceTest("T7", "Millennium and Flak 37", AirDefenceGuns);
+            yield return new AcceptanceTest("T7", "Millennium and Flak 43", AirDefenceGuns);
             yield return new AcceptanceTest("T8", "Man-portable SAM", ManPortableSam);
             yield return new AcceptanceTest("T9", "Field air defence: on-map cannon turns before firing", FieldAirDefenceGroundFire);
         }

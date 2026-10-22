@@ -47,7 +47,7 @@
 | `DMSE_Building_LoiteringLauncher` 軌道發射架 | SAM + 對地發射軌 | 容量 1；V1／白蟻走對地、萊茵女兒走攔截 |
 | `DMSE_Building_LightMissileLauncher` 傾斜發射箱 | **SAM + 對地發射軌（共用彈艙）** | 容量 4；SAM 冷卻 240／飛行 300；對地冷卻 450 |
 | `DMSE_Building_LightMissileVLS` 小型垂直發射井 | SAM + 對地發射軌 | 容量 4、200 W |
-| `DMSE_Turret_LegacyFlak` 老式防空砲 | CIWS（**需砲手**） | `interceptChance` 0.2、每輪 4 發、間隔 20、冷卻 90、鋼製砲彈 40 |
+| `DMSE_Turret_LegacyFlak` 老式防空砲 | CIWS（**需砲手**） | Flak 43 原型；`interceptChance` 0.2（每輪）、每輪 8 發、間隔 14、冷卻 90、37 毫米砲彈 80；Radar＋GasOperation |
 | `DMSE_Turret_Vulcan_WingBack` GAU-4 | CIWS | 窗口 1800、每輪 10 發、間隔 4、冷卻 20、`interceptChance` 0.25、`debrisChance` 0.3、每發耗 1 砲管（容量 600） |
 | `DMSE_Turret_Millennium` 先進防空砲 | CIWS | `interceptChance` 0.85、每輪 12 發、間隔 3、冷卻 30、每發耗 2（容量 600）、3000 W |
 

@@ -4,16 +4,16 @@
   <!-- ==================================================================
        三代裝備體系的防空砲（docs/三代裝備體系_實作計畫.md §5、§11-3）
        Both guns are Building_TurretGun (ground fire) + DMSE.CompTerminalCIWS (terminal interception).
-         - Flak 37（老資歷）：要砲手（CompMannable：原版 Building_TurretGun.Tick 無人不射擊，
-           CompBVRDevice.Active 無人不攔截），砲彈用鋼，攔截率 0.2。
+         - Flak 43（老資歷）：要砲手（CompMannable：原版 Building_TurretGun.Tick 無人不射擊，
+           CompBVRDevice.Active 無人不攔截），砲彈用鋼，8 發彈夾，每輪攔截率 0.2。
          - 千禧年（小登）：全自動、3000 W，攔截率 0.85，每發 CIWS 消耗 2 發空爆彈。
        ================================================================== -->
 
-  <!-- ==================== 老式防空砲「Flak 37」（2x2，手操）==================== -->
+  <!-- ==================== 老式防空砲「Flak 43」（2x2，手操）==================== -->
   <ThingDef ParentName="DMS_BaseCannonBuilding">
     <defName>DMSE_Turret_LegacyFlak</defName>
     <label>legacy flak gun</label>
-    <description>A towed 88 mm-class anti-aircraft gun with outriggers, an optical sight and a trained crew that loads by hand and computes lead by eye, a real threat to slow low targets and mostly a matter of luck against fast ones, with no radar, no power and no servos, only a barrel, ammunition and people.\n\nNeeds a gunner. Fires steel shells at ground targets and at incoming missiles in their final approach.</description>
+    <description>A crew-served 37 mm anti-aircraft autocannon based on the 3.7 cm Flak 43. Its gas-operated action feeds from eight-round clips; a gunner turns the handwheels and aims through an optical sight. Small high-explosive shells and rapid bursts make it useful against slow, low-flying targets, but it has no radar, electrical drive or automatic fire control.\n\nNeeds a gunner. Fires steel-supplied 37 mm rounds at ground targets and at incoming missiles in their final approach. Requires Radar and gas operation research.</description>
     <techLevel>Industrial</techLevel>
     <graphicData>
       <texPath>Things/Building/AA_Gun/AntiAirGun_Base</texPath>
@@ -38,18 +38,18 @@
       <li Class="CompProperties_Mannable">
         <manWorkType>Violent</manWorkType>
       </li>
-      <!-- 88 毫米砲彈：鋼，1 鋼 = 2 發；對地每發 1，CIWS 每發 1。 -->
+      <!-- 37 毫米砲彈：鋼，1 鋼 = 8 發；對地每發 1，CIWS 每發 1。 -->
       <li Class="CompProperties_Refuelable">
-        <fuelLabel>88 mm shells</fuelLabel>
-        <fuelGizmoLabel>88 mm shells</fuelGizmoLabel>
+        <fuelLabel>37 mm rounds</fuelLabel>
+        <fuelGizmoLabel>37 mm rounds</fuelGizmoLabel>
         <outOfFuelMessage>Cannot fire: no shells.</outOfFuelMessage>
         <fuelFilter>
           <thingDefs>
             <li>Steel</li>
           </thingDefs>
         </fuelFilter>
-        <fuelCapacity>40</fuelCapacity>
-        <fuelMultiplier>2</fuelMultiplier>
+        <fuelCapacity>80</fuelCapacity>
+        <fuelMultiplier>8</fuelMultiplier>
         <initialFuelPercent>0.5</initialFuelPercent>
         <showFuelGizmo>true</showFuelGizmo>
         <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
@@ -60,8 +60,8 @@
         <projectile>DMSE_Bullet_LegacyFlak_CIWS</projectile>
         <terminalWindowTicks>1800</terminalWindowTicks>
         <cooldownTicks>90</cooldownTicks>
-        <ticksBetweenShots>20</ticksBetweenShots>
-        <shotsPerBurst>4</shotsPerBurst>
+        <ticksBetweenShots>14</ticksBetweenShots>
+        <shotsPerBurst>8</shotsPerBurst>
         <interceptChance>0.2</interceptChance>
         <debrisChance>0.4</debrisChance>
         <aimLeadCells>3</aimLeadCells>
@@ -71,9 +71,9 @@
     </comps>
     <building>
       <turretGunDef>DMSE_Gun_LegacyFlak</turretGunDef>
-      <turretTopDrawSize>5</turretTopDrawSize>
-      <turretBurstWarmupTime>3</turretBurstWarmupTime>
-      <turretBurstCooldownTime>4.5</turretBurstCooldownTime>
+      <turretTopDrawSize>3.5</turretTopDrawSize>
+      <turretBurstWarmupTime>0.5</turretBurstWarmupTime>
+      <turretBurstCooldownTime>1</turretBurstCooldownTime>
     </building>
     <hasInteractionCell>true</hasInteractionCell>
     <interactionCellOffset>(0,0,-1)</interactionCellOffset>
@@ -83,7 +83,8 @@
       <ComponentIndustrial>6</ComponentIndustrial>
     </costList>
     <researchPrerequisites Inherit="False">
-      <li>DMSE_Ballistics</li>
+      <li>DMSE_RadarBasis</li>
+      <li>GasOperation</li>
     </researchPrerequisites>
     <minifiedDef>MinifiedThing</minifiedDef>
     <thingCategories>
@@ -93,8 +94,8 @@
 
   <ThingDef ParentName="BaseWeaponTurret">
     <defName>DMSE_Gun_LegacyFlak</defName>
-    <label>88 mm flak gun</label>
-    <description>A towed 88 mm-class anti-aircraft gun, loaded by hand.</description>
+    <label>37 mm flak autocannon</label>
+    <description>A crew-served, gas-operated 37 mm anti-aircraft autocannon based on the 3.7 cm Flak 43, fed from eight-round clips.</description>
     <graphicData>
       <texPath>Things/Building/AA_Gun/AntiAirGun_Turret</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -105,23 +106,24 @@
       <AccuracyShort>0.65</AccuracyShort>
       <AccuracyMedium>0.6</AccuracyMedium>
       <AccuracyLong>0.5</AccuracyLong>
-      <RangedWeapon_Cooldown>4.5</RangedWeapon_Cooldown>
+      <RangedWeapon_Cooldown>1</RangedWeapon_Cooldown>
     </statBases>
     <verbs>
       <li>
         <verbClass>Verb_Shoot</verbClass>
         <defaultProjectile>DMSE_Bullet_LegacyFlak</defaultProjectile>
         <requireLineOfSight>true</requireLineOfSight>
-        <warmupTime>3</warmupTime>
+        <warmupTime>0.5</warmupTime>
         <!-- 高爆砲彈：原版要求爆炸投射物有 forcedMissRadius。 -->
-        <forcedMissRadius>1.9</forcedMissRadius>
-        <minRange>9.9</minRange>
-        <range>40.9</range>
-        <ai_AvoidFriendlyFireRadius>3</ai_AvoidFriendlyFireRadius>
-        <burstShotCount>1</burstShotCount>
-        <soundCast>Mortar_LaunchA</soundCast>
+        <forcedMissRadius>0.9</forcedMissRadius>
+        <minRange>3.9</minRange>
+        <range>34.9</range>
+        <ai_AvoidFriendlyFireRadius>1.5</ai_AvoidFriendlyFireRadius>
+        <ticksBetweenBurstShots>14</ticksBetweenBurstShots>
+        <burstShotCount>8</burstShotCount>
+        <soundCast>Shot_Autocannon</soundCast>
         <soundCastTail>GunTail_Heavy</soundCastTail>
-        <muzzleFlashScale>14</muzzleFlashScale>
+        <muzzleFlashScale>6</muzzleFlashScale>
         <consumeFuelPerShot>1</consumeFuelPerShot>
         <targetParams>
           <canTargetLocations>true</canTargetLocations>
@@ -132,7 +134,7 @@
 
   <ThingDef ParentName="BaseBullet">
     <defName>DMSE_Bullet_LegacyFlak</defName>
-    <label>88 mm shell</label>
+    <label>37 mm HE round</label>
     <thingClass>Projectile_Explosive</thingClass>
     <graphicData>
       <texPath>Things/Projectile/Bullet_Big</texPath>
@@ -140,24 +142,24 @@
     </graphicData>
     <projectile>
       <damageDef>Bomb</damageDef>
-      <damageAmountBase>30</damageAmountBase>
-      <explosionRadius>1.9</explosionRadius>
-      <speed>70</speed>
+      <damageAmountBase>18</damageAmountBase>
+      <explosionRadius>0.9</explosionRadius>
+      <speed>85</speed>
     </projectile>
   </ThingDef>
 
   <!-- 末端 CIWS 曳光彈：朝天空直射的視覺彈（CompTerminalCIWS 以 ProjectileHitFlags.None 發射，不造成傷害）。 -->
   <ThingDef ParentName="BaseBullet">
     <defName>DMSE_Bullet_LegacyFlak_CIWS</defName>
-    <label>88 mm shell</label>
+    <label>37 mm tracer round</label>
     <graphicData>
       <texPath>Things/Projectile/Bullet_Big</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <projectile>
       <damageDef>Bullet</damageDef>
-      <damageAmountBase>20</damageAmountBase>
-      <speed>90</speed>
+      <damageAmountBase>12</damageAmountBase>
+      <speed>85</speed>
     </projectile>
   </ThingDef>
 

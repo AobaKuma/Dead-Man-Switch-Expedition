@@ -2,14 +2,14 @@
 <LanguageData>
 
   <DMSE_Turret_LegacyFlak.label>老式防空炮</DMSE_Turret_LegacyFlak.label>
-  <DMSE_Turret_LegacyFlak.description>一门牵引式 88 毫米等级的高射炮，配备脚架、光学瞄准具与一组受过训练的炮手，靠人工装填与人工计算提前量，对低空慢速目标仍有一定威胁、对高速目标则基本靠运气，没有雷达、没有电力、没有伺服机构，只有炮管、弹药与人。\n\n需要炮手。以钢制炮弹对地面目标开火，也会拦截进入最后进场阶段的来袭导弹。</DMSE_Turret_LegacyFlak.description>
-  <DMSE_Turret_LegacyFlak.comps.CompRefuelable.fuelLabel>88毫米炮弹</DMSE_Turret_LegacyFlak.comps.CompRefuelable.fuelLabel>
-  <DMSE_Turret_LegacyFlak.comps.CompRefuelable.fuelGizmoLabel>88毫米炮弹</DMSE_Turret_LegacyFlak.comps.CompRefuelable.fuelGizmoLabel>
+  <DMSE_Turret_LegacyFlak.description>一门以 3.7 cm Flak 43 为原型的 37 毫米防空机关炮。气动式自动机构由 8 发弹夹供弹，炮手以手轮转向并通过光学瞄准具计算提前量。小型高爆弹配合快速连射，适合对付低空慢速目标；没有雷达、电动驱动或自动火控。\n\n需要炮手操作。以钢补充 37 毫米炮弹，可射击地面目标与进入最后进场阶段的来袭导弹。需要雷达与气动作用科技。</DMSE_Turret_LegacyFlak.description>
+  <DMSE_Turret_LegacyFlak.comps.CompRefuelable.fuelLabel>37毫米炮弹</DMSE_Turret_LegacyFlak.comps.CompRefuelable.fuelLabel>
+  <DMSE_Turret_LegacyFlak.comps.CompRefuelable.fuelGizmoLabel>37毫米炮弹</DMSE_Turret_LegacyFlak.comps.CompRefuelable.fuelGizmoLabel>
   <DMSE_Turret_LegacyFlak.comps.CompRefuelable.outOfFuelMessage>无法开火：没有炮弹。</DMSE_Turret_LegacyFlak.comps.CompRefuelable.outOfFuelMessage>
-  <DMSE_Gun_LegacyFlak.label>88毫米高射炮</DMSE_Gun_LegacyFlak.label>
-  <DMSE_Gun_LegacyFlak.description>一门以人工装填的牵引式 88 毫米等级高射炮。</DMSE_Gun_LegacyFlak.description>
-  <DMSE_Bullet_LegacyFlak.label>88毫米炮弹</DMSE_Bullet_LegacyFlak.label>
-  <DMSE_Bullet_LegacyFlak_CIWS.label>88毫米炮弹</DMSE_Bullet_LegacyFlak_CIWS.label>
+  <DMSE_Gun_LegacyFlak.label>37毫米防空机关炮</DMSE_Gun_LegacyFlak.label>
+  <DMSE_Gun_LegacyFlak.description>一门以 3.7 cm Flak 43 为原型、由 8 发弹夹供弹的气动式 37 毫米防空机关炮，需要炮手操作。</DMSE_Gun_LegacyFlak.description>
+  <DMSE_Bullet_LegacyFlak.label>37毫米高爆弹</DMSE_Bullet_LegacyFlak.label>
+  <DMSE_Bullet_LegacyFlak_CIWS.label>37毫米曳光弹</DMSE_Bullet_LegacyFlak_CIWS.label>
   <DMSE_Turret_Millennium.label>先进防空炮</DMSE_Turret_Millennium.label>
   <DMSE_Turret_Millennium.description>一门 35 毫米的现代化防空炮，配备可编程空爆弹、雷达与光电追踪以及一套能同时接战多目标的火控系统，拦截率高得惊人，代价是惊人的耗电与弹药消耗，每一次接战都像把一整箱白银倒进天空。\n\n以钢材制作的空爆弹开火；每一轮末端防御连射都会烧掉数十发。</DMSE_Turret_Millennium.description>
   <DMSE_Turret_Millennium.comps.CompRefuelable.fuelLabel>35毫米空爆弹</DMSE_Turret_Millennium.comps.CompRefuelable.fuelLabel>
