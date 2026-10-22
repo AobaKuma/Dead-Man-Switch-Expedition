@@ -30,7 +30,110 @@ namespace DMSE.BVRAcceptance
             new AcceptanceTest("F8", "Incoming entry screenshots (cruise missile arriving from the north-east)", IncomingScreenshots),
             new AcceptanceTest("F9", "High-angle shields stop incoming missiles at the contact point (no attribution, shield HP, strike report); ground shields and friendly shields do not", ShieldInterception),
             new AcceptanceTest("F10", "Missile damage is attributed to the launching building, on the same map and across maps", LauncherAttribution),
+            new AcceptanceTest("F11", "Interceptors turn after the ascent toward the incoming bearing (missile entry heading, pod landing cell, world meeting point) and fly out of the map", InterceptorBearing),
+            new AcceptanceTest("F12", "Launches in the same tick are staggered: each map spawns its missiles at least SpacingTicks apart; backblast fires at the spawn", LaunchStagger),
         };
+
+        // ==================================================================
+        //  F11: interceptors turn toward the incoming bearing
+        // ==================================================================
+
+        public static IEnumerable<Wait> InterceptorBearing(TestContext t)
+        {
+            Building_MissileRack rack = SpawnLoadedLauncher(2, 2, 3);
+            yield return WaitPowered();
+            CompMissileLauncher_Interceptor sam = rack.GetComp<CompMissileLauncher_Interceptor>();
+            t.Require(sam != null && sam.HasAmmo, "a loaded SAM launcher");
+            ThingDef incomingDef = LightBody.incomingSkyfaller;
+
+            // A held missile that will fly in from the north-west (300°), and a target without a heading 40 cells east of the SAM.
+            var missile = (Projectile_MissileIncoming)MissileProjectileMaker.MakeIncoming(incomingDef);
+            missile.SetEntryHeading(300f); missile.attacker = Enemy; missile.bvrHandled = true;
+            var plain = (Projectile_MissileIncoming)MissileProjectileMaker.MakeIncoming(incomingDef);
+            plain.attacker = Enemy; plain.bvrHandled = true;
+            IntVec3 east = (rack.Position + new IntVec3(40, 0, 0)).ClampInsideMap(Home);
+            var a = new BVRTarget(missile, SafeImpactCell, Home, 999911);
+            var b = new BVRTarget(plain, east, Home, 999912);
+            HomeBVR.Waves.Add(new BVRWave(Find.TickManager.TicksGame + 20000, new List<BVRTarget> { a, b }) { defenderFaction = Player });
+            float expectB = MissileMapEntryUtility.HeadingOf((east - rack.Position).ToVector3());
+            t.Check(Mathf.Approximately(MissileProjectileMaker.IncomingBearing(a, rack.Position) ?? -1f, 300f), "a missile target's bearing is its entry heading");
+            t.Check(Mathf.Abs(Mathf.DeltaAngle(MissileProjectileMaker.IncomingBearing(b, rack.Position) ?? -999f, expectB)) < 0.01f, $"a target without a heading is bearing {expectB:0.#}° (toward its landing cell)");
+
+            MissileFlightTrace.Begin();
+            Projectile_MissileLaunch shotA = null, shotB = null;
+            try
+            {
+                int now = Find.TickManager.TicksGame;
+                sam.FireInterceptor(a, 1f, now);
+                sam.FireInterceptor(b, 1f, now); // same tick: the second one is staggered
+                TickWatch seenA = AcceptanceDriver.Watch(() => (shotA = InterceptorShotAt(a.id) as Projectile_MissileLaunch) != null);
+                TickWatch seenB = AcceptanceDriver.Watch(() => (shotB = InterceptorShotAt(b.id) as Projectile_MissileLaunch) != null);
+                yield return new WaitUntil(() => seenA.Seen && seenB.Seen, 300);
+                t.Require(shotA != null && shotB != null, "both interceptors spawned");
+                int gap = shotA.ageTicks - shotB.ageTicks; // both alive: the age difference is the spawn-tick difference
+                t.Check(gap >= MapComponent_MissileLaunchQueue.SpacingTicks - 1,
+                    $"the second interceptor launched in the same tick spawns {gap} ticks later (spacing {MapComponent_MissileLaunchQueue.SpacingTicks})");
+                t.Check(Mathf.Approximately(shotA.DepartureHeading, 300f) && Mathf.Abs(Mathf.DeltaAngle(shotB.DepartureHeading, expectB)) < 0.01f,
+                    $"each interceptor carries its target's bearing ({shotA.DepartureHeading:0.#}°, {shotB.DepartureHeading:0.#}°)");
+                yield return new WaitUntil(() => shotA.Cruising && shotB.Cruising || shotA.Destroyed || shotB.Destroyed, 300);
+                t.Check(shotA.Cruising || shotA.Destroyed, "interceptor A hands off from the ascent to the turn");
+                yield return new WaitUntil(() => shotA.Destroyed && shotB.Destroyed, 1500);
+            }
+            finally
+            {
+                MissileFlightTrace.End();
+            }
+            foreach (var (shot, heading, name) in new[] { (shotA, 300f, "A"), (shotB, expectB, "B") })
+            {
+                List<MissileFlightTrace.Sample> s = MissileFlightTrace.For(shot);
+                int n = s.Count;
+                bool cruised = s.Any(x => x.cruising);
+                float exitDir = n >= 2 ? MissileMapEntryUtility.HeadingOf(s[n - 1].pos - s[n - 2].pos) : -999f;
+                t.Check(cruised && Mathf.Abs(Mathf.DeltaAngle(exitDir, heading)) < 0.5f && !MissileDepartureKinematics.InMap(s[n - 1].pos, Home.Size),
+                    $"interceptor {name} turns and leaves the map on {heading:0.#}° (exit direction {exitDir:0.#}°)");
+            }
+            t.Check(HomeBVR.GetTarget(a.id) == null && HomeBVR.GetTarget(b.id) == null, "both targets are resolved (forced hits) once the interceptors leave the map");
+            t.Check(MissileProjectileMaker.WorldInterceptBearing(Home.Tile, MissileWorldUtility.TileCenter(TileAtDistance(8f, 12f))) != null,
+                "world interceptions get a bearing toward the meeting point");
+        }
+
+        // ==================================================================
+        //  F12: staggered launches
+        // ==================================================================
+
+        public static IEnumerable<Wait> LaunchStagger(TestContext t)
+        {
+            MapComponent_MissileLaunchQueue queue = MapComponent_MissileLaunchQueue.For(Home);
+            t.Require(queue != null, "the map has a launch queue");
+            ThingDef def = LightBody.launchProjectile;
+            yield return new WaitTicks(MapComponent_MissileLaunchQueue.SpacingTicks + 1);
+            int now = Find.TickManager.TicksGame;
+            var spawnTicks = new List<int>();
+            for (int i = 0; i < 4; i++)
+            {
+                spawnTicks.Add(MapComponent_MissileLaunchQueue.Launch(Home, new PendingMissileLaunch
+                {
+                    def = def,
+                    cell = Pad.CenterCell + new IntVec3(i * 3, 0, 0),
+                    rotation = Rot4.North,
+                }));
+            }
+            t.Check(spawnTicks[0] == now, $"the first launch spawns at once (tick {spawnTicks[0]} vs now {now})");
+            t.Check(spawnTicks.Zip(spawnTicks.Skip(1), (x, y) => y - x).All(d => d == MapComponent_MissileLaunchQueue.SpacingTicks),
+                $"four launches in one tick get spawn ticks {string.Join(", ", spawnTicks.Select(x => x - now))} (+{MapComponent_MissileLaunchQueue.SpacingTicks} each)");
+            t.Check(queue.PendingCount == 3, $"three wait in the queue ({queue.PendingCount})");
+
+            yield return new WaitUntil(() => queue.PendingCount == 0, 120);
+            t.Check(queue.PendingCount == 0, "the queue drains");
+            // Spawn tick of each live missile = now - age (all four are still climbing).
+            int at = Find.TickManager.TicksGame;
+            List<int> spawnedAt = Home.listerThings.ThingsOfDef(def).OfType<Projectile_MissileBase>()
+                .Select(m => at - m.ageTicks).OrderBy(x => x).ToList();
+            bool onTime = spawnedAt.Count == 4 && spawnedAt.Select((x, i) => Mathf.Abs(x - spawnTicks[i]) <= 1).All(ok => ok);
+            t.Check(onTime, $"the four missiles appeared at +{string.Join(", +", spawnedAt.Select(x => x - now))} ticks");
+
+            yield return new WaitUntil(() => Home.listerThings.ThingsOfDef(def).Count == 0, 1500);
+        }
 
         // ==================================================================
         //  L3: old saves (docs/Missile_Skyfaller轉Projectile_計畫.md §9)
@@ -68,6 +171,15 @@ namespace DMSE.BVRAcceptance
             // D: an old interceptor skyfaller (visual only).
             var interceptor = (InterceptProjectile)MissileProjectileMaker.LaunchInterceptor(InterceptorSkyfaller, Pad.CenterCell + new IntVec3(4, 0, 0), Home, Rot4.North, null, -1, 0f);
             t.Check(departure.Spawned && interceptor.Spawned && flying.Spawned && !held.Spawned, "four in-flight objects before saving");
+            // E: launches still waiting in the launch queue when the game is saved.
+            ThingDef queuedDef = LightBody.launchProjectile;
+            yield return new WaitTicks(MapComponent_MissileLaunchQueue.SpacingTicks + 1);
+            for (int i = 0; i < 3; i++)
+            {
+                MapComponent_MissileLaunchQueue.Launch(Home, new PendingMissileLaunch { def = queuedDef, cell = Pad.CenterCell + new IntVec3(i * 3, 0, 6), rotation = Rot4.North });
+            }
+            int pendingAtSave = MapComponent_MissileLaunchQueue.For(Home).PendingCount;
+            t.Check(pendingAtSave == 2, $"two staggered launches are still queued at save time ({pendingAtSave})");
 
             // Save, then rewrite the incoming missiles to the skyfaller-era class, as an old save holds them.
             RememberEnemyForReload();
@@ -98,13 +210,18 @@ namespace DMSE.BVRAcceptance
 
             // A: converted on its first tick into a projectile on the same target, with its fields.
             t.Check(!Home.listerThings.AllThings.OfType<MissileIncoming>().Any(), "no skyfaller-era incoming missile remains on the map");
-            t.Check(a != null && a.Position == target && a.attacker == Enemy && a.config != null && a.config.Valid && a.worldPhaseDone,
+            // The landing cell takes the guidance scatter on the projectile's first tick.
+            t.Check(a != null && a.Position.InHorDistOf(target, Mathf.Max(1f, a.config?.Scatter ?? 0f) + 1f) && a.attacker == Enemy && a.config != null && a.config.Valid && a.worldPhaseDone,
                 "the flying old missile continues as a projectile on the same target with its config, attacker and strike id");
             t.Note($"legacy missile seen on the map before conversion: {legacySeen}");
             // B: converted inside the BVR wave on load.
             BVRTarget heldTarget = HomeBVR.Waves.SelectMany(w => w.targets).FirstOrDefault(x => x.id == heldTargetId);
             t.Check(heldTarget != null && heldTarget.Payload is Projectile_MissileIncoming p && p.strikeWave == 1 && p.config != null && p.attacker == Enemy,
                 $"the BVR-held old missile is a projectile after loading ({heldTarget?.Payload?.GetType().Name ?? "none"})");
+            // E: the queued launches survived the save and spawned after loading.
+            yield return new WaitUntil(() => MapComponent_MissileLaunchQueue.For(Home).PendingCount == 0, 120);
+            t.Check(MapComponent_MissileLaunchQueue.For(Home).PendingCount == 0 && Home.listerThings.ThingsOfDef(queuedDef).Count == 3,
+                $"the queued launches are restored and spawn after loading ({Home.listerThings.ThingsOfDef(queuedDef).Count} of 3 on the map)");
             // C and D: the unchanged skyfaller classes still finish their ascent.
             yield return new WaitUntil(() => !Home.listerThings.AllThings.Any(x => x is ScorerProjectile || x is InterceptProjectile), 600);
             WorldObject track = Find.WorldObjects.AllWorldObjects.FirstOrDefault(x => x.ID == woId);
@@ -143,6 +260,7 @@ namespace DMSE.BVRAcceptance
             m.bvrHandled = true;
             m.attacker = attacker;
             m.config = config;
+            m.LandingScatterApplied = true; // fixed landing cell: no guidance scatter
             m.SetLauncher(launcher);
             return m;
         }

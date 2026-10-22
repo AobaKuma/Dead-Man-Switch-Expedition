@@ -20,6 +20,9 @@ namespace DMSE
         /// </summary>
         public Thing launcherThing;
 
+        /// <summary>升空彈實際生成的 tick（發射排程可能比發射當下晚幾個 tick；-1 = 未知，視同發射當下）。</summary>
+        public int launchSpawnTick = -1;
+
         /// <summary>波次打擊的任務 id 與波次（0 起算）；-1 表示不是波次打擊發射的。</summary>
         public int strikeMissionId = -1;
         public int strikeWave = -1;
@@ -38,6 +41,7 @@ namespace DMSE
             Scribe_Defs.Look(ref skyfallerIncoming, "skyfallerIncoming");
             if (Scribe.mode == LoadSaveMode.Saving && launcherThing != null && launcherThing.Destroyed) { launcherThing = null; }
             Scribe_References.Look(ref launcherThing, "launcherThing");
+            Scribe_Values.Look(ref launchSpawnTick, "launchSpawnTick", -1);
             Scribe_Values.Look(ref strikeMissionId, "strikeMissionId", -1);
             Scribe_Values.Look(ref strikeWave, "strikeWave", -1);
 
@@ -149,7 +153,12 @@ namespace DMSE
                 incoming.Attacker = base.Faction; // 玩家的巡航導彈，供敵方 BVR 攔截判定。
                 incoming.StrikeMissionId = strikeMissionId;
                 incoming.StrikeWave = strikeWave;
-                (thing as Projectile_MissileIncoming)?.SetLauncher(launcherThing); // 傷害歸因於發射建築
+                if (thing is Projectile_MissileIncoming p)
+                {
+                    p.SetLauncher(launcherThing); // 傷害歸因於發射建築
+                    p.ApplyLandingScatter();      // 命中偏移套在落點上，BVR 以偏移後的落點登記
+                    cell = p.Position;
+                }
                 MissileBVRUtility.TryRegister(thing, cell);
             }
         }

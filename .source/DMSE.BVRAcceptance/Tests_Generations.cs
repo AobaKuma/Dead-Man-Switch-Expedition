@@ -31,7 +31,7 @@ namespace DMSE.BVRAcceptance
         private static ThingDef FireControlRadar => Def("DMSE_FireControlRadar");
         private static ThingDef Millennium => Def("DMSE_Turret_Millennium");
         private static ThingDef Flak37 => Def("DMSE_Turret_LegacyFlak");
-        private static ThingDef SamWeapon => Def("DMSE_Weapon_SamLauncher");
+        private static ThingDef SamLauncher => Def("DMSE_Apparel_SamLauncher");
 
         private static ThingDef V1 => Def("DMSE_Missile_LegacyLoiter");
         private static ThingDef Termite => Def("DMSE_Missile_Termite");
@@ -261,12 +261,12 @@ namespace DMSE.BVRAcceptance
             t.Check(Max(phased) == 24 && Max(fcr) == 4 && Max(early) == 1 && Max(field) == 2,
                 $"channels: phased array 24, fire control 4, early 1, field air defence 2 (got {Max(phased)}/{Max(fcr)}/{Max(early)}/{Max(field)})");
             t.Check(phased.TryGetComp<CompPowerTrader>().Props.PowerConsumption == 9000f, "the phased array draws 9000 W");
-            t.Check(HomeBVR.Channels.Capacity(Player) == 28, $"unmanned: 24 + 4 = 28 channels (got {HomeBVR.Channels.Capacity(Player)})");
+            t.Check(field.TryGetComp<CompMannable>() == null, "the field air-defence system is automatic (no manning comp)");
+            t.Check(HomeBVR.Channels.Capacity(Player) == 30, $"unmanned: 24 + 4 + field air defence 2 = 30 channels (got {HomeBVR.Channels.Capacity(Player)})");
             early.TryGetComp<CompMannable>().ManForATick(colonist);
-            field.TryGetComp<CompMannable>().ManForATick(colonist);
-            t.Check(HomeBVR.Channels.Capacity(Player) == 31, $"manned: + early 1 + field air defence 2 = 31 (got {HomeBVR.Channels.Capacity(Player)})");
+            t.Check(HomeBVR.Channels.Capacity(Player) == 31, $"manned: + early 1 = 31 (got {HomeBVR.Channels.Capacity(Player)})");
             t.Check(field.TryGetComp<CompSearchRadar>().Active && field.TryGetComp<CompTerminalCIWS>().Active,
-                "a manned field air-defence system runs its radar and cannon");
+                "the unmanned field air-defence system runs its radar and cannon");
             t.Check(field.MaxStored == 4 && !field.TryGetComp<CompMissileLauncher_Interceptor>().HasAmmo, "it holds four missiles (empty now)");
 
             CompSearchRadar sr = search.TryGetComp<CompSearchRadar>();
@@ -429,6 +429,75 @@ namespace DMSE.BVRAcceptance
         }
 
         // ------------------------------------------------------------------
+        //  T9: field air defence on-map cannon (CompBuildingTurretGun + facing renderer)
+        // ------------------------------------------------------------------
+
+        public static IEnumerable<Wait> FieldAirDefenceGroundFire(TestContext t)
+        {
+            Building_MissileRack field = (Building_MissileRack)SpawnBuilding(FieldAirDefense, 14, 4);
+            yield return WaitPowered(); yield return new WaitTicks(2);
+            CompBuildingTurretGun gun = field.TryGetComp<CompBuildingTurretGun>();
+            CompTurretFacingRenderer head = field.TryGetComp<CompTurretFacingRenderer>();
+            CompRefuelable fuel = field.TryGetComp<CompRefuelable>();
+            t.Require(gun != null && head != null && fuel != null, "the field air-defence system has an on-map cannon, a turret head and cannon rounds");
+            t.Check(gun.Active && gun.AttackVerb.verbProps.range > 30f && gun.AttackVerb.verbProps.consumeFuelPerShot == 1f,
+                $"the cannon is active, reaches past 30 cells and spends one round per shot (range {gun.AttackVerb.verbProps.range})");
+
+            // An enemy due east: the head starts facing north, so it must turn about 90 degrees before it may fire.
+            IntVec3 cell = new IntVec3(Pad.minX + 38, 0, field.Position.z);
+            Pawn enemy = MakeEnemyPawn();
+            GenSpawn.Spawn(enemy, cell, Home);
+            Find.CameraDriver.SetRootPosAndSize((field.TrueCenter() + enemy.DrawPos) / 2f, 18f);
+            float before = fuel.Fuel;
+            float OffTarget() => Mathf.Abs(Mathf.DeltaAngle(head.CurRotation, (enemy.DrawPos - field.DrawPos).AngleFlat()));
+
+            // Sample on the exact ticks of lock-on and of the first round spent (a frame spans several ticks at Ultrafast).
+            float offAtLock = -1f, fuelAtLock = -1f, offAtFire = -1f;
+            TickWatch locked = AcceptanceDriver.Watch(() =>
+            {
+                if (gun.CurrentTarget.Thing != enemy) { return false; }
+                offAtLock = OffTarget(); fuelAtLock = fuel.Fuel;
+                return true;
+            });
+            TickWatch fired = AcceptanceDriver.Watch(() =>
+            {
+                if (fuel.Fuel >= before) { return false; }
+                offAtFire = enemy.Spawned ? OffTarget() : 0f;
+                return true;
+            });
+
+            var acquire = new WaitUntil(() => locked.Seen, 300);
+            yield return acquire;
+            t.Require(!acquire.TimedOut, "the cannon picks up the enemy");
+            t.Check(offAtLock > 30f && fuelAtLock == before,
+                $"at lock-on the head is still off target ({offAtLock:F0} deg) and nothing has been fired");
+
+            var waitFire = new WaitUntil(() => fired.Seen || enemy.Dead || !enemy.Spawned, 600);
+            yield return waitFire;
+            t.Require(fired.Seen, $"the cannon fires at the enemy ({before - fuel.Fuel} rounds)");
+            int warmup = gun.AttackVerb.verbProps.warmupTime.SecondsToTicks();
+            t.Check(offAtFire <= gun.Props.aimToleranceDeg + 2f,
+                $"the first round leaves only once the head points at the enemy ({offAtFire:F1} deg off)");
+            t.Check(fired.FirstTick - locked.FirstTick >= warmup,
+                $"it turns and aims before firing ({fired.FirstTick - locked.FirstTick} ticks from lock-on, warmup {warmup})");
+            yield return new WaitTicks(10);
+            t.Screenshot("field_air_defence_ground_fire");
+            yield return new WaitFrames(10);
+
+            // Target gone: the head keeps its last firing heading for a while instead of swinging back.
+            if (!enemy.Destroyed) { enemy.Destroy(DestroyMode.Vanish); }
+            float headingAtKill = head.CurRotation;
+            yield return new WaitTicks(250);
+            float drift = Mathf.Abs(Mathf.DeltaAngle(head.CurRotation, headingAtKill));
+            t.Check(!gun.CurrentTarget.IsValid && drift < 1f,
+                $"with the target gone the head holds its firing heading ({drift:F1} deg drift after 250 ticks)");
+
+            SetFlick(field, false);
+            yield return new WaitTicks(2);
+            t.Check(!gun.Active && !gun.CurrentTarget.IsValid, "switched off, the cannon drops its target and stops");
+        }
+
+        // ------------------------------------------------------------------
         //  T8: man-portable SAM
         // ------------------------------------------------------------------
 
@@ -436,34 +505,40 @@ namespace DMSE.BVRAcceptance
         {
             Pawn colonist = Colonist;
             t.Require(colonist != null, "a colonist exists");
-            ThingWithComps oldPrimary = colonist.equipment.Primary;
-            if (oldPrimary != null) { colonist.equipment.Remove(oldPrimary); }
-            ThingWithComps weapon = (ThingWithComps)ThingMaker.MakeThing(SamWeapon);
-            colonist.equipment.AddEquipment(weapon);
+            Apparel launcher = (Apparel)ThingMaker.MakeThing(SamLauncher);
+            colonist.apparel.Wear(launcher, dropReplacedApparel: true);
             Override(() => { }, () =>
             {
-                if (!weapon.Destroyed)
+                if (!launcher.Destroyed)
                 {
-                    if (colonist.equipment.Primary == weapon) { colonist.equipment.Remove(weapon); }
-                    weapon.Destroy();
-                }
-                if (oldPrimary != null && !oldPrimary.Destroyed && colonist.equipment.Primary == null) { colonist.equipment.AddEquipment(oldPrimary); }
-                foreach (Thing m in colonist.inventory.innerContainer.Where(x => x.def == Stinger).ToList())
-                {
-                    colonist.inventory.innerContainer.Remove(m);
-                    m.Destroy();
+                    if (colonist.apparel.Contains(launcher)) { colonist.apparel.Remove(launcher); }
+                    launcher.Destroy();
                 }
             });
 
-            var comp = weapon.GetComp<CompEquippable_ManPortableSAM>();
-            t.Require(comp != null && colonist.equipment.PrimaryEq == comp, "the launcher's equippable comp is the SAM comp");
-            Command_Action Gizmo() => colonist.equipment.GetGizmos().OfType<Command_Action>()
+            var comp = launcher.GetComp<CompManPortableSAM>();
+            t.Require(comp != null && comp.Wearer == colonist && CompManPortableSAM.WornBy(colonist) == comp,
+                "the launcher is worn apparel carrying the SAM comp");
+            t.Check(comp is CompApparelReloadable && comp.AmmoDef == Stinger, "it reloads through vanilla CompApparelReloadable with light SAMs");
+            Verb groundVerb = comp.AllVerbs.FirstOrDefault();
+            t.Require(groundVerb != null, "the launcher has a ground-attack verb");
+            while (comp.RemainingCharges > 0) { comp.UsedOnce(); }
+            t.Check(!launcher.Destroyed, "an empty launcher is kept (not disposable)");
+            Command_Action Gizmo() => comp.CompGetWornGizmosExtra().OfType<Command_Action>()
                 .FirstOrDefault(c => c.defaultLabel == "DMSE.ManPortableSAM.Fire".Translate());
-            t.Check(Gizmo() != null && Gizmo().Disabled, "without missiles the air-defence command is shown but disabled");
-            t.Check(!comp.PrimaryVerb.Available(), "and the ground shot is unavailable");
+            t.Check(Gizmo() != null && Gizmo().Disabled, "without charges the air-defence command is shown but disabled");
+            t.Check(!groundVerb.Available(), "and the ground shot is unavailable");
 
-            for (int i = 0; i < 2; i++) { colonist.inventory.innerContainer.TryAdd(ThingMaker.MakeThing(Stinger)); }
-            t.Check(comp.AmmoCount(colonist) == 2 && comp.PrimaryVerb.Available(), "two missiles in the pack arm the ground shot");
+            Thing ammo = ThingMaker.MakeThing(Stinger);
+            t.Check(comp.NeedsReload(false) && comp.MaxAmmoNeeded(true) == comp.MaxCharges, "the empty launcher asks for one missile per charge");
+            comp.ReloadFrom(ammo);
+            t.Check(comp.RemainingCharges == 1 && ammo.Destroyed, "vanilla reload loads one missile and consumes the item");
+            var loaded = (System.Collections.IList)typeof(CompManPortableSAM)
+                .GetField("loadedConfigs", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(comp);
+            t.Check(loaded.Count == 1 && comp.NextConfig?.body == Body("DMSE_MissileBody_Stinger"),
+                "the loaded missile's assembly config is kept for the shot");
+            comp.ReloadFrom(ThingMaker.MakeThing(Stinger));
+            t.Check(comp.RemainingCharges == 2 && groundVerb.Available(), "a second missile fills the launcher and arms the ground shot");
 
             SpawnBuilding(AcousticRadar, 2, 2);
             yield return WaitPowered(); yield return new WaitTicks(2);
@@ -476,24 +551,24 @@ namespace DMSE.BVRAcceptance
             yield return new WaitTicks(1);
             List<BVRTarget> targets = comp.EngageableTargets(colonist).ToList();
             t.Require(targets.Count == 2, $"two tracked pods are engageable (got {targets.Count})");
-            t.Check(Gizmo() != null && !Gizmo().Disabled, "with missiles and tracks the command is enabled");
+            t.Check(Gizmo() != null && !Gizmo().Disabled, "with charges and tracks the command is enabled");
 
             int now = Find.TickManager.TicksGame;
             t.Check(comp.TryFire(colonist, targets[0].id, out string reason), $"firing at the first pod succeeds ({reason ?? "ok"})");
             IInterceptorShot shot = InterceptorShotAt(targets[0].id);
             t.Check(shot != null && shot.HitChance > 0f, $"an interceptor is in flight (hit chance {shot?.HitChance:0.00})");
             t.Check((shot as Thing)?.def.defName == "DMSE_Launch_Stinger", $"the man-portable SAM launches the Stinger's own launch projectile ({(shot as Thing)?.def.defName})");
-            t.Check(comp.AmmoCount(colonist) == 1 && targets[0].midcourseEngagedUntil > now, "one missile used; the target is marked engaged");
+            t.Check(comp.RemainingCharges == 1 && loaded.Count == 1 && targets[0].midcourseEngagedUntil > now, "one charge used; the target is marked engaged");
             t.Check(comp.OnCooldown && Gizmo().Disabled && !comp.TryFire(colonist, targets[1].id, out _), "the launcher is on cooldown");
 
-            typeof(CompEquippable_ManPortableSAM).GetField("cooldownUntil", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(comp, 0);
+            typeof(CompManPortableSAM).GetField("cooldownUntil", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(comp, 0);
             Job job = JobMaker.MakeJob(DMSE_ManPortableSAMDefOf.DMSE_FireManPortableSAM, colonist);
             job.count = targets[1].id;
             t.Require(colonist.jobs.TryTakeOrderedJob(job, JobTag.Misc), "the colonist takes the aiming job");
-            var waitSecond = new WaitUntil(() => comp.AmmoCount(colonist) == 0, 600);
+            var waitSecond = new WaitUntil(() => comp.RemainingCharges == 0, 600);
             yield return waitSecond;
             t.Check(!waitSecond.TimedOut, "after aiming, the job fires the second missile");
-            t.Check(!comp.PrimaryVerb.Available(), "out of missiles, the ground shot is unavailable again");
+            t.Check(!groundVerb.Available() && loaded.Count == 0 && !launcher.Destroyed, "out of charges, the ground shot is unavailable again");
         }
 
         public static IEnumerable<AcceptanceTest> Tests()
@@ -506,6 +581,7 @@ namespace DMSE.BVRAcceptance
             yield return new AcceptanceTest("T6", "Interceptor hit factors", InterceptHitFactors);
             yield return new AcceptanceTest("T7", "Millennium and Flak 37", AirDefenceGuns);
             yield return new AcceptanceTest("T8", "Man-portable SAM", ManPortableSam);
+            yield return new AcceptanceTest("T9", "Field air defence: on-map cannon turns before firing", FieldAirDefenceGroundFire);
         }
     }
 }

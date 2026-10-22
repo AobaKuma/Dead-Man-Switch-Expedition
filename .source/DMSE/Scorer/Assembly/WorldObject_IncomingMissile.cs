@@ -48,6 +48,12 @@ namespace DMSE
                     incoming.Config = config != null ? config.Clone() : null;
                     incoming.WorldPhaseDone = true;
                     incoming.Attacker = base.Faction;
+                    // 命中偏移套在落點上（每枚各自落在不同格），BVR 以偏移後的落點登記
+                    if (thing is Projectile_MissileIncoming p)
+                    {
+                        p.ApplyLandingScatter();
+                        cell = p.Position;
+                    }
                     if (Prefs.DevMode)
                     {
                         Log.Message($"[DMSE BVR] 來襲導彈抵達落點 {cell}（攻擊方={(base.Faction != null ? base.Faction.Name : "null")}），嘗試交給 BVR。");

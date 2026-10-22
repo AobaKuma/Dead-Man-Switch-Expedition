@@ -30,10 +30,10 @@ namespace DMSE
         /// <summary>有序掃射半幅（格）：一輪連射由 -aimSweepCells 線性掃到 +aimSweepCells（疊加在提前量上）。</summary>
         public int aimSweepCells = 4;
 
-        /// <summary>瞄準高度（佔砲塔到北邊緣距離的比例）：迫近距離遠時的初始高度（1=邊緣/上）。</summary>
+        /// <summary>來襲航線上從落點到入場邊緣的距離比例：遠時的瞄準位置（1=邊緣）。</summary>
         public float aimHeightFar = 1f;
 
-        /// <summary>瞄準高度比例：迫近距離近時下移到的高度（0.5≈中段）。</summary>
+        /// <summary>迫近時的航線距離比例（0.5=落點與入場邊緣的中段）。</summary>
         public float aimHeightNear = 0.5f;
 
         /// <summary>每發消耗的 Refuelable 燃料量（例如裝甲砲管耐久）；建築無 CompRefuelable 時不消耗。</summary>
@@ -139,7 +139,7 @@ namespace DMSE
             if (!HasFuel) { EndBurst(now); return; }
             Refuelable?.ConsumeFuel(Props.fuelPerShot);
 
-            // 虛擬迫近進度：剛進入末端窗口=0（遠/瞄準偏上），即將落地=1（近/瞄準下移）。
+            // 虛擬迫近進度：剛進入末端窗口=0（入場邊緣），即將落地=1（沿航線靠近落點）。
             int timeLeft = wave.tickToImpact - now;
             float approach = Props.terminalWindowTicks > 0
                 ? Mathf.Clamp01(1f - (float)timeLeft / Props.terminalWindowTicks)
@@ -180,35 +180,60 @@ namespace DMSE
         /// <summary>讓砲塔頂部持續朝向指定格（連射期間每 tick 呼叫，維持瞄準平順）。</summary>
         private void AimTopAt(IntVec3 cell)
         {
-            if (cell.IsValid && parent is Building_TurretGun turret)
+            if (!cell.IsValid) { return; }
+            if (parent is Building_TurretGun turret)
             {
                 turret.Top.ForceFaceTarget(new LocalTargetInfo(cell));
             }
+            // 非 Building_TurretGun 的平台（例如野戰防空砲）由 CompTurretFacingRenderer 畫砲塔頭。
+            parent.GetComp<CompTurretFacingRenderer>()?.ForceFaceTarget(cell.ToVector3Shifted());
         }
 
-        /// <summary>朝天空發射一發曳光攔截彈：砲塔轉向、槍口閃光、射擊音效，朝上方射出不傷及殖民地。</summary>
-        /// <param name="approach">虛擬迫近進度（0=遠/瞄準偏上，1=近/瞄準下移到中段）。</param>
+        /// <summary>
+        /// BVR 目標在攔截窗口內被收進容器，position 是落點，不能作為目前空中位置。
+        /// 以保留的入場方位重建落點到地圖邊緣的航線，並沿航線迫近、垂直航線掃射。
+        /// </summary>
+        public IntVec3 CalculateAimCell(BVRTarget target, IntVec3 origin, IntVec3 mapSize, float approach, int shotIndex)
+        {
+            Vector3 landing = target.position.ToVector3Shifted();
+            Thing payload = target.Payload;
+            float heading;
+            if (payload is Projectile_MissileIncoming incoming && incoming.HasEntryHeading)
+                heading = incoming.EntryHeading;
+            else if (payload is Projectile_MissileBase missile)
+                heading = missile.angle;
+            else if (payload is Skyfaller skyfaller)
+                heading = skyfaller.angle;
+            else
+                heading = MissileMapEntryUtility.HeadingOf(landing - origin.ToVector3Shifted());
+
+            Vector3 direction = MissileMapEntryUtility.HeadingVector(heading);
+            Vector3 edge = MissileMapEntryUtility.EdgePoint(mapSize, landing, heading);
+            float fraction = Mathf.Clamp01(Mathf.Lerp(Props.aimHeightFar, Props.aimHeightNear, Mathf.Clamp01(approach)));
+            Vector3 aim = landing + (edge - landing) * fraction;
+            // 提前量沿導彈飛向落點的方向；掃射沿航線的橫向，不固定在世界 X 軸。
+            float lead = Mathf.Min(Mathf.Max(0, Props.aimLeadCells), (aim - landing).magnitude);
+            aim -= direction * lead;
+            int total = Mathf.Max(1, Props.shotsPerBurst);
+            float sweepT = total > 1 ? (float)Mathf.Clamp(shotIndex, 0, total - 1) / (total - 1) : 0.5f;
+            float sweep = Mathf.Lerp(-Props.aimSweepCells, Props.aimSweepCells, sweepT);
+            aim += new Vector3(direction.z, 0f, -direction.x) * sweep;
+            return new IntVec3(Mathf.Clamp(Mathf.FloorToInt(aim.x), 0, mapSize.x - 1), 0,
+                Mathf.Clamp(Mathf.FloorToInt(aim.z), 0, mapSize.z - 1));
+        }
+
+        /// <summary>朝來襲航線發射曳光攔截彈，砲塔與曳光彈使用同一個掃射瞄準點。</summary>
+        /// <param name="approach">虛擬迫近進度（0=入場邊緣，1=航線中段）。</param>
         private void FireVisual(BVRTarget target, float approach)
         {
             Map map = parent.Map;
             if (map == null) { return; }
 
             IntVec3 origin = parent.Position;
-            // 瞄準高度依虛擬迫近距離：遠時偏上（接近北邊緣），近時下移到約中段（左上 → 左中）。
-            int distToEdge = Mathf.Max(1, (map.Size.z - 1) - origin.z);
-            float upFrac = Mathf.Lerp(Props.aimHeightFar, Props.aimHeightNear, Mathf.Clamp01(approach));
-            int skyZ = Mathf.Clamp(origin.z + Mathf.RoundToInt(distToEdge * upFrac), origin.z + 1, map.Size.z - 1);
-            // 提前量：朝目標方向小幅偏移（上限 aimLeadCells），模擬攔截飛行導彈的提前量。
-            int lead = Mathf.Clamp(target.position.x - origin.x, -Props.aimLeadCells, Props.aimLeadCells);
-            // 有序掃射：依本輪連射進度，砲管由一側線性掃到另一側（第一發至最後一發）。
-            int total = Mathf.Max(1, Props.shotsPerBurst);
-            int index = Mathf.Clamp(total - burstShotsLeft, 0, total - 1); // 0 = 第一發
-            float sweepT = total > 1 ? (float)index / (total - 1) : 0.5f;
-            int sweep = Mathf.RoundToInt(Mathf.Lerp(-Props.aimSweepCells, Props.aimSweepCells, sweepT));
-            int aimX = Mathf.Clamp(origin.x + lead + sweep, 0, map.Size.x - 1);
-            IntVec3 skyCell = new IntVec3(aimX, 0, skyZ);
+            IntVec3 skyCell = CalculateAimCell(target, origin, map.Size, approach, Props.shotsPerBurst - burstShotsLeft);
             LocalTargetInfo skyTarget = new LocalTargetInfo(skyCell);
             lastAim = skyCell; // 供連射期間每 tick 持續朝向。
+            parent.GetComp<CompTurretFacingRenderer>()?.ForceFaceTarget(skyCell.ToVector3Shifted());
 
             // 砲塔轉向天空目標 + 槍口閃光 + 射擊音效。
             float muzzleScale = 9f;

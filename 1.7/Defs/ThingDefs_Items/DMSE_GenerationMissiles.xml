@@ -142,13 +142,13 @@
   </ThingDef>
 
   <!-- ==================== 輕型防空導彈「刺針」====================
-       攔截彈，也是單兵防空導彈發射具（DMSE_Weapon_SamLauncher）放在背包裡的彈藥：質量刻意壓低。 -->
+       攔截彈，也是單兵防空導彈發射具（DMSE_Apparel_SamLauncher）裝填的彈藥：質量刻意壓低。 -->
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_Missile_Stinger</defName>
     <label>light surface-to-air missile</label>
     <description>A man-portable infrared-guided surface-to-air missile whose launch tube, sight and small round weigh under twenty kilograms all up, short-ranged and light-headed against fast or manoeuvring targets yet giving every infantry squad an air-defence option that does not wait for a radar and fits into any magazine with room to spare.</description>
     <descriptionHyperlinks>
-      <ThingDef>DMSE_Weapon_SamLauncher</ThingDef>
+      <ThingDef>DMSE_Apparel_SamLauncher</ThingDef>
       <ThingDef>DMSE_Building_RotaryMissileLauncher</ThingDef>
       <ThingDef>DMSE_Building_FieldAirDefense</ThingDef>
       <ThingDef>DMSE_Building_LightMissileLauncher</ThingDef>

@@ -554,9 +554,59 @@ static class Test
         }
     }
 
+    static void CiwsAimDirections()
+    {
+        var props = new CompProperties_TerminalCIWS { shotsPerBurst = 5, aimLeadCells = 4, aimSweepCells = 4 };
+        var ciws = new CompTerminalCIWS { props = props };
+        var size = new IntVec3(250, 1, 250);
+        var origin = new IntVec3(125, 0, 125);
+        foreach (float heading in new[] { 0f, 45f, 90f, 135f, 180f, 225f, 270f, 315f })
+        {
+            var missile = new Projectile_MissileIncoming { def = Empty<ThingDef>(), angle = 0f };
+            missile.SetEntryHeading(heading); // Deliberately differs from angle: held missiles retain their entry heading.
+            var target = new BVRTarget(missile, origin, null, 1);
+            IntVec3 far = ciws.CalculateAimCell(target, origin, size, 0f, 2);
+            IntVec3 near = ciws.CalculateAimCell(target, origin, size, 1f, 2);
+            Near(Mathf.Abs(Mathf.DeltaAngle(MissileMapEntryUtility.HeadingOf((far - origin).ToVector3()), heading)),
+                0f, $"CIWS aims into incoming heading {heading}", 1f);
+            Check((near - origin).LengthHorizontalSquared < (far - origin).LengthHorizontalSquared,
+                $"CIWS follows approach toward landing from {heading}");
+            IntVec3 first = ciws.CalculateAimCell(target, origin, size, 0.5f, 0);
+            IntVec3 last = ciws.CalculateAimCell(target, origin, size, 0.5f, 4);
+            Vector3 sweep = (last - first).ToVector3();
+            Check(sweep.magnitude >= 7f, $"CIWS sweeps across heading {heading}");
+            Check(Mathf.Abs(Vector3.Dot(sweep, MissileMapEntryUtility.HeadingVector(heading))) < 1.5f,
+                $"CIWS sweep is perpendicular to heading {heading}");
+        }
+        // The aim follows the missile's landing-to-entry line, including a turret away from that line.
+        var east = new Projectile_MissileIncoming { def = Empty<ThingDef>() };
+        east.SetEntryHeading(90f);
+        var offset = new BVRTarget(east, new IntVec3(70, 0, 40), null, 2);
+        IntVec3 aim = ciws.CalculateAimCell(offset, origin, size, 0f, 2);
+        Check(aim.x > origin.x && aim.z == 40, "CIWS uses entry trajectory rather than turret-to-north edge");
+        props.shotsPerBurst = 1;
+        foreach (var landing in new[] { new IntVec3(0, 0, 0), new IntVec3(249, 0, 249) })
+        {
+            offset.position = landing;
+            aim = ciws.CalculateAimCell(offset, origin, size, 0f, 0);
+            Check(aim.x >= 0 && aim.x < size.x && aim.z >= 0 && aim.z < size.z,
+                "CIWS single-shot aim remains inside map at corners");
+        }
+        var noPayload = new BVRTarget { position = new IntVec3(20, 0, 125) };
+        aim = ciws.CalculateAimCell(noPayload, origin, size, 0f, 0);
+        Check(aim.x < origin.x && aim.z == origin.z, "CIWS missing-payload fallback uses target bearing");
+        var legacy = new BVRTarget(new Skyfaller { def = Empty<ThingDef>(), angle = 270f }, origin, null, 3);
+        aim = ciws.CalculateAimCell(legacy, origin, size, 0f, 0);
+        Check(aim.x < origin.x && aim.z == origin.z, "CIWS follows skyfaller entry angle");
+        var noHeading = new BVRTarget(new Projectile_MissileIncoming { def = Empty<ThingDef>(), angle = 180f }, origin, null, 4);
+        aim = ciws.CalculateAimCell(noHeading, origin, size, 0f, 0);
+        Check(aim.z < origin.z && aim.x == origin.x, "CIWS older missiles use flight angle when entry heading is absent");
+    }
+
     public static void Main()
     {
         Setup();
+        CiwsAimDirections();
         MissileMapEntry();
         Detection(); Solver(); FireControl(); LedgerAndTerminal(); InventoryAndPersistence(); StrikeP0(); StrikeP1(); StrikeP2(); StrikeP3(); StrikeP4();
         MissileContent(); AreaDefense();

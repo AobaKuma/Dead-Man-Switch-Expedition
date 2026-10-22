@@ -22,6 +22,24 @@ namespace DMSE
             WorldObjectDef worldObjectDef = null,
             MapParent target = null)
         {
+            WorldObject_IncomingMissile wo = Make(source, destination, config, attacker, incomingDef, worldObjectDef, target);
+            if (wo != null) { Find.WorldObjects.Add(wo); }
+            return wo;
+        }
+
+        /// <summary>
+        /// 同 <see cref="Launch"/>，但不加入世界：交給地圖上的離場彈，飛出地圖邊緣時才加入
+        /// （<see cref="Projectile_MissileLaunch.worldObject"/>）。
+        /// </summary>
+        public static WorldObject_IncomingMissile Make(
+            PlanetTile source,
+            PlanetTile destination,
+            MissileConfig config,
+            Faction attacker,
+            ThingDef incomingDef = null,
+            WorldObjectDef worldObjectDef = null,
+            MapParent target = null)
+        {
             WorldObjectDef woDef = worldObjectDef
                 ?? DefDatabase<WorldObjectDef>.GetNamedSilentFail(DefaultWorldObjectDef);
             if (woDef == null)
@@ -39,8 +57,6 @@ namespace DMSE
                 ?? (config != null && config.body != null ? config.body.incomingSkyfaller : null)
                 ?? DefDatabase<ThingDef>.GetNamedSilentFail(DefaultIncomingDef);
             if (attacker != null) { wo.SetFaction(attacker); }
-
-            Find.WorldObjects.Add(wo);
             return wo;
         }
     }

@@ -41,7 +41,7 @@
 | `DMSE_PhaseArrayRadar` 相控陣雷達 | 搜索 + 火控 | 搜索 200/功率 2/反隱身 2/`tpd` 4；火控 **24 通道**、功率 2、`maxHitChance` 0.9、`lockOnTicks` 120、`maxRangeTicks` 6000；9000 W |
 | `DMSE_FireControlRadar` 火控雷達 | 火控 | **4 通道**、功率 1、`maxHitChance` 0.85、`stealthMissFactor` 0.55、`lockOnTicks` 150、`maxRangeTicks` 5000、`supportsArtilleryGuidance`；1500 W |
 | `DMSE_EarlyFireControlRadar` 老式火控雷達 | 火控（**需人操作**） | **1 通道**、功率 1、`maxHitChance` 0.75、`stealthMissFactor` 0.6、`lockOnTicks` 200、`maxRangeTicks` 4000、`supportsArtilleryGuidance` |
-| `DMSE_Building_FieldAirDefense` 野戰防空砲 | 搜索 + 火控 + SAM + CIWS（**需人操作**） | 搜索 100／世界 4；火控 2 通道；容量 4（SA-19／刺針／攔截彈）；機砲 CIWS `interceptChance` 0.35、每輪 8 發、鋼製機砲彈 |
+| `DMSE_Building_FieldAirDefense` 野戰防空砲 | 搜索 + 火控 + SAM + CIWS + 本地圖對地機砲（**全自動**，`CompBuildingTurretGun`，砲塔頭轉到目標方位才開火；貼圖借 DMS 通古斯卡） | 搜索 100／世界 4；火控 2 通道；容量 4（SA-19／刺針／攔截彈）；機砲 CIWS `interceptChance` 0.35、每輪 8 發、鋼製機砲彈 |
 | `DMSE_Building_RotaryMissileLauncher` 防空導彈發射架 | SAM（**需人操作**） | 容量 **4**、裝填冷卻 240、攔截彈飛行 180；收攔截彈／SA-19／刺針／麻雀；砲塔頭繪製在架導彈 |
 | `DMSE_Building_RotaryLauncher` 旋轉發射架 | SAM + 對地發射軌（**需人操作**） | 容量 1；Loitering＋Light；V1／白蟻走對地、萊茵女兒／刺針等走攔截 |
 | `DMSE_Building_LoiteringLauncher` 軌道發射架 | SAM + 對地發射軌 | 容量 1；V1／白蟻走對地、萊茵女兒走攔截 |

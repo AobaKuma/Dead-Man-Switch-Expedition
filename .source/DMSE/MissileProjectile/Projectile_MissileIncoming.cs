@@ -28,6 +28,7 @@ namespace DMSE
 
         private bool hasEntryHeading;
         private float entryHeading;
+        private bool scatterApplied;
 
         public MissileConfig Config { get => config; set => config = value; }
         public Faction Attacker { get => attacker; set => attacker = value; }
@@ -35,6 +36,9 @@ namespace DMSE
         public bool WorldPhaseDone { get => worldPhaseDone; set => worldPhaseDone = value; }
         public int StrikeMissionId { get => strikeMissionId; set => strikeMissionId = value; }
         public int StrikeWave { get => strikeWave; set => strikeWave = value; }
+
+        /// <summary>命中偏移已處理（套在落點上，落地不再偏移）。設為 true 可讓落點固定不偏移（驗收測試用）。</summary>
+        public bool LandingScatterApplied { get => scatterApplied; set => scatterApplied = value; }
 
         public bool HasEntryHeading => hasEntryHeading;
         public float EntryHeading => entryHeading;
@@ -77,12 +81,30 @@ namespace DMSE
             }
         }
 
+        /// <summary>
+        /// 把落點換成套用導引命中偏移後的格（每枚只做一次，BVR 收起再投放不重骰）：每枚彈各自飛向偏移後的落點，
+        /// 落地時不再偏移。呼叫端填好 config 後、交給 BVR 前呼叫；沒有呼叫時首 tick 補做。
+        /// </summary>
+        public void ApplyLandingScatter()
+        {
+            if (scatterApplied || !Spawned || config == null || !config.Valid) { return; }
+            scatterApplied = true;
+            IntVec3 cell = MissileImpactUtility.ScatterCell(config, Position, Map);
+            if (cell == Position) { return; }
+            Position = cell;
+            if (hasEntryHeading)
+            {
+                ticksToImpact = ticksToImpactMax = MissileArrivalKinematics.EntryTicks(Flight, Map.Size, cell, entryHeading);
+            }
+        }
+
         protected override void Tick()
         {
-            // 首次 tick 時（此時呼叫端已設好 attacker/config）嘗試交給 BVR 攔截。
+            // 首次 tick 時（此時呼叫端已設好 attacker/config）套用命中偏移，再嘗試交給 BVR 攔截。
             if (!checkedBvr)
             {
                 checkedBvr = true;
+                ApplyLandingScatter();
                 if (!bvrHandled)
                 {
                     MissileBVRUtility.TryRegister(this, Position);
@@ -147,7 +169,8 @@ namespace DMSE
             }
             Map map = Map;
             IntVec3 position = Position;
-            LastImpactCell = MissileImpactUtility.Detonate(config, position, map, attacker, Instigator); // 傷害歸因於發射建築
+            // 傷害歸因於發射建築；命中偏移已套用在落點上時不再偏移
+            LastImpactCell = MissileImpactUtility.Detonate(config, position, map, attacker, Instigator, applyScatter: !scatterApplied);
 
             // 同 Skyfaller.Impact 的落地表現：揚塵、鏡頭震動、落地音效。
             MissileFlightExtension f = Flight;
@@ -179,6 +202,7 @@ namespace DMSE
             Scribe_Values.Look(ref checkedBvr, "checkedBvr", false);
             Scribe_Values.Look(ref hasEntryHeading, "hasEntryHeading", false);
             Scribe_Values.Look(ref entryHeading, "entryHeading", 0f);
+            Scribe_Values.Look(ref scatterApplied, "scatterApplied", false);
         }
     }
 }

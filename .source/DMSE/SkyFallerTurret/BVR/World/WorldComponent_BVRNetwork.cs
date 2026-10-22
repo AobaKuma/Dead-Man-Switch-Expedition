@@ -257,7 +257,7 @@ namespace DMSE
             float chance = Mathf.Clamp01(CompFireControlRadar.ComputeHitChance(settings, target, eta)
                 * (config?.InterceptHitFactor ?? 1f)
                 + (warhead?.warheadEffect?.InterceptBonus(payload) ?? 0));
-            if (launcher != null ? !launcher.FireWorldInterceptor(now) : !node.TryConsumeDefense(now)) return;
+            if (launcher != null ? !launcher.FireWorldInterceptor(now, MissileProjectileMaker.WorldInterceptBearing(node.Tile, point)) : !node.TryConsumeDefense(now)) return;
             var interceptor = (WorldObject_Interceptor)WorldObjectMaker.MakeWorldObject(def);
             interceptor.Tile = node.Tile;
             interceptor.SetFaction(node.faction);

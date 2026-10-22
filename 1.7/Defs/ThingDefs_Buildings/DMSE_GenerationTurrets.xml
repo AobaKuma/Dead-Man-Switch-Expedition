@@ -167,10 +167,12 @@
     <label>advanced air-defence gun</label>
     <description>A modern 35 mm anti-aircraft gun with programmable airburst ammunition, radar and electro-optical tracking and a fire-control system that engages several targets at once, its interception rate startling and so is its draw on power and ammunition, every engagement a crate of silver poured into the sky.\n\nFires airburst rounds made from steel; each terminal-defence burst burns through dozens of them.</description>
     <techLevel>Industrial</techLevel>
+    <uiIconPath>Things/Turrets/DMS_Oerlikon_icon</uiIconPath>
+    <uiIconScale>1.8</uiIconScale>
     <graphicData>
       <texPath>Things/Building/TurretBase/baseHeavy</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
-      <drawSize>5</drawSize>
+      <drawSize>4</drawSize>
       <drawOffset>(0,0,0)</drawOffset>
     </graphicData>
     <size>(3,3)</size>
@@ -231,7 +233,7 @@
     </comps>
     <building>
       <turretGunDef>DMSE_Gun_Millennium</turretGunDef>
-      <turretTopDrawSize>6</turretTopDrawSize>
+      <turretTopDrawSize>8</turretTopDrawSize>
       <turretBurstWarmupTime>1.5</turretBurstWarmupTime>
       <turretBurstCooldownTime>2</turretBurstCooldownTime>
     </building>
@@ -245,8 +247,6 @@
     <researchPrerequisites Inherit="False">
       <li>DMSE_Aerospace</li>
     </researchPrerequisites>
-    <uiIconPath>Things/Turrets/DMS_WingBack_icon</uiIconPath>
-    <uiIconScale>1.2</uiIconScale>
   </ThingDef>
 
   <ThingDef ParentName="BaseWeaponTurret">
@@ -254,9 +254,9 @@
     <label>35 mm revolver cannon</label>
     <description>A 35 mm revolver cannon firing programmable airburst rounds.</description>
     <graphicData>
-      <texPath>Things/Turrets/DMS_Gun_Vulcan_WingBack</texPath>
+      <texPath>Things/Turrets/DMS_Oerlikon_Gun</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>6</drawSize>
+      <drawSize>8</drawSize>
     </graphicData>
     <statBases>
       <AccuracyTouch>0.95</AccuracyTouch>
@@ -274,8 +274,8 @@
         <minRange>3.9</minRange>
         <range>42.9</range>
         <ai_AvoidFriendlyFireRadius>4.9</ai_AvoidFriendlyFireRadius>
-        <ticksBetweenBurstShots>3</ticksBetweenBurstShots>
-        <burstShotCount>12</burstShotCount>
+        <ticksBetweenBurstShots>4</ticksBetweenBurstShots>
+        <burstShotCount>6</burstShotCount>
         <soundCast>DMS_Shot_GAU</soundCast>
         <soundCastTail>GunTail_Heavy</soundCastTail>
         <muzzleFlashScale>12</muzzleFlashScale>

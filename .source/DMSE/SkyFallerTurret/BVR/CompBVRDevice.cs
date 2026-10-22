@@ -29,7 +29,12 @@ namespace DMSE
         /// </summary>
         public bool ActiveForSeeker => Operational(countPowerStarting: true);
 
-        private bool Operational(bool countPowerStarting)
+        private bool Operational(bool countPowerStarting) => IsOperational(parent, countPowerStarting);
+
+        /// <summary>
+        /// 共用的可運作判定，供無法繼承本類的 Comp（例如 <see cref="CompBuildingTurretGun"/>）沿用同一套規則。
+        /// </summary>
+        public static bool IsOperational(ThingWithComps parent, bool countPowerStarting = false)
         {
             if (parent == null || !parent.Spawned || parent.Destroyed)
             {

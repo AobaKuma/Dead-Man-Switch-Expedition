@@ -30,9 +30,21 @@ namespace DMSE
         public float altitudeOffset = 0f;
 
         /// <summary>
+        /// 貼圖本身的朝向補償角度（度），只影響繪製、不影響追蹤角度。
+        /// 預設 0 表示貼圖朝北；借用 vanilla 砲塔槍管貼圖（朝東）時設為 -90，與 <see cref="TurretTop"/> 的 ArtworkRotation 相同。
+        /// </summary>
+        public float artworkRotation = 0f;
+
+        /// <summary>
         /// 每 tick 最大轉動角度（度）。&lt;= 0 表示瞬間轉向（不平滑）。
         /// </summary>
         public float rotationSpeedDegPerTick = 3f;
+
+        /// <summary>
+        /// 外部瞄準指令（本地圖砲擊／CIWS）結束後，維持最後角度不動的 ticks。
+        /// 避免連射之間的冷卻、或目標剛被擊倒時，砲塔頭立刻轉回 BVR 目標方位或閒置擺動，下一輪又轉回來。
+        /// </summary>
+        public int postAimHoldTicks = 300;
 
         /// <summary>無目標時是否啟用類 TurretTop 的閒置左右擺動。</summary>
         public bool idleSwayEnabled = true;
@@ -109,6 +121,32 @@ namespace DMSE
         private bool idleTurnClockwise;
 
         private Graphic cachedGraphic;
+
+        // 外部瞄準指令（本地圖砲擊／CIWS）：期限內優先於 BVR 目標與閒置擺動。不存檔，由下達者每 tick 續期。
+        private Vector3 aimOverridePos;
+        private int aimOverrideUntilTick = -1;
+
+        private bool AimOverrideActive => Find.TickManager.TicksGame <= aimOverrideUntilTick;
+
+        /// <summary>目前砲塔頭的繪製朝向（度，0 = 北）。</summary>
+        public float CurRotation => curRotation;
+
+        /// <summary>
+        /// 讓砲塔頭在 <paramref name="holdTicks"/> 內朝向指定位置轉動（依 rotationSpeedDegPerTick 平滑轉向）。
+        /// 下達者需持續呼叫以維持朝向；期限過後回到 BVR 目標追蹤／閒置擺動。
+        /// </summary>
+        public void ForceFaceTarget(Vector3 pos, int holdTicks = 2)
+        {
+            aimOverridePos = pos;
+            aimOverrideUntilTick = Find.TickManager.TicksGame + Mathf.Max(1, holdTicks);
+        }
+
+        /// <summary>砲塔頭是否已對準 <paramref name="pos"/>（與目標方位的夾角不超過 <paramref name="toleranceDeg"/>）。</summary>
+        public bool IsFacing(Vector3 pos, float toleranceDeg)
+        {
+            float desired = (pos - parent.DrawPos).AngleFlat();
+            return Mathf.Abs(Mathf.DeltaAngle(curRotation, desired)) <= toleranceDeg;
+        }
 
         private Graphic HeadGraphic
         {
@@ -204,6 +242,22 @@ namespace DMSE
                 return;
             }
 
+            if (AimOverrideActive)
+            {
+                RotateTowards((aimOverridePos - parent.DrawPos).AngleFlat());
+                ticksUntilIdleTurn = Rand.RangeInclusive(Props.idleTurnIntervalMin, Props.idleTurnIntervalMax);
+                idleTurnTicksLeft = 0;
+                return;
+            }
+
+            // 剛交戰完：停在最後的射擊角度，不追 BVR 目標也不閒置擺動。
+            if (aimOverrideUntilTick >= 0 && Find.TickManager.TicksGame <= aimOverrideUntilTick + Props.postAimHoldTicks)
+            {
+                ticksUntilIdleTurn = Rand.RangeInclusive(Props.idleTurnIntervalMin, Props.idleTurnIntervalMax);
+                idleTurnTicksLeft = 0;
+                return;
+            }
+
             IntVec3? targetCell = FindFacingTargetCell();
             if (targetCell.HasValue)
             {
@@ -273,7 +327,7 @@ namespace DMSE
             Vector3 pos = parent.DrawPos + Props.offset;
             pos.y = AltitudeLayer.BuildingOnTop.AltitudeFor() + Props.altitudeOffset;
 
-            Quaternion quat = Quaternion.Euler(0f, curRotation, 0f);
+            Quaternion quat = Quaternion.Euler(0f, curRotation + Props.artworkRotation, 0f);
             Vector3 scale = new Vector3(Props.drawSize.x, 1f, Props.drawSize.y);
 
             Graphics.DrawMesh(

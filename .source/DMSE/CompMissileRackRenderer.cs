@@ -72,6 +72,12 @@ namespace DMSE
         /// <summary>額外高度偏移（用於微調疊繪層級）。</summary>
         public float altitudeOffset = 0f;
 
+        /// <summary>
+        /// 已裝填單元的井蓋疊圖，依容器順序顯示；每張皆以建築中心及 drawSize 繪製。
+        /// 設定後改畫井蓋，不受 renderStoredBody=false 影響，也不繪製導彈彈體。
+        /// </summary>
+        public List<string> loadedHatchTexPaths;
+
         public CompProperties_MissileRackRenderer()
         {
             compClass = typeof(CompMissileRackRenderer);
@@ -98,6 +104,35 @@ namespace DMSE
         public CompProperties_MissileRackRenderer Props => (CompProperties_MissileRackRenderer)props;
 
         private List<Vector3> cachedSlots;
+        private Graphic[] cachedHatches;
+
+        public override void Notify_DefsHotReloaded()
+        {
+            base.Notify_DefsHotReloaded();
+            cachedSlots = null;
+            cachedHatches = null;
+        }
+
+        private void DrawLoadedHatches(int storedCount)
+        {
+            int count = Mathf.Min(storedCount, Mathf.Min(Props.loadedHatchTexPaths.Count, Props.maxStored));
+            if (count <= 0) return;
+
+            Vector2 drawSize = parent.def.graphicData.drawSize;
+            if (cachedHatches == null)
+                cachedHatches = new Graphic[Props.loadedHatchTexPaths.Count];
+
+            Vector3 pos = parent.DrawPos;
+            pos.y = AltitudeLayer.BuildingOnTop.AltitudeFor() + Props.altitudeOffset;
+            Matrix4x4 matrix = Matrix4x4.TRS(pos, Quaternion.Euler(0f, parent.Rotation.AsAngle, 0f),
+                new Vector3(drawSize.x, 1f, drawSize.y));
+            for (int i = 0; i < count; i++)
+            {
+                Graphic hatch = cachedHatches[i] ?? (cachedHatches[i] = GraphicDatabase.Get<Graphic_Single>(
+                    Props.loadedHatchTexPaths[i], ShaderDatabase.Cutout, drawSize, Color.white));
+                Graphics.DrawMesh(MeshPool.GridPlane(Vector2.one, false), matrix, hatch.MatAt(parent.Rotation, parent), 0);
+            }
+        }
 
         /// <summary>共用（北向）槽位：有設定則用設定值，否則自動均分。</summary>
         private List<Vector3> SharedSlots
@@ -152,6 +187,12 @@ namespace DMSE
             IReadOnlyList<Thing> held = rack.HeldThings;
             if (held == null || held.Count == 0)
             {
+                return;
+            }
+
+            if (Props.loadedHatchTexPaths != null && Props.loadedHatchTexPaths.Count > 0)
+            {
+                DrawLoadedHatches(held.Count);
                 return;
             }
 

@@ -383,6 +383,12 @@ DMSE.MissileShieldUtility                        ← 高角護盾攔截（§6）
   改為測試開始就生成並麻醉（不會走開），並以新增的 `Projectile_MissileIncoming.LastImpactCell`（實際爆心）判斷是否在爆炸範圍內後，F10、L3 重跑 PASS。
   與 P0 基準相比沒有回歸；日誌中的錯誤只有既有雜訊（VoidMonolith／SteamGeyser 清場、D4 的 DropPodTrack 重複銷毀，P0 即有）。
   BVRTests 263 項、`check_missile_content.py`、產生器冪等性皆通過。
+- **追加（2026-10-21）：攔截彈轉向＋發射錯開**
+  - 攔截彈（SAM、單兵防空、世界層攔截的視覺升空彈）升空後轉向「來襲方位」並沿 speedCurve 飛出地圖邊緣，飛出時才結算（沿用離場巡航段）：
+    導彈目標用它的進入方位；空投艙等沒有方位的目標用發射點到預測落點的方向；世界層攔截用發射據點到會合點的方位（`MissileProjectileMaker.IncomingBearing`／`WorldInterceptBearing`）。
+  - `MapComponent_MissileLaunchQueue`：同一張地圖的升空彈至少相隔 6 tick 生成（對地發射、SAM、單兵防空都經它）。只錯開畫面上的生成：彈藥、冷卻、BVR 通道、世界航跡物件在發射當下處理；
+    後焰在實際生成時觸發；等待中的發射隨地圖存檔；`ScorerProjectile_WorldObject.launchSpawnTick` 讓打擊時間軸計入延後。
+  - 驗收 F11、F12，L3 加查「排程中的發射存讀檔後照常生成」。
 - **剩餘未做**：發射建築已不存在時的「以陣營歸因」；中立陣營好感度扣減未驗證（測試世界沒有可用的中立陣營）；火砲改用 `MissileMapEntryUtility`（後續項目）。
 - **P1 中確認的事實**（影響後續設計）：
   - 原版 skyfaller 的 `angle` 與世界方位是同一套羅盤角（`PosAtDist` 位移 = (sin, cos)），所以邊緣入射的墜落角＝進入方位，不需換算。

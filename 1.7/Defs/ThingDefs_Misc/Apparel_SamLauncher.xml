@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ==================== 防空導彈發射具（單兵裝備，中登）====================
+       docs/三代裝備體系_實作計畫.md §10 C10。
+       - 與 DMS 拋棄式發射器（DMS_DeposableRocketLauncher）同為腰帶層 Apparel，不占主武器欄。
+       - DMSE.CompProperties_ManPortableSAM 繼承原版 CompProperties_ApparelReloadable：
+         彈藥是輕型防空導彈（DMSE_Missile_Stinger），一發一枚，用原版「裝填」工作從地上的導彈裝入；
+         防空 Gizmo 與對地射擊（原版 Verb_LaunchProjectile）共用裝填彈數。
+         裝填時記下每枚導彈的裝配設定（彈體、戰鬥部），發射時沿用。
+       - 不掛 tradeTags / apparelTags：不會出現在任何陣營的生成裝備池。 -->
+  <ThingDef ParentName="ApparelNoQualityBase">
+    <defName>DMSE_Apparel_SamLauncher</defName>
+    <label>man-portable SAM launcher</label>
+    <description>A shoulder-carried surface-to-air launcher whose tube, grip, rudimentary IFF antenna and helmet-linked sight let one person fire an interceptor at a beyond-visual-range track, provided the operator stands still to complete the lock. It is slung across the back, leaving the hands free for a primary weapon.\n\nLoad it with light surface-to-air missiles. The air-defence command engages incoming threats that your radar network has already tracked on this map; it needs no fire-control channel.</description>
+    <graphicData>
+      <texPath>Things/Weapons/DMSE_Stinger</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>1.4</drawSize>
+    </graphicData>
+    <techLevel>Industrial</techLevel>
+    <statBases>
+      <WorkToMake>12000</WorkToMake>
+      <Mass>6</Mass>
+      <EquipDelay>1</EquipDelay>
+      <MaxHitPoints>100</MaxHitPoints>
+    </statBases>
+    <equippedStatOffsets>
+      <MoveSpeed>-0.25</MoveSpeed>
+    </equippedStatOffsets>
+    <costList>
+      <Steel>60</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+    </costList>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <effectWorking>Smith</effectWorking>
+      <soundWorking>Recipe_Smith</soundWorking>
+      <recipeUsers Inherit="False">
+        <li>DMS_TableMachinePrinter</li>
+      </recipeUsers>
+      <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
+      <researchPrerequisite>DMSE_IntegratedCircuits</researchPrerequisite>
+    </recipeMaker>
+    <tickerType>Never</tickerType>
+    <thingCategories>
+      <li>ApparelUtility</li>
+    </thingCategories>
+    <apparel>
+      <countsAsClothingForNudity>false</countsAsClothingForNudity>
+      <careIfWornByCorpse>false</careIfWornByCorpse>
+      <careIfDamaged>false</careIfDamaged>
+      <ignoredByNonViolent>true</ignoredByNonViolent>
+      <wearPerDay>0</wearPerDay>
+      <bodyPartGroups>
+        <li>Waist</li>
+      </bodyPartGroups>
+      <layers>
+        <li>Belt</li>
+      </layers>
+      <!-- 背掛外觀暫借 DMS 拋棄式發射器的貼圖。 -->
+      <wornGraphicPath>Things/Apparel/RocketLauncher/apparel</wornGraphicPath>
+      <wornGraphicData>
+        <renderUtilityAsPack>true</renderUtilityAsPack>
+        <north>
+          <scale>0.75</scale>
+          <offset>(-0.1,0)</offset>
+          <hulk><offset>(-0.15,-0.10)</offset></hulk>
+          <fat><offset>(-0.15,-0.10)</offset></fat>
+        </north>
+        <south>
+          <scale>0.75</scale>
+          <offset>(0.10,0.15)</offset>
+          <hulk><offset>(0.15,0)</offset></hulk>
+          <fat><offset>(0.15,0)</offset></fat>
+        </south>
+        <east>
+          <offset>(-0.35,0)</offset>
+          <scale>0.75</scale>
+          <thin><offset>(0,0.1)</offset></thin>
+          <hulk><offset>(-0.15,0)</offset></hulk>
+          <fat><offset>(-0.15,0)</offset></fat>
+          <male><offset>(0,0.1)</offset></male>
+        </east>
+        <west>
+          <offset>(0.35,0)</offset>
+          <scale>0.75</scale>
+          <thin><offset>(0,0.1)</offset></thin>
+          <hulk><offset>(0.15,0)</offset></hulk>
+          <fat><offset>(0.15,0)</offset></fat>
+          <male><offset>(0,0.1)</offset></male>
+        </west>
+      </wornGraphicData>
+    </apparel>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <smeltable>false</smeltable>
+    <burnableByRecipe>false</burnableByRecipe>
+    <drawGUIOverlay>false</drawGUIOverlay>
+    <!-- 對地射擊：原版 Verb_LaunchProjectile 每發呼叫 UsedOnce 扣一發裝填彈。
+         Apparel 動詞不會被 AI 自動使用，只在玩家下令時發射。 -->
+    <verbs>
+      <li>
+        <label>fire missile</label>
+        <commandIcon>Things/Weapons/DMSE_Stinger</commandIcon>
+        <verbClass>Verb_LaunchProjectile</verbClass>
+        <hasStandardCommand>true</hasStandardCommand>
+        <defaultProjectile>DMSE_Projectile_Stinger</defaultProjectile>
+        <warmupTime>2.5</warmupTime>
+        <accuracyTouch>0.5</accuracyTouch>
+        <accuracyShort>0.7</accuracyShort>
+        <accuracyMedium>0.75</accuracyMedium>
+        <accuracyLong>0.7</accuracyLong>
+        <!-- 爆炸投射物：原版要求設 forcedMissRadius。 -->
+        <forcedMissRadius>1.5</forcedMissRadius>
+        <minRange>4.9</minRange>
+        <range>32.9</range>
+        <burstShotCount>1</burstShotCount>
+        <soundCast>Shot_IncendiaryLauncher</soundCast>
+        <soundCastTail>GunTail_Heavy</soundCastTail>
+        <muzzleFlashScale>12</muzzleFlashScale>
+        <ai_IsWeapon>false</ai_IsWeapon>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+          <canTargetBuildings>true</canTargetBuildings>
+          <canTargetPawns>true</canTargetPawns>
+        </targetParams>
+      </li>
+    </verbs>
+    <comps>
+      <li Class="DMSE.CompProperties_ManPortableSAM">
+        <!-- 原版裝填（CompApparelReloadable） -->
+        <maxCharges>2</maxCharges>
+        <ammoDef>DMSE_Missile_Stinger</ammoDef>
+        <ammoCountPerCharge>1</ammoCountPerCharge>
+        <baseReloadTicks>180</baseReloadTicks>
+        <soundReload>Standard_Reload</soundReload>
+        <hotKey>Misc4</hotKey>
+        <chargeNoun>missile</chargeNoun>
+        <displayGizmoWhileUndrafted>false</displayGizmoWhileUndrafted>
+        <!-- 防空 -->
+        <interceptorSkyfaller>DMSE_SkyFaller_Interceptor</interceptorSkyfaller>
+        <aimTicks>90</aimTicks>
+        <cooldownTicks>300</cooldownTicks>
+        <interceptorTravelTicks>180</interceptorTravelTicks>
+        <maxRangeCells>40</maxRangeCells>
+        <maxEtaTicks>2400</maxEtaTicks>
+        <uiIconPath>Things/Weapons/DMSE_Projectile_Stinger</uiIconPath>
+        <!-- 導引頭：沿用火控雷達的命中率公式；功率 0 = 對任何隱身都吃虧。 -->
+        <seeker>
+          <maxTargets>1</maxTargets>
+          <powerLevel>0</powerLevel>
+          <guidanceAccuracyTime>600</guidanceAccuracyTime>
+          <maxRangeTicks>2400</maxRangeTicks>
+          <maxHitChance>0.6</maxHitChance>
+          <stealthMissFactor>0.5</stealthMissFactor>
+          <lockOnTicks>90</lockOnTicks>
+        </seeker>
+      </li>
+      <!-- 瞄準時的手持外觀（同 DMS 拋棄式發射器）。 -->
+      <li Class="Fortified.CompProperties_AimingEquipmentGraphic">
+        <graphicData>
+          <texPath>Things/Weapons/DMSE_Stinger</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>1.4</drawSize>
+        </graphicData>
+      </li>
+      <li Class="CompProperties_Styleable" />
+    </comps>
+  </ThingDef>
+
+  <!-- 對地射擊的投射物（刺針），小型高爆。 -->
+  <ThingDef ParentName="BaseBullet">
+    <defName>DMSE_Projectile_Stinger</defName>
+    <label>light surface-to-air missile</label>
+    <thingClass>Projectile_Explosive</thingClass>
+    <graphicData>
+      <texPath>Things/Weapons/DMSE_Projectile_Stinger</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>1.2</drawSize>
+    </graphicData>
+    <projectile>
+      <damageDef>Bomb</damageDef>
+      <damageAmountBase>45</damageAmountBase>
+      <explosionRadius>1.9</explosionRadius>
+      <speed>45</speed>
+    </projectile>
+  </ThingDef>
+
+  <!-- 防空 Gizmo 派的工作：原地瞄準後發射（目標 id 放在 job.count）。 -->
+  <JobDef>
+    <defName>DMSE_FireManPortableSAM</defName>
+    <driverClass>DMSE.JobDriver_FireManPortableSAM</driverClass>
+    <reportString>aiming a surface-to-air missile.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+    <suspendable>false</suspendable>
+  </JobDef>
+
+</Defs>

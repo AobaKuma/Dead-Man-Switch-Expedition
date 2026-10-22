@@ -6,7 +6,7 @@
        New platforms of the three-generation equipment plan. 全部由既有 Comp 組成，不需新 C#：
          - 旋轉發射架（老資歷）：手操、Loitering＋Light、對地軌＋攔截兩種發射 Comp 共用一枚彈；
          - 傾斜發射管（中登）：1x3 單管中型；
-         - 野戰防空砲（中登）：手操、彈砲一體——搜索＋2 通道火控＋4 枚攔截彈＋機砲 CIWS；
+         - 野戰防空砲（中登）：全自動、彈砲一體——搜索＋2 通道火控＋4 枚攔截彈＋機砲 CIWS；
          - 搜索雷達、火控雷達（中登）；
          - 垂直發射井 2x2（小登）。
        貼圖暫借既有建築（計畫 §13-4）。
@@ -23,10 +23,11 @@
     <description>An old 360-degree launcher whose rail is turned by hand crank and foot pedal, able to fire early loitering munitions and light missiles with a slew rate that depends on how fast the crank is turned and a reload that takes one round at a time, cheap, reliable and completely free of electronics at the cost of needing an operator at all times.</description>
     <thingClass>DMSE.Building_MissileRack</thingClass>
     <category>Building</category>
+    <uiIconPath>Things/Building/turretBase</uiIconPath>
     <graphicData>
       <texPath>Things/Building/turretBase</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(2.8,2.8)</drawSize>
+      <drawSize>(4,4)</drawSize>
     </graphicData>
     <altitudeLayer>Building</altitudeLayer>
     <drawerType>MapMeshAndRealTime</drawerType>
@@ -48,7 +49,7 @@
       <Mass>120</Mass>
       <Flammability>0.25</Flammability>
     </statBases>
-    <size>(2,2)</size>
+    <size>(3,3)</size>
     <costList>
       <Steel>100</Steel>
       <ComponentIndustrial>6</ComponentIndustrial>
@@ -133,7 +134,7 @@
       </li>
       <li Class="DMSE.CompProperties_TurretFacingRenderer">
         <texPath>Things/Building/slideLauncher</texPath>
-        <drawSize>(2.8,2.8)</drawSize>
+        <drawSize>(4,4)</drawSize>
         <altitudeOffset>0.01</altitudeOffset>
         <rotationSpeedDegPerTick>1</rotationSpeedDegPerTick>
         <drawLoadedAmmo>true</drawLoadedAmmo>
@@ -239,17 +240,20 @@
   </ThingDef>
 
   <!-- ==================== 野戰防空砲（3x3，中登，彈砲一體）====================
-       一個操作員同時讓所有裝置運作（CompBVRDevice.Active 對 CompMannable 的判定）：
-         搜索雷達（短程）＋火控雷達（2 通道）＋攔截發射器（4 枚 SA-19／刺針／攔截彈）＋機砲 CIWS（鋼製機砲彈）。
-       雷達開機即是反輻射導引頭的目標。 -->
+       全自動：不掛 CompMannable，通電＋開啟即讓所有裝置運作（CompBVRDevice.Active）：
+         搜索雷達（短程）＋火控雷達（2 通道）＋攔截發射器（4 枚 SA-19／刺針／攔截彈）＋機砲 CIWS（鋼製機砲彈）
+         ＋本地圖對地機砲（CompBuildingTurretGun，與 CIWS 共用鋼製機砲彈；砲塔頭轉到目標方位才開火）。
+       雷達開機即是反輻射導引頭的目標。貼圖借用 DMS 本體的通古斯卡（DMS_Turret_Tunguska）。 -->
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_Building_FieldAirDefense</defName>
     <label>field air-defence system</label>
-    <description>A gun-missile field air-defence system with two 30 mm cannon, four short-range missiles and a search and track radar packed into one turret that fires missiles under radar guidance and then uses the guns to mop up, the last line of mobile air defence, though the radar draws heavily, ammunition disappears at a frightening rate and switching it on greets every anti-radiation seeker in the world.\n\nNeeds an operator; the cannon uses steel as ammunition.</description>
+    <description>A gun-missile field air-defence system with two 30 mm cannon, four short-range missiles and a search and track radar packed into one turret that fires missiles under radar guidance and then uses the guns to mop up, the last line of mobile air defence, though the radar draws heavily, ammunition disappears at a frightening rate and switching it on greets every anti-radiation seeker in the world.\n\nFully automatic, no operator needed; the cannon also engages enemies on the map and uses steel as ammunition.</description>
     <thingClass>DMSE.Building_MissileRack</thingClass>
     <category>Building</category>
+    <uiIconPath>Things/Turrets/DMS_Tunguska</uiIconPath>
+    <uiIconScale>1.2</uiIconScale>
     <graphicData>
-      <texPath>Things/Building/turretBase</texPath>
+      <texPath>Things/Turrets/DMS_Base_Tunguska_GateKeeper</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(4,4)</drawSize>
     </graphicData>
@@ -272,6 +276,7 @@
       <WorkToBuild>14000</WorkToBuild>
       <Mass>400</Mass>
       <Flammability>0.25</Flammability>
+      <ShootingAccuracyTurret>0.96</ShootingAccuracyTurret>
     </statBases>
     <size>(3,3)</size>
     <costList>
@@ -328,13 +333,6 @@
         <compClass>CompPowerTrader</compClass>
         <basePowerConsumption>800</basePowerConsumption>
       </li>
-      <li Class="CompProperties_Mannable">
-        <compClass>DMSE.CompMannableMissileLauncher</compClass>
-        <planetLayerWhitelist>
-          <li>Surface</li>
-          <li>Orbit</li>
-        </planetLayerWhitelist>
-      </li>
       <!-- 搜索／追蹤雷達：短程、低功率，主要給自己的防空網提供航跡。 -->
       <li Class="DMSE.CompProperties_SearchRadar">
         <worldDetectionRange>4</worldDetectionRange>
@@ -388,19 +386,19 @@
         <aimSweepCells>5</aimSweepCells>
         <fuelPerShot>1</fuelPerShot>
       </li>
+      <!-- 本地圖對地機砲：自動搜尋敵人，砲塔頭（下方渲染 Comp）轉到目標方位後才開火；每發扣 1 機砲彈。 -->
+      <li Class="DMSE.CompProperties_BuildingTurretGun">
+        <turretDef>DMSE_Gun_FieldAirDefense</turretDef>
+        <aimToleranceDeg>8</aimToleranceDeg>
+        <maxAimTicks>300</maxAimTicks>
+      </li>
+      <!-- 通古斯卡砲塔頭：貼圖已畫出發射筒，不另疊彈體；vanilla 槍管貼圖朝東，故 -90 補償。 -->
       <li Class="DMSE.CompProperties_TurretFacingRenderer">
-        <texPath>Things/Building/slideLauncher</texPath>
+        <texPath>Things/Turrets/DMS_Gun_Tunguska</texPath>
         <drawSize>(4,4)</drawSize>
         <altitudeOffset>0.01</altitudeOffset>
+        <artworkRotation>-90</artworkRotation>
         <rotationSpeedDegPerTick>3</rotationSpeedDegPerTick>
-        <drawLoadedAmmo>true</drawLoadedAmmo>
-        <ammoSlotOffsets>
-          <li>(-0.45,0,0.45)</li>
-          <li>(0.45,0,0.45)</li>
-          <li>(-0.15,0,0.6)</li>
-          <li>(0.15,0,0.6)</li>
-        </ammoSlotOffsets>
-        <ammoAltitudeOffset>0.005</ammoAltitudeOffset>
       </li>
     </comps>
     <inspectorTabs>
@@ -410,6 +408,59 @@
     <placeWorkers>
       <li>DMSE.PlaceWorker_NoAdjacentSameLayer</li>
     </placeWorkers>
+  </ThingDef>
+
+  <!-- 野戰防空砲的對地機砲（2A38 雙聯 30 毫米）。本體不是 Building_TurretGun，此武器由 CompBuildingTurretGun 持有；
+       冷卻用 verb 的 defaultCooldownTime（CompTurretGun 讀這個，不讀 RangedWeapon_Cooldown）。 -->
+  <ThingDef ParentName="BaseWeaponTurret">
+    <defName>DMSE_Gun_FieldAirDefense</defName>
+    <label>twin 30 mm cannon</label>
+    <description>A pair of 30 mm automatic cannon mounted beside the missile tubes of a field air-defence system.</description>
+    <graphicData>
+      <texPath>Things/Turrets/DMS_Gun_Tunguska</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <AccuracyTouch>0.75</AccuracyTouch>
+      <AccuracyShort>0.85</AccuracyShort>
+      <AccuracyMedium>0.8</AccuracyMedium>
+      <AccuracyLong>0.7</AccuracyLong>
+      <RangedWeapon_Cooldown>3</RangedWeapon_Cooldown>
+    </statBases>
+    <verbs>
+      <li>
+        <verbClass>Verb_Shoot</verbClass>
+        <defaultProjectile>DMSE_Bullet_FieldAirDefense</defaultProjectile>
+        <requireLineOfSight>true</requireLineOfSight>
+        <warmupTime>1</warmupTime>
+        <defaultCooldownTime>3</defaultCooldownTime>
+        <minRange>3.9</minRange>
+        <range>39.9</range>
+        <ai_AvoidFriendlyFireRadius>4.9</ai_AvoidFriendlyFireRadius>
+        <ticksBetweenBurstShots>4</ticksBetweenBurstShots>
+        <burstShotCount>8</burstShotCount>
+        <soundCast>DMS_Shot_Tunguska</soundCast>
+        <soundCastTail>GunTail_Heavy</soundCastTail>
+        <muzzleFlashScale>12</muzzleFlashScale>
+        <consumeFuelPerShot>1</consumeFuelPerShot>
+      </li>
+    </verbs>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseBullet">
+    <defName>DMSE_Bullet_FieldAirDefense</defName>
+    <label>30 mm round</label>
+    <graphicData>
+      <texPath>Things/Projectile/Bullet_Big</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <projectile>
+      <damageDef>Bullet</damageDef>
+      <damageAmountBase>20</damageAmountBase>
+      <armorPenetrationBase>0.35</armorPenetrationBase>
+      <stoppingPower>2.5</stoppingPower>
+      <speed>100</speed>
+    </projectile>
   </ThingDef>
 
   <!-- ==================== 搜索雷達（4x4，中登）====================
@@ -583,10 +634,11 @@
     <label>vertical launch silo</label>
     <description>A 2x2 vertical launcher with four cells sized for medium missiles, gas-ejecting each round from its tube before ignition through hatches and a flame trench built for repeated launches, letting medium missiles be deployed as densely as light ones at the cost of construction and upkeep.\n\nCannot be installed on gravship decks.</description>
     <thingClass>DMSE.Building_MissileRack</thingClass>
+    <uiIconPath>Things/Building/MissileSilo_Medium/icon</uiIconPath>
     <graphicData>
-      <texPath>Things/Building/MissileSilo</texPath>
+      <texPath>Things/Building/MissileSilo_Medium/building</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(2.4,2.4)</drawSize>
+      <drawSize>(3,3)</drawSize>
     </graphicData>
     <size>(2,2)</size>
     <pathCost>70</pathCost>
@@ -640,6 +692,15 @@
       </li>
       <li Class="CompProperties_Flickable" />
       <li Class="CompProperties_Breakdownable" />
+      <li Class="DMSE.CompProperties_MissileRackRenderer">
+        <maxStored>4</maxStored>
+        <loadedHatchTexPaths>
+          <li>Things/Building/MissileSilo_Medium/hatch_a</li>
+          <li>Things/Building/MissileSilo_Medium/hatch_b</li>
+          <li>Things/Building/MissileSilo_Medium/hatch_c</li>
+          <li>Things/Building/MissileSilo_Medium/hatch_d</li>
+        </loadedHatchTexPaths>
+      </li>
       <li Class="DMSE.CompProperties_MissileRailLauncher">
         <skyfaller>DMSE_SkyFaller_BallisticMissile</skyfaller>
         <skyfallerIncoming>DMSE_Incoming_Moskit</skyfallerIncoming>

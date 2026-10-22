@@ -74,8 +74,11 @@ namespace DMSE
             return GenSpawn.Spawn(thing, cell, map);
         }
 
-        /// <summary>攔截發射：生成升空彈，離場時對 <paramref name="targetId"/> 擲骰（-1 = 純視覺）。</summary>
-        public static Thing LaunchInterceptor(ThingDef def, IntVec3 cell, Map map, Rot4 rotation, Thing launcher, int targetId, float hitChance)
+        /// <summary>
+        /// 攔截發射：生成升空彈，離場時對 <paramref name="targetId"/> 擲骰（-1 = 純視覺）。
+        /// 有 <paramref name="heading"/>（來襲方位）時，升空中途轉向該方位、沿 speedCurve 加速飛出地圖邊緣後才結算。
+        /// </summary>
+        public static Thing LaunchInterceptor(ThingDef def, IntVec3 cell, Map map, Rot4 rotation, Thing launcher, int targetId, float hitChance, float? heading = null)
         {
             if (IsMissileProjectile(def))
             {
@@ -83,6 +86,7 @@ namespace DMSE
                 missile.isInterceptor = true;
                 missile.targetId = targetId;
                 missile.hitChance = hitChance;
+                if (heading != null) { missile.SetDepartureHeading(heading.Value); }
                 return missile;
             }
 
@@ -92,6 +96,30 @@ namespace DMSE
             faller.targetId = targetId;
             faller.hitChance = hitChance;
             return faller;
+        }
+
+        /// <summary>
+        /// 地圖層攔截目標的來襲方位（攔截彈升空後轉向它飛出地圖）：
+        /// 導彈 Projectile 用它的進入方位（世界航跡最後一段的方向）；其餘（空投艙、無方位的導彈）用發射點到預測落點的方向；
+        /// 落點太近或未知時回傳 null（照原本垂直升空）。
+        /// </summary>
+        public static float? IncomingBearing(BVRTarget target, IntVec3 from)
+        {
+            if (target == null || target.id < 0) { return null; }
+            if (target.Payload is Projectile_MissileIncoming missile && missile.HasEntryHeading) { return missile.EntryHeading; }
+            if (!target.position.IsValid) { return null; }
+            Vector3 d = (target.position - from).ToVector3();
+            d.y = 0f;
+            return d.magnitude >= 3f ? MissileMapEntryUtility.HeadingOf(d) : (float?)null;
+        }
+
+        /// <summary>世界層攔截：從發射據點朝世界會合點 <paramref name="meetingPoint"/> 的方位；跨圖層或同點時 null。</summary>
+        public static float? WorldInterceptBearing(PlanetTile launchTile, Vector3 meetingPoint)
+        {
+            if (!launchTile.Valid) { return null; }
+            Vector3 start = MissileWorldUtility.TileCenter(launchTile);
+            if (!MissileMapEntryUtility.HasHorizontalHeading(launchTile.Layer, launchTile.Layer, start, meetingPoint)) { return null; }
+            return MissileMapEntryUtility.DepartureHeading(launchTile.Layer, start, meetingPoint);
         }
 
         /// <summary>

@@ -6,10 +6,13 @@
   <DMSE_Building_MediumTube.label>傾斜發射管</DMSE_Building_MediumTube.label>
   <DMSE_Building_MediumTube.description>一具單管的中型導彈傾斜發射管，以冷發射把彈體拋出管口再點火、避免尾焰燒蝕甲板，一次只能裝一枚、重新裝填需整枚更換，射程與彈頭都比輕型導彈大上一截，代價是它幾乎只能放在固定陣地或船上。</DMSE_Building_MediumTube.description>
   <DMSE_Building_FieldAirDefense.label>野戰防空砲</DMSE_Building_FieldAirDefense.label>
-  <DMSE_Building_FieldAirDefense.description>一座彈砲一體的野戰防空系統，兩門 30 毫米機砲、四枚短程防空導彈與一具搜索／追蹤雷達全擠在同一個砲塔裡，能在雷達導引下先射導彈、再用機砲補漏，是行進間防空的最後一道防線，但雷達耗電、彈藥消耗驚人，而且一開機就等於向全世界的反輻射導引頭打招呼。\n\n需要操作員；機砲以鋼材作為彈藥。</DMSE_Building_FieldAirDefense.description>
+  <DMSE_Building_FieldAirDefense.description>一座彈砲一體的野戰防空系統，兩門 30 毫米機砲、四枚短程防空導彈與一具搜索／追蹤雷達全擠在同一個砲塔裡，能在雷達導引下先射導彈、再用機砲補漏，是行進間防空的最後一道防線，但雷達耗電、彈藥消耗驚人，而且一開機就等於向全世界的反輻射導引頭打招呼。\n\n全自動運作，不需操作員；機砲也會攻擊地圖上的敵人，並以鋼材作為彈藥。</DMSE_Building_FieldAirDefense.description>
   <DMSE_Building_FieldAirDefense.comps.CompRefuelable.fuelLabel>機砲彈</DMSE_Building_FieldAirDefense.comps.CompRefuelable.fuelLabel>
   <DMSE_Building_FieldAirDefense.comps.CompRefuelable.fuelGizmoLabel>機砲彈</DMSE_Building_FieldAirDefense.comps.CompRefuelable.fuelGizmoLabel>
   <DMSE_Building_FieldAirDefense.comps.CompRefuelable.outOfFuelMessage>機砲無法開火：沒有彈藥。</DMSE_Building_FieldAirDefense.comps.CompRefuelable.outOfFuelMessage>
+  <DMSE_Gun_FieldAirDefense.label>雙聯 30 毫米機砲</DMSE_Gun_FieldAirDefense.label>
+  <DMSE_Gun_FieldAirDefense.description>一對裝在野戰防空系統導彈發射筒旁的 30 毫米自動機砲。</DMSE_Gun_FieldAirDefense.description>
+  <DMSE_Bullet_FieldAirDefense.label>30 毫米砲彈</DMSE_Bullet_FieldAirDefense.label>
   <DMSE_SearchRadar.label>搜索雷達</DMSE_SearchRadar.label>
   <DMSE_SearchRadar.description>一座主動式搜索雷達，以旋轉天線持續掃描天空、為整個防空網提供目標的方位、距離與航向，不像火控雷達那樣能直接引導攔截，但沒有它、火控雷達就只是瞎子手中的望遠鏡，而它耗電可觀，開機後方圓數十公里內的反輻射導引頭都會知道這座陣地在哪裡。</DMSE_SearchRadar.description>
   <DMSE_FireControlRadar.label>火控雷達</DMSE_FireControlRadar.label>

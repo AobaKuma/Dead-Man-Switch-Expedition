@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -18,12 +19,12 @@ namespace DMSE
         }
     }
 
-    /// <summary>單兵防空導彈發射具（docs/三代裝備體系_實作計畫.md §10 C10）。</summary>
-    public class CompProperties_ManPortableSAM : CompProperties
+    /// <summary>
+    /// 單兵防空導彈發射具（docs/三代裝備體系_實作計畫.md §10 C10）。
+    /// 與 DMS 拋棄式發射器同為腰帶層 Apparel；彈藥用原版 <see cref="CompApparelReloadable"/> 裝填（ammoDef = 輕型防空導彈，一發一枚）。
+    /// </summary>
+    public class CompProperties_ManPortableSAM : CompProperties_ApparelReloadable
     {
-        /// <summary>彈藥：裝備者背包裡的這種導彈，每發消耗一枚（對地射擊與防空共用）。</summary>
-        public ThingDef ammoDef;
-
         /// <summary>防空發射時生成的攔截彈 skyfaller（thingClass 應為 DMSE.InterceptProjectile）。</summary>
         public ThingDef interceptorSkyfaller;
 
@@ -49,24 +50,31 @@ namespace DMSE
 
         public CompProperties_ManPortableSAM()
         {
-            compClass = typeof(CompEquippable_ManPortableSAM);
+            compClass = typeof(CompManPortableSAM);
         }
     }
 
     /// <summary>
-    /// 可對 BVR 目標發射攔截彈的單兵武器。取代武器的 <see cref="CompEquippable"/>（XML 需 comps Inherit="False"），
-    /// 原版 <see cref="Pawn_EquipmentTracker.GetGizmos"/> 會為主武器呼叫 <see cref="CompGetEquippedGizmosExtra"/>。
+    /// 可對 BVR 目標發射攔截彈的單兵發射具。繼承原版 <see cref="CompApparelReloadable"/>：
+    /// 對地射擊（原版 Verb_LaunchProjectile）與防空 Gizmo 共用同一組裝填彈數，裝填走原版「裝填」工作。
+    ///
+    /// 裝填時原版會銷毀彈藥物品，所以由 <see cref="Patch_ManPortableSAMReload"/> 先記下該枚導彈的裝配設定（彈體、戰鬥部），
+    /// 發射時取最後裝入的一枚；沒有紀錄的彈數（出廠滿彈、開發者裝填）用彈藥的預設構型。
     ///
     /// 只接戰本地圖 <see cref="MapComponent_BVRCombat"/> 的波次（地圖內空投與已進入末端的世界導彈），
     /// 防禦方須是裝備者的陣營；不占火控通道，但需要雷達網提供的航跡。
     /// </summary>
-    public class CompEquippable_ManPortableSAM : CompEquippable
+    public class CompManPortableSAM : CompApparelReloadable
     {
         private int cooldownUntil;
 
-        public CompProperties_ManPortableSAM Props => (CompProperties_ManPortableSAM)props;
+        /// <summary>已裝入導彈的裝配設定，後進先出；數量不超過剩餘彈數。</summary>
+        private List<MissileConfig> loadedConfigs = new List<MissileConfig>();
 
-        public Pawn Wielder => (parent.ParentHolder as Pawn_EquipmentTracker)?.pawn;
+        private MissileConfig reloadingConfig;
+        private int chargesBeforeReload;
+
+        public new CompProperties_ManPortableSAM Props => (CompProperties_ManPortableSAM)props;
 
         public bool OnCooldown => Find.TickManager.TicksGame < cooldownUntil;
 
@@ -85,22 +93,29 @@ namespace DMSE
             }
         }
 
-        /// <summary>背包裡的第一枚彈藥；沒有為 null。</summary>
-        public static Thing AmmoIn(Pawn pawn, ThingDef ammoDef)
+        /// <summary>裝備者身上的單兵發射具；沒有為 null。</summary>
+        public static CompManPortableSAM WornBy(Pawn pawn)
         {
-            if (pawn?.inventory == null || ammoDef == null) { return null; }
-            ThingOwner<Thing> inv = pawn.inventory.innerContainer;
-            for (int i = 0; i < inv.Count; i++)
+            List<Apparel> worn = pawn?.apparel?.WornApparel;
+            if (worn == null) { return null; }
+            for (int i = 0; i < worn.Count; i++)
             {
-                if (inv[i].def == ammoDef) { return inv[i]; }
+                CompManPortableSAM comp = worn[i].GetComp<CompManPortableSAM>();
+                if (comp != null) { return comp; }
             }
             return null;
         }
 
-        public int AmmoCount(Pawn pawn)
+        /// <summary>下一發的裝配設定（副本）：最後裝入的一枚，否則彈藥的預設構型。</summary>
+        public MissileConfig NextConfig
         {
-            if (pawn?.inventory == null || Props.ammoDef == null) { return 0; }
-            return pawn.inventory.innerContainer.Where(t => t.def == Props.ammoDef).Sum(t => t.stackCount);
+            get
+            {
+                if (loadedConfigs.Count > 0) { return loadedConfigs[loadedConfigs.Count - 1].Clone(); }
+                MissileBodyDef body = Props.ammoDef?.GetCompProperties<CompProperties_MissileConfig>()?.defaultBody
+                    ?? Props.ammoDef?.GetModExtension<MissileItemExtension>()?.body;
+                return body != null ? MissileConfig.NewWithDefaults(body) : null;
+            }
         }
 
         /// <summary>可接戰的目標：本陣營防禦、未被攔截彈占用、在射程與時間內。</summary>
@@ -131,7 +146,7 @@ namespace DMSE
         {
             if (Props.seeker == null) { return 0f; }
             float chance = CompFireControlRadar.ComputeHitChance(Props.seeker, target, eta);
-            MissileConfig cfg = MissileItemExtension.ConfigFor(AmmoIn(pawn, Props.ammoDef));
+            MissileConfig cfg = NextConfig;
             chance *= cfg?.InterceptHitFactor ?? 1f;
             chance *= pawn.GetStatValue(StatDefOf.ShootingAccuracyPawn);
             MissilePartDef warhead = cfg?.PartFor(MissilePartCategory.Warhead);
@@ -145,11 +160,8 @@ namespace DMSE
         /// <summary>發射前的共同檢查；回傳 null 表示可以發射，否則為停用理由。</summary>
         public string CannotFireReason(Pawn pawn)
         {
-            if (pawn == null || !pawn.Spawned || pawn.Downed) { return "DMSE.ManPortableSAM.NotReady".Translate(); }
-            if (AmmoIn(pawn, Props.ammoDef) == null)
-            {
-                return "DMSE.ManPortableSAM.NoAmmo".Translate(Props.ammoDef?.label ?? "?");
-            }
+            if (pawn == null || !pawn.Spawned || pawn.Downed || pawn != Wearer) { return "DMSE.ManPortableSAM.NotReady".Translate(); }
+            if (!CanBeUsed(out string reason)) { return reason.NullOrEmpty() ? "DMSE.ManPortableSAM.NotReady".Translate().ToString() : reason; }
             if (OnCooldown)
             {
                 return "DMSE.MissileLauncher.LaunchCooldown".Translate(
@@ -158,23 +170,27 @@ namespace DMSE
             return null;
         }
 
-        public override IEnumerable<Gizmo> CompGetEquippedGizmosExtra()
+        public override IEnumerable<Gizmo> CompGetWornGizmosExtra()
         {
-            foreach (Gizmo g in base.CompGetEquippedGizmosExtra())
+            foreach (Gizmo g in base.CompGetWornGizmosExtra())
             {
                 yield return g;
             }
-            Pawn pawn = Wielder;
+            Pawn pawn = Wearer;
             if (pawn == null || !pawn.IsColonistPlayerControlled) { yield break; }
 
             Command_Action command = new Command_Action
             {
                 defaultLabel = "DMSE.ManPortableSAM.Fire".Translate(),
-                defaultDesc = "DMSE.ManPortableSAM.FireDesc".Translate(AmmoCount(pawn)),
+                defaultDesc = "DMSE.ManPortableSAM.FireDesc".Translate(LabelRemaining),
                 icon = Icon,
                 action = () => OpenTargetMenu(pawn)
             };
             string reason = CannotFireReason(pawn);
+            if (reason == null && pawn.WorkTagIsDisabled(WorkTags.Violent))
+            {
+                reason = "IsIncapableOfViolenceLower".Translate(pawn.LabelShort, pawn).CapitalizeFirst() + ".";
+            }
             if (reason == null && !EngageableTargets(pawn).Any())
             {
                 reason = "DMSE.ManPortableSAM.NoTargets".Translate();
@@ -209,7 +225,7 @@ namespace DMSE
         }
 
         /// <summary>
-        /// 對指定目標發射：消耗一枚背包彈藥、生成攔截彈（命中與否在它離開地圖時擲骰）、起算冷卻。
+        /// 對指定目標發射：消耗一發裝填彈、生成攔截彈（命中與否在它離開地圖時擲骰）、起算冷卻。
         /// 失敗時回傳 false 與理由（目標已消失、已被其他攔截彈占用、彈藥用完…）。
         /// </summary>
         public bool TryFire(Pawn pawn, int targetId, out string failReason)
@@ -232,37 +248,88 @@ namespace DMSE
             }
 
             float chance = HitChance(pawn, target, wave.tickToImpact - now);
-            Thing ammo = AmmoIn(pawn, Props.ammoDef);
-            // 升空外觀與尾焰隨彈藥的彈體；沒有 launchProjectile 時退回 interceptorSkyfaller。
-            ThingDef launchDef = MissileItemExtension.BodyOf(ammo)?.launchProjectile ?? Props.interceptorSkyfaller;
-            MissileProjectileMaker.LaunchInterceptor(launchDef, pawn.Position, pawn.Map, pawn.Rotation, pawn, target.id, chance);
+            // 升空外觀與尾焰隨裝填導彈的彈體；沒有 launchProjectile 時退回 interceptorSkyfaller。
+            ThingDef launchDef = NextConfig?.body?.launchProjectile ?? Props.interceptorSkyfaller;
+            // 升空後轉向來襲方位；經發射排程錯開生成。
+            float? heading = MissileProjectileMaker.IncomingBearing(target, pawn.Position);
+            MapComponent_MissileLaunchQueue.Launch(pawn.Map, new PendingMissileLaunch
+            {
+                def = launchDef,
+                cell = pawn.Position,
+                rotation = pawn.Rotation,
+                launcher = pawn,
+                interceptor = true,
+                targetId = target.id,
+                hitChance = chance,
+                hasHeading = heading != null,
+                heading = heading ?? 0f,
+            });
             target.midcourseEngagedUntil = now + Props.interceptorTravelTicks;
             target.lockUntil = -1;
 
-            if (ammo.stackCount > 1)
-            {
-                ammo.SplitOff(1).Destroy(DestroyMode.Vanish);
-            }
-            else
-            {
-                pawn.inventory.innerContainer.Remove(ammo);
-                ammo.Destroy(DestroyMode.Vanish);
-            }
+            UsedOnce();
             cooldownUntil = now + Props.cooldownTicks;
             return true;
+        }
+
+        /// <summary>每發（對地射擊或防空）消耗一發：彈出最後裝入的設定。</summary>
+        public override void UsedOnce()
+        {
+            base.UsedOnce();
+            if (loadedConfigs.Count > 0) { loadedConfigs.RemoveAt(loadedConfigs.Count - 1); }
+            while (loadedConfigs.Count > RemainingCharges) { loadedConfigs.RemoveAt(0); }
+        }
+
+        internal void BeginReload(Thing ammo)
+        {
+            reloadingConfig = MissileItemExtension.ConfigFor(ammo);
+            chargesBeforeReload = RemainingCharges;
+        }
+
+        internal void EndReload()
+        {
+            if (reloadingConfig != null)
+            {
+                for (int i = chargesBeforeReload; i < RemainingCharges; i++)
+                {
+                    loadedConfigs.Add(reloadingConfig.Clone());
+                }
+            }
+            while (loadedConfigs.Count > RemainingCharges) { loadedConfigs.RemoveAt(0); }
+            reloadingConfig = null;
         }
 
         public override void PostExposeData()
         {
             base.PostExposeData();
             Scribe_Values.Look(ref cooldownUntil, "manPortableSamCooldownUntil", 0);
+            Scribe_Collections.Look(ref loadedConfigs, "manPortableSamLoadedConfigs", LookMode.Deep);
+            if (Scribe.mode == LoadSaveMode.PostLoadInit && loadedConfigs == null)
+            {
+                loadedConfigs = new List<MissileConfig>();
+            }
+        }
+    }
+
+    /// <summary>原版裝填會銷毀彈藥物品；先記下它的裝配設定，裝填完成後按實際增加的彈數存入發射具。</summary>
+    [HarmonyPatch(typeof(CompApparelReloadable), nameof(CompApparelReloadable.ReloadFrom))]
+    public static class Patch_ManPortableSAMReload
+    {
+        public static void Prefix(CompApparelReloadable __instance, Thing ammo)
+        {
+            (__instance as CompManPortableSAM)?.BeginReload(ammo);
+        }
+
+        public static void Postfix(CompApparelReloadable __instance)
+        {
+            (__instance as CompManPortableSAM)?.EndReload();
         }
     }
 
     /// <summary>原地瞄準 <see cref="CompProperties_ManPortableSAM.aimTicks"/> 後發射；目標 id 放在 job.count。</summary>
     public class JobDriver_FireManPortableSAM : JobDriver
     {
-        private CompEquippable_ManPortableSAM Launcher => pawn.equipment?.Primary?.GetComp<CompEquippable_ManPortableSAM>();
+        private CompManPortableSAM Launcher => CompManPortableSAM.WornBy(pawn);
 
         private BVRTarget Target => pawn.Map?.GetComponent<MapComponent_BVRCombat>()?.GetTarget(job.count);
 
@@ -285,7 +352,7 @@ namespace DMSE
             Toil fire = ToilMaker.MakeToil("DMSE_FireManPortableSAM");
             fire.initAction = () =>
             {
-                CompEquippable_ManPortableSAM launcher = Launcher;
+                CompManPortableSAM launcher = Launcher;
                 if (launcher == null) { return; }
                 if (!launcher.TryFire(pawn, job.count, out string reason) && pawn.Faction == Faction.OfPlayer)
                 {
@@ -294,40 +361,6 @@ namespace DMSE
             };
             fire.defaultCompleteMode = ToilCompleteMode.Instant;
             yield return fire;
-        }
-    }
-
-    /// <summary>
-    /// 單兵發射具的對地射擊：只有背包裡有彈藥（刺針）時可用，每發消耗一枚。
-    /// 彈藥種類取自武器上的 <see cref="CompEquippable_ManPortableSAM"/>。
-    /// </summary>
-    public class Verb_ShootStinger : Verb_Shoot
-    {
-        private ThingDef AmmoDef => EquipmentSource?.GetComp<CompEquippable_ManPortableSAM>()?.Props.ammoDef;
-
-        public override bool Available()
-        {
-            return base.Available() && CompEquippable_ManPortableSAM.AmmoIn(CasterPawn, AmmoDef) != null;
-        }
-
-        protected override bool TryCastShot()
-        {
-            Thing ammo = CompEquippable_ManPortableSAM.AmmoIn(CasterPawn, AmmoDef);
-            if (ammo == null) { return false; }
-            bool fired = base.TryCastShot();
-            if (fired)
-            {
-                if (ammo.stackCount > 1)
-                {
-                    ammo.SplitOff(1).Destroy(DestroyMode.Vanish);
-                }
-                else
-                {
-                    CasterPawn.inventory.innerContainer.Remove(ammo);
-                    ammo.Destroy(DestroyMode.Vanish);
-                }
-            }
-            return fired;
         }
     }
 }

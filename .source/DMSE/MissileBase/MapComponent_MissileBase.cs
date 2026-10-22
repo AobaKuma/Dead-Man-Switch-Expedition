@@ -15,6 +15,7 @@ namespace DMSE
     ///    ‧ 每個通道同時最多追蹤一枚飛行中的 <see cref="WorldObject_IncomingMissile"/>；<br/>
     ///      導彈落地或被攔截（<see cref="WorldObject.Destroyed"/>）後通道自動釋放。<br/>
     ///    ‧ 彈藥來源：地圖上敵方 <see cref="Building_MissileRack"/>；耗盡後停止射擊直到補給。<br/>
+    ///    ‧ 導彈從地圖上的敵方世界選靶發射建築升空，飛出地圖邊緣後才進入世界航跡（同玩家發射）。<br/>
     /// 2. 指派 <see cref="LordJob_MissileCrewDuty"/> 給地圖內的敵方 Pawn。<br/>
     /// 3. 偵測「保留觀察狀態 + 所有敵方世界選靶發射器（<see cref="CompMissileLauncher_WorldTargeting"/>：
     ///    Rail / Ballistic / Scorer）皆已摧毀」→ 哨站摧毀。
@@ -37,6 +38,9 @@ namespace DMSE
         // 快取：每次 rare-tick 更新一次
         private List<Building> cachedEnemyLaunchers;
         private int lastLauncherCacheTick = -1;
+
+        // 輪流發射用的建築索引（不存檔）
+        private int nextPadIndex;
 
         // ── 此地圖是否為導彈陣地地圖 ──────────────────────────────────────────
         // null = 尚未確認；true/false = 已快取結果
@@ -157,7 +161,15 @@ namespace DMSE
             WorldObjectComp_MissileBase wc = WorldComp;
             int range = wc?.Props.range ?? 20;
 
-            // 4. 為每個空閒通道射出一枚導彈
+            // 導彈必須從地圖上的發射建築升空、飛出地圖邊緣後才進入世界航跡；發射建築全滅則停火
+            List<CompMissileLauncher_WorldTargeting> pads = GetEnemyLaunchersCached()
+                .Where(b => b.Spawned && !b.Destroyed)
+                .Select(b => b.TryGetComp<CompMissileLauncher_WorldTargeting>())
+                .Where(c => c != null)
+                .ToList();
+            if (pads.Count == 0) return;
+
+            // 4. 為每個空閒通道射出一枚導彈（輪流使用各發射建築）
             for (int i = 0; i < freeChannels; i++)
             {
                 Building_MissileRack rack = FindRackWithMissiles(out Thing missile);
@@ -178,13 +190,20 @@ namespace DMSE
                 List<MapParent> targets = FindPlayerTargetsInRange(source, range, cfg);
                 if (targets.NullOrEmpty()) break; // 這枚導彈沒有可打的目標，保留在架上
 
+                // 彈架本身就是發射平台（如發射軌）時從原處升空，否則輪流交給其他發射建築
+                CompMissileLauncher_WorldTargeting pad = rack.TryGetComp<CompMissileLauncher_WorldTargeting>()
+                    ?? pads[nextPadIndex++ % pads.Count];
+                ThingDef launchDef = pad.LaunchDefFor(cfg);
+                if (launchDef == null) break;
+
                 container.Remove(missile);
                 missile.Destroy();
 
                 // 選擇目標（隨機；未來可擴充為優先級排序）
                 MapParent target = targets.RandomElement();
 
-                WorldObject_IncomingMissile wo = IncomingMissileUtility.Launch(
+                // 世界航跡物件先建立、不加入世界：升空彈飛出地圖時才加入（同玩家發射）
+                WorldObject_IncomingMissile wo = IncomingMissileUtility.Make(
                     source.Tile,
                     target.Tile,
                     cfg,
@@ -194,6 +213,7 @@ namespace DMSE
 
                 if (wo != null)
                 {
+                    pad.LaunchDeparture(wo, launchDef, target.Tile);
                     engagedChannels.Add(wo);
                     if (Prefs.DevMode)
                         Log.Message($"[DMSE MissileBase] 通道射擊：{source.Tile} → {target.Tile}"

@@ -147,7 +147,8 @@ namespace DMSE
             }
 
             // 落地：原版 Skyfaller.GetDrawPositionAndRotation（angleCurve 於 Tick 更新，不在繪製時改狀態）。
-            if (f.rotateGraphicTowardsDirection) { extraRotation = angle; }
+            // 彈體貼圖一律機頭朝北；原版公式下彈體從 angle 方位飛向落點（行進方向 = angle + 180），所以機頭轉到 angle + 180。
+            if (f.rotateGraphicTowardsDirection) { extraRotation = angle + 180f; }
             if (f.rotationCurve != null) { extraRotation += f.rotationCurve.Evaluate(t); }
             if (f.xPositionCurve != null) { drawLoc.x += f.xPositionCurve.Evaluate(t); }
             if (f.zPositionCurve != null) { drawLoc.z += f.zPositionCurve.Evaluate(t); }

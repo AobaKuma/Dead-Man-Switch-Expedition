@@ -37,6 +37,13 @@ namespace DMSE
             }
         }
 
+        /// <summary>導引精度的命中偏移：<paramref name="position"/> 附近隨機一格（散佈 &lt; 1 時不偏移）。</summary>
+        public static IntVec3 ScatterCell(MissileConfig config, IntVec3 position, Map map)
+        {
+            if (config == null || !config.Valid || config.Scatter < 1f) { return position; }
+            return CellFinder.RandomClosewalkCellNear(position, map, Mathf.RoundToInt(config.Scatter));
+        }
+
         private static IntVec3 DetonateInner(MissileConfig config, IntVec3 position, Map map, Faction attacker,
             Thing instigator, bool applyScatter)
         {
@@ -46,9 +53,9 @@ namespace DMSE
                 float N = config.PayloadCapacity;
 
                 // 命中偏移（導引精度）
-                if (applyScatter && config.Scatter >= 1f)
+                if (applyScatter)
                 {
-                    center = CellFinder.RandomClosewalkCellNear(position, map, Mathf.RoundToInt(config.Scatter));
+                    center = ScatterCell(config, position, map);
                 }
 
                 // 主彈體爆炸（Body explosion：基礎參數 + Warhead 數值修正）

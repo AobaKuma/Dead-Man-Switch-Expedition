@@ -233,11 +233,11 @@
     <label>light vertical launch cell</label>
     <description>A 1x1 vertical launcher with four cells flush with the ground and sized only for light missiles, compact enough to ring a base's perimeter at the cost of loading each cell separately, with every opening hatch telling the enemy that something is here.\n\nCannot be installed on gravship decks.</description>
     <thingClass>DMSE.Building_MissileRack</thingClass>
+    <uiIconPath>Things/Building/MissileSilo_Small/icon</uiIconPath>
     <graphicData>
-      <!-- 暫借 1x1 貼圖；建議後期替換為獨立 VLS 頂蓋貼圖。 -->
-      <texPath>Things/Building/MissileLauncher/building</texPath>
-      <graphicClass>Graphic_Multi</graphicClass>
-      <drawSize>(2,2)</drawSize>
+      <texPath>Things/Building/MissileSilo_Small/building</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.5,1.5)</drawSize>
     </graphicData>
     <size>(1,1)</size>
     <pathCost>60</pathCost>
@@ -297,11 +297,13 @@
       </li>
       <li Class="CompProperties_Flickable" />
       <li Class="DMSE.CompProperties_MissileRackRenderer">
-        <maxStored>1</maxStored>
-        <useNativeDrawSize>true</useNativeDrawSize>
-        <slotOffsets>
-          <li>(0, 0, 0)</li>
-        </slotOffsets>
+        <maxStored>4</maxStored>
+        <loadedHatchTexPaths>
+          <li>Things/Building/MissileSilo_Small/hatch_a</li>
+          <li>Things/Building/MissileSilo_Small/hatch_b</li>
+          <li>Things/Building/MissileSilo_Small/hatch_c</li>
+          <li>Things/Building/MissileSilo_Small/hatch_d</li>
+        </loadedHatchTexPaths>
       </li>
       <li Class="DMSE.CompProperties_MissileRailLauncher">
         <skyfaller>DMSE_SkyFaller_LightMissile</skyfaller>

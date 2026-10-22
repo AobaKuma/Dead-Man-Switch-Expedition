@@ -21,8 +21,10 @@
     <description>A four-round surface-to-air launcher on a rotating base, aimed and fired by a single operator, with no radar of its own and dependent on a fire-control radar to hand it a target, so that all the operator does is pull the trigger when the lamp lights and pray the seeker holds.</description>
     <thingClass>DMSE.Building_MissileRack</thingClass>
     <category>Building</category>
+    <uiIconPath>Things/Building/QuadLauncher_icon</uiIconPath>
+    <uiIconScale>1.2</uiIconScale>
     <graphicData>
-      <texPath>Things/Building/turretBase</texPath>
+      <texPath>Things/Building/turretBase_Green</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(4,4)</drawSize>
     </graphicData>
@@ -133,16 +135,16 @@
         <interceptorTravelTicks>180</interceptorTravelTicks>
       </li>
       <li Class="DMSE.CompProperties_TurretFacingRenderer">
-        <texPath>Things/Building/slideLauncher</texPath>
-        <drawSize>(4,4)</drawSize>
+        <texPath>Things/Building/QuadLauncher</texPath>
+        <drawSize>(5,5)</drawSize>
         <altitudeOffset>0.01</altitudeOffset>
         <rotationSpeedDegPerTick>2</rotationSpeedDegPerTick>
         <drawLoadedAmmo>true</drawLoadedAmmo>
         <ammoSlotOffsets>
-          <li>(-0.45,0,0.45)</li>
-          <li>(0.45,0,0.45)</li>
-          <li>(-0.15,0,0.6)</li>
-          <li>(0.15,0,0.6)</li>
+          <li>(-1.4,0,1)</li>
+          <li>(1.4,0,1)</li>
+          <li>(-0.5,0,1)</li>
+          <li>(0.5,0,1)</li>
         </ammoSlotOffsets>
         <ammoAltitudeOffset>0.005</ammoAltitudeOffset>
       </li>

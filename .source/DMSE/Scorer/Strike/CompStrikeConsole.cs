@@ -391,7 +391,7 @@ namespace DMSE
                     {
                         // 離場 skyfaller 還在地圖上時航跡尚未開始移動：抵達要從它離開地圖的時刻起算
                         int departs = slot.track != null && !slot.track.Spawned
-                            ? Mathf.Max(now, slot.launchTick + (launcher?.DepartureTicksFor(slot.track.config, slot.track.destinationTile) ?? 0)) : now;
+                            ? Mathf.Max(now, Mathf.Max(slot.launchTick, slot.track.launchSpawnTick) + (launcher?.DepartureTicksFor(slot.track.config, slot.track.destinationTile) ?? 0)) : now;
                         list.Add(new StrikePlanSlot { launched = true, arrivalTick = slot.InFlight ? departs + slot.track.TicksToArrival : -1 });
                         continue;
                     }

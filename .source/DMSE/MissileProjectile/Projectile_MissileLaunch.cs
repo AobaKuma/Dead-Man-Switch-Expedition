@@ -32,7 +32,8 @@ namespace DMSE
             if (worldObject != null)
             {
                 Find.WorldObjects.Add(worldObject);
-                CameraJumper.TryJump(worldObject);
+                // 只有玩家自己的發射才跳到世界地圖（NPC 導彈陣地的升空彈不搶鏡頭）
+                if (worldObject.Faction == Faction.OfPlayer) { CameraJumper.TryJump(worldObject); }
             }
         }
 

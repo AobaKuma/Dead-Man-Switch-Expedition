@@ -154,7 +154,8 @@ namespace DMSE
                 Building_MissileRack launcher = Launcher;
                 if (carried != null && launcher != null)
                 {
-                    if (!launcher.GetDirectlyHeldThings().TryAdd(carried))
+                    // 手上的導彈仍在 carryTracker 容器內，必須以容器轉移放入（直接 TryAdd 會被拒絕而掉在地上）
+                    if (pawn.carryTracker.innerContainer.TryTransferToContainer(carried, launcher.GetDirectlyHeldThings(), carried.stackCount) <= 0)
                     {
                         pawn.carryTracker.TryDropCarriedThing(launcher.InteractionCell, ThingPlaceMode.Near, out _);
                     }

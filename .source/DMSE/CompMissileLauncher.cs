@@ -379,15 +379,33 @@ namespace DMSE
             wo.targetParent = TargetParentAt(target);
             wo.config = config;
             wo.launcherThing = parent; // 落地爆炸歸因於本發射建築（被攔截時不歸因）
-            // 升空外觀與尾焰隨彈體（launchProjectile）；彈體沒有設定時退回平台的離場 skyfaller。
-            // 升空後沿世界航跡的出發方位飛出地圖邊緣（跨圖層沒有水平方位時照原本升空後消失）。
-            MissileProjectileMaker.LaunchDeparture(launchDef, LaunchCell, parent.Map, parent.Rotation, parent, wo,
-                MissileProjectileMaker.DepartureHeading(parent.Map.Tile, target.Tile));
+            wo.launchSpawnTick = LaunchDeparture(wo, launchDef, target.Tile);
 
             ConsumeAmmo(round);
             StartCooldown(now);
-            CompLaunchBackblast.TryTrigger(parent);
             return wo;
+        }
+
+        /// <summary>
+        /// 從本平台升空一枚離場彈，飛出地圖邊緣時把 <paramref name="worldObject"/> 加入世界；回傳升空彈實際生成 tick。
+        /// 不檢查彈藥、冷卻或可運作性（NPC 導彈陣地從彈架取彈後經此發射，見 <see cref="MapComponent_MissileBase"/>）。
+        /// </summary>
+        public int LaunchDeparture(WorldObject worldObject, ThingDef launchDef, PlanetTile targetTile)
+        {
+            // 升空外觀與尾焰隨彈體（launchProjectile）；彈體沒有設定時退回平台的離場 skyfaller。
+            // 升空後沿世界航跡的出發方位飛出地圖邊緣（跨圖層沒有水平方位時照原本升空後消失）。
+            // 經發射排程：同一張地圖的升空彈錯開生成，後焰在實際生成時觸發（MapComponent_MissileLaunchQueue）。
+            float? heading = MissileProjectileMaker.DepartureHeading(parent.Map.Tile, targetTile);
+            return MapComponent_MissileLaunchQueue.Launch(parent.Map, new PendingMissileLaunch
+            {
+                def = launchDef,
+                cell = LaunchCell,
+                rotation = parent.Rotation,
+                launcher = parent,
+                worldObject = worldObject,
+                hasHeading = heading != null,
+                heading = heading ?? 0f,
+            });
         }
 
         /// <summary>在基底的冷卻／裝填狀態之後，加上被打擊任務保留的彈藥數。</summary>

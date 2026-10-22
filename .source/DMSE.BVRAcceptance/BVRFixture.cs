@@ -33,7 +33,8 @@ namespace DMSE.BVRAcceptance
 
         /// <summary>Strike missiles still climbing out of the home map (old ScorerProjectile or a body launch projectile).</summary>
         public static int DepartingMissiles
-            => Home.listerThings.AllThings.Count(x => x is ScorerProjectile || x is Projectile_MissileLaunch { worldObject: not null });
+            => Home.listerThings.AllThings.Count(x => x is ScorerProjectile || x is Projectile_MissileLaunch { worldObject: not null })
+               + (MapComponent_MissileLaunchQueue.For(Home)?.PendingDepartures ?? 0); // staggered launches not spawned yet
         public static ThingDef CruiseIncoming => ThingDef.Named("DMSE_Incoming_CruiseMissile");
         public static MissileBodyDef CruiseBody => DefDatabase<MissileBodyDef>.GetNamed("DMSE_MissileBody_Cruise");
         public static MissileBodyDef BallisticBody => DefDatabase<MissileBodyDef>.GetNamed("DMSE_MissileBody_Ballistic");

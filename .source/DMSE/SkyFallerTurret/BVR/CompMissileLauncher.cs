@@ -72,7 +72,11 @@ namespace DMSE
         public bool ReadyToFire(int now)
             => Active && HasAmmo && !OnCooldown(now) && Props.interceptorSkyfaller != null;
 
-        public void FireInterceptor(BVRTarget target, float hitChance, int now)
+        /// <summary>
+        /// 發射一枚攔截彈。<paramref name="heading"/> 為來襲方位（升空後轉向飛出地圖）；不給時以
+        /// <see cref="MissileProjectileMaker.IncomingBearing"/> 由目標推算。經發射排程錯開生成。
+        /// </summary>
+        public void FireInterceptor(BVRTarget target, float hitChance, int now, float? heading = null)
         {
             if (Props.interceptorSkyfaller == null || parent.Map == null) { return; }
 
@@ -83,22 +87,35 @@ namespace DMSE
             // 升空外觀與尾焰隨裝填的攔截彈彈體；彈體沒有 launchProjectile 時退回平台的 interceptorSkyfaller。
             // 發射方向與發射器建築朝向一致（同巡航導彈）。
             ThingDef launchDef = MissileItemExtension.BodyOf(missile)?.launchProjectile ?? Props.interceptorSkyfaller;
-            MissileProjectileMaker.LaunchInterceptor(launchDef, parent.Position, parent.Map, parent.Rotation, parent, target.id, hitChance);
+            heading ??= MissileProjectileMaker.IncomingBearing(target, parent.Position);
+            MapComponent_MissileLaunchQueue.Launch(parent.Map, new PendingMissileLaunch
+            {
+                def = launchDef,
+                cell = parent.Position,
+                rotation = parent.Rotation,
+                launcher = parent,
+                interceptor = true,
+                targetId = target.id,
+                hitChance = hitChance,
+                hasHeading = heading != null,
+                heading = heading ?? 0f,
+            });
 
             StartCooldown(now);
 
             // 消耗實體彈藥（與 CompMissileLauncher_Rail 相同）。
             HeldContainer?.Remove(missile);
             missile.Destroy(DestroyMode.Vanish);
-
-            CompLaunchBackblast.TryTrigger(parent);
         }
 
-        /// <summary>Consume a real missile and launch a visual-only skyfaller; world scheduling owns the roll.</summary>
-        public bool FireWorldInterceptor(int now)
+        /// <summary>
+        /// Consume a real missile and launch a visual-only interceptor; world scheduling owns the roll.
+        /// <paramref name="heading"/>: bearing toward the world meeting point, so the missile turns that way after the ascent.
+        /// </summary>
+        public bool FireWorldInterceptor(int now, float? heading = null)
         {
             if (!ReadyToFire(now) || parent.Map == null) return false;
-            FireInterceptor(new BVRTarget { id = -1 }, 0f, now);
+            FireInterceptor(new BVRTarget { id = -1 }, 0f, now, heading);
             return true;
         }
 
