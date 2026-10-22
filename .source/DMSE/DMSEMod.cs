@@ -17,6 +17,8 @@ namespace DMSE
         {
             var listing = new Listing_Standard();
             listing.Begin(inRect);
+            listing.CheckboxLabeled("DMSE.Platform.Settings.SpaceTraversal".Translate(), ref Settings.allowSpaceTraversal,
+                "DMSE.Platform.Settings.SpaceTraversalDesc".Translate());
             listing.CheckboxLabeled("DMSE.BVR.World.ShowCoverage".Translate(), ref Settings.showBVRWorldCoverage,
                 "DMSE.BVR.World.ShowCoverageDesc".Translate());
             listing.CheckboxLabeled("DMSE.Strike.Settings.WaveReadyAlert".Translate(), ref Settings.strikeWaveReadyAlert,

@@ -6,4 +6,7 @@
   <DMSE.Platform.FloorOnTop>請先拆除地板。</DMSE.Platform.FloorOnTop>
   <DMSE.Platform.Blocked>這裡有{0}。</DMSE.Platform.Blocked>
 
+  <DMSE.Platform.Settings.SpaceTraversal>允許通行真空地板（需重新啟動）</DMSE.Platform.Settings.SpaceTraversal>
+  <DMSE.Platform.Settings.SpaceTraversalDesc>啟用補丁，讓原版太空虛空可供行走。預設關閉，變更後需重新啟動遊戲。其他模組也可能修改太空通行性。</DMSE.Platform.Settings.SpaceTraversalDesc>
+
 </LanguageData>
