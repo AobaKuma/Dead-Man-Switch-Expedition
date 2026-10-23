@@ -26,17 +26,17 @@ namespace DMSE
         private const TargetIndex LauncherInd = TargetIndex.A;
         private const TargetIndex SourceRackInd = TargetIndex.B;
 
-        private Building_MissileRack Launcher => job.GetTarget(LauncherInd).Thing as Building_MissileRack;
-        private Building_MissileRack SourceRack => job.GetTarget(SourceRackInd).Thing as Building_MissileRack;
+        private IMissileRack Launcher => MissileRackUtil.Of(job.GetTarget(LauncherInd).Thing);
+        private IMissileRack SourceRack => MissileRackUtil.Of(job.GetTarget(SourceRackInd).Thing);
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
             => pawn.Reserve(job.GetTarget(LauncherInd), job, 1, -1, null, errorOnFailed);
 
         /// <summary>發射平台是否仍有空彈槽，值得再跑一趟裝填。非發射平台一律 false。</summary>
-        private static bool NeedsReload(Thing t)
+        private static bool NeedsReload(IMissileRack rack)
         {
-            if (!(t is Building_MissileRack rack)) { return false; }
-            if (rack.TryGetComp<CompMissileLauncher_Interceptor>() == null) { return false; }
+            if (rack == null) { return false; }
+            if (rack.RackThing.TryGetComp<CompMissileLauncher_Interceptor>() == null) { return false; }
             return !rack.Full;
         }
 
@@ -50,7 +50,7 @@ namespace DMSE
             Toil checkReload = ToilMaker.MakeToil("DMSE_CheckMissileReload");
             checkReload.initAction = delegate
             {
-                Building_MissileRack launcher = Launcher;
+                IMissileRack launcher = Launcher;
                 if (launcher == null)
                 {
                     pawn.jobs.EndCurrentJob(JobCondition.Incompletable);
@@ -63,7 +63,7 @@ namespace DMSE
                     return;
                 }
 
-                Building_MissileRack source = WorkGiver_LoadMissileLauncher.FindSourceRack(pawn, launcher);
+                IMissileRack source = WorkGiver_LoadMissileLauncher.FindSourceRack(pawn, launcher);
                 if (source == null)
                 {
                     if (launcher.StoredCount > 0)
@@ -76,14 +76,14 @@ namespace DMSE
                     {
                         Messages.Message(
                             "DMSE.Missile.NoRackAvailable".Translate().CapitalizeFirst(),
-                            launcher,
+                            launcher.RackThing,
                             MessageTypeDefOf.NegativeEvent);
                     }
                     pawn.jobs.EndCurrentJob(JobCondition.Incompletable);
                     return;
                 }
 
-                job.SetTarget(SourceRackInd, source);
+                job.SetTarget(SourceRackInd, source.RackThing);
             };
             yield return checkReload;
 
@@ -100,8 +100,8 @@ namespace DMSE
             Toil extractToil = ToilMaker.MakeToil("DMSE_ExtractMissileForManning");
             extractToil.initAction = delegate
             {
-                Building_MissileRack rack = SourceRack;
-                Building_MissileRack launcher = Launcher;
+                IMissileRack rack = SourceRack;
+                IMissileRack launcher = Launcher;
                 if (rack == null || launcher == null)
                 {
                     pawn.jobs.EndCurrentJob(JobCondition.Incompletable, true);
@@ -151,13 +151,13 @@ namespace DMSE
             depositToil.initAction = delegate
             {
                 Thing carried = pawn.carryTracker.CarriedThing;
-                Building_MissileRack launcher = Launcher;
+                IMissileRack launcher = Launcher;
                 if (carried != null && launcher != null)
                 {
                     // 手上的導彈仍在 carryTracker 容器內，必須以容器轉移放入（直接 TryAdd 會被拒絕而掉在地上）
                     if (pawn.carryTracker.innerContainer.TryTransferToContainer(carried, launcher.GetDirectlyHeldThings(), carried.stackCount) <= 0)
                     {
-                        pawn.carryTracker.TryDropCarriedThing(launcher.InteractionCell, ThingPlaceMode.Near, out _);
+                        pawn.carryTracker.TryDropCarriedThing(launcher.RackThing.InteractionCell, ThingPlaceMode.Near, out _);
                     }
                 }
 
@@ -190,7 +190,7 @@ namespace DMSE
                     return;
                 }
 
-                if (NeedsReload(building))
+                if (NeedsReload(MissileRackUtil.Of(building)))
                 {
                     JumpToToil(checkReload);
                     return;

@@ -216,6 +216,27 @@
     </researchPrerequisites>
   </DMSE.MissilePartDef>
 
+  <!-- 反碉堡酬載：穿透厚岩頂後在內部引爆；小半徑高穿甲爆炸，並對爆心附近建築施加額外結構傷害。
+       沒有它（或鎢芯穿甲戰鬥部）的導彈打在厚岩頂上只在岩層表面引爆，導引頭也不鎖定岩頂下的目標。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_AdvCruise_Payload_BunkerBuster</defName>
+    <label>bunker buster payload</label>
+    <description>A hardened, delayed-fuze penetrator charge. It bores through thick rock roofs and detonates inside, wrecking nearby structures with a focused high-penetration blast. Without a bunker buster or a penetrator warhead, a missile that strikes a mountain only detonates on the rock surface, and its seeker ignores targets under thick roofs.</description>
+    <category>Payload</category>
+    <compatibleBodies><li>DMSE_MissileBody_AdvancedCruise</li></compatibleBodies>
+    <payloadEffect Class="DMSE.PayloadEffect_BunkerBuster">
+      <damageAmount>180</damageAmount>
+      <structureDamage>400</structureDamage>
+    </payloadEffect>
+    <costList>
+      <Steel>30</Steel>
+      <Plasteel>20</Plasteel>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_IntegratedCircuits</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvCruise_Payload_Graphite</defName>
     <label>graphite filament payload</label>

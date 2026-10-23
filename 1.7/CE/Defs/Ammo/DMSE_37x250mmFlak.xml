@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+	<!-- ==================================================================
+	     CE 彈藥：37x250mmR 高砲彈（Flak 43）
+	     寫法沿用 1.6/CE 的 DMSE_20x102mmNATO_HV.xml 與 762x385mmRCannon_HV.xml：
+	     只借用 CE 的泛用父 Def（MediumAmmoBase／BaseBulletCE／AmmoRecipeBase／
+	     AdvancedAmmoRecipeBase），彈種、彈體與配方全部自己定義。
+	     數值以 CE 1.6 的 40x311mmR（Bofors）為基準，按口徑截面（37/40）² ≈ 0.855 縮放：
+	        40x311mmR AP   105 傷／70 穿甲／6502 鈍 → 37x250mmR AP   88／58／5400
+	        40x311mmR AP-I 105／70 + 燃燒 86         → 37x250mmR AP-I 88／58 + 燃燒 72
+	        40x311mmR AP-HE 168／35 + 爆炸 117       → 37x250mmR AP-HE 140／29 + 爆炸 98
+	     初速：Flak 43 的 37mm 是 820 m/s，CE 的 881 m/s 對應 speed 158 → 取 150。
+	     ================================================================== -->
+
+	<ThingCategoryDef>
+		<defName>DMSE_Ammo37x250mmFlak</defName>
+		<label>37x250mmR flak</label>
+		<parent>AmmoHighCaliber</parent>
+		<!-- CE 自家的高口徑分類都指向 CaliberHighCaliber.png，但 CE 1.6 的 Textures 裡
+		     只有 AmmoHighCaliber.png（那條路徑是缺圖的），這裡直接用存在的那張。 -->
+		<iconPath>UI/Icons/ThingCategories/AmmoHighCaliber</iconPath>
+	</ThingCategoryDef>
+
+	<!-- ==================== AmmoSet ========================== -->
+
+	<CombatExtended.AmmoSetDef>
+		<defName>DMSE_AmmoSet_37x250mmFlak</defName>
+		<label>37x250mmR flak</label>
+		<ammoTypes>
+			<DMSE_Ammo_37x250mmFlak_AP>DMSE_Bullet_37x250mmFlak_AP</DMSE_Ammo_37x250mmFlak_AP>
+			<DMSE_Ammo_37x250mmFlak_Incendiary>DMSE_Bullet_37x250mmFlak_Incendiary</DMSE_Ammo_37x250mmFlak_Incendiary>
+			<DMSE_Ammo_37x250mmFlak_HE>DMSE_Bullet_37x250mmFlak_HE</DMSE_Ammo_37x250mmFlak_HE>
+		</ammoTypes>
+		<similarTo>AmmoSet_Autocannon</similarTo>
+	</CombatExtended.AmmoSetDef>
+
+	<!-- ==================== Ammo ========================== -->
+
+	<ThingDef Class="CombatExtended.AmmoDef" Name="DMSE_Ammo37x250mmFlakBase" ParentName="MediumAmmoBase" Abstract="True">
+		<description>37x250mmR high-explosive cartridge fed from eight-round clips to interwar and wartime anti-aircraft guns.</description>
+		<statBases>
+			<Mass>0.72</Mass>
+			<Bulk>0.62</Bulk>
+		</statBases>
+		<tradeTags>
+			<li>CE_AutoEnableTrade</li>
+			<li>CE_AutoEnableCrafting</li>
+		</tradeTags>
+		<thingCategories>
+			<li>DMSE_Ammo37x250mmFlak</li>
+		</thingCategories>
+		<stackLimit>100</stackLimit>
+	</ThingDef>
+
+	<ThingDef Class="CombatExtended.AmmoDef" ParentName="DMSE_Ammo37x250mmFlakBase">
+		<defName>DMSE_Ammo_37x250mmFlak_AP</defName>
+		<label>37x250mmR flak cartridge (AP)</label>
+		<graphicData>
+			<texPath>Things/Ammo/HighCaliber/Bofors/AP</texPath>
+			<graphicClass>Graphic_StackCount</graphicClass>
+		</graphicData>
+		<ammoClass>ArmorPiercing</ammoClass>
+		<cookOffProjectile>DMSE_Bullet_37x250mmFlak_AP</cookOffProjectile>
+	</ThingDef>
+
+	<ThingDef Class="CombatExtended.AmmoDef" ParentName="DMSE_Ammo37x250mmFlakBase">
+		<defName>DMSE_Ammo_37x250mmFlak_Incendiary</defName>
+		<label>37x250mmR flak cartridge (AP-I)</label>
+		<graphicData>
+			<texPath>Things/Ammo/HighCaliber/Bofors/Incendiary</texPath>
+			<graphicClass>Graphic_StackCount</graphicClass>
+		</graphicData>
+		<ammoClass>IncendiaryAP</ammoClass>
+		<generateAllowChance>0.65</generateAllowChance>
+		<cookOffProjectile>DMSE_Bullet_37x250mmFlak_Incendiary</cookOffProjectile>
+	</ThingDef>
+
+	<ThingDef Class="CombatExtended.AmmoDef" ParentName="DMSE_Ammo37x250mmFlakBase">
+		<defName>DMSE_Ammo_37x250mmFlak_HE</defName>
+		<label>37x250mmR flak cartridge (AP-HE)</label>
+		<graphicData>
+			<texPath>Things/Ammo/HighCaliber/Bofors/HE</texPath>
+			<graphicClass>Graphic_StackCount</graphicClass>
+		</graphicData>
+		<ammoClass>ExplosiveAP</ammoClass>
+		<generateAllowChance>0.65</generateAllowChance>
+		<cookOffProjectile>DMSE_Bullet_37x250mmFlak_HE</cookOffProjectile>
+	</ThingDef>
+
+	<!-- ================== Projectiles ================== -->
+
+	<ThingDef Name="DMSE_Base37x250mmFlakBullet" ParentName="BaseBulletCE" Abstract="true">
+		<graphicData>
+			<texPath>Things/Projectile/Bullet_Big</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageDef>Bullet</damageDef>
+			<speed>150</speed>
+			<dropsCasings>true</dropsCasings>
+			<casingMoteDefname>Fleck_RifleAmmoCasings_HighCal</casingMoteDefname>
+			<casingFilthDefname>Filth_RifleAmmoCasings_HighCal</casingFilthDefname>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="DMSE_Base37x250mmFlakBullet">
+		<defName>DMSE_Bullet_37x250mmFlak_AP</defName>
+		<label>37x250mmR flak bullet (AP)</label>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageAmountBase>88</damageAmountBase>
+			<armorPenetrationSharp>58</armorPenetrationSharp>
+			<armorPenetrationBlunt>5400</armorPenetrationBlunt>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="DMSE_Base37x250mmFlakBullet">
+		<defName>DMSE_Bullet_37x250mmFlak_Incendiary</defName>
+		<label>37x250mmR flak bullet (AP-I)</label>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageAmountBase>88</damageAmountBase>
+			<armorPenetrationSharp>58</armorPenetrationSharp>
+			<armorPenetrationBlunt>5400</armorPenetrationBlunt>
+			<secondaryDamage>
+				<li>
+					<def>Flame_Secondary</def>
+					<amount>72</amount>
+				</li>
+			</secondaryDamage>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="DMSE_Base37x250mmFlakBullet">
+		<defName>DMSE_Bullet_37x250mmFlak_HE</defName>
+		<label>37x250mmR flak bullet (AP-HE)</label>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageAmountBase>140</damageAmountBase>
+			<armorPenetrationSharp>29</armorPenetrationSharp>
+			<armorPenetrationBlunt>5400</armorPenetrationBlunt>
+			<secondaryDamage>
+				<li>
+					<def>Bomb_Secondary</def>
+					<amount>98</amount>
+				</li>
+			</secondaryDamage>
+		</projectile>
+	</ThingDef>
+
+	<!-- ==================== Recipes ========================== -->
+
+	<RecipeDef ParentName="AmmoRecipeBase">
+		<defName>MakeAmmo_37x250mmFlak_AP</defName>
+		<label>make 37x250mmR flak cartridge (AP) x50</label>
+		<description>Craft 50 37x250mmR flak cartridges (AP).</description>
+		<jobString>Making 37x250mmR flak cartridges (AP).</jobString>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Steel</li>
+					</thingDefs>
+				</filter>
+				<count>180</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Steel</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<DMSE_Ammo_37x250mmFlak_AP>50</DMSE_Ammo_37x250mmFlak_AP>
+		</products>
+		<workAmount>22000</workAmount>
+	</RecipeDef>
+
+	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
+		<defName>MakeAmmo_37x250mmFlak_Incendiary</defName>
+		<label>make 37x250mmR flak cartridge (AP-I) x50</label>
+		<description>Craft 50 37x250mmR flak cartridges (AP-I).</description>
+		<jobString>Making 37x250mmR flak cartridges (AP-I).</jobString>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Steel</li>
+					</thingDefs>
+				</filter>
+				<count>180</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Prometheum</li>
+					</thingDefs>
+				</filter>
+				<count>20</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Steel</li>
+				<li>Prometheum</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<DMSE_Ammo_37x250mmFlak_Incendiary>50</DMSE_Ammo_37x250mmFlak_Incendiary>
+		</products>
+		<workAmount>26000</workAmount>
+	</RecipeDef>
+
+	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
+		<defName>MakeAmmo_37x250mmFlak_HE</defName>
+		<label>make 37x250mmR flak cartridge (AP-HE) x50</label>
+		<description>Craft 50 37x250mmR flak cartridges (AP-HE).</description>
+		<jobString>Making 37x250mmR flak cartridges (AP-HE).</jobString>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Steel</li>
+					</thingDefs>
+				</filter>
+				<count>180</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>FSX</li>
+					</thingDefs>
+				</filter>
+				<count>34</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Steel</li>
+				<li>FSX</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<DMSE_Ammo_37x250mmFlak_HE>50</DMSE_Ammo_37x250mmFlak_HE>
+		</products>
+		<workAmount>32000</workAmount>
+	</RecipeDef>
+
+</Defs>

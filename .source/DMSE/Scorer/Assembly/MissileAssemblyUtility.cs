@@ -69,7 +69,8 @@ namespace DMSE
             if (direct != null) { return direct; }
 
             // 間接情況：目標為儲存架，搜尋架內第一枚待裝配且已確認的導彈
-            if (t is Building_MissileRack rack)
+            IMissileRack rack = MissileRackUtil.Of(t);
+            if (rack != null)
             {
                 IReadOnlyList<Thing> held = rack.HeldThings;
                 if (held == null) { return null; }
@@ -94,7 +95,8 @@ namespace DMSE
         public static bool TryInstantAssemble(Thing t)
         {
             if (t == null || !GodModeInstant) { return false; }
-            if (t is Building_MissileRack rack)
+            IMissileRack rack = MissileRackUtil.Of(t);
+            if (rack != null)
             {
                 bool any = false;
                 IReadOnlyList<Thing> held = rack.HeldThings;

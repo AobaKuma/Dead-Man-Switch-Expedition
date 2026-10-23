@@ -135,17 +135,17 @@ namespace DMSE
         /// ‧ 沒有規則匹配當前 Faction 的 TechLevel。<br/>
         /// ‧ 解析出的可選彈型列表為空。
         /// </summary>
-        public static void TryAutoFill(Building_MissileRack rack, bool respawningAfterLoad)
+        public static void TryAutoFill(IMissileRack rack, bool respawningAfterLoad)
         {
             if (respawningAfterLoad) return;
 
-            MissileRackAutoFillExtension ext = rack.def.GetModExtension<MissileRackAutoFillExtension>();
+            MissileRackAutoFillExtension ext = rack.RackThing.def.GetModExtension<MissileRackAutoFillExtension>();
             if (ext == null) return;
 
-            Faction faction = rack.Faction;
+            Faction faction = rack.RackThing.Faction;
             if (ext.enemyFactionOnly && (faction == null || faction.IsPlayer)) return;
 
-            Map map = rack.Map; // 此時已 Spawned，Map 不為 null
+            Map map = rack.RackThing.Map; // 此時已 Spawned，Map 不為 null
 
             MissileAutoFillRule rule = FindFirstMatchingRule(ext.fillRules, faction, map);
             if (rule == null) return;
@@ -169,7 +169,7 @@ namespace DMSE
             }
 
             if (Prefs.DevMode)
-                Log.Message($"[DMSE AutoFill] {rack.def.defName} @ {rack.Position} 填充 {slots} 發"
+                Log.Message($"[DMSE AutoFill] {rack.RackThing.def.defName} @ {rack.RackThing.Position} 填充 {slots} 發"
                     + $"（faction={faction?.Name ?? "null"}, techLevel={faction?.def?.techLevel.ToString() ?? "?"}）");
         }
 
@@ -216,9 +216,9 @@ namespace DMSE
         /// ‧ candidates 非空 → 以 candidates 為基礎，視 <see cref="MissileAutoFillRule.mustMatchStorageFilter"/> 過濾。<br/>
         /// ‧ candidates 為空  → 回退到建築 <c>fixedStorageSettings.filter</c> 允許的所有 ThingDef。
         /// </summary>
-        public static List<ThingDef> ResolvePool(MissileAutoFillRule rule, Building_MissileRack rack)
+        public static List<ThingDef> ResolvePool(MissileAutoFillRule rule, IMissileRack rack)
         {
-            ThingFilter storageFilter = rack.def.building?.fixedStorageSettings?.filter;
+            ThingFilter storageFilter = rack.RackThing.def.building?.fixedStorageSettings?.filter;
 
             if (!rule.candidates.NullOrEmpty())
             {

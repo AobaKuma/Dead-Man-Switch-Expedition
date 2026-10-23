@@ -168,7 +168,7 @@
     <defName>DMSE_Building_FieldAirDefense</defName>
     <label>field air-defence system</label>
     <description>A gun-missile field air-defence system with two 30 mm cannon, four short-range missiles and a search and track radar packed into one turret that fires missiles under radar guidance and then uses the guns to mop up, the last line of mobile air defence, though the radar draws heavily, ammunition disappears at a frightening rate and switching it on greets every anti-radiation seeker in the world.\n\nFully automatic, no operator needed; the cannon also engages enemies on the map and uses steel as ammunition.</description>
-    <thingClass>DMSE.Building_MissileRack</thingClass>
+    <thingClass>Building_TurretGun</thingClass>
     <category>Building</category>
     <uiIconPath>Things/Turrets/DMS_Tunguska</uiIconPath>
     <uiIconScale>1.2</uiIconScale>
@@ -207,6 +207,12 @@
       <ComponentSpacer>2</ComponentSpacer>
     </costList>
     <building>
+      <!-- 真砲塔：對地機砲由 Building_TurretGun 自己持有（turretGunDef），不再由
+           DMSE.CompBuildingTurretGun 代持。CE 下 thingClass 會被補丁換成
+           Building_TurretGunCE，走的同樣是這條 turretGunDef。 -->
+      <turretGunDef>DMSE_Gun_FieldAirDefense</turretGunDef>
+      <turretTopDrawSize>4</turretTopDrawSize>
+      <turretBurstCooldownTime>3</turretBurstCooldownTime>
       <destroySound>BuildingDestroyed_Metal_Small</destroySound>
       <maxItemsInCell>1</maxItemsInCell>
       <ignoreStoredThingsBeauty>true</ignoreStoredThingsBeauty>
@@ -254,6 +260,11 @@
         <compClass>CompPowerTrader</compClass>
         <basePowerConsumption>800</basePowerConsumption>
       </li>
+      <!-- 全自動，不掛 CompMannable：通電＋開啟即運作（搜索雷達／火控通道／飛彈／機砲／CIWS）。
+           手操只留給老式防空砲（DMSE_Turret_LegacyFlak）。
+           註：CE 下機砲吃 CompAmmoUser 彈藥，而 CE 對「無人砲塔」的補彈只有相鄰
+           Building_AutoloaderCE 一條路（Building_TurretGunCE.TryOrderReload 的 manning 條件
+           不成立），所以 CE 環境要讓它持續開火，得在旁邊放一台自動裝彈機。 -->
       <!-- 搜索／追蹤雷達：短程、低功率，主要給自己的防空網提供航跡。 -->
       <li Class="DMSE.CompProperties_SearchRadar">
         <worldDetectionRange>4</worldDetectionRange>
@@ -307,20 +318,11 @@
         <aimSweepCells>5</aimSweepCells>
         <fuelPerShot>1</fuelPerShot>
       </li>
-      <!-- 本地圖對地機砲：自動搜尋敵人，砲塔頭（下方渲染 Comp）轉到目標方位後才開火；每發扣 1 機砲彈。 -->
-      <li Class="DMSE.CompProperties_BuildingTurretGun">
-        <turretDef>DMSE_Gun_FieldAirDefense</turretDef>
-        <aimToleranceDeg>8</aimToleranceDeg>
-        <maxAimTicks>300</maxAimTicks>
-      </li>
-      <!-- 通古斯卡砲塔頭：貼圖已畫出發射筒，不另疊彈體；vanilla 槍管貼圖朝東，故 -90 補償。 -->
-      <li Class="DMSE.CompProperties_TurretFacingRenderer">
-        <texPath>Things/Turrets/DMS_Gun_Tunguska</texPath>
-        <drawSize>(4,4)</drawSize>
-        <altitudeOffset>0.01</altitudeOffset>
-        <artworkRotation>-90</artworkRotation>
-        <rotationSpeedDegPerTick>3</rotationSpeedDegPerTick>
-      </li>
+      <!-- 本地圖對地機砲改由 Building_TurretGun 持有（見 building/turretGunDef），
+           所以不再需要 CompBuildingTurretGun 代持，也不再需要 CompTurretFacingRenderer
+           自繪砲塔頭——TurretTop 會自己畫 DMSE_Gun_FieldAirDefense 的貼圖（同一張通古斯卡砲塔圖）。
+           飛彈儲存改掛 comp：容器不再寫在建築類別上，CE 換掉 thingClass 也不會消失。 -->
+      <li Class="DMSE.CompProperties_MissileRackStorage" />
     </comps>
     <inspectorTabs>
       <li>RimWorld.ITab_Storage</li>

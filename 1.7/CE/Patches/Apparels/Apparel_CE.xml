@@ -59,6 +59,17 @@
 				</value>
 			</li>
 			
+			<!--DMSE_Apparel_SamLauncher（三代裝備體系新增的單兵防空具）
+			    它自帶 CompProperties_ManPortableSAM 的裝填與 Gizmo，不吃 CE 彈藥，
+			    這裡只補 CE 的體積／穿戴體積，讓背著它的人真的會被壓到。-->
+			<li Class="PatchOperationAdd">
+				<xpath>Defs/ThingDef[defName="DMSE_Apparel_SamLauncher"]/statBases</xpath>
+				<value>
+					<Bulk>9</Bulk>
+					<WornBulk>3.5</WornBulk>
+				</value>
+			</li>
+
 			<!--DMS_Apparel_Uniform-->
 			<li Class="PatchOperationReplace">
 				<xpath>Defs/ThingDef[defName="DMS_Apparel_Uniform"]/statBases/StuffEffectMultiplierArmor</xpath>

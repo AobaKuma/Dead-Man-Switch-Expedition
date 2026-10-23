@@ -29,7 +29,7 @@ namespace DMSE
         private float   lastDrawnHeight;
         private Thing   thingToSelect;   // SelectLater 模式
 
-        private Building_MissileRack Rack => SelThing as Building_MissileRack;
+        private IMissileRack Rack => MissileRackUtil.Of(SelThing);
 
         public override bool IsVisible => Rack != null;
 
@@ -45,7 +45,7 @@ namespace DMSE
         {
             thingToSelect = null;
 
-            Building_MissileRack rack = Rack;
+            IMissileRack rack = Rack;
             if (rack == null) { return; }
 
             IReadOnlyList<Thing> missiles = rack.HeldThings;

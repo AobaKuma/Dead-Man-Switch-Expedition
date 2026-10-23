@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+	<!-- ==================================================================
+	     三代裝備體系新增的砲塔／機砲的 CE 補丁（1.7 開發版）
+	     寫法完全照 1.6/CE 的 Security_CE.xml：PatchOperationSequence ＋
+	     PatchOperationMakeGunCECompatible，彈藥走 CE 的 Magazine（CompAmmoUser）。
+
+	     與 1.6 版不同的兩點，先講清楚理由：
+	     1) 建築的 thingClass 不在這裡改。DMS 核心的 1.7/CE/Patches/Buildings/Security_CE.xml
+	        已經把 DMS_BaseCannonBuilding 換成 CombatExtended.Building_TurretGunCE，
+	        本模組的兩座砲塔都繼承它，重複設定只會多一次覆寫。
+	     2) CompProperties_Refuelable 不刪。這兩座砲的末端攔截走 DMSE 自己的
+	        CompProperties_TerminalCIWS（BVR 波次），它從 Refuelable 扣 37mm 砲彈；
+	        刪掉會讓 BVR 攔截變成免費。CE 只接手「對地射擊」那一條 Verb
+	        （MakeGunCECompatible 會移除 Verb_Shoot 並換成 Verb_ShootCE，
+	         連帶把 consumeFuelPerShot 一起帶走，所以地面射擊不會重複吃鋼鐵）。
+	     3) 野戰防空砲（DMSE_Building_FieldAirDefense）已改成真砲塔、維持全自動（無 CompMannable），
+	        機砲接 CE 彈藥；CE 下要持續開火需在旁邊放一台 Building_AutoloaderCE。
+	        飛彈儲存與末端 CIWS 仍走 DMSE 自己的 comp，不吃 CE 彈藥。
+	     ================================================================== -->
+
+	<Operation Class="PatchOperationSequence">
+		<operations>
+
+			<!-- ==================== 老式防空砲「Flak 43」==================== -->
+
+			<!-- 射速：8 發彈夾（史實 Flak 43 就是 8 發橋夾）＋3.2 秒循環。
+			     原版路線是 8×12 傷害／5.33 秒 ≈ 18 DPS，與原版自動加農炮塔（81 傷／4.57 秒 ≈
+			     17.7 DPS）同級。CE 的 37mm 彈藥傷害另計（見 DMSE_37x250mmFlak.xml）。 -->
+			<li Class="CombatExtended.PatchOperationMakeGunCECompatible">
+				<defName>DMSE_Gun_LegacyFlak</defName>
+				<statBases>
+					<Mass>180</Mass>
+					<Bulk>120</Bulk>
+					<SwayFactor>1.35</SwayFactor>
+					<ShotSpread>0.06</ShotSpread>
+					<SightsEfficiency>1.1</SightsEfficiency>
+					<RangedWeapon_Cooldown>3.2</RangedWeapon_Cooldown>
+				</statBases>
+				<Properties>
+					<recoilAmount>1.15</recoilAmount>
+					<verbClass>CombatExtended.Verb_ShootCE</verbClass>
+					<hasStandardCommand>true</hasStandardCommand>
+					<defaultProjectile>DMSE_Bullet_37x250mmFlak_AP</defaultProjectile>
+					<warmupTime>0.5</warmupTime>
+					<range>58</range>
+					<minRange>6</minRange>
+					<ticksBetweenBurstShots>14</ticksBetweenBurstShots>
+					<burstShotCount>8</burstShotCount>
+					<soundCast>Shot_Autocannon</soundCast>
+					<soundCastTail>GunTail_Heavy</soundCastTail>
+					<muzzleFlashScale>6</muzzleFlashScale>
+					<targetParams>
+						<canTargetLocations>true</canTargetLocations>
+					</targetParams>
+					<recoilPattern>Mounted</recoilPattern>
+				</Properties>
+				<AmmoUser>
+					<magazineSize>8</magazineSize>
+					<reloadTime>2.6</reloadTime>
+					<ammoSet>DMSE_AmmoSet_37x250mmFlak</ammoSet>
+				</AmmoUser>
+				<FireModes>
+					<noSingleShot>true</noSingleShot>
+					<aiUseBurstMode>FALSE</aiUseBurstMode>
+					<aiAimMode>AimedShot</aiAimMode>
+				</FireModes>
+				<weaponTags />
+			</li>
+
+			<!-- DMS 核心把 DMS_BaseCannonBuilding 的 AimingAccuracy 拉到 1.5（給雷達砲用），
+			     手操光學瞄準的老砲要壓回來。子 Def 的同名節點會蓋掉父 Def（見
+			     XmlInheritance.RecursiveNodeCopyOverwriteElements），所以直接加即可。 -->
+			<li Class="PatchOperationAdd">
+				<xpath>Defs/ThingDef[defName="DMSE_Turret_LegacyFlak"]/statBases</xpath>
+				<value>
+					<AimingAccuracy>0.7</AimingAccuracy>
+				</value>
+			</li>
+
+			<!-- ==================== 先進防空砲「千禧年」==================== -->
+
+			<!-- 35 毫米直接吃 CE 既有的 AmmoSet_35x228mm（CE 1.6 自帶 AP／AP-I／AP-HE／Sabot）。 -->
+			<li Class="CombatExtended.PatchOperationMakeGunCECompatible">
+				<defName>DMSE_Gun_Millennium</defName>
+				<statBases>
+					<Mass>950</Mass>
+					<Bulk>240</Bulk>
+					<SwayFactor>1.6</SwayFactor>
+					<ShotSpread>0.03</ShotSpread>
+					<SightsEfficiency>2.2</SightsEfficiency>
+					<RangedWeapon_Cooldown>2</RangedWeapon_Cooldown>
+				</statBases>
+				<Properties>
+					<recoilAmount>1.45</recoilAmount>
+					<verbClass>CombatExtended.Verb_ShootCE</verbClass>
+					<hasStandardCommand>true</hasStandardCommand>
+					<defaultProjectile>Bullet_35x228mmNATO_HE</defaultProjectile>
+					<warmupTime>1.5</warmupTime>
+					<range>70</range>
+					<minRange>6</minRange>
+					<ticksBetweenBurstShots>4</ticksBetweenBurstShots>
+					<burstShotCount>6</burstShotCount>
+					<soundCast>DMS_Shot_GAU</soundCast>
+					<soundCastTail>GunTail_Heavy</soundCastTail>
+					<muzzleFlashScale>12</muzzleFlashScale>
+					<targetParams>
+						<canTargetLocations>true</canTargetLocations>
+					</targetParams>
+					<recoilPattern>Mounted</recoilPattern>
+				</Properties>
+				<AmmoUser>
+					<magazineSize>300</magazineSize>
+					<reloadTime>12</reloadTime>
+					<ammoSet>AmmoSet_35x228mm</ammoSet>
+				</AmmoUser>
+				<FireModes>
+					<noSingleShot>true</noSingleShot>
+					<aiUseBurstMode>true</aiUseBurstMode>
+					<aiAimMode>AimedShot</aiAimMode>
+					<aimedBurstShotCount>3</aimedBurstShotCount>
+				</FireModes>
+				<weaponTags />
+			</li>
+
+			<li Class="PatchOperationAdd">
+				<xpath>Defs/ThingDef[defName="DMSE_Turret_Millennium"]/statBases</xpath>
+				<value>
+					<AimingAccuracy>1.1</AimingAccuracy>
+				</value>
+			</li>
+
+			<!-- ==================== 野戰防空砲（彈砲一體，全自動）====================
+			     2026-10-24 起它已經是真正的 Building_TurretGun（thingClass），CE 下會變成
+			     Building_TurretGunCE；機砲走 building/turretGunDef = DMSE_Gun_FieldAirDefense。
+			     它是全自動（刻意不掛 CompMannable，手操只留給老式防空砲），因此 CE 的補彈
+			     Job 沒有砲手可用，補彈只剩一條路：旁邊放一台 Building_AutoloaderCE。
+			     沒有自動裝彈機時，彈匣（300 發）打完就停火——這是 CE 對所有無人砲塔的規則，
+			     不是本模組的 bug；彈藥量在 CE 的彈藥 Gizmo 上看得到。
+			     飛彈（CompMissileLauncher＋CompMissileRackStorage）與末端 CIWS 走 DMSE 自己的
+			     系統，不吃 CE 彈藥；鋼鐵燃料（CompProperties_Refuelable）留給 CIWS 用。 -->
+			<li Class="PatchOperationAdd">
+				<xpath>Defs/ThingDef[defName="DMSE_Building_FieldAirDefense"]/statBases</xpath>
+				<value>
+					<AimingAccuracy>0.8</AimingAccuracy>
+				</value>
+			</li>
+
+			<li Class="CombatExtended.PatchOperationMakeGunCECompatible">
+				<defName>DMSE_Gun_FieldAirDefense</defName>
+				<statBases>
+					<Mass>400</Mass>
+					<Bulk>120</Bulk>
+					<SwayFactor>1.2</SwayFactor>
+					<ShotSpread>0.05</ShotSpread>
+					<SightsEfficiency>1.6</SightsEfficiency>
+					<RangedWeapon_Cooldown>3</RangedWeapon_Cooldown>
+				</statBases>
+				<Properties>
+					<recoilAmount>1.2</recoilAmount>
+					<verbClass>CombatExtended.Verb_ShootCE</verbClass>
+					<hasStandardCommand>true</hasStandardCommand>
+					<defaultProjectile>Bullet_30x165mm_HE</defaultProjectile>
+					<warmupTime>1</warmupTime>
+					<range>64</range>
+					<minRange>5</minRange>
+					<ticksBetweenBurstShots>4</ticksBetweenBurstShots>
+					<burstShotCount>8</burstShotCount>
+					<soundCast>DMS_Shot_Tunguska</soundCast>
+					<soundCastTail>GunTail_Heavy</soundCastTail>
+					<muzzleFlashScale>12</muzzleFlashScale>
+					<targetParams>
+						<canTargetLocations>true</canTargetLocations>
+					</targetParams>
+					<recoilPattern>Mounted</recoilPattern>
+				</Properties>
+				<AmmoUser>
+					<magazineSize>300</magazineSize>
+					<reloadTime>10</reloadTime>
+					<ammoSet>AmmoSet_30x165mm</ammoSet>
+				</AmmoUser>
+				<FireModes>
+					<noSingleShot>true</noSingleShot>
+					<aiUseBurstMode>true</aiUseBurstMode>
+					<aiAimMode>AimedShot</aiAimMode>
+					<aimedBurstShotCount>4</aimedBurstShotCount>
+				</FireModes>
+				<weaponTags />
+			</li>
+		</operations>
+	</Operation>
+
+</Patch>

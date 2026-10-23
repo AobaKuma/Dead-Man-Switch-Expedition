@@ -20,9 +20,9 @@ namespace DMSE
 
         public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn)
         {
-            foreach (Building b in pawn.Map.listerBuildings.AllBuildingsColonistOfClass<Building_MissileRack>())
+            foreach (Building b in pawn.Map.listerBuildings.AllBuildingsColonistOfClass<Building>())
             {
-                if (IsLauncher(b))
+                if (MissileRackUtil.Of(b) != null && IsLauncher(b))
                 {
                     yield return b;
                 }
@@ -41,7 +41,8 @@ namespace DMSE
 
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
-            if (!(t is Building_MissileRack launcher)) { return false; }
+            IMissileRack launcher = MissileRackUtil.Of(t);
+            if (launcher == null) { return false; }
             if (launcher.Full) { return false; }
             if (t.IsForbidden(pawn)) { return false; }
             if (!pawn.CanReserve(t, 1, -1, null, forced)) { return false; }
@@ -55,24 +56,26 @@ namespace DMSE
 
         public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
-            if (!(t is Building_MissileRack launcher) || launcher.Full) { return null; }
-            Building_MissileRack source = FindSourceRack(pawn, launcher);
+            IMissileRack launcher = MissileRackUtil.Of(t);
+            if (launcher == null || launcher.Full) { return null; }
+            IMissileRack source = FindSourceRack(pawn, launcher);
             if (source == null) { return null; }
-            return JobMaker.MakeJob(DMSE_MissileJobDefOf.DMSE_LoadMissileLauncher, launcher, source);
+            return JobMaker.MakeJob(DMSE_MissileJobDefOf.DMSE_LoadMissileLauncher, launcher.RackThing, source.RackThing);
         }
 
         /// <summary>
         /// 找到一個可用的儲存架：有相容導彈、pawn 可到達且可預約。
         /// </summary>
-        public static Building_MissileRack FindSourceRack(Pawn pawn, Building_MissileRack launcher)
+        public static IMissileRack FindSourceRack(Pawn pawn, IMissileRack launcher)
         {
             StorageSettings launcherSettings = launcher.GetStoreSettings();
 
-            foreach (Building b in pawn.Map.listerBuildings.AllBuildingsColonistOfClass<Building_MissileRack>())
+            foreach (Building b in pawn.Map.listerBuildings.AllBuildingsColonistOfClass<Building>())
             {
-                if (b == launcher) { continue; }
+                if (b == launcher.RackThing) { continue; }
                 if (IsLauncher(b)) { continue; } // 不從其他發射平台搬
-                Building_MissileRack rack = (Building_MissileRack)b;
+                IMissileRack rack = MissileRackUtil.Of(b);
+                if (rack == null) { continue; }
                 if (rack.StoredCount == 0) { continue; }
                 if (b.IsForbidden(pawn)) { continue; }
                 if (!pawn.CanReserve(b, 1, -1, null, false)) { continue; }

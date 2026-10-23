@@ -25,6 +25,9 @@ namespace DMSE
         /// </summary>
         public virtual float RangeFactor(float N) => 1f;
 
+        /// <summary>能否穿透厚岩頂：穿透時引爆前先在岩層開孔（<see cref="MissileImpactUtility.BreachThickRoof"/>），導引頭也會鎖定岩頂下的目標。</summary>
+        public virtual bool PenetratesThickRoof => false;
+
         /// <summary>可選的 Def 驗證。</summary>
         public virtual IEnumerable<string> ConfigErrors(MissilePartDef parent)
         {
@@ -49,6 +52,47 @@ namespace DMSE
         {
             if (map == null || !center.InBounds(map)) { return; }
             GenExplosion.DoExplosion(center, map, N, DamageDefOf.Bomb, MissileImpactUtility.Instigator, damageAmount);
+        }
+    }
+
+    // ============================================================
+    //  反碉堡（Bunker Buster）
+    //  延時引信的硬化穿甲彈：穿透厚岩頂後在內部引爆。
+    //  小半徑（N×0.4，2–5 格）高穿甲爆炸，並對爆心附近的建築額外施加結構傷害。
+    // ============================================================
+    public class PayloadEffect_BunkerBuster : PayloadEffect
+    {
+        public int damageAmount = 150;
+        public float armorPenetration = 1f;
+
+        /// <summary>爆心 <see cref="structureRadius"/> 格內建築額外受到的傷害。</summary>
+        public int structureDamage = 300;
+        public float structureRadius = 1.9f;
+
+        public override bool PenetratesThickRoof => true;
+
+        public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
+        {
+            if (map == null || !center.InBounds(map)) { return; }
+            float radius = Mathf.Clamp(N * 0.4f, 2f, 5f);
+            GenExplosion.DoExplosion(center, map, radius, DamageDefOf.Bomb, MissileImpactUtility.Instigator,
+                damageAmount, armorPenetration);
+
+            // 取快照：傷害可能摧毀建築而改動格子上的物件清單。
+            List<Building> buildings = new List<Building>();
+            foreach (IntVec3 cell in GenRadial.RadialCellsAround(center, structureRadius, true))
+            {
+                if (!cell.InBounds(map)) { continue; }
+                foreach (Thing t in cell.GetThingList(map))
+                {
+                    if (t is Building b && !buildings.Contains(b)) { buildings.Add(b); }
+                }
+            }
+            foreach (Building b in buildings)
+            {
+                if (b.Destroyed || !b.def.useHitPoints) { continue; }
+                b.TakeDamage(new DamageInfo(DamageDefOf.Bomb, structureDamage, armorPenetration, -1f, MissileImpactUtility.Instigator));
+            }
         }
     }
 

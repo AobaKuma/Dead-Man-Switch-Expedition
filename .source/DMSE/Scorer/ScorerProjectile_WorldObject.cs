@@ -117,7 +117,9 @@ namespace DMSE
                 new TargetingParameters()
                 {
                     canTargetLocations = true,
-                    canTargetItems = false
+                    canTargetItems = false,
+                    // 沒有穿甲彈頭／反碉堡酬載時，厚岩頂下的格子打不到（只會在岩層表面引爆）。
+                    validator = t => config.PenetratesThickRoof || !MissileImpactUtility.UnderThickRoof(t.Cell, map)
                 },
             action: t =>
                 {

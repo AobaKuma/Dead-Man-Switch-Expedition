@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <!-- EN: make 37x250mmR flak cartridge (AP) x50 -->
+  <MakeAmmo_37x250mmFlak_AP.label>制作 37x250mmR 高射炮弹（穿甲弹）x50</MakeAmmo_37x250mmFlak_AP.label>
+  <!-- EN: Craft 50 37x250mmR flak cartridges (AP). -->
+  <MakeAmmo_37x250mmFlak_AP.description>制作 50 发 37x250mmR 高射炮弹（穿甲弹）。</MakeAmmo_37x250mmFlak_AP.description>
+  <!-- EN: Making 37x250mmR flak cartridges (AP). -->
+  <MakeAmmo_37x250mmFlak_AP.jobString>制作 37x250mmR 高射炮弹（穿甲弹）。</MakeAmmo_37x250mmFlak_AP.jobString>
+
+  <!-- EN: make 37x250mmR flak cartridge (AP-I) x50 -->
+  <MakeAmmo_37x250mmFlak_Incendiary.label>制作 37x250mmR 高射炮弹（穿甲燃烧弹）x50</MakeAmmo_37x250mmFlak_Incendiary.label>
+  <!-- EN: Craft 50 37x250mmR flak cartridges (AP-I). -->
+  <MakeAmmo_37x250mmFlak_Incendiary.description>制作 50 发 37x250mmR 高射炮弹（穿甲燃烧弹）。</MakeAmmo_37x250mmFlak_Incendiary.description>
+  <!-- EN: Making 37x250mmR flak cartridges (AP-I). -->
+  <MakeAmmo_37x250mmFlak_Incendiary.jobString>制作 37x250mmR 高射炮弹（穿甲燃烧弹）。</MakeAmmo_37x250mmFlak_Incendiary.jobString>
+
+  <!-- EN: make 37x250mmR flak cartridge (AP-HE) x50 -->
+  <MakeAmmo_37x250mmFlak_HE.label>制作 37x250mmR 高射炮弹（穿甲高爆弹）x50</MakeAmmo_37x250mmFlak_HE.label>
+  <!-- EN: Craft 50 37x250mmR flak cartridges (AP-HE). -->
+  <MakeAmmo_37x250mmFlak_HE.description>制作 50 发 37x250mmR 高射炮弹（穿甲高爆弹）。</MakeAmmo_37x250mmFlak_HE.description>
+  <!-- EN: Making 37x250mmR flak cartridges (AP-HE). -->
+  <MakeAmmo_37x250mmFlak_HE.jobString>制作 37x250mmR 高射炮弹（穿甲高爆弹）。</MakeAmmo_37x250mmFlak_HE.jobString>
+
+</LanguageData>

@@ -38,7 +38,10 @@ namespace DMSE
         protected override string CooldownTranslationKey => "DMSE.MissileLauncher.Interceptor.Reloading";
 
         // 彈藥來源：parent 為 Building_MissileRack（容器），攔截彈以實體 Thing 逐枚存放，
-        private ThingOwner HeldContainer => (parent as IThingHolder)?.GetDirectlyHeldThings();
+        // 或是由 CompMissileRackStorage 掛在砲塔型平台上（野戰防空砲）。
+        private ThingOwner HeldContainer =>
+            parent.GetComp<CompMissileRackStorage>()?.HeldContainer
+            ?? (parent as IThingHolder)?.GetDirectlyHeldThings();
 
         // 輕型發射箱與對地發射軌共用彈艙：只取攔截／兩用彈（對地彈不能當攔截彈射掉），
         // 且被打擊任務保留的導彈（StrikeReservation）不取用。

@@ -180,7 +180,8 @@ namespace DMSE
         {
             base.PostDraw();
 
-            if (!(parent is Building_MissileRack rack))
+            IMissileRack rack = MissileRackUtil.Of(parent);
+            if (rack == null)
             {
                 return;
             }

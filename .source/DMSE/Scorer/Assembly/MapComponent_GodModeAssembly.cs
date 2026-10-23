@@ -22,7 +22,7 @@ namespace DMSE
             for (int i = 0; i < defs.Count; i++) { targets.AddRange(map.listerThings.ThingsOfDef(defs[i])); }
             foreach (Building b in map.listerBuildings.allBuildingsColonist)
             {
-                if (b is Building_MissileRack || b.TryGetComp<CompMissileLauncher_Ballistic>() != null) { targets.Add(b); }
+                if (MissileRackUtil.Of(b) != null || b.TryGetComp<CompMissileLauncher_Ballistic>() != null) { targets.Add(b); }
             }
             for (int i = 0; i < targets.Count; i++) { MissileAssemblyUtility.TryInstantAssemble(targets[i]); }
         }

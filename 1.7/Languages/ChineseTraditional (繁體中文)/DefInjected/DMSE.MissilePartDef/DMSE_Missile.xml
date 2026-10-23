@@ -136,4 +136,10 @@
   <DMSE_Light_Guidance_SemiActive.description>追蹤火控雷達照射目標所產生回波的半主動雷達導引頭。專為攔截而設計；對地打擊時退化為散布較小的慣性選點。</DMSE_Light_Guidance_SemiActive.description>
   <DMSE_Guidance_ActiveRadar.label>主動雷達尋標器</DMSE_Guidance_ActiveRadar.label>
   <DMSE_Guidance_ActiveRadar.description>射後不理的主動雷達尋標器。優先鎖定占地面積最大的敵對建築；沒有敵對建築時，鎖定體型最大的敵對生物。無目標時退回地圖中心的慣性散布，提供終端導引。</DMSE_Guidance_ActiveRadar.description>
+  <DMSE_Payload_BunkerBuster.label>反碉堡酬載</DMSE_Payload_BunkerBuster.label>
+  <DMSE_Payload_BunkerBuster.description>硬化延時引信穿甲裝藥。可鑽穿厚岩頂並在內部引爆，以集中的高穿甲爆炸摧毀爆心附近的結構。沒有反碉堡酬載或穿甲彈頭的導彈打在山體上只會在岩層表面引爆，導引頭也會忽略厚岩頂下的目標。</DMSE_Payload_BunkerBuster.description>
+  <DMSE_Ballistic_Payload_BunkerBuster.label>反碉堡酬載</DMSE_Ballistic_Payload_BunkerBuster.label>
+  <DMSE_Ballistic_Payload_BunkerBuster.description>硬化延時引信穿甲裝藥。可鑽穿厚岩頂並在內部引爆，以集中的高穿甲爆炸摧毀爆心附近的結構。沒有反碉堡酬載或穿甲彈頭的導彈打在山體上只會在岩層表面引爆，導引頭也會忽略厚岩頂下的目標。</DMSE_Ballistic_Payload_BunkerBuster.description>
+  <DMSE_AdvCruise_Payload_BunkerBuster.label>反碉堡酬載</DMSE_AdvCruise_Payload_BunkerBuster.label>
+  <DMSE_AdvCruise_Payload_BunkerBuster.description>硬化延時引信穿甲裝藥。可鑽穿厚岩頂並在內部引爆，以集中的高穿甲爆炸摧毀爆心附近的結構。沒有反碉堡酬載或穿甲彈頭的導彈打在山體上只會在岩層表面引爆，導引頭也會忽略厚岩頂下的目標。</DMSE_AdvCruise_Payload_BunkerBuster.description>
 </LanguageData>

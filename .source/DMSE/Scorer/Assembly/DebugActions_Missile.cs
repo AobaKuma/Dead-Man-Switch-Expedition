@@ -3,156 +3,141 @@ using System.Linq;
 using LudeonTK;
 using RimWorld;
 using RimWorld.Planet;
-using UnityEngine;
 using Verse;
 
 namespace DMSE
 {
-    /// <summary>除錯動作：在當前地圖生成來自敵人的導彈打擊（測試導彈落點與彈頭/酬載結算）。</summary>
+    /// <summary>
+    /// 開發工具：對當前地圖發動敵方導彈打擊。彈體與枚數由選單選擇，部件用彈體預設值
+    /// （<see cref="MissileConfig.NewWithDefaults"/>）。
+    /// </summary>
     public static class DebugActions_Missile
     {
-        [DebugAction("DMSE", "Enemy missile strike (incoming, world)", allowedGameStates = AllowedGameStates.PlayingOnMap)]
-        private static void EnemyMissileStrikeIncoming()
+        private const string Category = "DMSE Missile";
+        private static readonly int[] Counts = { 1, 3, 8 };
+
+        /// <summary>世界航跡：從約 6–10 格外發射，走完整的世界偵測、攔截與地圖交接流程。</summary>
+        [DebugAction(Category, "World strike on this map...", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void WorldStrike()
         {
             Map map = Find.CurrentMap;
-            if (map == null) { return; }
-
-            Faction attacker = FindHostileFaction();
-            PlanetTile dest = map.Tile;
-            PlanetTile source = OffsetTile(dest, 6);
-
-            IncomingMissileUtility.Launch(source, dest, BuildEnemyConfig(), attacker, target: map.Parent);
-            Messages.Message("DMSE: incoming missile launched" + (attacker != null ? " from " + attacker.Name : ""),
-                MessageTypeDefOf.NeutralEvent, false);
-        }
-
-        [DebugAction("DMSE", "Enemy missile salvo", allowedGameStates = AllowedGameStates.PlayingOnMap)]
-        private static void EnemyMissileBarrage()
-        {
-            Map map = Find.CurrentMap;
-            if (map == null) { return; }
-            MapComponent_BVRCombat comp = map.GetComponent<MapComponent_BVRCombat>();
-            if (comp == null) { return; }
-
-            const int count = 8;
-            Faction attacker = FindHostileFaction();
-            Faction defender = comp.ResolveDefender(attacker);
-            ThingDef incomingDef = DefDatabase<ThingDef>.GetNamedSilentFail(IncomingMissileUtility.DefaultIncomingDef);
-
-            // 有防禦方：直接生成一個含 8 枚導彈的單一波次。
-            if (defender != null && comp.RegisterSalvo(incomingDef, count, BuildEnemyConfig(), attacker, defender))
+            ChooseBodyAndCount(delegate (MissileBodyDef body, int count)
             {
-                Messages.Message("DMSE: missile salvo registered as single wave (" + count + ")"
-                    + (attacker != null ? " from " + attacker.Name : ""), MessageTypeDefOf.ThreatBig, false);
-                return;
-            }
-int c = Random.Range(8,20);
-            // 無運作中的防禦方搜索雷達：直接落地，無法攔截。
-            for (int i = 0; i < c  && incomingDef != null; i++)
-            {
-                IntVec3 cell = DropCellFinder.RandomDropSpot(map);
-                if (MissileProjectileMaker.SpawnIncoming(incomingDef, cell, map) is IIncomingMissile mi)
+                Faction attacker = DebugMissileUtility.HostileFaction();
+                PlanetTile source = DebugMissileUtility.TileAtDistance(map.Tile, 6f, 10f);
+                if (!source.Valid)
                 {
-                    mi.Config = BuildEnemyConfig();
-                    mi.Attacker = attacker;
+                    Messages.Message("DMSE: no launch tile 6–10 tiles away.", MessageTypeDefOf.RejectInput, false);
+                    return;
                 }
-            }
-            Messages.Message("DMSE: missile salvo x" + count + " (no active defender radar, impacts directly)",
-                MessageTypeDefOf.NeutralEvent, false);
-        }
-
-        [DebugAction("DMSE", "Enemy missile strike (single)", allowedGameStates = AllowedGameStates.PlayingOnMap)]
-        private static void EnemyMissileStrikeSingle()
-        {
-            DebugTools.curTool = new DebugTool("Enemy missile strike: pick target", delegate
-            {
-                Map map = Find.CurrentMap;
-                if (map == null) { return; }
-                IntVec3 cell = UI.MouseCell();
-                if (cell.InBounds(map))
+                for (int i = 0; i < count; i++)
                 {
-                    SpawnStrike(map, cell);
+                    IncomingMissileUtility.Launch(source, map.Tile, MissileConfig.NewWithDefaults(body), attacker, target: map.Parent);
                 }
+                Messages.Message($"DMSE: {count}× {body.label} launched from {source} by {attacker?.Name ?? "no faction"}.",
+                    new GlobalTargetInfo(source), MessageTypeDefOf.ThreatBig, false);
             });
         }
 
-        [DebugAction("DMSE", "Enemy missile strike (volley x5)", allowedGameStates = AllowedGameStates.PlayingOnMap)]
-        private static void EnemyMissileStrikeVolley()
+        /// <summary>地圖波次：直接登記為一個波次（略過世界層）；沒有防禦方雷達時直接落地。</summary>
+        [DebugAction(Category, "Map salvo wave...", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void MapSalvo()
         {
-            DebugTools.curTool = new DebugTool("Enemy missile volley: pick impact area", delegate
+            Map map = Find.CurrentMap;
+            ChooseBodyAndCount(delegate (MissileBodyDef body, int count)
             {
-                Map map = Find.CurrentMap;
-                if (map == null) { return; }
-                IntVec3 center = UI.MouseCell();
-                if (!center.InBounds(map)) { return; }
-                for (int i = 0; i < 5; i++)
+                MapComponent_BVRCombat comp = map.GetComponent<MapComponent_BVRCombat>();
+                Faction attacker = DebugMissileUtility.HostileFaction();
+                Faction defender = comp?.ResolveDefender(attacker);
+                if (defender != null && comp.RegisterSalvo(body.incomingSkyfaller, count, MissileConfig.NewWithDefaults(body), attacker, defender))
                 {
-                    IntVec3 c = CellFinder.RandomClosewalkCellNear(center, map, 8);
-                    SpawnStrike(map, c);
+                    Messages.Message($"DMSE: {count}× {body.label} registered as one wave against {defender.Name}.", MessageTypeDefOf.ThreatBig, false);
+                    return;
                 }
+                for (int i = 0; i < count; i++)
+                {
+                    SpawnAt(map, DropCellFinder.RandomDropSpot(map), body, attacker);
+                }
+                Messages.Message($"DMSE: {count}× {body.label} falling (no active defender radar).", MessageTypeDefOf.NeutralEvent, false);
             });
         }
 
-        private static void SpawnStrike(Map map, IntVec3 cell)
+        /// <summary>指定落點：在點選的格子生成來襲導彈（測試彈頭與酬載結算）。</summary>
+        [DebugAction(Category, "Missile impact at cell...", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void ImpactAtCell()
         {
-            MissileConfig cfg = BuildEnemyConfig();
-            ThingDef def = (cfg != null && cfg.body != null ? cfg.body.incomingSkyfaller : null)
-                ?? DefDatabase<ThingDef>.GetNamedSilentFail("DMSE_Incoming_CruiseMissile");
-            if (def == null)
+            ChooseBody(delegate (MissileBodyDef body)
             {
-                Messages.Message("DMSE: no incoming-missile def found.", MessageTypeDefOf.RejectInput, false);
+                Faction attacker = DebugMissileUtility.HostileFaction();
+                DebugTools.curTool = new DebugTool("Impact: " + body.label, delegate
+                {
+                    Map map = Find.CurrentMap;
+                    IntVec3 cell = UI.MouseCell();
+                    if (map != null && cell.InBounds(map)) { SpawnAt(map, cell, body, attacker); }
+                });
+            });
+        }
+
+        private static void SpawnAt(Map map, IntVec3 cell, MissileBodyDef body, Faction attacker)
+        {
+            if (MissileProjectileMaker.SpawnIncoming(body.incomingSkyfaller, cell, map) is IIncomingMissile incoming)
+            {
+                incoming.Config = MissileConfig.NewWithDefaults(body);
+                incoming.Attacker = attacker;
+            }
+        }
+
+        private static IEnumerable<MissileBodyDef> StrikeBodies => DefDatabase<MissileBodyDef>.AllDefsListForReading
+            .Where(b => b.incomingSkyfaller != null).OrderBy(b => b.label);
+
+        private static void ChooseBody(System.Action<MissileBodyDef> action)
+        {
+            var options = StrikeBodies.Select(b => new FloatMenuOption($"{b.LabelCap} ({b.defName})", () => action(b))).ToList();
+            if (options.Count == 0)
+            {
+                Messages.Message("DMSE: no missile body with an incoming skyfaller.", MessageTypeDefOf.RejectInput, false);
                 return;
             }
-
-            Thing faller = MissileProjectileMaker.SpawnIncoming(def, cell, map);
-            if (faller is IIncomingMissile incoming)
-            {
-                incoming.Config = cfg;
-            }
+            Find.WindowStack.Add(new FloatMenu(options));
         }
 
-        /// <summary>建立預設的「敵方」導彈設定：第一個彈體 + 相容的第一個彈頭（若有）。</summary>
-        private static MissileConfig BuildEnemyConfig()
+        private static void ChooseBodyAndCount(System.Action<MissileBodyDef, int> action)
         {
-            MissileBodyDef body = DefDatabase<MissileBodyDef>.AllDefsListForReading.FirstOrDefault();
-            if (body == null) { return null; }
-
-            MissileConfig cfg = new MissileConfig(body);
-            MissilePartDef warhead = DefDatabase<MissilePartDef>.AllDefsListForReading
-                .FirstOrDefault(p => p.category == MissilePartCategory.Warhead && p.CompatibleWith(body));
-            if (warhead != null)
-            {
-                cfg.SetPart(MissilePartCategory.Warhead, warhead);
-            }
-            return cfg;
+            ChooseBody(body => Find.WindowStack.Add(new FloatMenu(Counts
+                .Select(n => new FloatMenuOption($"{n}×", () => action(body, n))).ToList())));
         }
+    }
 
-        /// <summary>取得一個與玩家敵對的陣營（找不到就退回任一非玩家陣營）。</summary>
-        private static Faction FindHostileFaction()
+    /// <summary>開發工具共用：敵對陣營、距離內的空 tile。</summary>
+    public static class DebugMissileUtility
+    {
+        /// <summary>與玩家敵對的陣營（找不到就退回任一非玩家可見陣營）。</summary>
+        public static Faction HostileFaction()
         {
-            Faction player = Faction.OfPlayer;
             List<Faction> all = Find.FactionManager.AllFactionsListForReading;
-            Faction hostile = all
-                .Where(f => f != player && !f.defeated && !f.def.hidden && f.HostileTo(player))
-                .RandomElementWithFallback(null);
-            if (hostile != null) { return hostile; }
-            return all.FirstOrDefault(f => f != player && !f.def.hidden);
+            return all.Where(f => !f.IsPlayer && !f.defeated && !f.def.hidden && f.HostileTo(Faction.OfPlayer)).RandomElementWithFallback(null)
+                ?? all.FirstOrDefault(f => !f.IsPlayer && !f.def.hidden);
         }
 
-        /// <summary>從起始 tile 沿隨機相鄰 tile 走若干步，作為來襲導彈的發射來源（製造可見航跡）。</summary>
-        private static PlanetTile OffsetTile(PlanetTile origin, int steps)
+        /// <summary>與 <paramref name="origin"/> 同圖層、距離在範圍內的隨機空 tile；<paramref name="buildable"/> 時要求可建據點。</summary>
+        public static PlanetTile TileAtDistance(PlanetTile origin, float min, float max, bool buildable = false)
         {
-            PlanetTile t = origin;
-            WorldGrid grid = Find.WorldGrid;
-            List<PlanetTile> neighbors = new List<PlanetTile>();
-            for (int i = 0; i < steps; i++)
+            var candidates = new List<PlanetTile>();
+            int count = origin.Layer.TilesCount;
+            for (int i = 0; i < count; i++)
             {
-                neighbors.Clear();
-                grid.GetTileNeighbors(t, neighbors);
-                if (neighbors.Count == 0) { break; }
-                t = neighbors.RandomElement();
+                PlanetTile t = new PlanetTile(i, origin.Layer);
+                float d = MissileWorldUtility.RangeDistance(origin, t);
+                if (d < min || d > max || Find.WorldObjects.AnyWorldObjectAt(t)) { continue; }
+                if (buildable)
+                {
+                    Tile info = Find.WorldGrid[t];
+                    if (!info.PrimaryBiome.canBuildBase || info.hilliness == Hilliness.Impassable
+                        || Find.WorldObjects.AnySettlementBaseAtOrAdjacent(t)) { continue; }
+                }
+                candidates.Add(t);
             }
-            return t;
+            return candidates.Count > 0 ? candidates.RandomElement() : PlanetTile.Invalid;
         }
     }
 }

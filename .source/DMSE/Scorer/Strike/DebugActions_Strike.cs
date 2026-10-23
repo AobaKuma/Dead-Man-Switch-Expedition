@@ -6,39 +6,10 @@ using Verse;
 
 namespace DMSE
 {
-    /// <summary>
-    /// 波次打擊 P0 的除錯動作：手動保留／釋放在架彈藥，檢查單發 Gizmo、SAM 與裝配是否略過保留彈。
-    /// 手動保留不存檔（<see cref="MapComponent_StrikePlanner.DebugOwner"/>）。
-    /// </summary>
+    /// <summary>開發工具：列出地圖上的世界打擊發射器與可用彈藥（含保留狀態）。</summary>
     public static class DebugActions_Strike
     {
-        [DebugAction("DMSE", "Strike: reserve rounds on selected launchers", allowedGameStates = AllowedGameStates.PlayingOnMap)]
-        private static void ReserveSelected()
-        {
-            int count = 0;
-            foreach (ThingWithComps building in Find.Selector.SelectedObjectsListForReading.OfType<ThingWithComps>())
-            {
-                MapComponent_StrikePlanner planner = StrikeReservation.PlannerFor(building);
-                if (planner == null) { continue; }
-                foreach (CompMissileLauncher_WorldTargeting launcher in building.GetComps<CompMissileLauncher_WorldTargeting>())
-                {
-                    foreach (Thing round in launcher.StrikeRounds.ToList())
-                    {
-                        if (planner.TryReserve(round, MapComponent_StrikePlanner.DebugOwner)) { count++; }
-                    }
-                }
-            }
-            Messages.Message($"DMSE: reserved {count} strike round(s) (debug, not saved)", MessageTypeDefOf.NeutralEvent, false);
-        }
-
-        [DebugAction("DMSE", "Strike: release debug reservations", allowedGameStates = AllowedGameStates.PlayingOnMap)]
-        private static void ReleaseDebug()
-        {
-            Find.CurrentMap?.GetComponent<MapComponent_StrikePlanner>()?.ReleaseAll(MapComponent_StrikePlanner.DebugOwner);
-            Messages.Message("DMSE: debug strike reservations released", MessageTypeDefOf.NeutralEvent, false);
-        }
-
-        [DebugAction("DMSE", "Strike: log strike rounds on map", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        [DebugAction("DMSE Strike", "Log strike rounds on map", allowedGameStates = AllowedGameStates.PlayingOnMap)]
         private static void LogRounds()
         {
             MapComponent_StrikePlanner planner = Find.CurrentMap?.GetComponent<MapComponent_StrikePlanner>();

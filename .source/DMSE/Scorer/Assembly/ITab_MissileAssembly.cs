@@ -39,7 +39,8 @@ namespace DMSE
                 CompMissileConfig direct = SelThing.TryGetComp<CompMissileConfig>();
                 if (direct != null) { return direct; }
                 // 間接情況：導彈儲存架 → 取容器第一枚導彈的 Comp
-                if (SelThing is Building_MissileRack rack)
+                IMissileRack rack = MissileRackUtil.Of(SelThing);
+                if (rack != null)
                 {
                     IReadOnlyList<Thing> held = rack.HeldThings;
                     if (held != null && held.Count > 0)
@@ -58,7 +59,8 @@ namespace DMSE
         {
             get
             {
-                if (SelThing is Building_MissileRack rack)
+                IMissileRack rack = MissileRackUtil.Of(SelThing);
+                if (rack != null)
                 {
                     IReadOnlyList<Thing> held = rack.HeldThings;
                     if (held != null && held.Count > 0)

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <!-- EN: 37x250mmR flak cartridge (AP) -->
+  <DMSE_Ammo_37x250mmFlak_AP.label>37x250mmR 高射砲砲彈（穿甲彈）</DMSE_Ammo_37x250mmFlak_AP.label>
+
+  <!-- EN: 37x250mmR flak cartridge (AP-I) -->
+  <DMSE_Ammo_37x250mmFlak_Incendiary.label>37x250mmR 高射砲砲彈（穿甲燃燒彈）</DMSE_Ammo_37x250mmFlak_Incendiary.label>
+
+  <!-- EN: 37x250mmR flak cartridge (AP-HE) -->
+  <DMSE_Ammo_37x250mmFlak_HE.label>37x250mmR 高射砲砲彈（穿甲高爆彈）</DMSE_Ammo_37x250mmFlak_HE.label>
+
+  <!-- EN: 37x250mmR flak bullet (AP) -->
+  <DMSE_Bullet_37x250mmFlak_AP.label>37x250mmR 高射砲彈頭（穿甲彈）</DMSE_Bullet_37x250mmFlak_AP.label>
+
+  <!-- EN: 37x250mmR flak bullet (AP-I) -->
+  <DMSE_Bullet_37x250mmFlak_Incendiary.label>37x250mmR 高射砲彈頭（穿甲燃燒彈）</DMSE_Bullet_37x250mmFlak_Incendiary.label>
+
+  <!-- EN: 37x250mmR flak bullet (AP-HE) -->
+  <DMSE_Bullet_37x250mmFlak_HE.label>37x250mmR 高射砲彈頭（穿甲高爆彈）</DMSE_Bullet_37x250mmFlak_HE.label>
+
+</LanguageData>

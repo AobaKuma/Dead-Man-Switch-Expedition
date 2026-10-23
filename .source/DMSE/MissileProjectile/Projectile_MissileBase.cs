@@ -337,15 +337,19 @@ namespace DMSE
             Destroy();
         }
 
-        /// <summary>同 <c>Skyfaller.HitRoof</c>：打穿屋頂並崩塌周圍（厚岩頂不擋，之後照樣命中）。</summary>
+        /// <summary>
+        /// 同 <c>Skyfaller.HitRoof</c>：打穿屋頂並崩塌周圍。厚岩頂不在此崩塌（原版會在落點填滿崩落岩石，把之後的爆炸悶在岩石裡），
+        /// 改由 <see cref="MissileImpactUtility.Detonate"/> 依彈頭能否穿透決定開孔或在岩層表面引爆。
+        /// </summary>
         protected virtual void HitRoof()
         {
             MissileFlightExtension f = Flight;
             if (!f.hitRoof) { return; }
             Map map = Map;
             CellRect cr = this.OccupiedRect();
-            if (!cr.Cells.Any(x => x.InBounds(map) && x.Roofed(map))) { return; }
-            RoofDef roof = cr.Cells.First(x => x.InBounds(map) && x.Roofed(map)).GetRoof(map);
+            bool ThinRoofed(IntVec3 x) => x.InBounds(map) && x.Roofed(map) && !MissileImpactUtility.UnderThickRoof(x, map);
+            if (!cr.Cells.Any(ThinRoofed)) { return; }
+            RoofDef roof = cr.Cells.First(ThinRoofed).GetRoof(map);
             if (!roof.soundPunchThrough.NullOrUndefined())
             {
                 roof.soundPunchThrough.PlayOneShot(new TargetInfo(Position, map));
@@ -353,7 +357,7 @@ namespace DMSE
             CellRect area = cr.ExpandedBy(f.minimalRoofDestruction ? 0 : 1).ClipInsideMap(map);
             RoofCollapserImmediate.DropRoofInCells(area.Cells.Where(c =>
             {
-                if (!c.InBounds(map)) { return false; }
+                if (!ThinRoofed(c)) { return false; }
                 if (cr.Contains(c)) { return true; }
                 if (c.GetFirstPawn(map) != null) { return false; }
                 Building edifice = c.GetEdifice(map);

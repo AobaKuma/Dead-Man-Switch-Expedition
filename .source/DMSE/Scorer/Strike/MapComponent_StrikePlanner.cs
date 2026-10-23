@@ -48,12 +48,12 @@ namespace DMSE
     /// 波次打擊的地圖管理器（docs/BVR_波次打擊規劃.md §4-1）：
     ///   - 世界選靶發射平台與打擊指揮台的註冊表（各自在 PostSpawnSetup／PostDeSpawn 註冊）；
     ///   - 打擊保留索引：彈藥 Thing → 擁有者（打擊任務 id）。不存檔：指揮台在 PostSpawnSetup 依任務重建，
-    ///     開發者模式的手動保留（<see cref="DebugOwner"/>）讀檔後即消失；
+    ///     測試用的手動保留（<see cref="DebugOwner"/>）讀檔後即消失；
     ///   - 漣波發射佇列與導引期（存檔），兩者都計入火控通道帳本的 Strike 分項。
     /// </summary>
     public class MapComponent_StrikePlanner : MapComponent
     {
-        /// <summary>開發者模式手動保留使用的擁有者；打擊任務 id 從 1 起算。</summary>
+        /// <summary>驗收測試手動保留使用的擁有者；打擊任務 id 從 1 起算。</summary>
         public const int DebugOwner = 0;
 
         public readonly HashSet<CompMissileLauncher_WorldTargeting> launchers = new HashSet<CompMissileLauncher_WorldTargeting>();

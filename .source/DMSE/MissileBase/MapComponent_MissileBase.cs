@@ -172,7 +172,7 @@ namespace DMSE
             // 4. 為每個空閒通道射出一枚導彈（輪流使用各發射建築）
             for (int i = 0; i < freeChannels; i++)
             {
-                Building_MissileRack rack = FindRackWithMissiles(out Thing missile);
+                IMissileRack rack = FindRackWithMissiles(out Thing missile);
                 if (rack == null)
                 {
                     // 無可用導彈，停止嘗試
@@ -191,7 +191,7 @@ namespace DMSE
                 if (targets.NullOrEmpty()) break; // 這枚導彈沒有可打的目標，保留在架上
 
                 // 彈架本身就是發射平台（如發射軌）時從原處升空，否則輪流交給其他發射建築
-                CompMissileLauncher_WorldTargeting pad = rack.TryGetComp<CompMissileLauncher_WorldTargeting>()
+                CompMissileLauncher_WorldTargeting pad = rack.RackThing.TryGetComp<CompMissileLauncher_WorldTargeting>()
                     ?? pads[nextPadIndex++ % pads.Count];
                 ThingDef launchDef = pad.LaunchDefFor(cfg);
                 if (launchDef == null) break;
@@ -255,7 +255,7 @@ namespace DMSE
         /// <see cref="Building_MissileRack"/>，並以 <paramref name="missile"/> 回傳該枚導彈。<br/>
         /// 只存放不帶此 comp 之彈（如攔截彈）的彈架會被跳過，不消耗任何東西。
         /// </summary>
-        private Building_MissileRack FindRackWithMissiles(out Thing missile)
+        private IMissileRack FindRackWithMissiles(out Thing missile)
         {
             missile = null;
             Faction enemy = map.ParentFaction;
@@ -264,7 +264,8 @@ namespace DMSE
             foreach (Building b in map.listerBuildings.allBuildingsNonColonist)
             {
                 if (b.Faction != enemy || b.Destroyed) continue;
-                if (!(b is Building_MissileRack rack) || rack.StoredCount <= 0) continue;
+                IMissileRack rack = MissileRackUtil.Of(b);
+                if (rack == null || rack.StoredCount <= 0) continue;
 
                 missile = rack.GetDirectlyHeldThings()
                     .FirstOrDefault(t => t.def.HasComp(typeof(CompMissileConfig)));

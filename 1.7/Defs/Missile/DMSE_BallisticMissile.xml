@@ -181,6 +181,24 @@
     </costList>
   </DMSE.MissilePartDef>
 
+  <!-- 反碉堡酬載：穿透厚岩頂後在內部引爆；小半徑高穿甲爆炸，並對爆心附近建築施加額外結構傷害。
+       沒有它（或鎢芯穿甲戰鬥部）的導彈打在厚岩頂上只在岩層表面引爆，導引頭也不鎖定岩頂下的目標。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Ballistic_Payload_BunkerBuster</defName>
+    <label>bunker buster payload</label>
+    <description>A hardened, delayed-fuze penetrator charge. It bores through thick rock roofs and detonates inside, wrecking nearby structures with a focused high-penetration blast. Without a bunker buster or a penetrator warhead, a missile that strikes a mountain only detonates on the rock surface, and its seeker ignores targets under thick roofs.</description>
+    <category>Payload</category>
+    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_Tochka</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
+    <payloadEffect Class="DMSE.PayloadEffect_BunkerBuster">
+      <damageAmount>220</damageAmount>
+      <structureDamage>500</structureDamage>
+    </payloadEffect>
+    <costList>
+      <Steel>60</Steel>
+      <Plasteel>30</Plasteel>
+    </costList>
+  </DMSE.MissilePartDef>
+
   <!-- 反粒子酬載：N 半徑 BombSuper 爆炸，毀傷力極強。 -->
   <DMSE.MissilePartDef>
     <defName>DMSE_Ballistic_Payload_Antiparticle</defName>

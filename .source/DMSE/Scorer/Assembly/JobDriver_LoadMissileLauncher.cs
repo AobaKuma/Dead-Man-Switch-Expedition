@@ -27,8 +27,8 @@ namespace DMSE
         /// </summary>
         private bool missileExtracted;
 
-        private Building_MissileRack Launcher => job.GetTarget(LauncherInd).Thing as Building_MissileRack;
-        private Building_MissileRack SourceRack => job.GetTarget(SourceRackInd).Thing as Building_MissileRack;
+        private IMissileRack Launcher => MissileRackUtil.Of(job.GetTarget(LauncherInd).Thing);
+        private IMissileRack SourceRack => MissileRackUtil.Of(job.GetTarget(SourceRackInd).Thing);
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
@@ -65,8 +65,8 @@ namespace DMSE
             Toil extractToil = ToilMaker.MakeToil("ExtractMissileFromRack");
             extractToil.initAction = delegate
             {
-                Building_MissileRack rack = SourceRack;
-                Building_MissileRack launcher = Launcher;
+                IMissileRack rack = SourceRack;
+                IMissileRack launcher = Launcher;
                 if (rack == null || launcher == null)
                 {
                     pawn.jobs.EndCurrentJob(JobCondition.Incompletable, true);
@@ -118,7 +118,7 @@ namespace DMSE
             depositToil.initAction = delegate
             {
                 Thing carried = pawn.carryTracker.CarriedThing;
-                Building_MissileRack launcher = Launcher;
+                IMissileRack launcher = Launcher;
                 if (carried == null || launcher == null) { return; }
 
                 // 手上的導彈仍在 carryTracker 容器內，必須以容器轉移放入（直接 TryAdd 會被拒絕而掉在地上）
@@ -127,7 +127,7 @@ namespace DMSE
                 if (added <= 0)
                 {
                     // 若發射平台在最後一刻滿了，把導彈放在附近而非讓它消失
-                    pawn.carryTracker.TryDropCarriedThing(launcher.InteractionCell, ThingPlaceMode.Near, out _);
+                    pawn.carryTracker.TryDropCarriedThing(launcher.RackThing.InteractionCell, ThingPlaceMode.Near, out _);
                 }
             };
             depositToil.defaultCompleteMode = ToilCompleteMode.Instant;

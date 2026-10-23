@@ -40,6 +40,9 @@ namespace DMSE
         /// </summary>
         public virtual float RangeOffset(float N) => 0f;
 
+        /// <summary>能否穿透厚岩頂：穿透時引爆前先在岩層開孔（<see cref="MissileImpactUtility.BreachThickRoof"/>），導引頭也會鎖定岩頂下的目標。</summary>
+        public virtual bool PenetratesThickRoof => false;
+
         /// <summary>可選的設定驗證。</summary>
         public virtual IEnumerable<string> ConfigErrors(MissilePartDef parent)
         {
@@ -86,24 +89,17 @@ namespace DMSE
 
     // ============================================================
     //  鎢芯穿甲（Tungsten Penetrator）
-    //  無視厚岩頂阻擋：強制在命中位置生成爆炸，並嘗試坍塌覆蓋的屋頂。
+    //  穿透厚岩頂（開孔由 MissileImpactUtility 在引爆前處理），之後在落點補一個 2 格爆炸。
     // ============================================================
     public class WarheadEffect_TungstenPenetrator : WarheadEffect
     {
         public int damageAmount = 80;
 
+        public override bool PenetratesThickRoof => true;
+
         public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
         {
             if (map == null || !center.InBounds(map)) { return; }
-
-            // 強制在落點執行爆炸（不依賴正常爆炸傳播，直接對格格列舉）。
-            RoofDef roof = map.roofGrid.RoofAt(center);
-            if (roof != null && roof.isThickRoof)
-            {
-                // 坍塌厚岩頂並在此生成爆炸。
-                map.roofGrid.SetRoof(center, null);
-                RoofCollapserImmediate.DropRoofInCells(center, map);
-            }
             GenExplosion.DoExplosion(center, map, 2f, DamageDefOf.Bomb, MissileImpactUtility.Instigator, damageAmount);
         }
     }

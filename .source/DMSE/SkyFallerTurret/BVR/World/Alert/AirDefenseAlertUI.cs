@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using HarmonyLib;
 using LudeonTK;
@@ -138,14 +139,40 @@ namespace DMSE
             Find.WindowStack.Add(new FloatMenu(options));
         }
 
-        [DebugAction(Category, "Pressure +20 local (selected site)", allowedGameStates = AllowedGameStates.Playing)]
-        private static void AddLocal() { MapParent p = Selected; if (p != null) Alert?.DevAddPressure(p, 20f, 0f); }
+        [DebugAction(Category, "Adjust pressure (selected site)...", allowedGameStates = AllowedGameStates.Playing)]
+        private static void AdjustPressure()
+        {
+            MapParent parent = Selected;
+            if (parent == null) { return; }
+            var options = new List<FloatMenuOption>
+            {
+                new FloatMenuOption("Local +20", () => Alert?.DevAddPressure(parent, 20f, 0f)),
+                new FloatMenuOption("Regional +20", () => Alert?.DevAddPressure(parent, 0f, 20f)),
+                new FloatMenuOption("Both -20", () => Alert?.DevAddPressure(parent, -20f, -20f)),
+                new FloatMenuOption("Clear", () => Alert?.DevAddPressure(parent, -100f, -100f)),
+            };
+            Find.WindowStack.Add(new FloatMenu(options));
+        }
 
-        [DebugAction(Category, "Pressure +20 regional (selected site)", allowedGameStates = AllowedGameStates.Playing)]
-        private static void AddRegional() { MapParent p = Selected; if (p != null) Alert?.DevAddPressure(p, 0f, 20f); }
-
-        [DebugAction(Category, "Pressure -20 local/regional (selected site)", allowedGameStates = AllowedGameStates.Playing)]
-        private static void RemovePressure() { MapParent p = Selected; if (p != null) Alert?.DevAddPressure(p, -20f, -20f); }
+        [DebugAction(Category, "Spawn allied settlement near selected site", allowedGameStates = AllowedGameStates.Playing)]
+        private static void SpawnNeighbor()
+        {
+            MapParent parent = Selected;
+            if (parent == null) { return; }
+            PlanetTile tile = DebugMissileUtility.TileAtDistance(parent.Tile, 3f, 8f, buildable: true);
+            if (!tile.Valid)
+            {
+                Messages.Message("DMSE: no buildable tile 3–8 tiles from the selected site.", MessageTypeDefOf.RejectInput, false);
+                return;
+            }
+            var settlement = (Settlement)WorldObjectMaker.MakeWorldObject(WorldObjectDefOf.Settlement);
+            settlement.Tile = tile;
+            settlement.SetFaction(parent.Faction);
+            settlement.Name = SettlementNameGenerator.GenerateSettlementName(settlement);
+            Find.WorldObjects.Add(settlement);
+            Messages.Message($"DMSE: {settlement.Label} ({parent.Faction.Name}) spawned for regional-pressure tests.", settlement,
+                MessageTypeDefOf.NeutralEvent, false);
+        }
 
         [DebugAction(Category, "Cycle relation with player (selected site)", allowedGameStates = AllowedGameStates.Playing)]
         private static void CycleRelation()
@@ -181,6 +208,24 @@ namespace DMSE
             if (comp != null) { comp.Degrade(now); }
             else { WorldComponent_SettlementDefense.Current?.DefenseFor(parent)?.Degrade(now); }
             AirspaceRestrictionUtility.Invalidate();
+        }
+
+        [DebugAction(Category, "Log alert states (all sites)", allowedGameStates = AllowedGameStates.Playing)]
+        private static void LogStates()
+        {
+            WorldComponent_FactionAirDefenseAlert alert = Alert;
+            if (alert == null) { return; }
+            int now = Find.TickManager.TicksGame;
+            var sb = new StringBuilder("[DMSE Air Alert] sites:");
+            foreach (AirDefenseSiteAlert state in alert.AllStates.OrderByDescending(s => s.stage))
+            {
+                state.Decay(now);
+                sb.Append($"\n  #{state.siteId} {state.parent?.Label ?? "?"} [{state.faction?.Name}] stage={state.stage} base={state.baseline}"
+                    + $" L={state.local:0.#} R={state.regional:0.#} T={state.Threat:0.#} waves={state.RecentWaves(now)}"
+                    + (state.BlockadePending ? $" blockadeIn={state.blockadeAt - now}" : "")
+                    + (now <= state.directThreatUntil ? " directThreat" : ""));
+            }
+            Log.Message(sb.ToString());
         }
 
         [DebugAction(Category, "Log track decisions and blockades", allowedGameStates = AllowedGameStates.Playing)]

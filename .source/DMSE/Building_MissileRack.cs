@@ -68,7 +68,7 @@ namespace DMSE
     /// 由於導彈被收入容器後為 unspawned，CompDurabilityDecay 的容器庇護判定
     /// 會沿 ParentHolder 找到此建築 → 視為受庇護（且 unspawned 物品不 tick，自然停止劣化）。
     /// </summary>
-    public class Building_MissileRack : Building, IThingHolder, IHaulDestination, IStoreSettingsParent
+    public class Building_MissileRack : Building, IThingHolder, IHaulDestination, IStoreSettingsParent, IMissileRack
     {
         protected ThingOwner<Thing> innerContainer;
         protected StorageSettings settings;
@@ -124,6 +124,7 @@ namespace DMSE
         public IReadOnlyList<Thing> HeldThings => innerContainer.InnerListForReading;
         public int StoredCount => innerContainer.Count;
         public bool Full => StoredCount >= MaxStored;
+        public Thing RackThing => this;
 
         // ---------------- IThingHolder ----------------
         public void GetChildHolders(List<IThingHolder> outChildren)

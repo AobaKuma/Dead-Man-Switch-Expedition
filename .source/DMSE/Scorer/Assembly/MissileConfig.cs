@@ -179,6 +179,14 @@ namespace DMSE
         public int StrikeChannelCost => (body?.sizeClass == MissileSizeClass.Ballistic ? 2 : 1)
             + (TargetingGuidance is GuidanceType_TV ? 1 : 0);
 
+        /// <summary>
+        /// 戰鬥部或載荷能否穿透厚岩頂（鎢芯穿甲、反碉堡酬載）。不能穿透的導彈打在厚岩頂上只在岩層表面引爆，
+        /// 導引頭也不會鎖定厚岩頂下的目標。
+        /// </summary>
+        public bool PenetratesThickRoof
+            => (PartFor(MissilePartCategory.Warhead)?.warheadEffect?.PenetratesThickRoof ?? false)
+            || (PartFor(MissilePartCategory.Payload)?.payloadEffect?.PenetratesThickRoof ?? false);
+
         /// <summary>玩家發射時是否在抵達後由玩家手動選擇落點（電視制導）。</summary>
         public bool PlayerChoosesTarget => TargetingGuidance?.PlayerChoosesTarget ?? false;
 

@@ -62,10 +62,45 @@ namespace DMSE
             GuidanceType guidance = config?.TargetingGuidance;
             if (guidance != null)
             {
-                IntVec3 result = guidance.PickTarget(N, map, attacker);
-                if (result.IsValid && result.InBounds(map)) { return result; }
+                bool previous = targetsUnderThickRoof;
+                targetsUnderThickRoof = config.PenetratesThickRoof;
+                try
+                {
+                    IntVec3 result = guidance.PickTarget(N, map, attacker);
+                    if (result.IsValid && result.InBounds(map)) { return result; }
+                }
+                finally
+                {
+                    targetsUnderThickRoof = previous;
+                }
             }
             return InertialTarget(map, attacker);
+        }
+
+        // ---- 共用：厚岩頂 ----
+
+        /// <summary>
+        /// <see cref="PickCell"/> 執行期間：導彈能否穿透厚岩頂（<see cref="MissileConfig.PenetratesThickRoof"/>）。
+        /// 不能穿透時導引頭不鎖定厚岩頂下的目標（打上去只會在岩層表面引爆）。PickCell 之外為 false。
+        /// </summary>
+        private static bool targetsUnderThickRoof;
+
+        /// <summary>導引頭可否以該格為落點：能穿透厚岩頂，或該格不在厚岩頂下。</summary>
+        public static bool Strikable(IntVec3 cell, Map map)
+            => targetsUnderThickRoof || !MissileImpactUtility.UnderThickRoof(cell, map);
+
+        /// <summary>
+        /// 對物件的瞄準格：<see cref="Thing.Position"/> 可打時用它，否則用占地中任一不在厚岩頂下的格
+        /// （半埋在山裡的大型建築仍可從露出的部分打）；整個都在厚岩頂下則為 Invalid。
+        /// </summary>
+        public static IntVec3 AimCell(Thing t, Map map)
+        {
+            if (Strikable(t.Position, map)) { return t.Position; }
+            foreach (IntVec3 cell in t.OccupiedRect())
+            {
+                if (cell.InBounds(map) && Strikable(cell, map)) { return cell; }
+            }
+            return IntVec3.Invalid;
         }
 
         // ---- 共用：目標篩選 ----
@@ -81,18 +116,18 @@ namespace DMSE
             return owner != attacker && owner.HostileTo(attacker);
         }
 
-        /// <summary>目標地圖上屬於攻擊方敵人的建築（玩家與非玩家建築都會檢查）。</summary>
+        /// <summary>目標地圖上屬於攻擊方敵人、且導引頭打得到（<see cref="AimCell"/>）的建築（玩家與非玩家建築都會檢查）。</summary>
         public static IEnumerable<Building> HostileBuildings(Map map, Faction attacker)
         {
             List<Building> colonist = map.listerBuildings.allBuildingsColonist;
             for (int i = 0; i < colonist.Count; i++)
             {
-                if (IsHostileTarget(colonist[i].Faction, attacker)) { yield return colonist[i]; }
+                if (IsHostileTarget(colonist[i].Faction, attacker) && AimCell(colonist[i], map).IsValid) { yield return colonist[i]; }
             }
             List<Building> others = map.listerBuildings.allBuildingsNonColonist;
             for (int i = 0; i < others.Count; i++)
             {
-                if (IsHostileTarget(others[i].Faction, attacker)) { yield return others[i]; }
+                if (IsHostileTarget(others[i].Faction, attacker) && AimCell(others[i], map).IsValid) { yield return others[i]; }
             }
         }
 
@@ -133,13 +168,13 @@ namespace DMSE
                 int area = b.def.size.x * b.def.size.z;
                 if (area > largestArea) { largestArea = area; largest = b; }
             }
-            if (largest != null) { return largest.Position; }
+            if (largest != null) { return AimCell(largest, map); }
 
             Pawn biggest = null;
             float biggestSize = -1f;
             foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
             {
-                if (p.Dead || !IsHostileTarget(p.Faction, attacker)) { continue; }
+                if (p.Dead || !IsHostileTarget(p.Faction, attacker) || !Strikable(p.Position, map)) { continue; }
                 if (p.BodySize > biggestSize) { biggestSize = p.BodySize; biggest = p; }
             }
             return biggest != null ? biggest.Position : IntVec3.Invalid;
@@ -155,7 +190,7 @@ namespace DMSE
                 float draw = PowerDraw(b);
                 if (draw > bestDraw) { bestDraw = draw; best = b; }
             }
-            return best != null ? best.Position : IntVec3.Invalid;
+            return best != null ? AimCell(best, map) : IntVec3.Invalid;
         }
 
         /// <summary>耐久最高的敵對建築（反艦導引頭用）；沒有則回傳 Invalid。</summary>
@@ -167,7 +202,7 @@ namespace DMSE
             {
                 if (b.MaxHitPoints > bestHp) { bestHp = b.MaxHitPoints; best = b; }
             }
-            return best != null ? best.Position : IntVec3.Invalid;
+            return best != null ? AimCell(best, map) : IntVec3.Invalid;
         }
 
         /// <summary>
@@ -242,7 +277,7 @@ namespace DMSE
                 }
             }
 
-            if (bestRadar != null) { return bestRadar.Position; }
+            if (bestRadar != null) { return AimCell(bestRadar, map); }
             return HighestPowerDrawTarget(map, attacker);
         }
 
@@ -284,7 +319,7 @@ namespace DMSE
             float biggestSize = -1f;
             foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
             {
-                if (p.Dead) { continue; }
+                if (p.Dead || !Strikable(p.Position, map)) { continue; }
                 if (attacker != null && p.Faction != null && !IsHostileTarget(p.Faction, attacker)) { continue; }
                 if (p.BodySize > biggestSize) { biggestSize = p.BodySize; biggest = p; }
             }
@@ -299,6 +334,7 @@ namespace DMSE
             foreach (Room room in map.regionGrid.AllRooms)
             {
                 if (room.PsychologicallyOutdoors || room.UsesOutdoorTemperature) { continue; }
+                if (!room.Cells.Any(c => Strikable(c, map))) { continue; }
                 float temp = room.Temperature;
                 if (temp >= threshold && temp > hottestTemp)
                 {
@@ -308,11 +344,11 @@ namespace DMSE
             }
             if (hottest == null) { return IntVec3.Invalid; }
 
-            if (hottest.Cells.Where(c => c.Standable(map)).TryRandomElement(out IntVec3 cell))
+            if (hottest.Cells.Where(c => c.Standable(map) && Strikable(c, map)).TryRandomElement(out IntVec3 cell))
             {
                 return cell;
             }
-            return hottest.Cells.FirstOrFallback(IntVec3.Invalid);
+            return hottest.Cells.Where(c => Strikable(c, map)).FirstOrFallback(IntVec3.Invalid);
         }
     }
 
@@ -367,7 +403,7 @@ namespace DMSE
         public override IntVec3 PickTarget(float N, Map map, Faction attacker)
         {
             LaserDesignatorMark mark = LaserDesignatorUtility.LatestMarkFor(map, attacker);
-            return mark != null ? mark.Position : IntVec3.Invalid;
+            return mark != null && Strikable(mark.Position, map) ? mark.Position : IntVec3.Invalid;
         }
     }
 
@@ -417,7 +453,7 @@ namespace DMSE
             float biggestSize = -1f;
             foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
             {
-                if (p.Dead || !IsHostileTarget(p.Faction, attacker)) { continue; }
+                if (p.Dead || !IsHostileTarget(p.Faction, attacker) || !Strikable(p.Position, map)) { continue; }
                 if (p.BodySize > biggestSize) { biggestSize = p.BodySize; biggest = p; }
             }
             return biggest != null ? biggest.Position : IntVec3.Invalid;

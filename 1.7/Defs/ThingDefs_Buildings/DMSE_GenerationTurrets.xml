@@ -25,10 +25,12 @@
     <rotatable>true</rotatable>
     <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
     <fillPercent>0.5</fillPercent>
+    <!-- 數值對標原版自動加農炮塔（Turret_Autocannon：380 HP／15000 工作／0.96 砲塔精度）。
+         手操砲折價：HP 300、工作 9000（約 6 折）。 -->
     <statBases>
-      <MaxHitPoints>250</MaxHitPoints>
+      <MaxHitPoints>300</MaxHitPoints>
       <Flammability>0.5</Flammability>
-      <WorkToBuild>4000</WorkToBuild>
+      <WorkToBuild>9000</WorkToBuild>
       <Beauty>-2</Beauty>
       <ShootingAccuracyTurret>0.85</ShootingAccuracyTurret>
     </statBases>
@@ -38,7 +40,7 @@
       <li Class="CompProperties_Mannable">
         <manWorkType>Violent</manWorkType>
       </li>
-      <!-- 37 毫米砲彈：鋼，1 鋼 = 8 發；對地每發 1，CIWS 每發 1。 -->
+      <!-- 37 毫米砲彈：鋼，1 鋼 = 4 發（原 8 發太便宜）；對地每發 1，CIWS 每發 1。 -->
       <li Class="CompProperties_Refuelable">
         <fuelLabel>37 mm rounds</fuelLabel>
         <fuelGizmoLabel>37 mm rounds</fuelGizmoLabel>
@@ -49,7 +51,7 @@
           </thingDefs>
         </fuelFilter>
         <fuelCapacity>80</fuelCapacity>
-        <fuelMultiplier>8</fuelMultiplier>
+        <fuelMultiplier>4</fuelMultiplier>
         <initialFuelPercent>0.5</initialFuelPercent>
         <showFuelGizmo>true</showFuelGizmo>
         <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
@@ -73,14 +75,15 @@
       <turretGunDef>DMSE_Gun_LegacyFlak</turretGunDef>
       <turretTopDrawSize>3.5</turretTopDrawSize>
       <turretBurstWarmupTime>0.5</turretBurstWarmupTime>
-      <turretBurstCooldownTime>1</turretBurstCooldownTime>
+      <turretBurstCooldownTime>3.2</turretBurstCooldownTime>
     </building>
     <hasInteractionCell>true</hasInteractionCell>
     <interactionCellOffset>(0,0,-1)</interactionCellOffset>
     <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+    <!-- 造價對標原版自動加農炮塔（350 鋼＋40 玻璃鋼＋6 零件 ≈ 430 鋼等值）的 6 折。 -->
     <costList>
-      <Steel>120</Steel>
-      <ComponentIndustrial>6</ComponentIndustrial>
+      <Steel>260</Steel>
+      <ComponentIndustrial>8</ComponentIndustrial>
     </costList>
     <researchPrerequisites Inherit="False">
       <li>DMSE_RadarBasis</li>
@@ -106,7 +109,7 @@
       <AccuracyShort>0.65</AccuracyShort>
       <AccuracyMedium>0.6</AccuracyMedium>
       <AccuracyLong>0.5</AccuracyLong>
-      <RangedWeapon_Cooldown>1</RangedWeapon_Cooldown>
+      <RangedWeapon_Cooldown>3.2</RangedWeapon_Cooldown>
     </statBases>
     <verbs>
       <li>
@@ -142,7 +145,7 @@
     </graphicData>
     <projectile>
       <damageDef>Bomb</damageDef>
-      <damageAmountBase>18</damageAmountBase>
+      <damageAmountBase>12</damageAmountBase>
       <explosionRadius>0.9</explosionRadius>
       <speed>85</speed>
     </projectile>
