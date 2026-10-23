@@ -57,7 +57,7 @@ int c = Random.Range(8,20);
                     mi.Attacker = attacker;
                 }
             }
-            Messages.Message("DMSE: missile salvo x" + count + " (no active defender radar — impacts directly)",
+            Messages.Message("DMSE: missile salvo x" + count + " (no active defender radar, impacts directly)",
                 MessageTypeDefOf.NeutralEvent, false);
         }
 

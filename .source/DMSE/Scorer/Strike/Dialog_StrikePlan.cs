@@ -218,7 +218,7 @@ namespace DMSE
                     Text.Anchor = TextAnchor.MiddleLeft;
                     GUI.color = c.issue != StrikeRoundIssue.None ? WarnColor : Color.white;
                     string label = c.launcher.parent.LabelShort + " · " + c.round.LabelShort
-                        + (c.issue != StrikeRoundIssue.None ? " — " + c.issueText : string.Empty);
+                        + (c.issue != StrikeRoundIssue.None ? ": " + c.issueText : string.Empty);
                     Widgets.Label(sub, label.Truncate(sub.width));
                     GUI.color = Color.white;
                     Text.Anchor = TextAnchor.UpperLeft;
@@ -246,7 +246,7 @@ namespace DMSE
                         StrikeCandidate first = group.First();
                         Rect row = new Rect(12f, cy, view.width - 12f, RowHeight);
                         GUI.color = DMSEUI.Muted;
-                        Widgets.Label(row, (first.groupLabel + " ×" + group.Count() + " — " + first.issueText).Truncate(row.width));
+                        Widgets.Label(row, (first.groupLabel + " ×" + group.Count() + ": " + first.issueText).Truncate(row.width));
                         GUI.color = Color.white;
                         cy += RowHeight;
                     }

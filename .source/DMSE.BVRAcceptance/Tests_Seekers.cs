@@ -294,6 +294,8 @@ namespace DMSE.BVRAcceptance
                 new AcceptanceTest("D2", "Synthetic settlement air defense and radar suppression", Tests_P4.SettlementDefense),
                 new AcceptanceTest("D3", "Undetected tracks are hidden", Tests_P4.HiddenTracks),
                 new AcceptanceTest("D4", "Drop-pod ghost track and abstract-node degradation", Tests_P4.GhostTrackAndAbstractNode),
+                new AcceptanceTest("A1", "Alert stage 3 lets transit pass, stage 4 engages it", Tests_AirAlert.PassiveThenActive),
+                new AcceptanceTest("A2", "Alert pressure, regional spread, blockade notice, zone and routes", Tests_AirAlert.PressureNoticeAndBlockade),
                 new AcceptanceTest("K1", "Strike rounds, reservation, per-round and ripple launch", Tests_Strike.RoundsReservationAndLaunch),
                 new AcceptanceTest("K2", "Reserved rounds skip assembly; silo as a round", Tests_Strike.ReservedSkipAssembly),
                 new AcceptanceTest("K3", "World defense engages the soonest arrival first", Tests_Strike.SoonestArrivalFirst),

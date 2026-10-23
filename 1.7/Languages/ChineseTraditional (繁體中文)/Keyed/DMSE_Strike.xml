@@ -126,7 +126,7 @@
   <DMSE.Strike.Alert.WaveReadyLine>{0}：第 {1} 波（{2}）</DMSE.Strike.Alert.WaveReadyLine>
   <DMSE.Strike.Report.Label>{0} 戰果</DMSE.Strike.Report.Label>
   <DMSE.Strike.Report.Header>{0}（目標 {1}，自 {2} 發射）：</DMSE.Strike.Report.Header>
-  <DMSE.Strike.Report.Wave>第 {0} 波：發射 {1} 枚——飛行中被攔截 {2}、命中 {3}、在目標上空被擊落 {4}、落空 {5}</DMSE.Strike.Report.Wave>
+  <DMSE.Strike.Report.Wave>第 {0} 波：發射 {1} 枚，飛行中被攔截 {2}、命中 {3}、在目標上空被擊落 {4}、落空 {5}</DMSE.Strike.Report.Wave>
   <DMSE.Strike.Report.WaveShieldBlocked>、被護盾擋下 {0}</DMSE.Strike.Report.WaveShieldBlocked>
   <DMSE.Strike.Report.Unknown>另有 {0} 枚已抵達，但結果不明。</DMSE.Strike.Report.Unknown>
   <DMSE.Strike.Settings.WaveReadyAlert>打擊波次可發射警報</DMSE.Strike.Settings.WaveReadyAlert>

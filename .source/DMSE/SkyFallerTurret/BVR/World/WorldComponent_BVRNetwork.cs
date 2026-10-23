@@ -58,16 +58,18 @@ namespace DMSE
         public static List<T> InEngagementOrder<T>(IEnumerable<T> tracks, System.Func<T, float> priority) where T : IBVRTrack
             => tracks.OrderByDescending(priority).ThenBy(t => t.TicksToArrival).ToList();
         /// <summary>
-        /// 接戰節點：目的地節點優先（點防禦）；否則由最近的「看得到或航跡飛越其覆蓋範圍」的敵對節點接手
-        /// （P4 區域防禦）。
+        /// 接戰節點：目的地節點優先（點防禦）；否則由最近的「看得到或航跡飛越其覆蓋範圍」的節點接手
+        /// （P4 區域防禦）。NPC 節點依警戒階段政策篩選，且本陣營必須在 <paramref name="intelSince"/> 之後
+        /// 實際看到這條航跡（本地或同陣營資料鏈），避免先選最近節點後才發現沒有情報而放棄其他可用節點。
         /// </summary>
-        private BVRNode NodeFor(MissileWorldObject track)
+        private BVRNode NodeFor(MissileWorldObject track, int intelSince)
         {
             BVRNode best = null;
             float bestDistance = float.MaxValue;
             foreach (BVRNode n in nodes)
             {
-                if (n.parent == null || n.faction == null || !n.faction.HostileTo(track.Attacker)) { continue; }
+                if (n.parent == null || n.faction == null || !n.PolicyAllows(track)) { continue; }
+                if (intelSince != int.MinValue && !track.State.FactionSees(n.faction, intelSince)) { continue; }
                 if (!n.CanEngage(track)) { continue; }
                 float distance = MissileWorldUtility.SurfaceTilesBetween(n.Center, track.PositionAt(0));
                 bool better = best == null
@@ -82,20 +84,37 @@ namespace DMSE
 
         /// <summary>
         /// 數據鏈（P4）：任何節點看到航跡都算「該陣營已偵測」，不要求目的地節點自己看到。
-        /// 玩家優先，其餘取最近的探測者。
+        /// 每個陣營各自記錄情報（<see cref="AirDefenseObservation"/>），NPC 節點同時把觀測交給警戒系統入帳。
+        /// 回傳玩家介面用的代表探測者：玩家優先，其餘取最近的探測者。
         /// </summary>
-        private BVRNode DetectorFor(MissileWorldObject track)
+        private BVRNode Observe(MissileWorldObject track, int now)
         {
             BVRNode best = null;
             float bestDistance = float.MaxValue;
+            WorldComponent_FactionAirDefenseAlert alert = WorldComponent_FactionAirDefenseAlert.Current;
+            MapParent targetSite = null;
+            bool targetResolved = false;
             foreach (BVRNode n in nodes)
             {
-                if (n.parent == null || n.faction == null || !n.faction.HostileTo(track.Attacker)) { continue; }
+                if (n.parent == null || n.faction == null || !n.MayObserve(track)) { continue; }
                 if (!n.CanSee(track)) { continue; }
+                if (!targetResolved)
+                {
+                    targetSite = WorldComponent_FactionAirDefenseAlert.TargetSite(track);
+                    targetResolved = true;
+                }
+                AirDefenseObservation observation = track.State.ObservationOf(n.faction, create: true);
+                if (observation.firstSeenTick < 0) { observation.firstSeenTick = now; }
+                observation.lastSeenTick = now;
+                observation.lastPosition = track.PositionAt(0);
+                observation.knownDestination = track.Destination;
+                observation.knownTargetFaction = targetSite?.Faction;
+                if (n.UsesAlertRules) { alert?.ReportObservation(n, track, observation, now); }
                 float distance = MissileWorldUtility.SurfaceTilesBetween(n.Center, track.PositionAt(0));
-                bool better = best == null
-                    || (n.faction.IsPlayer && !best.faction.IsPlayer)
-                    || (n.faction.IsPlayer == best.faction.IsPlayer && distance < bestDistance);
+                // 代表探測者：玩家優先，其次是被瞄準的陣營（NPC 也會觀測中立過境，避免由旁觀者代表），再取最近。
+                int rank = n.faction.IsPlayer ? 2 : n.faction == targetSite?.Faction ? 1 : 0;
+                int bestRank = best == null ? -1 : best.faction.IsPlayer ? 2 : best.faction == targetSite?.Faction ? 1 : 0;
+                bool better = rank > bestRank || (rank == bestRank && distance < bestDistance);
                 if (better) { best = n; bestDistance = distance; }
             }
             return best;
@@ -141,7 +160,44 @@ namespace DMSE
                     nodes.Add(new BVRNode { parent = parent, faction = parent.Faction, defense = synthetic });
                 }
             }
+            ApplyAlertStages();
+            lastRebuildTick = Find.TickManager.TicksGame;
         }
+
+        /// <summary>
+        /// NPC 節點套用警戒階段（docs/NPC防空警戒五階段_執行計畫.md §3）。只套用在節點陣營等於據點陣營的情況；
+        /// 玩家節點、或別的陣營放在這張地圖上的裝置維持舊規則。
+        /// </summary>
+        private void ApplyAlertStages()
+        {
+            WorldComponent_FactionAirDefenseAlert alert = WorldComponent_FactionAirDefenseAlert.Current;
+            bool enabled = alert != null && WorldComponent_FactionAirDefenseAlert.Enabled;
+            foreach (BVRNode node in nodes)
+            {
+                node.alertStage = 0;
+                node.rangeFactor = 1f;
+                if (!enabled || node.faction == null || node.faction.IsPlayer || node.parent?.Faction != node.faction) { continue; }
+                int stage = alert.StageOf(node.parent);
+                if (stage <= 0) { continue; }
+                node.alertStage = stage;
+                node.rangeFactor = AirDefenseAlertPolicy.DetectionFactor(stage, alert.RadarWarm(node.parent));
+            }
+        }
+
+        private int lastRebuildTick = -1;
+
+        /// <summary>目前的節點（封鎖圈與介面使用）；本 tick 還沒建立時先建立一次。</summary>
+        public List<BVRNode> Nodes
+        {
+            get
+            {
+                if (lastRebuildTick != Find.TickManager.TicksGame && (nodes.Count == 0 || rebuild)) { RebuildNodes(); }
+                return nodes;
+            }
+        }
+
+        public BVRNode NodeOf(MapParent parent, Faction faction = null)
+            => Nodes.FirstOrDefault(n => n.parent == parent && (faction == null ? n.faction == parent.Faction : n.faction == faction));
         public override void WorldComponentTick()
         {
             base.WorldComponentTick();
@@ -163,8 +219,9 @@ namespace DMSE
             }
             if (now % Mathf.Max(1, BVRWorldTuningDef.Current.scanIntervalTicks) != 0) return;
             RebuildNodes();
+            // 排序只看哪個節點會接手（不看本次掃描的情報），與接戰時的情報檢查分開。
             foreach (MissileWorldObject track in InEngagementOrder(Tracks,
-                t => NodeFor(t)?.ThreatAssessment == true ? t.TargetProps.distanceLevel : 0f)) Scan(track, now);
+                t => NodeFor(t, int.MinValue)?.ThreatAssessment == true ? t.TargetProps.distanceLevel : 0f)) Scan(track, now);
         }
         private void Scan(MissileWorldObject track, int now)
         {
@@ -176,8 +233,8 @@ namespace DMSE
                 state.ClearLock();
                 state.lastKnownDestination = track.Destination;
             }
-            // 數據鏈：任何敵對節點看到就算偵測到，不要求「目的地節點」自己看到。
-            BVRNode detector = DetectorFor(track);
+            // 數據鏈：任何會觀測它的節點看到就算該陣營偵測到，不要求「目的地節點」自己看到。
+            BVRNode detector = Observe(track, now);
             if (detector == null)
             {
                 state.ClearLock();
@@ -200,14 +257,14 @@ namespace DMSE
             state.interceptor = null;
 
             // 區域防禦：目的地節點優先，否則由最近的可用節點接手。
-            BVRNode node = NodeFor(track);
+            // 資料鏈：本節點自己看不到時，只要同陣營本次掃描看到仍可接戰（NodeFor 已檢查情報）。
+            // 每次掃描都重查政策：鎖定期間降級、聯盟改變或改靶都會在發射前放掉鎖定。
+            BVRNode node = NodeFor(track, now);
             if (node == null)
             {
                 state.ClearLock();
                 return;
             }
-            // 資料鏈：本節點自己看不到時，只要同陣營已偵測到仍可接戰。
-            if (!node.CanSee(track) && state.detectedByFaction != node.faction) { state.ClearLock(); return; }
             if (state.lockUntil >= 0 && (state.lockNode != node.parent || state.lockFaction != node.faction)) state.ClearLock();
             int eta = track.TicksToArrival;
             var target = new BVRTarget { stealthLevel = track.TargetProps.stealthLevel, speed = track.TargetProps.speed };
@@ -227,6 +284,7 @@ namespace DMSE
                 state.lockNode = node.parent;
                 state.lockFaction = node.faction;
                 state.lockNodeTile = node.Tile;
+                if (node.UsesAlertRules) { WorldComponent_FactionAirDefenseAlert.Current?.NotifyEngagingPlayer(node, track); }
                 return;
             }
             if (!armed)
@@ -339,7 +397,15 @@ namespace DMSE
             MissileWorldObject target = interceptor.target;
             bool valid = target != null && !target.Destroyed && target.TicksToArrival > 0
                 && target.Destination == interceptor.targetDestination && target.RouteRevision == interceptor.targetRevision;
-            if (valid)
+            // 結算前重查友軍身分：飛行中結盟就安全解除，不命中也不退款。
+            bool friendly = target != null && target.Attacker != null && AirDefenseAlertPolicy.IsFriendly(interceptor.Faction, target.Attacker);
+            if (valid && friendly)
+            {
+                if (interceptor.Faction == Faction.OfPlayer || target.Attacker == Faction.OfPlayer)
+                    Messages.Message("DMSE.AirAlert.InterceptorSafed".Translate(target.Label), new GlobalTargetInfo(target),
+                        MessageTypeDefOf.NeutralEvent, historical: false);
+            }
+            else if (valid)
             {
                 if (Rand.Chance(interceptor.hitChance)) target.Notify_Intercepted(interceptor.Faction);
                 else if (interceptor.Faction == Faction.OfPlayer || target.Attacker == Faction.OfPlayer)
@@ -349,7 +415,7 @@ namespace DMSE
                 if (rolls > 0)
                 {
                     foreach (var other in Tracks.Where(t => t != target && t.Destination == interceptor.targetDestination
-                        && interceptor.Faction.HostileTo(t.Attacker)
+                        && WouldAirburst(interceptor.Faction, t)
                         && MissileWorldUtility.SurfaceTilesBetween(t.PositionAt(0), interceptor.end) <= BVRWorldTuningDef.Current.airburstRadiusTiles).ToList())
                     {
                         if (rolls-- <= 0) break;
@@ -363,6 +429,44 @@ namespace DMSE
                     MessageTypeDefOf.NeutralEvent, historical: false);
             if (target != null && target.State.interceptor == interceptor) target.State.interceptor = null;
             interceptor.Destroy();
+        }
+
+        /// <summary>開發工具：列出每條航跡被各節點接受或拒絕的理由，以及目前的封鎖圈。</summary>
+        public string DevDescribeDecisions()
+        {
+            RebuildNodes();
+            int now = Find.TickManager.TicksGame;
+            int since = now - Mathf.Max(1, BVRWorldTuningDef.Current.scanIntervalTicks);
+            var sb = new System.Text.StringBuilder();
+            foreach (MissileWorldObject track in Tracks)
+            {
+                MapParent target = WorldComponent_FactionAirDefenseAlert.TargetSite(track);
+                sb.AppendLine($"{track.Label} #{track.ID}: attacker={track.Attacker?.Name ?? "unknown"}, target={target?.Label ?? track.Destination.ToString()} [{target?.Faction?.Name ?? "-"}], eta={track.TicksToArrival}, status={track.State.StatusKey.Translate()}");
+                foreach (AirDefenseObservation o in track.State.observations)
+                    sb.AppendLine($"    intel {o.faction?.Name}: last seen {now - o.lastSeenTick} ticks ago, reported sites {o.reportedSites.Count}");
+                foreach (BVRNode n in nodes)
+                {
+                    if (n.parent == null || n.faction == null) { continue; }
+                    string verdict = !n.MayObserve(track) ? "ignores (same faction / ally)"
+                        : !n.PolicyAllows(track) ? "observe only (stage policy)"
+                        : !track.State.FactionSees(n.faction, since) ? "no fresh intel"
+                        : !n.CanEngage(track) ? "outside coverage"
+                        : !n.HasInterceptorAmmo ? "no interceptors"
+                        : "may engage";
+                    sb.AppendLine($"    {n.parent.Label} [{n.faction.Name}] stage={(n.UsesAlertRules ? n.alertStage.ToString() : "legacy")} range={n.DetectionRange(track.TargetProps):0.#}: {verdict}");
+                }
+            }
+            foreach (BlockadeZone zone in AirspaceRestrictionUtility.ActiveZones)
+                sb.AppendLine($"Blockade: {zone.site.Label} [{zone.faction.Name}] radius {zone.radius:0.#} tiles on {zone.tile.LayerDef.defName}");
+            return sb.Length == 0 ? "No world tracks or blockades." : sb.ToString();
+        }
+
+        /// <summary>空爆波及：玩家（或警戒系統關閉時）只波及敵對導彈；NPC 波及非盟友導彈。</summary>
+        private static bool WouldAirburst(Faction by, MissileWorldObject other)
+        {
+            if (by == null) { return false; }
+            if (by.IsPlayer || !WorldComponent_FactionAirDefenseAlert.Enabled) { return by.HostileTo(other.Attacker); }
+            return AirDefenseAlertPolicy.IsNonAlly(by, other.Attacker);
         }
         /// <summary>
         /// 每 60 ticks 取樣所有 MapParent 的 tile，推導移動速度。

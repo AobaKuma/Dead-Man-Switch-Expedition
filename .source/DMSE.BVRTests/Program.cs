@@ -611,6 +611,67 @@ static class Test
         Near(track.AngularSpeed, GenMath.SphericalDistance(track.a.normalized, track.b.normalized) / 3000f,
             "the line track speed matches its path");
     }
+    // NPC air-defense alert (docs/NPC防空警戒五階段_執行計畫.md §3, §5, §6.1): pure rules and route geometry.
+    static void AirDefenseAlert()
+    {
+        Faction defender = Faction(false), neutral = Faction(false), ally = Faction(false);
+        Field(defender, "relations", new List<FactionRelation>
+        {
+            new FactionRelation(ally, FactionRelationKind.Ally), new FactionRelation(neutral, FactionRelationKind.Neutral)
+        });
+        Check(!AirDefenseAlertPolicy.MayEngage(2, defender, neutral, defender), "alert: stage 2 only observes");
+        Check(AirDefenseAlertPolicy.MayEngage(3, defender, neutral, defender), "alert: stage 3 engages missiles aimed at its own faction");
+        Check(!AirDefenseAlertPolicy.MayEngage(3, defender, neutral, neutral), "alert: stage 3 lets third-party strikes pass");
+        Check(AirDefenseAlertPolicy.MayEngage(4, defender, neutral, neutral), "alert: stage 4 engages neutral transit");
+        Check(AirDefenseAlertPolicy.MayEngage(5, defender, neutral, null), "alert: stage 5 engages transit to an empty tile");
+        Check(!AirDefenseAlertPolicy.MayEngage(5, defender, ally, defender), "alert: allies are never engaged");
+        Check(!AirDefenseAlertPolicy.MayEngage(5, defender, defender, defender), "alert: own missiles at own sites are not attacks");
+        Check(!AirDefenseAlertPolicy.MayEngage(4, defender, null, neutral), "alert: unknown transit is not engaged");
+        Check(AirDefenseAlertPolicy.MayEngage(4, defender, null, defender), "alert: unknown attacker on own site is engaged");
+        Check(AirDefenseAlertPolicy.MayObserve(defender, null) && AirDefenseAlertPolicy.MayObserve(defender, neutral)
+            && !AirDefenseAlertPolicy.MayObserve(defender, ally) && !AirDefenseAlertPolicy.MayObserve(defender, defender),
+            "alert: neutral and unknown missiles are observed, own and allied ones are not");
+        Near(AirDefenseAlertPolicy.DetectionFactor(1, true), 0f, "alert: stage 1 has no local detection");
+        Near(AirDefenseAlertPolicy.DetectionFactor(2, true), 0.4f, "alert: stage 2 uses the observation radius");
+        Near(AirDefenseAlertPolicy.DetectionFactor(4, false), 0f, "alert: radar warming up detects nothing");
+        Near(AirDefenseAlertPolicy.DetectionFactor(4, true), 1f, "alert: stage 4 uses full radius");
+
+        AirDefenseStageInputs In(int cur, float threat, int waves = 0, bool direct = false, bool hold = false, int baseline = 2, bool radar = true)
+            => new AirDefenseStageInputs { current = cur, threat = threat, recentWaves = waves, directThreat = direct,
+                holdElapsed = hold, baseline = baseline, hasRadar = radar };
+        Check(AirDefenseAlertPolicy.NextStage(In(2, 20)) == 3, "alert: T 20 raises stage 2 to 3");
+        Check(AirDefenseAlertPolicy.NextStage(In(2, 5, direct: true)) == 3, "alert: a direct threat jumps to stage 3");
+        Check(AirDefenseAlertPolicy.NextStage(In(3, 50)) == 4, "alert: T 50 raises to stage 4");
+        Check(AirDefenseAlertPolicy.NextStage(In(4, 50, waves: 5)) == 4, "alert: regional pressure alone (0.5R <= 50) cannot blockade");
+        Check(AirDefenseAlertPolicy.NextStage(In(4, 85, waves: 1)) == 4, "alert: a blockade needs two attack waves");
+        Check(AirDefenseAlertPolicy.NextStage(In(4, 85, waves: 2)) == 5, "alert: T 80 with two waves orders a blockade");
+        Check(AirDefenseAlertPolicy.NextStage(In(4, 40, hold: true)) == 4, "alert: stage 4 holds above its down threshold");
+        Check(AirDefenseAlertPolicy.NextStage(In(4, 30, hold: false)) == 4, "alert: minimum hold delays a downgrade");
+        Check(AirDefenseAlertPolicy.NextStage(In(4, 30, hold: true)) == 3, "alert: T below 35 drops to stage 3");
+        Check(AirDefenseAlertPolicy.NextStage(In(5, 0, hold: true)) == 4, "alert: downgrades move one stage at a time");
+        Check(AirDefenseAlertPolicy.NextStage(In(5, 70, waves: 0, hold: true)) == 4, "alert: expired attack records lift a blockade");
+        Check(AirDefenseAlertPolicy.NextStage(In(5, 70, waves: 1, hold: true)) == 5, "alert: a blockade holds above 60");
+        Check(AirDefenseAlertPolicy.NextStage(In(3, 0, hold: true, direct: true)) == 3, "alert: a direct threat keeps stage 3");
+        Check(AirDefenseAlertPolicy.NextStage(In(3, 0, hold: true, baseline: 3)) == 3, "alert: never below the baseline");
+        Check(AirDefenseAlertPolicy.NextStage(In(1, 90, waves: 3, baseline: 1, radar: false)) == 1, "alert: no radar stays at stage 1");
+        Check(AirDefenseAlertPolicy.NextStage(In(1, 4, baseline: 1)) == 2, "alert: a credible alert wakes stage 1 with a radar");
+
+        float applied = 0f;
+        Near(AirDefenseAlertPolicy.TopUp(ref applied, 4f), 4f, "alert: first transit event");
+        Near(AirDefenseAlertPolicy.TopUp(ref applied, 20f), 16f, "alert: targeted upgrade only adds the difference");
+        Near(AirDefenseAlertPolicy.TopUp(ref applied, 4f), 0f, "alert: repeated lower event adds nothing");
+        Near(AirDefenseAlertPolicy.EffectiveThreat(10f, 60f), 30f, "alert: T = max(L, 0.5 R)");
+        Near(AirDefenseAlertPolicy.Decayed(10f, 2500), 8f, "alert: 2 points per game hour");
+
+        // Fixture surface: radius 100, 200 tiles per radian.
+        Vector3 a = new Vector3(100, 0, 0), b = new Vector3(0, 0, 100), mid = (a + b).normalized * 100f;
+        Near(AirspaceRestrictionUtility.SegmentDistanceTiles(mid, a, b), 0f, "airspace: point on the route", 0.01f);
+        Vector3 above = (mid.normalized * Mathf.Cos(0.05f) + Vector3.up * Mathf.Sin(0.05f)) * 100f;
+        Near(AirspaceRestrictionUtility.SegmentDistanceTiles(above, a, b), 10f, "airspace: transit passing 10 tiles from a node", 0.05f);
+        Vector3 beyond = new Vector3(-Mathf.Sin(0.1f), 0, Mathf.Cos(0.1f)) * 100f;
+        Near(AirspaceRestrictionUtility.SegmentDistanceTiles(beyond, a, b), 20f, "airspace: past the endpoint uses the endpoint", 0.05f);
+        Near(AirspaceRestrictionUtility.SegmentDistanceTiles(a, a, a), 0f, "airspace: single-point takeoff check");
+    }
     // Skyfaller → Projectile migration (docs/Missile_Skyfaller轉Projectile_計畫.md §5): headings, edge points, skyfaller angle.
     static void MissileMapEntry()
     {
@@ -819,6 +880,7 @@ static class Test
     public static void Main()
     {
         Setup();
+        AirDefenseAlert();
         InertialDistribution();
         ShahedGuidanceOptions();
         ShortBoosterEffects();

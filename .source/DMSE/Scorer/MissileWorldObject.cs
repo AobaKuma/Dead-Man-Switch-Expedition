@@ -220,6 +220,8 @@ namespace DMSE
             {
                 traveledPct = 1f;
                 arrived = true;
+                // 受襲通報（NPC 防空警戒）：抵達目標據點即通報，不論之後是命中地圖還是壓制抽象節點。
+                WorldComponent_FactionAirDefenseAlert.Current?.ReportHit(this, WorldComponent_FactionAirDefenseAlert.TargetSite(this));
                 if (!TryStrikeAbstractNode())
                 {
                     OnArrived(MissileWorldUtility.ResolveArrivalMap(destinationTile, targetParent, AllowGenerateTargetMap));

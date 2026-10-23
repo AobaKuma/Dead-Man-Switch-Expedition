@@ -135,6 +135,12 @@ namespace DMSE
                         issues.Add(new TransferIssue(TransferIssueSeverity.Error, targetProblem));
                     }
                 }
+                // 防空封鎖：計畫後才生效的封鎖也會在倒數中檢查到並中止起飛（燃料在分離時才消耗）。
+                string airspace = TransferPlanningUtility.AirspaceProblem(plan);
+                if (airspace != null)
+                {
+                    issues.Add(new TransferIssue(TransferIssueSeverity.Error, airspace));
+                }
             }
 
             // ── 同一地圖同時只允許一艘船在起飛程序中 ──

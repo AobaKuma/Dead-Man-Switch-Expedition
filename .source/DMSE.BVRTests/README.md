@@ -10,7 +10,9 @@ missile roles, reservations, rail/silo strike rounds and soonest-arrival engagem
 gating, wave-strike P1 channel booking, config fingerprints, auto-assign and mission save output,
 P2 manual computation work and missile-by-missile solving (with P3 incremental additions), the P3 arrival
 timeline (order warnings, suggested delays, ripple and cooldown timing, channel holds, in-flight ETAs), and P4
-decoy signature factors and threat-assessment engagement order.
+decoy signature factors and threat-assessment engagement order, and the NPC air-defense alert rules
+(engagement matrix by stage and relation, stage transitions with hysteresis/hold/baseline, event top-up,
+pressure decay, great-circle route distance used by blockade checks).
 
 Use .NET 10 and supply the game reference directory (Assembly-CSharp.dll,
 UnityStubs.dll and Waylith.dll). Restore dependencies once, then:

@@ -32,6 +32,48 @@
     <areaDefenseEnabled>true</areaDefenseEnabled>
   </DMSE.BVRWorldTuningDef>
 
+  <!-- NPC 防空警戒五階段（docs/NPC防空警戒五階段_執行計畫.md）。數值為首輪測試起點，不是已驗證的平衡值。 -->
+  <DMSE.AirDefenseAlertTuningDef>
+    <defName>DMSE_AirDefenseAlertTuning</defName>
+    <enabled>true</enabled>
+    <!-- 第二階段觀測半徑 = 正常探測半徑 × 此值；支援半徑（世界格，同圖層）；情報有效期限與雷達暖機（ticks）。 -->
+    <observeRangeFactor>0.4</observeRangeFactor>
+    <supportRadiusTiles>20</supportRadiusTiles>
+    <intelExpiryTicks>600</intelExpiryTicks>
+    <radarWarmupTicks>600</radarWarmupTicks>
+    <!-- 事件權重：本地 L／區域 R。 -->
+    <transitLocal>4</transitLocal>
+    <transitRegional>2</transitRegional>
+    <transitSalvoCapLocal>12</transitSalvoCapLocal>
+    <transitSalvoCapRegional>6</transitSalvoCapRegional>
+    <targetedLocal>20</targetedLocal>
+    <targetedRegional>10</targetedRegional>
+    <hitLocal>25</hitLocal>
+    <hitRegional>12</hitRegional>
+    <repeatWaveLocal>15</repeatWaveLocal>
+    <repeatWaveRegional>8</repeatWaveRegional>
+    <attackWindowTicks>60000</attackWindowTicks>
+    <salvoGroupTicks>600</salvoGroupTicks>
+    <!-- 升降級門檻（有效壓力 T = max(L, 0.5R)）。 -->
+    <stage3Up>20</stage3Up>
+    <stage3Down>10</stage3Down>
+    <stage4Up>50</stage4Up>
+    <stage4Down>35</stage4Down>
+    <stage5Up>80</stage5Up>
+    <stage5Down>60</stage5Down>
+    <stage5MinWaves>2</stage5MinWaves>
+    <decayPerHour>2</decayPerHour>
+    <minStageHoldTicks>15000</minStageHoldTicks>
+    <blockadeNoticeTicks>5000</blockadeNoticeTicks>
+    <noticeCooldownTicks>30000</noticeCooldownTicks>
+    <!-- 據點基準：無設備／具雷達／專業軍事（導彈陣地）。 -->
+    <baselineNoRadar>1</baselineNoRadar>
+    <baselineRadar>2</baselineRadar>
+    <baselineMilitary>3</baselineMilitary>
+    <!-- 世界攔截（封鎖）半徑，與探測半徑分開；CompProperties_WorldAirDefense.worldInterceptRange 可覆寫。 -->
+    <interceptRadiusTiles>6</interceptRadiusTiles>
+  </DMSE.AirDefenseAlertTuningDef>
+
   <WorldObjectDef>
     <defName>DMSE_Interceptor</defName>
     <label>interceptor missile</label>

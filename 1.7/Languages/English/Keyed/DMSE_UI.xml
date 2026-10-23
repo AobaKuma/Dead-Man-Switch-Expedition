@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
   <DMSE.UI.ActiveConfig>Currently active</DMSE.UI.ActiveConfig>
-  <DMSE.UI.PendingConfig>Pending assembly — not yet active</DMSE.UI.PendingConfig>
+  <DMSE.UI.PendingConfig>Pending assembly: not yet active</DMSE.UI.PendingConfig>
   <DMSE.UI.DamageChange>Damage</DMSE.UI.DamageChange>
   <DMSE.UI.TransferBlocked>Departure blocked: {0} errors, {1} warnings</DMSE.UI.TransferBlocked>
   <DMSE.UI.TransferReady>Readiness checks passed · {1} warnings</DMSE.UI.TransferReady>

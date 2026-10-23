@@ -352,6 +352,13 @@ namespace DMSE
             }
             if (state == TransferConsoleState.Countdown && now >= countdownEndTick)
             {
+                // 分離（扣燃料）前最後一次檢查，例如倒數最後幾 tick 才生效的防空封鎖。
+                string finalReason = LaunchSequenceProblem();
+                if (finalReason != null)
+                {
+                    AbortLaunch(finalReason);
+                    return;
+                }
                 separationQueued = true;
                 ShipSeparationUtility.Launch(this);
             }

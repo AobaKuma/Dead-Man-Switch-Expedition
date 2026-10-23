@@ -92,6 +92,14 @@ namespace DMSE
         public bool HasActiveDefense(MapParent parent)
             => Eligible(parent) && StateOf(parent).stock > 0;
 
+        /// <summary>開發工具：清空合成防空庫存。</summary>
+        public void DevDrain(MapParent parent)
+        {
+            SettlementDefenseState state = StateOf(parent);
+            state.stock = 0;
+            state.lastRestockTick = Find.TickManager.TicksGame;
+        }
+
         internal SettlementDefenseState StateOf(MapParent parent)
         {
             if (!states.TryGetValue(parent.ID, out SettlementDefenseState state))

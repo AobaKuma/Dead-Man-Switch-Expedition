@@ -21,28 +21,55 @@ namespace DMSE
             => tile.LayerDef.isSpace ? tile.LayerDef.WorldLineMaterialHighVis : tile.LayerDef.WorldLineMaterial;
 
         private class Ring { public Vector3 center; public float range; public Vector3[] points; }
-        private readonly Dictionary<(MapParent, Faction), Ring> rings = new Dictionary<(MapParent, Faction), Ring>();
+
+        /// <summary>圈的種類：探測（實線）、攔截（點線）、封鎖（粗虛線）。用線型區分，不只靠顏色。</summary>
+        private enum RingKind { Detection, Intercept, Blockade }
+        private readonly Dictionary<(MapParent, Faction, RingKind), Ring> rings = new Dictionary<(MapParent, Faction, RingKind), Ring>();
         private readonly List<(Vector3 point, float until)> flashes = new List<(Vector3, float)>();
+        private static Material interceptMaterial, blockadeMaterial;
         public void AddFlash(Vector3 point) => flashes.Add((point, Time.realtimeSinceStartup + 1f));
+
+        private void DrawRing(HashSet<(MapParent, Faction, RingKind)> live, MapParent parent, Faction faction, RingKind kind,
+            Vector3 center, PlanetTile tile, float range, Material material, float width, int dashOn, int dashPeriod)
+        {
+            var key = (parent, faction, kind);
+            live.Add(key);
+            if (range <= 0) return;
+            if (!rings.TryGetValue(key, out Ring ring) || ring.center != center || ring.range != range)
+            {
+                ring = MakeRing(center, range);
+                rings[key] = ring;
+            }
+            width *= tile.LayerDef.lineWidthFactor;
+            for (int i = 0; i < ring.points.Length; i++)
+            {
+                if (i % dashPeriod >= dashOn) continue;
+                Line(ring.points[i], ring.points[(i + 1) % ring.points.Length], material, width);
+            }
+        }
+
         public void Draw(IEnumerable<BVRNode> nodes, bool showAll)
         {
-            var live = new HashSet<(MapParent, Faction)>();
+            // Created on the main thread at first draw (MaterialPool is not safe from static constructors here).
+            interceptMaterial ??= MaterialPool.MatFrom(GenDraw.OneSidedLineOpaqueTexPath, ShaderDatabase.WorldOverlayAdditiveTwoSided, new Color(1f, 0.6f, 0.15f), 3590);
+            blockadeMaterial ??= MaterialPool.MatFrom(GenDraw.OneSidedLineOpaqueTexPath, ShaderDatabase.WorldOverlayAdditiveTwoSided, ColorLibrary.RedReadable, 3590);
+            var live = new HashSet<(MapParent, Faction, RingKind)>();
             foreach (BVRNode node in nodes)
             {
-                var key = (node.parent, node.faction);
-                live.Add(key);
-                if (!Find.WorldSelector.IsSelected(node.parent) && !(showAll && node.faction.IsPlayer)) continue;
-                float range = node.DetectionRange(BVRTargetProps.Default);
-                if (range <= 0) continue;
-                if (!rings.TryGetValue(key, out Ring ring) || ring.center != node.Center || ring.range != range)
-                {
-                    ring = MakeRing(node.Center, range);
-                    rings[key] = ring;
-                }
-                Material material = RingMaterial(node.Tile);
-                float width = 5f * node.Tile.LayerDef.lineWidthFactor;
-                for (int i = 0; i < ring.points.Length; i++)
-                    Line(ring.points[i], ring.points[(i + 1) % ring.points.Length], material, width);
+                bool selected = Find.WorldSelector.IsSelected(node.parent);
+                if (!selected && !(showAll && node.faction.IsPlayer)) continue;
+                DrawRing(live, node.parent, node.faction, RingKind.Detection, node.Center, node.Tile,
+                    node.DetectionRange(BVRTargetProps.Default), RingMaterial(node.Tile), 5f, 1, 1);
+                // 選取的 NPC 據點：攔截圈（配置半徑，第三階段以上才會攔截）。
+                if (selected && node.UsesAlertRules && node.alertStage >= (int)AirDefenseStage.Passive)
+                    DrawRing(live, node.parent, node.faction, RingKind.Intercept, node.Center, node.Tile,
+                        AirspaceRestrictionUtility.NominalRadius(node.parent), interceptMaterial, 3f, 1, 3);
+            }
+            // 封鎖圈：玩家不能通行者一律顯示（已公告）。
+            foreach (BlockadeZone zone in AirspaceRestrictionUtility.ActiveZones)
+            {
+                if (AirspaceRestrictionUtility.AllowedThrough(zone, Faction.OfPlayer)) continue;
+                DrawRing(live, zone.site, zone.faction, RingKind.Blockade, zone.center, zone.tile, zone.radius, blockadeMaterial, 7f, 2, 3);
             }
             foreach (var stale in rings.Keys.Where(k => !live.Contains(k)).ToList()) rings.Remove(stale);
             foreach (var interceptor in Find.WorldObjects.AllWorldObjects.OfType<WorldObject_Interceptor>())

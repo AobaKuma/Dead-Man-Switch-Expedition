@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <DMSE.AirAlert.Stage1>無探測</DMSE.AirAlert.Stage1>
+  <DMSE.AirAlert.Stage2>預警</DMSE.AirAlert.Stage2>
+  <DMSE.AirAlert.Stage3>被動攔截</DMSE.AirAlert.Stage3>
+  <DMSE.AirAlert.Stage4>主動攔截</DMSE.AirAlert.Stage4>
+  <DMSE.AirAlert.Stage5>封鎖</DMSE.AirAlert.Stage5>
+  <DMSE.AirAlert.InspectStage>防空警戒：{0}（{1}）</DMSE.AirAlert.InspectStage>
+  <DMSE.AirAlert.InspectUnavailable>失能：{0}</DMSE.AirAlert.InspectUnavailable>
+  <DMSE.AirAlert.InspectBlockadePending>封鎖將於 {0} 後生效</DMSE.AirAlert.InspectBlockadePending>
+  <DMSE.AirAlert.InspectBlockadeActive>封鎖中：{0} 格</DMSE.AirAlert.InspectBlockadeActive>
+  <DMSE.AirAlert.Unavailable.NoEquipment>無防空設備</DMSE.AirAlert.Unavailable.NoEquipment>
+  <DMSE.AirAlert.Unavailable.NoNode>無防空節點</DMSE.AirAlert.Unavailable.NoNode>
+  <DMSE.AirAlert.Unavailable.WarmingUp>雷達啟動中</DMSE.AirAlert.Unavailable.WarmingUp>
+  <DMSE.AirAlert.Unavailable.RadarDown>雷達遭壓制</DMSE.AirAlert.Unavailable.RadarDown>
+  <DMSE.AirAlert.Unavailable.NoAmmo>攔截彈耗盡</DMSE.AirAlert.Unavailable.NoAmmo>
+  <DMSE.AirAlert.Unavailable.NoFireControl>無火控</DMSE.AirAlert.Unavailable.NoFireControl>
+  <DMSE.AirAlert.Unavailable.NoTracking>無雷達覆蓋</DMSE.AirAlert.Unavailable.NoTracking>
+  <DMSE.AirAlert.BlockadeNoticeLabel>防空封鎖公告</DMSE.AirAlert.BlockadeNoticeLabel>
+  <DMSE.AirAlert.BlockadeNoticeText>{0}將於 {3} 後封鎖{1}周邊 {2} 格空域，非盟友載具不得起降或通過。</DMSE.AirAlert.BlockadeNoticeText>
+  <DMSE.AirAlert.BlockadeActiveLabel>防空封鎖生效</DMSE.AirAlert.BlockadeActiveLabel>
+  <DMSE.AirAlert.BlockadeActiveText>{0}已封鎖{1}周邊 {2} 格空域。</DMSE.AirAlert.BlockadeActiveText>
+  <DMSE.AirAlert.BlockadeCancelled>{0}取消了{1}的封鎖。</DMSE.AirAlert.BlockadeCancelled>
+  <DMSE.AirAlert.BlockadeLifted>{0}解除了{1}的封鎖。</DMSE.AirAlert.BlockadeLifted>
+  <DMSE.AirAlert.EngagingPlayer>{1}正在攔截你的導彈。</DMSE.AirAlert.EngagingPlayer>
+  <DMSE.AirAlert.NeutralInterceptLabel>中立防空攔截</DMSE.AirAlert.NeutralInterceptLabel>
+  <DMSE.AirAlert.NeutralInterceptText>{0}的{1}會攔截飛越其空域的非盟友導彈，包括你的。</DMSE.AirAlert.NeutralInterceptText>
+  <DMSE.AirAlert.InterceptorSafed>攔截彈已解除：{0}屬於盟友。</DMSE.AirAlert.InterceptorSafed>
+  <DMSE.Airspace.Blocked>航線穿越{0}的封鎖區（{1}，{2} 格）。</DMSE.Airspace.Blocked>
+</LanguageData>

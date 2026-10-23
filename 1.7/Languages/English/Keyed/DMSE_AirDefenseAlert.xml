@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <DMSE.AirAlert.Stage1>no detection</DMSE.AirAlert.Stage1>
+  <DMSE.AirAlert.Stage2>early warning</DMSE.AirAlert.Stage2>
+  <DMSE.AirAlert.Stage3>passive intercept</DMSE.AirAlert.Stage3>
+  <DMSE.AirAlert.Stage4>active intercept</DMSE.AirAlert.Stage4>
+  <DMSE.AirAlert.Stage5>blockade</DMSE.AirAlert.Stage5>
+  <DMSE.AirAlert.InspectStage>Air alert: {0} ({1})</DMSE.AirAlert.InspectStage>
+  <DMSE.AirAlert.InspectUnavailable>Disabled: {0}</DMSE.AirAlert.InspectUnavailable>
+  <DMSE.AirAlert.InspectBlockadePending>Blockade in {0}</DMSE.AirAlert.InspectBlockadePending>
+  <DMSE.AirAlert.InspectBlockadeActive>Blockade: {0} tiles</DMSE.AirAlert.InspectBlockadeActive>
+  <DMSE.AirAlert.Unavailable.NoEquipment>no air defense</DMSE.AirAlert.Unavailable.NoEquipment>
+  <DMSE.AirAlert.Unavailable.NoNode>no air-defense node</DMSE.AirAlert.Unavailable.NoNode>
+  <DMSE.AirAlert.Unavailable.WarmingUp>radar starting</DMSE.AirAlert.Unavailable.WarmingUp>
+  <DMSE.AirAlert.Unavailable.RadarDown>radar suppressed</DMSE.AirAlert.Unavailable.RadarDown>
+  <DMSE.AirAlert.Unavailable.NoAmmo>no interceptors</DMSE.AirAlert.Unavailable.NoAmmo>
+  <DMSE.AirAlert.Unavailable.NoFireControl>no fire control</DMSE.AirAlert.Unavailable.NoFireControl>
+  <DMSE.AirAlert.Unavailable.NoTracking>no radar coverage</DMSE.AirAlert.Unavailable.NoTracking>
+  <DMSE.AirAlert.BlockadeNoticeLabel>Blockade announced</DMSE.AirAlert.BlockadeNoticeLabel>
+  <DMSE.AirAlert.BlockadeNoticeText>In {3}, {0} will close the airspace within {2} tiles of {1} to non-allied craft.</DMSE.AirAlert.BlockadeNoticeText>
+  <DMSE.AirAlert.BlockadeActiveLabel>Blockade in effect</DMSE.AirAlert.BlockadeActiveLabel>
+  <DMSE.AirAlert.BlockadeActiveText>{0} has closed the airspace within {2} tiles of {1}.</DMSE.AirAlert.BlockadeActiveText>
+  <DMSE.AirAlert.BlockadeCancelled>{0} called off the blockade at {1}.</DMSE.AirAlert.BlockadeCancelled>
+  <DMSE.AirAlert.BlockadeLifted>{0} lifted the blockade at {1}.</DMSE.AirAlert.BlockadeLifted>
+  <DMSE.AirAlert.EngagingPlayer>{1} is intercepting your missile.</DMSE.AirAlert.EngagingPlayer>
+  <DMSE.AirAlert.NeutralInterceptLabel>Neutral air defense</DMSE.AirAlert.NeutralInterceptLabel>
+  <DMSE.AirAlert.NeutralInterceptText>{1} ({0}) will intercept non-allied missiles in its airspace, including yours.</DMSE.AirAlert.NeutralInterceptText>
+  <DMSE.AirAlert.InterceptorSafed>Interceptor disarmed: {0} is allied.</DMSE.AirAlert.InterceptorSafed>
+  <DMSE.Airspace.Blocked>Route crosses {0}'s blockade ({1}, {2} tiles).</DMSE.Airspace.Blocked>
+</LanguageData>

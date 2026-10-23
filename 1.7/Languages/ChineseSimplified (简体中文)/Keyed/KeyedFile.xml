@@ -9,10 +9,9 @@
   <DMSE.MissileBase.RelocatedDesc>一处敌方导弹阵地在部署后完成射击任务并转移，防止殖民地反制。</DMSE.MissileBase.RelocatedDesc>
   <DMSE.MissileBase.Destroyed>导弹阵地已摧毁</DMSE.MissileBase.Destroyed>
   <DMSE.MissileBase.DestroyedDesc>殖民者已摧毁敌方导弹阵地的所有雷达与发射设施。来自该阵地的导弹威胁已解除。</DMSE.MissileBase.DestroyedDesc>
-  <DMSE.MissileBase.ShuttleBlocked>此区域位于敌方导弹阵地的防空封锁范围内（{0} 格），无法进行穿梭机起降。</DMSE.MissileBase.ShuttleBlocked>
-  <DMSE.MissileBase.ReentryBlockedIn>地面通道封锁中——敌方整备防线（{0}）</DMSE.MissileBase.ReentryBlockedIn>
-  <DMSE.MissileBase.ReentryBlocked>通道封锁——敌方整备防线（{0}）</DMSE.MissileBase.ReentryBlocked>
-  <DMSE.MissileBase.ArrivedLetter>你们抵达了一处导弹阵地——敌方已在此部署火控雷达与导弹发射架，不断向周围殖民地发射打击。摧毁所有雷达可瓦解其打击能力。</DMSE.MissileBase.ArrivedLetter>
+  <DMSE.MissileBase.ReentryBlockedIn>地面通道封锁中，敌方整备防线（{0}）</DMSE.MissileBase.ReentryBlockedIn>
+  <DMSE.MissileBase.ReentryBlocked>通道封锁，敌方整备防线（{0}）</DMSE.MissileBase.ReentryBlocked>
+  <DMSE.MissileBase.ArrivedLetter>你们抵达了一处导弹阵地。敌方已在此部署火控雷达与导弹发射架，不断向周围殖民地发射打击。摧毁所有雷达可瓦解其打击能力。</DMSE.MissileBase.ArrivedLetter>
   <DMSE.MissileBase.SiteDesc>一处配备火控雷达与导弹发射架的机动战术弹道导弹阵地。阵地会在完成任务后转移，以躲避反制。</DMSE.MissileBase.SiteDesc>
 
   <!-- EN: Launch Missile -->
@@ -38,7 +37,7 @@
   <DMSE.Alert.HuntdownThreatCritical.Desc>石碑的位置已被追踪，追捕小队和可能的空袭将很快到达，请在为时已晚之前转移。</DMSE.Alert.HuntdownThreatCritical.Desc>
 
   <!-- EN: {0} drop pods will breach in {1} -->
-  <DMSE.Alert.Pods>{0} 个来袭目标 — 拦截窗口剩余 {1}</DMSE.Alert.Pods>
+  <DMSE.Alert.Pods>{0} 个来袭目标，拦截窗口剩余 {1}</DMSE.Alert.Pods>
   <DMSE.Alert.Pods.Window.Midcourse>中过程拦截窗口：{0}</DMSE.Alert.Pods.Window.Midcourse>
   <DMSE.Alert.Pods.Window.Terminal>末端拦截窗口（CIWS）：{0}</DMSE.Alert.Pods.Window.Terminal>
   <DMSE.Alert.Pods.Target>  · {0}  【{1}】</DMSE.Alert.Pods.Target>
@@ -125,9 +124,9 @@
   <DMSE.Alert.Exist.IsMissileBase>这是一处运作中的导弹阵地。提前结束观察将让敌方人员得以重整并重置其防御。</DMSE.Alert.Exist.IsMissileBase>
   <DMSE.Alert.Exist.ClickHint>点击以提前结束观察。</DMSE.Alert.Exist.ClickHint>
   <DMSE.Alert.Exist.EndEarly.Confirm>现在就结束观察？地图将不再被保留，可能会被游戏清理。</DMSE.Alert.Exist.EndEarly.Confirm>
-  <DMSE.Alert.Exist.EndEarly.Confirm.MissileBase>提前结束观察？\n\n敌方人员将有机会重整——该导弹阵地的防御与计时器都会重置，如同观察从未发生。\n\n此操作无法复原。</DMSE.Alert.Exist.EndEarly.Confirm.MissileBase>
+  <DMSE.Alert.Exist.EndEarly.Confirm.MissileBase>提前结束观察？\n\n敌方人员将有机会重整，该导弹阵地的防御与计时器都会重置，如同观察从未发生。\n\n此操作无法复原。</DMSE.Alert.Exist.EndEarly.Confirm.MissileBase>
   <DMSE.Alert.Exist.ObservationEnded>观察已提前结束。敌军可能会重整。</DMSE.Alert.Exist.ObservationEnded>
-  <DMSE.Alert.PlayerMissiles.Label>{0} 枚导弹飞行中 — 首波落地倒数 {1}</DMSE.Alert.PlayerMissiles.Label>
+  <DMSE.Alert.PlayerMissiles.Label>{0} 枚导弹飞行中，首波落地倒数 {1}</DMSE.Alert.PlayerMissiles.Label>
   <DMSE.Alert.PlayerMissiles.MapHeader>目标：{0}</DMSE.Alert.PlayerMissiles.MapHeader>
   <DMSE.Alert.PlayerMissiles.WaveImpact>  落地倒数 {0}：</DMSE.Alert.PlayerMissiles.WaveImpact>
   <DMSE.Alert.PlayerMissiles.Target>    · {0}  ({1},{2})  【{3}】</DMSE.Alert.PlayerMissiles.Target>
@@ -159,7 +158,7 @@
   <DMSE.Missile.Stat.NoTerminalGuidance>无制导能力：无法追踪移动目标，也无法跨图层打击</DMSE.Missile.Stat.NoTerminalGuidance>
   <DMSE.MissileLauncher.OutOfRange>目标超出导弹射程（{0} 格）。</DMSE.MissileLauncher.OutOfRange>
   <DMSE.MissileLauncher.RangeLabel>{0} / {1} 格</DMSE.MissileLauncher.RangeLabel>
-  <DMSE.MissileLauncher.NoTargetHere>此处没有目标——导弹将会落空</DMSE.MissileLauncher.NoTargetHere>
+  <DMSE.MissileLauncher.NoTargetHere>此处没有目标，导弹将会落空</DMSE.MissileLauncher.NoTargetHere>
   <DMSE.Missile.CrossLayerNeedsGuidance>跨图层打击需要具备制导能力的导弹；惯性制导与无制导弹药无法做到。</DMSE.Missile.CrossLayerNeedsGuidance>
   <DMSE.Missile.Cat.Warhead>弹头</DMSE.Missile.Cat.Warhead>
   <DMSE.Missile.Cat.Guidance>导引</DMSE.Missile.Cat.Guidance>
@@ -167,11 +166,11 @@
   <DMSE.Missile.Cat.Payload>特殊酬载</DMSE.Missile.Cat.Payload>
   <DMSE.Missile.Inspect>弹体：{0}\n弹头：{1}\n爆炸：半径 {2} / 伤害 {3}</DMSE.Missile.Inspect>
   <DMSE.Missile.NeedResources>装配所需：{0}</DMSE.Missile.NeedResources>
-  <DMSE.Missile.ReadyToAssemble>资源已备齐——确认后开始装配</DMSE.Missile.ReadyToAssemble>
+  <DMSE.Missile.ReadyToAssemble>资源已备齐，确认后开始装配</DMSE.Missile.ReadyToAssemble>
   <DMSE.Missile.NoResources>没有可用于装配的资源</DMSE.Missile.NoResources>
   <DMSE.Missile.EditingSlot>正在编辑架上第 1 枚（共 {0} 枚）</DMSE.Missile.EditingSlot>
   <DMSE.Missile.ConfirmAssembly>加入装配队列</DMSE.Missile.ConfirmAssembly>
-  <DMSE.Missile.AssemblyQueued>已加入队列——殖民者即将开始装配</DMSE.Missile.AssemblyQueued>
+  <DMSE.Missile.AssemblyQueued>已加入队列，殖民者即将开始装配</DMSE.Missile.AssemblyQueued>
   <DMSE.Missile.ResetToCurrent>还原为已装配设定</DMSE.Missile.ResetToCurrent>
   <DMSE.MissileLauncher.LaunchCooldown>发射轨重新装填中：{0}</DMSE.MissileLauncher.LaunchCooldown>
   <DMSE.MissileLauncher.Rail.NoMissileLoaded>未装填导弹</DMSE.MissileLauncher.Rail.NoMissileLoaded>
@@ -215,19 +214,19 @@
   <DMSE.MissileLauncher.Ballistic.Loaded>弹道导弹：已装配，可发射</DMSE.MissileLauncher.Ballistic.Loaded>
   <DMSE.MissileLauncher.Ballistic.LoadedWith>弹道导弹已装填：{0}</DMSE.MissileLauncher.Ballistic.LoadedWith>
   <DMSE.MissileLauncher.Ballistic.AwaitingAssembly>弹道导弹：等待殖民者完成装配</DMSE.MissileLauncher.Ballistic.AwaitingAssembly>
-  <DMSE.MissileLauncher.Ballistic.Unloaded>弹道发射井：未装填—请在装配分页设定</DMSE.MissileLauncher.Ballistic.Unloaded>
+  <DMSE.MissileLauncher.Ballistic.Unloaded>弹道发射井：未装填，请在装配分页设定</DMSE.MissileLauncher.Ballistic.Unloaded>
 
   <!-- 火炮打击（CompArtilleryStrike） -->
   <DMSE.Artillery.Fire>火炮射击</DMSE.Artillery.Fire>
   <DMSE.Artillery.FireDesc>选择世界地图上的目标持续炮击，直到下令停止。</DMSE.Artillery.FireDesc>
   <DMSE.Artillery.Stop>停止射击</DMSE.Artillery.Stop>
   <DMSE.Artillery.StopDesc>停止持续射击。当前状态：{0}</DMSE.Artillery.StopDesc>
-  <DMSE.Artillery.TooClose>目标距离太近——最小射程为 {0} 格。</DMSE.Artillery.TooClose>
+  <DMSE.Artillery.TooClose>目标距离太近，最小射程为 {0} 格。</DMSE.Artillery.TooClose>
   <DMSE.Artillery.NoFireControl>没有具备空闲引导通道的火控雷达。</DMSE.Artillery.NoFireControl>
-  <DMSE.Artillery.NoAmmo>未装填炮弹——持续射击已停止。</DMSE.Artillery.NoAmmo>
+  <DMSE.Artillery.NoAmmo>未装填炮弹，持续射击已停止。</DMSE.Artillery.NoAmmo>
   <DMSE.Artillery.CrossLayer>炮弹没有制导能力，无法跨图层打击。</DMSE.Artillery.CrossLayer>
   <DMSE.Artillery.Missed>炮击找不到目标，已落空。</DMSE.Artillery.Missed>
-  <DMSE.Artillery.NoBarrel>炮管已磨损——持续射击已停止，请更换强化炮管。</DMSE.Artillery.NoBarrel>
+  <DMSE.Artillery.NoBarrel>炮管已磨损，持续射击已停止，请更换强化炮管。</DMSE.Artillery.NoBarrel>
   <DMSE.BVR.DeviceInactive>装置不可用（无电、损坏或已关闭）。</DMSE.BVR.DeviceInactive>
   <!-- 状态字符串（用于 StopDesc） -->
   <DMSE.Artillery.StateCooldown>装填冷却中，剩余 {0}</DMSE.Artillery.StateCooldown>

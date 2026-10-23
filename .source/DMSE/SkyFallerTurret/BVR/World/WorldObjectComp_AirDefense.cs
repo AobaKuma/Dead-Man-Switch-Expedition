@@ -22,6 +22,8 @@ namespace DMSE
         public bool threatAssessment = false;
         /// <summary>最低陣營科技等級；Undefined 表示不設限（DMSE 自己的導彈陣地維持不設限）。</summary>
         public TechLevel minTechLevel = TechLevel.Undefined;
+        /// <summary>世界攔截（封鎖）半徑；&lt; 0 用 <see cref="AirDefenseAlertTuningDef.interceptRadiusTiles"/>。與探測半徑分開。</summary>
+        public float worldInterceptRange = -1f;
         public CompProperties_WorldAirDefense() { compClass = typeof(WorldObjectComp_AirDefense); }
         public override IEnumerable<string> ConfigErrors(WorldObjectDef parentDef)
         {
@@ -83,6 +85,8 @@ namespace DMSE
             radarDownUntil = now + GenDate.TicksPerDay;
             cooldownUntil = Mathf.Max(cooldownUntil, now + 600);
         }
+        /// <summary>開發工具：清空庫存（測試耗盡彈藥時的封鎖與接戰）。</summary>
+        public void DevDrain() { Refresh(); stock = 0; }
         public override void CompTick() { base.CompTick(); Refresh(); }
         public override string CompInspectStringExtra() => Available
             ? "DMSE.BVR.World.AbstractInspect".Translate(Stock, Props.interceptorStock, Props.worldDetectionRange, Props.channels) : null;

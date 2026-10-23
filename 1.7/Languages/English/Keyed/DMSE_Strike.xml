@@ -126,7 +126,7 @@ Enable research work for a colonist on that map.</DMSE.Strike.Alert.ComputationP
   <DMSE.Strike.Alert.WaveReadyLine>{0}: wave {1} on {2}</DMSE.Strike.Alert.WaveReadyLine>
   <DMSE.Strike.Report.Label>{0} results</DMSE.Strike.Report.Label>
   <DMSE.Strike.Report.Header>{0} on {1}, launched from {2}:</DMSE.Strike.Report.Header>
-  <DMSE.Strike.Report.Wave>Wave {0}: {1} launched — {2} intercepted in flight, {3} hit, {4} shot down at the target, {5} missed</DMSE.Strike.Report.Wave>
+  <DMSE.Strike.Report.Wave>Wave {0}: {1} launched: {2} intercepted in flight, {3} hit, {4} shot down at the target, {5} missed</DMSE.Strike.Report.Wave>
   <DMSE.Strike.Report.WaveShieldBlocked>, {0} stopped by shields</DMSE.Strike.Report.WaveShieldBlocked>
   <DMSE.Strike.Report.Unknown>{0} arrived but their result is unknown.</DMSE.Strike.Report.Unknown>
   <DMSE.Strike.Settings.WaveReadyAlert>Strike wave ready alert</DMSE.Strike.Settings.WaveReadyAlert>

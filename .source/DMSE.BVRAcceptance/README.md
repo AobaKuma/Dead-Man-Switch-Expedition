@@ -59,6 +59,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .source/DMSE.BVRAcceptance/r
 | D2 | Synthetic settlement air defense: a plain enemy settlement gets one by tech level; an anti-radiation strike takes stock and the radar down |
 | D3 | Undetected hostile tracks are hidden and unselectable until a radar sees them |
 | D4 | Drop-pod ghost track interpolates from the ring edge; degrading a real abstract node removes stock and suppresses the radar |
+| A1 | NPC alert: a missile base starts at stage 3, records intel on a missile aimed at an empty tile but lets it pass; at stage 4 it engages the same track |
+| A2 | NPC alert: hits add local pressure and repeat-wave bonuses, a nearby settlement gets regional pressure only, the blockade is announced, takes effect after the notice, restricts player takeoff/landing/routes (not the owner), and stops being enforced when interceptors run out |
 | K1 | Wave strike P0: strike rounds skip interceptors; reservation; SAM and single-shot skip reserved missiles; out-of-range refusal; per-round launch, cooldown, ripple continuation |
 | K2 | Reserved missiles offer no assembly work; an assembled ballistic silo is its own round and can be reserved |
 | K3 | World defense gives free channels to the soonest arrivals, not the first-created track |

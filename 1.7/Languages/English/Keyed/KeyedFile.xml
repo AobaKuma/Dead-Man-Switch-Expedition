@@ -9,9 +9,8 @@
   <DMSE.MissileBase.RelocatedDesc>An enemy missile launch position has completed its strike mission and relocated to avoid counteraction.</DMSE.MissileBase.RelocatedDesc>
   <DMSE.MissileBase.Destroyed>Missile position destroyed</DMSE.MissileBase.Destroyed>
   <DMSE.MissileBase.DestroyedDesc>Your colonists have destroyed all radars and launch facilities at the enemy missile position. The missile threat from this position has been neutralized.</DMSE.MissileBase.DestroyedDesc>
-  <DMSE.MissileBase.ShuttleBlocked>This area is within {0} tiles of an enemy missile position's anti-air denial zone. Shuttle takeoff and landing are not possible here.</DMSE.MissileBase.ShuttleBlocked>
-  <DMSE.MissileBase.ReentryBlockedIn>Ground access denied — enemy regrouping ({0})</DMSE.MissileBase.ReentryBlockedIn>
-  <DMSE.MissileBase.ReentryBlocked>Access denied — enemy regrouping ({0})</DMSE.MissileBase.ReentryBlocked>
+  <DMSE.MissileBase.ReentryBlockedIn>Ground access denied: enemy regrouping ({0})</DMSE.MissileBase.ReentryBlockedIn>
+  <DMSE.MissileBase.ReentryBlocked>Access denied: enemy regrouping ({0})</DMSE.MissileBase.ReentryBlocked>
   <DMSE.MissileBase.ArrivedLetter>Your pawns have arrived at a missile launch position. The enemy has deployed fire control radars and launch vehicles here, continuously striking nearby colonies. Destroying all radars will neutralize their strike capability.</DMSE.MissileBase.ArrivedLetter>
   <DMSE.MissileBase.SiteDesc>A mobile tactical ballistic missile launch position equipped with fire control radar and missile launchers. The position will relocate after completing its mission.</DMSE.MissileBase.SiteDesc>
 
@@ -29,7 +28,7 @@
   <DMSE.Alert.HuntdownThreatCritical>Huntdown approaching</DMSE.Alert.HuntdownThreatCritical>
   <DMSE.Alert.HuntdownThreatCritical.Desc>the position of Stele has been tracked down, hunting squad and possible air strike will arrive in no time, transfer before it's too late.</DMSE.Alert.HuntdownThreatCritical.Desc>
 
-  <DMSE.Alert.Pods>{0} incoming threats — interception window: {1} left</DMSE.Alert.Pods>
+  <DMSE.Alert.Pods>{0} incoming threats, interception window: {1} left</DMSE.Alert.Pods>
   <!-- Tooltip detail lines for incoming-threat alert -->
   <DMSE.Alert.Pods.Window.Midcourse>Midcourse intercept window: {0}</DMSE.Alert.Pods.Window.Midcourse>
   <DMSE.Alert.Pods.Window.Terminal>Terminal (CIWS) window: {0}</DMSE.Alert.Pods.Window.Terminal>
@@ -91,11 +90,11 @@
   <DMSE.Alert.Exist.IsMissileBase>This is an active missile launch position. Ending observation early will allow the crew to regroup and reset their defenses.</DMSE.Alert.Exist.IsMissileBase>
   <DMSE.Alert.Exist.ClickHint>Click to end observation early.</DMSE.Alert.Exist.ClickHint>
   <DMSE.Alert.Exist.EndEarly.Confirm>End observation now? The map will no longer be held open and may be cleaned up by the game.</DMSE.Alert.Exist.EndEarly.Confirm>
-  <DMSE.Alert.Exist.EndEarly.Confirm.MissileBase>End observation early?\n\nThe enemy crew will have the opportunity to regroup — the launch position's defenses and timers will reset, as if the observation never happened.\n\nThis cannot be undone.</DMSE.Alert.Exist.EndEarly.Confirm.MissileBase>
+  <DMSE.Alert.Exist.EndEarly.Confirm.MissileBase>End observation early?\n\nThe enemy crew will have the opportunity to regroup. The launch position's defenses and timers will reset, as if the observation never happened.\n\nThis cannot be undone.</DMSE.Alert.Exist.EndEarly.Confirm.MissileBase>
   <DMSE.Alert.Exist.ObservationEnded>Observation ended early. Enemy forces may regroup.</DMSE.Alert.Exist.ObservationEnded>
 
-  <!-- Alerts_PlayerMissiles — player attacking, enemy BVR tracking our missiles -->
-  <DMSE.Alert.PlayerMissiles.Label>{0} missiles outbound — first impact in {1}</DMSE.Alert.PlayerMissiles.Label>
+  <!-- Alerts_PlayerMissiles: player attacking, enemy BVR tracking our missiles -->
+  <DMSE.Alert.PlayerMissiles.Label>{0} missiles outbound: first impact in {1}</DMSE.Alert.PlayerMissiles.Label>
   <DMSE.Alert.PlayerMissiles.MapHeader>Target: {0}</DMSE.Alert.PlayerMissiles.MapHeader>
   <DMSE.Alert.PlayerMissiles.WaveImpact>  Impact in {0}:</DMSE.Alert.PlayerMissiles.WaveImpact>
   <!-- {0}=missile label, {1}=col, {2}=row, {3}=intercept status -->
@@ -128,7 +127,7 @@
   <DMSE.Missile.Stat.NoTerminalGuidance>Unguided: cannot track moving targets or strike across orbital layers</DMSE.Missile.Stat.NoTerminalGuidance>
   <DMSE.MissileLauncher.OutOfRange>Target is beyond missile range ({0} tiles).</DMSE.MissileLauncher.OutOfRange>
   <DMSE.MissileLauncher.RangeLabel>{0} / {1} tiles</DMSE.MissileLauncher.RangeLabel>
-  <DMSE.MissileLauncher.NoTargetHere>No target at this location — the missile will be wasted</DMSE.MissileLauncher.NoTargetHere>
+  <DMSE.MissileLauncher.NoTargetHere>No target at this location: the missile will be wasted</DMSE.MissileLauncher.NoTargetHere>
   <DMSE.Missile.CrossLayerNeedsGuidance>Striking across orbital layers requires a guided missile. Inertial guidance and unguided munitions cannot.</DMSE.Missile.CrossLayerNeedsGuidance>
   <DMSE.Missile.Cat.Warhead>Warhead</DMSE.Missile.Cat.Warhead>
   <DMSE.Missile.Cat.Guidance>Guidance</DMSE.Missile.Cat.Guidance>
@@ -136,11 +135,11 @@
   <DMSE.Missile.Cat.Payload>Payload</DMSE.Missile.Cat.Payload>
   <DMSE.Missile.Inspect>Body: {0}\nWarhead: {1}\nBlast: {2} / {3} dmg</DMSE.Missile.Inspect>
   <DMSE.Missile.NeedResources>Needs (for assembly): {0}</DMSE.Missile.NeedResources>
-  <DMSE.Missile.ReadyToAssemble>Resources ready — confirm to begin assembly</DMSE.Missile.ReadyToAssemble>
+  <DMSE.Missile.ReadyToAssemble>Resources ready: confirm to begin assembly</DMSE.Missile.ReadyToAssemble>
   <DMSE.Missile.NoResources>No resources available to assemble</DMSE.Missile.NoResources>
   <DMSE.Missile.EditingSlot>Editing missile 1 of {0} in rack</DMSE.Missile.EditingSlot>
   <DMSE.Missile.ConfirmAssembly>Queue for assembly</DMSE.Missile.ConfirmAssembly>
-  <DMSE.Missile.AssemblyQueued>Assembly queued — colonists will begin shortly</DMSE.Missile.AssemblyQueued>
+  <DMSE.Missile.AssemblyQueued>Assembly queued: colonists will begin shortly</DMSE.Missile.AssemblyQueued>
   <DMSE.Missile.ResetToCurrent>Reset to assembled config</DMSE.Missile.ResetToCurrent>
   <DMSE.MissileLauncher.LaunchCooldown>Reloading launch rail: {0}</DMSE.MissileLauncher.LaunchCooldown>
   <DMSE.MissileLauncher.Rail.NoMissileLoaded>No missile loaded</DMSE.MissileLauncher.Rail.NoMissileLoaded>
@@ -187,7 +186,7 @@
   <DMSE.MissileLauncher.Ballistic.Loaded>Ballistic missile: assembled and ready</DMSE.MissileLauncher.Ballistic.Loaded>
   <DMSE.MissileLauncher.Ballistic.LoadedWith>Ballistic missile loaded: {0}</DMSE.MissileLauncher.Ballistic.LoadedWith>
   <DMSE.MissileLauncher.Ballistic.AwaitingAssembly>Ballistic missile: awaiting assembly by colonists</DMSE.MissileLauncher.Ballistic.AwaitingAssembly>
-  <DMSE.MissileLauncher.Ballistic.Unloaded>Ballistic missile silo: unloaded — configure in Assembly tab</DMSE.MissileLauncher.Ballistic.Unloaded>
+  <DMSE.MissileLauncher.Ballistic.Unloaded>Ballistic missile silo: unloaded, configure in Assembly tab</DMSE.MissileLauncher.Ballistic.Unloaded>
 
   <!-- ==================== Artillery strike (CompArtilleryStrike) ==================== -->
   <!-- Gizmo -->
@@ -196,12 +195,12 @@
   <DMSE.Artillery.Stop>Stop Firing</DMSE.Artillery.Stop>
   <DMSE.Artillery.StopDesc>Halt sustained fire. Current status: {0}</DMSE.Artillery.StopDesc>
   <!-- Disabled / error reasons -->
-  <DMSE.Artillery.TooClose>Target is too close — minimum range is {0} cells.</DMSE.Artillery.TooClose>
+  <DMSE.Artillery.TooClose>Target is too close: minimum range is {0} cells.</DMSE.Artillery.TooClose>
   <DMSE.Artillery.NoFireControl>No fire control radar with a free guidance channel available.</DMSE.Artillery.NoFireControl>
-  <DMSE.Artillery.NoAmmo>No shell loaded — sustained fire halted.</DMSE.Artillery.NoAmmo>
+  <DMSE.Artillery.NoAmmo>No shell loaded: sustained fire halted.</DMSE.Artillery.NoAmmo>
   <DMSE.Artillery.CrossLayer>Artillery shells are unguided and cannot strike across orbital layers.</DMSE.Artillery.CrossLayer>
   <DMSE.Artillery.Missed>The artillery salvo found no target and was wasted.</DMSE.Artillery.Missed>
-  <DMSE.Artillery.NoBarrel>Barrel worn out — sustained fire halted. Replace the reinforced barrel.</DMSE.Artillery.NoBarrel>
+  <DMSE.Artillery.NoBarrel>Barrel worn out: sustained fire halted. Replace the reinforced barrel.</DMSE.Artillery.NoBarrel>
   <DMSE.BVR.DeviceInactive>Device is inactive (no power, broken down, or switched off).</DMSE.BVR.DeviceInactive>
   <!-- State strings (used in StopDesc) -->
   <DMSE.Artillery.StateCooldown>reloading, {0} remaining</DMSE.Artillery.StateCooldown>

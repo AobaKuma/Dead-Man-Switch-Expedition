@@ -9,10 +9,9 @@
   <DMSE.MissileBase.RelocatedDesc>一處敵方導彈陣地在部署後完成射擊任務並轉移，防止殖民地反制。</DMSE.MissileBase.RelocatedDesc>
   <DMSE.MissileBase.Destroyed>導彈陣地已摧毀</DMSE.MissileBase.Destroyed>
   <DMSE.MissileBase.DestroyedDesc>殖民者已摧毀敵方導彈陣地的所有雷達與發射設施。來自該陣地的導彈威脅已解除。</DMSE.MissileBase.DestroyedDesc>
-  <DMSE.MissileBase.ShuttleBlocked>此區域位於敵方導彈陣地的防空封鎖範圍內（{0} 格），無法進行穿梭機起降。</DMSE.MissileBase.ShuttleBlocked>
-  <DMSE.MissileBase.ReentryBlockedIn>地面通道封鎖中——敵方整備防線（{0}）</DMSE.MissileBase.ReentryBlockedIn>
-  <DMSE.MissileBase.ReentryBlocked>通道封鎖——敵方整備防線（{0}）</DMSE.MissileBase.ReentryBlocked>
-  <DMSE.MissileBase.ArrivedLetter>你們抵達了一處導彈陣地——敵方已在此部署火控雷達與導彈發射架，不斷向周圍殖民地發射打擊。摧毀所有雷達可瓦解其打擊能力。</DMSE.MissileBase.ArrivedLetter>
+  <DMSE.MissileBase.ReentryBlockedIn>地面通道封鎖中，敵方整備防線（{0}）</DMSE.MissileBase.ReentryBlockedIn>
+  <DMSE.MissileBase.ReentryBlocked>通道封鎖，敵方整備防線（{0}）</DMSE.MissileBase.ReentryBlocked>
+  <DMSE.MissileBase.ArrivedLetter>你們抵達了一處導彈陣地。敵方已在此部署火控雷達與導彈發射架，不斷向周圍殖民地發射打擊。摧毀所有雷達可瓦解其打擊能力。</DMSE.MissileBase.ArrivedLetter>
   <DMSE.MissileBase.SiteDesc>一處配備火控雷達與導彈發射架的機動戰術彈道導彈陣地。陣地會在完成任務後轉移，以躲避反制。</DMSE.MissileBase.SiteDesc>
 
   <!-- EN: Launch Missile -->
@@ -38,7 +37,7 @@
   <DMSE.Alert.HuntdownThreatCritical.Desc>石碑的位置已被追蹤，追捕小隊和可能的空襲將很快到達，請在為時已晚之前轉移。</DMSE.Alert.HuntdownThreatCritical.Desc>
 
   <!-- EN: {0} drop pods will breach in {1} -->
-  <DMSE.Alert.Pods>{0} 個來襲目標 — 攔截窗口剩餘 {1}</DMSE.Alert.Pods>
+  <DMSE.Alert.Pods>{0} 個來襲目標，攔截窗口剩餘 {1}</DMSE.Alert.Pods>
   <DMSE.Alert.Pods.Window.Midcourse>中過程攔截窗口：{0}</DMSE.Alert.Pods.Window.Midcourse>
   <DMSE.Alert.Pods.Window.Terminal>末端攔截窗口（CIWS）：{0}</DMSE.Alert.Pods.Window.Terminal>
   <DMSE.Alert.Pods.Target>  · {0}  【{1}】</DMSE.Alert.Pods.Target>
@@ -125,9 +124,9 @@
   <DMSE.Alert.Exist.IsMissileBase>這是一處運作中的導彈陣地。提前結束觀察將讓敵方人員得以重整並重置其防禦。</DMSE.Alert.Exist.IsMissileBase>
   <DMSE.Alert.Exist.ClickHint>點擊以提前結束觀察。</DMSE.Alert.Exist.ClickHint>
   <DMSE.Alert.Exist.EndEarly.Confirm>現在就結束觀察？地圖將不再被保留，可能會被遊戲清理。</DMSE.Alert.Exist.EndEarly.Confirm>
-  <DMSE.Alert.Exist.EndEarly.Confirm.MissileBase>提前結束觀察？\n\n敵方人員將有機會重整——該導彈陣地的防禦與計時器都會重置，如同觀察從未發生。\n\n此操作無法復原。</DMSE.Alert.Exist.EndEarly.Confirm.MissileBase>
+  <DMSE.Alert.Exist.EndEarly.Confirm.MissileBase>提前結束觀察？\n\n敵方人員將有機會重整，該導彈陣地的防禦與計時器都會重置，如同觀察從未發生。\n\n此操作無法復原。</DMSE.Alert.Exist.EndEarly.Confirm.MissileBase>
   <DMSE.Alert.Exist.ObservationEnded>觀察已提前結束。敵軍可能會重整。</DMSE.Alert.Exist.ObservationEnded>
-  <DMSE.Alert.PlayerMissiles.Label>{0} 枚導彈飛行中 — 首波落地倒數 {1}</DMSE.Alert.PlayerMissiles.Label>
+  <DMSE.Alert.PlayerMissiles.Label>{0} 枚導彈飛行中，首波落地倒數 {1}</DMSE.Alert.PlayerMissiles.Label>
   <DMSE.Alert.PlayerMissiles.MapHeader>目標：{0}</DMSE.Alert.PlayerMissiles.MapHeader>
   <DMSE.Alert.PlayerMissiles.WaveImpact>  落地倒數 {0}：</DMSE.Alert.PlayerMissiles.WaveImpact>
   <DMSE.Alert.PlayerMissiles.Target>    · {0}  ({1},{2})  【{3}】</DMSE.Alert.PlayerMissiles.Target>
@@ -159,7 +158,7 @@
   <DMSE.Missile.Stat.NoTerminalGuidance>無導引能力：無法追蹤移動目標，也無法跨圖層打擊</DMSE.Missile.Stat.NoTerminalGuidance>
   <DMSE.MissileLauncher.OutOfRange>目標超出導彈射程（{0} 格）。</DMSE.MissileLauncher.OutOfRange>
   <DMSE.MissileLauncher.RangeLabel>{0} / {1} 格</DMSE.MissileLauncher.RangeLabel>
-  <DMSE.MissileLauncher.NoTargetHere>此處沒有目標——導彈將會落空</DMSE.MissileLauncher.NoTargetHere>
+  <DMSE.MissileLauncher.NoTargetHere>此處沒有目標，導彈將會落空</DMSE.MissileLauncher.NoTargetHere>
   <DMSE.Missile.CrossLayerNeedsGuidance>跨圖層打擊需要具導引能力的導彈；慣性制導與無導引彈藥無法做到。</DMSE.Missile.CrossLayerNeedsGuidance>
   <DMSE.Missile.Cat.Warhead>彈頭</DMSE.Missile.Cat.Warhead>
   <DMSE.Missile.Cat.Guidance>導引</DMSE.Missile.Cat.Guidance>
@@ -167,11 +166,11 @@
   <DMSE.Missile.Cat.Payload>特殊酬載</DMSE.Missile.Cat.Payload>
   <DMSE.Missile.Inspect>彈體：{0}\n彈頭：{1}\n爆炸：半徑 {2} / 傷害 {3}</DMSE.Missile.Inspect>
   <DMSE.Missile.NeedResources>裝配所需：{0}</DMSE.Missile.NeedResources>
-  <DMSE.Missile.ReadyToAssemble>資源已備齊——確認後開始裝配</DMSE.Missile.ReadyToAssemble>
+  <DMSE.Missile.ReadyToAssemble>資源已備齊，確認後開始裝配</DMSE.Missile.ReadyToAssemble>
   <DMSE.Missile.NoResources>沒有可用於裝配的資源</DMSE.Missile.NoResources>
   <DMSE.Missile.EditingSlot>正在編輯架上第 1 枚（共 {0} 枚）</DMSE.Missile.EditingSlot>
   <DMSE.Missile.ConfirmAssembly>加入裝配佇列</DMSE.Missile.ConfirmAssembly>
-  <DMSE.Missile.AssemblyQueued>已加入佇列——殖民者即將開始裝配</DMSE.Missile.AssemblyQueued>
+  <DMSE.Missile.AssemblyQueued>已加入佇列，殖民者即將開始裝配</DMSE.Missile.AssemblyQueued>
   <DMSE.Missile.ResetToCurrent>還原為已裝配設定</DMSE.Missile.ResetToCurrent>
   <DMSE.MissileLauncher.LaunchCooldown>發射軌重新裝填中：{0}</DMSE.MissileLauncher.LaunchCooldown>
   <DMSE.MissileLauncher.Rail.NoMissileLoaded>未裝填導彈</DMSE.MissileLauncher.Rail.NoMissileLoaded>
@@ -215,19 +214,19 @@
   <DMSE.MissileLauncher.Ballistic.Loaded>彈道導彈：已裝配，可發射</DMSE.MissileLauncher.Ballistic.Loaded>
   <DMSE.MissileLauncher.Ballistic.LoadedWith>彈道導彈已裝填：{0}</DMSE.MissileLauncher.Ballistic.LoadedWith>
   <DMSE.MissileLauncher.Ballistic.AwaitingAssembly>彈道導彈：等待殖民者完成裝配</DMSE.MissileLauncher.Ballistic.AwaitingAssembly>
-  <DMSE.MissileLauncher.Ballistic.Unloaded>彈道發射井：未裝填—請在裝配分頁設定</DMSE.MissileLauncher.Ballistic.Unloaded>
+  <DMSE.MissileLauncher.Ballistic.Unloaded>彈道發射井：未裝填，請在裝配分頁設定</DMSE.MissileLauncher.Ballistic.Unloaded>
 
   <!-- 火砲打擊（CompArtilleryStrike） -->
   <DMSE.Artillery.Fire>火砲射擊</DMSE.Artillery.Fire>
   <DMSE.Artillery.FireDesc>選擇世界地圖上的目標持續砲擊，直到下令停止。</DMSE.Artillery.FireDesc>
   <DMSE.Artillery.Stop>停止射擊</DMSE.Artillery.Stop>
   <DMSE.Artillery.StopDesc>停止持續射擊。目前狀態：{0}</DMSE.Artillery.StopDesc>
-  <DMSE.Artillery.TooClose>目標距離太近——最小射程為 {0} 格。</DMSE.Artillery.TooClose>
+  <DMSE.Artillery.TooClose>目標距離太近，最小射程為 {0} 格。</DMSE.Artillery.TooClose>
   <DMSE.Artillery.NoFireControl>沒有具備空閒引導通道的火控雷達。</DMSE.Artillery.NoFireControl>
-  <DMSE.Artillery.NoAmmo>未裝填砲彈——持續射擊已停止。</DMSE.Artillery.NoAmmo>
+  <DMSE.Artillery.NoAmmo>未裝填砲彈，持續射擊已停止。</DMSE.Artillery.NoAmmo>
   <DMSE.Artillery.CrossLayer>砲彈沒有導引能力，無法跨圖層打擊。</DMSE.Artillery.CrossLayer>
   <DMSE.Artillery.Missed>砲擊找不到目標，已落空。</DMSE.Artillery.Missed>
-  <DMSE.Artillery.NoBarrel>砲管已耗損——持續射擊已停止，請更換強化砲管。</DMSE.Artillery.NoBarrel>
+  <DMSE.Artillery.NoBarrel>砲管已耗損，持續射擊已停止，請更換強化砲管。</DMSE.Artillery.NoBarrel>
   <DMSE.BVR.DeviceInactive>裝置不可用（無電、損壞或已關閉）。</DMSE.BVR.DeviceInactive>
   <!-- 狀態字串（用於 StopDesc） -->
   <DMSE.Artillery.StateCooldown>裝填冷卻中，剩餘 {0}</DMSE.Artillery.StateCooldown>
