@@ -20,7 +20,9 @@
     <statBases>
       <MaxHitPoints>350</MaxHitPoints>
       <Flammability>0.5</Flammability>
-      <WorkToBuild>1500</WorkToBuild>
+      <!-- 平衡（方案 B）：原本 1500 比原版小型機槍塔（1800）還低，卻有 29 DPS、還只佔 1x1；
+           拉到 6000 讓工時對齊它的火力檔次。連發同時 15 → 10。 -->
+      <WorkToBuild>6000</WorkToBuild>
       <Beauty>-2</Beauty>
       <ShootingAccuracyTurret>0.94</ShootingAccuracyTurret>
     </statBases>
@@ -99,7 +101,7 @@
         <ticksBetweenBurstShots>5</ticksBetweenBurstShots>
         <requireLineOfSight>true</requireLineOfSight>
         <ai_AvoidFriendlyFireRadius>7.9</ai_AvoidFriendlyFireRadius>
-        <burstShotCount>15</burstShotCount>
+        <burstShotCount>10</burstShotCount>
         <soundCast>Shot_AssaultRifle</soundCast>
         <soundCastTail>GunTail_Heavy</soundCastTail>
         <muzzleFlashScale>10</muzzleFlashScale>
@@ -130,7 +132,8 @@
     <statBases>
       <MaxHitPoints>800</MaxHitPoints>
       <Flammability>0.5</Flammability>
-      <WorkToBuild>6600</WorkToBuild>
+      <!-- 平衡（方案 B）：6600 → 12000；彈頭 30 → 22（DPS 193 → 142）。 -->
+      <WorkToBuild>12000</WorkToBuild>
       <Beauty>-1</Beauty>
       <ShootingAccuracyTurret>1</ShootingAccuracyTurret>
     </statBases>
@@ -267,7 +270,7 @@
     </graphicData>
     <projectile>
       <damageDef>Bullet</damageDef>
-      <damageAmountBase>30</damageAmountBase>
+      <damageAmountBase>22</damageAmountBase>
       <armorPenetrationBase>0.44</armorPenetrationBase>
       <stoppingPower>6</stoppingPower>
       <speed>102</speed>
@@ -310,7 +313,8 @@
     <statBases>   <!--================ HP, mass, and work amount ================-->
       <MaxHitPoints>2250</MaxHitPoints>
       <Flammability>0.4</Flammability>
-      <WorkToBuild>8500</WorkToBuild>
+      <!-- 平衡（方案 B）：8500 → 10000；直接命中 70 → 95（DPS 44 → 60，另加 30 傷的錐形爆散未動）。 -->
+      <WorkToBuild>10000</WorkToBuild>
       <Beauty>-1</Beauty>
       <ShootingAccuracyTurret>1.00</ShootingAccuracyTurret>
     </statBases>
@@ -432,7 +436,7 @@
       <explosionDelay>1</explosionDelay>
       <soundExplode>Explosion_Rocket</soundExplode>
       <damageDef>Bullet</damageDef>
-      <damageAmountBase>70</damageAmountBase>
+      <damageAmountBase>95</damageAmountBase>
       <armorPenetrationBase>0.91</armorPenetrationBase>
       <stoppingPower>12</stoppingPower>
       <speed>121</speed>

@@ -89,6 +89,33 @@
     </costList>
   </DMSE.MissilePartDef>
 
+  <!-- 集束子彈戰鬥部：Impact 時在落點四周「spawn 實體破片彈」，而不是只做多點爆炸。
+       與載荷的 DMSE.PayloadEffect_Cluster 差別：破片會飛、會打到路徑上的其他人，
+       並照 CE 的護甲與掩護規則結算。
+       子彈數 = clusterBurstCount + payloadCapacity × countPerCapacity（上限 maxCount）。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Ballistic_Warhead_ClusterBomblet</defName>
+    <label>cluster bomblet warhead</label>
+    <description>A warhead that opens over the target and scatters a cloud of small fragmentation submunitions, each a real projectile falling on its own path rather than a single point of blast, so the damage creeps through a whole compound instead of one cell.</description>
+    <category>Warhead</category>
+    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_Tochka</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
+    <warheadEffect Class="DMSE.WarheadEffect_ClusterBomblets">
+      <projectile>DMSE_Bullet_AirburstFrag</projectile>
+      <clusterBurstCount>6</clusterBurstCount>
+      <countPerCapacity>2</countPerCapacity>
+      <forceMissingRange>9</forceMissingRange>
+      <maxCount>48</maxCount>
+    </warheadEffect>
+    <costList>
+      <Steel>60</Steel>
+      <Chemfuel>40</Chemfuel>
+      <DMSE_TantastenAlloy>10</DMSE_TantastenAlloy>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_Ballistics</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
   <!-- 鎢芯穿甲：貫穿厚岩頂、2 格爆炸，用於打擊地下設施。 -->
   <DMSE.MissilePartDef>
     <defName>DMSE_Ballistic_Warhead_TungstenPenetrator</defName>

@@ -8,20 +8,40 @@ CSC = r"C:\Program Files\dotnet\sdk\10.0.402\Roslyn\bincore\csc.dll"
 
 def find_cmdline(path):
     data = open(path, "r", encoding="utf-8", errors="replace").read()
-    idx = data.find("csc.exe /noconfig")
-    if idx < 0:
-        return None
-    end = data.find("\n", idx)
-    line = data[idx:end] if end > 0 else data[idx:]
-    return re.sub(r"\s*\(工作 ID:\d+\)\s*$", "", line)
+    best = None
+    start = 0
+    while True:
+        idx = data.find("csc.exe /noconfig", start)
+        if idx < 0:
+            break
+        end = data.find("\n", idx)
+        line = data[idx:end] if end > 0 else data[idx:]
+        line = re.sub(r"\s*\(工作 ID:\d+\)\s*$", "", line)
+        if best is None or len(line) > len(best):
+            best = line
+        start = idx + 1
+    return best
+
+
+def _build():
+    with open(LOG, "w", encoding="utf-8") as log:
+        subprocess.run(["dotnet", "build", "--nologo", "-v:diag"], cwd=PROJ,
+                       stdout=log, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL)
 
 
 def main():
     # 先讓 MSBuild 產生命令列（它自己會在 Csc 任務失敗，無妨——我們只要那行命令列）。
-    with open(LOG, "w", encoding="utf-8") as log:
-        subprocess.run(["dotnet", "build", "--nologo", "-v:diag", "-t:CoreCompile"], cwd=PROJ,
-                       stdout=log, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL)
+    # 必須用預設 target：-t:CoreCompile 不會跑 ResolveReferences，產出的命令列沒有參考組件。
+    _build()
     line = find_cmdline(LOG)
+    if not line or "/reference:" not in line:
+        # 沒有觸發編譯（增量跳過）：刪掉輸出逼它重編一次
+        for p in ("obj/Debug/DMSE.dll", "obj/Debug/refint/DMSE.dll"):
+            fp = os.path.join(PROJ, p)
+            if os.path.exists(fp):
+                os.remove(fp)
+        _build()
+        line = find_cmdline(LOG)
     if line:
         # 保留原本的引號：rsp 與命令列的引號規則一致，直接用「空白分隔、引號內不切」切
         args = re.findall(r'(?:[^\s"]+|"[^"]*")+', line)

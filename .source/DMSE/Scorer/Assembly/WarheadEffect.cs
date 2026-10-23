@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -158,6 +159,112 @@ namespace DMSE
     //  狂暴脈衝（Berserk Pulse）
     //  N 半徑內所有生物進入狂暴狀態（不含玩家陣營可選）。
     // ============================================================
+    // ============================================================
+    //  集束子彈（Cluster bomblets）
+    //  與 PayloadEffect_Cluster 的差別：那個是「多點爆炸」，這個是**真的 spawn 實體
+    //  Projectile**，所以破片會飛、會打到路上的人、會被 CE 的護甲與掩護規則處理。
+    //  欄位刻意對齊 FFF 的 ModExtension_ClusterBomb（projectile／clusterBurstCount／
+    //  forceMissingRange），兩邊的設定值可以直接互相搬。
+    // ============================================================
+    public class WarheadEffect_ClusterBomblets : WarheadEffect
+    {
+        /// <summary>子彈 def（必須是 Projectile 子類）。</summary>
+        public ThingDef projectile;
+
+        /// <summary>基礎子彈數（不受載荷容量影響的部分）。</summary>
+        public int clusterBurstCount = 6;
+
+        /// <summary>每點 payloadCapacity 追加的子彈數。</summary>
+        public float countPerCapacity = 1f;
+
+        /// <summary>撒佈半徑（格）：每枚子彈朝落點周圍這個範圍內的隨機格飛。</summary>
+        public float forceMissingRange = 6f;
+
+        /// <summary>子彈數上限，避免大當量戰鬥部把地圖塞滿。</summary>
+        public int maxCount = 60;
+
+        /// <summary>
+        /// 是否套用「打到非敵對勢力就扣聲望」的修正。
+        /// 只對**玩家發射**的子母彈生效：敵方打來的子母彈不該動到玩家與中立勢力的關係。
+        /// </summary>
+        public bool correctNeutralGoodwill = true;
+
+        /// <summary>
+        /// 被波及的非敵對勢力扣多少聲望（正值，實際為扣減）。
+        /// FFF 原本是「把關係壓到 -10」（+80 的商隊會直接掉到 -10），這裡改成扣固定點數。
+        /// </summary>
+        public int goodwillPenalty = 10;
+
+        public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
+        {
+            if (projectile == null || map == null || !center.InBounds(map)) { return; }
+
+            int count = Mathf.Clamp(
+                clusterBurstCount + Mathf.FloorToInt(Mathf.Max(0f, N) * countPerCapacity),
+                1, maxCount);
+
+            List<IntVec3> cells = GenRadial.RadialCellsAround(center, forceMissingRange, true)
+                .Where(c => c.InBounds(map))
+                .ToList();
+            if (cells.Count == 0) { return; }
+
+            Thing launcher = MissileImpactUtility.Instigator;
+            Vector3 origin = center.ToVector3Shifted();
+            for (int i = 0; i < count; i++)
+            {
+                IntVec3 target = cells.RandomElement();
+                Projectile shell = (Projectile)GenSpawn.Spawn(projectile, center, map, WipeMode.Vanish);
+                shell.Launch(launcher ?? (Thing)shell, origin,
+                    new LocalTargetInfo(target), new LocalTargetInfo(target),
+                    (ProjectileHitFlags)(-1));
+            }
+
+            // 只有玩家的彈才動聲望：敵方打來的子母彈炸到中立勢力，不該由玩家買單。
+            if (correctNeutralGoodwill && attacker != null && attacker.IsPlayer)
+            {
+                CorrectNeutralGoodwill(cells, map, attacker);
+            }
+        }
+
+        /// <summary>
+        /// 撒佈範圍內任何「非玩家、非敵對」陣營的活著的 Pawn，該陣營對發射方扣
+        /// <see cref="goodwillPenalty"/> 點聲望。
+        /// 與 FFF 的差別：FFF 是「把關係壓到 -10」（對高好感勢力等於一次扣掉 80+），
+        /// 這裡改成固定扣點，且只處理玩家發射的彈。
+        /// </summary>
+        private void CorrectNeutralGoodwill(List<IntVec3> cells, Map map, Faction attacker)
+        {
+            if (attacker == null) { return; }
+            int delta = -Mathf.Abs(goodwillPenalty);
+            if (delta == 0) { return; }
+
+            for (int i = 0; i < cells.Count; i++)
+            {
+                List<Thing> things = cells[i].GetThingList(map);
+                for (int j = 0; j < things.Count; j++)
+                {
+                    if (!(things[j] is Pawn pawn)) { continue; }
+                    if (pawn.Dead || pawn.Faction == null || pawn.Faction.IsPlayer) { continue; }
+                    if (FactionUtility.HostileTo(pawn.Faction, attacker)) { continue; }
+
+                    pawn.Faction.TryAffectGoodwillWith(attacker, delta, true, false);
+                }
+            }
+        }
+
+        public override IEnumerable<string> ConfigErrors(MissilePartDef parent)
+        {
+            if (projectile == null)
+            {
+                yield return $"WarheadEffect_ClusterBomblets 未指定 projectile（{parent?.defName}）。";
+            }
+            else if (!typeof(Projectile).IsAssignableFrom(projectile.thingClass))
+            {
+                yield return $"WarheadEffect_ClusterBomblets.projectile={projectile.defName} 不是 Projectile 子類。";
+            }
+        }
+    }
+
     // ============================================================
     //  溫壓（Thermobaric / MAC）
     //  小半徑但近距離燒傷＋點燃；密閉空間（房間）效果最明顯。

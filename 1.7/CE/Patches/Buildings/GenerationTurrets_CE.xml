@@ -100,8 +100,8 @@
 					<warmupTime>1.5</warmupTime>
 					<range>70</range>
 					<minRange>6</minRange>
-					<ticksBetweenBurstShots>4</ticksBetweenBurstShots>
-					<burstShotCount>6</burstShotCount>
+					<ticksBetweenBurstShots>8</ticksBetweenBurstShots>
+					<burstShotCount>3</burstShotCount>
 					<soundCast>DMS_Shot_GAU</soundCast>
 					<soundCastTail>GunTail_Heavy</soundCastTail>
 					<muzzleFlashScale>12</muzzleFlashScale>
