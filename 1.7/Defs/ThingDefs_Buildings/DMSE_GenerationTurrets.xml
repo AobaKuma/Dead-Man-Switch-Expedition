@@ -314,14 +314,27 @@
        DMS 核心的 About.xml 已把 AOBA.Framework 列為依賴，所以這個 thingClass 一定存在；
        DMSE 的 Dawnblade 砲彈早就在用 Fortified.Projectile_ConeExplosive。
        注意 FFF 的行為：解體是 Destroy 而不是 Impact，所以砲彈本身沒有直接命中傷害，
-       全部傷害來自破片彈與解體時的小爆炸；另外它會把爆炸範圍內非敵對勢力的聲望
-       強制拉到 -10（打中立地盤時要留意）。 -->
+       全部傷害來自破片彈（每枚＝錐形破片＋落地小爆炸）與解體時的小爆炸；
+       另外它對「玩家發射、波及非敵對勢力」的每個勢力扣 10 點聲望
+       （1.7 版是固定 -10，不是舊註解說的壓到 -10，見 Projectile_ClusterBomb.CorrectPawnGoodwill）。 -->
 
-  <!-- 破片彈：由上面的空爆彈撒出，落地小爆炸。 -->
+  <!-- 破片彈：由上面的空爆彈撒出。
+       2026-10-24 起 thingClass 由 Projectile_Explosive 改成 FFF 的
+       Fortified.Projectile_ConeExplosive：破片散到空地時，0.9 格圓形爆炸常常只擦到一兩格，
+       談不上面殺傷；錐形爆炸沿「每枚破片自己的飛行方向」鋪開，散開後才有穩定的面殺傷。
+       流程（已對 1.7/Fortified.dll 反編譯核對，不是只看原始碼）：
+       1. Projectile_ConeExplosive.Impact 先讀 Fortified.ExplosiveExtension，
+          以 preExplosionOffset 把錐心沿飛行方向前推、用 range／swayAngle 開扇形，
+          做一次 GenExplosion（忽略其他投射物、damageFalloff 未傳 → 不做距離衰減）；
+       2. 再呼叫 Projectile_Explosive.Impact → 照舊做 def 上的 0.9 格圓形爆炸。
+       所以每枚破片＝「錐形 8 傷害（Bomb）＋ 命中格 0.9 格 8 傷害」。
+       傷害維持 8（與改動前單發破片相同），變大的只有覆蓋面積。
+       同一個 def 也被彈道導彈的集束子彈戰鬥部（DMSE_Ballistic_Warhead_ClusterBomblet，
+       最多 48 枚）共用，那邊會一起變成錐形破片，威力與瞬間爆炸次數都會上升。 -->
   <ThingDef ParentName="BaseBullet">
     <defName>DMSE_Bullet_AirburstFrag</defName>
     <label>airburst fragmentation submunition</label>
-    <thingClass>Projectile_Explosive</thingClass>
+    <thingClass>Fortified.Projectile_ConeExplosive</thingClass>
     <graphicData>
       <texPath>Things/Projectile/Bullet_Big</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -332,6 +345,23 @@
       <explosionRadius>0.9</explosionRadius>
       <speed>60</speed>
     </projectile>
+    <modExtensions>
+      <!-- 欄位意義見 FFF 的 Projectile_ConeExplosive.DoExplosion。damage 一定要明寫：
+           留空會走 FFF 的預設分支（Bullet、30 傷害、7 格、±10°），跟破片彈的定位不符。
+           armorPen 留空（-1）＝沿用 Projectile.ArmorPenetration，與改動前的圓形爆炸同為 0。
+           preExplosionOffset＝錐心沿飛行方向前推的格數，破片用 0（以命中點為錐心）。
+           range＝錐長（格）；swayAngle＝左右各幾度，50 → 100° 扇形。
+           doVisualEffects＝用原版爆炸特效、不掛 effecterDef：一次三連發會撒 18 枚破片，
+           再疊 DMS_ConeExplosion 的噴濺特效會太花。 -->
+      <li Class="Fortified.ExplosiveExtension">
+        <damage>Bomb</damage>
+        <damageAmount>8</damageAmount>
+        <preExplosionOffset>0</preExplosionOffset>
+        <range>2.9</range>
+        <swayAngle>50</swayAngle>
+        <doVisualEffects>true</doVisualEffects>
+      </li>
+    </modExtensions>
   </ThingDef>
 
   <!-- 35 毫米空爆破片彈本體。 -->
@@ -357,8 +387,11 @@
         <!-- 自家頭上不炸。刻意壓到 3：砲塔本身最短射程 3.9 格，若設太大（例如 7），
              近距離目標的砲彈會「永遠不解體 → 到點直接消失」，等於近距離完全沒有傷害。 -->
         <safetyDistance>3</safetyDistance>
-        <!-- 距目標 2~5 格解體 -->
-        <TDDistance>2~5</TDDistance>
+        <!-- 解體時機：距目標 ≤7 格、且離發射點 ≥2 格。IntRange 的 min 是「離發射點」、
+             max 是「距目標」，由 Projectile_ClusterBomb.CheckDistanceBasedDismantle 決定
+             （distanceToTarget <= max && distanceFromLauncher >= min），不是單純的「距目標 2~7 格」。
+             2026-10-24：2~5 → 2~7，提前 2 格開殼，讓子彈藥多飛 2 格再落地。 -->
+        <TDDistance>2~7</TDDistance>
         <doDismantlExplosion>true</doDismantlExplosion>
         <dismantlExplosionDam>Bomb</dismantlExplosionDam>
         <dismantlExplosionRadius>1.9</dismantlExplosionRadius>
