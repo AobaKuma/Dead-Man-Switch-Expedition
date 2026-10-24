@@ -18,12 +18,12 @@
     <baseDamageAmount>70</baseDamageAmount>
     <baseScatter>4</baseScatter>
     <baseWorldSpeedFactor>0.65</baseWorldSpeedFactor>
-    <!-- 射程：70 * 2.4 * 0.1 = 16.8 → 17 格 -->
+    <!-- 射程：70 * 2.4 * 0.1905 ≈ 32 格（以洲際彈道導彈＝民兵三型 500 格為錨點分級） -->
     <baseRange>0</baseRange>
     <terminalUpdates>1</terminalUpdates>
     <baseFuel>70</baseFuel>
     <baseSpecificImpulse>2.4</baseSpecificImpulse>
-    <rangePerFuelImpulse>0.1</rangePerFuelImpulse>
+    <rangePerFuelImpulse>0.1905</rangePerFuelImpulse>
     <incomingSkyfaller>DMSE_Incoming_Loiter</incomingSkyfaller>
     <launchProjectile>DMSE_Launch_Loiter</launchProjectile>
     <!-- 無 slots：不可自定義。 -->

@@ -18,13 +18,13 @@
     <baseDamageAmount>85</baseDamageAmount>
     <baseScatter>3</baseScatter>
     <baseWorldSpeedFactor>0.75</baseWorldSpeedFactor>
-    <!-- 射程：70 * 2.5 * 0.1 = 17.5 格（巡飛彈 ~12，中型 ~30） -->
+    <!-- 射程：70 * 2.5 * 0.2286 ≈ 40 格（以洲際彈道導彈＝民兵三型 500 格為錨點分級） -->
     <baseRange>0</baseRange>
     <!-- 具導引能力時，飛行中可更新終端位置的次數（單次修正） -->
     <terminalUpdates>1</terminalUpdates>
     <baseFuel>70</baseFuel>
     <baseSpecificImpulse>2.5</baseSpecificImpulse>
-    <rangePerFuelImpulse>0.1</rangePerFuelImpulse>
+    <rangePerFuelImpulse>0.2286</rangePerFuelImpulse>
     <incomingSkyfaller>DMSE_Incoming_LightMissile</incomingSkyfaller>
     <launchProjectile>DMSE_Launch_Light</launchProjectile>
     <slots>

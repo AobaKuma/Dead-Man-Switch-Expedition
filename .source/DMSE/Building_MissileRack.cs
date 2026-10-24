@@ -68,7 +68,7 @@ namespace DMSE
     /// 由於導彈被收入容器後為 unspawned，CompDurabilityDecay 的容器庇護判定
     /// 會沿 ParentHolder 找到此建築 → 視為受庇護（且 unspawned 物品不 tick，自然停止劣化）。
     /// </summary>
-    public class Building_MissileRack : Building, IThingHolder, IHaulDestination, IStoreSettingsParent, IMissileRack
+    public class Building_MissileRack : Building, IThingHolder, IHaulDestination, IHaulSource, IStoreSettingsParent, IMissileRack
     {
         protected ThingOwner<Thing> innerContainer;
         protected StorageSettings settings;
@@ -148,14 +148,25 @@ namespace DMSE
             if (Spawned)
             {
                 Map.haulDestinationManager.Notify_HaulDestinationChangedPriority();
+                // 立即重算容器內物品：不再符合設定的導彈會被列為可搬運，小人自動取出。
+                Map.listerHaulables.Notify_HaulSourceChanged(this);
             }
         }
+
+        // ---------------- IHaulSource ----------------
+        // 讓 ListerHaulables 檢查容器內物品；不符合儲存設定（或有更高優先儲存）時由原版搬運取出。
+        public bool HaulSourceEnabled => true;
 
         // ---------------- IHaulDestination ----------------
         public bool HaulDestinationEnabled => true;
 
         public bool Accepts(Thing t)
         {
+            // 已在架上的導彈只看設定：否則架滿時 IsInValidBestStorage 會判定「不接受」而反覆被搬走。
+            if (innerContainer.Contains(t))
+            {
+                return GetStoreSettings().AllowedToAccept(t);
+            }
             if (Full)
             {
                 return false;

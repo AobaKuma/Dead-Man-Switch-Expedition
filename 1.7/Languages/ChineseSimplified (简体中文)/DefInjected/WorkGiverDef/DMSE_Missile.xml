@@ -7,6 +7,9 @@
   <DMSE_LoadMissileLauncher.label>装填导弹发射器</DMSE_LoadMissileLauncher.label>
   <DMSE_LoadMissileLauncher.verb>装填</DMSE_LoadMissileLauncher.verb>
   <DMSE_LoadMissileLauncher.gerund>装填</DMSE_LoadMissileLauncher.gerund>
+  <DMSE_UnloadMissileRack.label>取下不符设定的导弹</DMSE_UnloadMissileRack.label>
+  <DMSE_UnloadMissileRack.verb>取下</DMSE_UnloadMissileRack.verb>
+  <DMSE_UnloadMissileRack.gerund>取下</DMSE_UnloadMissileRack.gerund>
   <DMSE_AssembleBallisticSilo.label>装配弹道导弹</DMSE_AssembleBallisticSilo.label>
   <DMSE_AssembleBallisticSilo.verb>装配</DMSE_AssembleBallisticSilo.verb>
   <DMSE_AssembleBallisticSilo.gerund>装配</DMSE_AssembleBallisticSilo.gerund>

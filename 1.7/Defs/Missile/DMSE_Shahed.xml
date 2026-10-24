@@ -12,10 +12,11 @@
     <baseDamageAmount>55</baseDamageAmount>
     <baseScatter>2</baseScatter>
     <baseWorldSpeedFactor>0.25</baseWorldSpeedFactor>
+    <!-- 射程：50 * 12 * 0.325 ≈ 195 格（以洲際彈道導彈＝民兵三型 500 格為錨點分級） -->
     <baseRange>0</baseRange>
     <baseFuel>50</baseFuel>
     <baseSpecificImpulse>12</baseSpecificImpulse>
-    <rangePerFuelImpulse>0.1</rangePerFuelImpulse>
+    <rangePerFuelImpulse>0.325</rangePerFuelImpulse>
     <incomingSkyfaller>DMSE_Incoming_Shahed</incomingSkyfaller>
     <launchProjectile>DMSE_Launch_Shahed</launchProjectile>
     <builtInGuidance Class="DMSE.GuidanceType_Inertial" />

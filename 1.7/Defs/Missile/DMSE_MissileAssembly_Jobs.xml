@@ -50,6 +50,29 @@
     </requiredCapacities>
   </WorkGiverDef>
 
+  <!-- 取下 comp 型飛彈平台（CompMissileRackStorage）上不符合儲存設定的導彈。
+       Building_MissileRack 是 IHaulSource，由原版搬運處理，不經此工作。 -->
+  <JobDef>
+    <defName>DMSE_UnloadMissileRack</defName>
+    <driverClass>DMSE.JobDriver_UnloadMissileRack</driverClass>
+    <reportString>unloading missile from TargetA.</reportString>
+  </JobDef>
+
+  <WorkGiverDef>
+    <defName>DMSE_UnloadMissileRack</defName>
+    <label>unload disallowed missiles</label>
+    <giverClass>DMSE.WorkGiver_UnloadMissileRack</giverClass>
+    <workType>Hauling</workType>
+    <verb>unload</verb>
+    <gerund>unloading</gerund>
+    <scanThings>true</scanThings>
+    <scanCells>false</scanCells>
+    <priorityInType>86</priorityInType>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
   <!-- 操作旋轉導彈發射架：由 CompMannableMissileLauncher 的右鍵「操作」指令指派（非一般 WorkGiver
        自動搜尋，語意上與 vanilla ManTurret 一致，皆由玩家下令或既有派遣邏輯觸發）。
        操作者會在進入/持續操作時自行前往鄰近儲存架取彈裝填，詳見 JobDriver_ManMissileLauncher。 -->

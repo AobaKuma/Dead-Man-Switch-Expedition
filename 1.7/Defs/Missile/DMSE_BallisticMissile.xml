@@ -20,13 +20,13 @@
     <baseDamageAmount>200</baseDamageAmount>
     <baseScatter>5</baseScatter>
     <baseWorldSpeedFactor>1.5</baseWorldSpeedFactor>
-    <!-- 射程：150 * 3 * 0.1 = 45 格（洲際範圍） -->
+    <!-- 射程：150 * 3 * 0.8667 ≈ 390 格（以洲際彈道導彈＝民兵三型 500 格為錨點分級） -->
     <baseRange>0</baseRange>
     <!-- 具導引能力時，飛行中可更新終端位置的次數（重返大氣前的有限中段修正） -->
     <terminalUpdates>2</terminalUpdates>
     <baseFuel>150</baseFuel>
     <baseSpecificImpulse>3</baseSpecificImpulse>
-    <rangePerFuelImpulse>0.1</rangePerFuelImpulse>
+    <rangePerFuelImpulse>0.8667</rangePerFuelImpulse>
     <!-- 裝配工作量：遠多於中型 -->
     <assembleWorkAmount>3600</assembleWorkAmount>
     <!-- 現役彈道彈體屬戰略系統：塔式發射架（DMSE_Ballistics）只能裝 V2，研究後才能換成本彈體 -->

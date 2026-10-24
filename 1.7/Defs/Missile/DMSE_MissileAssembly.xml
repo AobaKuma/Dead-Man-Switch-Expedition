@@ -15,12 +15,13 @@
     <baseDamageAmount>120</baseDamageAmount>
     <baseScatter>3</baseScatter>
     <baseWorldSpeedFactor>1</baseWorldSpeedFactor>
+    <!-- 射程：100 * 3 * 0.3833 ≈ 115 格（以洲際彈道導彈＝民兵三型 500 格為錨點分級） -->
     <baseRange>0</baseRange>
     <!-- 具導引能力時，飛行中可更新終端位置的次數（資料鏈可多次修正） -->
     <terminalUpdates>3</terminalUpdates>
     <baseFuel>100</baseFuel>
     <baseSpecificImpulse>3</baseSpecificImpulse>
-    <rangePerFuelImpulse>0.1</rangePerFuelImpulse>
+    <rangePerFuelImpulse>0.3833</rangePerFuelImpulse>
     <incomingSkyfaller>DMSE_Incoming_CruiseMissile</incomingSkyfaller>
     <launchProjectile>DMSE_Launch_Cruise</launchProjectile>
     <slots>
