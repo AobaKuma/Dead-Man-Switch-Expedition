@@ -19,7 +19,8 @@ namespace DMSE
         public List<Vector3> slotOffsets = new List<Vector3>();
 
         /// <summary>
-        /// 此朝向下導彈貼圖的旋轉角度（度，繞 Y 軸）。
+        /// 此朝向下導彈彈體的最終朝向（度，繞 Y 軸；0＝北、90＝東）。
+        /// 方向貼圖（Graphic_Multi）已代表的朝向會自動扣除，單張與方向貼圖填同一個值即可。
         /// 留空（null）則回退使用建築朝向（單張貼圖時旋轉、方向貼圖時不旋轉）。
         /// 設定後即與座標獨立、可單獨調整，且一律優先於自動旋轉。
         /// </summary>
@@ -147,6 +148,35 @@ namespace DMSE
             }
         }
 
+        /// <summary>若 <paramref name="ammo"/> 正由此 Comp 繪製，回傳其畫面位置相對發射物中心的偏移。</summary>
+        public bool TryGetRenderedAmmoOffset(Thing ammo, out Vector3 offset)
+        {
+            offset = Vector3.zero;
+            if (ammo == null || ammo.Graphic == null
+                || (Props.loadedHatchTexPaths != null && Props.loadedHatchTexPaths.Count > 0)) { return false; }
+            IMissileRack rack = MissileRackUtil.Of(parent);
+            if (rack == null) { return false; }
+            MissileRackExtension ext = rack.RackExt;
+            if (ext != null && !ext.ShowStoredBody) { return false; }
+
+            Rot4 rot = parent.Rotation;
+            MissileRackDirectional dir = DirectionalFor(rot);
+            bool useDirectionalSlots = dir != null && dir.slotOffsets != null && dir.slotOffsets.Count > 0;
+            List<Vector3> slots = useDirectionalSlots ? dir.slotOffsets : SharedSlots;
+            IReadOnlyList<Thing> held = rack.HeldThings;
+            int count = Mathf.Min(held.Count, Mathf.Min(slots.Count, Props.maxStored));
+            for (int i = 0; i < count; i++)
+            {
+                if (!ReferenceEquals(held[i], ammo)) { continue; }
+                Vector3 renderedPos = parent.DrawPos + (useDirectionalSlots ? slots[i] : slots[i].RotatedBy(rot));
+                renderedPos.y = AltitudeLayer.BuildingOnTop.AltitudeFor() + Props.altitudeOffset;
+                Vector3 projectileCenter = parent.TrueCenter();
+                offset = renderedPos - projectileCenter;
+                return true;
+            }
+            return false;
+        }
+
         private MissileRackDirectional DirectionalFor(Rot4 rot)
         {
             switch (rot.AsInt)
@@ -157,6 +187,20 @@ namespace DMSE
                 case Rot4.WestInt: return Props.west;
                 default: return null;
             }
+        }
+
+        /// <summary>
+        /// <paramref name="rot"/> 下所取貼圖本身代表的彈體朝向（度）。
+        /// 單張貼圖、或方向貼圖缺該向而退回北向貼圖時（例如只有 _north/_west 的 Multi 在南向）為北向
+        ///（再加上 Graphic 的 DrawRotatedExtraAngleOffset）；具該向貼圖（含東西鏡像）則為該朝向角度。
+        /// </summary>
+        private static float TextureFacingAngle(Graphic graphic, Rot4 rot, Thing thing)
+        {
+            if (rot == Rot4.North || graphic.MatAt(rot, thing) == graphic.MatAt(Rot4.North, thing))
+            {
+                return -graphic.DrawRotatedExtraAngleOffset;
+            }
+            return rot.AsAngle;
         }
 
         private List<Vector3> GenerateLineSlots()
@@ -257,7 +301,9 @@ namespace DMSE
                 Quaternion quat;
                 if (hasManualRotation)
                 {
-                    quat = manualQuat;
+                    // 覆寫角度＝彈體最終朝向；扣掉所選貼圖本身已代表的朝向，
+                    // 單張與方向貼圖的導彈混放同一架時才會指向一致。
+                    quat = manualQuat * Quaternion.Euler(0f, -TextureFacingAngle(graphic, rot, missile), 0f);
                 }
                 else if (graphic.ShouldDrawRotated)
                 {

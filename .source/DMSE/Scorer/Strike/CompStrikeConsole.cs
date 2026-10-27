@@ -29,6 +29,8 @@ namespace DMSE
 
         public int maxRoundsPerMission = 20;
 
+        public int maxRoundsPerWave = 8;
+
         public CompProperties_StrikeConsole()
         {
             compClass = typeof(CompStrikeConsole);
@@ -68,11 +70,16 @@ namespace DMSE
         public string CannotPlanReason()
         {
             if (!Active) { return "DMSE.BVR.DeviceInactive".Translate(); }
-            if (StrikeCapacity <= 0) { return "DMSE.Strike.NoFireControl".Translate(); }
             MapComponent_StrikePlanner planner = Planner;
             if (planner == null || !planner.launchers.Any(l => l.parent.Faction == Side && l.StrikeRounds.Any()))
             {
                 return "DMSE.Strike.NoStrikeRounds".Translate();
+            }
+            if (StrikeCapacity <= 0 && !planner.launchers.Where(l => l.parent.Faction == Side)
+                .SelectMany(l => l.StrikeRounds.Select(r => l.BuildFiringConfig(r)))
+                .Any(config => config != null && config.StrikeChannelCost == 0))
+            {
+                return "DMSE.Strike.NoFireControl".Translate();
             }
             return null;
         }
@@ -150,7 +157,7 @@ namespace DMSE
         /// <summary>草稿能否確認；可以時回傳 null。</summary>
         public string ValidateDraft(StrikeMission draft)
         {
-            int cap = Mathf.Max(1, StrikeCapacity);
+            int cap = StrikeCapacity;
             int rounds = draft.RoundCount;
             if (rounds == 0) { return "DMSE.Strike.NoRoundsAssigned".Translate(); }
             if (rounds > Props.maxRoundsPerMission) { return "DMSE.Strike.TooManyRounds".Translate(Props.maxRoundsPerMission); }
@@ -160,6 +167,10 @@ namespace DMSE
             }
             for (int i = 0; i < draft.waves.Count; i++)
             {
+                if (draft.waves[i].slots.Count > Props.maxRoundsPerWave)
+                {
+                    return "DMSE.Strike.WaveRoundLimit".Translate(Props.maxRoundsPerWave);
+                }
                 if (StrikeRoundUtility.PendingChannels(draft.waves[i]) > cap)
                 {
                     return "DMSE.Strike.WaveOverCap".Translate(i + 1, StrikeRoundUtility.PendingChannels(draft.waves[i]), cap);
@@ -418,7 +429,7 @@ namespace DMSE
             }
             BVRWorldTuningDef tuning = BVRWorldTuningDef.Current;
             IEnumerable<int> holds = Planner?.GuidanceReleaseTicks(Side) ?? Enumerable.Empty<int>();
-            return StrikeTimeline.Simulate(input, Mathf.Max(1, StrikeCapacity), tuning.strikeGuidanceTicks,
+            return StrikeTimeline.Simulate(input, StrikeCapacity, tuning.strikeGuidanceTicks,
                 tuning.strikeArrivalSpacingTicks, now, holds);
         }
 
@@ -443,7 +454,7 @@ namespace DMSE
         public string ValidateAdjustment(List<StrikeWave> waves)
         {
             if (mission == null) { return "DMSE.Strike.NotReady".Translate(); }
-            int cap = Mathf.Max(1, StrikeCapacity);
+            int cap = StrikeCapacity;
             List<StrikeSlot> all = waves.SelectMany(w => w.slots).ToList();
             if (mission.AllSlots.Any(s => !s.Open && !all.Contains(s))) { return "DMSE.Strike.Adjust.FixedRemoved".Translate(); }
             if (all.Count > Props.maxRoundsPerMission) { return "DMSE.Strike.TooManyRounds".Translate(Props.maxRoundsPerMission); }
@@ -451,6 +462,10 @@ namespace DMSE
             if (all.Where(s => s.round != null).GroupBy(s => s.round).Any(g => g.Count() > 1)) { return "DMSE.Strike.RoundTaken".Translate(); }
             for (int i = 0; i < waves.Count; i++)
             {
+                if (waves[i].slots.Count > Props.maxRoundsPerWave)
+                {
+                    return "DMSE.Strike.WaveRoundLimit".Translate(Props.maxRoundsPerWave);
+                }
                 int pending = StrikeRoundUtility.PendingChannels(waves[i]);
                 if (pending > cap) { return "DMSE.Strike.WaveOverCap".Translate(i + 1, pending, cap); }
             }
@@ -571,8 +586,8 @@ namespace DMSE
                     check.channels += cost;
                     if (platformReady)
                     {
+                        check.minReadyCost = check.ready == 0 ? cost : Mathf.Min(check.minReadyCost, cost);
                         check.ready++;
-                        check.minReadyCost = check.minReadyCost == 0 ? cost : Mathf.Min(check.minReadyCost, cost);
                     }
                     else if (!counted) { check.blockedPlatforms++; counted = true; }
                 }

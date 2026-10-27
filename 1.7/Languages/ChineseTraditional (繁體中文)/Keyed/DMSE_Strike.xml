@@ -24,6 +24,7 @@
   <DMSE.Strike.TargetLabel.Reach>射程內：{0}／在架 {1}</DMSE.Strike.TargetLabel.Reach>
   <DMSE.Strike.NoRoundsAssigned>至少要把一枚導彈分配到波次</DMSE.Strike.NoRoundsAssigned>
   <DMSE.Strike.TooManyRounds>每個任務最多 {0} 枚導彈</DMSE.Strike.TooManyRounds>
+  <DMSE.Strike.WaveRoundLimit>每波最多 {0} 枚導彈</DMSE.Strike.WaveRoundLimit>
   <DMSE.Strike.TooManyWaves>每個任務最多 {0} 波</DMSE.Strike.TooManyWaves>
   <DMSE.Strike.WaveOverCap>第 {0} 波需要 {1} 條導引通道；容量為 {2}</DMSE.Strike.WaveOverCap>
   <DMSE.Strike.RoundTaken>有導彈已被其他打擊任務保留</DMSE.Strike.RoundTaken>
@@ -60,7 +61,8 @@
   <!-- 規劃視窗 -->
   <DMSE.Strike.Plan.Title>波次打擊規劃：{0}</DMSE.Strike.Plan.Title>
   <DMSE.Strike.Plan.Target>目標：{0}（{1} 格）</DMSE.Strike.Plan.Target>
-  <DMSE.Strike.Plan.Channels>導引通道：{0}（空閒 {1}）· 單波上限 {0} · 導引期 {2}</DMSE.Strike.Plan.Channels>
+  <DMSE.Strike.Plan.Channels>導引通道：{0}（空閒 {1}）· 導引期 {2}</DMSE.Strike.Plan.Channels>
+  <DMSE.Strike.Plan.WaveRoundLimit>單波枚數上限：{0}</DMSE.Strike.Plan.WaveRoundLimit>
   <DMSE.Strike.Plan.SiteWarning>此據點尚未生成地圖。第一枚抵達的導彈會生成地圖，據點自己的防空（SAM 照常滿彈）隨即接手攔截還在飛的導彈。</DMSE.Strike.Plan.SiteWarning>
   <DMSE.Strike.Plan.Available>可用導彈：{0}</DMSE.Strike.Plan.Available>
   <DMSE.Strike.Plan.AddHint>點一列加一枚到選取中的波次；按住 Shift 點擊加到滿。黃色列目前無法立即發射，發射時會再檢查。</DMSE.Strike.Plan.AddHint>

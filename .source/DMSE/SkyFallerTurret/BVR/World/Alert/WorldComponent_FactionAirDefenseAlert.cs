@@ -181,7 +181,20 @@ namespace DMSE
         public WorldComponent_FactionAirDefenseAlert(World world) : base(world) { }
 
         private static AirDefenseAlertTuningDef Tuning => AirDefenseAlertTuningDef.Current;
-        public static bool Enabled => Tuning.enabled;
+
+        /// <summary>
+        /// NPC world-map detection, interception and alert escalation are gated by the radar-network research.
+        /// The tuning Def remains a player/debug master switch; the research state is authoritative for normal play.
+        /// </summary>
+        public static bool Enabled
+        {
+            get
+            {
+                if (!Tuning.enabled) { return false; }
+                ResearchProjectDef radarNetwork = DefDatabase<ResearchProjectDef>.GetNamedSilentFail("DMSE_RadarNetwork");
+                return radarNetwork != null && radarNetwork.IsFinished;
+            }
+        }
         private static int Now => Find.TickManager.TicksGame;
 
         public IEnumerable<AirDefenseSiteAlert> AllStates => siteList;

@@ -24,6 +24,7 @@
   <DMSE.Strike.TargetLabel.Reach>射程内：{0}／在架 {1}</DMSE.Strike.TargetLabel.Reach>
   <DMSE.Strike.NoRoundsAssigned>至少要把一枚导弹分配到波次</DMSE.Strike.NoRoundsAssigned>
   <DMSE.Strike.TooManyRounds>每个任务最多 {0} 枚导弹</DMSE.Strike.TooManyRounds>
+  <DMSE.Strike.WaveRoundLimit>每波最多 {0} 枚导弹</DMSE.Strike.WaveRoundLimit>
   <DMSE.Strike.TooManyWaves>每个任务最多 {0} 波</DMSE.Strike.TooManyWaves>
   <DMSE.Strike.WaveOverCap>第 {0} 波需要 {1} 条导引通道；容量为 {2}</DMSE.Strike.WaveOverCap>
   <DMSE.Strike.RoundTaken>有导弹已被其他打击任务保留</DMSE.Strike.RoundTaken>
@@ -60,7 +61,8 @@
   <!-- 规划窗口 -->
   <DMSE.Strike.Plan.Title>波次打击规划：{0}</DMSE.Strike.Plan.Title>
   <DMSE.Strike.Plan.Target>目标：{0}（{1} 格）</DMSE.Strike.Plan.Target>
-  <DMSE.Strike.Plan.Channels>引导通道：{0}（空闲 {1}）· 单波上限 {0} · 引导期 {2}</DMSE.Strike.Plan.Channels>
+  <DMSE.Strike.Plan.Channels>引导通道：{0}（空闲 {1}）· 引导期 {2}</DMSE.Strike.Plan.Channels>
+  <DMSE.Strike.Plan.WaveRoundLimit>单波枚数上限：{0}</DMSE.Strike.Plan.WaveRoundLimit>
   <DMSE.Strike.Plan.SiteWarning>此据点尚未生成地图。第一枚抵达的导弹会生成地图，据点自己的防空（SAM 照常满弹）随即接手拦截还在飞的导弹。</DMSE.Strike.Plan.SiteWarning>
   <DMSE.Strike.Plan.Available>可用导弹：{0}</DMSE.Strike.Plan.Available>
   <DMSE.Strike.Plan.AddHint>点一行加一枚到选中的波次；按住 Shift 点击加到满。黄色行目前无法立即发射，发射时会再检查。</DMSE.Strike.Plan.AddHint>

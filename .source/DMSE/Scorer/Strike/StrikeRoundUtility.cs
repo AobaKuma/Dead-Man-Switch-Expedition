@@ -235,15 +235,19 @@ namespace DMSE
 
         /// <summary>Fill waves in candidate order without splitting a missile's channel requirement.</summary>
         public static List<List<int>> AutoAssign(IReadOnlyList<int> costs, int cap, int maxWaves)
+            => AutoAssign(costs, cap, maxWaves, int.MaxValue);
+
+        /// <summary>Fill waves in candidate order with independent channel and per-wave round limits.</summary>
+        public static List<List<int>> AutoAssign(IReadOnlyList<int> costs, int cap, int maxWaves, int maxRoundsPerWave)
         {
             var waves = new List<List<int>>();
-            if (cap <= 0 || maxWaves <= 0) { return waves; }
+            if (maxWaves <= 0 || maxRoundsPerWave <= 0) { return waves; }
             int used = 0;
             for (int i = 0; i < costs.Count; i++)
             {
-                int cost = System.Math.Max(1, costs[i]);
+                int cost = System.Math.Max(0, costs[i]);
                 if (cost > cap) { continue; }
-                if (waves.Count == 0 || used + cost > cap)
+                if (waves.Count == 0 || used + cost > cap || waves[waves.Count - 1].Count >= maxRoundsPerWave)
                 {
                     if (waves.Count >= maxWaves) { break; }
                     waves.Add(new List<int>());

@@ -10,12 +10,10 @@
   <DMSE_Building_LightMissileLauncher.label>傾斜發射箱</DMSE_Building_LightMissileLauncher.label>
   <DMSE_Building_LightMissileLauncher.description>一具可容納四枚輕型導彈的傾斜發射箱，箱蓋兼作發射導軌，能自動裝填、自動發射，代價是一組液壓與電力系統，而四個發射單元共用一具箱體，讓它在有限的面積裡提供不錯的齊射能力。\n\n對地彈可對本地圖以外的目標發射；防空與兩用導彈也會由火控網指派作為攔截彈發射。</DMSE_Building_LightMissileLauncher.description>
   <DMSE_Building_LightMissileVLS.label>小型垂直發射井</DMSE_Building_LightMissileVLS.label>
-  <DMSE_Building_LightMissileVLS.description>一座 1x1 的四單元垂直發射井，井蓋與地面齊平、只能容納小型導彈，緊湊到可以沿著基地圍牆排成一圈，代價是每個單元都必須獨立裝填，而且井蓋一開就等於告訴敵人「這裡有東西」。\n\n無法安裝於重力船甲板上。</DMSE_Building_LightMissileVLS.description>
+  <DMSE_Building_LightMissileVLS.description>一座 1x1 的四單元垂直發射井，井蓋與地面齊平、只能容納小型導彈，緊湊到可以沿著基地圍牆排成一圈，代價是每個單元都必須獨立裝填，而且井蓋一開就等於告訴敵人「這裡有東西」。</DMSE_Building_LightMissileVLS.description>
   <DMSE_Building_RotaryMissileLauncher.label>防空導彈發射架</DMSE_Building_RotaryMissileLauncher.label>
   <DMSE_Building_RotaryMissileLauncher.description>一座四聯裝的防空導彈發射架，架在可旋轉的底座上，由一名操作員手動瞄準與發射，沒有自己的雷達、得靠火控雷達把目標「交給」它，操作員要做的只是在指示燈亮起時扣下扳機，然後祈禱導引頭抓得住。</DMSE_Building_RotaryMissileLauncher.description>
-  <DMSE_SkyFaller_BallisticMissile.label>彈道導彈（升空）</DMSE_SkyFaller_BallisticMissile.label>
-  <DMSE_Incoming_BallisticMissile.label>彈道導彈（來襲）</DMSE_Incoming_BallisticMissile.label>
   <DMSE_Building_BallisticSilo.label>戰略導彈發射井</DMSE_Building_BallisticSilo.label>
-  <DMSE_Building_BallisticSilo.description>一座半埋式的戰略導彈發射井，厚重的混凝土井蓋、多層減震與抑爆結構讓發射不會波及周圍，是整個基地最貴、最難摧毀、也最讓敵人頭痛的建築之一，通常只為一枚導彈而存在。\n\n彈道導彈的彈體由小人消耗原料直接在井內裝配；完成後以發射指令對世界地圖上的目標發射。\n\n無法安裝於重力船甲板上。</DMSE_Building_BallisticSilo.description>
+  <DMSE_Building_BallisticSilo.description>一座半埋式的戰略導彈發射井，厚重的混凝土井蓋、多層減震與抑爆結構讓發射不會波及周圍，是整個基地最貴、最難摧毀、也最讓敵人頭痛的建築之一，通常只為一枚導彈而存在。\n\n彈道導彈透過消耗原料直接在井內裝配。。</DMSE_Building_BallisticSilo.description>
 
 </LanguageData>

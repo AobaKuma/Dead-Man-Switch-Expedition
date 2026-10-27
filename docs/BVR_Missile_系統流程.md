@@ -7,6 +7,8 @@
 
 > 2026-10-19 波次打擊 P0：攔截彈（`MissileRoleExtension` = Interceptor）不再被對地發射軌當成輕型導彈射出；世界選靶平台改以「指定彈藥」發射（`TryLaunchRound`）；被打擊任務保留的導彈不會被單發、SAM 或裝配取用；世界防空改為依 ETA 先到先打。同日 P1：新增打擊指揮中心（`DMSE_StrikeCommandCenter`／`CompStrikeConsole`），可把在架進攻導彈分波發射，波次占用火控通道（帳本 Strike 分項）；沒有可用攔截彈的節點不再鎖定。P2：新增打擊規劃桌（`DMSE_StrikePlanningTable`，人工版），確認後由研究者計算彈道，依波次逐枚解出。P3：抵達時間軸與順序警示、組別展開指定單枚、執行中調整波次（增量計算）、打擊航跡分組警報與戰果彙總信件。P4：定時發射、目標移動 ≥ 5 格重算、誘餌酬載（`signatureFactor`）與威脅評估、NPC 陣地齊射。詳見 [波次打擊規劃 §15](BVR_波次打擊規劃.md#15-實作與驗證記錄2026-10-19)。
 
+> 2026-10-27 地圖層 SAM 接戰到落地：進入 CIWS 末端窗口後 SAM 不再停火，與 CIWS 疊加（原規則下手操 Flak 43 的 1800 ticks 窗口會吞掉早期雷達的整個預警窗口，旋轉發射軌射一發、復裝後就不再出手）；命中率的導引時間改為距落地時間（同世界層）；只在攔截彈趕得上落地時鎖定與發射。`terminalOnly` 目標（世界層漏網）仍只交給 CIWS。見 A-4、A-5。
+
 本文整理三套同屬「超視距作戰」的系統：
 
 - **A. 超視距攔截系統（BVR）** — 偵測並攔截敵方來襲空投（drop pod）**與來襲導彈**（`Projectile_MissileIncoming`；舊存檔的 `MissileIncoming` 讀檔時轉換）。
@@ -119,14 +121,19 @@ window = Σ(各運作中防禦方搜索雷達的貢獻) × distanceLevel ÷ targ
 | 巡航導彈（隱身 1） | 720（反隱身不足 ×0.4） | 7200 |
 | 彈道導彈（隱身 2） | 960（反隱身不足 ×0.4） | 6400 |
 
-多座雷達的貢獻相加。**注意**：末端窗口（WingBack 為 1800）內一律走 CIWS；只有早期預警雷達時窗口都 ≤ 1800，若同時有 CIWS，目標一進系統就直接進入末端，**中過程 SAM 不會出手**。
+多座雷達的貢獻相加。**注意**：末端窗口（WingBack、千禧年、Flak 43 皆為 1800）是 CIWS 開始射擊的時刻，**不是 SAM 停火的時刻**（2026-10-27 起）：只有早期預警雷達時窗口多半 ≤ 1800，若同時有 CIWS，目標一進系統就在末端，CIWS 與 SAM 一起接戰到落地。舊規則下這種配置的 SAM 完全不出手（或只來得及射一發）。
 
 ### A-5. 線性時間線（偵測 → 落地）
 
 ```
 每 tick：MapComponent_BVRCombat.MapComponentTick → 由 Waves 尾端往前，依 timeLeft 分階段
    │
-   ├─ timeLeft > 末端窗口  →  中過程（MidcourseDefense）
+   ├─ timeLeft > 0（非 terminalOnly 波次） →  SAM 接戰（MidcourseDefense；2026-10-27 起一路到落地，末端窗口內與 CIWS 並行）
+   │     • terminalOnly 目標（世界層漏網）略過，只交給 CIWS
+   │     • 趕得上才接戰：攔截彈升空結算時間 = 裝填彈體的發射 Projectile 朝來襲方位的升空模擬
+   │           （CompMissileLauncher_Interceptor.InterceptFlightTicks；模擬不到時用 interceptorTravelTicks）；
+   │           新鎖定要 timeLeft − 鎖定時間 > 最快結算時間，發射只選 結算時間 < timeLeft 的 SAM，
+   │           已沒有 SAM 趕得上時放掉鎖定、釋放通道
    │     • 火力通道容量 = Σ 防禦方運作中火控雷達的 max(0, maxTargets − OccupiedArtilleryChannels)
    │                       （共用池；僅計 timeLeft ≤ maxRangeTicks 的雷達；已借給火砲的通道先扣除）
    │     • 占用數 CountEngaged = 全部波次中 lockUntil ≥ 0 或攔截彈在飛的目標數
@@ -135,7 +142,8 @@ window = Σ(各運作中防禦方搜索雷達的貢獻) × distanceLevel ÷ targ
    │           lockUntil = now + lockOnTicks × (1 + 0.5×隱身差 + max(0, speed−15)/60)
    │     ② 發射：鎖定完成（lockUntil ≤ now）→ 最佳火控雷達 + 冷卻最早結束的就緒 SAM
    │           就緒 = Active（含有彈、有人操作）且不在冷卻；SAM 只是冷卻中時目標保持鎖定、續占通道
-   │           命中率 = maxHitChance × clamp01((timeLeft − 末端窗口) / guidanceAccuracyTime)
+   │           命中率 = maxHitChance × clamp01(timeLeft / guidanceAccuracyTime)（導引時間 = 距落地時間，同世界層；
+   │                    2026-10-27 前為 timeLeft − 末端窗口）
    │                    × 速度係數（>15 每單位 −1.2%，下限 0.2）
    │                    × stealthMissFactor^(stealthLevel − powerLevel)₊
    │                    + 攔截彈戰鬥部加成（連續桿 InterceptBonus = N×0.05），clamp01
@@ -148,8 +156,9 @@ window = Σ(各運作中防禦方搜索雷達的貢獻) × distanceLevel ÷ targ
    │           成功 → 地圖外攔截閃光 + RemoveTarget（乾淨消滅，【不留碎片】）
    │           落空 → 目標存活，下一 tick 重新排隊鎖定
    │
-   ├─ timeLeft ≤ 末端窗口  →  末端（TerminalDefense）
-   │     • 末端窗口 = 防禦方運作中 CIWS 的最大 terminalWindowTicks；沒有 CIWS 則為 0（全程中過程）
+   ├─ timeLeft ≤ 末端窗口（或 terminalOnly 波次）  →  另加末端 CIWS（TerminalDefense）
+   │     • 末端窗口 = 防禦方運作中 CIWS 的最大 terminalWindowTicks；沒有 CIWS 則為 0（只有 SAM）
+   │     • CIWS 與 SAM 可能打同一目標：先擊毀者移除目標，另一方的連射中止不判定、攔截彈結算時找不到目標而落空
    │     • 每具 CIWS 獨立節奏、每 tick 只處理一次：冷卻完＋有彈料 → 對己方末端波次中
    │           tickToImpact 最早者的 targets[0] 開始一輪連射；連射中跨所有末端波次以 burstTargetId 找目標
    │           整輪鎖定同一目標；每發間隔 ticksBetweenShots、耗 fuelPerShot（CompRefuelable，

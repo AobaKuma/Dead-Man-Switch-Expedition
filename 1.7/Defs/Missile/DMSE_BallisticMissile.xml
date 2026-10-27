@@ -4,43 +4,6 @@
   <!-- ==================== 彈道導彈 彈體 ====================
        第四階：長程、僅垂直發射、不可上重力船、無物品型態（直接在發射架上裝配）。
        payloadCapacity N=8，最強效果強度。 -->
-  <DMSE.MissileBodyDef>
-    <defName>DMSE_MissileBody_Ballistic</defName>
-    <label>ballistic missile body</label>
-    <description>A long-range ballistic missile chassis that lofts its warhead to the edge of the atmosphere. Assembled directly in the silo; the airframe never exists as an item. Range and payload are far greater than any cruise missile.</description>
-    <sizeClass>Ballistic</sizeClass>
-    <!-- 只能垂直發射 -->
-    <launchMode>Vertical</launchMode>
-    <!-- 在發射架上直接裝配（無物品型態）-->
-    <customizeLocation>Launcher</customizeLocation>
-    <!-- N = 8：最強效果強度 -->
-    <payloadCapacity>8</payloadCapacity>
-    <baseExplosionRadius>8</baseExplosionRadius>
-    <baseDamageDef>Bomb</baseDamageDef>
-    <baseDamageAmount>200</baseDamageAmount>
-    <baseScatter>5</baseScatter>
-    <baseWorldSpeedFactor>1.5</baseWorldSpeedFactor>
-    <!-- 射程：150 * 3 * 0.8667 ≈ 390 格（以洲際彈道導彈＝民兵三型 500 格為錨點分級） -->
-    <baseRange>0</baseRange>
-    <!-- 具導引能力時，飛行中可更新終端位置的次數（重返大氣前的有限中段修正） -->
-    <terminalUpdates>2</terminalUpdates>
-    <baseFuel>150</baseFuel>
-    <baseSpecificImpulse>3</baseSpecificImpulse>
-    <rangePerFuelImpulse>0.8667</rangePerFuelImpulse>
-    <!-- 裝配工作量：遠多於中型 -->
-    <assembleWorkAmount>3600</assembleWorkAmount>
-    <!-- 現役彈道彈體屬戰略系統：塔式發射架（DMSE_Ballistics）只能裝 V2，研究後才能換成本彈體 -->
-    <researchPrerequisites>
-      <li>DMSE_StrategicSystems</li>
-    </researchPrerequisites>
-    <incomingSkyfaller>DMSE_Incoming_BallisticMissile</incomingSkyfaller>
-    <launchProjectile>DMSE_Launch_Ballistic</launchProjectile>
-    <slots>
-      <li>Warhead</li>
-      <li>Guidance</li>
-      <li>Payload</li>
-    </slots>
-  </DMSE.MissileBodyDef>
 
   <!-- ==================== 彈道導彈 部件 Defs ====================
        所有部件均使用新式 Class 欄位；成本反映大型彈體的物料需求。
@@ -57,7 +20,7 @@
     <label>thermonuclear warhead</label>
     <description>A massive blast warhead with thermonuclear yield. No special effects: the explosion radius and damage speak for themselves.</description>
     <category>Warhead</category>
-    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_AdvancedBallistic</li><li>DMSE_MissileBody_LegacyBallistic</li></compatibleBodies>
     <explosionRadiusOffset>5</explosionRadiusOffset>
     <damageAmountOffset>200</damageAmountOffset>
     <damageDefOverride>Bomb</damageDefOverride>
@@ -78,7 +41,7 @@
     <label>airburst warhead</label>
     <description>Detonates above the target for maximum fragment coverage. When used as an interceptor, gains extra engagement rolls per engagement window.</description>
     <category>Warhead</category>
-    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_AdvancedBallistic</li><li>DMSE_MissileBody_LegacyBallistic</li></compatibleBodies>
     <warheadEffect Class="DMSE.WarheadEffect_Airburst">
       <groundDamageAmount>120</groundDamageAmount>
     </warheadEffect>
@@ -98,7 +61,7 @@
     <label>cluster bomblet warhead</label>
     <description>A warhead that opens over the target and scatters a cloud of small fragmentation submunitions, each a real projectile falling on its own path rather than a single point of blast, so the damage creeps through a whole compound instead of one cell.</description>
     <category>Warhead</category>
-    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_AdvancedBallistic</li><li>DMSE_MissileBody_LegacyBallistic</li></compatibleBodies>
     <warheadEffect Class="DMSE.WarheadEffect_ClusterBomblets">
       <projectile>DMSE_Bullet_AirburstFrag</projectile>
       <clusterBurstCount>6</clusterBurstCount>
@@ -112,7 +75,7 @@
       <DMSE_TantastenAlloy>10</DMSE_TantastenAlloy>
     </costList>
     <researchPrerequisites>
-      <li>DMSE_Ballistics</li>
+      <li>DMSE_LoiteringMunitions</li>
     </researchPrerequisites>
   </DMSE.MissilePartDef>
 
@@ -122,7 +85,7 @@
     <label>tungsten penetrator</label>
     <description>A dense tungsten rod that punches through thick roofs before detonating inside, making underground shelters no protection.</description>
     <category>Warhead</category>
-    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_AdvancedBallistic</li><li>DMSE_MissileBody_LegacyBallistic</li></compatibleBodies>
     <warheadEffect Class="DMSE.WarheadEffect_TungstenPenetrator">
       <damageAmount>200</damageAmount>
     </warheadEffect>
@@ -140,7 +103,7 @@
     <label>inertial guidance</label>
     <description>Strap-down inertial reference unit. High accuracy is unnecessary at thermonuclear yield. Aim points follow a circular normal distribution around the target map center; it does not lock buildings or units.</description>
     <category>Guidance</category>
-    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_AdvancedBallistic</li><li>DMSE_MissileBody_LegacyBallistic</li></compatibleBodies>
     <guidanceType Class="DMSE.GuidanceType_Inertial" />
     <scatterOffset>0</scatterOffset>
   </DMSE.MissilePartDef>
@@ -151,7 +114,7 @@
     <label>fire-control guidance</label>
     <description>Terminal guidance aided by the colony's fire-control radar network. Significantly tightens impact dispersion for precision strikes.</description>
     <category>Guidance</category>
-    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_AdvancedBallistic</li><li>DMSE_MissileBody_LegacyBallistic</li></compatibleBodies>
     <guidanceType Class="DMSE.GuidanceType_FireControl" />
     <scatterOffset>-3</scatterOffset>
     <costList>
@@ -159,7 +122,7 @@
       <ComponentStamped>5</ComponentStamped>
     </costList>
     <researchPrerequisites>
-      <li>DMSE_IntegratedCircuits</li>
+      <li>DMSE_FireControlNetwork</li>
     </researchPrerequisites>
   </DMSE.MissilePartDef>
 
@@ -168,7 +131,7 @@
     <label>laser terminal seeker</label>
     <description>Semi-active laser seeker for the re-entry vehicle. Locks onto the most recent laser designation your faction has painted on the target map with a laser target designator. Falls back to inertial targeting if there is none.</description>
     <category>Guidance</category>
-    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_AdvancedBallistic</li><li>DMSE_MissileBody_LegacyBallistic</li></compatibleBodies>
     <guidanceType Class="DMSE.GuidanceType_Laser" />
     <scatterOffset>-3</scatterOffset>
     <costList>
@@ -188,7 +151,7 @@
     <label>no payload</label>
     <description>No secondary payload. The primary warhead alone is typically sufficient for a ballistic strike.</description>
     <category>Payload</category>
-    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_AdvancedBallistic</li><li>DMSE_MissileBody_LegacyBallistic</li></compatibleBodies>
     <payloadEffect Class="DMSE.PayloadEffect_None" />
   </DMSE.MissilePartDef>
 
@@ -198,7 +161,7 @@
     <label>cluster payload</label>
     <description>Releases a cloud of sub-munitions across a wide area. Trades blast concentration for area coverage.</description>
     <category>Payload</category>
-    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_AdvancedBallistic</li><li>DMSE_MissileBody_LegacyBallistic</li></compatibleBodies>
     <payloadEffect Class="DMSE.PayloadEffect_Cluster">
       <subDamageAmount>80</subDamageAmount>
     </payloadEffect>
@@ -215,7 +178,7 @@
     <label>bunker buster payload</label>
     <description>A hardened, delayed-fuze penetrator charge. It bores through thick rock roofs and detonates inside, wrecking nearby structures with a focused high-penetration blast. Without a bunker buster or a penetrator warhead, a missile that strikes a mountain only detonates on the rock surface, and its seeker ignores targets under thick roofs.</description>
     <category>Payload</category>
-    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_AdvancedBallistic</li><li>DMSE_MissileBody_LegacyBallistic</li></compatibleBodies>
     <payloadEffect Class="DMSE.PayloadEffect_BunkerBuster">
       <damageAmount>220</damageAmount>
       <structureDamage>500</structureDamage>
@@ -232,7 +195,7 @@
     <label>antiparticle payload</label>
     <description>A secondary antiparticle burst that vaporises everything in range. The most destructive secondary payload available.</description>
     <category>Payload</category>
-    <compatibleBodies><li>DMSE_MissileBody_Ballistic</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_AdvancedBallistic</li></compatibleBodies>
+    <compatibleBodies><li>DMSE_MissileBody_AdvancedBallistic</li><li>DMSE_MissileBody_LegacyBallistic</li></compatibleBodies>
     <payloadEffect Class="DMSE.PayloadEffect_Antiparticle">
       <damageAmount>300</damageAmount>
     </payloadEffect>

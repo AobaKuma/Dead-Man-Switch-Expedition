@@ -730,23 +730,18 @@ static class Test
             Vector3 back = MissileMapEntryUtility.HeadingVector(heading);
             Vector3 forward = -back;
 
-            // Midcourse: just outside the entry edge, high up.
+            // Midcourse: virtual burst outside the map; only remote debris fades into view.
             var mid = InterceptEventData.Build(missile, landing, size, center, false, IntVec3.Invalid, 0f, null, 17 + (int)heading, p);
             Check(mid.hasHeading && mid.payloadKind == InterceptPayloadKind.Missile, $"intercept data reads missile heading {heading}");
             Near(mid.heading, heading, $"intercept data heading {heading}");
-            // The drawn burst (ground + height lift) sits just inside the entry edge: vanilla's edge clipper hides anything outside.
-            Vector3 edge = MissileMapEntryUtility.EdgePoint(size, landingPos, heading);
             Vector3 drawn = mid.BurstDrawPos(p); drawn.y = 0f;
-            float inset = Vector3.Dot(edge - drawn, back);
-            Check(inset >= p.drawEdgeInset - 0.01f && inset <= p.midcourseInset.max * 1.5f + 0.01f,
-                $"midcourse burst is drawn {inset:F1} cells inside the entry edge for {heading}");
-            Check(drawn.x >= p.drawEdgeInset - 0.01f && drawn.x <= size.x - p.drawEdgeInset + 0.01f
-                && drawn.z >= p.drawEdgeInset - 0.01f && drawn.z <= size.z - p.drawEdgeInset + 0.01f,
-                $"midcourse burst is drawn inside the map margin for {heading}");
+            Check(mid.remote && InterceptGeometry.DrawHidden(mid.burstGround, mid.burstHeight, size, p),
+                $"midcourse burst is hidden outside the map for {heading}");
+            Check(InterceptGeometry.DistanceOutside(size, drawn) > 0f,
+                $"midcourse burst draw position is outside the map for {heading}");
             Near(drawn.z - mid.burstGround.z, mid.burstHeight * p.heightScale, $"midcourse ground lies under the drawn burst for {heading}", 0.01f);
             Check(mid.burstHeight >= p.midcourseHeight.min && mid.burstHeight <= p.midcourseHeight.max, $"midcourse height for {heading}");
 
-            Check(!mid.remote, $"midcourse bursts are never remote ({heading})");
 
             // Terminal: at the CIWS aim cell, jittered only along the route; height follows the approach.
             IntVec3 aim = (landingPos + back * 30f).ToIntVec3();
@@ -841,8 +836,8 @@ static class Test
         Check(pod.payloadKind == InterceptPayloadKind.DropPod && Mathf.Abs(pod.heading - 200f) < 0.001f, "drop pod uses skyfaller angle");
         var none = InterceptEventData.Build(null, new IntVec3(200, 0, 125), size, center, false, IntVec3.Invalid, 0f, null, 9, p);
         Check(!none.hasHeading && Mathf.Abs(Mathf.DeltaAngle(none.heading, 90f)) < 0.5f, "missing payload falls back to center bearing");
-        Check(none.burstGround.x >= size.x - p.midcourseInset.max - 0.01f && none.burstGround.x <= size.x - p.drawEdgeInset + 0.01f,
-            "fallback midcourse burst sits just inside the east edge");
+        Check(none.remote && none.burstGround.x > size.x,
+            "fallback midcourse burst is virtual beyond the east edge");
         Near(InterceptGeometry.AverageSpeed(null), InterceptGeometry.FallbackSpeed, "unknown payload speed fallback");
 
         // A terminal burst whose height lift carries it past the north edge is no longer pulled back onto the edge:

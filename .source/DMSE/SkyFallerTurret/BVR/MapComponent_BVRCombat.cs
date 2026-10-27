@@ -313,6 +313,11 @@ namespace DMSE
             foreach (BVRTarget target in wave.targets)
             {
                 if (target.terminalOnly) continue;
+                if (target.midcourseEngagedUntil <= now && target.interceptorsInFlight > 0)
+                {
+                    // 防止遭移除／失去地圖的攔截彈讓舊存計數永久占住目標。
+                    target.interceptorsInFlight = 0;
+                }
                 if (target.midcourseEngagedUntil > now) { continue; } // 已有攔截彈在飛。
                 if (!armed)
                 {
@@ -342,8 +347,13 @@ namespace DMSE
                             hitChance = Mathf.Clamp01(hitChance + wh.warheadEffect.InterceptBonus(N));
                         }
 
-                        launcher.FireInterceptor(target, hitChance, now);
-                        target.midcourseEngagedUntil = now + launcher.Props.interceptorTravelTicks;
+                        if (!launcher.TryFireInterceptor(target, hitChance, now, out _, out int lastSpawnTick))
+                        {
+                            // 旋轉發射架尚未對準這個指定目標：保留火控鎖定並逐 tick 重試，直到砲頭對準。
+                            target.lockUntil = now + 1;
+                            continue;
+                        }
+                        target.midcourseEngagedUntil = lastSpawnTick + launcher.Props.interceptorTravelTicks;
                         target.lockUntil = -1;
 
                         // 空爆：額外對同波次其他目標進行獨立攔截擲骰

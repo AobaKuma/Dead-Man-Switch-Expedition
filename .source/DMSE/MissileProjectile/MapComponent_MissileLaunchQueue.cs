@@ -14,6 +14,10 @@ namespace DMSE
         public ThingDef def;
         public IntVec3 cell;
         public Rot4 rotation;
+        public bool hasLaunchAngle;
+        public float launchAngle;
+        public Vector3 launchOffset;
+        public bool hasLaunchOffset;
         public Thing launcher;
 
         // 對地離場
@@ -35,6 +39,10 @@ namespace DMSE
             Scribe_Defs.Look(ref def, "def");
             Scribe_Values.Look(ref cell, "cell");
             Scribe_Values.Look(ref rotation, "rotation");
+            Scribe_Values.Look(ref hasLaunchAngle, "hasLaunchAngle", false);
+            Scribe_Values.Look(ref launchAngle, "launchAngle", 0f);
+            Scribe_Values.Look(ref launchOffset, "launchOffset");
+            Scribe_Values.Look(ref hasLaunchOffset, "hasLaunchOffset", false);
             if (Scribe.mode == LoadSaveMode.Saving && launcher != null && launcher.Destroyed) { launcher = null; }
             Scribe_References.Look(ref launcher, "launcher");
             Scribe_Deep.Look(ref worldObject, "worldObject");
@@ -58,7 +66,7 @@ namespace DMSE
     public class MapComponent_MissileLaunchQueue : MapComponent
     {
         /// <summary>同一張地圖兩枚升空彈的最小間隔（tick）。</summary>
-        public const int SpacingTicks = 6;
+        public const int SpacingTicks = 15;
 
         private int lastSlotTick = -100000;
         private List<PendingMissileLaunch> pending = new List<PendingMissileLaunch>();
@@ -125,8 +133,12 @@ namespace DMSE
             }
             IntVec3 cell = launch.cell.InBounds(map) ? launch.cell : launch.cell.ClampInsideMap(map);
             return launch.interceptor
-                ? MissileProjectileMaker.LaunchInterceptor(launch.def, cell, map, launch.rotation, launcher, launch.targetId, launch.hitChance, launch.Heading)
-                : MissileProjectileMaker.LaunchDeparture(launch.def, cell, map, launch.rotation, launcher, launch.worldObject, launch.Heading);
+                ? MissileProjectileMaker.LaunchInterceptor(launch.def, cell, map, launch.rotation, launcher, launch.targetId, launch.hitChance,
+                    launch.Heading, launch.hasLaunchAngle ? launch.launchAngle : (float?)null,
+                    launch.hasLaunchOffset ? launch.launchOffset : Vector3.zero)
+                : MissileProjectileMaker.LaunchDeparture(launch.def, cell, map, launch.rotation, launcher, launch.worldObject,
+                    launch.Heading, launch.hasLaunchAngle ? launch.launchAngle : (float?)null,
+                    launch.hasLaunchOffset ? launch.launchOffset : Vector3.zero);
         }
 
         public override void ExposeData()

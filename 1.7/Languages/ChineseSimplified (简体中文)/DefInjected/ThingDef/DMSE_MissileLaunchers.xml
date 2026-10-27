@@ -13,8 +13,6 @@
   <DMSE_Building_LightMissileVLS.description>一座 1x1 的四单元垂直发射井，井盖与地面齐平、只能容纳小型导弹，紧凑到可以沿着基地围墙排成一圈，代价是每个单元都必须独立装填，而且井盖一开就等于告诉敌人「这里有东西」。\n\n无法安装于重力船甲板上。</DMSE_Building_LightMissileVLS.description>
   <DMSE_Building_RotaryMissileLauncher.label>防空导弹发射架</DMSE_Building_RotaryMissileLauncher.label>
   <DMSE_Building_RotaryMissileLauncher.description>一座四联装的防空导弹发射架，架在可旋转的底座上，由一名操作员手动瞄准与发射，没有自己的雷达、得靠火控雷达把目标「交给」它，操作员要做的只是在指示灯亮起时扣下扳机，然后祈祷导引头抓得住。</DMSE_Building_RotaryMissileLauncher.description>
-  <DMSE_SkyFaller_BallisticMissile.label>弹道导弹（升空）</DMSE_SkyFaller_BallisticMissile.label>
-  <DMSE_Incoming_BallisticMissile.label>弹道导弹（来袭）</DMSE_Incoming_BallisticMissile.label>
   <DMSE_Building_BallisticSilo.label>战略导弹发射井</DMSE_Building_BallisticSilo.label>
   <DMSE_Building_BallisticSilo.description>一座半埋式的战略导弹发射井，厚重的混凝土井盖、多层减震与抑爆结构让发射不会波及周围，是整个基地最贵、最难摧毁、也最让敌人头痛的建筑之一，通常只为一枚导弹而存在。\n\n弹道导弹的弹体由小人消耗原料直接在井内装配；完成后以发射指令对世界地图上的目标发射。\n\n无法安装于重力船甲板上。</DMSE_Building_BallisticSilo.description>
 

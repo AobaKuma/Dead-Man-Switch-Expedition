@@ -65,9 +65,17 @@ namespace DMSE
 
         // 中過程狀態：在此 tick 之前已有攔截彈在飛，避免重複指派（占用一個火力通道）。
         public int midcourseEngagedUntil = -1;
+        /// <summary>目前已發射、尚未結算的中過程攔截彈數（同一目標連射時避免首枚落空就釋放通道）。</summary>
+        public int interceptorsInFlight;
 
         // 火控鎖定：>= 0 表示已占用一個火力通道（> now 鎖定中，<= now 鎖定完成待發）。-1 = 未鎖定（含已發射）。
         public int lockUntil = -1;
+
+        public void NotifyInterceptorResolved()
+        {
+            if (interceptorsInFlight > 0) { interceptorsInFlight--; }
+            if (interceptorsInFlight == 0) { midcourseEngagedUntil = -1; }
+        }
 
         public BVRTarget() { }
 
@@ -218,6 +226,7 @@ namespace DMSE
             Scribe_Values.Look(ref speed, "speed", 15f);
             Scribe_Values.Look(ref jamStrength, "jamStrength", 0f);
             Scribe_Values.Look(ref midcourseEngagedUntil, "midcourseEngagedUntil", -1);
+            Scribe_Values.Look(ref interceptorsInFlight, "interceptorsInFlight", 0);
             Scribe_Values.Look(ref lockUntil, "lockUntil", -1);
         }
     }

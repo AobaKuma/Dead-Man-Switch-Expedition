@@ -39,8 +39,8 @@
       <DeteriorationRate>10.0</DeteriorationRate>
     </statBases>
     <costList>
-      <Chemfuel>90</Chemfuel>
-      <Steel>70</Steel>
+      <Chemfuel>75</Chemfuel>
+      <Steel>60</Steel>
       <ComponentIndustrial>1</ComponentIndustrial>
     </costList>
     <recipeMaker>
@@ -51,7 +51,7 @@
       <recipeUsers Inherit="False">
         <li>DMS_TableMachinePrinter</li>
       </recipeUsers>
-      <researchPrerequisite>DMSE_RadarBasis</researchPrerequisite>
+      <researchPrerequisite>DMSE_LoiteringMunitions</researchPrerequisite>
       <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
     </recipeMaker>
     <modExtensions>
@@ -115,7 +115,7 @@
       <recipeUsers Inherit="False">
         <li>DMS_TableMachinePrinter</li>
       </recipeUsers>
-      <researchPrerequisite>DMSE_RadarBasis</researchPrerequisite>
+      <researchPrerequisite>DMSE_LoiteringMunitions</researchPrerequisite>
       <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
     </recipeMaker>
     <modExtensions>
@@ -182,7 +182,7 @@
       <recipeUsers Inherit="False">
         <li>DMS_TableMachinePrinter</li>
       </recipeUsers>
-      <researchPrerequisite>DMSE_IntegratedCircuits</researchPrerequisite>
+      <researchPrerequisite>DMSE_FireControlNetwork</researchPrerequisite>
       <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
     </recipeMaker>
     <modExtensions>
@@ -310,9 +310,9 @@
       <DeteriorationRate>10.0</DeteriorationRate>
     </statBases>
     <costList>
-      <Chemfuel>150</Chemfuel>
-      <DMSE_TantastenAlloy>14</DMSE_TantastenAlloy>
-      <DMSE_Graphene>18</DMSE_Graphene>
+      <Chemfuel>120</Chemfuel>
+      <DMSE_TantastenAlloy>12</DMSE_TantastenAlloy>
+      <DMSE_Graphene>14</DMSE_Graphene>
       <ComponentSpacer>2</ComponentSpacer>
     </costList>
     <recipeMaker>
@@ -383,7 +383,7 @@
       <Chemfuel>270</Chemfuel>
       <DMSE_TantastenAlloy>70</DMSE_TantastenAlloy>
       <DMSE_Graphene>90</DMSE_Graphene>
-      <ComponentSpacer>4</ComponentSpacer>
+      <ComponentSpacer>6</ComponentSpacer>
     </costList>
     <recipeMaker>
       <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -454,9 +454,9 @@
       <DeteriorationRate>10.0</DeteriorationRate>
     </statBases>
     <costList>
-      <Chemfuel>300</Chemfuel>
-      <Tungsteel>70</Tungsteel>
-      <ComponentStamped>10</ComponentStamped>
+      <Chemfuel>260</Chemfuel>
+      <Tungsteel>55</Tungsteel>
+      <ComponentStamped>8</ComponentStamped>
     </costList>
     <recipeMaker>
       <workSpeedStat>GeneralLaborSpeed</workSpeedStat>

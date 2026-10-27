@@ -30,7 +30,7 @@
     <tickerType>Normal</tickerType>
     <statBases>
       <MaxHitPoints>400</MaxHitPoints>
-      <WorkToBuild>12000</WorkToBuild>
+      <WorkToBuild>8000</WorkToBuild>
       <Mass>300</Mass>
       <Flammability>0</Flammability>
     </statBases>
@@ -40,8 +40,9 @@
       <li>Stony</li>
     </stuffCategories>
     <costList>
-      <Steel>60</Steel>
-      <ComponentIndustrial>4</ComponentIndustrial>
+      <BlocksGranite>500</BlocksGranite>
+      <Steel>40</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
     </costList>
     <building>
       <destroySound>BuildingDestroyed_Metal_Small</destroySound>

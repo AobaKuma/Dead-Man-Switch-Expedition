@@ -60,6 +60,12 @@ namespace DMSE
         public float maxTurnRate = 2f;
         /// <summary>轉速從 0 升到 <see cref="maxTurnRate"/> 的 tick 數。</summary>
         public int turnRampTicks = 15;
+        /// <summary>欠阻尼轉向的自然頻率（每 tick 弧度）；調低可拉長越過目標後的回正週期。</summary>
+        public float turnNaturalFrequency = 0.18f;
+        /// <summary>欠阻尼比；低阻尼會保留較多角速度，讓過轉與反覆修正更明顯。</summary>
+        public float turnDampingRatio = 0.18f;
+        /// <summary>最大角加速度（度/tick²）；調低會放慢加速與反向煞轉，增加轉向慣性。</summary>
+        public float turnMaxAcceleration = 0.18f;
         /// <summary>
         /// 最大轉彎半徑（格）：速度快時轉速上限提高到「速度 ÷ 此半徑」，避免巡航段沿 speedCurve 加速後繞出半張地圖、
         /// 從出發方位以外的邊離場（驗收 F5：地圖中央發射、180° 迴轉時曾從西邊出圖）。低速時仍由 maxTurnRate 決定。

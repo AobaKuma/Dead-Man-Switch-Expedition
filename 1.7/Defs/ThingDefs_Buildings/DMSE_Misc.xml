@@ -29,15 +29,16 @@
     <tickerType>Normal</tickerType>
     <statBases>
       <MaxHitPoints>500</MaxHitPoints>
-      <WorkToBuild>30000</WorkToBuild>
+      <WorkToBuild>28000</WorkToBuild>
       <!-- <Mass>500</Mass> -->
       <Flammability>0</Flammability>
     </statBases>
     <size>(3,3)</size>
     <costList>
-      <DMSE_TantastenAlloy>290</DMSE_TantastenAlloy>
-      <DMSE_Graphene>375</DMSE_Graphene>
-      <ComponentSpacer>24</ComponentSpacer>
+      <DMSE_TantastenAlloy>220</DMSE_TantastenAlloy>
+      <DMSE_Graphene>260</DMSE_Graphene>
+      <ComponentSpacer>16</ComponentSpacer>
+      <ComponentControlChip>4</ComponentControlChip>
     </costList>
     <building>
       <destroySound>BuildingDestroyed_Metal_Small</destroySound>
@@ -47,7 +48,7 @@
       </buildingTags>
     </building>
     <researchPrerequisites>
-      <li>DMSE_Aerospace</li>
+      <li>DMSE_IntegratedAirDefense</li>
     </researchPrerequisites>
     <designationCategory>DMS_Category</designationCategory>
     <!-- <minifiedDef>MinifiedThing</minifiedDef> -->

@@ -8,11 +8,7 @@
   <!-- EN: Loaded missile -->
   <DMSE_Building_Scorer.comps.CompRefuelable.fuelGizmoLabel>战术巡弋飞弹</DMSE_Building_Scorer.comps.CompRefuelable.fuelGizmoLabel>
   
-  <!-- EN: cruise missile (incoming) -->
-  <DMSE_Incoming_CruiseMissile.label>巡弋飞弹（来袭）</DMSE_Incoming_CruiseMissile.label>
   
-  <!-- EN: cruise missile (leaving) -->
-  <DMSE_SkyFaller_CruiseMissile.label>巡弋飞弹（升空）</DMSE_SkyFaller_CruiseMissile.label>
   
 
   <DMSE_SkyFaller_Interceptor.label>拦截弹</DMSE_SkyFaller_Interceptor.label>

@@ -210,7 +210,7 @@ namespace DMSE
             }
             if (bestWave == null) { return null; }
 
-            IntVec3? best = null;
+            BVRTarget bestTarget = null;
             float bestDistSq = float.MaxValue;
             foreach (BVRTarget target in bestWave.targets)
             {
@@ -219,10 +219,20 @@ namespace DMSE
                 if (distSq < bestDistSq)
                 {
                     bestDistSq = distSq;
-                    best = target.position;
+                    bestTarget = target;
                 }
             }
-            return best;
+            if (bestTarget == null) { return null; }
+
+            // 中程追蹤與 CIWS 共用來襲方位基準；BVRTarget.position 是落點，直接追它會讓砲頭偏離來襲航線。
+            Vector3 landing = bestTarget.position.ToVector3Shifted();
+            float heading = InterceptGeometry.IncomingHeading(bestTarget.Payload, landing, parent.Position.ToVector3Shifted(), out bool hasHeading);
+            if (hasHeading)
+            {
+                Vector3 alongTrack = parent.Position.ToVector3Shifted() + MissileMapEntryUtility.HeadingVector(heading) * 10f;
+                return alongTrack.ToIntVec3();
+            }
+            return bestTarget.position;
         }
 
         public override void CompTick()
@@ -359,6 +369,29 @@ namespace DMSE
                 }
                 return singleAmmoSlotCache ?? (singleAmmoSlotCache = new List<Vector3> { Props.ammoOffset });
             }
+        }
+
+        /// <summary>若 <paramref name="ammo"/> 正以本 Comp 繪製，回傳該枚彈藥相對建築中心的畫面位置偏移。</summary>
+        public bool TryGetRenderedAmmoOffset(Thing ammo, out Vector3 offset)
+        {
+            offset = Vector3.zero;
+            if (!Props.drawLoadedAmmo || ammo == null || ammo.Graphic == null) { return false; }
+            ThingOwner owner = (parent as IThingHolder)?.GetDirectlyHeldThings();
+            if (owner == null) { return false; }
+
+            List<Vector3> slots = AmmoSlots;
+            int count = Mathf.Min(owner.Count, slots.Count);
+            for (int i = 0; i < count; i++)
+            {
+                if (!ReferenceEquals(owner[i], ammo)) { continue; }
+                Vector3 renderedPos = parent.DrawPos + Props.offset
+                    + (Quaternion.Euler(0f, curRotation, 0f) * slots[i]);
+                renderedPos.y = AltitudeLayer.BuildingOnTop.AltitudeFor() + Props.altitudeOffset + Props.ammoAltitudeOffset;
+                Vector3 projectileCenter = parent.TrueCenter();
+                offset = renderedPos - projectileCenter;
+                return true;
+            }
+            return false;
         }
 
         /// <summary>

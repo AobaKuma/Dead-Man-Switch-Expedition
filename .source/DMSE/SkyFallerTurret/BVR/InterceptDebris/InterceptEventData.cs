@@ -23,7 +23,7 @@ namespace DMSE
         /// <summary>爆心的假想高度（格）。</summary>
         public float burstHeight;
         /// <summary>
-        /// 遠距攔截（只有末端）：爆心是看不見的虛擬點（畫面位置在圖外或邊緣帶），不畫爆炸，殘骸從虛擬點飛進畫面時淡入。
+        /// 遠距攔截（含中過程）：爆心是看不見的虛擬點（畫面位置在圖外或邊緣帶），不畫爆炸，殘骸從虛擬點飛進畫面時淡入。
         /// </summary>
         public bool remote;
         public InterceptPayloadKind payloadKind;
@@ -39,7 +39,7 @@ namespace DMSE
 
         /// <summary>
         /// 由 BVR 目標建立。末端攔截傳 CIWS 本輪的掃射點 <paramref name="aimCell"/> 與迫近進度 <paramref name="approach"/>；
-        /// 中過程攔截傳 <see cref="IntVec3.Invalid"/>，攔截點放在入場邊緣外。
+        /// 中過程攔截傳 <see cref="IntVec3.Invalid"/>，攔截點放在入場邊緣外；只顯示淡入畫面的掉落殘骸。
         /// </summary>
         public static InterceptEventData From(BVRTarget target, Map map, bool terminal, IntVec3 aimCell, float approach = 0f,
             SoundDef sound = null, InterceptDebrisPhysics physics = null)
@@ -91,7 +91,8 @@ namespace DMSE
             {
                 if (!terminal)
                 {
-                    data.burstGround = InterceptGeometry.MidcourseBurstGround(mapSize, landingPos, heading, p, out data.burstHeight);
+                    data.burstGround = InterceptGeometry.MidcourseRemoteBurstGround(mapSize, landingPos, heading, p, out data.burstHeight);
+                    data.remote = true;
                 }
                 else
                 {

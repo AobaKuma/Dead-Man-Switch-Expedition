@@ -2,6 +2,7 @@
 
 > 開發文檔：https://docs.qq.com/doc/DRnhtVGJYVU5SUndD
 > 遠程作戰系統技術說明：[docs/BVR_Missile_系統流程.md](docs/BVR_Missile_系統流程.md)
+> 導彈與雷達科技重整執行狀態：[docs/導彈與雷達科技重整_執行計畫.md](docs/導彈與雷達科技重整_執行計畫.md)
 > 天體轉移飛行設計與實作進度：[docs/CelestialTransfer_轉移飛行重構.md](docs/CelestialTransfer_轉移飛行重構.md)
 > 三代裝備體系（老資歷／中登／小登）設計與實作計畫：[docs/三代裝備體系_實作計畫.md](docs/三代裝備體系_實作計畫.md)
 > 三代裝備物品介紹文本：[docs/三代裝備體系_物品介紹.md](docs/三代裝備體系_物品介紹.md)
@@ -85,7 +86,7 @@ _Dead-Man-Switch-Expedition/
 ### 2. 導彈自定義裝配系統
 玩家在導彈物品的 ITab 中選擇部件（戰鬥部 / 導引 / 推進 / 酬載），由小人搬料、施工裝配（Crafting 工種）；彈體由發射平台或物品 def 的 `defaultBody` 固定，物品端不可更換；固定構型的物品（V1、白蟻、萊茵女兒）以 `MissileItemExtension` 宣告彈體，同一條發射軌可裝不同型號。彈道導彈沒有物品型態，所以在**塔式發射架／戰略導彈發射井**的裝配分頁選彈體（老式 V2 / 圓點U / 現役 / 先進民兵三型，共用同一組部件；各彈體有研究門檻，未研究的在選單上顯示為鎖定）。射程由 `燃料 × 比衝` 決定，發射時於世界地圖選靶並強制受射程限制。
 
-彈道平台有兩種：3x3 封閉式**戰略導彈發射井**（`DMSE_Building_BallisticSilo`，發射不波及周圍），以及 2x2 開放式**塔式發射架**（`DMSE_Building_BallisticRack`，`DMSE_Ballistics` 即可建造，預設 V2）。塔式發射架在彈體裝配完成後會在桁架中央畫出該型號的直立彈體（換彈體就換圖），點火時尾焰與衝擊波（`CompLaunchBackblast`）燒傷、震懾半徑 3.5 格內的人並點燃可燃物，不傷建築。
+彈道平台有兩種：3x3 封閉式**戰略導彈發射井**（`DMSE_Building_BallisticSilo`，發射不波及周圍），以及 2x2 開放式**塔式發射架**（`DMSE_Building_BallisticRack`，研究「基本導彈工程」即可建造，預設 V2）。基本導彈工程同時解鎖 V2 彈體與彈道儲存架；塔式發射架在彈體裝配完成後會在桁架中央畫出該型號的直立彈體（換彈體就換圖），點火時尾焰與衝擊波（`CompLaunchBackblast`）燒傷、震懾半徑 3.5 格內的人並點燃可燃物，不傷建築。
 
 平台能裝什麼由建築的 storage filter 決定；`MissileLauncherExtension` 的 `sizeClass`／`extraSizeClasses` 必須與 filter 一致（`check_missile_content.py` 第 8 條）。攔截器只取攔截／兩用彈、對地發射只取非攔截彈（`MissileRoleExtension`）。
 
@@ -170,7 +171,7 @@ dotnet run --project .source/DMSE.BVRTests/DMSE.BVRTests.csproj -c Release --no-
 
 ### 8. 劇本與研究
 - 劇本 **The Deviant**（WIP）：殖民艦隊叛徒，駕駛偷來的引力船；含 `ScenPart_Huntdown` 追捕機制。
-- 研究樹：真空化製程、雷達、巡飛彈、軌道動力學、碳合成、微重力製造、航太應用、彈道學、積體電路、反艦導彈、戰略系統；獨立研究分頁（`KnowledgeCategoryDef`）。
+- 研究樹：早期預警與人工火控 → 基本導彈工程／雷達探測網 → 彈道平台／火控與攔截導引／精準導引與戰術導彈 → 戰略投送／相控陣與整合防空；NPC 世界地圖防空圈由雷達探測網研究啟用。另有軌道動力學、航太應用、反艦導彈等旁支；獨立研究分頁（`KnowledgeCategoryDef`）。
 
 ---
 

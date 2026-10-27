@@ -10,7 +10,7 @@ namespace DMSE
         public object launcher;
         public int flightTicks;
         public int channelCost;
-        public int Channels => System.Math.Max(1, channelCost);
+        public int Channels => System.Math.Max(0, channelCost);
         public int salvoInterval;
         public int launchCooldown;
         /// <summary>平台冷卻結束的 tick。</summary>

@@ -169,19 +169,22 @@ namespace DMSE
         }
 
         /// <summary>
-        /// 中過程攔截點（§3）：爆心的「畫面位置」在入場邊緣內側 <see cref="InterceptDebrisPhysics.midcourseInset"/> 格
-        /// （地圖外會被原版邊緣遮罩蓋掉），地面點 = 畫面位置減去高度偏移。北緣入場時地面點因此更深入圖內
-        /// （從上斜看，高空的爆心本來就在圖內某點的正上方）。
+        /// 中過程攔截的虛擬爆心：放在入場邊緣外，確保爆炸不會顯示在地圖內；殘骸從此處飛入並淡入。
         /// </summary>
-        public static Vector3 MidcourseBurstGround(IntVec3 mapSize, Vector3 landing, float heading, InterceptDebrisPhysics p, out float height)
+        public static Vector3 MidcourseRemoteBurstGround(IntVec3 mapSize, Vector3 landing, float heading, InterceptDebrisPhysics p, out float height)
         {
             landing.y = 0f;
             Vector3 edge = MissileMapEntryUtility.EdgePoint(mapSize, landing, heading);
-            Vector3 draw = edge - MissileMapEntryUtility.HeadingVector(heading) * p.midcourseInset.RandomInRange;
             height = p.midcourseHeight.RandomInRange;
-            Vector3 g = draw - new Vector3(0f, 0f, height * p.heightScale);
+            Vector3 outward = MissileMapEntryUtility.HeadingVector(heading);
+            // 北向畫面高度與飛行方向同向；南向則高度把畫面位置推回地圖，因此地面起點需額外外推。
+            float distance = p.drawEdgeInset + p.midcourseInset.RandomInRange
+                + (outward.z < 0f ? height * p.heightScale : 0f);
+            Vector3 g = edge + outward * distance;
             g.y = 0f;
-            return ClampDrawInside(g, height, mapSize, p);
+            // 側向入場時落點可能貼近地圖角落；繼續沿入場方向外推，直到畫面位置也確定在地圖外。
+            for (int i = 0; i < 64 && !DrawHidden(g, height, mapSize, p); i++) { g += outward; }
+            return g;
         }
 
         /// <summary>

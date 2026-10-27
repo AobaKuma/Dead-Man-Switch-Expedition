@@ -502,7 +502,7 @@ namespace DMSE.BVRAcceptance
                     }
                 }
                 // Without a heading the old fall is unchanged: angle -33.7, ticks within ticksToImpactRange.
-                ThingDef plainDef = DefDatabase<MissileBodyDef>.GetNamed("DMSE_MissileBody_Cruise").incomingSkyfaller;
+                ThingDef plainDef = DefDatabase<MissileBodyDef>.GetNamed("DMSE_MissileBody_Moskit").incomingSkyfaller;
                 var plain = (Projectile_MissileIncoming)MissileProjectileMaker.SpawnIncoming(plainDef, target, Home);
                 plain.bvrHandled = true;
                 MissileFlightExtension pf = plainDef.GetModExtension<MissileFlightExtension>();
@@ -808,16 +808,14 @@ namespace DMSE.BVRAcceptance
         /// <summary>Bodies whose launch projectile copies a platform launch skyfaller verbatim: must replay it tick for tick.</summary>
         private static readonly (string body, string platformSkyfaller)[] VerbatimCopies =
         {
-            ("DMSE_MissileBody_Ballistic", "DMSE_SkyFaller_BallisticMissile"),
             ("DMSE_MissileBody_Light", "DMSE_SkyFaller_LightMissile"),
             ("DMSE_MissileBody_Loiter", "DMSE_SkyFaller_Loiter"),
-            ("DMSE_MissileBody_Cruise", "DMSE_SkyFaller_CruiseMissile"),
         };
 
         public static IEnumerable<Wait> BodyLaunchProjectiles(TestContext t)
         {
             List<MissileBodyDef> bodies = DefDatabase<MissileBodyDef>.AllDefsListForReading;
-            t.Check(bodies.Count >= 16, $"{bodies.Count} missile bodies loaded");
+            t.Check(bodies.Count >= 15, $"{bodies.Count} missile bodies loaded");
             HashSet<ThingDef> distinct = new HashSet<ThingDef>();
             var launched = new List<(MissileBodyDef body, Projectile_MissileLaunch missile)>();
             var pairs = new List<Pair>();
@@ -960,10 +958,7 @@ namespace DMSE.BVRAcceptance
         {
             "DMSE_SkyFaller_LightMissile",      // hot launch
             "DMSE_SkyFaller_Loiter",            // hot launch
-            "DMSE_SkyFaller_BallisticMissile",  // cold launch, 20-tick eject
-            "DMSE_SkyFaller_CruiseMissile",     // cold launch, 40-tick eject
             "DMSE_SkyFaller_Interceptor",       // hot launch
-            "DMSE_InterceptProjectile",         // no launch effect
         };
 
         private static readonly Rot4[] Rotations = { Rot4.North, Rot4.East, Rot4.South, Rot4.West };
@@ -1147,12 +1142,10 @@ namespace DMSE.BVRAcceptance
 
         public static IEnumerable<Wait> AscentScreenshots(TestContext t)
         {
-            // Hot launch sideways (z and rotation curves), cold launch upright (eject delay), interceptor sideways.
+            // Hot launch sideways (z and rotation curves) and interceptor sideways; the ballistic/cruise skyfallers are generator templates only now.
             var shots = new (string def, Rot4 rot, string tag)[]
             {
                 ("DMSE_SkyFaller_LightMissile", Rot4.East, "light_E"),
-                ("DMSE_SkyFaller_BallisticMissile", Rot4.North, "ballistic_N"),
-                ("DMSE_SkyFaller_CruiseMissile", Rot4.West, "cruise_W"),
                 ("DMSE_SkyFaller_Interceptor", Rot4.East, "sam_E"),
             };
             int[] at = { 10, 30, 60 };

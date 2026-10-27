@@ -120,14 +120,15 @@ namespace DMSE
             finally { Rand.PopState(); }
             LastDebrisLandingCell = landing;
 
-            SoundDef s = data.sound ?? DefaultSound;
+            // 中過程攔截發生在地圖外：不播放地圖內爆炸音，也不觸發天光，只讓殘骸淡入畫面。
+            SoundDef s = data.terminal ? data.sound ?? DefaultSound : null;
             if (s != null)
             {
                 s.PlayOneShot(SoundInfo.InMap(new TargetInfo(data.landing, map)));
             }
 
-            // 攔截空爆閃光：用暖色爆炸閃光（與導彈爆炸同款），節流避免齊射過度閃爍。遠距攔截在畫面外，只剩微弱的天光。
-            if (nowTick - lastWeatherFlashTick >= WeatherFlashMinInterval)
+            // 末端攔截才觸發空爆閃光；遠距末端在畫面外，只剩微弱天光。中過程不觸發閃光。
+            if (data.terminal && nowTick - lastWeatherFlashTick >= WeatherFlashMinInterval)
             {
                 lastWeatherFlashTick = nowTick;
                 Vector2 shadow = new Vector2(Rand.Range(-4f, 4f), Rand.Range(-4f, 0f));

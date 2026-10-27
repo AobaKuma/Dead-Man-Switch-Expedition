@@ -4,8 +4,9 @@ Every MissileBodyDef gets `DMSE_Launch_<Body>` (thingClass DMSE.Projectile_Missi
   - graphic: the body's own missile texture (nose up) at its incoming drawSize;
   - flight: the <skyfaller> block of a template launch skyfaller, moved into DMSE.MissileFlightExtension unchanged;
   - effect: hot or cold launch comp with the template's exhaust/smoke curves and a per-body blast scale / eject delay.
-The four bodies that already had a dedicated launch skyfaller copy it verbatim (graphic, flight and comp),
-so their launches look exactly as before.
+The bodies that already had a dedicated launch skyfaller copy it verbatim (graphic, flight and comp),
+so their launches look exactly as before. The ballistic and cruise template skyfallers live in
+.source/Tools/launch_templates.xml (not game defs since their bodies were retired on 2026-10-27).
 
 Also inserts <launchProjectile> into each body def and writes the label translations.
 Idempotent: rerun after changing SPECS.  Usage: python .source/Tools/gen_missile_launch_defs.py [mod root]
@@ -20,15 +21,15 @@ DEFS = os.path.join(ROOT, "1.7", "Defs")
 LANG = os.path.join(ROOT, "1.7", "Languages")
 OUT_DEFS = os.path.join(DEFS, "Missile", "DMSE_MissileLaunchProjectiles.xml")
 OUT_LANG_NAME = "DMSE_MissileLaunchProjectiles.xml"
+# Template launch skyfallers that are no longer game defs (their bodies were retired 2026-10-27): read only by this script.
+TEMPLATES = os.path.join(ROOT, ".source", "Tools", "launch_templates.xml")
 
 # body suffix, template launch skyfaller, texture (None = template's), effect (None = template's comp verbatim)
 #   effect: ("hot", launchBlastScale) | ("cold", delayTicks)
 SPECS = [
     # Bodies with a dedicated launch skyfaller already: verbatim copies.
-    ("Ballistic",         "DMSE_SkyFaller_BallisticMissile", None, None),
     ("Light",             "DMSE_SkyFaller_LightMissile",     None, None),
     ("Loiter",            "DMSE_SkyFaller_Loiter",           None, None),
-    ("Cruise",            "DMSE_SkyFaller_CruiseMissile",    None, None),
     # Three-generation bodies: own texture, flight of the closest family, effect by how the real missile leaves its launcher.
     ("LegacyBallistic",   "DMSE_SkyFaller_BallisticMissile", "Things/Missile/V2/skyFaller_incoming",        ("hot", 1.2)),   # V2 lifts off its pad
     ("LegacyLoiter",      "DMSE_SkyFaller_Loiter",           "Things/Missile/V1/skyFaller_incoming",        ("hot", 0.7)),   # V1 off its ramp
@@ -47,10 +48,8 @@ SPECS = [
 
 # Launch FX profile per body (docs/導彈發射特效_重製計畫.md §5, approved 2026-10-26): written as <fxProfile> into the launch comp.
 FX_PROFILES = {
-    "Ballistic": "ColdVls",
     "Light": "SolidBooster",
     "Loiter": "Pulsejet",
-    "Cruise": "CruiseBooster",
     "LegacyBallistic": "LiquidBallistic",
     "LegacyLoiter": "Pulsejet",
     "Shahed": "SolidBooster",
@@ -129,7 +128,7 @@ def reindent(xml, indent):
 def load_defs():
     things, bodies = {}, {}
     files = {}
-    for path in glob.glob(os.path.join(DEFS, "**", "*.xml"), recursive=True):
+    for path in glob.glob(os.path.join(DEFS, "**", "*.xml"), recursive=True) + [TEMPLATES]:
         if os.path.abspath(path) == os.path.abspath(OUT_DEFS):
             continue
         text = read(path)

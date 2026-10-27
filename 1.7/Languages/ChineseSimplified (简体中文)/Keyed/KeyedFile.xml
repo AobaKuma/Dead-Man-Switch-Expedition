@@ -192,6 +192,7 @@
   <!-- 导引头选目标 -->
   <DMSE.Missile.SeekerLocked>{0}已锁定目标，导弹正在落下。</DMSE.Missile.SeekerLocked>
   <DMSE.Guidance.Inertial>惯性导引</DMSE.Guidance.Inertial>
+  <DMSE.Guidance.RadioCommand>无线电指令制导</DMSE.Guidance.RadioCommand>
   <DMSE.Guidance.ManualTarget>{0}：抵达后由你选择落点</DMSE.Guidance.ManualTarget>
   <DMSE.Guidance.AutoTarget>{0}：抵达后自动锁定目标</DMSE.Guidance.AutoTarget>
   <DMSE.LaserMark.Inspect>标定方：{0}\n剩余时间：{1}</DMSE.LaserMark.Inspect>
@@ -208,6 +209,24 @@
 
   <!-- ITab_MissileInventory（建筑库存分页） -->
   <DMSE.Tab.MissileInventory>库存</DMSE.Tab.MissileInventory>
+  <DMSE.MissileInventory.Features>特性</DMSE.MissileInventory.Features>
+  <DMSE.MissileInventory.Stat.BlastRadius>爆炸半径</DMSE.MissileInventory.Stat.BlastRadius>
+  <DMSE.MissileInventory.Stat.Damage>伤害</DMSE.MissileInventory.Stat.Damage>
+  <DMSE.MissileInventory.Unit.Tiles>格</DMSE.MissileInventory.Unit.Tiles>
+  <DMSE.MissileInventory.Feature.Mechanics>本枚导弹的生效机制</DMSE.MissileInventory.Feature.Mechanics>
+  <DMSE.MissileInventory.Feature.Warhead>主弹头伤害类型：{0}；伤害值：{1}；爆炸半径：{2} 格。载荷容量系数 N = {3}。</DMSE.MissileInventory.Feature.Warhead>
+  <DMSE.MissileInventory.Feature.InterceptBonus>拦截命中率加成：{0}%</DMSE.MissileInventory.Feature.InterceptBonus>
+  <DMSE.MissileInventory.Feature.ExtraRolls>每次拦截额外掷骰：{0} 次</DMSE.MissileInventory.Feature.ExtraRolls>
+  <DMSE.MissileInventory.Feature.RangeOffset>战斗部射程修正：{0} 格</DMSE.MissileInventory.Feature.RangeOffset>
+  <DMSE.MissileInventory.Feature.PenetratesRoof>可穿透厚岩顶，命中岩顶下目标。</DMSE.MissileInventory.Feature.PenetratesRoof>
+  <DMSE.MissileInventory.Feature.Guidance>散布半径：{0} 格；终端位置更新：{1} 次；{2}</DMSE.MissileInventory.Feature.Guidance>
+  <DMSE.MissileInventory.Feature.Guided>具终端制导，可追踪目标位置。</DMSE.MissileInventory.Feature.Guided>
+  <DMSE.MissileInventory.Feature.Unguided>不具终端制导，依默认落点散布。</DMSE.MissileInventory.Feature.Unguided>
+  <DMSE.MissileInventory.Feature.Propulsion>有效射程：{0} 格；世界移动速度倍率：{1}；燃料：{2}；比冲：{3}。</DMSE.MissileInventory.Feature.Propulsion>
+  <DMSE.MissileInventory.Feature.Payload>载荷效果依弹体容量 N = {0} 缩放；有效射程：{1} 格。</DMSE.MissileInventory.Feature.Payload>
+  <DMSE.MissileInventory.Feature.Signature>雷达截面倍率：{0}。</DMSE.MissileInventory.Feature.Signature>
+  <DMSE.MissileInventory.Feature.Jamming>干扰强度：{0}%。</DMSE.MissileInventory.Feature.Jamming>
+  <DMSE.MissileInventory.Feature.Chaff>携带箔条／干扰丝：{0} 次。</DMSE.MissileInventory.Feature.Chaff>
   <DMSE.MissileInventory.Count>已装填：{0} / {1}</DMSE.MissileInventory.Count>
   <DMSE.MissileInventory.Empty>未装填任何导弹。</DMSE.MissileInventory.Empty>
   <!-- {0} = 爆炸半径, {1} = 伤害 -->

@@ -281,9 +281,9 @@ namespace DMSE.BVRAcceptance
                 // Booster separation drops debris.
                 yield return WaitClearSky(map);
                 int chunksBefore = map.listerThings.ThingsOfDef(DMSE_DefOf.DMSE_InterceptDebrisChunk).Count;
-                Thing cruise = Launch("Cruise", cell);
+                Thing cruise = Launch("Moskit", cell);
                 LaunchFxEmitter cruiseFx = null;
-                int booster = LaunchDef("Cruise").GetCompProperties<CompProperties_EffecterLaunch>().fxProfile.boosterTicks;
+                int booster = LaunchDef("Moskit").GetCompProperties<CompProperties_EffecterLaunch>().fxProfile.boosterTicks;
                 int cruiseDelay = LaunchComp(cruise).Props.delayTicks;
                 start = Find.TickManager.TicksGame;
                 foreach (Wait w in RunTo(start, cruiseDelay + booster + 15)) { yield return w; }
@@ -310,7 +310,7 @@ namespace DMSE.BVRAcceptance
             Map map = Home;
             IntVec3 cell = Pad.CenterCell;
             List<ThingDef> defs = DefDatabase<ThingDef>.AllDefsListForReading.Where(d => d.defName.StartsWith("DMSE_Launch_")).OrderBy(d => d.defName).ToList();
-            t.Check(defs.Count >= 17, $"{defs.Count} launch defs");
+            t.Check(defs.Count >= 15, $"{defs.Count} launch defs");
             var missing = defs.Where(d => d.GetCompProperties<CompProperties_EffecterLaunch>()?.fxProfile == null).Select(d => d.defName).ToList();
             t.Check(missing.Count == 0, "every launch def has a launch FX profile" + (missing.Count > 0 ? ": missing " + string.Join(", ", missing) : ""));
             t.allowPause = true;

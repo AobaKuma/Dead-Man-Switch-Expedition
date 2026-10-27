@@ -144,6 +144,11 @@ namespace DMSE
                 foreach (Faction faction in factions)
                     nodes.Add(new BVRNode { parent = map.Parent, faction = faction, local = local });
             }
+            // Abstract NPC air-defence nodes are a world-map radar-network feature. Keep physical map
+            // radars above active for local combat, but do not synthesize or register remote NPC nodes
+            // until the player has researched the radar detection network.
+            bool npcWorldNetworkEnabled = WorldComponent_FactionAirDefenseAlert.Enabled;
+            if (npcWorldNetworkEnabled)
             foreach (MapParent parent in Find.WorldObjects.AllWorldObjects.OfType<MapParent>())
             {
                 if (parent == null || parent.Destroyed) { continue; }

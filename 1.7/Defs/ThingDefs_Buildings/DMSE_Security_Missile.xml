@@ -96,10 +96,10 @@
             <!-- 發射：取出容器中的實體飛彈，採用其自身 CompMissileConfig（逐枚數值），以 Scorer 方式打擊地圖外目標。
                  無自身設定時回退 missileBody。已取代舊 CompMissileLauncher_Scorer + CompRefuelable。 -->
             <li Class="DMSE.CompProperties_MissileRailLauncher">
-                <skyfaller>DMSE_SkyFaller_CruiseMissile</skyfaller>
-                <skyfallerIncoming>DMSE_Incoming_CruiseMissile</skyfallerIncoming>
+                <skyfaller>DMSE_Launch_Moskit</skyfaller>
+                <skyfallerIncoming>DMSE_Incoming_Moskit</skyfallerIncoming>
                 <worldObjectDef>DMSE_WorldObject_CruiseMissile</worldObjectDef>
-                <missileBody>DMSE_MissileBody_Cruise</missileBody>
+                <missileBody>DMSE_MissileBody_Moskit</missileBody>
                 <launchCooldownTicks>300</launchCooldownTicks>
                 <launchForwardCells>2</launchForwardCells>
             </li>
@@ -110,79 +110,10 @@
             <li>DMSE.ITab_MissileAssembly</li>
         </inspectorTabs>
         <researchPrerequisites>
-            <li>DMSE_Ballistics</li>
+            <li>DMSE_IntegratedCircuits</li>
         </researchPrerequisites>
     </ThingDef>
 
-    <ThingDef ParentName="SkyfallerBase">
-        <defName>DMSE_SkyFaller_CruiseMissile</defName>
-        <label>cruise missile (leaving)</label>
-        <size>(1,1)</size>
-        <graphicData>
-            <texPath>Things/Missile/Moskit/skyFaller</texPath>
-            <graphicClass>Graphic_Single</graphicClass>
-            <drawSize>3.11</drawSize>
-        </graphicData>
-        <thingClass>DMSE.ScorerProjectile</thingClass>
-        <skyfaller>
-            <movementType>Accelerate</movementType>
-            <reversed>true</reversed>
-            <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
-            <shadowSize>(2, 2)</shadowSize>
-            <ticksToDiscardInReverse>300</ticksToDiscardInReverse>
-            <ticksToImpactRange>0</ticksToImpactRange>
-            <anticipationSound>DropPod_Leaving</anticipationSound>
-            <anticipationSoundTicks>-1</anticipationSoundTicks>
-            <speedCurve>
-                <points>
-                    <li>(0,0.3)</li>
-                    <li>(0.2,0.2)</li>
-                    <li>(0.5,0.5)</li>
-                    <li>(1,1)</li>
-                </points>
-            </speedCurve>
-            <rotationCurve>
-                <points>
-                    <li>(0,-10)</li>
-                    <li>(0.30,-25)</li>
-                    <li>(0.6,-5)</li>
-                    <li>(1,0)</li>
-                </points>
-            </rotationCurve>
-            <zPositionCurve>
-                <points>
-                    <li>(0,0)</li>
-                    <li>(0.05,2)</li>
-                    <li>(0.3,1)</li>
-                    <li>(1,10)</li>
-                </points>
-            </zPositionCurve>
-        </skyfaller>
-        <comps>
-            <li Class="DMSE.CompProperties_EffecterColdLaunch">
-                <delayTicks>40</delayTicks>
-                <ignitionSound>DMSE_Missile_Flight</ignitionSound>
-                <ExhaustFleck>DMS_Fleck_RocketFlame</ExhaustFleck>
-                <ExhaustCurve>
-                    <points>
-                        <li>(0,2)</li>
-                        <li>(0.1,8)</li>
-                        <li>(0.5,4)</li>
-                        <li>(0.9,2)</li>
-                    </points>
-                </ExhaustCurve>
-                <SmokeFleck>Smoke</SmokeFleck>
-                <SmokeCurve>
-                    <points>
-                        <li>(0,12)</li>
-                        <li>(0.5,9)</li>
-                        <li>(1,2)</li>
-                    </points>
-                </SmokeCurve>
-                <launchEffectTrigger>DMS_LaunchDust_Recoilless</launchEffectTrigger>
-            </li>
-        </comps>
-    </ThingDef>
 
     <WorldObjectDef>
         <defName>DMSE_WorldObject_CruiseMissile</defName>
@@ -218,34 +149,6 @@
         <validLaunchTarget>false</validLaunchTarget>
     </WorldObjectDef>
 
-    <ThingDef ParentName="DMSE_MissileIncomingProjectileBase">
-        <defName>DMSE_Incoming_CruiseMissile</defName>
-        <label>cruise missile (incoming)</label>
-        <thingClass>DMSE.Projectile_MissileIncoming</thingClass>
-        <graphicData>
-            <texPath>Things/Missile/Moskit/skyFaller_incoming</texPath>
-            <graphicClass>Graphic_Single</graphicClass>
-            <drawSize>3.11</drawSize>
-        </graphicData>
-        <size>(1,1)</size>
-        <!-- 爆炸效果改由導彈裝配設定（MissileConfig）於落點動態套用，故此處不設固定 explosionRadius/explosionDamage。 -->
-        <!-- BVR 攔截特性：巡航導彈有完整世界航跡，可較早偵測（窗口需大於末端窗口，
-             中過程 SAM 與末端 CIWS 才會依序作用）；仍需一定反隱身才能完整偵測。 -->
-        <modExtensions>
-          <li Class="DMSE.MissileFlightExtension">
-            <shadowSize>(3, 3)</shadowSize>
-            <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
-            <speed>1</speed>
-          </li>
-            <li Class="DMSE.BVRTargetProps">
-                <distanceLevel>1.5</distanceLevel>
-                <stealthLevel>1</stealthLevel>
-                <speed>30</speed>
-                <!-- 基準高度：既有彈種維持中性（1000 = 係數 1），高度差異留給世代化彈體。 -->
-                <altitude>1000</altitude>
-            </li>
-        </modExtensions>
-    </ThingDef>
 
     <!-- ==================== 中程防空攔截彈（skyfaller，由 CompMissileLauncher_Interceptor 發射） ==================== -->
     <ThingDef ParentName="SkyfallerBase">

@@ -18,7 +18,7 @@
     <graphicData>
       <texPath>Things/Building/AA_Gun/AntiAirGun_Base</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
-      <drawSize>(3.6,3.6)</drawSize>
+      <drawSize>(3,3)</drawSize>
       <drawOffset>(0,0,0)</drawOffset>
     </graphicData>
     <size>(2,2)</size>
@@ -73,8 +73,8 @@
     </comps>
     <building>
       <turretGunDef>DMSE_Gun_LegacyFlak</turretGunDef>
-      <turretTopDrawSize>3.5</turretTopDrawSize>
-      <turretBurstWarmupTime>0.5</turretBurstWarmupTime>
+      <turretTopDrawSize>4</turretTopDrawSize>
+      <turretBurstWarmupTime>1.5</turretBurstWarmupTime>
       <turretBurstCooldownTime>3.2</turretBurstCooldownTime>
     </building>
     <hasInteractionCell>true</hasInteractionCell>
@@ -250,7 +250,7 @@
       <ComponentSpacer>6</ComponentSpacer>
     </costList>
     <researchPrerequisites Inherit="False">
-      <li>DMSE_Aerospace</li>
+      <li>DMSE_IntegratedAirDefense</li>
     </researchPrerequisites>
   </ThingDef>
 

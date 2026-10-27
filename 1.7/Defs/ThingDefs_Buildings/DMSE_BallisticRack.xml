@@ -12,7 +12,7 @@
            桁架頂層（overlay）畫在彈體之上，未裝彈時只看得到空塔。
          - 沒有導流與抑爆：發射時 DMSE.CompLaunchBackblast 對半徑 3.5 格的 Pawn 造成火焰傷害與震懾、
            點燃可燃物；不傷建築（含塔本身）。
-         - 預設彈體是老式彈道（V2，DMSE_Ballistics）；圓點U、現役、民兵三型要各自的研究
+         - 預設彈體是老式彈道（V2，基本導彈工程）；圓點U、現役、民兵三型要各自的研究
            （MissileBodyDef.researchPrerequisites，ITab_MissileAssembly 的彈體選單顯示為鎖定）。
          - 不可旋轉（垂直發射唯一朝向），禁止建於重力船 substructure（繼承自 DMSE_VerticalLauncherBase）。 -->
   <ThingDef ParentName="DMSE_VerticalLauncherBase">
@@ -32,15 +32,14 @@
     <constructEffect>ConstructMetal</constructEffect>
     <statBases>
       <MaxHitPoints>500</MaxHitPoints>
-      <WorkToBuild>12000</WorkToBuild>
+      <WorkToBuild>10000</WorkToBuild>
       <Flammability>0.0</Flammability>
     </statBases>
     <!-- 發射架本身不帶彈體：建造完畢是空架，裝配完成後才畫出直立彈體。 -->
     <costList>
-      <Steel>220</Steel>
-      <DMSE_TantastenAlloy>30</DMSE_TantastenAlloy>
-      <ComponentStamped>12</ComponentStamped>
-      <ComponentSpacer>2</ComponentSpacer>
+      <Steel>280</Steel>
+      <ComponentIndustrial>8</ComponentIndustrial>
+      <ComponentStamped>6</ComponentStamped>
     </costList>
     <comps>
       <!-- 待機功耗：架體液壓與溫控，較發射井低。 -->
@@ -56,8 +55,8 @@
       </li>
       <!-- 發射控制：在世界地圖選靶並點火；離場/落點 skyfaller 與發射井共用。 -->
       <li Class="DMSE.CompProperties_BallisticLauncher">
-        <skyfaller>DMSE_SkyFaller_BallisticMissile</skyfaller>
-        <skyfallerIncoming>DMSE_Incoming_BallisticMissile</skyfallerIncoming>
+        <skyfaller>DMSE_Launch_AdvancedBallistic</skyfaller>
+        <skyfallerIncoming>DMSE_Incoming_AdvancedBallisticMissile</skyfallerIncoming>
         <worldObjectDef>DMSE_WorldObject_BallisticMissile</worldObjectDef>
         <launchCooldownTicks>2400</launchCooldownTicks>
         <launchForwardCells>0</launchForwardCells>
@@ -87,7 +86,7 @@
       <li>DMSE.ITab_MissileAssembly</li>
     </inspectorTabs>
     <researchPrerequisites>
-      <li>DMSE_Ballistics</li>
+      <li>DMSE_LoiteringMunitions</li>
     </researchPrerequisites>
   </ThingDef>
 

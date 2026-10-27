@@ -41,7 +41,7 @@
         <li>DMS_TableMachinePrinter</li>
       </recipeUsers>
       <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
-      <researchPrerequisite>DMSE_IntegratedCircuits</researchPrerequisite>
+      <researchPrerequisite>DMSE_FireControlNetwork</researchPrerequisite>
     </recipeMaker>
     <tickerType>Never</tickerType>
     <thingCategories>

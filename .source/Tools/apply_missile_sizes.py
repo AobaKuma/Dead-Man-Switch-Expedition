@@ -43,10 +43,8 @@ MODELS = {
     "LegacyInterceptor": (6.3, "Things/Missile/Rheintochter/skyFaller", ["DMSE_Incoming_LegacyInterceptor", "DMSE_Missile_Rheintochter"], ["Things/Missile/Rheintochter/skyFaller_incoming"]),
     "LegacyLoiter":      (8.3, "Things/Missile/V1/skyFaller_incoming", ["DMSE_Incoming_LegacyLoiter", "DMSE_Missile_LegacyLoiter"], ["Things/Missile/V1/ammo"]),
     "Yj":                (6.3 * 494 / 281, "Things/Missile/YJ20/skyFaller", ["DMSE_Incoming_Yj", "DMSE_Missile_Yj"], ["Things/Missile/YJ20/skyFaller_incoming"]),
-    "Cruise":            (7.0, "Things/Missile/Moskit/skyFaller", ["DMSE_SkyFaller_CruiseMissile", "DMSE_Incoming_CruiseMissile"], []),
     "Moskit":            (9.7, "Things/Missile/Moskit/skyFaller", ["DMSE_Incoming_Moskit", "DMSE_Missile_Moskit"], ["Things/Missile/Moskit/skyFaller_incoming"]),
     "Tochka":            (6.4, "Things/Missile/Tochka/skyFaller_incoming", ["DMSE_Incoming_Tochka", "DMSE_Missile_Tochka"], []),
-    "Ballistic":         (12.0, "Things/Missile/Moskit/skyFaller", ["DMSE_SkyFaller_BallisticMissile", "DMSE_Incoming_BallisticMissile"], []),
     "LegacyBallistic":   (14.0, "Things/Missile/V2/skyFaller_incoming", ["DMSE_Incoming_LegacyBallisticMissile"], []),
     "AdvancedBallistic": (18.2, "Things/Missile/Minuteman/skyFaller_incoming", ["DMSE_Incoming_AdvancedBallisticMissile"], []),
 }

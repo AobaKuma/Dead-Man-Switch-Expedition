@@ -70,9 +70,9 @@
     <rangePerFuelImpulse>0.4398</rangePerFuelImpulse>
     <!-- 裝配工作量：零件少、工藝粗，遠低於現役（3600） -->
     <assembleWorkAmount>1800</assembleWorkAmount>
-    <!-- 塔式發射架（DMSE_Ballistics）的預設彈體 -->
+    <!-- 基本導彈工程解鎖的塔式發射架預設彈體（V2） -->
     <researchPrerequisites>
-      <li>DMSE_Ballistics</li>
+      <li>DMSE_LoiteringMunitions</li>
     </researchPrerequisites>
     <incomingSkyfaller>DMSE_Incoming_LegacyBallisticMissile</incomingSkyfaller>
     <launchProjectile>DMSE_Launch_LegacyBallistic</launchProjectile>
@@ -141,8 +141,8 @@
     <launchProjectile>DMSE_Launch_LegacyInterceptor</launchProjectile>
     <!-- 作為攔截彈時命中率 ×0.6：無線電指令導引、靠操作員肉眼，命中率令人沮喪。 -->
     <interceptHitFactor>0.6</interceptHitFactor>
-    <!-- 無 slots：固定構型（連續桿／破片戰鬥部）。沒有導引槽也沒有 builtInGuidance，
-         MissileConfig.HasTerminalGuidance 恆為 false，故不設 terminalUpdates。 -->
+    <!-- 無 slots：固定構型（連續桿／破片戰鬥部），內建無線電指令導引但不具終端更新能力。 -->
+    <builtInGuidance Class="DMSE.GuidanceType_RadioCommand" />
   </DMSE.MissileBodyDef>
 
 
@@ -180,7 +180,7 @@
     <!-- 建造時自帶：材料已含在物品 costList 內。 -->
     <defaultParts>
       <li>DMSE_AdvLight_Warhead_HEAT</li>
-      <li>DMSE_AdvLight_Guidance_Inertial</li>
+      <li>DMSE_AdvLight_Guidance_Imaging</li>
       <li>DMSE_AdvLight_Payload_None</li>
     </defaultParts>
   </DMSE.MissileBodyDef>
@@ -211,7 +211,7 @@
     <rangePerFuelImpulse>0.8681</rangePerFuelImpulse>
     <assembleWorkAmount>4200</assembleWorkAmount>
     <researchPrerequisites>
-      <li>DMSE_StrategicSystems</li>
+      <li>DMSE_Ballistics</li>
     </researchPrerequisites>
     <incomingSkyfaller>DMSE_Incoming_AdvancedBallisticMissile</incomingSkyfaller>
     <launchProjectile>DMSE_Launch_AdvancedBallistic</launchProjectile>
@@ -246,7 +246,7 @@
     <baseFuel>115</baseFuel>
     <baseSpecificImpulse>3.4</baseSpecificImpulse>
     <rangePerFuelImpulse>0.3836</rangePerFuelImpulse>
-    <assembleWorkAmount>900</assembleWorkAmount>
+    <assembleWorkAmount>1600</assembleWorkAmount>
     <incomingSkyfaller>DMSE_Incoming_AdvancedCruiseMissile</incomingSkyfaller>
     <launchProjectile>DMSE_Launch_AdvancedCruise</launchProjectile>
     <slots>
@@ -507,7 +507,7 @@
 
   <!-- ==================================================================
        落點 incoming skyfaller（每個新彈體一個）
-       與既有 DMSE_Incoming_LightMissile / DMSE_Incoming_BallisticMissile 同格式：
+       與既有 DMSE_Incoming_LightMissile 同格式：
        thingClass = DMSE.MissileIncoming，爆炸由落點的 MissileConfig 動態套用，
        故不設固定 explosionRadius/explosionDamage；
        BVRTargetProps 描述世界層雷達特性（世代越新＝越快、越難偵測）。

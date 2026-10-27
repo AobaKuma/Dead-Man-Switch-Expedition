@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  <DMSE_NPCAirDefenseCircles.label>NPC 雷達偵測與防空範圍</DMSE_NPCAirDefenseCircles.label>
+  <DMSE_NPCAirDefenseCircles.helpText>完成雷達探測網後，敵對派系能偵測遠程打擊、提高警戒，並從有防空部署的據點攔截導彈。世界地圖現在會顯示偵測圈、攔截圈、警戒圈與封鎖圈。這項科技不會改變局部地圖的防空行為。</DMSE_NPCAirDefenseCircles.helpText>
+</LanguageData>

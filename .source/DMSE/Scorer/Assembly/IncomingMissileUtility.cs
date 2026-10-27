@@ -11,7 +11,7 @@ namespace DMSE
     public static class IncomingMissileUtility
     {
         public const string DefaultWorldObjectDef = "DMSE_WorldObject_IncomingMissile";
-        public const string DefaultIncomingDef = "DMSE_Incoming_CruiseMissile";
+        public const string DefaultIncomingDef = "DMSE_Incoming_Moskit"; // 原 DMSE_Incoming_CruiseMissile，2026-10-27 併入 Moskit
 
         public static WorldObject_IncomingMissile Launch(
             PlanetTile source,

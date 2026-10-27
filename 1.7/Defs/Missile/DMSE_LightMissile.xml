@@ -159,6 +159,7 @@
     <guidanceType Class="DMSE.GuidanceType_FireControl" />
     <scatterOffset>-1.5</scatterOffset>
     <researchPrerequisites>
+      <li>DMSE_FireControlNetwork</li>
       <li>DMSE_StrategicSystems</li>
     </researchPrerequisites>
     <costList>

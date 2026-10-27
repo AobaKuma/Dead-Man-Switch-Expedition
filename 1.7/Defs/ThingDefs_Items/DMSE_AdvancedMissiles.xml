@@ -14,7 +14,7 @@
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_Missile_AdvancedLight</defName>
     <label>advanced general-purpose missile</label>
-    <description>A Hellfire-class multi-role airframe with modern seekers and tight dispersion. Comes off the printer already loaded with a tandem shaped-charge warhead and an inertial unit; swap the loadout in the assembly tab if you want something else.</description>
+    <description>A Hellfire-class multi-role airframe with modern seekers and tight dispersion. Comes off the printer already loaded with a tandem shaped-charge warhead and an autonomous imaging seeker; swap the loadout in the assembly tab if you want something else.</description>
     <descriptionHyperlinks>
       <ThingDef>DMSE_Building_LightMissileLauncher</ThingDef>
       <ThingDef>DMSE_Building_LightMissileVLS</ThingDef>
@@ -41,7 +41,8 @@
       <Chemfuel>170</Chemfuel>
       <DMSE_TantastenAlloy>19</DMSE_TantastenAlloy>
       <DMSE_Graphene>24</DMSE_Graphene>
-      <ComponentSpacer>2</ComponentSpacer>
+      <ComponentSpacer>3</ComponentSpacer>
+      <ComponentIndustrial>4</ComponentIndustrial>
     </costList>
     <recipeMaker>
       <workSpeedStat>GeneralLaborSpeed</workSpeedStat>

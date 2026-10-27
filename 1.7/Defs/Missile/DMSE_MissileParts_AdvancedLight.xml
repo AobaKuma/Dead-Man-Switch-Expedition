@@ -124,6 +124,26 @@
     <scatterOffset>1</scatterOffset>
   </DMSE.MissilePartDef>
 
+  <!-- 自動影像尋標：優先攻擊屋頂外具威脅的敵方生物。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_AdvLight_Guidance_Imaging</defName>
+    <label>automatic imaging seeker</label>
+    <description>An autonomous imaging seeker that targets exposed hostile creatures, prioritizing combat threat and then body size. It ignores pawns under roofs and falls back to inertial targeting if no suitable target exists.</description>
+    <category>Guidance</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_AdvancedLight</li>
+    </compatibleBodies>
+    <guidanceType Class="DMSE.GuidanceType_Imaging" />
+    <scatterOffset>-1</scatterOffset>
+    <costList>
+      <ComponentIndustrial>4</ComponentIndustrial>
+      <ComponentSpacer>1</ComponentSpacer>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_IntegratedCircuits</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
   <!-- 影像紅外（IIR）：熱目標優先，散布收斂。 -->
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvLight_Guidance_IIR</defName>
@@ -177,8 +197,8 @@
     <guidanceType Class="DMSE.GuidanceType_ActiveRadar" />
     <scatterOffset>-2</scatterOffset>
     <costList>
-      <ComponentIndustrial>3</ComponentIndustrial>
-      <ComponentSpacer>1</ComponentSpacer>
+      <ComponentIndustrial>4</ComponentIndustrial>
+      <ComponentSpacer>2</ComponentSpacer>
     </costList>
     <researchPrerequisites>
       <li>DMSE_IntegratedCircuits</li>
@@ -214,7 +234,7 @@
       <Chemfuel>20</Chemfuel>
     </costList>
     <researchPrerequisites>
-      <li>DMSE_Ballistics</li>
+      <li>DMSE_IntegratedCircuits</li>
     </researchPrerequisites>
   </DMSE.MissilePartDef>
 

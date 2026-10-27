@@ -12,6 +12,7 @@ namespace DMSE
     {
         public int targetId = -1;
         public float hitChance = 0.9f;
+        public Vector3 launchOffset;
 
         public int TargetId => targetId;
         public float HitChance { get => hitChance; set => hitChance = value; }
@@ -61,8 +62,8 @@ namespace DMSE
                 BVRTarget target = comp.GetTarget(targetId);
                 if (target != null)
                 {
-                    // 釋放火力通道。
-                    target.midcourseEngagedUntil = -1;
+                    // 僅在此目標最後一枚攔截彈結算後釋放火力通道。
+                    target.NotifyInterceptorResolved();
 
                     if (Rand.Chance(hitChance))
                     {
@@ -82,6 +83,7 @@ namespace DMSE
 
         protected override void GetDrawPositionAndRotation(ref Vector3 drawLoc, out float extraRotation)
         {
+            drawLoc += launchOffset;
             extraRotation = 0f;
             if (def.skyfaller.zPositionCurve != null && (Rotation == Rot4.East || Rotation == Rot4.West))
             {
@@ -103,6 +105,7 @@ namespace DMSE
             base.ExposeData();
             Scribe_Values.Look(ref targetId, "targetId", -1);
             Scribe_Values.Look(ref hitChance, "hitChance", 0.9f);
+            Scribe_Values.Look(ref launchOffset, "launchOffset", Vector3.zero);
         }
     }
 }

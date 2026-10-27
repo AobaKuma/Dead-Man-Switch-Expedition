@@ -303,7 +303,7 @@ public ScorerProjectile_WorldObject TryLaunchRound(GlobalTargetInfo target, Thin
 ### 8-3. 自動版
 
 - 確認後進入短暫機器計算（`autoComputeTicks`，指揮台需 `Active`），之後 Ready；不需要殖民者。
-- 兩版只靠數值區分：自動版上限較大（例：5 波／20 枚）；人工版較早可建、上限較小。研究前置待定（人工版建議接 `DMSE_Ballistics`，自動版接雷達線後段）。
+- 兩版只靠數值區分：自動版上限較大（例：5 波／20 枚）；人工版較早可建、上限較小。研究前置待定（人工版建議接 `DMSE_LoiteringMunitions`，自動版接雷達線後段）。
 
 ### 8-4. 保留（兩版共用）
 
@@ -560,7 +560,7 @@ foreach (MissileWorldObject track in Tracks.OrderBy(t => t.TicksToArrival).ToLis
 - **工作**：`WorkGiver_ComputeFiringSolution`（工作類型「研究」，`priorityInType` 110，高於一般研究）、`JobDriver_ComputeFiringSolution`（比照原版研究：互動格、研究特效、進度條、智識經驗、座椅舒適；全部解完自行結束，中斷不丟進度）。右鍵指揮台可強制指派。
 - **警報** `Alert_StrikeComputationPending`：有人工版任務待計算，但該地圖沒有能做研究工作的殖民者（未倒地、研究工作已啟用）。
 - **介面**：規劃視窗顯示人工版的計算工作量，以及此地圖最快研究者約需的時間（沒有研究者時說明）；狀態顯示「等待彈道計算（%）」或「執行中；彈道已算 %」；不能發射時說明本波還差多少。開發者模式「Finish firing solutions」也適用人工版。
-- **Def 與翻譯**：`DMSE_StrikePlanningTable`（3×2、不需電力、研究 `DMSE_Ballistics`、最多 3 波／12 枚；貼圖暫用原版簡易研究台），`DMSE_ComputeFiringSolution` 的 JobDef／WorkGiverDef，三語 Keyed（新增 9 鍵）與 DefInjected。
+- **Def 與翻譯**：`DMSE_StrikePlanningTable`（3×2、不需電力、研究 `DMSE_LoiteringMunitions`、最多 3 波／12 枚；貼圖暫用原版簡易研究台），`DMSE_ComputeFiringSolution` 的 JobDef／WorkGiverDef，三語 Keyed（新增 9 鍵）與 DefInjected。
 
 **延到 P3**：增量計算（加入新導彈只補算新枚數）要等「執行中調整波次」一起做。
 

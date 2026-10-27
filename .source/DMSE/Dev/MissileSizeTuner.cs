@@ -46,10 +46,8 @@ namespace DMSE
         /// <summary>現役彈體的飛行貼圖也用在舊的模板 skyfaller（發射器的預設），一起改才一致。</summary>
         private static readonly Dictionary<string, string[]> Templates = new Dictionary<string, string[]>
         {
-            { "DMSE_MissileBody_Ballistic", new[] { "DMSE_SkyFaller_BallisticMissile" } },
             { "DMSE_MissileBody_Light", new[] { "DMSE_SkyFaller_LightMissile", "DMSE_SkyFaller_Interceptor" } },
             { "DMSE_MissileBody_Loiter", new[] { "DMSE_SkyFaller_Loiter" } },
-            { "DMSE_MissileBody_Cruise", new[] { "DMSE_SkyFaller_CruiseMissile" } },
         };
 
         private static List<MissileSizeEntry> entries;

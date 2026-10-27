@@ -16,7 +16,7 @@ namespace DMSE.BVRAcceptance
             t.Require(Enemy != null && Enemy.HostileTo(Player), "a hostile humanlike faction exists");
             foreach (string d in new[] { "DMSE_PhaseArrayRadar", "DMSE_AcousticEarlyWarningRadar", "DMSE_EarlyFireControlRadar",
                 "DMSE_Building_LightMissileLauncher", "DMSE_Turret_Vulcan_WingBack", "DMSE_Missile_Grison",
-                "DMSE_SkyFaller_Interceptor", "DMSE_Incoming_CruiseMissile", "DMSE_LaserDesignatorMark",
+                "DMSE_SkyFaller_Interceptor", "DMSE_Incoming_Moskit", "DMSE_LaserDesignatorMark",
                 "DMSE_Bullet_LaserDesignator", "DMSE_Gun_LaserDesignator" })
             {
                 t.Check(DefDatabase<ThingDef>.GetNamedSilentFail(d) != null, $"ThingDef {d} loaded");

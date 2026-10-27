@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  <DMSE_NPCAirDefenseCircles.label>NPC 雷达探测与防空范围</DMSE_NPCAirDefenseCircles.label>
+  <DMSE_NPCAirDefenseCircles.helpText>完成雷达探测网后，敌对派系能够探测远程打击、提高警戒，并从部署防空的据点拦截导弹。世界地图现在会显示探测圈、拦截圈、警戒圈与封锁圈。这项科技不会改变局部地图的防空行为。</DMSE_NPCAirDefenseCircles.helpText>
+</LanguageData>

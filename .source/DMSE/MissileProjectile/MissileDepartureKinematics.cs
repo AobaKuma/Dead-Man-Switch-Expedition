@@ -19,6 +19,9 @@ namespace DMSE
         public float nose0;
         public float speed0;
         public float progress0;
+        /// <summary>航向與機頭各自的轉向慣性狀態，供逐 tick 修正及存檔續接。</summary>
+        public float motionTurnRate;
+        public float noseTurnRate;
         /// <summary>目前機頭角（繪製與尾焰用）。</summary>
         public float nose;
         /// <summary>目前航向（轉向中逐 tick 逼近 <see cref="heading"/>）。</summary>
@@ -34,6 +37,8 @@ namespace DMSE
             Scribe_Values.Look(ref nose0, "cruiseNose0", 0f);
             Scribe_Values.Look(ref speed0, "cruiseSpeed0", 0f);
             Scribe_Values.Look(ref progress0, "cruiseProgress0", 0f);
+            Scribe_Values.Look(ref motionTurnRate, "cruiseMotionTurnRate", 0f);
+            Scribe_Values.Look(ref noseTurnRate, "cruiseNoseTurnRate", 0f);
             Scribe_Values.Look(ref nose, "cruiseNose", 0f);
             Scribe_Values.Look(ref motion, "cruiseMotion", float.NaN);
             // 舊存檔（固定 tick 轉向時）沒有航向：從機頭接續，轉向照新規則完成。
@@ -48,7 +53,7 @@ namespace DMSE
     ///
     /// 升空段：逐 tick 重算原版 Skyfaller 公式（<see cref="AscentPose"/>），與舊 ScorerProjectile 相同。
     /// 交接：動畫進度達 <see cref="MissileFlightExtension.ascentHandoff"/> 或畫面位移達 handoffMaxCells 時。
-    /// 巡航段：從交接位置與速度出發，航向與機頭以限速轉向轉到出發方位（<see cref="TurnStep"/>：轉速漸增到 maxTurnRate、接近目標漸減）；
+    /// 巡航段：從交接位置與速度出發，航向與機頭以欠阻尼角速度控制過轉並回正（<see cref="TurnCorrectionStep"/>）；
     /// 速度 = 交接速度 × speedCurve(進度) / speedCurve(交接進度)，即升空段的加速曲線在巡航段繼續生效（進度超過 1 後取曲線末值）。
     /// 畫面位置離開地圖即離場。
     /// </summary>
@@ -82,7 +87,7 @@ namespace DMSE
             int leaveMapAfterTicks, out float rotation)
         {
             Vector3 pos = AscentDrawPos(f, center, ticksToImpact, angle, leaveMapAfterTicks);
-            rotation = rot.AsAngle + AscentCurveOffset(f, rot, Progress(ticksToImpact, leaveMapAfterTicks), ref pos);
+            rotation = angle + AscentCurveOffset(f, rot, Progress(ticksToImpact, leaveMapAfterTicks), ref pos);
             return pos;
         }
 
@@ -147,28 +152,36 @@ namespace DMSE
             return Mathf.Clamp(speed, f.minCruiseSpeed, f.maxCruiseSpeed);
         }
 
-        /// <summary>接近目標時轉速的上限比例：每 tick 最多轉剩餘角度的這個比例（漸減收尾，不會一下停住）。</summary>
-        public const float TurnSettle = 0.12f;
-        /// <summary>收尾時的最小轉速（度/tick），避免無限逼近。</summary>
-        public const float MinTurnStep = 0.1f;
-
-        /// <summary>
-        /// 限速轉向一 tick（純函式）：第 <paramref name="tick"/> 個轉向 tick 的轉速 = max(maxTurnRate × 漸增比例（turnRampTicks），
-        /// 讓轉彎半徑不超過 <paramref name="radius"/>（預設 maxTurnRadius）的轉速 × 漸增比例（<see cref="RadiusRampTicks"/>））（<paramref name="speed"/> 為格/tick）；
-        /// 且不超過剩餘角度 × <see cref="TurnSettle"/>（下限 <see cref="MinTurnStep"/>）；回傳新的角度，不會轉過頭。
-        /// 剩餘角度超過 <see cref="UTurnAngle"/> 時，<paramref name="preferSign"/>（±1）決定往哪一側迴轉（否則取短邊）。
-        /// </summary>
+        /// <summary>無狀態的一步轉向入口，保留供純數學呼叫端使用；飛行中應保存角速度並呼叫 TurnCorrectionStep。</summary>
         public static float TurnStep(MissileFlightExtension f, float current, float target, int tick, float speed = 0f, float radius = -1f, int preferSign = 0)
         {
-            float remaining = Mathf.DeltaAngle(current, target);
+            float turnRate = 0f;
+            return TurnCorrectionStep(f, current, target, tick, speed, radius, preferSign, ref turnRate);
+        }
+
+        /// <summary>
+        /// 欠阻尼轉向一步：角度偏差產生角加速度、角速度形成阻尼，讓彈體帶慣性越過目標後反向回修；
+        /// 阻尼比控制過轉後往復衰減的次數。輸出受漸增轉速、轉彎半徑與最大角加速度限制。
+        /// </summary>
+        public static float TurnCorrectionStep(MissileFlightExtension f, float current, float target, int tick, float speed, float radius,
+            int preferSign, ref float turnRate)
+        {
+            float error = Mathf.DeltaAngle(current, target);
+            if (Mathf.Abs(error) > UTurnAngle && preferSign != 0) { error = preferSign * Mathf.Abs(error); }
             if (radius < 0f) { radius = f.maxTurnRadius; }
-            // 一般轉速依 turnRampTicks 慢慢升；半徑限制（地圖邊緣近、速度快）只給 RadiusRampTicks，不然漸增期間就先飛出圖（F5：圓點U 在離西邊 17 格處朝西交接）。
-            float rate = Mathf.Max(f.maxTurnRate * Mathf.Clamp01((float)tick / Mathf.Max(1, f.turnRampTicks)),
+
+            // 一般轉速依 turnRampTicks 漸增；半徑限制用較短漸增，避免高速時轉彎過大。
+            float rateLimit = Mathf.Max(
+                f.maxTurnRate * Mathf.Clamp01((float)tick / Mathf.Max(1, f.turnRampTicks)),
                 radius > 0f ? speed / radius * Mathf.Rad2Deg * Mathf.Clamp01((float)tick / RadiusRampTicks) : 0f);
-            float step = Mathf.Min(rate, Mathf.Max(MinTurnStep, Mathf.Abs(remaining) * TurnSettle));
-            if (Mathf.Abs(remaining) <= step) { return target; }
-            float sign = Mathf.Abs(remaining) > UTurnAngle && preferSign != 0 ? preferSign : Mathf.Sign(remaining);
-            return current + sign * step;
+            float naturalFrequency = Mathf.Max(0f, f.turnNaturalFrequency);
+            float dampingRatio = Mathf.Clamp(f.turnDampingRatio, 0f, 1f);
+            float accelerationLimit = Mathf.Max(0f, f.turnMaxAcceleration);
+            float angularAcceleration = naturalFrequency * naturalFrequency * error
+                - 2f * dampingRatio * naturalFrequency * turnRate;
+            angularAcceleration = Mathf.Clamp(angularAcceleration, -accelerationLimit, accelerationLimit);
+            turnRate = Mathf.Clamp(turnRate + angularAcceleration, -rateLimit, rateLimit);
+            return current + turnRate;
         }
 
         /// <summary>半徑限制轉速的漸增 tick 數（比 turnRampTicks 短）。</summary>
@@ -202,7 +215,7 @@ namespace DMSE
         public static float TurnBlend(in MissileCruiseState s)
         {
             float total = Mathf.Abs(Mathf.DeltaAngle(s.motion0, s.heading));
-            return total < 1e-3f ? 1f : 1f - Mathf.Abs(Mathf.DeltaAngle(s.motion, s.heading)) / total;
+            return total < 1e-3f ? 1f : Mathf.Clamp01(1f - Mathf.Abs(Mathf.DeltaAngle(s.motion, s.heading)) / total);
         }
 
         /// <summary>巡航段前進一 tick（時間軸已推進後呼叫）。</summary>
@@ -212,8 +225,8 @@ namespace DMSE
             float speed = CruiseSpeed(f, s, ticksToImpact, leaveMapAfterTicks, TurnBlend(s));
             float radius = TurnRadiusAt(f, s.pos, s.motion, mapSize);
             int side = InwardSide(s.pos, s.motion, mapSize);
-            s.motion = TurnStep(f, s.motion, s.heading, s.ticks, speed, radius, side);
-            s.nose = TurnStep(f, s.nose, s.heading, s.ticks, speed, radius, side);
+            s.motion = TurnCorrectionStep(f, s.motion, s.heading, s.ticks, speed, radius, side, ref s.motionTurnRate);
+            s.nose = TurnCorrectionStep(f, s.nose, s.heading, s.ticks, speed, radius, side, ref s.noseTurnRate);
             s.pos += MissileMapEntryUtility.HeadingVector(s.motion) * speed;
         }
 
@@ -225,14 +238,14 @@ namespace DMSE
         /// 時間軸長度取 ticksToDiscardInReverse 的下限，現有 def 皆為固定值）。
         /// 沒有出發方位（<paramref name="heading"/> 為 null）時回傳升空動畫長度。
         /// </summary>
-        public static int SimulateDepartureTicks(MissileFlightExtension f, IntVec3 cell, IntVec3 mapSize, Rot4 rot, float? heading)
+        public static int SimulateDepartureTicks(MissileFlightExtension f, IntVec3 cell, IntVec3 mapSize, Rot4 rot, float? heading, float? launchAngle = null)
         {
             int leave = f.ticksToDiscardInReverse != IntRange.Zero ? f.ticksToDiscardInReverse.min : 220;
             if (leave <= 0) { leave = 220; }
             if (heading == null || !f.reversed) { return leave; }
 
             Vector3 center = cell.ToVector3Shifted();
-            float angle = rot.AsAngle;
+            float angle = launchAngle ?? rot.AsAngle;
             MissileCruiseState cruise = default;
             for (int tick = 1, tti = 0; tick <= leave + f.maxCruiseTicks + 1; tick++)
             {

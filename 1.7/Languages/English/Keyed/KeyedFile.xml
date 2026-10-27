@@ -161,6 +161,7 @@
   <!-- 導引頭選目標 -->
   <DMSE.Missile.SeekerLocked>{0} locked onto a target. The missile is coming down.</DMSE.Missile.SeekerLocked>
   <DMSE.Guidance.Inertial>inertial guidance</DMSE.Guidance.Inertial>
+  <DMSE.Guidance.RadioCommand>radio-command guidance</DMSE.Guidance.RadioCommand>
   <DMSE.Guidance.ManualTarget>{0}: you choose the impact point on arrival</DMSE.Guidance.ManualTarget>
   <DMSE.Guidance.AutoTarget>{0}: locks a target automatically on arrival</DMSE.Guidance.AutoTarget>
   <DMSE.LaserMark.Inspect>Designated by: {0}\nExpires in: {1}</DMSE.LaserMark.Inspect>
@@ -177,6 +178,24 @@
 
   <!-- ITab_MissileInventory: building-level missile management tab -->
   <DMSE.Tab.MissileInventory>Inventory</DMSE.Tab.MissileInventory>
+  <DMSE.MissileInventory.Features>Features</DMSE.MissileInventory.Features>
+  <DMSE.MissileInventory.Stat.BlastRadius>Blast</DMSE.MissileInventory.Stat.BlastRadius>
+  <DMSE.MissileInventory.Stat.Damage>Damage</DMSE.MissileInventory.Stat.Damage>
+  <DMSE.MissileInventory.Unit.Tiles>tiles</DMSE.MissileInventory.Unit.Tiles>
+  <DMSE.MissileInventory.Feature.Mechanics>Active mechanics for this missile</DMSE.MissileInventory.Feature.Mechanics>
+  <DMSE.MissileInventory.Feature.Warhead>Primary warhead damage type: {0}; damage: {1}; blast radius: {2} tiles. Payload capacity N = {3}.</DMSE.MissileInventory.Feature.Warhead>
+  <DMSE.MissileInventory.Feature.InterceptBonus>Intercept hit chance bonus: {0}%</DMSE.MissileInventory.Feature.InterceptBonus>
+  <DMSE.MissileInventory.Feature.ExtraRolls>Additional intercept rolls per engagement: {0}</DMSE.MissileInventory.Feature.ExtraRolls>
+  <DMSE.MissileInventory.Feature.RangeOffset>Warhead range adjustment: {0} tiles</DMSE.MissileInventory.Feature.RangeOffset>
+  <DMSE.MissileInventory.Feature.PenetratesRoof>Can penetrate thick rock roofs and target objects beneath them.</DMSE.MissileInventory.Feature.PenetratesRoof>
+  <DMSE.MissileInventory.Feature.Guidance>Scatter radius: {0} tiles; terminal position updates: {1}; {2}</DMSE.MissileInventory.Feature.Guidance>
+  <DMSE.MissileInventory.Feature.Guided>Terminal guidance can update the target position in flight.</DMSE.MissileInventory.Feature.Guided>
+  <DMSE.MissileInventory.Feature.Unguided>No terminal guidance; uses the default impact point dispersion.</DMSE.MissileInventory.Feature.Unguided>
+  <DMSE.MissileInventory.Feature.Propulsion>Effective range: {0} tiles; world speed factor: {1}; fuel: {2}; specific impulse: {3}.</DMSE.MissileInventory.Feature.Propulsion>
+  <DMSE.MissileInventory.Feature.Payload>Payload effect scales with body capacity N = {0}; effective range: {1} tiles.</DMSE.MissileInventory.Feature.Payload>
+  <DMSE.MissileInventory.Feature.Signature>Radar cross-section factor: {0}.</DMSE.MissileInventory.Feature.Signature>
+  <DMSE.MissileInventory.Feature.Jamming>Jamming strength: {0}%.</DMSE.MissileInventory.Feature.Jamming>
+  <DMSE.MissileInventory.Feature.Chaff>Chaff / streamer charges: {0}.</DMSE.MissileInventory.Feature.Chaff>
   <DMSE.MissileInventory.Count>Loaded: {0} / {1}</DMSE.MissileInventory.Count>
   <DMSE.MissileInventory.Empty>No missiles loaded.</DMSE.MissileInventory.Empty>
   <!-- {0} = blast radius, {1} = damage -->

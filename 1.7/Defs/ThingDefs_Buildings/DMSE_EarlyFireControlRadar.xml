@@ -37,14 +37,14 @@
     <interactionCellOffset>(0,0,-2)</interactionCellOffset>
     <statBases>
       <MaxHitPoints>300</MaxHitPoints>
-      <WorkToBuild>15000</WorkToBuild>
+      <WorkToBuild>10000</WorkToBuild>
       <Mass>250</Mass>
       <Flammability>0.25</Flammability>
     </statBases>
     <size>(3,3)</size>
     <costList>
-      <Steel>730</Steel>
-      <ComponentIndustrial>35</ComponentIndustrial>
+      <Steel>350</Steel>
+      <ComponentIndustrial>12</ComponentIndustrial>
     </costList>
     <building>
       <destroySound>BuildingDestroyed_Metal_Small</destroySound>

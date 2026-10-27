@@ -17,6 +17,7 @@ namespace DMSE
         /// 或任何其他 <see cref="WorldObject"/> 子類（例如 <see cref="WorldObject_ArtilleryStrike"/>）。
         /// </summary>
         public WorldObject worldObject;
+        public Vector3 launchOffset;
 
         public Vector3 LaunchDrawPos => trueDrawPos;
         public float LaunchRotation => trueRotation;
@@ -81,7 +82,8 @@ namespace DMSE
         }
         protected override void GetDrawPositionAndRotation(ref Vector3 drawLoc, out float extraRotation)
         {
-            extraRotation = 0f;  
+            drawLoc += launchOffset;
+            extraRotation = angle - Rotation.AsAngle;
             if (def.skyfaller.zPositionCurve != null && (this.Rotation == Rot4.East || this.Rotation == Rot4.West))
             {
                 drawLoc.z += this.def.skyfaller.zPositionCurve.Evaluate(this.TimeInAnimation);
@@ -101,6 +103,7 @@ namespace DMSE
         {
             base.ExposeData();
             Scribe_Deep.Look(ref this.worldObject, "worldObject");
+            Scribe_Values.Look(ref launchOffset, "launchOffset", Vector3.zero);
         }
     }
 }

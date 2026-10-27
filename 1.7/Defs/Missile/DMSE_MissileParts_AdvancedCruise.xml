@@ -76,7 +76,7 @@
       <ComponentIndustrial>4</ComponentIndustrial>
     </costList>
     <researchPrerequisites>
-      <li>DMSE_RadarBasis</li>
+      <li>DMSE_IntegratedCircuits</li>
     </researchPrerequisites>
   </DMSE.MissilePartDef>
 
@@ -97,6 +97,7 @@
     </costList>
     <researchPrerequisites>
       <li>DMSE_IntegratedCircuits</li>
+      <li>DMSE_RadarNetwork</li>
     </researchPrerequisites>
   </DMSE.MissilePartDef>
 
@@ -137,7 +138,7 @@
       <Chemfuel>30</Chemfuel>
     </costList>
     <researchPrerequisites>
-      <li>DMSE_Ballistics</li>
+      <li>DMSE_IntegratedCircuits</li>
     </researchPrerequisites>
   </DMSE.MissilePartDef>
 
@@ -178,7 +179,7 @@
       <Chemfuel>40</Chemfuel>
     </costList>
     <researchPrerequisites>
-      <li>DMSE_Ballistics</li>
+      <li>DMSE_IntegratedCircuits</li>
     </researchPrerequisites>
   </DMSE.MissilePartDef>
 
@@ -272,7 +273,7 @@
       <ComponentIndustrial>2</ComponentIndustrial>
     </costList>
     <researchPrerequisites>
-      <li>DMSE_Ballistics</li>
+      <li>DMSE_IntegratedCircuits</li>
     </researchPrerequisites>
   </DMSE.MissilePartDef>
 

@@ -2,7 +2,7 @@
 <LanguageData>
 
   <DMSE_Missile_AdvancedLight.label>先进通用导弹</DMSE_Missile_AdvancedLight.label>
-  <DMSE_Missile_AdvancedLight.description>地狱火级的多用途弹体，具备现代导引头与极小的散布。离开打印机时已装好串联成型装药弹头与惯性导引；想要别的配置就到装配页签更换。</DMSE_Missile_AdvancedLight.description>
+  <DMSE_Missile_AdvancedLight.description>地狱火级的多用途弹体，具备现代导引头与极小的散布。离开打印机时已装好串联成型装药弹头与自动影像寻标器；想要别的配置就到装配页签更换。</DMSE_Missile_AdvancedLight.description>
   <DMSE_Missile_AdvancedCruise.label>先进巡航导弹</DMSE_Missile_AdvancedCruise.label>
   <DMSE_Missile_AdvancedCruise.description>战斧级的低可观测巡航导弹：地形跟随、数据链导引，比它所取代的射门手弹体精准得多。出厂时已装好穿透弹头、地形比对导引与涡轮扇。</DMSE_Missile_AdvancedCruise.description>
 

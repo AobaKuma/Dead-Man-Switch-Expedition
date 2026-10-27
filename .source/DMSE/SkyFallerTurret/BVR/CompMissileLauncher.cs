@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace DMSE
@@ -14,6 +16,9 @@ namespace DMSE
 
         /// <summary>攔截彈飛行時間（ticks）：占用火力通道直到結算。</summary>
         public int interceptorTravelTicks = 180;
+
+        /// <summary>每個指定目標連射的攔截彈數；受實際裝填彈數限制。</summary>
+        public int interceptorSalvoSize = 1;
 
         public CompProperties_MissileLauncher()
         {
@@ -81,34 +86,97 @@ namespace DMSE
         /// </summary>
         public void FireInterceptor(BVRTarget target, float hitChance, int now, float? heading = null)
         {
-            if (Props.interceptorSkyfaller == null || parent.Map == null) { return; }
+            FireInterceptorRounds(target, hitChance, now, heading, 1, out _);
+        }
 
-            // 取出一枚實體攔截彈作為彈藥；無彈則不發射。
-            Thing missile = LoadedMissile;
-            if (missile == null) { return; }
+        private int FireInterceptorRounds(BVRTarget target, float hitChance, int now, float? heading, int requestedRounds,
+            out int lastSpawnTick)
+        {
+            lastSpawnTick = now;
+            if (Props.interceptorSkyfaller == null || parent.Map == null) { return 0; }
 
-            // 升空外觀與尾焰隨裝填的攔截彈彈體；彈體沒有 launchProjectile 時退回平台的 interceptorSkyfaller。
-            // 發射方向與發射器建築朝向一致（同巡航導彈）。
-            ThingDef launchDef = MissileItemExtension.BodyOf(missile)?.launchProjectile ?? Props.interceptorSkyfaller;
+            // 初始升空角沿用建築朝向；具旋轉砲頭的發射架採用砲頭角度。heading 留給升空後的攔截航線。
             heading ??= MissileProjectileMaker.IncomingBearing(target, parent.Position);
-            MapComponent_MissileLaunchQueue.Launch(parent.Map, new PendingMissileLaunch
+            float launchAngle = parent.TryGetComp<CompTurretFacingRenderer>()?.CurRotation ?? parent.Rotation.AsAngle;
+            CompTurretFacingRenderer facing = parent.TryGetComp<CompTurretFacingRenderer>();
+            MapComponent_StrikePlanner planner = StrikeReservation.PlannerFor(parent);
+            ThingOwner owner = HeldContainer;
+            List<(Thing missile, ThingDef launchDef, Vector3 launchOffset, bool hasLaunchOffset)> rounds
+                = new List<(Thing, ThingDef, Vector3, bool)>();
+            int requested = Mathf.Max(1, requestedRounds);
+            if (owner != null)
             {
-                def = launchDef,
-                cell = parent.Position,
-                rotation = parent.Rotation,
-                launcher = parent,
-                interceptor = true,
-                targetId = target.id,
-                hitChance = hitChance,
-                hasHeading = heading != null,
-                heading = heading ?? 0f,
-            });
+                for (int i = 0; i < owner.Count && rounds.Count < requested; i++)
+                {
+                    Thing missile = owner[i];
+                    if (!MissileRoleExtension.CanIntercept(missile)) { continue; }
+                    if (planner != null && planner.IsReserved(missile)) { continue; }
+                    Vector3 launchOffset = Vector3.zero;
+                    bool hasLaunchOffset = facing != null && facing.TryGetRenderedAmmoOffset(missile, out launchOffset);
+                    if (!hasLaunchOffset)
+                    {
+                        CompMissileRackRenderer rackRenderer = parent.TryGetComp<CompMissileRackRenderer>();
+                        hasLaunchOffset = rackRenderer != null && rackRenderer.TryGetRenderedAmmoOffset(missile, out launchOffset);
+                    }
+                    ThingDef roundLaunchDef = MissileItemExtension.BodyOf(missile)?.launchProjectile ?? Props.interceptorSkyfaller;
+                    rounds.Add((missile, roundLaunchDef, launchOffset, hasLaunchOffset));
+                }
+            }
 
-            StartCooldown(now);
+            int fired = 0;
+            foreach (var round in rounds)
+            {
+                int spawnTick = MapComponent_MissileLaunchQueue.Launch(parent.Map, new PendingMissileLaunch
+                {
+                    def = round.launchDef,
+                    cell = parent.Position,
+                    rotation = parent.Rotation,
+                    hasLaunchAngle = facing != null,
+                    launchAngle = launchAngle,
+                    hasLaunchOffset = round.hasLaunchOffset,
+                    launchOffset = round.launchOffset,
+                    launcher = parent,
+                    interceptor = true,
+                    targetId = target.id,
+                    hitChance = hitChance,
+                    hasHeading = heading != null,
+                    heading = heading ?? 0f,
+                });
+                lastSpawnTick = Mathf.Max(lastSpawnTick, spawnTick);
+                owner.Remove(round.missile);
+                round.missile.Destroy(DestroyMode.Vanish);
+                fired++;
+            }
 
-            // 消耗實體彈藥（與 CompMissileLauncher_Rail 相同）。
-            HeldContainer?.Remove(missile);
-            missile.Destroy(DestroyMode.Vanish);
+            if (fired > 0)
+            {
+                StartCooldown(now);
+                if (target != null && target.id >= 0) { target.interceptorsInFlight += fired; }
+            }
+            return fired;
+
+        }
+
+        /// <summary>
+        /// 試射地圖目標。旋轉發射架先對準本次指派目標，砲頭進入容許角度後才發射；
+        /// 避免渲染器追蹤另一個更急迫的波次時，導彈沿著錯的砲頭角度離架。
+        /// </summary>
+        public bool TryFireInterceptor(BVRTarget target, float hitChance, int now, out int roundsFired, out int lastSpawnTick)
+        {
+            roundsFired = 0;
+            lastSpawnTick = now;
+            CompTurretFacingRenderer facing = parent.TryGetComp<CompTurretFacingRenderer>();
+            float? heading = MissileProjectileMaker.IncomingBearing(target, parent.Position);
+            if (facing != null && heading.HasValue)
+            {
+                Vector3 aimPoint = parent.DrawPos + MissileMapEntryUtility.HeadingVector(heading.Value) * 10f;
+                facing.ForceFaceTarget(aimPoint, 2);
+                float tolerance = Mathf.Max(1f, facing.Props.rotationSpeedDegPerTick * 0.5f);
+                if (!facing.IsFacing(aimPoint, tolerance)) { return false; }
+            }
+
+            roundsFired = FireInterceptorRounds(target, hitChance, now, heading, Props.interceptorSalvoSize, out lastSpawnTick);
+            return roundsFired > 0;
         }
 
         /// <summary>

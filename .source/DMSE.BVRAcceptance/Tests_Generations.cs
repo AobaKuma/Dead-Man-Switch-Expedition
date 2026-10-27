@@ -20,6 +20,27 @@ namespace DMSE.BVRAcceptance
         private static ThingDef Def(string name) => ThingDef.Named(name);
         private static MissileBodyDef Body(string name) => DefDatabase<MissileBodyDef>.GetNamed(name);
 
+        private static bool HasPrerequisites(ResearchProjectDef project, params string[] defNames)
+        {
+            if (project == null || project.prerequisites == null) { return false; }
+            return project.prerequisites.Select(p => p.defName).OrderBy(n => n)
+                .SequenceEqual(defNames.OrderBy(n => n));
+        }
+
+        private static bool HasResearchPrerequisites(ThingDef thing, params string[] defNames)
+        {
+            if (thing == null || thing.researchPrerequisites == null) { return false; }
+            return thing.researchPrerequisites.Select(p => p.defName).OrderBy(n => n)
+                .SequenceEqual(defNames.OrderBy(n => n));
+        }
+
+        private static bool HasPartResearchPrerequisites(MissilePartDef part, params string[] defNames)
+        {
+            if (part == null || part.researchPrerequisites == null) { return false; }
+            return part.researchPrerequisites.Select(p => p.defName).OrderBy(n => n)
+                .SequenceEqual(defNames.OrderBy(n => n));
+        }
+
         private static ThingDef Tower => Def("DMSE_Building_BallisticRack");
         private static ThingDef Silo => Def("DMSE_Building_BallisticSilo");
         private static ThingDef RotaryRail => Def("DMSE_Building_RotaryLauncher");
@@ -107,7 +128,7 @@ namespace DMSE.BVRAcceptance
             CompMissileConfig towerCfg = tower.TryGetComp<CompMissileConfig>();
             towerCfg.EnsureInit();
             t.Check(towerCfg.config.body == Body("DMSE_MissileBody_LegacyBallistic"), "a new launch tower starts with the legacy ballistic airframe (V2)");
-            t.Check(Tower.researchPrerequisites.Contains(ResearchProjectDef.Named("DMSE_Ballistics")), "the tower is a ballistics-tier platform");
+            t.Check(Tower.researchPrerequisites.Contains(ResearchProjectDef.Named("DMSE_LoiteringMunitions")), "basic missile engineering unlocks the V2 launch tower");
             t.Check(tower.TryGetComp<CompLaunchBackblast>() != null && silo.TryGetComp<CompLaunchBackblast>() == null,
                 "the tower has a backblast, the silo does not");
 
@@ -320,14 +341,14 @@ namespace DMSE.BVRAcceptance
                 t.Check(got == range, $"{body} range with default parts is {range} (got {got})");
             }
 
-            ResearchProjectDef ballistics = ResearchProjectDef.Named("DMSE_Ballistics");
+            ResearchProjectDef basicMissileEngineering = ResearchProjectDef.Named("DMSE_LoiteringMunitions");
             ResearchProjectDef ic = ResearchProjectDef.Named("DMSE_IntegratedCircuits");
             ResearchProjectDef strategic = ResearchProjectDef.Named("DMSE_StrategicSystems");
-            t.Check(Body("DMSE_MissileBody_LegacyBallistic").researchPrerequisites.SequenceEqual(new[] { ballistics })
+            ResearchProjectDef ballisticPlatform = ResearchProjectDef.Named("DMSE_Ballistics");
+            t.Check(Body("DMSE_MissileBody_LegacyBallistic").researchPrerequisites.SequenceEqual(new[] { basicMissileEngineering })
                 && Body("DMSE_MissileBody_Tochka").researchPrerequisites.SequenceEqual(new[] { ic })
-                && Body("DMSE_MissileBody_Ballistic").researchPrerequisites.SequenceEqual(new[] { strategic })
-                && Body("DMSE_MissileBody_AdvancedBallistic").researchPrerequisites.SequenceEqual(new[] { strategic }),
-                "airframes are gated V2 → Ballistics, Tochka → IC, current / Minuteman → Strategic");
+                && Body("DMSE_MissileBody_AdvancedBallistic").researchPrerequisites.SequenceEqual(new[] { ballisticPlatform }),
+                "airframes are gated V2 → basic missile engineering, Tochka → IC, Minuteman → ballistic platform research");
             // Tochka became a medium item missile (2026-10-27): crafted at IC, fired from medium platforms, medium parts.
             MissileBodyDef tochka = Body("DMSE_MissileBody_Tochka");
             ThingDef tochkaItem = DefDatabase<ThingDef>.GetNamedSilentFail("DMSE_Missile_Tochka");
@@ -339,13 +360,13 @@ namespace DMSE.BVRAcceptance
                 "the medium tilt launcher and the vertical launch silo accept it");
             t.Check(Part("DMSE_Warhead_HE").compatibleBodies.Contains(tochka) && !Part("DMSE_Ballistic_Warhead_Airburst").compatibleBodies.Contains(tochka),
                 "it takes medium parts, not ballistic ones");
-            t.Check(Body("DMSE_MissileBody_AdvancedBallistic").ResearchSatisfied == strategic.IsFinished,
+            t.Check(Body("DMSE_MissileBody_AdvancedBallistic").ResearchSatisfied == ballisticPlatform.IsFinished,
                 "the gate follows the research state");
             t.Check(!Part("DMSE_Ballistic_Warhead_Thermonuclear").ResearchSatisfied == !strategic.IsFinished,
                 "the thermonuclear warhead now needs strategic systems");
             ResearchProjectDef antiship = ResearchProjectDef.Named("DMSE_AntishipMissiles");
-            // 2026-10-23: the anti-ship node follows loitering munitions; integrated circuits gate the supersonic missile's recipe instead.
-            t.Check(antiship.prerequisites.Contains(ResearchProjectDef.Named("DMSE_LoiteringMunitions")), "the anti-ship node follows loitering munitions");
+            // 2026-10-28: back under basic missile engineering; advanced missile engineering (IC) gates the supersonic missile's recipe instead.
+            t.Check(HasPrerequisites(antiship, "DMSE_LoiteringMunitions"), "the anti-ship node follows basic missile engineering");
             t.Check(DefDatabase<RecipeDef>.AllDefs.Any(r => r.ProducedThingDef == ThingDef.Named("DMSE_Missile_Moskit")
                     && r.researchPrerequisites != null && r.researchPrerequisites.Contains(antiship) && r.researchPrerequisites.Contains(ic)),
                 "the Moskit recipe needs anti-ship missiles and integrated circuits");
@@ -354,6 +375,84 @@ namespace DMSE.BVRAcceptance
             RecipeDef yj = DefDatabase<RecipeDef>.AllDefs.FirstOrDefault(r => r.ProducedThingDef == Def("DMSE_Missile_Yj"));
             t.Check(yj != null && yj.researchPrerequisites != null && yj.researchPrerequisites.Contains(antiship) && yj.researchPrerequisites.Contains(strategic),
                 "the YJ recipe needs both anti-ship missiles and strategic systems");
+            yield break;
+        }
+
+        // ------------------------------------------------------------------
+        //  T12: missile and radar research tree split / unlock gates
+        // ------------------------------------------------------------------
+
+        public static IEnumerable<Wait> MissileAndRadarTechnologyTree(TestContext t)
+        {
+            ResearchProjectDef radarBasis = DefDatabase<ResearchProjectDef>.GetNamedSilentFail("DMSE_RadarBasis");
+            ResearchProjectDef loitering = DefDatabase<ResearchProjectDef>.GetNamedSilentFail("DMSE_LoiteringMunitions");
+            ResearchProjectDef radarNetwork = DefDatabase<ResearchProjectDef>.GetNamedSilentFail("DMSE_RadarNetwork");
+            ResearchProjectDef fireControl = DefDatabase<ResearchProjectDef>.GetNamedSilentFail("DMSE_FireControlNetwork");
+            ResearchProjectDef integratedCircuits = DefDatabase<ResearchProjectDef>.GetNamedSilentFail("DMSE_IntegratedCircuits");
+            ResearchProjectDef strategic = DefDatabase<ResearchProjectDef>.GetNamedSilentFail("DMSE_StrategicSystems");
+            ResearchProjectDef integratedAirDefense = DefDatabase<ResearchProjectDef>.GetNamedSilentFail("DMSE_IntegratedAirDefense");
+            ResearchProjectDef aerospace = DefDatabase<ResearchProjectDef>.GetNamedSilentFail("DMSE_Aerospace");
+            t.Require(radarBasis != null && loitering != null && radarNetwork != null && fireControl != null
+                && integratedCircuits != null && strategic != null
+                && integratedAirDefense != null && aerospace != null,
+                "the missile, radar-network and integrated-air-defence research projects load");
+
+            t.Check(radarBasis.baseCost == 1000f && loitering.baseCost == 3500f
+                && radarNetwork.baseCost == 2500f && fireControl.baseCost == 3500f
+                && integratedAirDefense.baseCost == 6000f,
+                "the staged warning, search, fire-control and integrated-defence research costs are preserved");
+            t.Check(integratedCircuits.baseCost == 4000f && strategic.baseCost == 6000f,
+                "the precision and strategic missile research costs are preserved");
+            ResearchProjectDef ballisticPlatform = DefDatabase<ResearchProjectDef>.GetNamedSilentFail("DMSE_Ballistics");
+            t.Check(ballisticPlatform != null && !ballisticPlatform.IsHidden && ballisticPlatform.baseCost == 2500f
+                && HasPrerequisites(ballisticPlatform, "DMSE_StrategicSystems", "DMSE_IntegratedAirDefense"),
+                "ballistic platform research follows cutting-edge missile engineering and the phased array");
+            t.Check(new[] { "DMSE_AdvBallistic_Warhead_LowYield", "DMSE_AdvBallistic_Guidance_Stellar",
+                    "DMSE_AdvBallistic_Payload_Penaids", "DMSE_AdvBallistic_Payload_MIRV" }
+                    .All(p => HasPartResearchPrerequisites(Part(p), "DMSE_Ballistics")),
+                "the Minuteman III's dedicated parts unlock with ballistic platform research");
+            List<Def> ballisticUnlocks = ballisticPlatform.UnlockedDefs;
+            t.Check(ballisticUnlocks.Contains(Body("DMSE_MissileBody_AdvancedBallistic"))
+                && ballisticUnlocks.Contains(Part("DMSE_AdvBallistic_Payload_MIRV"))
+                && ballisticUnlocks.Distinct().Count() == ballisticUnlocks.Count,
+                $"the research panel lists missile bodies and parts as unlocks ({string.Join(", ", ballisticUnlocks.Select(d => d.defName))})");
+            var grouped = RimWorld.ResearchPrerequisitesUtility.UnlockedDefsGroupedByPrerequisites(strategic);
+            t.Check(grouped.SelectMany(g => g.Second).Contains(Part("DMSE_Ballistic_Warhead_Thermonuclear")),
+                "strategic systems' grouped unlock list includes its missile parts without errors");
+
+            t.Check(HasPrerequisites(radarBasis, "DMS_UAVBasis")
+                && HasPrerequisites(loitering, "DMSE_RadarBasis")
+                && HasPrerequisites(radarNetwork, "DMSE_LoiteringMunitions")
+                && HasPrerequisites(fireControl, "DMSE_RadarNetwork")
+                && HasPrerequisites(integratedAirDefense, "DMSE_FireControlNetwork"),
+                "the radar branch advances from early warning to search, fire control and integrated air defence");
+            t.Check(HasPrerequisites(integratedCircuits, "DMSE_RadarNetwork")
+                && HasPrerequisites(strategic, "DMSE_IntegratedCircuits"),
+                "advanced missile engineering follows the radar detection network, then cutting-edge missile engineering");
+            ThingDef ballisticRack = DefDatabase<ThingDef>.GetNamedSilentFail("DMSE_Building_BallisticRack");
+            t.Check(ballisticRack != null && HasResearchPrerequisites(Tower, "DMSE_LoiteringMunitions")
+                && HasResearchPrerequisites(ballisticRack, "DMSE_LoiteringMunitions")
+                && Body("DMSE_MissileBody_LegacyBallistic").researchPrerequisites.SequenceEqual(new[] { loitering })
+                && HasPartResearchPrerequisites(Part("DMSE_LegacyBallistic_Warhead_Trialen"), "DMSE_LoiteringMunitions"),
+                "basic missile engineering unlocks the ballistic launch tower, storage rack and V2 airframe");
+            t.Check(!integratedAirDefense.prerequisites.Contains(aerospace),
+                "integrated air defence no longer depends on aerospace-material research");
+            bool expectedNpcNetworkState = DMSE.AirDefenseAlertTuningDef.Current.enabled && radarNetwork.IsFinished;
+            t.Check(DMSE.WorldComponent_FactionAirDefenseAlert.Enabled == expectedNpcNetworkState,
+                "NPC world-map air defence follows Radar Network research and its master switch");
+
+            t.Check(HasResearchPrerequisites(AcousticRadar, "DMSE_RadarBasis")
+                && HasResearchPrerequisites(EarlyFireControl, "DMSE_RadarBasis"),
+                "the passive warning mirror and manually operated early fire-control radar remain early unlocks");
+            t.Check(HasResearchPrerequisites(SearchRadar, "DMSE_RadarNetwork")
+                && HasResearchPrerequisites(FireControlRadar, "DMSE_FireControlNetwork")
+                && HasResearchPrerequisites(PhaseArray, "DMSE_IntegratedAirDefense"),
+                "active search, dedicated fire control and phased array unlock on their matching research nodes");
+            t.Check(HasResearchPrerequisites(SamLauncherBuilding, "DMSE_FireControlNetwork")
+                && HasResearchPrerequisites(LightVls, "DMSE_IntegratedCircuits"),
+                "multi-channel interception follows fire-control research while compact VLS follows missile electronics");
+            t.Check(HasPartResearchPrerequisites(Part("DMSE_Ballistic_Guidance_FireControl"), "DMSE_FireControlNetwork"),
+                "command-guided ballistic missiles require the fire-control network");
             yield break;
         }
 
@@ -428,8 +527,8 @@ namespace DMSE.BVRAcceptance
                 "both guns are turrets with terminal CIWS");
             t.Check(Flak43.researchPrerequisites.Contains(ResearchProjectDef.Named("DMSE_RadarBasis"))
                 && Flak43.researchPrerequisites.Contains(ResearchProjectDef.Named("GasOperation"))
-                && !Flak43.researchPrerequisites.Contains(ResearchProjectDef.Named("DMSE_Ballistics")),
-                "the Flak 43 requires Radar and gas operation, not ballistics");
+                && !Flak43.researchPrerequisites.Any(r => r.defName == "DMSE_Ballistics"),
+                "the Flak 43 requires Radar and gas operation on a separate track");
             t.Check(flakCiws.Props.shotsPerBurst == 8 && flakCiws.Props.ticksBetweenShots == 14,
                 "the Flak 43 fires eight-round clips at the autocannon cadence");
             t.Check(millCiws.Active, "the Millennium works unmanned");
@@ -599,6 +698,110 @@ namespace DMSE.BVRAcceptance
             t.Check(!groundVerb.Available() && loaded.Count == 0 && !launcher.Destroyed, "out of charges, the ground shot is unavailable again");
         }
 
+        // ------------------------------------------------------------------
+        //  T10/T11: a manned rotary rail reloads from a rack and fires again,
+        //  also inside a manned Flak 43's terminal window (2026-10-27 report)
+        // ------------------------------------------------------------------
+
+        public static IEnumerable<Wait> RotaryRailRefire(TestContext t) => RotaryRailScenario(t, withFlak: false, pods: 4);
+
+        public static IEnumerable<Wait> RotaryRailRefireInTerminal(TestContext t) => RotaryRailScenario(t, withFlak: true, pods: 12);
+
+        /// <summary>
+        /// The player's setup from the report: two acoustic radars, a manned early fire-control radar, a rotary rail manned through
+        /// DMSE_ManMissileLauncher with Rheintochters in loitering racks. With a manned Flak 43 a 12-pod wave lands inside the
+        /// 1800-tick terminal window from the start; the SAM must still fire, reload and fire again before impact.
+        /// </summary>
+        private static IEnumerable<Wait> RotaryRailScenario(TestContext t, bool withFlak, int pods)
+        {
+            Building_MissileRack rail = (Building_MissileRack)SpawnBuilding(RotaryRail, 10, 10);
+            Building_MissileRack rackA = (Building_MissileRack)SpawnBuilding(Def("DMSE_LoiteringRack"), 5, 8);
+            Building_MissileRack rackB = (Building_MissileRack)SpawnBuilding(Def("DMSE_LoiteringRack"), 5, 12);
+            Thing fcr = SpawnBuilding(EarlyFireControl, 18, 2);
+            Thing flak = withFlak ? SpawnBuilding(Flak43, 24, 10) : null;
+            SpawnBuilding(AcousticRadar, 2, 2);
+            SpawnBuilding(AcousticRadar, 2, 20);
+            Load(rail, Rheintochter);
+            Load(rackA, Rheintochter);
+            Load(rackB, Rheintochter);
+            yield return WaitPowered(); yield return new WaitTicks(2);
+
+            List<Pawn> colonists = Home.mapPawns.FreeColonistsSpawned.ToList();
+            t.Require(colonists.Count >= 1, "a colonist exists");
+            Pawn gunner = colonists[0];
+            Pawn radarman = colonists.Count > 1 ? colonists[1] : colonists[0];
+            Pawn flakCrew = colonists.Count > 2 ? colonists[2] : radarman;
+            CompMissileLauncher_Interceptor sam = rail.TryGetComp<CompMissileLauncher_Interceptor>();
+            CompMannable railMan = rail.TryGetComp<CompMannable>();
+            CompMannable fcMan = fcr.TryGetComp<CompMannable>();
+            CompMannable flakMan = flak?.TryGetComp<CompMannable>();
+
+            gunner.jobs.TryTakeOrderedJob(JobMaker.MakeJob(DMSE_MissileJobDefOf.DMSE_ManMissileLauncher, rail), JobTag.Misc);
+            var waitManned = new WaitUntil(() => railMan.MannedNow, 2500);
+            yield return waitManned;
+            t.Require(!waitManned.TimedOut, "the gunner mans the rotary rail");
+
+            // Every shot misses so the wave keeps a target for the second round; log the state once a second.
+            var launches = new List<int>();
+            var hitChances = new List<float>();
+            var seenShots = new HashSet<IInterceptorShot>();
+            var resolvedAt = new Dictionary<IInterceptorShot, int>();
+            int lastCooldown = sam.CooldownUntil;
+            TickWatch watch = AcceptanceDriver.Watch(() =>
+            {
+                int now = Find.TickManager.TicksGame;
+                fcMan.ManForATick(radarman);
+                flakMan?.ManForATick(flakCrew);
+                foreach (IInterceptorShot shot in Home.listerThings.AllThings.OfType<IInterceptorShot>())
+                {
+                    if (seenShots.Add(shot)) { hitChances.Add(shot.HitChance); }
+                    shot.HitChance = 0f;
+                }
+                foreach (IInterceptorShot shot in seenShots)
+                {
+                    if (!resolvedAt.ContainsKey(shot) && shot is Thing th && !th.Spawned) { resolvedAt[shot] = now; }
+                }
+                if (sam.CooldownUntil != lastCooldown) { lastCooldown = sam.CooldownUntil; launches.Add(now); }
+                if (now % 60 == 0)
+                {
+                    BVRWave w = HomeBVR.Waves.FirstOrDefault();
+                    JobDriver d = gunner.jobs.curDriver;
+                    t.Note($"tick {now}: job {gunner.CurJobDef?.defName}/{d?.CurToilString} manned={railMan.MannedNow} stored={rail.StoredCount} " +
+                        $"ammo={sam.HasAmmo} active={sam.Active} cooldown={sam.CooldownTicksRemaining(now)} launches={launches.Count} " +
+                        $"wave={(w == null ? "none" : $"{w.tickToImpact - now} ticks, {w.targets.Count} targets, locks {string.Join(",", w.targets.Select(x => x.lockUntil < 0 ? "-" : (x.lockUntil - now).ToString()))}, engaged {w.targets.Count(x => x.midcourseEngagedUntil > now)}")} " +
+                        $"free={HomeBVR.Channels.Free(Player)}");
+                }
+                return false;
+            });
+
+            for (int i = 0; i < pods; i++) { DropEnemyPod(1, at: new IntVec3(Pad.maxX + 8, 0, Pad.CenterCell.z + i * 3)); }
+            yield return new WaitTicks(1);
+            t.Require(HomeBVR.Waves.Count == 1, $"the pods form one wave ({HomeBVR.Waves.Count})");
+            BVRWave wave = HomeBVR.Waves[0];
+            int window = wave.tickToImpact - Find.TickManager.TicksGame;
+            int terminal = HomeBVR.TerminalWindowTicks(Player);
+            t.Note($"wave window {window} ticks, terminal window {terminal}");
+            if (withFlak)
+            {
+                t.Require(terminal == 1800 && window <= terminal,
+                    $"the manned Flak 43 puts the whole {window}-tick wave inside its terminal window ({terminal})");
+            }
+
+            var waitFirst = new WaitUntil(() => launches.Count >= 1, window);
+            yield return waitFirst;
+            t.Require(!waitFirst.TimedOut, "the manned rail fires its first interceptor");
+            var waitSecond = new WaitUntil(() => launches.Count >= 2 || !HomeBVR.Waves.Contains(wave), window);
+            yield return waitSecond;
+            t.Check(launches.Count >= 2, $"after reloading from the rack it fires a second one (launch ticks {string.Join(",", launches)})");
+            t.Check(rackA.StoredCount + rackB.StoredCount <= 1, $"the gunner took the reload from a rack ({rackA.StoredCount}+{rackB.StoredCount} left)");
+            t.Check(hitChances.Count >= 2 && hitChances.All(c => c > 0f),
+                $"the guidance time is the time to impact, so terminal-phase shots can hit (hit chances {string.Join(", ", hitChances.Select(c => c.ToString("0.00")))})");
+            var waitResolved = new WaitUntil(() => resolvedAt.Count >= seenShots.Count, 1200);
+            yield return waitResolved;
+            t.Check(!waitResolved.TimedOut && resolvedAt.Values.All(tick => tick < wave.tickToImpact),
+                $"every interceptor resolves before the wave lands at {wave.tickToImpact} (resolved at {string.Join(",", resolvedAt.Values)})");
+        }
+
         public static IEnumerable<AcceptanceTest> Tests()
         {
             yield return new AcceptanceTest("T1", "Launch tower backblast; sealed silo", TowerBackblast);
@@ -610,6 +813,9 @@ namespace DMSE.BVRAcceptance
             yield return new AcceptanceTest("T7", "Millennium and Flak 43", AirDefenceGuns);
             yield return new AcceptanceTest("T8", "Man-portable SAM", ManPortableSam);
             yield return new AcceptanceTest("T9", "Field air defence: on-map cannon turns before firing", FieldAirDefenceGroundFire);
+            yield return new AcceptanceTest("T10", "Manned rotary rail reloads from a rack and fires again", RotaryRailRefire);
+            yield return new AcceptanceTest("T11", "SAM keeps firing inside a manned Flak 43's terminal window", RotaryRailRefireInTerminal);
+            yield return new AcceptanceTest("T12", "Missile and radar research tree split / unlock gates", MissileAndRadarTechnologyTree);
         }
     }
 }

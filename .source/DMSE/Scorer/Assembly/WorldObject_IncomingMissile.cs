@@ -36,7 +36,7 @@ namespace DMSE
 
             ThingDef def = incomingSkyfaller
                 ?? (config != null && config.body != null ? config.body.incomingSkyfaller : null)
-                ?? DefDatabase<ThingDef>.GetNamedSilentFail("DMSE_Incoming_CruiseMissile");
+                ?? DefDatabase<ThingDef>.GetNamedSilentFail(IncomingMissileUtility.DefaultIncomingDef);
 
             if (def != null)
             {

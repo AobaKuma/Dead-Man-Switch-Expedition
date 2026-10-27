@@ -421,6 +421,47 @@ namespace DMSE
     }
 
     // ============================================================
+    //  無線電指令導引（Radio Command）
+    //  地面操作員／火控持續提供修正；沒有改變 BVR 攔截命中模型。
+    // ============================================================
+    public class GuidanceType_RadioCommand : GuidanceType_FireControl
+    {
+    }
+
+    // ============================================================
+    //  自動影像尋標（Imaging Seeker）
+    //  只選屋頂外的敵方生物，先按戰力、再按體型；完全同分時以 Thing ID 穩定排序。
+    // ============================================================
+    public class GuidanceType_Imaging : GuidanceType
+    {
+        public override IntVec3 PickTarget(float N, Map map, Faction attacker)
+        {
+            Pawn best = null;
+            float bestThreat = -1f;
+            float bestSize = -1f;
+            int bestId = int.MaxValue;
+            foreach (Pawn pawn in map.mapPawns.AllPawnsSpawned)
+            {
+                if (!pawn.Spawned || pawn.Dead || !IsHostileTarget(pawn.Faction, attacker)
+                    || map.roofGrid.Roofed(pawn.Position) || !Strikable(pawn.Position, map)) { continue; }
+
+                float threat = pawn.kindDef?.combatPower ?? 0f;
+                float size = pawn.BodySize;
+                int id = pawn.thingIDNumber;
+                if (threat > bestThreat || (threat == bestThreat && size > bestSize)
+                    || (threat == bestThreat && size == bestSize && id < bestId))
+                {
+                    best = pawn;
+                    bestThreat = threat;
+                    bestSize = size;
+                    bestId = id;
+                }
+            }
+            return best != null ? best.Position : IntVec3.Invalid;
+        }
+    }
+
+    // ============================================================
     //  主動雷達（Active Radar / MMW）
     //  射後不理：鎖定占地最大的敵對建築，其次為體型最大的敵對單位；找不到則退化為慣性。
     //  與反輻射（打雷達）、電磁訊號（打耗電）、反艦（打耐久）區隔。

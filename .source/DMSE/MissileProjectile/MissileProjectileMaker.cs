@@ -17,11 +17,13 @@ namespace DMSE
         /// 在 <paramref name="cell"/> 生成一枚升空中的導彈，朝向 <paramref name="rotation"/>
         /// （同舊版 <c>faller.Rotation = parent.Rotation; faller.angle = Rotation.AsAngle</c>）。
         /// </summary>
-        public static Projectile_MissileBase SpawnAscent(ThingDef def, IntVec3 cell, Map map, Rot4 rotation, Thing launcher)
+        public static Projectile_MissileBase SpawnAscent(ThingDef def, IntVec3 cell, Map map, Rot4 rotation, Thing launcher,
+            float? launchAngle = null, Vector3? launchOffset = null)
         {
             Projectile_MissileBase missile = (Projectile_MissileBase)GenSpawn.Spawn(def, cell, map);
             missile.Rotation = rotation;
-            missile.angle = rotation.AsAngle;
+            missile.angle = launchAngle ?? rotation.AsAngle;
+            missile.SetLaunchOffset(launchOffset ?? Vector3.zero);
             missile.Launch(launcher, cell.ToVector3Shifted(), new LocalTargetInfo(cell), new LocalTargetInfo(cell), ProjectileHitFlags.None);
             return missile;
         }
@@ -33,11 +35,12 @@ namespace DMSE
         /// 對地發射：生成升空彈，離場時把 <paramref name="worldObject"/> 加入世界。
         /// 有 <paramref name="heading"/>（世界航跡的出發方位）時，升空中途轉向並沿該方位飛出地圖邊緣（§8.3）。
         /// </summary>
-        public static Thing LaunchDeparture(ThingDef def, IntVec3 cell, Map map, Rot4 rotation, Thing launcher, WorldObject worldObject, float? heading = null)
+        public static Thing LaunchDeparture(ThingDef def, IntVec3 cell, Map map, Rot4 rotation, Thing launcher, WorldObject worldObject,
+            float? heading = null, float? launchAngle = null, Vector3? launchOffset = null)
         {
             if (IsMissileProjectile(def))
             {
-                Projectile_MissileLaunch missile = (Projectile_MissileLaunch)SpawnAscent(def, cell, map, rotation, launcher);
+                Projectile_MissileLaunch missile = (Projectile_MissileLaunch)SpawnAscent(def, cell, map, rotation, launcher, launchAngle, launchOffset);
                 missile.worldObject = worldObject;
                 if (heading != null) { missile.SetDepartureHeading(heading.Value); }
                 return missile;
@@ -45,7 +48,8 @@ namespace DMSE
 
             ScorerProjectile faller = (ScorerProjectile)SkyfallerMaker.SpawnSkyfaller(def, cell, map);
             faller.Rotation = rotation;
-            faller.angle = rotation.AsAngle;
+            faller.angle = launchAngle ?? rotation.AsAngle;
+            if (faller is ScorerProjectile scorer) { scorer.launchOffset = launchOffset ?? Vector3.zero; }
             faller.worldObject = worldObject;
             return faller;
         }
@@ -78,11 +82,12 @@ namespace DMSE
         /// 攔截發射：生成升空彈，離場時對 <paramref name="targetId"/> 擲骰（-1 = 純視覺）。
         /// 有 <paramref name="heading"/>（來襲方位）時，升空中途轉向該方位、沿 speedCurve 加速飛出地圖邊緣後才結算。
         /// </summary>
-        public static Thing LaunchInterceptor(ThingDef def, IntVec3 cell, Map map, Rot4 rotation, Thing launcher, int targetId, float hitChance, float? heading = null)
+        public static Thing LaunchInterceptor(ThingDef def, IntVec3 cell, Map map, Rot4 rotation, Thing launcher, int targetId, float hitChance,
+            float? heading = null, float? launchAngle = null, Vector3? launchOffset = null)
         {
             if (IsMissileProjectile(def))
             {
-                Projectile_MissileLaunch missile = (Projectile_MissileLaunch)SpawnAscent(def, cell, map, rotation, launcher);
+                Projectile_MissileLaunch missile = (Projectile_MissileLaunch)SpawnAscent(def, cell, map, rotation, launcher, launchAngle, launchOffset);
                 missile.isInterceptor = true;
                 missile.targetId = targetId;
                 missile.hitChance = hitChance;
@@ -92,25 +97,30 @@ namespace DMSE
 
             InterceptProjectile faller = (InterceptProjectile)SkyfallerMaker.SpawnSkyfaller(def, cell, map);
             faller.Rotation = rotation;
-            faller.angle = rotation.AsAngle;
+            faller.angle = launchAngle ?? rotation.AsAngle;
+            faller.launchOffset = launchOffset ?? Vector3.zero;
             faller.targetId = targetId;
             faller.hitChance = hitChance;
             return faller;
         }
 
         /// <summary>
-        /// 地圖層攔截目標的來襲方位（攔截彈升空後轉向它飛出地圖）：
-        /// 導彈 Projectile 用它的進入方位（世界航跡最後一段的方向）；其餘（空投艙、無方位的導彈）用發射點到預測落點的方向；
+        /// 地圖層攔截目標的來襲方位（與末端 CIWS 使用同一角度基準）：
+        /// 導彈 Projectile 用它的進入方位，Skyfaller 用 angle；缺少方位時才用發射點到預測落點的方向；
         /// 落點太近或未知時回傳 null（照原本垂直升空）。
         /// </summary>
         public static float? IncomingBearing(BVRTarget target, IntVec3 from)
         {
             if (target == null || target.id < 0) { return null; }
-            if (target.Payload is Projectile_MissileIncoming missile && missile.HasEntryHeading) { return missile.EntryHeading; }
             if (!target.position.IsValid) { return null; }
-            Vector3 d = (target.position - from).ToVector3();
-            d.y = 0f;
-            return d.magnitude >= 3f ? MissileMapEntryUtility.HeadingOf(d) : (float?)null;
+            Thing payload = target.Payload;
+            Vector3 landing = target.position.ToVector3Shifted();
+            Vector3 fallback = from.ToVector3Shifted();
+            float heading = InterceptGeometry.IncomingHeading(payload, landing, fallback, out bool hasHeading);
+            if (hasHeading) { return heading; }
+            Vector3 delta = landing - fallback;
+            delta.y = 0f;
+            return delta.magnitude >= 3f ? heading : (float?)null;
         }
 
         /// <summary>世界層攔截：從發射據點朝世界會合點 <paramref name="meetingPoint"/> 的方位；跨圖層或同點時 null。</summary>
@@ -139,23 +149,24 @@ namespace DMSE
         /// 以 <paramref name="def"/> 從 <paramref name="cell"/> 朝 <paramref name="heading"/> 離場時，到飛出地圖的 tick 數。
         /// 新發射 Projectile 用與實際飛行相同的模擬；舊 skyfaller 為升空動畫長度。
         /// </summary>
-        public static int DepartureTicksOf(ThingDef def, IntVec3 cell, IntVec3 mapSize, Rot4 rotation, float? heading)
+        public static int DepartureTicksOf(ThingDef def, IntVec3 cell, IntVec3 mapSize, Rot4 rotation, float? heading, float? launchAngle = null)
         {
             MissileFlightExtension flight = def?.GetModExtension<MissileFlightExtension>();
             if (flight == null || !IsMissileProjectile(def)) { return DepartureTicksOf(def); }
             // 波次打擊規劃可能每幀為每枚彈估算：結果只取決於下列輸入，快取起來。
-            var key = (def, cell, mapSize, rotation.AsInt, heading.HasValue ? Mathf.RoundToInt(heading.Value * 100f) : int.MinValue);
+            var key = (def, cell, mapSize, rotation.AsInt, heading.HasValue ? Mathf.RoundToInt(heading.Value * 100f) : int.MinValue,
+                launchAngle.HasValue ? Mathf.RoundToInt(launchAngle.Value * 100f) : int.MinValue);
             if (!departureTicksCache.TryGetValue(key, out int ticks))
             {
                 if (departureTicksCache.Count > 4096) { departureTicksCache.Clear(); }
-                ticks = MissileDepartureKinematics.SimulateDepartureTicks(flight, cell, mapSize, rotation, heading);
+                ticks = MissileDepartureKinematics.SimulateDepartureTicks(flight, cell, mapSize, rotation, heading, launchAngle);
                 departureTicksCache[key] = ticks;
             }
             return ticks;
         }
 
-        private static readonly System.Collections.Generic.Dictionary<(ThingDef, IntVec3, IntVec3, int, int), int> departureTicksCache
-            = new System.Collections.Generic.Dictionary<(ThingDef, IntVec3, IntVec3, int, int), int>();
+        private static readonly System.Collections.Generic.Dictionary<(ThingDef, IntVec3, IntVec3, int, int, int), int> departureTicksCache
+            = new System.Collections.Generic.Dictionary<(ThingDef, IntVec3, IntVec3, int, int, int), int>();
 
         /// <summary>升空到離開地圖的 tick 數（不知道方位時的時間軸估算）：新發射 Projectile 讀 <see cref="MissileFlightExtension"/>，舊 skyfaller 讀 &lt;skyfaller&gt;。</summary>
         public static int DepartureTicksOf(ThingDef def)

@@ -45,6 +45,7 @@ namespace DMSE
         private bool hasDepartureHeading;
         private float departureHeading;
         private IntVec3 launchCell = IntVec3.Invalid;
+        private Vector3 launchOffset;
         private MissileCruiseState cruise;
         /// <summary>交接後尾焰進度固定在交接當下（發射特效的 ticksSinceSpawn 上限）。</summary>
         private int effectHoldTicks = int.MaxValue;
@@ -58,6 +59,11 @@ namespace DMSE
             hasDepartureHeading = true;
             departureHeading = heading;
         }
+
+        /// <summary>把升空彈的軌跡起點偏移到發射架實際繪製的彈藥槽位置。</summary>
+        public void SetLaunchOffset(Vector3 offset) => launchOffset = offset;
+
+        private Vector3 AscentCenter => this.TrueCenter() + launchOffset;
 
         public bool Cruising => cruise.active;
         public float CruiseNoseAngle => cruise.nose;
@@ -112,7 +118,7 @@ namespace DMSE
                 if (cruise.active) { return cruise.pos; }
                 if (Flight.reversed)
                 {
-                    return MissileDepartureKinematics.AscentDrawPos(Flight, this.TrueCenter(), ticksToImpact, angle, LeaveMapAfterTicks);
+                    return MissileDepartureKinematics.AscentDrawPos(Flight, AscentCenter, ticksToImpact, angle, LeaveMapAfterTicks);
                 }
                 return MissileArrivalKinematics.FallDrawPos(Flight, this.TrueCenter(), ticksToImpact, ticksToImpactMax, angle);
             }
@@ -143,6 +149,7 @@ namespace DMSE
             {
                 // 升空：沿用舊 ScorerProjectile / InterceptProjectile 的覆寫——曲線只在東/西朝向生效。
                 extraRotation = MissileDepartureKinematics.AscentCurveOffset(f, Rotation, t, ref drawLoc);
+                extraRotation += angle - Rotation.AsAngle;
                 return;
             }
 
@@ -249,7 +256,7 @@ namespace DMSE
                 {
                     if (hasDepartureHeading)
                     {
-                        Vector3 center = this.TrueCenter();
+                        Vector3 center = AscentCenter;
                         Vector3 pose = MissileDepartureKinematics.AscentPose(f, center, Rotation, ticksToImpact, angle, LeaveMapAfterTicks, out float nose);
                         if (MissileDepartureKinematics.ShouldHandoff(f, ticksToImpact, LeaveMapAfterTicks, pose, center))
                         {
@@ -461,6 +468,7 @@ namespace DMSE
             Scribe_Values.Look(ref hasDepartureHeading, "hasDepartureHeading", false);
             Scribe_Values.Look(ref departureHeading, "departureHeading", 0f);
             Scribe_Values.Look(ref launchCell, "launchCell", IntVec3.Invalid);
+            Scribe_Values.Look(ref launchOffset, "launchOffset", Vector3.zero);
             Scribe_Values.Look(ref effectHoldTicks, "effectHoldTicks", int.MaxValue);
             cruise.Expose();
         }

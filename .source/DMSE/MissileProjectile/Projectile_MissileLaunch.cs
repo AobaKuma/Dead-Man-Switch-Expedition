@@ -45,7 +45,7 @@ namespace DMSE
             BVRTarget target = comp.GetTarget(targetId);
             if (target == null) { return; }
 
-            target.midcourseEngagedUntil = -1;
+            target.NotifyInterceptorResolved();
             if (Rand.Chance(hitChance))
             {
                 MapComponent_InterceptEffects.Trigger(Map, InterceptEventData.From(target, Map, terminal: false, IntVec3.Invalid));

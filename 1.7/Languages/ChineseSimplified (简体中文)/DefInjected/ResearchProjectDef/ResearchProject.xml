@@ -1,9 +1,9 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
   
   <!-- EN: Aerospace Applications -->
   <DMSE_Aerospace.label>航太应用</DMSE_Aerospace.label>
-  <DMSE_Aerospace.description>透过规模化的生产钽钨合金与石墨烯并发掘这些特种材料在航空航天领与微电子等领域中的关键应用。\n\n透过该研究解锁应用於重力船与轨道星舰上的热核推进引擎与轨道电子战隐蔽设备，以及相控阵雷达与先进防空炮。</DMSE_Aerospace.description>
+  <DMSE_Aerospace.description>透过规模化生产钽钨合金与石墨烯，并研究这些特种材料在航天与微电子领域的应用。\n\n解锁重力船与轨道星舰使用的核热推进引擎及轨道电子战隐蔽设备。</DMSE_Aerospace.description>
   
   <!-- EN: Carbon synthesis -->
   <DMSE_Carbohydrate.label>碳合成</DMSE_Carbohydrate.label>
@@ -22,17 +22,24 @@
   <DMSE_VacuumMaterial.description>在真空环境的材料生产能够有效的避免材料在化学反应中受到氮气与氧气等常见气体的影响，透过在大气层外的材料学研究，这对於应用像钽钨合金这样会在大气内环境的加工过程中受氧化影响的特殊材料而言具有非常大的价值。\n\n透过该研究能够在真空环境下的箱型炉与烧结炉中生产钽钨合金。</DMSE_VacuumMaterial.description>
   
 
-  <DMSE_RadarBasis.label>雷达</DMSE_RadarBasis.label>
-  <DMSE_LoiteringMunitions.label>巡飞弹</DMSE_LoiteringMunitions.label>
-  <DMSE_LoiteringMunitions.description>解锁轨道发射架、巡飞弹储存架与打击规划桌。远程巡飞弹另需微电子基础。</DMSE_LoiteringMunitions.description>
-  <DMSE_Ballistics.label>弹道学</DMSE_Ballistics.label>
-  <DMSE_Ballistics.description>解锁塔式发射架、老式弹道导弹、倾斜发射箱、Scorer MLS 与导弹储存架。</DMSE_Ballistics.description>
-  <DMSE_IntegratedCircuits.label>集成电路</DMSE_IntegratedCircuits.label>
-  <DMSE_IntegratedCircuits.description>解锁搜索与火控雷达、防空系统、轻型发射平台、先进制导，以及轻型与战术导弹。</DMSE_IntegratedCircuits.description>
-  <DMSE_StrategicSystems.label>战略系统</DMSE_StrategicSystems.label>
-  <DMSE_StrategicSystems.description>解锁战略与垂直发射井、进阶弹道与巡航导弹、先进防空导弹及热核弹头。</DMSE_StrategicSystems.description>
+  <DMSE_RadarBasis.label>早期预警与人工火控</DMSE_RadarBasis.label>
+  <DMSE_LoiteringMunitions.label>基础导弹工程</DMSE_LoiteringMunitions.label>
+  <DMSE_LoiteringMunitions.description>解锁第一代巡飞弹、V2 弹道导弹、发射轨与塔式发射架、导弹储存架、导弹装配，以及打击规划桌。先进制导与远程型号需要进一步研究。</DMSE_LoiteringMunitions.description>
+  <DMSE_Ballistics.label>弹道平台研究</DMSE_Ballistics.label>
+  <DMSE_Ballistics.description>解锁民兵三型级先进弹道导弹弹体及其专属部件：低当量弹头、星光导引、突防诱饵与分导弹头。直接在战略发射井与塔式发射架内装配。</DMSE_Ballistics.description>
+  <DMSE_IntegratedCircuits.label>进阶导弹工程</DMSE_IntegratedCircuits.label>
+  <DMSE_IntegratedCircuits.description>解锁精确制导部件、轻型与战术导弹、紧凑型发射平台、Scorer 巡航导弹系统及打击指挥中心。自主寻标弹不占火控通道；指令制导与半主动制导弹需要外部支援。</DMSE_IntegratedCircuits.description>
+  <DMSE_StrategicSystems.label>先进导弹工程</DMSE_StrategicSystems.label>
+  <DMSE_StrategicSystems.description>解锁战略发射井与垂直发射系统、先进巡航导弹、高超音速反舰武器、进阶拦截弹与热核弹头。</DMSE_StrategicSystems.description>
 
-  <DMSE_RadarBasis.description>解锁早期探测与火控雷达、旋转发射架、老式巡飞弹与拦截巡飞弹。老式防空炮另需气动作用科技。</DMSE_RadarBasis.description>
+  <DMSE_RadarBasis.description>解锁被动声学预警雷达、需操作员的单通道早期火控雷达、早期旋转发射架与老式防空炮。主动搜索雷达与现代防空网另需研究。</DMSE_RadarBasis.description>
+  <DMSE_RadarNetwork.label>雷达探测网</DMSE_RadarNetwork.label>
+  <DMSE_RadarNetwork.description>解锁主动搜索雷达与共享预警网。完成研究后将启用 NPC 世界地图上的探测、拦截、警戒升级及封锁圈；局部地图防空仍可独立运作。</DMSE_RadarNetwork.description>
+  <DMSE_FireControlNetwork.label>火控与拦截制导</DMSE_FireControlNetwork.label>
+  <DMSE_FireControlNetwork.description>解锁独立火控雷达、多通道防空发射器与现代拦截导弹。搜索雷达负责发现与追踪；火控雷达负责锁定并支援需要外部制导的拦截弹。</DMSE_FireControlNetwork.description>
+  <DMSE_IntegratedAirDefense.label>相控阵与整合防空</DMSE_IntegratedAirDefense.label>
+  <DMSE_IntegratedAirDefense.description>解锁相控阵雷达与最高容量的整合防空系统。需要雷达探测网与火控网；只有实际使用航天特种材料的装备才需要航天应用研究。</DMSE_IntegratedAirDefense.description>
+
   <DMSE_AntishipMissiles.label>反舰导弹</DMSE_AntishipMissiles.label>
-  <DMSE_AntishipMissiles.description>解锁反舰巡飞弹。超音速反舰导弹另需集成电路，高超音速反舰导弹另需战略系统。</DMSE_AntishipMissiles.description>
+  <DMSE_AntishipMissiles.description>解锁反舰巡飞弹。超音速反舰导弹另需进阶导弹工程，高超音速反舰导弹另需先进导弹工程。</DMSE_AntishipMissiles.description>
 </LanguageData>

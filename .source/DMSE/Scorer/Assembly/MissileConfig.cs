@@ -175,9 +175,16 @@ namespace DMSE
         public GuidanceType TargetingGuidance
             => PartFor(MissilePartCategory.Guidance)?.guidanceType ?? body?.builtInGuidance;
 
-        /// <summary>Strike fire-control cost: ballistic base 2, other bodies base 1; TV adds one.</summary>
-        public int StrikeChannelCost => (body?.sizeClass == MissileSizeClass.Ballistic ? 2 : 1)
-            + (TargetingGuidance is GuidanceType_TV ? 1 : 0);
+        /// <summary>持續火控通道只供需要地面指令或雷達照射的導引方式使用；自主及預先裝定導引不占通道。</summary>
+        public int StrikeChannelCost
+        {
+            get
+            {
+                GuidanceType guidance = TargetingGuidance;
+                if (!(guidance is GuidanceType_RadioCommand) && !(guidance is GuidanceType_FireControl)) { return 0; }
+                return body?.sizeClass == MissileSizeClass.Ballistic ? 2 : 1;
+            }
+        }
 
         /// <summary>
         /// 戰鬥部或載荷能否穿透厚岩頂（鎢芯穿甲、反碉堡酬載）。不能穿透的導彈打在厚岩頂上只在岩層表面引爆，
@@ -197,6 +204,7 @@ namespace DMSE
             {
                 MissilePartDef part = PartFor(MissilePartCategory.Guidance);
                 if (part != null) { return part.LabelCap; }
+                if (body?.builtInGuidance is GuidanceType_RadioCommand) { return "DMSE.Guidance.RadioCommand".Translate(); }
                 if (body?.builtInGuidance != null) { return body.LabelCap; }
                 return "DMSE.Guidance.Inertial".Translate();
             }

@@ -126,10 +126,11 @@ namespace DMSE
 
         private void DoComposing(Rect inRect)
         {
-            int cap = Mathf.Max(1, console.StrikeCapacity);
+            int cap = console.StrikeCapacity;
             float y = Header(inRect, Editing ? "DMSE.Strike.Adjust.Title".Translate(mission.Label) : "DMSE.Strike.Plan.Title".Translate(mission.Label));
             y = Line(inRect, y, "DMSE.Strike.Plan.Channels".Translate(console.StrikeCapacity, console.StrikeFree,
                 BVRWorldTuningDef.Current.strikeGuidanceTicks.ToStringTicksToPeriod()));
+            y = Line(inRect, y, "DMSE.Strike.Plan.WaveRoundLimit".Translate(console.Props.maxRoundsPerWave));
             if (Planning && console.Props.requiresComputation)
             {
                 float work = console.WorkFor(mission);
@@ -302,12 +303,20 @@ namespace DMSE
             StrikeWave wave = Waves[selectedWave];
             int total = Waves.Sum(w => w.slots.Count);
             int freeChannels = cap - StrikeRoundUtility.PendingChannels(wave);
-            int room = console.Props.maxRoundsPerMission - total;
-            if (room <= 0 || freeChannels <= 0)
+            int missionRoom = console.Props.maxRoundsPerMission - total;
+            int waveRoom = console.Props.maxRoundsPerWave - wave.slots.Count;
+            int room = Mathf.Min(missionRoom, waveRoom);
+            if (room <= 0)
             {
-                Messages.Message(freeChannels <= 0
-                    ? "DMSE.Strike.WaveOverCap".Translate(selectedWave + 1, StrikeRoundUtility.PendingChannels(wave), cap)
-                    : "DMSE.Strike.TooManyRounds".Translate(console.Props.maxRoundsPerMission), MessageTypeDefOf.RejectInput, false);
+                Messages.Message(missionRoom <= 0
+                    ? "DMSE.Strike.TooManyRounds".Translate(console.Props.maxRoundsPerMission)
+                    : "DMSE.Strike.WaveRoundLimit".Translate(console.Props.maxRoundsPerWave), MessageTypeDefOf.RejectInput, false);
+                return;
+            }
+            if (freeChannels <= 0 && !list.Any(c => c.config?.StrikeChannelCost == 0))
+            {
+                Messages.Message("DMSE.Strike.WaveOverCap".Translate(selectedWave + 1,
+                    StrikeRoundUtility.PendingChannels(wave), cap), MessageTypeDefOf.RejectInput, false);
                 return;
             }
             int added = 0;
@@ -499,7 +508,7 @@ namespace DMSE
             List<StrikeCandidate> pool = candidates.Where(c => c.Assignable)
                 .OrderBy(c => c.value).ThenBy(c => c.issue == StrikeRoundIssue.None ? 0 : 1).ToList();
             List<List<int>> plan = StrikeRoundUtility.AutoAssign(pool.Take(console.Props.maxRoundsPerMission).Select(c => c.config?.StrikeChannelCost ?? 1).ToList(),
-                cap, console.Props.maxWavesPerMission);
+                cap, console.Props.maxWavesPerMission, console.Props.maxRoundsPerWave);
             mission.waves.Clear();
             foreach (List<int> indices in plan)
             {

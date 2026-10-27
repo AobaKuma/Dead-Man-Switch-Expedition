@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
+  <ConceptDef>
+    <defName>DMSE_NPCAirDefenseCircles</defName>
+    <label>NPC radar detection and air-defence ranges</label>
+    <priority>-1000</priority>
+    <helpText>With a radar detection network in place, hostile factions can detect long-range strikes, raise their alert level, and intercept missiles from defended locations. Detection, interception, alert, and blockade circles are now shown on the world map. This technology does not change local map air-defence behaviour.</helpText>
+  </ConceptDef>
+
 </Defs>

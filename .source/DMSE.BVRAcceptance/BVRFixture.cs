@@ -35,9 +35,9 @@ namespace DMSE.BVRAcceptance
         public static int DepartingMissiles
             => Home.listerThings.AllThings.Count(x => x is ScorerProjectile || x is Projectile_MissileLaunch { worldObject: not null })
                + (MapComponent_MissileLaunchQueue.For(Home)?.PendingDepartures ?? 0); // staggered launches not spawned yet
-        public static ThingDef CruiseIncoming => ThingDef.Named("DMSE_Incoming_CruiseMissile");
-        public static MissileBodyDef CruiseBody => DefDatabase<MissileBodyDef>.GetNamed("DMSE_MissileBody_Cruise");
-        public static MissileBodyDef BallisticBody => DefDatabase<MissileBodyDef>.GetNamed("DMSE_MissileBody_Ballistic");
+        public static ThingDef CruiseIncoming => ThingDef.Named("DMSE_Incoming_Moskit");
+        public static MissileBodyDef CruiseBody => DefDatabase<MissileBodyDef>.GetNamed("DMSE_MissileBody_Moskit");
+        public static MissileBodyDef BallisticBody => DefDatabase<MissileBodyDef>.GetNamed("DMSE_MissileBody_AdvancedBallistic");
         public static MissilePartDef Part(string defName) => DefDatabase<MissilePartDef>.GetNamed(defName);
 
         // ---- world ----

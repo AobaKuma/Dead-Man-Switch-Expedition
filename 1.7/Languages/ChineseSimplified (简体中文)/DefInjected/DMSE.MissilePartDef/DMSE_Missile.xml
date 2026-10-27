@@ -73,6 +73,8 @@
   <DMSE_AdvLight_Warhead_Kinetic.description>依 AGM-114R9X 设计的惰性弹体与弹出刀刃：几乎没有炸药，只杀死命中的生物，对周围破坏极小，代价是毫无爆破效果。</DMSE_AdvLight_Warhead_Kinetic.description>
   <DMSE_AdvLight_Guidance_Inertial.label>惯性导引</DMSE_AdvLight_Guidance_Inertial.label>
   <DMSE_AdvLight_Guidance_Inertial.description>不锁定建筑或单位；选点以地图中心为均值，呈圆形正态分布，限制于地图内切圆内。</DMSE_AdvLight_Guidance_Inertial.description>
+  <DMSE_AdvLight_Guidance_Imaging.label>自动影像寻标器</DMSE_AdvLight_Guidance_Imaging.label>
+  <DMSE_AdvLight_Guidance_Imaging.description>自主影像寻标器会攻击露天敌对生物，优先选择战力高、体型大的目标。忽略屋顶下单位；没有合格目标时退回惯性制导。</DMSE_AdvLight_Guidance_Imaging.description>
   <DMSE_AdvLight_Guidance_IIR.label>成像红外导引头</DMSE_AdvLight_Guidance_IIR.label>
   <DMSE_AdvLight_Guidance_IIR.description>锁定比室外高 15°C 以上最热的密闭房间，否则锁定目标地图上体型最大的生物。射后不理：不需要操作员、视线或激光标定。</DMSE_AdvLight_Guidance_IIR.description>
   <DMSE_AdvLight_Guidance_Laser.label>半主动激光导引头</DMSE_AdvLight_Guidance_Laser.label>

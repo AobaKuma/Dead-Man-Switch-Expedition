@@ -121,8 +121,8 @@ namespace DMSE
         {
             if (faction == null) { return 0; }
             int now = Find.TickManager.TicksGame;
-            return holds.Where(h => h.faction == faction && h.releaseTick > now).Sum(h => System.Math.Max(1, h.channelCost))
-                + queue.Where(q => q.console != null && q.console.Faction == faction).Sum(q => System.Math.Max(1, q.channelCost));
+            return holds.Where(h => h.faction == faction && h.releaseTick > now).Sum(h => System.Math.Max(0, h.channelCost))
+                + queue.Where(q => q.console != null && q.console.Faction == faction).Sum(q => System.Math.Max(0, q.channelCost));
         }
 
         /// <summary>最早一條導引期結束的剩餘 tick；沒有導引中的導彈時回傳 -1。</summary>
@@ -144,13 +144,15 @@ namespace DMSE
         {
             int now = Find.TickManager.TicksGame;
             int guidance = BVRWorldTuningDef.Current.strikeGuidanceTicks;
-            foreach (StrikeGuidanceHold h in holds) { if (h.faction == faction && h.releaseTick > now) { for (int c = 0; c < System.Math.Max(1, h.channelCost); c++) { yield return h.releaseTick; } } }
-            foreach (StrikeQueuedLaunch q in queue) { if (q.console != null && q.console.Faction == faction) { for (int c = 0; c < System.Math.Max(1, q.channelCost); c++) { yield return System.Math.Max(now, q.fireTick) + guidance; } } }
+            foreach (StrikeGuidanceHold h in holds) { if (h.faction == faction && h.releaseTick > now) { for (int c = 0; c < System.Math.Max(0, h.channelCost); c++) { yield return h.releaseTick; } } }
+            foreach (StrikeQueuedLaunch q in queue) { if (q.console != null && q.console.Faction == faction) { for (int c = 0; c < System.Math.Max(0, q.channelCost); c++) { yield return System.Math.Max(now, q.fireTick) + guidance; } } }
         }
 
         public void AddGuidanceHold(Faction faction, int releaseTick, int channelCost = 1)
         {
-            holds.Add(new StrikeGuidanceHold { faction = faction, releaseTick = releaseTick, channelCost = System.Math.Max(1, channelCost) });
+            int cost = System.Math.Max(0, channelCost);
+            if (cost == 0) { return; }
+            holds.Add(new StrikeGuidanceHold { faction = faction, releaseTick = releaseTick, channelCost = cost });
         }
 
         // ---------------- 發射佇列 ----------------

@@ -24,6 +24,7 @@
   <DMSE.Strike.TargetLabel.Reach>In range: {0} of {1} loaded</DMSE.Strike.TargetLabel.Reach>
   <DMSE.Strike.NoRoundsAssigned>Assign at least one missile to a wave</DMSE.Strike.NoRoundsAssigned>
   <DMSE.Strike.TooManyRounds>At most {0} missiles per mission</DMSE.Strike.TooManyRounds>
+  <DMSE.Strike.WaveRoundLimit>At most {0} missiles per wave</DMSE.Strike.WaveRoundLimit>
   <DMSE.Strike.TooManyWaves>At most {0} waves per mission</DMSE.Strike.TooManyWaves>
   <DMSE.Strike.WaveOverCap>Wave {0} requires {1} guidance channels; capacity is {2}</DMSE.Strike.WaveOverCap>
   <DMSE.Strike.RoundTaken>A missile is already reserved by another strike mission</DMSE.Strike.RoundTaken>
@@ -60,7 +61,8 @@
   <!-- Planning window -->
   <DMSE.Strike.Plan.Title>Wave strike plan: {0}</DMSE.Strike.Plan.Title>
   <DMSE.Strike.Plan.Target>Target: {0} ({1} tiles)</DMSE.Strike.Plan.Target>
-  <DMSE.Strike.Plan.Channels>Guidance channels: {0} (free {1}) · wave limit {0} · guidance period {2}</DMSE.Strike.Plan.Channels>
+  <DMSE.Strike.Plan.Channels>Guidance channels: {0} (free {1}) · guidance period {2}</DMSE.Strike.Plan.Channels>
+  <DMSE.Strike.Plan.WaveRoundLimit>Wave limit: {0} missiles</DMSE.Strike.Plan.WaveRoundLimit>
   <DMSE.Strike.Plan.SiteWarning>This site has no map yet. The first missile to arrive generates it, and the site's own air defense, with fully loaded SAMs, then engages the missiles still in flight.</DMSE.Strike.Plan.SiteWarning>
   <DMSE.Strike.Plan.Available>Available missiles: {0}</DMSE.Strike.Plan.Available>
   <DMSE.Strike.Plan.AddHint>Click a row to add one to the selected wave; shift-click to add as many as fit. Yellow rows are not ready right now and are checked again at launch.</DMSE.Strike.Plan.AddHint>

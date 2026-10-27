@@ -136,8 +136,11 @@ namespace DMSE
         {
             if (parent.Map == null) { return MissileProjectileMaker.DepartureTicksOf(LaunchDefFor(config)); }
             return MissileProjectileMaker.DepartureTicksOf(LaunchDefFor(config), LaunchCell, parent.Map.Size, parent.Rotation,
-                MissileProjectileMaker.DepartureHeading(parent.Map.Tile, target));
+                MissileProjectileMaker.DepartureHeading(parent.Map.Tile, target), LauncherFacingAngle);
         }
+
+        /// <summary>有旋轉砲頭時採用砲頭實際角度；一般發射架沿用建築朝向。</summary>
+        protected float LauncherFacingAngle => parent.TryGetComp<CompTurretFacingRenderer>()?.CurRotation ?? parent.Rotation.AsAngle;
 
         /// <summary>
         /// 可供世界打擊的在架彈藥（含被打擊任務保留者）：Rail 為容器中可進攻的導彈；
@@ -404,7 +407,7 @@ namespace DMSE
             wo.targetParent = TargetParentAt(target);
             wo.config = config;
             wo.launcherThing = parent; // 落地爆炸歸因於本發射建築（被攔截時不歸因）
-            wo.launchSpawnTick = LaunchDeparture(wo, launchDef, target.Tile);
+            wo.launchSpawnTick = LaunchDeparture(wo, launchDef, target.Tile, round);
 
             if (!channelsBooked)
             {
@@ -420,17 +423,29 @@ namespace DMSE
         /// 從本平台升空一枚離場彈，飛出地圖邊緣時把 <paramref name="worldObject"/> 加入世界；回傳升空彈實際生成 tick。
         /// 不檢查彈藥、冷卻或可運作性（NPC 導彈陣地從彈架取彈後經此發射，見 <see cref="MapComponent_MissileBase"/>）。
         /// </summary>
-        public int LaunchDeparture(WorldObject worldObject, ThingDef launchDef, PlanetTile targetTile)
+        public int LaunchDeparture(WorldObject worldObject, ThingDef launchDef, PlanetTile targetTile, Thing round = null)
         {
             // 升空外觀與尾焰隨彈體（launchProjectile）；彈體沒有設定時退回平台的離場 skyfaller。
             // 升空後沿世界航跡的出發方位飛出地圖邊緣（跨圖層沒有水平方位時照原本升空後消失）。
             // 經發射排程：同一張地圖的升空彈錯開生成，後焰在實際生成時觸發（MapComponent_MissileLaunchQueue）。
             float? heading = MissileProjectileMaker.DepartureHeading(parent.Map.Tile, targetTile);
+            Vector3 launchOffset = Vector3.zero;
+            CompTurretFacingRenderer facing = parent.TryGetComp<CompTurretFacingRenderer>();
+            bool hasLaunchOffset = round != null && facing != null && facing.TryGetRenderedAmmoOffset(round, out launchOffset);
+            if (round != null && !hasLaunchOffset)
+            {
+                CompMissileRackRenderer rackRenderer = parent.TryGetComp<CompMissileRackRenderer>();
+                hasLaunchOffset = rackRenderer != null && rackRenderer.TryGetRenderedAmmoOffset(round, out launchOffset);
+            }
             return MapComponent_MissileLaunchQueue.Launch(parent.Map, new PendingMissileLaunch
             {
                 def = launchDef,
                 cell = LaunchCell,
                 rotation = parent.Rotation,
+                hasLaunchAngle = parent.TryGetComp<CompTurretFacingRenderer>() != null,
+                launchAngle = LauncherFacingAngle,
+                hasLaunchOffset = hasLaunchOffset,
+                launchOffset = hasLaunchOffset ? launchOffset : Vector3.zero,
                 launcher = parent,
                 worldObject = worldObject,
                 hasHeading = heading != null,

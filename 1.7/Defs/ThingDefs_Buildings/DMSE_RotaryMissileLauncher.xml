@@ -47,14 +47,15 @@
     <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
     <statBases>
       <MaxHitPoints>260</MaxHitPoints>
-      <WorkToBuild>9000</WorkToBuild>
+      <WorkToBuild>10000</WorkToBuild>
       <Mass>200</Mass>
       <Flammability>0.25</Flammability>
     </statBases>
     <size>(3,3)</size>
     <costList>
-      <Steel>140</Steel>
+      <Steel>200</Steel>
       <ComponentIndustrial>8</ComponentIndustrial>
+      <ComponentSpacer>2</ComponentSpacer>
     </costList>
     <building>
       <destroySound>BuildingDestroyed_Metal_Small</destroySound>
@@ -86,7 +87,7 @@
       </buildingTags>
     </building>
     <researchPrerequisites>
-      <li>DMSE_IntegratedCircuits</li>
+      <li>DMSE_FireControlNetwork</li>
     </researchPrerequisites>
     <designationCategory>DMS_Category</designationCategory>
     <minifiedDef>MinifiedThing</minifiedDef>
@@ -132,8 +133,11 @@
       <!-- 發射：受火控雷達指派目標，取出容器中的攔截彈作為彈藥。 -->
       <li Class="DMSE.CompProperties_MissileLauncher">
         <interceptorSkyfaller>DMSE_SkyFaller_Interceptor</interceptorSkyfaller>
-        <reloadCooldownTicks>240</reloadCooldownTicks>
+        <!-- 多聯裝旋轉架按排程間隔連續發射；重裝與裝填由彈藥流程另行處理。 -->
+        <reloadCooldownTicks>6</reloadCooldownTicks>
         <interceptorTravelTicks>180</interceptorTravelTicks>
+        <!-- 四枚滿載時同一目標連射四發；實際不足四枚時依剩餘彈藥數發射。 -->
+        <interceptorSalvoSize>4</interceptorSalvoSize>
       </li>
       <li Class="DMSE.CompProperties_TurretFacingRenderer">
         <texPath>Things/Building/QuadLauncher</texPath>

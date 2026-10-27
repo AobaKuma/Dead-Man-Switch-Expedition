@@ -64,8 +64,8 @@ namespace DMSE
         {
             return "DMSE.BVR.World.RadarRange".Translate(Props.worldDetectionRange) + "\n"
                 + "DMSE.BVR.World.EffectiveRanges".Translate(RangeFor("DMSE_Incoming_Loiter"),
-                    RangeFor("DMSE_Incoming_LightMissile"), RangeFor("DMSE_Incoming_CruiseMissile"),
-                    RangeFor("DMSE_Incoming_BallisticMissile")) + "\n"
+                    RangeFor("DMSE_Incoming_LightMissile"), RangeFor("DMSE_Incoming_Moskit"),
+                    RangeFor("DMSE_Incoming_AdvancedBallisticMissile")) + "\n"
                 + "DMSE.BVR.SearchRadar".Translate(Props.searchDistance, Props.antiStealthLevel,
                     Active ? "DMSE.BVR.Online".Translate() : "DMSE.BVR.Offline".Translate());
         }

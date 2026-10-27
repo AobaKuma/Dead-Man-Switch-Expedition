@@ -33,7 +33,7 @@
       <DMSE_TantastenAlloy>8</DMSE_TantastenAlloy>
     </costList>
     <researchPrerequisites>
-      <li>DMSE_StrategicSystems</li>
+      <li>DMSE_Ballistics</li>
     </researchPrerequisites>
   </DMSE.MissilePartDef>
 
@@ -53,7 +53,7 @@
       <ComponentStamped>3</ComponentStamped>
     </costList>
     <researchPrerequisites>
-      <li>DMSE_StrategicSystems</li>
+      <li>DMSE_Ballistics</li>
     </researchPrerequisites>
   </DMSE.MissilePartDef>
 
@@ -73,7 +73,7 @@
       <ComponentIndustrial>8</ComponentIndustrial>
     </costList>
     <researchPrerequisites>
-      <li>DMSE_StrategicSystems</li>
+      <li>DMSE_Ballistics</li>
     </researchPrerequisites>
   </DMSE.MissilePartDef>
 
@@ -95,7 +95,7 @@
       <ComponentSpacer>4</ComponentSpacer>
     </costList>
     <researchPrerequisites>
-      <li>DMSE_StrategicSystems</li>
+      <li>DMSE_Ballistics</li>
     </researchPrerequisites>
   </DMSE.MissilePartDef>
 
@@ -142,7 +142,7 @@
       <Chemfuel>45</Chemfuel>
     </costList>
     <researchPrerequisites>
-      <li>DMSE_Ballistics</li>
+      <li>DMSE_LoiteringMunitions</li>
     </researchPrerequisites>
   </DMSE.MissilePartDef>
 

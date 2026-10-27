@@ -35,15 +35,15 @@
     <interactionCellOffset>(0,0,2)</interactionCellOffset>
     <statBases>
       <MaxHitPoints>250</MaxHitPoints>
-      <WorkToBuild>12000</WorkToBuild>
+      <WorkToBuild>14000</WorkToBuild>
       <Mass>120</Mass>
       <Flammability>0.5</Flammability>
     </statBases>
     <costList>
-      <Steel>150</Steel>
-      <DMSE_TantastenAlloy>20</DMSE_TantastenAlloy>
-      <ComponentIndustrial>8</ComponentIndustrial>
-      <ComponentSpacer>2</ComponentSpacer>
+      <Steel>180</Steel>
+      <ComponentIndustrial>10</ComponentIndustrial>
+      <ComponentSpacer>4</ComponentSpacer>
+      <ComponentTransmitter>4</ComponentTransmitter>
     </costList>
     <building>
       <destroySound>BuildingDestroyed_Metal_Small</destroySound>

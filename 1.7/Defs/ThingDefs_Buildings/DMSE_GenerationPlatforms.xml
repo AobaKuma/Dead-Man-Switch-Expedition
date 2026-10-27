@@ -46,14 +46,14 @@
     <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
     <statBases>
       <MaxHitPoints>180</MaxHitPoints>
-      <WorkToBuild>5000</WorkToBuild>
+      <WorkToBuild>4000</WorkToBuild>
       <Mass>120</Mass>
       <Flammability>0.25</Flammability>
     </statBases>
     <size>(3,3)</size>
     <costList>
-      <Steel>100</Steel>
-      <ComponentIndustrial>6</ComponentIndustrial>
+      <Steel>90</Steel>
+      <ComponentIndustrial>4</ComponentIndustrial>
     </costList>
     <building>
       <destroySound>BuildingDestroyed_Metal_Small</destroySound>
@@ -240,7 +240,7 @@
       </buildingTags>
     </building>
     <researchPrerequisites>
-      <li>DMSE_IntegratedCircuits</li>
+      <li>DMSE_FireControlNetwork</li>
     </researchPrerequisites>
     <designationCategory>DMS_Category</designationCategory>
     <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
@@ -416,14 +416,16 @@
     <tickerType>Normal</tickerType>
     <statBases>
       <MaxHitPoints>350</MaxHitPoints>
-      <WorkToBuild>18000</WorkToBuild>
+      <WorkToBuild>15000</WorkToBuild>
       <Mass>300</Mass>
       <Flammability>0.25</Flammability>
     </statBases>
     <size>(4,4)</size>
     <costList>
-      <Tungsteel>260</Tungsteel>
-      <ComponentStamped>20</ComponentStamped>
+      <Steel>140</Steel>
+      <Tungsteel>120</Tungsteel>
+      <ComponentStamped>8</ComponentStamped>
+      <ComponentIndustrial>4</ComponentIndustrial>
     </costList>
     <building>
       <destroySound>BuildingDestroyed_Metal_Small</destroySound>
@@ -432,7 +434,7 @@
       </buildingTags>
     </building>
     <researchPrerequisites>
-      <li>DMSE_IntegratedCircuits</li>
+      <li>DMSE_RadarNetwork</li>
     </researchPrerequisites>
     <designationCategory>DMS_Category</designationCategory>
     <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
@@ -496,14 +498,16 @@
     <tickerType>Normal</tickerType>
     <statBases>
       <MaxHitPoints>320</MaxHitPoints>
-      <WorkToBuild>16000</WorkToBuild>
+      <WorkToBuild>18000</WorkToBuild>
       <Mass>250</Mass>
       <Flammability>0.25</Flammability>
     </statBases>
     <size>(3,3)</size>
     <costList>
-      <Tungsteel>345</Tungsteel>
-      <ComponentStamped>20</ComponentStamped>
+      <Steel>180</Steel>
+      <Tungsteel>220</Tungsteel>
+      <ComponentStamped>12</ComponentStamped>
+      <ComponentSpacer>2</ComponentSpacer>
     </costList>
     <building>
       <destroySound>BuildingDestroyed_Metal_Small</destroySound>
@@ -512,7 +516,7 @@
       </buildingTags>
     </building>
     <researchPrerequisites>
-      <li>DMSE_IntegratedCircuits</li>
+      <li>DMSE_FireControlNetwork</li>
     </researchPrerequisites>
     <designationCategory>DMS_Category</designationCategory>
     <minifiedDef>MinifiedThing</minifiedDef>
@@ -623,7 +627,7 @@
         </loadedHatchTexPaths>
       </li>
       <li Class="DMSE.CompProperties_MissileRailLauncher">
-        <skyfaller>DMSE_SkyFaller_BallisticMissile</skyfaller>
+        <skyfaller>DMSE_Launch_Yj</skyfaller>
         <skyfallerIncoming>DMSE_Incoming_Yj</skyfallerIncoming>
         <worldObjectDef>DMSE_WorldObject_CruiseMissile</worldObjectDef>
         <missileBody>DMSE_MissileBody_Yj</missileBody>

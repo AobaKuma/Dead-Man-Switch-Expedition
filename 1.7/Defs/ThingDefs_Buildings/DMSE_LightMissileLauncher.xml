@@ -120,7 +120,7 @@
 
   <!-- ==================== 傾斜發射箱（1x3，中登）====================
        參考 DMSE_Building_LoiteringLauncher 結構，提升成本以反映更高技術層次。
-       容量 4 枚輕型導彈，需 DMSE_Ballistics 解鎖。對地發射軌與 SAM 共用彈艙：
+       容量 4 枚輕型導彈，需 DMSE_IntegratedCircuits 解鎖。對地發射軌與 SAM 共用彈艙：
        用途過濾（MissileRoleExtension）讓攔截彈只被 SAM 取用、對地彈只被對地發射。 -->
   <ThingDef ParentName="DMSE_TiltLauncherBase">
     <defName>DMSE_Building_LightMissileLauncher</defName>
@@ -221,7 +221,7 @@
       <li>DMSE.ITab_MissileAssembly</li>
     </inspectorTabs>
     <researchPrerequisites>
-      <li>DMSE_Ballistics</li>
+      <li>DMSE_IntegratedCircuits</li>
     </researchPrerequisites>
   </ThingDef>
 
@@ -245,12 +245,13 @@
     <constructEffect>ConstructMetal</constructEffect>
     <statBases>
       <MaxHitPoints>200</MaxHitPoints>
-      <WorkToBuild>4000</WorkToBuild>
+      <WorkToBuild>8000</WorkToBuild>
       <Flammability>0.05</Flammability>
     </statBases>
     <costList>
-      <Steel>80</Steel>
-      <ComponentIndustrial>3</ComponentIndustrial>
+      <Steel>180</Steel>
+      <ComponentIndustrial>8</ComponentIndustrial>
+      <ComponentSpacer>2</ComponentSpacer>
     </costList>
     <building>
       <maxItemsInCell>1</maxItemsInCell>

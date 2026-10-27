@@ -76,13 +76,13 @@
           <slotOffsets>
             <li>(0, 0, 0.1)</li>
           </slotOffsets>
-          <rotation>0</rotation>
+          <rotation>90</rotation>
         </east>
         <west>
           <slotOffsets>
             <li>(0, 0, 0.1)</li>
           </slotOffsets>
-          <rotation>0</rotation>
+          <rotation>-90</rotation>
         </west>
       </li>
     </comps>
@@ -237,7 +237,7 @@
       <li>DMSE.ITab_MissileInventory</li>
     </inspectorTabs>
     <researchPrerequisites>
-      <li>DMSE_Ballistics</li>
+      <li>DMSE_IntegratedCircuits</li>
     </researchPrerequisites>
   </ThingDef>
 
@@ -370,7 +370,7 @@
       <li>DMSE.ITab_MissileAssembly</li>
     </inspectorTabs>
     <researchPrerequisites>
-      <li>DMSE_Ballistics</li>
+      <li>DMSE_IntegratedCircuits</li>
     </researchPrerequisites>
   </ThingDef>
 </Defs>
