@@ -41,7 +41,7 @@
     <graphicData>
       <texPath>Things/Missile/Shahed/ammo</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(2.5,2.5)</drawSize>
+      <drawSize>(2.08,2.08)</drawSize>
     </graphicData>
     <soundInteract>Metal_Drop</soundInteract>
     <soundDrop>Standard_Drop</soundDrop>
@@ -56,11 +56,9 @@
       <DeteriorationRate>10.0</DeteriorationRate>
     </statBases>
     <costList>
-      <Steel>45</Steel>
-      <Cloth>20</Cloth>
       <Chemfuel>50</Chemfuel>
-      <ComponentStamped>4</ComponentStamped>
-      <ComponentIndustrial>2</ComponentIndustrial>
+      <Steel>60</Steel>
+      <ComponentIndustrial>10</ComponentIndustrial>
     </costList>
     <recipeMaker>
       <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -109,7 +107,7 @@
     <graphicData>
       <texPath>Things/Missile/Shahed/skyFaller_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>3</drawSize>
+      <drawSize>2.08</drawSize>
     </graphicData>
     <size>(1,1)</size>
     <modExtensions>

@@ -67,7 +67,7 @@ namespace DMSE
                     if (Rand.Chance(hitChance))
                     {
                         // 地圖外攔截光效與音效（中過程）。
-                        MapComponent_InterceptEffects.Trigger(Map, target.position, terminal: false);
+                        MapComponent_InterceptEffects.Trigger(Map, InterceptEventData.From(target, Map, terminal: false, IntVec3.Invalid));
                         comp.RemoveTarget(targetId); // 中過程攔截成功：乾淨消滅，不留殘骸。
                         if (Prefs.DevMode) { Log.Message($"[DMSE BVR] 中過程攔截成功 target#{targetId}"); }
                     }

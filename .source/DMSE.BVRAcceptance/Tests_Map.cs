@@ -153,6 +153,7 @@ namespace DMSE.BVRAcceptance
             t.Require(HomeBVR.Waves.Count == 1 || burst.Seen, "pod captured by the acoustic radar");
             int registered = Find.TickManager.TicksGame;
             int window = HomeBVR.Waves.Count == 1 ? HomeBVR.Waves[0].tickToImpact - registered : 0;
+            IntVec3 podLanding = HomeBVR.Waves.Count == 1 ? HomeBVR.Waves[0].targets[0].position : IntVec3.Invalid;
             t.Check(window <= props.terminalWindowTicks, $"acoustic window {window} is inside the CIWS terminal window");
 
             var waitBurst = new WaitUntil(() => burst.Seen, 600);
@@ -171,9 +172,19 @@ namespace DMSE.BVRAcceptance
             t.Check(Mathf.Abs(fuelBefore - fuel.Fuel - props.shotsPerBurst * props.fuelPerShot) < 0.01f,
                 $"one burst used {props.shotsPerBurst * props.fuelPerShot} barrel durability (used {fuelBefore - fuel.Fuel})");
             t.Check(pawns.All(p => p.Dead), "all pawns in the pod are killed");
+            // The corpse pod lands next to the predicted landing cell of the pod's debris (docs/攔截殘骸特效_實作與技術美術計畫.md §1-4).
+            IntVec3 debrisCell = Home.GetComponent<MapComponent_InterceptEffects>().LastDebrisLandingCell;
             var waitCorpses = new WaitUntil(() => pawns.All(p => p.Corpse != null && p.Corpse.Spawned), 1200);
             yield return waitCorpses;
             t.Check(!waitCorpses.TimedOut, "both corpses land in one debris pod");
+            if (t.Check(debrisCell.IsValid, $"the intercept predicted a debris landing cell ({debrisCell})"))
+            {
+                float far = pawns.Where(p => p.Corpse != null && p.Corpse.Spawned).Select(p => p.Corpse.Position.DistanceTo(debrisCell)).DefaultIfEmpty(999f).Max();
+                t.Note($"debris cell {debrisCell}, pod landing cell {podLanding}, corpses up to {far:0.#} cells from the debris cell");
+                // Near the debris cell, or (when it has no drop spot, e.g. inside a mountain) on the way back to the landing cell.
+                float landingFar = podLanding.IsValid ? podLanding.DistanceTo(debrisCell) : 0f;
+                t.Check(far <= 9f || far < landingFar, $"corpses land at the pod-debris cell or nearer to it than the landing cell ({far:0.#} vs {landingFar:0.#} cells)");
+            }
             int steelAfter = Home.listerThings.ThingsOfDef(ThingDefOf.Steel).Sum(s => s.stackCount);
             t.Check(steelAfter <= steelBefore, "the pod's other cargo is destroyed with it");
         }

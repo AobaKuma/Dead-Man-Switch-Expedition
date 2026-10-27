@@ -115,6 +115,13 @@
   <DMSE.Missile.GodModeInstant>God mode: changes are assembled at once, free and without research.</DMSE.Missile.GodModeInstant>
   <DMSE.Missile.Settings.GodModeInstantAssembly>God mode: instant missile assembly</DMSE.Missile.Settings.GodModeInstantAssembly>
   <DMSE.Missile.Settings.GodModeInstantAssemblyDesc>While god mode is on, missile and ballistic silo refits finish immediately: no confirmation, hauling or assembly work, and no resources are used. Parts are available without research. Removed parts are not refunded.</DMSE.Missile.Settings.GodModeInstantAssemblyDesc>
+  <DMSE.BVR.Settings.InterceptDebrisDamage>Intercept debris causes damage</DMSE.BVR.Settings.InterceptDebrisDamage>
+  <DMSE.BVR.Settings.InterceptDebrisDamageDesc>Large debris from intercepted missiles and drop pods deals light blunt damage where it lands. Roofs stop it. When off, debris only leaves dust, sparks and rubble.</DMSE.BVR.Settings.InterceptDebrisDamageDesc>
+  <DMSE.BVR.Settings.InterceptFxDensity>Intercept effect density</DMSE.BVR.Settings.InterceptFxDensity>
+  <DMSE.BVR.Settings.InterceptFxDensityDesc>How many fragments, smoke puffs and trail puffs an interception makes. Lower it if large salvos slow the game down. Large debris still lands at every setting.</DMSE.BVR.Settings.InterceptFxDensityDesc>
+  <DMSE.BVR.Settings.InterceptFxDensity0>Low</DMSE.BVR.Settings.InterceptFxDensity0>
+  <DMSE.BVR.Settings.InterceptFxDensity1>Medium</DMSE.BVR.Settings.InterceptFxDensity1>
+  <DMSE.BVR.Settings.InterceptFxDensity2>High</DMSE.BVR.Settings.InterceptFxDensity2>
   <DMSE.Missile.Stats>Pending stats (after assembly)</DMSE.Missile.Stats>
   <DMSE.Missile.Stat.Radius>Blast radius: {0}</DMSE.Missile.Stat.Radius>
   <DMSE.Missile.Stat.Damage>Warhead: {0} ({1})</DMSE.Missile.Stat.Damage>

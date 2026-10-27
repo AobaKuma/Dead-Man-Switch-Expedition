@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!--
+    攔截空爆特效（docs/攔截殘骸特效_實作與技術美術計畫.md §5）。
+    由 MapComponent_InterceptEffects 自持的 fleck 系統產生與繪製，不經 FleckMaker。
+    貼圖：Textures/Things/Effects/InterceptDebris/，由 .source/Tools/gen_intercept_fx_textures.py 產生（P6），可用同名手繪檔替換。
+    Shader：煙團、煙跡、火球用 Mote＋renderInstanced（GPU instancing；docs/導彈發射特效_重製計畫.md §0.1-3：
+    Transparent 開 instancing 會遺失逐個顏色與透明度，Mote 不會）。灰階放在貼圖裡，tint 只用淺色（Mote 上深色 tint 會消失）。
+    細碎片維持 Transparent 不 instancing（空投艙 profile 的 minorTint 偏深）；閃光、光暈、火花用 MoteGlow（加成）。
+    蓋過戰爭迷霧（P6，使用者決定）：DMSE.InterceptFxMaterial 把材質的 render queue 設成迷霧（3175）+ offset，
+    仍低於地圖邊緣遮罩（4000），所以地圖外照樣被裁掉。同一 queue 內的前後由 altitudeLayerIncOffset 決定
+    （單位 = Altitudes.AltInc）：煙跡 < 煙團 < 細碎片 < 火球 < 光暈 < 火花 < 閃光。
+    realTime 為 false：與遊戲速度同步、暫停時停住。
+  -->
+
+  <!--
+    殘骸 profile（§6）：被攔截來襲物的殘骸數量、質量、斷裂彈體機率、貼圖與顏色。來襲物 def 可在 BVRTargetProps.debrisProfile 指定，
+    沒有指定時導彈用 _Missile、空投艙用 _DropPod。
+  -->
+  <DMSE.InterceptDebrisProfileDef>
+    <defName>DMSE_InterceptDebris_Missile</defName>
+    <majorCount>2~4</majorCount>
+    <majorMass>1~2.5</majorMass>
+    <hulkChance>0.6</hulkChance>
+    <minorCount>14~24</minorCount>
+    <minorMass>0.2~0.6</minorMass>
+    <inheritFactor>1</inheritFactor>
+    <fireball>true</fireball>
+    <majorTexPath>Things/Effects/InterceptDebris/Major</majorTexPath>
+  </DMSE.InterceptDebrisProfileDef>
+
+  <!-- 空投艙：沒有彈頭（無火球），艙殼裂成較少、較大、較慢的板件；近乎垂直落下，繼承速度低。顏色偏原版艙體的冷灰。 -->
+  <DMSE.InterceptDebrisProfileDef>
+    <defName>DMSE_InterceptDebris_DropPod</defName>
+    <majorCount>2~3</majorCount>
+    <majorMass>1.5~3</majorMass>
+    <hulkChance>0.5</hulkChance>
+    <minorCount>8~14</minorCount>
+    <minorMass>0.4~1</minorMass>
+    <denseMinorCount>4</denseMinorCount>
+    <inheritFactor>0.6</inheritFactor>
+    <fireball>false</fireball>
+    <majorTexPath>Things/Effects/InterceptDebris/Pod</majorTexPath>
+    <majorTint>(0.85, 0.88, 0.92, 1)</majorTint>
+    <hulkTint>(0.7, 0.72, 0.76, 1)</hulkTint>
+    <minorTint>(0.75, 0.78, 0.84, 1)</minorTint>
+  </DMSE.InterceptDebrisProfileDef>
+
+  <!-- 單一貼圖的加成光（閃光、光暈、火花）。 -->
+  <FleckDef Name="DMSE_InterceptGlowBase" Abstract="True">
+    <fleckSystemClass>FleckSystemStatic</fleckSystemClass>
+    <graphicData>
+      <graphicClass>Graphic_Fleck</graphicClass>
+      <shaderType>MoteGlow</shaderType>
+    </graphicData>
+    <altitudeLayer>MetaOverlays</altitudeLayer>
+  </FleckDef>
+
+  <!-- 隨機貼圖的半透明（煙、火球、碎片）：graphicData 留空，變體放 randomGraphics。 -->
+  <FleckDef Name="DMSE_InterceptRandomBase" Abstract="True">
+    <fleckSystemClass>FleckSystemStatic</fleckSystemClass>
+    <altitudeLayer>MetaOverlays</altitudeLayer>
+  </FleckDef>
+
+  <!-- 白熱核心閃光（取代舊的橙色方塊）。 -->
+  <FleckDef ParentName="DMSE_InterceptGlowBase">
+    <defName>DMSE_InterceptFlash</defName>
+    <graphicData>
+      <texPath>Things/Effects/InterceptDebris/Glow_Radial</texPath>
+    </graphicData>
+    <altitudeLayerIncOffset>4</altitudeLayerIncOffset>
+    <solidTime>0.05</solidTime>
+    <fadeOutTime>0.35</fadeOutTime>
+    <growthRate>2</growthRate>
+    <modExtensions>
+      <li Class="DMSE.InterceptFxMaterial"><renderQueueOffset>7</renderQueueOffset></li>
+    </modExtensions>
+  </FleckDef>
+
+  <!-- 火球：貼圖自帶白→橙→暗紅的漸層，instanceColor 只微調；快速膨脹後淡出，上面再疊一層光暈。 -->
+  <FleckDef ParentName="DMSE_InterceptRandomBase">
+    <defName>DMSE_InterceptFireball</defName>
+    <randomGraphics>
+      <li><texPath>Things/Effects/InterceptDebris/Fireball/Fireball_a</texPath><graphicClass>Graphic_Fleck</graphicClass><shaderType>Mote</shaderType><renderInstanced>true</renderInstanced></li>
+      <li><texPath>Things/Effects/InterceptDebris/Fireball/Fireball_b</texPath><graphicClass>Graphic_Fleck</graphicClass><shaderType>Mote</shaderType><renderInstanced>true</renderInstanced></li>
+      <li><texPath>Things/Effects/InterceptDebris/Fireball/Fireball_c</texPath><graphicClass>Graphic_Fleck</graphicClass><shaderType>Mote</shaderType><renderInstanced>true</renderInstanced></li>
+    </randomGraphics>
+    <altitudeLayerIncOffset>2</altitudeLayerIncOffset>
+    <fadeInTime>0.03</fadeInTime>
+    <solidTime>0.15</solidTime>
+    <fadeOutTime>0.5</fadeOutTime>
+    <growthRate>2.5</growthRate>
+    <modExtensions>
+      <li Class="DMSE.InterceptFxMaterial"><renderQueueOffset>4</renderQueueOffset></li>
+    </modExtensions>
+  </FleckDef>
+
+  <FleckDef ParentName="DMSE_InterceptGlowBase">
+    <defName>DMSE_InterceptFireGlow</defName>
+    <graphicData>
+      <texPath>Things/Effects/InterceptDebris/Glow_Radial</texPath>
+    </graphicData>
+    <altitudeLayerIncOffset>2.5</altitudeLayerIncOffset>
+    <solidTime>0.1</solidTime>
+    <fadeOutTime>0.4</fadeOutTime>
+    <growthRate>3</growthRate>
+    <modExtensions>
+      <li Class="DMSE.InterceptFxMaterial"><renderQueueOffset>5</renderQueueOffset></li>
+    </modExtensions>
+  </FleckDef>
+
+  <!-- 星芒火花：短命的四芒星亮點。 -->
+  <FleckDef ParentName="DMSE_InterceptGlowBase">
+    <defName>DMSE_InterceptSparkStar</defName>
+    <graphicData>
+      <texPath>Things/Effects/InterceptDebris/Spark_Star</texPath>
+    </graphicData>
+    <altitudeLayerIncOffset>3</altitudeLayerIncOffset>
+    <solidTime>0.08</solidTime>
+    <fadeOutTime>0.15</fadeOutTime>
+    <modExtensions>
+      <li Class="DMSE.InterceptFxMaterial"><renderQueueOffset>6</renderQueueOffset></li>
+    </modExtensions>
+  </FleckDef>
+
+  <!--
+    B 層細碎片（§5.3）：由 InterceptDebrisFlecks 依 InterceptGeometry 的彈道推進（不是原版 fleck 系統），落地或出界即移除。
+    壽命只是保險上限；顏色由程式從熾熱橙漸變到 profile 的 minorTint。
+  -->
+  <FleckDef ParentName="DMSE_InterceptRandomBase">
+    <defName>DMSE_InterceptDebrisMinor</defName>
+    <randomGraphics>
+      <li><texPath>Things/Effects/InterceptDebris/Minor/Minor_a</texPath><graphicClass>Graphic_Fleck</graphicClass><shaderType>Transparent</shaderType></li>
+      <li><texPath>Things/Effects/InterceptDebris/Minor/Minor_b</texPath><graphicClass>Graphic_Fleck</graphicClass><shaderType>Transparent</shaderType></li>
+      <li><texPath>Things/Effects/InterceptDebris/Minor/Minor_c</texPath><graphicClass>Graphic_Fleck</graphicClass><shaderType>Transparent</shaderType></li>
+      <li><texPath>Things/Effects/InterceptDebris/Minor/Minor_d</texPath><graphicClass>Graphic_Fleck</graphicClass><shaderType>Transparent</shaderType></li>
+      <li><texPath>Things/Effects/InterceptDebris/Minor/Minor_e</texPath><graphicClass>Graphic_Fleck</graphicClass><shaderType>Transparent</shaderType></li>
+      <li><texPath>Things/Effects/InterceptDebris/Minor/Minor_f</texPath><graphicClass>Graphic_Fleck</graphicClass><shaderType>Transparent</shaderType></li>
+      <li><texPath>Things/Effects/InterceptDebris/Minor/Minor_g</texPath><graphicClass>Graphic_Fleck</graphicClass><shaderType>Transparent</shaderType></li>
+      <li><texPath>Things/Effects/InterceptDebris/Minor/Minor_h</texPath><graphicClass>Graphic_Fleck</graphicClass><shaderType>Transparent</shaderType></li>
+    </randomGraphics>
+    <altitudeLayerIncOffset>1.5</altitudeLayerIncOffset>
+    <solidTime>10</solidTime>
+    <fadeOutTime>0.5</fadeOutTime>
+    <modExtensions>
+      <li Class="DMSE.InterceptFxMaterial"><renderQueueOffset>3</renderQueueOffset></li>
+    </modExtensions>
+  </FleckDef>
+
+  <!--
+    A 層主殘骸的煙跡（§5.2）：每 1–4 tick（依預算）在殘骸位置留一團，慢慢變粗、淡出，連起來就是參考圖裡向下彎的長煙跡。
+    中灰貼圖（P6；P4 只能用淺色暫代貼圖，煙跡呈米色）。
+  -->
+  <FleckDef ParentName="DMSE_InterceptRandomBase">
+    <defName>DMSE_DebrisTrailPuff</defName>
+    <graphicData>
+      <texPath>Things/Effects/InterceptDebris/SmokeMid/SmokeMid_a</texPath>
+      <graphicClass>Graphic_Fleck</graphicClass>
+      <shaderType>Mote</shaderType>
+      <renderInstanced>true</renderInstanced>
+    </graphicData>
+    <altitudeLayerIncOffset>0.5</altitudeLayerIncOffset>
+    <fadeInTime>0.05</fadeInTime>
+    <solidTime>0.3</solidTime>
+    <fadeOutTime>2.5</fadeOutTime>
+    <growthRate>0.35</growthRate>
+    <modExtensions>
+      <li Class="DMSE.InterceptFxMaterial"><renderQueueOffset>1</renderQueueOffset></li>
+    </modExtensions>
+  </FleckDef>
+
+  <!-- 空爆煙團：慢慢變大、淡出的灰煙（參考圖右上的大團灰煙）。單一貼圖（同高度多材質會互相亂序，見 docs/導彈發射特效_重製計畫.md §0.5），深淺由程式的 tint 給。 -->
+  <FleckDef ParentName="DMSE_InterceptRandomBase">
+    <defName>DMSE_InterceptSmokeBall</defName>
+    <graphicData>
+      <texPath>Things/Effects/InterceptDebris/SmokeLight/SmokeLight_a</texPath>
+      <graphicClass>Graphic_Fleck</graphicClass>
+      <shaderType>Mote</shaderType>
+      <renderInstanced>true</renderInstanced>
+    </graphicData>
+    <altitudeLayerIncOffset>1</altitudeLayerIncOffset>
+    <fadeInTime>0.1</fadeInTime>
+    <solidTime>1</solidTime>
+    <fadeOutTime>4</fadeOutTime>
+    <growthRate>1.2</growthRate>
+    <modExtensions>
+      <li Class="DMSE.InterceptFxMaterial"><renderQueueOffset>2</renderQueueOffset></li>
+    </modExtensions>
+  </FleckDef>
+
+  <!--
+    A 層主殘骸（§4.4、§5.2）：可存檔的 Thing（InterceptDebrisChunk），Position 固定在生成格，畫面位置由彈道狀態決定。
+    drawOffscreen／seeThroughFog：不依 Position 剔除（畫面位置可能離 Position 很遠）。
+    實際畫的貼圖由 profile 的 majorTexPath 決定（導彈碎片／艙體板件），斷裂彈體畫來襲物自己的貼圖；這裡的 graphicData 只是預設。
+    繪製時改用 InterceptFxMaterial 複製出的材質（render queue 在迷霧之上），不改原版或導彈本身共用的材質。
+  -->
+  <ThingDef>
+    <defName>DMSE_InterceptDebrisChunk</defName>
+    <label>intercept debris</label>
+    <thingClass>DMSE.InterceptDebrisChunk</thingClass>
+    <category>Ethereal</category>
+    <tickerType>Normal</tickerType>
+    <drawerType>RealtimeOnly</drawerType>
+    <altitudeLayer>MetaOverlays</altitudeLayer>
+    <useHitPoints>false</useHitPoints>
+    <selectable>false</selectable>
+    <rotatable>false</rotatable>
+    <drawOffscreen>true</drawOffscreen>
+    <seeThroughFog>true</seeThroughFog>
+    <graphicData>
+      <texPath>Things/Effects/InterceptDebris/Major</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shaderType>Cutout</shaderType>
+    </graphicData>
+  </ThingDef>
+
+  <!-- 殘骸落地留下的金屬碎屑（§5.4；取代 P4 暫用的原版 Filth_RubbleBuilding）。Graphic_Cluster 要的是資料夾路徑。 -->
+  <ThingDef ParentName="BaseFilth">
+    <defName>DMSE_Filth_MetalScrap</defName>
+    <label>scattered metal scrap</label>
+    <graphicData>
+      <texPath>Things/Effects/InterceptDebris/Filth</texPath>
+    </graphicData>
+    <filth>
+      <disappearsInDays>35~45</disappearsInDays>
+      <cleaningWorkToReduceThickness>35</cleaningWorkToReduceThickness>
+    </filth>
+  </ThingDef>
+
+</Defs>

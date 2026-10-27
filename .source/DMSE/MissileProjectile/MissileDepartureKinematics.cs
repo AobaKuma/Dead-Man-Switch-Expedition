@@ -21,6 +21,8 @@ namespace DMSE
         public float progress0;
         /// <summary>目前機頭角（繪製與尾焰用）。</summary>
         public float nose;
+        /// <summary>目前航向（轉向中逐 tick 逼近 <see cref="heading"/>）。</summary>
+        public float motion;
 
         public void Expose()
         {
@@ -33,6 +35,9 @@ namespace DMSE
             Scribe_Values.Look(ref speed0, "cruiseSpeed0", 0f);
             Scribe_Values.Look(ref progress0, "cruiseProgress0", 0f);
             Scribe_Values.Look(ref nose, "cruiseNose", 0f);
+            Scribe_Values.Look(ref motion, "cruiseMotion", float.NaN);
+            // 舊存檔（固定 tick 轉向時）沒有航向：從機頭接續，轉向照新規則完成。
+            if (Scribe.mode == LoadSaveMode.PostLoadInit && float.IsNaN(motion)) { motion = nose; }
         }
     }
 
@@ -43,7 +48,7 @@ namespace DMSE
     ///
     /// 升空段：逐 tick 重算原版 Skyfaller 公式（<see cref="AscentPose"/>），與舊 ScorerProjectile 相同。
     /// 交接：動畫進度達 <see cref="MissileFlightExtension.ascentHandoff"/> 或畫面位移達 handoffMaxCells 時。
-    /// 巡航段：從交接位置與速度出發，航向與機頭以 smoothstep 在 turnTicks 內轉到出發方位；
+    /// 巡航段：從交接位置與速度出發，航向與機頭以限速轉向轉到出發方位（<see cref="TurnStep"/>：轉速漸增到 maxTurnRate、接近目標漸減）；
     /// 速度 = 交接速度 × speedCurve(進度) / speedCurve(交接進度)，即升空段的加速曲線在巡航段繼續生效（進度超過 1 後取曲線末值）。
     /// 畫面位置離開地圖即離場。
     /// </summary>
@@ -120,6 +125,7 @@ namespace DMSE
                 pos = pose,
                 heading = heading,
                 motion0 = speed > 1e-4f ? MissileMapEntryUtility.HeadingOf(v) : noseAngle,
+                motion = speed > 1e-4f ? MissileMapEntryUtility.HeadingOf(v) : noseAngle,
                 nose0 = noseAngle,
                 nose = noseAngle,
                 speed0 = Mathf.Clamp(speed, f.minCruiseSpeed, f.maxCruiseSpeed),
@@ -141,15 +147,74 @@ namespace DMSE
             return Mathf.Clamp(speed, f.minCruiseSpeed, f.maxCruiseSpeed);
         }
 
+        /// <summary>接近目標時轉速的上限比例：每 tick 最多轉剩餘角度的這個比例（漸減收尾，不會一下停住）。</summary>
+        public const float TurnSettle = 0.12f;
+        /// <summary>收尾時的最小轉速（度/tick），避免無限逼近。</summary>
+        public const float MinTurnStep = 0.1f;
+
+        /// <summary>
+        /// 限速轉向一 tick（純函式）：第 <paramref name="tick"/> 個轉向 tick 的轉速 = max(maxTurnRate × 漸增比例（turnRampTicks），
+        /// 讓轉彎半徑不超過 <paramref name="radius"/>（預設 maxTurnRadius）的轉速 × 漸增比例（<see cref="RadiusRampTicks"/>））（<paramref name="speed"/> 為格/tick）；
+        /// 且不超過剩餘角度 × <see cref="TurnSettle"/>（下限 <see cref="MinTurnStep"/>）；回傳新的角度，不會轉過頭。
+        /// 剩餘角度超過 <see cref="UTurnAngle"/> 時，<paramref name="preferSign"/>（±1）決定往哪一側迴轉（否則取短邊）。
+        /// </summary>
+        public static float TurnStep(MissileFlightExtension f, float current, float target, int tick, float speed = 0f, float radius = -1f, int preferSign = 0)
+        {
+            float remaining = Mathf.DeltaAngle(current, target);
+            if (radius < 0f) { radius = f.maxTurnRadius; }
+            // 一般轉速依 turnRampTicks 慢慢升；半徑限制（地圖邊緣近、速度快）只給 RadiusRampTicks，不然漸增期間就先飛出圖（F5：圓點U 在離西邊 17 格處朝西交接）。
+            float rate = Mathf.Max(f.maxTurnRate * Mathf.Clamp01((float)tick / Mathf.Max(1, f.turnRampTicks)),
+                radius > 0f ? speed / radius * Mathf.Rad2Deg * Mathf.Clamp01((float)tick / RadiusRampTicks) : 0f);
+            float step = Mathf.Min(rate, Mathf.Max(MinTurnStep, Mathf.Abs(remaining) * TurnSettle));
+            if (Mathf.Abs(remaining) <= step) { return target; }
+            float sign = Mathf.Abs(remaining) > UTurnAngle && preferSign != 0 ? preferSign : Mathf.Sign(remaining);
+            return current + sign * step;
+        }
+
+        /// <summary>半徑限制轉速的漸增 tick 數（比 turnRampTicks 短）。</summary>
+        public const float RadiusRampTicks = 4f;
+
+        /// <summary>超過這個角度的轉向算迴轉：往地圖內側轉（<see cref="CruiseStep"/>），不取短邊。</summary>
+        public const float UTurnAngle = 150f;
+
+        /// <summary>
+        /// 轉彎半徑依「沿目前航向到地圖邊緣的距離」縮小（純函式）：最多一半，讓轉彎在出圖前完成，不從出發方位以外的邊離場
+        /// （驗收 F5：靠近地圖角落發射時，晚轉、緩轉曾從側邊出圖）。下限 4 格。
+        /// </summary>
+        public static float TurnRadiusAt(MissileFlightExtension f, Vector3 pos, float motion, IntVec3 mapSize)
+        {
+            if (mapSize.x <= 0) { return f.maxTurnRadius; }
+            float ahead = (MissileMapEntryUtility.EdgePoint(mapSize, pos, motion) - pos).WithY(0f).magnitude;
+            return Mathf.Clamp(ahead * 0.5f, 4f, f.maxTurnRadius);
+        }
+
+        /// <summary>迴轉時往地圖中心那一側轉：+1 = 順時針（羅盤角增加）、−1 = 逆時針。</summary>
+        public static int InwardSide(Vector3 pos, float motion, IntVec3 mapSize)
+        {
+            if (mapSize.x <= 0) { return 0; }
+            Vector3 toCenter = new Vector3(mapSize.x * 0.5f - pos.x, 0f, mapSize.z * 0.5f - pos.z);
+            if (toCenter.sqrMagnitude < 1f) { return 0; }
+            float d = Mathf.DeltaAngle(motion, MissileMapEntryUtility.HeadingOf(toCenter));
+            return Mathf.Abs(d) < 1f ? 0 : (d > 0f ? 1 : -1);
+        }
+
+        /// <summary>轉向完成比例（0 = 交接時、1 = 航向已對準出發方位），給 cruiseSpeedFactor 漸入用。</summary>
+        public static float TurnBlend(in MissileCruiseState s)
+        {
+            float total = Mathf.Abs(Mathf.DeltaAngle(s.motion0, s.heading));
+            return total < 1e-3f ? 1f : 1f - Mathf.Abs(Mathf.DeltaAngle(s.motion, s.heading)) / total;
+        }
+
         /// <summary>巡航段前進一 tick（時間軸已推進後呼叫）。</summary>
-        public static void CruiseStep(MissileFlightExtension f, ref MissileCruiseState s, int ticksToImpact, int leaveMapAfterTicks)
+        public static void CruiseStep(MissileFlightExtension f, ref MissileCruiseState s, int ticksToImpact, int leaveMapAfterTicks, IntVec3 mapSize = default)
         {
             s.ticks++;
-            float k = f.turnTicks > 0 ? Mathf.Clamp01((float)s.ticks / f.turnTicks) : 1f;
-            float blend = k * k * (3f - 2f * k); // smoothstep：轉向起訖都平順
-            float motion = Mathf.LerpAngle(s.motion0, s.heading, blend);
-            s.nose = Mathf.LerpAngle(s.nose0, s.heading, blend);
-            s.pos += MissileMapEntryUtility.HeadingVector(motion) * CruiseSpeed(f, s, ticksToImpact, leaveMapAfterTicks, blend);
+            float speed = CruiseSpeed(f, s, ticksToImpact, leaveMapAfterTicks, TurnBlend(s));
+            float radius = TurnRadiusAt(f, s.pos, s.motion, mapSize);
+            int side = InwardSide(s.pos, s.motion, mapSize);
+            s.motion = TurnStep(f, s.motion, s.heading, s.ticks, speed, radius, side);
+            s.nose = TurnStep(f, s.nose, s.heading, s.ticks, speed, radius, side);
+            s.pos += MissileMapEntryUtility.HeadingVector(s.motion) * speed;
         }
 
         public static bool InMap(Vector3 pos, IntVec3 mapSize)
@@ -175,7 +240,7 @@ namespace DMSE
                 tti++;
                 if (cruise.active)
                 {
-                    CruiseStep(f, ref cruise, tti, leave);
+                    CruiseStep(f, ref cruise, tti, leave, mapSize);
                     if (!InMap(cruise.pos, mapSize) || cruise.ticks >= f.maxCruiseTicks) { return tick; }
                     continue;
                 }

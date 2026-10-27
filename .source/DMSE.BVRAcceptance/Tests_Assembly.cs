@@ -34,6 +34,10 @@ namespace DMSE.BVRAcceptance
                 Building_MissileRack rack = (Building_MissileRack)SpawnBuilding(LightLauncher, 10, 2);
                 Thing refit = Load(rack), stripped = Load(rack), reserved = Load(rack);
                 Thing silo = SpawnBuilding(BallisticSilo, 20, 10);
+                // Strike launches need free strike channels (weighted channels, 2026-10-22: a ballistic round costs 2);
+                // two phased arrays give 4.
+                SpawnBuilding(PhaseArray, 2, 30);
+                SpawnBuilding(PhaseArray, 8, 30);
                 yield return WaitPowered(); yield return new WaitTicks(2);
                 t.Require(refit != null && stripped != null && reserved != null, "three light missiles in the rack");
                 MissilePartDef rod = Part("DMSE_Light_Warhead_ContinuousRod");

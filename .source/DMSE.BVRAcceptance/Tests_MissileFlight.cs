@@ -692,7 +692,10 @@ namespace DMSE.BVRAcceptance
             Vector3 last = s[s.Count - 1].pos;
             if (MissileDepartureKinematics.InMap(last, Home.Size)) { problems.Add($"last pose {Fmt(last)} still inside the map"); }
             int n = s.Count;
-            if (n - handoff > f.turnTicks + 2)
+            // 轉向結束：機頭對準出發方位的第一個 tick（限速轉向，長度依轉角而定）。
+            int turnEnd = s.FindIndex(handoff, x => Mathf.Abs(Mathf.DeltaAngle(x.rotation, heading)) < 0.01f);
+            if (turnEnd < 0) { turnEnd = n; }
+            if (n - turnEnd > 2)
             {
                 float exitDir = MissileMapEntryUtility.HeadingOf(s[n - 1].pos - s[n - 2].pos);
                 if (Mathf.Abs(Mathf.DeltaAngle(exitDir, heading)) > 0.5f) { problems.Add($"exit direction {exitDir:0.#}° ≠ heading {heading:0}°"); }
@@ -703,12 +706,17 @@ namespace DMSE.BVRAcceptance
             Rot4 expectedEdge = edge.x <= 0.01f ? Rot4.West : edge.x >= Home.Size.x - 0.01f ? Rot4.East : edge.z <= 0.01f ? Rot4.South : Rot4.North;
             bool corner = Mathf.Min(Mathf.Min(edge.x, Home.Size.x - edge.x), Mathf.Min(edge.z, Home.Size.z - edge.z)) > 0.01f
                 || (Mathf.Min(edge.x, Home.Size.x - edge.x) < 8f && Mathf.Min(edge.z, Home.Size.z - edge.z) < 8f);
-            if (!corner && exitEdge != expectedEdge) { problems.Add($"exits the {exitEdge} edge, heading points at the {expectedEdge} edge"); }
+            if (!corner && exitEdge != expectedEdge)
+            {
+                // 診斷：交接點、交接航向、轉完的 tick 與位置、出圖點。
+                string turned = turnEnd < n ? $"turned at +{turnEnd - handoff} ticks {Fmt(s[turnEnd].pos)}" : "never finished the turn";
+                problems.Add($"exits the {exitEdge} edge, heading points at the {expectedEdge} edge (handoff {Fmt(s[handoff].pos)} nose {s[handoff].rotation:0.#}°, {turned}, exit {Fmt(last)} after {n - handoff} cruise ticks)");
+            }
 
             // Speed: after the turn, per-tick speed follows speedCurve(progress) / speedCurve(progress at handoff).
             int leave = f.ticksToDiscardInReverse.min;
             float worstRatio = 0f, maxSpeed = 0f, speedAtHandoff = (s[handoff].pos - s[handoff - 1].pos).WithY(0f).magnitude;
-            for (int k = handoff + f.turnTicks + 2; k < n - 1; k++)
+            for (int k = turnEnd + 2; k < n - 1; k++)
             {
                 float v0 = (s[k].pos - s[k - 1].pos).WithY(0f).magnitude;
                 float v1 = (s[k + 1].pos - s[k].pos).WithY(0f).magnitude;
@@ -723,7 +731,7 @@ namespace DMSE.BVRAcceptance
 
             // Continuity: no jump in step length or direction at the handoff.
             float worstJump = 0f, worstTurn = 0f;
-            for (int k = Math.Max(1, handoff - 3); k < Math.Min(n - 1, handoff + f.turnTicks + 2); k++)
+            for (int k = Math.Max(1, handoff - 3); k < Math.Min(n - 1, turnEnd + 2); k++)
             {
                 Vector3 d0 = (s[k].pos - s[k - 1].pos).WithY(0f), d1 = (s[k + 1].pos - s[k].pos).WithY(0f);
                 if (d0.magnitude < 1e-3f || d1.magnitude < 1e-3f) { continue; }
@@ -734,11 +742,14 @@ namespace DMSE.BVRAcceptance
             if (worstTurn > 30f) { problems.Add($"direction jumps {worstTurn:0.#}° in one tick around the handoff"); }
 
             // Exhaust stays lit through the cruise while the missile is on the map (after ignition, if it has an effect).
+            // Burn-limited motors (burnDurationTicks >= 0, e.g. Shahed's rail booster) only stay lit until the burn ends.
             int ignition = s.FindIndex(x => x.ignited);
             if (ignition >= 0)
             {
+                int burn = def.GetCompProperties<CompProperties_EffecterLaunch>()?.burnDurationTicks ?? -1;
+                int litUntil = burn >= 0 ? Math.Min(n - 1, ignition + burn) : n - 1;
                 int dark = 0;
-                for (int k = Math.Max(handoff, ignition) + 1; k < n - 1; k++) { if (!s[k].exhaust) { dark++; } }
+                for (int k = Math.Max(handoff, ignition) + 1; k < litUntil; k++) { if (!s[k].exhaust) { dark++; } }
                 if (dark > 0) { problems.Add($"exhaust off on {dark} cruise ticks"); }
                 float held = s.Skip(Math.Max(handoff, ignition) + 2).Where(x => x.exhaust).Select(x => x.evaluate).DefaultIfEmpty(-1f).Max()
                     - s.Skip(Math.Max(handoff, ignition) + 2).Where(x => x.exhaust).Select(x => x.evaluate).DefaultIfEmpty(-1f).Min();

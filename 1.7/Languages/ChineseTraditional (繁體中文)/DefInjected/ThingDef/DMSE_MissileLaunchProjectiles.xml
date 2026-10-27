@@ -7,6 +7,7 @@
   <DMSE_Launch_Cruise.label>巡弋飛彈（升空）</DMSE_Launch_Cruise.label>
   <DMSE_Launch_LegacyBallistic.label>老式彈道導彈（升空）</DMSE_Launch_LegacyBallistic.label>
   <DMSE_Launch_LegacyLoiter.label>老式巡飛彈（升空）</DMSE_Launch_LegacyLoiter.label>
+  <DMSE_Launch_Shahed.label>長程巡飛彈（升空）</DMSE_Launch_Shahed.label>
   <DMSE_Launch_LegacyInterceptor.label>老式攔截巡飛彈（升空）</DMSE_Launch_LegacyInterceptor.label>
   <DMSE_Launch_AdvancedLight.label>先進通用導彈（升空）</DMSE_Launch_AdvancedLight.label>
   <DMSE_Launch_AdvancedBallistic.label>先進彈道導彈（升空）</DMSE_Launch_AdvancedBallistic.label>
@@ -17,5 +18,4 @@
   <DMSE_Launch_Moskit.label>超音速反艦導彈（升空）</DMSE_Launch_Moskit.label>
   <DMSE_Launch_Yj.label>高超音速反艦導彈（升空）</DMSE_Launch_Yj.label>
   <DMSE_Launch_Tochka.label>戰術彈道導彈（升空）</DMSE_Launch_Tochka.label>
-  <DMSE_Launch_Shahed.label>長程巡飛彈（升空）</DMSE_Launch_Shahed.label>
 </LanguageData>

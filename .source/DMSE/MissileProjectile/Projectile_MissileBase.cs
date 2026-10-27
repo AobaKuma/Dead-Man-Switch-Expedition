@@ -236,7 +236,7 @@ namespace DMSE
                 }
                 if (cruise.active)
                 {
-                    MissileDepartureKinematics.CruiseStep(f, ref cruise, ticksToImpact, LeaveMapAfterTicks);
+                    MissileDepartureKinematics.CruiseStep(f, ref cruise, ticksToImpact, LeaveMapAfterTicks, Map.Size);
                     if (!MissileDepartureKinematics.InMap(cruise.pos, Map.Size) || cruise.ticks >= f.maxCruiseTicks)
                     {
                         Depart();

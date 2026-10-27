@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!--
+    導彈發射特效（docs/導彈發射特效_重製計畫.md）。
+    煙團與地面雲由 LaunchFxEmitter 以漂浮粒子（FxSmokeParticles）發出，淡入淡出由程式控制，所以 solidTime 給很長。
+    Shader：Mote＋renderInstanced（§0.1-3：Transparent 開 instancing 會遺失逐個顏色與透明度）；環境光由程式（FxLighting）乘進顏色，因為這些材質畫在原版光照層之後。
+    每種煙只用一張貼圖（§0.5）：同一高度的煙團若分屬多個材質，各材質是各自的一次 instanced 繪製，彼此先後由 Unity 任意決定（實機看到淺色團一塊塊蓋在深色團上、逐幀跳動）；
+    單一材質時整批依加入順序畫，舊的在下、新的在上。深淺改用 tint（LaunchFxEmitter.ShadeTint），變化靠隨機旋轉與大小。
+    DMSE_LaunchSmokeMid／Dark 只剩驗收 V6 在用。
+    材質 render queue 在戰爭迷霧之上（InterceptFxMaterial），地圖外仍被原版邊緣遮罩蓋住。
+    尾焰（核心、外焰、光暈）不是 fleck，由 LaunchFxEmitter 每幀直接畫（LaunchFxMaterials）。
+  -->
+
+  <FleckDef Name="DMSE_LaunchSmokeBase" Abstract="True">
+    <fleckSystemClass>FleckSystemStatic</fleckSystemClass>
+    <altitudeLayer>MetaOverlays</altitudeLayer>
+    <altitudeLayerIncOffset>1.2</altitudeLayerIncOffset>
+    <solidTime>1000</solidTime>
+    <modExtensions>
+      <li Class="DMSE.InterceptFxMaterial"><renderQueueOffset>1</renderQueueOffset></li>
+    </modExtensions>
+  </FleckDef>
+
+  <FleckDef ParentName="DMSE_LaunchSmokeBase">
+    <defName>DMSE_LaunchSmokeLight</defName>
+    <graphicData>
+      <texPath>Things/Effects/InterceptDebris/SmokeLight/SmokeLight_a</texPath>
+      <graphicClass>Graphic_Fleck</graphicClass>
+      <shaderType>Mote</shaderType>
+      <renderInstanced>true</renderInstanced>
+    </graphicData>
+  </FleckDef>
+
+  <FleckDef ParentName="DMSE_LaunchSmokeBase">
+    <defName>DMSE_LaunchSmokeMid</defName>
+    <graphicData>
+      <texPath>Things/Effects/InterceptDebris/SmokeMid/SmokeMid_a</texPath>
+      <graphicClass>Graphic_Fleck</graphicClass>
+      <shaderType>Mote</shaderType>
+      <renderInstanced>true</renderInstanced>
+    </graphicData>
+  </FleckDef>
+
+  <FleckDef ParentName="DMSE_LaunchSmokeBase">
+    <defName>DMSE_LaunchSmokeDark</defName>
+    <graphicData>
+      <texPath>Things/Effects/InterceptDebris/SmokeDark/SmokeDark_a</texPath>
+      <graphicClass>Graphic_Fleck</graphicClass>
+      <shaderType>Mote</shaderType>
+      <renderInstanced>true</renderInstanced>
+    </graphicData>
+  </FleckDef>
+
+  <!-- 地面雲：扁平、底面較暗的塵煙團（熱射點火時沿地面放射）。在煙柱之下。 -->
+  <FleckDef ParentName="DMSE_LaunchSmokeBase">
+    <defName>DMSE_LaunchGroundCloud</defName>
+    <altitudeLayerIncOffset>0.8</altitudeLayerIncOffset>
+    <graphicData>
+      <texPath>Things/Effects/MissileFx/GroundCloud/GroundCloud_a</texPath>
+      <graphicClass>Graphic_Fleck</graphicClass>
+      <shaderType>Mote</shaderType>
+      <renderInstanced>true</renderInstanced>
+    </graphicData>
+  </FleckDef>
+
+  <!--
+    尾焰尺寸依 2026-10-26 實機截圖（驗收 V1／V4）放大：長 ×1.6、寬 ×1.4。
+    煙的透明度（smokeColor／groundCloudColor 的 a）是「單顆」的：煙柱沿線前後重疊約 4 顆，所以單顆只給 0.3–0.4（§0.5；原本 0.6–0.9 疊起來近乎不透明）。
+    六種發射 profile（§5，使用者 2026-10-26 核准）。17 個發射體的對應寫在 .source/Tools/gen_missile_launch_defs.py 的 FX_PROFILES。
+  -->
+
+  <!-- 固體助推（參考圖 1）：長白熱焰、橙黃外焰、濃密灰褐煙柱、地面大塵雲。 -->
+  <DMSE.LaunchFxProfileDef>
+    <defName>DMSE_LaunchFx_SolidBooster</defName>
+    <coreLength>4.8</coreLength>
+    <plumeWidth>1.4</plumeWidth>
+    <flameColor>(1, 0.6, 0.2, 1)</flameColor>
+    <exhaustSpeed>0.4</exhaustSpeed>
+    <smokeSize>1.6</smokeSize>
+    <smokeGrowth>3</smokeGrowth>
+    <smokeShade>0.65</smokeShade>
+    <smokeColor>(1, 0.93, 0.84, 0.42)</smokeColor>
+    <groundCloudCount>16</groundCloudCount>
+    <groundCloudColor>(1, 0.92, 0.8, 0.5)</groundCloudColor>
+    <groundGlow>12</groundGlow>
+  </DMSE.LaunchFxProfileDef>
+
+  <!-- 冷射垂直發射（參考圖 2）：彈射白燃氣 → 空中點火 → 長直白煙柱。 -->
+  <DMSE.LaunchFxProfileDef>
+    <defName>DMSE_LaunchFx_ColdVls</defName>
+    <coreLength>4.16</coreLength>
+    <plumeWidth>1.19</plumeWidth>
+    <flameColor>(1, 0.75, 0.4, 1)</flameColor>
+    <exhaustSpeed>0.3</exhaustSpeed>
+    <smokeSize>1.5</smokeSize>
+    <smokeGrowth>3.2</smokeGrowth>
+    <smokeShade>0.12</smokeShade>
+    <smokeColor>(1, 1, 1, 0.4)</smokeColor>
+    <buoyancy>0.002</buoyancy>
+    <ejectionPuffs>10</ejectionPuffs>
+    <airIgnitionRing>10</airIgnitionRing>
+    <groundGlow>6</groundGlow>
+  </DMSE.LaunchFxProfileDef>
+
+  <!-- 液體彈道（V2）：淡藍白焰、煙少而淺、地面雲大。 -->
+  <DMSE.LaunchFxProfileDef>
+    <defName>DMSE_LaunchFx_LiquidBallistic</defName>
+    <coreLength>5.44</coreLength>
+    <plumeWidth>1.54</plumeWidth>
+    <coreColor>(0.95, 0.97, 1, 1)</coreColor>
+    <flameColor>(0.8, 0.85, 1, 1)</flameColor>
+    <exhaustSpeed>0.35</exhaustSpeed>
+    <smokeSize>1.2</smokeSize>
+    <smokeGrowth>2.5</smokeGrowth>
+    <smokeShade>0.2</smokeShade>
+    <smokeColor>(1, 1, 1, 0.28)</smokeColor>
+    <groundCloudCount>20</groundCloudCount>
+    <groundCloudColor>(1, 1, 1, 0.5)</groundCloudColor>
+    <groundGlow>14</groundGlow>
+  </DMSE.LaunchFxProfileDef>
+
+  <!-- 巡航導彈助推：短助推（燒完掉一片助推器殘骸）→ 幾乎無焰、只剩很淡的渦扇尾跡。 -->
+  <DMSE.LaunchFxProfileDef>
+    <defName>DMSE_LaunchFx_CruiseBooster</defName>
+    <coreLength>3.52</coreLength>
+    <plumeWidth>1.12</plumeWidth>
+    <boosterTicks>45</boosterTicks>
+    <sustainThrust>0.12</sustainThrust>
+    <smokeSize>1.3</smokeSize>
+    <smokeShade>0.55</smokeShade>
+    <smokeColor>(1, 0.95, 0.88, 0.4)</smokeColor>
+    <ejectionPuffs>8</ejectionPuffs>
+    <boosterDebris>1</boosterDebris>
+    <groundGlow>8</groundGlow>
+  </DMSE.LaunchFxProfileDef>
+
+  <!-- 脈衝噴射（V1 類）：無高亮長焰、斷續的淡煙。 -->
+  <DMSE.LaunchFxProfileDef>
+    <defName>DMSE_LaunchFx_Pulsejet</defName>
+    <coreLength>1.6</coreLength>
+    <plumeWidth>0.7</plumeWidth>
+    <flameColor>(1, 0.55, 0.2, 1)</flameColor>
+    <exhaustSpeed>0.25</exhaustSpeed>
+    <smokeSize>0.8</smokeSize>
+    <smokeGrowth>2</smokeGrowth>
+    <smokeShade>0.5</smokeShade>
+    <smokeColor>(1, 0.96, 0.9, 0.3)</smokeColor>
+    <trailLifeTicks>300</trailLifeTicks>
+    <spacingFactor>0.6</spacingFactor>
+    <groundCloudCount>6</groundCloudCount>
+    <groundGlow>4</groundGlow>
+  </DMSE.LaunchFxProfileDef>
+
+  <!-- 肩射：筒口小噴發 → 數公尺外點火 → 細長淺灰煙。 -->
+  <DMSE.LaunchFxProfileDef>
+    <defName>DMSE_LaunchFx_Manpads</defName>
+    <coreLength>2.24</coreLength>
+    <plumeWidth>0.7</plumeWidth>
+    <smokeSize>0.7</smokeSize>
+    <smokeGrowth>2.2</smokeGrowth>
+    <smokeShade>0.4</smokeShade>
+    <smokeColor>(1, 0.97, 0.92, 0.38)</smokeColor>
+    <trailLifeTicks>360</trailLifeTicks>
+    <ejectionPuffs>4</ejectionPuffs>
+    <airIgnitionRing>5</airIgnitionRing>
+    <ignitionFlash>2.5</ignitionFlash>
+    <groundGlow>3</groundGlow>
+  </DMSE.LaunchFxProfileDef>
+
+</Defs>

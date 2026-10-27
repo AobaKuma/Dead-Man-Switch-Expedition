@@ -422,10 +422,8 @@
     </statBases>
     <size>(4,4)</size>
     <costList>
-      <Steel>150</Steel>
-      <DMSE_TantastenAlloy>60</DMSE_TantastenAlloy>
-      <ComponentIndustrial>12</ComponentIndustrial>
-      <ComponentSpacer>4</ComponentSpacer>
+      <Tungsteel>260</Tungsteel>
+      <ComponentStamped>20</ComponentStamped>
     </costList>
     <building>
       <destroySound>BuildingDestroyed_Metal_Small</destroySound>
@@ -504,10 +502,8 @@
     </statBases>
     <size>(3,3)</size>
     <costList>
-      <Steel>180</Steel>
-      <DMSE_TantastenAlloy>80</DMSE_TantastenAlloy>
-      <ComponentIndustrial>12</ComponentIndustrial>
-      <ComponentSpacer>4</ComponentSpacer>
+      <Tungsteel>345</Tungsteel>
+      <ComponentStamped>20</ComponentStamped>
     </costList>
     <building>
       <destroySound>BuildingDestroyed_Metal_Small</destroySound>
@@ -588,6 +584,7 @@
         <filter>
           <thingDefs>
             <li>DMSE_Missile_Yj</li>
+            <li>DMSE_Missile_Tochka</li>
           </thingDefs>
         </filter>
       </fixedStorageSettings>
@@ -596,6 +593,7 @@
         <filter>
           <thingDefs>
             <li>DMSE_Missile_Yj</li>
+            <li>DMSE_Missile_Tochka</li>
           </thingDefs>
         </filter>
       </defaultStorageSettings>

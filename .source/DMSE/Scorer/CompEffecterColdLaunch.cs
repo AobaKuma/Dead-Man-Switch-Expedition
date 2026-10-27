@@ -37,6 +37,12 @@ namespace DMSE
         public SimpleCurve ExhaustCurve;
         public FleckDef SmokeFleck;
         public SimpleCurve SmokeCurve;
+
+        /// <summary>
+        /// 新發射特效的 profile（docs/導彈發射特效_重製計畫.md）：有值時走 <see cref="LaunchFxEmitter"/>（尾焰、連續煙柱、地面雲、助推器分離），
+        /// 上面的舊欄位（ExhaustFleck、SmokeFleck、launchEffectTrigger 等）只在沒有 profile 時使用。
+        /// </summary>
+        public LaunchFxProfileDef fxProfile;
     }
 
     /// <summary>
@@ -49,6 +55,11 @@ namespace DMSE
         protected bool hasIgnited;
         protected Effecter effecter;
         protected IMissileFlight flight;
+        /// <summary>新發射特效（有 fxProfile 時）；不存檔，讀檔後重建。</summary>
+        protected LaunchFxEmitter launchFx;
+
+        /// <summary>新發射特效（驗收與除錯讀取）；沒有 fxProfile 或尚未生成時為 null。</summary>
+        public LaunchFxEmitter LaunchFx => launchFx;
 
         public CompProperties_EffecterLaunch Props => (CompProperties_EffecterLaunch)props;
 
@@ -78,6 +89,11 @@ namespace DMSE
         {
             base.CompTick();
             ticksSinceSpawn++;
+            if (Props.fxProfile != null && flight != null)
+            {
+                TickLaunchFx();
+                return;
+            }
             if (ShouldShowEffecter())
             {
                 if (!hasIgnited)
@@ -101,6 +117,40 @@ namespace DMSE
                 effecter?.Cleanup();
                 effecter = null;
             }
+        }
+
+        /// <summary>新發射特效（docs/導彈發射特效_重製計畫.md）：點火音效照舊，視覺全部交給 <see cref="LaunchFxEmitter"/>。</summary>
+        private void TickLaunchFx()
+        {
+            if (!parent.Spawned) { return; }
+            if (launchFx == null)
+            {
+                launchFx = new LaunchFxEmitter(parent, flight, Props, ticksSinceSpawn, IgnitionDelayTicks);
+                MapComponent_MissileFx.For(parent.Map)?.Register(launchFx);
+            }
+            if (!hasIgnited && Props.IsBurning(ticksSinceSpawn, IgnitionDelayTicks))
+            {
+                hasIgnited = true;
+                if (parent.Map == Find.CurrentMap)
+                {
+                    Props.ignitionSound?.PlayOneShot(new TargetInfo(flight.LaunchDrawPos.ToIntVec3(), parent.Map));
+                }
+                MissileFlightTrace.RecordIgnition(parent);
+            }
+            float evaluate = flight.EffectEvaluate(ticksSinceSpawn, IgnitionDelayTicks);
+            launchFx.Tick(ticksSinceSpawn, IgnitionDelayTicks, evaluate, IgnitionDelayTicks == 0);
+            // 飛行追蹤（驗收 F1／F4／F5）：與舊路徑相同的「排氣中」條件（燃燒中、彈體在圖內、玩家看著這張地圖）。
+            if (Props.IsBurning(ticksSinceSpawn, IgnitionDelayTicks) && flight.VisualPos.InBounds(parent.Map) && parent.Map == Find.CurrentMap)
+            {
+                MissileFlightTrace.RecordExhaust(parent, flight.LaunchDrawPos, flight.LaunchRotation, evaluate, flight.EffectSpeed(evaluate));
+            }
+        }
+
+        public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
+        {
+            base.PostDeSpawn(map, mode);
+            if (launchFx != null) { MapComponent_MissileFx.For(map)?.Unregister(launchFx); }
+            launchFx = null;
         }
 
         public void ThrowExhaust(Vector3 drawPos, float rotation, float evaluate, float speed)

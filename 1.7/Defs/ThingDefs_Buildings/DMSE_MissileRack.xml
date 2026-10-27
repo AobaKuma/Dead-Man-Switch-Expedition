@@ -283,6 +283,7 @@
             <li>DMSE_Missile_Moskit</li>
             <li>DMSE_Missile_AdvancedCruise</li>
             <li>DMSE_Missile_Yj</li>
+            <li>DMSE_Missile_Tochka</li>
           </thingDefs>
         </filter>
       </fixedStorageSettings>
@@ -293,6 +294,7 @@
             <li>DMSE_Missile_Moskit</li>
             <li>DMSE_Missile_AdvancedCruise</li>
             <li>DMSE_Missile_Yj</li>
+            <li>DMSE_Missile_Tochka</li>
           </thingDefs>
         </filter>
       </defaultStorageSettings>

@@ -35,10 +35,9 @@
     </statBases>
     <size>(3,3)</size>
     <costList>
-      <DMSE_TantastenAlloy>300</DMSE_TantastenAlloy>
-      <DMSE_Graphene>200</DMSE_Graphene>
+      <DMSE_TantastenAlloy>290</DMSE_TantastenAlloy>
+      <DMSE_Graphene>375</DMSE_Graphene>
       <ComponentSpacer>24</ComponentSpacer>
-      <DMSE_Nitrogallium>20</DMSE_Nitrogallium>
     </costList>
     <building>
       <destroySound>BuildingDestroyed_Metal_Small</destroySound>

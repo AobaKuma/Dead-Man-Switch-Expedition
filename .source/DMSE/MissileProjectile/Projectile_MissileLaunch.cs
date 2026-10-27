@@ -48,7 +48,7 @@ namespace DMSE
             target.midcourseEngagedUntil = -1;
             if (Rand.Chance(hitChance))
             {
-                MapComponent_InterceptEffects.Trigger(Map, target.position, terminal: false);
+                MapComponent_InterceptEffects.Trigger(Map, InterceptEventData.From(target, Map, terminal: false, IntVec3.Invalid));
                 comp.RemoveTarget(targetId);
                 if (Prefs.DevMode) { Log.Message($"[DMSE BVR] 中過程攔截成功 target#{targetId}"); }
             }

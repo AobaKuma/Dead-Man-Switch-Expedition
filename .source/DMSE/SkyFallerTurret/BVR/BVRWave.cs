@@ -1,6 +1,7 @@
 using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using Verse;
 using Verse.AI.Group;
 
@@ -125,8 +126,15 @@ namespace DMSE
             }
         }
 
-        /// <summary>末端攔截成功且擲骰通過時呼叫：殺死內部所有 pawn，屍體以一個殘骸空投（碎片）落下，其餘內容物隨艙體清除。</summary>
-        public void SpawnDebris(Map map)
+        /// <summary>
+        /// 末端攔截成功且擲骰通過時呼叫：殺死內部所有 pawn，屍體以一個殘骸空投（碎片）落下，其餘內容物隨艙體清除。
+        /// <paramref name="debrisCell"/> 是攔截特效預測的艙體殘骸落點（docs/攔截殘骸特效_實作與技術美術計畫.md §1-4）：
+        /// 屍體空投落在它附近可空投的格；沒有預測或找不到格時落在原落點。
+        /// </summary>
+        public void SpawnDebris(Map map) => SpawnDebris(map, IntVec3.Invalid);
+
+        /// <inheritdoc cref="SpawnDebris(Map)"/>
+        public void SpawnDebris(Map map, IntVec3 debrisCell)
         {
             // 先取出清單：殺死 pawn 會把它在容器中換成屍體。
             List<Pawn> pawns = ContainedPawns;
@@ -149,8 +157,30 @@ namespace DMSE
 
             if (info.innerContainer.Any)
             {
-                DropPodUtility.MakeDropPodAt(position, map, info);
+                DropPodUtility.MakeDropPodAt(CorpsePodCell(map, debrisCell), map, info);
             }
+        }
+
+        /// <summary>
+        /// 屍體空投的落點：預測的殘骸落點附近（6 格內、不穿屋頂、可在迷霧裡）可空投的格。
+        /// 預測落點常在山體或屋頂下（2026-10-26 實機：落點在山裡、找不到格），所以找不到時沿「殘骸落點 → 原落點」
+        /// 每 6 格再找一次，取最靠近殘骸落點的可空投格；全程都找不到才落在原落點。
+        /// </summary>
+        public IntVec3 CorpsePodCell(Map map, IntVec3 debrisCell)
+        {
+            if (!debrisCell.IsValid || !debrisCell.InBounds(map)) { return position; }
+            float distance = debrisCell.DistanceTo(position);
+            int steps = Mathf.Max(1, Mathf.CeilToInt(distance / 6f));
+            for (int i = 0; i <= steps; i++)
+            {
+                IntVec3 probe = IntVec3.FromVector3(Vector3.Lerp(debrisCell.ToVector3Shifted(), position.ToVector3Shifted(), (float)i / steps));
+                if (probe.InBounds(map)
+                    && DropCellFinder.TryFindDropSpotNear(probe, map, out IntVec3 spot, allowFogged: true, canRoofPunch: false, maxRadius: 6))
+                {
+                    return spot;
+                }
+            }
+            return position;
         }
 
         /// <summary>清掉持有的來襲物（攔截成功、不落地、不留殘骸）。</summary>

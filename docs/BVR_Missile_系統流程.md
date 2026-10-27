@@ -285,7 +285,7 @@ AltitudeFactor = clamp( sqrt(altitude / altitudeRefMeters), minAltitudeFactor, m
 | `DMSE_MissileBody_Sparrow` 先進防空（麻雀） | Light／Both | Item | 4 | 85×3.4 | 彈頭/導引/酬載 |
 | `DMSE_MissileBody_Moskit` 超音速反艦（白蛉） | Medium／Both | Item | 5 | 100×3.6 | 彈頭/導引/推進/酬載 |
 | `DMSE_MissileBody_Yj` 高超音速反艦（鷹擊） | Medium／Both | Item | 6 | 120×4.25 | 彈頭/導引/推進/酬載 |
-| `DMSE_MissileBody_Tochka` 戰術彈道（圓點U） | Ballistic／Vertical | Launcher | 7 | 140×2.2 | 彈頭/導引/酬載（共用現役彈道部件） |
+| `DMSE_MissileBody_Tochka` 戰術彈道（圓點U） | Medium／Both（2026-10-27 由 Ballistic 改） | Item（`DMSE_Missile_Tochka`） | 7 | 140×2.2 | 彈頭/導引/推進/酬載（中型部件；預設 HE／慣性／標準／無） |
 
 全部彈體都已接線（2026-10-21 三代裝備體系）：固定構型的 V1、白蟻、萊茵女兒以 `MissileItemExtension` 宣告彈體；四個 Ballistic 彈體由塔式發射架與戰略導彈發射井的彈體選單共用，並以 `MissileBodyDef.researchPrerequisites` 設研究門檻。**物品型態**的彈體帶 `defaultParts`（B-8）。
 

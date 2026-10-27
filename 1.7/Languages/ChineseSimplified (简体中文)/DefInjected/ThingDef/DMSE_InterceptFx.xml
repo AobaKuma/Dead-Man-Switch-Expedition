@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <!-- EN: intercept debris -->
+  <DMSE_InterceptDebrisChunk.label>拦截残骸</DMSE_InterceptDebrisChunk.label>
+  <!-- EN: scattered metal scrap -->
+  <DMSE_Filth_MetalScrap.label>散落的金属碎屑</DMSE_Filth_MetalScrap.label>
+
+</LanguageData>

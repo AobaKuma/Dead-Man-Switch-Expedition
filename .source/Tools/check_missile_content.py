@@ -4,7 +4,8 @@
 Checks:
   1. every body that opens slots has at least one compatible part per slot;
   2. every body's defaultParts cover all of its slots, are compatible, and are unique per category;
-  3. every thing with CompProperties_MissileConfig has its default parts' costs folded into costList;
+  3. every thing with CompProperties_MissileConfig costs at least as much (market value) as its default parts
+     (materials follow the equipment tier since 2026-10-27, so the parts' own materials need not appear);
   4. every missile item can be stored somewhere (storage filter or NPC autofill candidate);
   5. every BVR target extension declares a sane altitude;
   6. every "Class=DMSE.*" reference exists in .source;
@@ -23,6 +24,12 @@ from pathlib import Path
 
 root = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else Path(__file__).resolve().parents[2]
 errors = []
+
+
+# Market values of recipe materials (vanilla Core, Dead Man Switch, this mod); used by check 3.
+MATERIAL_VALUE = {'Steel': 1.9, 'Chemfuel': 2.3, 'Cloth': 1.5, 'Plasteel': 9, 'ComponentIndustrial': 32,
+                  'ComponentSpacer': 200, 'ComponentStamped': 60, 'Tungsteel': 8, 'DMSE_TantastenAlloy': 30,
+                  'DMSE_Graphene': 10, 'DMSE_Nitrogallium': 75}
 
 
 def require(ok, message):
@@ -149,9 +156,13 @@ for name, entries in defs.items():
         for item in node.findall('costList'):
             for res in item:
                 actual[res.tag] = actual.get(res.tag, 0) + int(float(res.text or 0))
-        for res, count in expected.items():
-            require(actual.get(res, 0) >= count,
-                    f'{name}: costList lacks default-part materials for {res} ({actual.get(res, 0)} < {count})')
+        # Default parts are bundled into the tier materials (.source/Tools/tier_missile_costs.py): compare value, not materials.
+        unknown = sorted((set(expected) | set(actual)) - set(MATERIAL_VALUE))
+        require(not unknown, f'{name}: no market value known for {unknown} (add it to MATERIAL_VALUE)')
+        cost_value = sum(MATERIAL_VALUE.get(r, 0) * c for r, c in actual.items())
+        parts_value = sum(MATERIAL_VALUE.get(r, 0) * c for r, c in expected.items())
+        require(cost_value >= parts_value,
+                f'{name}: costList is worth {cost_value:.0f}, less than its default parts ({parts_value:.0f})')
 
 # ---- 4. storage reachability ------------------------------------------------
 storable = set()

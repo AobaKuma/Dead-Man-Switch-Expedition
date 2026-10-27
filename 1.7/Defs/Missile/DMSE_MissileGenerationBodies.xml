@@ -21,7 +21,7 @@
          DMSE_MissileBody_Sparrow   ← 麻雀（AIM-7）     ← 輕型半主動攔截彈
          DMSE_MissileBody_Moskit    ← 白蛉（P-270）     ← 中型反艦彈
          DMSE_MissileBody_Yj        ← 鷹擊（YJ-12 級）  ← 中型高超音速反艦彈
-         DMSE_MissileBody_Tochka    ← 圓點U（9K79-1）   ← 彈道階，塔／井內裝配
+         DMSE_MissileBody_Tochka    ← 圓點U（9K79-1）   ← 中型階（2026-10-27 由彈道階改），傾斜／垂直發射
 
        世代只影響數值與成本，不新增 MissileSizeClass 列舉值。
        平台實際能裝什麼由建築的 storage filter 決定；MissileLauncherExtension 的
@@ -32,9 +32,9 @@
        離場 skyfaller 由發射平台（CompProperties_MissileRailLauncher.skyfaller）指定，不在彈體上。
 
        可達路徑：
-         - Ballistic 四種（LegacyBallistic／Tochka／Ballistic／AdvancedBallistic）都可在塔式發射架與
+         - Ballistic 三種（LegacyBallistic／Ballistic／AdvancedBallistic）都可在塔式發射架與
            戰略導彈發射井的彈體選單切換，研究門檻見各彈體的 researchPrerequisites；
-           DMSE_BallisticMissile.xml 的 9 個部件同時列入這四種彈體。
+           DMSE_BallisticMissile.xml 的彈道部件同時列入這三種彈體（圓點U 改為中型後改用中型部件）。
          - 物品型彈體由對應物品的 CompMissileConfig.defaultBody 使用；
            固定構型物品（V1、萊茵女兒、白蟻）以 DMSE.MissileItemExtension 宣告彈體。
          - 只有**物品型態**、且有槽位的彈體帶 defaultParts：該物品建造時自帶一組零件，
@@ -462,15 +462,16 @@
 
 
   <!-- ══════════════════════════════════════════════════════════════
-       十二、戰術彈道導彈（圓點U）— 彈道階，塔／井內直接裝配
+       十二、戰術彈道導彈（圓點U）— 中型階，四槽（2026-10-27 由彈道階改為中型：實物 6.4 m、約 2 t，
+             與白蛉同級；物品型態、傾斜發射架與垂直發射井皆可發射，飛行仍是彈道軌跡）
        ══════════════════════════════════════════════════════════════ -->
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_Tochka</defName>
     <label>tactical ballistic missile body</label>
-    <description>A solid-fuelled tactical ballistic airframe with enough range to cross a theatre and a broad warhead menu, more accurate and far quicker to prepare than the first-generation rockets but well short of strategic systems. Assembled directly on a launch tower or in a silo; it never exists as an item.</description>
-    <sizeClass>Ballistic</sizeClass>
-    <launchMode>Vertical</launchMode>
-    <customizeLocation>Launcher</customizeLocation>
+    <description>A solid-fuelled tactical ballistic airframe with enough range to cross a theatre, more accurate and far quicker to prepare than the first-generation rockets but well short of strategic systems. Four assembly slots: warhead, guidance, propulsion and payload; it leaves the printer with inertial guidance.</description>
+    <sizeClass>Medium</sizeClass>
+    <launchMode>Both</launchMode>
+    <customizeLocation>Item</customizeLocation>
     <payloadCapacity>7</payloadCapacity>
     <baseExplosionRadius>6</baseExplosionRadius>
     <baseDamageDef>Bomb</baseDamageDef>
@@ -492,8 +493,15 @@
     <slots>
       <li>Warhead</li>
       <li>Guidance</li>
+      <li>Propulsion</li>
       <li>Payload</li>
     </slots>
+    <defaultParts>
+      <li>DMSE_Warhead_HE</li>
+      <li>DMSE_Guidance_Inertial</li>
+      <li>DMSE_Propulsion_Standard</li>
+      <li>DMSE_Payload_None</li>
+    </defaultParts>
   </DMSE.MissileBodyDef>
 
 
@@ -513,7 +521,7 @@
     <graphicData>
       <texPath>Things/Missile/V2/skyFaller_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>4</drawSize>
+      <drawSize>6.8</drawSize>
     </graphicData>
     <size>(1,1)</size>
     <modExtensions>
@@ -539,7 +547,7 @@
     <graphicData>
       <texPath>Things/Missile/V1/skyFaller_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>3</drawSize>
+      <drawSize>4.65</drawSize>
     </graphicData>
     <size>(1,1)</size>
     <modExtensions>
@@ -565,7 +573,7 @@
     <graphicData>
       <texPath>Things/Missile/Rheintochter/skyFaller_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>2</drawSize>
+      <drawSize>3.25</drawSize>
     </graphicData>
     <size>(1,1)</size>
     <modExtensions>
@@ -591,7 +599,7 @@
     <graphicData>
       <texPath>Things/Missile/Hellfire/skyFaller_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>2.5</drawSize>
+      <drawSize>2.21</drawSize>
     </graphicData>
     <size>(1,1)</size>
     <modExtensions>
@@ -617,7 +625,7 @@
     <graphicData>
       <texPath>Things/Missile/Minuteman/skyFaller_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>6</drawSize>
+      <drawSize>6.43</drawSize>
     </graphicData>
     <size>(1,1)</size>
     <modExtensions>
@@ -643,7 +651,7 @@
     <graphicData>
       <texPath>Things/Missile/Tomahawk/skyFaller_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>4</drawSize>
+      <drawSize>2.83</drawSize>
     </graphicData>
     <size>(1,1)</size>
     <modExtensions>
@@ -669,7 +677,7 @@
     <graphicData>
       <texPath>Things/Weapons/DMSE_Projectile_Stinger</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>2</drawSize>
+      <drawSize>1.33</drawSize>
     </graphicData>
     <size>(1,1)</size>
     <modExtensions>
@@ -695,7 +703,7 @@
     <graphicData>
       <texPath>Things/Missile/AGM65/skyFaller_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>2.5</drawSize>
+      <drawSize>1.91</drawSize>
     </graphicData>
     <size>(1,1)</size>
     <modExtensions>
@@ -721,7 +729,7 @@
     <graphicData>
       <texPath>Things/Missile/Aim120/skyFaller</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>2.5</drawSize>
+      <drawSize>1.88</drawSize>
     </graphicData>
     <size>(1,1)</size>
     <modExtensions>
@@ -747,7 +755,7 @@
     <graphicData>
       <texPath>Things/Missile/Moskit/skyFaller_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>4</drawSize>
+      <drawSize>3.97</drawSize>
     </graphicData>
     <size>(1,1)</size>
     <modExtensions>
@@ -773,7 +781,7 @@
     <graphicData>
       <texPath>Things/Missile/YJ20/skyFaller_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>4.5</drawSize>
+      <drawSize>4.46</drawSize>
     </graphicData>
     <size>(1,1)</size>
     <modExtensions>
@@ -791,15 +799,15 @@
     </modExtensions>
   </ThingDef>
 
-  <!-- 圓點U：戰術彈道、高空再入、隱身 1（貼圖暫借民兵三型） -->
+  <!-- 圓點U：戰術彈道、高空再入、隱身 1（自有貼圖，2026-10-27 起不再借民兵三型） -->
   <ThingDef ParentName="DMSE_MissileIncomingProjectileBase">
     <defName>DMSE_Incoming_Tochka</defName>
     <label>tactical ballistic missile (incoming)</label>
     <thingClass>DMSE.Projectile_MissileIncoming</thingClass>
     <graphicData>
-      <texPath>Things/Missile/Minuteman/skyFaller_incoming</texPath>
+      <texPath>Things/Missile/Tochka/skyFaller_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>5</drawSize>
+      <drawSize>3.3</drawSize>
     </graphicData>
     <size>(1,1)</size>
     <modExtensions>

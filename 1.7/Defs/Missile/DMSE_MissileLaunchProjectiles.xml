@@ -47,7 +47,7 @@
     <graphicData>
       <texPath>Things/Missile/Moskit/skyFaller</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>5</drawSize>
+      <drawSize>4.66</drawSize>
     </graphicData>
     <modExtensions>
       <li Class="DMSE.MissileFlightExtension">
@@ -82,6 +82,8 @@
             <li>(1,20)</li>
           </points>
         </zPositionCurve>
+        <handoffMaxCells>22</handoffMaxCells>
+        <maxTurnRate>1.2</maxTurnRate>
       </li>
     </modExtensions>
     <comps>
@@ -106,6 +108,7 @@
           </points>
         </SmokeCurve>
         <launchEffectTrigger>DMS_LaunchDust_Recoilless</launchEffectTrigger>
+        <fxProfile>DMSE_LaunchFx_ColdVls</fxProfile>
       </li>
     </comps>
   </ThingDef>
@@ -117,7 +120,7 @@
     <graphicData>
       <texPath>Things/Missile/Grison/skyFaller</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>2.5</drawSize>
+      <drawSize>1.49</drawSize>
     </graphicData>
     <modExtensions>
       <li Class="DMSE.MissileFlightExtension">
@@ -177,6 +180,7 @@
           </points>
         </SmokeCurve>
         <launchEffectTrigger>DMS_LaunchDust_Recoilless</launchEffectTrigger>
+        <fxProfile>DMSE_LaunchFx_SolidBooster</fxProfile>
       </li>
     </comps>
   </ThingDef>
@@ -188,7 +192,7 @@
     <graphicData>
       <texPath>Things/Missile/Termite/missile_north</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>3</drawSize>
+      <drawSize>2.67</drawSize>
     </graphicData>
     <modExtensions>
       <li Class="DMSE.MissileFlightExtension">
@@ -248,6 +252,7 @@
           </points>
         </SmokeCurve>
         <launchEffectTrigger>DMS_LaunchDust_Recoilless</launchEffectTrigger>
+        <fxProfile>DMSE_LaunchFx_Pulsejet</fxProfile>
       </li>
     </comps>
   </ThingDef>
@@ -259,7 +264,7 @@
     <graphicData>
       <texPath>Things/Missile/Moskit/skyFaller</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>4</drawSize>
+      <drawSize>3.11</drawSize>
     </graphicData>
     <modExtensions>
       <li Class="DMSE.MissileFlightExtension">
@@ -319,6 +324,7 @@
           </points>
         </SmokeCurve>
         <launchEffectTrigger>DMS_LaunchDust_Recoilless</launchEffectTrigger>
+        <fxProfile>DMSE_LaunchFx_CruiseBooster</fxProfile>
       </li>
     </comps>
   </ThingDef>
@@ -330,7 +336,7 @@
     <graphicData>
       <texPath>Things/Missile/V2/skyFaller_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>4</drawSize>
+      <drawSize>6.8</drawSize>
     </graphicData>
     <modExtensions>
       <li Class="DMSE.MissileFlightExtension">
@@ -365,6 +371,8 @@
             <li>(1,20)</li>
           </points>
         </zPositionCurve>
+        <handoffMaxCells>22</handoffMaxCells>
+        <maxTurnRate>1.2</maxTurnRate>
       </li>
     </modExtensions>
     <comps>
@@ -389,6 +397,7 @@
           </points>
         </SmokeCurve>
         <launchEffectTrigger>DMS_LaunchDust_Recoilless</launchEffectTrigger>
+        <fxProfile>DMSE_LaunchFx_LiquidBallistic</fxProfile>
       </li>
     </comps>
   </ThingDef>
@@ -400,7 +409,7 @@
     <graphicData>
       <texPath>Things/Missile/V1/skyFaller_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>3</drawSize>
+      <drawSize>4.65</drawSize>
     </graphicData>
     <modExtensions>
       <li Class="DMSE.MissileFlightExtension">
@@ -460,6 +469,81 @@
           </points>
         </SmokeCurve>
         <launchEffectTrigger>DMS_LaunchDust_Recoilless</launchEffectTrigger>
+        <fxProfile>DMSE_LaunchFx_Pulsejet</fxProfile>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- DMSE_MissileBody_Shahed: DMSE_SkyFaller_Loiter flight, hot launch 0.5 -->
+  <ThingDef ParentName="DMSE_MissileLaunchProjectileBase">
+    <defName>DMSE_Launch_Shahed</defName>
+    <label>long-range loitering munition (launching)</label>
+    <graphicData>
+      <texPath>Things/Missile/Shahed/skyFaller_incoming</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>2.08</drawSize>
+    </graphicData>
+    <modExtensions>
+      <li Class="DMSE.MissileFlightExtension">
+        <movementType>Accelerate</movementType>
+        <reversed>true</reversed>
+        <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
+        <shadowSize>(1.5, 1.5)</shadowSize>
+        <ticksToDiscardInReverse>300</ticksToDiscardInReverse>
+        <ticksToImpactRange>0</ticksToImpactRange>
+        <anticipationSound>DropPod_Leaving</anticipationSound>
+        <anticipationSoundTicks>-1</anticipationSoundTicks>
+        <speedCurve>
+          <points>
+            <li>(0,0.3)</li>
+            <li>(0.2,0.2)</li>
+            <li>(0.5,0.5)</li>
+            <li>(1,1)</li>
+          </points>
+        </speedCurve>
+        <rotationCurve>
+          <points>
+            <li>(0,-10)</li>
+            <li>(0.30,-25)</li>
+            <li>(0.6,-5)</li>
+            <li>(1,0)</li>
+          </points>
+        </rotationCurve>
+        <zPositionCurve>
+          <points>
+            <li>(0,0)</li>
+            <li>(0.05,2)</li>
+            <li>(0.3,1)</li>
+            <li>(1,10)</li>
+          </points>
+        </zPositionCurve>
+      </li>
+    </modExtensions>
+    <comps>
+      <li Class="DMSE.CompProperties_EffecterHotLaunch">
+        <launchBlastScale>0.5</launchBlastScale>
+        <ignitionSound>DMSE_Missile_Flight</ignitionSound>
+        <ExhaustFleck>DMS_Fleck_RocketFlame</ExhaustFleck>
+        <ExhaustCurve>
+          <points>
+            <li>(0,2)</li>
+            <li>(0.1,5)</li>
+            <li>(0.5,3)</li>
+            <li>(0.9,2)</li>
+          </points>
+        </ExhaustCurve>
+        <SmokeFleck>Smoke</SmokeFleck>
+        <SmokeCurve>
+          <points>
+            <li>(0,3)</li>
+            <li>(0.5,2)</li>
+            <li>(1,1)</li>
+          </points>
+        </SmokeCurve>
+        <launchEffectTrigger>DMS_LaunchDust_Recoilless</launchEffectTrigger>
+        <burnDurationTicks>30</burnDurationTicks>
+        <effectScale>0.35</effectScale>
+        <fxProfile>DMSE_LaunchFx_SolidBooster</fxProfile>
       </li>
     </comps>
   </ThingDef>
@@ -471,7 +555,7 @@
     <graphicData>
       <texPath>Things/Missile/Rheintochter/skyFaller</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>2</drawSize>
+      <drawSize>3.25</drawSize>
     </graphicData>
     <modExtensions>
       <li Class="DMSE.MissileFlightExtension">
@@ -531,6 +615,7 @@
           </points>
         </SmokeCurve>
         <launchEffectTrigger>DMS_LaunchDust_Recoilless</launchEffectTrigger>
+        <fxProfile>DMSE_LaunchFx_SolidBooster</fxProfile>
       </li>
     </comps>
   </ThingDef>
@@ -542,7 +627,7 @@
     <graphicData>
       <texPath>Things/Missile/Hellfire/skyFaller_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>2.5</drawSize>
+      <drawSize>2.21</drawSize>
     </graphicData>
     <modExtensions>
       <li Class="DMSE.MissileFlightExtension">
@@ -602,6 +687,7 @@
           </points>
         </SmokeCurve>
         <launchEffectTrigger>DMS_LaunchDust_Recoilless</launchEffectTrigger>
+        <fxProfile>DMSE_LaunchFx_SolidBooster</fxProfile>
       </li>
     </comps>
   </ThingDef>
@@ -613,7 +699,7 @@
     <graphicData>
       <texPath>Things/Missile/Minuteman/skyFaller_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>6</drawSize>
+      <drawSize>6.43</drawSize>
     </graphicData>
     <modExtensions>
       <li Class="DMSE.MissileFlightExtension">
@@ -648,6 +734,8 @@
             <li>(1,20)</li>
           </points>
         </zPositionCurve>
+        <handoffMaxCells>22</handoffMaxCells>
+        <maxTurnRate>1.2</maxTurnRate>
       </li>
     </modExtensions>
     <comps>
@@ -672,6 +760,7 @@
           </points>
         </SmokeCurve>
         <launchEffectTrigger>DMS_LaunchDust_Recoilless</launchEffectTrigger>
+        <fxProfile>DMSE_LaunchFx_ColdVls</fxProfile>
       </li>
     </comps>
   </ThingDef>
@@ -683,7 +772,7 @@
     <graphicData>
       <texPath>Things/Missile/Tomahawk/skyFaller_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>4</drawSize>
+      <drawSize>2.83</drawSize>
     </graphicData>
     <modExtensions>
       <li Class="DMSE.MissileFlightExtension">
@@ -743,6 +832,7 @@
           </points>
         </SmokeCurve>
         <launchEffectTrigger>DMS_LaunchDust_Recoilless</launchEffectTrigger>
+        <fxProfile>DMSE_LaunchFx_ColdVls</fxProfile>
       </li>
     </comps>
   </ThingDef>
@@ -754,7 +844,7 @@
     <graphicData>
       <texPath>Things/Weapons/DMSE_Projectile_Stinger</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>2</drawSize>
+      <drawSize>1.33</drawSize>
     </graphicData>
     <modExtensions>
       <li Class="DMSE.MissileFlightExtension">
@@ -814,6 +904,7 @@
           </points>
         </SmokeCurve>
         <launchEffectTrigger>DMS_LaunchDust_Recoilless</launchEffectTrigger>
+        <fxProfile>DMSE_LaunchFx_Manpads</fxProfile>
       </li>
     </comps>
   </ThingDef>
@@ -825,7 +916,7 @@
     <graphicData>
       <texPath>Things/Missile/AGM65/skyFaller</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>2.5</drawSize>
+      <drawSize>1.91</drawSize>
     </graphicData>
     <modExtensions>
       <li Class="DMSE.MissileFlightExtension">
@@ -885,6 +976,7 @@
           </points>
         </SmokeCurve>
         <launchEffectTrigger>DMS_LaunchDust_Recoilless</launchEffectTrigger>
+        <fxProfile>DMSE_LaunchFx_SolidBooster</fxProfile>
       </li>
     </comps>
   </ThingDef>
@@ -896,7 +988,7 @@
     <graphicData>
       <texPath>Things/Missile/Aim120/skyFaller</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>2.5</drawSize>
+      <drawSize>1.88</drawSize>
     </graphicData>
     <modExtensions>
       <li Class="DMSE.MissileFlightExtension">
@@ -956,6 +1048,7 @@
           </points>
         </SmokeCurve>
         <launchEffectTrigger>DMS_LaunchDust_Recoilless</launchEffectTrigger>
+        <fxProfile>DMSE_LaunchFx_SolidBooster</fxProfile>
       </li>
     </comps>
   </ThingDef>
@@ -967,7 +1060,7 @@
     <graphicData>
       <texPath>Things/Missile/Moskit/skyFaller</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>4</drawSize>
+      <drawSize>3.97</drawSize>
     </graphicData>
     <modExtensions>
       <li Class="DMSE.MissileFlightExtension">
@@ -1027,6 +1120,7 @@
           </points>
         </SmokeCurve>
         <launchEffectTrigger>DMS_LaunchDust_Recoilless</launchEffectTrigger>
+        <fxProfile>DMSE_LaunchFx_CruiseBooster</fxProfile>
       </li>
     </comps>
   </ThingDef>
@@ -1038,7 +1132,7 @@
     <graphicData>
       <texPath>Things/Missile/YJ20/skyFaller</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>4.5</drawSize>
+      <drawSize>4.46</drawSize>
     </graphicData>
     <modExtensions>
       <li Class="DMSE.MissileFlightExtension">
@@ -1098,6 +1192,7 @@
           </points>
         </SmokeCurve>
         <launchEffectTrigger>DMS_LaunchDust_Recoilless</launchEffectTrigger>
+        <fxProfile>DMSE_LaunchFx_CruiseBooster</fxProfile>
       </li>
     </comps>
   </ThingDef>
@@ -1107,9 +1202,9 @@
     <defName>DMSE_Launch_Tochka</defName>
     <label>tactical ballistic missile (launching)</label>
     <graphicData>
-      <texPath>Things/Missile/Minuteman/skyFaller_incoming</texPath>
+      <texPath>Things/Missile/Tochka/skyFaller_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>5</drawSize>
+      <drawSize>3.3</drawSize>
     </graphicData>
     <modExtensions>
       <li Class="DMSE.MissileFlightExtension">
@@ -1144,6 +1239,8 @@
             <li>(1,20)</li>
           </points>
         </zPositionCurve>
+        <handoffMaxCells>22</handoffMaxCells>
+        <maxTurnRate>1.2</maxTurnRate>
       </li>
     </modExtensions>
     <comps>
@@ -1168,84 +1265,9 @@
           </points>
         </SmokeCurve>
         <launchEffectTrigger>DMS_LaunchDust_Recoilless</launchEffectTrigger>
+        <fxProfile>DMSE_LaunchFx_SolidBooster</fxProfile>
       </li>
     </comps>
   </ThingDef>
-
-  <!-- Shahed-136: rail booster launch, propeller-powered cruise. -->
-  <ThingDef ParentName="DMSE_MissileLaunchProjectileBase">
-    <defName>DMSE_Launch_Shahed</defName>
-    <label>long-range loitering munition (launching)</label>
-    <graphicData>
-      <texPath>Things/Missile/Shahed/skyFaller_incoming</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>3</drawSize>
-    </graphicData>
-    <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
-        <movementType>Accelerate</movementType>
-        <reversed>true</reversed>
-        <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
-        <shadowSize>(1.5, 1.5)</shadowSize>
-        <ticksToDiscardInReverse>300</ticksToDiscardInReverse>
-        <ticksToImpactRange>0</ticksToImpactRange>
-        <anticipationSound>DropPod_Leaving</anticipationSound>
-        <anticipationSoundTicks>-1</anticipationSoundTicks>
-        <speedCurve>
-          <points>
-            <li>(0,0.3)</li>
-            <li>(0.2,0.2)</li>
-            <li>(0.5,0.5)</li>
-            <li>(1,1)</li>
-          </points>
-        </speedCurve>
-        <rotationCurve>
-          <points>
-            <li>(0,-10)</li>
-            <li>(0.30,-25)</li>
-            <li>(0.6,-5)</li>
-            <li>(1,0)</li>
-          </points>
-        </rotationCurve>
-        <zPositionCurve>
-          <points>
-            <li>(0,0)</li>
-            <li>(0.05,2)</li>
-            <li>(0.3,1)</li>
-            <li>(1,10)</li>
-          </points>
-        </zPositionCurve>
-      </li>
-    </modExtensions>
-    <comps>
-      <li Class="DMSE.CompProperties_EffecterHotLaunch">
-        <launchBlastScale>0.5</launchBlastScale>
-        <burnDurationTicks>30</burnDurationTicks>
-        <effectScale>0.35</effectScale>
-        <ignitionSound>DMSE_Missile_Flight</ignitionSound>
-        <ExhaustFleck>DMS_Fleck_RocketFlame</ExhaustFleck>
-        <ExhaustCurve>
-          <points>
-            <li>(0,2)</li>
-            <li>(0.1,5)</li>
-            <li>(0.5,3)</li>
-            <li>(0.9,2)</li>
-          </points>
-        </ExhaustCurve>
-        <SmokeFleck>Smoke</SmokeFleck>
-        <SmokeCurve>
-          <points>
-            <li>(0,3)</li>
-            <li>(0.5,2)</li>
-            <li>(1,1)</li>
-          </points>
-        </SmokeCurve>
-        <launchEffectTrigger>DMS_LaunchDust_Recoilless</launchEffectTrigger>
-      </li>
-    </comps>
-  </ThingDef>
-
-
-
 
 </Defs>

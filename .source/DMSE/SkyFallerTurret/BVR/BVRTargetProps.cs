@@ -24,6 +24,9 @@ namespace DMSE
         /// </summary>
         public float altitude = 1000f;
 
+        /// <summary>被攔截後的殘骸外觀與數量；null = 依種類取預設（導彈／空投艙）。</summary>
+        public InterceptDebrisProfileDef debrisProfile;
+
         public static readonly BVRTargetProps Default = new BVRTargetProps();
     }
 }

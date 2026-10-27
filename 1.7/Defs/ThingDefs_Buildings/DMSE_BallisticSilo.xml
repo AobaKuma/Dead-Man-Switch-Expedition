@@ -10,7 +10,7 @@
     <graphicData>
       <texPath>Things/Missile/Moskit/skyFaller</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>5</drawSize>
+      <drawSize>4.66</drawSize>
     </graphicData>
     <skyfaller>
       <movementType>Accelerate</movementType>
@@ -79,7 +79,7 @@
     <graphicData>
       <texPath>Things/Missile/Moskit/skyFaller_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>5</drawSize>
+      <drawSize>4.66</drawSize>
     </graphicData>
     <size>(1,1)</size>
     <modExtensions>

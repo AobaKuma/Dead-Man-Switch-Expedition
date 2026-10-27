@@ -146,6 +146,13 @@
   <DMSE.Missile.GodModeInstant>上帝模式：变更立即装配完成，不耗资源、不需研究。</DMSE.Missile.GodModeInstant>
   <DMSE.Missile.Settings.GodModeInstantAssembly>上帝模式：导弹即时装配</DMSE.Missile.Settings.GodModeInstantAssembly>
   <DMSE.Missile.Settings.GodModeInstantAssemblyDesc>开启上帝模式时，导弹与弹道导弹发射井的装配立即完成：不需确认、搬运或装配工作，也不消耗资源；部件不需研究即可选用。移除的部件不退还资源。</DMSE.Missile.Settings.GodModeInstantAssemblyDesc>
+  <DMSE.BVR.Settings.InterceptDebrisDamage>拦截残骸造成伤害</DMSE.BVR.Settings.InterceptDebrisDamage>
+  <DMSE.BVR.Settings.InterceptDebrisDamageDesc>被拦截的导弹与空投舱所掉落的大块残骸，落地时对该格造成轻微钝伤，屋顶可以挡下。关闭时残骸只留下扬尘、火花与碎屑。</DMSE.BVR.Settings.InterceptDebrisDamageDesc>
+  <DMSE.BVR.Settings.InterceptFxDensity>拦截特效密度</DMSE.BVR.Settings.InterceptFxDensity>
+  <DMSE.BVR.Settings.InterceptFxDensityDesc>拦截时产生的碎片、烟团与烟迹数量。大规模齐射造成卡顿时可调低；任何设定下大块残骸都仍会落地。</DMSE.BVR.Settings.InterceptFxDensityDesc>
+  <DMSE.BVR.Settings.InterceptFxDensity0>低</DMSE.BVR.Settings.InterceptFxDensity0>
+  <DMSE.BVR.Settings.InterceptFxDensity1>中</DMSE.BVR.Settings.InterceptFxDensity1>
+  <DMSE.BVR.Settings.InterceptFxDensity2>高</DMSE.BVR.Settings.InterceptFxDensity2>
   <DMSE.Missile.Stats>待装配数值（装配后生效）</DMSE.Missile.Stats>
   <DMSE.Missile.Stat.Radius>爆炸半径：{0}</DMSE.Missile.Stat.Radius>
   <DMSE.Missile.Stat.Damage>弹头：{0}（{1}）</DMSE.Missile.Stat.Damage>

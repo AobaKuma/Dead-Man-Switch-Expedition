@@ -197,8 +197,8 @@
     </descriptionHyperlinks>
     <graphicData>
       <texPath>Things/Missile/Moskit/skyFaller</texPath>
-      <drawSize>(4,4)</drawSize>
-      <drawOffset>(0,0,1.5)</drawOffset>
+      <drawSize>(3.97,3.97)</drawSize>
+      <drawOffset>(0,0,1.49)</drawOffset>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <soundInteract>Metal_Drop</soundInteract>
@@ -213,14 +213,11 @@
       <Flammability>0.5</Flammability>
       <DeteriorationRate>10.0</DeteriorationRate>
     </statBases>
-    <!-- 含預設零件：HE 彈頭（鋼 30、化學燃料 20）＋反艦導引（工業零件 5、太空零件 1）。 -->
+    <!-- 預設零件已折算在下方材料內（2026-10-27 材料分代：T1）。 -->
     <costList>
       <Chemfuel>270</Chemfuel>
-      <Steel>155</Steel>
-      <DMSE_TantastenAlloy>15</DMSE_TantastenAlloy>
-      <ComponentStamped>10</ComponentStamped>
-      <ComponentSpacer>1</ComponentSpacer>
-      <ComponentIndustrial>5</ComponentIndustrial>
+      <Tungsteel>95</Tungsteel>
+      <ComponentStamped>16</ComponentStamped>
     </costList>
     <recipeMaker>
       <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -272,8 +269,8 @@
     </descriptionHyperlinks>
     <graphicData>
       <texPath>Things/Missile/Grison/ammo</texPath>
-      <drawSize>(2.5,2.5)</drawSize>
-      <drawOffset>(0,0,1)</drawOffset>
+      <drawSize>(1.49,1.49)</drawSize>
+      <drawOffset>(0,0,0.6)</drawOffset>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <soundInteract>Metal_Drop</soundInteract>
@@ -290,10 +287,8 @@
     </statBases>
     <costList>
       <Chemfuel>100</Chemfuel>
-      <Steel>50</Steel>
-      <DMSE_TantastenAlloy>5</DMSE_TantastenAlloy>
-      <ComponentStamped>4</ComponentStamped>
-      <ComponentSpacer>1</ComponentSpacer>
+      <Tungsteel>31</Tungsteel>
+      <ComponentStamped>7</ComponentStamped>
     </costList>
     <recipeMaker>
       <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -346,8 +341,8 @@
     </descriptionHyperlinks>
     <graphicData>
       <texPath>Things/Missile/Grison/skyFaller</texPath>
-      <drawSize>(2.5,2.5)</drawSize>
-      <drawOffset>(0,0,1)</drawOffset>
+      <drawSize>(1.49,1.49)</drawSize>
+      <drawOffset>(0,0,0.6)</drawOffset>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <soundInteract>Metal_Drop</soundInteract>
@@ -363,8 +358,7 @@
     </statBases>
     <costList>
       <Chemfuel>165</Chemfuel>
-      <Steel>100</Steel>
-      <DMSE_TantastenAlloy>8</DMSE_TantastenAlloy>
+      <Tungsteel>55</Tungsteel>
       <ComponentStamped>6</ComponentStamped>
     </costList>
     <recipeMaker>

@@ -7,7 +7,7 @@
 *.user
 *.suo
 .vs/
-
+/docs
 # RimWorld 1.7 asset packs baked on Workshop upload (and their local sidecars)
 Assets.zip
 Assets.zip.*

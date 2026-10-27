@@ -96,6 +96,10 @@ namespace DMSE.BVRAcceptance
             Thing tower = SpawnBuilding(Tower, 10, 10);
             Thing wall = SpawnBuilding(ThingDefOf.Wall, 13, 10);
             Thing silo = SpawnBuilding(Silo, 28, 10);
+            // Strike launches need free strike channels (weighted channels, 2026-10-22: a ballistic round costs 2).
+            // Two phased arrays give 4, enough for the tower's V2 and the silo's; far from the backblast area.
+            SpawnBuilding(PhaseArray, 2, 30);
+            SpawnBuilding(PhaseArray, 8, 30);
             yield return WaitPowered(); yield return new WaitTicks(2);
             CellRect area = new CellRect(Pad.minX + 4, Pad.minZ + 4, 30, 14);
             Override(() => { }, () => ClearFiresAndFloor(area));
@@ -187,7 +191,8 @@ namespace DMSE.BVRAcceptance
             man.ManForATick(colonist);
             t.Check(strike.Active, "manned, the strike rail is active");
             MissileConfig v1Config = strike.BuildFiringConfig(v1);
-            t.Check(v1Config?.body == Body("DMSE_MissileBody_LegacyLoiter") && v1Config.Range == 12,
+            // 24 = the V1's range after the 2026-10-24 rebalance (ICBM benchmark 500 tiles).
+            t.Check(v1Config?.body == Body("DMSE_MissileBody_LegacyLoiter") && v1Config.Range == 24,
                 $"the V1 flies with its own airframe, not the platform fallback (range {v1Config?.Range})");
             t.Check(!sam.HasAmmo, "a V1 is not an interceptor round");
 
@@ -300,12 +305,14 @@ namespace DMSE.BVRAcceptance
             var v1 = new MissileConfig(Body("DMSE_MissileBody_LegacyLoiter"));
             t.Check(v1.PlayerChoosesTarget && !v1.HasTerminalGuidance, "the V1's built-in TV only picks the impact point");
 
+            // Ranges after the 2026-10-24 rebalance (calibrated to a 500-tile Minuteman; each body def's comment
+            // shows its fuel × specific impulse × range factor).
             (string body, int range)[] expected =
             {
-                ("DMSE_MissileBody_Loiter", 17), ("DMSE_MissileBody_LegacyLoiter", 12), ("DMSE_MissileBody_LegacyInterceptor", 10),
-                ("DMSE_MissileBody_Stinger", 21), ("DMSE_MissileBody_Maverick", 24), ("DMSE_MissileBody_Sparrow", 29),
-                ("DMSE_MissileBody_Moskit", 36), ("DMSE_MissileBody_Yj", 51), ("DMSE_MissileBody_Tochka", 31),
-                ("DMSE_MissileBody_LegacyBallistic", 22),
+                ("DMSE_MissileBody_Loiter", 32), ("DMSE_MissileBody_LegacyLoiter", 24), ("DMSE_MissileBody_LegacyInterceptor", 20),
+                ("DMSE_MissileBody_Stinger", 20), ("DMSE_MissileBody_Maverick", 32), ("DMSE_MissileBody_Sparrow", 36),
+                ("DMSE_MissileBody_Moskit", 70), ("DMSE_MissileBody_Yj", 235), ("DMSE_MissileBody_Tochka", 125),
+                ("DMSE_MissileBody_LegacyBallistic", 95),
             };
             foreach ((string body, int range) in expected)
             {
@@ -320,13 +327,28 @@ namespace DMSE.BVRAcceptance
                 && Body("DMSE_MissileBody_Tochka").researchPrerequisites.SequenceEqual(new[] { ic })
                 && Body("DMSE_MissileBody_Ballistic").researchPrerequisites.SequenceEqual(new[] { strategic })
                 && Body("DMSE_MissileBody_AdvancedBallistic").researchPrerequisites.SequenceEqual(new[] { strategic }),
-                "ballistic airframes are gated V2 → Ballistics, Tochka → IC, current / Minuteman → Strategic");
+                "airframes are gated V2 → Ballistics, Tochka → IC, current / Minuteman → Strategic");
+            // Tochka became a medium item missile (2026-10-27): crafted at IC, fired from medium platforms, medium parts.
+            MissileBodyDef tochka = Body("DMSE_MissileBody_Tochka");
+            ThingDef tochkaItem = DefDatabase<ThingDef>.GetNamedSilentFail("DMSE_Missile_Tochka");
+            t.Check(tochka.sizeClass == MissileSizeClass.Medium && tochka.customizeLocation == MissileCustomizeLocation.Item && tochkaItem != null,
+                "Tochka is a medium missile with an item form");
+            t.Check(DefDatabase<RecipeDef>.AllDefs.Any(r => r.ProducedThingDef == tochkaItem && r.researchPrerequisites != null && r.researchPrerequisites.Contains(ic)),
+                "the Tochka item is crafted after integrated circuits");
+            t.Check(new[] { "DMSE_Building_Scorer", "DMSE_Building_MediumVLS" }.All(b => ThingDef.Named(b).building.fixedStorageSettings.filter.Allows(tochkaItem)),
+                "the medium tilt launcher and the vertical launch silo accept it");
+            t.Check(Part("DMSE_Warhead_HE").compatibleBodies.Contains(tochka) && !Part("DMSE_Ballistic_Warhead_Airburst").compatibleBodies.Contains(tochka),
+                "it takes medium parts, not ballistic ones");
             t.Check(Body("DMSE_MissileBody_AdvancedBallistic").ResearchSatisfied == strategic.IsFinished,
                 "the gate follows the research state");
             t.Check(!Part("DMSE_Ballistic_Warhead_Thermonuclear").ResearchSatisfied == !strategic.IsFinished,
                 "the thermonuclear warhead now needs strategic systems");
             ResearchProjectDef antiship = ResearchProjectDef.Named("DMSE_AntishipMissiles");
-            t.Check(antiship.prerequisites.Contains(ic), "the anti-ship node follows integrated circuits");
+            // 2026-10-23: the anti-ship node follows loitering munitions; integrated circuits gate the supersonic missile's recipe instead.
+            t.Check(antiship.prerequisites.Contains(ResearchProjectDef.Named("DMSE_LoiteringMunitions")), "the anti-ship node follows loitering munitions");
+            t.Check(DefDatabase<RecipeDef>.AllDefs.Any(r => r.ProducedThingDef == ThingDef.Named("DMSE_Missile_Moskit")
+                    && r.researchPrerequisites != null && r.researchPrerequisites.Contains(antiship) && r.researchPrerequisites.Contains(ic)),
+                "the Moskit recipe needs anti-ship missiles and integrated circuits");
             t.Check(DefDatabase<RecipeDef>.AllDefs.Any(r => r.ProducedThingDef == Termite && r.researchPrerequisite == antiship),
                 "the Termite recipe moved to anti-ship missiles");
             RecipeDef yj = DefDatabase<RecipeDef>.AllDefs.FirstOrDefault(r => r.ProducedThingDef == Def("DMSE_Missile_Yj"));

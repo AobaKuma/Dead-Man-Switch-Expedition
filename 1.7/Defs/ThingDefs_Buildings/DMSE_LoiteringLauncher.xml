@@ -10,7 +10,7 @@
     <graphicData>
       <texPath>Things/Missile/Termite/missile_north</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>3</drawSize>
+      <drawSize>2.67</drawSize>
     </graphicData>
     <skyfaller>
       <movementType>Accelerate</movementType>
@@ -80,7 +80,7 @@
     <graphicData>
       <texPath>Things/Missile/Termite/missile_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>3</drawSize>
+      <drawSize>2.67</drawSize>
     </graphicData>
     <size>(1,1)</size>
     <!-- 爆炸效果由 MissileConfig 於落點動態套用，故此處不設固定 explosionRadius/explosionDamage。 -->

@@ -22,8 +22,8 @@
     </descriptionHyperlinks>
     <graphicData>
       <texPath>Things/Missile/Hellfire/ammo</texPath>
-      <drawSize>(2.5,2.5)</drawSize>
-      <drawOffset>(0,0,1)</drawOffset>
+      <drawSize>(2.21,2.21)</drawSize>
+      <drawOffset>(0,0,0.88)</drawOffset>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <soundInteract>Metal_Drop</soundInteract>
@@ -38,10 +38,10 @@
       <DeteriorationRate>10.0</DeteriorationRate>
     </statBases>
     <costList>
-      <Steel>140</Steel>
       <Chemfuel>170</Chemfuel>
-      <DMSE_TantastenAlloy>18</DMSE_TantastenAlloy>
-      <ComponentStamped>8</ComponentStamped>
+      <DMSE_TantastenAlloy>19</DMSE_TantastenAlloy>
+      <DMSE_Graphene>24</DMSE_Graphene>
+      <ComponentSpacer>2</ComponentSpacer>
     </costList>
     <recipeMaker>
       <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -93,8 +93,8 @@
     </descriptionHyperlinks>
     <graphicData>
       <texPath>Things/Missile/Tomahawk/ammo</texPath>
-      <drawSize>(3,3)</drawSize>
-      <drawOffset>(0,0,1)</drawOffset>
+      <drawSize>(2.83,2.83)</drawSize>
+      <drawOffset>(0,0,0.94)</drawOffset>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <soundInteract>Metal_Drop</soundInteract>
@@ -109,12 +109,10 @@
       <DeteriorationRate>10.0</DeteriorationRate>
     </statBases>
     <costList>
-      <Steel>215</Steel>
       <Chemfuel>330</Chemfuel>
-      <DMSE_TantastenAlloy>42</DMSE_TantastenAlloy>
-      <ComponentStamped>12</ComponentStamped>
-      <ComponentSpacer>2</ComponentSpacer>
-      <ComponentIndustrial>4</ComponentIndustrial>
+      <DMSE_TantastenAlloy>39</DMSE_TantastenAlloy>
+      <DMSE_Graphene>50</DMSE_Graphene>
+      <ComponentSpacer>6</ComponentSpacer>
     </costList>
     <recipeMaker>
       <workSpeedStat>GeneralLaborSpeed</workSpeedStat>

@@ -16,7 +16,7 @@
     </descriptionHyperlinks>
     <graphicData>
       <texPath>Things/Missile/Termite/missile_fold</texPath>
-      <drawSize>3</drawSize>
+      <drawSize>2.67</drawSize>
       <graphicClass>Graphic_Multi</graphicClass>
     </graphicData>
     <soundInteract>Metal_Drop</soundInteract>
@@ -34,8 +34,8 @@
     </statBases>
     <costList>
       <Chemfuel>90</Chemfuel>
-      <Steel>70</Steel>
-      <ComponentIndustrial>3</ComponentIndustrial>
+      <Tungsteel>17</Tungsteel>
+      <ComponentStamped>2</ComponentStamped>
     </costList>
     <recipeMaker>
       <workSpeedStat>GeneralLaborSpeed</workSpeedStat>

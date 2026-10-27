@@ -267,6 +267,21 @@ DMSE.MissileShieldUtility                        ← 高角護盾攔截（§6）
 - **尾焰**：`EffectEvaluate` 繼續依原公式增加，超過 1 後固定在 1——火焰與煙維持升空末段的強度與形狀，方向自動跟著機頭角（`ThrowExhaust` 本來就用 `LaunchRotation` 決定機尾偏移與噴射方向）。
 - **停止條件**：視覺位置離開地圖（同原 `ShouldShowEffecter`），也就是飛出邊緣的那一刻；隨即加入世界航跡。
 
+### 8.3.1 轉向時機與轉速調整（2026-10-26，使用者要求「晚一點、緩一點」）
+
+- 實測（`DrawPos_Accelerate`：位移 = tick^0.95 × 1.7 × speedCurve）：現有 def 都是 `handoffMaxCells` 先到（`ascentHandoff` 0.3 = 第 90 tick 從未生效），原 12 格 ≈ 彈道族點火後 29 tick、其餘 37 tick 就開始轉。
+- 時機：`handoffMaxCells` 預設 12 → 16（≈ 55 tick）；彈道族（模板 `DMSE_SkyFaller_BallisticMissile`：Ballistic／V2／民兵3／圓點U）由 `gen_missile_launch_defs.py` 的 `FLIGHT_OVERRIDES` 覆寫為 22 格（≈ 44 tick，加速快）。
+- 轉速：原本固定 `turnTicks` 45 的 smoothstep（150° 轉向峰值約 5°/tick）改為限速轉向 `MissileDepartureKinematics.TurnStep`：轉速在 `turnRampTicks`（15）內由 0 升到 `maxTurnRate`（預設 2°/tick，彈道族 1.2），且每 tick 不超過剩餘角度 × 0.12（最少 0.1°），不轉過頭。航向與機頭各自逼近出發方位；`cruiseSpeedFactor` 改依「已轉角度比例」（`TurnBlend`）漸入。`turnTicks` 欄位移除。
+- 轉向長度：預設 20°／90°／150° = 40／76／106 tick；彈道族 44／102／152 tick。
+- 轉彎半徑上限 `maxTurnRadius`（25 格）：巡航段沿 speedCurve 加速（巡飛族可到交接速度 5 倍），只限轉速時 180° 迴轉的半徑會超過 30–60 格，第一次實機 F5 有 3/85 從出發方位以外的邊離場（地圖中央發射：白蟻與萊茵女兒朝南發射、轉向正北；圓點U 朝西發射、轉向正北）。轉速上限因此取 max(maxTurnRate, 速度 ÷ 25 格)：低速時仍緩，高速時不會繞出半張地圖。（以上轉向長度是低速時的值。）
+- 靠近地圖邊緣（同一輪 F5，測試發射台在地圖西南角附近）：只限半徑仍有 3/85 從側邊出圖，所以再加兩條（`MissileDepartureKinematics`）：
+  - `TurnRadiusAt`：半徑上限 = 沿目前航向到地圖邊緣距離的一半（4–25 格），越靠邊轉越急；
+  - `InwardSide`：超過 150° 的迴轉往地圖中心那一側轉，不取短邊（白蟻／萊茵女兒朝南發射、轉向正北時原本往西邊繞）；
+  - 半徑限制的轉速只用 4 tick 漸增（一般轉速仍 15 tick），否則快彈在漸增期間就先飛出圖（圓點U 在離西邊 17 格處朝西交接）。
+- 實機驗收（2026-10-26）：F5 85/85、F6、F11 通過；F6 序列截圖 `docs/review/launch_turn_f6.png`（輕型彈朝東發射，約 80 tick 才明顯轉向西北）。BVRTests 551 項。
+- 存檔：巡航狀態新增 `cruiseMotion`；舊存檔沒有時從機頭角接續。
+- 驗證：BVRTests 546 項（新增：轉完、越大越久、不超速、不轉過頭、由 0 漸增、跨北取短邊、TurnBlend）；驗收 F5 改為以「機頭對準出發方位」判斷轉向結束（不再用 handoff + turnTicks）。
+
 ### 8.4 落地段：巡航 → 終端墜落
 
 - **巡航**：從邊緣點沿進入方位飛向落點上空，視覺高度 `entryAltitude`，機頭朝進入方位，影子在地面航線上。
@@ -299,6 +314,27 @@ DMSE.MissileShieldUtility                        ← 高角護盾攔截（§6）
   同樣地，落地端的地圖內飛行 tick 加進打擊時間軸的「抵達」估算（若時間軸有顯示落地時刻）。
 
 ---
+
+### 8.8 導彈貼圖尺寸（2026-10-26）
+
+使用者先要求以白蛉黑邊粗細統一尺寸，比對圖顯示黑邊仍不一致（各貼圖的黑邊粗細本來就不同），改為「依量級與現實相對尺寸」：
+- 畫面長度 = 3.9 格 × √(真實長度 ÷ 9.7 m)（白蛉 9.7 m 維持現況 3.9 格；開根號把 1.5–18 m 壓進 1.5–5.5 格），再夾在量級區間內：輕型 1.5–2.6、巡飛 2.2–3.8、中型 3.0–4.2、彈道 4.2–5.6 格。
+- drawSize = 畫面長度 ÷ 彈體在**落地貼圖**中所佔高度比例；發射 projectile 沿用落地 def 的 drawSize（產生器既有規則），因為同型號的發射貼圖（含助推段）與落地貼圖像素比例相同。
+- **2026-10-26 更正**（使用者指出）：小牛、鷹擊、萊茵女兒的落地貼圖是**沒有助推器**的飛行段，發射／物品貼圖才是含助推器的完整彈體（萊茵女兒尾端那塊是助推器與尾翼，不是發射架）。上面的參考長度對小牛（2.49 m 為彈體本身）、鷹擊（6.3 m 為無助推空射型）是對的，但萊茵女兒 6.3 m 是含助推器的 R1 全長，卻套在無助推的落地貼圖上，所以偏大約 1.46 倍（完整彈體畫面 4.6 格）。另外鷹擊的發射貼圖與落地貼圖像素比例不同（彈身 84 px 對 56 px），發射 projectile 沿用落地 drawSize 時畫成 5.5 格。完整彈體版比對圖：`docs/review/missile_sizes_full_proposal.png`。
+- 參考長度（m）：刺針 1.52、地獄火 1.63、小牛 2.49、SA-19（Grison）2.56、麻雀 3.66、戰斧 5.56、Shahed 3.5、白蟻 4.0（虛構，取小型反艦彈）、萊茵女兒 6.3、V1 8.3、鷹擊 6.3、現役巡航 7.0、白蛉 9.7、圓點U 6.4、現役彈道 12.0、V2 14.0、民兵3 18.2。
+- 實機：F4（104 項）、V4（17 種彈體截圖）通過。
+- 結果（drawSize）：刺針 1.7、地獄火 2.9、小牛 2.9、Grison 2.1、麻雀 2.4、戰斧 2.9、Shahed 2.7、白蟻 3.3、萊茵女兒 5.3、V1 4.8、鷹擊 5.7、現役巡航 3.4、白蛉 4.0、圓點U 4.3、現役彈道 4.4、V2 6.2、民兵3 5.5。比對圖 `docs/review/missile_sizes.png`。
+- 改到的 def：各彈體 incoming、四個現役模板 skyfaller／incoming（彈道井、輕型發射器、巡飛發射架、安保導彈含 Interceptor），以及重新產生的 17 個發射 projectile。未改：`DMSE_InterceptProjectile`（攔截特效用）與單兵刺針子彈（武器投射物 1.2）。
+
+### 8.8.1 定案：完整彈體、長度^0.75（2026-10-26，使用者核准「應用並修復」）
+
+- 規則：完整彈體（含助推器）的畫面長度 = max(1.2, 3.9 × (長度 ÷ 9.7 m)^0.75) 格，不再夾量級區間（區間使圓點U 比白蛉大、與現實相反）。量級靠外形、發射平台與發射特效區分。
+- 同一型號的發射、落地（無助推）、物品（ammo）貼圖像素比例相同（鷹擊兩張貼圖的彈身寬度不同，是因為助推器比彈體粗，不是比例不同——先前「鷹擊比例錯」的判斷有誤），所以一個型號的所有 def 共用同一個 drawSize。
+- 參考長度改為對應完整彈體：小牛 2.49 × 482/347 = 3.46 m、鷹擊 6.3 × 494/281 = 11.1 m（6.3 m 是無助推段），萊茵女兒 6.3 m 是含助推器全長，配完整貼圖。
+- 工具：`.source/Tools/apply_missile_sizes.py`（量貼圖、算 drawSize、寫入落地／模板／物品 def，物品 drawOffset.z 等比縮放，再重跑 gen_missile_launch_defs.py）；`--report` 輸出對齊 V1 黑邊所需的修圖量（`docs/review/missile_outline_vs_V1.md`）。
+- 結果（drawSize）：刺針 1.33、地獄火 2.21、小牛 1.91、Grison 1.49、麻雀 1.88、戰斧 2.83、Shahed 2.08、白蟻 2.67、萊茵女兒 3.25、V1 4.65、鷹擊 4.46、現役巡航 3.11、白蛉 3.97、圓點U 2.94、現役彈道 4.66、V2 6.80、民兵3 6.43。
+- 2026-10-27：使用者重繪多張貼圖的黑邊；圓點U 改用自有貼圖 `Things/Missile/Tochka/skyFaller_incoming`（不再借民兵3），以 `apply_missile_sizes.py --only Tochka` 重算為 drawSize 3.3（畫面 2.86 格），其他型號未重算。參考圖：`.source/Tools/render_missile_reference.py` → `docs/review/missile_reference.png`（含物品列與相對 V1 的黑邊比例）。實機 F4、V4 通過。
+- 臨時調整工具：`.source/DMSE/Dev/MissileSizeTuner.cs`（debug action「DMSE Missile Size」，驗收 V8），調完匯出後刪除。
 
 ## 9. 存檔相容
 
@@ -339,8 +375,8 @@ DMSE.MissileShieldUtility                        ← 高角護盾攔截（§6）
   - 同一 def 兩用：`Projectile_MissileLaunch` 帶 worldObject（對地）或 isInterceptor（攔截）結算，邏輯同舊 ScorerProjectile／InterceptProjectile。
 - **P2 完成**：離場巡航段（§8.3）。
   - `MissileDepartureKinematics`：升空公式、交接判定、巡航積分與 `SimulateDepartureTicks` 共用一套純函式，實際飛行與時間軸估算逐 tick 相同。
-  - 對地離場彈（`TryLaunchRound` 傳入世界航跡出發方位 `MissileProjectileMaker.DepartureHeading`）在 `ascentHandoff`（0.3）或畫面位移 `handoffMaxCells`（12 格）時交接，
-    航向與機頭以 smoothstep 在 `turnTicks`（45）內轉到出發方位；**巡航速度 = 交接速度 × speedCurve(進度)/speedCurve(交接進度)**，升空的加速曲線在巡航段繼續生效
+  - 對地離場彈（`TryLaunchRound` 傳入世界航跡出發方位 `MissileProjectileMaker.DepartureHeading`）在 `ascentHandoff`（0.3）或畫面位移 `handoffMaxCells`（12 格；2026-10-26 改 16／彈道 22，§8.3.1）時交接，
+    航向與機頭以 smoothstep 在 `turnTicks`（45）內轉到出發方位（2026-10-26 改為限速轉向，§8.3.1）；**巡航速度 = 交接速度 × speedCurve(進度)/speedCurve(交接進度)**，升空的加速曲線在巡航段繼續生效
     （夾在 `minCruiseSpeed`／`maxCruiseSpeed`）；畫面位置離開地圖即加入世界航跡。跨圖層（無水平方位）與攔截彈照舊跑完升空動畫。
   - 尾焰進度在交接後固定（`IMissileFlight.EffectEvaluate`），火焰維持交接時的強度直到出圖；影子留在發射點並照原公式淡出。
   - 波次打擊時間軸改用 `DepartureTicksFor(config, targetTile)`（模擬結果，有快取）。

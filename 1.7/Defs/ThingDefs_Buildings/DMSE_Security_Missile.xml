@@ -48,6 +48,7 @@
                         <li>DMSE_Missile_Moskit</li>
                         <li>DMSE_Missile_AdvancedCruise</li>
                         <li>DMSE_Missile_Yj</li>
+                        <li>DMSE_Missile_Tochka</li>
                     </thingDefs>
                 </filter>
             </fixedStorageSettings>
@@ -58,6 +59,7 @@
                         <li>DMSE_Missile_Moskit</li>
                         <li>DMSE_Missile_AdvancedCruise</li>
                         <li>DMSE_Missile_Yj</li>
+                        <li>DMSE_Missile_Tochka</li>
                     </thingDefs>
                 </filter>
             </defaultStorageSettings>
@@ -119,7 +121,7 @@
         <graphicData>
             <texPath>Things/Missile/Moskit/skyFaller</texPath>
             <graphicClass>Graphic_Single</graphicClass>
-            <drawSize>4</drawSize>
+            <drawSize>3.11</drawSize>
         </graphicData>
         <thingClass>DMSE.ScorerProjectile</thingClass>
         <skyfaller>
@@ -223,7 +225,7 @@
         <graphicData>
             <texPath>Things/Missile/Moskit/skyFaller_incoming</texPath>
             <graphicClass>Graphic_Single</graphicClass>
-            <drawSize>4</drawSize>
+            <drawSize>3.11</drawSize>
         </graphicData>
         <size>(1,1)</size>
         <!-- 爆炸效果改由導彈裝配設定（MissileConfig）於落點動態套用，故此處不設固定 explosionRadius/explosionDamage。 -->
@@ -254,7 +256,7 @@
         <graphicData>
             <texPath>Things/Missile/Grison/skyFaller</texPath>
             <graphicClass>Graphic_Single</graphicClass>
-            <drawSize>2.5</drawSize>
+            <drawSize>1.49</drawSize>
         </graphicData>
         <!-- 與巡航導彈相同的發射軌跡 -->
         <skyfaller>

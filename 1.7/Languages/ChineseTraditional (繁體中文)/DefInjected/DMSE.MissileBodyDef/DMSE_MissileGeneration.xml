@@ -30,5 +30,5 @@
   <DMSE_MissileBody_Yj.label>高超音速反艦導彈彈體</DMSE_MissileBody_Yj.label>
   <DMSE_MissileBody_Yj.description>一款固體火箭助推、衝壓引擎巡航的高超音速彈體，雷達截面小、終端彈道極低，留給防禦方的反應時間只有幾十秒。四個裝配槽：彈頭、導引、推進與酬載；出廠時裝有反艦雷達導引頭。</DMSE_MissileBody_Yj.description>
   <DMSE_MissileBody_Tochka.label>戰術彈道導彈彈體</DMSE_MissileBody_Tochka.label>
-  <DMSE_MissileBody_Tochka.description>一款固體燃料的戰術彈道彈體，射程足以跨過整個戰區、彈頭種類齊全，比第一代火箭更準、準備也快得多，但遠不及戰略系統。直接在發射塔或發射井上裝配，彈體本身不會以物品形式存在。</DMSE_MissileBody_Tochka.description>
+  <DMSE_MissileBody_Tochka.description>一款固體燃料的戰術彈道彈體，射程足以跨過整個戰區，比第一代火箭更準、準備也快得多，但遠不及戰略系統。四個裝配槽：彈頭、導引、推進與酬載；出廠時配備慣性導引。</DMSE_MissileBody_Tochka.description>
 </LanguageData>

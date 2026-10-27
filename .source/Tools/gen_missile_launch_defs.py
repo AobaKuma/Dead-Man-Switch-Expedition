@@ -42,8 +42,35 @@ SPECS = [
     ("Sparrow",           "DMSE_SkyFaller_Interceptor",      "Things/Missile/Aim120/skyFaller",             ("hot", 1.0)),
     ("Moskit",            "DMSE_SkyFaller_CruiseMissile",    "Things/Missile/Moskit/skyFaller",             ("hot", 1.0)),   # booster
     ("Yj",                "DMSE_SkyFaller_CruiseMissile",    "Things/Missile/YJ20/skyFaller",             ("hot", 1.1)),
-    ("Tochka",            "DMSE_SkyFaller_BallisticMissile", "Things/Missile/Minuteman/skyFaller_incoming", ("hot", 1.1)),   # off a launcher vehicle
+    ("Tochka",            "DMSE_SkyFaller_BallisticMissile", "Things/Missile/Tochka/skyFaller_incoming",    ("hot", 1.1)),   # off a launcher vehicle
 ]
+
+# Launch FX profile per body (docs/導彈發射特效_重製計畫.md §5, approved 2026-10-26): written as <fxProfile> into the launch comp.
+FX_PROFILES = {
+    "Ballistic": "ColdVls",
+    "Light": "SolidBooster",
+    "Loiter": "Pulsejet",
+    "Cruise": "CruiseBooster",
+    "LegacyBallistic": "LiquidBallistic",
+    "LegacyLoiter": "Pulsejet",
+    "Shahed": "SolidBooster",
+    "LegacyInterceptor": "SolidBooster",
+    "AdvancedLight": "SolidBooster",
+    "AdvancedBallistic": "ColdVls",
+    "AdvancedCruise": "ColdVls",
+    "Stinger": "Manpads",
+    "Maverick": "SolidBooster",
+    "Sparrow": "SolidBooster",
+    "Moskit": "CruiseBooster",
+    "Yj": "CruiseBooster",
+    "Tochka": "SolidBooster",
+}
+
+# Departure turn per flight family (2026-10-26: turn later and gentler). Code defaults: handoffMaxCells 16, maxTurnRate 2 °/tick.
+# Ballistic bodies accelerate much harder, so they climb further (22 cells ≈ 44 ticks after ignition) and turn slower.
+FLIGHT_OVERRIDES = {
+    "DMSE_SkyFaller_BallisticMissile": {"handoffMaxCells": "22", "maxTurnRate": "1.2"},
+}
 
 LAUNCH_EFFECT_OVERRIDES = {
     "Shahed": {"burnDurationTicks": "30", "effectScale": "0.35"},
@@ -246,10 +273,13 @@ def main():
         name = "DMSE_Launch_" + suffix
         labels[name] = incoming_name
         flight = child(template, "skyfaller")
+        flight = flight.rstrip() + "".join("\n<%s>%s</%s>" % (k, v, k) for k, v in FLIGHT_OVERRIDES.get(template_name, {}).items()) + "\n"
         comp = comp_xml(template, effect)
         if comp:
             extra = "".join("<%s>%s</%s>\n" % (key, value, key)
                             for key, value in LAUNCH_EFFECT_OVERRIDES.get(suffix, {}).items())
+            if suffix in FX_PROFILES:
+                extra += "<fxProfile>DMSE_LaunchFx_%s</fxProfile>\n" % FX_PROFILES[suffix]
             comp = comp.removesuffix("</li>") + extra + "</li>"
         note = ("copy of %s" % template_name) if tex is None else ("%s flight, %s" % (template_name, "%s launch %s" % effect if effect else "template launch"))
         parts.append("  <!-- %s: %s -->" % (body_name, note))

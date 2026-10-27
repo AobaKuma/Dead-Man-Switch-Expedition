@@ -43,10 +43,8 @@
     </statBases>
     <size>(3,3)</size>
     <costList>
-      <Steel>100</Steel>
-      <DMSE_TantastenAlloy>40</DMSE_TantastenAlloy>
-      <ComponentIndustrial>10</ComponentIndustrial>
-      <ComponentSpacer>4</ComponentSpacer>
+      <Steel>730</Steel>
+      <ComponentIndustrial>35</ComponentIndustrial>
     </costList>
     <building>
       <destroySound>BuildingDestroyed_Metal_Small</destroySound>

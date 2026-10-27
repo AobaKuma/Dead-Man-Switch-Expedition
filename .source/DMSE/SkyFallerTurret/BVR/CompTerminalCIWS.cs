@@ -154,11 +154,14 @@ namespace DMSE
             {
                 if (Rand.Chance(Props.interceptChance))
                 {
-                    // 地圖外攔截光效與音效（末端）。
-                    MapComponent_InterceptEffects.Trigger(parent.Map, target.position, terminal: true, Props.interceptSound);
+                    // 攔截表現（末端）：爆心在本輪最後一發的掃射點上空，與曳光彈一致；剛進入窗口時目標還在圖外，
+                    // 改為入場邊緣外的虛擬點（不畫爆炸，殘骸淡入，見 InterceptEventData.remote）。須在 SpawnDebris / Discard 之前擷取。
+                    IntVec3 debrisCell = MapComponent_InterceptEffects.Trigger(parent.Map,
+                        InterceptEventData.From(target, parent.Map, terminal: true, lastAim, approach, Props.interceptSound));
                     if (Rand.Chance(Props.debrisChance))
                     {
-                        target.SpawnDebris(parent.Map);
+                        // 屍體空投落在艙體殘骸的預測落點附近，而不是原本的落點。
+                        target.SpawnDebris(parent.Map, debrisCell);
                     }
                     else
                     {
@@ -196,16 +199,7 @@ namespace DMSE
         public IntVec3 CalculateAimCell(BVRTarget target, IntVec3 origin, IntVec3 mapSize, float approach, int shotIndex)
         {
             Vector3 landing = target.position.ToVector3Shifted();
-            Thing payload = target.Payload;
-            float heading;
-            if (payload is Projectile_MissileIncoming incoming && incoming.HasEntryHeading)
-                heading = incoming.EntryHeading;
-            else if (payload is Projectile_MissileBase missile)
-                heading = missile.angle;
-            else if (payload is Skyfaller skyfaller)
-                heading = skyfaller.angle;
-            else
-                heading = MissileMapEntryUtility.HeadingOf(landing - origin.ToVector3Shifted());
+            float heading = InterceptGeometry.IncomingHeading(target.Payload, landing, origin.ToVector3Shifted(), out _);
 
             Vector3 direction = MissileMapEntryUtility.HeadingVector(heading);
             Vector3 edge = MissileMapEntryUtility.EdgePoint(mapSize, landing, heading);

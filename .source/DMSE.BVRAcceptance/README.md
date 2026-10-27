@@ -37,7 +37,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .source/DMSE.BVRAcceptance/r
 | M1–M2 | Device registration, Active (power, switch, manning), channel capacity |
 | M3 | Drop pod capture, warning window formula, landing without interception |
 | M4 | Fire-control lock, SAM consumes a real missile and reloads, midcourse kill (no debris) |
-| M5 | CIWS burst in the terminal window, barrel wear, multi-pawn pod debris |
+| M5 | CIWS burst in the terminal window, barrel wear, multi-pawn pod debris landing next to the predicted pod-debris cell |
 | M6 | Two terminal waves: CIWS starts on the one landing first |
 | M7 | No radar: pod lands normally |
 | M8 | Map waves, world tracks and artillery share one channel ledger |
@@ -78,6 +78,22 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .source/DMSE.BVRAcceptance/r
 | K14 | Wave strike P4: a decoy payload doubles the radar size; with one channel a threat-assessing base locks the decoy first, a soonest-first base the plain missile |
 | K15 | Wave strike P4: an unloaded NPC missile base fires a three-missile salvo at one colony |
 | G1 | God-mode instant assembly setting: off (or outside god mode) leaves refits pending; on, rack missiles and a silo are assembled with no confirmation, hauling or resources (removed parts refund nothing), a reserved missile waits until released, and the silo reloads right after firing |
+| I1 | Intercept airburst FX (docs/攔截殘骸特效_實作與技術美術計畫.md): terminal/midcourse/drop pod at several headings, screenshots at 3 and 45 ticks; the drawn burst stays inside the map margin |
+| I2 | Fleck render A/B for the art review: intercept smoke via own fleck system vs vanilla system vs vanilla dust puff |
+| I3 | Intercept major debris chunks: spawn with a hulk, flight state survives save/load, all land or are culled within the lifetime, damage only with the setting (roofs stop it), trail screenshots |
+| I4 | Intercept drop-pod debris profile: no fireball, pod chunk/fragment counts and tint, the hulk draws the pod texture; missiles keep the missile profile |
+| I5 | Intercept FX draw above fog of war: own materials sit between the fog and map-edge render queues, vanilla materials untouched, burst-over-fog screenshots |
+| I6 | Intercept FX budget: density setting scales fragment counts; a 40-burst salvo stays under the live chunk/fragment caps (frame time logged) |
+| I7 | Smoke instancing A/B: the same seeded 40-burst salvo in one session with smoke/trail/fireball instancing on, off, on; frame times logged |
+| I8 | Remote terminal intercepts: approach-0 bursts from N/E/S/W are virtual points beyond the entry edge with no airburst; every chunk reaches the screen before leaving, fragments fade in from the edge band; edge screenshots at 30/60/90 ticks |
+| V0 | Launch FX L0 (docs/導彈發射特效_重製計畫.md): 3000 smoke quads drawn as Transparent, Transparent instanced and Mote instanced; screenshots show whether per-instance colour survives, CPU submit time logged |
+| V1 | Launch FX L2: the plume emitter registers, reaches full thrust and is drawn; old vs new solid-booster launch screenshots at the same ticks |
+| V2 | Launch FX L3: a cold vertical launch leaves a continuous smoke column (max gap / puff size < 0.8) that still hangs in the air 4 s after the missile left |
+| V3 | Launch FX L4: hot ground cloud at ignition, cold ejection puff before ignition and air ignition after the delay, booster separation drops debris and the cruise missile drops to its sustainer |
+| V4 | Launch FX L5: every DMSE_Launch_* def carries a launch FX profile; one screenshot per body at the same tick |
+| V5 | Launch FX L6: a 12-missile ripple (30 ticks apart) at medium and high density stays under the smoke cap; canvas draw CPU logged |
+| V6 | Lighting diagnostic: smoke tinted 100/60/35 % on Mote (instanced) vs Transparent, sky colour logged (dark tints darken on Mote; Transparent at the default queue is lit by the overlay) |
+| V7 | Smoke and debris follow ambient light (FxLighting): midnight darker than noon, brighter next to a torch lamp; launch and intercept screenshots at noon and midnight (jumps the clock with the debug tick setter) |
 | T1 | Three-generation (docs/三代裝備體系_實作計畫.md §14-2): the launch tower starts with V2; its backblast burns and stuns an animal two cells away and starts fires, but leaves the tower and a wall unharmed; the strategic silo hurts nobody |
 | T2 | Rotary launch rail: Loitering + Light storage and taxonomy; unmanned it neither strikes nor intercepts; V1 and Termite fly their own airframes (MissileItemExtension); the SAM never takes them; a Rheintochter arms only the SAM (hit factor 0.6); the launch rail splits roles the same way |
 | T3 | The SAM skips a strike-only Tomahawk in a tilt container and fires the SA-19 next to it |

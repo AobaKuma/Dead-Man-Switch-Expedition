@@ -24,7 +24,7 @@
     <graphicData>
       <texPath>Things/Missile/V1/ammo</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(2.5,2.5)</drawSize>
+      <drawSize>(4.65,4.65)</drawSize>
     </graphicData>
     <soundInteract>Metal_Drop</soundInteract>
     <soundDrop>Standard_Drop</soundDrop>
@@ -39,8 +39,8 @@
       <DeteriorationRate>10.0</DeteriorationRate>
     </statBases>
     <costList>
-      <Steel>70</Steel>
       <Chemfuel>90</Chemfuel>
+      <Steel>70</Steel>
       <ComponentIndustrial>1</ComponentIndustrial>
     </costList>
     <recipeMaker>
@@ -88,7 +88,7 @@
     <graphicData>
       <texPath>Things/Missile/Rheintochter/skyFaller</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(2.5,2.5)</drawSize>
+      <drawSize>(3.25,3.25)</drawSize>
     </graphicData>
     <soundInteract>Metal_Drop</soundInteract>
     <soundDrop>Standard_Drop</soundDrop>
@@ -103,8 +103,8 @@
       <DeteriorationRate>10.0</DeteriorationRate>
     </statBases>
     <costList>
-      <Steel>40</Steel>
       <Chemfuel>50</Chemfuel>
+      <Steel>40</Steel>
       <ComponentIndustrial>1</ComponentIndustrial>
     </costList>
     <recipeMaker>
@@ -156,7 +156,7 @@
     <graphicData>
       <texPath>Things/Weapons/DMSE_Projectile_Stinger</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(1.6,1.6)</drawSize>
+      <drawSize>(1.33,1.33)</drawSize>
     </graphicData>
     <soundInteract>Metal_Drop</soundInteract>
     <soundDrop>Standard_Drop</soundDrop>
@@ -170,9 +170,9 @@
       <DeteriorationRate>10.0</DeteriorationRate>
     </statBases>
     <costList>
-      <Steel>30</Steel>
       <Chemfuel>30</Chemfuel>
-      <ComponentIndustrial>3</ComponentIndustrial>
+      <Tungsteel>7</Tungsteel>
+      <ComponentStamped>2</ComponentStamped>
     </costList>
     <recipeMaker>
       <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -226,8 +226,8 @@
     <graphicData>
       <texPath>Things/Missile/AGM65/ammo</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(2.5,2.5)</drawSize>
-      <drawOffset>(0,0,1)</drawOffset>
+      <drawSize>(1.91,1.91)</drawSize>
+      <drawOffset>(0,0,0.76)</drawOffset>
     </graphicData>
     <soundInteract>Metal_Drop</soundInteract>
     <soundDrop>Standard_Drop</soundDrop>
@@ -241,10 +241,9 @@
       <DeteriorationRate>10.0</DeteriorationRate>
     </statBases>
     <costList>
-      <Steel>120</Steel>
       <Chemfuel>140</Chemfuel>
-      <DMSE_TantastenAlloy>6</DMSE_TantastenAlloy>
-      <ComponentIndustrial>4</ComponentIndustrial>
+      <Tungsteel>50</Tungsteel>
+      <ComponentStamped>2</ComponentStamped>
     </costList>
     <recipeMaker>
       <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -296,8 +295,8 @@
     <graphicData>
       <texPath>Things/Missile/Aim120/ammo</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(2.5,2.5)</drawSize>
-      <drawOffset>(0,0,1)</drawOffset>
+      <drawSize>(1.88,1.88)</drawSize>
+      <drawOffset>(0,0,0.75)</drawOffset>
     </graphicData>
     <soundInteract>Metal_Drop</soundInteract>
     <soundDrop>Standard_Drop</soundDrop>
@@ -311,11 +310,10 @@
       <DeteriorationRate>10.0</DeteriorationRate>
     </statBases>
     <costList>
-      <Steel>120</Steel>
       <Chemfuel>150</Chemfuel>
-      <DMSE_TantastenAlloy>12</DMSE_TantastenAlloy>
-      <ComponentIndustrial>4</ComponentIndustrial>
-      <ComponentSpacer>1</ComponentSpacer>
+      <DMSE_TantastenAlloy>14</DMSE_TantastenAlloy>
+      <DMSE_Graphene>18</DMSE_Graphene>
+      <ComponentSpacer>2</ComponentSpacer>
     </costList>
     <recipeMaker>
       <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -367,8 +365,8 @@
     <graphicData>
       <texPath>Things/Missile/YJ20/skyFaller</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(4,4)</drawSize>
-      <drawOffset>(0,0,1.5)</drawOffset>
+      <drawSize>(4.46,4.46)</drawSize>
+      <drawOffset>(0,0,1.67)</drawOffset>
     </graphicData>
     <soundInteract>Metal_Drop</soundInteract>
     <soundDrop>Standard_Drop</soundDrop>
@@ -382,12 +380,10 @@
       <DeteriorationRate>10.0</DeteriorationRate>
     </statBases>
     <costList>
-      <Steel>90</Steel>
       <Chemfuel>270</Chemfuel>
-      <DMSE_TantastenAlloy>80</DMSE_TantastenAlloy>
-      <DMSE_Graphene>35</DMSE_Graphene>
-      <ComponentStamped>10</ComponentStamped>
-      <ComponentIndustrial>5</ComponentIndustrial>
+      <DMSE_TantastenAlloy>70</DMSE_TantastenAlloy>
+      <DMSE_Graphene>90</DMSE_Graphene>
+      <ComponentSpacer>4</ComponentSpacer>
     </costList>
     <recipeMaker>
       <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -412,6 +408,78 @@
       <li Class="DMSE.CompProperties_Renameable" />
       <li Class="DMSE.CompProperties_MissileConfig">
         <defaultBody>DMSE_MissileBody_Yj</defaultBody>
+      </li>
+      <li Class="DMSE.CompProperties_DurabilityDecay">
+        <hitPointsPerDay>5</hitPointsPerDay>
+        <destroyWhenDepleted>true</destroyWhenDepleted>
+        <shelterBuildings>
+          <li>DMSE_CruiseMissileRack</li>
+          <li>DMSE_MissileRack</li>
+          <li>DMSE_Building_Scorer</li>
+          <li>DMSE_Building_MediumVLS</li>
+        </shelterBuildings>
+      </li>
+    </comps>
+    <inspectorTabs>
+      <li>DMSE.ITab_MissileAssembly</li>
+    </inspectorTabs>
+  </ThingDef>
+
+  <!-- ==================== 戰術彈道導彈「圓點U」（2026-10-27 由彈道階改為中型物品）====================
+       含預設零件：HE 彈頭（鋼 30、化學燃料 20）＋慣性導引＋標準推進＋無酬載（後三者無材料）。
+       研究門檻同改前的彈體門檻：積體電路。 -->
+  <ThingDef ParentName="DMSE_ResourceBase">
+    <defName>DMSE_Missile_Tochka</defName>
+    <label>tactical ballistic missile</label>
+    <description>A solid-fuelled tactical ballistic missile fired from a tilted launcher or a vertical launch cell, climbing high before coming down steep and fast on a target across the theatre; accurate enough for a depot or a command post and able to take any medium warhead, it costs less than an anti-ship missile but gives its launch site away with the fire and smoke it leaves behind.</description>
+    <descriptionHyperlinks>
+      <ThingDef>DMSE_Building_Scorer</ThingDef>
+      <ThingDef>DMSE_Building_MediumVLS</ThingDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Things/Missile/Tochka/skyFaller_incoming</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(3.3,3.3)</drawSize>
+      <drawOffset>(0,0,1.25)</drawOffset>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>1</stackLimit>
+    <tickerType>Rare</tickerType>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <MarketValue>2800</MarketValue>
+      <Mass>900</Mass>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>10.0</DeteriorationRate>
+    </statBases>
+    <costList>
+      <Chemfuel>300</Chemfuel>
+      <Tungsteel>70</Tungsteel>
+      <ComponentStamped>10</ComponentStamped>
+    </costList>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <effectWorking>Smith</effectWorking>
+      <soundWorking>Recipe_Smith</soundWorking>
+      <recipeUsers Inherit="False">
+        <li>DMS_TableMachinePrinter</li>
+      </recipeUsers>
+      <researchPrerequisites>
+        <li>DMSE_IntegratedCircuits</li>
+      </researchPrerequisites>
+      <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
+    </recipeMaker>
+    <modExtensions>
+      <li Class="DMSE.MissileRoleExtension">
+        <role>Strike</role>
+      </li>
+    </modExtensions>
+    <comps>
+      <li Class="DMSE.CompProperties_Renameable" />
+      <li Class="DMSE.CompProperties_MissileConfig">
+        <defaultBody>DMSE_MissileBody_Tochka</defaultBody>
       </li>
       <li Class="DMSE.CompProperties_DurabilityDecay">
         <hitPointsPerDay>5</hitPointsPerDay>

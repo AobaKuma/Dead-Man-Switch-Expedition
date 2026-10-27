@@ -25,6 +25,16 @@ namespace DMSE
                 "DMSE.Strike.Settings.WaveReadyAlertDesc".Translate());
             listing.CheckboxLabeled("DMSE.Missile.Settings.GodModeInstantAssembly".Translate(), ref Settings.godModeInstantAssembly,
                 "DMSE.Missile.Settings.GodModeInstantAssemblyDesc".Translate());
+            listing.CheckboxLabeled("DMSE.BVR.Settings.InterceptDebrisDamage".Translate(), ref Settings.interceptDebrisDamage,
+                "DMSE.BVR.Settings.InterceptDebrisDamageDesc".Translate());
+            listing.Label("DMSE.BVR.Settings.InterceptFxDensity".Translate(), tooltip: "DMSE.BVR.Settings.InterceptFxDensityDesc".Translate());
+            for (int level = 0; level <= 2; level++)
+            {
+                if (listing.RadioButton(("DMSE.BVR.Settings.InterceptFxDensity" + level).Translate(), Settings.interceptFxDensity == level, 12f))
+                {
+                    Settings.interceptFxDensity = level;
+                }
+            }
             listing.End();
         }
 

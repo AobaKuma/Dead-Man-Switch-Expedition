@@ -18,4 +18,8 @@
   <DMSE_Missile_Sparrow.description>一款半主动雷达导引的中程防空导弹，弹体细长、翼面小巧，能在剧烈机动中持续接收母雷达的照射信号，比刺针飞得更快、更远、更准，代价是需要一具持续照射目标的火控雷达，因此它从来不是一个人的武器。</DMSE_Missile_Sparrow.description>
   <DMSE_Missile_Yj.label>高超音速反舰导弹</DMSE_Missile_Yj.label>
   <DMSE_Missile_Yj.description>一款以固体火箭助推、冲压引擎巡航的高超音速反舰导弹，终端速度超过五马赫并具备有限的机动变轨能力，以极低的弹道贴海飞行、留给防御方的反应时间只有几十秒，造价与维护费用同样惊人，通常只留给最值得的目标。</DMSE_Missile_Yj.description>
+
+  <!-- 戰術彈道導彈「圓點U」（2026-10-27 起為中型物品） -->
+  <DMSE_Missile_Tochka.label>战术弹道导弹</DMSE_Missile_Tochka.label>
+  <DMSE_Missile_Tochka.description>一款固体燃料的战术弹道导弹，可从倾斜发射架或垂直发射单元发射，先爬到高空、再以陡峭高速的弹道砸向战区另一端的目标；精度足以命中仓库或指挥所，也能换装各种中型弹头，价格比反舰导弹便宜，但发射时留下的火光与烟柱会把阵地位置出卖给对方。</DMSE_Missile_Tochka.description>
 </LanguageData>

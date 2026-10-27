@@ -10,7 +10,7 @@
     <graphicData>
       <texPath>Things/Missile/Grison/skyFaller</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>2.5</drawSize>
+      <drawSize>1.49</drawSize>
     </graphicData>
     <skyfaller>
       <movementType>Accelerate</movementType>
@@ -80,7 +80,7 @@
     <graphicData>
       <texPath>Things/Missile/Grison/skyFaller</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>2.5</drawSize>
+      <drawSize>1.49</drawSize>
     </graphicData>
     <size>(1,1)</size>
     <!-- BVR 特性：輕型導彈比巡航快，但比彈道慢；隱身適中。 -->

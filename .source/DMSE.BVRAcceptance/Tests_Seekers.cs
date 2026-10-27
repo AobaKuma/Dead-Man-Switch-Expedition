@@ -259,6 +259,10 @@ namespace DMSE.BVRAcceptance
             tests.InsertRange(tests.FindIndex(x => x.id == "L1"), Tests_Generations.Tests());
             // Skyfaller → Projectile migration parity (docs/Missile_Skyfaller轉Projectile_計畫.md §8.6).
             tests.InsertRange(tests.FindIndex(x => x.id == "L1"), Tests_MissileFlight.Tests());
+            // Intercept debris FX screenshots (docs/攔截殘骸特效_實作與技術美術計畫.md).
+            tests.InsertRange(tests.FindIndex(x => x.id == "L1"), Tests_InterceptFx.Tests());
+            // Missile launch FX remake (docs/導彈發射特效_重製計畫.md).
+            tests.InsertRange(tests.FindIndex(x => x.id == "L1"), Tests_LaunchFx.Tests());
             tests.Add(Tests_MissileFlight.OldSaveTest()); // reloads the game: last
             return tests;
         }
