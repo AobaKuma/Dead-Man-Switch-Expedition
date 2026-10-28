@@ -2,8 +2,8 @@
 <LanguageData>
 
   <DMSE_MissileBody_Loiter.label>反舰巡飞弹</DMSE_MissileBody_Loiter.label>
-  <DMSE_MissileBody_Loiter.description>一款折叠翼的反舰巡飞弹，以小型涡轮喷气引擎贴海飞行，在最后阶段用自己的雷达导引头寻找舰影。速度慢且容易被侦测，但会自行选定落点、持续追击移动目标，并能跨图层打击。</DMSE_MissileBody_Loiter.description>
+  <DMSE_MissileBody_Loiter.description>一种折叠翼反舰巡飞弹，以小型涡轮喷气发动机推进。速度慢、容易被发现，但末段会由弹上雷达自行选定落点，并持续追击移动中的舰船。\n\n能打击其他地图层的目标。</DMSE_MissileBody_Loiter.description>
   <DMSE_MissileBody_Light.label>轻型导弹弹体</DMSE_MissileBody_Light.label>
-  <DMSE_MissileBody_Light.description>一种紧凑的单级导弹弹体，具备弹头、导引与酬载三个装配槽。比巡飞弹更快、射程更远，但比完整的巡弋导弹更轻、更便宜。</DMSE_MissileBody_Light.description>
+  <DMSE_MissileBody_Light.description>一种小型单节导弹弹体。飞得比巡飞弹快、也更远，但载重不如巡航导弹。\n\n可装配弹头、制导与载荷。</DMSE_MissileBody_Light.description>
 
 </LanguageData>

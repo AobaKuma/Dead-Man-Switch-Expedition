@@ -125,7 +125,7 @@
   <ThingDef ParentName="DMSE_TiltLauncherBase">
     <defName>DMSE_Building_LightMissileLauncher</defName>
     <label>tilt-launch container</label>
-    <description>A tilt-launch box holding four light missiles whose lid doubles as the launch rail, loading and firing automatically at the cost of hydraulics and power while four cells share one box to give decent salvo weight in a small footprint.\n\nStrike missiles are launched at targets beyond the local map; surface-to-air and dual-role missiles are also fired by the fire-control network as interceptors.</description>
+    <description>An angled launch box that holds four light missiles. It loads and fires on its own, giving a solid salvo from a small footprint.\n\nRequires power. Strike missiles are launched at targets beyond the map. Surface-to-air and dual-role missiles are also fired by the fire-control network as interceptors.</description>
     <thingClass>DMSE.Building_MissileRack</thingClass>
     <graphicData>
       <texPath>Things/Building/MissileLauncher4X/building</texPath>
@@ -231,7 +231,7 @@
   <ThingDef ParentName="DMSE_VerticalLauncherBase">
     <defName>DMSE_Building_LightMissileVLS</defName>
     <label>light vertical launch cell</label>
-    <description>A 1x1 vertical launcher with four cells flush with the ground and sized only for light missiles, compact enough to ring a base's perimeter at the cost of loading each cell separately, with every opening hatch telling the enemy that something is here.\n\nCannot be installed on gravship decks.</description>
+    <description>A ground-level vertical launcher with four cells for light missiles. It fits on a single tile, so it is easy to place along a perimeter, but each cell must be loaded separately.\n\nCannot be built on a gravship.</description>
     <thingClass>DMSE.Building_MissileRack</thingClass>
     <uiIconPath>Things/Building/MissileSilo_Small/icon</uiIconPath>
     <graphicData>

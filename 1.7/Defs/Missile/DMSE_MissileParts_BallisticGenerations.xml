@@ -19,7 +19,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvBallistic_Warhead_LowYield</defName>
     <label>low-yield warhead</label>
-    <description>A reduced-yield strategic warhead of the W78/W87 class scaled down for tactical use. Smaller blast and less damage than the full thermonuclear package, but far cheaper and safer to keep on alert.</description>
+    <description>A smaller strategic warhead scaled down for tactical use. It does less damage than a full thermonuclear warhead, but it is much cheaper.</description>
     <category>Warhead</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedBallistic</li>
@@ -41,7 +41,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvBallistic_Guidance_Stellar</defName>
     <label>stellar-inertial guidance</label>
-    <description>A stellar-updated inertial platform in the NS-50 tradition: star trackers trim the drift of the gyros during the coast, cutting dispersion to almost nothing. It is still a ballistic path with no terminal seeker, so a target that moves is still missed. Aim points follow a circular normal distribution around the target map center; it does not lock buildings or units.</description>
+    <description>Inertial guidance corrected by star sightings during flight, cutting dispersion to almost nothing. It has no terminal seeker, so a moving target is still missed. Impacts scatter around the center of the target map. It does not lock onto buildings or creatures.</description>
     <category>Guidance</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedBallistic</li>
@@ -61,7 +61,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvBallistic_Payload_Penaids</defName>
     <label>penetration aids</label>
-    <description>Chaff, radar decoys and a low-observable shroud released with the re-entry vehicle. The missile shows up as a much smaller target on the way in, so enemy radars pick it up later and have less time to engage it.</description>
+    <description>Chaff, radar decoys and a stealth shroud released with the warhead. The missile looks much smaller on the way in, so enemy radars spot it later and have less time to respond.</description>
     <category>Payload</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedBallistic</li>
@@ -82,7 +82,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvBallistic_Payload_MIRV</defName>
     <label>multiple re-entry vehicles</label>
-    <description>A bus of several independent re-entry vehicles released before the terminal phase. This implementation keeps one impact point and spreads the sub-charges around it; a true multiple-target bus would need a different impact model.</description>
+    <description>Several separate warheads released before the final dive. They spread out and land around a single impact point.</description>
     <category>Payload</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedBallistic</li>
@@ -107,7 +107,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_LegacyBallistic_Warhead_Amatol</defName>
     <label>Amatol warhead</label>
-    <description>Eight hundred and fifty kilograms of Amatol, a Second World War blast filler: simple, stable and cheap enough to build out of industrial stock. No special effects, just a large hole.</description>
+    <description>A large, simple warhead of amatol explosive, stable and cheap enough to make from industrial materials. It leaves a big hole and nothing more.</description>
     <category>Warhead</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_LegacyBallistic</li>
@@ -128,7 +128,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_LegacyBallistic_Warhead_Trialen</defName>
     <label>Trialen warhead</label>
-    <description>The later Trialen filler used when supplies of Amatol ran short: it adds an incendiary component to the blast, so the impact starts fires around the crater. Slightly more expensive and no more accurate.</description>
+    <description>A warhead of trialen explosive with an incendiary component, so the impact starts fires around the crater. Slightly more expensive than amatol.</description>
     <category>Warhead</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_LegacyBallistic</li>

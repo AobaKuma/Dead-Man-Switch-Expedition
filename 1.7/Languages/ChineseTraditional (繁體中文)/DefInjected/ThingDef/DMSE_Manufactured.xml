@@ -30,10 +30,10 @@
   
 
   <DMSE_Missile_Moskit.label>超音速反艦導彈</DMSE_Missile_Moskit.label>
-  <DMSE_Missile_Moskit.description>一款以衝壓引擎推進的超音速反艦導彈，發射後先爬升、再貼海俯衝，終端速度足以讓近防系統的反應時間壓縮到幾秒，彈體大、燃料兇、導引頭複雜，價格是巡飛彈的數倍，但一枚就足以讓一艘護衛艦失去戰鬥力。</DMSE_Missile_Moskit.description>
+  <DMSE_Missile_Moskit.description>一種衝壓引擎推進的大型超音速反艦導彈。末段貼著海面飛行，近迫防禦只剩幾秒鐘能反應。造價昂貴，但一發命中就能讓一艘戰艦退出戰鬥。</DMSE_Missile_Moskit.description>
   <DMSE_InterceptorMissile.label>攔截彈</DMSE_InterceptorMissile.label>
   <DMSE_InterceptorMissile.description>一枚可立即發射的地對空攔截彈。裝填至防空導彈發射架的內部彈艙後，每次接戰消耗一枚，用於在超視距作戰的中段飛行階段摧毀來襲威脅。</DMSE_InterceptorMissile.description>
   <DMSE_Missile_Grison.label>野戰防空導彈</DMSE_Missile_Grison.label>
-  <DMSE_Missile_Grison.description>一款彈砲一體系統使用的短程防空導彈，以無線電指令導引、與同軸機砲共用一具雷達與一具光電瞄準具，操作員不必一直盯著天空，但雷達一開機就像在黑暗中點了一盞燈，反輻射導引頭最喜歡這種目標。</DMSE_Missile_Grison.description>
+  <DMSE_Missile_Grison.description>一種供野戰防空砲塔使用的短程防空導彈，以無線電指令導向目標。</DMSE_Missile_Grison.description>
 
 </LanguageData>

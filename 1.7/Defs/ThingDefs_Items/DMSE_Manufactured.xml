@@ -191,7 +191,7 @@
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_Missile_Moskit</defName>
     <label>supersonic anti-ship missile</label>
-    <description>A ramjet-powered supersonic anti-ship missile that climbs after launch before diving to skim the sea with a terminal speed that compresses a close-in defence system's reaction time to seconds, big, thirsty and complicated at several times the price of a loitering munition, yet one round is enough to take a frigate out of the fight.</description>
+    <description>A large ramjet-powered supersonic anti-ship missile. It skims the sea on its final approach, leaving close-in defenses only seconds to react. It is expensive, but one hit can take a warship out of the fight.</description>
     <descriptionHyperlinks>
       <ThingDef>DMSE_Building_Scorer</ThingDef>
     </descriptionHyperlinks>
@@ -332,7 +332,7 @@
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_Missile_Grison</defName>
     <label>field air-defence missile</label>
-    <description>A short-range surface-to-air missile for gun-missile air-defence systems, steered by radio command and sharing a radar and an electro-optical sight with a coaxial cannon, so that the crew need not watch the sky constantly even as the radar, once switched on, becomes a lamp in the dark that anti-radiation seekers love.</description>
+    <description>A short-range anti-air missile for field air-defense turrets, steered onto its target by radio command.</description>
     <descriptionHyperlinks>
       <ThingDef>DMSE_Building_FieldAirDefense</ThingDef>
       <ThingDef>DMSE_Building_RotaryMissileLauncher</ThingDef>

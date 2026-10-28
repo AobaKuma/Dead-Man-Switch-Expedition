@@ -31,7 +31,7 @@
   <ThingDef ParentName="DMSE_VerticalLauncherBase">
     <defName>DMSE_Building_BallisticSilo</defName>
     <label>strategic missile silo</label>
-    <description>A semi-buried strategic missile silo whose heavy concrete hatches, layered shock absorption and blast suppression keep a launch from spilling onto its surroundings, among the most expensive and toughest structures a base can build and existing for a single missile.\n\nThe ballistic airframe is assembled directly in the silo by colonists consuming raw materials; once built, launch via the fire command at a world map target.\n\nCannot be installed on gravship decks.</description>
+    <description>A semi-buried strategic missile silo with heavy concrete hatches and blast suppression, so a launch does not harm its surroundings. It is very expensive and very tough, and holds a single missile.\n\nMissiles are assembled in the silo from raw materials, then launched at a target on the world map.\n\nCannot be built on a gravship.</description>
     <graphicData>
       <texPath>Things/Building/MissileSilo</texPath>
       <graphicClass>Graphic_Single</graphicClass>

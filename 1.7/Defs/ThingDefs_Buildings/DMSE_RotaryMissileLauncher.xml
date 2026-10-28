@@ -18,7 +18,7 @@
     <defName>DMSE_Building_RotaryMissileLauncher</defName>
     <label>SAM launcher</label>
     <!-- 中登：四聯裝防空導彈發射架，手動瞄準與發射，沒有自己的雷達、靠火控雷達指派目標。 -->
-    <description>A four-round surface-to-air launcher on a rotating base, aimed and fired by a single operator, with no radar of its own and dependent on a fire-control radar to hand it a target, so that all the operator does is pull the trigger when the lamp lights and pray the seeker holds.</description>
+    <description>A four-round surface-to-air launcher on a rotating base. It has no radar of its own and fires only at targets handed to it by a fire-control radar.\n\nRequires an operator.</description>
     <thingClass>DMSE.Building_MissileRack</thingClass>
     <category>Building</category>
     <uiIconPath>Things/Building/QuadLauncher_icon</uiIconPath>

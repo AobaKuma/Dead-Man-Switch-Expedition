@@ -2,8 +2,8 @@
 <LanguageData>
 
   <DMSE_AcousticEarlyWarningRadar.label>被动声学雷达</DMSE_AcousticEarlyWarningRadar.label>
-  <DMSE_AcousticEarlyWarningRadar.description>一座雷达时代之前的混凝土声学反射镜，被动收集远处飞行器的引擎噪音，不发射任何电磁波也不需要电力，反辐射导引头对它束手无策，代价是探测距离短、方位模糊、对隐身与高速目标几乎全盲，因此它提供的不是火控，而是一句提早几分钟的「有东西来了」。</DMSE_AcousticEarlyWarningRadar.description>
+  <DMSE_AcousticEarlyWarningRadar.description>一座用来收集远方发动机声音的混凝土声学反射镜。不需要电力、也不发出任何信号，反辐射导弹找不到它。预警来得早但很模糊，也很难听见高速或隐身目标。\n\n只能侦测来袭目标，无法制导拦截弹。</DMSE_AcousticEarlyWarningRadar.description>
   <DMSE_EarlyFireControlRadar.label>老式火控雷达</DMSE_EarlyFireControlRadar.label>
-  <DMSE_EarlyFireControlRadar.description>一座仍得靠人手操作的早期火控雷达，操作员以手轮与光学瞄准具把天线压向目标、再把解算出的射击诸元读给发射架听，一次只能导引一枚拦截弹且锁定慢、精度差，却让殖民地在集成电路成熟之前就能把拦截弹送到视线之外。</DMSE_EarlyFireControlRadar.description>
+  <DMSE_EarlyFireControlRadar.description>一座以手轮与光学瞄准具人工瞄准的早期火控雷达。一次只能制导一枚拦截弹，锁定慢、精度也不高。\n\n需要操作员。</DMSE_EarlyFireControlRadar.description>
 
 </LanguageData>

@@ -2,33 +2,33 @@
 <LanguageData>
 
   <DMSE_MissileBody_LegacyBallistic.label>老式弹道导弹弹体</DMSE_MissileBody_LegacyBallistic.label>
-  <DMSE_MissileBody_LegacyBallistic.description>一款以 V2 为蓝本的第一代液态燃料弹道火箭，机械式惯性平台加上无线电横向修正却没有真正的终端制导，准备缓慢、精度以街区计、大半质量都花在结构与推进剂上，但在真正的战略体系问世之前很久，就能用工业材料在塔式发射架或发射井里装配出来。</DMSE_MissileBody_LegacyBallistic.description>
+  <DMSE_MissileBody_LegacyBallistic.description>一种早期的液态燃料弹道火箭。准备时间长、精度极差，但在现代制导技术出现之前，就能用工业材料造出来。\n\n直接在发射塔或发射井上装配。</DMSE_MissileBody_LegacyBallistic.description>
 
   <DMSE_MissileBody_LegacyLoiter.label>老式巡飞弹弹体</DMSE_MissileBody_LegacyLoiter.label>
-  <DMSE_MissileBody_LegacyLoiter.description>一款以 V1 为蓝本的第一代脉冲喷射巡飞弹，方盒状弹身与粗短的平直翼由钟表式惯性自动驾驶仪带着沿预设航向飞完全程，慢、容易被侦测、落点偏差以街区计，却只需要钢板、燃料与一具简单的喷射管就能从倾斜轨道送上天空，而且没有什么可配置的：造好、上轨、发射。</DMSE_MissileBody_LegacyLoiter.description>
+  <DMSE_MissileBody_LegacyLoiter.description>一种早期的脉冲喷气巡飞弹，由发条式自动驾驶仪沿预设航向飞行。速度慢、噪音大、精度差，但结构简单，几乎只靠钢材与燃料就能造出来。\n\n固定构型，无法改装。</DMSE_MissileBody_LegacyLoiter.description>
 
   <DMSE_MissileBody_LegacyInterceptor.label>老式拦截巡飞弹弹体</DMSE_MissileBody_LegacyInterceptor.label>
-  <DMSE_MissileBody_LegacyInterceptor.description>一款第一代导引拦截巡飞弹，四片特大尾翼与一具无线电指令链路让它在发射后能于目标空域盘旋等待，再由导引员以肉眼与操纵杆把它“开”向来袭目标，速度慢、腿短、精度勉强，但在高射炮还靠肉眼瞄准的年代，它已是真正的导引拦截手段，而且以固定构型出厂、不逐目标装配。</DMSE_MissileBody_LegacyInterceptor.description>
+  <DMSE_MissileBody_LegacyInterceptor.description>一种早期的制导拦截弹，配有四片超大尾翼与无线电指令链路。发射后会在目标空域盘旋，直到操作员把它引向来袭目标。速度慢、射程短、命中率低，但确实是一种制导拦截武器。\n\n固定构型，无法改装。</DMSE_MissileBody_LegacyInterceptor.description>
 
   <DMSE_MissileBody_AdvancedLight.label>先进通用导弹弹体</DMSE_MissileBody_AdvancedLight.label>
-  <DMSE_MissileBody_AdvancedLight.description>一款地狱火级的小型多用途弹体。轻到可由单兵与载具挂架携带，却具备现代导引头、极小的散布，以及老式轻型导弹从未达到的弹头重量比。三个装配槽：弹头、导引与载荷。</DMSE_MissileBody_AdvancedLight.description>
+  <DMSE_MissileBody_AdvancedLight.description>一种小型多用途导弹弹体。小到能装上便携式与车载发射器，精度与载重却都胜过旧式轻型导弹。\n\n可装配弹头、制导与载荷。</DMSE_MissileBody_AdvancedLight.description>
 
   <DMSE_MissileBody_AdvancedBallistic.label>先进弹道导弹弹体</DMSE_MissileBody_AdvancedBallistic.label>
-  <DMSE_MissileBody_AdvancedBallistic.description>一款民兵三型级的现代井射战略弹体。分级、轻量且精准导引，把弹头抛到大气层边缘，能把战斗部送到指定建筑而不是指定街区。直接在发射井内装配，弹体本身不会以物品形式存在。</DMSE_MissileBody_AdvancedBallistic.description>
+  <DMSE_MissileBody_AdvancedBallistic.description>一种现代多级战略导弹。它会爬升到太空边缘，再把弹头投向单一建筑，而不是一整个街区。\n\n直接在战略发射井或发射塔上装配，不会以物品形式存在。</DMSE_MissileBody_AdvancedBallistic.description>
 
   <DMSE_MissileBody_AdvancedCruise.label>先进巡航导弹弹体</DMSE_MissileBody_AdvancedCruise.label>
-  <DMSE_MissileBody_AdvancedCruise.description>一款战斧级的现代低可观测巡航导弹弹体。地形跟随、数据链导引，比它所取代的“射门手”弹体精准得多，并具备完整的四槽：弹头、导引、推进与载荷。</DMSE_MissileBody_AdvancedCruise.description>
+  <DMSE_MissileBody_AdvancedCruise.description>一种现代隐身巡航导弹弹体。沿地形低空飞行，精度远胜旧式的射门手导弹。\n\n可装配弹头、制导、推进与载荷。</DMSE_MissileBody_AdvancedCruise.description>
 
   <DMSE_MissileBody_Stinger.label>轻型防空导弹弹体</DMSE_MissileBody_Stinger.label>
-  <DMSE_MissileBody_Stinger.description>一款纤细的单兵红外防空弹体，只有弹头与导引两个装配槽。射程短、弹头小，作为拦截弹时命中率略逊于正规防空弹，但小到能塞进任何弹舱或士兵的背包。</DMSE_MissileBody_Stinger.description>
+  <DMSE_MissileBody_Stinger.description>一种纤细的便携式红外防空导弹。射程短、弹头小，拦截精度也不如大型防空导弹，但几乎任何发射器都装得下。\n\n可装配弹头与制导。</DMSE_MissileBody_Stinger.description>
   <DMSE_MissileBody_Maverick.label>对地攻击导弹弹体</DMSE_MissileBody_Maverick.label>
-  <DMSE_MissileBody_Maverick.description>一款小牛级的轻型对地攻击弹体，为了把较重的弹头准确送上某个点状目标而设计。三个装配槽：弹头、导引与酬载。</DMSE_MissileBody_Maverick.description>
+  <DMSE_MissileBody_Maverick.description>一种轻型对地攻击导弹弹体，用来把重型弹头准确送到单一目标上。\n\n可装配弹头、制导与载荷。</DMSE_MissileBody_Maverick.description>
   <DMSE_MissileBody_Sparrow.label>先进防空导弹弹体</DMSE_MissileBody_Sparrow.label>
-  <DMSE_MissileBody_Sparrow.description>一款细长的半主动雷达导引弹体，能在剧烈机动中持续接收照射雷达的信号。作为拦截弹时命中率明显高于旧型弹。三个装配槽：弹头、导引与酬载。</DMSE_MissileBody_Sparrow.description>
+  <DMSE_MissileBody_Sparrow.description>一种细长的半主动雷达制导导弹。即使在急转弯时也能持续跟随火控雷达的信号，拦截命中率远高于旧式导弹。\n\n可装配弹头、制导与载荷。</DMSE_MissileBody_Sparrow.description>
   <DMSE_MissileBody_Moskit.label>超音速反舰导弹弹体</DMSE_MissileBody_Moskit.label>
-  <DMSE_MissileBody_Moskit.description>一款以冲压引擎推进的超音速弹体，发射后先爬升再贴海俯冲，把近防系统的反应时间压缩到几秒。四个装配槽：弹头、导引、推进与酬载；出厂时装有反舰雷达导引头。</DMSE_MissileBody_Moskit.description>
+  <DMSE_MissileBody_Moskit.description>一种冲压发动机推进的超音速反舰导弹。末段贴着海面飞行，近防系统只剩几秒钟能反应。\n\n可装配弹头、制导、推进与载荷，出厂时配备反舰雷达导引头。</DMSE_MissileBody_Moskit.description>
   <DMSE_MissileBody_Yj.label>高超音速反舰导弹弹体</DMSE_MissileBody_Yj.label>
-  <DMSE_MissileBody_Yj.description>一款固体火箭助推、冲压引擎巡航的高超音速弹体，雷达截面小、终端弹道极低，留给防御方的反应时间只有几十秒。四个装配槽：弹头、导引、推进与酬载；出厂时装有反舰雷达导引头。</DMSE_MissileBody_Yj.description>
+  <DMSE_MissileBody_Yj.description>一种以火箭助推、冲压发动机巡航的高超音速反舰导弹。雷达信号小、末段飞得极低，防御方几乎没有反应时间。\n\n可装配弹头、制导、推进与载荷，出厂时配备反舰雷达导引头。</DMSE_MissileBody_Yj.description>
   <DMSE_MissileBody_Tochka.label>战术弹道导弹弹体</DMSE_MissileBody_Tochka.label>
-  <DMSE_MissileBody_Tochka.description>一款固体燃料的战术弹道弹体，射程足以跨过整个战区，比第一代火箭更准、准备也快得多，但远不及战略系统。四个装配槽：弹头、制导、推进与载荷；出厂时配备惯性制导。</DMSE_MissileBody_Tochka.description>
+  <DMSE_MissileBody_Tochka.description>一种固体燃料战术弹道导弹。比早期火箭更准、准备也快得多，但射程远不及战略导弹。\n\n可装配弹头、制导、推进与载荷，出厂时配备惯性制导。</DMSE_MissileBody_Tochka.description>
 </LanguageData>

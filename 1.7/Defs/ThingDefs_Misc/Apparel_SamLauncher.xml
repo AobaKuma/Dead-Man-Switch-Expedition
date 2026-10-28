@@ -12,7 +12,7 @@
   <ThingDef ParentName="ApparelNoQualityBase">
     <defName>DMSE_Apparel_SamLauncher</defName>
     <label>man-portable SAM launcher</label>
-    <description>A shoulder-carried surface-to-air launcher whose tube, grip, rudimentary IFF antenna and helmet-linked sight let one person fire an interceptor at a beyond-visual-range track, provided the operator stands still to complete the lock. It is slung across the back, leaving the hands free for a primary weapon.\n\nLoad it with light surface-to-air missiles. The air-defence command engages incoming threats that your radar network has already tracked on this map; it needs no fire-control channel.</description>
+    <description>A shoulder-fired anti-air launcher with a simple friend-or-foe antenna and a helmet-linked sight. It is carried on the back, leaving the hands free for a main weapon. The user must stand still to lock on.\n\nLoad with light surface-to-air missiles. It fires at incoming threats already tracked by your radar network on this map, and needs no fire-control channel.</description>
     <graphicData>
       <texPath>Things/Weapons/DMSE_Stinger</texPath>
       <graphicClass>Graphic_Single</graphicClass>

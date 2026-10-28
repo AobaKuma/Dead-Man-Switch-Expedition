@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
   <DMSE_MissileBody_Shahed.label>長程巡飛彈</DMSE_MissileBody_Shahed.label>
-  <DMSE_MissileBody_Shahed.description>採用活塞引擎的低成本三角翼單向攻擊無人機。航程遠、速度慢、戰鬥部小。預設慣性制導，選點以地圖中心為均值呈圓形正態分布。具有一個導引槽，可消耗 1 個高級零件選配電視制導，手動選擇落點並額外占用 1 個火控通道。沒有飛行中追蹤移動目標的能力。</DMSE_MissileBody_Shahed.description>
+  <DMSE_MissileBody_Shahed.description>一種廉價的三角翼攻擊無人機，以活塞引擎推進。速度慢、彈頭小，但航程很遠。\n\n未加裝電視導引模組時，落點散布在目標地圖中央附近。加裝後可自行指定落點，但會多佔用一條火控通道。無法追蹤移動目標。</DMSE_MissileBody_Shahed.description>
 </LanguageData>

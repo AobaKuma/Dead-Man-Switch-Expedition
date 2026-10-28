@@ -48,7 +48,7 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_LegacyBallistic</defName>
     <label>legacy ballistic missile body</label>
-    <description>A first-generation ballistic rocket in the mould of the V-2: a liquid-fuelled airframe with a mechanical inertial platform and radio lateral correction and no true terminal guidance, slow to prepare and wildly inaccurate by modern standards, devoting most of its mass to structure and propellant but able to be assembled in a silo out of industrial stock long before real strategic systems exist.</description>
+    <description>An early liquid-fueled ballistic rocket. It is slow to prepare and wildly inaccurate, but it can be built from industrial materials long before modern guidance exists.\n\nAssembled directly on a launch tower or in a silo.</description>
     <sizeClass>Ballistic</sizeClass>
     <!-- 與現役彈道彈體相同：只能垂直發射、在發射架上直接裝配（無物品型態） -->
     <launchMode>Vertical</launchMode>
@@ -90,7 +90,7 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_LegacyLoiter</defName>
     <label>legacy loitering munition</label>
-    <description>A first-generation pulsejet loitering munition in the spirit of the V-1, rail-launched and flown by a clockwork inertial autopilot along a preset heading, slow and easy to detect with accuracy measured in neighbourhoods but needing only steel, fuel and a simple jet tube to be thrown at a target beyond the horizon, with nothing to configure: it is built, loaded onto the rail, and fired.</description>
+    <description>An early pulsejet loitering munition flown along a preset heading by a clockwork autopilot. It is slow, loud and inaccurate, but simple enough to build from little more than steel and fuel.\n\nComes in a fixed configuration and cannot be customized.</description>
     <sizeClass>Loitering</sizeClass>
     <launchMode>Tilt</launchMode>
     <!-- 與現役巡飛彈相同：無裝配槽，固定構型 -->
@@ -120,7 +120,7 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_LegacyInterceptor</defName>
     <label>legacy interceptor loitering munition</label>
-    <description>A first-generation guided interceptor loitering munition built around four oversized fins and a radio command link: it is launched to circle over the target area and only then dives on an incoming aircraft under an operator's command, slow, short-legged and only marginally accurate, yet a genuine guided interceptor in an age when anti-aircraft fire is still aimed by eye. It leaves the factory in a fixed configuration rather than being assembled per target.</description>
+    <description>An early guided interceptor with four oversized fins and a radio command link. After launch it circles over the target area until an operator steers it onto an incoming threat. It is slow, short-ranged and inaccurate, but it is a true guided interceptor.\n\nComes in a fixed configuration and cannot be customized.</description>
     <!-- 巡飛階：與巡飛彈發射軌／旋轉架的 sizeClass 相容；它不是輕型防空彈，而是滯空攔截彈 -->
     <sizeClass>Loitering</sizeClass>
     <!-- 巡飛平台是傾斜發射軌，沒有垂直發射單元 -->
@@ -152,7 +152,7 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_AdvancedLight</defName>
     <label>advanced general-purpose missile body</label>
-    <description>A compact multi-role airframe in the class of the Hellfire. Light enough for man-portable and vehicle racks, but with modern seekers, tight dispersion and a payload fraction the older light missiles never managed. Three assembly slots: warhead, guidance and payload.</description>
+    <description>A compact multi-role missile airframe. It is small enough for portable and vehicle launchers, yet more accurate and able to carry more than older light missiles.\n\nHas slots for a warhead, guidance and payload.</description>
     <sizeClass>Light</sizeClass>
     <launchMode>Both</launchMode>
     <customizeLocation>Item</customizeLocation>
@@ -192,7 +192,7 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_AdvancedBallistic</defName>
     <label>advanced ballistic missile body</label>
-    <description>A modern silo-based strategic airframe in the class of the Minuteman III. Staged, lightweight and precisely guided, it lofts its bus to the edge of the atmosphere and puts a warhead on a specific building rather than a district. Assembled directly in the silo; the airframe never exists as an item.</description>
+    <description>A modern multi-stage strategic missile. It climbs to the edge of space, then drops its warhead onto a single building rather than a whole district.\n\nAssembled directly in a strategic silo or on a launch tower, and never exists as an item.</description>
     <sizeClass>Ballistic</sizeClass>
     <launchMode>Vertical</launchMode>
     <customizeLocation>Launcher</customizeLocation>
@@ -229,7 +229,7 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_AdvancedCruise</defName>
     <label>advanced cruise missile body</label>
-    <description>A modern low-observable cruise missile airframe in the class of the Tomahawk. Terrain-following, datalinked and far more accurate than the Scorer chassis it supersedes, with the full four slots: warhead, guidance, propulsion and payload.</description>
+    <description>A modern stealthy cruise missile airframe. It hugs the terrain on the way in and is far more accurate than the older Scorer missile.\n\nHas slots for a warhead, guidance, propulsion and payload.</description>
     <sizeClass>Light</sizeClass>
     <launchMode>Both</launchMode>
     <customizeLocation>Item</customizeLocation>
@@ -271,7 +271,7 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_Stinger</defName>
     <label>light surface-to-air missile body</label>
-    <description>A slim man-portable infrared surface-to-air airframe with only two assembly slots, warhead and guidance. Short-ranged and light-headed, and as an interceptor somewhat less accurate than a full-size surface-to-air round, but small enough to fit any magazine or a soldier's pack.</description>
+    <description>A slim, man-portable heat-seeking anti-air missile. It has a short range and a small warhead, and is a less accurate interceptor than a full-size missile, but it fits in almost any launcher.\n\nHas slots for a warhead and guidance.</description>
     <sizeClass>Light</sizeClass>
     <launchMode>Both</launchMode>
     <customizeLocation>Item</customizeLocation>
@@ -309,7 +309,7 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_Maverick</defName>
     <label>ground-attack missile body</label>
-    <description>A light ground-attack airframe in the class of the Maverick, built to put a heavier warhead on one specific point target. Three assembly slots: warhead, guidance and payload.</description>
+    <description>A light ground-attack missile airframe, built to put a heavy warhead on a single target.\n\nHas slots for a warhead, guidance and payload.</description>
     <sizeClass>Light</sizeClass>
     <launchMode>Both</launchMode>
     <customizeLocation>Item</customizeLocation>
@@ -347,7 +347,7 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_Sparrow</defName>
     <label>advanced surface-to-air missile body</label>
-    <description>A slender semi-active radar-homing airframe that keeps receiving the illuminator's signal through hard manoeuvres. As an interceptor it is markedly more accurate than older rounds. Three assembly slots: warhead, guidance and payload.</description>
+    <description>A slender semi-active radar-homing missile. It keeps following the fire-control radar's signal even through hard turns, making it a much more accurate interceptor than older missiles.\n\nHas slots for a warhead, guidance and payload.</description>
     <sizeClass>Light</sizeClass>
     <launchMode>Both</launchMode>
     <customizeLocation>Item</customizeLocation>
@@ -387,7 +387,7 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_Moskit</defName>
     <label>supersonic anti-ship missile body</label>
-    <description>A ramjet-powered supersonic airframe that climbs after launch and dives to skim the sea, compressing a close-in defence's reaction time to seconds. Four assembly slots: warhead, guidance, propulsion and payload; it leaves the printer with an anti-ship radar seeker.</description>
+    <description>A ramjet-powered supersonic anti-ship missile. It skims the sea on its final approach, leaving close-in defenses only seconds to react.\n\nHas slots for a warhead, guidance, propulsion and payload. Comes with an anti-ship radar seeker.</description>
     <sizeClass>Medium</sizeClass>
     <launchMode>Tilt</launchMode>
     <customizeLocation>Item</customizeLocation>
@@ -427,7 +427,7 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_Yj</defName>
     <label>hypersonic anti-ship missile body</label>
-    <description>A rocket-boosted, ramjet-cruised hypersonic airframe with a low radar signature and an extremely low terminal trajectory, leaving a defender tens of seconds to react. Four assembly slots: warhead, guidance, propulsion and payload; it leaves the printer with an anti-ship radar seeker.</description>
+    <description>A hypersonic anti-ship missile with a rocket booster and a ramjet cruise stage. Its small radar signature and very low final approach give defenders little time to respond.\n\nHas slots for a warhead, guidance, propulsion and payload. Comes with an anti-ship radar seeker.</description>
     <sizeClass>Medium</sizeClass>
     <launchMode>Both</launchMode>
     <customizeLocation>Item</customizeLocation>
@@ -468,7 +468,7 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_Tochka</defName>
     <label>tactical ballistic missile body</label>
-    <description>A solid-fuelled tactical ballistic airframe with enough range to cross a theatre, more accurate and far quicker to prepare than the first-generation rockets but well short of strategic systems. Four assembly slots: warhead, guidance, propulsion and payload; it leaves the printer with inertial guidance.</description>
+    <description>A solid-fuel tactical ballistic missile. It is more accurate and much quicker to prepare than early rockets, but its range falls well short of a strategic missile.\n\nHas slots for a warhead, guidance, propulsion and payload. Comes with inertial guidance.</description>
     <sizeClass>Medium</sizeClass>
     <launchMode>Both</launchMode>
     <customizeLocation>Item</customizeLocation>

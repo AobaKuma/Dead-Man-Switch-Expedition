@@ -3,7 +3,7 @@
     <ThingDef ParentName="BuildingBase">
         <defName>DMSE_Building_Scorer</defName>
         <label>Scorer MLS</label>
-        <description>The S1120 "Scorer" is a cruise missile launch system. It is a highly versatile anti-ship missile launcher used on cruisers and armed landing ships of the Colonial Fleet.</description>
+        <description>A cruise missile launch system used aboard the Colonial Fleet's cruisers and armed landing ships. It is a versatile launcher, most often used against ships.</description>
         <category>Building</category>
         <!-- 容器式裝載：彈藥以實體 Thing 存入內部容器，逐枚保留各自數值與渲染（取代舊 CompRefuelable 抽象燃料）。 -->
         <thingClass>DMSE.Building_MissileRack</thingClass>

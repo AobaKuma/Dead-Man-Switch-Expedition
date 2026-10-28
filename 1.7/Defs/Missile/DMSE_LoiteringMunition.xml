@@ -9,7 +9,7 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_Loiter</defName>
     <label>anti-ship loitering munition</label>
-    <description>A folding-wing anti-ship loitering munition that skims on a small turbojet and finds a hull with its own radar seeker in the terminal phase. Slow and easy to detect, but it picks its own impact point, keeps chasing a moving target and can strike across layers.</description>
+    <description>A folding-wing anti-ship loitering munition powered by a small turbojet. It is slow and easy to detect, but its own radar seeker picks the impact point on the final approach and keeps chasing a moving ship.\n\nCan strike targets on other map layers.</description>
     <sizeClass>Loitering</sizeClass>
     <launchMode>Tilt</launchMode>
     <customizeLocation>None</customizeLocation>

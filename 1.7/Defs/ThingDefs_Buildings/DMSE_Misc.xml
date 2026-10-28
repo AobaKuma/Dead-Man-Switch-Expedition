@@ -4,7 +4,7 @@
     <defName>DMSE_PhaseArrayRadar</defName>
     <label>phased-array radar</label>
     <!-- 小登：集搜索與火控於一身的相控陣雷達，24 個火力通道（docs/三代裝備體系_實作計畫.md §7-3），9000 W。 -->
-    <description>A phased-array radar that combines search and fire control in a fixed face with electronic scanning and more than twenty simultaneous target channels, guiding over twenty missiles at once in attack or defence and acting as the brain of the whole air-defence net at the price of a large share of a base's power and a cost that makes any colony wince.</description>
+    <description>A fixed phased-array radar that combines search and fire control. It can track and guide more than twenty missiles at once, in attack or defense, and serves as the core of an air-defense network.\n\nVery expensive, and draws a large share of a colony's power.</description>
     <graphicData>
       <texPath>Things/Building/PhaseArrayRadar</texPath>
       <graphicClass>Graphic_Single</graphicClass>

@@ -2,6 +2,6 @@
 <LanguageData>
 
   <DMSE_Missile_Termite.label>反艦巡飛彈</DMSE_Missile_Termite.label>
-  <DMSE_Missile_Termite.description>一款折疊翼的反艦巡飛彈，以小型渦輪噴射引擎貼海飛行，靠被動雷達與紅外複合導引頭在最後階段自行尋找艦影，飛得慢、彈頭不大，但勝在便宜、可以從地面軌道發射，而且會優先咬住移動中的船隻，對沒有神盾系統的對手而言這就夠了。</DMSE_Missile_Termite.description>
+  <DMSE_Missile_Termite.description>一種以小型渦輪噴射引擎推進的折疊翼反艦巡飛彈。速度慢、火力弱，但便宜，可從地面發射軌發射，並以彈上尋標器追擊移動中的船艦。</DMSE_Missile_Termite.description>
 
 </LanguageData>

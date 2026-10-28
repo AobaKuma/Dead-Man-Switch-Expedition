@@ -3,7 +3,7 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_Shahed</defName>
     <label>long-range loitering munition</label>
-    <description>A low-cost delta-wing one-way attack drone with a piston engine. Long range, slow flight and a small warhead. Delivered with inertial guidance: aim points follow a circular normal distribution around the map center. One guidance slot accepts an optional TV guidance module costing one advanced component; TV lets the player select an impact point and occupies one additional fire-control channel. No in-flight target tracking.</description>
+    <description>A cheap delta-wing attack drone with a piston engine. It is slow and carries a small warhead, but it can fly a very long way.\n\nWithout a TV guidance module, it strikes somewhere around the center of the target map. The module lets you pick the impact point, but uses an extra fire-control channel. Cannot track moving targets.</description>
     <sizeClass>Loitering</sizeClass>
     <launchMode>Tilt</launchMode>
     <customizeLocation>Item</customizeLocation>
@@ -32,7 +32,7 @@
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_Missile_Shahed</defName>
     <label>long-range loitering munition</label>
-    <description>A cheap, rail-launched delta-wing attack drone with a pusher propeller. Reaches distant targets with a small high-explosive warhead, but is slow and vulnerable to air defence. Delivered with inertial guidance and map-center circular normal dispersion. Fit an optional TV guidance module for one advanced component to choose an impact point; TV occupies two fire-control channels instead of one. Requires loitering munitions and microelectronics basics to manufacture.</description>
+    <description>A cheap delta-wing attack drone with a pusher propeller, launched from a rail. It flies a long way with a small warhead, but it is slow and easy to shoot down.\n\nComes with inertial guidance, which scatters impacts around the center of the target map. An optional TV guidance module lets you pick the impact point, but uses an extra fire-control channel.</description>
     <descriptionHyperlinks>
       <ThingDef>DMSE_Building_LoiteringLauncher</ThingDef>
       <ThingDef>DMSE_Building_RotaryLauncher</ThingDef>
@@ -127,7 +127,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_Shahed_Guidance_Inertial</defName>
     <label>inertial guidance</label>
-    <description>Standard long-range loitering munition inertial navigation. No target recognition or terminal guidance. Aim points follow a circular normal distribution around the map center. Uses one fire-control channel.</description>
+    <description>Standard inertial guidance with no target recognition or terminal guidance. Uses one fire-control channel. Impacts scatter around the center of the target map. It does not lock onto buildings or creatures.</description>
     <category>Guidance</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_Shahed</li>
@@ -137,7 +137,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_Shahed_Guidance_TV</defName>
     <label>TV guidance</label>
-    <description>Optional long-range loitering munition TV guidance module. Lets the player choose the impact point when the drone reaches the target map. Costs one advanced component and occupies one additional fire-control channel (two in total). Enemy-launched TV drones fall back to inertial targeting.</description>
+    <description>An optional TV guidance module. When the drone reaches the target map, you choose the impact point. Uses two fire-control channels instead of one. Enemy drones with this module use inertial guidance instead.</description>
     <category>Guidance</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_Shahed</li>

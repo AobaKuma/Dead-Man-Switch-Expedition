@@ -2,24 +2,24 @@
 <LanguageData>
 
   <DMSE_Missile_AdvancedLight.label>先进通用导弹</DMSE_Missile_AdvancedLight.label>
-  <DMSE_Missile_AdvancedLight.description>地狱火级的多用途弹体，具备现代导引头与极小的散布。离开打印机时已装好串联成型装药弹头与自动影像寻标器；想要别的配置就到装配页签更换。</DMSE_Missile_AdvancedLight.description>
+  <DMSE_Missile_AdvancedLight.description>一种小型多用途导弹，精度与载重都胜过旧式轻型导弹。\n\n出厂配备串联聚能弹头与自动影像导引头，可在装配分页更换部件。</DMSE_Missile_AdvancedLight.description>
   <DMSE_Missile_AdvancedCruise.label>先进巡航导弹</DMSE_Missile_AdvancedCruise.label>
-  <DMSE_Missile_AdvancedCruise.description>战斧级的低可观测巡航导弹：地形跟随、数据链导引，比它所取代的射门手弹体精准得多。出厂时已装好穿透弹头、地形比对导引与涡轮扇。</DMSE_Missile_AdvancedCruise.description>
+  <DMSE_Missile_AdvancedCruise.description>一种沿地形低空飞行的隐身巡航导弹，精度远胜旧式的射门手导弹。\n\n出厂配备穿透弹头、地形匹配制导与涡轮风扇发动机，可在装配分页更换部件。</DMSE_Missile_AdvancedCruise.description>
 
   <DMSE_Missile_LegacyLoiter.label>老式巡飞弹</DMSE_Missile_LegacyLoiter.label>
-  <DMSE_Missile_LegacyLoiter.description>一具以脉冲喷射引擎推进的早期巡飞弹，方盒状弹体与粗短的平直翼由钟表式惯性自动驾驶仪带着沿预设航向飞完全程，慢得让雷达操作员有时间泡杯茶、落点偏差几十米都算正常；但它只需要钢板、燃料与一具简单的喷射管就能从倾斜轨道送上天空，在更好的东西出现之前，这就是「超视距打击」的全部意思。</DMSE_Missile_LegacyLoiter.description>
+  <DMSE_Missile_LegacyLoiter.description>一种早期的脉冲喷气巡飞弹，由发条式自动驾驶仪沿预设航向飞行。速度慢、噪音大、精度差，但结构简单，几乎只靠钢材与燃料就能造出来。\n\n以发射轨发射，固定构型。</DMSE_Missile_LegacyLoiter.description>
   <DMSE_Missile_Rheintochter.label>老式拦截巡飞弹</DMSE_Missile_Rheintochter.label>
-  <DMSE_Missile_Rheintochter.description>一款第一代导引拦截巡飞弹，四片特大尾翼与一具无线电指令链路搭配一具只能勉强追上轰炸机的固体引擎，发射后在目标空域盘旋等待、再由导引员用肉眼与操纵杆把它「开」向来袭目标，命中率低得令人沮丧，但在高射炮仍靠曳光弹与祈祷的年代，这已经是真正的导引拦截手段。</DMSE_Missile_Rheintochter.description>
+  <DMSE_Missile_Rheintochter.description>一种早期的制导拦截弹，配有四片超大尾翼与无线电指令链路。发射后会在目标空域盘旋，直到操作员把它引向来袭目标。速度慢、很少命中，但确实是一种制导拦截武器。\n\n由火控网发射，固定构型。</DMSE_Missile_Rheintochter.description>
   <DMSE_Missile_Stinger.label>轻型防空导弹</DMSE_Missile_Stinger.label>
-  <DMSE_Missile_Stinger.description>一款可由单兵携带的红外导引防空导弹，发射管、瞄准具与一枚小弹全重不到二十公斤，射程短、弹头小，对高速或大机动目标命中率有限，却让每一个步兵班都拥有「不用等雷达」的防空手段，而且可以塞进任何一个有空间的弹舱。</DMSE_Missile_Stinger.description>
+  <DMSE_Missile_Stinger.description>一种纤细的便携式红外防空导弹。射程短、弹头小，对付高速或灵活的目标相当吃力，但几乎任何发射器都装得下。</DMSE_Missile_Stinger.description>
   <DMSE_Missile_Maverick.label>对地攻击导弹</DMSE_Missile_Maverick.label>
-  <DMSE_Missile_Maverick.description>一款电视／红外导引的轻型对地攻击导弹，原本挂在攻击机翼下、现在被搬进发射箱里，弹体小、射程中等，但导引头能在飞行末段让操作员「看着目标打」，对点状目标与装甲车辆特别有效，因此它不适合拿来拆基地，却很适合把某个具体的东西从地图上删掉。</DMSE_Missile_Maverick.description>
+  <DMSE_Missile_Maverick.description>一种配备电视与红外导引头的轻型对地攻击导弹。最擅长摧毁单一特定目标，而不是夷平整座基地。</DMSE_Missile_Maverick.description>
   <DMSE_Missile_Sparrow.label>先进防空导弹</DMSE_Missile_Sparrow.label>
-  <DMSE_Missile_Sparrow.description>一款半主动雷达导引的中程防空导弹，弹体细长、翼面小巧，能在剧烈机动中持续接收母雷达的照射信号，比刺针飞得更快、更远、更准，代价是需要一具持续照射目标的火控雷达，因此它从来不是一个人的武器。</DMSE_Missile_Sparrow.description>
+  <DMSE_Missile_Sparrow.description>一种半主动雷达制导的中程防空导弹。比轻型防空导弹更快、射程更远、也更准，但火控雷达必须持续照射目标直到命中。</DMSE_Missile_Sparrow.description>
   <DMSE_Missile_Yj.label>高超音速反舰导弹</DMSE_Missile_Yj.label>
-  <DMSE_Missile_Yj.description>一款以固体火箭助推、冲压引擎巡航的高超音速反舰导弹，终端速度超过五马赫并具备有限的机动变轨能力，以极低的弹道贴海飞行、留给防御方的反应时间只有几十秒，造价与维护费用同样惊人，通常只留给最值得的目标。</DMSE_Missile_Yj.description>
+  <DMSE_Missile_Yj.description>一种以火箭助推、冲压发动机巡航的高超音速反舰导弹。末段飞得极低又极快，防御方几乎没有反应时间。造价极高。</DMSE_Missile_Yj.description>
 
   <!-- 戰術彈道導彈「圓點U」（2026-10-27 起為中型物品） -->
   <DMSE_Missile_Tochka.label>战术弹道导弹</DMSE_Missile_Tochka.label>
-  <DMSE_Missile_Tochka.description>一款固体燃料的战术弹道导弹，可从倾斜发射架或垂直发射单元发射，先爬到高空、再以陡峭高速的弹道砸向战区另一端的目标；精度足以命中仓库或指挥所，也能换装各种中型弹头，价格比反舰导弹便宜，但发射时留下的火光与烟柱会把阵地位置出卖给对方。</DMSE_Missile_Tochka.description>
+  <DMSE_Missile_Tochka.description>一种固体燃料战术弹道导弹，可从倾斜发射器或垂直发射格发射。先爬升到高空，再陡直俯冲打击远方目标，精度足以命中仓库或指挥所。</DMSE_Missile_Tochka.description>
 </LanguageData>

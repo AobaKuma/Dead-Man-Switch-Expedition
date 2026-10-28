@@ -4,16 +4,16 @@
   <DMSE_SkyFaller_Loiter.label>巡飞弹（升空）</DMSE_SkyFaller_Loiter.label>
   <DMSE_Incoming_Loiter.label>巡飞弹（来袭）</DMSE_Incoming_Loiter.label>
   <DMSE_Building_LoiteringLauncher.label>轨道发射架</DMSE_Building_LoiteringLauncher.label>
-  <DMSE_Building_LoiteringLauncher.description>一具供单枚巡飞弹使用的倾斜发射轨，没有电力也没有伺服，只有一条轨道、一组止动器与一枚待发的弹体，廉价到可以沿着防线摆上一排，也脆弱到一发炮弹就能让整条轨道报废。\n\n对地弹可对本地图以外的目标发射；装在轨道上的拦截巡飞弹则由火控网指派发射。</DMSE_Building_LoiteringLauncher.description>
+  <DMSE_Building_LoiteringLauncher.description>一条只放得下一枚巡飞弹的简易倾斜发射轨。不需要电力，便宜到可以沿着防线排满，但挨一发就可能整座报销。\n\n打击用巡飞弹会射向地图以外的目标；拦截用巡飞弹则由火控网自动发射。</DMSE_Building_LoiteringLauncher.description>
   <DMSE_SkyFaller_LightMissile.label>轻型导弹（升空）</DMSE_SkyFaller_LightMissile.label>
   <DMSE_Incoming_LightMissile.label>轻型导弹（来袭）</DMSE_Incoming_LightMissile.label>
   <DMSE_Building_LightMissileLauncher.label>倾斜发射箱</DMSE_Building_LightMissileLauncher.label>
-  <DMSE_Building_LightMissileLauncher.description>一具可容纳四枚轻型导弹的倾斜发射箱，箱盖兼作发射导轨，能自动装填、自动发射，代价是一组液压与电力系统，而四个发射单元共用一具箱体，让它在有限的面积里提供不错的齐射能力。\n\n对地弹可对本地图以外的目标发射；防空与两用导弹也会由火控网指派作为拦截弹发射。</DMSE_Building_LightMissileLauncher.description>
+  <DMSE_Building_LightMissileLauncher.description>一座倾斜的发射箱，可容纳四枚轻型导弹。能自动装填与发射，以很小的占地提供可观的齐射火力。\n\n需要电力。打击用导弹会射向地图以外的目标；防空与两用导弹也会由火控网当作拦截弹发射。</DMSE_Building_LightMissileLauncher.description>
   <DMSE_Building_LightMissileVLS.label>小型垂直发射井</DMSE_Building_LightMissileVLS.label>
-  <DMSE_Building_LightMissileVLS.description>一座 1x1 的四单元垂直发射井，井盖与地面齐平、只能容纳小型导弹，紧凑到可以沿着基地围墙排成一圈，代价是每个单元都必须独立装填，而且井盖一开就等于告诉敌人「这里有东西」。\n\n无法安装于重力船甲板上。</DMSE_Building_LightMissileVLS.description>
+  <DMSE_Building_LightMissileVLS.description>一座与地面齐平的垂直发射器，有四个轻型导弹发射单元。只占一格，很容易沿防线布置，但每个发射单元都得分别装填。\n\n无法建造在重力船上。</DMSE_Building_LightMissileVLS.description>
   <DMSE_Building_RotaryMissileLauncher.label>防空导弹发射架</DMSE_Building_RotaryMissileLauncher.label>
-  <DMSE_Building_RotaryMissileLauncher.description>一座四联装的防空导弹发射架，架在可旋转的底座上，由一名操作员手动瞄准与发射，没有自己的雷达、得靠火控雷达把目标「交给」它，操作员要做的只是在指示灯亮起时扣下扳机，然后祈祷导引头抓得住。</DMSE_Building_RotaryMissileLauncher.description>
+  <DMSE_Building_RotaryMissileLauncher.description>一座装在旋转底座上的四联装防空导弹发射架。本身没有雷达，只会射击火控雷达交给它的目标。\n\n需要操作员。</DMSE_Building_RotaryMissileLauncher.description>
   <DMSE_Building_BallisticSilo.label>战略导弹发射井</DMSE_Building_BallisticSilo.label>
-  <DMSE_Building_BallisticSilo.description>一座半埋式的战略导弹发射井，厚重的混凝土井盖、多层减震与抑爆结构让发射不会波及周围，是整个基地最贵、最难摧毁、也最让敌人头痛的建筑之一，通常只为一枚导弹而存在。\n\n弹道导弹的弹体由小人消耗原料直接在井内装配；完成后以发射指令对世界地图上的目标发射。\n\n无法安装于重力船甲板上。</DMSE_Building_BallisticSilo.description>
+  <DMSE_Building_BallisticSilo.description>一座半埋入地下的战略导弹发射井，配有厚重的混凝土舱盖与爆震抑制结构，发射时不会波及周围。造价极高、非常坚固，只能容纳一枚导弹。\n\n导弹直接在发射井内以原料装配，再对世界地图上的目标发射。\n\n无法建造在重力船上。</DMSE_Building_BallisticSilo.description>
 
 </LanguageData>

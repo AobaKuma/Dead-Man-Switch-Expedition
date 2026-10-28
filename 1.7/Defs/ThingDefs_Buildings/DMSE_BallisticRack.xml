@@ -18,7 +18,7 @@
   <ThingDef ParentName="DMSE_VerticalLauncherBase">
     <defName>DMSE_Building_BallisticRack</defName>
     <label>ballistic launch tower</label>
-    <description>An old launch tower that stands a ballistic missile upright in a truss frame, simple and cheap but with no flame trench and no blast suppression, so that at ignition the exhaust and shockwave sweep outward to set nearby grass alight and injure anyone who did not walk far enough; it is good for throwing cheap airframes a long way and bad for building next to your own warehouse.\n\nThe airframe has no item form: colonists assemble it on the tower from raw materials. Swap airframes from the assembly tab; newer ones need their own research.\n\nCannot be installed on gravship decks.</description>
+    <description>An old open truss tower that holds a ballistic missile upright. It is cheap, but has no flame trench: at launch, the blast sets nearby grass on fire and injures anyone standing too close.\n\nMissiles are assembled on the tower from raw materials and never exist as items. Switch airframes in the assembly tab; newer airframes require research.\n\nCannot be built on a gravship.</description>
     <graphicData>
       <texPath>Things/Building/BallisticRack/building</texPath>
       <graphicClass>Graphic_Single</graphicClass>

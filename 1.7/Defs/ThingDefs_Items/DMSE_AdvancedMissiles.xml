@@ -14,7 +14,7 @@
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_Missile_AdvancedLight</defName>
     <label>advanced general-purpose missile</label>
-    <description>A Hellfire-class multi-role airframe with modern seekers and tight dispersion. Comes off the printer already loaded with a tandem shaped-charge warhead and an autonomous imaging seeker; swap the loadout in the assembly tab if you want something else.</description>
+    <description>A compact multi-role missile, accurate and able to carry more than older light missiles.\n\nComes with a tandem shaped-charge warhead and an automatic imaging seeker. The parts can be changed in the assembly tab.</description>
     <descriptionHyperlinks>
       <ThingDef>DMSE_Building_LightMissileLauncher</ThingDef>
       <ThingDef>DMSE_Building_LightMissileVLS</ThingDef>
@@ -85,7 +85,7 @@
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_Missile_AdvancedCruise</defName>
     <label>advanced cruise missile</label>
-    <description>A Tomahawk-class low-observable cruise missile: terrain-following, datalinked and far more accurate than the Scorer chassis it supersedes. It is delivered with a penetrating unitary warhead, terrain-matching guidance and a turbofan already fitted.</description>
+    <description>A stealthy cruise missile that hugs the terrain on the way in. It is far more accurate than the older Scorer missile.\n\nComes with a penetrating warhead, terrain-matching guidance and a turbofan engine. The parts can be changed in the assembly tab.</description>
     <descriptionHyperlinks>
       <ThingDef>DMSE_Building_Scorer</ThingDef>
       <ThingDef>DMSE_CruiseMissileRack</ThingDef>

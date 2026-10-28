@@ -15,7 +15,7 @@
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_Missile_LegacyLoiter</defName>
     <label>legacy loitering munition</label>
-    <description>An early pulsejet-powered loitering munition whose boxy airframe and stubby straight wings are carried along a preset heading by a clockwork inertial autopilot, slow enough to give a radar operator time to make tea and inaccurate enough that a miss of tens of metres is normal, yet simple enough to need only steel, fuel and a simple jet tube to be thrown into the sky from a tilt rail; before anything better exists, this is what beyond-visual-range strike means.</description>
+    <description>An early pulsejet loitering munition flown along a preset heading by a clockwork autopilot. It is slow, loud and inaccurate, but simple enough to build from little more than steel and fuel.\n\nFired from a launch rail. Comes in a fixed configuration.</description>
     <descriptionHyperlinks>
       <ThingDef>DMSE_Building_LoiteringLauncher</ThingDef>
       <ThingDef>DMSE_Building_RotaryLauncher</ThingDef>
@@ -79,7 +79,7 @@
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_Missile_Rheintochter</defName>
     <label>legacy interceptor loitering munition</label>
-    <description>A first-generation guided interceptor loitering munition whose four oversized fins and radio command link are paired with a solid motor that can barely catch a bomber, launched to circle over the target area and then flown onto an incoming aircraft by an operator with naked eyes and a joystick at a dispiriting hit rate; in an age when flak still relies on tracers and prayer, it is a genuine guided interceptor.</description>
+    <description>An early guided interceptor with four oversized fins and a radio command link. After launch it circles over the target area until an operator steers it onto an incoming threat. It is slow and rarely hits, but it is a true guided interceptor.\n\nFired by the fire-control network. Comes in a fixed configuration.</description>
     <descriptionHyperlinks>
       <ThingDef>DMSE_Building_LoiteringLauncher</ThingDef>
       <ThingDef>DMSE_Building_RotaryLauncher</ThingDef>
@@ -146,7 +146,7 @@
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_Missile_Stinger</defName>
     <label>light surface-to-air missile</label>
-    <description>A man-portable infrared-guided surface-to-air missile whose launch tube, sight and small round weigh under twenty kilograms all up, short-ranged and light-headed against fast or manoeuvring targets yet giving every infantry squad an air-defence option that does not wait for a radar and fits into any magazine with room to spare.</description>
+    <description>A slim, man-portable heat-seeking anti-air missile. It has a short range and a small warhead, and struggles against fast or agile targets, but it fits in almost any launcher.</description>
     <descriptionHyperlinks>
       <ThingDef>DMSE_Apparel_SamLauncher</ThingDef>
       <ThingDef>DMSE_Building_RotaryMissileLauncher</ThingDef>
@@ -217,7 +217,7 @@
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_Missile_Maverick</defName>
     <label>ground-attack missile</label>
-    <description>A television and infrared-guided light ground-attack missile, once hung under an attack aircraft's wing and now loaded into launch boxes, small and medium-ranged but with a seeker that lets an operator fly it onto the target in the terminal phase, making it deadly against point targets and armoured vehicles and better suited to deleting one specific thing from the map than to demolishing a base.</description>
+    <description>A light ground-attack missile with a TV and infrared seeker. It is best at destroying one specific target, not at leveling a whole base.</description>
     <descriptionHyperlinks>
       <ThingDef>DMSE_Building_LightMissileLauncher</ThingDef>
       <ThingDef>DMSE_Building_LightMissileVLS</ThingDef>
@@ -286,7 +286,7 @@
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_Missile_Sparrow</defName>
     <label>advanced surface-to-air missile</label>
-    <description>A semi-active radar-homing medium-range surface-to-air missile, slender with small fins and able to keep receiving the illuminator's signal through hard manoeuvres, faster, longer-legged and more accurate than a Stinger at the price of a fire-control radar that must keep illuminating the target, which is to say it was never a one-man weapon.</description>
+    <description>A medium-range anti-air missile with semi-active radar homing. It is faster, longer-ranged and more accurate than light anti-air missiles, but a fire-control radar must keep the target illuminated until impact.</description>
     <descriptionHyperlinks>
       <ThingDef>DMSE_Building_RotaryMissileLauncher</ThingDef>
       <ThingDef>DMSE_Building_LightMissileLauncher</ThingDef>
@@ -357,7 +357,7 @@
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_Missile_Yj</defName>
     <label>hypersonic anti-ship missile</label>
-    <description>A hypersonic anti-ship missile boosted by a solid rocket and cruised by a ramjet, with a terminal speed above Mach 5 and limited manoeuvring on an extremely low sea-skimming trajectory that leaves a defender tens of seconds to react, its cost and upkeep just as extreme and therefore reserved for targets that deserve it.</description>
+    <description>A hypersonic anti-ship missile with a rocket booster and a ramjet cruise stage. Its very low, very fast final approach gives defenders little time to respond. It is extremely expensive.</description>
     <descriptionHyperlinks>
       <ThingDef>DMSE_Building_MediumVLS</ThingDef>
       <ThingDef>DMSE_Building_Scorer</ThingDef>
@@ -431,7 +431,7 @@
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_Missile_Tochka</defName>
     <label>tactical ballistic missile</label>
-    <description>A solid-fuelled tactical ballistic missile fired from a tilted launcher or a vertical launch cell, climbing high before coming down steep and fast on a target across the theatre; accurate enough for a depot or a command post and able to take any medium warhead, it costs less than an anti-ship missile but gives its launch site away with the fire and smoke it leaves behind.</description>
+    <description>A solid-fuel tactical ballistic missile, fired from a tilted launcher or a vertical launch cell. It climbs high, then dives steeply onto targets far away, accurate enough to hit a depot or command post.</description>
     <descriptionHyperlinks>
       <ThingDef>DMSE_Building_Scorer</ThingDef>
       <ThingDef>DMSE_Building_MediumVLS</ThingDef>

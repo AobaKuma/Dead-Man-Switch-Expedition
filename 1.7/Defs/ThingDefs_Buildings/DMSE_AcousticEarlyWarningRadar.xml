@@ -5,7 +5,7 @@
     <defName>DMSE_AcousticEarlyWarningRadar</defName>
     <label>passive acoustic radar</label>
     <!-- 老資歷：一座雷達時代之前的混凝土聲學反射鏡，不用電、不發射電磁波、免疫反輻射；探測距離短、對隱身與高速目標幾乎全盲。 -->
-    <description>A pre-radar concrete acoustic mirror that passively gathers the engine noise of distant aircraft without emitting any electromagnetic signal or drawing power, leaving anti-radiation seekers nothing to lock onto at the cost of short range, vague bearings and near-blindness to stealthy or fast targets; what it provides is not fire control but an early and imprecise warning that something is coming.</description>
+    <description>A concrete acoustic mirror that listens for distant engine noise. It needs no power and emits nothing, so anti-radiation missiles cannot find it. Its warnings come early but are vague, and it struggles to hear fast or stealthy targets.\n\nDetects incoming threats only, and cannot guide interceptors.</description>
     <graphicData>
       <texPath>Things/Building/AcousticMirror/building</texPath>
       <graphicClass>Graphic_Multi</graphicClass>

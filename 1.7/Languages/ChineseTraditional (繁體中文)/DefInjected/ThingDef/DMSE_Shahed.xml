@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
   <DMSE_Missile_Shahed.label>長程巡飛彈</DMSE_Missile_Shahed.label>
-  <DMSE_Missile_Shahed.description>採用三角翼與尾推螺旋槳的廉價軌道發射攻擊無人機。能以小型高爆戰鬥部打擊遠方目標，但速度慢、容易遭防空攔截。出廠預設慣性制導，以地圖中心為中心作圓形正態散布；可在裝配頁消耗 1 個高級零件選配電視制導以手動選點，火控通道占用由 1 個增加至 2 個。製造需要巡飛彈科技與微電子基礎。</DMSE_Missile_Shahed.description>
+  <DMSE_Missile_Shahed.description>一種從發射軌射出、以推進式螺旋槳飛行的廉價三角翼攻擊無人機。能帶著小型彈頭飛得很遠，但速度慢、容易被擊落。\n\n出廠配備慣性導引，落點散布在目標地圖中央附近。可加裝電視導引模組自行指定落點，但會多佔用一條火控通道。</DMSE_Missile_Shahed.description>
   <DMSE_Incoming_Shahed.label>長程巡飛彈（來襲）</DMSE_Incoming_Shahed.label>
 </LanguageData>

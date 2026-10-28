@@ -5,7 +5,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_LoiteringRack</defName>
     <label>loitering munition rack</label>
-    <description>A rack that hold loitering munitions. Stored Munition will not degrade.</description>
+    <description>A rack that holds loitering munitions. Stored munitions do not deteriorate.</description>
     <thingClass>DMSE.Building_MissileRack</thingClass>
     <category>Building</category>
     <graphicData>
@@ -98,7 +98,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_MissileRack</defName>
     <label>missile rack</label>
-    <description>A metal rack that holds up to four light missiles. Missiles stored inside are sheltered from the elements and will not degrade.</description>
+    <description>A metal rack that holds up to four light missiles. Stored missiles are protected from the weather and do not deteriorate.</description>
     <thingClass>DMSE.Building_MissileRack</thingClass>
     <category>Building</category>
     <graphicData>
@@ -244,7 +244,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_CruiseMissileRack</defName>
     <label>cruise missile rack</label>
-    <description>A 2x4 armoured rack that holds up to two cruise missiles. Missiles stored inside are sheltered from the elements and will not degrade.</description>
+    <description>An armored rack that holds up to two cruise missiles. Stored missiles are protected from the weather and do not deteriorate.</description>
     <thingClass>DMSE.Building_MissileRack</thingClass>
     <category>Building</category>
     <graphicData>

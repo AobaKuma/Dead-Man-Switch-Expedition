@@ -20,7 +20,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_Building_RotaryLauncher</defName>
     <label>rotary launch rail</label>
-    <description>An old 360-degree launcher whose rail is turned by hand crank and foot pedal, able to fire early loitering munitions and light missiles with a slew rate that depends on how fast the crank is turned and a reload that takes one round at a time, cheap, reliable and completely free of electronics at the cost of needing an operator at all times.</description>
+    <description>An old launch rail that turns a full circle by hand crank. It fires early loitering munitions and light missiles, and reloads one round at a time.\n\nNeeds no power, but requires an operator at all times.</description>
     <thingClass>DMSE.Building_MissileRack</thingClass>
     <category>Building</category>
     <uiIconPath>Things/Building/turretBase</uiIconPath>
@@ -167,7 +167,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_Building_FieldAirDefense</defName>
     <label>field air-defence system</label>
-    <description>A gun-missile field air-defence system with two 30 mm cannon, four short-range missiles and a search and track radar packed into one turret that fires missiles under radar guidance and then uses the guns to mop up, the last line of mobile air defence, though the radar draws heavily, ammunition disappears at a frightening rate and switching it on greets every anti-radiation seeker in the world.\n\nFully automatic, no operator needed; the cannon also engages enemies on the map and uses steel as ammunition.</description>
+    <description>A self-contained air-defense turret with twin autocannons, four short-range missiles and its own search and tracking radar. It engages targets with missiles first, then finishes them off with its guns.\n\nFully automatic. The cannons also fire on ground enemies and use steel as ammunition. The radar uses a lot of power, and its emissions can be tracked by anti-radiation missiles.</description>
     <thingClass>Building_TurretGun</thingClass>
     <category>Building</category>
     <uiIconPath>Things/Turrets/DMS_Tunguska</uiIconPath>
@@ -391,7 +391,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_SearchRadar</defName>
     <label>search radar</label>
-    <description>An active search radar whose rotating antenna sweeps the sky to feed bearings, ranges and headings to the whole air-defence net, unable to guide an intercept the way a fire-control radar can but leaving that radar a telescope in a blind man's hands without it, and drawing heavily while telling every anti-radiation seeker for tens of kilometres where the battery is.</description>
+    <description>An active search radar with a rotating antenna. It finds and tracks incoming threats for the whole air-defense network, but cannot guide interceptors by itself.\n\nUses a lot of power. Its emissions can be tracked by anti-radiation missiles.</description>
     <graphicData>
       <texPath>Things/Building/FacilityBase</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -473,7 +473,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_FireControlRadar</defName>
     <label>fire control radar</label>
-    <description>A dedicated fire-control radar able to track and guide four targets at once, refining the coarse tracks from a search radar into firing solutions and assigning them to interceptors with far more accuracy and responsiveness than the early sets, though it needs steady power and good cooling and becomes the most expensive target on the map once an anti-radiation missile has it.</description>
+    <description>A dedicated fire-control radar. It turns search radar tracks into firing solutions and guides several interceptors at once, much faster and more accurately than early sets.\n\nNeeds a steady power supply. Its emissions can be tracked by anti-radiation missiles.</description>
     <graphicData>
       <texPath>Things/Building/FacilityBase</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -557,7 +557,7 @@
   <ThingDef ParentName="DMSE_VerticalLauncherBase">
     <defName>DMSE_Building_MediumVLS</defName>
     <label>vertical launch silo</label>
-    <description>A 2x2 vertical launcher with four cells sized for medium missiles, gas-ejecting each round from its tube before ignition through hatches and a flame trench built for repeated launches, letting medium missiles be deployed as densely as light ones at the cost of construction and upkeep.\n\nCannot be installed on gravship decks.</description>
+    <description>A vertical launcher with four cells for medium missiles. Each missile is pushed out of its tube before igniting, and a built-in flame trench allows repeated launches. It is costly to build.\n\nCannot be built on a gravship.</description>
     <thingClass>DMSE.Building_MissileRack</thingClass>
     <uiIconPath>Things/Building/MissileSilo_Medium/icon</uiIconPath>
     <graphicData>
