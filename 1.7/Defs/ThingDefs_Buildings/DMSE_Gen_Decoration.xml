@@ -44,7 +44,7 @@
             <texPath>Things/Building/StructuralFrame/Section/building_top</texPath>
             <graphicClass>Graphic_Multi</graphicClass>
             <drawSize>(2,3)</drawSize>
-            <drawOffset>(0,0.002,-0.1)</drawOffset>
+            <drawOffset>(0,0.005,-0.1)</drawOffset>
             <drawOffsetNorth>(0,0.006,-0.1)</drawOffsetNorth>
             <drawOffsetSouth>(0,0.006,-0.1)</drawOffsetSouth>
           </li>
@@ -68,7 +68,7 @@
             <texPath>Things/Building/StructuralFrame/End/building_top</texPath>
             <graphicClass>Graphic_Multi</graphicClass>
             <drawSize>(2,2)</drawSize>
-            <drawOffset>(0,0.004,-0.1)</drawOffset>
+            <drawOffset>(0,0.005,-0.1)</drawOffset>
           </li>
         </extraGraphic>
       </li>
@@ -91,7 +91,97 @@
             <texPath>Things/Building/StructuralFrame/Center/building_top</texPath>
             <graphicClass>Graphic_Single</graphicClass>
             <drawSize>(2,2)</drawSize>
-            <drawOffset>(0,0.002,-0.1)</drawOffset>
+            <drawOffset>(0,0.005,-0.1)</drawOffset>
+          </li>
+        </extraGraphic>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ==================== 野戰結構裝飾（雙層貼圖）==================== -->
+  <ThingDef ParentName="DMSE_BaseStructuralFrame">
+    <defName>DMSE_FieldStructure_SmallFrame</defName>
+    <label>small field frame</label>
+    <description>A decorative frame for field structures.</description>
+    <graphicData>
+      <texPath>Things/Building/FieldStructures/smallFrame</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,2)</drawSize>
+      <drawOffset>(0,-0.01,0)</drawOffset>
+    </graphicData>
+    <size>(1,1)</size>
+    <comps>
+      <li Class="DMSE.CompProperties_BuildingExtraRenderer">
+        <extraGraphic>
+          <li>
+            <texPath>Things/Building/FieldStructures/smallFrame_top</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>(2,2)</drawSize>
+            <drawOffset>(0,0.01,0)</drawOffset>
+          </li>
+        </extraGraphic>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="DMSE_BaseStructuralFrame">
+    <defName>DMSE_FieldStructure_MediumFrame</defName>
+    <label>medium field frame</label>
+    <description>A decorative frame for field structures.</description>
+    <graphicData>
+      <texPath>Things/Building/FieldStructures/mediumFrame</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(3,2)</drawSize>
+      <drawOffset>(0,-0.01,0)</drawOffset>
+    </graphicData>
+    <size>(2,1)</size>
+    <statBases>
+      <MaxHitPoints>650</MaxHitPoints>
+    </statBases>
+    <costList>
+      <Steel>8</Steel>
+    </costList>
+    <comps>
+      <li Class="DMSE.CompProperties_BuildingExtraRenderer">
+        <extraGraphic>
+          <li>
+            <texPath>Things/Building/FieldStructures/mediumFrame_top</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>(3,2)</drawSize>
+            <drawOffset>(0,0,0)</drawOffset>
+            <drawOffset>(0,0.01,0)</drawOffset>
+          </li>
+        </extraGraphic>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="DMSE_BaseStructuralFrame">
+    <defName>DMSE_FieldStructure_MediumSection</defName>
+    <label>medium field section</label>
+    <description>A decorative frame section for field structures.</description>
+    <graphicData>
+      <texPath>Things/Building/FieldStructures/mediumSection</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(3,2)</drawSize>
+      <drawOffset>(0,-0.01,0)</drawOffset>
+    </graphicData>
+    <size>(2,1)</size>
+    <statBases>
+      <MaxHitPoints>650</MaxHitPoints>
+    </statBases>
+    <costList>
+      <Steel>8</Steel>
+    </costList>
+    <comps>
+      <li Class="DMSE.CompProperties_BuildingExtraRenderer">
+        <extraGraphic>
+          <li>
+            <texPath>Things/Building/FieldStructures/mediumSection_top</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>(3,2)</drawSize>
+            <drawOffset>(0,0,0)</drawOffset>
+            <drawOffset>(0,0.01,0)</drawOffset>
           </li>
         </extraGraphic>
       </li>

@@ -26,26 +26,26 @@
   <DMSE_RadarBasis.description>利用最先抵達的聲音來為來臨的攻擊與空降提前預警。解鎖被動聲學預警雷達、早期火控雷達、旋轉發射架與防空砲。這項技術經常被殖民艦隊半買半送的推銷給殖民星球上的本土勢力，讓當權者們不得不關注起平民的基本教育以及保持溫飽的重要性。\n\n因為一群看不懂說明書的文盲顯然是無法操作這些技術裝備的。</DMSE_RadarBasis.description>
 
   <DMSE_LoiteringMunitions.label>基礎導彈工程</DMSE_LoiteringMunitions.label>
-  <DMSE_LoiteringMunitions.description>超視距戰鬥的雛型，解鎖人類最早使用的老式巡飛彈、彈道導彈，以及配套使用的發射軌、塔式發射架、導彈儲存架等。多個導彈發射平台能夠密集發射來實現飽和打擊，但需要使用打擊規劃桌來解算發射時機與彈道軌跡。\n\n是的，計算員至少要接受過國中基本教育才可能具備彈道導彈發射軌跡的計算能力。</DMSE_LoiteringMunitions.description>
+  <DMSE_LoiteringMunitions.description>超視距戰鬥的雛型，解鎖人類最早使用的老式巡飛彈、彈道導彈，以及配套使用的發射軌、塔式發射架、導彈儲存架等。輕型導彈的基礎高爆載荷也由此解鎖。多個導彈發射平台能夠密集發射來實現飽和打擊，但需要使用打擊規劃桌來解算發射時機與彈道軌跡。\n\n是的，計算員至少要接受過國中基本教育才可能具備彈道導彈發射軌跡的計算能力。</DMSE_LoiteringMunitions.description>
 
   <DMSE_Ballistics.label>洲際彈道導彈</DMSE_Ballistics.label>
   <DMSE_Ballistics.description>解鎖先進彈道導彈及其配套部件。這種導彈能夠橫跨整片大陸來實施超遠距離打擊，但通常當各大勢力守中都有著這樣的超級武器來保證催毀對方時，也代表他們大概在跟艦隊尋求或自行探索對應的反制技術了。</DMSE_Ballistics.description>
 
   <DMSE_IntegratedCircuits.label>進階導彈工程</DMSE_IntegratedCircuits.label>
-  <DMSE_IntegratedCircuits.description>解鎖使用真空管及電晶體元件控制的的輕型與戰術導彈，以及配套的精準導引組件、導彈發射系統。除此之外還有能夠自動計算彈道的打擊指揮中心、彈砲一體防空系統以及透過火控雷達提供攔截導引資訊的無線電指令彈與半主動彈。</DMSE_IntegratedCircuits.description>
+  <DMSE_IntegratedCircuits.description>解鎖以真空管與電晶體元件控制的輕型及戰術導彈、核心精準導引、導彈發射系統、打擊指揮中心，以及 Scorer 巡航導彈系統。紅外線、雷射、主動雷達、毫米波、電磁訊號與反艦尋標器，巡航導彈載荷和干擾裝置則分別由雷達、火控、整合防空、戰略及反艦科技解鎖。自主尋標彈不佔用火控通道；指令制導與半主動導引彈需要外部支援。</DMSE_IntegratedCircuits.description>
  
   <DMSE_StrategicSystems.label>先進導彈工程</DMSE_StrategicSystems.label>
-  <DMSE_StrategicSystems.description>解鎖使用精密電子技術支持的垂直發射系統、亞音速巡航導彈、高超音速反艦導彈、主動防空攔截彈與各類高級組件。</DMSE_StrategicSystems.description>
+  <DMSE_StrategicSystems.description>解鎖戰略發射井、垂直發射系統、先進巡航導彈及其地形比對與雙向資料鏈導引，並解鎖子彈藥與反碉堡載荷、高超音速反艦武器、主動防空攔截彈及熱核彈頭。</DMSE_StrategicSystems.description>
 
   <DMSE_RadarNetwork.label>長程預警雷達</DMSE_RadarNetwork.label>
-  <DMSE_RadarNetwork.description>解鎖主動搜索雷達，這種雷達工作的電磁波頻段能夠傳遞的非常遠，雖然其返回的回波無法用於鎖定目標但足夠在遠距離揭示有飛行物體的接近從而拉響防空警報。在完成研究後殖民地也將能夠透過被動回波來探明本星球上其他陣營據點的預警雷達預警範圍。</DMSE_RadarNetwork.description>
+  <DMSE_RadarNetwork.description>解鎖主動搜索雷達、主動雷達與毫米波導引頭、雷達誘餌載荷。這種雷達工作的電磁波頻段能夠傳遞得非常遠，雖然其回波無法用於鎖定目標，但足以在遠距離揭示飛行物體的接近並拉響防空警報。完成研究後，殖民地也能透過被動回波探明本星球上其他陣營據點的預警雷達範圍。</DMSE_RadarNetwork.description>
 
   <DMSE_FireControlNetwork.label>火控與攔截導引</DMSE_FireControlNetwork.label>
-  <DMSE_FireControlNetwork.description>解鎖具備多目標鎖定能力的半自動火控雷達系統、多通道防空發射器與更先進的防空攔截彈體。搜索雷達負責發現與追蹤；火控雷達負責鎖定並支援需要外部導引的攔截彈。</DMSE_FireControlNetwork.description>
+  <DMSE_FireControlNetwork.description>解鎖具備多目標鎖定能力的半自動火控雷達、多通道防空發射器、更先進的防空攔截彈、雷射標定器與尋標器，以及能破壞敵方火控鎖定的導彈箔條載荷。搜索雷達負責發現與追蹤；火控雷達負責鎖定並支援需要外部導引的攔截彈。</DMSE_FireControlNetwork.description>
 
   <DMSE_IntegratedAirDefense.label>相控陣</DMSE_IntegratedAirDefense.label>
-  <DMSE_IntegratedAirDefense.description>一種由電腦控制的複雜天線陣列，透過精密的控制算法使數千個發射機與接收機的錯開時機發射與接收，實現在無需轉動天線的狀況下同時完成多種雷達能做的工作；其性能可以說是超越了一整個世代，但需要大量的TR組件與極其可觀的電力消耗。</DMSE_IntegratedAirDefense.description>
+  <DMSE_IntegratedAirDefense.description>解鎖相控陣與高容量整合防空系統，並開放紅外線影像及電磁訊號尋標器、石墨纖維電網攻擊載荷。相控陣由電腦控制複雜天線陣列，精準調度數千個發射機與接收機，無須轉動天線便能同時完成多種雷達工作；性能超越一整個世代，但需要大量 TR 組件與可觀電力。</DMSE_IntegratedAirDefense.description>
 
   <DMSE_AntishipMissiles.label>反艦導彈</DMSE_AntishipMissiles.label>
-  <DMSE_AntishipMissiles.description>解鎖反艦導彈類型的生產與組件設計，這種彈頭能夠在鎖定目標後有限次修正彈道來命中處於移動中的非固定目標；特別是海上移動的各類導彈發射平台與戰略潛艇等。</DMSE_AntishipMissiles.description>
+  <DMSE_AntishipMissiles.description>解鎖反艦巡飛彈與追蹤世界地圖移動目標的反艦主動雷達尋標器。這類導彈能在鎖定目標後有限次修正彈道，命中移動中的非固定目標，特別是海上移動的導彈發射平台與戰略潛艇。</DMSE_AntishipMissiles.description>
 </LanguageData>

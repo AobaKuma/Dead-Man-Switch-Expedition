@@ -386,16 +386,17 @@
     </projectile>
   </ThingDef>
 
-  <!-- ==================== 搜索雷達（4x4，中登）====================
+  <!-- ==================== 搜索雷達（3x3，中登）====================
        純搜索、2500 W、反隱身 1；不提供火力通道。 -->
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_SearchRadar</defName>
     <label>search radar</label>
     <description>An active search radar with a rotating antenna. It finds and tracks incoming threats for the whole air-defense network, but cannot guide interceptors by itself.\n\nUses a lot of power. Its emissions can be tracked by anti-radiation missiles.</description>
+    <uiIconPath>Things/Building/Icon_Radar_EW</uiIconPath>
     <graphicData>
-      <texPath>Things/Building/FacilityBase</texPath>
+      <texPath>Things/Building/FacilityBase_Green</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(5.2,5.2)</drawSize>
+      <drawSize>(4,4)</drawSize>
       <damageData>
         <cornerTL>Damage/Corner</cornerTL>
         <cornerTR>Damage/Corner</cornerTR>
@@ -420,7 +421,7 @@
       <Mass>300</Mass>
       <Flammability>0.25</Flammability>
     </statBases>
-    <size>(4,4)</size>
+    <size>(3,3)</size>
     <costList>
       <Steel>140</Steel>
       <Tungsteel>120</Tungsteel>
@@ -454,10 +455,10 @@
         <antiStealthLevel>1</antiStealthLevel>
         <ticksPerDistance>8</ticksPerDistance>
       </li>
-      <!-- 純視覺：旋轉天線（閒置擺動調成近乎連續轉動）。 -->
+      <!-- 純視覺：旋轉雷達頂部（閒置擺動調成近乎連續轉動）。 -->
       <li Class="DMSE.CompProperties_TurretFacingRenderer">
-        <texPath>Things/Building/Radar_EarlyFC</texPath>
-        <drawSize>(6.5,6.5)</drawSize>
+        <texPath>Things/Building/Radar_EW</texPath>
+        <drawSize>(13,13)</drawSize>
         <altitudeOffset>0.01</altitudeOffset>
         <rotationSpeedDegPerTick>3</rotationSpeedDegPerTick>
         <idleTurnDegreesPerTick>1.5</idleTurnDegreesPerTick>
@@ -474,8 +475,9 @@
     <defName>DMSE_FireControlRadar</defName>
     <label>fire control radar</label>
     <description>A dedicated fire-control radar. It turns search radar tracks into firing solutions and guides several interceptors at once, much faster and more accurately than early sets.\n\nNeeds a steady power supply. Its emissions can be tracked by anti-radiation missiles.</description>
+    <uiIconPath>Things/Building/icon_Radar_FC</uiIconPath>
     <graphicData>
-      <texPath>Things/Building/FacilityBase</texPath>
+      <texPath>Things/Building/FacilityBase_Green</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(4,4)</drawSize>
       <damageData>
@@ -544,8 +546,8 @@
         <supportsArtilleryGuidance>true</supportsArtilleryGuidance>
       </li>
       <li Class="DMSE.CompProperties_TurretFacingRenderer">
-        <texPath>Things/Building/Radar_EarlyFC</texPath>
-        <drawSize>(5,5)</drawSize>
+        <texPath>Things/Building/Radar_FC</texPath>
+        <drawSize>(4,4)</drawSize>
         <altitudeOffset>0.01</altitudeOffset>
         <rotationSpeedDegPerTick>4</rotationSpeedDegPerTick>
       </li>

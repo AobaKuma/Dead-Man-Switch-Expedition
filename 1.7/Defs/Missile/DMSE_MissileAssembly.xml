@@ -68,7 +68,7 @@
     <guidanceType Class="DMSE.GuidanceType_ActiveRadar" />
     <scatterOffset>-1.5</scatterOffset>
     <researchPrerequisites>
-      <li>DMSE_IntegratedCircuits</li>
+      <li>DMSE_RadarNetwork</li>
     </researchPrerequisites>
     <costList>
       <ComponentIndustrial>4</ComponentIndustrial>
@@ -103,7 +103,7 @@
     <guidanceType Class="DMSE.GuidanceType_ElectromagneticSignal" />
     <scatterOffset>-1.5</scatterOffset>
     <researchPrerequisites>
-      <li>DMSE_IntegratedCircuits</li>
+      <li>DMSE_IntegratedAirDefense</li>
     </researchPrerequisites>
     <costList>
       <ComponentIndustrial>3</ComponentIndustrial>
@@ -119,7 +119,7 @@
     <guidanceType Class="DMSE.GuidanceType_AntiShip" />
     <scatterOffset>-2</scatterOffset>
     <researchPrerequisites>
-      <li>DMSE_IntegratedCircuits</li>
+      <li>DMSE_AntishipMissiles</li>
     </researchPrerequisites>
     <costList>
       <ComponentIndustrial>5</ComponentIndustrial>
@@ -136,7 +136,7 @@
     <guidanceType Class="DMSE.GuidanceType_Laser" />
     <scatterOffset>-2.5</scatterOffset>
     <researchPrerequisites>
-      <li>DMSE_IntegratedCircuits</li>
+      <li>DMSE_FireControlNetwork</li>
     </researchPrerequisites>
     <costList>
       <ComponentIndustrial>3</ComponentIndustrial>

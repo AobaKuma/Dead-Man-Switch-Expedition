@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 using Verse;
 
 namespace DMSE
@@ -6,10 +7,26 @@ namespace DMSE
     public class CompBuildingExtraRenderer : ThingComp
     {
         public CompProperties_BuildingExtraRenderer Props => (CompProperties_BuildingExtraRenderer)props;
+
+        private bool DrawInRealtime => parent != null && parent.def.drawerType == DrawerType.RealtimeOnly;
+
         public override void PostPrintOnto(SectionLayer layer)
         {
             base.PostPrintOnto(layer);
+            if (DrawInRealtime) { return; }
             ExtraGraphic.ForEach(g => g.Print(layer, parent, 0f));
+        }
+
+        public override void PostDraw()
+        {
+            base.PostDraw();
+            if (!DrawInRealtime) { return; }
+
+            Vector3 drawPos = parent.DrawPos;
+            foreach (Graphic graphic in ExtraGraphic)
+            {
+                graphic.Draw(drawPos, parent.Rotation, parent);
+            }
         }
         public override void Notify_DefsHotReloaded()
         {

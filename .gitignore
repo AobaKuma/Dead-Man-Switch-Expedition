@@ -8,6 +8,9 @@
 *.suo
 .vs/
 /docs
+!/docs/
+/docs/*
+!/docs/敵對NPC導彈發射站點_生成與彈藥選型計畫書.md
 # RimWorld 1.7 asset packs baked on Workshop upload (and their local sidecars)
 Assets.zip
 Assets.zip.*

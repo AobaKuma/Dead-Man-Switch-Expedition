@@ -33,7 +33,7 @@
   <ResearchProjectDef ParentName="DMS_BaseTech">
     <defName>DMSE_LoiteringMunitions</defName>
     <label>basic missile engineering</label>
-    <description>Unlocks first-generation loitering munitions, the V2 ballistic missile, launch rails and towers, missile storage racks, missile assembly, and the strike planning table. Advanced guidance and long-range variants require further research.</description>
+    <description>Unlocks first-generation loitering munitions, the V2 ballistic missile, launch rails and towers, missile storage racks, missile assembly, the strike planning table, and the basic high-explosive payload for light missiles. Advanced guidance and long-range variants require further research.</description>
     <baseCost>3500</baseCost>
     <requiredResearchBuilding Inherit="False" />
     <techLevel>Industrial</techLevel>
@@ -121,7 +121,7 @@
   <ResearchProjectDef ParentName="DMS_BaseTech">
     <defName>DMSE_RadarNetwork</defName>
     <label>radar detection network</label>
-    <description>Unlocks the active search radar and its shared early-warning network. Completing this research enables NPC world-map detection, interception, alert escalation, and blockade circles; local map air defence remains available independently.</description>
+    <description>Unlocks the active search radar, active-radar and millimetre-wave missile seekers, radar decoy payloads, and the shared early-warning network. Completing this research enables NPC world-map detection, interception, alert escalation, and blockade circles; local map air defence remains available independently.</description>
     <baseCost>2500</baseCost>
     <requiredResearchBuilding Inherit="False" />
     <techLevel>Industrial</techLevel>
@@ -137,7 +137,7 @@
   <ResearchProjectDef ParentName="DMS_BaseTech">
     <defName>DMSE_FireControlNetwork</defName>
     <label>fire control and interceptor guidance</label>
-    <description>Unlocks independent fire-control radar, multi-channel surface-to-air launchers, and modern interceptor missiles. Search and fire-control radars serve separate roles: a search radar finds and tracks; a fire-control radar locks targets and guides supported interceptors.</description>
+    <description>Unlocks independent fire-control radar, multi-channel surface-to-air launchers, modern interceptor missiles, laser designators and seekers, and missile chaff countermeasures. Search and fire-control radars serve separate roles: a search radar finds and tracks; a fire-control radar locks targets and guides supported interceptors.</description>
     <baseCost>3500</baseCost>
     <requiredResearchBuilding Inherit="False" />
     <techLevel>Industrial</techLevel>
@@ -152,7 +152,7 @@
   <ResearchProjectDef ParentName="DMS_BaseTech">
     <defName>DMSE_IntegratedCircuits</defName>
     <label>advanced missile engineering</label>
-    <description>Unlocks precision guidance components, light and tactical missiles, compact launchers, the Scorer cruise-missile system, and the strike command center. Autonomous seekers do not need a fire-control channel; command-guided and semi-active missiles do.</description>
+    <description>Unlocks core precision guidance, light and tactical missiles, compact launchers, the Scorer cruise-missile system, and the strike command center. Specialized seekers, cruise payloads, and countermeasures are unlocked through their corresponding radar, fire-control, integrated air-defence, strategic, and anti-ship research. Autonomous seekers do not need a fire-control channel; command-guided and semi-active missiles do.</description>
     <baseCost>4000</baseCost>
     <requiredResearchBuilding Inherit="False" />
     <techLevel>Industrial</techLevel>
@@ -167,7 +167,7 @@
   <ResearchProjectDef ParentName="DMS_BaseTech">
     <defName>DMSE_StrategicSystems</defName>
     <label>cutting-edge missile engineering</label>
-    <description>Unlocks strategic launch silos and vertical launch systems, advanced cruise missiles, hypersonic anti-ship weapons, advanced interceptors, and thermonuclear warheads.</description>
+    <description>Unlocks strategic launch silos and vertical launch systems, advanced cruise missiles with terrain-matching and two-way datalink guidance, submunition and bunker-buster payloads, hypersonic anti-ship weapons, advanced interceptors, and thermonuclear warheads.</description>
     <baseCost>6000</baseCost>
     <requiredResearchBuilding Inherit="False" />
     <techLevel>Industrial</techLevel>
@@ -182,7 +182,7 @@
   <ResearchProjectDef ParentName="DMS_BaseTech">
     <defName>DMSE_IntegratedAirDefense</defName>
     <label>phased-array and integrated air defence</label>
-    <description>Unlocks the phased-array radar and the highest-capacity integrated air-defence systems. This military electronics branch requires a radar detection network and fire-control network; Aerospace is only needed by equipment that actually consumes its specialist materials.</description>
+    <description>Unlocks the phased-array radar, the highest-capacity integrated air-defence systems, imaging infrared and electromagnetic-signal seekers, and graphite-filament payloads for electrical attacks. This military electronics branch requires a radar detection network and fire-control network; Aerospace is only needed by equipment that actually consumes its specialist materials.</description>
     <baseCost>6000</baseCost>
     <requiredResearchBuilding Inherit="False" />
     <techLevel>Industrial</techLevel>
@@ -197,7 +197,7 @@
   <ResearchProjectDef ParentName="DMS_BaseTech">
     <defName>DMSE_AntishipMissiles</defName>
     <label>anti-ship missiles</label>
-    <description>Unlocks the anti-ship loitering munition. Supersonic anti-ship missiles also require advanced missile engineering; hypersonic anti-ship missiles require cutting-edge missile engineering.</description>
+    <description>Unlocks the anti-ship loitering munition and active-radar seekers for tracking moving world-map targets. Supersonic anti-ship missiles also require advanced missile engineering; hypersonic anti-ship missiles require cutting-edge missile engineering.</description>
     <baseCost>3500</baseCost>
     <requiredResearchBuilding Inherit="False" />
     <techLevel>Industrial</techLevel>

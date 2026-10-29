@@ -207,6 +207,18 @@
         <reloadCooldownTicks>600</reloadCooldownTicks>
         <interceptorTravelTicks>240</interceptorTravelTicks>
       </li>
+      <li Class="DMSE.CompProperties_BuildingExtraRenderer">
+        <extraGraphic>
+          <li>
+            <texPath>Things/Building/MissileLauncher/building_top</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>(2,4)</drawSize>
+            <drawOffset>(0,0.01875,0)</drawOffset>
+            <drawOffsetEast>(0,0.01875,0.35)</drawOffsetEast>
+            <drawOffsetWest>(0,0.01875,0.35)</drawOffsetWest>
+          </li>
+        </extraGraphic>
+      </li>
     </comps>
     <inspectorTabs>
       <li>RimWorld.ITab_Storage</li>

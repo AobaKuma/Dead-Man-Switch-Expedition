@@ -24,22 +24,22 @@
 
   <DMSE_RadarBasis.label>早期预警与人工火控</DMSE_RadarBasis.label>
   <DMSE_LoiteringMunitions.label>基础导弹工程</DMSE_LoiteringMunitions.label>
-  <DMSE_LoiteringMunitions.description>解锁第一代巡飞弹、V2 弹道导弹、发射轨与塔式发射架、导弹储存架、导弹装配，以及打击规划桌。先进制导与远程型号需要进一步研究。</DMSE_LoiteringMunitions.description>
+  <DMSE_LoiteringMunitions.description>解锁第一代巡飞弹、V2 弹道导弹、发射轨与塔式发射架、导弹储存架、导弹装配、打击规划桌，以及轻型导弹使用的基础高爆载荷。先进制导与远程型号需要进一步研究。</DMSE_LoiteringMunitions.description>
   <DMSE_Ballistics.label>弹道平台研究</DMSE_Ballistics.label>
   <DMSE_Ballistics.description>解锁民兵三型级先进弹道导弹弹体及其专属部件：低当量弹头、星光导引、突防诱饵与分导弹头。直接在战略发射井与塔式发射架内装配。</DMSE_Ballistics.description>
   <DMSE_IntegratedCircuits.label>进阶导弹工程</DMSE_IntegratedCircuits.label>
-  <DMSE_IntegratedCircuits.description>解锁精确制导部件、轻型与战术导弹、紧凑型发射平台、Scorer 巡航导弹系统及打击指挥中心。自主寻标弹不占火控通道；指令制导与半主动制导弹需要外部支援。</DMSE_IntegratedCircuits.description>
+  <DMSE_IntegratedCircuits.description>解锁核心精确制导、轻型与战术导弹、紧凑型发射平台、Scorer 巡航导弹系统及打击指挥中心。红外、激光、主动雷达、毫米波、电磁信号与反舰寻标器，巡航导弹载荷和干扰装置分别由雷达、火控、整合防空、战略及反舰科技解锁。自主寻标弹不占火控通道；指令制导与半主动制导弹需要外部支援。</DMSE_IntegratedCircuits.description>
   <DMSE_StrategicSystems.label>先进导弹工程</DMSE_StrategicSystems.label>
-  <DMSE_StrategicSystems.description>解锁战略发射井与垂直发射系统、先进巡航导弹、高超音速反舰武器、进阶拦截弹与热核弹头。</DMSE_StrategicSystems.description>
+  <DMSE_StrategicSystems.description>解锁战略发射井、垂直发射系统、先进巡航导弹及其地形匹配与双向数据链制导，并解锁子弹药与钻地载荷、高超音速反舰武器、先进拦截弹和热核弹头。</DMSE_StrategicSystems.description>
 
   <DMSE_RadarBasis.description>解锁被动声学预警雷达、需操作员的单通道早期火控雷达、早期旋转发射架与老式防空炮。主动搜索雷达与现代防空网另需研究。</DMSE_RadarBasis.description>
   <DMSE_RadarNetwork.label>雷达探测网</DMSE_RadarNetwork.label>
-  <DMSE_RadarNetwork.description>解锁主动搜索雷达与共享预警网。完成研究后将启用 NPC 世界地图上的探测、拦截、警戒升级及封锁圈；局部地图防空仍可独立运作。</DMSE_RadarNetwork.description>
+  <DMSE_RadarNetwork.description>解锁主动搜索雷达、主动雷达与毫米波导引头、雷达诱饵载荷及共享预警网。完成研究后将启用 NPC 世界地图上的探测、拦截、警戒升级及封锁圈；局部地图防空仍可独立运作。</DMSE_RadarNetwork.description>
   <DMSE_FireControlNetwork.label>火控与拦截制导</DMSE_FireControlNetwork.label>
-  <DMSE_FireControlNetwork.description>解锁独立火控雷达、多通道防空发射器与现代拦截导弹。搜索雷达负责发现与追踪；火控雷达负责锁定并支援需要外部制导的拦截弹。</DMSE_FireControlNetwork.description>
+  <DMSE_FireControlNetwork.description>解锁独立火控雷达、多通道防空发射器、现代拦截导弹、激光指示器与寻标器，以及可打断敌方火控锁定的导弹箔条载荷。搜索雷达负责发现与追踪；火控雷达负责锁定并支援需要外部制导的拦截弹。</DMSE_FireControlNetwork.description>
   <DMSE_IntegratedAirDefense.label>相控阵与整合防空</DMSE_IntegratedAirDefense.label>
-  <DMSE_IntegratedAirDefense.description>解锁相控阵雷达与最高容量的整合防空系统。需要雷达探测网与火控网；只有实际使用航天特种材料的装备才需要航天应用研究。</DMSE_IntegratedAirDefense.description>
+  <DMSE_IntegratedAirDefense.description>解锁相控阵雷达、最高容量的整合防空系统、红外成像与电磁信号寻标器，以及可攻击电网的石墨纤维载荷。需要雷达探测网与火控网；只有实际使用航天特种材料的装备才需要航天应用研究。</DMSE_IntegratedAirDefense.description>
 
   <DMSE_AntishipMissiles.label>反舰导弹</DMSE_AntishipMissiles.label>
-  <DMSE_AntishipMissiles.description>解锁反舰巡飞弹。超音速反舰导弹另需进阶导弹工程，高超音速反舰导弹另需先进导弹工程。</DMSE_AntishipMissiles.description>
+  <DMSE_AntishipMissiles.description>解锁反舰巡飞弹，以及用于追踪世界地图移动目标的反舰主动雷达寻标器。超音速反舰导弹另需进阶导弹工程，高超音速反舰导弹另需先进导弹工程。</DMSE_AntishipMissiles.description>
 </LanguageData>

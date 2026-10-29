@@ -141,7 +141,7 @@
     <guidanceType Class="DMSE.GuidanceType_Laser" />
     <scatterOffset>-1.5</scatterOffset>
     <researchPrerequisites>
-      <li>DMSE_IntegratedCircuits</li>
+      <li>DMSE_FireControlNetwork</li>
     </researchPrerequisites>
     <costList>
       <ComponentIndustrial>3</ComponentIndustrial>

@@ -86,7 +86,7 @@
       <recipeUsers Inherit="False">
         <li>DMS_TableMachinePrinter</li>
       </recipeUsers>
-      <researchPrerequisite>DMSE_IntegratedCircuits</researchPrerequisite>
+      <researchPrerequisite>DMSE_FireControlNetwork</researchPrerequisite>
     </recipeMaker>
     <verbs>
       <li>

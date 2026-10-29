@@ -139,7 +139,7 @@
       <ComponentStamped>4</ComponentStamped>
     </costList>
     <researchPrerequisites>
-      <li>DMSE_IntegratedCircuits</li>
+      <li>DMSE_FireControlNetwork</li>
     </researchPrerequisites>
   </DMSE.MissilePartDef>
 

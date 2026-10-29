@@ -20,5 +20,20 @@
   <DMSE_StructuralFrame_Section.label>結構框架</DMSE_StructuralFrame_Section.label>
   <!-- EN: No description....yet. -->
   <DMSE_StructuralFrame_Section.description>尚無描述。</DMSE_StructuralFrame_Section.description>
+
+  <!-- EN: small field frame -->
+  <DMSE_FieldStructure_SmallFrame.label>野戰構架（小型）</DMSE_FieldStructure_SmallFrame.label>
+  <!-- EN: A decorative frame for field structures. -->
+  <DMSE_FieldStructure_SmallFrame.description>用於野戰結構的裝飾框架。</DMSE_FieldStructure_SmallFrame.description>
+
+  <!-- EN: medium field frame -->
+  <DMSE_FieldStructure_MediumFrame.label>野戰構架（中型）</DMSE_FieldStructure_MediumFrame.label>
+  <!-- EN: A decorative frame for field structures. -->
+  <DMSE_FieldStructure_MediumFrame.description>用於野戰結構的裝飾框架。</DMSE_FieldStructure_MediumFrame.description>
+
+  <!-- EN: medium field section -->
+  <DMSE_FieldStructure_MediumSection.label>野戰構架段（中型）</DMSE_FieldStructure_MediumSection.label>
+  <!-- EN: A decorative frame section for field structures. -->
+  <DMSE_FieldStructure_MediumSection.description>用於野戰結構的裝飾框架段。</DMSE_FieldStructure_MediumSection.description>
   
 </LanguageData>
