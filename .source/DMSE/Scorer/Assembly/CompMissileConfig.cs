@@ -22,7 +22,7 @@ namespace DMSE
     /// config = 已套用（影響發射效果）；pending = 玩家於 ITab 設定的目標。
     /// 兩者不同則需要小人搬運資源裝配；裝配完成後 config = pending。
     /// </summary>
-    public class CompMissileConfig : ThingComp
+    public class CompMissileConfig : ThingComp, IMissileAssemblyTarget
     {
         public MissileConfig config = new MissileConfig();   // 已套用
         public MissileConfig pending = new MissileConfig();  // 待裝配目標
@@ -43,6 +43,29 @@ namespace DMSE
         /// 玩家刻意拆空的導彈也不會在開啟 ITab 時自己長回來。
         /// </summary>
         public bool defaultsSeeded = true;
+
+        // 施工進度：workDone 只對 workDoneFor（開工當下的 pending）有效；
+        // 玩家在 ITab 改了目標構型，舊進度自動作廢，不必在每個改動點重置。
+        private float workDone;
+        private MissileConfig workDoneFor;
+
+        /// <summary>
+        /// 設計名稱（組裝台出廠時寫入）。只在目前 config 等於命名當下的構型（designNameFor）時顯示，
+        /// 改裝後自動失效。
+        /// </summary>
+        private string designName;
+        private MissileConfig designNameFor;
+
+        /// <summary>目前有效的設計名稱；改裝過或沒有命名時為 null。</summary>
+        public string DesignName
+            => !designName.NullOrEmpty() && designNameFor != null && ConfigsEqual(designNameFor, config) ? designName : null;
+
+        public void SetDesignName(string name)
+        {
+            EnsureInit();
+            designName = name.NullOrEmpty() ? null : name;
+            designNameFor = designName != null ? config.Clone() : null;
+        }
 
         public CompProperties_MissileConfig Props => (CompProperties_MissileConfig)props;
 
@@ -120,6 +143,40 @@ namespace DMSE
 
         public bool ResourcesComplete => StillNeeded().Count == 0;
 
+        // ---- IMissileAssemblyTarget ----
+        public Thing Parent => parent;
+
+        public bool WantsWork => assemblyConfirmed && NeedsAssembly;
+
+        public int WorkAmount
+        {
+            get
+            {
+                EnsureInit();
+                return pending?.body != null ? pending.body.assembleWorkAmount : 600;
+            }
+        }
+
+        public float WorkDone
+        {
+            get
+            {
+                EnsureInit();
+                return workDoneFor != null && ConfigsEqual(workDoneFor, pending) ? workDone : 0f;
+            }
+            set
+            {
+                EnsureInit();
+                workDone = value;
+                workDoneFor = value > 0f ? pending.Clone() : null;
+            }
+        }
+
+        /// <summary>改裝只吃小人速度：物品、儲存架、發射井都不是工作台，沒有設施可連。</summary>
+        public float WorkSpeedFor(Pawn pawn) => MissileAssemblyUtility.PawnWorkSpeed(pawn);
+
+        public bool CanFinishNow => true;
+
         public void Deposit(ThingDef def, int count)
         {
             EnsureInit();
@@ -165,6 +222,7 @@ namespace DMSE
             delivered.Clear();
             config = pending.Clone();
             assemblyConfirmed = false;
+            WorkDone = 0f;
         }
 
         /// <summary>
@@ -178,6 +236,7 @@ namespace DMSE
             delivered.Clear();
             config = pending.Clone();
             assemblyConfirmed = false;
+            WorkDone = 0f;
         }
 
         /// <summary>pending 已回到與 config 相同卻仍有搬運資源時，把資源退回（取消裝配）。</summary>
@@ -209,7 +268,7 @@ namespace DMSE
             }
         }
 
-        private static bool ConfigsEqual(MissileConfig a, MissileConfig b)
+        internal static bool ConfigsEqual(MissileConfig a, MissileConfig b)
         {
             if (a == null || b == null) { return a == b; }
             if (a.body != b.body) { return false; }
@@ -271,6 +330,10 @@ namespace DMSE
             Scribe_Collections.Look(ref delivered, "delivered", LookMode.Def, LookMode.Value);
             Scribe_Values.Look(ref assemblyConfirmed, "assemblyConfirmed", false);
             Scribe_Values.Look(ref defaultsSeeded, "defaultsSeeded", true);
+            Scribe_Values.Look(ref workDone, "workDone", 0f);
+            Scribe_Deep.Look(ref workDoneFor, "workDoneFor");
+            Scribe_Values.Look(ref designName, "designName");
+            Scribe_Deep.Look(ref designNameFor, "designNameFor");
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 if (config == null) { config = new MissileConfig(); }

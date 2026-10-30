@@ -40,14 +40,18 @@ namespace DMSE
         public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
             => JobMaker.MakeJob(DMSE_MissileJobDefOf.DMSE_UnloadMissileRack, t);
 
-        /// <summary>容器內第一枚不符合儲存設定的導彈（沒有則為 null）。</summary>
+        /// <summary>
+        /// 容器內第一枚不符合儲存設定的導彈（沒有則為 null）。組裝台「送往倉儲」的成品也視為不允許，
+        /// 所以會被取出並交給原版搬運，台的儲存設定本身不必改動。
+        /// </summary>
         public static Thing FirstDisallowed(IMissileRack rack)
         {
             if (rack.StoredCount == 0) { return null; }
             StorageSettings settings = rack.GetStoreSettings();
+            CompMissileAssemblyBench bench = rack.RackThing?.TryGetComp<CompMissileAssemblyBench>();
             foreach (Thing m in rack.HeldThings)
             {
-                if (!settings.AllowedToAccept(m))
+                if (!settings.AllowedToAccept(m) || (bench != null && bench.IsOutbound(m)))
                 {
                     return m;
                 }

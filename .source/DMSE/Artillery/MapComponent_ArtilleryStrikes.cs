@@ -32,6 +32,9 @@ namespace DMSE
         /// <summary>以目標格為圓心的散佈半徑（格數）。0 = 精準。</summary>
         public float scatterRadius;
 
+        /// <summary>雷達導引：生成時改以當下的敵方目標為中心（找不到則用 <see cref="targetCell"/>）。</summary>
+        public bool guided;
+
         public void ExposeData()
         {
             Scribe_Values.Look(ref fireTick,      "fireTick",      0);
@@ -40,6 +43,7 @@ namespace DMSE
             Scribe_Defs.Look(ref projectileDef,   "projectileDef");
             Scribe_References.Look(ref attackerFaction, "attackerFaction");
             Scribe_Values.Look(ref scatterRadius, "scatterRadius", 0f);
+            Scribe_Values.Look(ref guided,        "guided",        false);
         }
     }
 
@@ -62,6 +66,9 @@ namespace DMSE
         {
             if (req != null) { pending.Add(req); }
         }
+
+        /// <summary>尚未落下的砲彈請求（唯讀；測試用）。</summary>
+        public IReadOnlyList<ArtilleryShellRequest> Pending => pending;
 
         public override void MapComponentTick()
         {

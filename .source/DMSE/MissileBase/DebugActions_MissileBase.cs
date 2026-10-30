@@ -21,15 +21,33 @@ namespace DMSE
             Find.WindowStack.Add(new FloatMenu(options));
         }
 
-        private static void Spawn(PlanetTile origin, float min, float max)
+        /// <summary>野戰發射陣地只給工業等級派系；威脅點數取目前地圖的預設值，結構與守軍再依難度分級。</summary>
+        [DebugAction(Category, "Spawn industrial field launch site near this map...", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void SpawnFieldSiteNearPlayer()
         {
-            WorldObjectDef baseDef = DefDatabase<WorldObjectDef>.GetNamedSilentFail("DMSE_MissileBase");
-            SitePartDef partDef = DefDatabase<SitePartDef>.GetNamedSilentFail("DMSE_MissileBaseSitePart");
+            Map map = Find.CurrentMap;
+            var options = new[] { (5f, 10f), (10f, 15f), (15f, 20f) }
+                .Select(r => new FloatMenuOption($"{r.Item1:0}–{r.Item2:0} tiles", () => Spawn(map.Tile, r.Item1, r.Item2,
+                    "DMSE_FieldLaunchSite", "DMSE_FieldLaunchSitePart", StorytellerUtility.DefaultThreatPointsNow(map), StorytellerUtility.DefaultThreatPointsNow(map)))).ToList();
+            Find.WindowStack.Add(new FloatMenu(options));
+        }
+
+        private static void Spawn(PlanetTile origin, float min, float max,
+            string worldObjectDefName = "DMSE_MissileBase", string sitePartDefName = "DMSE_MissileBaseSitePart", float points = 2000f, float threatPoints = 0f)
+        {
+            WorldObjectDef baseDef = DefDatabase<WorldObjectDef>.GetNamedSilentFail(worldObjectDefName);
+            SitePartDef partDef = DefDatabase<SitePartDef>.GetNamedSilentFail(sitePartDefName);
             if (baseDef == null || partDef == null)
             {
-                Messages.Message("DMSE: missing DMSE_MissileBase or its site part def.", MessageTypeDefOf.RejectInput, false);
+                Messages.Message($"DMSE: missing {worldObjectDefName} or {sitePartDefName}.", MessageTypeDefOf.RejectInput, false);
                 return;
             }
+            Faction faction = Find.FactionManager.AllFactionsListForReading
+                .Where(f => f.HostileTo(Faction.OfPlayer) && partDef.FactionCanOwn(f)).RandomElementWithFallback()
+                ?? DebugMissileUtility.HostileFaction();
+            if (faction != null && !partDef.FactionCanOwn(faction))
+                Messages.Message($"DMSE: no hostile faction can own {sitePartDefName}; using {faction.Name} ({faction.def.techLevel}).",
+                    MessageTypeDefOf.CautionInput, false);
             PlanetTile tile = DebugMissileUtility.TileAtDistance(origin, min, max, buildable: true);
             if (!tile.Valid)
             {
@@ -38,9 +56,8 @@ namespace DMSE
             }
             Site site = (Site)WorldObjectMaker.MakeWorldObject(baseDef);
             site.Tile = tile;
-            Faction faction = DebugMissileUtility.HostileFaction();
             if (faction != null) { site.SetFaction(faction); }
-            site.AddPart(new SitePart(site, partDef, new SitePartParams { points = 2000f }));
+            site.AddPart(new SitePart(site, partDef, new SitePartParams { points = points, threatPoints = threatPoints }));
             Find.WorldObjects.Add(site);
             Messages.Message($"DMSE: missile base spawned at {tile} ({faction?.Name ?? "no faction"}).", site, MessageTypeDefOf.NeutralEvent, false);
         }

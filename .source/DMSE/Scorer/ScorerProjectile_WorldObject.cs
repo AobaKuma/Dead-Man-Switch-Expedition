@@ -8,7 +8,8 @@ namespace DMSE
     /// <summary>
     /// 玩家發射的導彈世界航跡。飛行、存檔與終端更新見 <see cref="MissileWorldObject"/>。
     /// 抵達目標地圖後依導引頭決定落點：電視制導（<see cref="MissileConfig.PlayerChoosesTarget"/>）暫停遊戲由玩家選點，
-    /// 其餘導引頭與慣性制導由 <see cref="GuidanceType.PickCell"/> 自動鎖定。
+    /// 其餘導引頭與慣性制導由 <see cref="GuidanceType.ArrivalCell"/> 自動鎖定；裝了盤旋飛控（<see cref="MissileConfig.LoiterTicks"/>）
+    /// 而導引頭找不到目標時，改為在目標上空盤旋等待（<see cref="MapComponent_BVRCombat.RegisterLoiter"/>）。
     /// </summary>
     public class ScorerProjectile_WorldObject : MissileWorldObject
     {
@@ -92,11 +93,13 @@ namespace DMSE
             // 只有電視制導由玩家手動選點；其餘導引頭（含慣性）依導引頭規則自動鎖定，不暫停遊戲。
             if (config == null || !config.PlayerChoosesTarget)
             {
-                IntVec3 cell = GuidanceType.PickCell(config, map, base.Faction);
-                SpawnIncoming(def, cell, map);
-                Messages.Message(
-                    "DMSE.Missile.SeekerLocked".Translate(config != null ? config.TargetingLabel : "DMSE.Guidance.Inertial".Translate().ToString()),
-                    new TargetInfo(cell, map), MessageTypeDefOf.NeutralEvent, historical: false);
+                // 盤旋飛控：導引頭找不到目標時不直接回退慣性，改在目標上空盤旋等待。
+                IntVec3 cell = GuidanceType.ArrivalCell(config, map, base.Faction, out bool loiter);
+                bool loiterStarted = SpawnIncoming(def, cell, map, loiter);
+                string message = loiterStarted
+                    ? "DMSE.Missile.Loitering".Translate(config.LoiterTicks.ToStringTicksToPeriod()).ToString()
+                    : "DMSE.Missile.SeekerLocked".Translate(config != null ? config.TargetingLabel : "DMSE.Guidance.Inertial".Translate().ToString()).ToString();
+                Messages.Message(message, new TargetInfo(cell, map), MessageTypeDefOf.NeutralEvent, historical: false);
                 Destroy();
                 return;
             }
@@ -145,7 +148,9 @@ namespace DMSE
         }
 
         /// <summary>生成落點導彈（從世界航跡最後一段的方向飛入地圖），並把裝配設定交給它。</summary>
-        private void SpawnIncoming(ThingDef def, IntVec3 cell, Map map)
+        /// <param name="loiter">盤旋飛控：導引頭找不到目標時不落地，改在目標上空盤旋等待；由 <see cref="MissileBVRUtility.TryRegisterLoitering"/> 接手。</param>
+        /// <returns>是否真的進入盤旋（<paramref name="loiter"/> 為 false 或無法交給 BVR 時為 false）。</returns>
+        private bool SpawnIncoming(ThingDef def, IntVec3 cell, Map map, bool loiter = false)
         {
             Thing thing = MissileProjectileMaker.SpawnIncoming(def, cell, map, ArrivalHeading);
             if (thing is IIncomingMissile incoming)
@@ -161,8 +166,11 @@ namespace DMSE
                     p.ApplyLandingScatter();      // 命中偏移套在落點上，BVR 以偏移後的落點登記
                     cell = p.Position;
                 }
+                // 盤旋飛控：改由 BVR 波次接手，飛彈在上空持續尋找目標（期間仍可被終端制導攔截）。
+                if (loiter && MissileBVRUtility.TryRegisterLoitering(thing, cell, incoming.Config)) { return true; }
                 MissileBVRUtility.TryRegister(thing, cell);
             }
+            return false;
         }
     }
 }

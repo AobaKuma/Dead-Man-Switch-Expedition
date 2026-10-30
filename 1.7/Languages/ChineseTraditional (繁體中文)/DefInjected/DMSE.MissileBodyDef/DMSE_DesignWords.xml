@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- 導彈設計名稱用的短詞（MissileDesignNamer）。 -->
+  <DMSE_MissileBody_Light.designWord>輕型</DMSE_MissileBody_Light.designWord>
+  <DMSE_MissileBody_AdvancedLight.designWord>多用途</DMSE_MissileBody_AdvancedLight.designWord>
+  <DMSE_MissileBody_AdvancedCruise.designWord>巡航</DMSE_MissileBody_AdvancedCruise.designWord>
+  <DMSE_MissileBody_Stinger.designWord>防空</DMSE_MissileBody_Stinger.designWord>
+  <DMSE_MissileBody_Maverick.designWord>對地</DMSE_MissileBody_Maverick.designWord>
+  <DMSE_MissileBody_Sparrow.designWord>區域防空</DMSE_MissileBody_Sparrow.designWord>
+  <DMSE_MissileBody_Moskit.designWord>超音速</DMSE_MissileBody_Moskit.designWord>
+  <DMSE_MissileBody_Yj.designWord>極超音速</DMSE_MissileBody_Yj.designWord>
+  <DMSE_MissileBody_Tochka.designWord>戰術</DMSE_MissileBody_Tochka.designWord>
+  <DMSE_MissileBody_Shahed.designWord>巡飛</DMSE_MissileBody_Shahed.designWord>
+  <DMSE_MissileBody_Sabre.designWord>軍刀</DMSE_MissileBody_Sabre.designWord>
+  <DMSE_MissileBody_LegacyBallistic.designWord>老式</DMSE_MissileBody_LegacyBallistic.designWord>
+  <DMSE_MissileBody_AdvancedBallistic.designWord>戰略</DMSE_MissileBody_AdvancedBallistic.designWord>
+</LanguageData>

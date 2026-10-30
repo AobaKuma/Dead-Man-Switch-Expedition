@@ -1,0 +1,463 @@
+/noconfig
+/unsafe-
+/checked-
+/nowarn:1701,1702,1701,1702,8002
+/fullpaths
+/nostdlib+
+/errorreport:prompt
+/warn:10
+/define:TRACE;RW_1_7;DEBUG;NET;NET10_0;NETCOREAPP;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NET9_0_OR_GREATER;NET10_0_OR_GREATER;NETCOREAPP1_0_OR_GREATER;NETCOREAPP1_1_OR_GREATER;NETCOREAPP2_0_OR_GREATER;NETCOREAPP2_1_OR_GREATER;NETCOREAPP2_2_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER
+/highentropyva+
+/nullable:disable
+/reference:C:\Users\user\.nuget\packages\lib.harmony\3.0.0-rc.2\lib\net10.0\0Harmony.dll
+/reference:D:\Steam\steamapps\common\RimWorld\Assembly-CSharp.dll
+/reference:D:\Steam\steamapps\common\RimWorld\Mods\_Fortified-Framework\1.7\Assemblies\Fortified.dll
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\Microsoft.CSharp.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\Microsoft.VisualBasic.Core.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\Microsoft.VisualBasic.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\Microsoft.Win32.Primitives.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\Microsoft.Win32.Registry.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\mscorlib.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\netstandard.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.AppContext.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Buffers.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Collections.Concurrent.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Collections.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Collections.Immutable.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Collections.NonGeneric.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Collections.Specialized.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.ComponentModel.Annotations.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.ComponentModel.DataAnnotations.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.ComponentModel.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.ComponentModel.EventBasedAsync.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.ComponentModel.Primitives.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.ComponentModel.TypeConverter.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Configuration.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Console.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Core.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Data.Common.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Data.DataSetExtensions.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Data.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Diagnostics.Contracts.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Diagnostics.Debug.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Diagnostics.DiagnosticSource.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Diagnostics.FileVersionInfo.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Diagnostics.Process.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Diagnostics.StackTrace.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Diagnostics.TextWriterTraceListener.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Diagnostics.Tools.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Diagnostics.TraceSource.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Diagnostics.Tracing.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Drawing.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Drawing.Primitives.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Dynamic.Runtime.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Formats.Asn1.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Formats.Tar.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Globalization.Calendars.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Globalization.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Globalization.Extensions.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.IO.Compression.Brotli.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.IO.Compression.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.IO.Compression.FileSystem.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.IO.Compression.ZipFile.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.IO.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.IO.FileSystem.AccessControl.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.IO.FileSystem.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.IO.FileSystem.DriveInfo.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.IO.FileSystem.Primitives.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.IO.FileSystem.Watcher.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.IO.IsolatedStorage.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.IO.MemoryMappedFiles.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.IO.Pipelines.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.IO.Pipes.AccessControl.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.IO.Pipes.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.IO.UnmanagedMemoryStream.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Linq.AsyncEnumerable.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Linq.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Linq.Expressions.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Linq.Parallel.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Linq.Queryable.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Memory.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Net.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Net.Http.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Net.Http.Json.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Net.HttpListener.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Net.Mail.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Net.NameResolution.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Net.NetworkInformation.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Net.Ping.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Net.Primitives.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Net.Quic.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Net.Requests.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Net.Security.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Net.ServerSentEvents.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Net.ServicePoint.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Net.Sockets.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Net.WebClient.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Net.WebHeaderCollection.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Net.WebProxy.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Net.WebSockets.Client.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Net.WebSockets.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Numerics.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Numerics.Vectors.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.ObjectModel.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Reflection.DispatchProxy.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Reflection.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Reflection.Emit.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Reflection.Emit.ILGeneration.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Reflection.Emit.Lightweight.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Reflection.Extensions.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Reflection.Metadata.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Reflection.Primitives.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Reflection.TypeExtensions.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Resources.Reader.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Resources.ResourceManager.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Resources.Writer.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Runtime.CompilerServices.Unsafe.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Runtime.CompilerServices.VisualC.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Runtime.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Runtime.Extensions.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Runtime.Handles.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Runtime.InteropServices.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Runtime.InteropServices.JavaScript.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Runtime.InteropServices.RuntimeInformation.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Runtime.Intrinsics.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Runtime.Loader.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Runtime.Numerics.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Runtime.Serialization.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Runtime.Serialization.Formatters.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Runtime.Serialization.Json.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Runtime.Serialization.Primitives.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Runtime.Serialization.Xml.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Security.AccessControl.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Security.Claims.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Security.Cryptography.Algorithms.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Security.Cryptography.Cng.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Security.Cryptography.Csp.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Security.Cryptography.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Security.Cryptography.Encoding.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Security.Cryptography.OpenSsl.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Security.Cryptography.Primitives.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Security.Cryptography.X509Certificates.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Security.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Security.Principal.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Security.Principal.Windows.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Security.SecureString.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.ServiceModel.Web.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.ServiceProcess.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Text.Encoding.CodePages.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Text.Encoding.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Text.Encoding.Extensions.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Text.Encodings.Web.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Text.Json.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Text.RegularExpressions.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Threading.AccessControl.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Threading.Channels.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Threading.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Threading.Overlapped.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Threading.Tasks.Dataflow.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Threading.Tasks.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Threading.Tasks.Extensions.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Threading.Tasks.Parallel.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Threading.Thread.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Threading.ThreadPool.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Threading.Timer.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Transactions.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Transactions.Local.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.ValueTuple.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Web.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Web.HttpUtility.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Windows.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Xml.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Xml.Linq.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Xml.ReaderWriter.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Xml.Serialization.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Xml.XDocument.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Xml.XmlDocument.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Xml.XmlSerializer.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Xml.XPath.dll"
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\System.Xml.XPath.XDocument.dll"
+/reference:D:\Steam\steamapps\common\RimWorld\UnityStubs.dll
+/reference:D:\Steam\steamapps\common\RimWorld\Waylith.dll
+/reference:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\ref\net10.0\WindowsBase.dll"
+/features:"InterceptorsNamespaces=;Microsoft.Extensions.Validation.Generated"
+/debug-
+/filealign:512
+/optimize-
+/out:obj\Debug\DMSE.dll
+/refout:obj\Debug\refint\DMSE.dll
+/target:library
+/warnaserror-
+/utf8output
+/deterministic+
+/langversion:10.0
+/analyzerconfig:obj\Debug\DMSE.GeneratedMSBuildEditorConfig.editorconfig
+/analyzerconfig:"C:\Program Files\dotnet\sdk\10.0.402\Sdks\Microsoft.NET.Sdk\analyzers\build\config\analysislevel_10_default.globalconfig"
+/analyzer:"C:\Program Files\dotnet\sdk\10.0.402\Sdks\Microsoft.NET.Sdk\targets\..\analyzers\Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll"
+/analyzer:"C:\Program Files\dotnet\sdk\10.0.402\Sdks\Microsoft.NET.Sdk\targets\..\analyzers\Microsoft.CodeAnalysis.NetAnalyzers.dll"
+/analyzer:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\analyzers/dotnet/cs/Microsoft.Interop.ComInterfaceGenerator.dll"
+/analyzer:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\analyzers/dotnet/cs/Microsoft.Interop.JavaScript.JSImportGenerator.dll"
+/analyzer:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\analyzers/dotnet/cs/Microsoft.Interop.LibraryImportGenerator.dll"
+/analyzer:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\analyzers/dotnet/cs/Microsoft.Interop.SourceGeneration.dll"
+/analyzer:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\analyzers/dotnet/cs/System.Text.Json.SourceGeneration.dll"
+/analyzer:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\analyzers/dotnet/cs/System.Text.RegularExpressions.Generator.dll"
+Artillery\ArtilleryStrikeUtility.cs
+Artillery\CompArtilleryStrike.cs
+Artillery\MapComponent_ArtilleryStrikes.cs
+Artillery\Projectile_ArtilleryDeparture.cs
+Artillery\WorldObject_ArtilleryStrike.cs
+Building_BatteryGraphene.cs
+Building_MissileRack.cs
+CelestialTransfer\Console\Alerts_Transfer.cs
+CelestialTransfer\Console\CompTransferConsole.cs
+CelestialTransfer\Console\Dialog_RenameTransferShip.cs
+CelestialTransfer\Console\Dialog_TransferPlan.cs
+CelestialTransfer\Console\ITab_TransferShip.cs
+CelestialTransfer\Console\JobDriver_InitiateTransfer.cs
+CelestialTransfer\Console\TransferPlan.cs
+CelestialTransfer\Console\TransferPlanningUtility.cs
+CelestialTransfer\Console\TransferUIUtility.cs
+CelestialTransfer\Console\WorkGiver_InitiateTransfer.cs
+CelestialTransfer\Engines\CompTransferEngine.cs
+CelestialTransfer\Engines\CompTransferReactor.cs
+CelestialTransfer\Engines\PlaceWorker_TransferEngine.cs
+CelestialTransfer\Fuel\TransferFuelSources.cs
+CelestialTransfer\Hellfire\GenStep_ImpactCraterDeposits.cs
+CelestialTransfer\Hellfire\ImpactCraterRecord.cs
+CelestialTransfer\Hellfire\ImpactCraterService.cs
+CelestialTransfer\Hellfire\PlayerConfigSettings.cs
+CelestialTransfer\Hellfire\WorldGenStep_ImpactCraters.cs
+CelestialTransfer\Legacy\MapComponent_Ship.cs
+CelestialTransfer\Legacy\WorldObject_ImpactGravship.cs
+CelestialTransfer\Legacy\WorldObject_Transfer.cs
+CelestialTransfer\Piles\CompProperties_StructuralPile.cs
+CelestialTransfer\Piles\CompStructuralPile.cs
+CelestialTransfer\Piles\GridTopology.cs
+CelestialTransfer\Piles\JobDriver_BuildPileBeam.cs
+CelestialTransfer\Piles\MapComponent_PileNetwork.cs
+CelestialTransfer\Piles\MapDrawLayer_StructuralBeams.cs
+CelestialTransfer\Piles\PileBeamOrder.cs
+CelestialTransfer\Piles\PileDrawUtility.cs
+CelestialTransfer\Piles\PileLinkUtility.cs
+CelestialTransfer\Piles\PileNetwork.cs
+CelestialTransfer\Piles\PileResources.cs
+CelestialTransfer\Piles\PlaceWorker_StructuralPile.cs
+CelestialTransfer\Piles\WorkGiver_BuildPileBeam.cs
+CelestialTransfer\Piles\WorkGiver_DeliverPileBeamMaterials.cs
+CelestialTransfer\Ship\MapComponent_TransferBurn.cs
+CelestialTransfer\Ship\Patch_TransferShuttles.cs
+CelestialTransfer\Ship\ShipSeparationUtility.cs
+CelestialTransfer\Ship\TransferEngineEffects.cs
+CelestialTransfer\Ship\TransferGraceUtility.cs
+CelestialTransfer\Ship\TransferImpactUtility.cs
+CelestialTransfer\Ship\TransferLandingUtility.cs
+CelestialTransfer\Ship\TransferTakeoffCutscene.cs
+CelestialTransfer\Ship\WorldObject_TransferShip.cs
+CelestialTransfer\TransferFlightMath.cs
+CelestialTransfer\TransferFlightTuningDef.cs
+CelestialTransfer\TransferReadiness.cs
+CelestialTransfer\TransferShipSurvey.cs
+CelestialTransfer\WorldDrawLayer_SpaceTiles.cs
+CompBuildingExtraRenderer.cs
+CompDurabilityDecay.cs
+CompMissileBodyRenderer.cs
+CompMissileLauncher.cs
+CompMissileRackRenderer.cs
+CompOxygenCandle.cs
+CompPowerPlantPhotovoltaic.cs
+CompProperties_ApparelHediffs.cs
+CompProperties_BatteryGraphene.cs
+CompProperties_SolidBoosterThruster.cs
+CompVacuumPump.cs
+DefOf.cs
+Dev\MissileSizeTuner.cs
+DMSEMod.cs
+DMSEUI.cs
+MissileBase\CompMissileRackStorage.cs
+MissileBase\DebugActions_MissileBase.cs
+MissileBase\FieldLaunchSiteRoads.cs
+MissileBase\GenStep_FieldLaunchSite.cs
+MissileBase\GenStep_MissileBaseCrew.cs
+MissileBase\IMissileRack.cs
+MissileBase\IncidentWorker_FieldLaunchSite.cs
+MissileBase\LordJob_MissileCrewDuty.cs
+MissileBase\LordJob_MissileStationCrew.cs
+MissileBase\MapComponent_MissileBase.cs
+MissileBase\MissileAutoFillUtility.cs
+MissileBase\MissileBaseRackSupply.cs
+MissileBase\Patch_MissileBaseReentry.cs
+MissileBase\SitePartWorker_MissileBase.cs
+MissileBase\WorldObjectComp_MissileBase.cs
+MissileFx\FxCanvas.cs
+MissileFx\FxLighting.cs
+MissileFx\FxSmokeParticles.cs
+MissileFx\FxWind.cs
+MissileFx\LaunchFxBudget.cs
+MissileFx\LaunchFxEmitter.cs
+MissileFx\LaunchFxProfileDef.cs
+MissileFx\MapComponent_MissileFx.cs
+MissileFx\TickInterpolation.cs
+MissileProjectile\IMissileFlight.cs
+MissileProjectile\MapComponent_MissileLaunchQueue.cs
+MissileProjectile\MissileArrivalKinematics.cs
+MissileProjectile\MissileDepartureKinematics.cs
+MissileProjectile\MissileFlightExtension.cs
+MissileProjectile\MissileFlightTrace.cs
+MissileProjectile\MissileImpactUtility.cs
+MissileProjectile\MissileMapEntryUtility.cs
+MissileProjectile\MissileProjectileMaker.cs
+MissileProjectile\MissileShieldUtility.cs
+MissileProjectile\Projectile_MissileBase.cs
+MissileProjectile\Projectile_MissileIncoming.cs
+MissileProjectile\Projectile_MissileLaunch.cs
+ModExtension_ReplacePawn.cs
+PatchMain.cs
+PatchOperationSpaceTraversal.cs
+Patch_Replace.cs
+PlaceWorkers\PlaceWorker_NoAdjacentSameLayer.cs
+Platform\Designator_RemovePlatform.cs
+Platform\JobDriver_RemovePlatform.cs
+Platform\PlatformEdgeTextureFix.cs
+Platform\PlatformRemoval.cs
+Platform\SectionLayer_PlatformHull.cs
+Platform\WorkGiver_RemovePlatform.cs
+Properties\AssemblyInfo.cs
+Renameable\CompRenameable.cs
+Renameable\Dialog_RenameBuilding.cs
+Renameable\Patch_InspectPaneRename.cs
+Renameable\Patch_ThingLabel.cs
+RetiredDefRemap.cs
+ScenPart_Huntdown.cs
+Scorer\Alerts_Exist.cs
+Scorer\Assembly\CompMissileAssemblyBench.cs
+Scorer\Assembly\CompMissileConfig.cs
+Scorer\Assembly\DebugActions_Missile.cs
+Scorer\Assembly\Dialog_MissileAssemblyBench.cs
+Scorer\Assembly\Dialog_MissileDesignList.cs
+Scorer\Assembly\GuidanceType.cs
+Scorer\Assembly\IMissileAssemblyTarget.cs
+Scorer\Assembly\IncomingMissileUtility.cs
+Scorer\Assembly\ITab_MissileAssembly.cs
+Scorer\Assembly\ITab_MissileInventory.cs
+Scorer\Assembly\JobDriver_AssembleMissile.cs
+Scorer\Assembly\JobDriver_DeliverMissileResource.cs
+Scorer\Assembly\JobDriver_LoadMissileLauncher.cs
+Scorer\Assembly\JobDriver_UnloadMissileRack.cs
+Scorer\Assembly\MapComponent_GodModeAssembly.cs
+Scorer\Assembly\MissileAssemblyCost.cs
+Scorer\Assembly\MissileAssemblyUtility.cs
+Scorer\Assembly\MissileBVRUtility.cs
+Scorer\Assembly\MissileConfig.cs
+Scorer\Assembly\MissileDefs.cs
+Scorer\Assembly\MissileDesignBlueprint.cs
+Scorer\Assembly\MissileDesignNamer.cs
+Scorer\Assembly\MissileDesignUI.cs
+Scorer\Assembly\MissileIncoming.cs
+Scorer\Assembly\MissileItemExtension.cs
+Scorer\Assembly\MissileItemUtility.cs
+Scorer\Assembly\MissileLauncherExtension.cs
+Scorer\Assembly\MissileNamerDef.cs
+Scorer\Assembly\MissileResearchUnlocks.cs
+Scorer\Assembly\Patch_Refuel_CarryConfig.cs
+Scorer\Assembly\Patch_SpawnMissileIncoming.cs
+Scorer\Assembly\PayloadEffect.cs
+Scorer\Assembly\WarheadEffect.cs
+Scorer\Assembly\WorkGiver_AssembleMissile.cs
+Scorer\Assembly\WorkGiver_LoadMissileLauncher.cs
+Scorer\Assembly\WorkGiver_UnloadMissileRack.cs
+Scorer\Assembly\WorkTableStatsExtension.cs
+Scorer\Assembly\WorldObject_IncomingMissile.cs
+Scorer\Ballistic\CompBallisticLauncher.cs
+Scorer\Ballistic\JobDriver_AssembleBallisticSilo.cs
+Scorer\Ballistic\WorkGiver_AssembleBallisticSilo.cs
+Scorer\CompEffecterColdLaunch.cs
+Scorer\CompEffecterHotLaunch.cs
+Scorer\CompLaunchBackblast.cs
+Scorer\CompMissileRailLauncher.cs
+Scorer\CompPlaySoundOnSpawn.cs
+Scorer\CompScorer.cs
+Scorer\GameComponent_MissileEngage.cs
+Scorer\Guidance\LaserDesignator.cs
+Scorer\MissileAlertThrottle.cs
+Scorer\MissileWorldObject.cs
+Scorer\MissileWorldUtility.cs
+Scorer\Patch_ShouldBeRemoved.cs
+Scorer\ScorerProjectile.cs
+Scorer\ScorerProjectile_WorldObject.cs
+Scorer\Strike\CompStrikeConsole.cs
+Scorer\Strike\DebugActions_Strike.cs
+Scorer\Strike\Dialog_RenameStrikeMission.cs
+Scorer\Strike\Dialog_StrikePlan.cs
+Scorer\Strike\MapComponent_StrikePlanner.cs
+Scorer\Strike\MissileRoleExtension.cs
+Scorer\Strike\StrikeMission.cs
+Scorer\Strike\StrikeMissionNamer.cs
+Scorer\Strike\StrikeReservation.cs
+Scorer\Strike\StrikeRoundUtility.cs
+Scorer\Strike\StrikeTimeline.cs
+Scorer\Strike\WorkGiver_ComputeFiringSolution.cs
+Scorer\Strike\WorldComponent_StrikeReports.cs
+SkyFallerTurret\Alerts_BVRStatus.cs
+SkyFallerTurret\Alerts_PlayerMissiles.cs
+SkyFallerTurret\Alerts_Pods.cs
+SkyFallerTurret\BVR\BVRTargetProps.cs
+SkyFallerTurret\BVR\BVRWave.cs
+SkyFallerTurret\BVR\CompBuildingTurretGun.cs
+SkyFallerTurret\BVR\CompBVRDevice.cs
+SkyFallerTurret\BVR\CompFireControlRadar.cs
+SkyFallerTurret\BVR\CompMannableMissileLauncher.cs
+SkyFallerTurret\BVR\CompMissileLauncher.cs
+SkyFallerTurret\BVR\CompSearchRadar.cs
+SkyFallerTurret\BVR\CompTerminalCIWS.cs
+SkyFallerTurret\BVR\CompTurretFacingRenderer.cs
+SkyFallerTurret\BVR\InterceptDebris\DebugActions_InterceptFx.cs
+SkyFallerTurret\BVR\InterceptDebris\InterceptDebrisChunk.cs
+SkyFallerTurret\BVR\InterceptDebris\InterceptDebrisFlecks.cs
+SkyFallerTurret\BVR\InterceptDebris\InterceptDebrisPhysics.cs
+SkyFallerTurret\BVR\InterceptDebris\InterceptDebrisProfileDef.cs
+SkyFallerTurret\BVR\InterceptDebris\InterceptEventData.cs
+SkyFallerTurret\BVR\InterceptDebris\InterceptFxBudget.cs
+SkyFallerTurret\BVR\InterceptDebris\InterceptFxMaterial.cs
+SkyFallerTurret\BVR\InterceptDebris\InterceptGeometry.cs
+SkyFallerTurret\BVR\JobDriver_ManMissileLauncher.cs
+SkyFallerTurret\BVR\ManPortableSAM.cs
+SkyFallerTurret\BVR\MapComponent_BVRCombat.cs
+SkyFallerTurret\BVR\MapComponent_InterceptEffects.cs
+SkyFallerTurret\BVR\WeatherEvent_MissileFlash.cs
+SkyFallerTurret\BVR\World\Alert\AirDefenseAlertPolicy.cs
+SkyFallerTurret\BVR\World\Alert\AirDefenseAlertTuningDef.cs
+SkyFallerTurret\BVR\World\Alert\AirDefenseAlertUI.cs
+SkyFallerTurret\BVR\World\Alert\AirDefenseObservation.cs
+SkyFallerTurret\BVR\World\Alert\AirspaceRestrictionUtility.cs
+SkyFallerTurret\BVR\World\Alert\Patch_AirspaceRestriction.cs
+SkyFallerTurret\BVR\World\Alert\WorldComponent_FactionAirDefenseAlert.cs
+SkyFallerTurret\BVR\World\Alert_WorldIncoming.cs
+SkyFallerTurret\BVR\World\BVRChannelLedger.cs
+SkyFallerTurret\BVR\World\BVRInterceptSolver.cs
+SkyFallerTurret\BVR\World\BVRNode.cs
+SkyFallerTurret\BVR\World\BVRTrackState.cs
+SkyFallerTurret\BVR\World\BVRWorldDrawer.cs
+SkyFallerTurret\BVR\World\BVRWorldTuningDef.cs
+SkyFallerTurret\BVR\World\IBVRDefense.cs
+SkyFallerTurret\BVR\World\IBVRTrack.cs
+SkyFallerTurret\BVR\World\MissileWorldMotion.cs
+SkyFallerTurret\BVR\World\Patch_HiddenTracks.cs
+SkyFallerTurret\BVR\World\WorldComponent_BVRNetwork.cs
+SkyFallerTurret\BVR\World\WorldObjectComp_AirDefense.cs
+SkyFallerTurret\BVR\World\WorldObject_DropPodTrack.cs
+SkyFallerTurret\BVR\World\WorldObject_Interceptor.cs
+SkyFallerTurret\CompProperties_InterceptRadar.cs
+SkyFallerTurret\CompSkyfallerTurret.cs
+SkyFallerTurret\EarlyWarningUtility.cs
+SkyFallerTurret\InterceptProjectile.cs
+SkyFallerTurret\InterceptSkyfallerUtility.cs
+SkyFallerTurret\MapComponent_InterceptSkyfaller.cs
+SkyFallerTurret\Patch_MakeDropPodAt.cs
+SkyFallerTurret\Patch_QuestPart_Bossgroup.cs
+Utilities\ImpactCraterUtility.cs
+VacuumRoom\CompLandFillable.cs
+VacuumRoom\GenStep_Prefab.cs
+VacuumRoom\JobDriver_LandFill.cs
+"obj\Debug\.NETCoreApp,Version=v10.0.AssemblyAttributes.cs"
+/warnaserror+:NU1605,SYSLIB0011

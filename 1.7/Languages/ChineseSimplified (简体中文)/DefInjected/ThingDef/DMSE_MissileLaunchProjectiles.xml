@@ -6,6 +6,7 @@
   <DMSE_Launch_LegacyBallistic.label>老式弹道导弹（升空）</DMSE_Launch_LegacyBallistic.label>
   <DMSE_Launch_LegacyLoiter.label>老式巡飞弹（升空）</DMSE_Launch_LegacyLoiter.label>
   <DMSE_Launch_Shahed.label>远程巡飞弹（升空）</DMSE_Launch_Shahed.label>
+  <DMSE_Launch_Sabre.label>轻型巡飞弹（升空）</DMSE_Launch_Sabre.label>
   <DMSE_Launch_LegacyInterceptor.label>老式拦截巡飞弹（升空）</DMSE_Launch_LegacyInterceptor.label>
   <DMSE_Launch_AdvancedLight.label>先进通用导弹（升空）</DMSE_Launch_AdvancedLight.label>
   <DMSE_Launch_AdvancedBallistic.label>先进弹道导弹（升空）</DMSE_Launch_AdvancedBallistic.label>

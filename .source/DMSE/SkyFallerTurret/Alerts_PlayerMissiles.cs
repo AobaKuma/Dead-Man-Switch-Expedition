@@ -35,8 +35,10 @@ namespace DMSE
 
                 foreach (BVRWave wave in comp.Waves)
                 {
-                    // 防禦方不是玩家 → 玩家正在攻擊此地圖
-                    if (wave.defenderFaction == null || wave.defenderFaction.IsPlayer) continue;
+                    // 防禦方不是玩家 → 玩家正在攻擊此地圖。
+                    // 沒有任何防空的一方也照樣回報盤旋中的飛彈（玩家需要知道自己的無人機還在等目標）。
+                    if (wave.defenderFaction != null && wave.defenderFaction.IsPlayer) continue;
+                    if (wave.defenderFaction == null && !wave.loitering) continue;
 
                     foreach (BVRTarget target in wave.targets)
                     {
@@ -66,7 +68,8 @@ namespace DMSE
                 if (comp == null) continue;
                 foreach (BVRWave wave in comp.Waves)
                 {
-                    if (wave.defenderFaction == null || wave.defenderFaction.IsPlayer) continue;
+                    if (wave.defenderFaction != null && wave.defenderFaction.IsPlayer) continue;
+                    if (wave.defenderFaction == null && !wave.loitering) continue;
                     foreach (BVRTarget target in wave.targets)
                     {
                         if (target.Missile is IIncomingMissile mi && mi.Attacker?.IsPlayer == true)
@@ -154,14 +157,20 @@ namespace DMSE
                 {
                     BVRWave wave = waveKv.Key;
                     int timeLeft = wave.tickToImpact - now;
-                    sb.AppendLine("DMSE.Alert.PlayerMissiles.WaveImpact".Translate(
-                        timeLeft.ToStringTicksToPeriod(allowSeconds: false)));
+                    // 盤旋飛控：導彈在上空等待目標，不會「衝擊」，改報盤旋剩餘時間。
+                    sb.AppendLine(wave.loitering
+                        ? "DMSE.Alert.Pods.Window.Loitering".Translate(
+                            Mathf.Max(0, wave.loiterUntil - now).ToStringTicksToPeriod(allowSeconds: false))
+                        : "DMSE.Alert.PlayerMissiles.WaveImpact".Translate(
+                            timeLeft.ToStringTicksToPeriod(allowSeconds: false)));
 
                     foreach (BVRTarget target in waveKv.Value)
                     {
                         // 攔截狀態
                         string statusKey;
-                        if (target.midcourseEngagedUntil > now)
+                        if (wave.loitering)
+                            statusKey = "DMSE.Alert.Pods.Status.Loitering";
+                        else if (target.midcourseEngagedUntil > now)
                             statusKey = "DMSE.Alert.Pods.Status.InFlight";
                         else if (target.lockUntil > now)
                             statusKey = "DMSE.Alert.Pods.Status.Locking";

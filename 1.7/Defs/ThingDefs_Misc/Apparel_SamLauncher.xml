@@ -6,13 +6,18 @@
        - 與 DMS 拋棄式發射器（DMS_DeposableRocketLauncher）同為腰帶層 Apparel，不占主武器欄。
        - DMSE.CompProperties_ManPortableSAM 繼承原版 CompProperties_ApparelReloadable：
          彈藥是輕型防空導彈（DMSE_Missile_Stinger），一發一枚，用原版「裝填」工作從地上的導彈裝入；
+         也能裝輕型巡飛彈（DMSE_Missile_Sabre，extraAmmoDefs），只能對地射擊、不能防空；
          防空 Gizmo 與對地射擊（原版 Verb_LaunchProjectile）共用裝填彈數。
          裝填時記下每枚導彈的裝配設定（彈體、戰鬥部），發射時沿用。
        - 不掛 tradeTags / apparelTags：不會出現在任何陣營的生成裝備池。 -->
   <ThingDef ParentName="ApparelNoQualityBase">
     <defName>DMSE_Apparel_SamLauncher</defName>
     <label>man-portable SAM launcher</label>
-    <description>A shoulder-fired anti-air launcher with a simple friend-or-foe antenna and a helmet-linked sight. It is carried on the back, leaving the hands free for a main weapon. The user must stand still to lock on.\n\nLoad with light surface-to-air missiles. It fires at incoming threats already tracked by your radar network on this map, and needs no fire-control channel.</description>
+    <description>A shoulder-fired anti-air launcher with a simple friend-or-foe antenna and a helmet-linked sight. It is carried on the back, leaving the hands free for a main weapon. The user must stand still to lock on.\n\nLoad with light surface-to-air missiles. It fires at incoming threats already tracked by your radar network on this map, and needs no fire-control channel.\n\nIt can also be loaded by hand with Sabre light loitering munitions, which it fires only at ground targets, with a much longer reach.</description>
+    <descriptionHyperlinks>
+      <ThingDef>DMSE_Missile_Stinger</ThingDef>
+      <ThingDef>DMSE_Missile_Sabre</ThingDef>
+    </descriptionHyperlinks>
     <graphicData>
       <texPath>Things/Weapons/DMSE_Stinger</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -98,12 +103,14 @@
     <burnableByRecipe>false</burnableByRecipe>
     <drawGUIOverlay>false</drawGUIOverlay>
     <!-- 對地射擊：原版 Verb_LaunchProjectile 每發呼叫 UsedOnce 扣一發裝填彈。
-         Apparel 動詞不會被 AI 自動使用，只在玩家下令時發射。 -->
+         Apparel 動詞不會被 AI 自動使用，只在玩家下令時發射。
+         每種彈藥一個動詞（ammoDef），只有下一發彈藥的那個會顯示、可用（DMSE.Verb_LaunchManPortableMissile）。 -->
     <verbs>
-      <li>
+      <li Class="DMSE.VerbProperties_ManPortableMissile">
+        <ammoDef>DMSE_Missile_Stinger</ammoDef>
         <label>fire missile</label>
         <commandIcon>Things/Weapons/DMSE_Stinger</commandIcon>
-        <verbClass>Verb_LaunchProjectile</verbClass>
+        <verbClass>DMSE.Verb_LaunchManPortableMissile</verbClass>
         <hasStandardCommand>true</hasStandardCommand>
         <defaultProjectile>DMSE_Projectile_Stinger</defaultProjectile>
         <warmupTime>2.5</warmupTime>
@@ -126,12 +133,45 @@
           <canTargetPawns>true</canTargetPawns>
         </targetParams>
       </li>
+      <!-- 軍刀巡飛彈：光電尋標頭俯衝攻擊，射程遠、落點準，但瞄準較久。 -->
+      <li Class="DMSE.VerbProperties_ManPortableMissile">
+        <ammoDef>DMSE_Missile_Sabre</ammoDef>
+        <label>launch loitering munition</label>
+        <commandIcon>Things/Missile/S570/ammo</commandIcon>
+        <verbClass>DMSE.Verb_LaunchManPortableMissile</verbClass>
+        <hasStandardCommand>true</hasStandardCommand>
+        <defaultProjectile>DMSE_Projectile_Sabre</defaultProjectile>
+        <warmupTime>3.5</warmupTime>
+        <accuracyTouch>0.9</accuracyTouch>
+        <accuracyShort>0.95</accuracyShort>
+        <accuracyMedium>0.95</accuracyMedium>
+        <accuracyLong>0.95</accuracyLong>
+        <!-- 爆炸投射物：原版要求設 forcedMissRadius；有導引所以很小。 -->
+        <forcedMissRadius>1</forcedMissRadius>
+        <minRange>6.9</minRange>
+        <range>55.9</range>
+        <requireLineOfSight>false</requireLineOfSight>
+        <burstShotCount>1</burstShotCount>
+        <soundCast>Shot_IncendiaryLauncher</soundCast>
+        <soundCastTail>GunTail_Heavy</soundCastTail>
+        <muzzleFlashScale>8</muzzleFlashScale>
+        <ai_IsWeapon>false</ai_IsWeapon>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+          <canTargetBuildings>true</canTargetBuildings>
+          <canTargetPawns>true</canTargetPawns>
+        </targetParams>
+      </li>
     </verbs>
     <comps>
       <li Class="DMSE.CompProperties_ManPortableSAM">
         <!-- 原版裝填（CompApparelReloadable） -->
         <maxCharges>2</maxCharges>
         <ammoDef>DMSE_Missile_Stinger</ammoDef>
+        <!-- 也能手動裝填軍刀巡飛彈（右鍵選單；原版自動裝填只找刺針）。 -->
+        <extraAmmoDefs>
+          <li>DMSE_Missile_Sabre</li>
+        </extraAmmoDefs>
         <ammoCountPerCharge>1</ammoCountPerCharge>
         <baseReloadTicks>180</baseReloadTicks>
         <soundReload>Standard_Reload</soundReload>

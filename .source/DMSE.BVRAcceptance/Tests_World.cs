@@ -271,7 +271,8 @@ namespace DMSE.BVRAcceptance
             int stockBefore = defense.Stock;
             t.Check(stockBefore == defense.Props.interceptorStock, $"full stock {stockBefore}");
 
-            ScorerProjectile_WorldObject wo = LaunchPlayerMissile(site.Tile, site, CruiseConfig("DMSE_Guidance_EMSignal"));
+            MissileConfig emConfig = CruiseConfig("DMSE_Guidance_EMSignal");
+            ScorerProjectile_WorldObject wo = LaunchPlayerMissile(site.Tile, site, emConfig);
             var waitLaunch = new WaitUntil(() => wo.Destroyed || wo.State.interceptor != null, 3000);
             yield return waitLaunch;
             t.Require(!wo.Destroyed && wo.State.interceptor != null, "the NPC base launches an interceptor at the player missile");
@@ -300,7 +301,10 @@ namespace DMSE.BVRAcceptance
             // The map was generated at the arrival tick, before its power net switched anything on (see S3).
             Thing radar = baseMap.listerThings.ThingsOfDef(PhaseArray).FirstOrDefault();
             t.Check(radar != null && expected == radar.Position, $"the phased array is the biggest power draw on the base ({expected})");
-            t.Check(landing.Contains(expected), $"EM seeker locked it on arrival (landing {string.Join(",", landing)})");
+            // The landing cell carries the guidance hit scatter (MissileImpactUtility.ScatterCell), so allow its radius.
+            float scatter = Mathf.Max(0f, Mathf.Round(emConfig.Scatter)) + 0.5f;
+            t.Check(landing.Any(c => c.DistanceTo(expected) <= scatter),
+                $"EM seeker locked it on arrival (landing {string.Join(",", landing)} within {scatter:0.#} of {expected})");
 
             Current.Game.DeinitAndRemoveMap(baseMap, false);
             yield return WaitPowered(); yield return new WaitTicks(2);

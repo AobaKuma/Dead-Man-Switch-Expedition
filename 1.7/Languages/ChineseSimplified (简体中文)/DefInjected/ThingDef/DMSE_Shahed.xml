@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
   <DMSE_Missile_Shahed.label>远程巡飞弹</DMSE_Missile_Shahed.label>
-  <DMSE_Missile_Shahed.description>一种从发射轨射出、以推进式螺旋桨飞行的廉价三角翼攻击无人机。能带着小型弹头飞得很远，但速度慢、容易被击落。\n\n出厂配备惯性制导，落点散布在目标地图中央附近。可加装电视制导模组自行指定落点，但会多占用一条火控通道。</DMSE_Missile_Shahed.description>
+  <DMSE_Missile_Shahed.description>一种从发射轨射出、以推进式螺旋桨飞行的廉价三角翼攻击无人机。能带着小型弹头飞得很远，但速度慢、容易被击落。\n\n出厂配备惯性制导，落点散布在目标地图中央附近。可加装电视制导模组自行指定落点，但会多占用一条火控通道。改装反辐射雷达导引头并搭配盘旋飞控后，若没有开机中的雷达可锁，它会盘旋在上空等待，而不是盲目落下。</DMSE_Missile_Shahed.description>
   <DMSE_Incoming_Shahed.label>远程巡飞弹（来袭）</DMSE_Incoming_Shahed.label>
 </LanguageData>

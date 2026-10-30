@@ -111,6 +111,8 @@ _Dead-Man-Switch-Expedition/
 
 **建造時自帶零件**：**物品型態**的彈體在 `MissileBodyDef.defaultParts` 宣告一組預設零件，新造的導彈物品會直接套用（`MissileConfig.NewWithDefaults()`）；零件材料已併入該物品的 `costList` 與 `MarketValue`。**發射井／發射架建造完成時是空的**（不帶彈體），彈道彈體都在井／塔上裝配、材料依所選零件另計。之後換部件或發射後重新裝填也要另外收費。舊存檔不會白送零件（`CompMissileConfig.defaultsSeeded` 讀檔時視為已播種）。
 
+**導彈組裝台**（`DMSE_MissileAssemblyBench`，2×4，研究「基本導彈工程」）：從零生產可自定義的物品型導彈。按台上的「裝配設定」打開窗口，選彈體與部件、命名設計、選數量與出廠去向（留在台上供發射平台直接裝填／送往倉儲）後下單；小人一次收一枚份的料、施工、出廠一枚，成品出廠即為完成彈。材料與工作量都與「在列印台做預設彈再用 ITab 改裝」相同——組裝台是便利、不是折扣。施工速度＝小人 `GeneralLaborSpeed` × 台的工作速度係數：工具櫃（+6%，最多 2 個）、DMS 機械櫃（+5%，最多 8 個，需電）加速，戶外 ×0.8、溫度不在 9–35°C ×0.7，算式在台的資訊卡上逐條可見。改裝（ITab）也依小人工作速度施工，進度中斷可接續。設計可存成跨存檔的方案檔（`Config/DMSE_MissileDesigns/*.xml`，可直接分享）。命名依彈體各有一套規則：型號代字＋編號（鷹擊-16、沙赫德-143、民兵-4）＋部件詞，改部件只換詞、不換編號。設計與驗收見 [導彈組裝台與裝配方案_實作計畫](docs/導彈組裝台與裝配方案_實作計畫.md)。
+
 **世界層 P4**：
 - **數據鏈**：同陣營任一節點看到航跡，全陣營都能接戰（不必是目的地節點自己看到）。
 - **區域防禦**：節點可攔截「飛越自己覆蓋範圍」的航跡；目的地節點優先，其餘用通用會合求解（`BVRInterceptSolver.TrySolveGeneral`，對交叉目標二分求解）。
@@ -127,7 +129,7 @@ _Dead-Man-Switch-Expedition/
 
 內容驗證（不啟動遊戲）：
 ```bash
-python .source/Tools/check_missile_content.py .   # 槽位覆蓋、預設零件、建造成本、收納、高度、Class 參照、翻譯
+python .source/Tools/check_missile_content.py .   # 槽位覆蓋、預設零件、建造成本、收納、高度、Class 參照、翻譯、組裝台產品／命名樣板／庇護
 python .source/Tools/check_bvr_world.py .
 dotnet run --project .source/DMSE.BVRTests/DMSE.BVRTests.csproj -c Release --no-restore -p:RimWorldDir=<RimWorld>/
 ```

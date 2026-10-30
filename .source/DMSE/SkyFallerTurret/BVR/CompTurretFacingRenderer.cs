@@ -224,6 +224,9 @@ namespace DMSE
             }
             if (bestTarget == null) { return null; }
 
+            // 盤旋中的導彈就停在落點上空：砲頭直接朝落點，不必重建來襲航線。
+            if (bestWave.loitering) { return bestTarget.position; }
+
             // 中程追蹤與 CIWS 共用來襲方位基準；BVRTarget.position 是落點，直接追它會讓砲頭偏離來襲航線。
             Vector3 landing = bestTarget.position.ToVector3Shifted();
             float heading = InterceptGeometry.IncomingHeading(bestTarget.Payload, landing, parent.Position.ToVector3Shifted(), out bool hasHeading);

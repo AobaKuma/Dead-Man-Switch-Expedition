@@ -18,6 +18,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvCruise_Warhead_Unitary</defName>
     <label>unitary penetrating warhead</label>
+    <designWord>Unitary</designWord>
     <description>A single large charge in a light, tough casing. It hits harder than the old Scorer warhead and can punch through a roof before it detonates.</description>
     <category>Warhead</category>
     <compatibleBodies>
@@ -39,6 +40,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvCruise_Warhead_Penetrator</defName>
     <label>hard-target penetrator</label>
+    <designWord>Penetrator</designWord>
     <description>A dense tungsten penetrator that punches through thick roofs and overhead mountain before detonating inside. Underground shelters offer no protection against it.</description>
     <category>Warhead</category>
     <compatibleBodies>
@@ -65,6 +67,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvCruise_Guidance_TerrainMatch</defName>
     <label>terrain-matching guidance</label>
+    <designWord>TERCOM</designWord>
     <description>Guidance that compares the ground below with a stored map, giving very tight dispersion. It cannot be retargeted in flight and has no terminal guidance, so a moving target is simply missed. Impacts scatter around the center of the target map. It does not lock onto buildings or creatures.</description>
     <category>Guidance</category>
     <compatibleBodies>
@@ -84,6 +87,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvCruise_Guidance_Datalink</defName>
     <label>two-way datalink</label>
+    <designWord>Datalink</designWord>
     <description>A two-way satellite datalink. The missile can be retargeted in flight, and when it reaches the target map the game pauses so you can pick the impact point. The most accurate option, and the only one that can chase a moving target mid-flight.</description>
     <category>Guidance</category>
     <compatibleBodies>
@@ -105,6 +109,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvCruise_Guidance_AntiShip</defName>
     <label>anti-ship radar seeker</label>
+    <designWord>Anti-ship</designWord>
     <description>An active radar seeker built for moving targets, such as ships and other mobile bases on the world map. It updates its aim more often than a normal seeker, but the missile still misses if the target moves out of its remaining range.</description>
     <category>Guidance</category>
     <compatibleBodies>
@@ -126,6 +131,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvCruise_Propulsion_Turbofan</defName>
     <label>turbofan sustainer</label>
+    <omitFromDesignName>true</omitFromDesignName>
     <description>A small fuel-efficient turbofan engine. It flies much farther than a rocket motor and is harder to spot on radar, but it is slow.</description>
     <category>Propulsion</category>
     <compatibleBodies>
@@ -145,6 +151,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvCruise_Propulsion_TurbofanER</defName>
     <label>extended-range turbofan</label>
+    <designWord>ER</designWord>
     <description>A fuel-saving turbofan with a larger tank. It has the longest range of any cruise setup, but it is the slowest to arrive and the most expensive to build.</description>
     <category>Propulsion</category>
     <compatibleBodies>
@@ -166,6 +173,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvCruise_Propulsion_Booster</defName>
     <label>solid rocket booster</label>
+    <designWord>Boost</designWord>
     <description>A solid rocket booster that pushes the missile to high speed, then burns out. It is very fast and very easy to spot, and its weight cuts the missile's range.</description>
     <category>Propulsion</category>
     <compatibleBodies>
@@ -188,6 +196,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvCruise_Payload_None</defName>
     <label>no payload</label>
+    <omitFromDesignName>true</omitFromDesignName>
     <description>No secondary charge. The warhead and fuel tank get all the space.</description>
     <category>Payload</category>
     <compatibleBodies>
@@ -199,6 +208,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvCruise_Payload_Submunition</defName>
     <label>submunition dispenser</label>
+    <designWord>Cluster</designWord>
     <description>A dispenser that opens over the target and scatters small bomblets across the area instead of one concentrated blast.</description>
     <category>Payload</category>
     <compatibleBodies>
@@ -222,9 +232,12 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvCruise_Payload_BunkerBuster</defName>
     <label>bunker buster payload</label>
+    <designWord>Bunker</designWord>
     <description>A hardened penetrator charge with a delayed fuze. It bores through thick rock roofs and detonates inside, wrecking nearby structures.\n\nWithout this or a penetrator warhead, a missile that hits a mountain detonates on the rock surface, and its seeker ignores targets under thick roofs.</description>
     <category>Payload</category>
-    <compatibleBodies><li>DMSE_MissileBody_AdvancedCruise</li></compatibleBodies>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_AdvancedCruise</li>
+    </compatibleBodies>
     <payloadEffect Class="DMSE.PayloadEffect_BunkerBuster">
       <damageAmount>180</damageAmount>
       <structureDamage>400</structureDamage>
@@ -241,6 +254,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvCruise_Payload_Graphite</defName>
     <label>graphite filament payload</label>
+    <designWord>Graphite</designWord>
     <description>A payload of carbon fibers that shorts out the power grid around the impact instead of exploding. It disables powered buildings and stuns mechanoids over a wide area.</description>
     <category>Payload</category>
     <compatibleBodies>
@@ -261,6 +275,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvCruise_Payload_Decoy</defName>
     <label>decoy payload</label>
+    <designWord>Decoy</designWord>
     <description>Radar reflectors and a signal booster in place of a secondary charge. The missile looks twice as large on enemy radar, so it is detected earlier and drawn fire from air defenses that rank threats by size. Adds no damage.</description>
     <category>Payload</category>
     <compatibleBodies>
@@ -281,6 +296,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvCruise_Payload_Chaff</defName>
     <label>chaff dispenser</label>
+    <designWord>Chaff</designWord>
     <description>A larger dispenser of chaff and radar-absorbing streamers. Each bundle can break one enemy fire-control lock. It holds more bundles than the light version, but they cannot be reloaded in flight.</description>
     <category>Payload</category>
     <compatibleBodies>

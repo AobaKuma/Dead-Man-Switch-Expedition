@@ -1,4 +1,4 @@
-using RimWorld;
+﻿using RimWorld;
 using RimWorld.Planet;
 using Verse;
 
@@ -29,12 +29,8 @@ namespace DMSE
         {
             if (isInterceptor) { ResolveIntercept(); }
             base.LeaveMap();
-            if (worldObject != null)
-            {
-                Find.WorldObjects.Add(worldObject);
-                // 只有玩家自己的發射才跳到世界地圖（NPC 導彈陣地的升空彈不搶鏡頭）
-                if (worldObject.Faction == Faction.OfPlayer) { CameraJumper.TryJump(worldObject); }
-            }
+            // 出圖不切鏡頭；只有電視制導抵達選點時才跳到目標地圖。
+            if (worldObject != null) { Find.WorldObjects.Add(worldObject); }
         }
 
         /// <summary>中過程攔截結算（與舊 <see cref="InterceptProjectile"/> 相同）：釋放火力通道，依命中率乾淨擊毀目標。</summary>

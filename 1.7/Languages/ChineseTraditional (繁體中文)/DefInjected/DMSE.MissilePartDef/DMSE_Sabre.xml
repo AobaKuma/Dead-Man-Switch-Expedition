@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <DMSE_Sabre_Guidance_Imaging.label>圖像識別導引頭</DMSE_Sabre_Guidance_Imaging.label>
+  <DMSE_Sabre_Guidance_Imaging.description>一種具彈上目標識別能力的小型攝影導引頭。優先選擇屋頂外最危險的敵方生物，其次是體型最大者，忽略屋頂下的目標。找不到目標時回報沒有目標，交給盤旋飛控在上空等待並持續搜索。</DMSE_Sabre_Guidance_Imaging.description>
+</LanguageData>

@@ -55,6 +55,28 @@ namespace DMSE
         /// <summary>開火後佔用火力通道的時間（tick）。</summary>
         public int fireControlHoldTicks = 900;
 
+        /// <summary>
+        /// 雷達導引的散佈半徑（格）；&lt; 0 = 不支援雷達導引（預設）。
+        /// 支援時，開火瞬間若同陣營有空閒砲擊引導通道（supportsArtilleryGuidance 的火控雷達），
+        /// 就佔用一條：這一發改用此散佈半徑，抵達時自動指向目標地圖上的敵方目標（無則地圖中心）。
+        /// 沒有通道時照常以 <see cref="scatterRadius"/> 無導引射擊（除非 <see cref="requiresFireControlChannel"/>）。
+        /// </summary>
+        public float guidedScatterRadius = -1f;
+
+        /// <summary>世界航跡速度：每跨一格地表等效距離需要的 tick（導彈基準為 BVRWorldTuningDef.ticksPerTileAtSpeed1 = 150）。</summary>
+        public float worldTicksPerTile = 60f;
+
+        /// <summary>砲身與瞄準方位夾角在此度數內才開火（有 CompTurretFacingRenderer 時）；瞄準時間到了還沒轉到就繼續等。</summary>
+        public float aimToleranceDeg = 2f;
+
+        /// <summary>最大射程（世界地表等效格）；0 = 不限。</summary>
+        public float maxRangeTiles = 0f;
+
+        /// <summary>CompRefuelable 是砲彈存量而非砲管耐久：用盡時顯示「無彈」而不是「砲管耗損」。</summary>
+        public bool refuelableIsAmmo = false;
+
+        public bool SupportsRadarGuidance => guidedScatterRadius >= 0f;
+
         public CompProperties_ArtilleryStrike()
         {
             compClass = typeof(CompArtilleryStrike);
@@ -195,10 +217,11 @@ namespace DMSE
                 return;
             }
 
-            // 裝填冷卻中 → 重置瞄準計時，等待冷卻結束
+            // 裝填冷卻中 → 重置瞄準計時，砲管維持在上一發的方位，等待冷卻結束
             if (cooldownUntil > now)
             {
                 warmupEndTick = -1;
+                SetTurretRotation(aimAngle);
                 return;
             }
 
@@ -212,11 +235,11 @@ namespace DMSE
                 return;
             }
 
-            // 確認砲管耐久（CompRefuelable，fuelIsMortarBarrel=true）
+            // 確認砲管耐久（CompRefuelable，fuelIsMortarBarrel=true）或砲彈存量（refuelableIsAmmo）
             CompRefuelable barrel = parent.GetComp<CompRefuelable>();
             if (barrel != null && !barrel.HasFuel)
             {
-                Messages.Message("DMSE.Artillery.NoBarrel".Translate(),
+                Messages.Message((Props.refuelableIsAmmo ? "DMSE.Artillery.NoAmmo" : "DMSE.Artillery.NoBarrel").Translate(),
                     parent, MessageTypeDefOf.NegativeEvent, historical: false);
                 StopSustainedFire();
                 return;
@@ -244,8 +267,9 @@ namespace DMSE
                 return;
             }
 
-            // 瞄準進行中：原版 TurretTop 沒有本地目標時會閒置擺動，每 tick 拉回瞄準方位
-            if (now < warmupEndTick)
+            // 瞄準進行中：原版 TurretTop 沒有本地目標時會閒置擺動，每 tick 拉回瞄準方位。
+            // 砲身轉速有限（CompTurretFacingRenderer），瞄準時間到了還沒轉到方位就繼續等，砲彈才會沿砲口方向出膛。
+            if (now < warmupEndTick || !BarrelOnBearing)
             {
                 SetTurretRotation(aimAngle);
                 return;
@@ -260,10 +284,25 @@ namespace DMSE
         //  停止持續射擊
         // =====================================================================
 
-        private void StopSustainedFire()
+        public void StopSustainedFire()
         {
             targetTile    = PlanetTile.Invalid;
             warmupEndTick = -1;
+        }
+
+        // =====================================================================
+        //  檢視字串
+        // =====================================================================
+
+        /// <summary>現在開火的話，這一發是否有雷達導引（支援導引且同陣營有空閒砲擊引導通道）。</summary>
+        public bool RadarGuidanceAvailable => Props.SupportsRadarGuidance && FindAvailableRadar() != null;
+
+        public override string CompInspectStringExtra()
+        {
+            if (!Props.SupportsRadarGuidance) { return null; }
+            return RadarGuidanceAvailable
+                ? "DMSE.Artillery.GuidanceOnline".Translate(Props.guidedScatterRadius.ToString("0.#"))
+                : "DMSE.Artillery.GuidanceOffline".Translate(Props.scatterRadius.ToString("0.#"));
         }
 
         // =====================================================================
@@ -408,36 +447,79 @@ namespace DMSE
 
             CameraJumper.TryJump(CameraJumper.GetWorldTarget(parent));
 
+            PlanetTile origin = parent.Map?.Tile ?? PlanetTile.Invalid;
             Find.WorldTargeter.BeginTargeting(
                 action:                    ChooseWorldTarget,
                 canTargetTiles:            true,
-                closeWorldTabWhenFinished: true
+                closeWorldTabWhenFinished: true,
+                onUpdate: () =>
+                {
+                    if (Props.maxRangeTiles > 0f && origin.Valid)
+                    {
+                        GenDraw.DrawWorldRadiusRing(origin, Mathf.FloorToInt(Props.maxRangeTiles));
+                    }
+                },
+                extraLabelGetter: t =>
+                {
+                    if (Props.maxRangeTiles <= 0f || !origin.Valid || !t.IsValid || !t.Tile.Valid) { return null; }
+                    return "DMSE.MissileLauncher.RangeLabel".Translate(
+                        MissileWorldUtility.RangeDistance(origin, t.Tile).ToString("0.#"), Props.maxRangeTiles.ToString("0.#"));
+                }
             );
+        }
+
+        /// <summary>世界目標是否可射擊（同一圖層、不是本地圖、射程內）；不可時給出原因。供選靶與測試共用。</summary>
+        public bool CanTargetTile(PlanetTile tile, out string reason)
+        {
+            reason = null;
+            if (!tile.Valid)
+            {
+                reason = "MessageTransportPodsDestinationIsInvalid".Translate();
+                return false;
+            }
+            PlanetTile origin = parent.Map?.Tile ?? PlanetTile.Invalid;
+            if (!origin.Valid) { return true; }
+
+            // 砲彈無導引，不能跨圖層（地表 ↔ 軌道）
+            if (!MissileWorldUtility.SameLayer(origin, tile))
+            {
+                reason = "DMSE.Artillery.CrossLayer".Translate();
+                return false;
+            }
+            // 本地圖：砲彈會從自己地圖邊緣落回地圖中心，等同砲擊自家
+            if (tile == origin)
+            {
+                reason = "DMSE.Artillery.TargetIsHome".Translate();
+                return false;
+            }
+            if (Props.maxRangeTiles > 0f && MissileWorldUtility.RangeDistance(origin, tile) > Props.maxRangeTiles)
+            {
+                reason = "DMSE.Artillery.OutOfRange".Translate(Props.maxRangeTiles.ToString("0.#"));
+                return false;
+            }
+            return true;
         }
 
         private bool ChooseWorldTarget(GlobalTargetInfo target)
         {
-            if (!target.IsValid || !target.Tile.Valid)
+            string reason = null;
+            if (!target.IsValid || !CanTargetTile(target.Tile, out reason))
             {
                 Messages.Message(
-                    "MessageTransportPodsDestinationIsInvalid".Translate(),
+                    reason ?? "MessageTransportPodsDestinationIsInvalid".Translate(),
                     MessageTypeDefOf.RejectInput, historical: false);
                 return false;
             }
 
-            // 砲彈無導引，不能跨圖層（地表 ↔ 軌道）
-            if (parent.Map != null && !MissileWorldUtility.SameLayer(parent.Map.Tile, target.Tile))
-            {
-                Messages.Message(
-                    "DMSE.Artillery.CrossLayer".Translate(),
-                    MessageTypeDefOf.RejectInput, historical: false);
-                return false;
-            }
-
-            // 設定持續射擊目標；狀態機在下一個 tick 開始瞄準流程
-            targetTile    = target.Tile;
-            warmupEndTick = -1;
+            StartSustainedFire(target.Tile);
             return true;
+        }
+
+        /// <summary>設定持續射擊目標；狀態機在下一個 tick 開始瞄準流程。不檢查目標（呼叫者先用 <see cref="CanTargetTile"/>）。</summary>
+        public void StartSustainedFire(PlanetTile tile)
+        {
+            targetTile    = tile;
+            warmupEndTick = -1;
         }
 
         // =====================================================================
@@ -455,9 +537,9 @@ namespace DMSE
                     Mathf.Clamp(parent.Position.x, 1, map.Size.x - 2), 0, map.Size.z - 1);
             }
 
+            // 沿砲身方位（= 世界方位）直線到地圖邊緣，離場航線才會與砲口朝向一致
             float angle = ArtilleryStrikeUtility.WorldDirectionAngle(srcTile, destTile);
-            return ArtilleryStrikeUtility.EdgeCellFromAngle(
-                map, angle, parent.Position.x, parent.Position.z);
+            return ArtilleryStrikeUtility.EdgeCellAlongBearing(map, parent.TrueCenter(), angle);
         }
 
         // =====================================================================
@@ -469,15 +551,36 @@ namespace DMSE
 
         /// <summary>
         /// 將砲管轉向指定方位角（0=North/+Z，90=East/+X，與 <see cref="TurretTop.CurRotation"/> 相同）；NaN 時不動作。
-        /// 砲管朝向存放在 <see cref="Building_TurretGun"/> 的 protected 欄位 top（<see cref="TurretTop"/>）。
+        /// 原版砲塔：砲管朝向存放在 <see cref="Building_TurretGun"/> 的 protected 欄位 top（<see cref="TurretTop"/>），直接設定。
+        /// 一般建築：交給 <see cref="CompTurretFacingRenderer"/> 平滑轉向（非正方形砲塔頭貼圖只能這樣畫）。
         /// </summary>
         private void SetTurretRotation(float angleDeg)
         {
-            if (!float.IsNaN(angleDeg) && parent is Building_TurretGun turret && TurretTopRef(turret) is TurretTop top)
+            if (float.IsNaN(angleDeg)) { return; }
+            if (parent is Building_TurretGun turret && TurretTopRef(turret) is TurretTop top)
             {
                 top.CurRotation = angleDeg;
             }
+            CompTurretFacingRenderer head = parent.GetComp<CompTurretFacingRenderer>();
+            if (head != null)
+            {
+                head.ForceFaceTarget(parent.DrawPos + Quaternion.Euler(0f, angleDeg, 0f) * Vector3.forward * 10f);
+            }
         }
+
+        /// <summary>砲身是否已指向瞄準方位（沒有方位、或沒有 CompTurretFacingRenderer 時視為已指向）。</summary>
+        private bool BarrelOnBearing
+        {
+            get
+            {
+                if (float.IsNaN(aimAngle)) { return true; }
+                CompTurretFacingRenderer head = parent.GetComp<CompTurretFacingRenderer>();
+                return head == null || Mathf.Abs(Mathf.DeltaAngle(head.CurRotation, aimAngle)) <= Props.aimToleranceDeg;
+            }
+        }
+
+        /// <summary>目前瞄準方位角（NaN = 未在瞄準）；測試用。</summary>
+        public float AimAngle => aimAngle;
 
         private static IntVec3 GetMapCenterCell(PlanetTile tile)
         {
@@ -502,6 +605,19 @@ namespace DMSE
             parent.GetComp<CompChangeableProjectile>()?.RemoveShell();
             parent.GetComp<CompRefuelable>()?.ConsumeFuel(1f);
 
+            // 一門砲同時只佔一條通道：上一發的通道若還沒到期，先釋放再重新找
+            if (reservedRadar != null)
+            {
+                reservedRadar.ReleaseArtilleryChannel();
+                reservedRadar      = null;
+                channelReleaseTick = -1;
+            }
+
+            // 雷達導引：開火瞬間有空閒通道才算數（requiresFireControlChannel 時狀態機已確認有通道）
+            CompFireControlRadar radar = Props.requiresFireControlChannel || Props.SupportsRadarGuidance
+                ? FindAvailableRadar() : null;
+            bool guided = radar != null && Props.SupportsRadarGuidance;
+
             // 生成離場投射物，朝對應方位邊緣格飛去
             IntVec3 edgeCell = CalcExitEdgeCell(destTile);
 
@@ -513,14 +629,16 @@ namespace DMSE
             departure.artilleryTargetCell         = GetMapCenterCell(destTile);
             departure.artilleryProjectileDef      = projDef;
             departure.artilleryAttackerFaction    = parent.Faction;
-            departure.artilleryScatterRadius      = Props.scatterRadius;
+            departure.artilleryScatterRadius      = guided ? Props.guidedScatterRadius : Props.scatterRadius;
+            departure.artilleryGuided             = guided;
             departure.artillerySalvoCount         = Props.salvoCount;
             departure.artillerySalvoIntervalTicks = Props.salvoIntervalTicks;
             departure.artilleryWorldObjectDef     = Props.worldObjectDef;
+            departure.artilleryWorldTicksPerTile  = Props.worldTicksPerTile;
 
             departure.Launch(
                 launcher:            parent,
-                origin:              parent.Position.ToVector3Shifted(),
+                origin:              parent.TrueCenter(),
                 usedTarget:          new LocalTargetInfo(edgeCell),
                 intendedTarget:      new LocalTargetInfo(edgeCell),
                 hitFlags:            ProjectileHitFlags.None,
@@ -532,17 +650,21 @@ namespace DMSE
             cooldownUntil = Find.TickManager.TicksGame + Props.cooldownTicks;
 
             // 火力通道佔用
-            if (Props.requiresFireControlChannel)
+            if (radar != null)
             {
-                CompFireControlRadar radar = FindAvailableRadar();
-                if (radar != null)
-                {
-                    radar.OccupyArtilleryChannel();
-                    reservedRadar      = radar;
-                    channelReleaseTick = Find.TickManager.TicksGame + Props.fireControlHoldTicks;
-                }
+                radar.OccupyArtilleryChannel();
+                reservedRadar      = radar;
+                channelReleaseTick = Find.TickManager.TicksGame + Props.fireControlHoldTicks;
             }
+
+            LastShotGuided = guided;
         }
+
+        /// <summary>最近一發是否有雷達導引（不存檔）；測試與檢視用。</summary>
+        public bool LastShotGuided { get; private set; }
+
+        /// <summary>目前為砲擊引導佔用的火控雷達（無則 null）；測試用。</summary>
+        public CompFireControlRadar ReservedRadar => reservedRadar;
 
         // =====================================================================
         //  建築拆除：釋放火力通道

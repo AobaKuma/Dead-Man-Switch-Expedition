@@ -4,4 +4,8 @@
   <DMSE_Shahed_Guidance_Inertial.description>标准惯性制导，没有目标辨识与末端制导。占用一条火控通道。落点散布在目标地图中央附近，不会锁定建筑或生物。</DMSE_Shahed_Guidance_Inertial.description>
   <DMSE_Shahed_Guidance_TV.label>电视制导</DMSE_Shahed_Guidance_TV.label>
   <DMSE_Shahed_Guidance_TV.description>可选的电视制导模组。无人机抵达目标地图时，由你选择落点。会占用两条火控通道而不是一条。敌方无人机即使装了此模组，也只会使用惯性制导。</DMSE_Shahed_Guidance_TV.description>
+  <DMSE_Shahed_Guidance_RadarHoming.label>反辐射雷达导引头</DMSE_Shahed_Guidance_RadarHoming.label>
+  <DMSE_Shahed_Guidance_RadarHoming.description>被动导引头，只追踪开机中的雷达。锁定开机中功率最高的敌方雷达；没有可锁定的雷达时直接回报没有目标，不会退化为打电网。搭配盘旋飞控可让无人机在上空等待雷达开机。被动声学反射器对它不可见。</DMSE_Shahed_Guidance_RadarHoming.description>
+  <DMSE_Payload_Loiter.label>盘旋飞控</DMSE_Payload_Loiter.label>
+  <DMSE_Payload_Loiter.description>巡飞弹专用的飞控软件与额外燃料储备。抵达目标时若导引头找不到目标，无人机不会直接回退惯性制导，而是在目标上空盘旋约一个游戏小时，每几秒重新执行一次导引头；盘旋时间用尽后才以惯性落点俯冲。\n\n盘旋中的无人机仍留在拦截波次里：末端防御在整段等待期间都能把它打下来。需要巡飞弹弹体。</DMSE_Payload_Loiter.description>
 </LanguageData>

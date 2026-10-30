@@ -88,9 +88,31 @@ namespace DMSE
         /// </summary>
         public static IntVec3 CalcEntryEdgeCell(Map map, IntVec3 target, PlanetTile src, PlanetTile dest)
         {
-            // 砲彈從 src 飛來 → 進入邊緣朝向 src，即 dest→src 方向
+            // 砲彈從 src 飛來 → 進入邊緣朝向 src，即 dest→src 方向；沿真實方位從目標格往外找邊緣，
+            // 進場航線才與發射方位一致（EdgeCellFromAngle 只取四個邊、航線會被拉成正東西南北）。
             float angle = WorldDirectionAngle(dest, src);
-            return EdgeCellFromAngle(map, angle, target.x, target.z);
+            return EdgeCellAlongBearing(map, target.ToVector3Shifted(), angle);
+        }
+
+        /// <summary>
+        /// 從 <paramref name="origin"/> 沿方位角 <paramref name="angle"/>（0=North/+Z，90=East/+X）
+        /// 直線前進，回傳最先碰到的地圖邊緣格（夾在 [0, size-1]）。
+        /// </summary>
+        public static IntVec3 EdgeCellAlongBearing(Map map, Vector3 origin, float angle)
+        {
+            Vector3 dir = Quaternion.Euler(0f, angle, 0f) * Vector3.forward;
+            float maxX = map.Size.x - 0.5f, maxZ = map.Size.z - 0.5f;
+            float t = float.MaxValue;
+            if (dir.x > 1e-4f)  { t = Mathf.Min(t, (maxX - origin.x) / dir.x); }
+            if (dir.x < -1e-4f) { t = Mathf.Min(t, (0.5f - origin.x) / dir.x); }
+            if (dir.z > 1e-4f)  { t = Mathf.Min(t, (maxZ - origin.z) / dir.z); }
+            if (dir.z < -1e-4f) { t = Mathf.Min(t, (0.5f - origin.z) / dir.z); }
+            if (t == float.MaxValue || t < 0f) { t = 0f; }
+            Vector3 hit = origin + dir * t;
+            return new IntVec3(
+                Mathf.Clamp(Mathf.FloorToInt(hit.x), 0, map.Size.x - 1),
+                0,
+                Mathf.Clamp(Mathf.FloorToInt(hit.z), 0, map.Size.z - 1));
         }
 
         // =====================================================================
@@ -124,8 +146,62 @@ namespace DMSE
                     projectileDef   = src.projectileDef,
                     attackerFaction = src.attackerFaction,
                     scatterRadius   = src.scatterRadius,
+                    guided          = src.guided,
                 });
             }
+        }
+
+        // =====================================================================
+        //  雷達導引選靶
+        // =====================================================================
+
+        /// <summary>
+        /// 雷達導引砲彈的瞄準點：<paramref name="map"/> 上敵對 <paramref name="attacker"/> 的目標中，
+        /// 先挑砲塔，再挑用電設備，最後挑未倒地、不在迷霧中的人形／機械；同級取最靠近 <paramref name="fallback"/> 者。
+        /// 沒有攻擊方陣營或找不到目標時回傳 <paramref name="fallback"/>。
+        /// </summary>
+        public static IntVec3 FindGuidedTarget(Map map, Faction attacker, IntVec3 fallback)
+        {
+            if (map == null || attacker == null) { return fallback; }
+
+            IntVec3 best = IntVec3.Invalid;
+            int bestTier = int.MaxValue;
+            float bestDist = float.MaxValue;
+
+            // 牆、地板、管線等沒有打擊價值：只挑砲塔與用電設備（雷達、發射架、發電機等會被雷達看到的目標）
+            void ConsiderBuilding(Building b)
+            {
+                if (b is Building_Turret) { Consider(b, 0); }
+                else if (b.TryGetComp<CompPowerTrader>() != null) { Consider(b, 1); }
+            }
+
+            void Consider(Thing t, int tier)
+            {
+                if (t == null || !t.Spawned || t.Faction == null || !t.HostileTo(attacker)) { return; }
+                if (t.Position.Fogged(map) && !(t is Building)) { return; }
+                float dist = (t.Position - fallback).LengthHorizontalSquared;
+                if (tier < bestTier || (tier == bestTier && dist < bestDist))
+                {
+                    best = t.Position; bestTier = tier; bestDist = dist;
+                }
+            }
+
+            foreach (Building b in map.listerBuildings.allBuildingsColonist)
+            {
+                ConsiderBuilding(b);
+            }
+            foreach (Building b in map.listerBuildings.allBuildingsNonColonist)
+            {
+                ConsiderBuilding(b);
+            }
+            if (bestTier > 1)
+            {
+                foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
+                {
+                    if (!p.Downed) { Consider(p, 2); }
+                }
+            }
+            return best.IsValid ? best : fallback;
         }
 
         // =====================================================================
@@ -147,8 +223,12 @@ namespace DMSE
                 return;
             }
 
+            // 雷達導引：以當下的敵方目標為中心（目標可能在齊射間被摧毀，所以每發重新挑）
+            IntVec3 finalTarget = req.guided
+                ? FindGuidedTarget(map, req.attackerFaction, req.targetCell)
+                : req.targetCell;
+
             // 散佈計算：以目標格為中心隨機偏移
-            IntVec3 finalTarget = req.targetCell;
             if (req.scatterRadius > 0f)
             {
                 Vector2 scatter = Rand.InsideUnitCircle * req.scatterRadius;

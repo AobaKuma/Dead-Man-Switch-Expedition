@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <DMSE_MissileBody_Sabre.label>轻型巡飞弹</DMSE_MissileBody_Sabre.label>
+  <DMSE_MissileBody_Sabre.description>一种管射式折翼巡飞弹，配有图像识别导引头。射程短、弹头小，但轻到能用肩射发射具发射。\n\n导引头会俯冲攻击屋顶外最危险的敌方生物；看不到目标时，盘旋飞控会让它在目标区上空盘旋并持续搜索，时间用完才退回惯性导引。固定构型。</DMSE_MissileBody_Sabre.description>
+</LanguageData>

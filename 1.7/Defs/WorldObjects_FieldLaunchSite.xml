@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       工業等級派系的野戰發射陣地
+       ‧ 布局：LaunchSite_Mid.xml 的 FFF 結構，以搜索雷達為中心向外散布。
+       ‧ 難度：Storyteller threatScale 落在 difficultyThresholds 的哪一段決定等級（0–3），
+         各組結構數量（countByTier）與守軍人數（crewByTier）依等級查表。
+         預設門檻 0.5 / 0.9 / 1.4：社區建設者 → 0、冒險故事 → 1、生存挑戰 → 2、血與塵埃以上 → 3。
+       ‧ 地形：keepNaturalTerrain（預設開）不鋪結構地板、不剷平岩石，各結構散落在可直接施工的原地面上。
+       ‧ 補給：地圖生成後依 supplyDrop 定時空投生存食品包，所有敵方雷達停止運作後不再投放。
+       ‧ 彈藥：rackSupply 在生成時依彈架類型裝填；之後每兩天為每座空彈架空投一艙導彈，守軍於落地後裝填。
+       一般地圖步驟繼承原版 MapCommonBase；礦塊與殘渣步驟沿用 WorldObjects_MissileBase.xml 的 GenStepDef。
+       ══════════════════════════════════════════════════════════════ -->
+
+  <GenStepDef>
+    <defName>DMSE_FieldLaunchSite_GS_Structures</defName>
+    <order>400</order>
+    <genStep Class="DMSE.GenStep_FieldLaunchSite">
+      <difficultyThresholds>
+        <li>0.5</li>
+        <li>0.9</li>
+        <li>1.4</li>
+      </difficultyThresholds>
+      <groups>
+        <!-- 中心：搜索雷達站（必定一座） -->
+        <li>
+          <label>search radar</label>
+          <pool>
+            <li>DMSE_Mid_SearchRadar</li>
+          </pool>
+          <countByTier>
+            <li>1</li>
+          </countByTier>
+          <radius>0~25</radius>
+          <randomRotation>false</randomRotation>
+        </li>
+        <li>
+          <label>fire control radar</label>
+          <pool>
+            <li>DMSE_Mid_FireControlRadar</li>
+          </pool>
+          <countByTier>
+            <li>1</li>
+            <li>1</li>
+            <li>1</li>
+            <li>2</li>
+          </countByTier>
+          <radius>16~30</radius>
+          <spacing>6</spacing>
+        </li>
+        <li>
+          <label>launch position</label>
+          <pool>
+            <li>DMSE_Mid_LaunchSite_A</li>
+            <li>DMSE_Mid_LaunchSite_B</li>
+            <li>DMSE_Mid_LaunchSite_C</li>
+            <li>DMSE_Mid_LaunchSite_D</li>
+          </pool>
+          <!-- 第一座必帶世界選靶發射器（A/D 輕型發射軌、B 劃線器）；C 只有彈架與人操旋轉發射架，
+               單獨出現時陣地無法發射，也永遠不會因「發射器全毀」而判定摧毀。 -->
+          <firstPool>
+            <li>DMSE_Mid_LaunchSite_A</li>
+            <li>DMSE_Mid_LaunchSite_B</li>
+            <li>DMSE_Mid_LaunchSite_D</li>
+          </firstPool>
+          <countByTier>
+            <li>1~2</li>
+            <li>2</li>
+            <li>2~3</li>
+            <li>3~4</li>
+          </countByTier>
+          <radius>26~52</radius>
+          <spacing>6</spacing>
+        </li>
+        <li>
+          <label>ammo carrier</label>
+          <pool>
+            <li>DMSE_Mid_AmmoCar_A</li>
+            <li>DMSE_Mid_AmmoCar_B</li>
+          </pool>
+          <countByTier>
+            <li>1</li>
+            <li>1~2</li>
+            <li>2</li>
+            <li>2~3</li>
+          </countByTier>
+          <radius>18~42</radius>
+          <spacing>6</spacing>
+        </li>
+        <li>
+          <label>CIWS</label>
+          <pool>
+            <li>DMSE_Mid_CIWS</li>
+          </pool>
+          <countByTier>
+            <li>0</li>
+            <li>1</li>
+            <li>1~2</li>
+            <li>2</li>
+          </countByTier>
+          <radius>18~46</radius>
+          <spacing>6</spacing>
+        </li>
+        <li>
+          <label>rest room</label>
+          <pool>
+            <li>DMSE_Mid_RestRoom_A</li>
+            <li>DMSE_Mid_RestRoom_B</li>
+          </pool>
+          <countByTier>
+            <li>1</li>
+            <li>1</li>
+            <li>1~2</li>
+            <li>2</li>
+          </countByTier>
+          <radius>20~44</radius>
+          <spacing>6</spacing>
+        </li>
+      </groups>
+    </genStep>
+  </GenStepDef>
+
+  <!-- 守軍：threatPoints / pointsPerPawn，夾在該難度等級的 crewByTier 內，且精確生成此人數。 -->
+  <!-- 道路：各結構之間以壓實泥土道路連通（最小生成樹），另有一條從中心雷達通往最近地圖邊緣。
+       order 800：排在原版遺跡與地標（500–750）之後，避免路面被它們的地板蓋掉；植被（900）之前，路上不長植物。 -->
+  <GenStepDef>
+    <defName>DMSE_FieldLaunchSite_GS_Roads</defName>
+    <order>800</order>
+    <genStep Class="DMSE.GenStep_FieldLaunchSiteRoads">
+      <roadTerrain>PackedDirt</roadTerrain>
+      <roadWidth>2</roadWidth>
+      <roadToMapEdge>true</roadToMapEdge>
+    </genStep>
+  </GenStepDef>
+
+  <!-- 彈架裝填：結構生成後依站點 rackSupply 的裝填表重裝。 -->
+  <GenStepDef>
+    <defName>DMSE_FieldLaunchSite_GS_RackFill</defName>
+    <order>420</order>
+    <genStep Class="DMSE.GenStep_MissileBaseRackFill" />
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>DMSE_FieldLaunchSite_GS_SpawnCrew</defName>
+    <order>450</order>
+    <genStep Class="DMSE.GenStep_FieldLaunchSiteCrew">
+      <pointsPerPawn>100</pointsPerPawn>
+      <minCrew>3</minCrew>
+      <maxCrew>14</maxCrew>
+      <crewByTier>
+        <li>3~5</li>
+        <li>5~8</li>
+        <li>7~11</li>
+        <li>10~14</li>
+      </crewByTier>
+      <gunnerFraction>0.25</gunnerFraction>
+      <spawnRadius>16</spawnRadius>
+    </genStep>
+  </GenStepDef>
+
+  <!-- 一般地圖步驟（山體、植被、動物、霧……）來自原版 MapCommonBase，見 WorldObjects_MissileBase.xml。 -->
+  <MapGeneratorDef ParentName="MapCommonBase">
+    <defName>DMSE_FieldLaunchSite_MapGen</defName>
+    <genSteps>
+      <li>RocksFromGrid</li>
+      <li>DMSE_MissileBase_GS_ScatterLumps</li>
+      <li>DMSE_FieldLaunchSite_GS_Structures</li>
+      <li>DMSE_FieldLaunchSite_GS_RackFill</li>
+      <li>DMSE_FieldLaunchSite_GS_SpawnCrew</li>
+      <li>DMSE_FieldLaunchSite_GS_Roads</li>
+      <li>DMSE_MissileBase_GS_ScatterSlag</li>
+    </genSteps>
+  </MapGeneratorDef>
+
+  <WorldObjectDef>
+    <defName>DMSE_FieldLaunchSite</defName>
+    <label>field launch position</label>
+    <description>A rapidly deployed field missile position fielded by an industrial-era faction: a search radar, scattered launch positions, ammunition carriers and crew shelters. Supply pods keep the garrison fed for as long as its radars stay operational.</description>
+    <worldObjectClass>RimWorld.Planet.Site</worldObjectClass>
+    <canHaveFaction>true</canHaveFaction>
+    <saved>true</saved>
+    <selectable>true</selectable>
+    <!-- 微縮圖示：Site 讀 SitePartDef.expandingIconTexture（UI/Icon/icon_LaunchSite_Loitering）；
+         少了 expandingIcon 世界地圖拉遠時不會畫，站點看起來像不存在。 -->
+    <expandingIcon>true</expandingIcon>
+    <expandingIconPriority>60</expandingIconPriority>
+    <validLaunchTarget>false</validLaunchTarget>
+    <mapGenerator>DMSE_FieldLaunchSite_MapGen</mapGenerator>
+    <comps>
+      <!-- 只在尚未生成地圖時使用；地圖生成後由實際雷達與發射架接手。 -->
+      <li Class="DMSE.CompProperties_WorldAirDefense">
+        <worldDetectionRange>10</worldDetectionRange>
+        <antiStealthLevel>1</antiStealthLevel>
+        <fireControlDef>DMSE_FireControlRadar</fireControlDef>
+        <channels>2</channels>
+        <interceptorStock>4</interceptorStock>
+        <restockPerDay>2</restockPerDay>
+        <interceptorBody>DMSE_MissileBody_Light</interceptorBody>
+        <interceptorWarhead>DMSE_Light_Warhead_ContinuousRod</interceptorWarhead>
+        <launchCooldownTicks>360</launchCooldownTicks>
+        <worldInterceptRange>6</worldInterceptRange>
+      </li>
+      <li Class="DMSE.CompProperties_MissileBase">
+        <missileFireIntervalDays>
+          <min>3</min>
+          <max>4</max>
+        </missileFireIntervalDays>
+        <missilesPerSalvo>
+          <min>1</min>
+          <max>2</max>
+        </missilesPerSalvo>
+        <range>15</range>
+        <relocationDays>
+          <min>10</min>
+          <max>20</max>
+        </relocationDays>
+        <reentryBlockedDays>
+          <min>0.5</min>
+          <max>1</max>
+        </reentryBlockedDays>
+        <incomingWorldObjectDef>DMSE_WorldObject_IncomingMissile</incomingWorldObjectDef>
+        <!-- 定時空投生存食品包：每 0.8–1.2 天一次，每名守軍 4 份，存量已達每人 10 份時跳過。 -->
+        <supplyDrop>
+          <intervalDays>0.8~1.2</intervalDays>
+          <perPawn>4</perPawn>
+          <maxStockPerPawn>10</maxStockPerPawn>
+        </supplyDrop>
+        <!-- 彈架：生成時依類型裝填；之後每 2 天為每座空彈架空投一艙（數量 = 該彈架容量或 count）。
+             未列出的彈架（劃線器、巡弋彈架）沿用建築自身的自動填充規則（工業等級 → 蚊式）。
+             發射架打空後由守軍從彈藥庫（彈藥車）搬彈補上；彈藥庫打空才靠空投。 -->
+        <rackSupply>
+          <intervalDays>2</intervalDays>
+          <loadDelayTicks>2500</loadDelayTicks>
+          <!-- 守軍自行從彈藥庫搬彈裝填發射架，同時最多 2 人。有相容彈的彈藥庫時，空發射架不另外空投。 -->
+          <maxCrewLoaders>2</maxCrewLoaders>
+          <loadouts>
+            <li>
+              <rack>DMSE_FieldStructure_AmmoStorage</rack>
+              <missiles>
+                <li>DMSE_Missile_Maverick</li>
+                <li>DMSE_Missile_Grison</li>
+              </missiles>
+            </li>
+            <li>
+              <rack>DMSE_Building_LightMissileLauncher</rack>
+              <missiles>
+                <li>DMSE_Missile_Maverick</li>
+                <li>DMSE_Missile_Grison</li>
+              </missiles>
+            </li>
+            <li>
+              <rack>DMSE_MissileRack</rack>
+              <missiles>
+                <li>DMSE_Missile_Maverick</li>
+                <li>DMSE_Missile_Grison</li>
+              </missiles>
+            </li>
+            <li>
+              <rack>DMSE_Building_RotaryMissileLauncher</rack>
+              <missiles>
+                <li>DMSE_InterceptorMissile</li>
+                <li>DMSE_Missile_Grison</li>
+              </missiles>
+            </li>
+            <li>
+              <rack>DMSE_Building_FieldAirDefense</rack>
+              <missiles>
+                <li>DMSE_InterceptorMissile</li>
+                <li>DMSE_Missile_Stinger</li>
+              </missiles>
+            </li>
+          </loadouts>
+        </rackSupply>
+      </li>
+    </comps>
+  </WorldObjectDef>
+
+  <SitePartDef>
+    <defName>DMSE_FieldLaunchSitePart</defName>
+    <label>field launch position</label>
+    <description>A field missile position with a search radar, launch positions, ammunition carriers and crew shelters.</description>
+    <!-- FactionCanOwn 只接受 TechLevel = Industrial 的派系 -->
+    <workerClass>DMSE.SitePartWorker_FieldLaunchSite</workerClass>
+    <siteTexture>World/WorldObjects/Sites/Outpost</siteTexture>
+    <expandingIconTexture>UI/Icon/icon_LaunchSite_Loitering</expandingIconTexture>
+    <applyFactionColorToSiteTexture>true</applyFactionColorToSiteTexture>
+    <disallowsAutomaticDetectionTimerStart>true</disallowsAutomaticDetectionTimerStart>
+    <requiresFaction>true</requiresFaction>
+    <minFactionTechLevel>Industrial</minFactionTechLevel>
+    <tags>
+      <li>DMSE_FieldLaunchSite</li>
+    </tags>
+    <wantsThreatPoints>true</wantsThreatPoints>
+    <forceExitAndRemoveMapCountdownDurationDays>0</forceExitAndRemoveMapCountdownDurationDays>
+  </SitePartDef>
+
+  <!-- 說書人觸發的大型威脅：敵對工業派系在殖民地射程內部署野戰發射陣地。
+       世界上已有 NPC 導彈陣地（任何種類）時不觸發。 -->
+  <IncidentDef>
+    <defName>DMSE_FieldLaunchSiteDeployed</defName>
+    <label>field launch position deployed</label>
+    <category>ThreatBig</category>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <workerClass>DMSE.IncidentWorker_FieldLaunchSite</workerClass>
+    <baseChance>0.6</baseChance>
+    <earliestDay>15</earliestDay>
+    <minRefireDays>20</minRefireDays>
+    <minThreatPoints>300</minThreatPoints>
+    <letterLabel>Enemy field launch position</letterLabel>
+    <letterDef>ThreatBig</letterDef>
+    <modExtensions>
+      <li Class="DMSE.FieldLaunchSiteIncidentExtension">
+        <worldObjectDef>DMSE_FieldLaunchSite</worldObjectDef>
+        <sitePartDef>DMSE_FieldLaunchSitePart</sitePartDef>
+        <distance>6~12</distance>
+        <maxActiveSites>1</maxActiveSites>
+        <threatPoints>300~3000</threatPoints>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+
+</Defs>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ==================================================================
+       導彈組裝台（docs/導彈組裝台與裝配方案_實作計畫.md）
+       從零生產導彈：選構型與數量 → 搬料 → 施工 → 出廠即完成彈。
+       行為全在 comp（CompMissileAssemblyBench + CompMissileRackStorage），thingClass 維持 Building，
+       CE 之類替換 thingClass 的補丁不會把功能洗掉。
+       ================================================================== -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_MissileAssemblyBench</defName>
+    <label>missile assembly bench</label>
+    <description>A two-by-four gantry where missiles are built from a bare airframe and the parts you choose. Finished missiles can wait on the bench for a launcher, or be sent to storage.\n\nTool cabinets and machine cabinets nearby speed up the work. Working outdoors or in uncomfortable temperatures slows it down.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/MissilePlatform/large2x</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,4)</drawSize>
+      <damageData>
+        <rect>(0.1,0.1,1.8,3.8)</rect>
+      </damageData>
+    </graphicData>
+    <size>(2,4)</size>
+    <rotatable>true</rotatable>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>60</pathCost>
+    <fillPercent>0.45</fillPercent>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.1</staticSunShadowHeight>
+    <canOverlapZones>false</canOverlapZones>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <tickerType>Never</tickerType>
+    <constructEffect>ConstructMetal</constructEffect>
+    <designationCategory>DMS_Category</designationCategory>
+    <statBases>
+      <MaxHitPoints>350</MaxHitPoints>
+      <WorkToBuild>6000</WorkToBuild>
+      <Flammability>0.4</Flammability>
+      <Mass>40</Mass>
+      <!-- 明寫基礎值；工具櫃、機械櫃的加成疊加在這上面，戶外與溫度減益乘在最後（原版 StatPart）。 -->
+      <WorkTableWorkSpeedFactor>1.0</WorkTableWorkSpeedFactor>
+    </statBases>
+    <costList>
+      <Steel>140</Steel>
+      <ComponentStamped>2</ComponentStamped>
+    </costList>
+    <building>
+      <ignoreStoredThingsBeauty>true</ignoreStoredThingsBeauty>
+      <destroySound>BuildingDestroyed_Metal_Big</destroySound>
+      <!-- 出廠暫存可放的導彈；check_missile_content.py 第 11 條檢查兩份清單＝組裝台可生產的所有物品。 -->
+      <fixedStorageSettings>
+        <filter>
+          <thingDefs>
+            <li>DMSE_Missile_Grison</li>
+            <li>DMSE_Missile_Moskit</li>
+            <li>DMSE_Missile_Stinger</li>
+            <li>DMSE_Missile_Maverick</li>
+            <li>DMSE_Missile_Sparrow</li>
+            <li>DMSE_Missile_Yj</li>
+            <li>DMSE_Missile_Tochka</li>
+            <li>DMSE_Missile_AdvancedLight</li>
+            <li>DMSE_Missile_AdvancedCruise</li>
+            <li>DMSE_Missile_Shahed</li>
+          </thingDefs>
+        </filter>
+      </fixedStorageSettings>
+      <defaultStorageSettings>
+        <priority>Important</priority>
+        <filter>
+          <thingDefs>
+            <li>DMSE_Missile_Grison</li>
+            <li>DMSE_Missile_Moskit</li>
+            <li>DMSE_Missile_Stinger</li>
+            <li>DMSE_Missile_Maverick</li>
+            <li>DMSE_Missile_Sparrow</li>
+            <li>DMSE_Missile_Yj</li>
+            <li>DMSE_Missile_Tochka</li>
+            <li>DMSE_Missile_AdvancedLight</li>
+            <li>DMSE_Missile_AdvancedCruise</li>
+            <li>DMSE_Missile_Shahed</li>
+          </thingDefs>
+        </filter>
+      </defaultStorageSettings>
+    </building>
+    <comps>
+      <!-- 出廠暫存：容量取 renderer 的 maxStored（不掛 MissileRackExtension，台不是某量級的平台）。 -->
+      <li Class="DMSE.CompProperties_MissileRackStorage" />
+      <li Class="DMSE.CompProperties_MissileRackRenderer">
+        <maxStored>2</maxStored>
+        <slotOffsets>
+          <li>(-0.5, 0, 0)</li>
+          <li>(0.5, 0, 0)</li>
+        </slotOffsets>
+      </li>
+      <li Class="DMSE.CompProperties_MissileAssemblyBench">
+        <maxBatch>99</maxBatch>
+      </li>
+      <!-- 工作台設施：與 DMS 列印台（DMS_BenchBase）同一組工作速度設施；漏斗是帳單取料用的，組裝台不需要。 -->
+      <li Class="CompProperties_AffectedByFacilities">
+        <linkableFacilities>
+          <li>ToolCabinet</li>
+          <li>DMS_MachineCabinet</li>
+          <li MayRequire="Aoba.Fortress.Industrial.Citadel">FT_transformer</li>
+        </linkableFacilities>
+      </li>
+    </comps>
+    <inspectorTabs>
+      <li>RimWorld.ITab_Storage</li>
+    </inspectorTabs>
+    <placeWorkers>
+      <li>PlaceWorker_ShowFacilitiesConnections</li>
+    </placeWorkers>
+    <researchPrerequisites>
+      <li>DMSE_LoiteringMunitions</li>
+    </researchPrerequisites>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+    <modExtensions>
+      <!-- 資訊卡照工作台規則顯示工作速度係數（設施、戶外、溫度逐條列出）。 -->
+      <li Class="DMSE.WorkTableStatsExtension" />
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

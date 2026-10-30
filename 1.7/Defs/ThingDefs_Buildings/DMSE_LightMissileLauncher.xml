@@ -187,18 +187,21 @@
         <fillRules>
           <li>
             <minTechLevel>Industrial</minTechLevel>
+            <!-- 存放過濾不含攔截彈（原本只列 DMSE_InterceptorMissile → 候選池永遠為空、敵方發射架生成時是空的）。
+                 改填 DMSE_Missile_Grison（兩用）與 DMSE_Missile_Maverick（對地）。 -->
             <candidates>
-              <li>DMSE_InterceptorMissile</li>
+              <li>DMSE_Missile_Grison</li>
+              <li>DMSE_Missile_Maverick</li>
             </candidates>
           </li>
         </fillRules>
       </li>
     </modExtensions>
     <comps>
-      <li Class="CompProperties_Power">
+      <!-- <li Class="CompProperties_Power">
         <compClass>CompPowerTrader</compClass>
         <basePowerConsumption>400</basePowerConsumption>
-      </li>
+      </li> -->
       <li Class="CompProperties_Flickable" />
       <li Class="CompProperties_Breakdownable" />
       <li Class="DMSE.CompProperties_MissileRailLauncher">

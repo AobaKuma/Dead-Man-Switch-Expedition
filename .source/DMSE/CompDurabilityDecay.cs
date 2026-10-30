@@ -110,6 +110,11 @@ namespace DMSE
                         {
                             return true;
                         }
+                        // comp 型容器（CompMissileRackStorage）：持有者是 comp，comp 的 ParentHolder 會跳過建築本身。
+                        if (holder is ThingComp comp && comp.parent is Building cb && shelters.Contains(cb.def))
+                        {
+                            return true;
+                        }
                         holder = holder.ParentHolder;
                     }
                 }

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <DMSE_MissileAssemblyBench.label>导弹组装台</DMSE_MissileAssemblyBench.label>
+  <DMSE_MissileAssemblyBench.description>一座二乘四的龙门组装台，以裸弹体加上你选的部件从零组装导弹。成品可以留在台上等发射平台来装填，也可以送往仓储。\n\n附近的工具柜与机械柜能加快工作；在户外或温度不适的环境施工会变慢。</DMSE_MissileAssemblyBench.description>
+</LanguageData>

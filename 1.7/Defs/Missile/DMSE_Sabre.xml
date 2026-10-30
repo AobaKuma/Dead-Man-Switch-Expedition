@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ==================== 輕型巡飛彈「軍刀」====================
+       管射式折翼小型巡飛彈，貼圖 Things/Missile/S570（ammo＝收翼裝管、skyFaller＝展翼飛行）。
+       - 固定構型（customizeLocation None、無槽位）：以 MissileItemExtension 宣告彈體，無 CompMissileConfig／ITab，不可改造。
+       - 單兵防空導彈發射具（DMSE_Apparel_SamLauncher）的額外彈藥（extraAmmoDefs）：裝入後用專屬的對地射擊動詞
+         （DMSE_Projectile_Sabre，射程比刺針遠）；用途為 Strike，不能拿來防空。
+       - 也是巡飛彈階（Loitering）：可裝在發射軌／旋轉發射架上作短程世界打擊。
+       - 預設零件（不可更換）：圖像識別導引頭（GuidanceType_Imaging，找屋頂外最危險的敵方生物）＋盤旋飛控
+         （DMSE_Payload_Loiter，找不到目標時在上空盤旋重試）。有槽位只是為了掛預設零件：物品沒有 CompMissileConfig／ITab、
+         customizeLocation 為 None，組裝台與改裝都不會列出它。 -->
+  <DMSE.MissileBodyDef>
+    <defName>DMSE_MissileBody_Sabre</defName>
+    <label>light loitering munition</label>
+    <designWord>Sabre</designWord>
+    <description>A tube-launched loitering munition with folding wings and an image-recognition seeker. It is short-ranged and carries a small warhead, but it is light enough to fire from a shoulder launcher.\n\nIts seeker dives on the most dangerous enemy creature in the open. If it sees none, its loiter flight control holds it over the target area and keeps looking before it falls back to inertial guidance. Comes in a fixed configuration.</description>
+    <sizeClass>Loitering</sizeClass>
+    <launchMode>Tilt</launchMode>
+    <customizeLocation>None</customizeLocation>
+    <baseExplosionRadius>2.4</baseExplosionRadius>
+    <baseDamageDef>Bomb</baseDamageDef>
+    <baseDamageAmount>50</baseDamageAmount>
+    <baseScatter>1.5</baseScatter>
+    <baseWorldSpeedFactor>0.4</baseWorldSpeedFactor>
+    <!-- 射程：40 * 2.5 * 0.25 = 25 格（以洲際彈道導彈＝民兵三型 500 格為錨點分級） -->
+    <baseRange>0</baseRange>
+    <terminalUpdates>1</terminalUpdates>
+    <baseFuel>40</baseFuel>
+    <baseSpecificImpulse>2.5</baseSpecificImpulse>
+    <rangePerFuelImpulse>0.25</rangePerFuelImpulse>
+    <incomingSkyfaller>DMSE_Incoming_Sabre</incomingSkyfaller>
+    <launchProjectile>DMSE_Launch_Sabre</launchProjectile>
+    <!-- 槽位只用來掛預設零件；customizeLocation None + 物品無 CompMissileConfig：不可自定義。 -->
+    <slots>
+      <li>Guidance</li>
+      <li>Payload</li>
+    </slots>
+    <defaultParts>
+      <li>DMSE_Sabre_Guidance_Imaging</li>
+      <li>DMSE_Payload_Loiter</li>
+    </defaultParts>
+  </DMSE.MissileBodyDef>
+
+  <!-- 軍刀專用圖像識別導引頭：與地獄火的自動影像尋標同一套邏輯（屋頂外的敵方生物，先戰力後體型）；
+       找不到目標回報無目標，交給盤旋飛控等待，盤旋時間用完才退化為慣性。出廠內建，不另計成本與研究。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Sabre_Guidance_Imaging</defName>
+    <label>image-recognition seeker</label>
+    <omitFromDesignName>true</omitFromDesignName>
+    <description>A compact camera seeker with onboard target recognition. It picks the most dangerous enemy creature in the open, then the largest, and ignores anyone under a roof. If it finds no target it reports none, leaving a loiter flight control to hold and keep looking.</description>
+    <category>Guidance</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_Sabre</li>
+    </compatibleBodies>
+    <guidanceType Class="DMSE.GuidanceType_Imaging" />
+    <scatterOffset>-1</scatterOffset>
+  </DMSE.MissilePartDef>
+
+  <ThingDef ParentName="DMSE_ResourceBase">
+    <defName>DMSE_Missile_Sabre</defName>
+    <label>Sabre light loitering munition</label>
+    <description>A tube-launched loitering munition with folding wings and an image-recognition seeker. It fits a man-portable SAM launcher, which fires it at ground targets well beyond the reach of a surface-to-air missile. It can also be fired from a launch rail for a short-range strike: its seeker hunts the most dangerous enemy creature in the open, and its loiter flight control keeps it circling until one shows up.\n\nCannot intercept incoming threats. Comes in a fixed configuration and cannot be modified.</description>
+    <descriptionHyperlinks>
+      <ThingDef>DMSE_Apparel_SamLauncher</ThingDef>
+      <ThingDef>DMSE_Building_LoiteringLauncher</ThingDef>
+      <ThingDef>DMSE_Building_RotaryLauncher</ThingDef>
+      <ThingDef>DMSE_LoiteringRack</ThingDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Things/Missile/S570/ammo</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.33,1.33)</drawSize>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>1</stackLimit>
+    <tickerType>Rare</tickerType>
+    <useHitPoints>true</useHitPoints>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>650</MarketValue>
+      <Mass>10</Mass>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>10.0</DeteriorationRate>
+    </statBases>
+    <costList>
+      <Chemfuel>20</Chemfuel>
+      <Tungsteel>5</Tungsteel>
+      <ComponentStamped>3</ComponentStamped>
+    </costList>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <effectWorking>Smith</effectWorking>
+      <soundWorking>Recipe_Smith</soundWorking>
+      <recipeUsers Inherit="False">
+        <li>DMS_TableMachinePrinter</li>
+      </recipeUsers>
+      <researchPrerequisite>DMSE_FireControlNetwork</researchPrerequisite>
+      <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
+    </recipeMaker>
+    <modExtensions>
+      <li Class="DMSE.MissileItemExtension">
+        <body>DMSE_MissileBody_Sabre</body>
+      </li>
+      <li Class="DMSE.MissileRoleExtension">
+        <role>Strike</role>
+      </li>
+    </modExtensions>
+    <comps>
+      <li Class="DMSE.CompProperties_Renameable" />
+      <li Class="DMSE.CompProperties_DurabilityDecay">
+        <hitPointsPerDay>3</hitPointsPerDay>
+        <destroyWhenDepleted>true</destroyWhenDepleted>
+        <shelterBuildings>
+          <li>DMSE_LoiteringRack</li>
+          <li>DMSE_Building_LoiteringLauncher</li>
+          <li>DMSE_Building_RotaryLauncher</li>
+        </shelterBuildings>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- 世界打擊抵達時的末端投射物：小、慢、低空、無隱身。 -->
+  <ThingDef ParentName="DMSE_MissileIncomingProjectileBase">
+    <defName>DMSE_Incoming_Sabre</defName>
+    <label>light loitering munition (incoming)</label>
+    <thingClass>DMSE.Projectile_MissileIncoming</thingClass>
+    <graphicData>
+      <texPath>Things/Missile/S570/skyFaller</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>1.33</drawSize>
+    </graphicData>
+    <size>(1,1)</size>
+    <modExtensions>
+      <li Class="DMSE.MissileFlightExtension">
+        <shadowSize>(1.5, 1.5)</shadowSize>
+        <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
+        <speed>1</speed>
+      </li>
+      <li Class="DMSE.BVRTargetProps">
+        <distanceLevel>0.6</distanceLevel>
+        <stealthLevel>0</stealthLevel>
+        <speed>9</speed>
+        <altitude>200</altitude>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- 單兵發射具對地射擊的投射物：從上方俯衝（flyOverhead），厚岩頂會擋下。 -->
+  <ThingDef ParentName="BaseBullet">
+    <defName>DMSE_Projectile_Sabre</defName>
+    <label>light loitering munition</label>
+    <thingClass>Projectile_Explosive</thingClass>
+    <graphicData>
+      <texPath>Things/Missile/S570/skyFaller</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>1.2</drawSize>
+    </graphicData>
+    <projectile>
+      <damageDef>Bomb</damageDef>
+      <damageAmountBase>55</damageAmountBase>
+      <explosionRadius>2.4</explosionRadius>
+      <speed>24</speed>
+      <flyOverhead>true</flyOverhead>
+    </projectile>
+  </ThingDef>
+
+</Defs>

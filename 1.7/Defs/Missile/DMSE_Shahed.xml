@@ -1,8 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_Shahed</defName>
     <label>long-range loitering munition</label>
+    <designWord>Loiter</designWord>
+    <namer>DMSE_Namer_Shahed</namer>
     <description>A cheap delta-wing attack drone with a piston engine. It is slow and carries a small warhead, but it can fly a very long way.\n\nWithout a TV guidance module, it strikes somewhere around the center of the target map. The module lets you pick the impact point, but uses an extra fire-control channel. Cannot track moving targets.</description>
     <sizeClass>Loitering</sizeClass>
     <launchMode>Tilt</launchMode>
@@ -24,9 +26,11 @@
     <builtInTerminalGuidance>false</builtInTerminalGuidance>
     <slots>
       <li>Guidance</li>
+      <li>Payload</li>
     </slots>
     <defaultParts>
       <li>DMSE_Shahed_Guidance_Inertial</li>
+      <li>DMSE_Payload_None</li>
     </defaultParts>
   </DMSE.MissileBodyDef>
   <ThingDef ParentName="DMSE_ResourceBase">
@@ -87,6 +91,7 @@
         <hitPointsPerDay>2</hitPointsPerDay>
         <destroyWhenDepleted>true</destroyWhenDepleted>
         <shelterBuildings>
+          <li>DMSE_MissileAssemblyBench</li>
           <li>DMSE_LoiteringRack</li>
           <li>DMSE_Building_LoiteringLauncher</li>
           <li>DMSE_Building_RotaryLauncher</li>
@@ -127,6 +132,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_Shahed_Guidance_Inertial</defName>
     <label>inertial guidance</label>
+    <omitFromDesignName>true</omitFromDesignName>
     <description>Standard inertial guidance with no target recognition or terminal guidance. Uses one fire-control channel. Impacts scatter around the center of the target map. It does not lock onto buildings or creatures.</description>
     <category>Guidance</category>
     <compatibleBodies>
@@ -137,6 +143,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_Shahed_Guidance_TV</defName>
     <label>TV guidance</label>
+    <designWord>TV</designWord>
     <description>An optional TV guidance module. When the drone reaches the target map, you choose the impact point. Uses two fire-control channels instead of one. Enemy drones with this module use inertial guidance instead.</description>
     <category>Guidance</category>
     <compatibleBodies>
@@ -145,6 +152,42 @@
     <guidanceType Class="DMSE.GuidanceType_TV" />
     <costList>
       <ComponentSpacer>1</ComponentSpacer>
+    </costList>
+  </DMSE.MissilePartDef>
+
+  <!-- 反輻射尋標頭（巡飛彈專用）：只鎖開機中的敵方雷達，沒有雷達就回報「沒有目標」，
+       交給盤旋飛控在上空等待（不退化為打電網）。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Shahed_Guidance_RadarHoming</defName>
+    <label>radar-homing seeker</label>
+    <designWord>Radar</designWord>
+    <description>A passive seeker that homes on radar emissions only. It locks onto the most powerful enemy radar that is switched on; if there is no radar to lock, it reports no target instead of falling back to a power grid. Combine it with a loiter flight control to keep the drone waiting overhead until a radar comes on. Passive acoustic mirrors are invisible to it.</description>
+    <category>Guidance</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_Shahed</li>
+    </compatibleBodies>
+    <guidanceType Class="DMSE.GuidanceType_AntiRadiation">
+      <fallBackToEmissions>false</fallBackToEmissions>
+    </guidanceType>
+    <costList>
+      <ComponentIndustrial>3</ComponentIndustrial>
+    </costList>
+  </DMSE.MissilePartDef>
+
+  <!-- 盤旋飛控（巡飛彈專用酬載）：導引頭找不到目標時不直接回退慣性，而是在目標上空盤旋等待；
+       盤旋期間仍留在攔截波次中，末端防禦（CIWS）照常接戰。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_Payload_Loiter</defName>
+    <label>loiter flight control</label>
+    <designWord>Loiter</designWord>
+    <description>Flight-control software and an extra fuel reserve for loitering munitions. When the seeker finds nothing on arrival, the drone does not fall back to inertial guidance: it holds over the target area for about an in-game hour, re-running its seeker every few seconds, and only dives on an inertial impact point once that time runs out.\n\nA loitering drone still sits in the interception wave: terminal defences can shoot it down the whole time it waits. Requires a loitering munition airframe.</description>
+    <category>Payload</category>
+    <requiresLoiteringBody>true</requiresLoiteringBody>
+    <loiterTicks>2500</loiterTicks>
+    <loiterRetryTicks>250</loiterRetryTicks>
+    <costList>
+      <ComponentIndustrial>2</ComponentIndustrial>
+      <Chemfuel>15</Chemfuel>
     </costList>
   </DMSE.MissilePartDef>
 </Defs>

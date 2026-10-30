@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <DMSE_Missile_Sabre.label>軍刀輕型巡飛彈</DMSE_Missile_Sabre.label>
+  <DMSE_Missile_Sabre.description>一種管射式折翼巡飛彈，配有圖像識別導引頭。可裝入防空導彈發射具，對遠超出防空導彈射程的地面目標發射；也能從發射軌發射，進行短程打擊：導引頭會搜尋屋頂外最危險的敵方生物，盤旋飛控讓它在上空盤旋直到目標出現。\n\n無法攔截來襲威脅。固定構型，無法改造。</DMSE_Missile_Sabre.description>
+  <DMSE_Incoming_Sabre.label>輕型巡飛彈（來襲）</DMSE_Incoming_Sabre.label>
+  <DMSE_Projectile_Sabre.label>輕型巡飛彈</DMSE_Projectile_Sabre.label>
+</LanguageData>

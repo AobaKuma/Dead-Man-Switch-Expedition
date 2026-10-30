@@ -5,15 +5,15 @@ using Verse.AI;
 
 namespace DMSE
 {
-    /// <summary>把一種資源搬到導彈並存入 CompMissileConfig.delivered。</summary>
+    /// <summary>把一種資源搬到裝配目標（導彈或組裝台）並存入其 delivered。</summary>
     public class JobDriver_DeliverMissileResource : JobDriver
     {
         private const TargetIndex MissileInd = TargetIndex.A;
         private const TargetIndex ResourceInd = TargetIndex.B;
 
-        /// <summary>工作目標：地面上的導彈物品，或含有待裝配導彈的儲存架。</summary>
+        /// <summary>工作目標：地面上的導彈物品、含有待裝配導彈的儲存架，或有訂單的組裝台。</summary>
         private Thing Target => job.GetTarget(MissileInd).Thing;
-        private CompMissileConfig Comp => Target != null ? MissileAssemblyUtility.GetAssemblyComp(Target) : null;
+        private IMissileAssemblyTarget Comp => Target != null ? MissileAssemblyUtility.GetAssemblyTarget(Target) : null;
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
@@ -25,7 +25,7 @@ namespace DMSE
         protected override IEnumerable<Toil> MakeNewToils()
         {
             this.FailOnDespawnedNullOrForbidden(MissileInd);
-            AddFailCondition(() => Comp == null || !Comp.NeedsAssembly);
+            AddFailCondition(() => Comp == null || !Comp.WantsWork);
 
             Toil reserve = Toils_Reserve.Reserve(ResourceInd);
             yield return reserve;
@@ -44,7 +44,7 @@ namespace DMSE
             deposit.initAction = delegate
             {
                 Thing carried = pawn.carryTracker.CarriedThing;
-                CompMissileConfig comp = Comp;
+                IMissileAssemblyTarget comp = Comp;
                 if (carried != null && comp != null)
                 {
                     comp.Deposit(carried.def, carried.stackCount);

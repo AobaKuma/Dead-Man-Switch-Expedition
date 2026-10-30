@@ -86,6 +86,26 @@ namespace DMSE
         }
 
         /// <summary>
+        /// 取得小人可以搬料／施工的裝配目標：先看組裝台的訂單，再退回 <see cref="GetAssemblyComp"/>
+        /// （地面導彈物品、容器內第一枚待裝配的導彈）。組裝台沒有訂單時落到後者，
+        /// 所以台上成品被玩家用 ITab 改裝仍走既有路徑。
+        /// </summary>
+        public static IMissileAssemblyTarget GetAssemblyTarget(Thing t)
+        {
+            if (t == null) { return null; }
+            CompMissileAssemblyBench bench = t.TryGetComp<CompMissileAssemblyBench>();
+            if (bench != null && bench.WantsWork) { return bench; }
+            return GetAssemblyComp(t);
+        }
+
+        /// <summary>
+        /// 小人的裝配工作速度：<see cref="StatDefOf.GeneralLaborSpeed"/>，
+        /// 與原版帳單施工（<c>Toils_Recipe.DoRecipeWork</c>）相同，開發者「快速製作」時 ×30。
+        /// </summary>
+        public static float PawnWorkSpeed(Pawn pawn)
+            => pawn.GetStatValue(StatDefOf.GeneralLaborSpeed) * (DebugSettings.fastCrafting ? 30f : 1f);
+
+        /// <summary>
         /// 上帝模式且開啟 Mod 設定「上帝模式即時裝配」：裝配立即完成，不耗資源、不需研究、不需確認或小人工作。
         /// </summary>
         public static bool GodModeInstant => DebugSettings.godMode && (DMSEMod.Settings?.godModeInstantAssembly ?? false);

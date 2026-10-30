@@ -1,0 +1,4 @@
+Microsoft (R) Visual C# 編譯器 版 5.9.0-1.26505.111 (a8dd0577c5c13f43a2f57fe33b4ff11b90f6371e) 
+Copyright (C) Microsoft Corporation. 著作權所有，並保留一切權利。
+
+warning CS2023: 因為在回應檔中已指定 /noconfig 選項，所以將會忽略該選項

@@ -44,6 +44,12 @@ namespace DMSE
         /// <summary>每發之間的間隔 tick。</summary>
         public int salvoIntervalTicks = 60;
 
+        /// <summary>世界航跡速度：每跨一格地表等效距離需要的 tick。</summary>
+        public float worldTicksPerTile = 60f;
+
+        /// <summary>雷達導引：每發落彈時改指向目標地圖上的敵方目標（見 <see cref="ArtilleryStrikeUtility.FindGuidedTarget"/>）。</summary>
+        public bool guided;
+
         /// <summary>目的地世界 tile（由 CompArtilleryStrike 在發射時設定）。</summary>
         public PlanetTile destinationTile = PlanetTile.Invalid;
 
@@ -104,8 +110,10 @@ namespace DMSE
                 if (s == e) { return 1f; }
                 float dist = GenMath.SphericalDistance(s.normalized, e.normalized);
                 if (dist == 0f) { return 1f; }
-                // def.travelSpeed 對應原版 WorldObject 的移動速度欄位
-                return projectileDef.projectile.speed/10 * 0.00025f / dist;
+                // 與導彈相同的換算（MissileWorldMotion）：角速度 = 1 / (每弧度格數 × 每格 tick)
+                float angularSpeed = 1f / Mathf.Max(0.001f,
+                    Find.WorldGrid.ApproxDistanceInTiles(1f) * Mathf.Max(1f, worldTicksPerTile));
+                return angularSpeed / dist;
             }
         }
 
@@ -156,14 +164,18 @@ namespace DMSE
                 return;
             }
 
+            // 與導彈抵達相同：砲擊非敵對陣營會使其敵對；登記交戰時間，
+            // 否則抵達時才生成、沒有我方人員的地圖會在砲彈落地前被原版移除（Patch_ShouldBeRemoved）。
+            if (attackerFaction != null && attackerFaction.IsPlayer &&
+                map.Parent?.Faction is Faction f && !f.IsPlayer &&
+                f.RelationKindWith(attackerFaction) != FactionRelationKind.Hostile)
+            {
+                f.TryAffectGoodwillWith(attackerFaction, f.GoodwillToMakeHostile(attackerFaction), true);
+            }
+            GameComponent_MissileEngage.Comp.times.SetOrAdd(map, Find.TickManager.TicksGame + GenDate.TicksPerDay * 2);
+
             // 排程所有齊射
             ArtilleryStrikeUtility.QueueSalvo(map, this);
-
-            // 鏡頭跳轉至目標地圖（第一發即將落下）
-            if (Find.CurrentMap != map)
-            {
-                CameraJumper.TryJump(targetCell, map, CameraJumper.MovementMode.Pan);
-            }
 
             Destroy();
         }
@@ -204,6 +216,8 @@ namespace DMSE
             Scribe_Values.Look(ref scatterRadius,      "scatterRadius",     0f);
             Scribe_Values.Look(ref salvoCount,         "salvoCount",        1);
             Scribe_Values.Look(ref salvoIntervalTicks, "salvoIntervalTicks", 60);
+            Scribe_Values.Look(ref guided,             "guided",            false);
+            Scribe_Values.Look(ref worldTicksPerTile,  "worldTicksPerTile", 60f);
         }
     }
 }

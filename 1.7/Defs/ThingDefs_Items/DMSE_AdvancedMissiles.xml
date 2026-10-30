@@ -70,6 +70,7 @@
         <hitPointsPerDay>5</hitPointsPerDay>
         <destroyWhenDepleted>true</destroyWhenDepleted>
         <shelterBuildings>
+          <li>DMSE_MissileAssemblyBench</li>
           <li>DMSE_Building_LightMissileLauncher</li>
           <li>DMSE_Building_LightMissileVLS</li>
           <li>DMSE_Building_RotaryLauncher</li>
@@ -140,6 +141,7 @@
         <hitPointsPerDay>5</hitPointsPerDay>
         <destroyWhenDepleted>true</destroyWhenDepleted>
         <shelterBuildings>
+          <li>DMSE_MissileAssemblyBench</li>
           <li>DMSE_Building_Scorer</li>
           <li>DMSE_CruiseMissileRack</li>
           <li>DMSE_MissileRack</li>

@@ -13,6 +13,10 @@
   <DMSE.MissileBase.ReentryBlocked>通道封鎖，敵方整備防線（{0}）</DMSE.MissileBase.ReentryBlocked>
   <DMSE.MissileBase.ArrivedLetter>你們抵達了一處導彈陣地。敵方已在此部署火控雷達與導彈發射架，不斷向周圍殖民地發射打擊。摧毀所有雷達可瓦解其打擊能力。</DMSE.MissileBase.ArrivedLetter>
   <DMSE.MissileBase.SiteDesc>一處配備火控雷達與導彈發射架的機動戰術彈道導彈陣地。陣地會在完成任務後轉移，以躲避反制。</DMSE.MissileBase.SiteDesc>
+  <DMSE.MissileBase.SupplyDrop>敵方補給空投：{0} ×{1}</DMSE.MissileBase.SupplyDrop>
+  <DMSE.MissileBase.RackResupply>敵方導彈補給：為 {0} 座空發射架空投了 {1} 枚導彈，守軍即將完成裝填。</DMSE.MissileBase.RackResupply>
+  <DMSE.FieldLaunchSite.ArrivedLetter>你們抵達了一處敵方野戰發射陣地。陣地以搜索雷達為中心，四周散布發射陣位、彈藥車與人員休息區。只要仍有雷達運作，敵方就會定時空投生存食品包維持守軍；摧毀所有發射架即可瓦解此陣地。</DMSE.FieldLaunchSite.ArrivedLetter>
+  <DMSE.FieldLaunchSite.SpawnedLetter>{0}在{1}的{2}方 {3} 格處部署了一處野戰導彈發射陣地。其發射架能打擊你的殖民地；只要雷達仍在運作，補給艙就會持續為守軍送來食物。\n\n摧毀所有發射架即可瓦解此陣地；癱瘓雷達則能切斷其補給。</DMSE.FieldLaunchSite.SpawnedLetter>
 
   <!-- EN: Launch Missile -->
   <ScorerLaunch>發射導彈</ScorerLaunch>
@@ -38,12 +42,15 @@
 
   <!-- EN: {0} drop pods will breach in {1} -->
   <DMSE.Alert.Pods>{0} 個來襲目標，攔截窗口剩餘 {1}</DMSE.Alert.Pods>
+  <DMSE.Alert.Pods.Loitering>{0} 枚飛彈在上空盤旋，剩餘盤旋 {1}</DMSE.Alert.Pods.Loitering>
   <DMSE.Alert.Pods.Window.Midcourse>中過程攔截窗口：{0}</DMSE.Alert.Pods.Window.Midcourse>
   <DMSE.Alert.Pods.Window.Terminal>末端攔截窗口（CIWS）：{0}</DMSE.Alert.Pods.Window.Terminal>
+  <DMSE.Alert.Pods.Window.Loitering>盤旋剩餘：{0}</DMSE.Alert.Pods.Window.Loitering>
   <DMSE.Alert.Pods.Target>  · {0}  【{1}】</DMSE.Alert.Pods.Target>
   <DMSE.Alert.Pods.Status.InFlight>攔截彈飛行中</DMSE.Alert.Pods.Status.InFlight>
   <DMSE.Alert.Pods.Status.Locking>火控鎖定中</DMSE.Alert.Pods.Status.Locking>
   <DMSE.Alert.Pods.Status.Unengaged>未接戰</DMSE.Alert.Pods.Status.Unengaged>
+  <DMSE.Alert.Pods.Status.Loitering>盤旋等待目標</DMSE.Alert.Pods.Status.Loitering>
   <!-- BVR 系統狀態提示（獨立於來襲威脅提示） -->
   <DMSE.Alert.BVRStatus.Label>BVR 系統</DMSE.Alert.BVRStatus.Label>
   <DMSE.Alert.BVRStatus.SearchRadars>搜索雷達：</DMSE.Alert.BVRStatus.SearchRadars>
@@ -163,6 +170,7 @@
   <DMSE.Missile.Stat.Range>射程：{0} 格</DMSE.Missile.Stat.Range>
   <DMSE.Missile.Stat.TerminalGuidance>具導引能力：飛行中可更新目標位置 {0} 次，可跨圖層打擊</DMSE.Missile.Stat.TerminalGuidance>
   <DMSE.Missile.Stat.NoTerminalGuidance>無導引能力：無法追蹤移動目標，也無法跨圖層打擊</DMSE.Missile.Stat.NoTerminalGuidance>
+  <DMSE.Missile.Stat.Loiter>盤旋飛控：找不到目標時可盤旋等待 {0}，之後才回退慣性落點</DMSE.Missile.Stat.Loiter>
   <DMSE.MissileLauncher.OutOfRange>目標超出導彈射程（{0} 格）。</DMSE.MissileLauncher.OutOfRange>
   <DMSE.MissileLauncher.RangeLabel>{0} / {1} 格</DMSE.MissileLauncher.RangeLabel>
   <DMSE.MissileLauncher.NoTargetHere>此處沒有目標，導彈將會落空</DMSE.MissileLauncher.NoTargetHere>
@@ -191,6 +199,7 @@
 
   <!-- 導引頭選目標 -->
   <DMSE.Missile.SeekerLocked>{0}已鎖定目標，導彈正在落下。</DMSE.Missile.SeekerLocked>
+  <DMSE.Missile.Loitering>導引頭沒有找到目標：飛彈在上空盤旋等待，最多 {0} 後才回退慣性導引。</DMSE.Missile.Loitering>
   <DMSE.Guidance.Inertial>慣性導引</DMSE.Guidance.Inertial>
   <DMSE.Guidance.RadioCommand>無線電指令導引</DMSE.Guidance.RadioCommand>
   <DMSE.Guidance.ManualTarget>{0}：抵達後由你選擇落點</DMSE.Guidance.ManualTarget>
@@ -253,12 +262,16 @@
   <DMSE.Artillery.CrossLayer>砲彈沒有導引能力，無法跨圖層打擊。</DMSE.Artillery.CrossLayer>
   <DMSE.Artillery.Missed>砲擊找不到目標，已落空。</DMSE.Artillery.Missed>
   <DMSE.Artillery.NoBarrel>砲管已耗損，持續射擊已停止，請更換強化砲管。</DMSE.Artillery.NoBarrel>
+  <DMSE.Artillery.TargetIsHome>不能砲擊自己所在的地塊。</DMSE.Artillery.TargetIsHome>
+  <DMSE.Artillery.OutOfRange>目標超出火砲射程（{0} 格）。</DMSE.Artillery.OutOfRange>
   <DMSE.BVR.DeviceInactive>裝置不可用（無電、損壞或已關閉）。</DMSE.BVR.DeviceInactive>
   <!-- 狀態字串（用於 StopDesc） -->
   <DMSE.Artillery.StateCooldown>裝填冷卻中，剩餘 {0}</DMSE.Artillery.StateCooldown>
   <DMSE.Artillery.StateAiming>瞄準中（{0}%）</DMSE.Artillery.StateAiming>
   <DMSE.Artillery.StateReady>可發射</DMSE.Artillery.StateReady>
   <DMSE.Artillery.Ready>火砲：可發射</DMSE.Artillery.Ready>
+  <DMSE.Artillery.GuidanceOnline>雷達導引：可用（散佈 {0} 格）</DMSE.Artillery.GuidanceOnline>
+  <DMSE.Artillery.GuidanceOffline>雷達導引：沒有空閒火控通道（無導引，散佈 {0} 格）</DMSE.Artillery.GuidanceOffline>
 
   <!-- PlaceWorker -->
   <DMSE.PlaceWorker.TooCloseSameLayer>與 {0} 太近。</DMSE.PlaceWorker.TooCloseSameLayer>

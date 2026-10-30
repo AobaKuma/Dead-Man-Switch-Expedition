@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- 各彈體設計名稱的型號代字（DMSE.MissileNamerDef.designator，簡體）。 -->
+  <DMSE_Namer_Light.designator>长枪</DMSE_Namer_Light.designator>
+  <DMSE_Namer_AdvancedLight.designator>地狱火</DMSE_Namer_AdvancedLight.designator>
+  <DMSE_Namer_AdvancedCruise.designator>战斧</DMSE_Namer_AdvancedCruise.designator>
+  <DMSE_Namer_Stinger.designator>刺针</DMSE_Namer_Stinger.designator>
+  <DMSE_Namer_Maverick.designator>小牛</DMSE_Namer_Maverick.designator>
+  <DMSE_Namer_Sparrow.designator>麻雀</DMSE_Namer_Sparrow.designator>
+  <DMSE_Namer_Moskit.designator>白蛉</DMSE_Namer_Moskit.designator>
+  <DMSE_Namer_Yj.designator>鹰击</DMSE_Namer_Yj.designator>
+  <DMSE_Namer_Tochka.designator>圆点</DMSE_Namer_Tochka.designator>
+  <DMSE_Namer_Shahed.designator>沙赫德</DMSE_Namer_Shahed.designator>
+  <DMSE_Namer_LegacyBallistic.designator>V2</DMSE_Namer_LegacyBallistic.designator>
+  <DMSE_Namer_AdvancedBallistic.designator>民兵</DMSE_Namer_AdvancedBallistic.designator>
+</LanguageData>

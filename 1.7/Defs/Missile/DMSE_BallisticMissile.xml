@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
   <!-- ==================== 彈道導彈 彈體 ====================
@@ -18,6 +18,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_Ballistic_Warhead_Thermonuclear</defName>
     <label>thermonuclear warhead</label>
+    <designWord>Thermonuclear</designWord>
     <description>A thermonuclear warhead. It has no special effects. It does not need any.</description>
     <category>Warhead</category>
     <compatibleBodies><li>DMSE_MissileBody_AdvancedBallistic</li><li>DMSE_MissileBody_LegacyBallistic</li></compatibleBodies>
@@ -39,6 +40,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_Ballistic_Warhead_Airburst</defName>
     <label>airburst warhead</label>
+    <designWord>Airburst</designWord>
     <description>A warhead that detonates above the target to spread fragments over a wide area. When used on an interceptor, it gets extra chances to hit in each engagement.</description>
     <category>Warhead</category>
     <compatibleBodies><li>DMSE_MissileBody_AdvancedBallistic</li><li>DMSE_MissileBody_LegacyBallistic</li></compatibleBodies>
@@ -59,6 +61,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_Ballistic_Warhead_ClusterBomblet</defName>
     <label>cluster bomblet warhead</label>
+    <designWord>Bomblet</designWord>
     <description>A warhead that opens over the target and scatters many small fragmentation bomblets. Each bomblet falls on its own, spreading damage across a whole compound instead of a single point.</description>
     <category>Warhead</category>
     <compatibleBodies><li>DMSE_MissileBody_AdvancedBallistic</li><li>DMSE_MissileBody_LegacyBallistic</li></compatibleBodies>
@@ -83,6 +86,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_Ballistic_Warhead_TungstenPenetrator</defName>
     <label>tungsten penetrator</label>
+    <designWord>Tungsten</designWord>
     <description>A dense tungsten rod that punches through thick roofs before detonating inside. Underground shelters offer no protection against it.</description>
     <category>Warhead</category>
     <compatibleBodies><li>DMSE_MissileBody_AdvancedBallistic</li><li>DMSE_MissileBody_LegacyBallistic</li></compatibleBodies>
@@ -101,6 +105,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_Ballistic_Guidance_Inertial</defName>
     <label>inertial guidance</label>
+    <designWord>Inertial</designWord>
     <description>Basic inertial guidance. With a big enough warhead, precision hardly matters. Impacts scatter around the center of the target map. It does not lock onto buildings or creatures.</description>
     <category>Guidance</category>
     <compatibleBodies><li>DMSE_MissileBody_AdvancedBallistic</li><li>DMSE_MissileBody_LegacyBallistic</li></compatibleBodies>
@@ -112,6 +117,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_Ballistic_Guidance_FireControl</defName>
     <label>fire-control guidance</label>
+    <designWord>FireControl</designWord>
     <description>Terminal guidance assisted by the colony's fire-control radar network. It greatly tightens impact dispersion.</description>
     <category>Guidance</category>
     <compatibleBodies><li>DMSE_MissileBody_AdvancedBallistic</li><li>DMSE_MissileBody_LegacyBallistic</li></compatibleBodies>
@@ -129,6 +135,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_Ballistic_Guidance_Laser</defName>
     <label>laser terminal seeker</label>
+    <designWord>Laser</designWord>
     <description>A semi-active laser seeker. It homes on the most recent point your colony marked on the target map with a laser target designator, and falls back to inertial guidance if there is none.</description>
     <category>Guidance</category>
     <compatibleBodies><li>DMSE_MissileBody_AdvancedBallistic</li><li>DMSE_MissileBody_LegacyBallistic</li></compatibleBodies>
@@ -151,6 +158,7 @@
     <label>no payload</label>
     <description>No secondary charge. The warhead does all the work.</description>
     <category>Payload</category>
+    <omitFromDesignName>true</omitFromDesignName>
     <compatibleBodies><li>DMSE_MissileBody_AdvancedBallistic</li><li>DMSE_MissileBody_LegacyBallistic</li></compatibleBodies>
     <payloadEffect Class="DMSE.PayloadEffect_None" />
   </DMSE.MissilePartDef>
@@ -159,6 +167,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_Ballistic_Payload_Cluster</defName>
     <label>cluster payload</label>
+    <designWord>Cluster</designWord>
     <description>Scatters submunitions across a wide area, trading concentrated blast for coverage.</description>
     <category>Payload</category>
     <compatibleBodies><li>DMSE_MissileBody_AdvancedBallistic</li><li>DMSE_MissileBody_LegacyBallistic</li></compatibleBodies>
@@ -176,6 +185,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_Ballistic_Payload_BunkerBuster</defName>
     <label>bunker buster payload</label>
+    <designWord>Bunker</designWord>
     <description>A hardened penetrator charge with a delayed fuze. It bores through thick rock roofs and detonates inside, wrecking nearby structures.\n\nWithout this or a penetrator warhead, a missile that hits a mountain detonates on the rock surface, and its seeker ignores targets under thick roofs.</description>
     <category>Payload</category>
     <compatibleBodies><li>DMSE_MissileBody_AdvancedBallistic</li><li>DMSE_MissileBody_LegacyBallistic</li></compatibleBodies>
@@ -193,6 +203,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_Ballistic_Payload_Antiparticle</defName>
     <label>antiparticle payload</label>
+    <designWord>Antiparticle</designWord>
     <description>A secondary antiparticle burst that destroys almost everything in range. The most destructive payload available.</description>
     <category>Payload</category>
     <compatibleBodies><li>DMSE_MissileBody_AdvancedBallistic</li><li>DMSE_MissileBody_LegacyBallistic</li></compatibleBodies>

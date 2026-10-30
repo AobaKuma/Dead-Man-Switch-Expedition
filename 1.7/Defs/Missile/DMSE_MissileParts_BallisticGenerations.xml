@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
   <!-- ==================================================================
@@ -19,6 +19,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvBallistic_Warhead_LowYield</defName>
     <label>low-yield warhead</label>
+    <designWord>Low Yield</designWord>
     <description>A smaller strategic warhead scaled down for tactical use. It does less damage than a full thermonuclear warhead, but it is much cheaper.</description>
     <category>Warhead</category>
     <compatibleBodies>
@@ -41,6 +42,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvBallistic_Guidance_Stellar</defName>
     <label>stellar-inertial guidance</label>
+    <designWord>Stellar</designWord>
     <description>Inertial guidance corrected by star sightings during flight, cutting dispersion to almost nothing. It has no terminal seeker, so a moving target is still missed. Impacts scatter around the center of the target map. It does not lock onto buildings or creatures.</description>
     <category>Guidance</category>
     <compatibleBodies>
@@ -61,6 +63,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvBallistic_Payload_Penaids</defName>
     <label>penetration aids</label>
+    <designWord>PenAids</designWord>
     <description>Chaff, radar decoys and a stealth shroud released with the warhead. The missile looks much smaller on the way in, so enemy radars spot it later and have less time to respond.</description>
     <category>Payload</category>
     <compatibleBodies>
@@ -82,6 +85,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvBallistic_Payload_MIRV</defName>
     <label>multiple re-entry vehicles</label>
+    <designWord>MIRV</designWord>
     <description>Several separate warheads released before the final dive. They spread out and land around a single impact point.</description>
     <category>Payload</category>
     <compatibleBodies>
@@ -107,6 +111,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_LegacyBallistic_Warhead_Amatol</defName>
     <label>Amatol warhead</label>
+    <designWord>Amatol</designWord>
     <description>A large, simple warhead of amatol explosive, stable and cheap enough to make from industrial materials. It leaves a big hole and nothing more.</description>
     <category>Warhead</category>
     <compatibleBodies>
@@ -128,6 +133,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_LegacyBallistic_Warhead_Trialen</defName>
     <label>Trialen warhead</label>
+    <designWord>Trialen</designWord>
     <description>A warhead of trialen explosive with an incendiary component, so the impact starts fires around the crater. Slightly more expensive than amatol.</description>
     <category>Warhead</category>
     <compatibleBodies>

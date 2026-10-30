@@ -345,8 +345,23 @@ namespace DMSE.BVRAcceptance
             enemySafeMark = LaserDesignatorUtility.PlaceMark(SafeImpactCell, Home, Enemy, null, -1);
         }
 
+        /// <summary>
+        /// NPC world-map air defence (abstract nodes) only exists once the player has researched the radar
+        /// detection network (<see cref="WorldComponent_FactionAirDefenseAlert.Enabled"/>); a fresh quicktest has not.
+        /// </summary>
+        public static void EnsureNpcWorldNetwork()
+        {
+            ResearchProjectDef radarNetwork = DefDatabase<ResearchProjectDef>.GetNamedSilentFail("DMSE_RadarNetwork");
+            if (radarNetwork != null && !radarNetwork.IsFinished)
+            {
+                Find.ResearchManager.FinishProject(radarNetwork, false, null, false);
+                AcceptanceDriver.Log("Finished DMSE_RadarNetwork research so NPC world air defence is active.");
+            }
+        }
+
         public static Site SpawnMissileBase(float minDist, float maxDist)
         {
+            EnsureNpcWorldNetwork();
             WorldObjectDef baseDef = DefDatabase<WorldObjectDef>.GetNamed("DMSE_MissileBase");
             PlanetTile tile = PlanetTile.Invalid;
             PlanetTile home = Home.Tile;
@@ -413,6 +428,8 @@ namespace DMSE.BVRAcceptance
 
         public static void CleanupAfterTest()
         {
+            // Letter-count checks expect each test to start with no alert cooldown running.
+            MissileAlertThrottle.Reset();
             for (int i = restoreActions.Count - 1; i >= 0; i--) { restoreActions[i](); }
             restoreActions.Clear();
 

@@ -4,6 +4,7 @@ using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
 using Verse;
+using Verse.AI;
 using Verse.AI.Group;
 
 namespace DMSE
@@ -42,6 +43,14 @@ namespace DMSE
         // 輪流發射用的建築索引（不存檔）
         private int nextPadIndex;
 
+        // ── 定時補給空投（CompProperties_MissileBase.supplyDrop）──────────────
+        // -1 = 尚未排程；地圖進入後的第一次檢查只排程不投放。
+        private int nextSupplyDropTick = -1;
+
+        // ── 彈架補彈（CompProperties_MissileBase.rackSupply）────────────────
+        private int nextRackSupplyTick = -1;
+        private List<PendingRackLoad> pendingRackLoads = new List<PendingRackLoad>();
+
         // ── 此地圖是否為導彈陣地地圖 ──────────────────────────────────────────
         // null = 尚未確認；true/false = 已快取結果
         private bool? isMissileBaseMapCached = null;
@@ -67,6 +76,17 @@ namespace DMSE
             base.ExposeData();
             Scribe_Values.Look(ref baseSiteDestroyed, "baseSiteDestroyed", false);
             Scribe_Values.Look(ref hasEverHadLaunchers, "hasEverHadLaunchers", false);
+            Scribe_Values.Look(ref nextSupplyDropTick, "nextSupplyDropTick", -1);
+            Scribe_Values.Look(ref nextRackSupplyTick, "nextRackSupplyTick", -1);
+            // 已被搶走／摧毀的導彈不存引用，避免存檔時引用已銷毀的物件。
+            if (Scribe.mode == LoadSaveMode.Saving)
+                pendingRackLoads.RemoveAll(e => e.missile == null || e.missile.Destroyed || e.rack == null || e.rack.Destroyed);
+            Scribe_Collections.Look(ref pendingRackLoads, "pendingRackLoads", LookMode.Deep);
+            if (Scribe.mode == LoadSaveMode.PostLoadInit)
+            {
+                pendingRackLoads ??= new List<PendingRackLoad>();
+                pendingRackLoads.RemoveAll(e => e.missile == null || e.rack == null);
+            }
             Scribe_References.Look(ref crewLord, "crewLord");
             // WorldObject 引用：依賴世界物件存檔中對應的引用解析。
             // 若導彈在儲存前已落地（Destroyed），載入後解析為 null，清理邏輯自動跳過。
@@ -87,6 +107,227 @@ namespace DMSE
             EnsureCrewLord();
             CheckRadarDestruction();
             TryFireFromOnMap();
+            TickSupplyDrop();
+            TickRackSupply();
+            TickCrewReload();
+        }
+
+        // ──────────────── 守軍搬彈裝填 ────────────────
+
+        /// <summary>
+        /// 讓防守中的守軍把彈藥庫／儲存架裡的導彈搬到未滿的發射架（沿用殖民者的 <c>DMSE_LoadMissileLauncher</c> 工作）。
+        /// 同時最多 <see cref="MissileBaseRackSupply.maxCrewLoaders"/> 人；守軍轉入進攻狀態時不搬。
+        /// </summary>
+        private void TickCrewReload()
+        {
+            MissileBaseRackSupply supply = WorldComp?.Props.rackSupply;
+            Faction enemy = map.ParentFaction;
+            if (supply == null || supply.maxCrewLoaders <= 0 || enemy == null) return;
+
+            JobDef loadJob = DMSE_MissileJobDefOf.DMSE_LoadMissileLauncher;
+            List<Pawn> crew = map.mapPawns.SpawnedPawnsInFaction(enemy)
+                .Where(p => p.RaceProps.Humanlike && p.GetLord()?.LordJob is LordJob_MissileCrewDuty).ToList();
+            int busy = crew.Count(p => p.CurJobDef == loadJob);
+            if (busy >= supply.maxCrewLoaders) return;
+
+            List<IMissileRack> racks = MissileBaseRackSupplyUtility.RacksOf(map, enemy);
+            List<IMissileRack> sources = racks.Where(r => !MissileBaseRackSupplyUtility.IsLauncher(r) && r.StoredCount > 0).ToList();
+            if (sources.Count == 0) return;
+
+            foreach (IMissileRack launcher in racks.Where(r => MissileBaseRackSupplyUtility.IsLauncher(r) && !r.Full))
+            {
+                if (busy >= supply.maxCrewLoaders) return;
+                foreach (Pawn p in crew)
+                {
+                    if (!CanHaulNow(p, loadJob)) continue;
+                    if (!p.CanReserveAndReach(launcher.RackThing, PathEndMode.Touch, Danger.Some)) continue;
+                    IMissileRack source = sources
+                        .Where(s => MissileBaseRackSupplyUtility.HasMissileFor(s, launcher)
+                                 && p.CanReserveAndReach(s.RackThing, PathEndMode.Touch, Danger.Some))
+                        .OrderBy(s => s.RackThing.Position.DistanceToSquared(launcher.RackThing.Position))
+                        .FirstOrDefault();
+                    if (source == null) break;   // 沒有彈藥庫存著這座發射架能用的彈
+
+                    Job job = JobMaker.MakeJob(loadJob, launcher.RackThing, source.RackThing);
+                    if (p.jobs.TryTakeOrderedJob(job, JobTag.Misc))
+                    {
+                        busy++;
+                        if (Prefs.DevMode)
+                            Log.Message($"[DMSE MissileBase] {p.LabelShort} 從 {source.RackThing.def.defName} 搬彈裝填 {launcher.RackThing.def.defName}");
+                        break;
+                    }
+                }
+            }
+        }
+
+        /// <summary>防守狀態中、沒在戰鬥或搬運的守軍。</summary>
+        private static bool CanHaulNow(Pawn p, JobDef loadJob)
+        {
+            if (!p.Spawned || p.Downed || p.InMentalState || p.carryTracker.CarriedThing != null) return false;
+            if (p.CurJobDef == loadJob) return false;
+            if (!(p.GetLord()?.CurLordToil is LordToil_MissileCrewDefend)) return false;
+            if (p.mindState.enemyTarget != null) return false;
+            return true;
+        }
+
+        // ──────────────── 彈架補彈 ────────────────
+
+        /// <summary>
+        /// 每 <see cref="MissileBaseRackSupply.intervalDays"/> 天，為每座空彈架空投一艙導彈（彈種與數量依彈架類型）。
+        /// 導彈開艙後等 <see cref="MissileBaseRackSupply.loadDelayTicks"/>，仍在彈架附近且守軍尚在時才裝入。
+        /// </summary>
+        private void TickRackSupply()
+        {
+            MissileBaseRackSupply supply = WorldComp?.Props.rackSupply;
+            if (supply == null) return;
+
+            ProcessPendingRackLoads(supply);
+
+            int now = Find.TickManager.TicksGame;
+            if (nextRackSupplyTick < 0 || now >= nextRackSupplyTick)
+            {
+                bool due = nextRackSupplyTick >= 0;
+                nextRackSupplyTick = now + Mathf.RoundToInt(supply.intervalDays * GenDate.TicksPerDay);
+                if (due) ResupplyEmptyRacks(supply);
+            }
+        }
+
+        private int ActiveCrewCount(Faction enemy)
+            => map.mapPawns.SpawnedPawnsInFaction(enemy).Count(p => p.RaceProps.Humanlike && !p.Dead && !p.Downed);
+
+        private void ResupplyEmptyRacks(MissileBaseRackSupply supply)
+        {
+            Faction enemy = map.ParentFaction;
+            if (enemy == null || ActiveCrewCount(enemy) <= 0) return;
+
+            int now = Find.TickManager.TicksGame;
+            int racks = 0, missiles = 0;
+            IntVec3 lookAt = IntVec3.Invalid;
+            foreach (IMissileRack rack in MissileBaseRackSupplyUtility.RacksOf(map, enemy))
+            {
+                if (rack.StoredCount > 0) continue;
+                if (supply.maxCrewLoaders > 0 && MissileBaseRackSupplyUtility.IsLauncher(rack)
+                    && MissileBaseRackSupplyUtility.RacksOf(map, enemy).Any(s => !MissileBaseRackSupplyUtility.IsLauncher(s)
+                        && MissileBaseRackSupplyUtility.HasMissileFor(s, rack)))
+                    continue;
+                if (pendingRackLoads.Any(e => e.rack == rack.RackThing && e.missile != null && !e.missile.Destroyed)) continue;
+
+                List<Thing> load = MissileBaseRackSupplyUtility.MakeLoad(rack, supply);
+                if (load.Count == 0) continue;
+
+                DropPodUtility.DropThingGroupsNear(rack.RackThing.Position, map, new List<List<Thing>> { load },
+                    openDelay: 110, instaDrop: false, leaveSlag: false, canRoofPunch: false, forbid: false,
+                    allowFogged: true, canTransfer: false, faction: enemy);
+                foreach (Thing m in load)
+                    pendingRackLoads.Add(new PendingRackLoad { missile = m, rack = rack.RackThing, loadTick = now + supply.loadDelayTicks });
+
+                racks++;
+                missiles += load.Count;
+                if (!lookAt.IsValid) lookAt = rack.RackThing.Position;
+            }
+
+            if (racks == 0) return;
+            if (IsPlayerObserving())
+                Messages.Message("DMSE.MissileBase.RackResupply".Translate(racks, missiles),
+                    new LookTargets(lookAt, map), MessageTypeDefOf.ThreatSmall);
+            if (Prefs.DevMode)
+                Log.Message($"[DMSE MissileBase] 彈架補給空投：{racks} 座彈架，共 {missiles} 發");
+        }
+
+        private void ProcessPendingRackLoads(MissileBaseRackSupply supply)
+        {
+            if (pendingRackLoads.Count == 0) return;
+            int now = Find.TickManager.TicksGame;
+            bool crew = map.ParentFaction != null && ActiveCrewCount(map.ParentFaction) > 0;
+
+            for (int i = pendingRackLoads.Count - 1; i >= 0; i--)
+            {
+                PendingRackLoad e = pendingRackLoads[i];
+                if (e.missile == null || e.missile.Destroyed || e.rack == null || e.rack.Destroyed || !e.rack.Spawned)
+                {
+                    pendingRackLoads.RemoveAt(i);
+                    continue;
+                }
+                if (!e.missile.Spawned)
+                {
+                    // 還在補給艙裡就繼續等；被人拿走（揹包、運送中）則放棄。
+                    if (!(e.missile.ParentHolder is ActiveTransporterInfo)) pendingRackLoads.RemoveAt(i);
+                    continue;
+                }
+                if (now < e.loadTick || !crew) continue;
+
+                IMissileRack rack = MissileRackUtil.Of(e.rack);
+                if (rack == null || e.missile.Map != map || e.missile.Position.DistanceTo(e.rack.Position) > supply.loadRadius
+                    || rack.Full || !rack.Accepts(e.missile))
+                {
+                    pendingRackLoads.RemoveAt(i);
+                    continue;
+                }
+
+                e.missile.DeSpawn();
+                if (!rack.GetDirectlyHeldThings().TryAdd(e.missile))
+                    GenPlace.TryPlaceThing(e.missile, e.rack.Position, map, ThingPlaceMode.Near);
+                pendingRackLoads.RemoveAt(i);
+            }
+        }
+
+        // ──────────────── 定時補給空投 ────────────────
+
+        /// <summary>
+        /// 依 <see cref="CompProperties_MissileBase.supplyDrop"/> 定時向守軍空投生存食品包。<br/>
+        /// 地圖上沒有任何運作中的敵方雷達（搜索或火控；被摧毀、斷電、關閉、故障或 EMP）時不投放；
+        /// 雷達恢復運作後下一次排程照常投放。
+        /// </summary>
+        private void TickSupplyDrop()
+        {
+            MissileBaseSupplyDrop drop = WorldComp?.Props.supplyDrop;
+            if (drop == null) return;
+
+            int now = Find.TickManager.TicksGame;
+            if (nextSupplyDropTick < 0 || now >= nextSupplyDropTick)
+            {
+                bool due = nextSupplyDropTick >= 0;
+                nextSupplyDropTick = now + Mathf.RoundToInt(drop.intervalDays.RandomInRange * GenDate.TicksPerDay);
+                if (due) TryDropSupplies(drop);
+            }
+        }
+
+        private void TryDropSupplies(MissileBaseSupplyDrop drop)
+        {
+            Faction enemy = map.ParentFaction;
+            if (enemy == null) return;
+
+            Building radar = FirstActiveRadar(enemy);
+            if (radar == null) return;
+
+            int crew = map.mapPawns.SpawnedPawnsInFaction(enemy).Count(p => p.RaceProps.Humanlike && !p.Dead && !p.Downed);
+            if (crew <= 0) return;
+
+            int room = crew * drop.maxStockPerPawn - MissileBaseSupplyUtility.CountFood(map, enemy);
+            int amount = Mathf.Min(crew * drop.perPawn, room);
+            if (amount <= 0) return;
+
+            IntVec3 near = (crewLord?.LordJob as LordJob_MissileCrewDuty)?.stagingPoint ?? radar.Position;
+            IntVec3 cell = MissileBaseSupplyUtility.Drop(map, near, drop.ThingDef, amount, enemy);
+            if (!cell.IsValid) return;
+
+            if (IsPlayerObserving())
+                Messages.Message("DMSE.MissileBase.SupplyDrop".Translate(drop.ThingDef.label, amount),
+                    new LookTargets(cell, map), MessageTypeDefOf.NeutralEvent);
+            if (Prefs.DevMode)
+                Log.Message($"[DMSE MissileBase] 定時補給 {drop.ThingDef.defName} ×{amount} 至 {cell}（守軍 {crew}）");
+        }
+
+        /// <summary>地圖上第一座屬於 <paramref name="enemy"/> 且運作中的搜索／火控雷達；沒有則為 null。</summary>
+        private Building FirstActiveRadar(Faction enemy)
+        {
+            foreach (Building b in map.listerBuildings.allBuildingsNonColonist)
+            {
+                if (b.Faction != enemy || b.Destroyed) continue;
+                if (b.TryGetComp<CompSearchRadar>()?.Active == true || b.TryGetComp<CompFireControlRadar>()?.Active == true)
+                    return b;
+            }
+            return null;
         }
 
         // ──────────────── 雷達摧毀偵測 ────────────────

@@ -251,7 +251,8 @@ namespace DMSE
             if (detector.faction.IsPlayer && !state.playerNotified)
             {
                 state.playerNotified = true;
-                Find.LetterStack.ReceiveLetter("DMSE.BVR.World.DetectedLetter".Translate(),
+                // 一小時內的後續偵測改用訊息，不再每發一封信件並暫停遊戲。
+                MissileAlertThrottle.Notify("Detected", "DMSE.BVR.World.DetectedLetter".Translate(),
                     "DMSE.BVR.World.DetectedLetterText".Translate(track.Label, detector.parent.Label,
                         track.TicksToArrival.ToStringTicksToPeriod()), LetterDefOf.ThreatBig,
                     new GlobalTargetInfo(track));

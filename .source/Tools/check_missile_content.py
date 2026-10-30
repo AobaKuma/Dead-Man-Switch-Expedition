@@ -16,6 +16,13 @@ Checks:
      incomingSkyfaller, researchPrerequisites) resolves;
  10. every body has its own launchProjectile (DMSE.Projectile_MissileLaunch, reversed MissileFlightExtension,
      existing texture, hot/cold launch effect, translated label).
+ 11. the missile assembly bench's fixed and default storage filters both equal the set of producible missiles
+     (items whose defaultBody is customizeLocation=Item), and none of those items is made from stuff;
+ 12. every designWord and every namer designator has zh-TW and zh-CN translations;
+ 13. every design-name template (English and translations) uses only the known symbols and has [body] or [designator];
+ 14. every producible missile lists the assembly bench in its durability-decay shelterBuildings;
+ 15. every customizable body has its own DMSE.MissileNamerDef (existing pack, translated, slots it opens),
+     every namer is referenced by a body, and no fixed body declares one.
 """
 import re
 import sys
@@ -349,8 +356,109 @@ for name, body in bodies.items():
     for language in languages:
         require(f'{launch}.label' in translated[language], f'{language}: missing {launch}.label')
 
+# ---- 11. assembly bench produces every customizable item --------------------
+# docs/導彈組裝台與裝配方案_實作計畫.md §4.5: the bench's storage lists must match MissileItemUtility.ProducibleBodies.
+BENCH = 'DMSE_MissileAssemblyBench'
+producible = set()
+for name, node in things.items():
+    body_name = node.findtext("comps/li[@Class='DMSE.CompProperties_MissileConfig']/defaultBody")
+    body = bodies.get(body_name) if body_name else None
+    if body is not None and (body.findtext('customizeLocation') or 'Item') == 'Item':
+        producible.add(name)
+        require(node.find('stuffCategories') is None, f'{name}: producible at the assembly bench but made from stuff')
+bench = things.get(BENCH)
+require(bench is not None, f'{BENCH} is missing')
+if bench is not None:
+    for which in ('fixedStorageSettings', 'defaultStorageSettings'):
+        listed = {li.text for li in bench.findall(f'building/{which}/filter/thingDefs/li')}
+        require(listed == producible, f'{BENCH} {which}: missing {sorted(producible - listed)}, extra {sorted(listed - producible)}')
+
+# ---- 12. design words and namer designators translated ----------------------
+for name, node in list(parts.items()) + list(bodies.items()):
+    if node.findtext('designWord'):
+        for language in languages:
+            require(f'{name}.designWord' in translated[language], f'{language}: missing {name}.designWord')
+
+namers = {name: node for name, entries in defs.items()
+          for node, _ in entries if tag(node) == 'DMSE.MissileNamerDef'}
+packs = {name: node for name, entries in defs.items()
+         for node, _ in entries if tag(node) == 'RulePackDef'}
+require('DMSE_NamerMissileDesign' in packs, 'DMSE_NamerMissileDesign rule pack is missing')
+
+for name in namers:
+    for language in languages:
+        require(f'{name}.designator' in translated[language], f'{language}: missing {name}.designator')
+for name, node in namers.items():
+    pack = node.findtext('pack')
+    if pack:
+        for language in languages:
+            require(f'{pack}.rulePack.rulesStrings' in translated[language],
+                    f'{language}: {pack} rule pack is not translated')
+
+# ---- 13. design-name templates use known symbols ----------------------------
+DESIGN_SYMBOLS = {'body', 'warhead', 'guidance', 'propulsion', 'payload', 'designator', 'num', 'suffix'}
+design_packs = {name for name in packs if name.startswith('DMSE_NamerPack_')} | {'DMSE_NamerMissileDesign'}
+templates = []
+for name in design_packs:
+    templates += [('Defs', name, li.text or '') for li in packs[name].findall('rulePack/rulesStrings/li')]
+for language in languages:
+    for path in (root / '1.7/Languages' / language / 'DefInjected/RulePackDef').glob('*.xml'):
+        for node in parse(path):
+            pack = node.tag.split('.')[0]
+            if node.tag.endswith('.rulePack.rulesStrings') and pack in design_packs:
+                templates += [(language, pack, li.text or '') for li in node.findall('li')]
+for where, pack, rule in templates:
+    if not rule.startswith('r_name'):
+        continue
+    symbols = set(re.findall(r'\[(\w+)\]', rule))
+    require(symbols <= DESIGN_SYMBOLS,
+            f'{where}: {pack} template {rule!r} uses unknown symbols {sorted(symbols - DESIGN_SYMBOLS)}')
+    require('body' in symbols or 'designator' in symbols,
+            f'{where}: {pack} template {rule!r} has neither [body] nor [designator]')
+for name in design_packs:
+    rules = [li.text or '' for li in packs[name].findall('rulePack/rulesStrings/li')]
+    require(any(r.startswith('r_name') for r in rules), f'{name}: no r_name templates')
+
+# ---- 14. bench shelters its output ------------------------------------------
+for name in producible:
+    shelters = {li.text for li in things[name].findall("comps/li[@Class='DMSE.CompProperties_DurabilityDecay']/shelterBuildings/li")}
+    require(BENCH in shelters, f'{name}: {BENCH} missing from shelterBuildings (finished missiles would decay on the bench)')
+
+# ---- 15. every customizable body has its own namer --------------------------
+for name, body in bodies.items():
+    customize = body.findtext('customizeLocation') or 'Item'
+    namer_name = body.findtext('namer')
+    if customize == 'None':
+        require(namer_name is None, f'{name}: not customizable, so it must not declare a namer')
+        continue
+    require(namer_name is not None, f'{name}: customizable body has no <namer> (names would fall back to the generic pack)')
+    if namer_name is None:
+        continue
+    require(namer_name in namers, f'{name}: namer {namer_name} is not a DMSE.MissileNamerDef')
+    if namer_name not in namers:
+        continue
+    pack = namers[namer_name].findtext('pack')
+    require(pack in packs, f'{namer_name}: pack {pack} is not a RulePackDef')
+    if pack in packs:
+        slots = {slot.lower() for slot in body_slots(body)}
+        for rule in (li.text or '' for li in packs[pack].findall('rulePack/rulesStrings/li')):
+            if not rule.startswith('r_name'):
+                continue
+            used = set(re.findall(r'\[(\w+)\]', rule)) - {'body', 'designator', 'num', 'suffix'}
+            require(used <= slots, f'{pack}: template {rule!r} uses slots {sorted(used - slots)} that {name} does not open')
+
+used_namers = {body.findtext('namer') for body in bodies.values() if body.findtext('namer')}
+for name in namers:
+    require(name in used_namers, f'{name}: not referenced by any MissileBodyDef')
+    low, high = namers[name].findtext('numberMin'), namers[name].findtext('numberMax')
+    if low is not None or high is not None:
+        require((low or '1').isdigit() and (high or '99').isdigit(),
+                f'{name}: numberMin/numberMax must be integers')
+        require(int(low or 1) <= int(high or 99), f'{name}: numberMin {low} > numberMax {high}')
+
 if errors:
     print('\n'.join('ERROR: ' + error for error in errors))
     sys.exit(1)
 print(f'PASS: {len(bodies)} bodies, {len(parts)} parts, {altitude_defs} BVR target defs, '
-      f'{len(expected_keys)} translations in 2 languages.')
+      f'{len(expected_keys)} translations in 2 languages, {len(producible)} bench-producible missiles, '
+      f'{len(namers)} missile namers, {len(templates)} design-name templates.')

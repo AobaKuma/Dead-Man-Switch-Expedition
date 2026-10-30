@@ -9,23 +9,7 @@
        MapGeneratorDef.genSteps 中以 defName 引用。
        ══════════════════════════════════════════════════════════════ -->
 
-  <GenStepDef>
-    <defName>DMSE_MissileBase_GS_Terrain</defName>
-    <order>100</order>
-    <genStep Class="GenStep_Terrain" />
-  </GenStepDef>
-
-  <GenStepDef>
-    <defName>DMSE_MissileBase_GS_Snow</defName>
-    <order>200</order>
-    <genStep Class="GenStep_Snow" />
-  </GenStepDef>
-
-  <GenStepDef>
-    <defName>DMSE_MissileBase_GS_RocksFromGrid</defName>
-    <order>210</order>
-    <genStep Class="GenStep_RocksFromGrid" />
-  </GenStepDef>
+  <!-- 地形、山體、洞穴、道路、植被、雪、動物、霧等一般地圖步驟由原版 MapCommonBase 提供（見下方 MapGeneratorDef）。 -->
 
   <GenStepDef>
     <defName>DMSE_MissileBase_GS_ScatterLumps</defName>
@@ -141,14 +125,6 @@
     </genStep>
   </GenStepDef>
 
-  <!-- 霧化：全圖上霧後從可達邊緣洪水揭霧。開放地形全部可見；FFF 封閉房間繼續霧化。
-       order 460：FFF 結構（400）和 Pawn 生成（450）已完成，牆壁和 Pawn 均已就位。 -->
-  <GenStepDef>
-    <defName>DMSE_MissileBase_GS_Fog</defName>
-    <order>460</order>
-    <genStep Class="DMSE.GenStep_MissileBaseFog" />
-  </GenStepDef>
-
   <GenStepDef>
     <defName>DMSE_MissileBase_GS_ScatterSlag</defName>
     <order>500</order>
@@ -159,24 +135,21 @@
     </genStep>
   </GenStepDef>
 
-  <!-- GenStep_Fog 已移除：需要 MapGenerator.PlayerStartSpot，但 NPC 陣地地圖無玩家出生點，
-       呼叫會觸發 "Accessing player start spot before setting it" 錯誤。
-       敵方陣地應讓玩家探索時自然揭霧，不需預設霧化範圍。 -->
-
   <!-- ══════════════════════════════════════════════════════════════
-       地圖生成器：引用上方 GenStepDef 以 defName 方式
+       地圖生成器：繼承原版 MapCommonBase（與 Encounter 相同），取得高程／肥沃度（山體）、地形、
+       洞穴、道路、岩塊、遺跡、蒸汽噴口、FindPlayerStartSpot、植被、雪、動物與霧；
+       再加上山體岩石（RocksFromGrid）與陣地專用步驟。
+       原本自訂的 Terrain／Snow／Rocks／Fog 步驟已移除：少了 ElevationFertility，地圖是平的、沒有植被與動物；
+       霧改用原版 GenStep_Fog（FindPlayerStartSpot 已在基底中設定出生點）。
        ══════════════════════════════════════════════════════════════ -->
 
-  <MapGeneratorDef>
+  <MapGeneratorDef ParentName="MapCommonBase">
     <defName>DMSE_MissileBase_MapGen</defName>
     <genSteps>
-      <li>DMSE_MissileBase_GS_Terrain</li>
-      <li>DMSE_MissileBase_GS_Snow</li>
-      <li>DMSE_MissileBase_GS_RocksFromGrid</li>
+      <li>RocksFromGrid</li>
       <li>DMSE_MissileBase_GS_ScatterLumps</li>
       <li>DMSE_MissileBase_GS_FFFStructure</li>
       <li>DMSE_MissileBase_GS_SpawnCrew</li>
-      <li>DMSE_MissileBase_GS_Fog</li>
       <li>DMSE_MissileBase_GS_ScatterSlag</li>
     </genSteps>
   </MapGeneratorDef>

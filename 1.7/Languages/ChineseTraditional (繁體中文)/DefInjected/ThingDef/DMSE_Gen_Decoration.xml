@@ -35,5 +35,35 @@
   <DMSE_FieldStructure_MediumSection.label>野戰構架段（中型）</DMSE_FieldStructure_MediumSection.label>
   <!-- EN: A decorative frame section for field structures. -->
   <DMSE_FieldStructure_MediumSection.description>用於野戰結構的裝飾框架段。</DMSE_FieldStructure_MediumSection.description>
+
+  <!-- EN: field frame -->
+  <DMSE_FieldStructure_Frame.label>野戰框架</DMSE_FieldStructure_Frame.label>
+  <!-- EN: A standard frame for assembling field structures. -->
+  <DMSE_FieldStructure_Frame.description>用於拼裝野戰結構的標準框架。</DMSE_FieldStructure_Frame.description>
+
+  <!-- EN: field support -->
+  <DMSE_FieldStructure_Support.label>野戰支撐架</DMSE_FieldStructure_Support.label>
+  <!-- EN: A load-bearing support for field structures. -->
+  <DMSE_FieldStructure_Support.description>用於支撐野戰結構的承重支架。</DMSE_FieldStructure_Support.description>
+
+  <!-- EN: field hull section -->
+  <DMSE_FieldStructure_Hull.label>野戰外殼段</DMSE_FieldStructure_Hull.label>
+  <!-- EN: An armored hull section for field structures. -->
+  <DMSE_FieldStructure_Hull.description>用於包覆野戰結構的裝甲外殼段。</DMSE_FieldStructure_Hull.description>
+
+  <!-- EN: field power unit -->
+  <DMSE_FieldStructure_PowerUnit.label>野戰電力單元</DMSE_FieldStructure_PowerUnit.label>
+  <!-- EN: A compact power unit for field structures. Supplies 1500 W while switched on. -->
+  <DMSE_FieldStructure_PowerUnit.description>為野戰結構供電的緊湊型電力單元，開啟時輸出 1500 W。</DMSE_FieldStructure_PowerUnit.description>
+
+  <!-- EN: field extinguisher unit -->
+  <DMSE_FieldStructure_ExtinguisherUnit.label>野戰滅火單元</DMSE_FieldStructure_ExtinguisherUnit.label>
+  <!-- EN: A fire-suppressant unit for field structures. Can be triggered by a colonist to spray extinguishing foam over a 4.9-cell radius. -->
+  <DMSE_FieldStructure_ExtinguisherUnit.description>為野戰結構配備的滅火單元，任何殖民者都能觸發，在 4.9 格半徑內噴灑滅火泡沫。</DMSE_FieldStructure_ExtinguisherUnit.description>
+
+  <!-- EN: field ammo storage -->
+  <DMSE_FieldStructure_AmmoStorage.label>野戰彈藥庫</DMSE_FieldStructure_AmmoStorage.label>
+  <!-- EN: A sealed ammunition locker for field structures. Holds up to eight missiles. -->
+  <DMSE_FieldStructure_AmmoStorage.description>為野戰結構儲存導彈的密封彈藥庫，可存放 8 枚導彈。</DMSE_FieldStructure_AmmoStorage.description>
   
 </LanguageData>

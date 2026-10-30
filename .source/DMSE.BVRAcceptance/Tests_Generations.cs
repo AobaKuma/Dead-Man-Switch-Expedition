@@ -699,6 +699,132 @@ namespace DMSE.BVRAcceptance
         }
 
         // ------------------------------------------------------------------
+        //  T13: Sabre light loitering munition on the man-portable launcher
+        // ------------------------------------------------------------------
+
+        /// <summary>
+        /// Sabre (DMSE_Missile_Sabre): fixed configuration, strike only, loaded by hand through the right-click reload menu,
+        /// fired at ground targets beyond the Stinger's range by its own verb; it blocks the air-defence command while it is next.
+        /// </summary>
+        public static IEnumerable<Wait> SabreOnManPortableLauncher(TestContext t)
+        {
+            ThingDef sabre = Def("DMSE_Missile_Sabre");
+            MissileBodyDef sabreBody = Body("DMSE_MissileBody_Sabre");
+            t.Check(sabre.GetCompProperties<CompProperties_MissileConfig>() == null && sabre.inspectorTabs.NullOrEmpty()
+                    && sabreBody.customizeLocation == MissileCustomizeLocation.None
+                    && sabre.GetModExtension<MissileItemExtension>()?.body == sabreBody,
+                "Sabre is a fixed-configuration item (no config comp, no assembly tab, not customizable)");
+            MissileConfig sabreConfig = MissileConfig.NewWithDefaults(sabreBody);
+            MissilePartDef seeker = sabreConfig.PartFor(MissilePartCategory.Guidance);
+            t.Check(seeker?.defName == "DMSE_Sabre_Guidance_Imaging" && seeker.guidanceType is GuidanceType_Imaging
+                    && sabreConfig.TargetingGuidance is GuidanceType_Imaging && sabreConfig.HasTerminalGuidance,
+                $"Sabre's default seeker is image recognition ({seeker?.defName})");
+            t.Check(sabreConfig.PartFor(MissilePartCategory.Payload)?.defName == "DMSE_Payload_Loiter"
+                    && sabreConfig.LoiterTicks > 0 && sabreConfig.LoiterRetryTicks > 0,
+                $"Sabre's default payload is the loiter flight control (loiter {sabreConfig.LoiterTicks} ticks)");
+            t.Check(MissileItemExtension.ConfigFor(ThingMaker.MakeThing(sabre)).parts.Select(x => x.defName).OrderBy(n => n)
+                    .SequenceEqual(new[] { "DMSE_Payload_Loiter", "DMSE_Sabre_Guidance_Imaging" }),
+                "a crafted Sabre flies with exactly those parts");
+            t.Check(MissileRoleExtension.RoleOf(sabre) == MissileRole.Strike, "Sabre is a strike-only round");
+            t.Check(sabre.graphicData.texPath == "Things/Missile/S570/ammo"
+                    && Def("DMSE_Projectile_Sabre").graphicData.texPath == "Things/Missile/S570/skyFaller",
+                "Sabre uses the S570 textures");
+            t.Check(sabre.recipeMaker?.researchPrerequisite?.defName == "DMSE_FireControlNetwork", "Sabre is gated by fire control research");
+            t.Check(LaunchRail.building.fixedStorageSettings.filter.Allows(sabre), "a launch rail accepts Sabre");
+
+            Pawn colonist = Colonist;
+            t.Require(colonist != null, "a colonist exists");
+            Apparel launcher = (Apparel)ThingMaker.MakeThing(SamLauncher);
+            colonist.apparel.Wear(launcher, dropReplacedApparel: true);
+            var comp = launcher.GetComp<CompManPortableSAM>();
+            Thing loose = null;
+            Override(() => { }, () =>
+            {
+                if (colonist.drafter != null) { colonist.drafter.Drafted = false; }
+                if (!launcher.Destroyed)
+                {
+                    if (colonist.apparel.Contains(launcher)) { colonist.apparel.Remove(launcher); }
+                    launcher.Destroy();
+                }
+                if (loose != null && !loose.Destroyed) { loose.Destroy(); }
+            });
+            t.Require(comp != null && comp.Props.extraAmmoDefs.Contains(sabre) && comp.CanLoad(sabre), "the launcher lists Sabre as extra ammo");
+            Verb_LaunchManPortableMissile stingerVerb = comp.AllVerbs.OfType<Verb_LaunchManPortableMissile>()
+                .FirstOrDefault(v => (v.verbProps as VerbProperties_ManPortableMissile)?.ammoDef == Stinger);
+            Verb_LaunchManPortableMissile sabreVerb = comp.AllVerbs.OfType<Verb_LaunchManPortableMissile>()
+                .FirstOrDefault(v => (v.verbProps as VerbProperties_ManPortableMissile)?.ammoDef == sabre);
+            t.Require(stingerVerb != null && sabreVerb != null, "the launcher has one ground verb per ammo type");
+            t.Check(sabreVerb.verbProps.defaultProjectile?.defName == "DMSE_Projectile_Sabre"
+                    && sabreVerb.verbProps.range > stingerVerb.verbProps.range,
+                $"the Sabre verb fires the Sabre projectile and reaches farther ({sabreVerb.verbProps.range} > {stingerVerb.verbProps.range})");
+
+            colonist.drafter.Drafted = true;
+            List<Verb> ShownVerbs() => comp.CompGetWornGizmosExtra().OfType<Command_VerbTarget>().Select(c => c.verb).ToList();
+            Command_Action AirGizmo() => comp.CompGetWornGizmosExtra().OfType<Command_Action>()
+                .FirstOrDefault(c => c.defaultLabel == "DMSE.ManPortableSAM.Fire".Translate());
+
+            // Mixed load: a Stinger first, then a Sabre on top (last in, first out).
+            while (comp.RemainingCharges > 0) { comp.UsedOnce(); }
+            comp.ReloadFrom(ThingMaker.MakeThing(Stinger));
+            t.Check(comp.NextAmmoDef == Stinger && ShownVerbs().SequenceEqual(new Verb[] { stingerVerb }) && stingerVerb.Available() && !sabreVerb.Available(),
+                "with a Stinger next only the Stinger ground verb is shown and usable");
+
+            // The Sabre is loaded through the real right-click menu (vanilla's reload menu only knows the Stinger).
+            IntVec3 near = CellFinder.StandableCellNear(colonist.Position, Home, 3f, c => c != colonist.Position && c.GetFirstItem(Home) == null);
+            t.Require(near.IsValid, "a free cell next to the colonist");
+            loose = GenSpawn.Spawn(ThingMaker.MakeThing(sabre), near, Home);
+            List<FloatMenuOption> options = FloatMenuMakerMap.GetOptions(new List<Pawn> { colonist }, loose.DrawPos, out _);
+            FloatMenuOption reload = options.FirstOrDefault(o => o.action != null && !o.Disabled && o.Label.Contains(sabre.label));
+            t.Require(reload != null, "right-clicking a Sabre offers to load it into the launcher: "
+                + string.Join(" | ", options.Select(o => o.Label)));
+            reload.action();
+            var waitReload = new WaitUntil(() => comp.RemainingCharges == 2, 1500);
+            yield return waitReload;
+            t.Require(!waitReload.TimedOut, "the colonist walks over and loads the Sabre");
+            t.Check(loose.Destroyed && comp.NextAmmoDef == sabre && comp.NextConfig?.body == sabreBody, "the Sabre item is used up and is now the next round");
+            t.Check(ShownVerbs().SequenceEqual(new Verb[] { sabreVerb }) && sabreVerb.Available() && !stingerVerb.Available(),
+                "with a Sabre next only the Sabre ground verb is shown and usable");
+
+            // Air defence is refused while the Sabre is next.
+            SpawnBuilding(AcousticRadar, 2, 2);
+            yield return WaitPowered(); yield return new WaitTicks(2);
+            float oldRange = comp.Props.maxRangeCells;
+            int oldEta = comp.Props.maxEtaTicks;
+            Override(() => { comp.Props.maxRangeCells = 999f; comp.Props.maxEtaTicks = 100000; },
+                () => { comp.Props.maxRangeCells = oldRange; comp.Props.maxEtaTicks = oldEta; });
+            DropEnemyPod(1);
+            yield return new WaitTicks(1);
+            List<BVRTarget> targets = comp.EngageableTargets(colonist).ToList();
+            t.Require(targets.Count >= 1, $"a tracked pod is engageable (got {targets.Count})");
+            string cannot = "DMSE.ManPortableSAM.CannotIntercept".Translate(sabre.label);
+            t.Check(AirGizmo() != null && AirGizmo().Disabled && AirGizmo().disabledReason == cannot,
+                $"the air-defence command is disabled because the Sabre cannot intercept ({AirGizmo()?.disabledReason})");
+            t.Check(!comp.TryFire(colonist, targets[0].id, out string refused) && refused == cannot && comp.RemainingCharges == 2,
+                "firing at the pod is refused without using a charge");
+
+            // Ground shot beyond the Stinger's reach.
+            IntVec3 from = colonist.Position;
+            float want = (stingerVerb.verbProps.range + sabreVerb.verbProps.range) / 2f;
+            IntVec3 aim = GenRadial.RadialCellsAround(from, want + 3f, false)
+                .Where(c => c.InBounds(Home) && !c.Roofed(Home) && c.DistanceTo(from) >= want && c.Standable(Home))
+                .OrderBy(c => c.DistanceTo(from)).FirstOrDefault();
+            t.Require(aim.IsValid && aim.InBounds(Home), $"an open target cell about {want:F0} cells away");
+            int projectilesBefore = Home.listerThings.ThingsOfDef(Def("DMSE_Projectile_Sabre")).Count;
+            ThingDef sabreProjectile = Def("DMSE_Projectile_Sabre");
+            TickWatch projectileSeen = AcceptanceDriver.Watch(() => Home.listerThings.ThingsOfDef(sabreProjectile).Count > projectilesBefore);
+            // Same order the gizmo's targeter gives: ai_IsWeapon false → UseVerbOnThing with this verb.
+            sabreVerb.OrderForceTarget(aim);
+            t.Require(colonist.CurJob?.verbToUse == sabreVerb, $"the colonist takes the order to launch the Sabre ({colonist.CurJob?.def.defName})");
+            var waitShot = new WaitUntil(() => comp.RemainingCharges == 1, 900);
+            yield return waitShot;
+            yield return new WaitTicks(2);
+            t.Check(!waitShot.TimedOut && projectileSeen.Seen,
+                $"the Sabre is launched {aim.DistanceTo(from):F1} cells (charges {comp.RemainingCharges}, projectile seen {projectileSeen.Seen})");
+            t.Check(comp.NextAmmoDef == Stinger && ShownVerbs().SequenceEqual(new Verb[] { stingerVerb }) && comp.CannotFireReason(colonist) == null,
+                "after the Sabre is fired the Stinger underneath is next and air defence is available again");
+        }
+
+        // ------------------------------------------------------------------
         //  T10/T11: a manned rotary rail reloads from a rack and fires again,
         //  also inside a manned Flak 43's terminal window (2026-10-27 report)
         // ------------------------------------------------------------------
@@ -816,6 +942,7 @@ namespace DMSE.BVRAcceptance
             yield return new AcceptanceTest("T10", "Manned rotary rail reloads from a rack and fires again", RotaryRailRefire);
             yield return new AcceptanceTest("T11", "SAM keeps firing inside a manned Flak 43's terminal window", RotaryRailRefireInTerminal);
             yield return new AcceptanceTest("T12", "Missile and radar research tree split / unlock gates", MissileAndRadarTechnologyTree);
+            yield return new AcceptanceTest("T13", "Sabre loitering munition on the man-portable launcher", SabreOnManPortableLauncher);
         }
     }
 }

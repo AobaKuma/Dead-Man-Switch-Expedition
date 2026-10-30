@@ -7,5 +7,6 @@
   <DMSE.ManPortableSAM.NotReady>裝備者目前無法發射。</DMSE.ManPortableSAM.NotReady>
   <DMSE.ManPortableSAM.TargetLost>目標已消失或已被其他攔截彈接戰。</DMSE.ManPortableSAM.TargetLost>
   <DMSE.ManPortableSAM.TargetOption>{0}（{1}後抵達，命中率 {2}）</DMSE.ManPortableSAM.TargetOption>
+  <DMSE.ManPortableSAM.CannotIntercept>下一發裝填的是{0}，無法用於攔截。請先對地面目標發射。</DMSE.ManPortableSAM.CannotIntercept>
   <DMSE.TurretGun.Engaging>交戰中：{0}</DMSE.TurretGun.Engaging>
 </LanguageData>

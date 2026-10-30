@@ -147,6 +147,16 @@ namespace DMSE
         /// </summary>
         public ThingDef launchProjectile;
 
+        /// <summary>設計名稱用的短詞（見 <see cref="MissileDesignNamer"/>）；null 時退回 label。</summary>
+        [MustTranslate]
+        public string designWord;
+
+        /// <summary>
+        /// 此彈體專屬的命名規則（型號代字、編號範圍與樣板包，見 <see cref="MissileNamerDef"/>）。
+        /// null 時沿用通用樣板 <c>DMSE_NamerMissileDesign</c>：只有部件詞，沒有型號代字。
+        /// </summary>
+        public MissileNamerDef namer;
+
         public string uiIconPath;
 
         private Texture2D iconInt;
@@ -230,6 +240,22 @@ namespace DMSE
         /// </summary>
         public PayloadEffect payloadEffect;
 
+        // ---- 盤旋飛控（Payload 槽專用；與戰鬥部／載荷效果無關，屬於飛行行為）----
+
+        /// <summary>
+        /// 盤旋時間（ticks；0 = 沒有盤旋能力）。導引頭在目標地圖上找不到符合的目標時，
+        /// 導彈不直接回退慣性制導，而是在目標上空盤旋等待：每 <see cref="loiterRetryTicks"/>
+        /// 重新執行一次導引頭，找到目標就俯衝；時間用盡才以慣性落點俯衝。
+        /// 盤旋期間導彈仍留在攔截波次中，末端防禦（CIWS）照常接戰。
+        /// </summary>
+        public int loiterTicks = 0;
+
+        /// <summary>盤旋期間重新執行導引頭的間隔（ticks）。</summary>
+        public int loiterRetryTicks = 250;
+
+        /// <summary>只有巡飛彈（<see cref="MissileSizeClass.Loitering"/>）能裝配此部件。</summary>
+        public bool requiresLoiteringBody = false;
+
         /// <summary>
         /// 沒有指定 <see cref="guidanceType"/> 的導引部件是否仍具導引能力（例：精確導引頭）。
         /// 有 guidanceType 時以 <see cref="GuidanceType.TerminalGuidance"/> 為準。
@@ -243,6 +269,13 @@ namespace DMSE
         public List<MissileBodyDef> compatibleBodies;
 
         public List<ResearchProjectDef> researchPrerequisites;
+
+        /// <summary>設計名稱用的短詞（見 <see cref="MissileDesignNamer"/>）；null 時退回 label。</summary>
+        [MustTranslate]
+        public string designWord;
+
+        /// <summary>命名時略過此部件（例如「無酬載」「標準推進」這類預設空部件）。</summary>
+        public bool omitFromDesignName = false;
 
         public string uiIconPath;
 
@@ -276,6 +309,7 @@ namespace DMSE
         {
             if (body == null) { return false; }
             if (!body.slots.Contains(category)) { return false; }
+            if (requiresLoiteringBody && body.sizeClass != MissileSizeClass.Loitering) { return false; }
             if (compatibleBodies != null && compatibleBodies.Count > 0 && !compatibleBodies.Contains(body)) { return false; }
             return true;
         }

@@ -38,6 +38,15 @@ namespace DMSE
         /// <summary>發射使用的 WorldObjectDef（預設 DMSE_WorldObject_IncomingMissile）。</summary>
         public WorldObjectDef incomingWorldObjectDef;
 
+        /// <summary>
+        /// 地圖生成後的定時補給空投（<see cref="MapComponent_MissileBase"/>）；只在地圖上仍有運作中的敵方雷達時投放。<br/>
+        /// null = 沿用守軍 <see cref="LordJob_MissileCrewDuty"/> 的低庫存補給。
+        /// </summary>
+        public MissileBaseSupplyDrop supplyDrop;
+
+        /// <summary>彈架的生成裝填表與定時空投補彈（<see cref="MissileBaseRackSupply"/>）；null = 只靠建築自身的自動填充。</summary>
+        public MissileBaseRackSupply rackSupply;
+
         // ── Inspect 字串鍵 ─────────────────────────────────────────────────────
 
         /// <summary>Inspect 字串：顯示下次發射冷卻倒計時。</summary>
@@ -51,6 +60,24 @@ namespace DMSE
 
         /// <summary>Inspect 字串：顯示再進入封鎖剩餘時間。</summary>
         public string reentryBlockedInspectKey = "DMSE.MissileBase.ReentryBlockedIn";
+    }
+
+    /// <summary>導彈陣地的定時補給空投設定。</summary>
+    public class MissileBaseSupplyDrop
+    {
+        /// <summary>兩次空投的間隔（天）。</summary>
+        public FloatRange intervalDays = new FloatRange(0.8f, 1.2f);
+
+        /// <summary>投放物品（null = 生存食品包）。</summary>
+        public ThingDef thingDef;
+
+        /// <summary>每名守軍每次投放的數量。</summary>
+        public int perPawn = 4;
+
+        /// <summary>地圖上已有的存量達到「守軍數 × 此值」時跳過該次投放，避免堆積。</summary>
+        public int maxStockPerPawn = 10;
+
+        public ThingDef ThingDef => thingDef ?? ThingDefOf.MealSurvivalPack;
     }
 
     /// <summary>

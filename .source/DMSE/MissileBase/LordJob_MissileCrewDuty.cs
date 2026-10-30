@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
 using UnityEngine;
+using RimWorld.Planet;
 using Verse;
 using Verse.AI;
 using Verse.AI.Group;
@@ -104,38 +105,18 @@ namespace DMSE
         {
             if (lord?.Map == null || lord.ownedPawns.NullOrEmpty()) return;
             Map map = lord.Map;
-            Faction faction = lord.faction;
 
-            // 計算地圖上屬於敵方（或非歸屬）的可食用物品數量
-            int foodCount = 0;
-            foreach (Thing t in map.listerThings.ThingsInGroup(ThingRequestGroup.FoodSourceNotPlantOrTree))
-            {
-                if (t.Faction != null && t.Faction != faction) continue;
-                if (!t.def.IsNutritionGivingIngestible) continue;
-                foodCount += t.stackCount;
-            }
+            // 站點設定了定時空投（野戰發射陣地）時由 MapComponent_MissileBase 負責，這裡不再按庫存補給。
+            if ((map.Parent as Site)?.GetComponent<WorldObjectComp_MissileBase>()?.Props.supplyDrop != null) return;
 
+            int foodCount = MissileBaseSupplyUtility.CountFood(map, lord.faction);
             int needed = lord.ownedPawns.Count * MinFoodPerPawn;
             if (foodCount >= needed) return;
 
-            AirdropFood(map, needed - foodCount);
-        }
+            int dropAmount = Mathf.Min(needed, ThingDefOf.MealSurvivalPack.stackLimit);
+            IntVec3 dropCell = MissileBaseSupplyUtility.Drop(map, stagingPoint, ThingDefOf.MealSurvivalPack, dropAmount, lord.faction);
 
-        private void AirdropFood(Map map, int shortfall)
-        {
-            int dropAmount = Mathf.Max(lord.ownedPawns.Count * MinFoodPerPawn, shortfall);
-            dropAmount = Mathf.Min(dropAmount, ThingDefOf.MealSurvivalPack.stackLimit);
-
-            IntVec3 dropCell = CellFinder.RandomClosewalkCellNear(stagingPoint, map, 10);
-            if (!dropCell.IsValid || !dropCell.InBounds(map)) return;
-
-            Thing food = ThingMaker.MakeThing(ThingDefOf.MealSurvivalPack);
-            food.stackCount = dropAmount;
-
-            DropPodUtility.DropThingsNear(dropCell, map, new List<Thing> { food },
-                openDelay: 110, canInstaDropDuringInit: true, forbid: false);
-
-            if (Prefs.DevMode)
+            if (Prefs.DevMode && dropCell.IsValid)
                 Log.Message($"[DMSE MissileBase] 食物空投 ×{dropAmount} 至 {dropCell}");
         }
 
@@ -146,6 +127,52 @@ namespace DMSE
             base.ExposeData();
             Scribe_Values.Look(ref stagingPoint, "stagingPoint");
             Scribe_Values.Look(ref lastFoodCheckTick, "lastFoodCheckTick", -1);
+        }
+    }
+
+    // ──────────────────────────────────────────────────────────────────────────
+    // 補給空投共用工具
+    // ──────────────────────────────────────────────────────────────────────────
+
+    public static class MissileBaseSupplyUtility
+    {
+        /// <summary>地圖上屬於 <paramref name="faction"/>（或無主）的可食用物品總數。</summary>
+        public static int CountFood(Map map, Faction faction)
+        {
+            int count = 0;
+            foreach (Thing t in map.listerThings.ThingsInGroup(ThingRequestGroup.FoodSourceNotPlantOrTree))
+            {
+                if (t.Faction != null && t.Faction != faction) continue;
+                if (!t.def.IsNutritionGivingIngestible) continue;
+                count += t.stackCount;
+            }
+            return count;
+        }
+
+        /// <summary>
+        /// 在 <paramref name="near"/> 附近以空投艙投下 <paramref name="amount"/> 個 <paramref name="def"/>（依堆疊上限分艙）。
+        /// 回傳投放中心；找不到落點時回傳 <see cref="IntVec3.Invalid"/>。
+        /// </summary>
+        public static IntVec3 Drop(Map map, IntVec3 near, ThingDef def, int amount, Faction faction)
+        {
+            if (map == null || def == null || amount <= 0) return IntVec3.Invalid;
+            if (!near.IsValid || !near.InBounds(map)) near = map.Center;
+
+            IntVec3 dropCell = CellFinder.RandomClosewalkCellNear(near, map, 10);
+            if (!dropCell.IsValid || !dropCell.InBounds(map)) return IntVec3.Invalid;
+
+            List<Thing> things = new List<Thing>();
+            while (amount > 0)
+            {
+                Thing t = ThingMaker.MakeThing(def);
+                t.stackCount = Mathf.Min(amount, def.stackLimit);
+                amount -= t.stackCount;
+                things.Add(t);
+            }
+
+            DropPodUtility.DropThingsNear(dropCell, map, things,
+                openDelay: 110, canInstaDropDuringInit: true, forbid: false, faction: faction);
+            return dropCell;
         }
     }
 }

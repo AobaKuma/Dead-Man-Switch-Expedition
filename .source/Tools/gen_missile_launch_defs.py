@@ -34,6 +34,7 @@ SPECS = [
     ("LegacyBallistic",   "DMSE_SkyFaller_BallisticMissile", "Things/Missile/V2/skyFaller_incoming",        ("hot", 1.2)),   # V2 lifts off its pad
     ("LegacyLoiter",      "DMSE_SkyFaller_Loiter",           "Things/Missile/V1/skyFaller_incoming",        ("hot", 0.7)),   # V1 off its ramp
     ("Shahed",            "DMSE_SkyFaller_Loiter",           "Things/Missile/Shahed/skyFaller_incoming",    ("hot", 0.5)),   # rail booster
+    ("Sabre",             "DMSE_SkyFaller_Loiter",           "Things/Missile/S570/skyFaller",               ("cold", 6)),    # tube ejection, wings unfold
     ("LegacyInterceptor", "DMSE_SkyFaller_Interceptor",      "Things/Missile/Rheintochter/skyFaller",       ("hot", 1.0)),   # boosted SAM
     ("AdvancedLight",     "DMSE_SkyFaller_LightMissile",     "Things/Missile/Hellfire/skyFaller_incoming",  ("hot", 0.75)),  # small rail missile
     ("AdvancedBallistic", "DMSE_SkyFaller_BallisticMissile", "Things/Missile/Minuteman/skyFaller_incoming", ("cold", 20)),   # silo ejection
@@ -53,6 +54,7 @@ FX_PROFILES = {
     "LegacyBallistic": "LiquidBallistic",
     "LegacyLoiter": "Pulsejet",
     "Shahed": "SolidBooster",
+    "Sabre": "Manpads",
     "LegacyInterceptor": "SolidBooster",
     "AdvancedLight": "SolidBooster",
     "AdvancedBallistic": "ColdVls",

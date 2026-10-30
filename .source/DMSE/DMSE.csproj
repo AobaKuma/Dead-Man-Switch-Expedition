@@ -53,6 +53,12 @@
       <HintPath>$(RimWorldDir)Waylith.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <!-- 野戰發射陣地組合多座 FFF 結構（GenStep_FieldLaunchSite）。AOBA.Framework 由 DMS Core 載入。
+         The field launch site composes several FFF structures; AOBA.Framework is loaded through DMS Core. -->
+    <Reference Include="Fortified">
+      <HintPath>$(RimWorldDir)Mods\_Fortified-Framework\1.7\Assemblies\Fortified.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
 
 </Project>

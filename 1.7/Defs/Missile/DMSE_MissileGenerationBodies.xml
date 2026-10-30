@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
   <!-- ==================================================================
@@ -48,6 +48,8 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_LegacyBallistic</defName>
     <label>legacy ballistic missile body</label>
+    <designWord>Legacy</designWord>
+    <namer>DMSE_Namer_LegacyBallistic</namer>
     <description>An early liquid-fueled ballistic rocket. It is slow to prepare and wildly inaccurate, but it can be built from industrial materials long before modern guidance exists.\n\nAssembled directly on a launch tower or in a silo.</description>
     <sizeClass>Ballistic</sizeClass>
     <!-- 與現役彈道彈體相同：只能垂直發射、在發射架上直接裝配（無物品型態） -->
@@ -152,6 +154,8 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_AdvancedLight</defName>
     <label>advanced general-purpose missile body</label>
+    <designWord>Multirole</designWord>
+    <namer>DMSE_Namer_AdvancedLight</namer>
     <description>A compact multi-role missile airframe. It is small enough for portable and vehicle launchers, yet more accurate and able to carry more than older light missiles.\n\nHas slots for a warhead, guidance and payload.</description>
     <sizeClass>Light</sizeClass>
     <launchMode>Both</launchMode>
@@ -192,6 +196,8 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_AdvancedBallistic</defName>
     <label>advanced ballistic missile body</label>
+    <designWord>Strategic</designWord>
+    <namer>DMSE_Namer_AdvancedBallistic</namer>
     <description>A modern multi-stage strategic missile. It climbs to the edge of space, then drops its warhead onto a single building rather than a whole district.\n\nAssembled directly in a strategic silo or on a launch tower, and never exists as an item.</description>
     <sizeClass>Ballistic</sizeClass>
     <launchMode>Vertical</launchMode>
@@ -229,6 +235,8 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_AdvancedCruise</defName>
     <label>advanced cruise missile body</label>
+    <designWord>Cruise</designWord>
+    <namer>DMSE_Namer_AdvancedCruise</namer>
     <description>A modern stealthy cruise missile airframe. It hugs the terrain on the way in and is far more accurate than the older Scorer missile.\n\nHas slots for a warhead, guidance, propulsion and payload.</description>
     <sizeClass>Light</sizeClass>
     <launchMode>Both</launchMode>
@@ -271,6 +279,8 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_Stinger</defName>
     <label>light surface-to-air missile body</label>
+    <designWord>SAM</designWord>
+    <namer>DMSE_Namer_Stinger</namer>
     <description>A slim, man-portable heat-seeking anti-air missile. It has a short range and a small warhead, and is a less accurate interceptor than a full-size missile, but it fits in almost any launcher.\n\nHas slots for a warhead and guidance.</description>
     <sizeClass>Light</sizeClass>
     <launchMode>Both</launchMode>
@@ -309,6 +319,8 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_Maverick</defName>
     <label>ground-attack missile body</label>
+    <designWord>Strike</designWord>
+    <namer>DMSE_Namer_Maverick</namer>
     <description>A light ground-attack missile airframe, built to put a heavy warhead on a single target.\n\nHas slots for a warhead, guidance and payload.</description>
     <sizeClass>Light</sizeClass>
     <launchMode>Both</launchMode>
@@ -347,6 +359,8 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_Sparrow</defName>
     <label>advanced surface-to-air missile body</label>
+    <designWord>Area SAM</designWord>
+    <namer>DMSE_Namer_Sparrow</namer>
     <description>A slender semi-active radar-homing missile. It keeps following the fire-control radar's signal even through hard turns, making it a much more accurate interceptor than older missiles.\n\nHas slots for a warhead, guidance and payload.</description>
     <sizeClass>Light</sizeClass>
     <launchMode>Both</launchMode>
@@ -387,6 +401,8 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_Moskit</defName>
     <label>supersonic anti-ship missile body</label>
+    <designWord>Supersonic</designWord>
+    <namer>DMSE_Namer_Moskit</namer>
     <description>A ramjet-powered supersonic anti-ship missile. It skims the sea on its final approach, leaving close-in defenses only seconds to react.\n\nHas slots for a warhead, guidance, propulsion and payload. Comes with an anti-ship radar seeker.</description>
     <sizeClass>Medium</sizeClass>
     <launchMode>Tilt</launchMode>
@@ -427,6 +443,8 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_Yj</defName>
     <label>hypersonic anti-ship missile body</label>
+    <designWord>Hypersonic</designWord>
+    <namer>DMSE_Namer_Yj</namer>
     <description>A hypersonic anti-ship missile with a rocket booster and a ramjet cruise stage. Its small radar signature and very low final approach give defenders little time to respond.\n\nHas slots for a warhead, guidance, propulsion and payload. Comes with an anti-ship radar seeker.</description>
     <sizeClass>Medium</sizeClass>
     <launchMode>Both</launchMode>
@@ -468,6 +486,8 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_Tochka</defName>
     <label>tactical ballistic missile body</label>
+    <designWord>Tactical</designWord>
+    <namer>DMSE_Namer_Tochka</namer>
     <description>A solid-fuel tactical ballistic missile. It is more accurate and much quicker to prepare than early rockets, but its range falls well short of a strategic missile.\n\nHas slots for a warhead, guidance, propulsion and payload. Comes with inertial guidance.</description>
     <sizeClass>Medium</sizeClass>
     <launchMode>Both</launchMode>

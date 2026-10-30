@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <DMSE_Missile_Sabre.label>军刀轻型巡飞弹</DMSE_Missile_Sabre.label>
+  <DMSE_Missile_Sabre.description>一种管射式折翼巡飞弹，配有图像识别导引头。可装入防空导弹发射具，对远超出防空导弹射程的地面目标发射；也能从发射轨发射，进行短程打击：导引头会搜寻屋顶外最危险的敌方生物，盘旋飞控让它在上空盘旋直到目标出现。\n\n无法拦截来袭威胁。固定构型，无法改造。</DMSE_Missile_Sabre.description>
+  <DMSE_Incoming_Sabre.label>轻型巡飞弹（来袭）</DMSE_Incoming_Sabre.label>
+  <DMSE_Projectile_Sabre.label>轻型巡飞弹</DMSE_Projectile_Sabre.label>
+</LanguageData>

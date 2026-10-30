@@ -48,6 +48,12 @@ namespace DMSE
 
         public string uiIconPath;
 
+        /// <summary>
+        /// 除 <see cref="CompProperties_ApparelReloadable.ammoDef"/> 外也能裝填的彈藥（如軍刀巡飛彈）。
+        /// 原版自動裝填只找 ammoDef；這些彈藥經 <see cref="FloatMenuOptionProvider_ManPortableSAMReload"/> 手動裝入。
+        /// </summary>
+        public List<ThingDef> extraAmmoDefs = new List<ThingDef>();
+
         public CompProperties_ManPortableSAM()
         {
             compClass = typeof(CompManPortableSAM);
@@ -112,11 +118,33 @@ namespace DMSE
             get
             {
                 if (loadedConfigs.Count > 0) { return loadedConfigs[loadedConfigs.Count - 1].Clone(); }
-                MissileBodyDef body = Props.ammoDef?.GetCompProperties<CompProperties_MissileConfig>()?.defaultBody
-                    ?? Props.ammoDef?.GetModExtension<MissileItemExtension>()?.body;
+                MissileBodyDef body = BodyOfDef(Props.ammoDef);
                 return body != null ? MissileConfig.NewWithDefaults(body) : null;
             }
         }
+
+        /// <summary>下一發的彈藥物品：最後裝入那枚的彈體屬於哪個 <see cref="CompProperties_ManPortableSAM.extraAmmoDefs"/>，否則 ammoDef。</summary>
+        public ThingDef NextAmmoDef
+        {
+            get
+            {
+                if (loadedConfigs.Count > 0 && !Props.extraAmmoDefs.NullOrEmpty())
+                {
+                    MissileBodyDef body = loadedConfigs[loadedConfigs.Count - 1].body;
+                    for (int i = 0; i < Props.extraAmmoDefs.Count; i++)
+                    {
+                        if (BodyOfDef(Props.extraAmmoDefs[i]) == body) { return Props.extraAmmoDefs[i]; }
+                    }
+                }
+                return Props.ammoDef;
+            }
+        }
+
+        public bool CanLoad(ThingDef def) => def != null && (def == Props.ammoDef || Props.extraAmmoDefs.Contains(def));
+
+        private static MissileBodyDef BodyOfDef(ThingDef def)
+            => def?.GetCompProperties<CompProperties_MissileConfig>()?.defaultBody
+               ?? def?.GetModExtension<MissileItemExtension>()?.body;
 
         /// <summary>可接戰的目標：本陣營防禦、未被攔截彈占用、在射程與時間內。</summary>
         public IEnumerable<BVRTarget> EngageableTargets(Pawn pawn)
@@ -162,6 +190,11 @@ namespace DMSE
         {
             if (pawn == null || !pawn.Spawned || pawn.Downed || pawn != Wearer) { return "DMSE.ManPortableSAM.NotReady".Translate(); }
             if (!CanBeUsed(out string reason)) { return reason.NullOrEmpty() ? "DMSE.ManPortableSAM.NotReady".Translate().ToString() : reason; }
+            ThingDef next = NextAmmoDef;
+            if (MissileRoleExtension.RoleOf(next) == MissileRole.Strike)
+            {
+                return "DMSE.ManPortableSAM.CannotIntercept".Translate(next.label);
+            }
             if (OnCooldown)
             {
                 return "DMSE.MissileLauncher.LaunchCooldown".Translate(
@@ -174,6 +207,8 @@ namespace DMSE
         {
             foreach (Gizmo g in base.CompGetWornGizmosExtra())
             {
+                // 每種彈藥各有一個對地射擊動詞，只顯示下一發彈藥的那個。
+                if (g is Command_VerbTarget cmd && cmd.verb is Verb_LaunchManPortableMissile v && !v.MatchesLoadedAmmo) { continue; }
                 yield return g;
             }
             Pawn pawn = Wearer;
@@ -361,6 +396,69 @@ namespace DMSE
             };
             fire.defaultCompleteMode = ToilCompleteMode.Instant;
             yield return fire;
+        }
+    }
+
+    /// <summary>單兵發射具的對地射擊動詞屬性：<see cref="ammoDef"/> 為此動詞發射的彈藥；空 = 任何彈藥都可用。</summary>
+    public class VerbProperties_ManPortableMissile : VerbProperties
+    {
+        public ThingDef ammoDef;
+    }
+
+    /// <summary>
+    /// 單兵發射具的對地射擊：只在下一發彈藥是 <see cref="VerbProperties_ManPortableMissile.ammoDef"/> 時可用，
+    /// 讓防空導彈與巡飛彈各用自己的投射物與射程；不符的動詞 Gizmo 由 <see cref="CompManPortableSAM"/> 隱藏。
+    /// </summary>
+    public class Verb_LaunchManPortableMissile : Verb_LaunchProjectile
+    {
+        public bool MatchesLoadedAmmo
+        {
+            get
+            {
+                ThingDef ammo = (verbProps as VerbProperties_ManPortableMissile)?.ammoDef;
+                return ammo == null || !(DirectOwner is CompManPortableSAM launcher) || launcher.NextAmmoDef == ammo;
+            }
+        }
+
+        public override bool Available() => base.Available() && MatchesLoadedAmmo;
+    }
+
+    /// <summary>原版「裝填」選單只認 ammoDef；為 <see cref="CompProperties_ManPortableSAM.extraAmmoDefs"/> 補上右鍵裝填選項。</summary>
+    public class FloatMenuOptionProvider_ManPortableSAMReload : FloatMenuOptionProvider
+    {
+        protected override bool Drafted => true;
+
+        protected override bool Undrafted => true;
+
+        protected override bool Multiselect => false;
+
+        public override IEnumerable<FloatMenuOption> GetOptionsFor(Thing clickedThing, FloatMenuContext context)
+        {
+            Pawn pawn = context.FirstSelectedPawn;
+            CompManPortableSAM launcher = CompManPortableSAM.WornBy(pawn);
+            if (launcher == null || clickedThing.def == launcher.Props.ammoDef || !launcher.CanLoad(clickedThing.def)) { yield break; }
+
+            string text = "Reload".Translate(launcher.parent.Named("GEAR"), clickedThing.def.Named("AMMO")) + " (" + launcher.LabelRemaining + ")";
+            if (!pawn.CanReach(clickedThing, PathEndMode.ClosestTouch, Danger.Deadly))
+            {
+                yield return new FloatMenuOption(text + ": " + "NoPath".Translate().CapitalizeFirst(), null);
+                yield break;
+            }
+            if (!launcher.NeedsReload(allowForcedReload: true))
+            {
+                yield return new FloatMenuOption(text + ": " + "ReloadFull".Translate(), null);
+                yield break;
+            }
+            if (clickedThing.stackCount < launcher.MinAmmoNeeded(allowForcedReload: true) || !pawn.CanReserve(clickedThing))
+            {
+                yield return new FloatMenuOption(text + ": " + "ReloadNotEnough".Translate(), null);
+                yield break;
+            }
+            List<Thing> chosenAmmo = new List<Thing> { clickedThing };
+            yield return FloatMenuUtility.DecoratePrioritizedTask(new FloatMenuOption(text, () =>
+            {
+                pawn.jobs.TryTakeOrderedJob(JobGiver_Reload.MakeReloadJob(launcher, chosenAmmo), JobTag.Misc);
+            }), pawn, clickedThing);
         }
     }
 }

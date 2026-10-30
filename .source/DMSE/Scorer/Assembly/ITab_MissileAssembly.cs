@@ -273,6 +273,11 @@ namespace DMSE
                 list.Label(cfg.HasTerminalGuidance
                     ? "DMSE.Missile.Stat.TerminalGuidance".Translate(cfg.TerminalUpdates)
                     : "DMSE.Missile.Stat.NoTerminalGuidance".Translate());
+                // 盤旋飛控：導引頭找不到目標時在目標上空等待的時間。
+                if (cfg.LoiterTicks > 0)
+                {
+                    list.Label("DMSE.Missile.Stat.Loiter".Translate(cfg.LoiterTicks.ToStringTicksToPeriod()));
+                }
                 list.Label(CompMissileLauncher_WorldTargeting.GuidanceTargetingText(cfg));
             }
 

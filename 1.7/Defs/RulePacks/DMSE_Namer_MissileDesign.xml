@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ==================================================================
+       導彈設計名稱樣板（r_name）
+       Design-name templates.
+       ==================================================================
+       樣板由 MissileDesignNamer 依彈體挑選：每個可裝配彈體在 <DMSE.MissileNamerDef> 的
+       pack 欄位指定自己的包（DMSE_NamerPack_*），沒指定的彈體用通用 DMSE_NamerMissileDesign。
+
+       符號：
+         [body] [warhead] [guidance] [propulsion] [payload]  由程式以 Rule_String 注入（值是 Def 的 designWord）
+         [designator]  型號代字（Namer 的 designator 欄位，可翻譯）
+         [num] [suffix] 型號編號與後綴；抽定樣板時就換成文字寫進規則字串，改部件不會重抽
+
+       本組合沒有的槽位符號會先被剔除，所以同一組樣板能服務有／無酬載的構型；
+       型號類樣板因此不重複列部件組合，而是靠 [designator]-[num] 當骨架。
+       每個彈體一組自己的樣板（語序依彈種：反艦偏戰頭＋導引、巡航偏導引、
+       輕型防空短、彈道以戰頭／酬載為主、巡飛只有導引／酬載）。
+       同一 keyword 多條＝加權候選，用 p= 調權重。check_missile_content.py 第 13／15 條檢查。
+       ================================================================== -->
+
+  <!-- 通用樣板：沒有綁 Namer 的彈體（只有部件詞、沒有型號代字）。 -->
+  <RulePackDef>
+    <defName>DMSE_NamerMissileDesign</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name(p=3)->[body] [warhead]</li>
+        <li>r_name(p=2)->[body] [warhead] [guidance]</li>
+        <li>r_name->[body]-[guidance]</li>
+        <li>r_name->[warhead] [payload] [body]</li>
+        <li>r_name->[guidance] [propulsion] [body]</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+  <!-- Light：輕型對地／通用彈體：戰頭＋導引＋酬載，短編號。 -->
+  <RulePackDef>
+    <defName>DMSE_NamerPack_Light</defName>
+    <rulePack>
+      <rulesStrings>        <li>r_name(p=3)->[designator]-[num] [warhead] [guidance]</li>        <li>r_name(p=2)->[designator]-[num] [warhead] [payload]</li>        <li>r_name(p=1)->[body] [designator]-[num]</li>        <li>r_name(p=1)->[designator]-[num]</li>      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+  <!-- AdvancedLight：先進輕型多用途彈體（地獄火級）：三位數編號，偏重戰頭型號。 -->
+  <RulePackDef>
+    <defName>DMSE_NamerPack_AdvancedLight</defName>
+    <rulePack>
+      <rulesStrings>        <li>r_name(p=3)->[designator]-[num] [warhead] [guidance]</li>        <li>r_name(p=2)->[designator]-[num] [warhead] [payload]</li>        <li>r_name(p=2)->[designator]-[num] [guidance]</li>        <li>r_name(p=1)->[body] [designator]-[num]</li>      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+  <!-- AdvancedCruise：先進巡航彈體（戰斧級）：導引頭與推進是型號重點，語序導引優先。 -->
+  <RulePackDef>
+    <defName>DMSE_NamerPack_AdvancedCruise</defName>
+    <rulePack>
+      <rulesStrings>        <li>r_name(p=3)->[designator]-[num] [guidance] [warhead]</li>        <li>r_name(p=2)->[designator]-[num][suffix] [guidance]</li>        <li>r_name(p=2)->[designator]-[num] [warhead] [propulsion]</li>        <li>r_name(p=1)->[body] [designator]-[num]</li>      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+  <!-- Stinger：輕型防空彈體（刺針級）：只有戰頭＋導引，名稱短。 -->
+  <RulePackDef>
+    <defName>DMSE_NamerPack_Stinger</defName>
+    <rulePack>
+      <rulesStrings>        <li>r_name(p=3)->[designator]-[num] [guidance]</li>        <li>r_name(p=2)->[designator]-[num] [warhead] [guidance]</li>        <li>r_name(p=1)->[body] [designator]-[num]</li>        <li>r_name(p=1)->[designator]-[num]</li>      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+  <!-- Maverick：輕型對地彈體（小牛級）：酬載可選，型號常帶酬載字。 -->
+  <RulePackDef>
+    <defName>DMSE_NamerPack_Maverick</defName>
+    <rulePack>
+      <rulesStrings>        <li>r_name(p=3)->[designator]-[num] [warhead] [guidance]</li>        <li>r_name(p=2)->[designator]-[num] [payload]</li>        <li>r_name(p=1)->[body] [designator]-[num]</li>        <li>r_name(p=1)->[designator]-[num]</li>      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+  <!-- Sparrow：先進防空彈體（麻雀級）：半主動族，後綴字母是型號的一部分。 -->
+  <RulePackDef>
+    <defName>DMSE_NamerPack_Sparrow</defName>
+    <rulePack>
+      <rulesStrings>        <li>r_name(p=3)->[designator]-[num][suffix] [guidance]</li>        <li>r_name(p=2)->[designator]-[num][suffix] [warhead] [guidance]</li>        <li>r_name(p=2)->[designator]-[num] [warhead] [payload]</li>        <li>r_name(p=1)->[body] [designator]-[num]</li>      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+  <!-- Moskit：中型反艦彈體（白蛉級）：戰頭＋導引是主體，推進放次要語序。 -->
+  <RulePackDef>
+    <defName>DMSE_NamerPack_Moskit</defName>
+    <rulePack>
+      <rulesStrings>        <li>r_name(p=3)->[designator]-[num] [warhead] [guidance]</li>        <li>r_name(p=2)->[designator]-[num][suffix] [guidance] [propulsion]</li>        <li>r_name(p=1)->[designator]-[num] [warhead] [propulsion]</li>        <li>r_name(p=1)->[body] [designator]-[num]</li>      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+  <!-- Yj：中型高超音速反艦彈體（鷹擊級）：導引／推進與戰頭並列。 -->
+  <RulePackDef>
+    <defName>DMSE_NamerPack_Yj</defName>
+    <rulePack>
+      <rulesStrings>        <li>r_name(p=3)->[designator]-[num] [warhead] [guidance]</li>        <li>r_name(p=2)->[designator]-[num] [guidance] [propulsion]</li>        <li>r_name(p=2)->[designator]-[num][suffix] [warhead] [payload]</li>        <li>r_name(p=1)->[body] [designator]-[num]</li>      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+  <!-- Tochka：中型戰術彈體（圓點級）：戰頭為型號主體，酬載／推進當後綴詞。 -->
+  <RulePackDef>
+    <defName>DMSE_NamerPack_Tochka</defName>
+    <rulePack>
+      <rulesStrings>        <li>r_name(p=3)->[designator]-[num][suffix] [warhead]</li>        <li>r_name(p=2)->[designator]-[num] [warhead] [guidance]</li>        <li>r_name(p=1)->[designator]-[num] [payload] [propulsion]</li>        <li>r_name(p=1)->[body] [designator]-[num]</li>      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+  <!-- LegacyBallistic：老式彈道彈體（V2 級）：沒有精密導引，戰頭就是型號。 -->
+  <RulePackDef>
+    <defName>DMSE_NamerPack_LegacyBallistic</defName>
+    <rulePack>
+      <rulesStrings>        <li>r_name(p=3)->[designator]-[num] [warhead]</li>        <li>r_name(p=2)->[designator]-[num] [warhead] [payload]</li>        <li>r_name(p=1)->[body] [designator]-[num]</li>        <li>r_name(p=1)->[designator]-[num]</li>      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+  <!-- AdvancedBallistic：先進彈道彈體（民兵級）：戰頭＋酬載（多彈頭／突防）為主。 -->
+  <RulePackDef>
+    <defName>DMSE_NamerPack_AdvancedBallistic</defName>
+    <rulePack>
+      <rulesStrings>        <li>r_name(p=3)->[designator]-[num] [warhead] [payload]</li>        <li>r_name(p=2)->[designator]-[num] [guidance] [warhead]</li>        <li>r_name(p=1)->[designator]-[num] [payload]</li>        <li>r_name(p=1)->[body] [designator]-[num]</li>      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+  <!-- Shahed：巡飛彈體（沙赫德級）：只有導引＋酬載，名稱短的無人機型號。 -->
+  <RulePackDef>
+    <defName>DMSE_NamerPack_Shahed</defName>
+    <rulePack>
+      <rulesStrings>        <li>r_name(p=3)->[designator]-[num] [guidance]</li>        <li>r_name(p=2)->[designator]-[num] [payload]</li>        <li>r_name(p=2)->[body] [designator]-[num]</li>        <li>r_name(p=1)->[designator]-[num]</li>      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+</Defs>

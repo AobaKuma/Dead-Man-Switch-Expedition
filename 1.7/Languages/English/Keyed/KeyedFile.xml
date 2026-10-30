@@ -13,6 +13,10 @@
   <DMSE.MissileBase.ReentryBlocked>Access denied: enemy regrouping ({0})</DMSE.MissileBase.ReentryBlocked>
   <DMSE.MissileBase.ArrivedLetter>Your pawns have arrived at a missile launch position. The enemy has deployed fire control radars and launch vehicles here, continuously striking nearby colonies. Destroying all radars will neutralize their strike capability.</DMSE.MissileBase.ArrivedLetter>
   <DMSE.MissileBase.SiteDesc>A mobile tactical ballistic missile launch position equipped with fire control radar and missile launchers. The position will relocate after completing its mission.</DMSE.MissileBase.SiteDesc>
+  <DMSE.MissileBase.SupplyDrop>Enemy supply drop: {0} ×{1}</DMSE.MissileBase.SupplyDrop>
+  <DMSE.MissileBase.RackResupply>Enemy missile resupply: {1} missiles dropped for {0} empty launchers. The crew will load them shortly.</DMSE.MissileBase.RackResupply>
+  <DMSE.FieldLaunchSite.ArrivedLetter>Your pawns have arrived at an enemy field launch position. A search radar sits at its centre, with launch positions, ammunition carriers and crew shelters spread around it. Supply pods keep the garrison fed while any radar is operational; destroying all launchers neutralizes the position.</DMSE.FieldLaunchSite.ArrivedLetter>
+  <DMSE.FieldLaunchSite.SpawnedLetter>{0} has deployed a field missile launch position {3} tiles {2} of {1}. Its launchers can strike your colony; supply pods will keep its garrison fed while its radars run.\n\nDestroy every launcher to neutralize it, or knock out its radars to cut off its supplies.</DMSE.FieldLaunchSite.SpawnedLetter>
 
   <ScorerLaunch>Launch Missile</ScorerLaunch>
 
@@ -29,13 +33,16 @@
   <DMSE.Alert.HuntdownThreatCritical.Desc>the position of Stele has been tracked down, hunting squad and possible air strike will arrive in no time, transfer before it's too late.</DMSE.Alert.HuntdownThreatCritical.Desc>
 
   <DMSE.Alert.Pods>{0} incoming threats, interception window: {1} left</DMSE.Alert.Pods>
+  <DMSE.Alert.Pods.Loitering>{0} missiles loitering overhead, {1} before they dive</DMSE.Alert.Pods.Loitering>
   <!-- Tooltip detail lines for incoming-threat alert -->
   <DMSE.Alert.Pods.Window.Midcourse>Midcourse intercept window: {0}</DMSE.Alert.Pods.Window.Midcourse>
   <DMSE.Alert.Pods.Window.Terminal>Terminal (CIWS) window: {0}</DMSE.Alert.Pods.Window.Terminal>
+  <DMSE.Alert.Pods.Window.Loitering>Loiter time left: {0}</DMSE.Alert.Pods.Window.Loitering>
   <DMSE.Alert.Pods.Target>  · {0}  [{1}]</DMSE.Alert.Pods.Target>
   <DMSE.Alert.Pods.Status.InFlight>interceptor in flight</DMSE.Alert.Pods.Status.InFlight>
   <DMSE.Alert.Pods.Status.Locking>fire control locking</DMSE.Alert.Pods.Status.Locking>
   <DMSE.Alert.Pods.Status.Unengaged>unengaged</DMSE.Alert.Pods.Status.Unengaged>
+  <DMSE.Alert.Pods.Status.Loitering>loitering, waiting for a target</DMSE.Alert.Pods.Status.Loitering>
   <!-- BVR system status alert (independent from incoming-threat alert) -->
   <DMSE.Alert.BVRStatus.Label>BVR System</DMSE.Alert.BVRStatus.Label>
   <DMSE.Alert.BVRStatus.SearchRadars>Search radars:</DMSE.Alert.BVRStatus.SearchRadars>
@@ -132,6 +139,7 @@
   <DMSE.Missile.Stat.Range>Range: {0} tiles</DMSE.Missile.Stat.Range>
   <DMSE.Missile.Stat.TerminalGuidance>Guided: can update its target position {0} time(s) in flight and strike across orbital layers</DMSE.Missile.Stat.TerminalGuidance>
   <DMSE.Missile.Stat.NoTerminalGuidance>Unguided: cannot track moving targets or strike across orbital layers</DMSE.Missile.Stat.NoTerminalGuidance>
+  <DMSE.Missile.Stat.Loiter>Loiter flight control: waits up to {0} before falling back</DMSE.Missile.Stat.Loiter>
   <DMSE.MissileLauncher.OutOfRange>Target is beyond missile range ({0} tiles).</DMSE.MissileLauncher.OutOfRange>
   <DMSE.MissileLauncher.RangeLabel>{0} / {1} tiles</DMSE.MissileLauncher.RangeLabel>
   <DMSE.MissileLauncher.NoTargetHere>No target at this location: the missile will be wasted</DMSE.MissileLauncher.NoTargetHere>
@@ -160,6 +168,7 @@
 
   <!-- 導引頭選目標 -->
   <DMSE.Missile.SeekerLocked>{0} locked onto a target. The missile is coming down.</DMSE.Missile.SeekerLocked>
+  <DMSE.Missile.Loitering>The seeker found no target: the missile is loitering overhead and will wait {0} before falling back to inertial guidance.</DMSE.Missile.Loitering>
   <DMSE.Guidance.Inertial>inertial guidance</DMSE.Guidance.Inertial>
   <DMSE.Guidance.RadioCommand>radio-command guidance</DMSE.Guidance.RadioCommand>
   <DMSE.Guidance.ManualTarget>{0}: you choose the impact point on arrival</DMSE.Guidance.ManualTarget>
@@ -227,6 +236,8 @@
   <DMSE.Artillery.CrossLayer>Artillery shells are unguided and cannot strike across orbital layers.</DMSE.Artillery.CrossLayer>
   <DMSE.Artillery.Missed>The artillery salvo found no target and was wasted.</DMSE.Artillery.Missed>
   <DMSE.Artillery.NoBarrel>Barrel worn out: sustained fire halted. Replace the reinforced barrel.</DMSE.Artillery.NoBarrel>
+  <DMSE.Artillery.TargetIsHome>Cannot shell your own map tile.</DMSE.Artillery.TargetIsHome>
+  <DMSE.Artillery.OutOfRange>Target is beyond gun range ({0} tiles).</DMSE.Artillery.OutOfRange>
   <DMSE.BVR.DeviceInactive>Device is inactive (no power, broken down, or switched off).</DMSE.BVR.DeviceInactive>
   <!-- State strings (used in StopDesc) -->
   <DMSE.Artillery.StateCooldown>reloading, {0} remaining</DMSE.Artillery.StateCooldown>
@@ -234,6 +245,8 @@
   <DMSE.Artillery.StateReady>ready to fire</DMSE.Artillery.StateReady>
   <!-- Inspect strings -->
   <DMSE.Artillery.Ready>Artillery: ready to fire</DMSE.Artillery.Ready>
+  <DMSE.Artillery.GuidanceOnline>Radar guidance: available (scatter {0} cells)</DMSE.Artillery.GuidanceOnline>
+  <DMSE.Artillery.GuidanceOffline>Radar guidance: no free fire-control channel (unguided, scatter {0} cells)</DMSE.Artillery.GuidanceOffline>
 
   <!-- PlaceWorker -->
   <DMSE.PlaceWorker.TooCloseSameLayer>Too close to {0} (same placement layer).</DMSE.PlaceWorker.TooCloseSameLayer>

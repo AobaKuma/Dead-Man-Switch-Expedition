@@ -13,7 +13,7 @@
   
   <!-- EN: Graphene -->
   <DMSE_Graphene.label>石墨烯</DMSE_Graphene.label>
-  <!-- EN: A single-layer carbon material produced by exfoliating graphite, it is the most widely used non-metallic material in the Midsphere World. Thanks to its excellent thermal conductivity and electrical properties, it is commonly employed in electronic components, beam emitters, and supercapacitors. \n\nGraphene itself demands extremely stringent production conditions and is often further processed into materials like carbon nanotubes or fullerenes. As a result, worlds capable of large-scale production and application typically possess massive industrial platforms in near-Earth orbit dedicated to manufacturing and processing these materials. -->
+  <!-- EN: A single-layer carbon material produced by exfoliating graphite, it is the most widely used non-metallic material in the Midworld. Thanks to its excellent thermal conductivity and electrical properties, it is commonly employed in electronic components, beam emitters, and supercapacitors. \n\nGraphene itself demands extremely stringent production conditions and is often further processed into materials like carbon nanotubes or fullerenes. As a result, worlds capable of large-scale production and application typically possess massive industrial platforms in near-Earth orbit dedicated to manufacturing and processing these materials. -->
   <DMSE_Graphene.description>透過剝離石墨來製造的單層碳材料，是中層世界應用最廣泛的非金屬材料之一。憑藉優異的導熱與導電特性，常見於電子元件、光束發射器與超級電容等裝置。\n\n石墨烯本身對生產條件要求極嚴，通常還會再加工為碳奈米管或富勒烯等材料。因此能大規模生產並應用此材料的世界通常都擁有近地軌道的大型工業平台來進行製造與加工。</DMSE_Graphene.description>
   <!-- EN: carbon fiber -->
   <DMSE_Graphene.stuffProps.stuffAdjective>碳纖維</DMSE_Graphene.stuffProps.stuffAdjective>

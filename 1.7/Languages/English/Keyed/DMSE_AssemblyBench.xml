@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- 導彈組裝台與裝配方案（docs/導彈組裝台與裝配方案_實作計畫.md） -->
+  <DMSE.Missile.DesignNameLabel>{0} "{1}"</DMSE.Missile.DesignNameLabel>
+  <DMSE.Bench.Open>Configure assembly</DMSE.Bench.Open>
+  <DMSE.Bench.OpenDesc>Choose a missile body and its parts, name the design and place an order. Colonists bring the materials and assemble the missiles here.</DMSE.Bench.OpenDesc>
+  <DMSE.Bench.CancelOrder>Cancel order</DMSE.Bench.CancelOrder>
+  <DMSE.Bench.CancelOrderDesc>Cancel the current order. Materials already delivered are returned next to the bench.</DMSE.Bench.CancelOrderDesc>
+  <DMSE.Bench.CancelOrderConfirm>Cancel this order? Materials already delivered will be returned next to the bench.</DMSE.Bench.CancelOrderConfirm>
+  <DMSE.Bench.OrderDone>Missile order finished: {0}.</DMSE.Bench.OrderDone>
+  <DMSE.Bench.OutputFull>Output rack full: move finished missiles off the bench.</DMSE.Bench.OutputFull>
+  <DMSE.Bench.InspectOrder>Order: {0} ({1} left)</DMSE.Bench.InspectOrder>
+  <DMSE.Bench.InspectProgress>Assembly progress: {0}</DMSE.Bench.InspectProgress>
+  <DMSE.Bench.NotProducible>This missile body cannot be built at an assembly bench.</DMSE.Bench.NotProducible>
+  <DMSE.Bench.NeedsResearch>Requires research: {0}</DMSE.Bench.NeedsResearch>
+  <DMSE.Bench.EmptyHint>Choose a missile body on the left to start a design.</DMSE.Bench.EmptyHint>
+  <DMSE.Bench.LoadDesign>Load design</DMSE.Bench.LoadDesign>
+  <DMSE.Bench.SaveDesign>Save design</DMSE.Bench.SaveDesign>
+  <DMSE.Bench.LockedWhileOrdered>Order in progress. Cancel the order to change the design.</DMSE.Bench.LockedWhileOrdered>
+  <DMSE.Bench.IfEquipped>If equipped:</DMSE.Bench.IfEquipped>
+  <DMSE.Bench.NameCandidates>Name suggestions</DMSE.Bench.NameCandidates>
+  <DMSE.Bench.Group.Strike>Strike</DMSE.Bench.Group.Strike>
+  <DMSE.Bench.Group.Guidance>Guidance</DMSE.Bench.Group.Guidance>
+  <DMSE.Bench.Group.Survival>Survivability</DMSE.Bench.Group.Survival>
+  <DMSE.Bench.Stat.Radius>Blast radius</DMSE.Bench.Stat.Radius>
+  <DMSE.Bench.Stat.Guidance>Targeting</DMSE.Bench.Stat.Guidance>
+  <DMSE.Bench.Stat.Scatter>Scatter</DMSE.Bench.Stat.Scatter>
+  <DMSE.Bench.Stat.DamageType>Damage type</DMSE.Bench.Stat.DamageType>
+  <DMSE.Bench.Stat.ThickRoof>Penetrates thick roof</DMSE.Bench.Stat.ThickRoof>
+  <DMSE.Bench.Stat.Speed>World speed</DMSE.Bench.Stat.Speed>
+  <DMSE.Bench.Stat.TerminalUpdates>Terminal updates</DMSE.Bench.Stat.TerminalUpdates>
+  <DMSE.Bench.Stat.Channels>Fire-control channels</DMSE.Bench.Stat.Channels>
+  <DMSE.Bench.Stat.Loiter>Loiter time</DMSE.Bench.Stat.Loiter>
+  <DMSE.Bench.Stat.Signature>Radar signature</DMSE.Bench.Stat.Signature>
+  <DMSE.Bench.Stat.Chaff>Chaff charges</DMSE.Bench.Stat.Chaff>
+  <DMSE.Bench.Stat.Jam>Jamming strength</DMSE.Bench.Stat.Jam>
+  <DMSE.Bench.NoMaterials>No materials needed</DMSE.Bench.NoMaterials>
+  <DMSE.Bench.Short>short {0}</DMSE.Bench.Short>
+  <DMSE.Bench.Output.KeepOnBench>Keep on bench</DMSE.Bench.Output.KeepOnBench>
+  <DMSE.Bench.Output.KeepOnBenchDesc>Finished missiles wait on the bench. Launchers that accept them load straight from it.</DMSE.Bench.Output.KeepOnBenchDesc>
+  <DMSE.Bench.Output.SendToStorageDesc>Finished missiles are taken off the bench and hauled to the best storage.</DMSE.Bench.Output.SendToStorageDesc>
+  <DMSE.Bench.Progress>Missile {0} of {1} · {2}</DMSE.Bench.Progress>
+  <DMSE.Bench.State.Collecting>gathering materials</DMSE.Bench.State.Collecting>
+  <DMSE.Bench.State.Ready>ready to assemble</DMSE.Bench.State.Ready>
+  <DMSE.Bench.State.Working>assembling</DMSE.Bench.State.Working>
+  <DMSE.Bench.State.OutputBlocked>waiting for space on the bench</DMSE.Bench.State.OutputBlocked>
+  <DMSE.Bench.PlaceOrder>Place order</DMSE.Bench.PlaceOrder>
+  <DMSE.Bench.InstantComplete>Complete now</DMSE.Bench.InstantComplete>
+  <DMSE.Bench.Block.NoBody>Choose a missile body.</DMSE.Bench.Block.NoBody>
+  <DMSE.Bench.Block.BadName>The design name contains unsupported characters.</DMSE.Bench.Block.BadName>
+  <DMSE.Bench.Warn.Short>Not enough {0} yet (short {1}); colonists will wait for it.</DMSE.Bench.Warn.Short>
+  <DMSE.Bench.Warn.NoLauncher>No launcher on this map accepts this missile yet.</DMSE.Bench.Warn.NoLauncher>
+  <DMSE.Bench.Summary>{0} missile(s), about {1} h of work</DMSE.Bench.Summary>
+  <DMSE.Bench.LockNameButtonDesc>Lock or unlock the design's name. When locked, the name will not regenerate when parts are changed.</DMSE.Bench.LockNameButtonDesc>
+  <DMSE.Bench.LockNameOn>Design name lock is on. The name will not regenerate when changing parts.</DMSE.Bench.LockNameOn>
+  <DMSE.Bench.LockNameOff>Design name lock is off. The name will regenerate when changing parts.</DMSE.Bench.LockNameOff>
+  <DMSE.Bench.MaterialTip>Per missile: {0}\nThis order: {1}\nIn storage: {2}</DMSE.Bench.MaterialTip>
+  <DMSE.Bench.WorkTimeTip>About {0} h with your fastest available crafter (work speed {1}).</DMSE.Bench.WorkTimeTip>
+  <DMSE.Bench.Size.Loitering>Loitering munitions</DMSE.Bench.Size.Loitering>
+  <DMSE.Bench.Size.Light>Light missiles</DMSE.Bench.Size.Light>
+  <DMSE.Bench.Size.Medium>Medium missiles</DMSE.Bench.Size.Medium>
+  <DMSE.Bench.Size.Ballistic>Ballistic missiles</DMSE.Bench.Size.Ballistic>
+  <DMSE.Blueprint.Title>Missile designs</DMSE.Blueprint.Title>
+  <DMSE.Blueprint.Empty>No saved designs yet. Use "Save design" at an assembly bench.</DMSE.Blueprint.Empty>
+  <DMSE.Blueprint.OpenFolder>Open folder</DMSE.Blueprint.OpenFolder>
+  <DMSE.Blueprint.OverwriteConfirm>A design named "{0}" already exists. Overwrite it?</DMSE.Blueprint.OverwriteConfirm>
+  <DMSE.Blueprint.Saved>Design saved: {0}</DMSE.Blueprint.Saved>
+  <DMSE.Blueprint.SaveFailed>Could not save the design: {0}</DMSE.Blueprint.SaveFailed>
+  <DMSE.Blueprint.MissingDef>Missing definition: {0}</DMSE.Blueprint.MissingDef>
+  <DMSE.Blueprint.Incompatible>Part does not fit this body: {0}</DMSE.Blueprint.Incompatible>
+</LanguageData>

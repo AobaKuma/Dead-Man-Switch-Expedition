@@ -29,8 +29,13 @@ namespace DMSE
             BVRWave wave = SoonestPlayerWave(Find.CurrentMap);
             if (wave != null)
             {
-                return "DMSE.Alert.Pods".Translate(wave.targets.Count,
-                    (wave.tickToImpact - Find.TickManager.TicksGame).ToStringTicksToPeriod());
+                int timeLeft = Mathf.Max(0, wave.tickToImpact - Find.TickManager.TicksGame);
+                // 盤旋中的飛彈不會「抵達」，標題改報盤旋剩餘時間。
+                if (wave.loitering)
+                {
+                    return "DMSE.Alert.Pods.Loitering".Translate(wave.targets.Count, timeLeft.ToStringTicksToPeriod());
+                }
+                return "DMSE.Alert.Pods".Translate(wave.targets.Count, timeLeft.ToStringTicksToPeriod());
             }
             return base.GetLabel();
         }
@@ -50,15 +55,24 @@ namespace DMSE
             StringBuilder sb = new StringBuilder();
 
             // ---- 攔截階段剩餘窗口 ----
-            if (midcourseLeft > 0)
+            if (wave.loitering)
             {
-                sb.AppendLine("DMSE.Alert.Pods.Window.Midcourse".Translate(
-                    midcourseLeft.ToStringTicksToPeriod()));
+                // 盤旋飛控：導引頭還找不到目標，飛彈在上空等待；盤旋期間不走中過程，全程只交給末端防禦接戰。
+                sb.AppendLine("DMSE.Alert.Pods.Window.Loitering".Translate(
+                    Mathf.Max(0, wave.loiterUntil - now).ToStringTicksToPeriod()));
             }
-            if (terminalWindow > 0)
+            else
             {
-                sb.AppendLine("DMSE.Alert.Pods.Window.Terminal".Translate(
-                    Mathf.Min(timeLeft, terminalWindow).ToStringTicksToPeriod()));
+                if (midcourseLeft > 0)
+                {
+                    sb.AppendLine("DMSE.Alert.Pods.Window.Midcourse".Translate(
+                        midcourseLeft.ToStringTicksToPeriod()));
+                }
+                if (terminalWindow > 0)
+                {
+                    sb.AppendLine("DMSE.Alert.Pods.Window.Terminal".Translate(
+                        Mathf.Min(timeLeft, terminalWindow).ToStringTicksToPeriod()));
+                }
             }
 
             // ---- 逐目標列表 ----
@@ -66,7 +80,8 @@ namespace DMSE
             foreach (BVRTarget t in wave.targets)
             {
                 string statusKey;
-                if (t.midcourseEngagedUntil > now)      { statusKey = "DMSE.Alert.Pods.Status.InFlight"; }
+                if (wave.loitering)                      { statusKey = "DMSE.Alert.Pods.Status.Loitering"; }
+                else if (t.midcourseEngagedUntil > now)  { statusKey = "DMSE.Alert.Pods.Status.InFlight"; }
                 else if (t.lockUntil > now)              { statusKey = "DMSE.Alert.Pods.Status.Locking"; }
                 else                                     { statusKey = "DMSE.Alert.Pods.Status.Unengaged"; }
 

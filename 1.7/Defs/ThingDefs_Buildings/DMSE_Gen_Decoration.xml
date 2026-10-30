@@ -148,7 +148,6 @@
             <texPath>Things/Building/FieldStructures/mediumFrame_top</texPath>
             <graphicClass>Graphic_Multi</graphicClass>
             <drawSize>(3,2)</drawSize>
-            <drawOffset>(0,0,0)</drawOffset>
             <drawOffset>(0,0.01,0)</drawOffset>
           </li>
         </extraGraphic>
@@ -180,11 +179,265 @@
             <texPath>Things/Building/FieldStructures/mediumSection_top</texPath>
             <graphicClass>Graphic_Multi</graphicClass>
             <drawSize>(3,2)</drawSize>
-            <drawOffset>(0,0,0)</drawOffset>
             <drawOffset>(0,0.01,0)</drawOffset>
           </li>
         </extraGraphic>
       </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ==================== 野戰結構模組件（雙層貼圖）==================== -->
+  <!-- 貼圖：64px = 1 格；畫布 = 佔地 + 四周各 0.5 格，故 drawSize = 畫布像素 / 64 -->
+  <!-- 缺少的朝向（如 _west）由 Graphic_Multi 自動鏡像，不必補圖 -->
+
+  <ThingDef ParentName="DMSE_BaseStructuralFrame">
+    <defName>DMSE_FieldStructure_Frame</defName>
+    <label>field frame</label>
+    <description>A standard frame for assembling field structures.</description>
+    <graphicData>
+      <texPath>Things/Building/FieldStructures/fieldFrame</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,2)</drawSize>
+      <drawOffset>(0,-0.01,0)</drawOffset>
+    </graphicData>
+    <size>(1,1)</size>
+    <comps>
+      <li Class="DMSE.CompProperties_BuildingExtraRenderer">
+        <extraGraphic>
+          <li>
+            <texPath>Things/Building/FieldStructures/fieldFrame_top</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>(2,2)</drawSize>
+            <drawOffset>(0,0.01,0)</drawOffset>
+          </li>
+        </extraGraphic>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="DMSE_BaseStructuralFrame">
+    <defName>DMSE_FieldStructure_Support</defName>
+    <label>field support</label>
+    <description>A load-bearing support for field structures.</description>
+    <graphicData>
+      <texPath>Things/Building/FieldStructures/fieldSupport</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,2)</drawSize>
+      <drawOffset>(0,-0.01,0)</drawOffset>
+    </graphicData>
+    <size>(1,1)</size>
+    <comps>
+      <li Class="DMSE.CompProperties_BuildingExtraRenderer">
+        <extraGraphic>
+          <li>
+            <texPath>Things/Building/FieldStructures/fieldSupport_top</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>(2,2)</drawSize>
+            <drawOffset>(0,0.01,0)</drawOffset>
+          </li>
+        </extraGraphic>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="DMSE_BaseStructuralFrame">
+    <defName>DMSE_FieldStructure_Hull</defName>
+    <label>field hull section</label>
+    <description>An armored hull section for field structures.</description>
+    <graphicData>
+      <texPath>Things/Building/FieldStructures/fieldHull</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,3)</drawSize>
+      <drawOffset>(0,-0.01,0)</drawOffset>
+    </graphicData>
+    <size>(1,2)</size>
+    <statBases>
+      <MaxHitPoints>650</MaxHitPoints>
+    </statBases>
+    <costList>
+      <Steel>8</Steel>
+    </costList>
+    <comps>
+      <li Class="DMSE.CompProperties_BuildingExtraRenderer">
+        <extraGraphic>
+          <li>
+            <texPath>Things/Building/FieldStructures/fieldHull_top</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>(2,3)</drawSize>
+            <drawOffset>(0,0.01,0)</drawOffset>
+          </li>
+        </extraGraphic>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="DMSE_BaseStructuralFrame">
+    <defName>DMSE_FieldStructure_PowerUnit</defName>
+    <label>field power unit</label>
+    <description>A compact power unit for field structures. Supplies 1500 W while switched on.</description>
+    <graphicData>
+      <texPath>Things/Building/FieldStructures/powerUnit</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,3)</drawSize>
+      <drawOffset>(0,-0.01,0)</drawOffset>
+    </graphicData>
+    <size>(1,2)</size>
+    <tickerType>Normal</tickerType>
+    <statBases>
+      <MaxHitPoints>650</MaxHitPoints>
+    </statBases>
+    <costList>
+      <Steel>8</Steel>
+    </costList>
+    <comps>
+      <li Class="DMSE.CompProperties_BuildingExtraRenderer">
+        <extraGraphic>
+          <li>
+            <texPath>Things/Building/FieldStructures/powerUnit_top</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>(2,3)</drawSize>
+            <drawOffset>(0,0.01,0)</drawOffset>
+          </li>
+        </extraGraphic>
+      </li>
+      <!-- FFF 發電 comp：basePowerConsumption 負值 = 發電量（-1500 = 1500 W）。 -->
+      <li Class="Fortified.CompProperties_SubstationPower">
+        <basePowerConsumption>-1500</basePowerConsumption>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="DMSE_BaseStructuralFrame">
+    <defName>DMSE_FieldStructure_ExtinguisherUnit</defName>
+    <label>field extinguisher unit</label>
+    <description>A fire-suppressant unit for field structures. Can be triggered by a colonist to spray extinguishing foam over a 4.9-cell radius.</description>
+    <graphicData>
+      <texPath>Things/Building/FieldStructures/extinguisherUnit</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,3)</drawSize>
+      <drawOffset>(0,-0.01,0)</drawOffset>
+    </graphicData>
+    <size>(1,2)</size>
+    <statBases>
+      <MaxHitPoints>650</MaxHitPoints>
+    </statBases>
+    <costList>
+      <Steel>8</Steel>
+    </costList>
+    <comps>
+      <li Class="DMSE.CompProperties_BuildingExtraRenderer">
+        <extraGraphic>
+          <li>
+            <texPath>Things/Building/FieldStructures/extinguisherUnit_top</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>(2,3)</drawSize>
+            <drawOffset>(0,0.01,0)</drawOffset>
+          </li>
+        </extraGraphic>
+      </li>
+      <!-- 手動滅火：小人右鍵使用 → CompUsable.UsedBy 呼叫同一個 def 上的 CompUseEffect_Extinguish
+           （FFF，半徑 4.9、留下滅火泡沫），建築本身不受損、可重複使用。 -->
+      <li Class="CompProperties_Usable">
+        <useJob>TriggerObject</useJob>
+        <useLabel>Trigger {0_label}</useLabel>
+        <useDuration>90</useDuration>
+      </li>
+      <li Class="CompProperties_UseEffect">
+        <compClass>Fortified.CompUseEffect_Extinguish</compClass>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="DMSE_BaseStructuralFrame">
+    <defName>DMSE_FieldStructure_AmmoStorage</defName>
+    <label>field ammo storage</label>
+    <description>A sealed ammunition locker for field structures. Holds up to eight missiles.</description>
+    <graphicData>
+      <texPath>Things/Building/FieldStructures/ammoStorage</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,4)</drawSize>
+      <drawOffset>(0,-0.01,0)</drawOffset>
+    </graphicData>
+    <size>(1,3)</size>
+    <statBases>
+      <MaxHitPoints>975</MaxHitPoints>
+    </statBases>
+    <costList>
+      <Steel>12</Steel>
+    </costList>
+    <building>
+      <ignoreStoredThingsBeauty>true</ignoreStoredThingsBeauty>
+      <!-- 只收實體導彈（與組裝台的出廠暫存同一份清單）。 -->
+      <fixedStorageSettings>
+        <filter>
+          <thingDefs>
+            <li>DMSE_Missile_Grison</li>
+            <li>DMSE_Missile_Moskit</li>
+            <li>DMSE_Missile_Stinger</li>
+            <li>DMSE_Missile_Maverick</li>
+            <li>DMSE_Missile_Sparrow</li>
+            <li>DMSE_Missile_Yj</li>
+            <li>DMSE_Missile_Tochka</li>
+            <li>DMSE_Missile_AdvancedLight</li>
+            <li>DMSE_Missile_AdvancedCruise</li>
+            <li>DMSE_Missile_Shahed</li>
+          </thingDefs>
+        </filter>
+      </fixedStorageSettings>
+      <defaultStorageSettings>
+        <priority>Normal</priority>
+        <filter>
+          <thingDefs>
+            <li>DMSE_Missile_Grison</li>
+            <li>DMSE_Missile_Moskit</li>
+            <li>DMSE_Missile_Stinger</li>
+            <li>DMSE_Missile_Maverick</li>
+            <li>DMSE_Missile_Sparrow</li>
+            <li>DMSE_Missile_Yj</li>
+            <li>DMSE_Missile_Tochka</li>
+            <li>DMSE_Missile_AdvancedLight</li>
+            <li>DMSE_Missile_AdvancedCruise</li>
+            <li>DMSE_Missile_Shahed</li>
+          </thingDefs>
+        </filter>
+      </defaultStorageSettings>
+    </building>
+    <!-- 容量 8 發；敵方站點生成時自動裝填（攔截彈），可當 NPC 導彈基地的彈藥庫。 -->
+    <modExtensions>
+      <li Class="DMSE.MissileRackExtension">
+        <capacity>8</capacity>
+        <renderStoredBody>false</renderStoredBody>
+      </li>
+      <li Class="DMSE.MissileRackAutoFillExtension">
+        <enemyFactionOnly>true</enemyFactionOnly>
+        <fillRules>
+          <li>
+            <minTechLevel>Industrial</minTechLevel>
+            <!-- 存放過濾不含攔截彈（原本只列 DMSE_InterceptorMissile → 候選池為空、生成時是空的）。 -->
+            <candidates>
+              <li>DMSE_Missile_Grison</li>
+              <li>DMSE_Missile_Maverick</li>
+            </candidates>
+          </li>
+        </fillRules>
+      </li>
+    </modExtensions>
+    <inspectorTabs>
+      <li>RimWorld.ITab_Storage</li>
+      <li>DMSE.ITab_MissileInventory</li>
+    </inspectorTabs>
+    <comps>
+      <li Class="DMSE.CompProperties_BuildingExtraRenderer">
+        <extraGraphic>
+          <li>
+            <texPath>Things/Building/FieldStructures/ammoStorage_top</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>(2,4)</drawSize>
+            <drawOffset>(0,0.01,0)</drawOffset>
+          </li>
+        </extraGraphic>
+      </li>
+      <li Class="DMSE.CompProperties_MissileRackStorage" />
     </comps>
   </ThingDef>
 

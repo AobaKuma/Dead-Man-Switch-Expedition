@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
+using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 using Verse.AI.Group;
@@ -11,8 +12,8 @@ namespace DMSE
     /// 導彈陣地 Pawn 生成步驟。<br/>
     /// 依 <see cref="SitePartParams.threatPoints"/>（或 XML 固定值 <see cref="crewCount"/>）
     /// 生成敵方 Pawn，分為兩組：<br/>
-    /// ‧ <b>炮手</b>（<see cref="gunnerFraction"/>）：
-    ///   <see cref="LordJob_ManTurrets"/> → 自動占據最近 Mannable 炮塔。<br/>
+    /// ‧ <b>炮手</b>（<see cref="gunnerFraction"/>，至少補到需人操作的設備數、最多半數）：
+    ///   <see cref="LordJob_MissileStationCrew"/> → 操作最近的砲塔、雷達或發射架；飢餓時下崗進食。<br/>
     /// ‧ <b>陣地班</b>（其餘）：
     ///   <see cref="LordJob_MissileCrewDuty"/> → 防守陣地、後台自動搬運導彈至發射架。<br/>
     /// <br/>
@@ -38,7 +39,7 @@ namespace DMSE
         public int maxCrew = 16;
 
         /// <summary>
-        /// 炮手佔總人數的比例（0–1）。炮手使用 <see cref="LordJob_ManTurrets"/>，
+        /// 炮手佔總人數的比例（0–1）。炮手使用 <see cref="LordJob_MissileStationCrew"/>，
         /// 其餘皆為陣地班（<see cref="LordJob_MissileCrewDuty"/>）。<br/>
         /// 若地圖上不存在任何 <see cref="CompMannable"/> 建築，此比例強制為 0（全員陣地班）。
         /// </summary>
@@ -70,17 +71,18 @@ namespace DMSE
             List<Pawn> spawned = SpawnPawns(faction, map, center, total, parms);
             if (spawned.NullOrEmpty()) return;
 
-            // 判定地圖是否有可操作炮塔；若無則全員陣地班
-            bool hasTurrets = HasMannableTurrets(map, faction);
-            int gunnerCount = hasTurrets
-                ? Mathf.Clamp(Mathf.RoundToInt(spawned.Count * gunnerFraction), 1, spawned.Count - 1)
+            // 需人操作的設備（砲塔、雷達、發射架）數量決定炮手人數：至少依 gunnerFraction，
+            // 不足以每座一人時補到設備數，但最多半數守軍；沒有設備則全員陣地班。
+            int stations = CountMannableStations(map, faction);
+            int gunnerCount = stations > 0 && spawned.Count > 1
+                ? Mathf.Clamp(Mathf.Max(Mathf.RoundToInt(spawned.Count * gunnerFraction), Mathf.Min(stations, spawned.Count / 2)), 1, spawned.Count - 1)
                 : 0;
 
             List<Pawn> gunners = spawned.Take(gunnerCount).ToList();
             List<Pawn> crew    = spawned.Skip(gunnerCount).ToList();
 
             if (gunners.Any())
-                CreateGunnerLord(gunners, faction, map);
+                CreateGunnerLord(gunners, faction, map, center);
 
             if (crew.Any())
                 CreateCrewLord(crew, faction, map, center);
@@ -91,11 +93,29 @@ namespace DMSE
 
         // ──────────────── 人數決定 ────────────────
 
-        private int ResolveCrewCount(GenStepParams parms)
+        /// <summary>
+        /// 是否精確生成 <see cref="ResolveCrewCount"/> 人：多生成的交回世界丟棄，不足的以 <see cref="PawnGenerator"/> 補足。
+        /// false（預設）沿用派系 PawnGroupMaker 依點數生成的人數。
+        /// </summary>
+        protected virtual bool ExactCrewCount => false;
+
+        protected virtual int ResolveCrewCount(GenStepParams parms)
         {
             if (crewCount >= 0) return crewCount;
-            float points = parms.sitePart?.parms?.threatPoints ?? (minCrew * pointsPerPawn);
+            float points = SiteThreatPoints(parms) ?? (minCrew * pointsPerPawn);
             return Mathf.Clamp(Mathf.RoundToInt(points / pointsPerPawn), minCrew, maxCrew);
+        }
+
+        /// <summary>
+        /// 站點威脅點數。MapGeneratorDef 內的 GenStep 拿到的 <see cref="GenStepParams.sitePart"/> 是 null
+        /// （原版只對 SitePartDef 的額外步驟填入），所以改從地圖生成中的 Site 讀取要求威脅點數的部件。
+        /// </summary>
+        private static float? SiteThreatPoints(GenStepParams parms)
+        {
+            if (parms.sitePart != null) return parms.sitePart.parms?.threatPoints;
+            Site site = MapGenerator.mapBeingGenerated?.Parent as Site;
+            SitePart part = site?.parts?.FirstOrDefault(p => p.def.wantsThreatPoints);
+            return part?.parms?.threatPoints;
         }
 
         // ──────────────── 結構中心 ────────────────
@@ -109,14 +129,15 @@ namespace DMSE
 
         // ──────────────── Mannable 炮塔偵測 ────────────────
 
-        private static bool HasMannableTurrets(Map map, Faction faction)
+        private static int CountMannableStations(Map map, Faction faction)
         {
+            int n = 0;
             foreach (Building b in map.listerBuildings.allBuildingsNonColonist)
             {
-                if (b.Faction != faction || b.Destroyed) continue;
-                if (b.TryGetComp<CompMannable>() != null) return true;
+                if (b.Faction != faction || b.Destroyed || !b.def.hasInteractionCell) continue;
+                if (b.TryGetComp<CompMannable>() != null) n++;
             }
-            return false;
+            return n;
         }
 
         // ──────────────── Pawn 生成與落地 ────────────────
@@ -132,14 +153,20 @@ namespace DMSE
                 List<Pawn> generated = PawnGroupMakerUtility.GeneratePawns(groupParms, warnOnZeroResults: false).ToList();
                 if (!generated.NullOrEmpty())
                 {
+                    if (ExactCrewCount && generated.Count > count)
+                    {
+                        foreach (Pawn extra in generated.Skip(count))
+                            Find.WorldPawns.PassToWorld(extra, PawnDiscardDecideMode.Discard);
+                        generated = generated.Take(count).ToList();
+                    }
                     foreach (Pawn p in generated)
                         TrySpawnPawn(p, center, map, result);
-                    return result;
+                    if (!ExactCrewCount) return result;
                 }
             }
 
-            // 回退：逐一以 PawnGenerator 生成基礎士兵
-            for (int i = 0; i < count; i++)
+            // 回退（或精確人數時補足）：逐一以 PawnGenerator 生成基礎士兵
+            for (int i = result.Count; i < count; i++)
             {
                 PawnKindDef kind = faction.RandomPawnKind();
                 if (kind == null) break;
@@ -156,7 +183,9 @@ namespace DMSE
 
         private PawnGroupMakerParms BuildGroupMakerParms(Faction faction, Map map, int count, GenStepParams parms)
         {
-            float points = parms.sitePart?.parms?.threatPoints ?? (count * pointsPerPawn);
+            float points = ExactCrewCount
+                ? count * pointsPerPawn
+                : SiteThreatPoints(parms) ?? (count * pointsPerPawn);
 
             PawnGroupMakerParms dummy = new PawnGroupMakerParms
             {
@@ -205,10 +234,10 @@ namespace DMSE
 
         // ──────────────── Lord 分配 ────────────────
 
-        private static void CreateGunnerLord(List<Pawn> gunners, Faction faction, Map map)
+        private static void CreateGunnerLord(List<Pawn> gunners, Faction faction, Map map, IntVec3 center)
         {
-            // LordJob_ManTurrets：LordToil_ManClosestTurrets 讓每個 Pawn 尋找最近的可操作炮塔
-            Lord lord = LordMaker.MakeNewLord(faction, new LordJob_ManTurrets(), map);
+            // LordJob_MissileStationCrew：操作砲塔、雷達與發射架（原版 LordJob_ManTurrets 只認砲塔），飢餓時下崗進食後回崗
+            Lord lord = LordMaker.MakeNewLord(faction, new LordJob_MissileStationCrew(center), map);
             foreach (Pawn p in gunners)
                 lord.AddPawn(p);
         }

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <DMSE_Turret_Empero.label>遠程加農砲</DMSE_Turret_Empero.label>
+  <DMSE_Turret_Empero.description>NK-30 "帝王"是一種砲口初速極高的重型遠程加農砲，能夠精確砲擊遠程目標來極大壓制敵方火力及摧毀設施，在近距離發射時下會使用減裝彈藥來透過低初速進行曲射，但仍有極高的精度。在砲擊世界地圖目標時會持續射擊直到下令停止、斷電或砲彈耗盡。每次發射消耗一枚高爆迫擊砲彈。\n\n無導引的砲彈在遠距離散佈極大，只會落在目標區域中央附近。開火時若有支援砲擊引導的火控雷達空出通道，就能夠由雷達導引瞄準該區域的敵方砲塔、用電設備或人員，落點也近得多。每發導引砲彈會佔用一條通道一段時間。\n\n無法跨層砲擊高空軌道目標。</DMSE_Turret_Empero.description>
+  <DMSE_Turret_Empero.comps.CompRefuelable.fuelLabel>砲彈</DMSE_Turret_Empero.comps.CompRefuelable.fuelLabel>
+  <DMSE_Turret_Empero.comps.CompRefuelable.fuelGizmoLabel>砲彈</DMSE_Turret_Empero.comps.CompRefuelable.fuelGizmoLabel>
+  <DMSE_Turret_Empero.comps.CompRefuelable.outOfFuelMessage>無法開火：沒有砲彈。</DMSE_Turret_Empero.comps.CompRefuelable.outOfFuelMessage>
+  <DMSE_ArtilleryDeparture_Empero.label>離場的長程砲彈</DMSE_ArtilleryDeparture_Empero.label>
+  <DMSE_Bullet_Shell_Empero.label>長程砲彈</DMSE_Bullet_Shell_Empero.label>
+  <DMSE_Gun_Empero.label>NK-30 加農砲（減裝藥）</DMSE_Gun_Empero.label>
+  <DMSE_Gun_Empero.description>NK-30「帝王」的主砲，以減裝藥、低初速對近距離目標進行曲射。</DMSE_Gun_Empero.description>
+  <DMSE_Bullet_Shell_EmperoReduced.label>減裝藥砲彈</DMSE_Bullet_Shell_EmperoReduced.label>
+
+</LanguageData>

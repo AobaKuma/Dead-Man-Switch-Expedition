@@ -19,6 +19,23 @@ namespace DMSE
         /// <summary>負責攔截此波次的防禦方陣營（擁有雷達/發射器/CIWS 的一方）。</summary>
         public Faction defenderFaction;
 
+        // ---- 盤旋飛控（loiter flight control）----
+        // 導引頭抵達時沒有目標、且彈體裝了盤旋飛控：波次停在盤旋狀態，
+        // tickToImpact 代表「盤旋結束（開始俯衝）」的 tick，每 loiterRetryTicks 重新執行導引頭。
+        // 盤旋期間是 terminalOnly 目標，CIWS 照常接戰（不受末端窗口限制）。
+
+        /// <summary>此波次是否正在盤旋等待目標。</summary>
+        public bool loitering;
+
+        /// <summary>盤旋期限（tick）；時間到就回退慣性落點俯衝。</summary>
+        public int loiterUntil = -1;
+
+        /// <summary>下一次重新執行導引頭的 tick。</summary>
+        public int nextSeekTick = -1;
+
+        /// <summary>盤旋期間重新搜尋的間隔（ticks）。</summary>
+        public int loiterRetryTicks = 250;
+
         public BVRWave() { }
 
         public BVRWave(int tick, List<BVRTarget> targets)
@@ -34,6 +51,10 @@ namespace DMSE
             Scribe_References.Look(ref defenderFaction, "defenderFaction");
             Scribe_Collections.Look(ref targets, "targets", LookMode.Deep);
             Scribe_Collections.Look(ref signal, "signal", LookMode.Value);
+            Scribe_Values.Look(ref loitering, "loitering", false);
+            Scribe_Values.Look(ref loiterUntil, "loiterUntil", -1);
+            Scribe_Values.Look(ref nextSeekTick, "nextSeekTick", -1);
+            Scribe_Values.Look(ref loiterRetryTicks, "loiterRetryTicks", 250);
 
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {

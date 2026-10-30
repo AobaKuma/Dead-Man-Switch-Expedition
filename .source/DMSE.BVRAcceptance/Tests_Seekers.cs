@@ -30,6 +30,16 @@ namespace DMSE.BVRAcceptance
                 "anti-radiation locks the active radar with the highest power level (phased array)");
             t.Check(Pick("DMSE_Guidance_EMSignal") == phased.Position, "EM seeker locks the building drawing the most power (phased array, 5 kW)");
 
+            // A dense salvo with the same seeker spreads: the second lock skips the building the first one claimed.
+            GuidanceType.ClearClaims();
+            MissileConfig emCfg = CruiseConfig("DMSE_Guidance_EMSignal");
+            IntVec3 salvo1 = GuidanceType.ArrivalCell(emCfg, Home, Enemy, out _);
+            IntVec3 salvo2 = GuidanceType.ArrivalCell(emCfg, Home, Enemy, out _);
+            t.Check(salvo1 == phased.Position && salvo2 == earlyFc.Position,
+                $"EM salvo spreads (1st {salvo1} = phased array, 2nd {salvo2} = next biggest draw, early FC radar)");
+            t.Check(Pick("DMSE_Guidance_EMSignal") == phased.Position, "a plain query still reports the best target");
+            GuidanceType.ClearClaims();
+
             SetFlick(phased, false);
             yield return new WaitTicks(3);
             IntVec3 arFallback = Pick("DMSE_Light_Guidance_AntiRadiation");
@@ -193,6 +203,101 @@ namespace DMSE.BVRAcceptance
         }
 
         // ------------------------------------------------------------------
+        //  Loiter flight control
+        // ------------------------------------------------------------------
+
+        /// <summary>
+        /// Loiter flight control: with nothing to lock the drone waits overhead instead of striking blind, re-runs
+        /// its seeker on the configured interval, dives the moment a target appears, and only falls back to the
+        /// inertial impact point when the loiter time runs out. Loitering targets stay terminal-only, so CIWS can
+        /// engage them for the whole wait.
+        /// </summary>
+        public static IEnumerable<Wait> LoiterFlightControl(TestContext t)
+        {
+            MissileBodyDef shahed = DefDatabase<MissileBodyDef>.GetNamed("DMSE_MissileBody_Shahed");
+            MissilePartDef loiter = DefDatabase<MissilePartDef>.GetNamed("DMSE_Payload_Loiter");
+            MissilePartDef laser = DefDatabase<MissilePartDef>.GetNamed("DMSE_Guidance_Laser");
+
+            // Fitting rules: loitering airframes only, and the airframe really has a payload slot.
+            t.Check(loiter.requiresLoiteringBody, "loiter flight control is restricted to loitering airframes");
+            t.Check(shahed.slots.Contains(MissilePartCategory.Payload), "the Shahed airframe has a payload slot");
+            t.Check(loiter.CompatibleWith(shahed), "so the flight control fits it");
+            MissileBodyDef cruiseBody = DefDatabase<MissileBodyDef>.GetNamed("DMSE_MissileBody_Moskit");
+            t.Check(!loiter.CompatibleWith(cruiseBody), "a cruise missile airframe cannot take it");
+
+            MissileConfig cfg = MissileConfig.NewWithDefaults(shahed);
+            cfg.SetPart(MissilePartCategory.Guidance, laser);
+            cfg.SetPart(MissilePartCategory.Payload, loiter);
+            t.Check(cfg.LoiterTicks == loiter.loiterTicks && cfg.LoiterTicks > 0,
+                $"fitted: {cfg.LoiterTicks} ticks of loiter, re-seek every {cfg.LoiterRetryTicks} ticks");
+            MissileConfig forced = new MissileConfig(cruiseBody);
+            forced.SetPart(MissilePartCategory.Payload, loiter);
+            t.Check(forced.LoiterTicks == 0, "force-fitted to a cruise body it still never loiters");
+
+            // Nothing to lock: drop this faction's designations, then the laser seeker reports no target
+            // and arrival asks for a loiter instead of an inertial strike.
+            foreach (LaserDesignatorMark leftover in Home.listerThings.AllThings.OfType<LaserDesignatorMark>().ToList())
+            {
+                if (leftover.IsActiveFor(Player)) { leftover.Destroy(); }
+            }
+            yield return new WaitTicks(2);
+            t.Check(!GuidanceType.TryPickTarget(cfg, Home, Player, out _), "the seeker has nothing to lock on arrival");
+            IntVec3 arrival = GuidanceType.ArrivalCell(cfg, Home, Player, out bool loiterOnArrival);
+            t.Check(loiterOnArrival && arrival.InBounds(Home), "arrival asks for a loiter (the inertial point stays the fallback)");
+
+            // Held in a loitering wave: the missile is put away, the wave is terminal-only.
+            MapComponent_BVRCombat comp = Home.GetComponent<MapComponent_BVRCombat>();
+            Thing missile = MissileProjectileMaker.SpawnIncoming(ThingDef.Named("DMSE_Incoming_Shahed"), arrival, Home);
+            Projectile_MissileIncoming inc = (Projectile_MissileIncoming)missile;
+            inc.config = cfg; inc.attacker = Player; inc.bvrHandled = true;
+            missile.DeSpawn();
+            BVRWave wave = comp.RegisterLoiter(missile, arrival, Enemy, cfg.LoiterTicks, 30);
+            t.Require(wave != null && wave.targets.Count == 1, "the missile is held in a loitering wave");
+            t.Check(wave.loitering, "the wave is marked as loitering");
+            t.Check(wave.TerminalOnly, "loitering targets are terminal-only, so CIWS can engage them the whole time");
+            t.Check(!missile.Spawned, "the missile itself is put away while it waits");
+
+            yield return new WaitTicks(5);
+            t.Check(wave.loitering, "still waiting before the first seek interval elapses");
+
+            // A target appears: the next seek locks it and the wave starts its dive.
+            IntVec3 designated = new IntVec3(Pad.minX + 44, 0, Pad.minZ + 44);
+            LaserDesignatorMark mark = LaserDesignatorUtility.PlaceMark(designated, Home, Player, null, 5000);
+            Track(mark);
+            var waitLock = new WaitUntil(() => !wave.loitering, 200);
+            yield return waitLock;
+            t.Check(!waitLock.TimedOut, "the drone locks the new target on its next seek");
+            t.Check(wave.targets[0].position.DistanceTo(designated) <= 3f,
+                $"and dives at the designated cell ({wave.targets[0].position} vs {designated})");
+            t.Check(wave.tickToImpact - Find.TickManager.TicksGame <= BVRTuning.LoiterDiveTicks,
+                "with only the short dive window left before impact");
+            // Clean up: the projectile would otherwise land in the test map later.
+            foreach (BVRTarget target in wave.targets) { target.Discard(); }
+            comp.Waves.Remove(wave);
+
+            // Time runs out with nothing to lock: fall back to the inertial impact point and dive.
+            // (Remove the designation, and keep the seek interval longer than the loiter time, so only the
+            //  expiry path can end this one.)
+            mark.Destroy();
+            IntVec3 start = new IntVec3(Pad.minX + 48, 0, Pad.minZ + 48);
+            Thing second = MissileProjectileMaker.SpawnIncoming(ThingDef.Named("DMSE_Incoming_Shahed"), start, Home);
+            Projectile_MissileIncoming inc2 = (Projectile_MissileIncoming)second;
+            inc2.config = cfg; inc2.attacker = Player; inc2.bvrHandled = true;
+            second.DeSpawn();
+            BVRWave timed = comp.RegisterLoiter(second, start, Enemy, 10, 1000);
+            t.Require(timed != null && timed.targets.Count == 1, "a second drone waits overhead");
+            var waitExpire = new WaitUntil(() => !timed.loitering, 200);
+            yield return waitExpire;
+            t.Check(!waitExpire.TimedOut, "the loiter ends when its time runs out");
+            t.Check(timed.targets[0].position.InBounds(Home) && timed.targets[0].position.DistanceTo(designated) > 3f,
+                $"it falls back to an in-bounds inertial point, not the designation ({timed.targets[0].position})");
+            t.Check(timed.tickToImpact - Find.TickManager.TicksGame <= BVRTuning.LoiterDiveTicks,
+                "and starts the same short dive");
+            foreach (BVRTarget target in timed.targets) { target.Discard(); }
+            comp.Waves.Remove(timed);
+        }
+
+        // ------------------------------------------------------------------
         //  Save/load (must run last: it replaces the game)
         // ------------------------------------------------------------------
 
@@ -283,6 +388,7 @@ namespace DMSE.BVRAcceptance
                 new AcceptanceTest("S1", "Seeker target selection", Tests_Seekers.SeekerTargetSelection),
                 new AcceptanceTest("S2", "Laser designator mark lifecycle", Tests_Seekers.LaserDesignatorMarkLifecycle),
                 new AcceptanceTest("S3", "Seekers on a map generated at arrival", Tests_Seekers.SeekersOnFreshMap),
+                new AcceptanceTest("S4", "Loiter flight control: wait, re-seek, dive, fall back", Tests_Seekers.LoiterFlightControl),
                 new AcceptanceTest("W1", "World detection, ETA, landing without CIWS", Tests_World.DetectionEtaAndLanding),
                 new AcceptanceTest("W2", "World interception hit", Tests_World.WorldInterceptHit),
                 new AcceptanceTest("W3", "World interception miss and re-lock", Tests_World.WorldInterceptMissThenRelock),
@@ -316,7 +422,18 @@ namespace DMSE.BVRAcceptance
                 new AcceptanceTest("K13", "Firing solutions are recomputed after a large target move", Tests_Strike.RecomputeOnTargetMove),
                 new AcceptanceTest("K14", "Decoy payload and threat assessment", Tests_Strike.DecoyThreatAssessment),
                 new AcceptanceTest("K15", "NPC missile base salvo", Tests_Strike.NpcSalvo),
+                new AcceptanceTest("N1", "Industrial field launch site: difficulty layout, garrison, radar-gated supply drops", Tests_FieldLaunchSite.LayoutCrewAndSupply),
+                new AcceptanceTest("N2", "Field launch site incident: spawns in range, letter, one at a time", Tests_FieldLaunchSite.IncidentSpawnsSite),
+                new AcceptanceTest("N3", "Missile site gunners man launchers, radars and guns; leave to eat when hungry", Tests_FieldLaunchSite.GunnersManStationsAndEat),
+                new AcceptanceTest("N4", "Missile alerts: one letter, repeats within an hour become messages", Tests_FieldLaunchSite.AlertThrottle),
                 new AcceptanceTest("G1", "God-mode instant missile assembly", Tests_Assembly.GodModeInstantAssembly),
+                new AcceptanceTest("R1", "Empero long-range gun: defs, head, targeting rules, out of shells", Tests_Artillery.DefsAndTargeting),
+                new AcceptanceTest("R2", "Empero unguided strike: warmup aim, departure, world track, map kept, edge entry near centre", Tests_Artillery.UnguidedStrike),
+                new AcceptanceTest("R3", "Empero radar-guided strike: channel per gun, scatter 3 on a hostile building, release, full pool unguided", Tests_Artillery.RadarGuidedStrike),
+                new AcceptanceTest("R4", "Empero local reduced-charge fire: head turns, shared shells, held during world fire", Tests_Artillery.LocalReducedChargeFire),
+                new AcceptanceTest("AB1", "Assembly bench: facilities, info card, labor speed", Tests_AssemblyBench.BenchFacilitiesAndInfoCard),
+                new AcceptanceTest("AB2", "Assembly bench: colonist hauls and assembles an order", Tests_AssemblyBench.BenchProducesWithColonist),
+                new AcceptanceTest("AB3", "Assembly bench: cancel, send to storage, designs, window", Tests_AssemblyBench.BenchOutputCancelAndDesigns),
                 new AcceptanceTest("L1", "Save/load mid-engagement", Tests_Seekers.SaveLoadMidEngagement),
                 new AcceptanceTest("L2", "Save/load after a reroute", Tests_WorldEdge.SaveLoadAfterReroute),
             };

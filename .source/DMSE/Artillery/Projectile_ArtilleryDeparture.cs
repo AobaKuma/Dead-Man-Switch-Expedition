@@ -50,6 +50,12 @@ namespace DMSE
         /// <summary>齊射各發間隔（tick）。</summary>
         public int artillerySalvoIntervalTicks = 60;
 
+        /// <summary>世界航跡速度（tick／格）。</summary>
+        public float artilleryWorldTicksPerTile = 60f;
+
+        /// <summary>這一發是否有雷達導引（抵達時自動指向敵方目標）。</summary>
+        public bool artilleryGuided;
+
         /// <summary>世界地圖物件的 def（用於重建 WorldObject）。</summary>
         public WorldObjectDef artilleryWorldObjectDef;
 
@@ -76,6 +82,8 @@ namespace DMSE
             Scribe_Values.Look(ref artillerySalvoCount,     "artillerySalvoCount",     1);
             Scribe_Values.Look(ref artillerySalvoIntervalTicks, "artillerySalvoIntervalTicks", 60);
             Scribe_Defs.Look(ref artilleryWorldObjectDef,   "artilleryWorldObjectDef");
+            Scribe_Values.Look(ref artilleryGuided,         "artilleryGuided",         false);
+            Scribe_Values.Look(ref artilleryWorldTicksPerTile, "artilleryWorldTicksPerTile", 60f);
         }
 
         // =====================================================================
@@ -101,6 +109,8 @@ namespace DMSE
             wo.scatterRadius      = artilleryScatterRadius;
             wo.salvoCount         = artillerySalvoCount;
             wo.salvoIntervalTicks = artillerySalvoIntervalTicks;
+            wo.guided             = artilleryGuided;
+            wo.worldTicksPerTile  = artilleryWorldTicksPerTile;
 
             // 出發 tile = 本投射物所在地圖的世界 tile
             wo.Tile            = Map.Tile;

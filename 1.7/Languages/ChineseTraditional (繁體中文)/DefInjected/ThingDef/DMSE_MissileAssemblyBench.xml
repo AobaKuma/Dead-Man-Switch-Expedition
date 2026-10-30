@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <DMSE_MissileAssemblyBench.label>導彈組裝台</DMSE_MissileAssemblyBench.label>
+  <DMSE_MissileAssemblyBench.description>一座二乘四的龍門組裝台，以裸彈體加上你選的部件從零組裝導彈。成品可以留在台上等發射平台來裝填，也可以送往倉儲。\n\n附近的工具櫃與機械櫃能加快工作；在戶外或溫度不適的環境施工會變慢。</DMSE_MissileAssemblyBench.description>
+</LanguageData>

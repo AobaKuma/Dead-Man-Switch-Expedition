@@ -7,9 +7,14 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_Warhead_HE</defName>
     <label>high-explosive warhead</label>
+    <designWord>HE</designWord>
     <description>A large high-explosive warhead with a wide blast radius.</description>
     <category>Warhead</category>
-    <compatibleBodies><li>DMSE_MissileBody_Moskit</li><li>DMSE_MissileBody_Yj</li><li>DMSE_MissileBody_Tochka</li></compatibleBodies>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_Moskit</li>
+      <li>DMSE_MissileBody_Yj</li>
+      <li>DMSE_MissileBody_Tochka</li>
+    </compatibleBodies>
     <explosionRadiusOffset>2</explosionRadiusOffset>
     <damageAmountOffset>60</damageAmountOffset>
     <damageDefOverride>Bomb</damageDefOverride>
@@ -22,9 +27,14 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_Warhead_AP</defName>
     <label>armor-piercing warhead</label>
+    <designWord>AP</designWord>
     <description>A focused penetrating warhead. Its blast radius is smaller, but it does far more damage.</description>
     <category>Warhead</category>
-    <compatibleBodies><li>DMSE_MissileBody_Moskit</li><li>DMSE_MissileBody_Yj</li><li>DMSE_MissileBody_Tochka</li></compatibleBodies>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_Moskit</li>
+      <li>DMSE_MissileBody_Yj</li>
+      <li>DMSE_MissileBody_Tochka</li>
+    </compatibleBodies>
     <explosionRadiusOffset>-2</explosionRadiusOffset>
     <damageAmountOffset>140</damageAmountOffset>
     <damageDefOverride>Bomb</damageDefOverride>
@@ -37,9 +47,14 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_Warhead_EMP</defName>
     <label>EMP warhead</label>
+    <designWord>EMP</designWord>
     <description>An EMP warhead that disables mechanoids and electronics over a wide area without a lethal blast.</description>
     <category>Warhead</category>
-    <compatibleBodies><li>DMSE_MissileBody_Moskit</li><li>DMSE_MissileBody_Yj</li><li>DMSE_MissileBody_Tochka</li></compatibleBodies>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_Moskit</li>
+      <li>DMSE_MissileBody_Yj</li>
+      <li>DMSE_MissileBody_Tochka</li>
+    </compatibleBodies>
     <explosionRadiusOffset>1</explosionRadiusOffset>
     <damageDefOverride>EMP</damageDefOverride>
     <costList>
@@ -52,9 +67,14 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_Guidance_Inertial</defName>
     <label>inertial guidance</label>
+    <omitFromDesignName>true</omitFromDesignName>
     <description>Inertial guidance with no target recognition and no terminal guidance. Impacts scatter around the center of the target map. It does not lock onto buildings or creatures.</description>
     <category>Guidance</category>
-    <compatibleBodies><li>DMSE_MissileBody_Moskit</li><li>DMSE_MissileBody_Yj</li><li>DMSE_MissileBody_Tochka</li></compatibleBodies>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_Moskit</li>
+      <li>DMSE_MissileBody_Yj</li>
+      <li>DMSE_MissileBody_Tochka</li>
+    </compatibleBodies>
     <guidanceType Class="DMSE.GuidanceType_Inertial" />
     <scatterOffset>0</scatterOffset>
   </DMSE.MissilePartDef>
@@ -62,9 +82,22 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_Guidance_ActiveRadar</defName>
     <label>active radar seeker</label>
+    <designWord>ARH</designWord>
     <description>A fire-and-forget active radar seeker. It targets the largest enemy building, or the largest enemy creature if there are no buildings, and falls back to inertial guidance if it finds nothing. Provides terminal guidance.</description>
     <category>Guidance</category>
-    <compatibleBodies><li>DMSE_MissileBody_AdvancedBallistic</li><li>DMSE_MissileBody_Light</li><li>DMSE_MissileBody_Moskit</li><li>DMSE_MissileBody_LegacyBallistic</li><li>DMSE_MissileBody_AdvancedLight</li><li>DMSE_MissileBody_AdvancedCruise</li><li>DMSE_MissileBody_Stinger</li><li>DMSE_MissileBody_Maverick</li><li>DMSE_MissileBody_Sparrow</li><li>DMSE_MissileBody_Yj</li><li>DMSE_MissileBody_Tochka</li></compatibleBodies>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_AdvancedBallistic</li>
+      <li>DMSE_MissileBody_Light</li>
+      <li>DMSE_MissileBody_Moskit</li>
+      <li>DMSE_MissileBody_LegacyBallistic</li>
+      <li>DMSE_MissileBody_AdvancedLight</li>
+      <li>DMSE_MissileBody_AdvancedCruise</li>
+      <li>DMSE_MissileBody_Stinger</li>
+      <li>DMSE_MissileBody_Maverick</li>
+      <li>DMSE_MissileBody_Sparrow</li>
+      <li>DMSE_MissileBody_Yj</li>
+      <li>DMSE_MissileBody_Tochka</li>
+    </compatibleBodies>
     <guidanceType Class="DMSE.GuidanceType_ActiveRadar" />
     <scatterOffset>-1.5</scatterOffset>
     <researchPrerequisites>
@@ -79,9 +112,14 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_Guidance_Precision</defName>
     <label>TV guidance</label>
+    <designWord>TV</designWord>
     <description>An operator-guided TV seeker with a datalink to the launch site. When the missile reaches the target map, the game pauses and you choose the impact point. Greatly tightens dispersion. Enemy TV missiles have no operator and use inertial guidance instead.</description>
     <category>Guidance</category>
-    <compatibleBodies><li>DMSE_MissileBody_Moskit</li><li>DMSE_MissileBody_Yj</li><li>DMSE_MissileBody_Tochka</li></compatibleBodies>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_Moskit</li>
+      <li>DMSE_MissileBody_Yj</li>
+      <li>DMSE_MissileBody_Tochka</li>
+    </compatibleBodies>
     <!-- 電視制導：玩家發射時抵達後手動選點；具導引能力（可跨圖層、可追蹤移動目標） -->
     <guidanceType Class="DMSE.GuidanceType_TV" />
     <scatterOffset>-2.5</scatterOffset>
@@ -97,9 +135,14 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_Guidance_EMSignal</defName>
     <label>electromagnetic-signal seeker</label>
+    <designWord>EM</designWord>
     <description>A passive seeker that homes on electrical activity. It targets the powered enemy building drawing the most electricity, and falls back to inertial guidance if nothing is powered.</description>
     <category>Guidance</category>
-    <compatibleBodies><li>DMSE_MissileBody_Moskit</li><li>DMSE_MissileBody_Yj</li><li>DMSE_MissileBody_Tochka</li></compatibleBodies>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_Moskit</li>
+      <li>DMSE_MissileBody_Yj</li>
+      <li>DMSE_MissileBody_Tochka</li>
+    </compatibleBodies>
     <guidanceType Class="DMSE.GuidanceType_ElectromagneticSignal" />
     <scatterOffset>-1.5</scatterOffset>
     <researchPrerequisites>
@@ -113,9 +156,14 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_Guidance_AntiShip</defName>
     <label>anti-ship radar seeker</label>
+    <designWord>Anti-ship</designWord>
     <description>An active radar seeker built for moving targets, such as ships and other mobile bases on the world map. It updates its aim more often than a normal seeker, but the missile still misses if the target moves out of its remaining range.</description>
     <category>Guidance</category>
-    <compatibleBodies><li>DMSE_MissileBody_Moskit</li><li>DMSE_MissileBody_Yj</li><li>DMSE_MissileBody_Tochka</li></compatibleBodies>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_Moskit</li>
+      <li>DMSE_MissileBody_Yj</li>
+      <li>DMSE_MissileBody_Tochka</li>
+    </compatibleBodies>
     <guidanceType Class="DMSE.GuidanceType_AntiShip" />
     <scatterOffset>-2</scatterOffset>
     <researchPrerequisites>
@@ -130,9 +178,14 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_Guidance_Laser</defName>
     <label>laser seeker</label>
+    <designWord>Laser</designWord>
     <description>A semi-active laser seeker. It homes on the most recent point your colony marked on the target map with a laser target designator, and falls back to inertial guidance if there is none.</description>
     <category>Guidance</category>
-    <compatibleBodies><li>DMSE_MissileBody_Moskit</li><li>DMSE_MissileBody_Yj</li><li>DMSE_MissileBody_Tochka</li></compatibleBodies>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_Moskit</li>
+      <li>DMSE_MissileBody_Yj</li>
+      <li>DMSE_MissileBody_Tochka</li>
+    </compatibleBodies>
     <guidanceType Class="DMSE.GuidanceType_Laser" />
     <scatterOffset>-2.5</scatterOffset>
     <researchPrerequisites>
@@ -148,17 +201,27 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_Propulsion_Standard</defName>
     <label>standard motor</label>
+    <omitFromDesignName>true</omitFromDesignName>
     <description>A standard solid-fuel rocket motor.</description>
     <category>Propulsion</category>
-    <compatibleBodies><li>DMSE_MissileBody_Moskit</li><li>DMSE_MissileBody_Yj</li><li>DMSE_MissileBody_Tochka</li></compatibleBodies>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_Moskit</li>
+      <li>DMSE_MissileBody_Yj</li>
+      <li>DMSE_MissileBody_Tochka</li>
+    </compatibleBodies>
   </DMSE.MissilePartDef>
 
   <DMSE.MissilePartDef>
     <defName>DMSE_Propulsion_Booster</defName>
     <label>boosted motor</label>
+    <designWord>Boost</designWord>
     <description>A more powerful motor that reaches the target faster and flies farther.</description>
     <category>Propulsion</category>
-    <compatibleBodies><li>DMSE_MissileBody_Moskit</li><li>DMSE_MissileBody_Yj</li><li>DMSE_MissileBody_Tochka</li></compatibleBodies>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_Moskit</li>
+      <li>DMSE_MissileBody_Yj</li>
+      <li>DMSE_MissileBody_Tochka</li>
+    </compatibleBodies>
     <worldSpeedFactorOffset>0.6</worldSpeedFactorOffset>
     <specificImpulseOffset>2</specificImpulseOffset>
     <costList>
@@ -171,9 +234,14 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_Payload_Cluster</defName>
     <label>cluster submunitions</label>
+    <designWord>Cluster</designWord>
     <description>Releases submunitions that cause a second blast across the impact area.</description>
     <category>Payload</category>
-    <compatibleBodies><li>DMSE_MissileBody_Moskit</li><li>DMSE_MissileBody_Yj</li><li>DMSE_MissileBody_Tochka</li></compatibleBodies>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_Moskit</li>
+      <li>DMSE_MissileBody_Yj</li>
+      <li>DMSE_MissileBody_Tochka</li>
+    </compatibleBodies>
     <payloadExplosionRadius>4</payloadExplosionRadius>
     <payloadDamageDef>Bomb</payloadDamageDef>
     <payloadDamageAmount>40</payloadDamageAmount>
@@ -186,9 +254,15 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_Payload_None</defName>
     <label>no payload</label>
+    <omitFromDesignName>true</omitFromDesignName>
     <description>No secondary charge. The warhead does all the work, keeping the missile light and its range long.</description>
     <category>Payload</category>
-    <compatibleBodies><li>DMSE_MissileBody_Moskit</li><li>DMSE_MissileBody_Yj</li><li>DMSE_MissileBody_Tochka</li></compatibleBodies>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_Moskit</li>
+      <li>DMSE_MissileBody_Yj</li>
+      <li>DMSE_MissileBody_Tochka</li>
+      <li>DMSE_MissileBody_Shahed</li>
+    </compatibleBodies>
     <payloadEffect Class="DMSE.PayloadEffect_None" />
   </DMSE.MissilePartDef>
 
@@ -197,9 +271,14 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_Payload_BunkerBuster</defName>
     <label>bunker buster payload</label>
+    <designWord>Bunker</designWord>
     <description>A hardened penetrator charge with a delayed fuze. It bores through thick rock roofs and detonates inside, wrecking nearby structures.\n\nWithout this or a penetrator warhead, a missile that hits a mountain detonates on the rock surface, and its seeker ignores targets under thick roofs.</description>
     <category>Payload</category>
-    <compatibleBodies><li>DMSE_MissileBody_Moskit</li><li>DMSE_MissileBody_Yj</li><li>DMSE_MissileBody_Tochka</li></compatibleBodies>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_Moskit</li>
+      <li>DMSE_MissileBody_Yj</li>
+      <li>DMSE_MissileBody_Tochka</li>
+    </compatibleBodies>
     <payloadEffect Class="DMSE.PayloadEffect_BunkerBuster">
       <damageAmount>150</damageAmount>
       <structureDamage>300</structureDamage>
@@ -213,9 +292,14 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_Payload_EMP</defName>
     <label>EMP submunitions</label>
+    <designWord>Pulse</designWord>
     <description>A secondary EMP burst that stuns and disables electronics around the impact.</description>
     <category>Payload</category>
-    <compatibleBodies><li>DMSE_MissileBody_Moskit</li><li>DMSE_MissileBody_Yj</li><li>DMSE_MissileBody_Tochka</li></compatibleBodies>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_Moskit</li>
+      <li>DMSE_MissileBody_Yj</li>
+      <li>DMSE_MissileBody_Tochka</li>
+    </compatibleBodies>
     <payloadExplosionRadius>5</payloadExplosionRadius>
     <payloadDamageDef>EMP</payloadDamageDef>
     <costList>

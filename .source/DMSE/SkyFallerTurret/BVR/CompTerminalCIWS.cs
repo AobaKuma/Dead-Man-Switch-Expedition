@@ -140,12 +140,16 @@ namespace DMSE
             Refuelable?.ConsumeFuel(Props.fuelPerShot);
 
             // 虛擬迫近進度：剛進入末端窗口=0（入場邊緣），即將落地=1（沿航線靠近落點）。
+            // 盤旋中的導彈就停在目標上空，迫近進度視為已到位。
             int timeLeft = wave.tickToImpact - now;
-            float approach = Props.terminalWindowTicks > 0
-                ? Mathf.Clamp01(1f - (float)timeLeft / Props.terminalWindowTicks)
-                : 0f;
+            bool loitering = wave.loitering;
+            float approach = loitering
+                ? 1f
+                : (Props.terminalWindowTicks > 0
+                    ? Mathf.Clamp01(1f - (float)timeLeft / Props.terminalWindowTicks)
+                    : 0f);
 
-            FireVisual(target, approach);
+            FireVisual(target, approach, loitering);
             burstShotsLeft--;
             nextShotTick = now + Mathf.Max(1, Props.ticksBetweenShots);
 
@@ -196,17 +200,20 @@ namespace DMSE
         /// BVR 目標在攔截窗口內被收進容器，position 是落點，不能作為目前空中位置。
         /// 以保留的入場方位重建落點到地圖邊緣的航線，並沿航線迫近、垂直航線掃射。
         /// </summary>
-        public IntVec3 CalculateAimCell(BVRTarget target, IntVec3 origin, IntVec3 mapSize, float approach, int shotIndex)
+        /// <param name="loitering">盤旋中的導彈滯留在落點上空：不做迫近與提前量，直接對著落點掃射。</param>
+        public IntVec3 CalculateAimCell(BVRTarget target, IntVec3 origin, IntVec3 mapSize, float approach, int shotIndex, bool loitering = false)
         {
             Vector3 landing = target.position.ToVector3Shifted();
             float heading = InterceptGeometry.IncomingHeading(target.Payload, landing, origin.ToVector3Shifted(), out _);
 
             Vector3 direction = MissileMapEntryUtility.HeadingVector(heading);
             Vector3 edge = MissileMapEntryUtility.EdgePoint(mapSize, landing, heading);
-            float fraction = Mathf.Clamp01(Mathf.Lerp(Props.aimHeightFar, Props.aimHeightNear, Mathf.Clamp01(approach)));
+            float fraction = loitering
+                ? 0f
+                : Mathf.Clamp01(Mathf.Lerp(Props.aimHeightFar, Props.aimHeightNear, Mathf.Clamp01(approach)));
             Vector3 aim = landing + (edge - landing) * fraction;
             // 提前量沿導彈飛向落點的方向；掃射沿航線的橫向，不固定在世界 X 軸。
-            float lead = Mathf.Min(Mathf.Max(0, Props.aimLeadCells), (aim - landing).magnitude);
+            float lead = loitering ? 0f : Mathf.Min(Mathf.Max(0, Props.aimLeadCells), (aim - landing).magnitude);
             aim -= direction * lead;
             int total = Mathf.Max(1, Props.shotsPerBurst);
             float sweepT = total > 1 ? (float)Mathf.Clamp(shotIndex, 0, total - 1) / (total - 1) : 0.5f;
@@ -217,14 +224,15 @@ namespace DMSE
         }
 
         /// <summary>朝來襲航線發射曳光攔截彈，砲塔與曳光彈使用同一個掃射瞄準點。</summary>
-        /// <param name="approach">虛擬迫近進度（0=入場邊緣，1=航線中段）。</param>
-        private void FireVisual(BVRTarget target, float approach)
+        /// <param name="approach">虛擬迫近進度（0=入場邊緣，1=航線中段／已到位）。</param>
+        /// <param name="loitering">目標正在盤旋：瞄準點固定在盤旋格上空。</param>
+        private void FireVisual(BVRTarget target, float approach, bool loitering = false)
         {
             Map map = parent.Map;
             if (map == null) { return; }
 
             IntVec3 origin = parent.Position;
-            IntVec3 skyCell = CalculateAimCell(target, origin, map.Size, approach, Props.shotsPerBurst - burstShotsLeft);
+            IntVec3 skyCell = CalculateAimCell(target, origin, map.Size, approach, Props.shotsPerBurst - burstShotsLeft, loitering);
             LocalTargetInfo skyTarget = new LocalTargetInfo(skyCell);
             lastAim = skyCell; // 供連射期間每 tick 持續朝向。
             parent.GetComp<CompTurretFacingRenderer>()?.ForceFaceTarget(skyCell.ToVector3Shifted());

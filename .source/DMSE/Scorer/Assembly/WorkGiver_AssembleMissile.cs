@@ -7,7 +7,7 @@ using Verse.AI;
 namespace DMSE
 {
     /// <summary>
-    /// 掃描需要裝配的導彈：尚缺資源時發配「搬運資源」工作，資源齊全時發配「裝配」工作。
+    /// 掃描需要裝配的導彈與有訂單的組裝台：尚缺資源時發配「搬運資源」工作，資源齊全時發配「裝配」工作。
     /// </summary>
     public class WorkGiver_AssembleMissile : WorkGiver_Scanner
     {
@@ -30,6 +30,12 @@ namespace DMSE
             // 被打擊任務保留的導彈不裝配（GetAssemblyComp 同樣略過），待裝配的變更擱置到保留解除。
             foreach (Building b in pawn.Map.listerBuildings.AllBuildingsColonistOfClass<Building>())
             {
+                // 有訂單的組裝台：以台本身為工作目標（GetAssemblyTarget 先看組裝台）。
+                if (b.TryGetComp<CompMissileAssemblyBench>()?.WantsWork == true)
+                {
+                    yield return b;
+                    continue;
+                }
                 IMissileRack rack = MissileRackUtil.Of(b);
                 if (rack == null) { continue; }
                 IReadOnlyList<Thing> held = rack.HeldThings;
@@ -48,14 +54,22 @@ namespace DMSE
 
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
-            CompMissileConfig comp = MissileAssemblyUtility.GetAssemblyComp(t);
-            // GetAssemblyComp 對架內已過濾 NeedsAssembly + assemblyConfirmed；
-            // 對地面物品則直接回傳，需在此補充檢查。
-            if (comp == null || !comp.NeedsAssembly || !comp.assemblyConfirmed) { return false; }
+            IMissileAssemblyTarget comp = MissileAssemblyUtility.GetAssemblyTarget(t);
+            // 架內與組裝台已在 GetAssemblyTarget 過濾；地面物品直接回傳，需在此補充檢查。
+            if (comp == null || !comp.WantsWork) { return false; }
             if (t.IsForbidden(pawn) || !pawn.CanReserve(t, 1, -1, null, forced)) { return false; }
 
             Dictionary<ThingDef, int> still = comp.StillNeeded();
-            if (still.Count == 0) { return true; }
+            if (still.Count == 0)
+            {
+                // 料已齊但出廠暫存已滿：不派施工，等成品被搬走。
+                if (!comp.CanFinishNow)
+                {
+                    JobFailReason.Is("DMSE.Bench.OutputFull".Translate());
+                    return false;
+                }
+                return true;
+            }
 
             foreach (KeyValuePair<ThingDef, int> kv in still)
             {
@@ -67,8 +81,8 @@ namespace DMSE
 
         public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
-            CompMissileConfig comp = MissileAssemblyUtility.GetAssemblyComp(t);
-            if (comp == null || !comp.NeedsAssembly || !comp.assemblyConfirmed) { return null; }
+            IMissileAssemblyTarget comp = MissileAssemblyUtility.GetAssemblyTarget(t);
+            if (comp == null || !comp.WantsWork) { return null; }
 
             Dictionary<ThingDef, int> still = comp.StillNeeded();
             if (still.Count > 0)
@@ -86,7 +100,7 @@ namespace DMSE
                 return null;
             }
 
-            return JobMaker.MakeJob(DMSE_MissileJobDefOf.DMSE_AssembleMissile, t);
+            return comp.CanFinishNow ? JobMaker.MakeJob(DMSE_MissileJobDefOf.DMSE_AssembleMissile, t) : null;
         }
     }
 }

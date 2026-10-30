@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- 導彈組裝台與裝配方案（docs/導彈組裝台與裝配方案_實作計畫.md） -->
+  <DMSE.Missile.DesignNameLabel>{0}「{1}」</DMSE.Missile.DesignNameLabel>
+  <DMSE.Bench.Open>裝配設定</DMSE.Bench.Open>
+  <DMSE.Bench.OpenDesc>選擇彈體與部件、命名設計並下單。小人會把材料搬來，在這裡組裝導彈。</DMSE.Bench.OpenDesc>
+  <DMSE.Bench.CancelOrder>取消訂單</DMSE.Bench.CancelOrder>
+  <DMSE.Bench.CancelOrderDesc>取消目前的訂單。已送達的材料會全數退回台旁。</DMSE.Bench.CancelOrderDesc>
+  <DMSE.Bench.CancelOrderConfirm>確定取消這張訂單？已送達的材料會全數退回台旁。</DMSE.Bench.CancelOrderConfirm>
+  <DMSE.Bench.OrderDone>導彈訂單完成：{0}。</DMSE.Bench.OrderDone>
+  <DMSE.Bench.OutputFull>出廠暫存已滿：請先搬走台上的成品。</DMSE.Bench.OutputFull>
+  <DMSE.Bench.InspectOrder>訂單：{0}（剩 {1} 枚）</DMSE.Bench.InspectOrder>
+  <DMSE.Bench.InspectProgress>施工進度：{0}</DMSE.Bench.InspectProgress>
+  <DMSE.Bench.NotProducible>這種彈體無法在組裝台生產。</DMSE.Bench.NotProducible>
+  <DMSE.Bench.NeedsResearch>需要研究：{0}</DMSE.Bench.NeedsResearch>
+  <DMSE.Bench.EmptyHint>從左側選擇彈體開始設計。</DMSE.Bench.EmptyHint>
+  <DMSE.Bench.LoadDesign>載入方案</DMSE.Bench.LoadDesign>
+  <DMSE.Bench.SaveDesign>保存方案</DMSE.Bench.SaveDesign>
+  <DMSE.Bench.LockedWhileOrdered>訂單進行中，取消訂單後才能修改。</DMSE.Bench.LockedWhileOrdered>
+  <DMSE.Bench.IfEquipped>換上後：</DMSE.Bench.IfEquipped>
+  <DMSE.Bench.NameCandidates>名稱候選</DMSE.Bench.NameCandidates>
+  <DMSE.Bench.Group.Strike>打擊</DMSE.Bench.Group.Strike>
+  <DMSE.Bench.Group.Guidance>導引</DMSE.Bench.Group.Guidance>
+  <DMSE.Bench.Group.Survival>生存</DMSE.Bench.Group.Survival>
+  <DMSE.Bench.Stat.Radius>爆炸半徑</DMSE.Bench.Stat.Radius>
+  <DMSE.Bench.Stat.Guidance>導引方式</DMSE.Bench.Stat.Guidance>
+  <DMSE.Bench.Stat.Scatter>散布</DMSE.Bench.Stat.Scatter>
+  <DMSE.Bench.Stat.DamageType>傷害類型</DMSE.Bench.Stat.DamageType>
+  <DMSE.Bench.Stat.ThickRoof>穿透厚岩頂</DMSE.Bench.Stat.ThickRoof>
+  <DMSE.Bench.Stat.Speed>世界航速</DMSE.Bench.Stat.Speed>
+  <DMSE.Bench.Stat.TerminalUpdates>終端更新次數</DMSE.Bench.Stat.TerminalUpdates>
+  <DMSE.Bench.Stat.Channels>火控通道</DMSE.Bench.Stat.Channels>
+  <DMSE.Bench.Stat.Loiter>盤旋時間</DMSE.Bench.Stat.Loiter>
+  <DMSE.Bench.Stat.Signature>雷達截面</DMSE.Bench.Stat.Signature>
+  <DMSE.Bench.Stat.Chaff>干擾次數</DMSE.Bench.Stat.Chaff>
+  <DMSE.Bench.Stat.Jam>干擾強度</DMSE.Bench.Stat.Jam>
+  <DMSE.Bench.NoMaterials>不需要材料</DMSE.Bench.NoMaterials>
+  <DMSE.Bench.Short>缺 {0}</DMSE.Bench.Short>
+  <DMSE.Bench.Output.KeepOnBench>留在台上</DMSE.Bench.Output.KeepOnBench>
+  <DMSE.Bench.Output.KeepOnBenchDesc>成品留在台上，接受它的發射平台會直接從台上裝填。</DMSE.Bench.Output.KeepOnBenchDesc>
+  <DMSE.Bench.Output.SendToStorageDesc>成品出廠後會被取下並搬到最合適的倉儲。</DMSE.Bench.Output.SendToStorageDesc>
+  <DMSE.Bench.Progress>第 {0} / {1} 枚 · {2}</DMSE.Bench.Progress>
+  <DMSE.Bench.State.Collecting>正在蒐集材料</DMSE.Bench.State.Collecting>
+  <DMSE.Bench.State.Ready>待施工</DMSE.Bench.State.Ready>
+  <DMSE.Bench.State.Working>施工中</DMSE.Bench.State.Working>
+  <DMSE.Bench.State.OutputBlocked>等待台上騰出空位</DMSE.Bench.State.OutputBlocked>
+  <DMSE.Bench.PlaceOrder>下單</DMSE.Bench.PlaceOrder>
+  <DMSE.Bench.InstantComplete>立即完成</DMSE.Bench.InstantComplete>
+  <DMSE.Bench.Block.NoBody>請選擇彈體。</DMSE.Bench.Block.NoBody>
+  <DMSE.Bench.Block.BadName>設計名稱含有不支援的字元。</DMSE.Bench.Block.BadName>
+  <DMSE.Bench.Warn.Short>{0} 目前不足（缺 {1}），小人會等到有料再做。</DMSE.Bench.Warn.Short>
+  <DMSE.Bench.Warn.NoLauncher>這張地圖上還沒有接受此導彈的發射平台。</DMSE.Bench.Warn.NoLauncher>
+  <DMSE.Bench.Summary>共 {0} 枚，約 {1} 小時工時</DMSE.Bench.Summary>
+  <DMSE.Bench.LockNameButtonDesc>鎖定或解鎖設計名稱。鎖定時，設計名稱不會因為更換部件而自動產生。</DMSE.Bench.LockNameButtonDesc>
+  <DMSE.Bench.LockNameOn>設計名稱鎖定。設計名稱不會因為更換部件而自動產生。</DMSE.Bench.LockNameOn>
+  <DMSE.Bench.LockNameOff>設計名稱解鎖。設計名稱會因為更換部件而自動產生。</DMSE.Bench.LockNameOff>
+  <DMSE.Bench.MaterialTip>每枚：{0}\n本次訂單：{1}\n倉庫現有：{2}</DMSE.Bench.MaterialTip>
+  <DMSE.Bench.WorkTimeTip>以目前最快可用的殖民者估算約 {0} 小時（工作速度 {1}）。</DMSE.Bench.WorkTimeTip>
+  <DMSE.Bench.Size.Loitering>巡飛彈</DMSE.Bench.Size.Loitering>
+  <DMSE.Bench.Size.Light>輕型導彈</DMSE.Bench.Size.Light>
+  <DMSE.Bench.Size.Medium>中型導彈</DMSE.Bench.Size.Medium>
+  <DMSE.Bench.Size.Ballistic>彈道導彈</DMSE.Bench.Size.Ballistic>
+  <DMSE.Blueprint.Title>裝配方案</DMSE.Blueprint.Title>
+  <DMSE.Blueprint.Empty>還沒有方案。可在組裝台按「保存方案」。</DMSE.Blueprint.Empty>
+  <DMSE.Blueprint.OpenFolder>打開資料夾</DMSE.Blueprint.OpenFolder>
+  <DMSE.Blueprint.OverwriteConfirm>已有名為「{0}」的方案，要覆蓋嗎？</DMSE.Blueprint.OverwriteConfirm>
+  <DMSE.Blueprint.Saved>方案已儲存：{0}</DMSE.Blueprint.Saved>
+  <DMSE.Blueprint.SaveFailed>無法儲存方案：{0}</DMSE.Blueprint.SaveFailed>
+  <DMSE.Blueprint.MissingDef>缺少定義：{0}</DMSE.Blueprint.MissingDef>
+  <DMSE.Blueprint.Incompatible>部件不適用此彈體：{0}</DMSE.Blueprint.Incompatible>
+</LanguageData>

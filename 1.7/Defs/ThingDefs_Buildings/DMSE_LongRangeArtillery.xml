@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ==================== 皇帝長程砲（3x3，超視距火砲）====================
+       CompArtilleryStrike 的第一個實際使用者：選世界地圖目標後持續砲擊，
+       砲彈從地圖邊緣離場 → 世界航跡 → 從目標地圖邊緣進入落彈。
+       雷達導引：開火瞬間若同陣營有支援砲擊引導（supportsArtilleryGuidance）的火控雷達空出一條通道，
+       就佔用 fireControlHoldTicks；這一發散佈縮到 guidedScatterRadius，並在落彈時改瞄目標地圖上的
+       敵方砲塔 → 用電設備 → 人員（ArtilleryStrikeUtility.FindGuidedTarget）。沒有通道就以 scatterRadius 無導引射擊。
+       砲身（10x4，貼圖朝東）由 CompTurretFacingRenderer 繪製：原版 TurretTop 只能畫正方形。
+       彈藥：原版高爆迫擊砲彈（CompRefuelable，refuelableIsAmmo），每發 1 枚。
+       本地圖：CompBuildingTurretGun 持有 DMSE_Gun_Empero（減裝藥低初速曲射），自動攻擊本地圖敵人，
+       與世界砲擊共用同一份砲彈；世界持續射擊期間本地砲暫停（砲管只有一根）。 -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_Turret_Empero</defName>
+    <label>long-range cannon</label>
+    <description>The NK-30 "Empero" is a heavy long-range cannon with an extremely high muzzle velocity. It shells distant targets with precision, suppressing enemy fire and destroying installations. At close range it fires reduced charges at low velocity for plunging fire, still with very high accuracy. When shelling a target on the world map, it keeps firing until stopped, out of power, or out of shells. Each shot uses one high-explosive mortar shell.\n\nUnguided shells scatter widely at long range and only land near the middle of the target area. If a fire-control radar that supports artillery guidance has a free channel when the gun fires, the shell is radar-guided onto enemy turrets, powered buildings or people in the area, and lands much closer to them. Each guided shell holds one channel for a while.\n\nCannot strike targets in high orbit across layers.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <uiIconPath>Things/Turrets/DMSE_Weapon_Empero</uiIconPath>
+    <uiIconScale>0.9</uiIconScale>
+    <graphicData>
+      <texPath>Things/Building/FacilityBase</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(4,4)</drawSize>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+      <drawRotated>false</drawRotated>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <!-- CompTurretFacingRenderer 靠 PostDraw 逐幀繪製，必須 MapMeshAndRealTime。 -->
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <rotatable>true</rotatable>
+    <passability>PassThroughOnly</passability>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.3</staticSunShadowHeight>
+    <fillPercent>0.7</fillPercent>
+    <canOverlapZones>false</canOverlapZones>
+    <pathCost>50</pathCost>
+    <tickerType>Normal</tickerType>
+    <selectable>true</selectable>
+    <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
+    <statBases>
+      <MaxHitPoints>600</MaxHitPoints>
+      <WorkToBuild>20000</WorkToBuild>
+      <Mass>600</Mass>
+      <Flammability>0.2</Flammability>
+      <ShootingAccuracyTurret>0.97</ShootingAccuracyTurret>
+    </statBases>
+    <size>(3,3)</size>
+    <costList>
+      <Steel>450</Steel>
+      <Plasteel>60</Plasteel>
+      <ComponentIndustrial>10</ComponentIndustrial>
+    </costList>
+    <building>
+      <destroySound>BuildingDestroyed_Metal_Big</destroySound>
+    </building>
+    <researchPrerequisites>
+      <li>DMSE_FireControlNetwork</li>
+    </researchPrerequisites>
+    <designationCategory>DMS_Category</designationCategory>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+    <comps>
+      <li Class="CompProperties_Forbiddable" />
+      <li Class="CompProperties_Breakdownable" />
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>500</basePowerConsumption>
+      </li>
+      <!-- 砲彈存量：原版高爆迫擊砲彈，1 枚 = 1 發。 -->
+      <li Class="CompProperties_Refuelable">
+        <fuelLabel>Shells</fuelLabel>
+        <fuelGizmoLabel>Shells</fuelGizmoLabel>
+        <outOfFuelMessage>Cannot fire: no shells.</outOfFuelMessage>
+        <fuelFilter>
+          <thingDefs>
+            <li>Shell_HighExplosive</li>
+          </thingDefs>
+        </fuelFilter>
+        <fuelCapacity>12</fuelCapacity>
+        <initialFuelPercent>0</initialFuelPercent>
+        <showFuelGizmo>true</showFuelGizmo>
+        <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+        <initialAllowAutoRefuel>true</initialAllowAutoRefuel>
+        <autoRefuelPercent>0.5</autoRefuelPercent>
+        <drawOutOfFuelOverlay>false</drawOutOfFuelOverlay>
+      </li>
+      <li Class="DMSE.CompProperties_ArtilleryStrike">
+        <departureProjectileDef>DMSE_ArtilleryDeparture_Empero</departureProjectileDef>
+        <worldObjectDef>DMSE_WorldObject_ArtilleryStrike</worldObjectDef>
+        <projectileDef>DMSE_Bullet_Shell_Empero</projectileDef>
+        <cooldownTicks>1800</cooldownTicks>
+        <warmupTicks>300</warmupTicks>
+        <scatterRadius>14</scatterRadius>
+        <guidedScatterRadius>3</guidedScatterRadius>
+        <salvoCount>1</salvoCount>
+        <fireControlHoldTicks>900</fireControlHoldTicks>
+        <maxRangeTiles>20</maxRangeTiles>
+        <!-- 世界航跡每格 60 tick（導彈基準 150）：10 格約 10 秒。 -->
+        <worldTicksPerTile>60</worldTicksPerTile>
+        <refuelableIsAmmo>true</refuelableIsAmmo>
+      </li>
+      <!-- 本地圖減裝藥曲射：由 verb 的 consumeFuelPerShot 扣上面的砲彈存量；
+           砲塔頭轉到目標方位（aimToleranceDeg）並穩定 warmupTime 後才開火。轉速 0.6°/tick，半圈 300 ticks。 -->
+      <li Class="DMSE.CompProperties_BuildingTurretGun">
+        <turretDef>DMSE_Gun_Empero</turretDef>
+        <aimToleranceDeg>4</aimToleranceDeg>
+        <maxAimTicks>450</maxAimTicks>
+      </li>
+      <!-- 砲身：DMSE_Weapon_Empero 1280x512（10x4 格），砲口朝東 → artworkRotation -90。
+           沒在射擊時只做緩慢的閒置擺動；射擊中由 CompArtilleryStrike 每 tick 指向世界方位。 -->
+      <li Class="DMSE.CompProperties_TurretFacingRenderer">
+        <texPath>Things/Turrets/DMSE_Weapon_Empero</texPath>
+        <drawSize>(10,4)</drawSize>
+        <altitudeOffset>0.01</altitudeOffset>
+        <artworkRotation>-90</artworkRotation>
+        <rotationSpeedDegPerTick>0.6</rotationSpeedDegPerTick>
+        <postAimHoldTicks>600</postAimHoldTicks>
+        <idleTurnDegreesPerTick>0.12</idleTurnDegreesPerTick>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>DMSE.PlaceWorker_NoAdjacentSameLayer</li>
+    </placeWorkers>
+  </ThingDef>
+
+  <!-- 本地圖武器（減裝藥曲射）：飛越牆頂，散佈遠小於迫擊砲。CompBuildingTurretGun 讀 verb 的 defaultCooldownTime。 -->
+  <ThingDef ParentName="BaseWeaponTurret">
+    <defName>DMSE_Gun_Empero</defName>
+    <label>NK-30 cannon (reduced charge)</label>
+    <description>The main gun of the NK-30 Empero, firing reduced charges at low muzzle velocity for plunging fire on targets close by.</description>
+    <graphicData>
+      <texPath>Things/Turrets/DMSE_Weapon_Empero</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <AccuracyTouch>0.9</AccuracyTouch>
+      <AccuracyShort>0.9</AccuracyShort>
+      <AccuracyMedium>0.9</AccuracyMedium>
+      <AccuracyLong>0.85</AccuracyLong>
+      <RangedWeapon_Cooldown>8</RangedWeapon_Cooldown>
+    </statBases>
+    <verbs>
+      <li>
+        <verbClass>Verb_Shoot</verbClass>
+        <defaultProjectile>DMSE_Bullet_Shell_EmperoReduced</defaultProjectile>
+        <isMortar>true</isMortar>
+        <requireLineOfSight>false</requireLineOfSight>
+        <warmupTime>3</warmupTime>
+        <defaultCooldownTime>8</defaultCooldownTime>
+        <forcedMissRadius>1.9</forcedMissRadius>
+        <minRange>12.9</minRange>
+        <range>119.9</range>
+        <burstShotCount>1</burstShotCount>
+        <ai_AvoidFriendlyFireRadius>5.9</ai_AvoidFriendlyFireRadius>
+        <soundCast>Mortar_LaunchA</soundCast>
+        <muzzleFlashScale>20</muzzleFlashScale>
+        <consumeFuelPerShot>1</consumeFuelPerShot>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+      </li>
+    </verbs>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseBullet">
+    <defName>DMSE_Bullet_Shell_EmperoReduced</defName>
+    <label>reduced-charge shell</label>
+    <thingClass>Projectile_Explosive</thingClass>
+    <graphicData>
+      <texPath>Things/Projectile/ShellHighExplosive</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>TransparentPostLight</shaderType>
+    </graphicData>
+    <projectile>
+      <damageDef>Bomb</damageDef>
+      <damageAmountBase>55</damageAmountBase>
+      <speed>35</speed>
+      <explosionRadius>3.4</explosionRadius>
+      <flyOverhead>true</flyOverhead>
+      <soundHitThickRoof>Artillery_HitThickRoof</soundHitThickRoof>
+      <soundExplode>MortarBomb_Explode</soundExplode>
+      <soundImpactAnticipate>MortarRound_PreImpact</soundImpactAnticipate>
+      <soundAmbient>MortarRound_Ambient</soundAmbient>
+      <preExplosionSpawnSingleThingDef>Filth_BlastMark</preExplosionSpawnSingleThingDef>
+    </projectile>
+  </ThingDef>
+
+  <!-- 世界航跡：WorldObject_ArtilleryStrike 從發射地 Slerp 到目標 tile，抵達後把齊射排進目標地圖。 -->
+  <WorldObjectDef>
+    <defName>DMSE_WorldObject_ArtilleryStrike</defName>
+    <label>artillery shell</label>
+    <description>A long-range artillery shell in flight.</description>
+    <worldObjectClass>DMSE.WorldObject_ArtilleryStrike</worldObjectClass>
+    <texture>UI/DMSE/TravelingMissile</texture>
+    <rotateGraphicWhenTraveling>true</rotateGraphicWhenTraveling>
+    <useDynamicDrawer>true</useDynamicDrawer>
+    <canHaveFaction>true</canHaveFaction>
+    <expandingIcon>true</expandingIcon>
+    <expandingIconTexture>UI/DMSE/TravelingMissile_Expanding</expandingIconTexture>
+    <expandingIconPriority>100</expandingIconPriority>
+    <expandingIconDrawSize>0.6</expandingIconDrawSize>
+    <validLaunchTarget>false</validLaunchTarget>
+  </WorldObjectDef>
+
+  <!-- 離場投射物：從砲位沿弧線飛到地圖邊緣，抵達時交給世界航跡（不爆炸）。 -->
+  <ThingDef ParentName="BaseBullet">
+    <defName>DMSE_ArtilleryDeparture_Empero</defName>
+    <label>departing long-range shell</label>
+    <thingClass>DMSE.Projectile_ArtilleryDeparture</thingClass>
+    <graphicData>
+      <texPath>Things/Projectile/ShellHighExplosive</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>TransparentPostLight</shaderType>
+    </graphicData>
+    <projectile>
+      <damageDef>Bomb</damageDef>
+      <speed>60</speed>
+      <flyOverhead>true</flyOverhead>
+      <soundAmbient>MortarRound_Ambient</soundAmbient>
+    </projectile>
+  </ThingDef>
+
+  <!-- 落地砲彈：比迫擊砲彈更重。projectile.speed 也決定世界航跡速度（WorldObject_ArtilleryStrike）。 -->
+  <ThingDef ParentName="BaseBullet">
+    <defName>DMSE_Bullet_Shell_Empero</defName>
+    <label>long-range shell</label>
+    <thingClass>Projectile_Explosive</thingClass>
+    <graphicData>
+      <texPath>Things/Projectile/ShellHighExplosive</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>TransparentPostLight</shaderType>
+    </graphicData>
+    <projectile>
+      <damageDef>Bomb</damageDef>
+      <damageAmountBase>70</damageAmountBase>
+      <speed>60</speed>
+      <explosionRadius>3.9</explosionRadius>
+      <flyOverhead>true</flyOverhead>
+      <soundHitThickRoof>Artillery_HitThickRoof</soundHitThickRoof>
+      <soundExplode>MortarBomb_Explode</soundExplode>
+      <soundImpactAnticipate>MortarRound_PreImpact</soundImpactAnticipate>
+      <soundAmbient>MortarRound_Ambient</soundAmbient>
+      <preExplosionSpawnSingleThingDef>Filth_BlastMark</preExplosionSpawnSingleThingDef>
+    </projectile>
+  </ThingDef>
+
+</Defs>

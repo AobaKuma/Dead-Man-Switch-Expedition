@@ -52,8 +52,7 @@ namespace DMSE
         {
             base.LeaveMap();
             if (worldObject == null) { return; } // 軌跡比對測試只看升空動畫，不帶世界航跡。
-            Find.WorldObjects.Add(this.worldObject);
-            if (worldObject.Faction == Faction.OfPlayer) { CameraJumper.TryJump(this.worldObject); }
+            Find.WorldObjects.Add(this.worldObject); // 出圖不切鏡頭；只有電視制導抵達選點時才跳。
         }
         public Vector3 trueDrawPos = Vector3.zero;
         public float trueRotation = 0f;

@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!-- 通用樣板（沒有綁 Namer 的彈體）。 -->
+  <DMSE_NamerMissileDesign.rulePack.rulesStrings>
+    <li>r_name(p=3)->[body]·[warhead]</li>
+    <li>r_name(p=2)->[warhead][guidance][body]</li>
+    <li>r_name->[guidance][body]</li>
+    <li>r_name->[body]·[warhead][payload]</li>
+    <li>r_name->[guidance][propulsion][body]</li>
+  </DMSE_NamerMissileDesign.rulePack.rulesStrings>
+
+  <!-- Light -->
+  <DMSE_NamerPack_Light.rulePack.rulesStrings>
+    <li>r_name(p=3)->[designator]-[num]·[warhead][guidance]</li>
+    <li>r_name(p=2)->[designator]-[num]·[warhead][payload]</li>
+    <li>r_name(p=1)->[body]·[designator]-[num]</li>
+    <li>r_name(p=1)->[designator]-[num]</li>
+  </DMSE_NamerPack_Light.rulePack.rulesStrings>
+
+  <!-- AdvancedLight -->
+  <DMSE_NamerPack_AdvancedLight.rulePack.rulesStrings>
+    <li>r_name(p=3)->[designator]-[num]·[warhead][guidance]</li>
+    <li>r_name(p=2)->[designator]-[num]·[warhead][payload]</li>
+    <li>r_name(p=2)->[designator]-[num]·[guidance]</li>
+    <li>r_name(p=1)->[body]·[designator]-[num]</li>
+  </DMSE_NamerPack_AdvancedLight.rulePack.rulesStrings>
+
+  <!-- AdvancedCruise -->
+  <DMSE_NamerPack_AdvancedCruise.rulePack.rulesStrings>
+    <li>r_name(p=3)->[designator]-[num]·[guidance][warhead]</li>
+    <li>r_name(p=2)->[designator]-[num][suffix]·[guidance]</li>
+    <li>r_name(p=2)->[designator]-[num]·[warhead][propulsion]</li>
+    <li>r_name(p=1)->[body]·[designator]-[num]</li>
+  </DMSE_NamerPack_AdvancedCruise.rulePack.rulesStrings>
+
+  <!-- Stinger -->
+  <DMSE_NamerPack_Stinger.rulePack.rulesStrings>
+    <li>r_name(p=3)->[designator]-[num]·[guidance]</li>
+    <li>r_name(p=2)->[designator]-[num]·[warhead][guidance]</li>
+    <li>r_name(p=1)->[body]·[designator]-[num]</li>
+    <li>r_name(p=1)->[designator]-[num]</li>
+  </DMSE_NamerPack_Stinger.rulePack.rulesStrings>
+
+  <!-- Maverick -->
+  <DMSE_NamerPack_Maverick.rulePack.rulesStrings>
+    <li>r_name(p=3)->[designator]-[num]·[warhead][guidance]</li>
+    <li>r_name(p=2)->[designator]-[num]·[payload]</li>
+    <li>r_name(p=1)->[body]·[designator]-[num]</li>
+    <li>r_name(p=1)->[designator]-[num]</li>
+  </DMSE_NamerPack_Maverick.rulePack.rulesStrings>
+
+  <!-- Sparrow -->
+  <DMSE_NamerPack_Sparrow.rulePack.rulesStrings>
+    <li>r_name(p=3)->[designator]-[num][suffix]·[guidance]</li>
+    <li>r_name(p=2)->[designator]-[num][suffix]·[warhead][guidance]</li>
+    <li>r_name(p=2)->[designator]-[num]·[warhead][payload]</li>
+    <li>r_name(p=1)->[body]·[designator]-[num]</li>
+  </DMSE_NamerPack_Sparrow.rulePack.rulesStrings>
+
+  <!-- Moskit -->
+  <DMSE_NamerPack_Moskit.rulePack.rulesStrings>
+    <li>r_name(p=3)->[designator]-[num]·[warhead][guidance]</li>
+    <li>r_name(p=2)->[designator]-[num][suffix]·[guidance][propulsion]</li>
+    <li>r_name(p=1)->[designator]-[num]·[warhead][propulsion]</li>
+    <li>r_name(p=1)->[body]·[designator]-[num]</li>
+  </DMSE_NamerPack_Moskit.rulePack.rulesStrings>
+
+  <!-- Yj -->
+  <DMSE_NamerPack_Yj.rulePack.rulesStrings>
+    <li>r_name(p=3)->[designator]-[num]·[warhead][guidance]</li>
+    <li>r_name(p=2)->[designator]-[num]·[guidance][propulsion]</li>
+    <li>r_name(p=2)->[designator]-[num][suffix]·[warhead][payload]</li>
+    <li>r_name(p=1)->[body]·[designator]-[num]</li>
+  </DMSE_NamerPack_Yj.rulePack.rulesStrings>
+
+  <!-- Tochka -->
+  <DMSE_NamerPack_Tochka.rulePack.rulesStrings>
+    <li>r_name(p=3)->[designator]-[num][suffix]·[warhead]</li>
+    <li>r_name(p=2)->[designator]-[num]·[warhead][guidance]</li>
+    <li>r_name(p=1)->[designator]-[num]·[payload][propulsion]</li>
+    <li>r_name(p=1)->[body]·[designator]-[num]</li>
+  </DMSE_NamerPack_Tochka.rulePack.rulesStrings>
+
+  <!-- LegacyBallistic -->
+  <DMSE_NamerPack_LegacyBallistic.rulePack.rulesStrings>
+    <li>r_name(p=3)->[designator]-[num]·[warhead]</li>
+    <li>r_name(p=2)->[designator]-[num]·[warhead][payload]</li>
+    <li>r_name(p=1)->[body]·[designator]-[num]</li>
+    <li>r_name(p=1)->[designator]-[num]</li>
+  </DMSE_NamerPack_LegacyBallistic.rulePack.rulesStrings>
+
+  <!-- AdvancedBallistic -->
+  <DMSE_NamerPack_AdvancedBallistic.rulePack.rulesStrings>
+    <li>r_name(p=3)->[designator]-[num]·[warhead][payload]</li>
+    <li>r_name(p=2)->[designator]-[num]·[guidance][warhead]</li>
+    <li>r_name(p=1)->[designator]-[num]·[payload]</li>
+    <li>r_name(p=1)->[body]·[designator]-[num]</li>
+  </DMSE_NamerPack_AdvancedBallistic.rulePack.rulesStrings>
+
+  <!-- Shahed -->
+  <DMSE_NamerPack_Shahed.rulePack.rulesStrings>
+    <li>r_name(p=3)->[designator]-[num]·[guidance]</li>
+    <li>r_name(p=2)->[designator]-[num]·[payload]</li>
+    <li>r_name(p=2)->[body]·[designator]-[num]</li>
+    <li>r_name(p=1)->[designator]-[num]</li>
+  </DMSE_NamerPack_Shahed.rulePack.rulesStrings>
+
+</LanguageData>

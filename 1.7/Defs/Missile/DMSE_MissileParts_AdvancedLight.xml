@@ -21,6 +21,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvLight_Warhead_HEAT</defName>
     <label>tandem shaped-charge warhead</label>
+    <designWord>HEAT</designWord>
     <description>A tandem shaped-charge warhead. A small first charge defeats reactive armor so the main charge can do its damage inside the target. Small blast, concentrated damage.</description>
     <category>Warhead</category>
     <compatibleBodies>
@@ -42,6 +43,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvLight_Warhead_BlastFrag</defName>
     <label>blast-fragmentation warhead</label>
+    <designWord>Frag</designWord>
     <description>A blast-fragmentation warhead with a heavy pre-fragmented casing. It gives up penetration for a wider lethal radius against infantry and light structures.</description>
     <category>Warhead</category>
     <compatibleBodies>
@@ -63,6 +65,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvLight_Warhead_Thermobaric</defName>
     <label>thermobaric warhead</label>
+    <designWord>Thermobaric</designWord>
     <description>A thermobaric warhead that burns instead of fragmenting. The blast is small, but its burns and fires are far worse inside a room or bunker than in the open.</description>
     <category>Warhead</category>
     <compatibleBodies>
@@ -89,6 +92,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvLight_Warhead_Kinetic</defName>
     <label>kinetic blade warhead</label>
+    <designWord>Blade</designWord>
     <description>An inert warhead with pop-out blades and almost no explosive. It kills the creature it hits and leaves the surroundings mostly intact.</description>
     <category>Warhead</category>
     <compatibleBodies>
@@ -115,6 +119,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvLight_Guidance_Inertial</defName>
     <label>inertial guidance</label>
+    <omitFromDesignName>true</omitFromDesignName>
     <description>Cheap inertial guidance with no seeker and no terminal guidance. Cannot strike other map layers. Impacts scatter around the center of the target map. It does not lock onto buildings or creatures.</description>
     <category>Guidance</category>
     <compatibleBodies>
@@ -128,6 +133,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvLight_Guidance_Imaging</defName>
     <label>automatic imaging seeker</label>
+    <designWord>Imaging</designWord>
     <description>An automatic imaging seeker that targets enemy creatures in the open, choosing the most dangerous first, then the largest. It ignores anyone under a roof, and falls back to inertial guidance if it finds no target.</description>
     <category>Guidance</category>
     <compatibleBodies>
@@ -148,6 +154,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvLight_Guidance_IIR</defName>
     <label>imaging infra-red seeker</label>
+    <designWord>IIR</designWord>
     <description>An imaging infrared seeker. It targets the hottest enclosed room if it is at least 15°C warmer than outside, otherwise the largest creature on the target map. Fire-and-forget: no operator, line of sight or laser needed.</description>
     <category>Guidance</category>
     <compatibleBodies>
@@ -169,6 +176,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvLight_Guidance_Laser</defName>
     <label>semi-active laser seeker</label>
+    <designWord>Laser</designWord>
     <description>A semi-active laser seeker that homes on the most recent point your colony marked on the target map with a laser target designator. The most accurate seeker for this missile, but someone has to mark the target.</description>
     <category>Guidance</category>
     <compatibleBodies>
@@ -189,6 +197,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvLight_Guidance_MMW</defName>
     <label>millimetre-wave radar seeker</label>
+    <designWord>MMW</designWord>
     <description>A fire-and-forget millimeter-wave radar seeker. It targets the largest enemy building, or the largest enemy creature if there are no buildings. It needs no designator, no operator and no clear weather.</description>
     <category>Guidance</category>
     <compatibleBodies>
@@ -210,6 +219,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvLight_Payload_None</defName>
     <label>no payload</label>
+    <omitFromDesignName>true</omitFromDesignName>
     <description>No secondary charge. The warhead does all the work, keeping the missile light and its range long.</description>
     <category>Payload</category>
     <compatibleBodies>
@@ -221,6 +231,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvLight_Payload_HE</defName>
     <label>secondary high-explosive charge</label>
+    <designWord>Blast</designWord>
     <description>A small second charge that detonates after the warhead, widening the damage radius a little.</description>
     <category>Payload</category>
     <compatibleBodies>
@@ -242,6 +253,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvLight_Payload_FragSleeve</defName>
     <label>fragmentation sleeve</label>
+    <designWord>Sleeve</designWord>
     <description>A pre-fragmented sleeve wrapped around the warhead. It sprays dense fragments over the impact area, badly wounding exposed infantry, but its weight costs a quarter of the missile's range.</description>
     <category>Payload</category>
     <compatibleBodies>
@@ -263,6 +275,7 @@
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvLight_Payload_Chaff</defName>
     <label>chaff dispenser</label>
+    <designWord>Chaff</designWord>
     <description>A dispenser of chaff and radar-absorbing streamers. Each bundle can break one enemy fire-control lock, but the bundles run out and do nothing to hide the missile before it is locked.</description>
     <category>Payload</category>
     <compatibleBodies>

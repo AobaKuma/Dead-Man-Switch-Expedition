@@ -169,6 +169,31 @@ namespace DMSE
         public bool TracksMobileTargets => TargetingGuidance?.TracksMobileTargets ?? false;
 
         /// <summary>
+        /// 盤旋飛控的有效盤旋時間（ticks；0 = 沒有盤旋能力）。只認 Payload 槽的部件，
+        /// 而且只有巡飛彈（<see cref="MissileSizeClass.Loitering"/>）能使用：
+        /// 一般導彈裝了也不會盤旋。
+        /// </summary>
+        public int LoiterTicks
+        {
+            get
+            {
+                MissilePartDef part = PartFor(MissilePartCategory.Payload);
+                if (part == null || part.loiterTicks <= 0) { return 0; }
+                return body != null && body.sizeClass == MissileSizeClass.Loitering ? part.loiterTicks : 0;
+            }
+        }
+
+        /// <summary>盤旋期間重新執行導引頭的間隔（ticks）；沒有盤旋能力時為 0。</summary>
+        public int LoiterRetryTicks
+        {
+            get
+            {
+                MissilePartDef part = PartFor(MissilePartCategory.Payload);
+                return LoiterTicks > 0 && part != null ? Mathf.Max(1, part.loiterRetryTicks) : 0;
+            }
+        }
+
+        /// <summary>
         /// 決定落點的導引頭：導引槽部件的 <see cref="MissilePartDef.guidanceType"/>，沒有時用彈體內建的
         /// <see cref="MissileBodyDef.builtInGuidance"/>；都沒有為 null（慣性）。只影響選目標，不影響導引能力。
         /// </summary>

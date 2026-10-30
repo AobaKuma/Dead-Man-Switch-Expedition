@@ -115,7 +115,7 @@
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_Graphene</defName>
     <label>Graphene</label>
-    <description>A single-layer carbon material produced by exfoliating graphite, it is the most widely used non-metallic material in the Midsphere World. Thanks to its excellent thermal conductivity and electrical properties, it is commonly employed in electronic components, beam emitters, and supercapacitors. \n\nGraphene itself demands extremely stringent production conditions and is often further processed into materials like carbon nanotubes or fullerenes. As a result, worlds capable of large-scale production and application typically possess massive industrial platforms in near-Earth orbit dedicated to manufacturing and processing these materials.</description>
+    <description>A single-layer carbon material produced by exfoliating graphite, it is the most widely used non-metallic material in the Midworld. Thanks to its excellent thermal conductivity and electrical properties, it is commonly employed in electronic components, beam emitters, and supercapacitors. \n\nGraphene itself demands extremely stringent production conditions and is often further processed into materials like carbon nanotubes or fullerenes. As a result, worlds capable of large-scale production and application typically possess massive industrial platforms in near-Earth orbit dedicated to manufacturing and processing these materials.</description>
     <descriptionHyperlinks>
       <ThingDef>DMSE_MicrogravityFacility</ThingDef>
       <recipeDef>DMSE_Make_Graphene_Chemfuel</recipeDef>
@@ -245,6 +245,7 @@
         <destroyWhenDepleted>true</destroyWhenDepleted>
         <!-- 存入導彈儲存架或發射平台容器即視為受庇護、停止劣化。 -->
         <shelterBuildings>
+          <li>DMSE_MissileAssemblyBench</li>
           <li>DMSE_MissileRack</li>
           <li>DMSE_CruiseMissileRack</li>
           <li>DMSE_Building_Scorer</li>
@@ -387,6 +388,7 @@
         <hitPointsPerDay>5</hitPointsPerDay>
         <destroyWhenDepleted>true</destroyWhenDepleted>
         <shelterBuildings>
+          <li>DMSE_MissileAssemblyBench</li>
           <li>DMSE_MissileRack</li>
           <li>DMSE_Building_LightMissileLauncher</li>
           <li>DMSE_Building_LightMissileVLS</li>

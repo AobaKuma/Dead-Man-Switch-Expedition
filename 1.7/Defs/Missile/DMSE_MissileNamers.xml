@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ==================================================================
+       各彈體專屬的設計名稱規則（DMSE.MissileNamerDef）
+       Per-airframe design-name rules.
+       ==================================================================
+       組裝台出廠時，名稱由該彈體的 Namer 決定：
+         designator  型號代字（樣板 [designator]，英文 YJ／中文「鷹擊」）
+         numberMin／numberMax／numberDigits   [num] 的編號範圍與補零位數
+         suffixes    [suffix] 的候選後綴（真實型號常見的 D／M／U 之類）
+         pack        該型號的 r_name 樣板包（見 Defs/RulePacks/DMSE_Namer_MissileDesign.xml）
+
+       [num]／[suffix] 在「抽定樣板」的當下就換成實際文字，寫進規則字串一起存檔，
+       所以之後換部件只換詞（彈頭／導引／推進／酬載），型號編號不會跟著跳。
+
+       只有可裝配（customizeLocation = Item／Launcher）的彈體需要 Namer；
+       巡飛彈（Loiter／LegacyLoiter／LegacyInterceptor／Sabre）不可自定義、也不會被命名。
+       沒綁 Namer 的彈體沿用通用樣板 DMSE_NamerMissileDesign（只有部件詞）。
+       ================================================================== -->
+
+  <!-- 輕型導彈：通用小彈體，短編號。 -->
+  <DMSE.MissileNamerDef>
+    <defName>DMSE_Namer_Light</defName>
+    <designator>Lancer</designator>
+    <pack>DMSE_NamerPack_Light</pack>
+    <numberMin>1</numberMin>
+    <numberMax>99</numberMax>
+  </DMSE.MissileNamerDef>
+
+  <!-- 先進通用彈體（地獄火級）：三位數編號。 -->
+  <DMSE.MissileNamerDef>
+    <defName>DMSE_Namer_AdvancedLight</defName>
+    <designator>Hellfire</designator>
+    <pack>DMSE_NamerPack_AdvancedLight</pack>
+    <numberMin>100</numberMin>
+    <numberMax>199</numberMax>
+  </DMSE.MissileNamerDef>
+
+  <!-- 先進巡航彈體（戰斧級）。 -->
+  <DMSE.MissileNamerDef>
+    <defName>DMSE_Namer_AdvancedCruise</defName>
+    <designator>Tomahawk</designator>
+    <pack>DMSE_NamerPack_AdvancedCruise</pack>
+    <numberMin>1</numberMin>
+    <numberMax>99</numberMax>
+  </DMSE.MissileNamerDef>
+
+  <!-- 輕型防空彈體（刺針級）。 -->
+  <DMSE.MissileNamerDef>
+    <defName>DMSE_Namer_Stinger</defName>
+    <designator>Stinger</designator>
+    <pack>DMSE_NamerPack_Stinger</pack>
+    <numberMin>1</numberMin>
+    <numberMax>99</numberMax>
+  </DMSE.MissileNamerDef>
+
+  <!-- 對地攻擊彈體（小牛級）。 -->
+  <DMSE.MissileNamerDef>
+    <defName>DMSE_Namer_Maverick</defName>
+    <designator>Maverick</designator>
+    <pack>DMSE_NamerPack_Maverick</pack>
+    <numberMin>1</numberMin>
+    <numberMax>99</numberMax>
+  </DMSE.MissileNamerDef>
+
+  <!-- 先進防空彈體（麻雀級）：半主動族有 C／D／E／M／P 等後綴。 -->
+  <DMSE.MissileNamerDef>
+    <defName>DMSE_Namer_Sparrow</defName>
+    <designator>Sparrow</designator>
+    <pack>DMSE_NamerPack_Sparrow</pack>
+    <numberMin>1</numberMin>
+    <numberMax>99</numberMax>
+    <suffixes>
+      <li>C</li>
+      <li>D</li>
+      <li>E</li>
+      <li>M</li>
+      <li>P</li>
+    </suffixes>
+  </DMSE.MissileNamerDef>
+
+  <!-- 中型反艦彈體（白蛉級）：P-270 的 2xx 編號帶。 -->
+  <DMSE.MissileNamerDef>
+    <defName>DMSE_Namer_Moskit</defName>
+    <designator>Moskit</designator>
+    <pack>DMSE_NamerPack_Moskit</pack>
+    <numberMin>200</numberMin>
+    <numberMax>299</numberMax>
+    <suffixes>
+      <li>M</li>
+    </suffixes>
+  </DMSE.MissileNamerDef>
+
+  <!-- 中型高超音速反艦彈體（鷹擊級）：A／B／D 後綴。 -->
+  <DMSE.MissileNamerDef>
+    <defName>DMSE_Namer_Yj</defName>
+    <designator>YJ</designator>
+    <pack>DMSE_NamerPack_Yj</pack>
+    <numberMin>1</numberMin>
+    <numberMax>99</numberMax>
+    <suffixes>
+      <li>A</li>
+      <li>B</li>
+      <li>D</li>
+    </suffixes>
+  </DMSE.MissileNamerDef>
+
+  <!-- 中型戰術彈道彈體（圓點U 級）：U 後綴。 -->
+  <DMSE.MissileNamerDef>
+    <defName>DMSE_Namer_Tochka</defName>
+    <designator>Tochka</designator>
+    <pack>DMSE_NamerPack_Tochka</pack>
+    <numberMin>1</numberMin>
+    <numberMax>99</numberMax>
+    <suffixes>
+      <li>U</li>
+    </suffixes>
+  </DMSE.MissileNamerDef>
+
+  <!-- 長程巡飛彈（見證者級）：三位數編號；只有導引／酬載兩槽。 -->
+  <DMSE.MissileNamerDef>
+    <defName>DMSE_Namer_Shahed</defName>
+    <designator>Shahed</designator>
+    <pack>DMSE_NamerPack_Shahed</pack>
+    <numberMin>100</numberMin>
+    <numberMax>199</numberMax>
+  </DMSE.MissileNamerDef>
+
+  <!-- 老式彈道彈體（V2／A4）：編號 1–20，代表二戰式量產批次。 -->
+  <DMSE.MissileNamerDef>
+    <defName>DMSE_Namer_LegacyBallistic</defName>
+    <designator>V2</designator>
+    <pack>DMSE_NamerPack_LegacyBallistic</pack>
+    <numberMin>1</numberMin>
+    <numberMax>20</numberMax>
+  </DMSE.MissileNamerDef>
+
+  <!-- 先進彈道彈體（民兵三型）。 -->
+  <DMSE.MissileNamerDef>
+    <defName>DMSE_Namer_AdvancedBallistic</defName>
+    <designator>Minuteman</designator>
+    <pack>DMSE_NamerPack_AdvancedBallistic</pack>
+    <numberMin>1</numberMin>
+    <numberMax>50</numberMax>
+  </DMSE.MissileNamerDef>
+
+</Defs>

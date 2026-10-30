@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
@@ -17,6 +18,8 @@ namespace DMSE
     ///   - 唯一例外是 <see cref="PlayerChoosesTarget"/> 為 true 的導引頭（電視制導）：玩家發射時暫停遊戲讓玩家選點，
     ///     敵方發射時退化為慣性。
     /// 找不到符合的目標時回傳 <see cref="IntVec3.Invalid"/>，由 <see cref="PickCell"/> 退化為慣性邏輯。
+    /// 實際鎖定（<see cref="ArrivalCell"/>、盤旋重新搜尋）會經 <see cref="SpreadBest{T}"/> 分散：
+    /// 密集來襲的同類導引頭導彈不會全部鎖在同一個目標上。
     /// </summary>
     public abstract class GuidanceType
     {
@@ -58,22 +61,55 @@ namespace DMSE
         /// </summary>
         public static IntVec3 PickCell(MissileConfig config, Map map, Faction attacker)
         {
-            float N = config?.PayloadCapacity ?? 5f;
+            if (TryPickTarget(config, map, attacker, out IntVec3 cell)) { return cell; }
+            return InertialTarget(map, attacker);
+        }
+
+        /// <summary>
+        /// 只執行導引頭本身：回傳 true 表示找到符合的目標（<paramref name="cell"/> 為其格），
+        /// 回傳 false 表示導引頭沒有目標（或根本沒有導引頭），由呼叫端決定要不要退化為慣性。
+        /// 盤旋飛控靠這個方法分辨「導引頭找不到目標」與「找到目標」。
+        /// </summary>
+        /// <param name="claim">
+        /// true = 導彈實際鎖定（抵達、盤旋重新搜尋）：避開同類導引頭最近已鎖定的目標，並登記這次鎖定
+        /// （見 <see cref="SpreadBest{T}"/>）。false = 只查詢，永遠回傳最佳目標、不留紀錄。
+        /// </param>
+        public static bool TryPickTarget(MissileConfig config, Map map, Faction attacker, out IntVec3 cell, bool claim = false)
+        {
+            cell = IntVec3.Invalid;
             GuidanceType guidance = config?.TargetingGuidance;
-            if (guidance != null)
+            if (guidance == null || map == null) { return false; }
+            bool previous = targetsUnderThickRoof;
+            GuidanceType previousClaimer = claimingGuidance;
+            targetsUnderThickRoof = config.PenetratesThickRoof;
+            claimingGuidance = claim ? guidance : null;
+            try
             {
-                bool previous = targetsUnderThickRoof;
-                targetsUnderThickRoof = config.PenetratesThickRoof;
-                try
+                IntVec3 result = guidance.PickTarget(config.PayloadCapacity, map, attacker);
+                if (result.IsValid && result.InBounds(map))
                 {
-                    IntVec3 result = guidance.PickTarget(N, map, attacker);
-                    if (result.IsValid && result.InBounds(map)) { return result; }
-                }
-                finally
-                {
-                    targetsUnderThickRoof = previous;
+                    cell = result;
+                    return true;
                 }
             }
+            finally
+            {
+                targetsUnderThickRoof = previous;
+                claimingGuidance = previousClaimer;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 抵達目標地圖時的落點：導引頭找到目標就用它；找不到且彈體裝了盤旋飛控時，
+        /// 回傳慣性落點並把 <paramref name="loiter"/> 設為 true，由呼叫端改為盤旋等待；
+        /// 其餘情況直接回退慣性（與 <see cref="PickCell"/> 相同）。
+        /// </summary>
+        public static IntVec3 ArrivalCell(MissileConfig config, Map map, Faction attacker, out bool loiter)
+        {
+            loiter = false;
+            if (TryPickTarget(config, map, attacker, out IntVec3 cell, claim: true)) { return cell; }
+            if (config != null && config.LoiterTicks > 0) { loiter = true; }
             return InertialTarget(map, attacker);
         }
 
@@ -101,6 +137,71 @@ namespace DMSE
                 if (cell.InBounds(map) && Strikable(cell, map)) { return cell; }
             }
             return IntVec3.Invalid;
+        }
+
+        // ---- 共用：分散鎖定 ----
+
+        /// <summary>同一目標被鎖定後，同類導引頭在這段時間內會優先改選其他目標（ticks）。</summary>
+        public const int ClaimWindowTicks = 1200;
+
+        private struct Claim
+        {
+            public Type guidance;
+            public object target;
+            public int tick;
+        }
+
+        /// <summary>最近的實際鎖定紀錄（僅執行期，不存檔；過期即清除）。</summary>
+        private static readonly List<Claim> claims = new List<Claim>();
+
+        /// <summary><see cref="TryPickTarget"/> 以 claim 模式執行期間的導引頭；其餘時候為 null（不分散、不登記）。</summary>
+        private static GuidanceType claimingGuidance;
+
+        /// <summary>清除所有鎖定紀錄（測試用）。</summary>
+        public static void ClearClaims() => claims.Clear();
+
+        private static int ClaimCount(Type guidance, object target)
+        {
+            int count = 0;
+            for (int i = 0; i < claims.Count; i++)
+            {
+                if (claims[i].guidance == guidance && ReferenceEquals(claims[i].target, target)) { count++; }
+            }
+            return count;
+        }
+
+        /// <summary>
+        /// 從候選中挑目標：<paramref name="better"/>(a, b) 為 true 表示 a 嚴格優於 b，同分保留先出現者。
+        /// 只查詢時直接回傳最佳者；實際鎖定時先比「同類導引頭在 <see cref="ClaimWindowTicks"/> 內已鎖定的次數」，
+        /// 次數少者優先、再比優劣，並登記這次鎖定——密集來襲的同類導彈因此依序分散到次佳目標，
+        /// 所有候選都被鎖過後再輪回最佳者。
+        /// </summary>
+        protected static T SpreadBest<T>(IEnumerable<T> candidates, Func<T, T, bool> better) where T : class
+        {
+            Type guidance = claimingGuidance?.GetType();
+            int now = Find.TickManager?.TicksGame ?? 0;
+            if (guidance != null)
+            {
+                // 過期或時間倒退（讀入其他存檔）的紀錄一併清除。
+                claims.RemoveAll(c => now - c.tick >= ClaimWindowTicks || now < c.tick);
+            }
+
+            T best = null;
+            int bestClaims = int.MaxValue;
+            foreach (T item in candidates)
+            {
+                int count = guidance != null ? ClaimCount(guidance, item) : 0;
+                if (best == null || count < bestClaims || (count == bestClaims && better(item, best)))
+                {
+                    best = item;
+                    bestClaims = count;
+                }
+            }
+            if (best != null && guidance != null)
+            {
+                claims.Add(new Claim { guidance = guidance, target = best, tick = now });
+            }
+            return best;
         }
 
         // ---- 共用：目標篩選 ----
@@ -161,47 +262,33 @@ namespace DMSE
         /// <summary>主動雷達依占地面積鎖定最大敵對建築；沒有建築時鎖定體型最大的敵對單位。</summary>
         public static IntVec3 LargestHostileTarget(Map map, Faction attacker)
         {
-            Building largest = null;
-            int largestArea = -1;
-            foreach (Building b in HostileBuildings(map, attacker))
-            {
-                int area = b.def.size.x * b.def.size.z;
-                if (area > largestArea) { largestArea = area; largest = b; }
-            }
+            Building largest = SpreadBest(HostileBuildings(map, attacker),
+                (a, b) => a.def.size.x * a.def.size.z > b.def.size.x * b.def.size.z);
             if (largest != null) { return AimCell(largest, map); }
+            return BiggestPawnCell(map, attacker);
+        }
 
-            Pawn biggest = null;
-            float biggestSize = -1f;
-            foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
-            {
-                if (p.Dead || !IsHostileTarget(p.Faction, attacker) || !Strikable(p.Position, map)) { continue; }
-                if (p.BodySize > biggestSize) { biggestSize = p.BodySize; biggest = p; }
-            }
+        /// <summary>體型最大、打得到的敵對單位所在格；沒有則 Invalid。</summary>
+        public static IntVec3 BiggestPawnCell(Map map, Faction attacker)
+        {
+            Pawn biggest = SpreadBest(map.mapPawns.AllPawnsSpawned
+                    .Where(p => !p.Dead && IsHostileTarget(p.Faction, attacker) && Strikable(p.Position, map)),
+                (a, b) => a.BodySize > b.BodySize);
             return biggest != null ? biggest.Position : IntVec3.Invalid;
         }
 
         /// <summary>電磁訊號：耗電量最大的運作中敵對建築；沒有則回傳 Invalid。</summary>
         public static IntVec3 HighestPowerDrawTarget(Map map, Faction attacker)
         {
-            Building best = null;
-            float bestDraw = 0f;
-            foreach (Building b in HostileBuildings(map, attacker))
-            {
-                float draw = PowerDraw(b);
-                if (draw > bestDraw) { bestDraw = draw; best = b; }
-            }
+            Building best = SpreadBest(HostileBuildings(map, attacker).Where(b => PowerDraw(b) > 0f),
+                (a, b) => PowerDraw(a) > PowerDraw(b));
             return best != null ? AimCell(best, map) : IntVec3.Invalid;
         }
 
         /// <summary>耐久最高的敵對建築（反艦導引頭用）；沒有則回傳 Invalid。</summary>
         public static IntVec3 ToughestHostileBuilding(Map map, Faction attacker)
         {
-            Building best = null;
-            float bestHp = -1f;
-            foreach (Building b in HostileBuildings(map, attacker))
-            {
-                if (b.MaxHitPoints > bestHp) { bestHp = b.MaxHitPoints; best = b; }
-            }
+            Building best = SpreadBest(HostileBuildings(map, attacker), (a, b) => a.MaxHitPoints > b.MaxHitPoints);
             return best != null ? AimCell(best, map) : IntVec3.Invalid;
         }
 
@@ -254,31 +341,34 @@ namespace DMSE
     //  反輻射（Anti-Radiation）
     //  鎖定開機（ActiveForSeeker：Active，或電網正要開啟）的敵對雷達建築中功率等級最高者；同級再比耗電量。
     //  標記 immuneToAntiRadiationSeeker 的雷達（純被動聲學預警）不列入。
-    //  找不到則退化為電磁訊號，再找不到由 PickCell 退化為慣性。
+    //  找不到時預設退化為電磁訊號（fallBackToEmissions），再找不到由 PickCell 退化為慣性；
+    //  巡飛彈的專用尋標頭把 fallBackToEmissions 設為 false，只回報雷達，沒有雷達就交給盤旋飛控等待開機。
     // ============================================================
     public class GuidanceType_AntiRadiation : GuidanceType
     {
+        /// <summary>
+        /// 找不到開機雷達時是否退化為「耗電最大的運作中建築」（電磁訊號）。
+        /// false = 只看雷達，沒有雷達就回報沒有目標（配合盤旋飛控在目標上空等待）。
+        /// </summary>
+        public bool fallBackToEmissions = true;
+
         public override IntVec3 PickTarget(float N, Map map, Faction attacker)
         {
-            Building bestRadar = null;
-            int bestPower = -1;
-            float bestDraw = -1f;
+            IntVec3 radar = BestRadarCell(map, attacker);
+            if (radar.IsValid) { return radar; }
+            return fallBackToEmissions ? HighestPowerDrawTarget(map, attacker) : IntVec3.Invalid;
+        }
 
-            foreach (Building b in HostileBuildings(map, attacker))
-            {
-                int power = RadarPowerLevel(b);
-                if (power < 0) { continue; }
-                float draw = PowerDraw(b);
-                if (power > bestPower || (power == bestPower && draw > bestDraw))
+        /// <summary>開機且可被反輻射尋標頭鎖定的敵對雷達中功率等級最高者；同級再比耗電。沒有則 Invalid。</summary>
+        public static IntVec3 BestRadarCell(Map map, Faction attacker)
+        {
+            Building bestRadar = SpreadBest(HostileBuildings(map, attacker).Where(b => RadarPowerLevel(b) >= 0),
+                (a, b) =>
                 {
-                    bestPower = power;
-                    bestDraw = draw;
-                    bestRadar = b;
-                }
-            }
-
-            if (bestRadar != null) { return AimCell(bestRadar, map); }
-            return HighestPowerDrawTarget(map, attacker);
+                    int pa = RadarPowerLevel(a), pb = RadarPowerLevel(b);
+                    return pa > pb || (pa == pb && PowerDraw(a) > PowerDraw(b));
+                });
+            return bestRadar != null ? AimCell(bestRadar, map) : IntVec3.Invalid;
         }
 
         /// <summary>建築上開機且未豁免的雷達中最高的功率等級；沒有則 -1。</summary>
@@ -315,33 +405,18 @@ namespace DMSE
             IntVec3 room = HottestRoomCell(map);
             if (room.IsValid) { return room; }
 
-            Pawn biggest = null;
-            float biggestSize = -1f;
-            foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
-            {
-                if (p.Dead || !Strikable(p.Position, map)) { continue; }
-                if (attacker != null && p.Faction != null && !IsHostileTarget(p.Faction, attacker)) { continue; }
-                if (p.BodySize > biggestSize) { biggestSize = p.BodySize; biggest = p; }
-            }
+            Pawn biggest = SpreadBest(map.mapPawns.AllPawnsSpawned.Where(p => !p.Dead && Strikable(p.Position, map)
+                    && (attacker == null || p.Faction == null || IsHostileTarget(p.Faction, attacker))),
+                (a, b) => a.BodySize > b.BodySize);
             return biggest != null ? biggest.Position : IntVec3.Invalid;
         }
 
         private IntVec3 HottestRoomCell(Map map)
         {
             float threshold = map.mapTemperature.OutdoorTemp + minRoomTempAboveOutdoor;
-            Room hottest = null;
-            float hottestTemp = float.MinValue;
-            foreach (Room room in map.regionGrid.AllRooms)
-            {
-                if (room.PsychologicallyOutdoors || room.UsesOutdoorTemperature) { continue; }
-                if (!room.Cells.Any(c => Strikable(c, map))) { continue; }
-                float temp = room.Temperature;
-                if (temp >= threshold && temp > hottestTemp)
-                {
-                    hottestTemp = temp;
-                    hottest = room;
-                }
-            }
+            Room hottest = SpreadBest(map.regionGrid.AllRooms.Where(room => !room.PsychologicallyOutdoors
+                    && !room.UsesOutdoorTemperature && room.Temperature >= threshold && room.Cells.Any(c => Strikable(c, map))),
+                (a, b) => a.Temperature > b.Temperature);
             if (hottest == null) { return IntVec3.Invalid; }
 
             if (hottest.Cells.Where(c => c.Standable(map) && Strikable(c, map)).TryRandomElement(out IntVec3 cell))
@@ -436,27 +511,15 @@ namespace DMSE
     {
         public override IntVec3 PickTarget(float N, Map map, Faction attacker)
         {
-            Pawn best = null;
-            float bestThreat = -1f;
-            float bestSize = -1f;
-            int bestId = int.MaxValue;
-            foreach (Pawn pawn in map.mapPawns.AllPawnsSpawned)
-            {
-                if (!pawn.Spawned || pawn.Dead || !IsHostileTarget(pawn.Faction, attacker)
-                    || map.roofGrid.Roofed(pawn.Position) || !Strikable(pawn.Position, map)) { continue; }
-
-                float threat = pawn.kindDef?.combatPower ?? 0f;
-                float size = pawn.BodySize;
-                int id = pawn.thingIDNumber;
-                if (threat > bestThreat || (threat == bestThreat && size > bestSize)
-                    || (threat == bestThreat && size == bestSize && id < bestId))
+            Pawn best = SpreadBest(map.mapPawns.AllPawnsSpawned.Where(pawn => pawn.Spawned && !pawn.Dead
+                    && IsHostileTarget(pawn.Faction, attacker) && !map.roofGrid.Roofed(pawn.Position) && Strikable(pawn.Position, map)),
+                (a, b) =>
                 {
-                    best = pawn;
-                    bestThreat = threat;
-                    bestSize = size;
-                    bestId = id;
-                }
-            }
+                    float ta = a.kindDef?.combatPower ?? 0f, tb = b.kindDef?.combatPower ?? 0f;
+                    if (ta != tb) { return ta > tb; }
+                    if (a.BodySize != b.BodySize) { return a.BodySize > b.BodySize; }
+                    return a.thingIDNumber < b.thingIDNumber;
+                });
             return best != null ? best.Position : IntVec3.Invalid;
         }
     }
@@ -489,15 +552,7 @@ namespace DMSE
         {
             IntVec3 building = ToughestHostileBuilding(map, attacker);
             if (building.IsValid) { return building; }
-
-            Pawn biggest = null;
-            float biggestSize = -1f;
-            foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
-            {
-                if (p.Dead || !IsHostileTarget(p.Faction, attacker) || !Strikable(p.Position, map)) { continue; }
-                if (p.BodySize > biggestSize) { biggestSize = p.BodySize; biggest = p; }
-            }
-            return biggest != null ? biggest.Position : IntVec3.Invalid;
+            return BiggestPawnCell(map, attacker);
         }
     }
 }

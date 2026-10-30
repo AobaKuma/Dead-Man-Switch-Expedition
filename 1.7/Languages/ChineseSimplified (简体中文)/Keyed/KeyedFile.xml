@@ -13,6 +13,10 @@
   <DMSE.MissileBase.ReentryBlocked>通道封锁，敌方整备防线（{0}）</DMSE.MissileBase.ReentryBlocked>
   <DMSE.MissileBase.ArrivedLetter>你们抵达了一处导弹阵地。敌方已在此部署火控雷达与导弹发射架，不断向周围殖民地发射打击。摧毁所有雷达可瓦解其打击能力。</DMSE.MissileBase.ArrivedLetter>
   <DMSE.MissileBase.SiteDesc>一处配备火控雷达与导弹发射架的机动战术弹道导弹阵地。阵地会在完成任务后转移，以躲避反制。</DMSE.MissileBase.SiteDesc>
+  <DMSE.MissileBase.SupplyDrop>敌方补给空投：{0} ×{1}</DMSE.MissileBase.SupplyDrop>
+  <DMSE.MissileBase.RackResupply>敌方导弹补给：为 {0} 座空发射架空投了 {1} 枚导弹，守军即将完成装填。</DMSE.MissileBase.RackResupply>
+  <DMSE.FieldLaunchSite.ArrivedLetter>你们抵达了一处敌方野战发射阵地。阵地以搜索雷达为中心，四周散布发射阵位、弹药车与人员休息区。只要仍有雷达运作，敌方就会定时空投生存食品包维持守军；摧毁所有发射架即可瓦解此阵地。</DMSE.FieldLaunchSite.ArrivedLetter>
+  <DMSE.FieldLaunchSite.SpawnedLetter>{0}在{1}的{2}方 {3} 格处部署了一处野战导弹发射阵地。其发射架能打击你的殖民地；只要雷达仍在运作，补给舱就会持续为守军送来食物。\n\n摧毁所有发射架即可瓦解此阵地；瘫痪雷达则能切断其补给。</DMSE.FieldLaunchSite.SpawnedLetter>
 
   <!-- EN: Launch Missile -->
   <ScorerLaunch>发射导弹</ScorerLaunch>
@@ -38,12 +42,15 @@
 
   <!-- EN: {0} drop pods will breach in {1} -->
   <DMSE.Alert.Pods>{0} 个来袭目标，拦截窗口剩余 {1}</DMSE.Alert.Pods>
+  <DMSE.Alert.Pods.Loitering>{0} 枚导弹在上空盘旋，剩余盘旋 {1}</DMSE.Alert.Pods.Loitering>
   <DMSE.Alert.Pods.Window.Midcourse>中过程拦截窗口：{0}</DMSE.Alert.Pods.Window.Midcourse>
   <DMSE.Alert.Pods.Window.Terminal>末端拦截窗口（CIWS）：{0}</DMSE.Alert.Pods.Window.Terminal>
+  <DMSE.Alert.Pods.Window.Loitering>盘旋剩余：{0}</DMSE.Alert.Pods.Window.Loitering>
   <DMSE.Alert.Pods.Target>  · {0}  【{1}】</DMSE.Alert.Pods.Target>
   <DMSE.Alert.Pods.Status.InFlight>拦截弹飞行中</DMSE.Alert.Pods.Status.InFlight>
   <DMSE.Alert.Pods.Status.Locking>火控锁定中</DMSE.Alert.Pods.Status.Locking>
   <DMSE.Alert.Pods.Status.Unengaged>未接战</DMSE.Alert.Pods.Status.Unengaged>
+  <DMSE.Alert.Pods.Status.Loitering>盘旋等待目标</DMSE.Alert.Pods.Status.Loitering>
   <!-- BVR 系统状态提示（独立于来袭威胁提示） -->
   <DMSE.Alert.BVRStatus.Label>BVR 系统</DMSE.Alert.BVRStatus.Label>
   <DMSE.Alert.BVRStatus.SearchRadars>搜索雷达：</DMSE.Alert.BVRStatus.SearchRadars>
@@ -163,6 +170,7 @@
   <DMSE.Missile.Stat.Range>射程：{0} 格</DMSE.Missile.Stat.Range>
   <DMSE.Missile.Stat.TerminalGuidance>具备制导能力：飞行中可更新目标位置 {0} 次，可跨图层打击</DMSE.Missile.Stat.TerminalGuidance>
   <DMSE.Missile.Stat.NoTerminalGuidance>无制导能力：无法追踪移动目标，也无法跨图层打击</DMSE.Missile.Stat.NoTerminalGuidance>
+  <DMSE.Missile.Stat.Loiter>盘旋飞控：找不到目标时可盘旋等待 {0}，之后才回退惯性落点</DMSE.Missile.Stat.Loiter>
   <DMSE.MissileLauncher.OutOfRange>目标超出导弹射程（{0} 格）。</DMSE.MissileLauncher.OutOfRange>
   <DMSE.MissileLauncher.RangeLabel>{0} / {1} 格</DMSE.MissileLauncher.RangeLabel>
   <DMSE.MissileLauncher.NoTargetHere>此处没有目标，导弹将会落空</DMSE.MissileLauncher.NoTargetHere>
@@ -191,6 +199,7 @@
 
   <!-- 导引头选目标 -->
   <DMSE.Missile.SeekerLocked>{0}已锁定目标，导弹正在落下。</DMSE.Missile.SeekerLocked>
+  <DMSE.Missile.Loitering>导引头没有找到目标：导弹在上空盘旋等待，最多 {0} 后才回退惯性制导。</DMSE.Missile.Loitering>
   <DMSE.Guidance.Inertial>惯性导引</DMSE.Guidance.Inertial>
   <DMSE.Guidance.RadioCommand>无线电指令制导</DMSE.Guidance.RadioCommand>
   <DMSE.Guidance.ManualTarget>{0}：抵达后由你选择落点</DMSE.Guidance.ManualTarget>
@@ -253,12 +262,16 @@
   <DMSE.Artillery.CrossLayer>炮弹没有制导能力，无法跨图层打击。</DMSE.Artillery.CrossLayer>
   <DMSE.Artillery.Missed>炮击找不到目标，已落空。</DMSE.Artillery.Missed>
   <DMSE.Artillery.NoBarrel>炮管已磨损，持续射击已停止，请更换强化炮管。</DMSE.Artillery.NoBarrel>
+  <DMSE.Artillery.TargetIsHome>不能炮击自己所在的地块。</DMSE.Artillery.TargetIsHome>
+  <DMSE.Artillery.OutOfRange>目标超出火炮射程（{0} 格）。</DMSE.Artillery.OutOfRange>
   <DMSE.BVR.DeviceInactive>装置不可用（无电、损坏或已关闭）。</DMSE.BVR.DeviceInactive>
   <!-- 状态字符串（用于 StopDesc） -->
   <DMSE.Artillery.StateCooldown>装填冷却中，剩余 {0}</DMSE.Artillery.StateCooldown>
   <DMSE.Artillery.StateAiming>瞄准中（{0}%）</DMSE.Artillery.StateAiming>
   <DMSE.Artillery.StateReady>可发射</DMSE.Artillery.StateReady>
   <DMSE.Artillery.Ready>火炮：可发射</DMSE.Artillery.Ready>
+  <DMSE.Artillery.GuidanceOnline>雷达制导：可用（散布 {0} 格）</DMSE.Artillery.GuidanceOnline>
+  <DMSE.Artillery.GuidanceOffline>雷达制导：没有空闲火控通道（无制导，散布 {0} 格）</DMSE.Artillery.GuidanceOffline>
 
   <!-- PlaceWorker -->
   <DMSE.PlaceWorker.TooCloseSameLayer>与 {0} 太近（同一放置图层）。</DMSE.PlaceWorker.TooCloseSameLayer>

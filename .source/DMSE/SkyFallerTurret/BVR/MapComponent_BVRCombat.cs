@@ -256,6 +256,8 @@ namespace DMSE
             for (int i = Waves.Count - 1; i >= 0; i--)
             {
                 BVRWave wave = Waves[i];
+                // 盤旋飛控：先推進盤旋（重新執行導引頭、到期回退慣性），再照一般波次結算。
+                if (wave.loitering) { LoiterTick(wave, now); }
                 int timeLeft = wave.tickToImpact - now;
 
                 if (timeLeft <= 0)
@@ -266,8 +268,9 @@ namespace DMSE
                 }
 
                 int terminalWindow = TerminalWindowTicks(wave.defenderFaction);
-                if (wave.TerminalOnly || timeLeft <= terminalWindow)
+                if (wave.loitering || wave.TerminalOnly || timeLeft <= terminalWindow)
                 {
+                    // 盤旋中的導彈仍在目標上空：末端防禦（CIWS）照常接戰，不受末端窗口限制。
                     // 末端波次先收集，迴圈結束後由 TerminalDefense 統一分配 CIWS。
                     terminalWaves.Add(wave);
                     continue;
@@ -282,6 +285,88 @@ namespace DMSE
             }
 
             TerminalDefense(now);
+        }
+
+        // ====================================================================
+        //  盤旋飛控：導引頭找不到目標時在目標上空等待
+        // ====================================================================
+
+        /// <summary>
+        /// 建立一個盤旋波次。防禦方可以為 null（沒有防空時導彈仍然滯空等待目標）；
+        /// 波次的 <see cref="BVRWave.tickToImpact"/> 代表盤旋結束時間，期間只交給末端防禦接戰。
+        /// </summary>
+        public BVRWave RegisterLoiter(Thing faller, IntVec3 pos, Faction defender, int loiterTicks, int retryTicks)
+        {
+            int now = Find.TickManager.TicksGame;
+            int duration = Mathf.Max(1, loiterTicks);
+            int retry = Mathf.Max(1, retryTicks);
+            BVRTarget target = new BVRTarget(faller, pos, map, nextTargetId++) { terminalOnly = true };
+            BVRWave wave = new BVRWave(now + duration, new List<BVRTarget> { target })
+            {
+                defenderFaction = defender,
+                loitering = true,
+                loiterUntil = now + duration,
+                nextSeekTick = now + retry,
+                loiterRetryTicks = retry,
+            };
+            Waves.Add(wave);
+            if (Prefs.DevMode)
+            {
+                Log.Message($"[DMSE BVR] 盤旋飛控：導引頭沒有目標，導彈在 {map} 上空盤旋 {duration} ticks"
+                    + $"（防禦方={(defender != null ? defender.Name : "無")}，每 {retry} ticks 重新搜尋）。");
+            }
+            return wave;
+        }
+
+        /// <summary>
+        /// 推進盤旋：到期就回退慣性，否則每隔 <see cref="BVRWave.loiterRetryTicks"/> 重新執行導引頭；
+        /// 一旦找到目標就改鎖定該落點並結束盤旋（波次改為短暫俯衝，交給末端防禦做完最後一段）。
+        /// </summary>
+        private void LoiterTick(BVRWave wave, int now)
+        {
+            if (wave.targets.Count == 0 || now >= wave.loiterUntil)
+            {
+                EndLoiter(wave, now);
+                return;
+            }
+            if (now < wave.nextSeekTick) { return; }
+            wave.nextSeekTick = now + Mathf.Max(1, wave.loiterRetryTicks);
+
+            BVRTarget target = wave.targets[0];
+            IIncomingMissile missile = target.Missile;
+            MissileConfig config = missile?.Config;
+            if (config == null)
+            {
+                EndLoiter(wave, now);
+                return;
+            }
+
+            if (!GuidanceType.TryPickTarget(config, map, missile.Attacker, out IntVec3 cell, claim: true)) { return; }
+
+            target.position = MissileImpactUtility.ScatterCell(config, cell, map);
+            wave.loitering = false;
+            wave.tickToImpact = now + BVRTuning.LoiterDiveTicks;
+            if (Prefs.DevMode)
+            {
+                Log.Message($"[DMSE BVR] 盤旋飛控鎖定目標 → {target.position}，俯衝 {BVRTuning.LoiterDiveTicks} ticks。");
+            }
+        }
+
+        /// <summary>盤旋時間用盡（或目標已不存在）：以慣性落點俯衝，與沒有盤旋飛控時的後備行為相同。</summary>
+        private void EndLoiter(BVRWave wave, int now)
+        {
+            wave.loitering = false;
+            wave.tickToImpact = now + BVRTuning.LoiterDiveTicks;
+            if (wave.targets.Count == 0) { return; }
+
+            BVRTarget target = wave.targets[0];
+            Faction attacker = target.Missile?.Attacker;
+            IntVec3 cell = GuidanceType.InertialTarget(map, attacker);
+            target.position = MissileImpactUtility.ScatterCell(target.Missile?.Config, cell, map);
+            if (Prefs.DevMode)
+            {
+                Log.Message($"[DMSE BVR] 盤旋時間用盡，退化為慣性落點 {target.position}。");
+            }
         }
 
         // ---- 階段二：火控雷達 + 導彈發射裝置 ----
@@ -535,5 +620,8 @@ namespace DMSE
 
         /// <summary>預測抵達時間相差在此 ticks 內的目標，合併到同一個攔截窗口（同一波次）。</summary>
         public const int MergeWindowTicks = 600;
+
+        /// <summary>盤旋結束（找到目標或時間用盡）後，留給末端防禦接戰的俯衝時間（ticks）。</summary>
+        public const int LoiterDiveTicks = 600;
     }
 }

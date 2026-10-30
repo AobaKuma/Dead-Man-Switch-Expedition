@@ -55,9 +55,22 @@ namespace DMSE
             }
         }
 
+        private CompArtilleryStrike artilleryInt;
+        private bool artilleryLooked;
+
+        /// <summary>同一根砲管的超視距火砲（<see cref="CompArtilleryStrike"/>）正在持續射擊時，本地圖武器暫停。</summary>
+        private bool BarrelBusy
+        {
+            get
+            {
+                if (!artilleryLooked) { artilleryInt = parent.GetComp<CompArtilleryStrike>(); artilleryLooked = true; }
+                return artilleryInt != null && artilleryInt.IsSustainedFiring;
+            }
+        }
+
         public override void CompTick()
         {
-            if (!Active)
+            if (!Active || BarrelBusy)
             {
                 ClearTarget();
                 return;

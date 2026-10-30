@@ -11,6 +11,7 @@ namespace DMSE
         public const float Gap = 8f;
         public const float SectionGap = 16f;
         public const float ButtonHeight = 34f;
+        public const float RowHeight = 28f;
         public const float ScrollbarWidth = 16f;
         public static readonly Color Muted = new Color(0.65f, 0.65f, 0.65f);
         public static readonly Color Warning = new Color(1f, 0.85f, 0.35f);

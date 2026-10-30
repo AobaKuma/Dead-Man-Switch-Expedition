@@ -43,6 +43,7 @@
             <li>DMSE_Missile_Termite</li>
             <li>DMSE_Missile_LegacyLoiter</li>
             <li>DMSE_Missile_Shahed</li>
+            <li>DMSE_Missile_Sabre</li>
             <li>DMSE_Missile_Rheintochter</li>
           </thingDefs>
         </filter>
@@ -54,6 +55,7 @@
             <li>DMSE_Missile_Termite</li>
             <li>DMSE_Missile_LegacyLoiter</li>
             <li>DMSE_Missile_Shahed</li>
+            <li>DMSE_Missile_Sabre</li>
             <li>DMSE_Missile_Rheintochter</li>
           </thingDefs>
         </filter>

@@ -4,4 +4,8 @@
   <DMSE_Shahed_Guidance_Inertial.description>標準慣性導引，沒有目標辨識與末端導引。佔用一條火控通道。落點散布在目標地圖中央附近，不會鎖定建築或生物。</DMSE_Shahed_Guidance_Inertial.description>
   <DMSE_Shahed_Guidance_TV.label>電視制導</DMSE_Shahed_Guidance_TV.label>
   <DMSE_Shahed_Guidance_TV.description>可選的電視導引模組。無人機抵達目標地圖時，由你選擇落點。會佔用兩條火控通道而不是一條。敵方無人機即使裝了此模組，也只會使用慣性導引。</DMSE_Shahed_Guidance_TV.description>
+  <DMSE_Shahed_Guidance_RadarHoming.label>反輻射雷達導引頭</DMSE_Shahed_Guidance_RadarHoming.label>
+  <DMSE_Shahed_Guidance_RadarHoming.description>被動尋標頭，只追蹤開機中的雷達。鎖定開機中功率最高的敵方雷達；沒有可鎖定的雷達時直接回報沒有目標，不會退化為打電網。搭配盤旋飛控可讓無人機在上空等待雷達開機。被動聲學反射器對它不可見。</DMSE_Shahed_Guidance_RadarHoming.description>
+  <DMSE_Payload_Loiter.label>盤旋飛控</DMSE_Payload_Loiter.label>
+  <DMSE_Payload_Loiter.description>巡飛彈專用的飛控軟體與額外燃料儲備。抵達目標時若導引頭找不到目標，無人機不會直接回退慣性導引，而是在目標上空盤旋約一個遊戲小時，每幾秒重新執行一次導引頭；盤旋時間用盡後才以慣性落點俯衝。\n\n盤旋中的無人機仍留在攔截波次裡：末端防禦在整段等待期間都能把它打下來。需要巡飛彈彈體。</DMSE_Payload_Loiter.description>
 </LanguageData>

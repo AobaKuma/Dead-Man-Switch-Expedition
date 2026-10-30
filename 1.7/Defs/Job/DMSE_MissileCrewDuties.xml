@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- NPC 導彈陣地炮手（LordJob_MissileStationCrew）：
+       ① 飽食度低於「飢餓」（30%）就下崗進食（空投的生存食品包等）；
+       ② 其餘基本需求同原版 ManClosestTurret；
+       ③ 操作最近一座本派系需人操作的設備：砲塔、雷達、發射架（JobGiver_ManMissileStation）；
+          操作工作每 600 tick 到期重新評估（約 10 秒；吃飽時沿用同一份工作），飢餓時讓位給 ①；
+       ④ 沒有可操作的設備時，防守據點並在附近徘徊。 -->
+  <DutyDef>
+    <defName>DMSE_ManMissileStations</defName>
+    <alwaysShowWeapon>true</alwaysShowWeapon>
+    <thinkNode Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="JobGiver_GetFood">
+          <minCategory>Hungry</minCategory>
+        </li>
+        <li Class="ThinkNode_Subtree">
+          <treeDef>SatisfyBasicNeeds</treeDef>
+        </li>
+        <li Class="DMSE.JobGiver_ManMissileStation">
+          <maxDistFromPoint>60</maxDistFromPoint>
+          <expiryInterval>600</expiryInterval>
+        </li>
+        <li Class="JobGiver_AIDefendPoint">
+          <targetAcquireRadius>35</targetAcquireRadius>
+          <targetKeepRadius>40</targetKeepRadius>
+        </li>
+        <li Class="JobGiver_WanderNearDutyLocation">
+          <wanderRadius>12</wanderRadius>
+          <locomotionUrgencyOutsideRadius>Sprint</locomotionUrgencyOutsideRadius>
+        </li>
+      </subNodes>
+    </thinkNode>
+  </DutyDef>
+
+</Defs>
