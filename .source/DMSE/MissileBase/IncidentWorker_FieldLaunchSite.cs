@@ -20,10 +20,14 @@ namespace DMSE
 
         /// <summary>威脅點數的下限與上限，傳給站點（守軍人數由此換算）。</summary>
         public FloatRange threatPoints = new FloatRange(300f, 3000f);
+
+        /// <summary>玩家完成此研究後事件才會出現（野戰陣地：雷達網）；null = 不限。</summary>
+        public ResearchProjectDef requiredResearch;
     }
 
     /// <summary>
     /// 敵對工業派系在殖民地附近部署野戰發射陣地。由說書人以 ThreatBig 事件觸發：<br/>
+    /// ‧ 玩家已完成 <see cref="FieldLaunchSiteIncidentExtension.requiredResearch"/>（雷達網）。<br/>
     /// ‧ 需有敵對、可擁有此 SitePart 的派系（<see cref="SitePartWorker_FieldLaunchSite"/>：工業等級）。<br/>
     /// ‧ 世界上 NPC 導彈陣地數量未達 <see cref="FieldLaunchSiteIncidentExtension.maxActiveSites"/>。<br/>
     /// ‧ 陣地落在可建據點、且在陣地射程內的 tile；以本體 <see cref="SiteMaker.MakeSite(SitePartDef, PlanetTile, Faction, bool, float?, WorldObjectDef)"/> 建立。
@@ -36,6 +40,7 @@ namespace DMSE
         {
             FieldLaunchSiteIncidentExtension ext = Ext;
             if (ext?.worldObjectDef == null || ext.sitePartDef == null) return false;
+            if (ext.requiredResearch != null && !ext.requiredResearch.IsFinished) return false;
             if (!(parms.target is Map map) || !map.IsPlayerHome) return false;
             if (ActiveSiteCount() >= ext.maxActiveSites) return false;
             return TryFindFaction(ext, out _) && TryFindTile(ext, map, out _);

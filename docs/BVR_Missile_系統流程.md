@@ -13,7 +13,7 @@
 
 - **A. 超視距攔截系統（BVR）** — 偵測並攔截敵方來襲空投（drop pod）**與來襲導彈**（`Projectile_MissileIncoming`；舊存檔的 `MissileIncoming` 讀檔時轉換）。
 - **B. 導彈自定義裝配與發射系統** — 玩家自組導彈、由小人裝配、發射打擊地圖外目標；NPC 導彈陣地也走同一條導彈鏈。
-- **C. 超視距火砲系統（Artillery）** — 世界選靶的持續砲擊：砲彈以 `Projectile` 離場 → 世界航跡 → 從目標地圖邊緣飛入。**1.7 目前沒有任何 Def 使用**，屬「僅程式碼」狀態。
+- **C. 超視距火砲系統（Artillery）** — 世界選靶的持續砲擊：砲彈以 `Projectile` 離場 → 世界航跡 → 從目標地圖邊緣飛入。1.7 已有 Def 使用：`DMSE_Turret_Empero`（見 §C）。
 
 皆以 **ThingComp** 組合到建築/物品上，達成「單一建築複合功能」。系統間的實質交互：SAM 以裝配系統產出的實體導彈為彈藥、戰鬥部（`WarheadEffect`）直接影響攔截判定；進攻導彈可掛反輻射導引頭反制雷達；火砲與 BVR 中過程攔截**共用火控雷達的火力通道**；所有發射平台共用 `CompMissileLauncher` 基類與 `CompBVRDevice` 的可用性判定。
 
@@ -463,7 +463,9 @@ OnArrived（AllowGenerateTargetMap = true：目標據點尚無地圖時會生成
 
 ## C. 超視距火砲系統（Artillery，`.source/DMSE/Artillery/`）
 
-> **現況**：1.6 的 `DMSE_ArtillerySystem.xml` 於 2026-07-25 改名停用（`.disabled`），1.7 拆分時未移植，**目前沒有任何 Def 掛 `CompProperties_ArtilleryStrike`**。以下只記程式碼行為。舊文件提到的 `docs/artillery-expansion-plan.md`（齊射指揮器/反砲兵雷達/ABM 攔截砲等規劃）並不存在於 repo，這些項目也都未實作。
+> **現況（補正）**：1.7 已有實際 Def——`DMSE_Turret_Empero`（3×3「NK-30 帝王」遠程加農砲，`1.7/Defs/ThingDefs_Buildings/DMSE_LongRangeArtillery.xml`）掛 `DMSE.CompProperties_ArtilleryStrike`，另含本地圖減裝藥曲射 verb（與世界砲擊共用同一份砲彈）與 `CompTurretFacingRenderer` 砲身；自動驗收 `Tests_Artillery`（R1–R4）涵蓋此 Def。原「1.7 沒有任何 Def 掛 `CompProperties_ArtilleryStrike`」的說法已不成立。
+> 1.6 的 `DMSE_ArtillerySystem.xml` 於 2026-07-25 改名停用（`.disabled`），1.7 未沿用該檔。
+> 舊文件提到的 `docs/artillery-expansion-plan.md`（齊射指揮器/反砲兵雷達/ABM 攔截砲等規劃）並不存在於 repo；反砲兵部分現由 `docs/反砲兵雷達_實作計畫.md`（提案，未實作）承接，齊射指揮器與 ABM 攔截砲則仍無規劃。
 
 ### C-1. 架構角色
 
@@ -473,16 +475,18 @@ OnArrived（AllowGenerateTargetMap = true：目標據點尚無地圖時會生成
 | 離場投射物 | `Projectile_ArtilleryDeparture` | 從建築以 `Projectile` 弧線（`flyOverhead`）飛到朝目標方位的出口邊緣格；`Impact` 時建立世界航跡並 Vanish |
 | 世界航跡 | `WorldObject_ArtilleryStrike` | 世界地圖 Slerp 飛行（步進 `projectile.speed / 10 × 0.00025 / 距離`）；抵達時 `ResolveArrivalMap`（沒有地圖也沒有據點即落空）、排程齊射、自毀 |
 | 地圖排程器 | `MapComponent_ArtilleryStrikes` | 持有 `List<ArtilleryShellRequest>`（Deep 序列化），每 tick 輪詢 `fireTick` 到時者生成砲彈 |
-| 排程資料 | `ArtilleryShellRequest` | `fireTick`、`targetCell`、`entryEdgeCell`、`projectileDef`、`attackerFaction`、`scatterRadius` |
-| 靜態工具 | `ArtilleryStrikeUtility` | `WorldDirectionAngle`（球面切平面方位角，0 = 北、順時針）、`EdgeCellFromAngle`、`CalcEntryEdgeCell`、`QueueSalvo`、`SpawnShell` |
+| 排程資料 | `ArtilleryShellRequest` | `fireTick`、`targetCell`、`entryEdgeCell`、`projectileDef`、`attackerFaction`、`scatterRadius`、`guided` |
+| 靜態工具 | `ArtilleryStrikeUtility` | `WorldDirectionAngle`（球面切平面方位角，0 = 北、順時針）、`EdgeCellFromAngle`、`CalcEntryEdgeCell`、`QueueSalvo`、`FindGuidedTarget`（雷達導引落點：砲塔 → 用電設備 → 人員）、`SpawnShell` |
 
-`CompProperties_ArtilleryStrike`：`departureProjectileDef`、`worldObjectDef`（兩者必填，缺少時 `ConfigErrors` 報錯）、`projectileDef`（後備；優先使用 `CompChangeableProjectile` 已裝填的砲彈）、`cooldownTicks`（3600）、`warmupTicks`（240）、`scatterRadius`（2）、`salvoCount`（1）、`salvoIntervalTicks`（60）、`requiresFireControlChannel`（false）、`fireControlHoldTicks`（900）。
+`CompProperties_ArtilleryStrike`：`departureProjectileDef`、`worldObjectDef`（兩者必填，缺少時 `ConfigErrors` 報錯）、`projectileDef`（後備；優先使用 `CompChangeableProjectile` 已裝填的砲彈）、`cooldownTicks`（3600）、`warmupTicks`（240）、`scatterRadius`（2）、`salvoCount`（1）、`salvoIntervalTicks`（60）、`requiresFireControlChannel`（false）、`fireControlHoldTicks`（900）、`guidedScatterRadius`（−1；< 0 = 不支援雷達導引，≥ 0 時開火搶到通道就改用此散佈並在落彈時改瞄敵方目標）、`maxRangeTiles`（0 = 不限）、`refuelableIsAmmo`（false；true 時把 `CompRefuelable` 當砲彈存量，用盡顯示「無彈」而非砲管耗損）。
+
+`DMSE_Turret_Empero` 的實值：`cooldownTicks` 1800、`warmupTicks` 300、`scatterRadius` 14、`guidedScatterRadius` 3、`salvoCount` 1、`fireControlHoldTicks` 900、`maxRangeTiles` 20、`refuelableIsAmmo` true（`CompRefuelable` 容量 12）。
 
 ### C-2. 線性時間線（選靶 → 落彈）
 
 ```
 玩家點擊「開火」Gizmo（需 Active、def 齊全、有砲彈；冷卻中也可先選靶）
-   │   世界選靶：同圖層的任何有效 tile（無射程、最小距離限制；其他圖層拒絕）
+   │   世界選靶：同圖層的有效 tile；拒絕本地圖、其他圖層與超出 maxRangeTiles 的目標（無最小距離限制）
    │   targetTile = 該 tile → 進入持續射擊；Gizmo 換成「停止」並顯示冷卻/瞄準/就緒狀態
    ▼
 每 tick CompTick
@@ -491,7 +495,7 @@ OnArrived（AllowGenerateTargetMap = true：目標據點尚無地圖時會生成
         !Active → 暫停（保留目標，恢復後繼續）
         冷卻中 → 等待
         無砲彈 → 訊息 + 停止持續射擊
-        砲管（CompRefuelable）耗盡 → 訊息 + 停止持續射擊
+        砲管（CompRefuelable）耗盡 → 訊息 + 停止持續射擊（refuelableIsAmmo = true 時改顯示「無彈」）
         requiresFireControlChannel 且無空閒火控通道 → 暫停瞄準，等通道釋放
         開始瞄準：warmupEndTick = now + warmupTicks；砲管轉向世界方位（TurretTop.CurRotation，
                   瞄準期間每 tick 拉回，蓋過原版閒置擺動）
@@ -502,6 +506,7 @@ FireSingleShot
    │   • 出口邊緣格 = WorldDirectionAngle(本地 → 目標) 對應的地圖邊（同 tile 時取北邊）
    │   • 生成 Projectile_ArtilleryDeparture 射向出口格，攜帶目標 tile、彈種、齊射參數、攻擊方
    │     targetCell = 目標地圖中心（目標地圖未載入時用 (125, 0, 125)）——玩家不選落點格
+   │     guided = 開火瞬間是否搶到一條砲擊引導通道（有則散佈改用 guidedScatterRadius）
    │   • 進入 cooldownTicks；需要火控時佔用最空閒火控雷達 1 通道，fireControlHoldTicks 後釋放
    ▼
 Projectile_ArtilleryDeparture.Impact（抵達出口格）→ 建立 WorldObject_ArtilleryStrike（Tile = 本地圖）→ Vanish
@@ -511,7 +516,9 @@ Projectile_ArtilleryDeparture.Impact（抵達出口格）→ 建立 WorldObject_
    │   • salvoCount 發依 salvoIntervalTicks 錯開推入 MapComponent_ArtilleryStrikes
    ▼
 每 tick：MapComponent_ArtilleryStrikes 輪詢 → 到時 SpawnShell
-   │   • 散佈：targetCell + Rand.InsideUnitCircle × scatterRadius（夾入地圖，生成時定格）
+   │   • guided：每發在生成前重新 FindGuidedTarget（敵方砲塔 → 用電設備 → 人員，同級取最靠近者），
+   │     找不到才退回 targetCell（齊射之間目標可能已被摧毀，所以逐發重挑）
+   │   • 散佈：目標格 + Rand.InsideUnitCircle × scatterRadius（夾入地圖，生成時定格）
    │   • 生成 Projectile 從進入邊緣格 Launch 至落點
    │     hitFlags = IntendedTarget | NonTargetPawns，launcher = null
    ▼
@@ -522,7 +529,7 @@ Projectile_Explosive 命中結算（原版彈道/爆炸邏輯）
 
 - **與 BVR 共用火控通道**：火控雷達設 `supportsArtilleryGuidance` 才能引導砲擊。`FindAvailableRadar` 挑同陣營、運作中、`FreeArtilleryChannels` 最多者；`FreeArtilleryChannels = maxTargets − 已借給火砲 − 依容量比例分攤的 BVR 占用（無條件進位）`。反過來，`MidcourseDefense` 計算容量時扣除各雷達的 `OccupiedArtilleryChannels`。
 - **落彈是 `Projectile` 而非 Skyfaller**：砲彈從邊緣格水平飛入，走原版投射物邏輯，因此 **BVR 不會攔截砲彈**（只攔空投艙與 `IIncomingMissile` 導彈）。
-- **與導彈鏈的差異**：離場用 `Projectile` 弧線（`ScorerProjectile` skyfaller 從建築正上方升起，視覺不像砲擊）；抵達時不開玩家選靶，直接打目標地圖中心 ± 散佈。
+- **與導彈鏈的差異**：離場用 `Projectile` 弧線（`ScorerProjectile` skyfaller 從建築正上方升起，視覺不像砲擊）；抵達時不開玩家選靶，直接打目標地圖中心 ± 散佈（導引砲彈則逐發改瞄敵方目標，見 C-2）。
 - **不可跨圖層、找不到目標即落空**：砲彈無導引，選靶時拒絕其他圖層的 tile；抵達時目標 tile 沒有地圖也沒有據點則落空並發訊息，不生成營地地圖（有據點但尚無地圖時會生成）。
 - **存檔**：冷卻、`targetTile`、`channelReleaseTick`、借用的雷達（以 Thing 參照存檔）都會保存；`warmupEndTick`/`aimAngle` 不存，讀檔後從冷卻結束重新瞄準。離場投射物序列化建立世界航跡所需的全部資料；目標與世界航跡的 `PlanetTile` 以 `Scribe_Values` 完整保存「tileId,layerId」（舊存檔的 int 欄位仍可讀，但只能視為地表）；在途齊射由 `ArtilleryShellRequest` 全值序列化。
 
@@ -592,7 +599,7 @@ BVR 是**防禦**，裝配/發射與火砲是**進攻**，但已互相牽動：
    - 修正：`MapComponentTick` 先收集末端波次，迴圈後 `TerminalDefense` 對每具 CIWS 只呼叫一次 `TryEngage(terminalWaves)`；連射中以 `burstTargetId` 跨該防禦方所有末端波次找目標，新連射選 `tickToImpact` 最早的波次；存檔欄位不變。
 2. **【已修正】【1.7 迴歸】導彈陣地的「發射器全滅 → 陣地摧毀」永遠不會觸發。** `MapComponent_MissileBase.GetEnemyLaunchersCached` 以 `CompMissileLauncher_Scorer` 辨識發射器，但 1.7 的 `DMSE_Building_Scorer` 已改掛 `CompProperties_MissileRailLauncher`（1.6 仍是 `CompPropertiesScorer`），1.7 已無 Def 使用 `CompMissileLauncher_Scorer`。快取恆為空 → `hasEverHadLaunchers` 永遠 false → 不會呼叫 `OnBaseDestroyed`；`EnsureCrewLord` 的集結點也一律退回地圖中心。修正方向：改判 `CompMissileLauncher_WorldTargeting`（或基類 `CompMissileLauncher`），並同步更新該類別的 XML 註解。
    - 修正：改以 `CompMissileLauncher_WorldTargeting` 辨識（涵蓋 `_Rail`/`_Ballistic`/`_Scorer`，`LaunchSite_A` 的 Scorer 與輕型導彈發射箱都算在內），類別 XML 註解同步更新。
-3. **【低】火砲傷害歸因沒有生效。** `ArtilleryShellRequest.attackerFaction` 有存檔，但 `SpawnShell` 以 `launcher: null` 發射，該欄位實際沒被用到。1.7 尚無火砲 Def，影響有限。
+3. **【低】火砲傷害歸因沒有生效。** `ArtilleryShellRequest.attackerFaction` 有存檔，但 `SpawnShell` 以 `launcher: null` 發射，該欄位實際沒被用到。1.7 現已有火砲 Def（`DMSE_Turret_Empero`），此缺口的影響不再限於開發階段；`docs/反砲兵雷達_實作計畫.md` §8.4 決定不在此處修改（世界層發射沒有實體可掛 `launcher`），改用世界層事件記錄攻擊方供報復射擊判定。
 4. **【已修正】【低，潛在】導彈陣地取到「沒有 `CompMissileConfig` 的導彈」時會 NRE。** `TryFireFromOnMap` 先取第一個有彈的敵方彈架，再找架內第一枚帶 `CompMissileConfig` 的導彈；若該架只放了不帶此 comp 的彈（如 `DMSE_InterceptorMissile`），`missile` 為 null，`ExtractConfigFromMissile` 會退回預設設定，但接著的 `missile.Destroy()` 拋 NullReferenceException。現行 `LaunchSite_A` 只放輕型導彈與 Moskit（兩者都有此 comp），所以目前不會觸發。
    - 修正：`FindRackWithMissiles` 只回傳存有帶 `CompMissileConfig` 導彈的彈架並一併回傳該枚導彈；只放攔截彈的彈架直接跳過，不消耗任何東西。
 
@@ -609,10 +616,18 @@ BVR 是**防禦**，裝配/發射與火砲是**進攻**，但已互相牽動：
 - 火控雷達與火砲共用火力通道（`supportsArtilleryGuidance`）。
 - 射程公式加入戰鬥部 `RangeOffset` 與酬載 `RangeFactor`；導引頭 7 種、戰鬥部 8 種、酬載 8 種。
 - 裝配需按「確認裝配」；儲存架內的導彈可就地裝配；彈道井的專用裝配流程。
-- 火砲章節整段改寫（世界選靶、持續射擊狀態機、離場 `Projectile`、依球面方位決定出入邊、無 `minRange`），並註明 1.7 無 Def。
+- 火砲章節整段改寫（世界選靶、持續射擊狀態機、離場 `Projectile`、依球面方位決定出入邊、無 `minRange`），並註明 1.7 無 Def（該註記已由下方「火砲章節補正」撤銷）。
 - 新增 1.7 Def 配置與數值試算、敵方導彈來源（NPC 導彈陣地）、VGE 近防相容層。
 - 移除失效引用：`docs/導彈四階分級架構.md`（07-06 已刪除，四階分級摘要併入 B-1）、`docs/artillery-expansion-plan.md`（repo 中不存在）。
 - `README.md` 的 BVR／發射器摘要同步改用現行類名；CIWS 一欄移除「85 式多用途速射系統」（那是 Dawnblade Striker 的砲，沒有 `CompTerminalCIWS`）。
+
+**火砲章節補正（對齊 1.7 現況）**
+
+- §C 現況改以 `DMSE_Turret_Empero` 為準（原「1.7 沒有 Def」已不成立）；`README.md` §3 同步改寫。
+- §C-1 props 清單補 `guidedScatterRadius`／`maxRangeTiles`／`refuelableIsAmmo`，並列出實際 Def 值；`ArtilleryShellRequest` 補 `guided` 欄位、靜態工具補 `FindGuidedTarget`。
+- §C-2 時間軸補「導引砲彈在 `SpawnShell` 時逐發重挑目標」——這是原本漏記的行為（舊版只寫「打地圖中心 ± 散佈」）。
+- §F 第 3 點（歸因缺失）改註明 1.7 已有火砲 Def，並指向 `docs/反砲兵雷達_實作計畫.md` §8.4 的處理決定。
+- 手動測試清單第 11 項改指向自動驗收 R1–R4，並註明 `requiresFireControlChannel` 仍無 Def 使用。
 
 ### 2026-10-18：導引頭選目標機制（新功能）
 
@@ -662,7 +677,7 @@ BVR 是**防禦**，裝配/發射與火砲是**進攻**，但已互相牽動：
 8. **導彈陣地**：未生成地圖時定期來襲；進入地圖後發射數受敵方火控通道限制；摧毀全部發射器後陣地消失、收到摧毀信件（F 第三輪第 2 點的修正）。
 9. **裝配**：ITab 改部件 → 缺料紅字 → 按「確認裝配」→ 小人搬料 → 施工 → config 生效；更換/移除部件部分退還；儲存架內導彈可就地裝配；彈道井裝配後可發射、發射後需重新裝配。
 10. **發射**：各平台裝填 → 世界選靶受射程限制 → 玩家選落點 → 依彈頭/酬載結算；增程件與酬載係數影響射程。
-11. **火砲**（需自備測試 Def）：選世界目標 → 冷卻 → 瞄準轉向 → 離場投射物飛向對應邊緣 → 世界航跡 → 從發射地一側飛入、散佈生效；`requiresFireControlChannel` 時佔用並釋放火控通道；砲彈不觸發 BVR。
+11. **火砲**：已由 `.source/DMSE.BVRAcceptance` 的 `Tests_Artillery`（R1–R4）自動涵蓋——Def 接線與選靶規則（本地圖／跨圖層／射程）、無導引砲擊（瞄準轉向 → 離場投射物 → 世界航跡 → 生成並保留目標地圖 → 從發射地一側進入邊緣 → 散佈）、雷達導引（每發佔一條通道、散佈 3、落點挑敵方建築、到期釋放、池滿時改無導引）、本地圖減裝藥曲射（共用砲彈、世界射擊期間本地停火）。`requiresFireControlChannel` 目前沒有 Def 使用，仍只有程式碼行為、未列入自動驗收；砲彈不觸發 BVR。
 12. **存讀檔**：BVR 波次/目標/CIWS 連射狀態、導彈 config/pending/delivered/assemblyConfirmed、各發射器冷卻、彈道井裝填旗標、火砲持續射擊目標與在途齊射皆正確還原；**在途導彈/砲擊的目標圖層（軌道）讀檔後不變**，終端更新剩餘次數保留。
 13. **跨圖層**：地表陣地只有慣性制導彈時不攻擊軌道據點；換成具導引能力且射程足夠的導彈才會攻擊。玩家從軌道選地表目標：慣性/無導引彈被拒並顯示原因，導引彈可發射；火砲選其他圖層被拒。軌道地圖存在導彈陣地時，穿梭機不再跳紅字。
 14. **逃逸區**：導彈飛行中移動目標（之後的轉移飛行船，或以 Debug 改動目標 MapParent 的 Tile）→ 導彈在更新次數內改飛新位置（檢視字串的次數遞減）；次數用完後再移動 → 抵達時落空並發訊息。

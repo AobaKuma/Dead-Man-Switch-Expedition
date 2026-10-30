@@ -6,6 +6,7 @@
 > 天體轉移飛行設計與實作進度：[docs/CelestialTransfer_轉移飛行重構.md](docs/CelestialTransfer_轉移飛行重構.md)
 > 三代裝備體系（老資歷／中登／小登）設計與實作計畫：[docs/三代裝備體系_實作計畫.md](docs/三代裝備體系_實作計畫.md)
 > 三代裝備物品介紹文本：[docs/三代裝備體系_物品介紹.md](docs/三代裝備體系_物品介紹.md)
+> 反砲兵雷達與反砲兵作戰實作計畫（提案）：[docs/反砲兵雷達_實作計畫.md](docs/反砲兵雷達_實作計畫.md)
 
 《Dead Man's Switch》的 Odyssey 擴充。以太空 / 軌道 / 遠程作戰為主題，在 DMS Core 的基礎上加入超視距攔截、導彈裝配與發射、天體轉移飛行、真空製造與軌道平台等內容。
 
@@ -139,7 +140,11 @@ dotnet run --project .source/DMSE.BVRTests/DMSE.BVRTests.csproj -c Release --no-
 世界導彈的偵測與 SAM 中過程攔截現由世界層處理：雷達覆蓋圈 → 火控鎖定 → 實體攔截彈升空 → 世界會合，漏網彈抵達後只交給 CIWS。玩家導彈也會受到未生成地圖的敵方導彈陣地抽象防空攔截。速度與平衡數值集中在 `1.7/Defs/DMSE_BVRWorld.xml`（預設 150 ticks/格）；覆蓋圈預設選取據點時顯示，可用世界 Gizmo 或 Mod 設定改為常駐。空投／舊地圖內波次保留原流程，與世界航跡、火砲共用通道。P0–P3 程式與自動檢查已完成，遊戲內驗收待進行；細節見 [BVR 重構與驗收記錄](docs/BVR_世界層偵測攔截重構.md)。
 
 ### 3. 超視距火砲（Artillery）
-`CompArtilleryStrike` 選靶後建立世界航跡，抵達時排程齊射，砲彈以 `Projectile` 從地圖邊緣飛入落點。程式碼已完成；建築 Def（`DMSE_ArtillerySystem.disabled`）**目前停用**。
+`CompArtilleryStrike` 選靶後建立世界航跡，抵達時排程齊射，砲彈以 `Projectile` 從地圖邊緣飛入落點。1.7 已提供實際建築 `DMSE_Turret_Empero`（NK-30「帝王」遠程加農砲，3×3，`1.7/Defs/ThingDefs_Buildings/DMSE_LongRangeArtillery.xml`）：射程 20 tile、限同圖層且非本地圖、無導引散佈 14 格，每發消耗一枚高爆迫擊砲彈（存量 12）。
+
+開火瞬間若同陣營有支援砲擊引導（`supportsArtilleryGuidance`）的火控雷達空出一條通道，該發散佈縮到 3 格，且**每一發落彈時重新挑目標**（敵方砲塔 → 用電設備 → 人員，`ArtilleryStrikeUtility.FindGuidedTarget`）；沒有通道就照 14 格散佈打目標地圖中心。同一門砲另有減裝藥曲射 verb 打本地圖近距離目標，與世界砲擊共用同一份砲彈；跨圖層（如軌道）一律拒絕。自動驗收見 `.source/DMSE.BVRAcceptance` 的 `Tests_Artillery`（R1–R4）。
+
+1.6 的 `DMSE_ArtillerySystem.xml` 已停用，1.7 未沿用該檔。舊文件提到的 `docs/artillery-expansion-plan.md` 從未存在；反砲兵雷達與反砲兵作戰的規劃現由 [反砲兵雷達_實作計畫](docs/反砲兵雷達_實作計畫.md) 承接（提案，尚未實作）。
 
 ### 4. 天體轉移飛行（Celestial Transfer）
 把太空中的基地（小行星上的一角、軌道平台）整塊搬到同一軌道層的另一個位置。不依賴引力船與駕駛台；船在飛行中仍是一張正常運作的地圖。

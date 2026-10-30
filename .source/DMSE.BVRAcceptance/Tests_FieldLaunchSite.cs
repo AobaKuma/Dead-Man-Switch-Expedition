@@ -271,7 +271,18 @@ namespace DMSE.BVRAcceptance
 
             List<WorldObject> before = Find.WorldObjects.AllWorldObjects.ToList();
             t.Require(IncidentWorker_FieldLaunchSite.ActiveSiteCount() == 0, "no NPC missile site exists yet");
-            t.Check((bool)canFireSub.Invoke(def.Worker, new object[] { parms }), "the incident can fire with no site present");
+
+            // Gated on the player's radar network research: un-finish it for one check, then finish it.
+            ResearchProjectDef radarNetwork = DefDatabase<ResearchProjectDef>.GetNamed("DMSE_RadarNetwork");
+            var progress = (Dictionary<ResearchProjectDef, float>)typeof(ResearchManager)
+                .GetField("progress", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(Find.ResearchManager);
+            float savedProgress = Find.ResearchManager.GetProgress(radarNetwork);
+            progress[radarNetwork] = 0f;
+            t.Check(!radarNetwork.IsFinished && !(bool)canFireSub.Invoke(def.Worker, new object[] { parms }),
+                "the incident cannot fire before DMSE_RadarNetwork is researched");
+            progress[radarNetwork] = savedProgress;
+            EnsureNpcWorldNetwork();
+            t.Check((bool)canFireSub.Invoke(def.Worker, new object[] { parms }), "after the research, with no site present, the incident can fire");
             t.Check(def.Worker.TryExecute(parms), "the incident executes");
 
             Site site = Find.WorldObjects.Sites.FirstOrDefault(s => !before.Contains(s) && s.def.defName == "DMSE_FieldLaunchSite");

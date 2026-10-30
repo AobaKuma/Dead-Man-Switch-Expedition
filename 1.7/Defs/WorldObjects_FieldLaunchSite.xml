@@ -296,7 +296,7 @@
   </SitePartDef>
 
   <!-- 說書人觸發的大型威脅：敵對工業派系在殖民地射程內部署野戰發射陣地。
-       世界上已有 NPC 導彈陣地（任何種類）時不觸發。 -->
+       玩家完成雷達網（DMSE_RadarNetwork）研究前不觸發；世界上已有 NPC 導彈陣地（任何種類）時不觸發。 -->
   <IncidentDef>
     <defName>DMSE_FieldLaunchSiteDeployed</defName>
     <label>field launch position deployed</label>
@@ -318,6 +318,8 @@
         <distance>6~12</distance>
         <maxActiveSites>1</maxActiveSites>
         <threatPoints>300~3000</threatPoints>
+        <!-- 玩家研究雷達網後才出現。雷達網之前的低機率「老式導彈陣地」另行規劃，尚未實作。 -->
+        <requiredResearch>DMSE_RadarNetwork</requiredResearch>
       </li>
     </modExtensions>
   </IncidentDef>
