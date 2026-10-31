@@ -135,11 +135,11 @@ namespace DMSE
                         issues.Add(new TransferIssue(TransferIssueSeverity.Error, targetProblem));
                     }
                 }
-                // 防空封鎖：計畫後才生效的封鎖也會在倒數中檢查到並中止起飛（燃料在分離時才消耗）。
+                // 防空封鎖（主動攔截）：航線穿越封鎖圈只警告，飛行中會被接戰。
                 string airspace = TransferPlanningUtility.AirspaceProblem(plan);
                 if (airspace != null)
                 {
-                    issues.Add(new TransferIssue(TransferIssueSeverity.Error, airspace));
+                    issues.Add(new TransferIssue(TransferIssueSeverity.Warning, airspace));
                 }
             }
 

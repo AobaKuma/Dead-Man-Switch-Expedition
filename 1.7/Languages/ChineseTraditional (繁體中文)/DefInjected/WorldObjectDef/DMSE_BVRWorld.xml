@@ -2,4 +2,6 @@
 <LanguageData>
   <DMSE_Interceptor.label>攔截導彈</DMSE_Interceptor.label>
   <DMSE_Interceptor.description>飛往預測會合點的防空攔截導彈。</DMSE_Interceptor.description>
+  <DMSE_BlockadeInterceptor.label>封鎖攔截導彈</DMSE_BlockadeInterceptor.label>
+  <DMSE_BlockadeInterceptor.description>向飛越封鎖空域的載具發射的防空攔截導彈。</DMSE_BlockadeInterceptor.description>
 </LanguageData>

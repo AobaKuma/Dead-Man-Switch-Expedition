@@ -17,14 +17,14 @@
   <DMSE.AirAlert.Unavailable.NoFireControl>無火控</DMSE.AirAlert.Unavailable.NoFireControl>
   <DMSE.AirAlert.Unavailable.NoTracking>無雷達覆蓋</DMSE.AirAlert.Unavailable.NoTracking>
   <DMSE.AirAlert.BlockadeNoticeLabel>防空封鎖公告</DMSE.AirAlert.BlockadeNoticeLabel>
-  <DMSE.AirAlert.BlockadeNoticeText>{0}將於 {3} 後封鎖{1}周邊 {2} 格空域，非盟友載具不得起降或通過。</DMSE.AirAlert.BlockadeNoticeText>
+  <DMSE.AirAlert.BlockadeNoticeText>{0}將於 {3} 後封鎖{1}周邊 {2} 格空域，防空火力會攻擊飛越的非盟友載具。</DMSE.AirAlert.BlockadeNoticeText>
   <DMSE.AirAlert.BlockadeActiveLabel>防空封鎖生效</DMSE.AirAlert.BlockadeActiveLabel>
-  <DMSE.AirAlert.BlockadeActiveText>{0}已封鎖{1}周邊 {2} 格空域。</DMSE.AirAlert.BlockadeActiveText>
+  <DMSE.AirAlert.BlockadeActiveText>{0}已封鎖{1}周邊 {2} 格空域，飛越的非盟友載具會遭到攻擊。</DMSE.AirAlert.BlockadeActiveText>
   <DMSE.AirAlert.BlockadeCancelled>{0}取消了{1}的封鎖。</DMSE.AirAlert.BlockadeCancelled>
   <DMSE.AirAlert.BlockadeLifted>{0}解除了{1}的封鎖。</DMSE.AirAlert.BlockadeLifted>
   <DMSE.AirAlert.EngagingPlayer>{1}正在攔截你的導彈。</DMSE.AirAlert.EngagingPlayer>
   <DMSE.AirAlert.NeutralInterceptLabel>中立防空攔截</DMSE.AirAlert.NeutralInterceptLabel>
   <DMSE.AirAlert.NeutralInterceptText>{0}的{1}會攔截飛越其空域的非盟友導彈，包括你的。</DMSE.AirAlert.NeutralInterceptText>
   <DMSE.AirAlert.InterceptorSafed>攔截彈已解除：{0}屬於盟友。</DMSE.AirAlert.InterceptorSafed>
-  <DMSE.Airspace.Blocked>航線穿越{0}的封鎖區（{1}，{2} 格）。</DMSE.Airspace.Blocked>
+  <DMSE.Airspace.Blocked>航線穿越{0}的封鎖區（{1}，{2} 格），會遭到防空火力攻擊。</DMSE.Airspace.Blocked>
 </LanguageData>

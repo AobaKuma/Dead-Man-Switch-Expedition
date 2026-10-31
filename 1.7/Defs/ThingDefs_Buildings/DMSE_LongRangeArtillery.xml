@@ -38,7 +38,8 @@
     <passability>PassThroughOnly</passability>
     <castEdgeShadows>true</castEdgeShadows>
     <staticSunShadowHeight>0.3</staticSunShadowHeight>
-    <fillPercent>0.7</fillPercent>
+    <!-- 建築高度 0.7 → 0.75：統一對齊 DMS_BaseCannonBuilding（掩體阻擋率 = fillPercent） -->
+    <fillPercent>0.75</fillPercent>
     <canOverlapZones>false</canOverlapZones>
     <pathCost>50</pathCost>
     <tickerType>Normal</tickerType>

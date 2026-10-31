@@ -9,4 +9,8 @@
   <DMSE.ManPortableSAM.TargetOption>{0}（{1}后抵达，命中率 {2}）</DMSE.ManPortableSAM.TargetOption>
   <DMSE.ManPortableSAM.CannotIntercept>下一发装填的是{0}，无法用于拦截。请先对地面目标发射。</DMSE.ManPortableSAM.CannotIntercept>
   <DMSE.TurretGun.Engaging>交战中：{0}</DMSE.TurretGun.Engaging>
+  <DMSE.TurretGun.TooClose>目标太近，最小射程为 {0} 格。</DMSE.TurretGun.TooClose>
+  <DMSE.TurretGun.OutOfRange>目标超出射程，最大射程为 {0} 格。</DMSE.TurretGun.OutOfRange>
+  <DMSE.TurretGun.RangeBand>射程：{0} 至 {1} 格，最小射程内的目标无法攻击。</DMSE.TurretGun.RangeBand>
+  <DMSE.TurretGun.BarrelBusy>火炮正在炮击世界地图目标。</DMSE.TurretGun.BarrelBusy>
 </LanguageData>

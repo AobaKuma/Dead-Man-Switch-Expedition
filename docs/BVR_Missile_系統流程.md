@@ -1,688 +1,212 @@
-# DMSE 遠程作戰系統 — 應用流程與實作說明
+# DMSE 遠程作戰系統 — 流程與實作總覽
 
-> 最後校對：2026-10-18（依 `.source/DMSE` 現行程式碼與 `1.7/Defs` 全面覆核；`1.6/` 已凍結為 Workshop 版，不在本文範圍）
-> 同日併入 9c3f5c5：跨圖層打擊、終端更新（逃逸區）、落空規則與世界 tile 圖層修正（A-3、B-4～B-6、C、F、G）
+最後全面校對 2026-10-18；之後各子系統變更以連結文件為準。`1.6/` 已凍結，不在範圍。原始完整版（含逐輪審查紀錄、19 項手動測試清單）在 `docs/_archive/`。
 
-> 同日世界層 BVR 更新：導彈正式航跡改為「世界偵測 → 世界 SAM 會合 → 抵達後 CIWS 末端」；本文 A 節的完整地圖內窗口仍適用空投、舊波次與直接生成的後備導彈。新的世界速度（150 ticks/格）、通道帳本、NPC 抽象防空、XML 與驗收狀態見 [BVR 世界層重構 §15](BVR_世界層偵測攔截重構.md#15-實作與驗證記錄2026-10-18)。
+三套系統：
 
-> 2026-10-19 波次打擊 P0：攔截彈（`MissileRoleExtension` = Interceptor）不再被對地發射軌當成輕型導彈射出；世界選靶平台改以「指定彈藥」發射（`TryLaunchRound`）；被打擊任務保留的導彈不會被單發、SAM 或裝配取用；世界防空改為依 ETA 先到先打。同日 P1：新增打擊指揮中心（`DMSE_StrikeCommandCenter`／`CompStrikeConsole`），可把在架進攻導彈分波發射，波次占用火控通道（帳本 Strike 分項）；沒有可用攔截彈的節點不再鎖定。P2：新增打擊規劃桌（`DMSE_StrikePlanningTable`，人工版），確認後由研究者計算彈道，依波次逐枚解出。P3：抵達時間軸與順序警示、組別展開指定單枚、執行中調整波次（增量計算）、打擊航跡分組警報與戰果彙總信件。P4：定時發射、目標移動 ≥ 5 格重算、誘餌酬載（`signatureFactor`）與威脅評估、NPC 陣地齊射。詳見 [波次打擊規劃 §15](BVR_波次打擊規劃.md#15-實作與驗證記錄2026-10-19)。
+- **A. 地圖層超視距攔截（BVR）**：偵測並攔截來襲空投與導彈。世界層的偵測／中過程攔截見 [BVR 世界層](BVR_世界層偵測攔截重構.md)；本節的完整地圖內窗口仍用於空投、舊波次與直接生成的後備導彈。
+- **B. 導彈裝配與發射**：玩家自組導彈、小人裝配、打擊地圖外目標；NPC 陣地共用同一條導彈鏈。波次打擊見[波次打擊](BVR_波次打擊規劃.md)；載體見 [Skyfaller→Projectile](Missile_Skyfaller轉Projectile_計畫.md)；裝備名冊見[三代裝備](三代裝備體系_實作計畫.md)。
+- **C. 超視距火砲**：世界選靶持續砲擊，`DMSE_Turret_Empero`。
 
-> 2026-10-27 地圖層 SAM 接戰到落地：進入 CIWS 末端窗口後 SAM 不再停火，與 CIWS 疊加（原規則下手操 Flak 43 的 1800 ticks 窗口會吞掉早期雷達的整個預警窗口，旋轉發射軌射一發、復裝後就不再出手）；命中率的導引時間改為距落地時間（同世界層）；只在攔截彈趕得上落地時鎖定與發射。`terminalOnly` 目標（世界層漏網）仍只交給 CIWS。見 A-4、A-5。
-
-本文整理三套同屬「超視距作戰」的系統：
-
-- **A. 超視距攔截系統（BVR）** — 偵測並攔截敵方來襲空投（drop pod）**與來襲導彈**（`Projectile_MissileIncoming`；舊存檔的 `MissileIncoming` 讀檔時轉換）。
-- **B. 導彈自定義裝配與發射系統** — 玩家自組導彈、由小人裝配、發射打擊地圖外目標；NPC 導彈陣地也走同一條導彈鏈。
-- **C. 超視距火砲系統（Artillery）** — 世界選靶的持續砲擊：砲彈以 `Projectile` 離場 → 世界航跡 → 從目標地圖邊緣飛入。1.7 已有 Def 使用：`DMSE_Turret_Empero`（見 §C）。
-
-皆以 **ThingComp** 組合到建築/物品上，達成「單一建築複合功能」。系統間的實質交互：SAM 以裝配系統產出的實體導彈為彈藥、戰鬥部（`WarheadEffect`）直接影響攔截判定；進攻導彈可掛反輻射導引頭反制雷達；火砲與 BVR 中過程攔截**共用火控雷達的火力通道**；所有發射平台共用 `CompMissileLauncher` 基類與 `CompBVRDevice` 的可用性判定。
+全部以 ThingComp 組合到建築／物品上（單一建築複合功能）。SAM 用裝配系統產出的實體導彈，戰鬥部影響攔截；進攻導彈可掛反輻射導引頭打雷達；火砲與 BVR 共用火控通道；所有發射平台共用 `CompMissileLauncher` 基類與 `CompBVRDevice` 可用性判定。
 
 ---
 
-## A. 超視距攔截系統（BVR）
+## A. 地圖層 BVR
 
-### A-1. 角色：建築 × ThingComp
+### A-1. 角色
 
-| 角色 | ThingComp（Props） | 關鍵參數 |
+| 角色 | Comp | 關鍵參數 |
 |---|---|---|
-| 搜索雷達 | `CompSearchRadar`（`CompProperties_SearchRadar`） | `searchDistance`、`powerLevel`（**超線性**，指數 `PowerWindowExponent=2`）、`antiStealthLevel`、`ticksPerDistance`、`immuneToAntiRadiationSeeker` |
-| 火控雷達 | `CompFireControlRadar`（`CompProperties_FireControlRadar`） | `maxTargets`（火力通道）、`powerLevel`（隱身對衝）、`guidanceAccuracyTime`、`maxRangeTicks`、`maxHitChance`、`stealthMissFactor`、`lockOnTicks`、`immuneToAntiRadiationSeeker`、`supportsArtilleryGuidance`（通道可借給火砲，見 C-3） |
-| 導彈發射裝置（SAM） | `CompMissileLauncher_Interceptor`（Props 仍名 `CompProperties_MissileLauncher`） | `interceptorSkyfaller`、`reloadCooldownTicks`、`interceptorTravelTicks`；**彈藥為容器中的實體導彈**（見 A-6） |
-| 末端攔截砲塔（CIWS） | `CompTerminalCIWS`（`CompProperties_TerminalCIWS`） | `terminalWindowTicks`、`cooldownTicks`、`shotsPerBurst`、`ticksBetweenShots`、`interceptChance`（**整輪連射只判定一次**）、`debrisChance`、`fuelPerShot`、瞄準視覺（`aimLeadCells`/`aimSweepCells`/`aimHeightFar`/`aimHeightNear`）、`interceptSound`、曳光彈 `projectile` |
+| 搜索雷達 | `CompSearchRadar` | `searchDistance`、`powerLevel`（平方）、`antiStealthLevel`、`ticksPerDistance`、`worldDetectionRange`、`immuneToAntiRadiationSeeker` |
+| 火控雷達 | `CompFireControlRadar` | `maxTargets`（通道）、`powerLevel`、`guidanceAccuracyTime`、`maxRangeTicks`、`maxHitChance`、`stealthMissFactor`、`lockOnTicks`、`supportsArtilleryGuidance`、`supportsStrikeGuidance` |
+| SAM | `CompMissileLauncher_Interceptor`（Props 名 `CompProperties_MissileLauncher`） | `reloadCooldownTicks`、`interceptorTravelTicks`；彈藥 = 容器內實體導彈 |
+| CIWS | `CompTerminalCIWS` | `terminalWindowTicks`、`cooldownTicks`、`shotsPerBurst`、`ticksBetweenShots`、`interceptChance`（**整輪一次**）、`debrisChance`、`fuelPerShot`、瞄準視覺參數 |
 
-所有裝置繼承 `CompBVRDevice`，統一 `Active` 判定：已生成且未銷毀／未損壞（Breakdownable）／開關開啟（Flickable）／通電（PowerTrader）／未被擊暈（Stunnable）／**掛有 `CompMannable` 時必須有人操作**（與 `CompTurretFacingRenderer` 的轉向判定一致，視覺停轉與實際停火同步）。搜索／火控／SAM／CIWS 四者於 `PostSpawnSetup`/`PostDeSpawn` 自行向地圖中央管理器註冊。
+`CompBVRDevice.Active`：已生成、未損壞、開關開、通電、未擊暈、**有 `CompMannable` 時必須有人操作**。四類裝置在 `PostSpawnSetup`／`PostDeSpawn` 自行註冊。SAM 屬發射平台家族，`HasAmmo` 為 Active 的一部分；其他平台與火砲只借用可用性判定，不註冊。
 
-`CompMissileLauncher_Interceptor` 屬於發射平台家族（`.source/DMSE/CompMissileLauncher.cs`，見 B-4）：抽象基類 `CompMissileLauncher` 再疊加 `HasAmmo`，所以 **SAM 要有彈才算 Active**。家族中只有 Interceptor 會向 BVR 註冊；世界選靶發射平台與火砲雖然也繼承 `CompBVRDevice`，但只借用可用性判定。
+現行雷達與防空砲數值見[三代裝備](三代裝備體系_實作計畫.md)與 `1.7/Defs`。攔截器只取 `Interceptor`／`Dual` 彈（`MissileRoleExtension.CanIntercept`），命中率再乘 `interceptHitFactor`。單兵防空具消耗背包刺針攔截本地圖波次，不占通道。
 
-**1.7 現行配置**（數值取自 `1.7/Defs`）：
+UI 配件（不參與判定）：`CompTurretFacingRenderer`（追最緊急目標；`drawLoadedAmmo`）、`MapComponent_InterceptEffects`（攔截特效，見[攔截殘骸特效](攔截殘骸特效_實作與技術美術計畫.md)）、`WeatherEvent_MissileFlash`、`Alerts_BVRStatus`（雷達與通道分項）、`Alerts_Pods`（防禦方波次）、`Alerts_PlayerMissiles`（攻擊方，左右鍵跳轉）、`CompEffecterColdLaunch`／`HotLaunch`（經 `IMissileFlight`，見[發射特效](導彈發射特效_重製計畫.md)）。
 
-| 建築 | 角色 | 重點數值 |
-|---|---|---|
-| `DMSE_AcousticEarlyWarningRadar` 被動聲學雷達 | 搜索（無火控） | 距離 120、功率 1、反隱身 0、`ticksPerDistance` 10、**不用電**、**反輻射免疫** |
-| `DMSE_SearchRadar` 搜索雷達 | 搜索（無火控） | 距離 200、世界 12 格、功率 1、反隱身 1、`tpd` 8、2500 W |
-| `DMSE_PhaseArrayRadar` 相控陣雷達 | 搜索 + 火控 | 搜索 200/功率 2/反隱身 2/`tpd` 4；火控 **24 通道**、功率 2、`maxHitChance` 0.9、`lockOnTicks` 120、`maxRangeTicks` 6000；9000 W |
-| `DMSE_FireControlRadar` 火控雷達 | 火控 | **4 通道**、功率 1、`maxHitChance` 0.85、`stealthMissFactor` 0.55、`lockOnTicks` 150、`maxRangeTicks` 5000、`supportsArtilleryGuidance`；1500 W |
-| `DMSE_EarlyFireControlRadar` 老式火控雷達 | 火控（**需人操作**） | **1 通道**、功率 1、`maxHitChance` 0.75、`stealthMissFactor` 0.6、`lockOnTicks` 200、`maxRangeTicks` 4000、`supportsArtilleryGuidance` |
-| `DMSE_Building_FieldAirDefense` 野戰防空砲 | 搜索 + 火控 + SAM + CIWS + 本地圖對地機砲（**全自動**，`CompBuildingTurretGun`，砲塔頭轉到目標方位才開火；貼圖借 DMS 通古斯卡） | 搜索 100／世界 4；火控 2 通道；容量 4（SA-19／刺針／攔截彈）；機砲 CIWS `interceptChance` 0.35、每輪 8 發、鋼製機砲彈 |
-| `DMSE_Building_RotaryMissileLauncher` 防空導彈發射架 | SAM（**需人操作**） | 容量 **4**、裝填冷卻 240、攔截彈飛行 180；收攔截彈／SA-19／刺針／麻雀；砲塔頭繪製在架導彈 |
-| `DMSE_Building_RotaryLauncher` 旋轉發射架 | SAM + 對地發射軌（**需人操作**） | 容量 1；Loitering＋Light；V1／白蟻走對地、萊茵女兒／刺針等走攔截 |
-| `DMSE_Building_LoiteringLauncher` 軌道發射架 | SAM + 對地發射軌 | 容量 1；V1／白蟻走對地、萊茵女兒走攔截 |
-| `DMSE_Building_LightMissileLauncher` 傾斜發射箱 | **SAM + 對地發射軌（共用彈艙）** | 容量 4；SAM 冷卻 240／飛行 300；對地冷卻 450 |
-| `DMSE_Building_LightMissileVLS` 小型垂直發射井 | SAM + 對地發射軌 | 容量 4、200 W |
-| `DMSE_Turret_LegacyFlak` 老式防空砲 | CIWS（**需砲手**） | Flak 43 原型；`interceptChance` 0.2（每輪）、每輪 8 發、間隔 14、冷卻 90、37 毫米砲彈 80；Radar＋GasOperation |
-| `DMSE_Turret_Vulcan_WingBack` GAU-4 | CIWS | 窗口 1800、每輪 10 發、間隔 4、冷卻 20、`interceptChance` 0.25、`debrisChance` 0.3、每發耗 1 砲管（容量 600） |
-| `DMSE_Turret_Millennium` 先進防空砲 | CIWS | `interceptChance` 0.85、每輪 12 發、間隔 3、冷卻 30、每發耗 2（容量 600）、3000 W |
+### A-2. 資料模型
 
-攔截器只取攔截／兩用彈（`MissileRoleExtension.CanIntercept`），命中率再乘攔截彈彈體的 `interceptHitFactor`（萊茵女兒 0.6、刺針 0.85、SA-19／地獄火 1.0、麻雀 1.25）。單兵防空導彈發射具（`CompEquippable_ManPortableSAM`）消耗背包裡的刺針攔截本地圖波次，不占火控通道。三代裝備的完整名冊見 [三代裝備體系_實作計畫.md](三代裝備體系_實作計畫.md)。
+`MapComponent_BVRCombat`（每地圖）：
 
-**純視覺/UI 配件**（不參與判定）：
+- `BVRWave`：`tickToImpact`、`targets`、`defenderFaction`、`lord`、`signal`、`terminalOnly`。
+- `BVRTarget`：`ThingOwner<Thing>`（存檔鍵 `skyfaller`）收起空投艙或 `IIncomingMissile`（`Payload`／`Missile`／`Skyfaller`）；`position`、`stealthLevel`、`speed`、`lockUntil`、`midcourseEngagedUntil`、唯一 `id`。`ContainedPawns` 回傳艙內全部 pawn。
+- 四個裝置註冊表；`Channels`（`BVRChannelLedger`）。
+- `BVRTargetProps`（掛在空投艙或落地導彈 def）：`distanceLevel`、`stealthLevel`、`speed`、`altitude`；無擴充時 1／0／15／1000。
+- `BVRTuning`：`PowerWindowExponent=2`、`AntiStealthBonusPerLevel=0.5`、`StealthDetectFactor=0.4`、`MergeWindowTicks=600`、`WindowPenaltyPerExtraTarget=60`。
 
-- `CompTurretFacingRenderer` — 通用砲塔頭渲染：讀取本陣營最緊急（`tickToImpact` 最早）的目標平滑轉向，無目標時閒置擺動；裝置不可運作時停止追蹤。可選 `drawLoadedAmmo` 讓在架導彈隨砲塔頭旋轉。
-- `MapComponent_InterceptEffects` — 攔截成功時在目標上方**地圖外高空**繪製閃光 + 音效（中過程與末端參數不同）；材質於啟動時以 `[StaticConstructorOnStartup]` 在主執行緒建立。
-- `WeatherEvent_MissileFlash` — 導彈落地時的全地圖爆炸閃光（強度∝爆炸半徑）。
-- `Alerts_BVRStatus` — 常駐警報：玩家在當前地圖持有任一**搜索或火控雷達**即顯示雷達清單與火力通道占用（`CountEngaged()/Σ運作中火控 maxTargets`；`CountEngaged` 計入該地圖所有波次）。
-- `Alerts_Pods` — 玩家為防禦方時，顯示最早抵達波次的中過程／末端剩餘時間與逐目標狀態（攔截彈在飛／鎖定中／未接戰），點擊跳到首目標。
-- `Alerts_PlayerMissiles` — 玩家為**攻擊方**、導彈被敵方 BVR 追蹤時顯示；左鍵／右鍵正反向循環跳轉相機至各彈落點（可跨地圖）。
-- `CompEffecterColdLaunch`／`CompEffecterHotLaunch` — 冷射／熱射排氣特效；經 `IMissileFlight` 讀飛行狀態（新的 `Projectile_MissileLaunch` 與舊 skyfaller 版 `ScorerProjectile`／`InterceptProjectile` 皆實作），公式不分載體。
-- **導彈載體為 Projectile**（docs/Missile_Skyfaller轉Projectile_計畫.md）：`.source/DMSE/MissileProjectile/`——每個彈體有自己的發射 Projectile（`MissileBodyDef.launchProjectile`，`Projectile_MissileLaunch`，對地與攔截兩用）；落地為 `Projectile_MissileIncoming`（`incomingSkyfaller` 欄位名沿用，def 已是 Projectile）。平台的 `skyfaller`／`interceptorSkyfaller` 只在彈體沒有發射 Projectile 時作為舊 skyfaller 後備。
+### A-3. 目標進入
 
-### A-2. 中央管理器與資料模型
-
-`MapComponent_BVRCombat`（每張地圖一個）持有：
-
-- `List<BVRWave> Waves` — 波次：`tickToImpact`、`targets`、`defenderFaction`（負責攔截的防禦方）、`lord`、`signal`。
-- `BVRTarget` — 以 `ThingOwner<Thing>`（存檔鍵 `skyfaller`）收起來襲物：空投艙 skyfaller，或實作 `IIncomingMissile` 的導彈（`Payload`／`Missile`／`Skyfaller` 三種存取）；`position`（預測落點）、`stealthLevel`、`speed`（來自 def 的 `BVRTargetProps`）、`lockUntil`（火控鎖定計時）、`midcourseEngagedUntil`（攔截彈在飛計時）、唯一 `id`（`nextTargetId` 遞增並存檔）。`ContainedPawns` 回傳艙內**所有** pawn。
-- 四個裝置註冊表（搜索／火控／SAM／CIWS，`HashSet`）。
-- `BVRTargetProps`（DefModExtension，掛在目標 def：空投艙 skyfaller 或落地導彈 Projectile）：`distanceLevel`（越高越早被偵測）、`stealthLevel`、`speed`（越快越難攔截）。無擴充時用 `Default`（1／0／15）。
-- `BVRTuning` — 集中平衡常數：`PowerWindowExponent=2`、`AntiStealthBonusPerLevel=0.5`、`StealthDetectFactor=0.4`、`MergeWindowTicks=600`、`WindowPenaltyPerExtraTarget=60`。
-
-1.7 目標屬性：
-
-| 目標 def | `distanceLevel` | `stealthLevel` | `speed` |
-|---|---|---|---|
-| 空投艙等（無擴充，`Default`） | 1 | 0 | 15 |
-| `DMSE_Incoming_Loiter` 巡飛彈 | 1 | 0 | 15 |
-| `DMSE_Incoming_LightMissile` 輕型導彈 | 1.2 | 0 | 22 |
-| `DMSE_Incoming_CruiseMissile` 巡航導彈 | 1.5 | 1 | 30 |
-| `DMSE_Incoming_BallisticMissile` 彈道導彈 | 2 | 2 | 80 |
-
-### A-3. 目標進入系統的路徑
-
-1. **敵對空投**：`Patch_MakeDropPodAt`（postfix on `SkyfallerMaker.SpawnSkyfaller(ThingDef, Thing, IntVec3, Map)` 這個多載）→ `BVRDetection.GetDropFaction`：以 `PawnsIn` 列出內容物 pawn（`innerThing` 本身，或 `ActiveTransporter` 艙內的**全部** pawn；艙內可同時有補給等其他物品），取第一個有陣營者 → `ResolveDefender` 找防禦方 → 有則 `DeSpawn` + `RegisterIncoming`。攔截彈自身（舊 `InterceptProjectile`）豁免；新的攔截彈是 Projectile，不經此 patch。
-2. **來襲導彈**：**生成端同步登記**。`WorldObject_IncomingMissile.Arrive`（敵方）與 `ScorerProjectile_WorldObject.SpawnIncoming`（玩家）以 `MissileProjectileMaker.SpawnIncoming`（帶世界航跡最後一段的進入方位 `ArrivalHeading`）生成 `Projectile_MissileIncoming`、設好 `config`/`attacker` 後立即呼叫 `MissileBVRUtility.TryRegister(Thing)`。首次 `Tick` 自註冊保留作後備（其他生成路徑，如 Debug 單發），`bvrHandled`/`checkedBvr` 旗標避免重複登記。`Patch_SpawnMissileIncoming` 已**廢棄留空**（spawn-time patch 執行時 `attacker`/`config` 尚未設定）。
-3. **測試**：`RegisterSalvo`（Debug「Enemy missile salvo」）直接生成含 N 枚導彈的單一波次，繞過世界航跡；無防禦方雷達時改為直接落地。
-
-**敵方導彈的來源**：
-
-- **NPC 導彈陣地**（`DMSE_MissileBase` Site，`.source/DMSE/MissileBase/`）：
-  - 地圖未生成：`WorldObjectComp_MissileBase` 每 1–2 天（`missileFireIntervalDays`）對這枚導彈打得到的玩家地圖（`MissileWorldUtility.CanEngage`：陣地射程 20 與導彈射程取小，跨圖層需導引能力）隨機選一個發射，設定為 `missileBody` 的空白 config（留空時取 `DefDatabase` 第一個 `MissileBodyDef`，取決於載入順序，建議在 XML 明確指定）；15–30 天後陣地轉移（站點消失）。
-  - 地圖已生成：改由 `MapComponent_MissileBase` 每 500 ticks 推進。發射通道數為地圖上敵方運作中火控雷達的 `maxTargets` 總和，每個空閒通道從找到的第一個存有可發射導彈（帶 `CompMissileConfig`）的敵方 `Building_MissileRack` 取一枚導彈（用該彈的 config），先以同一套 `CanEngage` 篩出它打得到的玩家地圖，沒有目標就保留在架上不消耗；發射時把目標據點設為 `targetParent`（供終端更新追蹤），`WorldObject_IncomingMissile` 銷毀（抵達或落空）後釋放通道。玩家觀察中且敵方世界選靶發射器（`CompMissileLauncher_WorldTargeting`）全數被摧毀時，陣地消失。陣地結構（FFF `LaunchSite_A`）放置相控陣雷達、4 座 `DMSE_Building_Scorer`、2 座輕型導彈發射箱（含 SAM）與 WingBack CIWS，彈架由 `MissileAutoFillUtility` 依陣營科技等級自動填彈。輕型發射箱的彈藥同時是陣地 SAM 的攔截彈與對外打擊的彈源。
-- **Debug**：`Enemy missile strike (incoming, world)` 走世界航跡；`single`／`volley x5` 直接生成於指定格。
+1. **敵對空投**：`Patch_MakeDropPodAt`（postfix `SkyfallerMaker.SpawnSkyfaller(ThingDef, Thing, IntVec3, Map)`）→ `BVRDetection.GetDropFaction`（`PawnsIn` 列出全部 pawn，取第一個有陣營者）→ `ResolveDefender` → `DeSpawn` + `RegisterIncoming`。舊 `InterceptProjectile` 豁免。
+2. **來襲導彈**：生成端同步登記。`MissileProjectileMaker.SpawnIncoming` 生成 `Projectile_MissileIncoming`、設好 config／attacker 後立即 `MissileBVRUtility.TryRegister`；首 tick 自註冊為後備（`bvrHandled`／`checkedBvr` 防重複）。世界層漏網者走 `RegisterTerminal`。`Patch_SpawnMissileIncoming` 已廢棄留空。
+3. **測試**：Debug「Enemy missile salvo」`RegisterSalvo` 直接生成波次。
 
 ### A-4. 預警窗口與波次合併
 
 ```
-window = Σ(各運作中防禦方搜索雷達的貢獻) × distanceLevel ÷ targetCount
-單雷達貢獻 = searchDistance × ticksPerDistance × max(1, powerLevel)^2 × 隱身係數
-隱身係數  = antiStealthLevel <  stealthLevel → 0.4（StealthDetectFactor）
-            antiStealthLevel >= stealthLevel → 1 + 0.5 × (antiStealth − stealth)
+window = Σ(防禦方運作中搜索雷達貢獻) × distanceLevel × AltitudeFactor ÷ targetCount
+單雷達 = searchDistance × ticksPerDistance × max(1, powerLevel)² × 隱身係數
+隱身係數 = antiStealth < stealth → 0.4；否則 1 + 0.5 × (antiStealth − stealth)
+AltitudeFactor = clamp(√(altitude / altitudeRefMeters), min, max)
 ```
 
-回傳 -1（防禦方無運作中搜索雷達）則不攔截、照常落地。`tickToImpact = now + window`。
+無運作中搜索雷達 → -1，照常落地。同防禦方、抵達相差 ≤600 ticks 的目標合併，取最早抵達，每多一個目標 −60（下限 now+1）。多雷達貢獻相加。高度只決定反應時間，速度只影響火控。
 
-**波次合併**：同防禦方、預測抵達相差 ≤ 600 ticks（`MergeWindowTicks`）的目標併入同一波次；合併後取最早抵達 tick，且每多一個目標再縮短 60 ticks（`WindowPenaltyPerExtraTarget`，下限 now+1）。
-
-**1.7 單雷達、單目標的窗口試算**（ticks；60 ticks = 1 秒）：
-
-| 目標 | 早期預警雷達（1200 基值） | 相控陣雷達（3200 基值） |
-|---|---|---|
-| 空投艙 | 1200 | 6400 |
-| 輕型導彈 | 1440 | 7680 |
-| 巡航導彈（隱身 1） | 720（反隱身不足 ×0.4） | 7200 |
-| 彈道導彈（隱身 2） | 960（反隱身不足 ×0.4） | 6400 |
-
-多座雷達的貢獻相加。**注意**：末端窗口（WingBack、千禧年、Flak 43 皆為 1800）是 CIWS 開始射擊的時刻，**不是 SAM 停火的時刻**（2026-10-27 起）：只有早期預警雷達時窗口多半 ≤ 1800，若同時有 CIWS，目標一進系統就在末端，CIWS 與 SAM 一起接戰到落地。舊規則下這種配置的 SAM 完全不出手（或只來得及射一發）。
-
-### A-5. 線性時間線（偵測 → 落地）
+### A-5. 時間線（每 tick，由 Waves 尾端往前）
 
 ```
-每 tick：MapComponent_BVRCombat.MapComponentTick → 由 Waves 尾端往前，依 timeLeft 分階段
-   │
-   ├─ timeLeft > 0（非 terminalOnly 波次） →  SAM 接戰（MidcourseDefense；2026-10-27 起一路到落地，末端窗口內與 CIWS 並行）
-   │     • terminalOnly 目標（世界層漏網）略過，只交給 CIWS
-   │     • 趕得上才接戰：攔截彈升空結算時間 = 裝填彈體的發射 Projectile 朝來襲方位的升空模擬
-   │           （CompMissileLauncher_Interceptor.InterceptFlightTicks；模擬不到時用 interceptorTravelTicks）；
-   │           新鎖定要 timeLeft − 鎖定時間 > 最快結算時間，發射只選 結算時間 < timeLeft 的 SAM，
-   │           已沒有 SAM 趕得上時放掉鎖定、釋放通道
-   │     • 火力通道容量 = Σ 防禦方運作中火控雷達的 max(0, maxTargets − OccupiedArtilleryChannels)
-   │                       （共用池；僅計 timeLeft ≤ maxRangeTicks 的雷達；已借給火砲的通道先扣除）
-   │     • 占用數 CountEngaged = 全部波次中 lockUntil ≥ 0 或攔截彈在飛的目標數
-   │     ① 鎖定：未鎖定的新目標，若占用 < 容量，且防禦方有可用攔截彈（任一 Active 的 SAM，冷卻中也算）
-   │           → 選命中率最高的火控雷達開始鎖定；沒有可用攔截彈時不鎖定，已有的鎖定也釋放（2026-10-19）
-   │           lockUntil = now + lockOnTicks × (1 + 0.5×隱身差 + max(0, speed−15)/60)
-   │     ② 發射：鎖定完成（lockUntil ≤ now）→ 最佳火控雷達 + 冷卻最早結束的就緒 SAM
-   │           就緒 = Active（含有彈、有人操作）且不在冷卻；SAM 只是冷卻中時目標保持鎖定、續占通道
-   │           命中率 = maxHitChance × clamp01(timeLeft / guidanceAccuracyTime)（導引時間 = 距落地時間，同世界層；
-   │                    2026-10-27 前為 timeLeft − 末端窗口）
-   │                    × 速度係數（>15 每單位 −1.2%，下限 0.2）
-   │                    × stealthMissFactor^(stealthLevel − powerLevel)₊
-   │                    + 攔截彈戰鬥部加成（連續桿 InterceptBonus = N×0.05），clamp01
-   │           CompMissileLauncher_Interceptor.FireInterceptor → 生成裝填彈體的發射 Projectile（攔截模式；
-   │                    沒有時退回 InterceptProjectile skyfaller；朝向同發射架）、消耗容器首枚實體導彈、進入 reloadCooldownTicks
-   │           空爆戰鬥部：額外 floor(N/5) 次獨立擲骰攔截同波次其他目標（不耗彈、不占通道）；
-   │                    命中者先收集，foreach 結束後才移除
-   │           midcourseEngagedUntil = now + interceptorTravelTicks（通道續占）、lockUntil = −1
-   │     ③ 結算：發射 Projectile 升空結束（LeaveMap）→ 釋放通道（midcourseEngagedUntil = −1）→ 擲 hitChance
-   │           成功 → 地圖外攔截閃光 + RemoveTarget（乾淨消滅，【不留碎片】）
-   │           落空 → 目標存活，下一 tick 重新排隊鎖定
-   │
-   ├─ timeLeft ≤ 末端窗口（或 terminalOnly 波次）  →  另加末端 CIWS（TerminalDefense）
-   │     • 末端窗口 = 防禦方運作中 CIWS 的最大 terminalWindowTicks；沒有 CIWS 則為 0（只有 SAM）
-   │     • CIWS 與 SAM 可能打同一目標：先擊毀者移除目標，另一方的連射中止不判定、攔截彈結算時找不到目標而落空
-   │     • 每具 CIWS 獨立節奏、每 tick 只處理一次：冷卻完＋有彈料 → 對己方末端波次中
-   │           tickToImpact 最早者的 targets[0] 開始一輪連射；連射中跨所有末端波次以 burstTargetId 找目標
-   │           整輪鎖定同一目標；每發間隔 ticksBetweenShots、耗 fuelPerShot（CompRefuelable，
-   │           例如裝甲砲管耐久；無 Refuelable 則無限）；目標消失或斷料 → 中止本輪、不判定
-   │           視覺：砲塔轉向天空格（提前量 + 線性掃射 + 依迫近度下移瞄準高度）、槍口閃光、曳光彈
-   │     • 連射全部打完後【整輪只擲一次】interceptChance：
-   │           命中 → 末端攔截閃光；再擲 debrisChance：
-   │                 過 → SpawnDebris：殺死艙內所有 pawn，屍體合併成一個殘骸空投落下，
-   │                      其餘內容物隨艙體清除【碎片只在此產生】
-   │                      ※ 無 pawn 的目標（如導彈）不產生殘骸，等同乾淨清除
-   │                 未過 → 乾淨消滅
-   │     • 判定（或中止）後進入 cooldownTicks
-   │
-   └─ timeLeft ≤ 0  →  ResolveWave：未被攔截的目標真正落地（TryDrop 重新生成；導彈 Projectile 依保存的進入方位重新從地圖邊緣飛入），
-         發送 wave.signal；wave.lord（由 Patch_QuestPart_Bossgroup 為 Boss 群波次設定）
-         只會收編 skyfaller 直接持有的 pawn，ActiveTransporter 艙內的 pawn 不經此路徑
+timeLeft > 0（非 terminalOnly）→ SAM 中過程（MidcourseDefense），2026-10-27 起一路到落地、末端內與 CIWS 並行
+  • 趕得上才接戰：攔截彈結算時間 = InterceptFlightTicks（模擬發射 Projectile 升空；否則 interceptorTravelTicks）
+  • 容量 = Σ 防禦方運作中火控 max(0, maxTargets − 借給火砲)，只計 timeLeft ≤ maxRangeTicks 的雷達
+  • 占用 = 鎖定中或攔截彈在飛的目標數
+  ① 鎖定：占用 < 容量 且防禦方有可用攔截彈（無彈不鎖、打光即放）
+        lockUntil = now + lockOnTicks × (1 + 0.5×隱身差 + max(0, speed−15)/60)
+  ② 發射：最佳火控 + 冷卻最早結束的就緒 SAM（只是冷卻中則保持鎖定）
+        hit = maxHitChance × clamp01(timeLeft / guidanceAccuracyTime)
+              × 速度係數（>15 每單位 −1.2%，下限 0.2）× stealthMissFactor^(stealth − power)₊
+              × interceptHitFactor × 箔條折減 + 戰鬥部加成（連續桿 N×0.05），clamp01
+        FireInterceptor：發射 Projectile（攔截模式）、消耗首枚未保留彈、進冷卻
+        空爆：額外 floor(N/5) 次擲骰攔截同波次其他目標（先收集，迴圈後移除）
+  ③ 結算：攔截彈出圖 → 釋放通道 → 擲骰；成功 RemoveTarget＋攔截特效；落空則下一 tick 重排
+timeLeft ≤ 末端窗口（或 terminalOnly）→ 另加 CIWS（TerminalDefense）
+  • 每具 CIWS 每 tick 只處理一次；新連射選 tickToImpact 最早的末端波次 targets[0]；連射中以 burstTargetId 跨波次找目標
+  • 每發耗 fuelPerShot；目標消失或斷料則中止不判定
+  • 整輪打完擲一次 interceptChance；命中後擲 debrisChance → SpawnDebris（殺死艙內 pawn、屍體合併成一個殘骸空投；無 pawn 則乾淨清除）
+timeLeft ≤ 0 → ResolveWave：未攔截者落地（空投 TryDrop；導彈依保存的進入方位從邊緣飛入），發 signal；wave.lord 只收編 skyfaller 直接持有的 pawn
 ```
 
-**1.7 火控試算**（導引時間充足、無戰鬥部加成）：
+terminalOnly 目標只交給 CIWS。CIWS 與 SAM 可能打同一目標，先擊毀者移除目標。
 
-| 目標 | 相控陣：命中率／鎖定 ticks | 早期火控：命中率／鎖定 ticks |
-|---|---|---|
-| 空投艙 | 0.90／120 | 0.75／200 |
-| 輕型導彈 | 0.82／134 | 0.69／223 |
-| 巡航導彈 | 0.74／150 | 0.62／250 |
-| 彈道導彈 | 0.20／250 | 0.10／517 |
+### A-6. SAM 彈藥
 
-輕型導彈作攔截彈時 N=3，連續桿戰鬥部 +0.15。
-
-### A-6. SAM 彈藥：實體導彈與裝填路徑
-
-發射器 parent 為 `Building_MissileRack`（`IThingHolder` + `IHaulDestination` 容器建築），攔截彈以**實體導彈 Thing** 逐枚存放。容量來自 def 的 `MissileRackExtension.capacity`（發射平台用子類 `MissileLauncherExtension`，預設 1）；能收哪種彈由建築的 storage filter 決定。
-
-裝填路徑：
-
-- **地面搬運**：散落在地的導彈經原版 `IHaulDestination` 搬運系統直接放入。
-- **彈架 → 發射平台**：`WorkGiver_LoadMissileLauncher` + `JobDriver_LoadMissileLauncher`。儲存架內的導彈是 unspawned，原版搬運看不到，由此補上；目標為掛 `CompMissileLauncher_Rail` 或 `_Interceptor` 的未滿平台，來源只取純儲存架。
-- **操作員自行補彈**：旋轉發射架以 `CompMannableMissileLauncher` 取代原版 `CompMannable` 的右鍵選項，改派 `DMSE_ManMissileLauncher`（`JobDriver_ManMissileLauncher`）。操作員先到彈架取彈、容器對容器搬入，直到裝滿才開始操作；操作中彈艙出現空槽就中斷回去取彈。找不到來源但艙內仍有彈時照常操作，完全無彈才放棄指令。
-- **敵方陣地**：`Building_MissileRack.SpawnSetup` 呼叫 `MissileAutoFillUtility.TryAutoFill`，依 `MissileRackAutoFillExtension` 規則與陣營 TechLevel 選彈填滿（讀檔時跳過）。
-
-發射時取出容器首枚並銷毀；`GetLoadedMissileConfig()` 讀取該彈的 `CompMissileConfig.config`，讓**裝配系統的戰鬥部直接影響攔截**（連續桿 → 命中率加成；空爆 → 額外攔截擲骰，皆以酬載容量 N 縮放）。`CompMissileRackRenderer` 依建築朝向渲染在架彈體（`renderStoredBody=false` 時不畫）。
-
-輕型導彈發射箱同時掛 `CompMissileLauncher_Rail` 與 `_Interceptor`，兩者讀同一個容器：同一批彈既可手動對地發射，也會在來襲時被 BVR 自動調用。
+發射器 parent 是 `Building_MissileRack`（或實作 `IMissileRack` 的 `CompMissileRackStorage`），容量 `MissileRackExtension.capacity`，能收什麼由 storage filter 決定。裝填：地面搬運（`IHaulDestination`）；彈架 → 平台（`WorkGiver_LoadMissileLauncher`，儲存架內 unspawned 導彈原版看不到）；操作員自行補彈（`CompMannableMissileLauncher` 改派 `DMSE_ManMissileLauncher`，取彈裝滿才操作）；敵方陣地 `MissileAutoFillUtility.TryAutoFill`（讀檔跳過）。輕型發射箱同時掛 Rail 與 Interceptor，共用彈艙。
 
 ### A-7. 重點設計
 
-- **碎片規則**：中過程攔截＝完全消滅、不落地、不留殘骸；末端攔截命中後依 `debrisChance` 生成殘骸，且僅限含 pawn 的目標；一個艙內多人時屍體合併成一個殘骸空投。
-- **火力通道**：共用池（Σ maxTargets，扣除借給火砲的通道）。通道在「鎖定階段」（`lockUntil ≥ 0`）與「攔截彈在飛」（`midcourseEngagedUntil > now`）期間均占用，結算後才釋放；存讀檔安全（in-flight 的 `InterceptProjectile` 以 `targetId`(int) 回連，不持久化引用）。
-- **隱身雙層對衝**：搜索段對衝 `antiStealthLevel`（影響預警窗口）；火控段對衝 `powerLevel`（影響命中率與鎖定時間）。目標 `speed` 只影響火控段。
-- **陣營相對防禦**（非玩家專屬）：以 `ResolveDefender` 找「擁有運作中搜索雷達、且與來襲方敵對」的陣營作防禦方（玩家優先），整波次只由該陣營裝置參與。玩家空投/導彈突擊敵方基地時**會被敵方防空攔截**（`Alerts_PlayerMissiles` 追蹤己方被攔截彈藥）；自家空投不被自家雷達攔截。
-- **人工操作裝置**：老式火控雷達、防空導彈發射架、旋轉發射架、野戰防空砲與 Flak 37 掛 `CompMannable`，無人操作時 `Active=false`，不鎖定、不發射、不開砲、砲塔頭不追蹤。
-- **電子對抗閉環**：導彈可裝反輻射導引頭（`GuidanceType_AntiRadiation`），在落點地圖的**敵對建築**中挑開機、`powerLevel` 最高的搜索／火控雷達（玩家打敵方雷達、敵方打玩家雷達都適用）；找不到退化為電磁訊號，再退化為慣性（B-7）。雷達可設 `immuneToAntiRadiationSeeker = true` 豁免（1.7 的早期預警雷達即是）。
-- **VGE 近防相容層**（`1.7/GravshipExpanded/PointDefence`，僅載入 VGE 時）：為 WingBack 等砲塔加上 VGE 的 `CompPointDefence`，與 `CompTerminalCIWS` 並存且共用砲管耐久；`PointDefenceCompat` 調整半徑加成、非玩家持有時改用 VGE 敵方命中公式並不攔空投。這一層與 BVR 的波次/通道完全不相通。
-- **存檔**：波次/目標經 `ExposeData` 深度持久化；CIWS 連射狀態（`burstShotsLeft`/`nextShotTick`/`burstTargetId`）與各發射器冷卻亦持久化（各平台沿用各自的 Scribe 鍵以維持舊檔相容）。
-
-### A-8. 高度與反應時間（2026-10 新增）
-
-目標的雷達特性除 `distanceLevel`／`stealthLevel`／`speed` 之外，新增 **`BVRTargetProps.altitude`（公尺）**：
-
-```
-AltitudeFactor = clamp( sqrt(altitude / altitudeRefMeters), minAltitudeFactor, maxAltitudeFactor )
-```
-
-- 套用點：世界層 `MissileWorldMotion.DetectionRange`（偵測半徑）與地圖層 `MapComponent_BVRCombat.ComputeWarningWindow`（預警窗口）都乘上此係數。
-- **分工**：高度決定「有多少反應時間」；速度（`speed`）仍只影響火控鎖定時間與命中率，兩者不重複計罰。
-- 預設 `altitude = 1000`＝中性，未指定的既有 Def 行為不變；1.7 來襲目標的值：
-
-| 目標 | altitude | 係數 | 效果 |
-|---|---|---|---|
-| 巡飛彈 | 1000 | 1.00 | 中性（既有平衡不變） |
-| 輕型導彈 | 1000 | 1.00 | 中性 |
-| 巡航導彈 | 1000 | 1.00 | 中性 |
-| 彈道導彈 | 1000 | 1.00 | 中性 |
-| V1（老式彈道） | 800 | 0.89 | 中低空 |
-| V2（老式巡飛） | 30000 | 1.30 | 高空 |
-| 老式攔截彈 | 5000 | 1.30 | 高空 |
-| 地獄火（先進通用） | 150 | 0.60 | 極低空，最晚被發現 |
-| 民兵三型（先進彈道） | 100000 | 1.30 | 再入 |
-| 戰斧（先進巡航） | 50 | 0.60 | 掠海＋stealth 2 |
-
-> 既有四種來襲目標刻意維持 1000（係數 1），以免改動既有的攔截窗口平衡與驗收基準；高度差異只加在世代化彈體與移動據點上。
-
-- 移動中的世界地圖據點沒有 `BVRTargetProps`，高度由圖層推導（地表 500、其他圖層 100000）。
-- 平衡旋鈕：`DMSE_BVRWorldTuning` 的 `minAltitudeFactor`（0.6→0.75 可全域回軟）、`maxAltitudeFactor`、`altitudeRefMeters`。
-
-### A-9. 電子干擾：箔條／干擾絲（2026-10 新增）
-
-- 部件欄位：`MissilePartDef.jamStrength`（0–1）與 `chaffCharges`（整數）；`MissileConfig.JamStrength` 取最大值、`ChaffCharges` 相加。發射時裝填、飛行中不補充。
-- **世界層**（`WorldComponent_BVRNetwork.Scan`）：
-  1. 首次掃到航跡時 `BVRTrackState.chaffLeft = config.ChaffCharges`。
-  2. 已被火控鎖定時擲 `chaffBreakChance × jamStrength`；成功則 `ClearLock()` 並設 `lockDelayUntil = now + chaffLockDelayTicks`，延遲期間整個 `Scan` 直接返回（不重新鎖定）。
-  3. **不論成敗都扣一發**，用完即失效。
-- **地圖層**（`CompFireControlRadar.ComputeHitChance`）：命中率再乘 `1 − chaffMapHitPenalty × jamStrength`；不改 `lockUntil` 狀態機，避免與 `MidcourseDefense` 衝突。
-- 與誘餌酬載的差異：`signatureFactor` 是被動、影響「多早被看到」；`jamStrength` 是主動、有限次、影響「鎖不鎖得住」。
-- 存檔：`BVRTrackState.chaffLeft`（-1＝未初始化）、`lockDelayUntil`、`jamCount` 皆持久化；舊檔下一輪掃描自動初始化。
+- **陣營相對防禦**：`ResolveDefender` 找擁有運作中搜索雷達、與來襲方敵對的陣營（玩家優先）；玩家打敵方基地也會被攔截。
+- **隱身雙層對衝**：搜索段對 `antiStealthLevel`（窗口），火控段對 `powerLevel`（命中與鎖定）。
+- **電子對抗**：反輻射導引打開機中 `powerLevel` 最高的敵對雷達；`immuneToAntiRadiationSeeker` 豁免（聲學雷達）。箔條 `jamStrength`／`chaffCharges`：世界層斷鎖（`chaffBreakChance × jam`，不論成敗扣一發）、地圖層命中 × `(1 − chaffMapHitPenalty × jam)`。後續見 [ECM 計畫](ECM與ECCM_實作計畫.md)。
+- **VGE 近防**（`1.7/GravshipExpanded/PointDefence`）：`CompPointDefence` 與 `CompTerminalCIWS` 並存、共用砲管，判定互不相通。
+- **存檔**：波次、目標、CIWS 連射狀態、冷卻皆持久化。
 
 ---
 
-## B. 導彈自定義裝配與發射系統
+## B. 導彈裝配與發射
 
-### B-1. Def 架構與四階分級
+### B-1. Def 架構
 
-- `MissileBodyDef`（彈體）：基礎參數 + 裝配槽位（`slots`）+ 對應落點 `incomingSkyfaller`。
-  - 數值：`baseExplosionRadius`、`baseDamageDef`、`baseDamageAmount`、`baseScatter`、`baseWorldSpeedFactor`、`baseRange`、`payloadCapacity`（N，預設 5）
-  - 燃料/推進：`baseFuel`、`baseSpecificImpulse`、`rangePerFuelImpulse`
-  - 裝配：`assembleWorkAmount`、`refundFraction`
-  - 分級：`sizeClass`（`Loitering`／`Light`／`Medium`／`Ballistic`）、`launchMode`（`Tilt`／`Vertical`／`Both`）、`customizeLocation`（`None`／`Item`／`StorageBuilding`／`Launcher`）
-- `MissilePartDef`（部件）：屬於某 `MissilePartCategory`（`Warhead`／`Guidance`／`Propulsion`／`Payload`），提供數值修正與成本。
-  - 數值修正：`explosionRadiusOffset`、`damageDefOverride`、`damageAmountOffset`、`scatterOffset`、`worldSpeedFactorOffset`、`specificImpulseOffset`、`fuelOffset`、`rangeOffset`；舊式酬載欄位（`payloadExplosionRadius` 等）作後備
-  - **行為類**（XML `Class=` 指定子類）：
-    - `warheadEffect`（8 種）：`ContinuousRod`（攔截 +N×5%）、`ExtendedFuel`（射程 +N×2）、`Airburst`（攔截額外 floor(N/5) 擲骰；對地 N 半徑爆炸）、`TungstenPenetrator`（坍塌厚岩頂）、`Incendiary`、`EMP`、`AnimalBerserk`、`BerserkPulse`
-    - `guidanceType`：`Inertial`、`AntiRadiation`、`HeatSource`（舊名 `Infrared`）、`ElectromagneticSignal`（舊名 `HighEnergy`）、`TV`、`Laser`、`FireControl`。決定導彈抵達後的落點，玩家與敵方發射都適用；只有 `TV` 在玩家發射時改為手動選點（見 B-7）
-  - 彈體另有 `builtInGuidance`：沒有導引部件時用來選目標（1.7 巡飛彈為電視制導），不提供導引能力
-    - `payloadEffect`（8 種）：`None`、`HighExplosive`、`Cluster`、`Defoliant`、`FireFoam`、`Antiparticle`、`ToxicGas`、`AirburstTungsten`（射程 ×0.75）
-  - 限制：`compatibleBodies`、`researchPrerequisites`、`costList`
+- `MissileBodyDef`：基礎數值（爆炸半徑、傷害、散布、`baseWorldSpeedFactor`、`payloadCapacity` N）、燃料／比衝、`assembleWorkAmount`、`refundFraction`、`sizeClass`（Loitering／Light／Medium／Ballistic）、`launchMode`（Tilt／Vertical／Both）、`customizeLocation`（None／Item／StorageBuilding／Launcher）、`slots`、`incomingSkyfaller`（現為落地 Projectile def）、`launchProjectile`、`builtInGuidance`、`builtInTerminalGuidance`、`defaultParts`、`terminalUpdates`、`interceptHitFactor`、`researchPrerequisites`。
+- `MissilePartDef`（Warhead／Guidance／Propulsion／Payload）：數值修正、`signatureFactor`、`jamStrength`、`chaffCharges`、`compatibleBodies`、`researchPrerequisites`、`costList`；行為子類：
+  - `warheadEffect`：ContinuousRod（攔截 +N×5%）、ExtendedFuel（射程 +N×2）、Airburst、TungstenPenetrator（坍塌厚岩頂）、Incendiary、EMP、AnimalBerserk、BerserkPulse。
+  - `guidanceType`：見 B-7。
+  - `payloadEffect`：None、HighExplosive、Cluster、Defoliant、FireFoam、Antiparticle、ToxicGas、AirburstTungsten（射程 ×0.75）。
+- 平台 `MissileLauncherExtension`（`sizeClass`、`extraSizeClasses`、`launchMode`、`capacity`、`isStorage`）。實際能裝什麼看 storage filter；`check_missile_content.py` 第 8 條比對。只有 `defaultBody.customizeLocation == Launcher` 的建築（塔式、戰略井）開放換彈體（同 sizeClass、未研究者鎖定）；物品與儲存架彈體唯讀。
 
-1.7 彈體：
+### B-2. 設定與射程
 
-| 彈體 | 分級／發射方式 | 自定義位置 | N | 燃料×比衝 | 槽位 |
-|---|---|---|---|---|---|
-| `DMSE_MissileBody_Loiter` 反艦巡飛彈（白蟻） | Loitering／Tilt | None | 5 | 70×2.4 | 無（內建反艦導引，`builtInTerminalGuidance`） |
-| `DMSE_MissileBody_Light` 輕型導彈 | Light／Both | Item | 3 | 70×2.5 | 彈頭/導引/酬載 |
-| `DMSE_MissileBody_Cruise` 巡航導彈 | Medium／Both | Item | 5 | 100×3 | 彈頭/導引/推進/酬載 |
-| `DMSE_MissileBody_Ballistic` 彈道導彈 | Ballistic／Vertical | Launcher | 8 | 150×3 | 彈頭/導引/酬載 |
-| `DMSE_MissileBody_LegacyBallistic` 老式彈道（V2） | Ballistic／Vertical | Launcher | 5 | 120×1.8 | 彈頭/導引/酬載（共用現役彈道部件） |
-| `DMSE_MissileBody_AdvancedBallistic` 先進彈道（民兵三型） | Ballistic／Vertical | Launcher | 9 | 180×3.2 | 彈頭/導引/酬載（共用現役彈道部件） |
-| `DMSE_MissileBody_LegacyLoiter` 老式巡飛彈（V1） | Loitering／Tilt | None | 5 | 55×2.2 | 無（內建電視制導） |
-| `DMSE_MissileBody_LegacyInterceptor` 老式攔截巡飛（萊茵女兒） | Loitering／Tilt | None | 5 | 50×2 | 無（戰備攔截彈） |
-| `DMSE_MissileBody_AdvancedLight` 先進通用（地獄火） | Light／Both | Item | 4 | 80×2.8 | 彈頭/導引/酬載 |
-| `DMSE_MissileBody_AdvancedCruise` 先進巡航（戰斧） | Light／Both | Item | 6 | 115×3.4 | 彈頭/導引/推進/酬載 |
-| `DMSE_MissileBody_Stinger` 輕型防空（刺針） | Light／Both | Item | 3 | 70×3.0 | 彈頭/導引 |
-| `DMSE_MissileBody_Maverick` 對地攻擊（小牛） | Light／Both | Item | 4 | 80×3.0 | 彈頭/導引/酬載 |
-| `DMSE_MissileBody_Sparrow` 先進防空（麻雀） | Light／Both | Item | 4 | 85×3.4 | 彈頭/導引/酬載 |
-| `DMSE_MissileBody_Moskit` 超音速反艦（白蛉） | Medium／Both | Item | 5 | 100×3.6 | 彈頭/導引/推進/酬載 |
-| `DMSE_MissileBody_Yj` 高超音速反艦（鷹擊） | Medium／Both | Item | 6 | 120×4.25 | 彈頭/導引/推進/酬載 |
-| `DMSE_MissileBody_Tochka` 戰術彈道（圓點U） | Medium／Both（2026-10-27 由 Ballistic 改） | Item（`DMSE_Missile_Tochka`） | 7 | 140×2.2 | 彈頭/導引/推進/酬載（中型部件；預設 HE／慣性／標準／無） |
+- `MissileConfig`（彈體 + 每槽最多一部件）：`Range = round((Fuel × SpecificImpulse × rangePerFuelImpulse + baseRange + Σ rangeOffset + 戰鬥部 RangeOffset(N)) × 酬載 RangeFactor(N))`，0 = 不限。例：100 × 3 × 0.1 = 30 格。
+- `CompMissileConfig`：`config`（已套用）、`pending`（目標）、`delivered`（已搬料）、`assemblyConfirmed`；`NeedsAssembly = config ≠ pending`。
+- **預設零件**：只有物品型態彈體有；`EnsureInit` 在建立時播種一次（`defaultsSeeded` 讀檔預設 true，不會白送或長回來）。材料併入物品 `costList`。彈道井／架建好是空的，裝配時依零件收費；發射後清空 parts、保留 pending。
+- 距離一律 `MissileWorldUtility.RangeDistance`（地表等效格，跨圖層 +10）；不用原版 `ApproxDistanceInTiles(PlanetTile, PlanetTile)`（跨圖層讀錯圖層、可能越界）。
 
-全部彈體都已接線（2026-10-21 三代裝備體系）：固定構型的 V1、白蟻、萊茵女兒以 `MissileItemExtension` 宣告彈體；四個 Ballistic 彈體由塔式發射架與戰略導彈發射井的彈體選單共用，並以 `MissileBodyDef.researchPrerequisites` 設研究門檻。**物品型態**的彈體帶 `defaultParts`（B-8）。
-
-平台側以 `MissileLauncherExtension`（`sizeClass`、`extraSizeClasses`、`launchMode`、`capacity`、`isStorage`）標記。實際能裝什麼彈由各建築的 storage filter 決定；`MissileTaxonomy.PlatformAccepts` 沒有執行期呼叫端，改由 `check_missile_content.py` 第 8 條逐一比對 filter 與分級（旋轉發射架 Loitering＋Light、Scorer Medium＋Light）。`customizeLocation` 則是 ITab 的唯一判準：只有 `defaultBody.customizeLocation == Launcher` 的建築（塔式發射架、戰略導彈發射井）開放換彈體，候選為同 `sizeClass`、同為 `Launcher` 型且發射方式相容的彈體，未研究者顯示為鎖定；導彈物品與儲存架的彈體由 def 的 `defaultBody` 固定，UI 只顯示唯讀名稱。垂直發射的建造限制在 `DMSE_LauncherBases.xml`（純 XML）。
-
-### B-2. 設定資料模型
-
-- `MissileConfig`（彈體 + 每槽位最多一部件）提供有效數值：`ExplosionRadius`／`DamageDef`／`DamageAmount`／`Scatter`／`WorldSpeedFactor`／`PayloadCapacity`(N)
-  - `Fuel = baseFuel + Σ fuelOffset`；`SpecificImpulse = baseSpecificImpulse + Σ specificImpulseOffset`
-  - **`Range = round((Fuel × SpecificImpulse × rangePerFuelImpulse + baseRange + Σ rangeOffset + 戰鬥部 RangeOffset(N)) × 酬載 RangeFactor(N))`**，下限 0（0 = 不限）
-- `CompMissileConfig`（掛在導彈物品；彈道井與舊 Scorer 平台也掛一份）：`config`（已套用）、`pending`（ITab 目標設定）、`delivered`（已搬未耗資源）、`assemblyConfirmed`（玩家已按「確認裝配」）、`NeedsAssembly = config ≠ pending`
-
-### B-3. 裝配流程（小人搬運）
+### B-3. 裝配
 
 ```
-玩家選取導彈物品，或導彈儲存架（編輯架內第一枚）→ ITab「裝配」分頁
-   • 彈體：彈道發射井可切換（候選 = 同 sizeClass 的 Launcher 型彈體）、物品與儲存架唯讀；各槽位部件
-     （FloatMenu 顯示成本、研究未解鎖灰顯、不相容隱藏）
-   • 編輯寫入 pending，並清除 assemblyConfirmed；面板即時顯示有效數值、射程與所需資源
-   • 按「確認裝配」→ assemblyConfirmed = true（未確認不派工）
-   • 「還原為已裝配設定」或改回與 config 相同 → RefundDeliveredIfIdle 退回已搬料
-   ▼
-WorkGiver_AssembleMissile（掃描地面上的導彈物品 + 架內待裝配的導彈；後者以儲存架作工作目標）
-   • NeedsAssembly 且已確認、缺料 → JobDriver_DeliverMissileResource（反覆補發直到備齊）
-   • 備齊 → JobDriver_AssembleMissile：施工 assembleWorkAmount → ApplyAssembly
-        消耗需求資源；移除部件按 refundFraction 部分退還、多搬的原樣退還；
-        config = pending，assemblyConfirmed 清除
-   ▼
-彈道導彈（無物品型態）：WorkGiver_AssembleBallisticSilo 掃描發射井／發射架建築，
-   重用 DMSE_DeliverMissileResource 搬料 → JobDriver_AssembleBallisticSilo
-   → ApplyAssembly + CompMissileLauncher_Ballistic.MarkLoaded
-   （發射架另由 CompMissileBodyRenderer 在 IsLoaded 時畫出架上直立彈體；未裝配只有空架子）
+ITab「裝配」→ 寫入 pending、清除 assemblyConfirmed →「確認裝配」（未確認不派工）
+WorkGiver_AssembleMissile（地上導彈＋架內待裝配者，後者以儲存架為工作目標）
+  缺料 → JobDriver_DeliverMissileResource；備齊 → JobDriver_AssembleMissile → ApplyAssembly
+  （消耗、部件按 refundFraction 退還、config = pending）
+彈道：WorkGiver_AssembleBallisticSilo → JobDriver_AssembleBallisticSilo → MarkLoaded
 ```
 
-`MissileAssemblyUtility.MissileDefs` 只收 `ThingCategory.Item`，掛著 `CompMissileConfig` 的建築不會被當成可裝配物品；舊 Scorer 平台另由 `Patch_Refuel_CarryConfig` 在裝填時同步 `config`/`pending`、清空 `delivered`。
+`MissileAssemblyUtility.MissileDefs` 只收 Item 類別，建築上的 `CompMissileConfig` 不會被當物品。舊 Scorer 平台由 `Patch_Refuel_CarryConfig` 同步設定。被打擊任務保留的導彈不派工。導彈組裝台見[組裝台計畫](導彈組裝台與裝配方案_實作計畫.md)。
 
-> 彈道平台的兩種外觀：`DMSE_Building_BallisticSilo`（3x3 封閉發射井，固定貼圖）與
-> `DMSE_Building_BallisticRack`（2x2 開放式發射架，裝配完成才顯示彈體）。兩者共用
-> `CompProperties_MissileConfig` + `CompProperties_BallisticLauncher`，也只差在 `CompMissileBodyRenderer`
-> 與規模／成本。
-
-### B-4. 發射流程（打擊地圖外）
-
-發射平台家族（`.source/DMSE/CompMissileLauncher.cs`；檔名沿用舊名，類別已更名）：
+### B-4. 發射
 
 ```
 CompBVRDevice
- └─ CompMissileLauncher（抽象：冷卻、HasAmmo、Active = base.Active && HasAmmo、檢視字串）
-     ├─ CompMissileLauncher_Interceptor   SAM（BVR 調用，見 A-5/A-6）          SkyFallerTurret/BVR/CompMissileLauncher.cs
-     └─ CompMissileLauncher_WorldTargeting（抽象：發射 Gizmo、世界選靶、Launch）
-         ├─ CompMissileLauncher_Rail        容器實體導彈；導彈無設定時用 Props.missileBody    Scorer/CompMissileRailLauncher.cs
-         ├─ CompMissileLauncher_Ballistic   isAssembled 旗標；發射後清空部件、保留 pending   Scorer/Ballistic/CompBallisticLauncher.cs
-         └─ CompMissileLauncher_Scorer      CompRefuelable 滿燃料 = 一發（1.7 無 Def 使用）    Scorer/CompScorer.cs
+ └ CompMissileLauncher（冷卻、HasAmmo、Active）
+    ├ CompMissileLauncher_Interceptor   SAM
+    └ CompMissileLauncher_WorldTargeting（Gizmo、世界選靶、TryLaunchRound）
+       ├ _Rail       容器實體導彈；MissileItemExtension → 平台 missileBody
+       ├ _Ballistic  isAssembled
+       └ _Scorer     CompRefuelable（1.7 無 Def）
 ```
 
-1.7 世界選靶平台：`DMSE_Building_Scorer`（巡航，Rail）、`DMSE_Building_LightMissileLauncher`／`DMSE_Building_LightMissileVLS`（輕型，Rail）、`DMSE_Building_LoiteringLauncher`（巡飛彈，Rail）、`DMSE_Building_BallisticSilo`（Ballistic）。
+世界航跡基底 `MissileWorldObject`（玩家 `ScorerProjectile_WorldObject`、敵方 `WorldObject_IncomingMissile`）：運動見世界層文件；`targetParent`、終端更新、落空；抵達時 `ResolveArrivalMap`。
 
-兩種導彈世界航跡（玩家的 `ScorerProjectile_WorldObject`、敵方的 `WorldObject_IncomingMissile`）共用基底 `MissileWorldObject`（`.source/DMSE/Scorer/`）：Slerp 飛行（每 tick 0.00025 弧度 × `WorldSpeedFactor`）、鎖定目標 `targetParent`、終端更新與落空（B-6）、存檔。抵達時以 `MissileWorldUtility.ResolveArrivalMap` 解析目標地圖，再呼叫子類的 `OnArrived(map)`；`map == null` 即落空。
+- **玩家**：選靶（`CanTargetTile`、`CanEngage`：射程、跨圖層需導引能力；游標顯示距離與「將會落空」）→ `TryLaunchRound` → 發射 Projectile 升空轉向飛出邊緣 → 世界航跡 → `OnArrived`（`AllowGenerateTargetMap = true`；非敵對陣營轉敵對；`GameComponent_MissileEngage` 保圖 2 天）→ 導引決定落點（TV 暫停讓玩家選；其餘自動）→ `SpawnIncoming`（進入方位 = 最後一段）→ 敵方 BVR。
+- **敵方**：`IncomingMissileUtility.Launch` → `OnArrived`（`AllowGenerateTargetMap = false`）→ `PickCell`（TV 退化慣性）→ 落地彈 → BVR；落點為玩家家園時發威脅信件。
+- **NPC 陣地**：見 [NPC 導彈站點](敵對NPC導彈發射站點_生成與彈藥選型計畫書.md) §3；地圖層以 `CompMissileLauncher_WorldTargeting` 辨識發射器，全滅時陣地摧毀。
+- **落點結算** `MissileImpactUtility.Detonate`：散布偏移 → 主爆炸 → `warheadEffect.Apply` → `payloadEffect.Apply` → 閃光。無 config 時 5 格 Bomb 後備。歸因於發射建築（`MissileImpactUtility.Instigator`）。高角護盾見 Projectile 文件。
 
-**玩家發射**：
+### B-5. 跨圖層與終端更新（逃逸區）
 
-```
-發射 Gizmo（無彈／不可運作／冷卻中停用）→ 世界選靶
-   • CanTargetTile：排除水域與已有非 MapParent 世界物件的 tile
-   • MissileWorldUtility.CanEngage：射程以地表等效格計（跨圖層 +10 格），跨圖層需導引能力
-   • 游標旁顯示「距離/射程」；該處沒有據點時提示「將會落空」
-   ▼
-Launch（發射前再驗一次 Active）
-   • 生成彈體的發射 Projectile（建築前方 LaunchForwardCells 格、沿建築朝向）：升空中途交接，
-     沿世界航跡的出發方位、依 speedCurve 加速飛出地圖邊緣（沒有 launchProjectile 時退回平台的 ScorerProjectile skyfaller）
-   • 建 ScorerProjectile_WorldObject（陣營 = 玩家、config 副本、落點 def、launcherThing = 發射建築、
-     targetParent = 點到的 MapParent 或該 tile 上的 MapParent）
-   • ConsumeAmmo + 起算冷卻
-   ▼
-發射 Projectile 飛出地圖（LeaveMap）→ 世界物件加入世界 → 飛行（目標移動時依 B-6 改飛）
-   ▼
-OnArrived（AllowGenerateTargetMap = true：目標據點尚無地圖時會生成）
-   • map == null → 「未命中」訊息、銷毀
-   • 目標據點的陣營非敵對 → 轉敵對
-   • GameComponent_MissileEngage 讓該地圖 2 天內不被移除（Patch_ShouldBeRemoved）
-   • 依導引頭決定落點（B-7）：
-       電視制導（config.PlayerChoosesTarget）→ 遊戲暫停、鏡頭切到目標地圖，玩家選落點格（取消 → 地圖中心）
-       其餘導引頭與慣性 → GuidanceType.PickCell 自動鎖定，不暫停，發訊息「{導引}已鎖定目標」
-   • SpawnIncoming：生成 Projectile_MissileIncoming（config 副本、attacker = 玩家、launcher = 發射建築、
-     進入方位 = 世界航跡最後一段）→ 從該方位的地圖邊緣飛入 → 同步 TryRegister（敵方 BVR）
-```
+- `HasTerminalGuidance`：導引槽部件 `ProvidesTerminalGuidance`（慣性 = false）或彈體 `builtInTerminalGuidance`。`builtInGuidance` 只影響選靶。
+- 跨圖層打擊需導引能力且射程含 +10；火砲一律不可跨圖層。
+- 終端更新：每 60 ticks（`TracksMobileTargets` 時 20）檢查目標 tile；次數 = 彈體 `terminalUpdates` + 導引加成（反艦 +2），且已飛＋新航段 ≤ 射程。用完或燃料不足就沿最後位置飛，目標不在即落空——**逃逸區**。
+- 移動目標登錄：`WorldComponent_BVRNetwork` 每 60 ticks 取樣所有 `MapParent` tile（保留 900 ticks），涵蓋轉移艦、搬遷陣地、其他 mod。飛行中的 `Gravship` 無地圖，不列為目標。
 
-選靶游標與 ITab 裝配面板都會顯示落點方式（「{導引}：抵達後由你選擇落點」或「抵達後自動鎖定目標」）。
+### B-6. 導引頭（`GuidanceType.PickCell`）
 
-**敵方發射**（陣地、Debug）：`IncomingMissileUtility.Launch(…, target)` → `WorldObject_IncomingMissile` 飛行 → `OnArrived`（`AllowGenerateTargetMap = false`：只打既有地圖）：落空時若目標是玩家據點發訊息；命中則以 `GuidanceType.PickCell` 自動選格（敵方的電視制導沒有操作員，退化為慣性）→ 生成 `Projectile_MissileIncoming`（從世界航跡方向的地圖邊緣飛入）→ 同步 `TryRegister`；落點為玩家家園時發威脅信件。
+抵達目標地圖後依 `TargetingGuidance`（導引部件，否則 `builtInGuidance`）選落點；找不到退化為慣性。「敵對」= 有陣營、非攻擊方、與攻擊方敵對。
 
-**落點結算**（`MissileImpactUtility.Detonate`，先過目標地圖 BVR，見 A-3）：Scatter ≥ 1 時隨機偏移落點 → 主彈體爆炸 → `warheadEffect.Apply` → `payloadEffect.Apply`（或舊式酬載數值欄位後備）→ 爆炸閃光（`WeatherEvent_MissileFlash`）。無有效 config 時以 5 格 Bomb 後備爆炸。傷害歸因於發射建築（`MissileImpactUtility.Instigator`，跨地圖亦同）。
+| 導引 | 類別 | 鎖定 | 後備 |
+|---|---|---|---|
+| 慣性 | `Inertial` | 隨機敵對建築 → 敵對 Pawn → 地圖中心 | — |
+| 反輻射 | `AntiRadiation` | 開機（`ActiveForSeeker`）敵對雷達中 `powerLevel` 最高，同級比耗電 | 電磁 → 慣性 |
+| 熱訊號 | `HeatSource`（舊名 `Infrared`） | 最熱室內房間高出室外 15°C → 該房間；否則最大 Pawn | 慣性 |
+| 電磁訊號 | `ElectromagneticSignal`（舊名 `HighEnergy`） | 耗電最大的敵對建築 | 慣性 |
+| 電視 | `TV` | 玩家：暫停手選；敵方：慣性 | — |
+| 雷射 | `Laser` | 攻擊方最近放置、仍有效的雷射標點 | 慣性 |
+| 火控 | `FireControl` | 慣性（較小散布；主要語意是攔截彈半主動） | — |
+| 無線電指令 | `RadioCommand` | 萊茵女兒內建；占外部通道 | — |
+| 主動雷達 | `ActiveRadar` | 耐久最高的敵對建築 | 慣性 |
+| 影像 | `Imaging` | 露天存活敵對 Pawn（戰力、體型、ID 排序） | 慣性 |
+| 反艦 | `AntiShip` | 船圖上耐久最高的敵對建築 → 最大 Pawn；+2 終端更新、20 ticks 檢查 | 慣性 |
 
-**高角護盾**：落地彈飛行途中每 tick 以原版 `CompProjectileInterceptor.CheckIntercept` 檢查，只有攔截空中彈的護盾（如 ShieldGeneratorMortar）會攔；被擋下時在碰觸點完整引爆（不偏移、不歸因），打擊報告記為「被護盾擋下」。VGE 近防只瞄準 def 有 explosionRadius 的投射物，不會攔導彈。
-
-### B-5. 射程模型（燃料 × 比衝）
-
-射程由「彈體燃料量 × 推進比衝」決定，再加上部件與戰鬥部的固定加成、乘上酬載係數。範例：100 燃料 × 比衝 3 × 0.1 = **30 格**；換增程馬達（比衝 +2）→ **50 格**；N=5 的增程燃油戰鬥部再 **+10 格**；改掛空爆鎢芯酬載則整體 **×0.75**。ITab 與發射選靶皆即時可見並強制生效。
-
-距離一律以**地表等效格**計算（`MissileWorldUtility.RangeDistance`：兩點球面夾角以地表格大小換算），跨圖層另加 `CrossLayerRangeCost = 10` 格。不使用原版 `WorldGrid.ApproxDistanceInTiles(PlanetTile, PlanetTile)`：它以第一個 tile 的圖層解讀第二個 tile 的編號，跨圖層時結果錯誤（軌道層讀地表編號還會越界報錯）。同圖層的地表距離與舊算法完全相同；軌道對軌道的距離會比舊算法大（軌道格較大，舊算法以軌道格計數）。
-
-### B-6. 跨圖層打擊與終端更新（逃逸區）
-
-- **導引能力** `MissileConfig.HasTerminalGuidance`：導引槽部件的 `ProvidesTerminalGuidance`。有 `guidanceType` 時看 `GuidanceType.TerminalGuidance`（慣性制導 = false，其餘 = true）；沒有 `guidanceType` 的部件看 XML 欄位 `terminalGuidance`（1.7 的導引部件都已指定 `guidanceType`，巡航的慣性導引例外，視為無導引能力）。未裝導引部件，或彈體沒有導引槽（巡飛彈），都算無導引能力；彈體的 `builtInGuidance`（B-7）只影響選目標，不提供導引能力。
-- **跨圖層打擊**（地表 ↔ 軌道）：必須具導引能力，且射程涵蓋含跨圖層成本的距離。玩家選靶、敵方陣地選目標都套用；火砲無導引，一律不可跨圖層。
-- **終端更新**：世界航跡鎖定 `targetParent`，每 60 tick 檢查一次；目標換了 tile 時，具導引能力的導彈可從當下位置改飛新位置。次數上限 = 彈體 `terminalUpdates`（輕型 1、巡航 3、彈道 2），且「已飛航程 + 新航段」不得超過射程。次數用完或燃料不足就沿最後位置飛行，抵達時目標已不在即落空——這就是**逃逸區**：目標在導彈用完更新次數後再移動，或移出剩餘射程，就能躲掉。
-- 世界航跡的檢視字串顯示剩餘更新次數；ITab 裝配面板顯示導引能力與更新次數。
-- **落空**：抵達時目標不在，或打擊的 tile 上沒有地圖也沒有據點 → 銷毀並發訊息。玩家選靶時，若該處沒有目標，游標旁會提示「將會落空」。
-
-### B-7. 導引頭與目標選擇
-
-導彈抵達目標地圖後，`GuidanceType.PickCell(config, map, attacker)` 依 `MissileConfig.TargetingGuidance`（導引部件的 `guidanceType`，沒有時用彈體的 `builtInGuidance`）選落點；導引頭找不到目標時退化為慣性。玩家與敵方發射都套用同一套規則，唯一例外是電視制導：玩家發射時改為手動選點。
-
-「敵對」= 有陣營、不是攻擊方、且與攻擊方敵對（`GuidanceType.IsHostileTarget`）；建築同時檢查玩家與非玩家建築，所以玩家打敵方據點、敵方打玩家都適用。
-
-| 導引頭 | 類別 | 鎖定規則 | 找不到時 | 1.7 部件 |
-|---|---|---|---|---|
-| 慣性 | `GuidanceType_Inertial`（或無導引部件） | 隨機一棟敵對建築 → 隨機一名敵對 Pawn → 地圖中心 | — | 各彈體的慣性導引 |
-| 反輻射 | `GuidanceType_AntiRadiation` | 開機（`ActiveForSeeker`）的敵對搜索／火控雷達中 `powerLevel` 最高者，同級比耗電量；`immuneToAntiRadiationSeeker` 的雷達不列入 | 電磁訊號 → 慣性 | 輕型 `DMSE_Light_Guidance_AntiRadiation` |
-| 熱訊號 | `GuidanceType_HeatSource`（`Infrared` 為舊名別名） | 最熱的室內房間若比室外高出 `minRoomTempAboveOutdoor`（15°C）→ 該房間內一格；否則體型最大的 Pawn（攻擊方與非敵對陣營除外，野生動物也算） | 慣性 | 輕型 `DMSE_Light_Guidance_IR`（熱訊號導引頭） |
-| 電磁訊號 | `GuidanceType_ElectromagneticSignal`（`HighEnergy` 為舊名別名） | 通電中、耗電量（`-PowerOutput`）最大的敵對建築；電網正要開啟的建築以額定耗電計 | 慣性 | 巡航 `DMSE_Guidance_EMSignal` |
-| 電視制導 | `GuidanceType_TV`（`PlayerChoosesTarget = true`） | 玩家發射：抵達後暫停，自由選點；敵方發射：慣性 | — | 巡航 `DMSE_Guidance_Precision`（改名「電視制導」）、巡飛彈內建 |
-| 雷射 | `GuidanceType_Laser` | 目標地圖上攻擊方自己、仍有效的雷射引導點中最近放置者 | 慣性 | 輕型 `DMSE_Light_Guidance_Laser`、巡航 `DMSE_Guidance_Laser`、彈道 `DMSE_Ballistic_Guidance_Laser` |
-| 火控 | `GuidanceType_FireControl` | 慣性（散布較小；主要語意是攔截彈） | — | 彈道 `DMSE_Ballistic_Guidance_FireControl` |
-| 主動雷達（毫米波） | `GuidanceType_ActiveRadar` | 耐久最高的敵對建築（射後不理） | 慣性 | 地獄火 `DMSE_AdvLight_Guidance_MMW` |
-| 反艦 | `GuidanceType_AntiShip` | 艦圖上耐久最高的敵對建築 → 最大敵對 Pawn；世界層 `ExtraTerminalUpdates +2`、終端檢查 20 ticks | 慣性 | 巡航 `DMSE_Guidance_AntiShip`、戰斧 `DMSE_AdvCruise_Guidance_AntiShip` |
-
-**電網啟動中的建築**：原版電網每 30–200 ticks 才開啟一棟新接上的耗電建築，而導彈打尚未生成地圖的據點時，地圖在抵達那一 tick 才生成，所有建築都還沒通電。`GuidanceType.PowerStarting` 把「開關為開、未故障、電網有可用電源且供得起、無停電事件」的未通電建築視為運作中（與原版 `PowerNet.PowerNetTick` 的開機條件相同）；反輻射用 `CompBVRDevice.ActiveForSeeker`（同 `Active`，但接受啟動中的電力），電磁訊號以額定耗電 `PowerConsumption` 計。人工操作的雷達仍須有人操作才算開機。熱訊號不受影響：新地圖的房間還沒升溫，會打體型最大的 Pawn。
-
-**雷射引導標點**（`.source/DMSE/Scorer/Guidance/LaserDesignator.cs`、`1.7/Defs/ThingDefs_Misc/Weapons/DMSE_LaserDesignator.xml`）：
-
-- `DMSE_LaserDesignatorMark`（`LaserDesignatorMark`）：Ethereal、`useHitPoints = false`，不會被攻擊、搬運、拆除或炸毀；記錄標定方陣營 `owner`、放置 tick 與失效 tick，到時自動消失（預設 5000 ticks = 2 遊戲小時）。以原版 `UI/Overlays/TargetHighlight_Square` 染紅並脈動顯示；檢視字串顯示標定方與剩餘時間。
-- **裝備**：`DMSE_Gun_LaserDesignator`（雷射目標標定器，機械印表機製作，研究「積體電路」）。射出 `DMSE_Bullet_LaserDesignator`（`Projectile_LaserDesignator`），不造成傷害，命中處生成屬於射手陣營的標點；被護盾擋下則不生成。`ai_IsWeapon = false`、沒有 `weaponTags`：AI 不會拿它當武器，也不會出現在陣營武器池。標點 def 與存在時間由彈頭的 `ModExtension_LaserDesignator` 設定。貼圖暫用 C95 手槍。
-- **能力**：`CompProperties_AbilityLaserDesignate`（`CompAbilityEffect_LaserDesignate`）可掛在任何 AbilityDef 上，對目標格施放即生成屬於施放者陣營的標點；目前**沒有隨附 AbilityDef**，需要時在 XML 定義並賦予（植入物、服裝等），能力的 `verbProperties.targetParams.canTargetLocations` 要設為 true。
-- 用法：先派人到目標地圖標定，再從基地發射雷射制導導彈；導彈抵達時標點必須仍有效。
-
-### B-8. 預設零件與建造成本（2026-10 新增）
-
-- `MissileBodyDef.defaultParts`：**只有物品型態的彈體**宣告預設零件（Ballistic 三種在發射井上裝配、沒有物品型態，因此不帶預設零件，井／架建造完成是空的）。`MissileConfig.NewWithDefaults(body)` 只收與該彈體相容、且彈體確實有該槽位的部件；同類別取第一個。
-- `CompMissileConfig.EnsureInit()` 在**建立時**播種一次（`defaultsSeeded` 由 `PostPostMake` 設為 false）：`config = NewWithDefaults(body)`、`pending` 同步 → `NeedsAssembly = false`，一造好就能發射。
-- 讀檔不播種：`defaultsSeeded` 序列化預設 `true`，舊存檔的飛彈維持原狀（不會白送零件），玩家刻意拆空的導彈也不會自己長回來。
-- 彈道井／架：**建造完成時是空的**（`isAssembled = false`），由 `WorkGiver_AssembleBallisticSilo` 搬料裝配後 `MarkLoaded()`；發射後 `config.parts` 清空、`pending` 保留 → 重新裝配時照 `pending` 收費。
-- **材料併入建造價**：預設零件的 `costList` 直接加進物品／建築的 `costList` 與 `MarketValue`。
-- 各彈體預設負載：
-
-| 彈體 | 預設零件 |
-|---|---|
-| Light | `DMSE_Light_Warhead_HE`＋`DMSE_Light_Guidance_Inertial`＋`DMSE_Light_Payload_None` |
-| Cruise | `DMSE_Warhead_HE`＋`DMSE_Guidance_Inertial`＋`DMSE_Propulsion_Standard`＋`DMSE_Payload_None` |
-| AdvancedLight | `DMSE_AdvLight_Warhead_HEAT`＋`DMSE_AdvLight_Guidance_Inertial`＋`DMSE_AdvLight_Payload_None` |
-| AdvancedCruise | `DMSE_AdvCruise_Warhead_Penetrator`＋`DMSE_AdvCruise_Guidance_TerrainMatch`＋`DMSE_AdvCruise_Propulsion_Turbofan`＋`DMSE_AdvCruise_Payload_None` |
-| Ballistic／LegacyBallistic／AdvancedBallistic | 無（發射井／架建造完成是空的，彈體在井上裝配，材料依所選零件另計） |
-| Loiter／LegacyLoiter／LegacyInterceptor | 無槽，不設 |
-
-- 驗證：`.source/Tools/check_missile_content.py` 會檢查每個槽位都有部件、預設零件覆蓋全槽且相容、預設零件的材料確實出現在對應 `costList`、以及物品至少被一個收納 filter 接受。
-
-### B-9. 反艦主動雷達（2026-10 新增）
-
-- `GuidanceType_AntiShip`：`TerminalGuidance => true`、`ExtraTerminalUpdates => 2`、`TracksMobileTargets => true`；落點打船圖上耐久最高的敵對建築，否則最大的敵對 Pawn，找不到退回慣性。
-- 世界層：`MissileConfig.TracksMobileTargets` 為 true 時，`MissileWorldObject` 的終端檢查間隔由 60 → **20 ticks**；`MissileConfig.TerminalUpdates` = 彈體值＋導引頭加成。
-- 移動目標登錄：`WorldComponent_BVRNetwork` 每 60 ticks 取樣所有 `MapParent` 的 tile，推導 `tilesPerTick` 並保留 900 ticks 記憶；只觀測、不 patch 原版，因此轉移艦、會搬遷的 NPC 陣地與其他 mod 的移動 `MapParent` 都涵蓋。
-- 選靶沿用既有世界選靶（`MapParent` 本來就可點），`targetParent` 已由 `TryLaunchRound` 記錄；目標在飛行中換 tile 時由 `TryTerminalUpdate` 改飛，射程不足就停飛、抵達落空。
-- 限制：飛行中的 `RimWorld.Planet.Gravship` 沒有 `Map`，抵達只會落空，v1 不列為目標。
+- **電網啟動中的建築**：導彈打未生成地圖的據點時建築都還沒開機（原版每 30–200 ticks 開一棟）。`GuidanceType.PowerStarting` 把符合原版開機條件的建築視為運作中；反輻射用 `ActiveForSeeker`，電磁以額定耗電計。熱訊號不受影響（房間還沒升溫）。
+- **雷射標點**（`Scorer/Guidance/LaserDesignator.cs`）：`DMSE_LaserDesignatorMark`（Ethereal、不可攻擊，預設 5000 ticks 失效）；`DMSE_Gun_LaserDesignator` 射出無傷害標定彈（`weaponTags Inherit="False"`、`ai_IsWeapon false`，AI 不會攜帶）；`CompProperties_AbilityLaserDesignate` 可掛任何 AbilityDef（未隨附）。
 
 ---
 
-## C. 超視距火砲系統（Artillery，`.source/DMSE/Artillery/`）
-
-> **現況（補正）**：1.7 已有實際 Def——`DMSE_Turret_Empero`（3×3「NK-30 帝王」遠程加農砲，`1.7/Defs/ThingDefs_Buildings/DMSE_LongRangeArtillery.xml`）掛 `DMSE.CompProperties_ArtilleryStrike`，另含本地圖減裝藥曲射 verb（與世界砲擊共用同一份砲彈）與 `CompTurretFacingRenderer` 砲身；自動驗收 `Tests_Artillery`（R1–R4）涵蓋此 Def。原「1.7 沒有任何 Def 掛 `CompProperties_ArtilleryStrike`」的說法已不成立。
-> 1.6 的 `DMSE_ArtillerySystem.xml` 於 2026-07-25 改名停用（`.disabled`），1.7 未沿用該檔。
-> 舊文件提到的 `docs/artillery-expansion-plan.md`（齊射指揮器/反砲兵雷達/ABM 攔截砲等規劃）並不存在於 repo；反砲兵部分現由 `docs/反砲兵雷達_實作計畫.md`（提案，未實作）承接，齊射指揮器與 ABM 攔截砲則仍無規劃。
-
-### C-1. 架構角色
+## C. 超視距火砲（`.source/DMSE/Artillery/`）
 
 | 角色 | 類別 | 職責 |
 |---|---|---|
-| 火砲核心 | `CompArtilleryStrike`（**繼承 `CompBVRDevice`**，不註冊） | 世界選靶 Gizmo、持續射擊狀態機、彈藥與砲管檢查、砲管轉向、（選配）佔用火控通道 |
-| 離場投射物 | `Projectile_ArtilleryDeparture` | 從建築以 `Projectile` 弧線（`flyOverhead`）飛到朝目標方位的出口邊緣格；`Impact` 時建立世界航跡並 Vanish |
-| 世界航跡 | `WorldObject_ArtilleryStrike` | 世界地圖 Slerp 飛行（步進 `projectile.speed / 10 × 0.00025 / 距離`）；抵達時 `ResolveArrivalMap`（沒有地圖也沒有據點即落空）、排程齊射、自毀 |
-| 地圖排程器 | `MapComponent_ArtilleryStrikes` | 持有 `List<ArtilleryShellRequest>`（Deep 序列化），每 tick 輪詢 `fireTick` 到時者生成砲彈 |
-| 排程資料 | `ArtilleryShellRequest` | `fireTick`、`targetCell`、`entryEdgeCell`、`projectileDef`、`attackerFaction`、`scatterRadius`、`guided` |
-| 靜態工具 | `ArtilleryStrikeUtility` | `WorldDirectionAngle`（球面切平面方位角，0 = 北、順時針）、`EdgeCellFromAngle`、`CalcEntryEdgeCell`、`QueueSalvo`、`FindGuidedTarget`（雷達導引落點：砲塔 → 用電設備 → 人員）、`SpawnShell` |
+| 核心 | `CompArtilleryStrike`（繼承 `CompBVRDevice`，不註冊） | 世界選靶、持續射擊狀態機、彈藥／砲管、砲管轉向、選配借火控通道 |
+| 離場 | `Projectile_ArtilleryDeparture` | 弧線飛到目標方位的出口邊緣格，`Impact` 建立世界航跡 |
+| 世界航跡 | `WorldObject_ArtilleryStrike` | Slerp（`speed/10 × 0.00025 / 距離`）；`Arrived` 解析地圖（落空／生成據點地圖）、排程齊射 |
+| 排程 | `MapComponent_ArtilleryStrikes`＋`ArtilleryShellRequest` | `fireTick`、`targetCell`、`entryEdgeCell`、`projectileDef`、`attackerFaction`、`scatterRadius`、`guided` |
+| 工具 | `ArtilleryStrikeUtility` | `WorldDirectionAngle`、`EdgeCellFromAngle`、`CalcEntryEdgeCell`、`QueueSalvo`、`FindGuidedTarget`、`SpawnShell` |
 
-`CompProperties_ArtilleryStrike`：`departureProjectileDef`、`worldObjectDef`（兩者必填，缺少時 `ConfigErrors` 報錯）、`projectileDef`（後備；優先使用 `CompChangeableProjectile` 已裝填的砲彈）、`cooldownTicks`（3600）、`warmupTicks`（240）、`scatterRadius`（2）、`salvoCount`（1）、`salvoIntervalTicks`（60）、`requiresFireControlChannel`（false）、`fireControlHoldTicks`（900）、`guidedScatterRadius`（−1；< 0 = 不支援雷達導引，≥ 0 時開火搶到通道就改用此散佈並在落彈時改瞄敵方目標）、`maxRangeTiles`（0 = 不限）、`refuelableIsAmmo`（false；true 時把 `CompRefuelable` 當砲彈存量，用盡顯示「無彈」而非砲管耗損）。
+Props：`departureProjectileDef`、`worldObjectDef`（必填）、`projectileDef`、`cooldownTicks`、`warmupTicks`、`scatterRadius`、`salvoCount`、`salvoIntervalTicks`、`requiresFireControlChannel`（無 Def 使用）、`fireControlHoldTicks`、`guidedScatterRadius`（<0 不支援導引）、`maxRangeTiles`、`refuelableIsAmmo`。Empero：冷卻 1800、瞄準 300、散布 14／導引 3、射程 20、砲彈 12；另有本地圖減裝藥曲射（共用砲彈、世界射擊期間停火）、hold fire／強制目標。
 
-`DMSE_Turret_Empero` 的實值：`cooldownTicks` 1800、`warmupTicks` 300、`scatterRadius` 14、`guidedScatterRadius` 3、`salvoCount` 1、`fireControlHoldTicks` 900、`maxRangeTiles` 20、`refuelableIsAmmo` true（`CompRefuelable` 容量 12）。
+流程：Gizmo 選靶（同圖層、非本地圖、射程內）→ 持續射擊（`!Active` 暫停、無彈停止、等通道）→ 瞄準 warmup（砲管轉向世界方位）→ `FireSingleShot`（耗彈、出口格 = 世界方位、`targetCell` = 目標地圖中心、開火瞬間搶到通道則 guided）→ 離場 → 世界航跡 → `QueueSalvo`（進入邊 = 從發射地一側）→ `SpawnShell`（guided 每發重挑 `FindGuidedTarget`：砲塔 → 用電設備 → 人員；散布；`launcher = null`）→ 原版爆炸。
 
-### C-2. 線性時間線（選靶 → 落彈）
-
-```
-玩家點擊「開火」Gizmo（需 Active、def 齊全、有砲彈；冷卻中也可先選靶）
-   │   世界選靶：同圖層的有效 tile；拒絕本地圖、其他圖層與超出 maxRangeTiles 的目標（無最小距離限制）
-   │   targetTile = 該 tile → 進入持續射擊；Gizmo 換成「停止」並顯示冷卻/瞄準/就緒狀態
-   ▼
-每 tick CompTick
-   ├─ 火控通道到期（channelReleaseTick）→ ReleaseArtilleryChannel
-   └─ TickSustainedFire：
-        !Active → 暫停（保留目標，恢復後繼續）
-        冷卻中 → 等待
-        無砲彈 → 訊息 + 停止持續射擊
-        砲管（CompRefuelable）耗盡 → 訊息 + 停止持續射擊（refuelableIsAmmo = true 時改顯示「無彈」）
-        requiresFireControlChannel 且無空閒火控通道 → 暫停瞄準，等通道釋放
-        開始瞄準：warmupEndTick = now + warmupTicks；砲管轉向世界方位（TurretTop.CurRotation，
-                  瞄準期間每 tick 拉回，蓋過原版閒置擺動）
-        瞄準完畢 → FireSingleShot
-   ▼
-FireSingleShot
-   │   • RemoveShell + 砲管 ConsumeFuel(1)
-   │   • 出口邊緣格 = WorldDirectionAngle(本地 → 目標) 對應的地圖邊（同 tile 時取北邊）
-   │   • 生成 Projectile_ArtilleryDeparture 射向出口格，攜帶目標 tile、彈種、齊射參數、攻擊方
-   │     targetCell = 目標地圖中心（目標地圖未載入時用 (125, 0, 125)）——玩家不選落點格
-   │     guided = 開火瞬間是否搶到一條砲擊引導通道（有則散佈改用 guidedScatterRadius）
-   │   • 進入 cooldownTicks；需要火控時佔用最空閒火控雷達 1 通道，fireControlHoldTicks 後釋放
-   ▼
-Projectile_ArtilleryDeparture.Impact（抵達出口格）→ 建立 WorldObject_ArtilleryStrike（Tile = 本地圖）→ Vanish
-   ▼
-世界 Slerp 飛行 → Arrived：ResolveArrivalMap（落空 → 訊息、自毀）→ QueueSalvo → 鏡頭 Pan 至落點 → 自毀
-   │   • 進入邊 = WorldDirectionAngle(目標 → 發射地)，即從發射地那一側飛入；沿邊座標取 targetCell 分量
-   │   • salvoCount 發依 salvoIntervalTicks 錯開推入 MapComponent_ArtilleryStrikes
-   ▼
-每 tick：MapComponent_ArtilleryStrikes 輪詢 → 到時 SpawnShell
-   │   • guided：每發在生成前重新 FindGuidedTarget（敵方砲塔 → 用電設備 → 人員，同級取最靠近者），
-   │     找不到才退回 targetCell（齊射之間目標可能已被摧毀，所以逐發重挑）
-   │   • 散佈：目標格 + Rand.InsideUnitCircle × scatterRadius（夾入地圖，生成時定格）
-   │   • 生成 Projectile 從進入邊緣格 Launch 至落點
-   │     hitFlags = IntendedTarget | NonTargetPawns，launcher = null
-   ▼
-Projectile_Explosive 命中結算（原版彈道/爆炸邏輯）
-```
-
-### C-3. 重點設計
-
-- **與 BVR 共用火控通道**：火控雷達設 `supportsArtilleryGuidance` 才能引導砲擊。`FindAvailableRadar` 挑同陣營、運作中、`FreeArtilleryChannels` 最多者；`FreeArtilleryChannels = maxTargets − 已借給火砲 − 依容量比例分攤的 BVR 占用（無條件進位）`。反過來，`MidcourseDefense` 計算容量時扣除各雷達的 `OccupiedArtilleryChannels`。
-- **落彈是 `Projectile` 而非 Skyfaller**：砲彈從邊緣格水平飛入，走原版投射物邏輯，因此 **BVR 不會攔截砲彈**（只攔空投艙與 `IIncomingMissile` 導彈）。
-- **與導彈鏈的差異**：離場用 `Projectile` 弧線（`ScorerProjectile` skyfaller 從建築正上方升起，視覺不像砲擊）；抵達時不開玩家選靶，直接打目標地圖中心 ± 散佈（導引砲彈則逐發改瞄敵方目標，見 C-2）。
-- **不可跨圖層、找不到目標即落空**：砲彈無導引，選靶時拒絕其他圖層的 tile；抵達時目標 tile 沒有地圖也沒有據點則落空並發訊息，不生成營地地圖（有據點但尚無地圖時會生成）。
-- **存檔**：冷卻、`targetTile`、`channelReleaseTick`、借用的雷達（以 Thing 參照存檔）都會保存；`warmupEndTick`/`aimAngle` 不存，讀檔後從冷卻結束重新瞄準。離場投射物序列化建立世界航跡所需的全部資料；目標與世界航跡的 `PlanetTile` 以 `Scribe_Values` 完整保存「tileId,layerId」（舊存檔的 int 欄位仍可讀，但只能視為地表）；在途齊射由 `ArtilleryShellRequest` 全值序列化。
+- 與 BVR 共用火控通道：`FreeArtilleryChannels = maxTargets − 借給火砲 − 按比例分攤的 BVR 占用`；`MidcourseDefense` 反向扣除。
+- 砲彈是 Projectile，**BVR 不攔截**。不可跨圖層。
+- 存檔：冷卻、`targetTile`（`PlanetTile` 完整 tileId,layerId）、`channelReleaseTick`、借用雷達、在途齊射。
+- 已知：傷害歸因 `launcher: null`（`attackerFaction` 未參與）；`DMSE_Turret_Empero` 是 `Building` 不是 `Building_Turret`，`FindGuidedTarget` 不會把它當 tier 0。見[反砲兵提案](反砲兵雷達_實作計畫.md)。
 
 ---
 
-## D. 系統間的關係
+## D. 檔案地圖
 
-BVR 是**防禦**，裝配/發射與火砲是**進攻**，但已互相牽動：
+- **BVR 核心** `.source/DMSE/SkyFallerTurret/BVR/`：`CompBVRDevice`、`MapComponent_BVRCombat`、`BVRWave`、`BVRTargetProps`、`CompSearchRadar`、`CompFireControlRadar`、`CompMissileLauncher`（Interceptor）、`CompMannableMissileLauncher`、`JobDriver_ManMissileLauncher`、`CompTerminalCIWS`、`CompTurretFacingRenderer`、`MapComponent_InterceptEffects`、`InterceptDebris/`、`World/`。
+- **BVR 周邊** `.source/DMSE/SkyFallerTurret/`：`InterceptProjectile`、`Patch_MakeDropPodAt`、`Alerts_*`、`Patch_QuestPart_Bossgroup`、`ManPortableSAM`。只剩 superseded 註解的空檔：`CompProperties_InterceptRadar`、`CompSkyfallerTurret`、`EarlyWarningUtility`、`InterceptSkyfallerUtility`、`MapComponent_InterceptSkyfaller`。
+- **導彈** `.source/DMSE/Scorer/`：`Assembly/`（Defs、Config、Effects、Guidance、ITab、WorkGiver／JobDriver、`MissileBVRUtility`、`MissileIncoming` 舊存檔轉換）、`Strike/`、`Ballistic/`、`Guidance/`、`MissileWorldObject`、`MissileWorldUtility`、`ScorerProjectile_WorldObject`、`GameComponent_MissileEngage`、`Patch_ShouldBeRemoved`。
+- **載體** `.source/DMSE/MissileProjectile/`；**特效** `.source/DMSE/MissileFx/`；**平台容器** `.source/DMSE/`（`CompMissileLauncher`、`Building_MissileRack`、`CompMissileRackRenderer`）。
+- **NPC 陣地** `.source/DMSE/MissileBase/`；**火砲** `.source/DMSE/Artillery/`；**VGE** `.source/GravshipExpanded/PointDefenceCompat`。
+- **Defs** `1.7/Defs/ThingDefs_Buildings/`、`ThingDefs_Items/`、`Missile/`、`WorldObjects_*.xml`、`DMSE_BVRWorld.xml`、`Effects/`。
 
-1. SAM 的彈藥是裝配系統產出的實體導彈，戰鬥部效果（連續桿/空爆）直接參與攔截判定（A-5/A-6）。輕型導彈發射箱的同一彈艙同時供對地發射與攔截。
-2. 進攻導彈落地前先過目標地圖的 BVR（生成端同步 `MissileBVRUtility.TryRegister`，首 tick 為後備）；玩家攻擊有雷達的敵方基地時，己方導彈也會被攔截。
-3. 反輻射導引頭 vs 雷達 `immuneToAntiRadiationSeeker` 構成電子對抗閉環。
-4. NPC 導彈陣地的地圖內發射速率受其火控通道數限制；陣地的相控陣雷達、輕型導彈發射箱（SAM）與 CIWS 同時防禦玩家導彈，而 SAM 與對外打擊從同一批彈架取彈。
-5. 火砲繼承 `CompBVRDevice` 共用可用性判定、不進 BVR 註冊表，但與 BVR 中過程攔截**共用火控通道**（C-3）；砲彈無法被 BVR 攔截。
-6. 所有發射平台共用 `CompMissileLauncher` 基類（冷卻、有彈、可用性）；只有 `CompMissileLauncher_Interceptor` 會被 BVR 調用。發射平台建築掛 `CompMissileConfig` 只為接收/保存設定，不會被 `WorkGiver_AssembleMissile` 當成物品（限定 Item 類別）；彈道井另有專用 WorkGiver。
-7. 載入 VGE 時，近防（`CompPointDefence`）與 `CompTerminalCIWS` 可同裝一座砲塔並共用砲管耐久，但兩者判定互不相通。
+## E. 未解問題與手動測試
 
----
-
-## E. 檔案清單
-
-**BVR 核心（`.source/DMSE/SkyFallerTurret/BVR/`）**
-`CompBVRDevice`、`MapComponent_BVRCombat`（含 `BVRTuning`）、`BVRWave`（含 `BVRTarget`）、`BVRTargetProps`、`CompSearchRadar`、`CompFireControlRadar`、`CompMissileLauncher`（`CompMissileLauncher_Interceptor`）、`CompMannableMissileLauncher`、`JobDriver_ManMissileLauncher`、`CompTerminalCIWS`、`CompTurretFacingRenderer`、`MapComponent_InterceptEffects`、`WeatherEvent_MissileFlash`
-
-**BVR 周邊（`.source/DMSE/SkyFallerTurret/`）**
-`InterceptProjectile`、`Patch_MakeDropPodAt`（含 `BVRDetection`）、`Alerts_BVRStatus`、`Alerts_Pods`、`Alerts_PlayerMissiles`、`Patch_QuestPart_Bossgroup`；舊系統空檔（只剩 superseded 註解，可自 csproj 移除）：`CompProperties_InterceptRadar`、`CompSkyfallerTurret`、`EarlyWarningUtility`、`InterceptSkyfallerUtility`、`MapComponent_InterceptSkyfaller`
-
-**BVR 銜接（`.source/DMSE/Scorer/Assembly/`）**
-`MissileBVRUtility`、`MissileProjectile/`（`Projectile_MissileIncoming`／`Projectile_MissileLaunch` 等）、`MissileIncoming`（舊存檔轉換用）、`WorldObject_IncomingMissile`、`IncomingMissileUtility`、`DebugActions_Missile`、`Patch_SpawnMissileIncoming`（**已廢棄留空**）
-
-**發射平台與容器（`.source/DMSE/`）**
-`CompMissileLauncher`（抽象基類 + `CompMissileLauncher_WorldTargeting`）、`Building_MissileRack`（含 `MissileRackExtension`）、`CompMissileRackRenderer`
-
-**導彈裝配/發射（`.source/DMSE/Scorer/`）**
-`Assembly/MissileDefs`、`Assembly/MissileConfig`、`Assembly/CompMissileConfig`、`Assembly/WarheadEffect`、`Assembly/PayloadEffect`、`Assembly/GuidanceType`、`Assembly/MissileLauncherExtension`（含 `MissileTaxonomy`）、`Assembly/ITab_MissileAssembly`、`Assembly/ITab_MissileInventory`、`Assembly/MissileAssemblyUtility`（含 `DMSE_MissileJobDefOf`）、`Assembly/WorkGiver_AssembleMissile`、`Assembly/JobDriver_DeliverMissileResource`、`Assembly/JobDriver_AssembleMissile`、`Assembly/WorkGiver_LoadMissileLauncher`、`Assembly/JobDriver_LoadMissileLauncher`、`Assembly/Patch_Refuel_CarryConfig`、`CompScorer`（`CompMissileLauncher_Scorer`）、`CompMissileRailLauncher`（`CompMissileLauncher_Rail`）、`Ballistic/CompBallisticLauncher`（`CompMissileLauncher_Ballistic`）、`Ballistic/WorkGiver_AssembleBallisticSilo`、`Ballistic/JobDriver_AssembleBallisticSilo`、`ScorerProjectile`、`ScorerProjectile_WorldObject`、`MissileWorldObject`、`MissileWorldUtility`、`Guidance/LaserDesignator`（標點、標定彈、標定能力 Comp）、`GameComponent_MissileEngage`、`Patch_ShouldBeRemoved`、`CompEffecterColdLaunch`、`CompEffecterHotLaunch`
-
-**NPC 導彈陣地（`.source/DMSE/MissileBase/`）**
-`WorldObjectComp_MissileBase`、`MapComponent_MissileBase`、`MissileAutoFillUtility`、`SitePartWorker_MissileBase`、`GenStep_MissileBaseCrew`、`GenStep_MissileBaseFog`、`LordJob_MissileCrewDuty`、`Patch_MissileBaseReentry`、`Patch_MissileBaseShuttleBlock`、`DebugActions_MissileBase`
-
-**超視距火砲（`.source/DMSE/Artillery/`）**
-`CompArtilleryStrike`、`Projectile_ArtilleryDeparture`、`WorldObject_ArtilleryStrike`、`MapComponent_ArtilleryStrikes`（含 `ArtilleryShellRequest`）、`ArtilleryStrikeUtility`
-
-**VGE 相容（`.source/GravshipExpanded/`）**
-`PointDefenceCompat`（含 `ModExtension_PointDefence` 與 `CompPointDefence` 補丁）
-
-**Defs（`1.7/`）**
-`Defs/ThingDefs_Buildings/`：`DMSE_AcousticEarlyWarningRadar.xml`、`DMSE_EarlyFireControlRadar.xml`、`DMSE_Misc.xml`（相控陣雷達）、`DMSE_RotaryMissileLauncher.xml`、`DMSE_LightMissileLauncher.xml`、`DMSE_Security.xml`（CIWS）、`DMSE_Security_Missile.xml`（巡航發射器/攔截彈 skyfaller/巡航落點導彈/來襲導彈世界物件）、`DMSE_LoiteringLauncher.xml`、`DMSE_BallisticSilo.xml`、`DMSE_BallisticRack.xml`（2x2 開放式彈道發射架，裝配完成顯示直立彈體）、`DMSE_MissileRack.xml`（儲存架）、`DMSE_LauncherBases.xml`（發射平台建造限制）；`Defs/ThingDefs_Misc/Weapons/DMSE_LaserDesignator.xml`（雷射引導標點、標定彈、雷射目標標定器）；`Defs/ThingDefs_Items/DMSE_Manufactured.xml`（導彈物品 + ITab）；`Defs/Missile/DMSE_MissileAssembly.xml`（巡航彈體+部件）、`DMSE_LightMissile.xml`、`DMSE_BallisticMissile.xml`、`DMSE_LoiteringMunition.xml`、`DMSE_MissileAssembly_Jobs.xml`（JobDef + WorkGiverDef）；`Defs/WorldObjects_MissileBase.xml`（導彈陣地）；`GravshipExpanded/PointDefence/Patches/Patch_VGE_PointDefence.xml`
-
----
-
-## F. 審查發現與修正記錄
-
-### 2026-10-18：遊戲內自動驗收
-
-新增 `.source/DMSE.BVRAcceptance`（用法見該目錄 README）：以 `-quicktest` 啟動 1.7、在新殖民地自動跑地圖層、導引頭、世界層與存讀檔，跑完刪除暫存存檔並關閉遊戲；測試用 DLL 只在執行期間放進 `1.7/Assemblies`。最初 19 項連續三輪全數通過；修正下方第 3 點後新增 S3，20/20 通過；再補上世界層空爆、移動目標改飛、末端 CIWS 斷電、各倍速 ETA 與改飛後存讀檔（W8–W11、L2），25/25 通過（Release DLL），未發現新缺陷。世界層各情境的結果與未測項目見《BVR_世界層偵測攔截重構》§15-4。
-
-1. **【已修正】雷射目標標定器會出現在敵人身上。** `DMSE_Gun_LaserDesignator` 繼承 `BaseHumanMakeableGun` 的 `weaponTags`（`Gun`），劫掠者的武器池會抽到這把無傷害的裝備。改為 `<weaponTags Inherit="False" />`。
-2. **【已修正】世界層覆蓋圈、攔截彈虛線與會合擴散圈看不見。** `BVRWorldDrawer` 的線畫在球面上，被地形網格蓋住；改照原版世界線沿法線外推 0.08，並使用圖層的世界線材質與寬度。
-3. **【已修正】反輻射、電磁訊號導引頭打剛生成的地圖時退化為慣性。** 兩者要求 `PowerOn`，但地圖在導彈抵達那一 tick 才生成，原版電網要 30–200 ticks 後才開啟耗電建築，打尚未生成地圖的 NPC 據點時，這兩種導引頭等同慣性。改為電網正要開啟的建築也算運作中（B-7「電網啟動中的建築」）；新增驗收 S3 在地圖生成當下直接選點，W6 改為必須命中相控陣雷達。熱訊號在新地圖上仍只會打最大的 Pawn（房間還沒升溫，符合「房間夠熱才選房間」）。
-4. 測試過程中確認的原版行為：新接上電網的耗電建築是逐一開啟的（每 30–200 ticks），`DebugSettings.unlimitedPower` 只對已在電網內的建築有效；不在世界畫面時世界物件每 15 ticks 才更新一次。
-
-### 2026-10-18 第三輪：全面覆核
-
-**新發現（第 1、2、4 點已於同日修正，編譯通過、尚未進遊戲驗證；第 3 點仍未修正）**
-
-1. **【已修正】CIWS 在多個波次同時處於末端時會中斷連射，且總是先打較晚登記的波次。** `MapComponentTick` 由 `Waves` 尾端往前處理，每個處於末端的波次都各自呼叫 `TerminalDefense` → `ciws.TryEngage(wave)`；但連射狀態（`burstShotsLeft`/`burstTargetId`/`nextShotTick`）每具 CIWS 只有一份，不分波次。若 CIWS 正在打 `Waves[0]` 的目標而 `Waves[1]` 也進入末端，下一發到時會先以 `Waves[1]` 呼叫 `FireBurstShot`，在該波次找不到 `burstTargetId` → `EndBurst`：本輪作廢、不擲骰、進冷卻；之後的新連射也一律先開在 `Waves[1]`。結果是較早進入末端（通常也較早落地）的波次分不到 CIWS 火力，直到後面的波次清空為止。觸發條件：兩個同防禦方波次的落地時間相差超過 `MergeWindowTicks`（600）但小於末端窗口（WingBack 為 1800），例如兩批空投相隔 10–30 秒抵達。修正方向：每具 CIWS 每 tick 只處理一次；連射中跨波次以 `burstTargetId` 找目標；新連射選 `tickToImpact` 最早的波次。
-   - 修正：`MapComponentTick` 先收集末端波次，迴圈後 `TerminalDefense` 對每具 CIWS 只呼叫一次 `TryEngage(terminalWaves)`；連射中以 `burstTargetId` 跨該防禦方所有末端波次找目標，新連射選 `tickToImpact` 最早的波次；存檔欄位不變。
-2. **【已修正】【1.7 迴歸】導彈陣地的「發射器全滅 → 陣地摧毀」永遠不會觸發。** `MapComponent_MissileBase.GetEnemyLaunchersCached` 以 `CompMissileLauncher_Scorer` 辨識發射器，但 1.7 的 `DMSE_Building_Scorer` 已改掛 `CompProperties_MissileRailLauncher`（1.6 仍是 `CompPropertiesScorer`），1.7 已無 Def 使用 `CompMissileLauncher_Scorer`。快取恆為空 → `hasEverHadLaunchers` 永遠 false → 不會呼叫 `OnBaseDestroyed`；`EnsureCrewLord` 的集結點也一律退回地圖中心。修正方向：改判 `CompMissileLauncher_WorldTargeting`（或基類 `CompMissileLauncher`），並同步更新該類別的 XML 註解。
-   - 修正：改以 `CompMissileLauncher_WorldTargeting` 辨識（涵蓋 `_Rail`/`_Ballistic`/`_Scorer`，`LaunchSite_A` 的 Scorer 與輕型導彈發射箱都算在內），類別 XML 註解同步更新。
-3. **【低】火砲傷害歸因沒有生效。** `ArtilleryShellRequest.attackerFaction` 有存檔，但 `SpawnShell` 以 `launcher: null` 發射，該欄位實際沒被用到。1.7 現已有火砲 Def（`DMSE_Turret_Empero`），此缺口的影響不再限於開發階段；`docs/反砲兵雷達_實作計畫.md` §8.4 決定不在此處修改（世界層發射沒有實體可掛 `launcher`），改用世界層事件記錄攻擊方供報復射擊判定。
-4. **【已修正】【低，潛在】導彈陣地取到「沒有 `CompMissileConfig` 的導彈」時會 NRE。** `TryFireFromOnMap` 先取第一個有彈的敵方彈架，再找架內第一枚帶 `CompMissileConfig` 的導彈；若該架只放了不帶此 comp 的彈（如 `DMSE_InterceptorMissile`），`missile` 為 null，`ExtractConfigFromMissile` 會退回預設設定，但接著的 `missile.Destroy()` 拋 NullReferenceException。現行 `LaunchSite_A` 只放輕型導彈與 Moskit（兩者都有此 comp），所以目前不會觸發。
-   - 修正：`FindRackWithMissiles` 只回傳存有帶 `CompMissileConfig` 導彈的彈架並一併回傳該枚導彈；只放攔截彈的彈架直接跳過，不消耗任何東西。
-
-**07-06 之後已修正（2026-10-13 提交，本輪已覆核程式碼）**
-
-- 多人空投艙：原本以 `ActiveTransporterInfo.SingleContainedThing` 取 pawn，艙內多於一件時會報錯（例如圍攻的補給艙）。現改由 `BVRDetection.PawnsIn` 列出艙內全部 pawn：`GetDropFaction` 取第一個有陣營者，`SpawnDebris` 殺死所有 pawn 並把屍體合併成一個殘骸空投，`Patch_QuestPart_Bossgroup.IsOk` 也改用同一判定。
-- `MapComponent_InterceptEffects` 的材質改在 `[StaticConstructorOnStartup]` 時於主執行緒建立，不再於 `MapComponentUpdate` 延遲建立。
-
-**文件漂移（本輪已更新）**
-
-- SAM 類別 `CompMissileLauncher` → `CompMissileLauncher_Interceptor`；`CompMissileLauncher` 現為所有發射平台的抽象基類，`CompScorer`/`CompMissileRailLauncher`/`CompBallisticLauncher` 只是檔名，類別為 `CompMissileLauncher_Scorer`/`_Rail`/`_Ballistic`。
-- `CompBVRDevice.Active` 新增 `CompMannable` 條件；補上人工操作旋轉發射架與操作員自動補彈。
-- 來襲導彈改為生成端同步登記，首 tick 自註冊降為後備。
-- 火控雷達與火砲共用火力通道（`supportsArtilleryGuidance`）。
-- 射程公式加入戰鬥部 `RangeOffset` 與酬載 `RangeFactor`；導引頭 7 種、戰鬥部 8 種、酬載 8 種。
-- 裝配需按「確認裝配」；儲存架內的導彈可就地裝配；彈道井的專用裝配流程。
-- 火砲章節整段改寫（世界選靶、持續射擊狀態機、離場 `Projectile`、依球面方位決定出入邊、無 `minRange`），並註明 1.7 無 Def（該註記已由下方「火砲章節補正」撤銷）。
-- 新增 1.7 Def 配置與數值試算、敵方導彈來源（NPC 導彈陣地）、VGE 近防相容層。
-- 移除失效引用：`docs/導彈四階分級架構.md`（07-06 已刪除，四階分級摘要併入 B-1）、`docs/artillery-expansion-plan.md`（repo 中不存在）。
-- `README.md` 的 BVR／發射器摘要同步改用現行類名；CIWS 一欄移除「85 式多用途速射系統」（那是 Dawnblade Striker 的砲，沒有 `CompTerminalCIWS`）。
-
-**火砲章節補正（對齊 1.7 現況）**
-
-- §C 現況改以 `DMSE_Turret_Empero` 為準（原「1.7 沒有 Def」已不成立）；`README.md` §3 同步改寫。
-- §C-1 props 清單補 `guidedScatterRadius`／`maxRangeTiles`／`refuelableIsAmmo`，並列出實際 Def 值；`ArtilleryShellRequest` 補 `guided` 欄位、靜態工具補 `FindGuidedTarget`。
-- §C-2 時間軸補「導引砲彈在 `SpawnShell` 時逐發重挑目標」——這是原本漏記的行為（舊版只寫「打地圖中心 ± 散佈」）。
-- §F 第 3 點（歸因缺失）改註明 1.7 已有火砲 Def，並指向 `docs/反砲兵雷達_實作計畫.md` §8.4 的處理決定。
-- 手動測試清單第 11 項改指向自動驗收 R1–R4，並註明 `requiresFireControlChannel` 仍無 Def 使用。
-
-### 2026-10-18：導引頭選目標機制（新功能）
-
-1. 落點選擇統一由 `GuidanceType.PickCell` 決定，玩家與敵方發射共用。玩家導彈只有電視制導（含巡飛彈內建）會暫停讓玩家選點，其餘導引頭與慣性一律自動鎖定（B-4、B-7）。過去玩家導彈不論導引頭都手動選點，導引頭只影響敵方。
-2. 鎖定規則重寫：反輻射改看全部敵對建築（原本只看玩家建築），後備從「發電量最大」改為電磁訊號（耗電量最大）；熱訊號以房間溫差門檻決定打房間或體型最大的 Pawn（原本先打 Pawn）；新增電磁訊號與雷射制導；慣性改為打隨機敵對建築（原本以 `allBuildingsColonist` 判斷，玩家發射時幾乎找不到目標）。
-3. 內容調整：`DMSE_Guidance_Precision` 改為電視制導並改名（defName 不變，舊存檔的導彈照常載入）；`DMSE_Light_Guidance_IR` 改用熱訊號邏輯並改名「熱訊號導引頭」；新增 4 個導引部件（輕型雷射、巡航電磁訊號、巡航雷射、彈道雷射）；巡飛彈加 `builtInGuidance = TV`，維持手動選點。
-4. 新增雷射引導標點、雷射標定彈、雷射目標標定器（裝備）與標定能力 Comp（未隨附 AbilityDef）。標定器貼圖暫用 C95 手槍。
-5. `GuidanceType_Infrared`／`GuidanceType_HighEnergy` 保留為舊名別名，行為分別等同熱訊號與電磁訊號。
-6. 驗證：1.7 編譯 0 警告 0 錯誤；所有異動 XML 可解析；新 Keyed 鍵在三語齊全、DefInjected 的 defName 皆存在。之後的遊戲內驗收（本節上方）涵蓋各導引頭規則、雷射標點與電視制導手動選點。
-
-### 2026-10-18：世界 tile 圖層與跨圖層打擊（9c3f5c5，已修正）
-
-1. **【已修正】存讀檔後軌道目標變地表。** `ScorerProjectile_WorldObject`、`WorldObject_ArtilleryStrike` 只存 `tileId`，再以 `new PlanetTile(int)`（圖層 0）還原。原註解稱 `Scribe_Values` 無法序列化 `PlanetTile`，實際上原版已註冊解析器（`tileId,layerId`），`WorldObject_IncomingMissile` 也一直直接使用。改為完整保存，舊欄位保留讀取。
-2. **【已修正】火砲永遠打地表。** `CompArtilleryStrike` 以 int 存目標（`PlanetTile` 隱式轉 int 會丟失圖層），`Projectile_ArtilleryDeparture` 再以地表重建；找目標地圖也只比對編號。全部改用 `PlanetTile`。
-3. **【已修正】跨圖層距離錯誤。** 玩家發射器射程、導彈陣地選目標原本用原版 `ApproxDistanceInTiles(PlanetTile, PlanetTile)`，跨圖層時為錯誤值（可能越界報錯），等於隨機決定是否打軌道據點。改用 `MissileWorldUtility.RangeDistance` 並套用 B-6 規則。穿梭機封鎖（`Patch_MissileBaseShuttleBlock`）改為只計同圖層的陣地。
-4. **【已修正】目標不在時生成垃圾地圖。** 三個抵達點原本呼叫 `GetOrGenerateMap(..., Camp)`，目標撤走或移動時會在該 tile（包含軌道）建營地並生成地圖。改為 `ResolveArrivalMap`：只取既有地圖或既有據點，否則落空。
-5. **【新功能】終端更新與逃逸區**（B-6），為轉移飛行的移動船體預作準備。
-6. 導彈陣地地圖內射擊：先以該枚導彈的導引能力與射程篩選目標，沒有可打目標的導彈保留在架上，不消耗。
-7. 已知未修：`ImpactCraterUtility`（撞擊飛行）也以 `ApproxDistanceInTiles(PlanetTile, PlanetTile)` 量測到據點的距離，有同樣的跨圖層問題，留待轉移飛行改版時處理。
-8. 合併進 main 時（947c93d），文件衝突整份取用了第三輪改寫的版本，本段與 B-5、B-6、G 第 13–15 項是之後補回的。
-
-### 2026-07-06 第二輪：已修正
-
-1. **【已修正】空爆額外攔截在枚舉中修改集合。** 原 `ApplyExtraInterceptRolls` 在 `MidcourseDefense` 的 `foreach (target in wave.targets)` 進行中直接 `RemoveTarget`（修改 `wave.targets`、必要時連 `Waves` 一起移除），會拋 `InvalidOperationException`。修正：命中的目標 id 先收集到 `airburstKills`（`ref List<int>`，跨多次空爆去重），待 foreach 結束後於 `MidcourseDefense` 尾端統一 `Discard()` + 從 `wave.targets` 移除；**刻意不移除空波次本身**——空波次交由 `MapComponentTick` 迴圈尾端既有的 `targets.Count == 0` 檢查處理，索引 `i` 因此始終有效（一併化解原審查第 2 點的索引錯位疑慮）。
-2. **【已修正】註解漂移**：`BVRTuning.WindowPenaltyPerExtraTarget` 的 XML 註解已改為實際語意「波次合併時每多一目標縮短的 ticks」。
-3. 修改僅涉及 `MapComponent_BVRCombat.cs`；當時尚未編譯驗證（沙箱無工具鏈）。
-
-### 2026-07-06 第一輪：文件漂移（已更新）
-
-舊版文件的預警窗口公式（功率線性、無反隱身加成）、SAM 彈藥（CompRefuelable 抽象燃料）、CIWS 判定（每發擲骰）、缺少鎖定階段/速度係數/戰鬥部攔截加成/導彈進入路徑等，均已按當時程式碼改寫。
-
-（歷史紀錄）早前修正過「發射器被誤判為可裝配物」：`MissileAssemblyUtility` 限定 item 類別 + `Patch_Refuel_CarryConfig` 同步 `pending`，現行程式碼仍保有此雙保險。
-
----
-
-## G. 測試檢查清單
-
-`.source/DMSE.BVRAcceptance` 自動涵蓋第 2、3、6 項，以及第 4、7、12、14、16–18 項的一部分（測試代號見該目錄 README）。裝配、發射 UI、火砲、地圖層空爆、導彈陣地摧毀、跨圖層、逃逸區用完次數後落空、舊存檔仍需手動測試。
-
-1. **編譯**：`.source/DMSE/DMSE.csproj`（SDK、net10.0，輸出至 `1.7/Assemblies`）。遊戲執行中會鎖住 DLL，建置前先關閉 RimWorld。
-2. **BVR 空投**：建搜索雷達 → 敵方空投出現預警窗口 → 火控鎖定（觀察通道占用警報）→ SAM 消耗實體導彈、中過程攔截（地圖外閃光、無碎片）→ 末端 CIWS 連射（整輪一次判定；命中後機率碎片、耗砲管耐久）→ 未攔截者落地。無雷達時照常落地。
-3. **多人空投艙**：含多名 pawn + 物品的空投艙被 CIWS 擊落且擲中碎片 → 所有 pawn 死亡、屍體以單一殘骸空投落下、無報錯。
-4. **人工操作**：早期火控雷達/旋轉發射架無人操作時不鎖定、不發射、砲塔頭不追蹤；下令操作後操作員先自行補彈至滿再就位，彈打光時自動回去取彈。
-5. **BVR 導彈**：敵方（或 Debug `Enemy missile salvo`）發射導彈 → 生成時即進入 BVR → 隱身/速度高的彈體窗口短、命中率低；**空爆回歸**：以多彈波次 + 空爆攔截彈齊射，確認一彈多殺、不拋例外、空波次正常清除。
-6. **CIWS 多波次**（F 第三輪第 1 點的修正）：讓兩批來襲相隔約 15–25 秒抵達，確認 CIWS 不再中斷連射、先落地的波次優先被攔截。
-7. **攻防互換**：玩家對有雷達的敵方基地發射導彈/空投 → 被敵方防空攔截，`Alerts_PlayerMissiles` 正確追蹤；反輻射導引頭優先打玩家雷達、早期預警雷達（豁免）不被選中。
-8. **導彈陣地**：未生成地圖時定期來襲；進入地圖後發射數受敵方火控通道限制；摧毀全部發射器後陣地消失、收到摧毀信件（F 第三輪第 2 點的修正）。
-9. **裝配**：ITab 改部件 → 缺料紅字 → 按「確認裝配」→ 小人搬料 → 施工 → config 生效；更換/移除部件部分退還；儲存架內導彈可就地裝配；彈道井裝配後可發射、發射後需重新裝配。
-10. **發射**：各平台裝填 → 世界選靶受射程限制 → 玩家選落點 → 依彈頭/酬載結算；增程件與酬載係數影響射程。
-11. **火砲**：已由 `.source/DMSE.BVRAcceptance` 的 `Tests_Artillery`（R1–R4）自動涵蓋——Def 接線與選靶規則（本地圖／跨圖層／射程）、無導引砲擊（瞄準轉向 → 離場投射物 → 世界航跡 → 生成並保留目標地圖 → 從發射地一側進入邊緣 → 散佈）、雷達導引（每發佔一條通道、散佈 3、落點挑敵方建築、到期釋放、池滿時改無導引）、本地圖減裝藥曲射（共用砲彈、世界射擊期間本地停火）。`requiresFireControlChannel` 目前沒有 Def 使用，仍只有程式碼行為、未列入自動驗收；砲彈不觸發 BVR。
-12. **存讀檔**：BVR 波次/目標/CIWS 連射狀態、導彈 config/pending/delivered/assemblyConfirmed、各發射器冷卻、彈道井裝填旗標、火砲持續射擊目標與在途齊射皆正確還原；**在途導彈/砲擊的目標圖層（軌道）讀檔後不變**，終端更新剩餘次數保留。
-13. **跨圖層**：地表陣地只有慣性制導彈時不攻擊軌道據點；換成具導引能力且射程足夠的導彈才會攻擊。玩家從軌道選地表目標：慣性/無導引彈被拒並顯示原因，導引彈可發射；火砲選其他圖層被拒。軌道地圖存在導彈陣地時，穿梭機不再跳紅字。
-14. **逃逸區**：導彈飛行中移動目標（之後的轉移飛行船，或以 Debug 改動目標 MapParent 的 Tile）→ 導彈在更新次數內改飛新位置（檢視字串的次數遞減）；次數用完後再移動 → 抵達時落空並發訊息。
-15. **落空**：玩家對空白 tile 發射 → 游標提示將落空，抵達時落空且不生成地圖；敵方導彈在途時玩家放棄該據點 → 落空，不生成營地。
-16. **導引頭選目標（玩家）**：選靶游標與 ITab 顯示落點方式；電視制導巡航彈與巡飛彈抵達後暫停手選；反輻射彈打敵方開機中功率最高的雷達；熱訊號彈在有暖氣房間的據點打房間、否則打最大的生物；電磁訊號彈打耗電最多的建築；慣性彈打隨機敵對建築，且不暫停遊戲、發「已鎖定目標」訊息。
-17. **導引頭選目標（敵方）**：導彈陣地以反輻射／熱訊號彈打玩家據點時落點符合規則；早期預警雷達（豁免）不被反輻射選中；敵方電視制導彈退化為慣性。
-18. **雷射標點**：小人裝備雷射目標標定器、征召後對地面標定 → 出現紅色脈動標點，檢視字串顯示剩餘時間、到時消失；爆炸與攻擊不會打掉它；雷射制導導彈鎖定最近一個我方標點，沒有標點時退化為慣性；敵方標點不會被我方導彈鎖定。
-19. **舊存檔**：在途的精確導引巡航彈（現為電視制導）讀檔後照常飛行，抵達時改為手動選點。
+- 火砲傷害歸因未生效（見 C）。
+- `ImpactCraterUtility`（撞擊飛行）仍用 `ApproxDistanceInTiles(PlanetTile, PlanetTile)`，跨圖層錯誤。
+- 原版事實：新接上電網的耗電建築逐一開啟（30–200 ticks），`DebugSettings.unlimitedPower` 只對已在電網內的有效；非世界畫面時世界物件每 15 ticks 更新。
+- 自動驗收未涵蓋、仍需手動：裝配 UI、發射 UI、地圖層空爆一彈多殺、導彈陣地摧毀信件、跨圖層拒絕／允許、逃逸區用完次數後落空、對空白 tile 發射落空、雷射標點完整流程、舊存檔。驗收與單元測試見 `.source/DMSE.BVRAcceptance/README.md`、`.source/DMSE.BVRTests/README.md`。

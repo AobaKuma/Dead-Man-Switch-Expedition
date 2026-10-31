@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -13,7 +14,9 @@ namespace DMSE
     ///   2) 砲塔頭朝向：鎖定目標後每 tick 對 <see cref="CompTurretFacingRenderer"/> 下達瞄準指令，
     ///      並且在砲塔頭轉到目標方位（<see cref="CompProperties_BuildingTurretGun.aimToleranceDeg"/> 內）
     ///      且穩定瞄準 warmupTime 之後才開火，確保射擊方向與畫面朝向一致；
-    ///   3) 彈藥：由武器 verb 的 consumeFuelPerShot 直接扣建築的 <see cref="CompRefuelable"/>（vanilla Verb 內建行為）。
+    ///   3) 彈藥：由武器 verb 的 consumeFuelPerShot 直接扣建築的 <see cref="CompRefuelable"/>（vanilla Verb 內建行為）；
+    ///   4) 玩家指令（同原版砲塔）：停火、強制目標／停止強制攻擊。強制目標與自動索敵都受 verb 的
+    ///      minRange（近距離射程限制）與 range 限制，選取時畫出最小（紅）／最大射程圈。
     /// </summary>
     public class CompProperties_BuildingTurretGun : CompProperties_TurretGun
     {
@@ -41,6 +44,79 @@ namespace DMSE
         private CompTurretFacingRenderer Facing => facingInt ?? (facingInt = parent.GetComp<CompTurretFacingRenderer>());
 
         public LocalTargetInfo CurrentTarget => currentTarget;
+
+        // ---- 玩家指令 ----
+        private bool holdFire;
+        private LocalTargetInfo forcedTarget = LocalTargetInfo.Invalid;
+
+        public bool HoldFire => holdFire;
+        public LocalTargetInfo ForcedTarget => forcedTarget;
+
+        private float MinRange => AttackVerb.verbProps.minRange;
+        private float MaxRange => AttackVerb.verbProps.range;
+
+        /// <summary>目標是否在射程帶內（不小於 minRange、不大於 range）；不在時給出原因。</summary>
+        public bool InRange(LocalTargetInfo target, out string reason)
+        {
+            reason = null;
+            if (!target.IsValid) { return false; }
+            float dist = target.Cell.DistanceTo(parent.Position);
+            if (dist < MinRange)
+            {
+                reason = "DMSE.TurretGun.TooClose".Translate(MinRange.ToString("0.#"));
+                return false;
+            }
+            if (dist > MaxRange)
+            {
+                reason = "DMSE.TurretGun.OutOfRange".Translate(MaxRange.ToString("0.#"));
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>設定強制目標；不在射程帶內則拒絕並回傳 false。Gizmo 與測試共用。</summary>
+        public bool TrySetForcedTarget(LocalTargetInfo target, out string reason)
+        {
+            if (target.HasThing && target.Thing == parent) { reason = null; return false; }
+            if (!InRange(target, out reason)) { return false; }
+            forcedTarget = target;
+            holdFire = false;
+            // 正在預熱別的目標（尚未射擊）就立刻改打強制目標
+            if (AttackVerb.state != VerbState.Bursting) { ClearTarget(); }
+            return true;
+        }
+
+        public void ResetForcedTarget()
+        {
+            forcedTarget = LocalTargetInfo.Invalid;
+            if (AttackVerb.state != VerbState.Bursting) { ClearTarget(); }
+        }
+
+        /// <summary>停火：同原版砲塔，同時取消強制目標。</summary>
+        public void SetHoldFire(bool value)
+        {
+            holdFire = value;
+            if (value)
+            {
+                forcedTarget = LocalTargetInfo.Invalid;
+                ClearTarget();
+            }
+        }
+
+        private bool ForcedTargetStillValid
+        {
+            get
+            {
+                if (!forcedTarget.IsValid) { return false; }
+                if (forcedTarget.HasThing)
+                {
+                    Thing t = forcedTarget.Thing;
+                    if (t.Destroyed || !t.Spawned || t.MapHeld != parent.Map) { return false; }
+                    if (t is Pawn p && (p.Dead || p.Downed)) { return false; }
+                }
+                return InRange(forcedTarget, out _);
+            }
+        }
 
         public bool Active => CompBVRDevice.IsOperational(parent);
 
@@ -70,10 +146,29 @@ namespace DMSE
 
         public override void CompTick()
         {
-            if (!Active || BarrelBusy)
+            if (!Active || BarrelBusy || holdFire)
             {
                 ClearTarget();
                 return;
+            }
+
+            // 強制目標：失效（摧毀／倒地／離開地圖／移出射程帶）就解除；有效時冷卻一結束就搶在 vanilla 索敵前接手
+            if (forcedTarget.IsValid && !ForcedTargetStillValid)
+            {
+                forcedTarget = LocalTargetInfo.Invalid;
+            }
+            if (forcedTarget.IsValid)
+            {
+                if (AttackVerb.state != VerbState.Bursting && burstWarmupTicksLeft <= 0 && burstCooldownTicksLeft <= 0)
+                {
+                    currentTarget = forcedTarget;
+                    burstWarmupTicksLeft = 1;
+                }
+            }
+            // 自動索敵（vanilla 只看 verb 射程）挑到近距離射程限制內的目標就放掉
+            else if (currentTarget.IsValid && AttackVerb.state != VerbState.Bursting && !InRange(currentTarget, out _))
+            {
+                ClearTarget();
             }
 
             if (currentTarget.IsValid && AttackVerb.state != VerbState.Bursting)
@@ -129,6 +224,90 @@ namespace DMSE
             aimSettleTicksLeft = -1;
         }
 
+        public override IEnumerable<Gizmo> CompGetGizmosExtra()
+        {
+            foreach (Gizmo g in base.CompGetGizmosExtra())
+            {
+                yield return g;
+            }
+            if (parent.Faction != Faction.OfPlayer) { yield break; }
+
+            Command_Action force = new Command_Action
+            {
+                defaultLabel = "CommandSetForceAttackTarget".Translate(),
+                defaultDesc  = "CommandSetForceAttackTargetDesc".Translate() + "\n\n"
+                    + "DMSE.TurretGun.RangeBand".Translate(MinRange.ToString("0.#"), MaxRange.ToString("0.#")),
+                icon         = ContentFinder<Texture2D>.Get("UI/Commands/Attack"),
+                hotKey       = KeyBindingDefOf.Misc4,
+                action       = BeginForceTargeting,
+            };
+            if (!Active) { force.Disable("DMSE.BVR.DeviceInactive".Translate()); }
+            else if (BarrelBusy) { force.Disable("DMSE.TurretGun.BarrelBusy".Translate()); }
+            yield return force;
+
+            if (forcedTarget.IsValid)
+            {
+                yield return new Command_Action
+                {
+                    defaultLabel = "CommandStopForceAttack".Translate(),
+                    defaultDesc  = "CommandStopForceAttackDesc".Translate(),
+                    icon         = ContentFinder<Texture2D>.Get("UI/Commands/Halt"),
+                    hotKey       = KeyBindingDefOf.Misc5,
+                    action       = ResetForcedTarget,
+                };
+            }
+
+            yield return new Command_Toggle
+            {
+                defaultLabel = "CommandHoldFire".Translate(),
+                defaultDesc  = "CommandHoldFireDesc".Translate(),
+                icon         = ContentFinder<Texture2D>.Get("UI/Commands/HoldFire"),
+                hotKey       = KeyBindingDefOf.Misc6,
+                isActive     = () => holdFire,
+                toggleAction = () => SetHoldFire(!holdFire),
+            };
+        }
+
+        private void BeginForceTargeting()
+        {
+            TargetingParameters parms = new TargetingParameters
+            {
+                canTargetLocations = true,
+                canTargetPawns     = true,
+                canTargetBuildings = true,
+                canTargetItems     = true,
+            };
+            Find.Targeter.BeginTargeting(parms, target =>
+            {
+                if (!TrySetForcedTarget(target, out string reason) && !reason.NullOrEmpty())
+                {
+                    Messages.Message(reason, MessageTypeDefOf.RejectInput, historical: false);
+                }
+            },
+            highlightAction: null,
+            targetValidator: t => InRange(t, out _),
+            caster: null,
+            actionWhenFinished: null,
+            mouseAttachment: ContentFinder<Texture2D>.Get("UI/Commands/Attack"),
+            playSoundOnAction: true,
+            onGuiAction: t =>
+            {
+                if (t.IsValid && !InRange(t, out string why)) { Widgets.MouseAttachedLabel(why); }
+            });
+        }
+
+        public override void PostDrawExtraSelectionOverlays()
+        {
+            base.PostDrawExtraSelectionOverlays();
+            if (MinRange > 0f) { GenDraw.DrawRadiusRing(parent.Position, MinRange, Color.red); }
+            if (MaxRange < GenRadial.MaxRadialPatternRadius) { GenDraw.DrawRadiusRing(parent.Position, MaxRange); }
+            if (forcedTarget.IsValid)
+            {
+                GenDraw.DrawLineBetween(parent.TrueCenter(), forcedTarget.CenterVector3, SimpleColor.Red);
+                GenDraw.DrawTargetHighlight(forcedTarget);
+            }
+        }
+
         public override string CompInspectStringExtra()
         {
             if (!currentTarget.IsValid || !parent.Spawned) { return null; }
@@ -140,6 +319,8 @@ namespace DMSE
             base.PostExposeData();
             Scribe_Values.Look(ref aimSettleTicksLeft, "aimSettleTicksLeft", -1);
             Scribe_Values.Look(ref aimWaitTicks, "aimWaitTicks", 0);
+            Scribe_Values.Look(ref holdFire, "holdFire", false);
+            Scribe_TargetInfo.Look(ref forcedTarget, "forcedTarget");
         }
     }
 }

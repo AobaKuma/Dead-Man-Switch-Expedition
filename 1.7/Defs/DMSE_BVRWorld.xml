@@ -92,6 +92,25 @@
     <selectable>true</selectable>
   </WorldObjectDef>
 
+  <!-- 防空封鎖的主動攔截：追向穿越封鎖圈的載具（運輸艙、穿梭機、重力船、轉移艦）。 -->
+  <WorldObjectDef>
+    <defName>DMSE_BlockadeInterceptor</defName>
+    <label>blockade interceptor</label>
+    <description>A surface-to-air interceptor fired at a craft flying through a closed airspace.</description>
+    <worldObjectClass>DMSE.WorldObject_BlockadeInterceptor</worldObjectClass>
+    <texture>UI/DMSE/BVR/Interceptor</texture>
+    <expandingIconTexture>UI/DMSE/BVR/Interceptor</expandingIconTexture>
+    <rotateGraphicWhenTraveling>true</rotateGraphicWhenTraveling>
+    <useDynamicDrawer>true</useDynamicDrawer>
+    <expandingIcon>true</expandingIcon>
+    <expandingIconPriority>110</expandingIconPriority>
+    <fullyExpandedInSpace>true</fullyExpandedInSpace>
+    <validLaunchTarget>false</validLaunchTarget>
+    <canHaveFaction>true</canHaveFaction>
+    <saved>true</saved>
+    <selectable>true</selectable>
+  </WorldObjectDef>
+
   <!-- P4：空投的世界層幽靈航跡（載荷仍留在目標地圖的波次裡，被攔截時同步移除）。 -->
   <WorldObjectDef>
     <defName>DMSE_DropPodTrack</defName>

@@ -16,7 +16,8 @@
     <size>(1,1)</size>
     <rotatable>false</rotatable>
     <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
-    <fillPercent>0.7</fillPercent>
+    <!-- 建築高度 0.7 → 0.75：統一對齊 DMS_BaseCannonBuilding（掩體阻擋率 = fillPercent） -->
+    <fillPercent>0.75</fillPercent>
     <statBases>
       <MaxHitPoints>350</MaxHitPoints>
       <Flammability>0.5</Flammability>
@@ -128,7 +129,8 @@
     <size>(2,2)</size>
     <rotatable>true</rotatable>
     <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
-    <fillPercent>0.7</fillPercent>
+    <!-- 建築高度 0.7 → 0.75：統一對齊 DMS_BaseCannonBuilding（掩體阻擋率 = fillPercent） -->
+    <fillPercent>0.75</fillPercent>
     <statBases>
       <MaxHitPoints>800</MaxHitPoints>
       <Flammability>0.5</Flammability>
@@ -310,6 +312,8 @@
     <size>(3,3)</size>
     <rotatable>true</rotatable>
     <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <!-- 明寫 0.75（原本靜默繼承 DMS_BaseCannonBuilding）；掩體阻擋率 = fillPercent -->
+    <fillPercent>0.75</fillPercent>
     <statBases>   <!--================ HP, mass, and work amount ================-->
       <MaxHitPoints>2250</MaxHitPoints>
       <Flammability>0.4</Flammability>

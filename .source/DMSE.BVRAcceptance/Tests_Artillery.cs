@@ -121,7 +121,77 @@ namespace DMSE.BVRAcceptance
             yield return new WaitTicks(900);
             t.Check(shells.Fuel == fuel && !Home.listerThings.ThingsOfDef(reduced).Any(p => p != shell), "no local shot while world fire is aiming");
             art.StopSustainedFire();
-            raider.Destroy(DestroyMode.Vanish);
+            if (!raider.Destroyed) { raider.Destroy(DestroyMode.Vanish); }
+        }
+
+        /// <summary>
+        /// Local fire controls: buttons, minimum-range limit (auto and forced), hold fire, and a forced ground target
+        /// that wins over an enemy in range.
+        /// </summary>
+        public static IEnumerable<Wait> LocalFireControls(TestContext t)
+        {
+            ThingDef reduced = ThingDef.Named("DMSE_Bullet_Shell_EmperoReduced");
+            Thing gun = SpawnBuilding(Empero, 2, 2);
+            yield return WaitPowered();
+            CompBuildingTurretGun local = gun.TryGetComp<CompBuildingTurretGun>();
+            CompRefuelable shells = gun.TryGetComp<CompRefuelable>();
+            float minRange = local.AttackVerb.verbProps.minRange;
+
+            List<Gizmo> gizmos = gun.GetGizmos().ToList();
+            string forceLabel = "CommandSetForceAttackTarget".Translate(), holdLabel = "CommandHoldFire".Translate(), stopLabel = "CommandStopForceAttack".Translate();
+            t.Check(gizmos.OfType<Command>().Any(c => c.defaultLabel == forceLabel), "force-target button");
+            t.Check(gizmos.OfType<Command_Toggle>().Any(c => c.defaultLabel == holdLabel), "hold-fire toggle");
+            t.Check(!gizmos.OfType<Command>().Any(c => c.defaultLabel == stopLabel), "no stop button without a forced target");
+
+            // Minimum range: a forced target inside it is refused with the reason.
+            IntVec3 tooClose = gun.Position + new IntVec3(0, 0, 6);
+            t.Check(!local.TrySetForcedTarget(tooClose, out string why) && why == "DMSE.TurretGun.TooClose".Translate(minRange.ToString("0.#")).ToString(),
+                $"forced target inside min range {minRange} refused ({why})");
+
+            // A raider inside the minimum range is never engaged.
+            IntVec3 nearCell = CellFinder.StandableCellNear(gun.Position + new IntVec3(7, 0, 0), Home, 2f);
+            Pawn close = MakeEnemyPawn();
+            GenSpawn.Spawn(close, nearCell, Home);
+            Track(close);
+            close.stances?.stunner?.StunFor(2000, null, addBattleLog: false);
+            t.Require(close.Position.DistanceTo(gun.Position) < minRange, $"raider inside min range ({close.Position.DistanceTo(gun.Position):0.0})");
+            yield return new WaitTicks(600);
+            t.Check(shells.Fuel == 12f && !Home.listerThings.ThingsOfDef(reduced).Any(), "raider inside min range is not shelled");
+            if (!close.Destroyed) { close.Destroy(DestroyMode.Vanish); }
+
+            // Hold fire: a raider in range is ignored.
+            IntVec3 farCell = CellFinder.StandableCellNear(gun.Position + new IntVec3(30, 0, 6), Home, 6f);
+            Pawn raider = MakeEnemyPawn();
+            GenSpawn.Spawn(raider, farCell, Home);
+            Track(raider);
+            raider.stances?.stunner?.StunFor(3000, null, addBattleLog: false);
+            local.SetHoldFire(true);
+            yield return new WaitTicks(600);
+            t.Check(shells.Fuel == 12f && !local.CurrentTarget.IsValid, "hold fire: no shot at a raider in range");
+
+            // Forced ground target beats the raider; hold fire is lifted by forcing.
+            IntVec3 ground = gun.Position + new IntVec3(-2, 0, 45);
+            if (!ground.InBounds(Home)) { ground = gun.Position + new IntVec3(45, 0, -2); }
+            t.Require(local.TrySetForcedTarget(ground, out string why2), $"forced ground target accepted ({why2})");
+            t.Check(!local.HoldFire, "forcing a target lifts hold fire");
+            t.Check(gun.GetGizmos().OfType<Command>().Any(c => c.defaultLabel == stopLabel), "stop button shown while forcing");
+            Projectile shell = null;
+            TickWatch fired = AcceptanceDriver.Watch(() =>
+            {
+                shell = shell ?? Home.listerThings.ThingsOfDef(reduced).OfType<Projectile>().FirstOrDefault();
+                return shell != null;
+            });
+            var waitFire = new WaitUntil(() => fired.Seen, 900);
+            yield return waitFire;
+            t.Require(!waitFire.TimedOut, "the gun fires at the forced target");
+            IntVec3 aim = Field<LocalTargetInfo>(shell, "intendedTarget").Cell;
+            t.Check(aim.DistanceTo(ground) <= 3f && aim.DistanceTo(raider.Position) > 10f,
+                $"shell aimed at the forced cell, not the raider ({aim.DistanceTo(ground):0.0} from it)");
+
+            local.ResetForcedTarget();
+            t.Check(!local.ForcedTarget.IsValid && !gun.GetGizmos().OfType<Command>().Any(c => c.defaultLabel == stopLabel), "stop forced attack clears it");
+            local.SetHoldFire(true);
+            if (!raider.Destroyed) { raider.Destroy(DestroyMode.Vanish); }
         }
 
         /// <summary>

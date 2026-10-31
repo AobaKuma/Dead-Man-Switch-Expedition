@@ -1,6 +1,0 @@
-﻿id	result	title	detail
-M8	PASS	Shared fire-control channels (local + world)	9 checks
-W1	PASS	World detection, ETA, landing without CIWS	19 checks
-W2	PASS	World interception hit	17 checks
-K2	PASS	Reserved rounds skip assembly; silo as a round	12 checks
-G1	PASS	God-mode instant missile assembly	15 checks

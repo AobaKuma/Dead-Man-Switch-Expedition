@@ -211,6 +211,16 @@ namespace DMSE.BVRAcceptance
             restoreActions.Add(restore);
         }
 
+        /// <summary>Force the WingBack CIWS burst and debris rolls for this test; returns its props.</summary>
+        public static CompProperties_TerminalCIWS ForceWingBack(float interceptChance, float debrisChance)
+        {
+            CompProperties_TerminalCIWS props = WingBack.GetCompProperties<CompProperties_TerminalCIWS>();
+            float oldChance = props.interceptChance, oldDebris = props.debrisChance;
+            Override(() => { props.interceptChance = interceptChance; props.debrisChance = debrisChance; },
+                () => { props.interceptChance = oldChance; props.debrisChance = oldDebris; });
+            return props;
+        }
+
         /// <summary>
         /// The mechanics suite (M/S/W/D/K/G/L) was written against the pre-generation values: a 2-channel phased array,
         /// a 2-channel early fire-control radar and a 2-channel NPC missile base. Pin them for those tests so their numeric

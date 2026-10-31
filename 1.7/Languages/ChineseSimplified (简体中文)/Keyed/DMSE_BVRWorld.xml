@@ -23,4 +23,14 @@
   <DMSE.BVR.World.ShowCoverageDesc>在世界地图常驻显示所有玩家雷达覆盖圈。选取据点时一律显示该据点的覆盖圈。圈线以隐身 0、尺寸 1 的目标为准。</DMSE.BVR.World.ShowCoverageDesc>
   <DMSE.BVR.World.ChannelBreakdown>通道：火炮 {0}、地图内 {1}、世界层 {2}、打击引导 {3}；空闲 {4}</DMSE.BVR.World.ChannelBreakdown>
   <DMSE.BVR.World.MissileType>导弹类型：{0}</DMSE.BVR.World.MissileType>
+  <DMSE.BVR.PawnsMissingLabel>运输舱被击落：人员失踪</DMSE.BVR.PawnsMissingLabel>
+  <DMSE.BVR.PawnsMissingText>一艘载有你的人员的运输舱被防空火力击落。没有找到遗体，以下人员失踪：\n\n{0}</DMSE.BVR.PawnsMissingText>
+  <DMSE.BVR.InterceptRiskRoute>航线穿越{0}在{1}周边的封锁区（{2} 格）。其防空火力会攻击所有飞越的载具。</DMSE.BVR.InterceptRiskRoute>
+  <DMSE.BVR.InterceptRiskDestination>{0}处于{1}的防空雷达覆盖之下。降落到那里的运输舱和穿梭机可能会被击落。</DMSE.BVR.InterceptRiskDestination>
+  <DMSE.BVR.InterceptRiskFooter>被击落的运输舱或穿梭机上的人员将会失踪。重力船和转移舰被击中只会受损，不会被摧毁。\n\n仍要发射吗？</DMSE.BVR.InterceptRiskFooter>
+  <DMSE.Blockade.Engaging>{0}在{1}的防空系统向{2}开火。</DMSE.Blockade.Engaging>
+  <DMSE.Blockade.PodDown>{0}：一艘运输工具被{1}击落，剩余 {2} 艘。</DMSE.Blockade.PodDown>
+  <DMSE.Blockade.GravshipHit>{0}被{1}的防空火力击中，船上 {2} 座建筑受损。</DMSE.Blockade.GravshipHit>
+  <DMSE.Blockade.TransferHitLabel>转移舰被击中</DMSE.Blockade.TransferHitLabel>
+  <DMSE.Blockade.TransferHitText>{0}在飞越{1}的封锁区时被防空火力击中，船上有 {2} 处发生爆炸。</DMSE.Blockade.TransferHitText>
 </LanguageData>

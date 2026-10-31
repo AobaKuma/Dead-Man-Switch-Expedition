@@ -2,4 +2,6 @@
 <LanguageData>
   <DMSE_Interceptor.label>interceptor missile</DMSE_Interceptor.label>
   <DMSE_Interceptor.description>A surface-to-air interceptor heading toward a predicted meeting point.</DMSE_Interceptor.description>
+  <DMSE_BlockadeInterceptor.label>blockade interceptor</DMSE_BlockadeInterceptor.label>
+  <DMSE_BlockadeInterceptor.description>A surface-to-air interceptor fired at a craft flying through a closed airspace.</DMSE_BlockadeInterceptor.description>
 </LanguageData>

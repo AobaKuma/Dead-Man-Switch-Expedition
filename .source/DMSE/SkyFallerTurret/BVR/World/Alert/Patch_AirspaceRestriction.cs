@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
@@ -10,50 +9,11 @@ namespace DMSE
 {
     // ──────────────────────────────────────────────────────────────────────────
     // 防空封鎖的航行管制（docs/NPC防空警戒五階段_執行計畫.md §6.2）。
-    // 取代舊的「導彈陣地 5 格固定封鎖」：只有第五階段且具執行能力的據點才封鎖，
-    // 依外交關係判定通行資格，並檢查整段航線。預覽可看、提交前（扣燃料之前）再查一次。
+    // 2026-10-31 起封鎖改為主動攔截：航線可以穿越封鎖圈，飛進圈內的載具由
+    // WorldComponent_BlockadeInterception 接戰。起飛前只警告（InterceptRiskUtility 的確認窗口），不再拒絕。
     // ──────────────────────────────────────────────────────────────────────────
 
-    /// <summary>
-    /// 原版穿梭機與運輸艙：已在封鎖圈內者不能起飛。CanLaunch 是回傳 AcceptanceReport 的方法；
-    /// 穿梭機的 CompShuttle.CanLaunch 只由這裡的結尾呼叫，所以這個 postfix 已涵蓋穿梭機。
-    /// 車隊攜帶的穿梭機（<see cref="CaravanShuttleUtility"/>）也走這裡，用 <see cref="Thing.Tile"/> 取車隊位置。
-    /// </summary>
-    [HarmonyPatch(typeof(CompLaunchable), nameof(CompLaunchable.CanLaunch))]
-    public static class Patch_Airspace_LaunchableCanLaunch
-    {
-        [HarmonyPostfix]
-        public static void Postfix(CompLaunchable __instance, ref AcceptanceReport __result)
-        {
-            if (!__result.Accepted || __instance.parent == null) { return; }
-            PlanetTile tile = __instance.parent.Tile;
-            if (!tile.Valid) { return; }
-            AirspaceRestriction restriction = AirspaceRestrictionUtility.CheckPoint(__instance.parent.Faction ?? Faction.OfPlayer, tile);
-            if (restriction.Restricted) { __result = restriction.Reason; }
-        }
-    }
-
-    /// <summary>選定目的地時：航線穿越封鎖圈就不可提交（含起降點與過境）。</summary>
-    [HarmonyPatch(typeof(CompLaunchable), "ChoseWorldTarget", new[]
-    {
-        typeof(GlobalTargetInfo), typeof(PlanetTile), typeof(IEnumerable<IThingHolder>), typeof(int),
-        typeof(Action<PlanetTile, TransportersArrivalAction>), typeof(CompLaunchable), typeof(float?)
-    })]
-    public static class Patch_Airspace_ChoseWorldTarget
-    {
-        [HarmonyPrefix]
-        public static bool Prefix(GlobalTargetInfo target, PlanetTile tile, CompLaunchable launchable, ref bool __result)
-        {
-            if (!target.IsValid) { return true; }
-            AirspaceRestriction restriction = AirspaceRestrictionUtility.CheckRoute(launchable?.parent?.Faction ?? Faction.OfPlayer, tile, target.Tile);
-            if (!restriction.Restricted) { return true; }
-            AirspaceRestrictionUtility.Reject(restriction);
-            __result = false;
-            return false;
-        }
-    }
-
-    /// <summary>選點預覽：滑鼠標籤顯示航線受封鎖與封鎖者。</summary>
+    /// <summary>選點預覽：滑鼠標籤顯示航線會穿越封鎖圈（會被攔截）與封鎖者。</summary>
     [HarmonyPatch(typeof(CompLaunchable), nameof(CompLaunchable.TargetingLabelGetter))]
     public static class Patch_Airspace_TargetingLabel
     {
@@ -68,78 +28,21 @@ namespace DMSE
         }
     }
 
-    /// <summary>真正起飛（扣燃料、轉移乘員）前再查一次；封鎖狀態改變就取消提交並完整保留資源。</summary>
-    [HarmonyPatch(typeof(CompLaunchable), nameof(CompLaunchable.TryLaunch))]
-    public static class Patch_Airspace_TryLaunch
-    {
-        [HarmonyPrefix]
-        [HarmonyPriority(Priority.High)]
-        public static bool Prefix(CompLaunchable __instance, PlanetTile destinationTile)
-        {
-            Thing parent = __instance.parent;
-            if (parent == null || !parent.Spawned) { return true; }
-            AirspaceRestriction restriction = AirspaceRestrictionUtility.CheckRoute(parent.Faction ?? Faction.OfPlayer, parent.Map.Tile, destinationTile);
-            if (!restriction.Restricted) { return true; }
-            AirspaceRestrictionUtility.Reject(restriction);
-            return false;
-        }
-    }
-
-    /// <summary>車隊穿梭機起飛前最終檢查（扣燃料之前）。</summary>
-    [HarmonyPatch(typeof(CaravanShuttleUtility), nameof(CaravanShuttleUtility.LaunchShuttle))]
-    public static class Patch_Airspace_CaravanShuttle
-    {
-        [HarmonyPrefix]
-        [HarmonyPriority(Priority.High)]
-        public static bool Prefix(Caravan caravan, PlanetTile destinationTile)
-        {
-            if (caravan == null) { return true; }
-            AirspaceRestriction restriction = AirspaceRestrictionUtility.CheckRoute(caravan.Faction ?? Faction.OfPlayer, caravan.Tile, destinationTile);
-            if (!restriction.Restricted) { return true; }
-            AirspaceRestrictionUtility.Reject(restriction);
-            return false;
-        }
-    }
-
-    /// <summary>
-    /// 重力船：<c>StartChoosingDestination_NewTemp(launching)</c> 同時服務航程預覽與起飛選點。
-    /// 預覽（launching=false）一律允許；起飛時起點在封鎖圈內就拒絕。
-    /// </summary>
-    [HarmonyPatch(typeof(CompPilotConsole), nameof(CompPilotConsole.StartChoosingDestination_NewTemp))]
-    public static class Patch_Airspace_GravshipChoose
-    {
-        [HarmonyPrefix]
-        [HarmonyPriority(Priority.High)]
-        public static bool Prefix(CompPilotConsole __instance, bool launching)
-        {
-            if (!launching) { return true; }
-            Map map = __instance.parent?.Map;
-            if (map == null) { return true; }
-            AirspaceRestriction restriction = AirspaceRestrictionUtility.CheckPoint(Faction.OfPlayer, map.Tile);
-            if (!restriction.Restricted) { return true; }
-            AirspaceRestrictionUtility.Reject(restriction);
-            return false;
-        }
-    }
-
     /// <summary>
     /// 重力船選定目的地後、扣燃料與起飛之前（原版在 CheckConfirmSettle 的確認動作裡才扣燃料）：
-    /// 航線受封鎖就拒絕並回到選點（呼叫原本的取消動作）。
+    /// 航線穿越封鎖圈就先彈出警告，確認後照原流程繼續，取消則回到選點。
     /// </summary>
     [HarmonyPatch(typeof(SettlementProximityGoodwillUtility), nameof(SettlementProximityGoodwillUtility.CheckConfirmSettle))]
     public static class Patch_Airspace_GravshipConfirm
     {
         [HarmonyPrefix]
         [HarmonyPriority(Priority.High)]
-        public static bool Prefix(PlanetTile tile, Action cancelAction, Building_GravEngine gravEngine)
+        public static bool Prefix(PlanetTile tile, Action settleAction, Action cancelAction, Building_GravEngine gravEngine)
         {
             Map map = gravEngine?.Map;
             if (map == null) { return true; }
-            AirspaceRestriction restriction = AirspaceRestrictionUtility.CheckRoute(gravEngine.Faction ?? Faction.OfPlayer, map.Tile, tile);
-            if (!restriction.Restricted) { return true; }
-            AirspaceRestrictionUtility.Reject(restriction);
-            cancelAction?.Invoke();
-            return false;
+            return InterceptRiskUtility.ConfirmOrDefer(map.Tile, tile, gravEngine.Faction ?? Faction.OfPlayer, checkDestination: false,
+                () => SettlementProximityGoodwillUtility.CheckConfirmSettle(tile, settleAction, cancelAction, gravEngine), cancelAction);
         }
     }
 

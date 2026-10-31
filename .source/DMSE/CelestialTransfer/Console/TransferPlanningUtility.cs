@@ -87,12 +87,7 @@ namespace DMSE
             {
                 reason = "DMSE.Transfer.Dest.Occupied".Translate();
             }
-            else
-            {
-                // 防空封鎖（NPC 防空警戒第五階段）：航線穿越封鎖圈不可核准。
-                AirspaceRestriction restriction = AirspaceRestrictionUtility.CheckRoute(Faction.OfPlayer, origin, tile);
-                if (restriction.Restricted) { reason = restriction.Reason; }
-            }
+            // 防空封鎖已改為主動攔截：航線可以穿越，整備檢查以警告提示（TransferReadiness）。
             if (reason != null)
             {
                 if (showMessage)
@@ -198,11 +193,11 @@ namespace DMSE
             {
                 return "DMSE.Transfer.Dest.OutOfRange".Translate(UnityEngine.Mathf.Max(0, maxDistance));
             }
-            return AirspaceProblem(TransferPlan.Impact(origin, tile));
+            return null;
         }
 
         /// <summary>
-        /// 計畫航線是否受防空封鎖：轉移檢查太空層航段；撞擊另檢查地表撞擊點。受限時回傳原因。
+        /// 計畫航線是否穿越防空封鎖圈（會被主動攔截）：轉移檢查太空層航段；撞擊另檢查地表撞擊點。穿越時回傳說明。
         /// </summary>
         public static string AirspaceProblem(TransferPlan plan)
         {

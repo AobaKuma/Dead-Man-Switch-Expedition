@@ -138,6 +138,12 @@ namespace DMSE
             }
         }
 
+        public override IEnumerable<StatDrawEntry> SpecialDisplayStats(StatRequest req)
+        {
+            foreach (StatDrawEntry e in base.SpecialDisplayStats(req)) { yield return e; }
+            foreach (StatDrawEntry e in MissileInfoCardUtility.BodyStats(this)) { yield return e; }
+        }
+
         /// <summary>抵達目標後生成的 incoming skyfaller（thingClass 應為 DMSE.MissileIncoming）。</summary>
         public ThingDef incomingSkyfaller;
 
@@ -303,6 +309,12 @@ namespace DMSE
                 }
                 return true;
             }
+        }
+
+        public override IEnumerable<StatDrawEntry> SpecialDisplayStats(StatRequest req)
+        {
+            foreach (StatDrawEntry e in base.SpecialDisplayStats(req)) { yield return e; }
+            foreach (StatDrawEntry e in MissileInfoCardUtility.PartStats(this)) { yield return e; }
         }
 
         public bool CompatibleWith(MissileBodyDef body)

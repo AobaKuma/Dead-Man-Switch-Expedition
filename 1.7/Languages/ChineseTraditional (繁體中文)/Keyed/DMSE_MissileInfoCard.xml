@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- 導彈物品／彈體／部件資訊卡（MissileInfoCardUtility） -->
+
+  <!-- 分級與平台 -->
+  <DMSE.Card.Body>彈體</DMSE.Card.Body>
+  <DMSE.Card.Item>導彈物品</DMSE.Card.Item>
+  <DMSE.Card.SizeClass>量級</DMSE.Card.SizeClass>
+  <DMSE.Card.SizeClassDesc.Loitering>巡飛彈：最前期的超視距武器，傾斜發射、可上重力船。速度慢，但雷達截面小、較晚被發現。</DMSE.Card.SizeClassDesc.Loitering>
+  <DMSE.Card.SizeClassDesc.Light>輕型導彈：中短程防空或對地打擊，由多聯裝發射架裝填。</DMSE.Card.SizeClassDesc.Light>
+  <DMSE.Card.SizeClassDesc.Medium>中型導彈：巡航或反彈道任務，可在物品或儲存架上自定義部件。</DMSE.Card.SizeClassDesc.Medium>
+  <DMSE.Card.SizeClassDesc.Ballistic>彈道導彈：長程打擊，只能垂直發射、不可建於重力船上，直接在發射井上建造與裝配。</DMSE.Card.SizeClassDesc.Ballistic>
+  <DMSE.Card.LaunchMode>發射方式</DMSE.Card.LaunchMode>
+  <DMSE.Card.LaunchMode.Tilt>傾斜發射</DMSE.Card.LaunchMode.Tilt>
+  <DMSE.Card.LaunchMode.Vertical>垂直發射</DMSE.Card.LaunchMode.Vertical>
+  <DMSE.Card.LaunchMode.Both>傾斜或垂直</DMSE.Card.LaunchMode.Both>
+  <DMSE.Card.LaunchModeDesc>決定可裝填此彈的發射平台。傾斜發射架可旋轉、可建於重力船上；垂直發射架只有單一朝向，不可建於重力船上。發射方式不影響彈道數值。</DMSE.Card.LaunchModeDesc>
+  <DMSE.Card.Platforms>可用發射平台</DMSE.Card.Platforms>
+  <DMSE.Card.PlatformsDesc>可裝填這種導彈的發射平台（依各平台的固定儲存設定）。點擊下方連結查看平台。</DMSE.Card.PlatformsDesc>
+  <DMSE.Card.Customize>裝配位置</DMSE.Card.Customize>
+  <DMSE.Card.Customize.None>不可改裝</DMSE.Card.Customize.None>
+  <DMSE.Card.Customize.Item>導彈物品</DMSE.Card.Customize.Item>
+  <DMSE.Card.Customize.StorageBuilding>儲存建築</DMSE.Card.Customize.StorageBuilding>
+  <DMSE.Card.Customize.Launcher>發射平台</DMSE.Card.Customize.Launcher>
+  <DMSE.Card.CustomizeDesc.None>構型固定，無法更換部件。</DMSE.Card.CustomizeDesc.None>
+  <DMSE.Card.CustomizeDesc.Item>選取導彈物品，在「裝配」分頁更換部件；確認後小人會搬來材料並施工。也可在導彈組裝台直接訂製。</DMSE.Card.CustomizeDesc.Item>
+  <DMSE.Card.CustomizeDesc.StorageBuilding>在專屬儲存建築上消耗資源調整部件。</DMSE.Card.CustomizeDesc.StorageBuilding>
+  <DMSE.Card.CustomizeDesc.Launcher>沒有物品型態：直接在發射平台上選擇彈體並裝配部件。</DMSE.Card.CustomizeDesc.Launcher>
+  <DMSE.Card.Slots>裝配槽位</DMSE.Card.Slots>
+  <DMSE.Card.SlotsDesc>此彈體開放的部件槽位。每個槽位最多裝一個部件；沒有的槽位無法裝配。</DMSE.Card.SlotsDesc>
+  <DMSE.Card.EmptySlotDesc>此槽位目前沒有部件。</DMSE.Card.EmptySlotDesc>
+
+  <!-- 打擊數值 -->
+  <DMSE.Card.DamageDesc>主爆炸在落點造成的傷害量與傷害類型。彈頭部件可加減傷害並覆寫傷害類型。</DMSE.Card.DamageDesc>
+  <DMSE.Card.RadiusDesc>主爆炸的半徑（格）。戰鬥部與酬載特效另以載荷容量 N 決定範圍，不受此值影響。</DMSE.Card.RadiusDesc>
+  <DMSE.Card.ScatterDesc>落點相對瞄準點的隨機偏移半徑（格）。導引部件可收緊散布；慣性制導最大。</DMSE.Card.ScatterDesc>
+  <DMSE.Card.RangeTiles>{0} 格</DMSE.Card.RangeTiles>
+  <DMSE.Card.Unlimited>不限</DMSE.Card.Unlimited>
+  <DMSE.Card.RangeDesc>世界地圖上的最大打擊距離。\n射程 =（燃料 × 比衝 × 換算係數 + 固定加成 + 戰鬥部增程）× 酬載倍率\n\n燃料：{0}\n比衝：{1}\n換算係數：{2}\n固定加成：{3}\n戰鬥部增程：{4}\n酬載倍率：{5}\n\n結果：{6}</DMSE.Card.RangeDesc>
+  <DMSE.Card.SpeedDesc>世界地圖上的飛行速度倍率。越快，敵方防空可接戰的時間越短。</DMSE.Card.SpeedDesc>
+  <DMSE.Card.PayloadCapacity>載荷容量 N</DMSE.Card.PayloadCapacity>
+  <DMSE.Card.PayloadCapacityDesc>由彈體決定。所有戰鬥部與酬載特效的範圍、數量與強度都以 N 換算（例如燒夷彈頭的引燃半徑 = N 格），所以同一個部件裝在大彈體上效果更強。</DMSE.Card.PayloadCapacityDesc>
+  <DMSE.Card.ThickRoofDesc>能穿透厚岩頂者會先在岩層開孔再引爆，導引頭也會鎖定厚岩頂下的目標；不能穿透者打在厚岩頂上只在岩層表面爆炸。</DMSE.Card.ThickRoofDesc>
+
+  <!-- 導引 -->
+  <DMSE.Card.NoGuidance>無導引</DMSE.Card.NoGuidance>
+  <DMSE.Card.TerminalUpdatesDesc>具導引能力時，飛行中可依目標新位置修正落點的次數（彈體基礎次數加上導引頭加成）。次數用完後沿最後位置飛行，目標若已離開即落空。</DMSE.Card.TerminalUpdatesDesc>
+  <DMSE.Card.ChannelsDesc>導彈飛行期間持續占用的火控通道數。只有無線電指令與火控雷達導引需要地面持續支援；自主尋標與預先裝定的導引不占通道。彈道導彈每枚占 2 條，其他占 1 條。</DMSE.Card.ChannelsDesc>
+  <DMSE.Card.ChannelsPerMissile>每枚 1（彈道 2）</DMSE.Card.ChannelsPerMissile>
+  <DMSE.Card.LoiterRetry>盤旋期間每 {0} 重新搜尋一次目標，期間仍會被末端防禦接戰。</DMSE.Card.LoiterRetry>
+  <DMSE.Card.LoiterOnlyLoitering>只有巡飛彈能使用盤旋能力；裝在其他彈體上不會盤旋。</DMSE.Card.LoiterOnlyLoitering>
+  <DMSE.Card.BuiltInGuidance>未裝導引部件，使用彈體內建的選目標方式。</DMSE.Card.BuiltInGuidance>
+  <DMSE.Card.TracksMobile>針對世界地圖上的移動目標：航跡會更頻繁地重新瞄準。</DMSE.Card.TracksMobile>
+  <DMSE.Card.TerminalGuidance>導引能力</DMSE.Card.TerminalGuidance>
+  <DMSE.Card.TerminalGuidanceYes>具導引能力：可跨圖層打擊，並可依彈體的終端更新次數追蹤移動目標。</DMSE.Card.TerminalGuidanceYes>
+  <DMSE.Card.TerminalGuidanceNo>無導引能力：無法跨圖層打擊，也無法追蹤移動目標。</DMSE.Card.TerminalGuidanceNo>
+  <DMSE.Card.TargetSelection>選定落點</DMSE.Card.TargetSelection>
+  <DMSE.Card.TargetManual>由玩家選擇</DMSE.Card.TargetManual>
+  <DMSE.Card.TargetAuto>自動鎖定</DMSE.Card.TargetAuto>
+  <DMSE.Card.SpreadNote>同類導引頭的齊射會分散鎖定不同目標，不會全部打在同一處。</DMSE.Card.SpreadNote>
+
+  <!-- 防空與生存 -->
+  <DMSE.Card.Intercept>攔截命中係數</DMSE.Card.Intercept>
+  <DMSE.Card.InterceptDesc>作為攔截彈發射時，乘在火控雷達算出的命中率上（地圖層與世界層皆同）。</DMSE.Card.InterceptDesc>
+  <DMSE.Card.InterceptBonus>戰鬥部加成：命中率 +{0}</DMSE.Card.InterceptBonus>
+  <DMSE.Card.InterceptRolls>額外攔截判定：{0} 次（可波及同波次其他目標）</DMSE.Card.InterceptRolls>
+  <DMSE.Card.SignatureDesc>乘在世界航跡的偵測距離等級上。大於 1 會更早被發現，可吸引具威脅評估的防空優先接戰（誘餌）；小於 1 會更晚被發現（突防）。</DMSE.Card.SignatureDesc>
+  <DMSE.Card.ChaffDesc>攜帶的箔條／干擾絲次數與干擾強度。世界地圖上被敵方火控鎖定時觸發，每次消耗一發，有 {0} 機率斷鎖並延後重新鎖定；飛行中不補充。在地圖上被攔截時，敵方命中率降低 {1}。</DMSE.Card.ChaffDesc>
+
+  <!-- 特效 -->
+  <DMSE.Card.WarheadEffect>戰鬥部效果</DMSE.Card.WarheadEffect>
+  <DMSE.Card.PayloadEffect>酬載效果</DMSE.Card.PayloadEffect>
+  <DMSE.Card.ScaledByN>以上數值依載荷容量 N = {0} 計算。</DMSE.Card.ScaledByN>
+  <DMSE.Card.ScaledByNGroups>效果依彈體的載荷容量 N 換算：</DMSE.Card.ScaledByNGroups>
+  <DMSE.Card.NGroup>N = {0}（{1}）</DMSE.Card.NGroup>
+  <DMSE.Card.Warhead.ContinuousRod>作為攔截彈時命中率 +{0}（N × 5%）。對地沒有額外效果。</DMSE.Card.Warhead.ContinuousRod>
+  <DMSE.Card.Warhead.ExtendedFuel>射程 +{0} 格（N × 2）。落點沒有額外效果。</DMSE.Card.Warhead.ExtendedFuel>
+  <DMSE.Card.Warhead.Airburst>對地：在落點追加半徑 {0}、{1} 點的爆炸。作為攔截彈：額外 {2} 次獨立攔截判定（N ÷ 5 取整），可波及同波次其他目標。</DMSE.Card.Warhead.Airburst>
+  <DMSE.Card.Warhead.TungstenPenetrator>可穿透厚岩頂，並鎖定厚岩頂下的目標；主爆炸後在落點追加半徑 2、{0} 點的爆炸。</DMSE.Card.Warhead.TungstenPenetrator>
+  <DMSE.Card.Warhead.Incendiary>無視視線，引燃落點半徑 {0} 格內的地面。</DMSE.Card.Warhead.Incendiary>
+  <DMSE.Card.Warhead.EMP>無視視線，在落點引發半徑 {0}、{1} 點的 EMP 爆炸：癱瘓電子設備與機械體。</DMSE.Card.Warhead.EMP>
+  <DMSE.Card.Warhead.AnimalBerserk>目標地圖上所有動物立即陷入狂暴。</DMSE.Card.Warhead.AnimalBerserk>
+  <DMSE.Card.Warhead.ClusterBomblets>撒出 {0} 枚實體子彈（{1}），落在半徑 {2} 格內；子彈會飛行並命中沿途的單位。</DMSE.Card.Warhead.ClusterBomblets>
+  <DMSE.Card.Warhead.ClusterGoodwill>玩家發射時，撒布範圍內每有一個非敵對勢力的單位，該勢力好感 -{0}。</DMSE.Card.Warhead.ClusterGoodwill>
+  <DMSE.Card.Warhead.Thermobaric>半徑 {0} 內每個生物受到 {1} 點燒傷，每格有 {2} 機率起火；在密閉房間內效果最明顯。</DMSE.Card.Warhead.Thermobaric>
+  <DMSE.Card.Warhead.KineticBlades>幾乎沒有爆炸：對落點 3 格內最近的一個生物揮出 {0} 片刀刃，每片 {1} 點切割傷害。</DMSE.Card.Warhead.KineticBlades>
+  <DMSE.Card.Payload.HighExplosive>在落點追加半徑 {0}、{1} 點的爆炸。</DMSE.Card.Payload.HighExplosive>
+  <DMSE.Card.Payload.BunkerBuster>可穿透厚岩頂，並鎖定厚岩頂下的目標。在內部以半徑 {0}、{1} 點（穿甲 {2}）引爆，並對爆心 {3} 格內的建築額外造成 {4} 點結構傷害。</DMSE.Card.Payload.BunkerBuster>
+  <DMSE.Card.Payload.Cluster>在半徑 {0} 格內散落 {1} 個子爆炸，每個半徑 {2}、{3} 點。</DMSE.Card.Payload.Cluster>
+  <DMSE.Card.Payload.Defoliant>半徑 {0} 格內的植物各有 {1} 機率枯死。</DMSE.Card.Payload.Defoliant>
+  <DMSE.Card.Payload.FireFoam>撲滅半徑 {0} 格內的火焰，並鋪上消防泡沫。</DMSE.Card.Payload.FireFoam>
+  <DMSE.Card.Payload.Antiparticle>在落點引發半徑 {0}、{1} 點的汽化爆炸。</DMSE.Card.Payload.Antiparticle>
+  <DMSE.Card.Payload.ToxicGas>在半徑 {0} 格內灌滿毒氣。</DMSE.Card.Payload.ToxicGas>
+  <DMSE.Card.Payload.EMP>在落點引發半徑 {0}、{1} 點的 EMP 爆炸：癱瘓電子設備、震暈機械體。</DMSE.Card.Payload.EMP>
+  <DMSE.Card.Payload.AirburstTungsten>射程變為 {0}。半徑 {1} 內每個生物受到（體型取整 + 1）次 {2} 點穿刺傷害（穿甲 {3}）。</DMSE.Card.Payload.AirburstTungsten>
+  <DMSE.Card.Payload.Extra>追加半徑 {0}、{1} 點的爆炸（{2}）。</DMSE.Card.Payload.Extra>
+  <DMSE.Card.Payload.Spawn>投放 {0} 份{1}（機率 {2}）。</DMSE.Card.Payload.Spawn>
+
+  <!-- 導引頭機制 -->
+  <DMSE.Card.Guidance.Inertial>不搜尋目標：落點以地圖中心為準，依散布隨機偏移，不鎖定建築或生物。</DMSE.Card.Guidance.Inertial>
+  <DMSE.Card.Guidance.AntiRadiation>鎖定開機中功率等級最高的敵方雷達（同級時比耗電量）；純被動預警設備不受影響。</DMSE.Card.Guidance.AntiRadiation>
+  <DMSE.Card.Guidance.AntiRadiationFallback>沒有開機雷達時改打耗電最大的運作中敵方建築，再找不到則退回慣性落點。</DMSE.Card.Guidance.AntiRadiationFallback>
+  <DMSE.Card.Guidance.AntiRadiationNoFallback>沒有開機雷達時不改打其他目標；搭配盤旋飛控可在上空等待雷達開機。</DMSE.Card.Guidance.AntiRadiationNoFallback>
+  <DMSE.Card.Guidance.HeatSource>鎖定比室外熱 {0} 以上的最熱室內房間；沒有時改打體型最大的生物（包含野生動物，但不含攻擊方與其盟友）。都沒有則退回慣性落點。</DMSE.Card.Guidance.HeatSource>
+  <DMSE.Card.Guidance.ElectromagneticSignal>鎖定耗電最大的運作中敵方建築；沒有通電建築時退回慣性落點。</DMSE.Card.Guidance.ElectromagneticSignal>
+  <DMSE.Card.Guidance.TV>玩家發射時，抵達目標地圖後暫停遊戲，由你自由選擇落點。敵方發射時無人操作，改用慣性落點。</DMSE.Card.Guidance.TV>
+  <DMSE.Card.Guidance.Laser>鎖定你在目標地圖上最近一次放置的雷射標定點；沒有標定點時退回慣性落點。</DMSE.Card.Guidance.Laser>
+  <DMSE.Card.Guidance.FireControl>主要供防空攔截使用，由火控雷達照射引導。對地打擊時以慣性選點。飛行期間持續占用火控通道。</DMSE.Card.Guidance.FireControl>
+  <DMSE.Card.Guidance.RadioCommand>由地面持續發送修正指令。對地打擊時以慣性選點。飛行期間持續占用火控通道。</DMSE.Card.Guidance.RadioCommand>
+  <DMSE.Card.Guidance.Imaging>只鎖定露天（無屋頂）的敵方生物，先比戰力、再比體型；找不到時退回慣性落點。</DMSE.Card.Guidance.Imaging>
+  <DMSE.Card.Guidance.ActiveRadar>射後不理：鎖定占地最大的敵方建築，其次是體型最大的敵方生物；都沒有則退回慣性落點。</DMSE.Card.Guidance.ActiveRadar>
+  <DMSE.Card.Guidance.AntiShip>針對世界地圖上的移動目標（艦船、移動基地）：航跡更頻繁地修正，終端更新 +{0}。抵達後先打最耐打的敵方建築，其次是體型最大的敵方生物。</DMSE.Card.Guidance.AntiShip>
+
+  <!-- 部件 -->
+  <DMSE.Card.PartSlot>裝配槽位</DMSE.Card.PartSlot>
+  <DMSE.Card.PartSlotDesc>此部件裝在哪個槽位。同一槽位只能裝一個部件，換上會取代原有部件。</DMSE.Card.PartSlotDesc>
+  <DMSE.Card.CompatibleBodies>適用彈體</DMSE.Card.CompatibleBodies>
+  <DMSE.Card.CompatibleBodiesDesc>可以裝配此部件的彈體（必須具有對應槽位）。點擊下方連結查看彈體。</DMSE.Card.CompatibleBodiesDesc>
+  <DMSE.Card.RequiresLoitering>只能裝在巡飛彈上。</DMSE.Card.RequiresLoitering>
+  <DMSE.Card.Research>需要研究</DMSE.Card.Research>
+  <DMSE.Card.ResearchDesc>完成這些研究後才能選用。</DMSE.Card.ResearchDesc>
+  <DMSE.Card.Cost>裝配材料</DMSE.Card.Cost>
+  <DMSE.Card.CostDesc>改裝時裝上此部件所需搬運並消耗的材料。彈體的預設部件已包含在建造成本中。移除或更換時，依彈體的退還比例退回部分材料。</DMSE.Card.CostDesc>
+  <DMSE.Card.ModifierDesc>加算在彈體的基礎值上。</DMSE.Card.ModifierDesc>
+  <DMSE.Card.DamageTypeDesc>覆寫主爆炸的傷害類型。</DMSE.Card.DamageTypeDesc>
+  <DMSE.Card.Fuel>燃料</DMSE.Card.Fuel>
+  <DMSE.Card.Impulse>比衝</DMSE.Card.Impulse>
+  <DMSE.Card.FuelImpulseDesc>射程約為 燃料 × 比衝 × 彈體換算係數，兩者都會放大射程。</DMSE.Card.FuelImpulseDesc>
+
+  <!-- 改裝 -->
+  <DMSE.Card.AssembleWork>改裝工作量</DMSE.Card.AssembleWork>
+  <DMSE.Card.AssembleWorkDesc>套用一次裝配變更所需的工作量，受施工小人的工作速度影響。</DMSE.Card.AssembleWorkDesc>
+  <DMSE.Card.Refund>拆除退還</DMSE.Card.Refund>
+  <DMSE.Card.RefundDesc>移除或更換部件時，退還該部件材料的比例。</DMSE.Card.RefundDesc>
+</LanguageData>

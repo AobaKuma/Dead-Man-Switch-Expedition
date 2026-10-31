@@ -138,10 +138,7 @@ namespace DMSE.BVRAcceptance
             Building_MissileRack launcher = SpawnLoadedLauncher(10, 2, 4);
             Thing ciws = SpawnBuilding(WingBack, 14, 2);
             yield return WaitPowered(); yield return new WaitTicks(2);
-            CompProperties_TerminalCIWS props = WingBack.GetCompProperties<CompProperties_TerminalCIWS>();
-            float oldChance = props.interceptChance, oldDebris = props.debrisChance;
-            Override(() => { props.interceptChance = 0f; props.debrisChance = 0f; },
-                () => { props.interceptChance = oldChance; props.debrisChance = oldDebris; });
+            CompProperties_TerminalCIWS props = ForceWingBack(0f, 0f);
 
             PlanetTile source = TileAtDistance(19f, 21f);
             t.Require(source.Valid, "a tile ~20 tiles away exists");

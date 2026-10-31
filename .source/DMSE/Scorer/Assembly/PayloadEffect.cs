@@ -28,6 +28,9 @@ namespace DMSE
         /// <summary>能否穿透厚岩頂：穿透時引爆前先在岩層開孔（<see cref="MissileImpactUtility.BreachThickRoof"/>），導引頭也會鎖定岩頂下的目標。</summary>
         public virtual bool PenetratesThickRoof => false;
 
+        /// <summary>資訊卡用的機制說明（已代入 <paramref name="N"/>）；null = 不顯示。</summary>
+        public virtual string EffectDescription(float N) => null;
+
         /// <summary>可選的 Def 驗證。</summary>
         public virtual IEnumerable<string> ConfigErrors(MissilePartDef parent)
         {
@@ -47,6 +50,9 @@ namespace DMSE
     public class PayloadEffect_HighExplosive : PayloadEffect
     {
         public int damageAmount = 100;
+
+        public override string EffectDescription(float N)
+            => "DMSE.Card.Payload.HighExplosive".Translate(N.ToString("0.#"), damageAmount);
 
         public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
         {
@@ -71,10 +77,16 @@ namespace DMSE
 
         public override bool PenetratesThickRoof => true;
 
+        private static float Radius(float N) => Mathf.Clamp(N * 0.4f, 2f, 5f);
+
+        public override string EffectDescription(float N)
+            => "DMSE.Card.Payload.BunkerBuster".Translate(Radius(N).ToString("0.#"), damageAmount,
+                armorPenetration.ToStringPercent(), structureRadius.ToString("0.#"), structureDamage);
+
         public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
         {
             if (map == null || !center.InBounds(map)) { return; }
-            float radius = Mathf.Clamp(N * 0.4f, 2f, 5f);
+            float radius = Radius(N);
             GenExplosion.DoExplosion(center, map, radius, DamageDefOf.Bomb, MissileImpactUtility.Instigator,
                 damageAmount, armorPenetration);
 
@@ -107,11 +119,19 @@ namespace DMSE
         /// <summary>固定子彈藥數量；0 = 沿用 floor(N/4)。用於「固定 6 枚 BLU-97」這類真實配置。</summary>
         public int countOverride = 0;
 
+        private int Count(float N) => countOverride > 0 ? countOverride : Mathf.Max(1, Mathf.FloorToInt(N / 4f));
+
+        private float SubRadius(float N) => Mathf.Max(1f, countOverride > 0 ? N / 6f : N / 4f);
+
+        public override string EffectDescription(float N)
+            => "DMSE.Card.Payload.Cluster".Translate(Mathf.Max(1, Mathf.RoundToInt(N)), Count(N),
+                SubRadius(N).ToString("0.#"), subDamageAmount);
+
         public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
         {
             if (map == null || !center.InBounds(map)) { return; }
-            int count = countOverride > 0 ? countOverride : Mathf.Max(1, Mathf.FloorToInt(N / 4f));
-            float subRadius = Mathf.Max(1f, countOverride > 0 ? N / 6f : N / 4f);
+            int count = Count(N);
+            float subRadius = SubRadius(N);
             int spreadRadius = Mathf.Max(1, Mathf.RoundToInt(N));
             for (int i = 0; i < count; i++)
             {
@@ -128,6 +148,9 @@ namespace DMSE
     public class PayloadEffect_Defoliant : PayloadEffect
     {
         public float killChance = 0.75f;
+
+        public override string EffectDescription(float N)
+            => "DMSE.Card.Payload.Defoliant".Translate(Mathf.RoundToInt(N), killChance.ToStringPercent());
 
         public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
         {
@@ -167,6 +190,9 @@ namespace DMSE
     // ============================================================
     public class PayloadEffect_FireFoam : PayloadEffect
     {
+        public override string EffectDescription(float N)
+            => "DMSE.Card.Payload.FireFoam".Translate(Mathf.Max(1, Mathf.RoundToInt(N / 2f)));
+
         public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
         {
             if (map == null || !center.InBounds(map)) { return; }
@@ -194,6 +220,9 @@ namespace DMSE
     {
         public int damageAmount = 150;
 
+        public override string EffectDescription(float N)
+            => "DMSE.Card.Payload.Antiparticle".Translate(N.ToString("0.#"), damageAmount);
+
         public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
         {
             if (map == null || !center.InBounds(map)) { return; }
@@ -209,6 +238,9 @@ namespace DMSE
     {
         /// <summary>每格注入的毒氣濃度（GasUtility 單位）。</summary>
         public int gasAmountPerCell = 10000;
+
+        public override string EffectDescription(float N)
+            => "DMSE.Card.Payload.ToxicGas".Translate(Mathf.Max(1, Mathf.RoundToInt(N)));
 
         public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
         {
@@ -230,6 +262,9 @@ namespace DMSE
     {
         public int empDamage = 150;
 
+        public override string EffectDescription(float N)
+            => "DMSE.Card.Payload.EMP".Translate(N.ToString("0.#"), empDamage);
+
         public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
         {
             if (map == null || !center.InBounds(map)) { return; }
@@ -247,6 +282,10 @@ namespace DMSE
         public float armorPenetration = 0.4f;
 
         public override float RangeFactor(float N) => 0.75f;
+
+        public override string EffectDescription(float N)
+            => "DMSE.Card.Payload.AirburstTungsten".Translate(RangeFactor(N).ToStringPercent(), N.ToString("0.#"),
+                damagePerHit, armorPenetration.ToStringPercent());
 
         public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
         {

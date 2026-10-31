@@ -129,10 +129,7 @@ namespace DMSE.BVRAcceptance
             SpawnBuilding(AcousticRadar, 2, 2);
             Thing ciws = SpawnBuilding(WingBack, 12, 2);
             yield return WaitPowered(); yield return new WaitTicks(2);
-            CompProperties_TerminalCIWS props = WingBack.GetCompProperties<CompProperties_TerminalCIWS>();
-            float oldChance = props.interceptChance, oldDebris = props.debrisChance;
-            Override(() => { props.interceptChance = 1f; props.debrisChance = 1f; },
-                () => { props.interceptChance = oldChance; props.debrisChance = oldDebris; });
+            CompProperties_TerminalCIWS props = ForceWingBack(1f, 1f);
             CompRefuelable fuel = ciws.TryGetComp<CompRefuelable>();
             float fuelBefore = fuel.Fuel;
             int steelBefore = Home.listerThings.ThingsOfDef(ThingDefOf.Steel).Sum(s => s.stackCount);
@@ -194,10 +191,7 @@ namespace DMSE.BVRAcceptance
             SpawnBuilding(AcousticRadar, 2, 2);
             Thing ciws = SpawnBuilding(WingBack, 12, 2);
             yield return WaitPowered(); yield return new WaitTicks(2);
-            CompProperties_TerminalCIWS props = WingBack.GetCompProperties<CompProperties_TerminalCIWS>();
-            float oldChance = props.interceptChance, oldDebris = props.debrisChance;
-            Override(() => { props.interceptChance = 1f; props.debrisChance = 0f; },
-                () => { props.interceptChance = oldChance; props.debrisChance = oldDebris; });
+            CompProperties_TerminalCIWS props = ForceWingBack(1f, 0f);
             SetFlick(ciws, false);
 
             List<Pawn> podA = DropEnemyPod(1);

@@ -44,6 +44,9 @@ namespace DMSE
         /// <summary>能否穿透厚岩頂：穿透時引爆前先在岩層開孔（<see cref="MissileImpactUtility.BreachThickRoof"/>），導引頭也會鎖定岩頂下的目標。</summary>
         public virtual bool PenetratesThickRoof => false;
 
+        /// <summary>資訊卡用的機制說明（已代入 <paramref name="N"/>）；null = 不顯示。</summary>
+        public virtual string EffectDescription(float N) => null;
+
         /// <summary>可選的設定驗證。</summary>
         public virtual IEnumerable<string> ConfigErrors(MissilePartDef parent)
         {
@@ -58,6 +61,9 @@ namespace DMSE
     public class WarheadEffect_ContinuousRod : WarheadEffect
     {
         public override float InterceptBonus(float N) => N * 0.05f;
+
+        public override string EffectDescription(float N)
+            => "DMSE.Card.Warhead.ContinuousRod".Translate(InterceptBonus(N).ToStringPercent());
     }
 
     // ============================================================
@@ -67,6 +73,9 @@ namespace DMSE
     public class WarheadEffect_ExtendedFuel : WarheadEffect
     {
         public override float RangeOffset(float N) => N * 2f;
+
+        public override string EffectDescription(float N)
+            => "DMSE.Card.Warhead.ExtendedFuel".Translate(RangeOffset(N).ToString("0.#"));
     }
 
     // ============================================================
@@ -80,6 +89,9 @@ namespace DMSE
         public int groundDamageAmount = 50;
 
         public override int ExtraInterceptRolls(float N) => Mathf.FloorToInt(N / 5f);
+
+        public override string EffectDescription(float N)
+            => "DMSE.Card.Warhead.Airburst".Translate(N.ToString("0.#"), groundDamageAmount, ExtraInterceptRolls(N));
 
         public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
         {
@@ -98,6 +110,9 @@ namespace DMSE
 
         public override bool PenetratesThickRoof => true;
 
+        public override string EffectDescription(float N)
+            => "DMSE.Card.Warhead.TungstenPenetrator".Translate(damageAmount);
+
         public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
         {
             if (map == null || !center.InBounds(map)) { return; }
@@ -111,6 +126,9 @@ namespace DMSE
     // ============================================================
     public class WarheadEffect_Incendiary : WarheadEffect
     {
+        public override string EffectDescription(float N)
+            => "DMSE.Card.Warhead.Incendiary".Translate(Mathf.Max(1, Mathf.RoundToInt(N)));
+
         public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
         {
             if (map == null || !center.InBounds(map)) { return; }
@@ -131,6 +149,9 @@ namespace DMSE
     {
         public int empDamage = 120;
 
+        public override string EffectDescription(float N)
+            => "DMSE.Card.Warhead.EMP".Translate(N.ToString("0.#"), empDamage);
+
         public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
         {
             if (map == null || !center.InBounds(map)) { return; }
@@ -144,6 +165,8 @@ namespace DMSE
     // ============================================================
     public class WarheadEffect_AnimalBerserk : WarheadEffect
     {
+        public override string EffectDescription(float N) => "DMSE.Card.Warhead.AnimalBerserk".Translate();
+
         public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
         {
             if (map == null) { return; }
@@ -195,13 +218,26 @@ namespace DMSE
         /// </summary>
         public int goodwillPenalty = 10;
 
+        /// <summary>載荷容量 N 時撒出的子彈數。</summary>
+        public int BombletCount(float N)
+            => Mathf.Clamp(clusterBurstCount + Mathf.FloorToInt(Mathf.Max(0f, N) * countPerCapacity), 1, maxCount);
+
+        public override string EffectDescription(float N)
+        {
+            string s = "DMSE.Card.Warhead.ClusterBomblets".Translate(BombletCount(N),
+                projectile != null ? projectile.LabelCap.ToString() : "?", forceMissingRange.ToString("0.#"));
+            if (correctNeutralGoodwill && goodwillPenalty != 0)
+            {
+                s += " " + "DMSE.Card.Warhead.ClusterGoodwill".Translate(Mathf.Abs(goodwillPenalty));
+            }
+            return s;
+        }
+
         public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
         {
             if (projectile == null || map == null || !center.InBounds(map)) { return; }
 
-            int count = Mathf.Clamp(
-                clusterBurstCount + Mathf.FloorToInt(Mathf.Max(0f, N) * countPerCapacity),
-                1, maxCount);
+            int count = BombletCount(N);
 
             List<IntVec3> cells = GenRadial.RadialCellsAround(center, forceMissingRange, true)
                 .Where(c => c.InBounds(map))
@@ -278,11 +314,16 @@ namespace DMSE
         /// <summary>每格點燃的機率。</summary>
         public float igniteChance = 0.6f;
 
+        private static float Radius(float N) => Mathf.Max(1.5f, N * 0.5f);
+
+        public override string EffectDescription(float N)
+            => "DMSE.Card.Warhead.Thermobaric".Translate(Radius(N).ToString("0.#"), pawnDamage, igniteChance.ToStringPercent());
+
         public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
         {
             if (map == null || !center.InBounds(map)) { return; }
 
-            float radius = Mathf.Max(1.5f, N * 0.5f);
+            float radius = Radius(N);
             foreach (Pawn pawn in map.mapPawns.AllPawnsSpawned)
             {
                 if (pawn.Dead || !pawn.Position.InHorDistOf(center, radius)) { continue; }
@@ -313,11 +354,18 @@ namespace DMSE
         /// <summary>最多命中幾個目標（每次命中消耗一片刀刃）。</summary>
         public int maxTargets = 3;
 
+        private int Blades(float N) => Mathf.Clamp(Mathf.RoundToInt(N * 0.5f) + 1, 1, Mathf.Max(1, maxTargets));
+
+        private int BladeDamage(float N) => damagePerBlade + Mathf.RoundToInt(N * 2f);
+
+        public override string EffectDescription(float N)
+            => "DMSE.Card.Warhead.KineticBlades".Translate(Blades(N), BladeDamage(N));
+
         public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
         {
             if (map == null || !center.InBounds(map)) { return; }
 
-            int blades = Mathf.Clamp(Mathf.RoundToInt(N * 0.5f) + 1, 1, Mathf.Max(1, maxTargets));
+            int blades = Blades(N);
 
             // 只打最近的一個 Pawn：刀刃是精確殺傷，不是區域壓制。
             Pawn nearest = null;
@@ -330,7 +378,7 @@ namespace DMSE
             }
             if (nearest == null) { return; }
 
-            int damage = damagePerBlade + Mathf.RoundToInt(N * 2f);
+            int damage = BladeDamage(N);
             for (int i = 0; i < blades; i++)
             {
                 nearest.TakeDamage(new DamageInfo(DamageDefOf.Cut, damage, 0.6f, -1f, MissileImpactUtility.Instigator));

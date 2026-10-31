@@ -15,6 +15,27 @@ namespace DMSE
         {
             compClass = typeof(CompMissileConfig);
         }
+
+        /// <summary>
+        /// 資訊卡：實物顯示已套用的構型，物品 def 顯示出廠預設構型。
+        /// 只在 props 這裡產生（原版 thing 卡也會走 def 的 SpecialDisplayStats），comp 不再重複。
+        /// </summary>
+        public override IEnumerable<StatDrawEntry> SpecialDisplayStats(StatRequest req)
+        {
+            foreach (StatDrawEntry e in base.SpecialDisplayStats(req)) { yield return e; }
+            MissileConfig config = null;
+            CompMissileConfig comp = req.Thing?.TryGetComp<CompMissileConfig>();
+            if (comp != null)
+            {
+                comp.EnsureInit();
+                config = comp.config;
+            }
+            if (config?.body == null)
+            {
+                config = MissileConfig.NewWithDefaults(defaultBody ?? DefDatabase<MissileBodyDef>.AllDefsListForReading.FirstOrDefault());
+            }
+            foreach (StatDrawEntry e in MissileInfoCardUtility.MissileStats(config, req.Def as ThingDef ?? req.Thing?.def)) { yield return e; }
+        }
     }
 
     /// <summary>

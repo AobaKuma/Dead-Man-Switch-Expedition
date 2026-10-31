@@ -23,4 +23,14 @@
   <DMSE.BVR.World.ShowCoverageDesc>Always display all player radar coverage circles on the world map. Selected sites always show their own coverage. Circles assume an unstealthed target of size 1.</DMSE.BVR.World.ShowCoverageDesc>
   <DMSE.BVR.World.ChannelBreakdown>Channels: artillery {0}, local {1}, world {2}, strike {3}; free {4}</DMSE.BVR.World.ChannelBreakdown>
   <DMSE.BVR.World.MissileType>Missile type: {0}</DMSE.BVR.World.MissileType>
+  <DMSE.BVR.PawnsMissingLabel>Pod shot down: colonists missing</DMSE.BVR.PawnsMissingLabel>
+  <DMSE.BVR.PawnsMissingText>A transport carrying your people was shot down by air defense. No bodies were recovered; the following are missing:\n\n{0}</DMSE.BVR.PawnsMissingText>
+  <DMSE.BVR.InterceptRiskRoute>The route crosses {0}'s blockade around {1} ({2} tiles). Its air defense fires on anything flying through.</DMSE.BVR.InterceptRiskRoute>
+  <DMSE.BVR.InterceptRiskDestination>{0} is covered by {1} air-defense radar. Drop pods and shuttles landing there may be shot down.</DMSE.BVR.InterceptRiskDestination>
+  <DMSE.BVR.InterceptRiskFooter>Anyone aboard a downed drop pod or shuttle goes missing. Gravships and transfer ships are damaged instead of destroyed.\n\nLaunch anyway?</DMSE.BVR.InterceptRiskFooter>
+  <DMSE.Blockade.Engaging>{0}'s air defense at {1} fired on {2}.</DMSE.Blockade.Engaging>
+  <DMSE.Blockade.PodDown>{0}: one transport was shot down by {1}. {2} remaining.</DMSE.Blockade.PodDown>
+  <DMSE.Blockade.GravshipHit>{0} was hit by {1}'s air defense. {2} structures aboard were damaged.</DMSE.Blockade.GravshipHit>
+  <DMSE.Blockade.TransferHitLabel>Transfer ship hit</DMSE.Blockade.TransferHitLabel>
+  <DMSE.Blockade.TransferHitText>{0} was hit by {1}'s air defense while flying through its blockade. Explosions tore through {2} spots aboard.</DMSE.Blockade.TransferHitText>
 </LanguageData>

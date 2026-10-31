@@ -2,4 +2,6 @@
 <LanguageData>
   <DMSE_Interceptor.label>拦截导弹</DMSE_Interceptor.label>
   <DMSE_Interceptor.description>飞往预测会合点的防空拦截导弹。</DMSE_Interceptor.description>
+  <DMSE_BlockadeInterceptor.label>封锁拦截导弹</DMSE_BlockadeInterceptor.label>
+  <DMSE_BlockadeInterceptor.description>向飞越封锁空域的载具发射的防空拦截导弹。</DMSE_BlockadeInterceptor.description>
 </LanguageData>

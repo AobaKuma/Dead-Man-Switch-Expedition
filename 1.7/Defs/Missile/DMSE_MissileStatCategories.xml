@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- 導彈物品／彈體／部件資訊卡的分類（MissileInfoCardUtility） -->
+  <StatCategoryDef>
+    <defName>DMSE_MissilePart</defName>
+    <label>missile part</label>
+    <displayOrder>14</displayOrder>
+  </StatCategoryDef>
+
+  <StatCategoryDef>
+    <defName>DMSE_MissileProfile</defName>
+    <label>missile profile</label>
+    <displayOrder>15</displayOrder>
+  </StatCategoryDef>
+
+  <StatCategoryDef>
+    <defName>DMSE_MissileMechanics</defName>
+    <label>guidance and effects</label>
+    <displayOrder>16</displayOrder>
+  </StatCategoryDef>
+
+</Defs>

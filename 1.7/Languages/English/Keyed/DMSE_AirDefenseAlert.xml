@@ -17,14 +17,14 @@
   <DMSE.AirAlert.Unavailable.NoFireControl>no fire control</DMSE.AirAlert.Unavailable.NoFireControl>
   <DMSE.AirAlert.Unavailable.NoTracking>no radar coverage</DMSE.AirAlert.Unavailable.NoTracking>
   <DMSE.AirAlert.BlockadeNoticeLabel>Blockade announced</DMSE.AirAlert.BlockadeNoticeLabel>
-  <DMSE.AirAlert.BlockadeNoticeText>In {3}, {0} will close the airspace within {2} tiles of {1} to non-allied craft.</DMSE.AirAlert.BlockadeNoticeText>
+  <DMSE.AirAlert.BlockadeNoticeText>In {3}, {0} will close the airspace within {2} tiles of {1}. Its air defense will fire on any non-allied craft flying through.</DMSE.AirAlert.BlockadeNoticeText>
   <DMSE.AirAlert.BlockadeActiveLabel>Blockade in effect</DMSE.AirAlert.BlockadeActiveLabel>
-  <DMSE.AirAlert.BlockadeActiveText>{0} has closed the airspace within {2} tiles of {1}.</DMSE.AirAlert.BlockadeActiveText>
+  <DMSE.AirAlert.BlockadeActiveText>{0} has closed the airspace within {2} tiles of {1}. Non-allied craft flying through will be fired on.</DMSE.AirAlert.BlockadeActiveText>
   <DMSE.AirAlert.BlockadeCancelled>{0} called off the blockade at {1}.</DMSE.AirAlert.BlockadeCancelled>
   <DMSE.AirAlert.BlockadeLifted>{0} lifted the blockade at {1}.</DMSE.AirAlert.BlockadeLifted>
   <DMSE.AirAlert.EngagingPlayer>{1} is intercepting your missile.</DMSE.AirAlert.EngagingPlayer>
   <DMSE.AirAlert.NeutralInterceptLabel>Neutral air defense</DMSE.AirAlert.NeutralInterceptLabel>
   <DMSE.AirAlert.NeutralInterceptText>{1} ({0}) will intercept non-allied missiles in its airspace, including yours.</DMSE.AirAlert.NeutralInterceptText>
   <DMSE.AirAlert.InterceptorSafed>Interceptor disarmed: {0} is allied.</DMSE.AirAlert.InterceptorSafed>
-  <DMSE.Airspace.Blocked>Route crosses {0}'s blockade ({1}, {2} tiles).</DMSE.Airspace.Blocked>
+  <DMSE.Airspace.Blocked>Route crosses {0}'s blockade ({1}, {2} tiles); its air defense will fire on you.</DMSE.Airspace.Blocked>
 </LanguageData>

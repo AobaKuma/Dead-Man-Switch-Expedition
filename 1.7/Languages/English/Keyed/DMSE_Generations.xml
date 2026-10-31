@@ -10,4 +10,8 @@
   <DMSE.ManPortableSAM.TargetOption>{0} (arrives in {1}, hit chance {2})</DMSE.ManPortableSAM.TargetOption>
   <DMSE.ManPortableSAM.CannotIntercept>The next round loaded is a {0}, which cannot intercept. Fire it at a ground target first.</DMSE.ManPortableSAM.CannotIntercept>
   <DMSE.TurretGun.Engaging>Engaging: {0}</DMSE.TurretGun.Engaging>
+  <DMSE.TurretGun.TooClose>Target is too close: minimum range is {0} cells.</DMSE.TurretGun.TooClose>
+  <DMSE.TurretGun.OutOfRange>Target is out of range: maximum range is {0} cells.</DMSE.TurretGun.OutOfRange>
+  <DMSE.TurretGun.RangeBand>Range: {0} to {1} cells. Targets inside the minimum range cannot be engaged.</DMSE.TurretGun.RangeBand>
+  <DMSE.TurretGun.BarrelBusy>The gun is busy shelling a world map target.</DMSE.TurretGun.BarrelBusy>
 </LanguageData>

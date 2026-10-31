@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using HarmonyLib;
+using RimWorld;
 using Verse;
 
 namespace DMSE
@@ -46,6 +48,23 @@ namespace DMSE
             }
             MissileBodyDef body = missile.def.GetModExtension<MissileItemExtension>()?.body;
             return body != null ? MissileConfig.NewWithDefaults(body) : null;
+        }
+    }
+
+    /// <summary>
+    /// 固定構型導彈（只有 <see cref="MissileItemExtension"/>、沒有 <see cref="CompProperties_MissileConfig"/>）的資訊卡：
+    /// modExtension 不參與 SpecialDisplayStats，所以在 def 這層補上同一套導彈條目。
+    /// </summary>
+    [HarmonyPatch(typeof(ThingDef), nameof(ThingDef.SpecialDisplayStats))]
+    public static class Patch_ThingDef_MissileItemStats
+    {
+        public static IEnumerable<StatDrawEntry> Postfix(IEnumerable<StatDrawEntry> values, ThingDef __instance, StatRequest req)
+        {
+            foreach (StatDrawEntry e in values) { yield return e; }
+            if (!__instance.HasModExtension<MissileItemExtension>() || __instance.HasComp(typeof(CompMissileConfig))) { yield break; }
+            MissileConfig config = req.Thing != null ? MissileItemExtension.ConfigFor(req.Thing) : null;
+            if (config == null) { config = MissileConfig.NewWithDefaults(__instance.GetModExtension<MissileItemExtension>().body); }
+            foreach (StatDrawEntry e in MissileInfoCardUtility.MissileStats(config, __instance)) { yield return e; }
         }
     }
 }

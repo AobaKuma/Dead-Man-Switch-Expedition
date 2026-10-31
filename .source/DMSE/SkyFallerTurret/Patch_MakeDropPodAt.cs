@@ -60,7 +60,7 @@ namespace DMSE
         }
 
         /// <summary>
-        /// 空投內容物中的 pawn：innerThing 本身，或 ActiveTransporter 艙內的所有 pawn。
+        /// 空投內容物中的 pawn：innerThing 本身，或 ActiveTransporter 艙內／穿梭機 CompTransporter 內的所有 pawn。
         /// 艙內可能同時裝著多個物品（例如圍攻的補給艙），不能用 ActiveTransporterInfo.SingleContainedThing（多於一件會報錯）。
         /// </summary>
         public static IEnumerable<Pawn> PawnsIn(Thing innerThing)
@@ -70,7 +70,8 @@ namespace DMSE
                 yield return pawn;
                 yield break;
             }
-            ThingOwner contents = (innerThing as ActiveTransporter)?.Contents?.innerContainer;
+            ThingOwner contents = (innerThing as ActiveTransporter)?.Contents?.innerContainer
+                ?? innerThing.TryGetComp<CompTransporter>()?.innerContainer; // 穿梭機
             if (contents == null) { yield break; }
             for (int i = 0; i < contents.Count; i++)
             {

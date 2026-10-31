@@ -431,6 +431,7 @@ namespace DMSE.BVRAcceptance
                 new AcceptanceTest("R2", "Empero unguided strike: warmup aim, departure, world track, map kept, edge entry near centre", Tests_Artillery.UnguidedStrike),
                 new AcceptanceTest("R3", "Empero radar-guided strike: channel per gun, scatter 3 on a hostile building, release, full pool unguided", Tests_Artillery.RadarGuidedStrike),
                 new AcceptanceTest("R4", "Empero local reduced-charge fire: head turns, shared shells, held during world fire", Tests_Artillery.LocalReducedChargeFire),
+                new AcceptanceTest("R5", "Empero local fire controls: min range, hold fire, forced target, buttons", Tests_Artillery.LocalFireControls),
                 new AcceptanceTest("AB1", "Assembly bench: facilities, info card, labor speed", Tests_AssemblyBench.BenchFacilitiesAndInfoCard),
                 new AcceptanceTest("AB2", "Assembly bench: colonist hauls and assembles an order", Tests_AssemblyBench.BenchProducesWithColonist),
                 new AcceptanceTest("AB3", "Assembly bench: cancel, send to storage, designs, window", Tests_AssemblyBench.BenchOutputCancelAndDesigns),

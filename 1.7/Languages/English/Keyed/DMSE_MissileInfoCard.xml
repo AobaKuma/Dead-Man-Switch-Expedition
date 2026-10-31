@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Missile item / body / part info cards (MissileInfoCardUtility) -->
+
+  <!-- Class and platforms -->
+  <DMSE.Card.Body>Missile body</DMSE.Card.Body>
+  <DMSE.Card.Item>Missile item</DMSE.Card.Item>
+  <DMSE.Card.SizeClass>Size class</DMSE.Card.SizeClass>
+  <DMSE.Card.SizeClassDesc.Loitering>Loitering munition: the earliest beyond-visual-range weapon. Tilt-launched and allowed on gravships. It is slow, but its small radar signature means it is detected later.</DMSE.Card.SizeClassDesc.Loitering>
+  <DMSE.Card.SizeClassDesc.Light>Light missile: short- to medium-range air defense or ground attack, loaded into multi-round launchers.</DMSE.Card.SizeClassDesc.Light>
+  <DMSE.Card.SizeClassDesc.Medium>Medium missile: cruise or anti-ballistic missions. Parts can be customized on the item or on a storage rack.</DMSE.Card.SizeClassDesc.Medium>
+  <DMSE.Card.SizeClassDesc.Ballistic>Ballistic missile: long-range strike. Vertical launch only and cannot be built on a gravship. It is built and configured directly on the launch silo.</DMSE.Card.SizeClassDesc.Ballistic>
+  <DMSE.Card.LaunchMode>Launch mode</DMSE.Card.LaunchMode>
+  <DMSE.Card.LaunchMode.Tilt>Tilt launch</DMSE.Card.LaunchMode.Tilt>
+  <DMSE.Card.LaunchMode.Vertical>Vertical launch</DMSE.Card.LaunchMode.Vertical>
+  <DMSE.Card.LaunchMode.Both>Tilt or vertical</DMSE.Card.LaunchMode.Both>
+  <DMSE.Card.LaunchModeDesc>Determines which launch platforms can load this missile. Tilt launchers can rotate and can be built on gravships. Vertical launchers have one facing and cannot be built on gravships. Launch mode does not change flight stats.</DMSE.Card.LaunchModeDesc>
+  <DMSE.Card.Platforms>Launch platforms</DMSE.Card.Platforms>
+  <DMSE.Card.PlatformsDesc>Launch platforms that can load this missile, based on each platform's fixed storage settings. Click the links below to view them.</DMSE.Card.PlatformsDesc>
+  <DMSE.Card.Customize>Configured on</DMSE.Card.Customize>
+  <DMSE.Card.Customize.None>Not configurable</DMSE.Card.Customize.None>
+  <DMSE.Card.Customize.Item>Missile item</DMSE.Card.Customize.Item>
+  <DMSE.Card.Customize.StorageBuilding>Storage building</DMSE.Card.Customize.StorageBuilding>
+  <DMSE.Card.Customize.Launcher>Launch platform</DMSE.Card.Customize.Launcher>
+  <DMSE.Card.CustomizeDesc.None>Fixed configuration. Parts cannot be changed.</DMSE.Card.CustomizeDesc.None>
+  <DMSE.Card.CustomizeDesc.Item>Select the missile item and change parts in its Assembly tab. After you confirm, colonists bring the materials and do the work. You can also order it built to spec at a missile assembly bench.</DMSE.Card.CustomizeDesc.Item>
+  <DMSE.Card.CustomizeDesc.StorageBuilding>Parts are changed on a dedicated storage building, consuming resources.</DMSE.Card.CustomizeDesc.StorageBuilding>
+  <DMSE.Card.CustomizeDesc.Launcher>No item form: choose the body and configure parts directly on the launch platform.</DMSE.Card.CustomizeDesc.Launcher>
+  <DMSE.Card.Slots>Part slots</DMSE.Card.Slots>
+  <DMSE.Card.SlotsDesc>The part slots this body offers. Each slot holds at most one part. Slots the body does not have cannot be used.</DMSE.Card.SlotsDesc>
+  <DMSE.Card.EmptySlotDesc>No part is installed in this slot.</DMSE.Card.EmptySlotDesc>
+
+  <!-- Strike stats -->
+  <DMSE.Card.DamageDesc>Damage and damage type of the main blast at the impact point. Warhead parts can add or remove damage and override the damage type.</DMSE.Card.DamageDesc>
+  <DMSE.Card.RadiusDesc>Radius of the main blast, in cells. Warhead and payload effects use the payload capacity N for their own area and are not affected by this value.</DMSE.Card.RadiusDesc>
+  <DMSE.Card.ScatterDesc>Random offset radius of the impact point from the aim point, in cells. Guidance parts tighten it. Inertial guidance has the most scatter.</DMSE.Card.ScatterDesc>
+  <DMSE.Card.RangeTiles>{0} tiles</DMSE.Card.RangeTiles>
+  <DMSE.Card.Unlimited>Unlimited</DMSE.Card.Unlimited>
+  <DMSE.Card.RangeDesc>Maximum strike distance on the world map.\nRange = (fuel × specific impulse × conversion factor + flat bonus + warhead range) × payload factor\n\nFuel: {0}\nSpecific impulse: {1}\nConversion factor: {2}\nFlat bonus: {3}\nWarhead range: {4}\nPayload factor: {5}\n\nResult: {6}</DMSE.Card.RangeDesc>
+  <DMSE.Card.SpeedDesc>Flight speed multiplier on the world map. Faster missiles give enemy air defense less time to engage.</DMSE.Card.SpeedDesc>
+  <DMSE.Card.PayloadCapacity>Payload capacity N</DMSE.Card.PayloadCapacity>
+  <DMSE.Card.PayloadCapacityDesc>Set by the body. The area, count and strength of every warhead and payload effect scale with N (for example, an incendiary warhead ignites everything within N cells), so the same part is stronger on a bigger body.</DMSE.Card.PayloadCapacityDesc>
+  <DMSE.Card.ThickRoofDesc>Missiles that penetrate thick roofs breach the rock before detonating, and their seekers also lock onto targets under thick roofs. Other missiles that hit a thick roof only explode on the rock surface.</DMSE.Card.ThickRoofDesc>
+
+  <!-- Guidance -->
+  <DMSE.Card.NoGuidance>No guidance</DMSE.Card.NoGuidance>
+  <DMSE.Card.TerminalUpdatesDesc>With terminal guidance, how many times the missile can correct its impact point to the target's new position in flight (body base count plus seeker bonus). When they run out, it flies to the last known position and misses if the target has left.</DMSE.Card.TerminalUpdatesDesc>
+  <DMSE.Card.ChannelsDesc>Fire-control channels the missile occupies for the whole flight. Only radio command and fire-control radar guidance need continuous ground support. Autonomous seekers and preset guidance use none. Ballistic missiles use 2 channels each, others use 1.</DMSE.Card.ChannelsDesc>
+  <DMSE.Card.ChannelsPerMissile>1 per missile (2 ballistic)</DMSE.Card.ChannelsPerMissile>
+  <DMSE.Card.LoiterRetry>While loitering, the seeker searches again every {0}. Terminal defenses can still engage it during this time.</DMSE.Card.LoiterRetry>
+  <DMSE.Card.LoiterOnlyLoitering>Only loitering munitions can loiter. Other bodies with this part do not.</DMSE.Card.LoiterOnlyLoitering>
+  <DMSE.Card.BuiltInGuidance>No guidance part installed: uses the body's built-in targeting.</DMSE.Card.BuiltInGuidance>
+  <DMSE.Card.TracksMobile>Built for moving targets on the world map: the flight path re-aims more often.</DMSE.Card.TracksMobile>
+  <DMSE.Card.TerminalGuidance>Terminal guidance</DMSE.Card.TerminalGuidance>
+  <DMSE.Card.TerminalGuidanceYes>Provides terminal guidance: can strike across map layers and track moving targets using the body's terminal updates.</DMSE.Card.TerminalGuidanceYes>
+  <DMSE.Card.TerminalGuidanceNo>No terminal guidance: cannot strike across map layers or track moving targets.</DMSE.Card.TerminalGuidanceNo>
+  <DMSE.Card.TargetSelection>Impact point</DMSE.Card.TargetSelection>
+  <DMSE.Card.TargetManual>Chosen by player</DMSE.Card.TargetManual>
+  <DMSE.Card.TargetAuto>Automatic lock</DMSE.Card.TargetAuto>
+  <DMSE.Card.SpreadNote>A salvo of missiles with the same seeker type spreads its locks over different targets instead of all hitting the same one.</DMSE.Card.SpreadNote>
+
+  <!-- Air defense and survivability -->
+  <DMSE.Card.Intercept>Intercept hit factor</DMSE.Card.Intercept>
+  <DMSE.Card.InterceptDesc>When fired as an interceptor, this multiplies the hit chance computed by the fire-control radar (on both the map and the world map).</DMSE.Card.InterceptDesc>
+  <DMSE.Card.InterceptBonus>Warhead bonus: hit chance +{0}</DMSE.Card.InterceptBonus>
+  <DMSE.Card.InterceptRolls>Extra intercept rolls: {0} (can hit other targets in the same wave)</DMSE.Card.InterceptRolls>
+  <DMSE.Card.SignatureDesc>Multiplies the detection range level of the world-map track. Above 1, the missile is detected earlier and draws air defenses that use threat assessment (a decoy). Below 1, it is detected later (penetration).</DMSE.Card.SignatureDesc>
+  <DMSE.Card.ChaffDesc>Chaff charges and jamming strength. On the world map, a charge is used whenever enemy fire control locks on, with a {0} chance to break the lock and delay the next one. Charges are not replenished in flight. When intercepted on a map, the enemy hit chance is reduced by {1}.</DMSE.Card.ChaffDesc>
+
+  <!-- Effects -->
+  <DMSE.Card.WarheadEffect>Warhead effect</DMSE.Card.WarheadEffect>
+  <DMSE.Card.PayloadEffect>Payload effect</DMSE.Card.PayloadEffect>
+  <DMSE.Card.ScaledByN>Values above are for payload capacity N = {0}.</DMSE.Card.ScaledByN>
+  <DMSE.Card.ScaledByNGroups>The effect scales with the body's payload capacity N:</DMSE.Card.ScaledByNGroups>
+  <DMSE.Card.NGroup>N = {0} ({1})</DMSE.Card.NGroup>
+  <DMSE.Card.Warhead.ContinuousRod>When used as an interceptor, hit chance +{0} (N × 5%). No extra effect against ground targets.</DMSE.Card.Warhead.ContinuousRod>
+  <DMSE.Card.Warhead.ExtendedFuel>Range +{0} tiles (N × 2). No extra effect at the impact point.</DMSE.Card.Warhead.ExtendedFuel>
+  <DMSE.Card.Warhead.Airburst>Against ground targets: an extra blast with radius {0} and {1} damage at the impact point. As an interceptor: {2} extra independent intercept rolls (N ÷ 5, rounded down) that can hit other targets in the same wave.</DMSE.Card.Warhead.Airburst>
+  <DMSE.Card.Warhead.TungstenPenetrator>Penetrates thick roofs and locks onto targets under them. After the main blast, an extra blast with radius 2 and {0} damage hits the impact point.</DMSE.Card.Warhead.TungstenPenetrator>
+  <DMSE.Card.Warhead.Incendiary>Ignores line of sight and sets fires within {0} cells of the impact point.</DMSE.Card.Warhead.Incendiary>
+  <DMSE.Card.Warhead.EMP>Ignores line of sight. An EMP blast with radius {0} and {1} damage disables electronics and mechanoids.</DMSE.Card.Warhead.EMP>
+  <DMSE.Card.Warhead.AnimalBerserk>Every animal on the target map immediately goes berserk.</DMSE.Card.Warhead.AnimalBerserk>
+  <DMSE.Card.Warhead.ClusterBomblets>Releases {0} physical bomblets ({1}) that land within {2} cells. The bomblets fly and can hit anyone in their path.</DMSE.Card.Warhead.ClusterBomblets>
+  <DMSE.Card.Warhead.ClusterGoodwill>When fired by the player, each pawn of a non-hostile faction in the spread area costs {0} goodwill with that faction.</DMSE.Card.Warhead.ClusterGoodwill>
+  <DMSE.Card.Warhead.Thermobaric>Every creature within radius {0} takes {1} burn damage, and each cell has a {2} chance to catch fire. Most effective in enclosed rooms.</DMSE.Card.Warhead.Thermobaric>
+  <DMSE.Card.Warhead.KineticBlades>Almost no blast: strikes the nearest creature within 3 cells of the impact point with {0} blades, each dealing {1} cut damage.</DMSE.Card.Warhead.KineticBlades>
+  <DMSE.Card.Payload.HighExplosive>An extra blast with radius {0} and {1} damage at the impact point.</DMSE.Card.Payload.HighExplosive>
+  <DMSE.Card.Payload.BunkerBuster>Penetrates thick roofs and locks onto targets under them. Detonates inside with radius {0} and {1} damage ({2} armor penetration), and deals an extra {4} structural damage to buildings within {3} cells of the center.</DMSE.Card.Payload.BunkerBuster>
+  <DMSE.Card.Payload.Cluster>Scatters {1} sub-explosions within {0} cells, each with radius {2} and {3} damage.</DMSE.Card.Payload.Cluster>
+  <DMSE.Card.Payload.Defoliant>Each plant within {0} cells has a {1} chance to die.</DMSE.Card.Payload.Defoliant>
+  <DMSE.Card.Payload.FireFoam>Puts out fires within {0} cells and covers the area in firefoam.</DMSE.Card.Payload.FireFoam>
+  <DMSE.Card.Payload.Antiparticle>A vaporizing blast with radius {0} and {1} damage at the impact point.</DMSE.Card.Payload.Antiparticle>
+  <DMSE.Card.Payload.ToxicGas>Floods every cell within {0} cells with toxic gas.</DMSE.Card.Payload.ToxicGas>
+  <DMSE.Card.Payload.EMP>An EMP blast with radius {0} and {1} damage at the impact point: disables electronics and stuns mechanoids.</DMSE.Card.Payload.EMP>
+  <DMSE.Card.Payload.AirburstTungsten>Range becomes {0}. Every creature within radius {1} takes (body size rounded up + 1) hits of {2} stab damage ({3} armor penetration).</DMSE.Card.Payload.AirburstTungsten>
+  <DMSE.Card.Payload.Extra>An extra blast with radius {0} and {1} damage ({2}).</DMSE.Card.Payload.Extra>
+  <DMSE.Card.Payload.Spawn>Drops {0} × {1} ({2} chance).</DMSE.Card.Payload.Spawn>
+
+  <!-- Seeker mechanics -->
+  <DMSE.Card.Guidance.Inertial>Does not search for targets: impacts scatter randomly around the center of the target map and never lock onto buildings or creatures.</DMSE.Card.Guidance.Inertial>
+  <DMSE.Card.Guidance.AntiRadiation>Locks onto the active enemy radar with the highest power level (ties go to the one drawing more power). Purely passive warning equipment is ignored.</DMSE.Card.Guidance.AntiRadiation>
+  <DMSE.Card.Guidance.AntiRadiationFallback>With no active radar, it targets the powered enemy building drawing the most electricity, then falls back to inertial guidance.</DMSE.Card.Guidance.AntiRadiationFallback>
+  <DMSE.Card.Guidance.AntiRadiationNoFallback>With no active radar, it does not pick another target. With loitering flight control it can wait overhead until a radar switches on.</DMSE.Card.Guidance.AntiRadiationNoFallback>
+  <DMSE.Card.Guidance.HeatSource>Locks onto the hottest indoor room at least {0} warmer than outdoors. Otherwise it targets the largest creature (wild animals included, the attacker and its allies excluded). If there is neither, it falls back to inertial guidance.</DMSE.Card.Guidance.HeatSource>
+  <DMSE.Card.Guidance.ElectromagneticSignal>Locks onto the powered enemy building drawing the most electricity. Falls back to inertial guidance if nothing is powered.</DMSE.Card.Guidance.ElectromagneticSignal>
+  <DMSE.Card.Guidance.TV>When you launch it, the game pauses on arrival and you choose the impact point freely. Enemy launches have no operator and use inertial guidance instead.</DMSE.Card.Guidance.TV>
+  <DMSE.Card.Guidance.Laser>Locks onto the most recent laser designation your side placed on the target map. Falls back to inertial guidance if there is none.</DMSE.Card.Guidance.Laser>
+  <DMSE.Card.Guidance.FireControl>Mainly for air-defense interception, guided by fire-control radar illumination. Against ground targets it aims inertially. Occupies a fire-control channel for the whole flight.</DMSE.Card.Guidance.FireControl>
+  <DMSE.Card.Guidance.RadioCommand>The ground station sends continuous corrections. Against ground targets it aims inertially. Occupies a fire-control channel for the whole flight.</DMSE.Card.Guidance.RadioCommand>
+  <DMSE.Card.Guidance.Imaging>Locks only onto enemy creatures in the open (not under a roof), preferring higher combat power, then larger body size. Falls back to inertial guidance if none are found.</DMSE.Card.Guidance.Imaging>
+  <DMSE.Card.Guidance.ActiveRadar>Fire-and-forget: locks onto the largest enemy building, then the largest enemy creature. Falls back to inertial guidance if there are neither.</DMSE.Card.Guidance.ActiveRadar>
+  <DMSE.Card.Guidance.AntiShip>Built for moving targets on the world map (ships, mobile bases): the flight path corrects more often, with {0} extra terminal updates. On arrival it hits the toughest enemy building first, then the largest enemy creature.</DMSE.Card.Guidance.AntiShip>
+
+  <!-- Parts -->
+  <DMSE.Card.PartSlot>Part slot</DMSE.Card.PartSlot>
+  <DMSE.Card.PartSlotDesc>The slot this part goes into. Each slot holds one part, and installing this replaces the current one.</DMSE.Card.PartSlotDesc>
+  <DMSE.Card.CompatibleBodies>Compatible bodies</DMSE.Card.CompatibleBodies>
+  <DMSE.Card.CompatibleBodiesDesc>Missile bodies that can take this part (they must have the matching slot). Click the links below to view them.</DMSE.Card.CompatibleBodiesDesc>
+  <DMSE.Card.RequiresLoitering>Loitering munitions only.</DMSE.Card.RequiresLoitering>
+  <DMSE.Card.Research>Research required</DMSE.Card.Research>
+  <DMSE.Card.ResearchDesc>Can be selected once these research projects are finished.</DMSE.Card.ResearchDesc>
+  <DMSE.Card.Cost>Assembly materials</DMSE.Card.Cost>
+  <DMSE.Card.CostDesc>Materials that must be hauled in and consumed to install this part during a refit. A body's default parts are already included in its build cost. When the part is removed or replaced, part of the materials is refunded according to the body's refund rate.</DMSE.Card.CostDesc>
+  <DMSE.Card.ModifierDesc>Added to the body's base value.</DMSE.Card.ModifierDesc>
+  <DMSE.Card.DamageTypeDesc>Overrides the damage type of the main blast.</DMSE.Card.DamageTypeDesc>
+  <DMSE.Card.Fuel>Fuel</DMSE.Card.Fuel>
+  <DMSE.Card.Impulse>Specific impulse</DMSE.Card.Impulse>
+  <DMSE.Card.FuelImpulseDesc>Range is roughly fuel × specific impulse × the body's conversion factor, so both increase range.</DMSE.Card.FuelImpulseDesc>
+
+  <!-- Refit -->
+  <DMSE.Card.AssembleWork>Refit work</DMSE.Card.AssembleWork>
+  <DMSE.Card.AssembleWorkDesc>Work needed to apply one configuration change. Affected by the working colonist's work speed.</DMSE.Card.AssembleWorkDesc>
+  <DMSE.Card.Refund>Removal refund</DMSE.Card.Refund>
+  <DMSE.Card.RefundDesc>Share of a part's materials returned when it is removed or replaced.</DMSE.Card.RefundDesc>
+</LanguageData>

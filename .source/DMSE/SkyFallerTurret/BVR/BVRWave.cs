@@ -156,7 +156,8 @@ namespace DMSE
         }
 
         /// <summary>
-        /// 末端攔截成功且擲骰通過時呼叫：殺死內部所有 pawn，屍體以一個殘骸空投（碎片）落下，其餘內容物隨艙體清除。
+        /// 末端攔截成功且擲骰通過時呼叫：殺死內部所有 pawn（玩家 pawn 改為失蹤，見 <see cref="HandleInterceptedPawns"/>），
+        /// 屍體以一個殘骸空投（碎片）落下，其餘內容物隨艙體清除。
         /// <paramref name="debrisCell"/> 是攔截特效預測的艙體殘骸落點（docs/攔截殘骸特效_實作與技術美術計畫.md §1-4）：
         /// 屍體空投落在它附近可空投的格；沒有預測或找不到格時落在原落點。
         /// </summary>
@@ -165,12 +166,10 @@ namespace DMSE
         /// <inheritdoc cref="SpawnDebris(Map)"/>
         public void SpawnDebris(Map map, IntVec3 debrisCell)
         {
-            // 先取出清單：殺死 pawn 會把它在容器中換成屍體。
-            List<Pawn> pawns = ContainedPawns;
+            List<Pawn> pawns = HandleInterceptedPawns();
             ActiveTransporterInfo info = new ActiveTransporterInfo();
             foreach (Pawn pawn in pawns)
             {
-                pawn.Kill(new DamageInfo(DamageDefOf.Blunt, 50f));
                 Corpse corpse = pawn.Corpse ?? pawn.MakeCorpse(null, null);
                 if (corpse == null) { continue; }
 
@@ -215,11 +214,27 @@ namespace DMSE
         /// <summary>清掉持有的來襲物（攔截成功、不落地、不留殘骸）。</summary>
         public void Discard()
         {
+            HandleInterceptedPawns();
+            TransportShip ship = Skyfaller?.innerContainer.FirstOrDefault().TryGetComp<CompShuttle>()?.shipParent;
             if (skyfaller != null)
             {
                 skyfaller.ClearAndDestroyContents();
             }
+            // 穿梭機的運輸船還在等它落地（ShipJob_Arrive 等 shipThing.Spawned），不結束會永遠卡住。
+            if (ship != null && !ship.Disposed)
+            {
+                ship.EndCurrentJob();
+                ship.Dispose();
+            }
         }
+
+        /// <summary>
+        /// 處理被攔截目標內的 pawn（清掉艙體前呼叫）：玩家陣營的 pawn 移出艙體、改為失蹤（送往世界 pawn）；
+        /// 其餘一律殺死——Vanish 不算 Dead、不送任務 Killed 信號，Boss 群等任務會卡住。
+        /// 回傳被殺死的 pawn（屍體留在原容器中，由呼叫端決定是否做成殘骸）。
+        /// </summary>
+        public List<Pawn> HandleInterceptedPawns()
+            => InterceptedPawnUtility.Resolve(ContainedPawns, new LookTargets(position, map));
 
         public IThingHolder ParentHolder => map;
         public void GetChildHolders(List<IThingHolder> outChildren)

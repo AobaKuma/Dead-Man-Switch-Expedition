@@ -47,6 +47,9 @@ namespace DMSE
         /// <summary>是否以世界層移動目標為對象（反艦）：航跡會縮短終端檢查間隔。</summary>
         public virtual bool TracksMobileTargets => false;
 
+        /// <summary>資訊卡用的選目標機制說明；null = 不顯示。</summary>
+        public virtual string MechanismDescription => null;
+
         /// <summary>可選的 Def 驗證。</summary>
         public virtual IEnumerable<string> ConfigErrors(MissilePartDef parent)
         {
@@ -331,6 +334,8 @@ namespace DMSE
         // 慣性制導無法跨圖層打擊，也無法追蹤移動目標
         public override bool TerminalGuidance => false;
 
+        public override string MechanismDescription => "DMSE.Card.Guidance.Inertial".Translate();
+
         public override IntVec3 PickTarget(float N, Map map, Faction attacker)
         {
             return InertialTarget(map, attacker);
@@ -351,6 +356,10 @@ namespace DMSE
         /// false = 只看雷達，沒有雷達就回報沒有目標（配合盤旋飛控在目標上空等待）。
         /// </summary>
         public bool fallBackToEmissions = true;
+
+        public override string MechanismDescription
+            => "DMSE.Card.Guidance.AntiRadiation".Translate() + " "
+               + (fallBackToEmissions ? "DMSE.Card.Guidance.AntiRadiationFallback" : "DMSE.Card.Guidance.AntiRadiationNoFallback").Translate();
 
         public override IntVec3 PickTarget(float N, Map map, Faction attacker)
         {
@@ -400,6 +409,9 @@ namespace DMSE
         /// <summary>房間需比室外溫度高出多少度（°C）才會被選為目標。</summary>
         public float minRoomTempAboveOutdoor = 15f;
 
+        public override string MechanismDescription
+            => "DMSE.Card.Guidance.HeatSource".Translate(minRoomTempAboveOutdoor.ToStringTemperatureOffset());
+
         public override IntVec3 PickTarget(float N, Map map, Faction attacker)
         {
             IntVec3 room = HottestRoomCell(map);
@@ -440,6 +452,8 @@ namespace DMSE
     // ============================================================
     public class GuidanceType_ElectromagneticSignal : GuidanceType
     {
+        public override string MechanismDescription => "DMSE.Card.Guidance.ElectromagneticSignal".Translate();
+
         public override IntVec3 PickTarget(float N, Map map, Faction attacker)
         {
             return HighestPowerDrawTarget(map, attacker);
@@ -462,6 +476,8 @@ namespace DMSE
     {
         public override bool PlayerChoosesTarget => true;
 
+        public override string MechanismDescription => "DMSE.Card.Guidance.TV".Translate();
+
         public override IntVec3 PickTarget(float N, Map map, Faction attacker)
         {
             return InertialTarget(map, attacker);
@@ -475,6 +491,8 @@ namespace DMSE
     // ============================================================
     public class GuidanceType_Laser : GuidanceType
     {
+        public override string MechanismDescription => "DMSE.Card.Guidance.Laser".Translate();
+
         public override IntVec3 PickTarget(float N, Map map, Faction attacker)
         {
             LaserDesignatorMark mark = LaserDesignatorUtility.LatestMarkFor(map, attacker);
@@ -489,6 +507,8 @@ namespace DMSE
     // ============================================================
     public class GuidanceType_FireControl : GuidanceType
     {
+        public override string MechanismDescription => "DMSE.Card.Guidance.FireControl".Translate();
+
         public override IntVec3 PickTarget(float N, Map map, Faction attacker)
         {
             return InertialTarget(map, attacker);
@@ -501,6 +521,7 @@ namespace DMSE
     // ============================================================
     public class GuidanceType_RadioCommand : GuidanceType_FireControl
     {
+        public override string MechanismDescription => "DMSE.Card.Guidance.RadioCommand".Translate();
     }
 
     // ============================================================
@@ -509,6 +530,8 @@ namespace DMSE
     // ============================================================
     public class GuidanceType_Imaging : GuidanceType
     {
+        public override string MechanismDescription => "DMSE.Card.Guidance.Imaging".Translate();
+
         public override IntVec3 PickTarget(float N, Map map, Faction attacker)
         {
             Pawn best = SpreadBest(map.mapPawns.AllPawnsSpawned.Where(pawn => pawn.Spawned && !pawn.Dead
@@ -531,6 +554,8 @@ namespace DMSE
     // ============================================================
     public class GuidanceType_ActiveRadar : GuidanceType
     {
+        public override string MechanismDescription => "DMSE.Card.Guidance.ActiveRadar".Translate();
+
         public override IntVec3 PickTarget(float N, Map map, Faction attacker)
         {
             return LargestHostileTarget(map, attacker);
@@ -547,6 +572,8 @@ namespace DMSE
         public override int ExtraTerminalUpdates => 2;
 
         public override bool TracksMobileTargets => true;
+
+        public override string MechanismDescription => "DMSE.Card.Guidance.AntiShip".Translate(ExtraTerminalUpdates);
 
         public override IntVec3 PickTarget(float N, Map map, Faction attacker)
         {

@@ -24,7 +24,8 @@
     <size>(2,2)</size>
     <rotatable>true</rotatable>
     <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
-    <fillPercent>0.5</fillPercent>
+    <!-- 建築高度 0.5 → 0.75：統一對齊 DMS_BaseCannonBuilding（掩體阻擋率 = fillPercent） -->
+    <fillPercent>0.75</fillPercent>
     <!-- 數值對標原版自動加農炮塔（Turret_Autocannon：380 HP／15000 工作／0.96 砲塔精度）。
          手操砲折價：HP 300、工作 9000（約 6 折）。 -->
     <statBases>
@@ -183,7 +184,8 @@
     <size>(3,3)</size>
     <rotatable>true</rotatable>
     <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
-    <fillPercent>0.7</fillPercent>
+    <!-- 建築高度 0.7 → 0.75：統一對齊 DMS_BaseCannonBuilding（掩體阻擋率 = fillPercent） -->
+    <fillPercent>0.75</fillPercent>
     <statBases>
       <MaxHitPoints>600</MaxHitPoints>
       <Flammability>0.5</Flammability>
