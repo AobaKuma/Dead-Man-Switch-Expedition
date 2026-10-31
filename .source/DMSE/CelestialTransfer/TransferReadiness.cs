@@ -78,7 +78,7 @@ namespace DMSE
                 return issues;
             }
 
-            if (!map.Tile.LayerDef.isSpace)
+            if (!TransferEnvironment.AllowsTransfer(map))
             {
                 issues.Add(new TransferIssue(TransferIssueSeverity.Error, "DMSE.Transfer.Issue.NotInSpace".Translate()));
             }

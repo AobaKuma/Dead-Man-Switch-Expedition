@@ -32,7 +32,7 @@ namespace DMSE
         /// </summary>
         public List<TerrainDef> excludedTerrains;
 
-        /// <summary>只能建在太空地圖（小行星、軌道）上。</summary>
+        /// <summary>只能建在可起飛的地圖上：太空地圖（小行星、軌道），或掛了 <see cref="TransferEnvironmentExtension"/> 的圖層。</summary>
         public bool spaceMapOnly;
 
         /// <summary>每根樁最多連結數（含施工中）；0 = 不限。</summary>

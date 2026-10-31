@@ -95,6 +95,7 @@ t_coast= d × 2 h；t_total = 2×t_burn + t_coast
 
 - 舊流程已刪除（駕駛台攔截、模式選單、`FlightModeLauncher`、`FlightUtility`、`Patch_Visible`、`Patch_Background`、`VGECompatibility`、VGE 攔截）。`Legacy/` 只留 `MapComponent_Ship`（空殼）、`TravelingObject`／`WorldObject_Transfer`、`WorldObject_ImpactGravship`：舊檔第一個 tick 直接 `Arrive()`（不在 `FinalizeInit`，避免載入中銷毀地圖或播片尾）。`DMSE_TransferThruster` 元件類型 Def 保留一個版本。
 - VGE：熱核推進器移除 `CompProperties_ResourceThruster` 與管線指令；燃料筒倉 `comps Inherit="False"` 改用 `CompProperties_PipeNetFuelProvider`；`DMSE_VGE_Patch` 不再有 Harmony patch，參考 `PipeSystem.dll`。
+- **非太空圖層**（2026-11-01）：在 `PlanetLayerDef` 掛 `DMSE.TransferEnvironmentExtension`（`voidTerrain`、`shipMapGenerator`、`shipWorldObject`，皆可省略）即可在該圖層起飛；`TransferEnvironment` 取代起飛判定、樁放置、`PileNetwork.IsSolidCell`、分離／降落中原本寫死的 `isSpace` 與 `TerrainDefOf.Space`。太空圖層不掛擴充時行為不變；`shipWorldObject` 的類別必須是 `WorldObject_TransferShip` 或其子類（`ConfigErrors` 檢查）。撞擊飛行與平台拆除仍只限太空。
 - `DMS_OrbitalPlatform` 不再依賴 Orbital Platforms 模組（`Patch_OrbitalPlatform.xml` 為虛空補 `VoidSpace` 承載力）；拆除用 `Designator_RemovePlatform`。
 
 ## 9. 待辦

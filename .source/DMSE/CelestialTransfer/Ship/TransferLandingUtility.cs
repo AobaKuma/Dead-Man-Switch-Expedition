@@ -57,9 +57,10 @@ namespace DMSE
         {
             List<IntVec3> cells = new List<IntVec3>();
             TerrainGrid tg = shipMap.terrainGrid;
+            TerrainDef voidTerrain = TransferEnvironment.VoidTerrain(shipMap);
             foreach (IntVec3 c in shipMap.AllCells)
             {
-                if (tg.TerrainAt(c) != TerrainDefOf.Space)
+                if (tg.TerrainAt(c) != voidTerrain)
                 {
                     cells.Add(c);
                 }

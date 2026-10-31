@@ -386,14 +386,14 @@ namespace DMSE
             return t.def.category == ThingCategory.Building || t is Blueprint || t is Frame;
         }
 
-        /// <summary>設計稿 §3-4：有地基，或地形不是太空虛空。</summary>
+        /// <summary>設計稿 §3-4：有地基，或地形不是此圖層的虛空（預設 Space，見 <see cref="TransferEnvironment.VoidTerrain(Map)"/>）。</summary>
         public static bool IsSolidCell(Map map, IntVec3 c)
         {
             if (map.terrainGrid.FoundationAt(c) != null)
             {
                 return true;
             }
-            return map.terrainGrid.TerrainAt(c) != TerrainDefOf.Space;
+            return map.terrainGrid.TerrainAt(c) != TransferEnvironment.VoidTerrain(map);
         }
     }
 }

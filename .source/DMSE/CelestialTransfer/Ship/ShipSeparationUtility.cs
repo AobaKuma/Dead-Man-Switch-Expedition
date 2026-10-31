@@ -269,7 +269,7 @@ namespace DMSE
 
             // ── 步驟 2、3：世界物件與同尺寸虛空地圖
             // 分離當下船不與原地圖同格：放在航線的第一格（設計稿 §6-4），DrawPos 仍從起點插值，看不出跳格
-            WorldObject_TransferShip ship = (WorldObject_TransferShip)WorldObjectMaker.MakeWorldObject(DMSE_DefOf.DMSE_TransferShip);
+            WorldObject_TransferShip ship = (WorldObject_TransferShip)WorldObjectMaker.MakeWorldObject(TransferEnvironment.ShipWorldObject(origin.Tile.LayerDef));
             ship.Tile = startTile;
             ship.SetFaction(Faction.OfPlayer);
             ship.Name = shipName;
@@ -282,7 +282,7 @@ namespace DMSE
                 ship.landingTarget = console.plan.destination;
             }
             Find.WorldObjects.Add(ship);
-            Map shipMap = MapGenerator.GenerateMap(origin.Size, ship, DMSE_DefOf.DMSE_ShipVoid);
+            Map shipMap = MapGenerator.GenerateMap(origin.Size, ship, TransferEnvironment.ShipMapGenerator(origin.Tile.LayerDef));
 
             // ── 步驟 4–6：擷取並從原地圖移除
             Snapshot snap = new Snapshot();
@@ -876,6 +876,7 @@ namespace DMSE
             }
 
             TerrainGrid tg = map.terrainGrid;
+            TerrainDef voidTerrain = TransferEnvironment.VoidTerrain(map);
             List<Area> areas = map.areaManager.AllAreas;
             bool biotech = ModsConfig.BiotechActive && map.pollutionGrid != null;
             foreach (IntVec3 c in footprint)
@@ -888,7 +889,7 @@ namespace DMSE
                 {
                     tg.RemoveFoundation(c, doLeavings: false);
                 }
-                tg.SetTerrain(c, TerrainDefOf.Space);
+                tg.SetTerrain(c, voidTerrain);
                 map.roofGrid.SetRoof(c, null);
                 for (int i = 0; i < areas.Count; i++)
                 {
@@ -943,6 +944,7 @@ namespace DMSE
         {
             ship.regionAndRoomUpdater.Enabled = true;
             TerrainGrid tg = ship.terrainGrid;
+            TerrainDef voidTerrain = TransferEnvironment.VoidTerrain(ship);
             bool biotech = ModsConfig.BiotechActive && ship.pollutionGrid != null;
 
             // 地形：底層 → 地基 → 頂層（layerable 時會把底層推入 under） → 臨時地形 → 顏色
@@ -951,7 +953,7 @@ namespace DMSE
                 IntVec3 c = kv.Key + offset;
                 CellData d = kv.Value;
                 TerrainDef baseTerrain = d.under ?? d.top;
-                if (baseTerrain != null && baseTerrain != TerrainDefOf.Space)
+                if (baseTerrain != null && baseTerrain != voidTerrain)
                 {
                     tg.SetTerrain(c, baseTerrain);
                 }
@@ -1345,7 +1347,8 @@ namespace DMSE
             List<IntVec3> attachmentTargets = attachmentCells.Select(c => c + offset).ToList();
             HashSet<IntVec3> occupied = new HashSet<IntVec3>(target);
             occupied.UnionWith(attachmentTargets);
-            Predicate<IntVec3> outside = x => !occupied.Contains(x) && x.Standable(map) && x.GetTerrain(map) != TerrainDefOf.Space;
+            TerrainDef voidTerrain = TransferEnvironment.VoidTerrain(map);
+            Predicate<IntVec3> outside = x => !occupied.Contains(x) && x.Standable(map) && x.GetTerrain(map) != voidTerrain;
             for (int i = 0; i < attachmentTargets.Count; i++)
             {
                 ClearThingsForLanding(map, attachmentTargets[i], outside);

@@ -29,7 +29,7 @@ namespace DMSE
                 return true;
             }
             CompProperties_StructuralPile props = def.GetCompProperties<CompProperties_StructuralPile>();
-            if (props != null && props.spaceMapOnly && !map.Tile.LayerDef.isSpace)
+            if (props != null && props.spaceMapOnly && !TransferEnvironment.AllowsTransfer(map))
             {
                 return new AcceptanceReport("DMSE.Pile.Place.SpaceOnly".Translate());
             }
