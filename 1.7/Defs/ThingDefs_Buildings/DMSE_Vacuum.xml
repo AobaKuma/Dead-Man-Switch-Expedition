@@ -243,6 +243,7 @@
         <job>DMSE_Landfill</job>
         <iconPath>Things/Building/VacuumRoom/building_entrance</iconPath>
         <filled>DMSE_VacuumRoom_Entrance</filled>
+        <landfillText>DMSE.Landfill.Reopen</landfillText>
       </li>
     </comps>
     <placeWorkers>
@@ -271,8 +272,33 @@
     <order>251</order>
     <genStep Class="DMSE.GenStep_Prefab">
       <prefab>DMSE_VacuumRoom_Prefab</prefab>
+      <terrain>DMSE_VacuumRoomFloor</terrain>
     </genStep>
   </GenStepDef>
+
+  <!-- 口袋地圖沒有地形步驟時 topGrid 全為 null，ReGrowth Core／Simple FX: Splashes 會在 Map.FinalizeInit 時 NRE，
+       入口因此每次點擊都多生成一張地圖。基底層（非 layerable）不能被移除，玩家仍可在上面鋪地板。 -->
+  <TerrainDef>
+    <defName>DMSE_VacuumRoomFloor</defName>
+    <label>sealed chamber base</label>
+    <description>The pressure-rated base layer of a vacuum sealed room. Floors can be laid on top of it.</description>
+    <texturePath>Terrain/Surfaces/Concrete</texturePath>
+    <color>(150,150,150)</color>
+    <edgeType>Hard</edgeType>
+    <renderPrecedence>70</renderPrecedence>
+    <statBases>
+      <Beauty>0</Beauty>
+      <CleaningTimeFactor>0.8</CleaningTimeFactor>
+    </statBases>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+      <li>Walkable</li>
+    </affordances>
+    <fertility>0</fertility>
+    <canEverTerraform>false</canEverTerraform>
+  </TerrainDef>
 
   <PrefabDef>
     <defName>DMSE_VacuumRoom_Prefab</defName>        <!-- rename -->

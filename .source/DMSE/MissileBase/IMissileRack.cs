@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace DMSE
@@ -25,6 +26,7 @@ namespace DMSE
         /// <summary>目前存放的飛彈。</summary>
         IReadOnlyList<Thing> HeldThings { get; }
 
+        /// <summary>存放的飛彈枚數（以堆疊數計，不是 Thing 數）。</summary>
         int StoredCount { get; }
 
         bool Full { get; }
@@ -46,5 +48,16 @@ namespace DMSE
             if (t is IMissileRack direct) { return direct; }
             return t.TryGetComp<CompMissileRackStorage>();
         }
+
+        // 飛彈 def 的 stackLimit 都是 1，但堆疊模組（Stack XXL 等）放寬上限後，同一個 Thing 可能是一整疊，
+        // 容器 TryAdd 也會把同種飛彈合併成一疊。以下兩個工具讓裝填與發射都以「枚」為單位。
+
+        /// <summary>從儲存架搬往 <paramref name="target"/> 的數量：最多填滿剩餘空位，至少 1。</summary>
+        public static int LoadCount(Thing missile, IMissileRack target)
+            => Mathf.Clamp(target.SpaceRemainingFor(missile.def), 1, missile.stackCount);
+
+        /// <summary>發射時消耗一枚；整疊直接 Remove＋Destroy 會把整疊當一發用掉。</summary>
+        public static void ConsumeOne(Thing missile)
+            => missile.SplitOff(1).Destroy(DestroyMode.Vanish);
     }
 }

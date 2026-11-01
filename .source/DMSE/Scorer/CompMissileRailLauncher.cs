@@ -125,8 +125,7 @@ namespace DMSE
             {
                 return;
             }
-            HeldContainer.Remove(round);
-            round.Destroy(DestroyMode.Vanish);
+            MissileRackUtil.ConsumeOne(round);
         }
     }
 }

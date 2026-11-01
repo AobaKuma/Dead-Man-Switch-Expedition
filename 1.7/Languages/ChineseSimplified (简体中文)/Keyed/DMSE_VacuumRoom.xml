@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <DMSE.Landfill.Fill>填埋</DMSE.Landfill.Fill>
+  <DMSE.Landfill.FillDesc>标记这个入口准备填埋，再选取殖民者右键点击入口开始施工。\n\n填埋会摧毁密封舱室，仍在里面的人员与物品都会消失。填埋后的入口可以拆除，或重新开挖成一间新的空舱室。</DMSE.Landfill.FillDesc>
+  <DMSE.Landfill.Reopen>重新开挖</DMSE.Landfill.Reopen>
+  <DMSE.Landfill.ReopenDesc>标记这个填埋入口准备重新开挖，再选取殖民者右键点击开始施工。开挖后会是一间新的空舱室。</DMSE.Landfill.ReopenDesc>
+  <DMSE.Landfill.Cancel>取消</DMSE.Landfill.Cancel>
+  <DMSE.Landfill.CancelDesc>取消标记。</DMSE.Landfill.CancelDesc>
+</LanguageData>

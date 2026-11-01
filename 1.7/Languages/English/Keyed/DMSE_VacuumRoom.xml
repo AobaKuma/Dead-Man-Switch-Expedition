@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <DMSE.Landfill.Fill>Landfill</DMSE.Landfill.Fill>
+  <DMSE.Landfill.FillDesc>Mark this entrance to be filled in, then right-click it with a colonist to start.\n\nFilling destroys the sealed room. Anyone and anything still inside is lost. The filled entrance can be deconstructed or reopened as a new, empty room.</DMSE.Landfill.FillDesc>
+  <DMSE.Landfill.Reopen>Reopen</DMSE.Landfill.Reopen>
+  <DMSE.Landfill.ReopenDesc>Mark this filled entrance to be dug out again, then right-click it with a colonist to start. The room behind it will be new and empty.</DMSE.Landfill.ReopenDesc>
+  <DMSE.Landfill.Cancel>Cancel</DMSE.Landfill.Cancel>
+  <DMSE.Landfill.CancelDesc>Remove the mark.</DMSE.Landfill.CancelDesc>
+</LanguageData>

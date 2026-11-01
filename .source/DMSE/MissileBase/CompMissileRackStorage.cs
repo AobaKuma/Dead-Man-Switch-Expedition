@@ -89,7 +89,7 @@ namespace DMSE
             get
             {
                 EnsureInitialized();
-                return innerContainer.Count;
+                return innerContainer.TotalStackCount;
             }
         }
 

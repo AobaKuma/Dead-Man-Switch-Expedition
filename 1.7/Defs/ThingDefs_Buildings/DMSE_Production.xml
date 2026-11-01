@@ -61,6 +61,85 @@
     </modExtensions>
   </ThingDef>
 
+  <!-- 逆重隔離器：以 FFF CompEnvironmentExemption 豁免所連接生產建築的真空與微重力需求，並提供 +10% 工作台速度。
+       連結目標由 Patches.xml 加到 DMS_BenchBase 的 linkableFacilities，所有 DMS 生產建築皆可連接。
+       貼圖暫用原版重力場擴展器。 -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_GravIsolator</defName>
+    <label>grav isolator</label>
+    <description>An ultratech device built around a gravcore. It wraps the work area of a linked production building in a sealed graviton null-field, holding the workpiece in simulated microgravity and hard vacuum regardless of the surrounding environment.\n\nWhile powered, linked production buildings ignore the vacuum and microgravity requirements of their recipes and gain +10% work speed. Each production building can link to one grav isolator.</description>
+    <graphicData>
+      <texPath>Things/Building/GravFieldExtender</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,2)</drawSize>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+    <size>(2,2)</size>
+    <rotatable>false</rotatable>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.35</staticSunShadowHeight>
+    <fillPercent>0.5</fillPercent>
+    <canOverlapZones>false</canOverlapZones>
+    <pathCost>42</pathCost>
+    <statBases>
+      <MaxHitPoints>300</MaxHitPoints>
+      <WorkToBuild>8000</WorkToBuild>
+      <Mass>40</Mass>
+      <Flammability>0</Flammability>
+    </statBases>
+    <costList>
+      <Gravcore>1</Gravcore>
+      <Steel>150</Steel>
+      <Plasteel>50</Plasteel>
+      <ComponentSpacer>2</ComponentSpacer>
+    </costList>
+    <!-- 比照原版逆重科技建築：拆除時全額返還，避免逆重核心被四捨五入吃掉 -->
+    <resourcesFractionWhenDeconstructed>1</resourcesFractionWhenDeconstructed>
+    <building>
+      <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+    </building>
+    <researchPrerequisites>
+      <li>DMSE_Microgravity</li>
+    </researchPrerequisites>
+    <designationCategory>DMS_Category</designationCategory>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
+    <comps>
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Facility">
+        <statOffsets>
+          <WorkTableWorkSpeedFactor>0.1</WorkTableWorkSpeedFactor>
+        </statOffsets>
+        <maxSimultaneous>1</maxSimultaneous>
+      </li>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>500</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Glower">
+        <glowRadius>3</glowRadius>
+        <glowColor>(0,218,255,0)</glowColor>
+      </li>
+      <li Class="Fortified.CompProperties_EnvironmentExemption">
+        <exemptVacuum>true</exemptVacuum>
+        <exemptMicroGravity>true</exemptMicroGravity>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>PlaceWorker_ShowFacilitiesConnections</li>
+    </placeWorkers>
+  </ThingDef>
+
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_GrapheneBioreactor</defName>
     <label>Graphene bio-reactor</label>

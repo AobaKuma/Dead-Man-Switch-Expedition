@@ -10,15 +10,20 @@
   <DMSE_MicrogravityFacility.label>精密制造中心</DMSE_MicrogravityFacility.label>
   <!-- EN: An extremely sophisticated additive manufacturing machine designed for nanoscale processing while also meeting the demands of extreme and demanding production environments. It can produce with exceptional precision even in conditions such as microgravity, vacuum, ultra-high pressure, and extreme temperatures. -->
   <DMSE_MicrogravityFacility.description>一种极其精密的增材制造机，针对奈米级加工设计，并可满足严苛与极端制程需求。即使在微重力、真空、超高压与极端温度条件下，也能进行高精度生产。</DMSE_MicrogravityFacility.description>
-  
+
+  <!-- EN: grav isolator -->
+  <DMSE_GravIsolator.label>逆重隔离器</DMSE_GravIsolator.label>
+  <!-- EN: An ultratech device built around a gravcore. It wraps the work area of a linked production building in a sealed graviton null-field, holding the workpiece in simulated microgravity and hard vacuum regardless of the surrounding environment.\n\nWhile powered, linked production buildings ignore the vacuum and microgravity requirements of their recipes and gain +10% work speed. Each production building can link to one grav isolator. -->
+  <DMSE_GravIsolator.description>一种基于利用逆重技术产物设计的精密装置。能以封闭的重力子零场包覆所连接生产建筑的内部工作区域，使工件无论周遭环境如何都能维持在模拟的微重力真空环境之中。\n\n通电运作时，所连接的生产建筑可豁免配方的真空与微重力需求并增加工作速度。每座生产建筑只能连接一座逆重隔离器。</DMSE_GravIsolator.description>
+
   <!-- EN: organic assembler -->
   <DMSE_TableArtifuscle.label>有机组装台</DMSE_TableArtifuscle.label>
   <!-- EN: A massive piece of industrial equipment used to assemble Artifuscle and Neutroamine. -->
-  <DMSE_TableArtifuscle.description>一种用於量产人工肌肉与中性胺的工业级培育装置。生物合成对环境的需求及其苛刻，因此即便降低了培育标准也依然需要在整个过程中维持净室环境来避免外来细菌污染制品。那怕是殖民舰队也只会在轨道上的无人生产设施中少量部署来维持人工肌肉的基本供应。</DMSE_TableArtifuscle.description>
+  <DMSE_TableArtifuscle.description>一种用于量产人工肌肉与中性胺的工业级培育装置。生物合成对环境的需求及其苛刻，因此即便降低了培育标准也依然需要在整个过程中维持净室环境来避免外来细菌污染制品。那怕是殖民舰队也只会在轨道上的无人生产设施中少量部署来维持人工肌肉的基本供应。</DMSE_TableArtifuscle.description>
   
   <!-- EN: rotary forger -->
   <DMSE_TableLathe.label>旋锻机</DMSE_TableLathe.label>
   <!-- EN: A machine that combine the process of forging machine and lathe, rotates a workpiece about an axis of rotation to perform various operations. -->
-  <DMSE_TableLathe.description>结合锻造机与车床工艺的设备，可让工件绕旋转轴转动并执行多种加工操作。大部分流通於边缘世界的加固炮管基本上都是透过这种设备或其简化的人工操作版本所生产</DMSE_TableLathe.description>
+  <DMSE_TableLathe.description>结合锻造机与车床工艺的设备，可让工件绕旋转轴转动并执行多种加工操作。大部分流通于边缘世界的加固炮管基本上都是透过这种设备或其简化的人工操作版本所生产</DMSE_TableLathe.description>
   
 </LanguageData>

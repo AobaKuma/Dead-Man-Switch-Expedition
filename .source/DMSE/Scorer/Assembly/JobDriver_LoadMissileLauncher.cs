@@ -96,7 +96,7 @@ namespace DMSE
                 // 導致裝填工作在讀條取出後被直接中斷。改用 TryTransferToContainer 完全不依賴
                 // 地圖上是否有空位，取出必定成功（只要 toTake 確實在 rack 容器內）。
                 int transferred = rack.GetDirectlyHeldThings().TryTransferToContainer(
-                    toTake, pawn.carryTracker.innerContainer, toTake.stackCount, out Thing carried);
+                    toTake, pawn.carryTracker.innerContainer, MissileRackUtil.LoadCount(toTake, launcher), out Thing carried);
                 if (transferred <= 0 || carried == null)
                 {
                     pawn.jobs.EndCurrentJob(JobCondition.Incompletable, true);

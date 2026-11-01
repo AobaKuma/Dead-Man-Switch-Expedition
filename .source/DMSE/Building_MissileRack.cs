@@ -122,7 +122,7 @@ namespace DMSE
         }
 
         public IReadOnlyList<Thing> HeldThings => innerContainer.InnerListForReading;
-        public int StoredCount => innerContainer.Count;
+        public int StoredCount => innerContainer.TotalStackCount;
         public bool Full => StoredCount >= MaxStored;
         public Thing RackThing => this;
 

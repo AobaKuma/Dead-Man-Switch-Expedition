@@ -10,7 +10,12 @@
   <DMSE_MicrogravityFacility.label>精密製造中心</DMSE_MicrogravityFacility.label>
   <!-- EN: An extremely sophisticated additive manufacturing machine designed for nanoscale processing while also meeting the demands of extreme and demanding production environments. It can produce with exceptional precision even in conditions such as microgravity, vacuum, ultra-high pressure, and extreme temperatures. -->
   <DMSE_MicrogravityFacility.description>一種極其精密的增材製造機，針對奈米級加工設計，並可滿足嚴苛與極端製程需求。即使在微重力、真空、超高壓與極端溫度條件下，也能進行高精度生產。</DMSE_MicrogravityFacility.description>
-  
+
+  <!-- EN: grav isolator -->
+  <DMSE_GravIsolator.label>逆重隔離器</DMSE_GravIsolator.label>
+  <!-- EN: An ultratech device built around a gravcore. It wraps the work area of a linked production building in a sealed graviton null-field, holding the workpiece in simulated microgravity and hard vacuum regardless of the surrounding environment.\n\nWhile powered, linked production buildings ignore the vacuum and microgravity requirements of their recipes and gain +10% work speed. Each production building can link to one grav isolator. -->
+  <DMSE_GravIsolator.description>一種基於利用逆重技術產物設計的精密裝置。能以封閉的重力子零場包覆所連接生產建築的內部工作區域，使工件無論周遭環境如何都能維持在模擬的微重力真空環境之中。\n\n通電運作時，所連接的生產建築可豁免配方的真空與微重力需求並增加工作速度。每座生產建築只能連接一座逆重隔離器。</DMSE_GravIsolator.description>
+
   <!-- EN: organic assembler -->
   <DMSE_TableArtifuscle.label>有機組裝台</DMSE_TableArtifuscle.label>
   <!-- EN: A massive piece of industrial equipment used to assemble Artifuscle and Neutroamine. -->

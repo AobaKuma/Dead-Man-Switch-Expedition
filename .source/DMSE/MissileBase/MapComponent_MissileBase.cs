@@ -423,7 +423,6 @@ namespace DMSE
                 }
 
                 // 先看這枚導彈打得到哪些目標（跨圖層需導引能力），再決定是否消耗
-                ThingOwner container = rack.GetDirectlyHeldThings();
                 MissileConfig cfg = ExtractConfigFromMissile(missile, wc);
 
                 if (cfg == null) break; // 無有效彈體定義，跳出
@@ -437,8 +436,7 @@ namespace DMSE
                 ThingDef launchDef = pad.LaunchDefFor(cfg);
                 if (launchDef == null) break;
 
-                container.Remove(missile);
-                missile.Destroy();
+                MissileRackUtil.ConsumeOne(missile);
 
                 // 選擇目標（隨機；未來可擴充為優先級排序）
                 MapParent target = targets.RandomElement();

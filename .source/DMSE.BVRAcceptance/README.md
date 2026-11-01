@@ -47,6 +47,7 @@ for each series has the details.
 | F1–F12 | `Tests_MissileFlight.cs` | Skyfaller → Projectile migration ([doc](../../docs/Missile_Skyfaller轉Projectile_計畫.md)) |
 | R1–R5 | `Tests_Artillery.cs` | Empero long-range gun |
 | AB1–AB3 | `Tests_AssemblyBench.cs` | Assembly bench ([doc](../../docs/導彈組裝台與裝配方案_實作計畫.md)) |
+| VR1 | `Tests_VacuumRoom.cs` | Vacuum sealed room terrain, room reuse, landfill owner and old ownerless filled entrances |
 | L1–L3 | `Tests_Seekers.cs`, `Tests_WorldEdge.cs`, `Tests_MissileFlight.cs` | Save/load with tracks in flight; old skyfaller-era saves. L3 is last (it reloads); run it alone with `-Only L3` if a third-party mod crashes on reload |
 
 ## Test environment

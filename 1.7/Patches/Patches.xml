@@ -64,6 +64,14 @@
 		</value>
 	</Operation>
 
+	<!-- 逆重隔離器：子代只繼承 DMS_BenchBase 的 AffectedByFacilities，無法單獨加到子代，故加在基底上 -->
+	<Operation Class="PatchOperationAdd">
+		<xpath>/Defs/ThingDef[@Name="DMS_BenchBase"]/comps/li[@Class="CompProperties_AffectedByFacilities"]/linkableFacilities</xpath>
+		<value>
+			<li>DMSE_GravIsolator</li>
+		</value>
+	</Operation>
+
 	<Operation Class="PatchOperationAdd">
 		<xpath>/Defs/ThingDef[defName="GravEngine"]/comps/li[@Class="CompProperties_AffectedByFacilities"]/linkableFacilities</xpath>
 		<value>

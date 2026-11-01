@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: sealed chamber base -->
+  <DMSE_VacuumRoomFloor.label>密封舱室基底</DMSE_VacuumRoomFloor.label>
+  <!-- EN: The pressure-rated base layer of a vacuum sealed room. Floors can be laid on top of it. -->
+  <DMSE_VacuumRoomFloor.description>真空密封设施的耐压基底层，可以在上面铺设地板。</DMSE_VacuumRoomFloor.description>
+  
+</LanguageData>

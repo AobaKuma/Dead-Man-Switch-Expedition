@@ -85,6 +85,8 @@ terminalOnly 目標只交給 CIWS。CIWS 與 SAM 可能打同一目標，先擊�
 
 發射器 parent 是 `Building_MissileRack`（或實作 `IMissileRack` 的 `CompMissileRackStorage`），容量 `MissileRackExtension.capacity`，能收什麼由 storage filter 決定。裝填：地面搬運（`IHaulDestination`）；彈架 → 平台（`WorkGiver_LoadMissileLauncher`，儲存架內 unspawned 導彈原版看不到）；操作員自行補彈（`CompMannableMissileLauncher` 改派 `DMSE_ManMissileLauncher`，取彈裝滿才操作）；敵方陣地 `MissileAutoFillUtility.TryAutoFill`（讀檔跳過）。輕型發射箱同時掛 Rail 與 Interceptor，共用彈艙。
 
+數量一律以「枚」計：飛彈 def 都是 `stackLimit=1`，但堆疊模組放寬上限後同一個 Thing 可能是整疊、容器 `TryAdd` 也會合併。所以 `StoredCount` 是 `TotalStackCount`，彈架 → 平台只搬 `MissileRackUtil.LoadCount`（最多填滿剩餘空位），三條發射路徑（Interceptor、Rail、NPC 陣地）都用 `MissileRackUtil.ConsumeOne` 每發扣一枚（BVRTests `MissileStacks`）。
+
 ### A-7. 重點設計
 
 - **陣營相對防禦**：`ResolveDefender` 找擁有運作中搜索雷達、與來襲方敵對的陣營（玩家優先）；玩家打敵方基地也會被攔截。

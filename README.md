@@ -167,7 +167,7 @@ dotnet run --project .source/DMSE.BVRTests/DMSE.BVRTests.csproj -c Release --no-
 世界地圖任務地點（`DMSE_MissileBase` / `DMSE_MissileBaseSitePart`）：敵方機動彈道導彈陣地，持續向殖民地發射導彈並透過補給空投補彈，一段時間後轉移位置。含專用 GenStep（地形、FFF 結構、駐守人員、戰爭迷霧）與 `LordJob_MissileCrewDuty`。
 
 ### 6. 真空製造與軌道環境
-- **真空密封室**：`MapPortal` 地下密室，可在大氣層內維持真空；搭配真空泵、氧氣蠟燭；廢棄後可回填（`CompLandFillable`）。
+- **真空密封室**：`MapPortal` 地下密室，可在大氣層內維持真空；搭配真空泵、氧氣蠟燭；廢棄後可回填（`CompLandFillable`），填埋入口沿用原陣營、可拆除或重新開挖。房間地圖由 `GenStep_Prefab.terrain` 鋪滿 `DMSE_VacuumRoomFloor` 基底；沒有地形時直接讀 `topGrid` 的模組（ReGrowth Core、Simple FX: Splashes）會在 `Map.FinalizeInit` NRE，入口每次點擊都多生一張地圖。舊存檔的房間由 `Map.FinalizeInit` prefix 補地形（acceptance `VR1`）。
 - **軌道平台地形**（`Terrain_OrbitalPlatform_DMS`）與微重力設施。另有輕型平台（`DMS_LightPlatform`，只承載輕型 / 中型建築）。不需 Orbital Platforms 模組即可在太空虛空上建造（`Patch_OrbitalPlatform.xml`）；Odyssey 分頁的「拆除平台」指令可把 DMS 平台與原版軌道平台、機械體平台拆回虛空並回收材料（`RemovablePlatformExtension`）。
 - **環境限定配方**：潔淨室、微重力、真空（`DMSE_Recipe_*.xml`），對應材料：碳水化合物、鉭鎢合金、石墨烯、氮化鎵。
 - 生產建築：精密製造中心、旋轉鍛造機、石墨烯生物反應器、有機組裝機；電力：石墨烯電池、光伏板。

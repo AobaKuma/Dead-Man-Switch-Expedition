@@ -119,7 +119,11 @@ namespace DMSE
                         hasLaunchOffset = rackRenderer != null && rackRenderer.TryGetRenderedAmmoOffset(missile, out launchOffset);
                     }
                     ThingDef roundLaunchDef = MissileItemExtension.BodyOf(missile)?.launchProjectile ?? Props.interceptorSkyfaller;
-                    rounds.Add((missile, roundLaunchDef, launchOffset, hasLaunchOffset));
+                    // 堆疊模組下一個 Thing 可能是多枚，每枚各算一發（發射時 ConsumeOne 逐枚扣除）。
+                    for (int n = 0; n < missile.stackCount && rounds.Count < requested; n++)
+                    {
+                        rounds.Add((missile, roundLaunchDef, launchOffset, hasLaunchOffset));
+                    }
                 }
             }
 
@@ -143,8 +147,7 @@ namespace DMSE
                     heading = heading ?? 0f,
                 });
                 lastSpawnTick = Mathf.Max(lastSpawnTick, spawnTick);
-                owner.Remove(round.missile);
-                round.missile.Destroy(DestroyMode.Vanish);
+                MissileRackUtil.ConsumeOne(round.missile);
                 fired++;
             }
 
