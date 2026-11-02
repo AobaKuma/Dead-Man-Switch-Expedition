@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Reflection;
 using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
@@ -7,35 +8,51 @@ using Verse;
 namespace DMSE
 {
     /// <summary>
-    /// 封鎖玩家車隊在再進入冷卻期間進入導彈陣地。<br/>
+    /// 封鎖玩家在再進入冷卻期間進入導彈陣地。<br/>
     /// <br/>
-    /// 攔截 <see cref="WorldObject.GetFloatMenuOptions(Caravan)"/>：<br/>
-    /// 當站點具有 <see cref="WorldObjectComp_MissileBase"/> 且 <see cref="WorldObjectComp_MissileBase.IsReentryBlocked"/>
-    /// 為真時，以一個「禁止進入（顯示剩餘時間）」的停用選項替換所有原始互動選項，
-    /// 讓玩家知道為何無法選擇進入，同時避免遊戲 NullRef（原選項為空列表亦覆蓋正常）。<br/>
+    /// 攔截原版的進入判定 <see cref="CaravanArrivalAction_VisitSite.CanVisit"/>（車隊）與
+    /// <see cref="TransportersArrivalAction_VisitSite.CanVisit"/>（運輸艙、穿梭機）：
+    /// 當站點的 <see cref="WorldObjectComp_MissileBase.IsReentryBlocked"/> 為真時回傳失敗，
+    /// 浮動選單顯示停用選項與剩餘時間；途中的車隊或運輸艙在抵達時也會因 StillValid 失敗而無法進入。<br/>
     /// <br/>
-    /// 注：封鎖僅阻止地面進入（車隊）；世界層的其他互動（選取、資訊視窗）不受影響。
+    /// 注：Site 覆寫了 GetFloatMenuOptions，修補 <see cref="WorldObject.GetFloatMenuOptions"/> 擋不住「接近站點」選項。
     /// </summary>
-    [HarmonyPatch(typeof(WorldObject), nameof(WorldObject.GetFloatMenuOptions))]
+    [HarmonyPatch]
     public static class Patch_MissileBaseReentry
     {
-        [HarmonyPostfix]
-        public static void Postfix(
-            WorldObject __instance,
-            ref IEnumerable<FloatMenuOption> __result)
+        private static IEnumerable<MethodBase> TargetMethods()
         {
-            // 只處理具有導彈陣地 Comp 的世界物件
-            WorldObjectComp_MissileBase woc = __instance.GetComponent<WorldObjectComp_MissileBase>();
+            yield return AccessTools.Method(typeof(CaravanArrivalAction_VisitSite), nameof(CaravanArrivalAction_VisitSite.CanVisit));
+            yield return AccessTools.Method(typeof(TransportersArrivalAction_VisitSite), nameof(TransportersArrivalAction_VisitSite.CanVisit));
+        }
+
+        [HarmonyPostfix]
+        public static void Postfix(Site site, ref FloatMenuAcceptanceReport __result)
+        {
+            if (!__result.Accepted) return;
+            WorldObjectComp_MissileBase woc = site?.GetComponent<WorldObjectComp_MissileBase>();
             if (woc == null || !woc.IsReentryBlocked) return;
 
-            // 以單一停用選項替換所有互動選項
-            string label = "DMSE.MissileBase.ReentryBlocked"
-                .Translate(woc.ReentryBlockedFor.ToStringTicksToPeriod());
+            string reason = "DMSE.MissileBase.ReentryBlocked".Translate(woc.ReentryBlockedFor.ToStringTicksToPeriod());
+            __result = FloatMenuAcceptanceReport.WithFailReasonAndMessage(reason, reason);
+        }
+    }
 
-            __result = new FloatMenuOption[]
-            {
-                new FloatMenuOption(label, action: null) { Disabled = true }
-            };
+    /// <summary>
+    /// 原版 <see cref="Site.ShouldRemoveMapNow"/> 在玩家離開後總是連同站點一起刪除；
+    /// 導彈陣地只在雷達與世界選靶發射器全滅（<see cref="MapComponent_MissileBase.BaseSiteDestroyed"/>）後才刪除，
+    /// 否則只移除地圖、保留站點（世界層恢復開火，下次進入時陣地完整重建）。
+    /// </summary>
+    [HarmonyPatch(typeof(Site), nameof(Site.ShouldRemoveMapNow))]
+    public static class Patch_MissileBaseSiteKept
+    {
+        [HarmonyPostfix]
+        public static void Postfix(Site __instance, bool __result, ref bool alsoRemoveWorldObject)
+        {
+            if (!__result || !alsoRemoveWorldObject) return;
+            if (__instance.GetComponent<WorldObjectComp_MissileBase>() == null) return;
+            MapComponent_MissileBase comp = __instance.Map?.GetComponent<MapComponent_MissileBase>();
+            if (comp != null && !comp.BaseSiteDestroyed) alsoRemoveWorldObject = false;
         }
     }
 }

@@ -426,6 +426,8 @@ namespace DMSE.BVRAcceptance
                 new AcceptanceTest("N2", "Field launch site incident: spawns in range, letter, one at a time", Tests_FieldLaunchSite.IncidentSpawnsSite),
                 new AcceptanceTest("N3", "Missile site gunners man launchers, radars and guns; leave to eat when hungry", Tests_FieldLaunchSite.GunnersManStationsAndEat),
                 new AcceptanceTest("N4", "Missile alerts: one letter, repeats within an hour become messages", Tests_FieldLaunchSite.AlertThrottle),
+                new AcceptanceTest("N5", "Site destroyed with colonists on the map: map kept until they leave, nobody lost", Tests_FieldLaunchSite.SiteKeptWhileColonistsOnMap),
+                new AcceptanceTest("N6", "Radars are required: retreat with radars standing keeps the site and blocks re-entry", Tests_FieldLaunchSite.RetreatWithRadarsBlocksReentry),
                 new AcceptanceTest("G1", "God-mode instant missile assembly", Tests_Assembly.GodModeInstantAssembly),
                 new AcceptanceTest("R1", "Empero long-range gun: defs, head, targeting rules, out of shells", Tests_Artillery.DefsAndTargeting),
                 new AcceptanceTest("R2", "Empero unguided strike: warmup aim, departure, world track, map kept, edge entry near centre", Tests_Artillery.UnguidedStrike),

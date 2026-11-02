@@ -27,8 +27,8 @@ namespace DMSE
         public IntRange relocationDays = new IntRange(15, 30);
 
         /// <summary>
-        /// 玩家撤退時，若敵方火控雷達仍存活，陣地封鎖地面再進入的持續時間（天數範圍）。<br/>
-        /// 封鎖期間，玩家車隊無法從地面進入陣地（模擬敵方重新整備防線）。
+        /// 玩家地面突擊後撤退時，若敵方雷達仍在，陣地封鎖再進入的持續時間（天數範圍）。<br/>
+        /// 封鎖期間，玩家車隊與運輸艙無法進入陣地（模擬敵方重新整備防線，見 <see cref="Patch_MissileBaseReentry"/>）。
         /// </summary>
         public FloatRange reentryBlockedDays = new FloatRange(0.5f, 1.5f);
 
@@ -84,8 +84,8 @@ namespace DMSE
     /// 導彈陣地世界物件元件。<br/>
     /// ‧ 未生成地圖：定期對射程內的玩家殖民地發射導彈；同時倒計時「陣地轉移」（模擬發射陣地易位）。<br/>
     /// ‧ 地圖已生成：暫停本元件，改由 <see cref="MapComponent_MissileBase"/> 以地圖內的建築繼續打擊。<br/>
-    /// ‧ 地圖移除後（玩家撤退）：若敵方火控雷達尚存，啟動再進入封鎖計時（<see cref="reentryBlockedUntil"/>），
-    ///   阻止玩家立即重回陣地；轉移計時同時重設。
+    /// ‧ 地圖移除後（玩家撤退）：陣地未摧毀時站點保留；若玩家曾地面突擊且敵方雷達尚存，
+    ///   啟動再進入封鎖計時（<see cref="reentryBlockedUntil"/>），阻止玩家立即重回陣地；轉移與開火計時同時重設。
     /// </summary>
     public class WorldObjectComp_MissileBase : WorldObjectComp
     {
@@ -113,7 +113,7 @@ namespace DMSE
             => IsReentryBlocked ? reentryBlockedUntil - Find.TickManager.TicksGame : 0;
 
         /// <summary>
-        /// 啟動再進入封鎖（由 <see cref="SitePartWorker_MissileBase"/> 在玩家撤退且敵方雷達尚存時呼叫）。
+        /// 啟動再進入封鎖（由 <see cref="SitePartWorker_MissileBase"/> 在玩家地面突擊後撤退且敵方雷達尚存時呼叫）。
         /// </summary>
         public void StartReentryCooldown()
         {
@@ -239,8 +239,16 @@ namespace DMSE
             parent.Destroy();
         }
 
-        /// <summary>地圖移除後由 <see cref="SitePartWorker_MissileBase"/> 呼叫，重設轉移計時（模擬重新部署）。</summary>
-        public void ResetRelocationTimer() => ScheduleRelocation();
+        /// <summary>
+        /// 地圖移除前由 <see cref="SitePartWorker_MissileBase"/> 呼叫：重設轉移計時（模擬重新部署），
+        /// 並從現在重新排程世界層開火——地圖存在期間不計時，過期的計時會讓陣地一撤離就立刻齊射。
+        /// </summary>
+        public void Notify_SiteMapRemoved()
+        {
+            ScheduleRelocation();
+            nextFireTick = Find.TickManager.TicksGame
+                + Mathf.RoundToInt(Props.missileFireIntervalDays.RandomInRange * GenDate.TicksPerDay);
+        }
 
         // ──────────────── Inspect ────────────────
 

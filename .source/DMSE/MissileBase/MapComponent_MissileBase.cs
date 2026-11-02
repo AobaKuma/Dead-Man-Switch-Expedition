@@ -18,12 +18,15 @@ namespace DMSE
     ///    ‧ 彈藥來源：地圖上敵方 <see cref="Building_MissileRack"/>；耗盡後停止射擊直到補給。<br/>
     ///    ‧ 導彈從地圖上的敵方世界選靶發射建築升空，飛出地圖邊緣後才進入世界航跡（同玩家發射）。<br/>
     /// 2. 指派 <see cref="LordJob_MissileCrewDuty"/> 給地圖內的敵方 Pawn。<br/>
-    /// 3. 偵測「保留觀察狀態 + 所有敵方世界選靶發射器（<see cref="CompMissileLauncher_WorldTargeting"/>：
-    ///    Rail / Ballistic / Scorer）皆已摧毀」→ 哨站摧毀。
+    /// 3. 偵測「保留觀察狀態 + 所有敵方雷達（<see cref="IsObjectiveRadar"/>）與世界選靶發射器
+    ///    （<see cref="CompMissileLauncher_WorldTargeting"/>：Rail / Ballistic / Scorer）皆已摧毀」→ 哨站摧毀；
+    ///    玩家單位仍在圖上時，等撤離後才移除站點。雷達尚存時撤退，站點保留並封鎖再進入（<see cref="SitePartWorker_MissileBase"/>）。
     /// </summary>
     public class MapComponent_MissileBase : MapComponent
     {
         private bool baseSiteDestroyed = false;
+        // 曾有玩家單位進入此地圖（地面突擊）；只有地面突擊後撤退才啟動再進入封鎖，遠程打擊的觀察地圖不算。
+        private bool playerVisited = false;
         private Lord crewLord;
 
         // ── 火力通道 ──────────────────────────────────────────────────────────
@@ -32,12 +35,13 @@ namespace DMSE
             = new List<WorldObject_IncomingMissile>();
 
         // ── 建築快取 ──────────────────────────────────────────────────────────
-        // 「曾見過雷達」標記：只有在至少一次 cache 時看到 launcher，
+        // 「曾見過陣地目標」標記：只有在至少一次 cache 時看到雷達或發射器，
         // 才啟動「全滅即摧毀」邏輯，避免 FFF 佔位符（0 建築）在地圖進入後立刻觸發摧毀。
         private bool hasEverHadLaunchers = false;
 
         // 快取：每次 rare-tick 更新一次
         private List<Building> cachedEnemyLaunchers;
+        private List<Building> cachedEnemyRadars;
         private int lastLauncherCacheTick = -1;
 
         // 輪流發射用的建築索引（不存檔）
@@ -68,6 +72,31 @@ namespace DMSE
 
         public MapComponent_MissileBase(Map map) : base(map) { }
 
+        // ──────────────── 陣地目標 API ────────────────
+
+        /// <summary>陣地已判定摧毀（雷達與世界選靶發射器全滅）；地圖移除時站點一併刪除。</summary>
+        public bool BaseSiteDestroyed => baseSiteDestroyed;
+
+        /// <summary>曾有玩家單位進入此地圖（地面突擊）。</summary>
+        public bool PlayerVisited => playerVisited;
+
+        /// <summary>此圖是導彈陣地、尚未摧毀且已見過陣地目標：顯示剩餘目標的警示。</summary>
+        public bool ShowsObjectives => IsMissileBaseMap && !baseSiteDestroyed && hasEverHadLaunchers;
+
+        /// <summary>尚存的敵方雷達（<see cref="IsObjectiveRadar"/>）。</summary>
+        public IEnumerable<Building> RemainingRadars => GetEnemyRadarsCached().Where(StillEnemy);
+
+        /// <summary>尚存的敵方世界選靶發射器。</summary>
+        public IEnumerable<Building> RemainingLaunchers => GetEnemyLaunchersCached().Where(StillEnemy);
+
+        /// <summary>陣地目標雷達：搜索或火控雷達建築；自帶雷達的防空砲塔（如野戰防空系統）不算。</summary>
+        public static bool IsObjectiveRadar(Building b)
+            => !(b is Building_Turret)
+            && (b.TryGetComp<CompSearchRadar>() != null || b.TryGetComp<CompFireControlRadar>() != null);
+
+        // 快取最多晚 500 tick：期間被摧毀、拆除或被玩家佔領的建築不算尚存。
+        private bool StillEnemy(Building b) => b.Spawned && !b.Destroyed && b.Faction == map.ParentFaction;
+
         // ──────────────── 存讀 ────────────────
 
         public override void ExposeData()
@@ -75,6 +104,7 @@ namespace DMSE
             if (!IsMissileBaseMap) return;
             base.ExposeData();
             Scribe_Values.Look(ref baseSiteDestroyed, "baseSiteDestroyed", false);
+            Scribe_Values.Look(ref playerVisited, "playerVisited", false);
             Scribe_Values.Look(ref hasEverHadLaunchers, "hasEverHadLaunchers", false);
             Scribe_Values.Look(ref nextSupplyDropTick, "nextSupplyDropTick", -1);
             Scribe_Values.Look(ref nextRackSupplyTick, "nextRackSupplyTick", -1);
@@ -104,6 +134,7 @@ namespace DMSE
             if (baseSiteDestroyed) return;
             if (Find.TickManager.TicksGame % 500 != 0) return;
 
+            if (!playerVisited && HasPlayerPawns(map)) playerVisited = true;
             EnsureCrewLord();
             CheckRadarDestruction();
             TryFireFromOnMap();
@@ -332,18 +363,18 @@ namespace DMSE
 
         // ──────────────── 雷達摧毀偵測 ────────────────
 
+        /// <summary>雷達與世界選靶發射器都是必要目標：兩者皆全滅才判定陣地摧毀。</summary>
         private void CheckRadarDestruction()
         {
             if (!IsPlayerObserving()) return;
 
-            List<Building> launchers = GetEnemyLaunchersCached();
-            if (launchers.Count > 0)
+            if (RemainingLaunchers.Any() || RemainingRadars.Any())
             {
                 hasEverHadLaunchers = true;
                 return;
             }
 
-            // 從未見過雷達（FFF 佔位符生成 0 建築）→ 跳過，避免誤判摧毀
+            // 從未見過陣地目標（FFF 佔位符生成 0 建築）→ 跳過，避免誤判摧毀
             if (!hasEverHadLaunchers) return;
 
             OnBaseDestroyed();
@@ -368,8 +399,27 @@ namespace DMSE
                     "DMSE.MissileBase.DestroyedDesc".Translate(),
                     LetterDefOf.PositiveEvent,
                     new GlobalTargetInfo(mp.Tile));
-                mp.Destroy();
+                // 玩家單位還在圖上時不能直接摧毀站點：原版關圖（MapDeiniter.PassPawnsToWorld）會把殖民者
+                // 當成被敵對派系俘虜、其餘玩家單位當成失蹤。改等玩家撤離後由 Site.ShouldRemoveMapNow 連同站點一起移除。
+                if (!AnyPlayerUnitAtMap()) mp.Destroy();
             }
+        }
+
+        /// <summary>地圖（含子口袋地圖）上是否還有關圖時會失蹤的玩家單位，或正飛往此圖的玩家運輸艙。</summary>
+        private bool AnyPlayerUnitAtMap()
+            => TransporterUtility.IncomingTransporterPreventingMapRemoval(map) || HasPlayerPawns(map);
+
+        private static bool HasPlayerPawns(Map m)
+        {
+            foreach (Pawn p in m.mapPawns.AllPawns)
+            {
+                if (p.Faction == Faction.OfPlayer || p.HostFaction == Faction.OfPlayer) return true;
+            }
+            foreach (Map pocket in m.ChildPocketMaps)
+            {
+                if (HasPlayerPawns(pocket)) return true;
+            }
+            return false;
         }
 
         // ──────────────── 地圖內射擊（火力通道驅動）────────────────
@@ -601,12 +651,24 @@ namespace DMSE
 
         private List<Building> GetEnemyLaunchersCached()
         {
+            RefreshObjectiveCache();
+            return cachedEnemyLaunchers;
+        }
+
+        private List<Building> GetEnemyRadarsCached()
+        {
+            RefreshObjectiveCache();
+            return cachedEnemyRadars;
+        }
+
+        private void RefreshObjectiveCache()
+        {
             int now = Find.TickManager.TicksGame;
-            if (cachedEnemyLaunchers != null && now - lastLauncherCacheTick < 500)
-                return cachedEnemyLaunchers;
+            if (cachedEnemyLaunchers != null && now - lastLauncherCacheTick < 500) return;
 
             Faction enemy = map.ParentFaction;
             cachedEnemyLaunchers = new List<Building>();
+            cachedEnemyRadars = new List<Building>();
 
             if (enemy != null)
             {
@@ -615,13 +677,12 @@ namespace DMSE
                     if (b.Faction != enemy) continue;
                     if (b.Destroyed) continue;
                     // 以世界選靶基類辨識：1.7 的 DMSE_Building_Scorer 掛的是 _Rail 而非 _Scorer。
-                    if (b.TryGetComp<CompMissileLauncher_WorldTargeting>() == null) continue;
-                    cachedEnemyLaunchers.Add(b);
+                    if (b.TryGetComp<CompMissileLauncher_WorldTargeting>() != null) cachedEnemyLaunchers.Add(b);
+                    else if (IsObjectiveRadar(b)) cachedEnemyRadars.Add(b);
                 }
             }
 
             lastLauncherCacheTick = now;
-            return cachedEnemyLaunchers;
         }
 
         // ──────────────── 提前結束觀察 ────────────────
@@ -636,6 +697,7 @@ namespace DMSE
             baseSiteDestroyed = false;
             hasEverHadLaunchers = false;
             cachedEnemyLaunchers = null;  // 清除建築快取，下次重新掃描
+            cachedEnemyRadars = null;
             CleanEngagedChannels();        // 釋放殘留的射擊通道引用
         }
 

@@ -39,7 +39,7 @@ for each series has the details.
 | W1–W11, D1–D4 | `Tests_World.cs`, `Tests_WorldEdge.cs`, `Tests_P4.cs` | World detection, lock, intercept, airburst, reroute, terminal handoff, NPC abstract defense, datalink, settlement defense, hidden tracks, pod ghost tracks, ETA at every speed |
 | A1–A2, X1 | `Tests_AirAlert.cs`, `Tests_DevTools.cs` | NPC alert stages and blockade; debug action categories |
 | K1–K15 | `Tests_Strike.cs` | Wave strike P0–P4 ([doc](../../docs/BVR_波次打擊規劃.md)) |
-| N1–N4 | `Tests_FieldLaunchSite.cs` | Field launch site layout, incident, gunners, alert throttle |
+| N1–N6 | `Tests_FieldLaunchSite.cs` | Field launch site layout, incident, gunners, alert throttle, site kept while colonists are on it, radars required + re-entry block |
 | G1 | `Tests_Assembly.cs` | God-mode instant assembly |
 | T1–T13 | `Tests_Generations.cs` | Three-generation equipment, manned launchers, research tree, Sabre ([doc](../../docs/三代裝備體系_實作計畫.md)) |
 | I1–I8 | `Tests_InterceptFx.cs` | Intercept FX ([doc](../../docs/攔截殘骸特效_實作與技術美術計畫.md)) |

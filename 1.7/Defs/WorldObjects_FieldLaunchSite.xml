@@ -10,6 +10,8 @@
        ‧ 地形：keepNaturalTerrain（預設開）不鋪結構地板、不剷平岩石，各結構散落在可直接施工的原地面上。
        ‧ 補給：地圖生成後依 supplyDrop 定時空投生存食品包，所有敵方雷達停止運作後不再投放。
        ‧ 彈藥：rackSupply 在生成時依彈架類型裝填；之後每兩天為每座空彈架空投一艙導彈，守軍於落地後裝填。
+       ‧ 摧毀：雷達（搜索／火控，不含自帶雷達的防空砲塔）與世界選靶發射器全滅才算摧毀；
+         雷達尚存時撤退，站點保留並封鎖再進入 reentryBlockedDays，下次進入時完整重建。
        一般地圖步驟繼承原版 MapCommonBase；礦塊與殘渣步驟沿用 WorldObjects_MissileBase.xml 的 GenStepDef。
        ══════════════════════════════════════════════════════════════ -->
 
@@ -58,7 +60,7 @@
             <li>DMSE_Mid_LaunchSite_D</li>
           </pool>
           <!-- 第一座必帶世界選靶發射器（A/D 輕型發射軌、B 劃線器）；C 只有彈架與人操旋轉發射架，
-               單獨出現時陣地無法發射，也永遠不會因「發射器全毀」而判定摧毀。 -->
+               單獨出現時陣地無法發射。 -->
           <firstPool>
             <li>DMSE_Mid_LaunchSite_A</li>
             <li>DMSE_Mid_LaunchSite_B</li>
@@ -215,6 +217,7 @@
           <min>10</min>
           <max>20</max>
         </relocationDays>
+        <!-- 地面突擊後雷達尚存就撤退：封鎖車隊與運輸艙再進入的天數。 -->
         <reentryBlockedDays>
           <min>0.5</min>
           <max>1</max>

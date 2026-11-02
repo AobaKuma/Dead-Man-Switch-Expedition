@@ -11,12 +11,15 @@
   <DMSE.MissileBase.DestroyedDesc>殖民者已摧毁敌方导弹阵地的所有雷达与发射设施。来自该阵地的导弹威胁已解除。</DMSE.MissileBase.DestroyedDesc>
   <DMSE.MissileBase.ReentryBlockedIn>地面通道封锁中，敌方整备防线（{0}）</DMSE.MissileBase.ReentryBlockedIn>
   <DMSE.MissileBase.ReentryBlocked>通道封锁，敌方整备防线（{0}）</DMSE.MissileBase.ReentryBlocked>
-  <DMSE.MissileBase.ArrivedLetter>你们抵达了一处导弹阵地。敌方已在此部署火控雷达与导弹发射架，不断向周围殖民地发射打击。摧毁所有雷达可瓦解其打击能力。</DMSE.MissileBase.ArrivedLetter>
+  <DMSE.MissileBase.ReentryBlockStarted>{0}：雷达仍在，敌方正重新整备防线。{1}内无法再次进入，阵地将完整重建。</DMSE.MissileBase.ReentryBlockStarted>
+  <DMSE.MissileBase.ObjectivesAlert>导弹阵地：剩余雷达 {0}、发射器 {1}</DMSE.MissileBase.ObjectivesAlert>
+  <DMSE.MissileBase.ObjectivesAlertDesc>摧毁所有雷达与世界选靶发射器才能瓦解此阵地（剩余雷达 {0}、发射器 {1}）。\n\n若在雷达尚存时撤退，敌方将重新整备：阵地留在世界地图上继续发射，一段时间内无法再次进入，下次进入时阵地完整重建。\n\n点击依序检视剩余目标。</DMSE.MissileBase.ObjectivesAlertDesc>
+  <DMSE.MissileBase.ArrivedLetter>你们抵达了一处导弹阵地。敌方已在此部署火控雷达与导弹发射架，不断向周围殖民地发射打击。摧毁所有雷达与发射架才能瓦解此阵地；若在雷达尚存时撤退，敌方将重新整备防线，一段时间内无法再次进入。</DMSE.MissileBase.ArrivedLetter>
   <DMSE.MissileBase.SiteDesc>一处配备火控雷达与导弹发射架的机动战术弹道导弹阵地。阵地会在完成任务后转移，以躲避反制。</DMSE.MissileBase.SiteDesc>
   <DMSE.MissileBase.SupplyDrop>敌方补给空投：{0} ×{1}</DMSE.MissileBase.SupplyDrop>
   <DMSE.MissileBase.RackResupply>敌方导弹补给：为 {0} 座空发射架空投了 {1} 枚导弹，守军即将完成装填。</DMSE.MissileBase.RackResupply>
-  <DMSE.FieldLaunchSite.ArrivedLetter>你们抵达了一处敌方野战发射阵地。阵地以搜索雷达为中心，四周散布发射阵位、弹药车与人员休息区。只要仍有雷达运作，敌方就会定时空投生存食品包维持守军；摧毁所有发射架即可瓦解此阵地。</DMSE.FieldLaunchSite.ArrivedLetter>
-  <DMSE.FieldLaunchSite.SpawnedLetter>{0}在{1}的{2}方 {3} 格处部署了一处野战导弹发射阵地。其发射架能打击你的殖民地；只要雷达仍在运作，补给舱就会持续为守军送来食物。\n\n摧毁所有发射架即可瓦解此阵地；瘫痪雷达则能切断其补给。</DMSE.FieldLaunchSite.SpawnedLetter>
+  <DMSE.FieldLaunchSite.ArrivedLetter>你们抵达了一处敌方野战发射阵地。阵地以搜索雷达为中心，四周散布发射阵位、弹药车与人员休息区。只要仍有雷达运作，敌方就会定时空投生存食品包维持守军。摧毁所有雷达与发射架才能瓦解此阵地；若在雷达尚存时撤退，敌方将重新整备防线，一段时间内无法再次进入。</DMSE.FieldLaunchSite.ArrivedLetter>
+  <DMSE.FieldLaunchSite.SpawnedLetter>{0}在{1}的{2}方 {3} 格处部署了一处野战导弹发射阵地。其发射架能打击你的殖民地；只要雷达仍在运作，补给舱就会持续为守军送来食物。\n\n摧毁所有雷达与发射架才能瓦解此阵地；瘫痪雷达也能切断其补给。</DMSE.FieldLaunchSite.SpawnedLetter>
 
   <!-- EN: Launch Missile -->
   <ScorerLaunch>发射导弹</ScorerLaunch>

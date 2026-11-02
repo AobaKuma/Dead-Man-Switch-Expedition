@@ -260,6 +260,135 @@ namespace DMSE.BVRAcceptance
         }
     
 
+        private static readonly FieldInfo BaseSiteDestroyed = typeof(MapComponent_MissileBase)
+            .GetField("baseSiteDestroyed", BindingFlags.Instance | BindingFlags.NonPublic);
+
+        private static readonly FieldInfo ReentryBlockedUntil = typeof(WorldObjectComp_MissileBase)
+            .GetField("reentryBlockedUntil", BindingFlags.Instance | BindingFlags.NonPublic);
+        private static readonly FieldInfo NextWorldFire = typeof(WorldObjectComp_MissileBase)
+            .GetField("nextFireTick", BindingFlags.Instance | BindingFlags.NonPublic);
+
+        /// <summary>
+        /// Generates a low-difficulty field site, drops a colonist at its map edge and kills the garrison; the site map is then
+        /// left to vanilla removal (no observation timer), so the colonist alone keeps it. Waits until the site has seen its objectives.
+        /// </summary>
+        private static IEnumerable<Wait> StormSite(TestContext t, Faction industrial, System.Action<Map, Pawn> done)
+        {
+            Layout l = GenerateAt(t, industrial, 0.3f);
+            Map map = l.map;
+            Pawn colonist = PawnGenerator.GeneratePawn(new PawnGenerationRequest(PawnKindDefOf.Colonist, Faction.OfPlayer, forceGenerateNewPawn: true));
+            t.Require(CellFinder.TryFindRandomEdgeCellWith(c => c.Standable(map) && !c.Fogged(map), map, 0f, out IntVec3 edge), "a standable map-edge cell");
+            GenSpawn.Spawn(colonist, edge, map);
+            foreach (Pawn p in map.mapPawns.SpawnedPawnsInFaction(industrial).ToList()) { p.Kill(null); }
+            GameComponent_MissileEngage.Comp.times.Remove(map);
+
+            // The objective check only counts the site as destroyed after it has seen a radar or launcher once.
+            yield return new WaitTicks(1100);
+            done(map, colonist);
+        }
+
+        private static Faction Industrial(TestContext t)
+        {
+            Faction industrial = Find.FactionManager.AllFactionsListForReading.FirstOrDefault(f =>
+                !f.IsPlayer && !f.defeated && !f.Hidden && f.def.techLevel == TechLevel.Industrial && f.def.humanlikeFaction);
+            t.Require(industrial != null, "an industrial humanlike faction exists");
+            return industrial;
+        }
+
+        /// <summary>
+        /// Garrison, every radar and every world launcher wiped out with a colonist on the site map: the site is destroyed, but its map
+        /// stays until the colonist leaves (before, the site was destroyed at once and vanilla's map close took the colonist
+        /// as kidnapped). After the colonist leaves by caravan, vanilla removes the map and the site.
+        /// </summary>
+        public static IEnumerable<Wait> SiteKeptWhileColonistsOnMap(TestContext t)
+        {
+            Faction industrial = Industrial(t);
+            Map map = null;
+            Pawn colonist = null;
+            foreach (Wait w in StormSite(t, industrial, (m, c) => { map = m; colonist = c; })) { yield return w; }
+            Site site = (Site)map.Parent;
+            MapComponent_MissileBase comp = map.GetComponent<MapComponent_MissileBase>();
+            t.Require(comp != null && BaseSiteDestroyed != null, "MapComponent_MissileBase with baseSiteDestroyed");
+
+            List<Building> launchers = comp.RemainingLaunchers.ToList();
+            List<Building> radars = comp.RemainingRadars.ToList();
+            t.Require(launchers.Count > 0 && radars.Count > 0, $"the site has world launchers ({launchers.Count}) and radars ({radars.Count})");
+            foreach (Building b in launchers.Concat(radars)) { b.Destroy(DestroyMode.Vanish); }
+
+            var waitDestroyed = new WaitUntil(() => (bool)BaseSiteDestroyed.GetValue(comp), 1100);
+            yield return waitDestroyed;
+            t.Check(!waitDestroyed.TimedOut, "with the garrison dead and every radar and launcher gone, the site counts as destroyed");
+            yield return new WaitTicks(300);
+            t.Check(!site.Destroyed && site.HasMap && site.Map == map, "the site and its map stay while the colonist is there");
+            t.Check(colonist.Spawned && colonist.Map == map && !colonist.Dead, "the colonist is still on the site map");
+            t.Check(!industrial.kidnapped.KidnappedPawnsListForReading.Contains(colonist), "the colonist was not taken as kidnapped");
+
+            Caravan caravan = CaravanExitMapUtility.ExitMapAndCreateCaravan(new List<Pawn> { colonist }, Faction.OfPlayer, map.Tile, map.Tile, PlanetTile.Invalid);
+            Track(caravan);
+            var waitRemoved = new WaitUntil(() => site.Destroyed, 1200);
+            yield return waitRemoved;
+            t.Check(!waitRemoved.TimedOut && map.Disposed, "after the colonist leaves, vanilla removes the map together with the site");
+            t.Check(caravan != null && caravan.ContainsPawn(colonist), "the colonist is in the caravan");
+        }
+
+        /// <summary>
+        /// Radars are a required objective: with every launcher gone but a radar standing the site is not destroyed, and a retreat
+        /// keeps the site (vanilla would delete it) and blocks caravans and transport pods for reentryBlockedDays. No world salvo
+        /// fires straight after the retreat, and once the block runs out the site can be visited again.
+        /// </summary>
+        public static IEnumerable<Wait> RetreatWithRadarsBlocksReentry(TestContext t)
+        {
+            Faction industrial = Industrial(t);
+            Map map = null;
+            Pawn colonist = null;
+            foreach (Wait w in StormSite(t, industrial, (m, c) => { map = m; colonist = c; })) { yield return w; }
+            Site site = (Site)map.Parent;
+            MapComponent_MissileBase comp = map.GetComponent<MapComponent_MissileBase>();
+            WorldObjectComp_MissileBase woc = site.GetComponent<WorldObjectComp_MissileBase>();
+            t.Require(comp != null && woc != null && ReentryBlockedUntil != null && NextWorldFire != null, "missile base comps and their timers");
+            t.Check(comp.PlayerVisited, "the ground visit is recorded");
+
+            List<Building> launchers = comp.RemainingLaunchers.ToList();
+            List<Building> radars = comp.RemainingRadars.ToList();
+            t.Require(launchers.Count > 0 && radars.Count > 0, $"the site has world launchers ({launchers.Count}) and radars ({radars.Count})");
+            t.Note($"radars: {string.Join(", ", radars.Select(b => b.def.defName))}");
+            t.Check(!radars.Any(b => b is Building_Turret), "air-defence turrets with a built-in radar are not radar objectives");
+
+            Alert_MissileBaseObjectives alert = new Alert_MissileBaseObjectives();
+            Current.Game.CurrentMap = map;
+            AlertReport report = alert.GetReport();
+            t.Check(report.active && report.AllCulprits.Count() == launchers.Count + radars.Count,
+                $"the objectives alert lists every radar and launcher ({alert.GetLabel()})");
+
+            foreach (Building b in launchers) { b.Destroy(DestroyMode.Vanish); }
+            yield return new WaitTicks(1100);
+            t.Check(!comp.BaseSiteDestroyed && !site.Destroyed, "with every launcher gone but radars standing, the site is not destroyed");
+            report = alert.GetReport();
+            t.Check(report.active && report.AllCulprits.Count() == radars.Count, $"the alert now lists only the radars ({alert.GetLabel()})");
+            Current.Game.CurrentMap = Home;
+
+            Caravan caravan = CaravanExitMapUtility.ExitMapAndCreateCaravan(new List<Pawn> { colonist }, Faction.OfPlayer, map.Tile, map.Tile, PlanetTile.Invalid);
+            Track(caravan);
+            var waitGone = new WaitUntil(() => !site.HasMap, 1200);
+            yield return waitGone;
+            t.Check(!waitGone.TimedOut && map.Disposed, "after the retreat the site map is removed");
+            t.Check(!site.Destroyed && site.Spawned, "the site stays on the world map");
+            t.Check(woc.IsReentryBlocked, $"re-entry is blocked for {woc.ReentryBlockedFor.ToStringTicksToPeriod()}");
+            int now = Find.TickManager.TicksGame;
+            t.Check((int)NextWorldFire.GetValue(woc) > now + GenDate.TicksPerDay, "no world salvo is due right after the retreat");
+
+            FloatMenuAcceptanceReport byCaravan = CaravanArrivalAction_VisitSite.CanVisit(caravan, site);
+            t.Check(!byCaravan.Accepted && !byCaravan.FailReason.NullOrEmpty(), $"a caravan cannot visit ({byCaravan.FailReason})");
+            List<FloatMenuOption> approach = site.GetFloatMenuOptions(caravan).Where(o => o.Label.StartsWith(site.ApproachOrderString)).ToList();
+            t.Check(approach.Count > 0 && approach.All(o => o.Disabled), $"the caravan's approach option is disabled ({string.Join(" | ", approach.Select(o => o.Label))})");
+            FloatMenuAcceptanceReport byPods = TransportersArrivalAction_VisitSite.CanVisit(new List<IThingHolder> { caravan }, site);
+            t.Check(!byPods.Accepted && !byPods.FailReason.NullOrEmpty(), "transport pods cannot visit either");
+
+            ReentryBlockedUntil.SetValue(woc, Find.TickManager.TicksGame + 1);
+            yield return new WaitTicks(2);
+            t.Check(!woc.IsReentryBlocked && CaravanArrivalAction_VisitSite.CanVisit(caravan, site).Accepted, "once the block runs out, the caravan can visit again");
+        }
+
         /// <summary>The storyteller incident deploys one field site in range of the colony and refuses a second.</summary>
         public static IEnumerable<Wait> IncidentSpawnsSite(TestContext t)
         {
