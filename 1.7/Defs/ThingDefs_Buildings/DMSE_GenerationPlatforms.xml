@@ -246,6 +246,7 @@
       <li>DMSE_FireControlNetwork</li>
     </researchPrerequisites>
     <designationCategory>DMS_Category</designationCategory>
+    <designatorDropdown>DMS_Turrets</designatorDropdown>
     <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
     <modExtensions>
       <li Class="DMSE.MissileLauncherExtension">

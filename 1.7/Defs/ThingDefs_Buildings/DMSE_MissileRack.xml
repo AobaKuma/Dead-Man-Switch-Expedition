@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
+  <!-- 三種導彈儲存架共用的下拉選單（砲塔、自動工作台則併入 DMS 本體的 DMS_Turrets、DMS_Autofacturers） -->
+  <DesignatorDropdownGroupDef>
+    <defName>DMSE_MissileRacks</defName>
+    <label>missile racks</label>
+  </DesignatorDropdownGroupDef>
+
   <!-- ==================== 巡飛彈 儲存架（1x2） ====================
        存放巡飛彈彈藥使其停止劣化（CompDurabilityDecay 庇護判定）。 -->
   <ThingDef ParentName="BuildingBase">
@@ -23,6 +29,7 @@
     <tickerType>Never</tickerType>
     <constructEffect>ConstructMetal</constructEffect>
     <designationCategory>DMS_Category</designationCategory>
+    <designatorDropdown>DMSE_MissileRacks</designatorDropdown>
     <size>(1,2)</size>
     <selectable>true</selectable>
     <statBases>
@@ -118,6 +125,7 @@
     <tickerType>Never</tickerType>
     <constructEffect>ConstructMetal</constructEffect>
     <designationCategory>DMS_Category</designationCategory>
+    <designatorDropdown>DMSE_MissileRacks</designatorDropdown>
     <size>(1,3)</size>
     <selectable>true</selectable>
     <statBases>
@@ -264,6 +272,7 @@
     <tickerType>Never</tickerType>
     <constructEffect>ConstructMetal</constructEffect>
     <designationCategory>DMS_Category</designationCategory>
+    <designatorDropdown>DMSE_MissileRacks</designatorDropdown>
     <size>(2,4)</size>
     <selectable>true</selectable>
     <statBases>

@@ -65,6 +65,7 @@
       <li>DMSE_FireControlNetwork</li>
     </researchPrerequisites>
     <designationCategory>DMS_Category</designationCategory>
+    <designatorDropdown>DMS_Turrets</designatorDropdown>
     <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
     <comps>
       <li Class="CompProperties_Forbiddable" />

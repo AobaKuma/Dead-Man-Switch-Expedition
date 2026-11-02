@@ -5,6 +5,7 @@
   <ThingDef ParentName="DMS_BaseCannonBuilding">
     <defName>DMSE_Turret_Squall</defName>
     <label>Squall</label>
+    <designatorDropdown>DMS_Turrets</designatorDropdown>
     <description>A gravship-based caseless turret.</description>
     <techLevel>Industrial</techLevel>
     <graphicData>
@@ -118,6 +119,7 @@
   <ThingDef ParentName="DMS_BaseCannonBuilding">
     <defName>DMSE_Turret_Vulcan_WingBack</defName>
     <label>GAU-4 “Wing-Back”</label>
+    <designatorDropdown>DMS_Turrets</designatorDropdown>
     <description>This is a gravship-based variant of the GAU-4 rotary cannon, also utilizing 20x102mm NATO ammunition. The ship-mounted turret features a longer barrel to increase effective range, but it also introduces a larger blind spot for close-range engagements.</description>
     <techLevel>Industrial</techLevel>
     <graphicData>
@@ -301,6 +303,7 @@
   <ThingDef ParentName="DMS_BaseCannonBuilding">
     <defName>DMSE_Turret_Dawnblade_Striker</defName>
     <label>Dawnblade "Striker"</label>
+    <designatorDropdown>DMS_Turrets</designatorDropdown>
     <description>MPQFS-85 "Dawnblade" is an onboard multirole quick-firing cannon system. It uses drum magazines and an automatic revolver loader to permit a high rate of sustained fire.</description>
     <techLevel>Industrial</techLevel>
     <graphicData>

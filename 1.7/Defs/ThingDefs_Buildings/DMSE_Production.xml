@@ -69,9 +69,10 @@
     <label>grav isolator</label>
     <description>An ultratech device built around a gravcore. It wraps the work area of a linked production building in a sealed graviton null-field, holding the workpiece in simulated microgravity and hard vacuum regardless of the surrounding environment.\n\nWhile powered, linked production buildings ignore the vacuum and microgravity requirements of their recipes and gain +10% work speed. Each production building can link to one grav isolator.</description>
     <graphicData>
-      <texPath>Things/Building/GravFieldExtender</texPath>
+      <texPath>Things/Building/DMSE_GravIsolator</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(2,2)</drawSize>
+      <drawSize>(3,3)</drawSize>
+      <drawRotated>false</drawRotated>
       <damageData>
         <cornerTL>Damage/Corner</cornerTL>
         <cornerTR>Damage/Corner</cornerTR>
