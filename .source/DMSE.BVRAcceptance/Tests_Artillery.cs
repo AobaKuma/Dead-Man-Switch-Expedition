@@ -68,6 +68,11 @@ namespace DMSE.BVRAcceptance
             yield return new WaitTicks(3);
             t.Check(!art.IsSustainedFiring, "empty gun stops sustained fire");
             t.Check(!Home.listerThings.ThingsOfDef(Departure).Any(), "nothing was fired");
+            string fireLabel = "DMSE.Artillery.Fire".Translate();
+            Command fire = gun.GetGizmos().OfType<Command>().FirstOrDefault(c => c.defaultLabel == fireLabel);
+            string noShells = gun.TryGetComp<CompRefuelable>().Props.outOfFuelMessage;
+            t.Check(fire != null && fire.Disabled && fire.disabledReason == noShells,
+                $"empty gun: Fire button disabled with the no-shells reason ({fire?.disabledReason})");
         }
 
         /// <summary>
@@ -121,6 +126,27 @@ namespace DMSE.BVRAcceptance
             yield return new WaitTicks(900);
             t.Check(shells.Fuel == fuel && !Home.listerThings.ThingsOfDef(reduced).Any(p => p != shell), "no local shot while world fire is aiming");
             art.StopSustainedFire();
+
+            // Out of shells: no target is taken up, not even a forced one (vanilla Verb would skip the shot silently
+            // while the head kept tracking the enemy); one shell back and it fires at the forced cell.
+            IntVec3 ground = gun.Position + new IntVec3(-2, 0, 45);
+            if (!ground.InBounds(Home)) { ground = gun.Position + new IntVec3(45, 0, -2); }
+            shells.ConsumeFuel(shells.Fuel);
+            t.Require(local.TrySetForcedTarget(ground, out string why), $"forced ground target accepted ({why})");
+            yield return new WaitTicks(600);
+            t.Check(!local.CurrentTarget.IsValid, $"empty gun takes up no target ({local.CurrentTarget})");
+            Projectile reloadedShot = null;
+            TickWatch refired = AcceptanceDriver.Watch(() =>
+            {
+                reloadedShot = reloadedShot ?? Home.listerThings.ThingsOfDef(reduced).OfType<Projectile>().FirstOrDefault(p => p != shell);
+                return reloadedShot != null;
+            });
+            shells.Refuel(1f);
+            var waitRefire = new WaitUntil(() => refired.Seen, 1500);
+            yield return waitRefire;
+            t.Check(!waitRefire.TimedOut, "one shell loaded: the gun fires at the forced cell");
+            t.Check(shells.Fuel == 0f, $"the loaded shell was used ({shells.Fuel})");
+            local.ResetForcedTarget();
             if (!raider.Destroyed) { raider.Destroy(DestroyMode.Vanish); }
         }
 

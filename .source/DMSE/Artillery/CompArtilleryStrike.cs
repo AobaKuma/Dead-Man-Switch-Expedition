@@ -395,6 +395,15 @@ namespace DMSE
                 reason = NotConfiguredReason;
                 return false;
             }
+            // 沒砲彈時不給選靶：否則選完下一 tick 就因無彈停火，本地圖武器隨即接手轉向本地敵人，看起來像沒打出去
+            CompRefuelable barrel = parent.GetComp<CompRefuelable>();
+            if (barrel != null && !barrel.HasFuel)
+            {
+                reason = !barrel.Props.outOfFuelMessage.NullOrEmpty()
+                    ? barrel.Props.outOfFuelMessage
+                    : (Props.refuelableIsAmmo ? "DMSE.Artillery.NoAmmo" : "DMSE.Artillery.NoBarrel").Translate().ToString();
+                return false;
+            }
             reason = null;
             return true;
         }

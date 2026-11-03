@@ -144,9 +144,15 @@ namespace DMSE
             }
         }
 
+        /// <summary>
+        /// 沒有彈藥（verb 的 consumeFuelPerShot 扣不到）：同原版 Building_TurretGun.TryStartShootSomething 的 Available 判定，
+        /// 不索敵也不瞄準；否則砲塔頭會一直轉向敵人，vanilla Verb 卻在 TryCastNextBurstShot 靜默放棄射擊。
+        /// </summary>
+        private bool OutOfAmmo => AttackVerb.state != VerbState.Bursting && !AttackVerb.Available();
+
         public override void CompTick()
         {
-            if (!Active || BarrelBusy || holdFire)
+            if (!Active || BarrelBusy || holdFire || OutOfAmmo)
             {
                 ClearTarget();
                 return;
