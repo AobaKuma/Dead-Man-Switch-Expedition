@@ -302,7 +302,7 @@
     <graphicData>
       <texPath>Things/Building/TransferConsole/building</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
-      <drawSize>(3,2)</drawSize>
+      <drawSize>(4,3)</drawSize>
     </graphicData>
     <size>(3,2)</size>
     <passability>PassThroughOnly</passability>
