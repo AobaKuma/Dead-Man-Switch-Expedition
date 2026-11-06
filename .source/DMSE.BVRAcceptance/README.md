@@ -45,7 +45,8 @@ for each series has the details.
 | I1–I8 | `Tests_InterceptFx.cs` | Intercept FX ([doc](../../docs/攔截殘骸特效_實作與技術美術計畫.md)) |
 | V0–V8 | `Tests_LaunchFx.cs` | Launch FX, lighting, missile size tuner ([doc](../../docs/導彈發射特效_重製計畫.md)) |
 | F1–F12 | `Tests_MissileFlight.cs` | Skyfaller → Projectile migration ([doc](../../docs/Missile_Skyfaller轉Projectile_計畫.md)) |
-| R1–R5 | `Tests_Artillery.cs` | Empero long-range gun |
+| R1–R7 | `Tests_Artillery.cs` | Empero long-range gun, ranging / fire-for-effect modes, heavy mortar with vanilla switchable shells |
+| E1–E13 | `Tests_ElectronicWarfare.cs` | War room console, jammer station, long-range radar, power levels, ROE ([doc](../../docs/電子戰建築_實作計畫.md)) |
 | AB1–AB3 | `Tests_AssemblyBench.cs` | Assembly bench ([doc](../../docs/導彈組裝台與裝配方案_實作計畫.md)) |
 | VR1 | `Tests_VacuumRoom.cs` | Vacuum sealed room terrain, room reuse, landfill owner and old ownerless filled entrances |
 | L1–L3 | `Tests_Seekers.cs`, `Tests_WorldEdge.cs`, `Tests_MissileFlight.cs` | Save/load with tracks in flight; old skyfaller-era saves. L3 is last (it reloads); run it alone with `-Only L3` if a third-party mod crashes on reload |

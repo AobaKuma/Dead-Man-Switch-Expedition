@@ -41,7 +41,7 @@ namespace DMSE
             if (def != null)
             {
                 // 盤旋飛控：導引頭找不到目標時不直接回退慣性落點，而是在目標上空盤旋等待。
-                IntVec3 cell = GuidanceType.ArrivalCell(config, map, base.Faction, out bool loiter);
+                IntVec3 cell = ArrivalCellFor(map, out bool loiter);
                 // 從世界航跡最後一段的方向飛入地圖。
                 Thing thing = MissileProjectileMaker.SpawnIncoming(def, cell, map, ArrivalHeading);
                 if (thing is IIncomingMissile incoming)

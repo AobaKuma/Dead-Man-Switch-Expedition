@@ -27,6 +27,12 @@ namespace DMSE
         /// </summary>
         public bool immuneToAntiRadiationSeeker = false;
 
+        /// <summary>
+        /// 解析度等級：目標 distanceLevel 低於此值時，有效距離與預警窗口依比例縮水
+        /// （min(1, distanceLevel / resolutionLevel)）。0 = 不限制。長程預警雷達用它表現「看得遠、看不清」。
+        /// </summary>
+        public float resolutionLevel = 0f;
+
         public CompProperties_SearchRadar()
         {
             compClass = typeof(CompSearchRadar);
@@ -51,8 +57,10 @@ namespace DMSE
             if (m != null) { m.searchRadars.Remove(this); }
         }
 
+        /// <summary>世界層有效距離：基礎（含反隱身、解析度）× 功率段位 × 操作員智識。</summary>
         public float EffectiveWorldRange(BVRTargetProps target)
-            => MissileWorldMotion.DetectionRange(Props.worldDetectionRange, Props.antiStealthLevel, target);
+            => MissileWorldMotion.DetectionRange(Props.worldDetectionRange, Props.antiStealthLevel, target, Props.resolutionLevel)
+               * PowerThrottleUtility.RangeFactor(parent) * EWControlUtility.RadarRangeFactor(parent);
 
         private string RangeFor(string defName)
         {

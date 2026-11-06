@@ -1,3 +1,4 @@
+using System.Linq;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -180,6 +181,42 @@ namespace DMSE
         /// <summary>被世界層防空擊落前呼叫（子類記錄戰果用）。</summary>
         protected virtual void OnIntercepted(Faction by) { }
 
+        /// <summary>
+        /// 被地面干擾機打掉導引後在地圖外落空：不生成目標地圖、不進 BVR、清掉在飛的攔截彈。
+        /// 沒有落到任何地方，所以不加爆炸閃光（docs/電子戰建築_實作計畫.md §3.2）。
+        /// </summary>
+        public void Notify_JammedOut(Faction by)
+        {
+            if (Destroyed) return;
+            if (by == Faction.OfPlayer || Attacker == Faction.OfPlayer)
+                Messages.Message("DMSE.EW.Jammer.JammedOut".Translate(Label, by?.Name ?? "?"),
+                    new GlobalTargetInfo(destinationTile), by == Faction.OfPlayer ? MessageTypeDefOf.PositiveEvent
+                        : MessageTypeDefOf.NegativeEvent, historical: false);
+            foreach (WorldObject_Interceptor interceptor in Find.WorldObjects.AllWorldObjects.OfType<WorldObject_Interceptor>().ToList())
+            {
+                if (interceptor.target == this && !interceptor.Destroyed) { interceptor.Destroy(); }
+            }
+            State.interceptor = null;
+            OnJammedOut(by);
+            Destroy();
+        }
+
+        /// <summary>被干擾機在世界層移除前呼叫（子類記錄戰果用）。</summary>
+        protected virtual void OnJammedOut(Faction by) { }
+
+        /// <summary>
+        /// 抵達時的落點：導引被干擾機打掉就走慣性、不盤旋；否則照導引頭。兩條落地路徑共用，行為才會一致。
+        /// </summary>
+        protected IntVec3 ArrivalCellFor(Map map, out bool loiter)
+        {
+            if (State.jamDenied)
+            {
+                loiter = false;
+                return GuidanceType.InertialTarget(map, Faction);
+            }
+            return GuidanceType.ArrivalCell(config, map, Faction, out loiter);
+        }
+
         private float CurrentLegLength
         {
             get
@@ -236,7 +273,7 @@ namespace DMSE
 
             PlanetTile targetTile = targetParent.Tile;
             if (!targetTile.Valid || targetTile == destinationTile) { return; }
-            if (TerminalUpdatesRemaining <= 0) { return; }
+            if (TerminalUpdatesRemaining <= 0 || State.jamDenied) { return; }
 
             Vector3 here = Vector3.Slerp(Start, End, traveledPct);
             float spent = rangeSpent + CurrentLegLength * traveledPct;

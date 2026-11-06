@@ -1,0 +1,8 @@
+﻿id	result	title	detail
+R1	PASS	Empero long-range gun: defs, head, targeting rules (incl. unspawned map), out of shells	19 checks
+R2	PASS	Empero unguided strike: unspawned base refused, warmup aim, departure, world track, existing map reused, edge entry near centre	29 checks
+R3	PASS	Empero radar-guided strike: channel per gun, scatter 3 on a hostile building, release, full pool unguided	24 checks
+R4	PASS	Empero local reduced-charge fire: head turns, shared shells, held during world fire	15 checks
+R5	PASS	Empero local fire controls: min range, hold fire, forced target, buttons	13 checks
+R6	PASS	Empero fire modes: ranging logs its impact, fire for effect shares it, scatter tightens per shot, unregistered map refused	39 checks
+R7	PASS	Heavy mortar: vanilla switchable shell (gunner-loaded) is the BVR warhead, reload pauses the mission, crew required	39 checks

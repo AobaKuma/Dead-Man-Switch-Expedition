@@ -397,6 +397,27 @@ namespace DMSE.BVRAcceptance
             return site;
         }
 
+        /// <summary>
+        /// Generate a site's map up front, as it exists while the player has pawns there. Artillery only strikes maps
+        /// that already exist (no map is generated for a shot), and vanilla removes a map without player pawns, so the
+        /// travel is protected the same way a missile arrival protects its target map.
+        /// </summary>
+        public static Map SpawnSiteMap(Site site)
+        {
+            Map map = GetOrGenerateMapUtility.GetOrGenerateMap(site.Tile, null);
+            KeepMapAlive(map);
+            return map;
+        }
+
+        /// <summary>Protect a loaded map from vanilla map removal for two days (as missile arrivals do).</summary>
+        public static void KeepMapAlive(Map map)
+        {
+            if (map != null)
+            {
+                GameComponent_MissileEngage.Comp.times.SetOrAdd(map, Find.TickManager.TicksGame + GenDate.TicksPerDay * 2);
+            }
+        }
+
         // ==================================================================
         //  Reflection helpers for private state
         // ==================================================================

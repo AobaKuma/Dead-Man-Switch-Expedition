@@ -12,4 +12,12 @@
   <DMSE_Gun_Empero.description>NK-30“帝王”的主炮，以减装药、低初速对近距离目标进行曲射。</DMSE_Gun_Empero.description>
   <DMSE_Bullet_Shell_EmperoReduced.label>减装药炮弹</DMSE_Bullet_Shell_EmperoReduced.label>
 
+  <DMSE_Turret_HeavyMortar.label>重型迫击炮</DMSE_Turret_HeavyMortar.label>
+  <DMSE_Turret_HeavyMortar.description>装在轮式炮架上的重型迫击炮。炮手会从附近库存搬来迫击炮弹并装填，这一发也能当作超视距炮弹打向世界地图目标：装填哪一种弹，远程打出去就是哪一种，改“炮弹”存储设置就能换弹种。世界炮击进行中炮管固定朝向世界目标方位，炮手不会接战本地目标。</DMSE_Turret_HeavyMortar.description>
+  <DMSE_Turret_HeavyMortar.comps.CompRefuelable.fuelLabel>换管前可射击次数</DMSE_Turret_HeavyMortar.comps.CompRefuelable.fuelLabel>
+  <DMSE_Turret_HeavyMortar.comps.CompRefuelable.fuelGizmoLabel>炮管耐久</DMSE_Turret_HeavyMortar.comps.CompRefuelable.fuelGizmoLabel>
+  <DMSE_Turret_HeavyMortar.comps.CompRefuelable.outOfFuelMessage>需要新的强化炮管</DMSE_Turret_HeavyMortar.comps.CompRefuelable.outOfFuelMessage>
+  <DMSE_Gun_HeavyMortar.label>重型迫击炮炮管</DMSE_Gun_HeavyMortar.label>
+  <DMSE_Gun_HeavyMortar.description>重型迫击炮的炮管，发射炮手装填的炮弹，也能通过火控组打击世界地图目标。</DMSE_Gun_HeavyMortar.description>
+  <DMSE_ArtilleryDeparture_HeavyMortar.label>离场的迫击炮弹</DMSE_ArtilleryDeparture_HeavyMortar.label>
 </LanguageData>

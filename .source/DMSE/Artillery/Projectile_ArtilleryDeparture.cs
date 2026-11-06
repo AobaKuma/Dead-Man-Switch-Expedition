@@ -32,7 +32,7 @@ namespace DMSE
         /// <summary>目標 tile（世界地圖，含圖層）。Invalid = 未設定。</summary>
         public PlanetTile destTile = PlanetTile.Invalid;
 
-        /// <summary>目標地圖上的落彈格（地圖中心，散佈在 SpawnShell 時套用）。</summary>
+        /// <summary>目標地圖上的瞄準格（校射＝地圖中心，效力射＝已登錄落點；散佈在 SpawnShell 時套用）。</summary>
         public IntVec3 artilleryTargetCell;
 
         /// <summary>落地所使用的 Projectile ThingDef。</summary>
@@ -55,6 +55,9 @@ namespace DMSE
 
         /// <summary>這一發是否有雷達導引（抵達時自動指向敵方目標）。</summary>
         public bool artilleryGuided;
+
+        /// <summary>這一發是否為效力射（散佈中心 = 目標地圖已登錄的校射落點；不登錄落點）。</summary>
+        public bool artilleryFireForEffect;
 
         /// <summary>世界地圖物件的 def（用於重建 WorldObject）。</summary>
         public WorldObjectDef artilleryWorldObjectDef;
@@ -83,6 +86,7 @@ namespace DMSE
             Scribe_Values.Look(ref artillerySalvoIntervalTicks, "artillerySalvoIntervalTicks", 60);
             Scribe_Defs.Look(ref artilleryWorldObjectDef,   "artilleryWorldObjectDef");
             Scribe_Values.Look(ref artilleryGuided,         "artilleryGuided",         false);
+            Scribe_Values.Look(ref artilleryFireForEffect,  "artilleryFireForEffect",  false);
             Scribe_Values.Look(ref artilleryWorldTicksPerTile, "artilleryWorldTicksPerTile", 60f);
         }
 
@@ -110,6 +114,7 @@ namespace DMSE
             wo.salvoCount         = artillerySalvoCount;
             wo.salvoIntervalTicks = artillerySalvoIntervalTicks;
             wo.guided             = artilleryGuided;
+            wo.fireForEffect      = artilleryFireForEffect;
             wo.worldTicksPerTile  = artilleryWorldTicksPerTile;
 
             // 出發 tile = 本投射物所在地圖的世界 tile

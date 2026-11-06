@@ -38,6 +38,12 @@ namespace DMSE
         /// </summary>
         public virtual bool TerminalGuidance => true;
 
+        /// <summary>
+        /// 對地面干擾機的易損度（docs/電子戰建築_實作計畫.md §3.2）：乘在導引失效機率上。
+        /// 依賴外部訊號的導引頭為 1；慣性（沒有導引可打）與反輻射（本來就追著干擾源飛）為 0。
+        /// </summary>
+        public virtual float JamVulnerability => 1f;
+
         /// <summary>玩家發射時是否由玩家手動選擇落點（電視制導）。其餘導引頭一律自動鎖定。</summary>
         public virtual bool PlayerChoosesTarget => false;
 
@@ -339,6 +345,8 @@ namespace DMSE
         // 慣性制導無法跨圖層打擊，也無法追蹤移動目標
         public override bool TerminalGuidance => false;
 
+        public override float JamVulnerability => 0f;
+
         public override string MechanismDescription => "DMSE.Card.Guidance.Inertial".Translate();
 
         public override IntVec3 PickTarget(float N, Map map, Faction attacker)
@@ -361,6 +369,8 @@ namespace DMSE
         /// false = 只看雷達，沒有雷達就回報沒有目標（配合盤旋飛控在目標上空等待）。
         /// </summary>
         public bool fallBackToEmissions = true;
+
+        public override float JamVulnerability => 0f;
 
         public override string MechanismDescription
             => "DMSE.Card.Guidance.AntiRadiation".Translate() + " "
@@ -392,12 +402,18 @@ namespace DMSE
             CompSearchRadar sr = b.TryGetComp<CompSearchRadar>();
             if (sr != null && sr.ActiveForSeeker && !sr.Props.immuneToAntiRadiationSeeker)
             {
-                level = sr.Props.powerLevel;
+                level = PowerThrottleUtility.SeekerLevel(b, sr.Props.powerLevel);
             }
             CompFireControlRadar fc = b.TryGetComp<CompFireControlRadar>();
-            if (fc != null && fc.ActiveForSeeker && !fc.Props.immuneToAntiRadiationSeeker && fc.Props.powerLevel > level)
+            if (fc != null && fc.ActiveForSeeker && !fc.Props.immuneToAntiRadiationSeeker)
             {
-                level = fc.Props.powerLevel;
+                level = Mathf.Max(level, PowerThrottleUtility.SeekerLevel(b, fc.Props.powerLevel));
+            }
+            // 干擾機是主動發射體：一樣是反輻射彈的目標。
+            CompJammer jammer = b.TryGetComp<CompJammer>();
+            if (jammer != null && jammer.ActiveForSeeker)
+            {
+                level = Mathf.Max(level, jammer.SeekerLevel);
             }
             return level;
         }

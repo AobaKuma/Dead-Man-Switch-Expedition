@@ -53,6 +53,13 @@ namespace DMSE
                 return false;
             }
 
+            // 功率段位 0 是待機：不偵測、不干擾、不佔通道、不被反輻射鎖定，但仍吃待機電。
+            CompPowerThrottle throttle = parent.GetComp<CompPowerThrottle>();
+            if (throttle != null && throttle.IsStandby)
+            {
+                return false;
+            }
+
             CompPowerTrader power = parent.GetComp<CompPowerTrader>();
             if (power != null && !power.PowerOn && !(countPowerStarting && GuidanceType.PowerStarting(power)))
             {

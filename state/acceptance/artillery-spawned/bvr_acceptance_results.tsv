@@ -1,0 +1,4 @@
+﻿id	result	title	detail
+R1	PASS	Empero long-range gun: defs, head, targeting rules (incl. unspawned map), out of shells	19 checks
+R2	PASS	Empero unguided strike: unspawned base refused, warmup aim, departure, world track, existing map reused, edge entry near centre	27 checks
+R3	PASS	Empero radar-guided strike: channel per gun, scatter 3 on a hostile building, release, full pool unguided	24 checks

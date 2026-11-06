@@ -32,8 +32,18 @@ namespace DMSE
         /// <summary>本次發射後的冷卻時長（tick），由各平台自其 Props 對應欄位提供。</summary>
         protected abstract int LaunchCooldownTicks { get; }
 
-        /// <summary>每次發射後的冷卻時長（供波次打擊的時間軸估算）。</summary>
-        public int CooldownTicksAfterLaunch => LaunchCooldownTicks;
+        /// <summary>發射冷卻倍率：本圖戰情終端操作員的射擊等級；沒有操作員或不是玩家平台時為 1。</summary>
+        protected virtual float CooldownMultiplier => EWControlUtility.LauncherCooldownFactor(parent);
+
+        /// <summary>每次發射後的冷卻時長（波次打擊的時間軸估算也用它，所以與實際冷卻一起縮放）。</summary>
+        public int CooldownTicksAfterLaunch
+        {
+            get
+            {
+                float multiplier = CooldownMultiplier;
+                return multiplier == 1f ? LaunchCooldownTicks : Mathf.RoundToInt(LaunchCooldownTicks * multiplier);
+            }
+        }
 
         /// <summary>Scribe 存檔用的欄位名稱；各平台沿用各自舊有名稱以維持存檔相容。</summary>
         protected virtual string CooldownScribeKey => "missileLauncherCooldownUntil";
@@ -60,7 +70,7 @@ namespace DMSE
         public int CooldownTicksRemaining(int now) => cooldownUntil > now ? cooldownUntil - now : 0;
 
         /// <summary>發射成功後呼叫，依 <see cref="LaunchCooldownTicks"/> 重新起算冷卻。</summary>
-        protected void StartCooldown(int now) => cooldownUntil = now + LaunchCooldownTicks;
+        protected void StartCooldown(int now) => cooldownUntil = now + CooldownTicksAfterLaunch;
 
         /// <summary>
         /// 平台當前詳情：冷卻中優先顯示剩餘時間；冷卻結束則交由子類別的

@@ -35,6 +35,16 @@ namespace DMSE
         public int strikeArrivalSpacingTicks = 60;
         /// <summary>Wave strike: firing solutions are recomputed once the target has moved this many tiles (0 = never).</summary>
         public float strikeRecomputeMoveTiles = 5f;
+        // ---- 功率段位（CompPowerThrottle）：調變都乘在結果上，滿段為 1。----
+        public float throttleWindowFloor = 0.4f;
+        public float throttleRangeFloor = 0.4f;
+        public float throttleHitFloor = 0.6f;
+        public float throttleLockPenalty = 0.5f;
+        // ---- 干擾場對敵方雷達（EWEnvironment）----
+        public float jamLevelScaling = 2f;
+        public float jamDetectionPenalty = 0.6f;
+        public float jamMinDetectionFactor = 0.15f;
+        public float jamLockPenalty = 0.8f;
         public static BVRWorldTuningDef Current => DefDatabase<BVRWorldTuningDef>.GetNamedSilentFail("DMSE_BVRWorldTuning") ?? fallback;
         private static readonly BVRWorldTuningDef fallback = new BVRWorldTuningDef();
         public override IEnumerable<string> ConfigErrors()

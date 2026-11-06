@@ -174,6 +174,9 @@ namespace DMSE
                 CompFlickable flickable = parent.GetComp<CompFlickable>();
                 if (flickable != null && !flickable.SwitchIsOn) { return false; }
 
+                CompPowerThrottle throttle = parent.GetComp<CompPowerThrottle>();
+                if (throttle != null && throttle.IsStandby) { return false; }
+
                 CompPowerTrader power = parent.GetComp<CompPowerTrader>();
                 if (power != null && !power.PowerOn) { return false; }
 

@@ -22,11 +22,11 @@ namespace DMSE
 
         private class Ring { public Vector3 center; public float range; public Vector3[] points; }
 
-        /// <summary>圈的種類：探測（實線）、攔截（點線）、封鎖（粗虛線）。用線型區分，不只靠顏色。</summary>
-        private enum RingKind { Detection, Intercept, Blockade }
+        /// <summary>圈的種類：探測（實線）、攔截（點線）、封鎖（粗虛線＋填色）、干擾（紅色實線、無填色）。用線型區分，不只靠顏色。</summary>
+        private enum RingKind { Detection, Intercept, Blockade, Jammer }
         private readonly Dictionary<(MapParent, Faction, RingKind), Ring> rings = new Dictionary<(MapParent, Faction, RingKind), Ring>();
         private readonly List<(Vector3 point, float until)> flashes = new List<(Vector3, float)>();
-        private static Material interceptMaterial, blockadeMaterial, blockadeFillMaterial;
+        private static Material interceptMaterial, blockadeMaterial, blockadeFillMaterial, jammerMaterial;
 
         /// <summary>封鎖圈內的地塊（紅色半透明填色）；圈心或半徑改變才重建網格（一次 flood fill）。</summary>
         private class ZoneFill { public Vector3 center; public float radius; public Mesh mesh; }
@@ -105,6 +105,7 @@ namespace DMSE
             blockadeMaterial ??= MaterialPool.MatFrom(GenDraw.OneSidedLineOpaqueTexPath, ShaderDatabase.WorldOverlayAdditiveTwoSided, ColorLibrary.RedReadable, 3590);
             blockadeFillMaterial ??= MaterialPool.MatFrom(new MaterialRequest(BaseContent.WhiteTex, ShaderDatabase.WorldOverlayTransparent,
                 new Color(1f, 0.1f, 0.05f, 0.25f)) { renderQueue = 3560 });
+            jammerMaterial ??= MaterialPool.MatFrom(GenDraw.OneSidedLineOpaqueTexPath, ShaderDatabase.WorldOverlayAdditiveTwoSided, new Color(1f, 0.12f, 0.1f), 3590);
             var live = new HashSet<(MapParent, Faction, RingKind)>();
             var liveFills = new HashSet<(MapParent, Faction)>();
             foreach (BVRNode node in nodes)
@@ -117,6 +118,12 @@ namespace DMSE
                 if (selected && node.UsesAlertRules && node.alertStage >= (int)AirDefenseStage.Passive)
                     DrawRing(live, node.parent, node.faction, RingKind.Intercept, node.Center, node.Tile,
                         AirspaceRestrictionUtility.NominalRadius(node.parent), interceptMaterial, 3f, 1, 3);
+            }
+            // 干擾圈（燒穿範圍）：顯示時機與覆蓋圈相同。
+            foreach (JammerRing jammer in JammerUtility.ActiveRings())
+            {
+                if (!Find.WorldSelector.IsSelected(jammer.parent) && !(showAll && jammer.faction.IsPlayer)) continue;
+                DrawRing(live, jammer.parent, jammer.faction, RingKind.Jammer, jammer.center, jammer.tile, jammer.range, jammerMaterial, 5f, 1, 1);
             }
             // 封鎖圈：會攔截玩家者一律顯示（已公告），圈內地塊標紅。
             foreach (BlockadeZone zone in AirspaceRestrictionUtility.ActiveZones)

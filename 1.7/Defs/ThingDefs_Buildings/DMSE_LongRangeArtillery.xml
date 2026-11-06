@@ -7,6 +7,9 @@
        雷達導引：開火瞬間若同陣營有支援砲擊引導（supportsArtilleryGuidance）的火控雷達空出一條通道，
        就佔用 fireControlHoldTicks；這一發散佈縮到 guidedScatterRadius，並在落彈時改瞄目標地圖上的
        敵方砲塔 → 用電設備 → 人員（ArtilleryStrikeUtility.FindGuidedTarget）。沒有通道就以 scatterRadius 無導引射擊。
+       射擊模式（Gizmo 切換，狀態存檔）：校射＝散佈於目標地圖中心，每個落點都登錄成該地圖的效力射落點；
+       效力射＝以該地圖最後一次校射的落點為散佈中心（同陣營共用這個落點），散佈從 scatterRadius 起算、
+       每發再收束 25%（最低 1 格，每門砲各自累計），且不使用雷達導引。
        砲身（10x4，貼圖朝東）由 CompTurretFacingRenderer 繪製：原版 TurretTop 只能畫正方形。
        彈藥：原版高爆迫擊砲彈（CompRefuelable，refuelableIsAmmo），每發 1 枚。
        本地圖：CompBuildingTurretGun 持有 DMSE_Gun_Empero（減裝藥低初速曲射），自動攻擊本地圖敵人，
@@ -14,7 +17,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_Turret_Empero</defName>
     <label>long-range cannon</label>
-    <description>The NK-30 "Empero" is a heavy long-range cannon with an extremely high muzzle velocity. It shells distant targets with precision, suppressing enemy fire and destroying installations. At close range it fires reduced charges at low velocity for plunging fire, still with very high accuracy. When shelling a target on the world map, it keeps firing until stopped, out of power, or out of shells. Each shot uses one high-explosive mortar shell.\n\nUnguided shells scatter widely at long range and only land near the middle of the target area. If a fire-control radar that supports artillery guidance has a free channel when the gun fires, the shell is radar-guided onto enemy turrets, powered buildings or people in the area, and lands much closer to them. Each guided shell holds one channel for a while.\n\nCannot strike targets in high orbit across layers.</description>
+    <description>The NK-30 "Empero" is a heavy long-range cannon with an extremely high muzzle velocity. It shells distant targets with precision, suppressing enemy fire and destroying installations. At close range it fires reduced charges at low velocity for plunging fire, still with very high accuracy. When shelling a target on the world map, it keeps firing until stopped, out of power, or out of shells. Each shot uses one high-explosive mortar shell.\n\nUnguided shells scatter widely at long range and only land near the middle of the target area. If a fire-control radar that supports artillery guidance has a free channel when the gun fires, the shell is radar-guided onto enemy turrets, powered buildings or people in the area, and lands much closer to them. Each guided shell holds one channel for a while.\n\nFire mode toggle: ranging shells scatter around the middle of the target area and log each impact; fire for effect shells scatter around the last logged impact on that map (every friendly gun shelling it shares that point) and tighten their scatter by a quarter of the base scatter per shot.\n\nCannot strike targets in high orbit across layers.</description>
     <thingClass>Building</thingClass>
     <category>Building</category>
     <uiIconPath>Things/Turrets/DMSE_Weapon_Empero</uiIconPath>

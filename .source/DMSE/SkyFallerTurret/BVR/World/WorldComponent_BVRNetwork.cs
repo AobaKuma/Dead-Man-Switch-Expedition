@@ -166,6 +166,7 @@ namespace DMSE
                 }
             }
             ApplyAlertStages();
+            foreach (BVRNode node in nodes) { node.jamEff = EWEnvironment.NodeJam(node); }
             lastRebuildTick = Find.TickManager.TicksGame;
         }
 
@@ -223,6 +224,8 @@ namespace DMSE
                 if (!interceptor.Destroyed) Resolve(interceptor);
             }
             if (now % Mathf.Max(1, BVRWorldTuningDef.Current.scanIntervalTicks) != 0) return;
+            // 先做干擾機進圈判定：被判定消失的彈不會先被鎖定、白射一枚攔截彈（docs/電子戰建築_實作計畫.md §3.2）。
+            JammerUtility.ProcessTracks(Tracks);
             RebuildNodes();
             // 排序只看哪個節點會接手（不看本次掃描的情報），與接戰時的情報檢查分開。
             foreach (MissileWorldObject track in InEngagementOrder(Tracks,
@@ -286,7 +289,8 @@ namespace DMSE
             if (state.lockUntil < 0)
             {
                 if (!armed || node.FreeChannels <= 0) return;
-                state.lockUntil = now + CompFireControlRadar.LockOnTicksFor(settings, target);
+                int lockTicks = radar != null ? radar.LockOnTicksFor(target) : CompFireControlRadar.LockOnTicksFor(settings, target);
+                state.lockUntil = now + Mathf.Max(1, Mathf.RoundToInt(lockTicks * EWEnvironment.LockFactor(node.jamEff)));
                 state.lockNode = node.parent;
                 state.lockFaction = node.faction;
                 state.lockNodeTile = node.Tile;
@@ -318,7 +322,7 @@ namespace DMSE
             if (def == null) { state.ClearLock(); return; }
             var warhead = config?.PartFor(MissilePartCategory.Warhead);
             float payload = config?.PayloadCapacity ?? 0;
-            float chance = Mathf.Clamp01(CompFireControlRadar.ComputeHitChance(settings, target, eta)
+            float chance = Mathf.Clamp01((radar != null ? radar.ComputeHitChance(target, eta) : CompFireControlRadar.ComputeHitChance(settings, target, eta))
                 * (config?.InterceptHitFactor ?? 1f)
                 + (warhead?.warheadEffect?.InterceptBonus(payload) ?? 0));
             if (launcher != null ? !launcher.FireWorldInterceptor(now, MissileProjectileMaker.WorldInterceptBearing(node.Tile, point)) : !node.TryConsumeDefense(now)) return;

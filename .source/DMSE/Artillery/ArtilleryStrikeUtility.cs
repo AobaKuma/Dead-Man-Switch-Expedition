@@ -8,11 +8,13 @@ namespace DMSE
     /// <summary>
     /// 超視距火砲打擊的靜態工具類。
     /// 負責：
-    /// 1. 球面切線框架方位角計算（<see cref="WorldDirectionAngle"/>）。
+    /// 1. 世界方位角（<see cref="WorldDirectionAngle"/>，原版 <see cref="PlanetLayer.GetHeadingFromTo(PlanetTile, PlanetTile)"/>，
+    ///    與世界地圖畫面上的方向一致）。
     /// 2. 根據方位角在地圖邊緣取格（<see cref="EdgeCellFromAngle"/>）。
     /// 3. 根據世界方向計算砲彈進入邊緣格（<see cref="CalcEntryEdgeCell"/>）。
     /// 4. 在地圖上生成並發射 <see cref="Projectile"/>（<see cref="SpawnShell"/>）。
     /// 5. 從 <see cref="WorldObject_ArtilleryStrike"/> 向 <see cref="MapComponent_ArtilleryStrikes"/> 排程（<see cref="QueueSalvo"/>）。
+    /// 6. 校射彈落點登錄（同陣營效力射的散佈中心）。
     /// </summary>
     public static class ArtilleryStrikeUtility
     {
@@ -21,39 +23,18 @@ namespace DMSE
         // =====================================================================
 
         /// <summary>
-        /// 計算從 <paramref name="src"/> 到 <paramref name="dest"/> 的
-        /// 球面切線方位角（RimWorld 慣例：0 = North/+Z，90 = East/+X，
-        /// 180 = South，270 = West）。
+        /// 計算從 <paramref name="src"/> 到 <paramref name="dest"/> 的水平方位角
+        /// （RimWorld 慣例：0 = North/+Z，90 = East/+X，180 = South，270 = West）。
         ///
-        /// 使用球面切平面投影，不依賴螢幕空間，在任何世界位置均穩定。
-        /// 切平面的 East 軸 = Cross(星球北極, 法線)；North 軸 = Cross(法線, East)。
+        /// 直接用原版 <see cref="PlanetLayer.GetHeadingFromTo(PlanetTile, PlanetTile)"/>：這是世界地圖
+        /// 畫面上的方位（導彈進出地圖用同一套），所以砲管與砲彈的進出邊和玩家在大地圖上看到的方向一致。
+        /// 舊版自己用切平面東軸 Cross(星球北極, 法線) 推算，那組軸左右相反：畫面上目標在西邊，
+        /// 砲管卻往東轉、砲彈也從反側離開／進入地圖。
         /// </summary>
         public static float WorldDirectionAngle(PlanetTile src, PlanetTile dest)
         {
-            WorldGrid grid   = Find.WorldGrid;
-            Vector3   srcPos = grid.GetTileCenter(src);
-            Vector3   dstPos = grid.GetTileCenter(dest);
-
-            // 切平面上的方向向量（投影到 src 的法線切平面）
-            Vector3 dir     = dstPos - srcPos;
-            Vector3 normal  = srcPos.normalized;
-            Vector3 tangent = Vector3.ProjectOnPlane(dir, normal);
-
-            if (tangent.sqrMagnitude < 1e-6f) { return 0f; } // 幾乎同一 tile，回傳 North
-            tangent = tangent.normalized;
-
-            // 切平面上的 East/North 局部軸
-            Vector3 worldUp = Vector3.up;                             // 星球北極（Y+）
-            Vector3 east    = Vector3.Cross(worldUp, normal);
-            if (east.sqrMagnitude < 1e-6f) { east = Vector3.right; } // 極點退化防護
-            east  = east.normalized;
-            Vector3 north = Vector3.Cross(normal, east).normalized;
-
-            // 投影 → RimWorld 方位角（0=North, 順時針）
-            float dx    = Vector3.Dot(tangent, east);   // 東分量（+X）
-            float dy    = Vector3.Dot(tangent, north);  // 北分量（+Z）
-            float angle = Mathf.Atan2(dx, dy) * Mathf.Rad2Deg;
-            return ((angle % 360f) + 360f) % 360f;
+            if (!src.Valid || !dest.Valid || src.Layer != dest.Layer) { return 0f; }
+            return src.Layer.GetHeadingFromTo(src, dest);
         }
 
         /// <summary>
@@ -147,6 +128,7 @@ namespace DMSE
                     attackerFaction = src.attackerFaction,
                     scatterRadius   = src.scatterRadius,
                     guided          = src.guided,
+                    fireForEffect   = src.fireForEffect,
                 });
             }
         }
@@ -211,6 +193,8 @@ namespace DMSE
         /// <summary>
         /// 立即在地圖上生成一枚 <see cref="Projectile"/>，從邊緣格朝目標格飛行。
         /// 若散佈半徑 &gt; 0，目標格會在呼叫時隨機偏移後固定（保證同一發彈落在確定位置）。
+        /// 校射彈（<see cref="ArtilleryShellRequest.fireForEffect"/> = false）會把偏移後的實際落點
+        /// 登錄到地圖上，成為同陣營效力射的散佈中心。
         /// </summary>
         public static void SpawnShell(ArtilleryShellRequest req, Map map)
         {
@@ -237,6 +221,12 @@ namespace DMSE
                     Mathf.Clamp(finalTarget.x, 0, map.Size.x - 1),
                     0,
                     Mathf.Clamp(finalTarget.z, 0, map.Size.z - 1));
+            }
+
+            // 校射彈的實際落點 = 同陣營之後效力射的散佈中心（效力射彈不回寫，避免落點自己越走越偏）
+            if (!req.fireForEffect)
+            {
+                map.GetComponent<MapComponent_ArtilleryStrikes>()?.RegisterImpact(req.attackerFaction, finalTarget);
             }
 
             // 生成 Projectile，從邊緣格朝目標格發射

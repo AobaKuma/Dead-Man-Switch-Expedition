@@ -232,6 +232,11 @@
   <DMSE.Artillery.FireDesc>Select a target on the world map. Keeps firing until stopped.</DMSE.Artillery.FireDesc>
   <DMSE.Artillery.Stop>Stop Firing</DMSE.Artillery.Stop>
   <DMSE.Artillery.StopDesc>Halt sustained fire. Current status: {0}</DMSE.Artillery.StopDesc>
+  <!-- Fire mode (ranging / fire for effect) -->
+  <DMSE.Artillery.ModeRanging>Fire mode: Ranging</DMSE.Artillery.ModeRanging>
+  <DMSE.Artillery.ModeEffect>Fire mode: Fire for effect</DMSE.Artillery.ModeEffect>
+  <DMSE.Artillery.ModeDesc>Switch fire mode. Ranging: scatter around the centre of the target map; every impact is logged as that map's fire-for-effect point. Fire for effect: scatter around the last logged ranging impact on that map, shared by every gun of the same faction shelling it; each shot tightens the scatter by a quarter of the base scatter (per gun, minimum 1 cell) and radar guidance is not used.</DMSE.Artillery.ModeDesc>
+  <DMSE.Artillery.EffectPoint>Impact point ({0}, {1}), next shot scatters {2} cells</DMSE.Artillery.EffectPoint>
   <!-- Disabled / error reasons -->
   <DMSE.Artillery.TooClose>Target is too close: minimum range is {0} cells.</DMSE.Artillery.TooClose>
   <DMSE.Artillery.NoFireControl>No fire control radar with a free guidance channel available.</DMSE.Artillery.NoFireControl>
@@ -241,6 +246,11 @@
   <DMSE.Artillery.NoBarrel>Barrel worn out: sustained fire halted. Replace the reinforced barrel.</DMSE.Artillery.NoBarrel>
   <DMSE.Artillery.TargetIsHome>Cannot shell your own map tile.</DMSE.Artillery.TargetIsHome>
   <DMSE.Artillery.OutOfRange>Target is beyond gun range ({0} tiles).</DMSE.Artillery.OutOfRange>
+  <DMSE.Artillery.MapNotSpawned>The target map is not loaded. Artillery can only shell a map that is currently active.</DMSE.Artillery.MapNotSpawned>
+  <DMSE.Artillery.NoCrew>Needs a gunner: right-click the mortar and order a pawn to man it; the gunner loads shells automatically.</DMSE.Artillery.NoCrew>
+  <DMSE.Artillery.NoLoadedShell>No shell loaded: have a gunner load a mortar shell before firing.</DMSE.Artillery.NoLoadedShell>
+  <DMSE.Artillery.WaitingForShell>Waiting for the gunner to reload: the mission is paused.</DMSE.Artillery.WaitingForShell>
+  <DMSE.Artillery.NoRegistration>No ranging impact has been logged on this map: fire a ranging shot first.</DMSE.Artillery.NoRegistration>
   <DMSE.BVR.DeviceInactive>Device is inactive (no power, broken down, or switched off).</DMSE.BVR.DeviceInactive>
   <!-- State strings (used in StopDesc) -->
   <DMSE.Artillery.StateCooldown>reloading, {0} remaining</DMSE.Artillery.StateCooldown>

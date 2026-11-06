@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <DMSE.EW.Tab>戰情</DMSE.EW.Tab>
+  <DMSE.EW.Throttle.Standby>待機</DMSE.EW.Throttle.Standby>
+  <DMSE.EW.Throttle.Inspect>功率段位：{0}（{1} 瓦）</DMSE.EW.Throttle.Inspect>
+  <DMSE.EW.Throttle.Gizmo>功率：{0}</DMSE.EW.Throttle.Gizmo>
+  <DMSE.EW.Throttle.GizmoDesc>設定功率段位。低功率會縮短距離、減弱效果，但耗電較少，也較不容易被反輻射導彈選中。待機時裝置完全停止運作，仍消耗待機電力。</DMSE.EW.Throttle.GizmoDesc>
+  <DMSE.EW.Jammer.Inspect>干擾半徑 {0} 世界格，強度 {1}，覆蓋 {2} 條敵對航跡</DMSE.EW.Jammer.Inspect>
+  <DMSE.EW.Jammer.CommsBlocked>干擾中，本圖通訊台停用。</DMSE.EW.Jammer.CommsBlocked>
+  <DMSE.EW.Jammer.CommsBlockedReason>通訊遭到干擾</DMSE.EW.Jammer.CommsBlockedReason>
+  <DMSE.EW.Jammer.CommsBlockedMessage>干擾機發射中：本圖通訊台已停用。</DMSE.EW.Jammer.CommsBlockedMessage>
+  <DMSE.EW.Jammer.ShowRing>顯示干擾圈</DMSE.EW.Jammer.ShowRing>
+  <DMSE.EW.Jammer.ShowRingDesc>干擾半徑 {0} 格（世界地圖紅圈）。跳到世界地圖上的這個殖民地。</DMSE.EW.Jammer.ShowRingDesc>
+  <DMSE.EW.Jammer.GuidanceDenied>{0} 的導引頭被干擾打掉，將只靠慣性落地。</DMSE.EW.Jammer.GuidanceDenied>
+  <DMSE.EW.Jammer.JammedOut>{0} 被 {1} 的干擾打掉導引，在地圖外墜毀。</DMSE.EW.Jammer.JammedOut>
+  <DMSE.EW.Jammer.ArrivedInertial>導引頭遭干擾：導彈只靠慣性落地。</DMSE.EW.Jammer.ArrivedInertial>
+  <DMSE.EW.Alert.CommsJammed>通訊遭干擾</DMSE.EW.Alert.CommsJammed>
+  <DMSE.EW.Alert.CommsJammedDesc>這張地圖上有干擾機正在發射，所以通訊台無法使用。把干擾機切到待機或關機即可恢復通訊。</DMSE.EW.Alert.CommsJammedDesc>
+  <DMSE.EW.Console.NoOperator>沒有操作員：無技能加成</DMSE.EW.Console.NoOperator>
+  <DMSE.EW.Console.Operator>操作員：{0}</DMSE.EW.Console.Operator>
+  <DMSE.EW.Tab.NoPower>沒有電力：無法遙控或修改規則，目前的規則繼續生效。</DMSE.EW.Tab.NoPower>
+  <DMSE.EW.Tab.Overview>狀態總覽</DMSE.EW.Tab.Overview>
+  <DMSE.EW.Tab.RadarsOnline>線上雷達：{0} / {1}</DMSE.EW.Tab.RadarsOnline>
+  <DMSE.EW.Tab.JammerRow>{0}：強度 {1}，覆蓋 {2} 條航跡</DMSE.EW.Tab.JammerRow>
+  <DMSE.EW.Tab.LocalJam>本地受敵方干擾：{0}</DMSE.EW.Tab.LocalJam>
+  <DMSE.EW.Tab.RadarRow>{0}：基礎 {1} × 功率 {2} × 操作員 {3} = {4} 格</DMSE.EW.Tab.RadarRow>
+  <DMSE.EW.Tab.SilencedWarning>電磁靜默中：雷達與干擾機已關閉。</DMSE.EW.Tab.SilencedWarning>
+  <DMSE.EW.Tab.Remote>遙控</DMSE.EW.Tab.Remote>
+  <DMSE.EW.Tab.PowerOn>開機</DMSE.EW.Tab.PowerOn>
+  <DMSE.EW.Tab.PowerOff>關機</DMSE.EW.Tab.PowerOff>
+  <DMSE.EW.Tab.Throttle>功率…</DMSE.EW.Tab.Throttle>
+  <DMSE.EW.Tab.Silence>一鍵靜默</DMSE.EW.Tab.Silence>
+  <DMSE.EW.Tab.Restore>結束靜默（還原先前開著的裝置）</DMSE.EW.Tab.Restore>
+  <DMSE.EW.Tab.Roe>交戰限制</DMSE.EW.Tab.Roe>
+  <DMSE.EW.Tab.Operator>操作員加成</DMSE.EW.Tab.Operator>
+  <DMSE.EW.Tab.OperatorRange>智識 {0}：雷達距離 × {1}</DMSE.EW.Tab.OperatorRange>
+  <DMSE.EW.Tab.OperatorCooldown>射擊 {0}：發射冷卻 × {1}</DMSE.EW.Tab.OperatorCooldown>
+  <DMSE.EW.Group.Jammers>干擾機</DMSE.EW.Group.Jammers>
+  <DMSE.EW.Group.SearchRadars>搜索雷達</DMSE.EW.Group.SearchRadars>
+  <DMSE.EW.Group.FireControlRadars>火控雷達</DMSE.EW.Group.FireControlRadars>
+  <DMSE.EW.Group.All>全部</DMSE.EW.Group.All>
+  <DMSE.EW.Roe.AutoEngage>自動接戰</DMSE.EW.Roe.AutoEngage>
+  <DMSE.EW.Roe.AutoEngageDesc>關閉時仍會偵測目標、警報照常，但不發射攔截彈。近防武器照常開火。</DMSE.EW.Roe.AutoEngageDesc>
+  <DMSE.EW.Roe.PolicyAll>全面接戰（關閉＝僅自衛）</DMSE.EW.Roe.PolicyAll>
+  <DMSE.EW.Roe.PolicyAllDesc>僅自衛時只打指向本殖民地或盟友的導彈，過境的導彈不接戰。</DMSE.EW.Roe.PolicyAllDesc>
+  <DMSE.EW.Roe.Neutral>對中立陣營開火</DMSE.EW.Roe.Neutral>
+  <DMSE.EW.Roe.LargestFirst>最大目標優先（關閉＝先到先打）</DMSE.EW.Roe.LargestFirst>
+  <DMSE.EW.Roe.LargestFirstDesc>通道不足時先打雷達截面最大的目標，而不是最快抵達的目標。</DMSE.EW.Roe.LargestFirstDesc>
+  <DMSE.EW.Roe.ChannelCap>防空通道上限：{0}</DMSE.EW.Roe.ChannelCap>
+  <DMSE.EW.Roe.CapUnlimited>不限</DMSE.EW.Roe.CapUnlimited>
+  <DMSE.EW.Roe.HoldFire>不攔截：</DMSE.EW.Roe.HoldFire>
+  <DMSE.EW.Roe.Class.Loitering>巡飛彈</DMSE.EW.Roe.Class.Loitering>
+  <DMSE.EW.Roe.Class.DropPod>空投艙</DMSE.EW.Roe.Class.DropPod>
+  <DMSE.EW.Roe.Class.Ballistic>彈道導彈</DMSE.EW.Roe.Class.Ballistic>
+</LanguageData>

@@ -7,8 +7,8 @@
 > 三代裝備體系（老資歷／中登／小登）設計與實作計畫：[docs/三代裝備體系_實作計畫.md](docs/三代裝備體系_實作計畫.md)
 > 三代裝備物品介紹文本：[docs/三代裝備體系_物品介紹.md](docs/三代裝備體系_物品介紹.md)
 > 反砲兵雷達與反砲兵作戰實作計畫（提案）：[docs/反砲兵雷達_實作計畫.md](docs/反砲兵雷達_實作計畫.md)
-> ECM／ECCM／EMCON（干擾、反干擾、發射管制與戰情終端）實作計畫（提案）：[docs/ECM與ECCM_實作計畫.md](docs/ECM與ECCM_實作計畫.md)
-> 電子戰三類建築（戰情終端／干擾機／長程預警雷達）規格（提案）：[docs/電子戰建築_實作計畫.md](docs/電子戰建築_實作計畫.md)
+> ECM／ECCM／EMCON（干擾、反干擾、發射管制）實作計畫（部分實作，ECCM／HoJ 未做）：[docs/ECM與ECCM_實作計畫.md](docs/ECM與ECCM_實作計畫.md)
+> 電子戰三類建築（戰情終端／干擾機／長程預警雷達）規格（已實作）：[docs/電子戰建築_實作計畫.md](docs/電子戰建築_實作計畫.md)
 
 《Dead Man's Switch》的 Odyssey 擴充。以太空 / 軌道 / 遠程作戰為主題，在 DMS Core 的基礎上加入超視距攔截、導彈裝配與發射、天體轉移飛行、真空製造與軌道平台等內容。
 
@@ -142,9 +142,15 @@ dotnet run --project .source/DMSE.BVRTests/DMSE.BVRTests.csproj -c Release --no-
 世界導彈的偵測與 SAM 中過程攔截現由世界層處理：雷達覆蓋圈 → 火控鎖定 → 實體攔截彈升空 → 世界會合，漏網彈抵達後只交給 CIWS。玩家導彈也會受到未生成地圖的敵方導彈陣地抽象防空攔截。速度與平衡數值集中在 `1.7/Defs/DMSE_BVRWorld.xml`（預設 150 ticks/格）；覆蓋圈預設選取據點時顯示，可用世界 Gizmo 或 Mod 設定改為常駐。空投／舊地圖內波次保留原流程，與世界航跡、火砲共用通道。P0–P3 程式與自動檢查已完成，遊戲內驗收待進行；細節見 [BVR 重構與驗收記錄](docs/BVR_世界層偵測攔截重構.md)。
 
 ### 3. 超視距火砲（Artillery）
-`CompArtilleryStrike` 選靶後建立世界航跡，抵達時排程齊射，砲彈以 `Projectile` 從地圖邊緣飛入落點。1.7 已提供實際建築 `DMSE_Turret_Empero`（NK-30「帝王」遠程加農砲，3×3，`1.7/Defs/ThingDefs_Buildings/DMSE_LongRangeArtillery.xml`）：射程 20 tile、限同圖層且非本地圖、無導引散佈 14 格，每發消耗一枚高爆迫擊砲彈（存量 12）。
+`CompArtilleryStrike` 選靶後建立世界航跡，抵達時排程齊射，砲彈以 `Projectile` 從地圖邊緣飛入落點。1.7 已提供實際建築 `DMSE_Turret_Empero`（NK-30「帝王」遠程加農砲，3×3，`1.7/Defs/ThingDefs_Buildings/DMSE_LongRangeArtillery.xml`）：射程 20 tile、限同圖層且非本地圖、**目標地圖必須已載入（spawned）**、無導引散佈 14 格，每發消耗一枚高爆迫擊砲彈（存量 12）。
 
-開火瞬間若同陣營有支援砲擊引導（`supportsArtilleryGuidance`）的火控雷達空出一條通道，該發散佈縮到 3 格，且**每一發落彈時重新挑目標**（敵方砲塔 → 用電設備 → 人員，`ArtilleryStrikeUtility.FindGuidedTarget`）；沒有通道就照 14 格散佈打目標地圖中心。同一門砲另有減裝藥曲射 verb 打本地圖近距離目標，與世界砲擊共用同一份砲彈；跨圖層（如軌道）一律拒絕。自動驗收見 `.source/DMSE.BVRAcceptance` 的 `Tests_Artillery`（R1–R4）。
+目標地圖的判定在選靶時（`CompArtilleryStrike.CanTargetTile`，游標與點擊都會顯示 `DMSE.Artillery.MapNotSpawned`）與抵達時（`WorldObject_ArtilleryStrike.Arrived`，`allowGenerateMap: false`）各做一次：砲擊不會為了一個 tile 生成整張地圖，飛行途中地圖被移除就落空。可打的目標是當下存在於 `Current.Game.Maps` 的地圖，實務上就是有我方人員所在、或仍被保留的地圖（例如突擊隊正在攻打、暫時留下的據點），純世界層的未生成據點不行。
+
+開火瞬間若同陣營有支援砲擊引導（`supportsArtilleryGuidance`）的火控雷達空出一條通道，該發散佈縮到 3 格，且**每一發落彈時重新挑目標**（敵方砲塔 → 用電設備 → 人員，`ArtilleryStrikeUtility.FindGuidedTarget`）；沒有通道就照 14 格散佈打目標地圖中心（校射模式）。同一門砲另有減裝藥曲射 verb 打本地圖近距離目標，與世界砲擊共用同一份砲彈；跨圖層（如軌道）一律拒絕。自動驗收見 `.source/DMSE.BVRAcceptance` 的 `Tests_Artillery`（R1–R6）。
+
+每門砲有兩個射擊模式（Gizmo 切換、狀態存檔）：**校射**維持上述行為，散佈中心是目標地圖中心；每一發校射彈的實際落點都會登錄在該地圖上（同陣營覆蓋，`MapComponent_ArtilleryStrikes.RegisterImpact`），雷達導引彈也照樣登錄。**效力射**改以該地圖最後一次校射的落點為散佈中心，同陣營對同一地圖效力射的砲共用這個落點；散佈從 `scatterRadius` 起算、每發再減 25%（最低 1 格，`CompArtilleryStrike.EffectScatterStep`／`EffectScatterFloor`），收束進度每門砲各自累計，停止射擊／換目標／切換模式都重置。效力射優先於雷達導引：效力射不找通道、不佔通道，一律打登錄落點；尚未校射過的地圖在選靶時就回 `DMSE.Artillery.NoRegistration`（射擊中切到效力射則停在待命）。
+
+1.7 另有**重型迫擊砲** `DMSE_Turret_HeavyMortar`（2×2，輪式砲架，`1.7/Defs/ThingDefs_Buildings/DMSE_HeavyMortar.xml`）：原版 `Building_TurretGun` ＋ 原版可換彈藥（`CompChangeableProjectile` 掛在砲塔的 gun 上）＋ `CompArtilleryStrike`。右鍵「操作」派砲手後，砲手會搬運 storage filter 允許的迫擊砲彈並裝填；世界選靶開火時，這一發就用**砲手載入的彈種**（高爆／燃燒／EMP／煙霧／泡沫／反粒子，`projectileWhenLoaded`）當超視距投射物，改「砲彈」儲存設定就是換 BVR 彈頭。世界砲擊進行中 `Building_HeavyMortar` 不自動接戰本地目標、砲管固定朝向世界方位；砲彈射掉後任務會**等砲手補彈**（`DMSE.Artillery.WaitingForShell`，不是取消），沒有砲手時 Fire 按鈕回 `NoCrew`、沒裝填時回 `NoLoadedShell`；強化砲管 20 發用完砲手會自動換管。散佈 9、射程 24 tile、無雷達導引；校射／效力射模式同樣適用。
 
 1.6 的 `DMSE_ArtillerySystem.xml` 已停用，1.7 未沿用該檔。舊文件提到的 `docs/artillery-expansion-plan.md` 從未存在；反砲兵雷達與反砲兵作戰的規劃現由 [反砲兵雷達_實作計畫](docs/反砲兵雷達_實作計畫.md) 承接（提案，尚未實作）。
 

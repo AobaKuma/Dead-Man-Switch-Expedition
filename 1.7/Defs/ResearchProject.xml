@@ -208,4 +208,33 @@
     <researchViewY>0.00</researchViewY>
   </ResearchProjectDef>
 
+  <!-- 電子戰（docs/電子戰建築_實作計畫.md §3.7）：到干擾機為止累積 2500 + 3000 + 5000 = 10500 點。 -->
+  <ResearchProjectDef ParentName="DMS_BaseTech">
+    <defName>DMSE_ElectronicWarfare</defName>
+    <label>electronic warfare</label>
+    <description>Unlocks the war room console, which sets rules of engagement and remotely controls radars and jammers, and the long-range warning radar, which trades resolution and all fire-control channels for 40 tiles of early warning.</description>
+    <baseCost>3000</baseCost>
+    <requiredResearchBuilding Inherit="False" />
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>DMSE_RadarNetwork</li>
+    </prerequisites>
+    <researchViewX>5.00</researchViewX>
+    <researchViewY>1.20</researchViewY>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef ParentName="DMS_BaseTech">
+    <defName>DMSE_ElectronicAttack</defName>
+    <label>electronic attack</label>
+    <description>Unlocks the electronic jammer station. It knocks out the seekers of hostile missiles inside an 8-tile ring on the world map and suppresses enemy radars, at the price of 6000 W at full power and a silenced comms console on its map.</description>
+    <baseCost>5000</baseCost>
+    <requiredResearchBuilding Inherit="False" />
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>DMSE_ElectronicWarfare</li>
+    </prerequisites>
+    <researchViewX>6.00</researchViewX>
+    <researchViewY>1.20</researchViewY>
+  </ResearchProjectDef>
+
 </Defs>

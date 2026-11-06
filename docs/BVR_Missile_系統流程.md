@@ -91,7 +91,7 @@ terminalOnly 目標只交給 CIWS。CIWS 與 SAM 可能打同一目標，先擊�
 
 - **陣營相對防禦**：`ResolveDefender` 找擁有運作中搜索雷達、與來襲方敵對的陣營（玩家優先）；玩家打敵方基地也會被攔截。
 - **隱身雙層對衝**：搜索段對 `antiStealthLevel`（窗口），火控段對 `powerLevel`（命中與鎖定）。
-- **電子對抗**：反輻射導引打開機中 `powerLevel` 最高的敵對雷達；`immuneToAntiRadiationSeeker` 豁免（聲學雷達）。箔條 `jamStrength`／`chaffCharges`：世界層斷鎖（`chaffBreakChance × jam`，不論成敗扣一發）、地圖層命中 × `(1 − chaffMapHitPenalty × jam)`。後續見 [ECM 計畫](ECM與ECCM_實作計畫.md)。
+- **電子對抗**：反輻射導引打開機中 `powerLevel` 最高的敵對雷達；`immuneToAntiRadiationSeeker` 豁免（聲學雷達）。箔條 `jamStrength`／`chaffCharges`：世界層斷鎖（`chaffBreakChance × jam`，不論成敗扣一發）、地圖層命中 × `(1 − chaffMapHitPenalty × jam)`。地面干擾機、功率段位與戰情終端見[電子戰建築](電子戰建築_實作計畫.md)；ECCM 等後續見 [ECM 計畫](ECM與ECCM_實作計畫.md)。
 - **VGE 近防**（`1.7/GravshipExpanded/PointDefence`）：`CompPointDefence` 與 `CompTerminalCIWS` 並存、共用砲管，判定互不相通。
 - **存檔**：波次、目標、CIWS 連射狀態、冷卻皆持久化。
 
@@ -182,17 +182,18 @@ CompBVRDevice
 |---|---|---|
 | 核心 | `CompArtilleryStrike`（繼承 `CompBVRDevice`，不註冊） | 世界選靶、持續射擊狀態機、彈藥／砲管、砲管轉向、選配借火控通道 |
 | 離場 | `Projectile_ArtilleryDeparture` | 弧線飛到目標方位的出口邊緣格，`Impact` 建立世界航跡 |
-| 世界航跡 | `WorldObject_ArtilleryStrike` | Slerp（`speed/10 × 0.00025 / 距離`）；`Arrived` 解析地圖（落空／生成據點地圖）、排程齊射 |
-| 排程 | `MapComponent_ArtilleryStrikes`＋`ArtilleryShellRequest` | `fireTick`、`targetCell`、`entryEdgeCell`、`projectileDef`、`attackerFaction`、`scatterRadius`、`guided` |
-| 工具 | `ArtilleryStrikeUtility` | `WorldDirectionAngle`、`EdgeCellFromAngle`、`CalcEntryEdgeCell`、`QueueSalvo`、`FindGuidedTarget`、`SpawnShell` |
+| 世界航跡 | `WorldObject_ArtilleryStrike` | Slerp（`speed/10 × 0.00025 / 距離`）；`Arrived` 解析地圖（目標地圖必須已存在，未載入即落空，不生成地圖）、排程齊射 |
+| 排程 | `MapComponent_ArtilleryStrikes`＋`ArtilleryShellRequest` | `fireTick`、`targetCell`、`entryEdgeCell`、`projectileDef`、`attackerFaction`、`scatterRadius`、`guided`、`fireForEffect`；各地圖各陣營的效力射落點（`ArtilleryImpactRegistration`） |
+| 工具 | `ArtilleryStrikeUtility` | `WorldDirectionAngle`（原版 `PlanetLayer.GetHeadingFromTo`，與世界地圖畫面上的方位一致）、`EdgeCellFromAngle`、`CalcEntryEdgeCell`、`QueueSalvo`、`FindGuidedTarget`、`SpawnShell`（校射彈登錄落點） |
 
-Props：`departureProjectileDef`、`worldObjectDef`（必填）、`projectileDef`、`cooldownTicks`、`warmupTicks`、`scatterRadius`、`salvoCount`、`salvoIntervalTicks`、`requiresFireControlChannel`（無 Def 使用）、`fireControlHoldTicks`、`guidedScatterRadius`（<0 不支援導引）、`maxRangeTiles`、`refuelableIsAmmo`。Empero：冷卻 1800、瞄準 300、散布 14／導引 3、射程 20、砲彈 12；另有本地圖減裝藥曲射（共用砲彈、世界射擊期間停火）、hold fire／強制目標。
+Props：`departureProjectileDef`、`worldObjectDef`（必填）、`projectileDef`（可留空：可換彈藥的砲由砲手載入的彈種決定）、`cooldownTicks`、`warmupTicks`、`scatterRadius`、`salvoCount`、`salvoIntervalTicks`、`requiresFireControlChannel`（無 Def 使用）、`fireControlHoldTicks`、`guidedScatterRadius`（<0 不支援導引）、`maxRangeTiles`、`refuelableIsAmmo`。Empero：冷卻 1800、瞄準 300、散布 14／導引 3、射程 20、砲彈 12；另有本地圖減裝藥曲射（共用砲彈、世界射擊期間停火）、hold fire／強制目標。
 
-流程：Gizmo 選靶（同圖層、非本地圖、射程內）→ 持續射擊（`!Active` 暫停、無彈停止、等通道）→ 瞄準 warmup（砲管轉向世界方位）→ `FireSingleShot`（耗彈、出口格 = 世界方位、`targetCell` = 目標地圖中心、開火瞬間搶到通道則 guided）→ 離場 → 世界航跡 → `QueueSalvo`（進入邊 = 從發射地一側）→ `SpawnShell`（guided 每發重挑 `FindGuidedTarget`：砲塔 → 用電設備 → 人員；散布；`launcher = null`）→ 原版爆炸。
+流程：Gizmo 選靶（同圖層、非本地圖、射程內、**目標地圖已載入（spawned）**、**效力射需該地圖已有校射落點**）→ 持續射擊（`!Active` 暫停、無彈停止、等通道、效力射無落點待命）→ 瞄準 warmup（砲管轉向世界方位）→ `FireSingleShot`（耗彈、出口格 = 世界方位、校射＝`targetCell` 地圖中心／效力射＝已登錄落點且每發收束 25%；效力射不找導引，校射開火瞬間搶到通道則 guided）→ 離場 → 世界航跡 → `QueueSalvo`（進入邊 = 從發射地一側）→ `SpawnShell`（guided 每發重挑 `FindGuidedTarget`：砲塔 → 用電設備 → 人員；散布；校射彈把實際落點登錄到地圖（每陣營一筆，同陣營共用）；`launcher = null`）→ 原版爆炸。
 
+- 重型迫擊砲 `DMSE_Turret_HeavyMortar`：原版 `Building_TurretGun` ＋ 掛在 gun 上的 `CompChangeableProjectile`。`CompArtilleryStrike` 從建築或 gun 找可換彈藥 comp，開火時用砲手載入彈種的 `projectileWhenLoaded` 當 BVR 投射物，並以 `Notify_ProjectileLaunched` 扣彈；沒彈時任務暫停等砲手補彈（`DMSE.Artillery.WaitingForShell`），沒砲手時 `Active` 為 false（選靶回 `NoCrew`／`NoLoadedShell`）。世界砲擊中 `Building_HeavyMortar.TryFindNewTarget` 不接本地目標，Tick 結束後把 `TurretTop.CurRotation` 拉回世界方位。
 - 與 BVR 共用火控通道：`FreeArtilleryChannels = maxTargets − 借給火砲 − 按比例分攤的 BVR 占用`；`MidcourseDefense` 反向扣除。
 - 砲彈是 Projectile，**BVR 不攔截**。不可跨圖層。
-- 存檔：冷卻、`targetTile`（`PlanetTile` 完整 tileId,layerId）、`channelReleaseTick`、借用雷達、在途齊射。
+- 存檔：冷卻、`targetTile`（`PlanetTile` 完整 tileId,layerId）、`channelReleaseTick`、借用雷達、在途齊射、射擊模式（`artilleryFireForEffect`）與效力射收束發數、各地圖各陣營的落點。
 - 已知：傷害歸因 `launcher: null`（`attackerFaction` 未參與）；`DMSE_Turret_Empero` 是 `Building` 不是 `Building_Turret`，`FindGuidedTarget` 不會把它當 tier 0。見[反砲兵提案](反砲兵雷達_實作計畫.md)。
 
 ---

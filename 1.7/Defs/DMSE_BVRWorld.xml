@@ -30,6 +30,16 @@
     <podsUseWorldTracks>false</podsUseWorldTracks>
     <!-- P4：區域防禦（節點可攔截飛越自己覆蓋範圍、目標是同陣營其他據點的航跡）。 -->
     <areaDefenseEnabled>true</areaDefenseEnabled>
+    <!-- 功率段位：調變乘在結果上，滿段全部為 1（docs/ECM與ECCM_實作計畫.md §3）。 -->
+    <throttleWindowFloor>0.4</throttleWindowFloor>
+    <throttleRangeFloor>0.4</throttleRangeFloor>
+    <throttleHitFloor>0.6</throttleHitFloor>
+    <throttleLockPenalty>0.5</throttleLockPenalty>
+    <!-- 干擾機對敵方雷達：jamEff = clamp01(jamSum × 此值^等級差)；偵測 × (1 − penalty × jamEff)，下限 minDetectionFactor；鎖定 × (1 + penalty × jamEff)。 -->
+    <jamLevelScaling>2</jamLevelScaling>
+    <jamDetectionPenalty>0.6</jamDetectionPenalty>
+    <jamMinDetectionFactor>0.15</jamMinDetectionFactor>
+    <jamLockPenalty>0.8</jamLockPenalty>
   </DMSE.BVRWorldTuningDef>
 
   <!-- NPC 防空警戒五階段（docs/NPC防空警戒五階段_執行計畫.md）。數值為首輪測試起點，不是已驗證的平衡值。 -->

@@ -12,7 +12,8 @@ namespace DMSE
     ///   1. <see cref="CompArtilleryStrike"/> 建立本物件，填入目標格、彈藥 def、齊射參數。
     ///   2. 由 <see cref="ScorerProjectile"/> 離場後帶入世界，並在世界地圖上做 Slerp 飛行。
     ///   3. 抵達目的地 tile 後呼叫 <see cref="Arrived"/>：
-    ///      a. 確保目標地圖已載入（GetOrGenerateMap）。
+    ///      a. 目標地圖必須已存在（砲擊不生成地圖；選靶時 <see cref="CompArtilleryStrike.CanTargetTile"/> 已擋，
+    ///         飛行途中地圖被移除則落空）。
     ///      b. 計算邊緣格，透過 <see cref="ArtilleryStrikeUtility.QueueSalvo"/> 排程齊射。
     ///      c. 自毀本物件。
     ///
@@ -26,7 +27,7 @@ namespace DMSE
         //  公開資料（由 CompArtilleryStrike 填入）
         // =====================================================================
 
-        /// <summary>玩家在地圖上選定的目標格（散佈在 SpawnShell 時套用）。</summary>
+        /// <summary>目標地圖上的瞄準格（校射＝地圖中心，效力射＝已登錄落點；散佈在 SpawnShell 時套用）。</summary>
         public IntVec3 targetCell;
 
         /// <summary>要生成的 Projectile ThingDef（應繼承 Projectile_Explosive）。</summary>
@@ -49,6 +50,12 @@ namespace DMSE
 
         /// <summary>雷達導引：每發落彈時改指向目標地圖上的敵方目標（見 <see cref="ArtilleryStrikeUtility.FindGuidedTarget"/>）。</summary>
         public bool guided;
+
+        /// <summary>
+        /// 效力射：散佈中心 = 目標地圖上已登錄的校射落點（<see cref="targetCell"/> 由開火端解析），
+        /// 這一發不登錄落點；校射彈（false）落彈時更新落點。
+        /// </summary>
+        public bool fireForEffect;
 
         /// <summary>目的地世界 tile（由 CompArtilleryStrike 在發射時設定）。</summary>
         public PlanetTile destinationTile = PlanetTile.Invalid;
@@ -154,8 +161,8 @@ namespace DMSE
                 return;
             }
 
-            // 目標 tile 上沒有地圖或據點 → 落空（不在空格上生成營地地圖）
-            Map map = MissileWorldUtility.ResolveArrivalMap(destinationTile, null, allowGenerateMap: true);
+            // 目標 tile 上沒有載入中的地圖 → 落空（不為砲擊生成地圖；目標地圖必須已 spawned）
+            Map map = MissileWorldUtility.ResolveArrivalMap(destinationTile, null, allowGenerateMap: false);
             if (map == null)
             {
                 Messages.Message("DMSE.Artillery.Missed".Translate(), new GlobalTargetInfo(destinationTile),
@@ -217,6 +224,7 @@ namespace DMSE
             Scribe_Values.Look(ref salvoCount,         "salvoCount",        1);
             Scribe_Values.Look(ref salvoIntervalTicks, "salvoIntervalTicks", 60);
             Scribe_Values.Look(ref guided,             "guided",            false);
+            Scribe_Values.Look(ref fireForEffect,      "fireForEffect",     false);
             Scribe_Values.Look(ref worldTicksPerTile,  "worldTicksPerTile", 60f);
         }
     }

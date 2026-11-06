@@ -78,7 +78,7 @@ namespace DMSE
 
         /// <summary>依導引時間、目標速度與隱身對衝計算單發攔截彈的命中率。</summary>
         public float ComputeHitChance(BVRTarget target, int guideTimeLeft)
-            => ComputeHitChance(Props, target, guideTimeLeft);
+            => Mathf.Clamp01(ComputeHitChance(Props, target, guideTimeLeft) * PowerThrottleUtility.HitFactor(parent));
 
         public static float ComputeHitChance(CompProperties_FireControlRadar settings, BVRTarget target, int guideTimeLeft)
         {
@@ -107,7 +107,7 @@ namespace DMSE
 
         /// <summary>新目標計入火力通道後所需的鎖定時間（ticks）：基礎時間受隱身對衝與速度延長。</summary>
         public int LockOnTicksFor(BVRTarget target)
-            => LockOnTicksFor(Props, target);
+            => Mathf.Max(1, Mathf.RoundToInt(LockOnTicksFor(Props, target) * PowerThrottleUtility.LockFactor(parent)));
 
         public static int LockOnTicksFor(CompProperties_FireControlRadar settings, BVRTarget target)
         {

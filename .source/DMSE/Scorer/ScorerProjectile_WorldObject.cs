@@ -69,6 +69,11 @@ namespace DMSE
             WorldComponent_StrikeReports.Report(strikeMissionId, strikeWave, StrikeOutcome.Intercepted);
         }
 
+        protected override void OnJammedOut(Faction by)
+        {
+            WorldComponent_StrikeReports.Report(strikeMissionId, strikeWave, StrikeOutcome.Missed);
+        }
+
         protected override void OnArrived(Map map)
         {
             WorldComponent_StrikeReports.Report(strikeMissionId, strikeWave, map == null ? StrikeOutcome.Missed : StrikeOutcome.Arrived);
@@ -91,12 +96,15 @@ namespace DMSE
             ThingDef def = skyfallerIncoming ?? ThingDef.Named(ProjectileDefName);
 
             // 只有電視制導由玩家手動選點；其餘導引頭（含慣性）依導引頭規則自動鎖定，不暫停遊戲。
-            if (config == null || !config.PlayerChoosesTarget)
+            // 導引被干擾機打掉時也不選點：已經沒有導引頭了。
+            if (config == null || !config.PlayerChoosesTarget || State.jamDenied)
             {
                 // 盤旋飛控：導引頭找不到目標時不直接回退慣性，改在目標上空盤旋等待。
-                IntVec3 cell = GuidanceType.ArrivalCell(config, map, base.Faction, out bool loiter);
+                IntVec3 cell = ArrivalCellFor(map, out bool loiter);
                 bool loiterStarted = SpawnIncoming(def, cell, map, loiter);
-                string message = loiterStarted
+                string message = State.jamDenied
+                    ? "DMSE.EW.Jammer.ArrivedInertial".Translate().ToString()
+                    : loiterStarted
                     ? "DMSE.Missile.Loitering".Translate(config.LoiterTicks.ToStringTicksToPeriod()).ToString()
                     : "DMSE.Missile.SeekerLocked".Translate(config != null ? config.TargetingLabel : "DMSE.Guidance.Inertial".Translate().ToString()).ToString();
                 Messages.Message(message, new TargetInfo(cell, map), MessageTypeDefOf.NeutralEvent, historical: false);

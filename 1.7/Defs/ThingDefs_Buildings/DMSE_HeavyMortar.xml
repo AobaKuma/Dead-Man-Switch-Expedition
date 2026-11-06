@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ==================== 重型迫擊砲（2x2，超視距火砲）====================
+       CompArtilleryStrike 的迫擊砲使用者：原版砲塔（Building_TurretGun）＋原版可換彈藥
+       （CompChangeableProjectile）＋世界砲擊。砲手（CompMannable，右鍵「操作」）會自動
+       從附近搬運 storage filter 允許的迫擊砲彈並裝填；世界選靶開火時，這一發就用砲手
+       載入的那種砲彈的 projectileWhenLoaded 當超視距投射物（高爆／燃燒／EMP／煙霧／
+       泡沫／反粒子），所以換彈種就是換 BVR 彈頭。
+       砲管耐久沿用原版強化砲管（CompRefuelable、fuelIsMortarBarrel）：20 發，用完砲手自動換管。
+       世界砲擊進行中 Building_HeavyMortar 不自動接戰本地目標（避免搶走載入的砲彈），
+       砲管由 CompArtilleryStrike 的世界方位控制；沒有世界目標時就是一座原版迫擊砲。
+       彈道散佈 9 格、射程 24 tile、無雷達導引（guidedScatterRadius 預設 -1）。 -->
+  <ThingDef ParentName="BaseArtilleryBuilding">
+    <defName>DMSE_Turret_HeavyMortar</defName>
+    <label>heavy mortar</label>
+    <description>A towed heavy mortar on a wheeled carriage. A gunner loads any mortar shell from the stockpile and the crew can also shell targets on the world map: whatever shell is loaded becomes the long-range round. Switch the stockpile filter to change shell types. While a world mission is running the tube stays on the world bearing and the crew does not engage local targets.</description>
+    <thingClass>DMSE.Building_HeavyMortar</thingClass>
+    <graphicData>
+      <texPath>Things/Turrets/WheeledTripod</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2.4,2.4)</drawSize>
+      <damageData>
+        <rect>(0.31,0.25,0.38,0.7)</rect>
+        <cornerTL>Damage/Corner</cornerTL>
+      </damageData>
+      <shadowData>
+        <offset>(0,0,0)</offset>
+        <volume>(0.5,0.4,0.9)</volume>
+      </shadowData>
+    </graphicData>
+    <uiIconPath>Things/Turrets/HeavyMortar_icon</uiIconPath>
+    <uiIconScale>1.1</uiIconScale>
+    <size>(2,2)</size>
+    <fillPercent>0.5</fillPercent>
+    <statBases>
+      <MaxHitPoints>260</MaxHitPoints>
+      <Flammability>0.4</Flammability>
+      <WorkToBuild>3200</WorkToBuild>
+      <Mass>55</Mass>
+    </statBases>
+    <costList>
+      <Steel>240</Steel>
+      <ComponentIndustrial>8</ComponentIndustrial>
+    </costList>
+    <costStuffCount>90</costStuffCount>
+    <researchPrerequisites Inherit="False">
+      <li>DMSE_RadarNetwork</li>
+    </researchPrerequisites>
+    <designationCategory>DMS_Category</designationCategory>
+    <designatorDropdown>DMS_Turrets</designatorDropdown>
+    <building>
+      <turretGunDef>DMSE_Gun_HeavyMortar</turretGunDef>
+      <turretTopDrawSize>2.6</turretTopDrawSize>
+      <turretTopOffset>(0, 0)</turretTopOffset>
+      <turretBurstWarmupTime>4.0</turretBurstWarmupTime>
+      <turretBurstCooldownTime>28.0</turretBurstCooldownTime>
+    </building>
+    <comps>
+      <!-- 砲管耐久：20 發，用完砲手拿強化砲管自動更換（原版迫擊砲同一套）。 -->
+      <li Class="CompProperties_Refuelable">
+        <fuelLabel>Shots until barrel change</fuelLabel>
+        <fuelGizmoLabel>Barrel durability</fuelGizmoLabel>
+        <outOfFuelMessage>Needs new reinforced barrel</outOfFuelMessage>
+        <fuelFilter><thingDefs><li>ReinforcedBarrel</li></thingDefs></fuelFilter>
+        <fuelIsMortarBarrel>true</fuelIsMortarBarrel>
+        <fuelCapacity>20</fuelCapacity>
+        <fuelMultiplier>20</fuelMultiplier>
+        <initialFuelPercent>1</initialFuelPercent>
+        <showFuelGizmo>true</showFuelGizmo>
+        <minimumFueledThreshold>1</minimumFueledThreshold>
+        <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+        <initialAllowAutoRefuel>true</initialAllowAutoRefuel>
+        <autoRefuelPercent>0</autoRefuelPercent>
+        <fuelIconPath>Things/Item/Resource/ReinforcedBarrel/ReinforcedBarrel</fuelIconPath>
+      </li>
+      <!-- 超視距砲擊：砲彈 def 由砲手載入的彈種決定（不設 projectileDef），換彈種就換彈頭。 -->
+      <li Class="DMSE.CompProperties_ArtilleryStrike">
+        <departureProjectileDef>DMSE_ArtilleryDeparture_HeavyMortar</departureProjectileDef>
+        <worldObjectDef>DMSE_WorldObject_ArtilleryStrike</worldObjectDef>
+        <cooldownTicks>1680</cooldownTicks>
+        <warmupTicks>240</warmupTicks>
+        <scatterRadius>9</scatterRadius>
+        <salvoCount>1</salvoCount>
+        <salvoIntervalTicks>60</salvoIntervalTicks>
+        <maxRangeTiles>24</maxRangeTiles>
+        <worldTicksPerTile>90</worldTicksPerTile>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- 砲塔頭：只負責畫管子與原版本地開火。沒有 defaultProjectile，所以沒裝填就打不出去；
+       這也讓砲塔的 Available() 正確回報「未裝填」。 -->
+  <ThingDef ParentName="BaseArtilleryWeapon">
+    <defName>DMSE_Gun_HeavyMortar</defName>
+    <label>heavy mortar tube</label>
+    <description>The tube of a heavy mortar. It fires whatever shell the gunner has loaded, at local targets or - through the fire-control crew - across the world map.</description>
+    <graphicData>
+      <texPath>Things/Turrets/HeavyMortar_Gun</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <weaponTags>
+      <li>Artillery_BaseDestroyer</li>
+    </weaponTags>
+    <verbs>
+      <li>
+        <verbClass>Verb_Shoot</verbClass>
+        <isMortar>true</isMortar>
+        <requireLineOfSight>false</requireLineOfSight>
+        <warmupTime>4.0</warmupTime>
+        <defaultCooldownTime>28.0</defaultCooldownTime>
+        <forcedMissRadius>9</forcedMissRadius>
+        <minRange>29.9</minRange>
+        <range>500</range>
+        <burstShotCount>1</burstShotCount>
+        <soundCast>Mortar_LaunchA</soundCast>
+        <soundCastTail>GunTail_Heavy</soundCastTail>
+        <muzzleFlashScale>16</muzzleFlashScale>
+        <consumeFuelPerShot>1</consumeFuelPerShot>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+      </li>
+    </verbs>
+    <comps>
+      <!-- 原版 switchable projectile：砲手裝填的彈種記在這裡，也提供「砲彈」儲存設定頁。 -->
+      <li Class="CompProperties_ChangeableProjectile" />
+    </comps>
+    <building>
+      <fixedStorageSettings>
+        <filter>
+          <categories>
+            <li>MortarShells</li>
+          </categories>
+        </filter>
+      </fixedStorageSettings>
+      <defaultStorageSettings>
+        <filter>
+          <categories>
+            <li>MortarShells</li>
+          </categories>
+          <disallowedThingDefs>
+            <li>Shell_Firefoam</li>
+            <li>Shell_AntigrainWarhead</li>
+          </disallowedThingDefs>
+        </filter>
+      </defaultStorageSettings>
+    </building>
+  </ThingDef>
+
+  <!-- 離場投射物：從砲位沿弧線飛到地圖邊緣，抵達時交給世界航跡（不爆炸）。 -->
+  <ThingDef ParentName="BaseBullet">
+    <defName>DMSE_ArtilleryDeparture_HeavyMortar</defName>
+    <label>departing mortar shell</label>
+    <thingClass>DMSE.Projectile_ArtilleryDeparture</thingClass>
+    <graphicData>
+      <texPath>Things/Projectile/ShellHighExplosive</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>TransparentPostLight</shaderType>
+    </graphicData>
+    <projectile>
+      <damageDef>Bomb</damageDef>
+      <speed>45</speed>
+      <flyOverhead>true</flyOverhead>
+      <soundAmbient>MortarRound_Ambient</soundAmbient>
+    </projectile>
+  </ThingDef>
+
+</Defs>

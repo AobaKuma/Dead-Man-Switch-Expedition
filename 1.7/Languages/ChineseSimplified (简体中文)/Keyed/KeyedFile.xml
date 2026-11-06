@@ -259,6 +259,11 @@
   <DMSE.Artillery.FireDesc>选择世界地图上的目标持续炮击，直到下令停止。</DMSE.Artillery.FireDesc>
   <DMSE.Artillery.Stop>停止射击</DMSE.Artillery.Stop>
   <DMSE.Artillery.StopDesc>停止持续射击。当前状态：{0}</DMSE.Artillery.StopDesc>
+  <!-- 射击模式（校射／效力射） -->
+  <DMSE.Artillery.ModeRanging>射击模式：校射</DMSE.Artillery.ModeRanging>
+  <DMSE.Artillery.ModeEffect>射击模式：效力射</DMSE.Artillery.ModeEffect>
+  <DMSE.Artillery.ModeDesc>切换射击模式。校射：以目标地图中心为散布中心，每个落点都会登录成该地图的效力射落点。效力射：以该地图最后一次校射的落点为散布中心，同阵营对同一地图的火炮共用这个落点；每发再收束基础散布的 25%（每门炮各自累计，最低 1 格），且不使用雷达导引。</DMSE.Artillery.ModeDesc>
+  <DMSE.Artillery.EffectPoint>落点 ({0}, {1})，下一发散布 {2} 格</DMSE.Artillery.EffectPoint>
   <DMSE.Artillery.TooClose>目标距离太近，最小射程为 {0} 格。</DMSE.Artillery.TooClose>
   <DMSE.Artillery.NoFireControl>没有具备空闲引导通道的火控雷达。</DMSE.Artillery.NoFireControl>
   <DMSE.Artillery.NoAmmo>未装填炮弹，持续射击已停止。</DMSE.Artillery.NoAmmo>
@@ -267,6 +272,11 @@
   <DMSE.Artillery.NoBarrel>炮管已磨损，持续射击已停止，请更换强化炮管。</DMSE.Artillery.NoBarrel>
   <DMSE.Artillery.TargetIsHome>不能炮击自己所在的地块。</DMSE.Artillery.TargetIsHome>
   <DMSE.Artillery.OutOfRange>目标超出火炮射程（{0} 格）。</DMSE.Artillery.OutOfRange>
+  <DMSE.Artillery.MapNotSpawned>目标地图尚未加载，只能炮击已生成的地图。</DMSE.Artillery.MapNotSpawned>
+  <DMSE.Artillery.NoCrew>需要炮手操作：右键选择“操作”指派人员，炮手会自动装填炮弹。</DMSE.Artillery.NoCrew>
+  <DMSE.Artillery.NoLoadedShell>尚未装填炮弹：先让炮手装填迫击炮弹再开火。</DMSE.Artillery.NoLoadedShell>
+  <DMSE.Artillery.WaitingForShell>等待炮手补弹，射击任务暂停中。</DMSE.Artillery.WaitingForShell>
+  <DMSE.Artillery.NoRegistration>这张地图还没有校射落点，无法效力射；请先以校射模式打一发。</DMSE.Artillery.NoRegistration>
   <DMSE.BVR.DeviceInactive>装置不可用（无电、损坏或已关闭）。</DMSE.BVR.DeviceInactive>
   <!-- 状态字符串（用于 StopDesc） -->
   <DMSE.Artillery.StateCooldown>装填冷却中，剩余 {0}</DMSE.Artillery.StateCooldown>

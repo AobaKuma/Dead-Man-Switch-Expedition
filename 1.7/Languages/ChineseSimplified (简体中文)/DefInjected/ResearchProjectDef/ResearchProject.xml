@@ -42,4 +42,9 @@
 
   <DMSE_AntishipMissiles.label>反舰导弹</DMSE_AntishipMissiles.label>
   <DMSE_AntishipMissiles.description>解锁反舰巡飞弹，以及用于追踪世界地图移动目标的反舰主动雷达寻标器。超音速反舰导弹另需进阶导弹工程，高超音速反舰导弹另需先进导弹工程。</DMSE_AntishipMissiles.description>
+
+  <DMSE_ElectronicWarfare.label>电子战</DMSE_ElectronicWarfare.label>
+  <DMSE_ElectronicWarfare.description>解锁战情终端与长程预警雷达。战情终端可设定交战限制，并遥控全图的雷达与干扰机；长程预警雷达以分辨率和全部火控通道，换取 40 格的早期预警。</DMSE_ElectronicWarfare.description>
+  <DMSE_ElectronicAttack.label>电子攻击</DMSE_ElectronicAttack.label>
+  <DMSE_ElectronicAttack.description>解锁电子干扰机。它能打掉世界地图上 8 格红圈内敌对导弹的导引头，并压制敌方雷达；代价是满段 6000 瓦的耗电，以及所在地图的通讯台停用。</DMSE_ElectronicAttack.description>
 </LanguageData>

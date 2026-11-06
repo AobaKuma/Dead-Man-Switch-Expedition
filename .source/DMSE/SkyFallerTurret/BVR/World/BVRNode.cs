@@ -29,7 +29,13 @@ namespace DMSE
         /// <summary>警戒階段對探測半徑的係數（第一階段 0、第二階段觀測半徑、雷達暖機中 0）。</summary>
         public float rangeFactor = 1f;
 
+        /// <summary>敵方干擾機對本節點的壓制（0–1）；不存檔，建立節點時重算（見 <see cref="EWEnvironment"/>）。</summary>
+        public float jamEff;
+
         public bool UsesAlertRules => alertStage > 0;
+
+        /// <summary>玩家節點要遵守的戰情終端規則；沒有終端或不是地圖節點時為 null（走舊規則）。</summary>
+        private MapComponent_EWControl Roe => local != null ? MapComponent_EWControl.ActiveRoe(local.map, faction) : null;
 
         /// <summary>移動中的船每次掃描都要用當前 tile。</summary>
         public PlanetTile Tile => parent.Tile;
@@ -42,18 +48,18 @@ namespace DMSE
         /// <summary>設備正常有效探測半徑（不看警戒階段；仍含反隱身與雷達壓制）。</summary>
         public float EquipmentDetectionRange(BVRTargetProps target)
         {
-            if (defense != null) { return defense.DetectionRange(target); }
+            float jam = EWEnvironment.DetectionFactor(jamEff);
+            if (defense != null) { return defense.DetectionRange(target) * jam; }
 
             float range = 0;
             foreach (CompSearchRadar r in local.searchRadars)
             {
                 if (r.Active && r.parent.Faction == faction)
                 {
-                    range = Mathf.Max(range,
-                        MissileWorldMotion.DetectionRange(r.Props.worldDetectionRange, r.Props.antiStealthLevel, target));
+                    range = Mathf.Max(range, r.EffectiveWorldRange(target));
                 }
             }
-            return range;
+            return range * jam;
         }
 
         /// <summary>本節點自己的感測器是否看見這條航跡（不含資料鏈）。</summary>
@@ -76,7 +82,9 @@ namespace DMSE
         /// </summary>
         public bool ThreatAssessment => defense != null
             ? defense.ThreatAssessment
-            : faction != null && !faction.IsPlayer && faction.def.techLevel >= TechLevel.Spacer;
+            : faction != null && (faction.IsPlayer
+                ? Roe?.priority == EngagePriority.LargestFirst
+                : faction.def.techLevel >= TechLevel.Spacer);
 
         /// <summary>有攔截彈可用（現在或冷卻後）。</summary>
         public bool HasInterceptorAmmo => local != null
@@ -84,7 +92,7 @@ namespace DMSE
             : defense != null && defense.Available && defense.Stock > 0;
 
         public int FreeChannels => local != null
-            ? local.Channels.Free(faction)
+            ? Mathf.Min(local.Channels.Free(faction), Roe?.RoeChannelsLeft(faction) ?? int.MaxValue)
             : Mathf.Max(0, (defense?.Channels ?? 0) - (WorldComponent_BVRNetwork.Current?.CountEngaged(parent, faction) ?? 0));
 
         public CompFireControlRadar BestRadar(BVRTarget target, int eta) => local?.fireControlRadars
@@ -106,12 +114,13 @@ namespace DMSE
         /// </summary>
         public bool PolicyAllows(IBVRTrack track) => UsesAlertRules
             ? AirDefenseAlertPolicy.MayEngage(alertStage, faction, track.Attacker, WorldComponent_FactionAirDefenseAlert.TargetSite(track)?.Faction)
-            : AirDefenseAlertPolicy.LegacyMayEngage(faction, track.Attacker);
+            : Roe?.AllowsTrack(track) ?? AirDefenseAlertPolicy.LegacyMayEngage(faction, track.Attacker);
 
-        /// <summary>這個節點是否會為此航跡產生／更新情報。</summary>
+        /// <summary>這個節點是否會為此航跡產生／更新情報。交戰限制不影響偵測；開放中立時也要看得到中立航跡。</summary>
         public bool MayObserve(IBVRTrack track) => UsesAlertRules
             ? AirDefenseAlertPolicy.MayObserve(faction, track.Attacker)
-            : AirDefenseAlertPolicy.LegacyMayEngage(faction, track.Attacker);
+            : AirDefenseAlertPolicy.LegacyMayEngage(faction, track.Attacker)
+              || (Roe?.engageNeutral == true && AirDefenseAlertPolicy.IsNonAlly(faction, track.Attacker));
 
         public CompProperties_FireControlRadar DefenseFireControl => defense?.FireControl;
         public MissileConfig DefenseConfig => defense?.Config;

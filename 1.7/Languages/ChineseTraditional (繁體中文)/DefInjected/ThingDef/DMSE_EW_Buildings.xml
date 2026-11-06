@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <DMSE_WarRoomConsole.label>戰情終端</DMSE_WarRoomConsole.label>
+  <DMSE_WarRoomConsole.description>本圖防空的指揮台。可為地圖層與世界層的攔截設定交戰限制，並遙控全圖雷達與干擾機的開關與功率，包含一鍵電磁靜默。這些都不需要有人站崗。\n\n有操作員坐鎮時另有技能加成：智識延長雷達搜索距離，射擊縮短導彈發射平台的冷卻。\n\n交戰限制只在本圖有戰情終端時生效。</DMSE_WarRoomConsole.description>
+  <DMSE_JammerStation.label>電子干擾機</DMSE_JammerStation.label>
+  <DMSE_JammerStation.description>大功率地面干擾站。發射時會在世界地圖上以本殖民地為中心畫出半徑 8 格的紅圈。敵對導彈進圈時擲骰一次：導引頭可能被打掉，之後不是在地圖外消失，就是只能靠慣性落地。反輻射與慣性導彈免疫。圈內的敵方雷達也會失去距離與鎖定速度。\n\n發射期間本圖通訊台一律停用，沒有例外。滿段耗電 6000 瓦、待機 600 瓦，斷電立刻失效，而且反輻射導彈會追著它飛。</DMSE_JammerStation.description>
+  <DMSE_OTHWarningRadar.label>長程預警雷達</DMSE_OTHWarningRadar.label>
+  <DMSE_OTHWarningRadar.description>利用電離層反射訊號的超視距巨型陣列，最遠可在 40 世界格外發現來襲目標。解析度很差：小型目標的有效距離會縮水，也完全沒有火控通道。它買到的是決策時間，不是攔截能力。\n\n滿段耗電 12000 瓦。</DMSE_OTHWarningRadar.description>
+</LanguageData>

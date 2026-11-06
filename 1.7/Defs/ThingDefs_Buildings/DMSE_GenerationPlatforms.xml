@@ -452,6 +452,7 @@
         <basePowerConsumption>2500</basePowerConsumption>
         <transmitsPower>true</transmitsPower>
       </li>
+      <li Class="DMSE.CompProperties_PowerThrottle" />
       <li Class="DMSE.CompProperties_SearchRadar">
         <worldDetectionRange>12</worldDetectionRange>
         <searchDistance>200</searchDistance>
@@ -539,6 +540,7 @@
         <basePowerConsumption>1500</basePowerConsumption>
         <transmitsPower>true</transmitsPower>
       </li>
+      <li Class="DMSE.CompProperties_PowerThrottle" />
       <li Class="DMSE.CompProperties_FireControlRadar">
         <maxTargets>4</maxTargets>
         <powerLevel>1</powerLevel>

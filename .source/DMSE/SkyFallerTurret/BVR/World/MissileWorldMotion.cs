@@ -22,6 +22,13 @@ namespace DMSE
             return Mathf.Clamp(factor, tuning.minAltitudeFactor, Mathf.Max(tuning.minAltitudeFactor, tuning.maxAltitudeFactor));
         }
 
+        /// <summary>解析度係數：distanceLevel 低於雷達解析度的目標，有效距離依比例縮水；resolutionLevel ≤ 0 不限制。</summary>
+        public static float ResolutionFactor(float resolutionLevel, BVRTargetProps target)
+            => resolutionLevel <= 0f ? 1f : Mathf.Min(1f, target.distanceLevel / resolutionLevel);
+
+        public static float DetectionRange(float range, int antiStealth, BVRTargetProps target, float resolutionLevel)
+            => DetectionRange(range, antiStealth, target) * ResolutionFactor(resolutionLevel, target);
+
         public static float DetectionRange(float range, int antiStealth, BVRTargetProps target)
         {
             BVRWorldTuningDef tuning = BVRWorldTuningDef.Current;

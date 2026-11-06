@@ -368,6 +368,8 @@ namespace DMSE.BVRAcceptance
             tests.InsertRange(tests.FindIndex(x => x.id == "L1"), Tests_InterceptFx.Tests());
             // Missile launch FX remake (docs/導彈發射特效_重製計畫.md).
             tests.InsertRange(tests.FindIndex(x => x.id == "L1"), Tests_LaunchFx.Tests());
+            // War room console, jammer station, long-range radar (docs/電子戰建築_實作計畫.md).
+            tests.InsertRange(tests.FindIndex(x => x.id == "L1"), Tests_ElectronicWarfare.Tests());
             tests.Add(Tests_MissileFlight.OldSaveTest()); // reloads the game: last
             return tests;
         }
@@ -429,11 +431,13 @@ namespace DMSE.BVRAcceptance
                 new AcceptanceTest("N5", "Site destroyed with colonists on the map: map kept until they leave, nobody lost", Tests_FieldLaunchSite.SiteKeptWhileColonistsOnMap),
                 new AcceptanceTest("N6", "Radars are required: retreat with radars standing keeps the site and blocks re-entry", Tests_FieldLaunchSite.RetreatWithRadarsBlocksReentry),
                 new AcceptanceTest("G1", "God-mode instant missile assembly", Tests_Assembly.GodModeInstantAssembly),
-                new AcceptanceTest("R1", "Empero long-range gun: defs, head, targeting rules, out of shells", Tests_Artillery.DefsAndTargeting),
-                new AcceptanceTest("R2", "Empero unguided strike: warmup aim, departure, world track, map kept, edge entry near centre", Tests_Artillery.UnguidedStrike),
+                new AcceptanceTest("R1", "Empero long-range gun: defs, head, targeting rules (incl. unspawned map), out of shells", Tests_Artillery.DefsAndTargeting),
+                new AcceptanceTest("R2", "Empero unguided strike: unspawned base refused, warmup aim, departure, world track, existing map reused, edge entry near centre", Tests_Artillery.UnguidedStrike),
                 new AcceptanceTest("R3", "Empero radar-guided strike: channel per gun, scatter 3 on a hostile building, release, full pool unguided", Tests_Artillery.RadarGuidedStrike),
                 new AcceptanceTest("R4", "Empero local reduced-charge fire: head turns, shared shells, held during world fire", Tests_Artillery.LocalReducedChargeFire),
                 new AcceptanceTest("R5", "Empero local fire controls: min range, hold fire, forced target, buttons", Tests_Artillery.LocalFireControls),
+                new AcceptanceTest("R6", "Empero fire modes: ranging logs its impact, fire for effect shares it, scatter tightens per shot, unregistered map refused", Tests_Artillery.FireModes),
+                new AcceptanceTest("R7", "Heavy mortar: vanilla switchable shell (gunner-loaded) is the BVR warhead, reload pauses the mission, crew required", Tests_Artillery.HeavyMortar),
                 new AcceptanceTest("AB1", "Assembly bench: facilities, info card, labor speed", Tests_AssemblyBench.BenchFacilitiesAndInfoCard),
                 new AcceptanceTest("AB2", "Assembly bench: colonist hauls and assembles an order", Tests_AssemblyBench.BenchProducesWithColonist),
                 new AcceptanceTest("AB3", "Assembly bench: cancel, send to storage, designs, window", Tests_AssemblyBench.BenchOutputCancelAndDesigns),

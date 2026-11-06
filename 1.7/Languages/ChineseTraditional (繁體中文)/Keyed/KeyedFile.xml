@@ -252,13 +252,18 @@
   <DMSE.MissileLauncher.Ballistic.Loaded>彈道導彈：已裝配，可發射</DMSE.MissileLauncher.Ballistic.Loaded>
   <DMSE.MissileLauncher.Ballistic.LoadedWith>彈道導彈已裝填：{0}</DMSE.MissileLauncher.Ballistic.LoadedWith>
   <DMSE.MissileLauncher.Ballistic.AwaitingAssembly>彈道導彈：等待殖民者完成裝配</DMSE.MissileLauncher.Ballistic.AwaitingAssembly>
-  <DMSE.MissileLauncher.Ballistic.Unloaded>彈道發射井：未裝填，請在裝配分頁設定</DMSE.MissileLauncher.Ballistic.Unloaded>
+  <DMSE.MissileLauncher.Ballistic.Unloaded>彈道發射井：未裝配</DMSE.MissileLauncher.Ballistic.Unloaded>
 
   <!-- 火砲打擊（CompArtilleryStrike） -->
   <DMSE.Artillery.Fire>火砲射擊</DMSE.Artillery.Fire>
   <DMSE.Artillery.FireDesc>選擇世界地圖上的目標持續砲擊，直到下令停止。</DMSE.Artillery.FireDesc>
   <DMSE.Artillery.Stop>停止射擊</DMSE.Artillery.Stop>
   <DMSE.Artillery.StopDesc>停止持續射擊。目前狀態：{0}</DMSE.Artillery.StopDesc>
+  <!-- 射擊模式（校射／效力射） -->
+  <DMSE.Artillery.ModeRanging>射擊模式：校射</DMSE.Artillery.ModeRanging>
+  <DMSE.Artillery.ModeEffect>射擊模式：效力射</DMSE.Artillery.ModeEffect>
+  <DMSE.Artillery.ModeDesc>切換射擊模式。校射：以目標地圖中心為散佈中心，每個落點都會登錄成該地圖的效力射落點。效力射：以該地圖最後一次校射的落點為散佈中心，同陣營對同一地圖的砲共用這個落點；每發再收束基礎散佈的 25%（每門砲各自累計，最低 1 格），且不佔用雷達通道。</DMSE.Artillery.ModeDesc>
+  <DMSE.Artillery.EffectPoint>落點 ({0}, {1})，下一發散佈 {2} 格</DMSE.Artillery.EffectPoint>
   <DMSE.Artillery.TooClose>目標距離太近，最小射程為 {0} 格。</DMSE.Artillery.TooClose>
   <DMSE.Artillery.NoFireControl>沒有具備空閒引導通道的火控雷達。</DMSE.Artillery.NoFireControl>
   <DMSE.Artillery.NoAmmo>未裝填砲彈，持續射擊已停止。</DMSE.Artillery.NoAmmo>
@@ -266,15 +271,20 @@
   <DMSE.Artillery.Missed>砲擊找不到目標，已落空。</DMSE.Artillery.Missed>
   <DMSE.Artillery.NoBarrel>砲管已耗損，持續射擊已停止，請更換強化砲管。</DMSE.Artillery.NoBarrel>
   <DMSE.Artillery.TargetIsHome>不能砲擊自己所在的地塊。</DMSE.Artillery.TargetIsHome>
-  <DMSE.Artillery.OutOfRange>目標超出火砲射程（{0} 格）。</DMSE.Artillery.OutOfRange>
-  <DMSE.BVR.DeviceInactive>裝置不可用（無電、損壞或已關閉）。</DMSE.BVR.DeviceInactive>
+  <DMSE.Artillery.OutOfRange>目標超出射程（{0} 格）。</DMSE.Artillery.OutOfRange>
+  <DMSE.Artillery.MapNotSpawned>目標地圖尚未載入，只能砲擊已生成的地圖。</DMSE.Artillery.MapNotSpawned>
+  <DMSE.Artillery.NoCrew>需要砲手操作：右鍵選擇「操作」指派人員，砲手會自動裝填砲彈。</DMSE.Artillery.NoCrew>
+  <DMSE.Artillery.NoLoadedShell>尚未裝填砲彈：先讓砲手裝填迫擊砲彈再開火。</DMSE.Artillery.NoLoadedShell>
+  <DMSE.Artillery.WaitingForShell>等待砲手補彈，射擊任務暫停中。</DMSE.Artillery.WaitingForShell>
+  <DMSE.Artillery.NoRegistration>這張地圖還沒有校射落點，無法效力射；請先以校射模式打一發。</DMSE.Artillery.NoRegistration>
+  <DMSE.BVR.DeviceInactive>裝置不可用（無電力、損壞或已關閉）。</DMSE.BVR.DeviceInactive>
   <!-- 狀態字串（用於 StopDesc） -->
   <DMSE.Artillery.StateCooldown>裝填冷卻中，剩餘 {0}</DMSE.Artillery.StateCooldown>
   <DMSE.Artillery.StateAiming>瞄準中（{0}%）</DMSE.Artillery.StateAiming>
   <DMSE.Artillery.StateReady>可發射</DMSE.Artillery.StateReady>
   <DMSE.Artillery.Ready>火砲：可發射</DMSE.Artillery.Ready>
   <DMSE.Artillery.GuidanceOnline>雷達導引：可用（散佈 {0} 格）</DMSE.Artillery.GuidanceOnline>
-  <DMSE.Artillery.GuidanceOffline>雷達導引：沒有空閒火控通道（無導引，散佈 {0} 格）</DMSE.Artillery.GuidanceOffline>
+  <DMSE.Artillery.GuidanceOffline>雷達導引：無導引（散佈 {0} 格）</DMSE.Artillery.GuidanceOffline>
 
   <!-- PlaceWorker -->
   <DMSE.PlaceWorker.TooCloseSameLayer>與 {0} 太近。</DMSE.PlaceWorker.TooCloseSameLayer>

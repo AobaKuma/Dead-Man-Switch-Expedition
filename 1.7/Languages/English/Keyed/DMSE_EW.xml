@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <DMSE.EW.Tab>War room</DMSE.EW.Tab>
+  <DMSE.EW.Throttle.Standby>Standby</DMSE.EW.Throttle.Standby>
+  <DMSE.EW.Throttle.Inspect>Power level: {0} ({1} W)</DMSE.EW.Throttle.Inspect>
+  <DMSE.EW.Throttle.Gizmo>Power: {0}</DMSE.EW.Throttle.Gizmo>
+  <DMSE.EW.Throttle.GizmoDesc>Set the power level. Lower power shortens range and weakens the effect but draws less and is harder for anti-radiation missiles to pick. Standby stops the device completely and still draws idle power.</DMSE.EW.Throttle.GizmoDesc>
+  <DMSE.EW.Jammer.Inspect>Jamming radius {0} world tiles, strength {1}, covering {2} hostile tracks</DMSE.EW.Jammer.Inspect>
+  <DMSE.EW.Jammer.CommsBlocked>Comms consoles on this map are disabled while jamming.</DMSE.EW.Jammer.CommsBlocked>
+  <DMSE.EW.Jammer.CommsBlockedReason>comms are being jammed</DMSE.EW.Jammer.CommsBlockedReason>
+  <DMSE.EW.Jammer.CommsBlockedMessage>A jammer is transmitting: comms consoles on this map are disabled.</DMSE.EW.Jammer.CommsBlockedMessage>
+  <DMSE.EW.Jammer.ShowRing>Show jamming ring</DMSE.EW.Jammer.ShowRing>
+  <DMSE.EW.Jammer.ShowRingDesc>Jamming radius {0} tiles (red ring on the world map). Jump to this colony on the world map.</DMSE.EW.Jammer.ShowRingDesc>
+  <DMSE.EW.Jammer.GuidanceDenied>{0} lost its seeker to jamming and will fall on inertial guidance.</DMSE.EW.Jammer.GuidanceDenied>
+  <DMSE.EW.Jammer.JammedOut>{0} lost guidance to {1}'s jamming and went down off-map.</DMSE.EW.Jammer.JammedOut>
+  <DMSE.EW.Jammer.ArrivedInertial>Seeker jammed: the missile is falling on inertial guidance.</DMSE.EW.Jammer.ArrivedInertial>
+  <DMSE.EW.Alert.CommsJammed>Comms jammed</DMSE.EW.Alert.CommsJammed>
+  <DMSE.EW.Alert.CommsJammedDesc>A jammer is transmitting on this map, so its comms consoles cannot be used. Set the jammer to standby or switch it off to restore comms.</DMSE.EW.Alert.CommsJammedDesc>
+  <DMSE.EW.Console.NoOperator>No operator: no skill bonus</DMSE.EW.Console.NoOperator>
+  <DMSE.EW.Console.Operator>Operator: {0}</DMSE.EW.Console.Operator>
+  <DMSE.EW.Tab.NoPower>No power: remote control and rules cannot be changed. The current rules stay in effect.</DMSE.EW.Tab.NoPower>
+  <DMSE.EW.Tab.Overview>Status</DMSE.EW.Tab.Overview>
+  <DMSE.EW.Tab.RadarsOnline>Radars online: {0} / {1}</DMSE.EW.Tab.RadarsOnline>
+  <DMSE.EW.Tab.JammerRow>{0}: strength {1}, covering {2} tracks</DMSE.EW.Tab.JammerRow>
+  <DMSE.EW.Tab.LocalJam>Enemy jamming here: {0}</DMSE.EW.Tab.LocalJam>
+  <DMSE.EW.Tab.RadarRow>{0}: base {1} × power {2} × operator {3} = {4} tiles</DMSE.EW.Tab.RadarRow>
+  <DMSE.EW.Tab.SilencedWarning>Emissions silence is on: radars and jammers are off.</DMSE.EW.Tab.SilencedWarning>
+  <DMSE.EW.Tab.Remote>Remote control</DMSE.EW.Tab.Remote>
+  <DMSE.EW.Tab.PowerOn>On</DMSE.EW.Tab.PowerOn>
+  <DMSE.EW.Tab.PowerOff>Off</DMSE.EW.Tab.PowerOff>
+  <DMSE.EW.Tab.Throttle>Power...</DMSE.EW.Tab.Throttle>
+  <DMSE.EW.Tab.Silence>Emissions silence</DMSE.EW.Tab.Silence>
+  <DMSE.EW.Tab.Restore>End silence (restores what was on)</DMSE.EW.Tab.Restore>
+  <DMSE.EW.Tab.Roe>Rules of engagement</DMSE.EW.Tab.Roe>
+  <DMSE.EW.Tab.Operator>Operator bonus</DMSE.EW.Tab.Operator>
+  <DMSE.EW.Tab.OperatorRange>Intellectual {0}: radar range × {1}</DMSE.EW.Tab.OperatorRange>
+  <DMSE.EW.Tab.OperatorCooldown>Shooting {0}: launcher cooldown × {1}</DMSE.EW.Tab.OperatorCooldown>
+  <DMSE.EW.Group.Jammers>Jammers</DMSE.EW.Group.Jammers>
+  <DMSE.EW.Group.SearchRadars>Search radars</DMSE.EW.Group.SearchRadars>
+  <DMSE.EW.Group.FireControlRadars>Fire-control radars</DMSE.EW.Group.FireControlRadars>
+  <DMSE.EW.Group.All>All</DMSE.EW.Group.All>
+  <DMSE.EW.Roe.AutoEngage>Automatic engagement</DMSE.EW.Roe.AutoEngage>
+  <DMSE.EW.Roe.AutoEngageDesc>When off, targets are still detected and alerts still fire, but interceptors are not launched. Close-in weapons keep firing.</DMSE.EW.Roe.AutoEngageDesc>
+  <DMSE.EW.Roe.PolicyAll>Engage all targets (off: self-defense only)</DMSE.EW.Roe.PolicyAll>
+  <DMSE.EW.Roe.PolicyAllDesc>Self-defense only engages missiles aimed at this colony or an ally. Passing missiles are left alone.</DMSE.EW.Roe.PolicyAllDesc>
+  <DMSE.EW.Roe.Neutral>Fire on neutral factions</DMSE.EW.Roe.Neutral>
+  <DMSE.EW.Roe.LargestFirst>Largest target first (off: first come, first served)</DMSE.EW.Roe.LargestFirst>
+  <DMSE.EW.Roe.LargestFirstDesc>When channels run short, engage the largest radar signature first instead of the soonest arrival.</DMSE.EW.Roe.LargestFirstDesc>
+  <DMSE.EW.Roe.ChannelCap>Air-defense channel limit: {0}</DMSE.EW.Roe.ChannelCap>
+  <DMSE.EW.Roe.CapUnlimited>none</DMSE.EW.Roe.CapUnlimited>
+  <DMSE.EW.Roe.HoldFire>Do not intercept:</DMSE.EW.Roe.HoldFire>
+  <DMSE.EW.Roe.Class.Loitering>Loitering munitions</DMSE.EW.Roe.Class.Loitering>
+  <DMSE.EW.Roe.Class.DropPod>Drop pods</DMSE.EW.Roe.Class.DropPod>
+  <DMSE.EW.Roe.Class.Ballistic>Ballistic missiles</DMSE.EW.Roe.Class.Ballistic>
+</LanguageData>

@@ -70,6 +70,7 @@
         <basePowerConsumption>1200</basePowerConsumption>
         <transmitsPower>true</transmitsPower>
       </li>
+      <li Class="DMSE.CompProperties_PowerThrottle" />
       <!-- 需要操作員手動操作方能運作；無人操作時雷達不會運轉。 -->
       <li Class="CompProperties_Mannable">
         <planetLayerWhitelist>

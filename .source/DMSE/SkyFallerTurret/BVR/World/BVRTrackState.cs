@@ -27,6 +27,12 @@ namespace DMSE
         /// <summary>已觸發的干擾次數（含失敗），僅供檢視與測試。</summary>
         public int jamCount;
 
+        /// <summary>已擲過地面干擾機的骰（每條航跡只擲一次；存檔，否則讀檔重擲會被 SL）。</summary>
+        public bool jamRolled;
+
+        /// <summary>導引被地面干擾機打掉：抵達時轉慣性落點、不盤旋、不再做終端更新。</summary>
+        public bool jamDenied;
+
         /// <summary>逐陣營情報（NPC 防空警戒）；<see cref="detectedByFaction"/> 只保留給玩家介面用的代表探測者。</summary>
         public List<AirDefenseObservation> observations = new List<AirDefenseObservation>();
 
@@ -74,6 +80,8 @@ namespace DMSE
             Scribe_Values.Look(ref chaffLeft, "chaffLeft", -1);
             Scribe_Values.Look(ref lockDelayUntil, "lockDelayUntil", 0);
             Scribe_Values.Look(ref jamCount, "jamCount", 0);
+            Scribe_Values.Look(ref jamRolled, "jamRolled", false);
+            Scribe_Values.Look(ref jamDenied, "jamDenied", false);
             Scribe_Collections.Look(ref observations, "observations", LookMode.Deep);
             Scribe_Values.Look(ref alertWaveId, "alertWaveId");
             if (Scribe.mode == LoadSaveMode.PostLoadInit)

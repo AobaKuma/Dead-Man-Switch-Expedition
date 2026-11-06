@@ -48,4 +48,9 @@
 
   <DMSE_AntishipMissiles.label>反艦導彈</DMSE_AntishipMissiles.label>
   <DMSE_AntishipMissiles.description>解鎖反艦巡飛彈與追蹤世界地圖移動目標的反艦主動雷達尋標器。這類導彈能在鎖定目標後有限次修正彈道，命中移動中的非固定目標，特別是海上移動的導彈發射平台與戰略潛艇。</DMSE_AntishipMissiles.description>
+
+  <DMSE_ElectronicWarfare.label>電子戰</DMSE_ElectronicWarfare.label>
+  <DMSE_ElectronicWarfare.description>解鎖戰情終端與長程預警雷達。戰情終端可設定交戰限制，並遙控全圖的雷達與干擾機；長程預警雷達以解析度和全部火控通道，換取 40 格的早期預警。</DMSE_ElectronicWarfare.description>
+  <DMSE_ElectronicAttack.label>電子攻擊</DMSE_ElectronicAttack.label>
+  <DMSE_ElectronicAttack.description>解鎖電子干擾機。它能打掉世界地圖上 8 格紅圈內敵對導彈的導引頭，並壓制敵方雷達；代價是滿段 6000 瓦的耗電，以及所在地圖的通訊台停用。</DMSE_ElectronicAttack.description>
 </LanguageData>

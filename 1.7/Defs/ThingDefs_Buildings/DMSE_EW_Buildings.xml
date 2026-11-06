@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- 電子戰三類建築（docs/電子戰建築_實作計畫.md）：長程雷達給時間 → 戰情終端給規則 → 干擾機給優勢。
+       貼圖都是佔位（FacilityBase_Green／Radar_FC／Radar_EW），待換正式美術。 -->
+
+  <!-- ==================== 戰情終端 ==================== -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_WarRoomConsole</defName>
+    <label>war room console</label>
+    <description>A command console for this map's air defense. It sets rules of engagement for both local and world-map interception, and remotely switches and throttles every radar and jammer on the map, including one-touch emissions silence. None of that needs a crew.\n\nAn operator adds a skill bonus while seated: Intellectual extends radar search range, Shooting shortens missile launcher cooldown.\n\nThe rules only apply while a console stands on the map.</description>
+    <!-- 佔位貼圖：待換戰情終端美術。 -->
+    <graphicData>
+      <texPath>Things/Building/FacilityBase_Green</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(3,3)</drawSize>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <castEdgeShadows>true</castEdgeShadows>
+    <fillPercent>0.5</fillPercent>
+    <pathCost>42</pathCost>
+    <canOverlapZones>false</canOverlapZones>
+    <rotatable>true</rotatable>
+    <size>(3,3)</size>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,-2)</interactionCellOffset>
+    <tickerType>Normal</tickerType>
+    <statBases>
+      <MaxHitPoints>400</MaxHitPoints>
+      <WorkToBuild>16000</WorkToBuild>
+      <Flammability>0.5</Flammability>
+    </statBases>
+    <costList>
+      <Steel>200</Steel>
+      <ComponentIndustrial>10</ComponentIndustrial>
+      <ComponentSpacer>2</ComponentSpacer>
+    </costList>
+    <building>
+      <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+    </building>
+    <researchPrerequisites>
+      <li>DMSE_ElectronicWarfare</li>
+    </researchPrerequisites>
+    <designationCategory>DMS_Category</designationCategory>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+    <inspectorTabs>
+      <li>DMSE.ITab_WarRoom</li>
+    </inspectorTabs>
+    <comps>
+      <li Class="CompProperties_Forbiddable" />
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>300</basePowerConsumption>
+      </li>
+      <li Class="DMSE.CompProperties_WarRoomConsole" />
+    </comps>
+  </ThingDef>
+
+  <!-- ==================== 電子干擾機 ==================== -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_JammerStation</defName>
+    <label>electronic jammer station</label>
+    <description>A high-power ground jammer. While transmitting it projects a red ring on the world map, 8 tiles around this colony's tile. A hostile missile entering the ring is rolled once: its seeker may be knocked out, and it then either vanishes off-map or falls on inertial guidance alone. Anti-radiation and inertial missiles are immune. Enemy radars inside the ring also lose range and lock speed.\n\nComms consoles on this map stop working while it transmits, with no exceptions. It draws 6000 W at full power and 600 W on standby, fails at once when the power fails, and anti-radiation missiles home on it.</description>
+    <!-- 佔位貼圖：待換干擾碟美術。碟型天線純視覺、不影響場形。 -->
+    <graphicData>
+      <texPath>Things/Building/FacilityBase_Green</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(3,3)</drawSize>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <castEdgeShadows>true</castEdgeShadows>
+    <fillPercent>0.7</fillPercent>
+    <pathCost>42</pathCost>
+    <canOverlapZones>false</canOverlapZones>
+    <size>(3,3)</size>
+    <tickerType>Normal</tickerType>
+    <statBases>
+      <MaxHitPoints>450</MaxHitPoints>
+      <WorkToBuild>24000</WorkToBuild>
+      <Flammability>0</Flammability>
+    </statBases>
+    <costList>
+      <Steel>300</Steel>
+      <Tungsteel>400</Tungsteel>
+      <ComponentStamped>20</ComponentStamped>
+      <ComponentSpacer>6</ComponentSpacer>
+    </costList>
+    <building>
+      <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+    </building>
+    <researchPrerequisites>
+      <li>DMSE_ElectronicAttack</li>
+    </researchPrerequisites>
+    <designationCategory>DMS_Category</designationCategory>
+    <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
+    <comps>
+      <li Class="CompProperties_Forbiddable" />
+      <li Class="CompProperties_Breakdownable" />
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>6000</basePowerConsumption>
+        <transmitsPower>true</transmitsPower>
+      </li>
+      <li Class="DMSE.CompProperties_PowerThrottle">
+        <drawAtFull>6000</drawAtFull>
+        <idleFraction>0.1</idleFraction>
+      </li>
+      <li Class="CompProperties_Stunnable">
+        <useLargeEMPEffecter>true</useLargeEMPEffecter>
+        <affectedDamageDefs>
+          <li>EMP</li>
+        </affectedDamageDefs>
+      </li>
+      <li Class="DMSE.CompProperties_Jammer">
+        <jamPower>0.6</jamPower>
+        <jamLevel>2</jamLevel>
+        <worldRange>8</worldRange>
+        <blocksComms>true</blocksComms>
+        <jamGuidanceBreakFactor>1</jamGuidanceBreakFactor>
+        <offMapChance>0.5</offMapChance>
+      </li>
+      <li Class="DMSE.CompProperties_TurretFacingRenderer">
+        <texPath>Things/Building/Radar_FC</texPath>
+        <drawSize>(4,4)</drawSize>
+        <altitudeOffset>0.01</altitudeOffset>
+        <rotationSpeedDegPerTick>3</rotationSpeedDegPerTick>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ==================== 長程預警雷達 ==================== -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_OTHWarningRadar</defName>
+    <label>long-range warning radar</label>
+    <description>A huge over-the-horizon array that bounces signals off the ionosphere to spot incoming threats up to 40 world tiles away. Its resolution is poor: small targets shrink out of its range, and it has no fire-control channels at all. It buys decision time, not interceptions.\n\nDraws 12000 W at full power.</description>
+    <!-- 佔位貼圖：待換 5×5 大型陣列美術。不掛 CompProperties_FireControlRadar：不產生火力通道。 -->
+    <graphicData>
+      <texPath>Things/Building/FacilityBase_Green</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(5,5)</drawSize>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <castEdgeShadows>true</castEdgeShadows>
+    <fillPercent>0.9</fillPercent>
+    <canOverlapZones>false</canOverlapZones>
+    <size>(5,5)</size>
+    <tickerType>Normal</tickerType>
+    <statBases>
+      <MaxHitPoints>600</MaxHitPoints>
+      <WorkToBuild>30000</WorkToBuild>
+      <Flammability>0</Flammability>
+    </statBases>
+    <costList>
+      <Steel>400</Steel>
+      <Tungsteel>500</Tungsteel>
+      <ComponentStamped>30</ComponentStamped>
+      <ComponentSpacer>4</ComponentSpacer>
+    </costList>
+    <building>
+      <destroySound>BuildingDestroyed_Metal_Big</destroySound>
+    </building>
+    <researchPrerequisites>
+      <li>DMSE_ElectronicWarfare</li>
+    </researchPrerequisites>
+    <designationCategory>DMS_Category</designationCategory>
+    <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
+    <comps>
+      <li Class="CompProperties_Forbiddable" />
+      <li Class="CompProperties_Breakdownable" />
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>12000</basePowerConsumption>
+        <transmitsPower>true</transmitsPower>
+      </li>
+      <li Class="DMSE.CompProperties_PowerThrottle" />
+      <li Class="CompProperties_Stunnable">
+        <useLargeEMPEffecter>true</useLargeEMPEffecter>
+        <affectedDamageDefs>
+          <li>EMP</li>
+        </affectedDamageDefs>
+      </li>
+      <li Class="DMSE.CompProperties_SearchRadar">
+        <worldDetectionRange>40</worldDetectionRange>
+        <searchDistance>360</searchDistance>
+        <ticksPerDistance>12</ticksPerDistance>
+        <powerLevel>1</powerLevel>
+        <antiStealthLevel>0</antiStealthLevel>
+        <resolutionLevel>1.6</resolutionLevel>
+      </li>
+      <li Class="DMSE.CompProperties_TurretFacingRenderer">
+        <texPath>Things/Building/Radar_EW</texPath>
+        <drawSize>(13,13)</drawSize>
+        <altitudeOffset>0.01</altitudeOffset>
+        <rotationSpeedDegPerTick>1</rotationSpeedDegPerTick>
+        <idleTurnDegreesPerTick>0.5</idleTurnDegreesPerTick>
+        <idleTurnDuration>600</idleTurnDuration>
+        <idleTurnIntervalMin>1</idleTurnIntervalMin>
+        <idleTurnIntervalMax>2</idleTurnIntervalMax>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>DMSE.PlaceWorker_NoAdjacentSameLayer</li>
+    </placeWorkers>
+  </ThingDef>
+
+  <JobDef>
+    <defName>DMSE_OperateWarRoom</defName>
+    <driverClass>DMSE.JobDriver_OperateWarRoom</driverClass>
+    <reportString>operating war room console.</reportString>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+</Defs>

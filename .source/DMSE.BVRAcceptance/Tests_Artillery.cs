@@ -4,6 +4,7 @@ using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
 using Verse;
+using Verse.AI;
 using static DMSE.BVRAcceptance.BVRFixture;
 
 namespace DMSE.BVRAcceptance
@@ -53,8 +54,11 @@ namespace DMSE.BVRAcceptance
             PlanetTile near = TileAtDistance(6f, 12f);
             PlanetTile far = TileAtDistance(25f, 40f);
             t.Require(near.Valid && far.Valid, "test tiles exist");
-            t.Check(art.CanTargetTile(near, out _), "tile within 20 accepted");
-            t.Check(!art.CanTargetTile(far, out string r2) && r2.Contains("20"), $"tile beyond 20 rejected ({r2})");
+            t.Check(!art.CanTargetTile(near, out string rMap)
+                && rMap == "DMSE.Artillery.MapNotSpawned".Translate().ToString(),
+                $"tile without a spawned map rejected ({rMap})");
+            t.Check(!art.CanTargetTile(far, out string r2) && r2.Contains("20"),
+                $"tile beyond 20 rejected before the map check ({r2})");
             PlanetLayer orbit = Find.WorldGrid.Orbit;
             if (orbit != null)
             {
@@ -221,8 +225,9 @@ namespace DMSE.BVRAcceptance
         }
 
         /// <summary>
-        /// Unguided shot at an NPC base: aim warmup turns the head, one shell is used, the departure flies off the
-        /// map edge, the world track arrives, generates the base map, keeps it, and the shell lands near its centre.
+        /// Unguided shot at an NPC base: an unspawned base map is refused, the spawned one is aimed at (warmup turns the
+        /// head), one shell is used, the departure flies off the map edge, the world track arrives, reuses that same map
+        /// and keeps it, and the shell lands near its centre.
         /// </summary>
         public static IEnumerable<Wait> UnguidedStrike(TestContext t)
         {
@@ -234,9 +239,26 @@ namespace DMSE.BVRAcceptance
             CompArtilleryStrike art = gun.TryGetComp<CompArtilleryStrike>();
             CompTurretFacingRenderer head = gun.TryGetComp<CompTurretFacingRenderer>();
             CompRefuelable shells = gun.TryGetComp<CompRefuelable>();
-            t.Require(art.CanTargetTile(site.Tile, out string why), $"base tile is a valid target ({why})");
 
+            // Artillery does not generate maps: a tile whose map is not spawned cannot be targeted.
+            t.Check(!art.CanTargetTile(site.Tile, out string notSpawned)
+                && notSpawned == "DMSE.Artillery.MapNotSpawned".Translate().ToString(),
+                $"base without a spawned map is refused ({notSpawned})");
+            t.Check(!site.HasMap, "targeting did not generate the base map");
+            Map map = SpawnSiteMap(site);
+            t.Require(map != null && site.HasMap, "the base map is spawned up front");
+            t.Require(art.CanTargetTile(site.Tile, out string why), $"base tile is a valid target once its map is spawned ({why})");
+
+            // The world bearing must be the same one the world map shows (vanilla PlanetLayer heading), or the turret
+            // and the shell leave/enter on the mirrored side of the map.
+            PlanetLayer layer = Home.Tile.Layer;
             float bearing = ArtilleryStrikeUtility.WorldDirectionAngle(Home.Tile, site.Tile);
+            t.Check(Mathf.Abs(Mathf.DeltaAngle(bearing, layer.GetHeadingFromTo(Home.Tile, site.Tile))) < 0.5f,
+                $"the artillery bearing is the world-map heading ({bearing:0.0} vs {layer.GetHeadingFromTo(Home.Tile, site.Tile):0.0})");
+            float backBearing = ArtilleryStrikeUtility.WorldDirectionAngle(site.Tile, Home.Tile);
+            t.Check(Mathf.Abs(Mathf.Abs(Mathf.DeltaAngle(bearing, backBearing)) - 180f) < 0.5f,
+                $"the shell enters the target map from the side facing home ({backBearing:0.0} vs {bearing:0.0})");
+
             Projectile departure = null;
             TickWatch departed = AcceptanceDriver.Watch(() =>
             {
@@ -280,9 +302,9 @@ namespace DMSE.BVRAcceptance
             t.Check(Mathf.Abs(flight - expectedFlight) <= expectedFlight * 0.25f + 10f,
                 $"world flight follows worldTicksPerTile ({flight} vs ~{expectedFlight:0})");
             t.Check(Find.CurrentMap == Home && !WorldRendererUtility.WorldSelected, "arrival does not move the camera");
-            t.Require(site.HasMap, "arrival generated the base map");
-            Map map = site.Map;
-            t.Check(GameComponent_MissileEngage.Comp.times.ContainsKey(map), "the generated map is kept until the shells land");
+            t.Require(site.HasMap, "the base map still exists");
+            t.Check(site.Map == map, "the salvo lands on the existing map (no map is generated for the shot)");
+            t.Check(GameComponent_MissileEngage.Comp.times.ContainsKey(map), "the map is kept until the shells land");
 
             Projectile shell = null;
             IntVec3 entry = IntVec3.Invalid;
@@ -291,7 +313,9 @@ namespace DMSE.BVRAcceptance
                 if (shell == null)
                 {
                     shell = map.listerThings.ThingsOfDef(Shell).OfType<Projectile>().FirstOrDefault();
-                    entry = shell?.Position ?? IntVec3.Invalid;
+                    // The first observed Position can already be a few cells inside the map (the shell moves every
+                    // tick); Projectile.origin is the exact cell SpawnShell launched it from.
+                    entry = shell != null ? Field<Vector3>(shell, "origin").ToIntVec3() : IntVec3.Invalid;
                 }
                 return shell != null;
             });
@@ -320,6 +344,8 @@ namespace DMSE.BVRAcceptance
         {
             Site site = SpawnMissileBase(6f, 14f);
             t.Require(site != null, "an NPC missile base 6-14 tiles away");
+            Map map = SpawnSiteMap(site);
+            t.Require(map != null && site.HasMap, "the base map is spawned up front (artillery only strikes existing maps)");
             Thing gun = SpawnBuilding(Empero, 2, 2);
             Thing radar = SpawnBuilding(FireControlRadar, 10, 2);
             yield return WaitPowered();
@@ -362,8 +388,8 @@ namespace DMSE.BVRAcceptance
 
             var waitArrive = new WaitUntil(() => track.Destroyed && site.HasMap, 3000);
             yield return waitArrive;
-            t.Require(!waitArrive.TimedOut, "the track arrives and the base map exists");
-            Map map = site.Map;
+            t.Require(!waitArrive.TimedOut, "the track arrives on the base map");
+            t.Check(site.Map == map, "the salvo reuses the existing map (no map is generated for the shot)");
             IntVec3 expected = ArtilleryStrikeUtility.FindGuidedTarget(map, Player, Center(map));
             Thing victim = expected.GetThingList(map).FirstOrDefault(x => x.Faction != null && x.HostileTo(Player));
             t.Check(victim is Building, $"guided target is a hostile building ({victim?.def.defName ?? "none"} at {expected})");
@@ -401,6 +427,313 @@ namespace DMSE.BVRAcceptance
             t.Check(!waitThird.TimedOut, "the gun still fires without a channel");
             t.Check(!art.LastShotGuided && art.ReservedRadar == null, "that shot is unguided and books nothing");
             art.StopSustainedFire();
+        }
+
+        /// <summary>
+        /// Fire modes: a ranging shot logs its impact for the faction, fire for effect from another gun lands on that
+        /// shared point, each fire-for-effect shot tightens its scatter by a quarter of the base scatter, stopping the
+        /// mission resets it, and a map without a logged impact refuses fire for effect.
+        /// </summary>
+        public static IEnumerable<Wait> FireModes(TestContext t)
+        {
+            Site site = SpawnMissileBase(6f, 14f);
+            t.Require(site != null, "an NPC missile base 6-14 tiles away");
+            Map map = SpawnSiteMap(site);
+            t.Require(map != null && site.HasMap, "the base map is spawned up front");
+            Thing gunA = SpawnBuilding(Empero, 2, 2);
+            Thing gunB = SpawnBuilding(Empero, 10, 2);
+            Thing radar = SpawnBuilding(FireControlRadar, 18, 2);
+            yield return WaitPowered();
+            yield return new WaitTicks(2);
+
+            CompArtilleryStrike artA = gunA.TryGetComp<CompArtilleryStrike>();
+            CompArtilleryStrike artB = gunB.TryGetComp<CompArtilleryStrike>();
+            CompFireControlRadar fc = radar.TryGetComp<CompFireControlRadar>();
+            CompProperties_ArtilleryStrike props = artA.Props;
+            MapComponent_ArtilleryStrikes comp = map.GetComponent<MapComponent_ArtilleryStrikes>();
+            t.Require(comp != null, "the base map has the artillery scheduler");
+            t.Check(fc != null && fc.Active && fc.FreeArtilleryChannels > 0, "the fire-control radar is online");
+            int oldCooldown = props.cooldownTicks, oldWarmup = props.warmupTicks;
+            Override(() => { props.cooldownTicks = 600; props.warmupTicks = 60; },
+                     () => { props.cooldownTicks = oldCooldown; props.warmupTicks = oldWarmup; });
+
+            string rangingLabel = "DMSE.Artillery.ModeRanging".Translate().ToString();
+            string effectLabel = "DMSE.Artillery.ModeEffect".Translate().ToString();
+
+            // 1) No ranging impact on that map yet: fire for effect is refused, and it does not use guidance.
+            Command_Toggle mode = gunA.GetGizmos().OfType<Command_Toggle>().FirstOrDefault(c => c.defaultLabel == rangingLabel);
+            t.Require(mode != null, "the mode toggle is offered while ranging");
+            t.Check(mode.isActive != null && !mode.isActive(), "the toggle starts inactive (ranging)");
+            mode.toggleAction();
+            t.Check(artA.FireForEffect, "toggling switches the gun to fire for effect");
+            t.Check(gunA.GetGizmos().OfType<Command_Toggle>().Any(c => c.defaultLabel == effectLabel),
+                "the toggle shows the fire-for-effect label");
+            t.Check(artA.CompInspectStringExtra() == effectLabel, $"inspect line shows the mode ({artA.CompInspectStringExtra()})");
+            t.Check(!comp.TryGetRegisteredImpact(Player, out _, out _), "no impact point is logged yet");
+            t.Check(!artA.CanTargetTile(site.Tile, out string noReg)
+                && noReg == "DMSE.Artillery.NoRegistration".Translate().ToString(),
+                $"a map without a ranging impact refuses fire for effect ({noReg})");
+            t.Check(!artA.RadarGuidanceAvailable, "fire for effect does not use radar guidance");
+            artA.SetFireForEffect(false);
+            t.Check(!artA.FireForEffect && artA.RadarGuidanceAvailable, "back to ranging: guidance is available again");
+
+            // 2) A ranging shot logs its actual impact for the faction.
+            Projectile_ArtilleryDeparture departureA = null;
+            TickWatch firedA = AcceptanceDriver.Watch(() =>
+            {
+                departureA = departureA ?? Home.listerThings.ThingsOfDef(Departure)
+                    .OfType<Projectile_ArtilleryDeparture>().FirstOrDefault();
+                return departureA != null;
+            });
+            artA.StartSustainedFire(site.Tile);
+            var waitA = new WaitUntil(() => firedA.Seen, 600);
+            yield return waitA;
+            t.Require(!waitA.TimedOut, "the ranging shot leaves the barrel");
+            t.Check(departureA.artilleryTargetCell == Center(map),
+                $"ranging aims at the map centre ({departureA.artilleryTargetCell})");
+            t.Check(artA.LastShotGuided, "a ranging shot still uses radar guidance");
+            artA.StopSustainedFire();
+
+            var waitTrackA = new WaitUntil(
+                () => Tracks.Any(tr => tr.destinationTile == site.Tile && !tr.fireForEffect), 1200);
+            yield return waitTrackA;
+            t.Require(!waitTrackA.TimedOut, "the ranging shot becomes a world track");
+            WorldObject_ArtilleryStrike trackA = Tracks.First(tr => tr.destinationTile == site.Tile && !tr.fireForEffect);
+            Track(trackA);
+            t.Check(trackA.targetCell == Center(map), "the ranging track aims at the map centre");
+
+            int shellWaitStart = Find.TickManager.TicksGame;
+            Projectile shellA = null;
+            TickWatch shellSeen = AcceptanceDriver.Watch(() =>
+            {
+                shellA = shellA ?? map.listerThings.ThingsOfDef(Shell).OfType<Projectile>().FirstOrDefault();
+                return shellA != null;
+            });
+            var waitShellA = new WaitUntil(() => shellSeen.Seen, 2400);
+            yield return waitShellA;
+            t.Require(!waitShellA.TimedOut, "the ranging shell reaches the base map");
+            IntVec3 aim = Field<LocalTargetInfo>(shellA, "intendedTarget").Cell;
+            t.Check(comp.TryGetRegisteredImpact(Player, out IntVec3 logged, out int loggedTick) && logged == aim,
+                $"the ranging impact is logged ({logged} vs shell aim {aim})");
+            t.Check(loggedTick >= shellWaitStart && loggedTick <= Find.TickManager.TicksGame,
+                $"the impact was logged when the shell spawned ({loggedTick}, waited from {shellWaitStart}, now {Find.TickManager.TicksGame})");
+            t.Check(!comp.TryGetRegisteredImpact(Enemy, out _, out _), "another faction does not share the point");
+
+            // 3) Move the logged impact, then fire for effect from the second gun: it lands on that shared point.
+            IntVec3 far = new IntVec3(
+                Mathf.Clamp(Center(map).x + 60, 1, map.Size.x - 2), 0,
+                Mathf.Clamp(Center(map).z - 40, 1, map.Size.z - 2));
+            comp.RegisterImpact(Player, far);
+            t.Check(comp.TryGetRegisteredImpact(Player, out IntVec3 moved, out _) && moved == far,
+                $"a newer ranging impact replaces the old one ({moved})");
+
+            var waitRelease = new WaitUntil(() => fc.OccupiedArtilleryChannels == 0, 1200);
+            yield return waitRelease;
+            t.Check(!waitRelease.TimedOut, "the ranging gun's radar channel is released");
+
+            artB.SetFireForEffect(true);
+            t.Require(artB.CanTargetTile(site.Tile, out string okWhy),
+                $"fire for effect can target a map with a logged impact ({okWhy})");
+            Projectile_ArtilleryDeparture departB = null;
+            TickWatch firedB = AcceptanceDriver.Watch(() =>
+            {
+                departB = departB ?? Home.listerThings.ThingsOfDef(Departure)
+                    .OfType<Projectile_ArtilleryDeparture>().FirstOrDefault(d => d != departureA);
+                return departB != null;
+            });
+            artB.StartSustainedFire(site.Tile);
+            var waitB = new WaitUntil(() => firedB.Seen, 900);
+            yield return waitB;
+            t.Require(!waitB.TimedOut, "the second gun fires for effect");
+            t.Check(departB.artilleryTargetCell == far,
+                $"fire for effect aims at the shared logged point ({departB.artilleryTargetCell} vs {far})");
+            t.Check(Mathf.Approximately(departB.artilleryScatterRadius, props.scatterRadius),
+                $"the first fire-for-effect shot keeps the base scatter {props.scatterRadius} ({departB.artilleryScatterRadius})");
+            t.Check(!departB.artilleryGuided && !artB.LastShotGuided, "fire for effect is unguided");
+            t.Check(artB.ReservedRadar == null && fc.OccupiedArtilleryChannels == 0,
+                $"fire for effect books no radar channel ({fc.OccupiedArtilleryChannels})");
+            t.Check(!artB.RadarGuidanceAvailable, "guidance reports unavailable in fire for effect");
+            string inspectB = artB.CompInspectStringExtra();
+            t.Check(inspectB.Contains(effectLabel) && inspectB.Contains($"({far.x}, {far.z})"),
+                $"inspect line shows the impact point ({inspectB})");
+
+            var waitTrackB = new WaitUntil(
+                () => Tracks.Any(tr => tr.fireForEffect && tr.targetCell == far), 1500);
+            yield return waitTrackB;
+            t.Check(!waitTrackB.TimedOut, "the fire-for-effect world track carries the mode and the point");
+            foreach (WorldObject_ArtilleryStrike tr in Tracks.ToList()) { Track(tr); }
+
+            // 4) Every fire-for-effect shot tightens the scatter by a quarter of the base scatter.
+            Projectile_ArtilleryDeparture departB2 = null;
+            TickWatch firedB2 = AcceptanceDriver.Watch(() =>
+            {
+                departB2 = departB2 ?? Home.listerThings.ThingsOfDef(Departure)
+                    .OfType<Projectile_ArtilleryDeparture>().FirstOrDefault(d => d != departureA && d != departB);
+                return departB2 != null;
+            });
+            var waitB2 = new WaitUntil(() => firedB2.Seen, 1200);
+            yield return waitB2;
+            t.Require(!waitB2.TimedOut, "the gun keeps firing for effect");
+            t.Check(Mathf.Approximately(departB2.artilleryScatterRadius, props.scatterRadius * 0.75f),
+                $"scatter tightens by a quarter ({departB2.artilleryScatterRadius} vs {props.scatterRadius * 0.75f})");
+            t.Check(departB2.artilleryTargetCell == far, "the logged point does not move between shots");
+            t.Check(comp.TryGetRegisteredImpact(Player, out IntVec3 afterFfe, out _) && afterFfe == far,
+                "fire-for-effect shots never rewrite the logged point");
+
+            // 5) Stopping the mission resets the tightening.
+            artB.StopSustainedFire();
+            artB.StartSustainedFire(site.Tile);
+            Projectile_ArtilleryDeparture departB3 = null;
+            TickWatch firedB3 = AcceptanceDriver.Watch(() =>
+            {
+                departB3 = departB3 ?? Home.listerThings.ThingsOfDef(Departure)
+                    .OfType<Projectile_ArtilleryDeparture>().FirstOrDefault(
+                        d => d != departureA && d != departB && d != departB2);
+                return departB3 != null;
+            });
+            var waitB3 = new WaitUntil(() => firedB3.Seen, 1200);
+            yield return waitB3;
+            t.Require(!waitB3.TimedOut, "the restarted mission fires");
+            t.Check(Mathf.Approximately(departB3.artilleryScatterRadius, props.scatterRadius),
+                $"stopping resets the scatter to {props.scatterRadius} ({departB3.artilleryScatterRadius})");
+            artB.StopSustainedFire();
+            t.Screenshot("fire_modes");
+        }
+
+        /// <summary>
+        /// Heavy mortar: the vanilla switchable projectile (gunner-loaded mortar shell) decides the BVR warhead, the
+        /// mission waits for a reload instead of cancelling, the crew requirement is reported, and the loaded shell
+        /// type travels through the world track onto the target map.
+        /// </summary>
+        public static IEnumerable<Wait> HeavyMortar(TestContext t)
+        {
+            ThingDef mortarDef = ThingDef.Named("DMSE_Turret_HeavyMortar");
+            ThingDef gunDef = ThingDef.Named("DMSE_Gun_HeavyMortar");
+            ThingDef incendiary = ThingDef.Named("Shell_Incendiary");
+            ThingDef incendiaryProj = ThingDef.Named("Bullet_Shell_Incendiary");
+            ThingDef he = ThingDef.Named("Shell_HighExplosive");
+            ThingDef heProj = ThingDef.Named("Bullet_Shell_HighExplosive");
+
+            CompProperties_ArtilleryStrike props = mortarDef.GetCompProperties<CompProperties_ArtilleryStrike>();
+            t.Require(props != null, "the heavy mortar has CompArtilleryStrike");
+            t.Check(mortarDef.thingClass == typeof(Building_HeavyMortar), "turret class keeps the barrel on the world bearing");
+            t.Check(mortarDef.building.turretGunDef == gunDef, "turret gun def is wired");
+            t.Check(mortarDef.size.x == 2 && mortarDef.size.z == 2, "2x2 footprint");
+            t.Check(mortarDef.building.IsMortar, "counts as a mortar (overhead fire)");
+            t.Check(mortarDef.uiIconPath == "Things/Turrets/HeavyMortar_icon", "menu icon");
+            t.Check(props.departureProjectileDef?.thingClass == typeof(Projectile_ArtilleryDeparture), "departure projectile class");
+            t.Check(!props.SupportsRadarGuidance && Mathf.Approximately(props.scatterRadius, 9f)
+                && Mathf.Approximately(props.maxRangeTiles, 24f), "BVR numbers (scatter 9, range 24, no radar guidance)");
+            t.Check(gunDef.GetCompProperties<CompProperties_ChangeableProjectile>() != null,
+                "the gun uses the vanilla switchable projectile comp");
+            t.Check(gunDef.building.fixedStorageSettings.filter.Allows(incendiary),
+                "the fixed shell filter accepts mortar shells");
+            t.Check(gunDef.building.defaultStorageSettings.filter.Allows(he), "high-explosive is loaded by default");
+            t.Check(!gunDef.building.defaultStorageSettings.filter.Allows(ThingDef.Named("Shell_Firefoam")),
+                "firefoam is disallowed by default");
+
+            Thing mortar = SpawnBuilding(mortarDef, 2, 2);
+            Building_HeavyMortar hm = (Building_HeavyMortar)mortar;
+            CompArtilleryStrike art = mortar.TryGetComp<CompArtilleryStrike>();
+            CompMannable mannable = mortar.TryGetComp<CompMannable>();
+            CompChangeableProjectile shells = hm.gun.TryGetComp<CompChangeableProjectile>();
+            CompRefuelable barrel = mortar.TryGetComp<CompRefuelable>();
+            Pawn gunner = PawnGenerator.GeneratePawn(new PawnGenerationRequest(
+                PawnKindDefOf.Colonist, Faction.OfPlayer, forceGenerateNewPawn: true));
+            Track(gunner);
+            t.Require(mannable != null && shells != null && barrel != null && gunner != null,
+                "mannable comp, barrel and switchable projectile comp");
+
+            t.Check(!art.Active, "no gunner: the mortar is inactive");
+            Command fire = mortar.GetGizmos().OfType<Command>().FirstOrDefault(c => c.defaultLabel == "DMSE.Artillery.Fire".Translate());
+            t.Check(fire != null && fire.Disabled && fire.disabledReason == "DMSE.Artillery.NoCrew".Translate().ToString(),
+                $"Fire is disabled without a gunner ({fire?.disabledReason})");
+
+            // A real crew: a spawned colonist takes the vanilla "man turret" job, which loads the shell.
+            IntVec3 stand = CellFinder.StandableCellNear(mortar.Position + new IntVec3(-3, 0, 0), Home, 3f);
+            t.Require(stand.IsValid, "a standable cell for the gunner");
+            GenSpawn.Spawn(gunner, stand, Home);
+            mannable.ManForATick(gunner);
+            t.Check(art.Active, "manned: the mortar is active");
+            fire = mortar.GetGizmos().OfType<Command>().FirstOrDefault(c => c.defaultLabel == "DMSE.Artillery.Fire".Translate());
+            t.Check(fire != null && fire.Disabled && fire.disabledReason == "DMSE.Artillery.NoLoadedShell".Translate().ToString(),
+                $"Fire is disabled without a loaded shell ({fire?.disabledReason})");
+            t.Check(shells.allowedShellsSettings.AllowedToAccept(incendiary),
+                "the shell storage filter accepts incendiary shells");
+            GenSpawn.Spawn(ThingMaker.MakeThing(incendiary), mortar.Position + new IntVec3(-2, 0, 0), Home);
+            gunner.jobs.TryTakeOrderedJob(JobMaker.MakeJob(JobDefOf.ManTurret, mortar), JobTag.Misc);
+            var waitLoaded = new WaitUntil(() => shells.Loaded && mannable.MannedNow, 900);
+            yield return waitLoaded;
+            t.Require(!waitLoaded.TimedOut, "the gunner mans the mortar and loads the shell");
+            t.Check(shells.Projectile == incendiaryProj, $"the gunner loaded the incendiary shell ({shells.LoadedShell})");
+            t.Check(art.Active, "the crew is on the mortar");
+            fire = mortar.GetGizmos().OfType<Command>().FirstOrDefault(c => c.defaultLabel == "DMSE.Artillery.Fire".Translate());
+            t.Check(fire != null && !fire.Disabled, $"Fire is available once manned and loaded ({fire?.disabledReason})");
+
+            Site site = SpawnMissileBase(6f, 14f);
+            t.Require(site != null, "an NPC missile base 6-14 tiles away");
+            Map map = SpawnSiteMap(site);
+            t.Require(map != null && site.HasMap, "the target map is spawned up front");
+            t.Require(art.CanTargetTile(site.Tile, out string why), $"the base tile is a valid target ({why})");
+
+            int oldCooldown = props.cooldownTicks, oldWarmup = props.warmupTicks;
+            float oldWorld = props.worldTicksPerTile;
+            Override(() => { props.cooldownTicks = 120; props.warmupTicks = 30; props.worldTicksPerTile = 20f; },
+                     () => { props.cooldownTicks = oldCooldown; props.warmupTicks = oldWarmup; props.worldTicksPerTile = oldWorld; });
+
+            Projectile_ArtilleryDeparture firstShot = null;
+            var waitFirst = new WaitUntil(() =>
+            {
+                firstShot = firstShot ?? Home.listerThings.ThingsOfDef(props.departureProjectileDef)
+                    .OfType<Projectile_ArtilleryDeparture>().FirstOrDefault();
+                return firstShot != null;
+            }, 900);
+            art.StartSustainedFire(site.Tile);
+            yield return waitFirst;
+            t.Require(!waitFirst.TimedOut, "the mortar fires its BVR shot");
+            t.Check(firstShot.artilleryProjectileDef == incendiaryProj,
+                $"the loaded shell type is the BVR projectile ({firstShot.artilleryProjectileDef})");
+            t.Check(!shells.Loaded, "the shot consumed the loaded shell");
+            t.Check(Mathf.Approximately(barrel.Fuel, 19f), $"one barrel shot used ({barrel.Fuel})");
+
+            // No shell in the breech: the gunner leaves to fetch one and the mission waits.
+            var waitGunnerLeft = new WaitUntil(() => !mannable.MannedNow, 600);
+            yield return waitGunnerLeft;
+            t.Check(!waitGunnerLeft.TimedOut, "the gunner leaves the tube to reload");
+            t.Check(art.IsSustainedFiring, "no shell loaded: the mission is paused, not cancelled");
+
+            // A different shell type in the stockpile: the next BVR round changes with it.
+            GenSpawn.Spawn(ThingMaker.MakeThing(he), mortar.Position + new IntVec3(-2, 0, 0), Home);
+            gunner.jobs.TryTakeOrderedJob(JobMaker.MakeJob(JobDefOf.ManTurret, mortar), JobTag.Misc);
+            var waitReloaded = new WaitUntil(() => shells.Loaded && mannable.MannedNow, 1200);
+            yield return waitReloaded;
+            t.Require(!waitReloaded.TimedOut, "the gunner reloads from the new stock");
+            t.Check(shells.Projectile == heProj, $"the gunner switched to the high-explosive shell ({shells.LoadedShell})");
+            t.Check(art.Active, "the crew is back on the mortar");
+
+            Projectile_ArtilleryDeparture secondShot = null;
+            var waitSecond = new WaitUntil(() =>
+            {
+                secondShot = secondShot ?? Home.listerThings.ThingsOfDef(props.departureProjectileDef)
+                    .OfType<Projectile_ArtilleryDeparture>().FirstOrDefault(d => d != firstShot);
+                return secondShot != null;
+            }, 900);
+            yield return waitSecond;
+            t.Require(!waitSecond.TimedOut, "the second shot fires after the reload");
+            t.Check(secondShot.artilleryProjectileDef == heProj,
+                $"switching the shell switches the BVR round ({secondShot.artilleryProjectileDef})");
+            art.StopSustainedFire();
+
+            // The loaded shell type travels through the world track and lands on the target map.
+            var waitTrack = new WaitUntil(
+                () => Tracks.Any(tr => tr.destinationTile == site.Tile && tr.projectileDef == heProj), 600);
+            yield return waitTrack;
+            t.Check(!waitTrack.TimedOut, "the world track carries the switched shell");
+            var waitLanding = new WaitUntil(() => map.listerThings.ThingsOfDef(heProj).Any(), 900);
+            yield return waitLanding;
+            t.Check(!waitLanding.TimedOut, "the switched shell lands on the target map");
+            foreach (WorldObject_ArtilleryStrike tr in Tracks.ToList()) { Track(tr); }
+            t.Screenshot("heavy_mortar");
         }
     }
 }

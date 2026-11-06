@@ -196,6 +196,9 @@ namespace DMSE
                 // 功率對窗口的影響改為超線性（指數放大）：高功率雷達顯著拉長預警/攔截窗口。
                 float powerFactor = Mathf.Pow(Mathf.Max(1, radar.Props.powerLevel), BVRTuning.PowerWindowExponent);
                 float eff = radar.Props.searchDistance * radar.Props.ticksPerDistance * powerFactor;
+                // 解析度、功率段位與操作員：與世界層同一組係數（沒有對應設定時都是 1）。
+                eff *= MissileWorldMotion.ResolutionFactor(radar.Props.resolutionLevel, tp)
+                    * PowerThrottleUtility.WindowFactor(radar.parent) * EWControlUtility.RadarRangeFactor(radar.parent);
 
                 // 反隱身強度：高出目標隱身越多，窗口加成越大；不足則大幅縮短（僅能局部偵測）。
                 int antiGap = radar.Props.antiStealthLevel - tp.stealthLevel;
@@ -380,6 +383,14 @@ namespace DMSE
         {
             Faction defender = wave.defenderFaction;
 
+            // 戰情終端的交戰限制：自動接戰關閉時不鎖定，已有的鎖定也釋放（目標仍在波次裡，警報照常）。
+            MapComponent_EWControl roe = MapComponent_EWControl.ActiveRoe(map, defender);
+            if (roe != null && !roe.autoEngage)
+            {
+                foreach (BVRTarget held in wave.targets) { held.lockUntil = -1; }
+                return;
+            }
+
             // 火力通道：防禦方所有運作中火控雷達的有效容量總和（共用池）。
             // 每個雷達的有效容量 = maxTargets − 已預留給砲擊引導的通道數，
             // 確保砲擊引導與 BVR 飛彈中過程攔截真正共用同一份額度。
@@ -392,6 +403,7 @@ namespace DMSE
                 }
             }
             if (capacity <= 0) { return; }
+            if (roe != null && roe.channelCap >= 0) { capacity = Mathf.Min(capacity, roe.channelCap); }
 
             capacity -= Channels.World(defender);
             int engaged = CountEngaged(defender);
@@ -401,7 +413,10 @@ namespace DMSE
             // 避免在枚舉 wave.targets 期間修改集合（InvalidOperationException）。
             List<int> airburstKills = null;
 
-            foreach (BVRTarget target in wave.targets)
+            IEnumerable<BVRTarget> engagementOrder = roe?.priority == EngagePriority.LargestFirst
+                ? wave.targets.OrderByDescending(TargetSize).ToList()
+                : (IEnumerable<BVRTarget>)wave.targets;
+            foreach (BVRTarget target in engagementOrder)
             {
                 if (target.terminalOnly) continue;
                 if (target.midcourseEngagedUntil <= now && target.interceptorsInFlight > 0)
@@ -410,6 +425,11 @@ namespace DMSE
                     target.interceptorsInFlight = 0;
                 }
                 if (target.midcourseEngagedUntil > now) { continue; } // 已有攔截彈在飛。
+                if (roe != null && !roe.AllowsMapTarget(target))
+                {
+                    target.lockUntil = -1;
+                    continue;
+                }
                 if (!armed)
                 {
                     // 沒有可用的攔截彈：不鎖定，已有的鎖定也釋放，不空占火力通道。
@@ -484,6 +504,12 @@ namespace DMSE
                     }
                 }
             }
+        }
+
+        private static float TargetSize(BVRTarget target)
+        {
+            Thing thing = target.skyfaller != null && target.skyfaller.Count > 0 ? target.skyfaller[0] : null;
+            return (thing?.def.GetModExtension<BVRTargetProps>() ?? BVRTargetProps.Default).distanceLevel;
         }
 
         // 火力通道在「鎖定階段」（lockUntil >= 0）與「攔截彈在飛」（midcourseEngagedUntil > now）期間均占用；
