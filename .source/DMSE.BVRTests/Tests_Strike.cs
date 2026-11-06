@@ -134,9 +134,10 @@ static partial class Test
         }
         Check(Cfg(MissileSizeClass.Medium).StrikeChannelCost == 0 && Cfg(MissileSizeClass.Ballistic).StrikeChannelCost == 0,
             "no seeker: inertial missiles book no guidance channel");
-        Check(Cfg(MissileSizeClass.Medium, new GuidanceType_TV()).StrikeChannelCost == 0
+        Check(Cfg(MissileSizeClass.Medium, new GuidanceType_TV()).StrikeChannelCost == 2
+            && Cfg(MissileSizeClass.Ballistic, new GuidanceType_TV()).StrikeChannelCost == 3
             && Cfg(MissileSizeClass.Ballistic, new GuidanceType_Laser()).StrikeChannelCost == 0,
-            "TV and laser guidance book no guidance channel");
+            "TV guidance books one channel on top of the airframe's own; laser books none");
         Check(Cfg(MissileSizeClass.Medium, new GuidanceType_FireControl()).StrikeChannelCost == 1
             && Cfg(MissileSizeClass.Ballistic, new GuidanceType_FireControl()).StrikeChannelCost == 2,
             "fire-control guidance books one channel, two for a ballistic body");

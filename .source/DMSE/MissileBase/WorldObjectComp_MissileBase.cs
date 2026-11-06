@@ -193,6 +193,12 @@ namespace DMSE
                     target: target);
             }
 
+            // 敵方導彈陣地第一次向玩家殖民地發射：教學「敵方導彈陣地」。
+            if (count > 0)
+            {
+                DMSE_Concepts.TeachEnemyMissileBases();
+            }
+
             if (Prefs.DevMode)
                 Log.Message($"[DMSE MissileBase] 世界層齊射 {count} 枚：{parent.Tile} → {target.Tile}");
             return count;

@@ -128,6 +128,12 @@ namespace DMSE
                     wave.tickToImpact - BVRTuning.WindowPenaltyPerExtraTarget);
             }
 
+            // 玩家第一次被雷達偵測到的來襲波次：教學「防空攔截鏈」。
+            if (defender != null && defender.IsPlayer)
+            {
+                DMSE_Concepts.TeachBVRChain();
+            }
+
             // P4 空投虛擬航跡：若開啟 Tuning 開關，另外建立一條世界層幽靈航跡（導彈有自己的航跡，不重複）。
             WorldComponent_BVRNetwork.Current?.TrySpawnDropPodTrack(map, wave, target, faller);
         }

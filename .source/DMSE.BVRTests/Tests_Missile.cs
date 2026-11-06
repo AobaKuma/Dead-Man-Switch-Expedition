@@ -239,8 +239,8 @@ static partial class Test
         var required = comp.TotalRequired();
         Check(required.Count == 1 && required.TryGetValue(advanced, out int amount) && amount == 1,
             "switching Shahed to TV requires exactly one advanced component");
-        Check(pending.PlayerChoosesTarget && pending.StrikeChannelCost == 0,
-            "TV Shahed permits manual selection without booking a guidance channel");
+        Check(pending.PlayerChoosesTarget && pending.StrikeChannelCost == 2,
+            "TV Shahed books two guidance channels: one for the airframe, one for the operator");
         Check(pending.TerminalUpdates == 0 && !pending.TracksMobileTargets,
             "TV upgrade does not give Shahed moving-base tracking");
         pending.SetPart(MissilePartCategory.Guidance, null);

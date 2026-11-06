@@ -13,14 +13,16 @@
     <description>A two-by-four gantry where missiles are built from a bare airframe and the parts you choose. Finished missiles can wait on the bench for a launcher, or be sent to storage.\n\nTool cabinets and machine cabinets nearby speed up the work. Working outdoors or in uncomfortable temperatures slows it down.</description>
     <thingClass>Building</thingClass>
     <graphicData>
-      <texPath>Things/Building/MissilePlatform/large2x</texPath>
+      <!-- 貼圖：64px = 1 格；畫布 = 佔地 + 四周各 0.5 格，故 drawSize = 畫布像素 / 64。
+           北/南 320×192 → (5,3)，佔地 4×2；西 192×320 由引擎旋轉，東向自動鏡像西向（Graphic_Multi 的 eastFlipped）。 -->
+      <texPath>Things/Building/AssemblyBenchMissile/building</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
-      <drawSize>(2,4)</drawSize>
+      <drawSize>(5,3)</drawSize>
       <damageData>
-        <rect>(0.1,0.1,1.8,3.8)</rect>
+        <rect>(0.1,0.1,3.8,1.8)</rect>
       </damageData>
     </graphicData>
-    <size>(2,4)</size>
+    <size>(4,2)</size>
     <rotatable>true</rotatable>
     <altitudeLayer>Building</altitudeLayer>
     <passability>PassThroughOnly</passability>
@@ -88,10 +90,18 @@
       <li Class="DMSE.CompProperties_MissileRackStorage" />
       <li Class="DMSE.CompProperties_MissileRackRenderer">
         <maxStored>2</maxStored>
+        <!-- 台上只顯示第一枚成品：渲染數量＝min(存放數, 槽位數, maxStored)，槽位只給一個＝置中，
+             第二枚（容量仍為 maxStored＝2）不畫。 -->
         <slotOffsets>
-          <li>(-0.5, 0, 0)</li>
-          <li>(0.5, 0, 0)</li>
+          <li>(0, 0, 0)</li>
         </slotOffsets>
+        <!-- 台上的成品導彈沿台的長軸橫躺（北向時彈頭朝東＝90°），隨台轉向一起轉：
+             東向台的長軸指向南（180）、南向指向西（-90）、西向指向北（0）。
+             只給 rotation、不給 slotOffsets，槽位仍沿用上面共用的 slotOffsets 自動旋轉。 -->
+        <north><rotation>90</rotation></north>
+        <east><rotation>180</rotation></east>
+        <south><rotation>-90</rotation></south>
+        <west><rotation>0</rotation></west>
       </li>
       <li Class="DMSE.CompProperties_MissileAssemblyBench">
         <maxBatch>99</maxBatch>

@@ -135,6 +135,15 @@ namespace DMSE
                 scrollPos = Vector2.zero;
                 lastHeight = 0f;
                 showStats = false;
+                // 第一次打開裝配介面：彈道平台與一般導彈分開教學。
+                if (CanChooseBody)
+                {
+                    DMSE_Concepts.TeachBallisticPlatforms();
+                }
+                else
+                {
+                    DMSE_Concepts.TeachMissileAssembly();
+                }
             }
             // §2.1: a short resource/status summary stays with the action, even when scrolled.
             string footerStatus = reserved ? "DMSE.Strike.ReservedNoEdit".Translate().ToString()

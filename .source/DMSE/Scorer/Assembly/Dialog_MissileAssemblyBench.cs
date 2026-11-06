@@ -71,6 +71,8 @@ namespace DMSE
             count = comp.OrderActive ? comp.remaining : 1;
             outputMode = comp.outputMode;
             bestPawnSpeed = BestPawnSpeed(comp.parent.Map);
+            // 第一次使用導彈組裝台：教學「導彈裝配」。
+            DMSE_Concepts.TeachMissileAssembly();
         }
 
         public override void PostClose()

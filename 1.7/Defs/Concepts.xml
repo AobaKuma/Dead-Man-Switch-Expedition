@@ -3,10 +3,66 @@
 
   <ConceptDef>
     <defName>DMSE_NPCAirDefenseCircles</defName>
-    <label>radar detection and air-defence radius</label>
+    <label>Radar detection and air-defence radius</label>
     <priority>10</priority>
     <needsOpportunity>true</needsOpportunity>
     <helpText>With a radar detection network in place, factions above industrial can detect long-range strikes, raise their alert level, and intercept missiles from defended locations. Detection, interception, alert, and blockade circles are now shown on the world map.</helpText>
+  </ConceptDef>
+
+  <ConceptDef>
+    <defName>DMSE_BVRChain</defName>
+    <label>Air-defence chain</label>
+    <priority>11</priority>
+    <needsOpportunity>true</needsOpportunity>
+    <helpText>Search radars detect incoming waves and set the warning time. Fire-control radars lock targets, one channel per lock, and SAM launchers fire real interceptor missiles. CIWS is the last line, and artillery borrows the same channels. If any link is missing, the wave lands.</helpText>
+  </ConceptDef>
+
+  <ConceptDef>
+    <defName>DMSE_SeekerTargeting</defName>
+    <label>Seeker target selection</label>
+    <priority>12</priority>
+    <needsOpportunity>true</needsOpportunity>
+    <helpText>A strike missile chooses its target after arrival, not at launch. Each seeker has its own rule: inertial hits a random hostile building, heat seeks the hottest room or largest pawn, anti-radiation hunts operating radars, and TV lets you choose. If it finds nothing, it falls back to inertial. Seekers do not coordinate, so two missiles can hit the same target.</helpText>
+  </ConceptDef>
+
+  <ConceptDef>
+    <defName>DMSE_ElectronicWarfare</defName>
+    <label>Electronic warfare</label>
+    <priority>13</priority>
+    <needsOpportunity>true</needsOpportunity>
+    <helpText>Anti-radiation missiles home on operating radars. Shut a radar down, or use a passive acoustic radar they cannot see. Chaff is a finite countermeasure: it can break a fire-control lock or lower hit chance, but it never reloads in flight. Stealth shortens search range and lowers fire-control hit chance.</helpText>
+  </ConceptDef>
+
+  <ConceptDef>
+    <defName>DMSE_MissileAssembly</defName>
+    <label>Missile assembly</label>
+    <priority>14</priority>
+    <needsOpportunity>true</needsOpportunity>
+    <helpText>A missile is a body plus parts. The body sets size class, launch mode, fuel and slots; parts set range, damage, accuracy and countermeasures. Item missiles come with default parts already paid for. Silos and racks start empty and charge for every part.</helpText>
+  </ConceptDef>
+
+  <ConceptDef>
+    <defName>DMSE_StrikePlanning</defName>
+    <label>Strike planning</label>
+    <priority>15</priority>
+    <needsOpportunity>true</needsOpportunity>
+    <helpText>Strike missiles are launched in waves, not one at a time. Wave size is limited by free fire-control channels; radio-command, semi-active fire-control and TV guidance reserve one, ballistic missiles reserve two, and TV adds one more. Auto-assign sends cheap missiles first to draw interceptors.</helpText>
+  </ConceptDef>
+
+  <ConceptDef>
+    <defName>DMSE_BallisticPlatforms</defName>
+    <label>Ballistic launch platforms</label>
+    <priority>16</priority>
+    <needsOpportunity>true</needsOpportunity>
+    <helpText>Ballistic missiles are assembled on the platform and never exist as items. The sealed silo launches safely; the open tower rack burns pawns and ignites flammables within 3.5 tiles without damaging buildings. Both accept any fitting ballistic body, and swapping one charges a new assembly.</helpText>
+  </ConceptDef>
+
+  <ConceptDef>
+    <defName>DMSE_EnemyMissileBases</defName>
+    <label>Enemy missile bases</label>
+    <priority>17</priority>
+    <needsOpportunity>true</needsOpportunity>
+    <helpText>Some hostile sites are mobile missile bases. They fire at your colony, resupply by drop pod, and relocate. Destroy their launchers and radars to end the site; killing only the crew is not enough.</helpText>
   </ConceptDef>
 
 </Defs>

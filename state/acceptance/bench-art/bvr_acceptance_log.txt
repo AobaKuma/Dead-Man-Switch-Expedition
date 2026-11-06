@@ -1,0 +1,23 @@
+﻿[t=      1] Game ready (map 0, tile 115193,0).
+[t=      1] Enemy faction: 沙依
+[t=      1] Test pad (20,20,59,59) on map size (250, 1, 250); safe impact cell (235, 0, 235).
+[t=      1] Running 1 acceptance tests.
+[t=    108] 
+[t=    108] === AB1: Assembly bench: facilities, info card, labor speed
+[t=    108]     ok:   the bench has its order comp and output rack
+[t=    108]     ok:   the output rack holds two missiles
+[t=    108]     ok:   ten bodies are producible (10)
+[t=    112]     ok:   the info card shows the bench's work speed
+[t=    112]     ok:   other DMSE buildings still hide it
+[t=    112]     ok:   the test pad is outdoors
+[t=    112]     ok:   outdoor (and temperature) penalties apply to the bench (0.8)
+[t=    112]     ok:   the info-card explanation lists the outdoor factor
+[t=    142]     ok:   only two tool cabinets link (2)
+[t=    142]     ok:   two tool cabinets add 12% (0.8 -> 0.896)
+[t=    142]     ok:   bench work speed = colonist labor speed x bench speed
+[t=    142]     ok:   a refit goes at the colonist's labor speed
+[t=    142]     ok:   changing the refit target discards earlier progress
+[t=    142] --- AB1: PASS (13 checks)
+[t=    172] 
+[t=    172] === SUMMARY: 1/1 passed
+[t=    172] PASS  AB1  Assembly bench: facilities, info card, labor speed  -- 13 checks

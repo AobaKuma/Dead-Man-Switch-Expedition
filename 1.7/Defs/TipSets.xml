@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <TipSetDef>
+    <defName>DMSE_Tips</defName>
+    <tips>
+      <li>Search radars give early warning and open the intercept window, but interceptors still need a fire-control radar to guide them. Some advanced radars can do both.</li>
+      <li>Each fire-control radar holds only so many locks. With more targets than channels, your defences must finish the current intercepts before taking on the rest.</li>
+      <li>Missile launchers need missiles loaded before they can fire.</li>
+      <li>CIWS is the colony's last line of defence. It only opens fire once a target reaches the terminal window, so it has very little time.</li>
+      <li>Some older radars and launchers need a colonist at the post. They still work, but replace them when you can.</li>
+      <li>Targets arriving within 600 ticks of each other merge into one wave. The more targets, the shorter the warning.</li>
+      <li>Over-the-horizon artillery borrows fire-control channels to track and correct its shells, so a long bombardment ties up your air defence.</li>
+      <li>A running radar is a loud electromagnetic beacon, and anti-radiation missiles will home on it. Keep your main radar switched off when you can.</li>
+      <li>Missile chaff decoys need no extra reloading.</li>
+      <li>A missile's stealth shortens how far search radars can see it and lowers fire-control hit chance.</li>
+      <li>Strike missiles pick their aim point on arrival according to their seeker. An inertial seeker just hits a random spot.</li>
+      <li>If a seeker finds nothing it falls back to inertial guidance; some special flight-control modules make the missile loiter instead, waiting for a valid target.</li>
+      <li>TV guidance pauses the game on arrival so you can pick the impact point yourself. It costs more, and it ties up an extra fire-control channel.</li>
+      <li>A laser seeker homes on the last marked laser point, and marking that point needs a laser designator.</li>
+      <li>The body sets size class and slot count; parts set range, damage, guidance and countermeasures.</li>
+      <li>Light and medium missiles come with default parts fitted. Large ballistic bodies must be assembled from scratch.</li>
+      <li>Radio-command and semi-active fire-control guidance reserve an extra channel each; on a large ballistic body, two.</li>
+      <li>Auto-assign at the strike planning table puts the cheapest missiles in the earliest waves to drain the defender's interceptors. A capable enemy does the same to you.</li>
+      <li>Only destroying a missile base's launchers and radars silences it. Kill the crew and it soon relocates and resumes its strikes.</li>
+      <li>A sealed silo keeps its missile safe from assembly to launch. An open tower rack can cook off the round, and when it fires it burns pawns and ignites flammables within 3.5 tiles.</li>
+    </tips>
+  </TipSetDef>
+
+</Defs>

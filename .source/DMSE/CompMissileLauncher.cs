@@ -398,6 +398,12 @@ namespace DMSE
                 return null;
             }
 
+            // 玩家第一次發射帶箔條或反輻射導引的導彈：教學「電子戰」。
+            if (config != null && (config.ChaffCharges > 0 || config.TargetingGuidance is GuidanceType_AntiRadiation))
+            {
+                DMSE_Concepts.TeachElectronicWarfare();
+            }
+
             ScorerProjectile_WorldObject wo = (ScorerProjectile_WorldObject)WorldObjectMaker.MakeWorldObject(TravelWorldObjectDef);
             // 落點視覺／BVR 目標特性以彈體為準（同一平台可換彈體）；平台指定的 skyfallerIncoming 僅作後備。
             wo.skyfallerIncoming = config?.body?.incomingSkyfaller ?? IncomingSkyfallerDef;

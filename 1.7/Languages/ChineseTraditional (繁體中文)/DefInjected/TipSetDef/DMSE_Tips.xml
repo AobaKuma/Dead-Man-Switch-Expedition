@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  <DMSE_Tips.tips.0>搜索雷達提供早期預警創造攔截窗口，但攔截導彈仍需要火控雷達提供導引，一些較先進的雷達能夠同時作為搜索雷達與火控雷達。</DMSE_Tips.tips.0>
+  <DMSE_Tips.tips.1>每座火控雷達同時能鎖定的目標數有限，一旦目標多於火控通道數那麼防空系統必需先攔截現有的來襲導彈後才能繼續攔截。</DMSE_Tips.tips.1>
+  <DMSE_Tips.tips.2>導彈發射架需要裝填導彈才能用。</DMSE_Tips.tips.2>
+  <DMSE_Tips.tips.3>迫近防禦系統(CIWS)是殖民地防禦的最後一道防線，只在目標進入末端窗口後開火，因此留給它們的時間並不多。</DMSE_Tips.tips.3>
+  <DMSE_Tips.tips.4>部分老舊的雷達與發射系統需要人來操作，雖然堪用但還是盡早淘汰掉吧。</DMSE_Tips.tips.4>
+  <DMSE_Tips.tips.5>相隔 600 ticks 內抵達的目標會合併；目標越多，預警越短。</DMSE_Tips.tips.5>
+  <DMSE_Tips.tips.6>火砲在進行超視距打擊時會借用火控通道來對砲彈軌跡進行跟蹤修正，因此進行大規模砲擊時火控通道會被占用。</DMSE_Tips.tips.6>
+  <DMSE_Tips.tips.7>開機中的雷達會產生明顯的電磁訊號，會因此被反輻射導彈鎖定為目標，因此平時最好關閉你的主要雷達。</DMSE_Tips.tips.7>
+  <DMSE_Tips.tips.8>導彈的干擾箔條不需要額外裝填。</DMSE_Tips.tips.8>
+  <DMSE_Tips.tips.9>導彈的隱身性能會縮短其被搜索雷達發現的距離、並且降低火控雷達的命中率。</DMSE_Tips.tips.9>
+  <DMSE_Tips.tips.10>攻擊型導彈會在抵達後根據自身的導引頭選擇目標落點；而慣性導引頭則會打在隨機落點上。</DMSE_Tips.tips.10>
+  <DMSE_Tips.tips.11>導引頭找不到目標時會退回慣性，而有些特殊的飛控能夠使導彈額外盤旋來等待符合的目標出現。</DMSE_Tips.tips.11>
+  <DMSE_Tips.tips.12>電視導引能夠在抵達目標後讓你指定彈體落點，但其造價較高且會占用額外的火控通道。</DMSE_Tips.tips.12>
+  <DMSE_Tips.tips.13>雷射導引頭會自動導引向最後一個被標註的雷射標定點，雷射標定點需要裝備標定器。</DMSE_Tips.tips.13>
+  <DMSE_Tips.tips.14>導彈彈體決定尺寸與插槽數量，部件決定射程、傷害、導引方式與反制。</DMSE_Tips.tips.14>
+  <DMSE_Tips.tips.15>中小型導彈在製作時會包含預設部件，而大型導彈則需要從零組裝。</DMSE_Tips.tips.15>
+  <DMSE_Tips.tips.16>無線電指令與半主動火控導引會佔用額外的火控通道；在大型導彈彈體上會佔兩條。</DMSE_Tips.tips.16>
+  <DMSE_Tips.tips.17>打擊規劃台的自動分配會優先將價值較低的導彈分配到更前面的波次，消耗防禦方的攔截彈，一個有戰術的敵人也會對你這麼做。</DMSE_Tips.tips.17>
+  <DMSE_Tips.tips.18>必須要摧毀發射器與雷達才能夠徹底癱瘓敵方的導彈發射陣地，否則他們很快就會轉移陣地並重新執行打擊任務。</DMSE_Tips.tips.18>
+  <DMSE_Tips.tips.19>封閉式發射井能夠保障從組裝到發射期間的安全性；而開放式塔架除了可能會導致彈體殉爆外還會在發射時會燒傷鄰近範圍內的人、點燃可燃物。</DMSE_Tips.tips.19>
+</LanguageData>

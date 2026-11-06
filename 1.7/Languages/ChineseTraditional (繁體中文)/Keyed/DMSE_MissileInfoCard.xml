@@ -45,8 +45,8 @@
   <!-- 導引 -->
   <DMSE.Card.NoGuidance>無導引</DMSE.Card.NoGuidance>
   <DMSE.Card.TerminalUpdatesDesc>具導引能力時，飛行中可依目標新位置修正落點的次數（彈體基礎次數加上導引頭加成）。次數用完後沿最後位置飛行，目標若已離開即落空。</DMSE.Card.TerminalUpdatesDesc>
-  <DMSE.Card.ChannelsDesc>導彈飛行期間持續占用的火控通道數。只有無線電指令與火控雷達導引需要地面持續支援；自主尋標與預先裝定的導引不占通道。彈道導彈每枚占 2 條，其他占 1 條。</DMSE.Card.ChannelsDesc>
-  <DMSE.Card.ChannelsPerMissile>每枚 1（彈道 2）</DMSE.Card.ChannelsPerMissile>
+  <DMSE.Card.ChannelsDesc>導彈飛行期間持續占用的火控通道數。只有無線電指令、火控雷達與電視導引需要地面持續支援；自主尋標與預先裝定的導引不占通道。彈道導彈每枚占 2 條，其他占 1 條；電視導引再多占 1 條。</DMSE.Card.ChannelsDesc>
+  <DMSE.Card.ChannelsPerMissile>每枚 1（彈道 2；電視導引 +1）</DMSE.Card.ChannelsPerMissile>
   <DMSE.Card.LoiterRetry>盤旋期間每 {0} 重新搜尋一次目標，期間仍會被末端防禦接戰。</DMSE.Card.LoiterRetry>
   <DMSE.Card.LoiterOnlyLoitering>只有巡飛彈能使用盤旋能力；裝在其他彈體上不會盤旋。</DMSE.Card.LoiterOnlyLoitering>
   <DMSE.Card.BuiltInGuidance>未裝導引部件，使用彈體內建的選目標方式。</DMSE.Card.BuiltInGuidance>

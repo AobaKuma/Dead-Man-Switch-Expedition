@@ -139,6 +139,8 @@ namespace DMSE
 
         private void OpenPlanner(GlobalTargetInfo t)
         {
+            // 玩家第一次打開打擊規劃視窗：教學「打擊規劃」。
+            DMSE_Concepts.TeachStrikePlanning();
             MapParent site = TargetParentAt(t);
             var draft = new StrikeMission
             {

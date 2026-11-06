@@ -2,4 +2,25 @@
 <LanguageData>
   <DMSE_NPCAirDefenseCircles.label>NPC 雷達偵測與防空範圍</DMSE_NPCAirDefenseCircles.label>
   <DMSE_NPCAirDefenseCircles.helpText>完成雷達探測網後，敵對派系能偵測遠程打擊、提高警戒，並從有防空部署的據點攔截導彈。世界地圖現在會顯示偵測圈、攔截圈、警戒圈與封鎖圈。這項科技不會改變局部地圖的防空行為。</DMSE_NPCAirDefenseCircles.helpText>
+
+  <DMSE_BVRChain.label>防空攔截鏈</DMSE_BVRChain.label>
+  <DMSE_BVRChain.helpText>搜索雷達發現來襲波次、決定預警時間。火控雷達鎖定目標，每次鎖定佔用一條通道；防空發射架發射實體攔截彈。CIWS 是最後一道防線，火砲也會借用同一批通道。任何一環缺失，波次就會落地。</DMSE_BVRChain.helpText>
+
+  <DMSE_SeekerTargeting.label>導引頭選目標</DMSE_SeekerTargeting.label>
+  <DMSE_SeekerTargeting.helpText>打擊導彈抵達目標地圖後才選目標，不是發射時就決定。每種導引頭有自己的規則：慣性打隨機敵對建築，熱訊號找最熱的房間或最大的生物，反輻射追開機中的雷達，電視導引讓你自行點選。找不到目標時退回慣性。導引頭彼此不協調，所以兩枚彈可能打同一個目標。</DMSE_SeekerTargeting.helpText>
+
+  <DMSE_ElectronicWarfare.label>電子戰</DMSE_ElectronicWarfare.label>
+  <DMSE_ElectronicWarfare.helpText>反輻射導彈會追著開機中的雷達打。關掉雷達，或改用它們看不到的被動聲學雷達。箔條是有限次的反制：能打斷火控鎖定或降低命中率，但飛行中不會補充。隱身會縮短搜索距離、降低火控命中率。</DMSE_ElectronicWarfare.helpText>
+
+  <DMSE_MissileAssembly.label>導彈裝配</DMSE_MissileAssembly.label>
+  <DMSE_MissileAssembly.helpText>一枚導彈由彈體加上部件組成。彈體決定尺寸級別、發射方式、燃料與插槽；部件決定射程、傷害、精度與反制能力。物品型導彈出廠時已附預設部件、材料也算在內；發射井與發射架是空的，每個部件都要另付。</DMSE_MissileAssembly.helpText>
+
+  <DMSE_StrikePlanning.label>打擊規劃</DMSE_StrikePlanning.label>
+  <DMSE_StrikePlanning.helpText>打擊導彈以波次發射，不是一枚一枚按。每波大小受空閒火控通道限制；無線電指令、半主動火控與電視導引都會佔用通道，彈道導彈佔兩條，電視導引再多佔一條。自動分配會先送便宜彈，讓防禦方消耗攔截彈。</DMSE_StrikePlanning.helpText>
+
+  <DMSE_BallisticPlatforms.label>彈道發射平台</DMSE_BallisticPlatforms.label>
+  <DMSE_BallisticPlatforms.helpText>彈道導彈直接在平台上裝配，不會以物品形式存在。封閉式發射井發射安全；開放式塔架會燒傷 3.5 格內的人、點燃可燃物，但不傷建築。兩者都接受相符的彈道彈體，更換彈體要重新付一次裝配費。</DMSE_BallisticPlatforms.helpText>
+
+  <DMSE_EnemyMissileBases.label>敵方導彈陣地</DMSE_EnemyMissileBases.label>
+  <DMSE_EnemyMissileBases.helpText>有些敵對據點是機動導彈陣地。它們會向你的殖民地發射導彈、以空投補給，並轉移位置。摧毀發射器與雷達才能結束陣地，只殺守軍不夠。</DMSE_EnemyMissileBases.helpText>
 </LanguageData>

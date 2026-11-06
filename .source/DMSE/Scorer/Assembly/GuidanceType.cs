@@ -64,6 +64,11 @@ namespace DMSE
         /// </summary>
         public static IntVec3 PickCell(MissileConfig config, Map map, Faction attacker)
         {
+            // 玩家打擊導彈第一次抵達目標地圖：教學「導引頭選目標」。
+            if (attacker != null && attacker.IsPlayer)
+            {
+                DMSE_Concepts.TeachSeekerTargeting();
+            }
             if (TryPickTarget(config, map, attacker, out IntVec3 cell)) { return cell; }
             return InertialTarget(map, attacker);
         }

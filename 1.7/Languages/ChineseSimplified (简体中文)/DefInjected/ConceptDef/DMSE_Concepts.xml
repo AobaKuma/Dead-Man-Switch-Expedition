@@ -2,4 +2,25 @@
 <LanguageData>
   <DMSE_NPCAirDefenseCircles.label>NPC 雷达探测与防空范围</DMSE_NPCAirDefenseCircles.label>
   <DMSE_NPCAirDefenseCircles.helpText>完成雷达探测网后，敌对派系能够探测远程打击、提高警戒，并从部署防空的据点拦截导弹。世界地图现在会显示探测圈、拦截圈、警戒圈与封锁圈。这项科技不会改变局部地图的防空行为。</DMSE_NPCAirDefenseCircles.helpText>
+
+  <DMSE_BVRChain.label>防空拦截链</DMSE_BVRChain.label>
+  <DMSE_BVRChain.helpText>搜索雷达发现来袭波次、决定预警时间。火控雷达锁定目标，每次锁定占用一条通道；防空发射架发射实体拦截弹。CIWS 是最后一道防线，火炮也会借用同一批通道。任何一环缺失，波次就会落地。</DMSE_BVRChain.helpText>
+
+  <DMSE_SeekerTargeting.label>导引头选目标</DMSE_SeekerTargeting.label>
+  <DMSE_SeekerTargeting.helpText>打击导弹抵达目标地图后才选目标，不是发射时就决定。每种导引头有自己的规则：惯性打随机敌对建筑，热信号找最热的房间或最大的生物，反辐射追开机中的雷达，电视制导让你自行点选。找不到目标时退回惯性。导引头彼此不协调，所以两枚弹可能打同一个目标。</DMSE_SeekerTargeting.helpText>
+
+  <DMSE_ElectronicWarfare.label>电子战</DMSE_ElectronicWarfare.label>
+  <DMSE_ElectronicWarfare.helpText>反辐射导弹会追着开机中的雷达打。关掉雷达，或改用它们看不到的被动声学雷达。箔条是有限次的反制：能打断火控锁定或降低命中率，但飞行中不会补充。隐身会缩短搜索距离、降低火控命中率。</DMSE_ElectronicWarfare.helpText>
+
+  <DMSE_MissileAssembly.label>导弹装配</DMSE_MissileAssembly.label>
+  <DMSE_MissileAssembly.helpText>一枚导弹由弹体加上部件组成。弹体决定尺寸级别、发射方式、燃料与插槽；部件决定射程、伤害、精度与反制能力。物品型导弹出厂时已附预设部件、材料也算在内；发射井与发射架是空的，每个部件都要另付。</DMSE_MissileAssembly.helpText>
+
+  <DMSE_StrikePlanning.label>打击规划</DMSE_StrikePlanning.label>
+  <DMSE_StrikePlanning.helpText>打击导弹以波次发射，不是一枚一枚按。每波大小受空闲火控通道限制；无线电指令、半主动火控与电视制导都会占用通道，弹道导弹占两条，电视制导再多占一条。自动分配会先送便宜弹，让防御方消耗拦截弹。</DMSE_StrikePlanning.helpText>
+
+  <DMSE_BallisticPlatforms.label>弹道发射平台</DMSE_BallisticPlatforms.label>
+  <DMSE_BallisticPlatforms.helpText>弹道导弹直接在平台上装配，不会以物品形式存在。封闭式发射井发射安全；开放式塔架会烧伤 3.5 格内的人、点燃可燃物，但不伤建筑。两者都接受相符的弹道弹体，更换弹体要重新付一次装配费。</DMSE_BallisticPlatforms.helpText>
+
+  <DMSE_EnemyMissileBases.label>敌方导弹阵地</DMSE_EnemyMissileBases.label>
+  <DMSE_EnemyMissileBases.helpText>有些敌对据点是机动导弹阵地。它们会向你的殖民地发射导弹、以空投补给，并转移位置。摧毁发射器与雷达才能结束阵地，只杀守军不够。</DMSE_EnemyMissileBases.helpText>
 </LanguageData>

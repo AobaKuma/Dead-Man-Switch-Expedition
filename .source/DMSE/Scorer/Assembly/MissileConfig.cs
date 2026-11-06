@@ -200,14 +200,19 @@ namespace DMSE
         public GuidanceType TargetingGuidance
             => PartFor(MissilePartCategory.Guidance)?.guidanceType ?? body?.builtInGuidance;
 
-        /// <summary>持續火控通道只供需要地面指令或雷達照射的導引方式使用；自主及預先裝定導引不占通道。</summary>
+        /// <summary>
+        /// 持續火控通道只供需要地面指令或雷達照射的導引方式使用；自主及預先裝定導引不占通道。
+        /// 電視導引要操作員盯畫面手選落點，比同級導彈多佔一條（一般 1＋1、彈道彈體 2＋1）。
+        /// </summary>
         public int StrikeChannelCost
         {
             get
             {
                 GuidanceType guidance = TargetingGuidance;
-                if (!(guidance is GuidanceType_RadioCommand) && !(guidance is GuidanceType_FireControl)) { return 0; }
-                return body?.sizeClass == MissileSizeClass.Ballistic ? 2 : 1;
+                bool tv = guidance is GuidanceType_TV;
+                if (!tv && !(guidance is GuidanceType_RadioCommand) && !(guidance is GuidanceType_FireControl)) { return 0; }
+                int cost = body?.sizeClass == MissileSizeClass.Ballistic ? 2 : 1;
+                return tv ? cost + 1 : cost;
             }
         }
 

@@ -45,8 +45,8 @@
   <!-- 导引 -->
   <DMSE.Card.NoGuidance>无导引</DMSE.Card.NoGuidance>
   <DMSE.Card.TerminalUpdatesDesc>具导引能力时，飞行中可依目标新位置修正落点的次数（弹体基础次数加上导引头加成）。次数用完后沿最后位置飞行，目标若已离开即落空。</DMSE.Card.TerminalUpdatesDesc>
-  <DMSE.Card.ChannelsDesc>导弹飞行期间持续占用的火控通道数。只有无线电指令与火控雷达导引需要地面持续支援；自主寻标与预先装定的导引不占通道。弹道导弹每枚占 2 条，其他占 1 条。</DMSE.Card.ChannelsDesc>
-  <DMSE.Card.ChannelsPerMissile>每枚 1（弹道 2）</DMSE.Card.ChannelsPerMissile>
+  <DMSE.Card.ChannelsDesc>导弹飞行期间持续占用的火控通道数。只有无线电指令、火控雷达与电视制导需要地面持续支援；自主寻标与预先装定的导引不占通道。弹道导弹每枚占 2 条，其他占 1 条；电视制导再多占 1 条。</DMSE.Card.ChannelsDesc>
+  <DMSE.Card.ChannelsPerMissile>每枚 1（弹道 2；电视制导 +1）</DMSE.Card.ChannelsPerMissile>
   <DMSE.Card.LoiterRetry>盘旋期间每 {0} 重新搜寻一次目标，期间仍会被末端防御接战。</DMSE.Card.LoiterRetry>
   <DMSE.Card.LoiterOnlyLoitering>只有巡导弹能使用盘旋能力；装在其他弹体上不会盘旋。</DMSE.Card.LoiterOnlyLoitering>
   <DMSE.Card.BuiltInGuidance>未装导引部件，使用弹体内建的选目标方式。</DMSE.Card.BuiltInGuidance>

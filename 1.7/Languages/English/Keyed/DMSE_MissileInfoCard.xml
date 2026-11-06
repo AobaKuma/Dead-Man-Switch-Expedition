@@ -45,8 +45,8 @@
   <!-- Guidance -->
   <DMSE.Card.NoGuidance>No guidance</DMSE.Card.NoGuidance>
   <DMSE.Card.TerminalUpdatesDesc>With terminal guidance, how many times the missile can correct its impact point to the target's new position in flight (body base count plus seeker bonus). When they run out, it flies to the last known position and misses if the target has left.</DMSE.Card.TerminalUpdatesDesc>
-  <DMSE.Card.ChannelsDesc>Fire-control channels the missile occupies for the whole flight. Only radio command and fire-control radar guidance need continuous ground support. Autonomous seekers and preset guidance use none. Ballistic missiles use 2 channels each, others use 1.</DMSE.Card.ChannelsDesc>
-  <DMSE.Card.ChannelsPerMissile>1 per missile (2 ballistic)</DMSE.Card.ChannelsPerMissile>
+  <DMSE.Card.ChannelsDesc>Fire-control channels the missile occupies for the whole flight. Only radio command, fire-control radar and TV guidance need continuous ground support. Autonomous seekers and preset guidance use none. Ballistic missiles use 2 channels each, others use 1; TV guidance adds 1 more.</DMSE.Card.ChannelsDesc>
+  <DMSE.Card.ChannelsPerMissile>1 per missile (2 ballistic, TV +1)</DMSE.Card.ChannelsPerMissile>
   <DMSE.Card.LoiterRetry>While loitering, the seeker searches again every {0}. Terminal defenses can still engage it during this time.</DMSE.Card.LoiterRetry>
   <DMSE.Card.LoiterOnlyLoitering>Only loitering munitions can loiter. Other bodies with this part do not.</DMSE.Card.LoiterOnlyLoitering>
   <DMSE.Card.BuiltInGuidance>No guidance part installed: uses the body's built-in targeting.</DMSE.Card.BuiltInGuidance>

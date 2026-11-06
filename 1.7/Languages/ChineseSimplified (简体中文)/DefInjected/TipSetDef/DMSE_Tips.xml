@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  <DMSE_Tips.tips.0>搜索雷达提供早期预警、创造拦截窗口，但拦截导弹仍需火控雷达提供制导；部分较先进的雷达能够同时充当搜索雷达与火控雷达。</DMSE_Tips.tips.0>
+  <DMSE_Tips.tips.1>每座火控雷达同时能锁定的目标数量有限；一旦目标多于火控通道数，防空系统必须先打完当前这批来袭导弹，才能继续拦截。</DMSE_Tips.tips.1>
+  <DMSE_Tips.tips.2>导弹发射架需要装填导弹才能使用。</DMSE_Tips.tips.2>
+  <DMSE_Tips.tips.3>近防系统（CIWS）是殖民地防御的最后一道防线，只在目标进入末端窗口后才开火，留给它的时间并不多。</DMSE_Tips.tips.3>
+  <DMSE_Tips.tips.4>部分老旧的雷达与发射系统需要人工操作；虽然还能用，但还是尽早淘汰为好。</DMSE_Tips.tips.4>
+  <DMSE_Tips.tips.5>相隔 600 ticks 内抵达的目标会合并；目标越多，预警越短。</DMSE_Tips.tips.5>
+  <DMSE_Tips.tips.6>火炮在超视距打击时会借用火控通道来跟踪修正弹道，因此大规模炮击会占用火控通道。</DMSE_Tips.tips.6>
+  <DMSE_Tips.tips.7>开机中的雷达会产生明显的电磁信号，因而被反辐射导弹锁定；平时最好关闭你的主要雷达。</DMSE_Tips.tips.7>
+  <DMSE_Tips.tips.8>导弹的干扰箔条不需要额外装填。</DMSE_Tips.tips.8>
+  <DMSE_Tips.tips.9>导弹的隐身性能会缩短其被搜索雷达发现的距离，并降低火控雷达的命中率。</DMSE_Tips.tips.9>
+  <DMSE_Tips.tips.10>打击导弹抵达后会根据自身的导引头选择落点；惯性导引头则打在随机落点上。</DMSE_Tips.tips.10>
+  <DMSE_Tips.tips.11>导引头找不到目标时会退回惯性；而有些特殊的飞控能让导弹额外盘旋，等待符合条件的目标出现。</DMSE_Tips.tips.11>
+  <DMSE_Tips.tips.12>电视制导能在导弹抵达后让你指定落点；造价较高，而且会占用额外的火控通道。</DMSE_Tips.tips.12>
+  <DMSE_Tips.tips.13>激光导引头会自动导向最后一个被标注的激光标定点；标定点需要装备标定器。</DMSE_Tips.tips.13>
+  <DMSE_Tips.tips.14>导弹弹体决定尺寸与插槽数量，部件决定射程、伤害、制导方式与反制手段。</DMSE_Tips.tips.14>
+  <DMSE_Tips.tips.15>中小型导弹在制作时会自带预设部件，而大型导弹需要从零开始组装。</DMSE_Tips.tips.15>
+  <DMSE_Tips.tips.16>无线电指令与半主动火控制导会占用额外的火控通道；在大型弹道导弹弹体上则占用两条。</DMSE_Tips.tips.16>
+  <DMSE_Tips.tips.17>打击规划桌的自动分配会优先把价值较低的导弹排进更靠前的波次，消耗防御方的拦截弹；有战术的敌人也会这么对付你。</DMSE_Tips.tips.17>
+  <DMSE_Tips.tips.18>必须摧毁发射器与雷达才能彻底瘫痪敌方的导弹发射阵地，否则他们很快就会转移阵地、重新执行打击任务。</DMSE_Tips.tips.18>
+  <DMSE_Tips.tips.19>封闭式发射井能保证从组装到发射期间的安全；开放式塔架除了可能导致弹体殉爆外，发射时还会烧伤邻近范围内的人、点燃可燃物。</DMSE_Tips.tips.19>
+</LanguageData>
