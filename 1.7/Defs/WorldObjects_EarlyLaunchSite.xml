@@ -150,7 +150,7 @@
 
   <WorldObjectDef>
     <defName>DMSE_EarlyLaunchSite</defName>
-    <label>old-pattern launch position</label>
+    <label>crude missile position</label>
     <description>A crude missile position built around acoustic mirrors, a hand-aimed fire-control radar and launch rails. It fires slow, inaccurate pulsejet loitering munitions, and it has no interceptors of its own.</description>
     <worldObjectClass>RimWorld.Planet.Site</worldObjectClass>
     <canHaveFaction>true</canHaveFaction>
@@ -212,13 +212,21 @@
             </li>
           </loadouts>
         </rackSupply>
+        <!-- 砲塔彈藥：早期站點補給較差，每 1 天才空投一次，落地後守軍自己搬（同時最多 1 人）。 -->
+        <turretAmmo>
+          <intervalDays>1</intervalDays>
+          <refillBelowPercent>0.5</refillBelowPercent>
+          <refillToPercent>1</refillToPercent>
+          <haulDelayTicks>400</haulDelayTicks>
+          <maxHaulers>1</maxHaulers>
+        </turretAmmo>
       </li>
     </comps>
   </WorldObjectDef>
 
   <SitePartDef>
     <defName>DMSE_EarlyLaunchSitePart</defName>
-    <label>old-pattern launch position</label>
+    <label>crude missile position</label>
     <description>A crude missile position with acoustic mirrors, a hand-aimed fire-control radar and launch rails.</description>
     <!-- FactionCanOwn：工業等級派系，或海盜（原版海盜是太空等級）。 -->
     <workerClass>DMSE.SitePartWorker_EarlyLaunchSite</workerClass>
@@ -240,7 +248,7 @@
        世界上已有任何 NPC 導彈陣地時不觸發。 -->
   <IncidentDef>
     <defName>DMSE_EarlyLaunchSiteDeployed</defName>
-    <label>old-pattern launch position deployed</label>
+    <label>crude missile position deployed</label>
     <category>ThreatBig</category>
     <targetTags>
       <li>Map_PlayerHome</li>

@@ -6,7 +6,7 @@
 
 - **工業級野戰發射場** `DMSE_FieldLaunchSite`／`DMSE_FieldLaunchSitePart`（`1.7/Defs/WorldObjects_FieldLaunchSite.xml`；`.source/DMSE/MissileBase/GenStep_FieldLaunchSite.cs`）：以 `LaunchSite_Mid.xml` FFF 結構圍繞中央搜索雷達組合，難度 tier 0–3（`threatScale` 0.5／0.9／1.4）；`firstPool` 保證至少一具對地發射器。
 - **生成**：storyteller ThreatBig 事件 `DMSE_FieldLaunchSiteDeployed`（`IncidentWorker_FieldLaunchSite`、`FieldLaunchSiteIncidentExtension`）：第 15 天起、間隔 ≥20 天、距殖民地 6–12 tile 且在射程內、全世界最多 1 個 NPC 導彈站；需玩家已研究 `DMSE_RadarNetwork`。
-- **補給**：`CompProperties_MissileBase.supplyDrop`（只在敵方雷達運作時）；`rackSupply`（`MissileBaseRackSupply.cs`：`GenStep_MissileBaseRackFill` 生成裝填，空架 2 天補給艙，守軍以 `DMSE_LoadMissileLauncher` 搬上發射器，最多 2 人）。
+- **補給**：`CompProperties_MissileBase.supplyDrop`（只在敵方雷達運作時）；`rackSupply`（`MissileBaseRackSupply.cs`：`GenStep_MissileBaseRackFill` 生成裝填，空架 2 天補給艙，落地後守軍以 `JobDriver_HaulMissileToRack`／`DMSE_LoadMissileLauncher` 搬上發射器，最多 2 人）；`turretAmmo`（砲塔 `CompRefuelable` 低於一半時空投實體彈藥，守軍用原版 `JobDefOf.Refuel` 裝填，見 §1.2）。
 - **守軍**：`LordJob_MissileStationCrew`＋`JobGiver_ManMissileStation` 操作己方 `CompMannable`（原版 `JobGiver_ManTurrets` 只會操作迫擊砲）。
 - MapGen 改繼承原版 `MapCommonBase`；道路 `GenStep_FieldLaunchSiteRoads`。
 - 坑：MapGeneratorDef 內的 GenStep 拿到 `parms.sitePart == null`，威脅點數改從 `MapGenerator.mapBeingGenerated.Parent as Site` 讀。
@@ -22,7 +22,23 @@
 - **火力條件**：老式火控雷達要有電且有人操作。炮手選崗順序：火控雷達 → 世界選靶發射架 → 其他。需人操作的發射架沒人時不發射（`NeedsOperator`）；第一座陣位固定 `LaunchSite_B`（傾斜發射軌不需人）。
 - **電力**：火控站兩座燒木發電機（單座 1000 W 帶不動 1200 W 雷達加探照燈）；`CompProperties_MissileBase.refuelGenerators` 讓守軍抽象補燃料。
 - **防空**：不掛 `CompProperties_WorldAirDefense`，只有地圖上的老式高射砲。
-- 驗收 N7（開火）、N8（事件門檻）。
+- **砲塔彈藥**：老式 Flak 43 的 37 mm 砲彈是 `CompRefuelable`（鋼，1 鋼 = 4 發）。以前 `MapComponent_MissileBase` 每 500 tick 直接把燃料補滿；現在改為空投實體鋼材、守軍自己搬（見 §1.2）。
+- 驗收 N7（開火）、N8（事件門檻）、N11（砲塔彈藥搬運）。
+
+## 1.2 補給一律「先落地、再靠守軍搬」（2026-11-07）
+
+原本兩種補給都是「憑空入庫」，玩家看不到也攔不到：
+
+1. 空彈架每 2 天（`rackSupply.intervalDays`）空投導彈，但 2500 tick（`loadDelayTicks`）後直接塞進彈架——中間只有一段看不見的計時。
+2. 砲塔彈藥（`CompRefuelable`）根本不空投：`MapComponent_MissileBase` 每 500 tick 掃一遍場上所有砲塔，低於門檻就 `Refuel()` 補滿。
+
+現在兩者都改成實體搬運（`MapComponent_MissileBase.TickCrewHaul`）：
+
+- **導彈**：空投艙落地後導彈留在地上（`pendingRackLoads` 追蹤），`loadDelayTicks` 過後由 `LordJob_MissileCrewDuty` 的守軍接 `JobDriver_HaulMissileToRack`（`DMSE_HaulMissileToRack`）走到導彈旁撿起、走到彈架、讀條 30 tick、再依 `MissileRackUtil.LoadCount` 的容量放進彈架（自訂 driver 自己檢查 `Full`／`Accepts`，不能用原版 `JobDriver_HaulToContainer`，`ThingOwner.TryTransferToContainer` 不檢查 `MaxStored`）。同時最多 `maxCrewLoaders` 人；導彈若被玩家拿走、打爛、或離彈架超過 `loadRadius` 就放棄追蹤（東西留在原地）。
+- **砲塔彈藥**：`turretAmmo` 每隔 `intervalDays` 檢查一次，低於 `refillBelowPercent`（預設 50%）的砲塔在附近 10 格內空投「燃料 × 需要數量」（`FuelItemsToRefill(refillToPercent)`，例如鋼材）的實體物品（如鋼材）；`haulDelayTicks` 過後由守軍接原版 `JobDefOf.Refuel`（TargetA = 砲塔、TargetB = 地上的彈藥、`playerForced = true`，因此砲塔關閉／拆卸中也照常補）走過去裝填。同時最多 `maxHaulers` 人。
+- **沒有守軍就沒有補給**：`ResupplyTurretAmmo` 要求 `ActiveCrewCount > 0`，`TickCrewHaul` 也要有 `LordJob_MissileCrewDuty` 的人；守軍全滅後彈藥只會躺在地上，砲塔打完就是打完。
+- **存檔相容**：`nextTurretAmmoTick` 與 `pendingTurretRefuels`（`LookMode.Deep`）都存檔；舊存檔沒有這兩個欄位時視為「尚未排程」與空清單。空投艙內的彈藥（`ParentHolder is ActiveTransporterInfo`）與正被本陣營守軍搬著的彈藥不會被 prune 掉——否則補給記錄會在艙門打開前就被清掉。
+- 驗收：N1（彈架補彈 + 搬運 job）、N11（砲塔彈藥：不瞬間補滿、半滿不空投、空砲塔空投→守軍搬→裝滿、無守軍不補）。
 
 
 ## 2. 設計原則

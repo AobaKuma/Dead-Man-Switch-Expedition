@@ -23,7 +23,7 @@
     <description>An old launch rail that turns a full circle by hand crank. It fires early loitering munitions and light missiles, and reloads one round at a time.\n\nNeeds no power, but requires an operator at all times.</description>
     <thingClass>DMSE.Building_MissileRack</thingClass>
     <category>Building</category>
-    <uiIconPath>Things/Building/turretBase</uiIconPath>
+    <uiIconPath>Things/Building/icon_slideLauncher</uiIconPath>
     <graphicData>
       <texPath>Things/Building/turretBase</texPath>
       <graphicClass>Graphic_Single</graphicClass>

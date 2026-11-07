@@ -2,7 +2,7 @@
 <Defs>
 
   <!-- 電子戰三類建築（docs/電子戰建築_實作計畫.md）：長程雷達給時間 → 戰情終端給規則 → 干擾機給優勢。
-       戰情終端已換正式貼圖（FireControlConsole）；干擾機與長程雷達仍是佔位（FacilityBase_Green／Radar_FC／Radar_EW），待換正式美術。 -->
+       戰情終端已換正式貼圖（FireControlConsole），干擾機已換正式貼圖（DMSE_Jammer）；長程雷達仍是佔位（FacilityBase_Green／Radar_FC／Radar_EW），待換正式美術。 -->
 
   <!-- ==================== 戰情終端 ==================== -->
   <ThingDef ParentName="BuildingBase">
@@ -69,11 +69,11 @@
     <defName>DMSE_JammerStation</defName>
     <label>electronic jammer station</label>
     <description>A high-power ground jammer. While transmitting it projects a red ring on the world map, 8 tiles around this colony's tile. A hostile missile entering the ring is rolled once: its seeker may be knocked out, and it then either vanishes off-map or falls on inertial guidance alone. Anti-radiation and inertial missiles are immune. Enemy radars inside the ring also lose range and lock speed.\n\nComms consoles on this map stop working while it transmits, with no exceptions. It draws 6000 W at full power and 600 W on standby, fails at once when the power fails, and anti-radiation missiles home on it.</description>
-    <!-- 佔位貼圖：待換干擾碟美術。碟型天線純視覺、不影響場形。 -->
+    <!-- 碟型天線純視覺、不影響場形。 -->
     <graphicData>
-      <texPath>Things/Building/FacilityBase_Green</texPath>
+      <texPath>Things/Building/DMSE_Jammer</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(3,3)</drawSize>
+      <drawSize>(4,4)</drawSize>
       <damageData>
         <cornerTL>Damage/Corner</cornerTL>
         <cornerTR>Damage/Corner</cornerTR>

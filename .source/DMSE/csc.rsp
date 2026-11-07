@@ -6,7 +6,7 @@
 /nostdlib+
 /errorreport:prompt
 /warn:10
-/define:TRACE;RW_1_7;DEBUG;NET;NET10_0;NETCOREAPP;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NET9_0_OR_GREATER;NET10_0_OR_GREATER;NETCOREAPP1_0_OR_GREATER;NETCOREAPP1_1_OR_GREATER;NETCOREAPP2_0_OR_GREATER;NETCOREAPP2_1_OR_GREATER;NETCOREAPP2_2_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER
+/define:TRACE;RW_1_7;RELEASE;NET;NET10_0;NETCOREAPP;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NET9_0_OR_GREATER;NET10_0_OR_GREATER;NETCOREAPP1_0_OR_GREATER;NETCOREAPP1_1_OR_GREATER;NETCOREAPP2_0_OR_GREATER;NETCOREAPP2_1_OR_GREATER;NETCOREAPP2_2_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER
 /highentropyva+
 /nullable:disable
 /reference:C:\Users\user\.nuget\packages\lib.harmony\3.0.0-rc.2\lib\net10.0\0Harmony.dll
@@ -184,15 +184,15 @@
 /features:"InterceptorsNamespaces=;Microsoft.Extensions.Validation.Generated"
 /debug-
 /filealign:512
-/optimize-
-/out:obj\Debug\DMSE.dll
-/refout:obj\Debug\refint\DMSE.dll
+/optimize+
+/out:obj\Release\DMSE.dll
+/refout:obj\Release\refint\DMSE.dll
 /target:library
 /warnaserror-
 /utf8output
 /deterministic+
 /langversion:10.0
-/analyzerconfig:obj\Debug\DMSE.GeneratedMSBuildEditorConfig.editorconfig
+/analyzerconfig:obj\Release\DMSE.GeneratedMSBuildEditorConfig.editorconfig
 /analyzerconfig:"C:\Program Files\dotnet\sdk\10.0.402\Sdks\Microsoft.NET.Sdk\analyzers\build\config\analysislevel_10_default.globalconfig"
 /analyzer:"C:\Program Files\dotnet\sdk\10.0.402\Sdks\Microsoft.NET.Sdk\targets\..\analyzers\Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll"
 /analyzer:"C:\Program Files\dotnet\sdk\10.0.402\Sdks\Microsoft.NET.Sdk\targets\..\analyzers\Microsoft.CodeAnalysis.NetAnalyzers.dll"
@@ -482,5 +482,5 @@ Utilities\Patch_ResearchCompleted.cs
 VacuumRoom\CompLandFillable.cs
 VacuumRoom\GenStep_Prefab.cs
 VacuumRoom\JobDriver_LandFill.cs
-"obj\Debug\.NETCoreApp,Version=v10.0.AssemblyAttributes.cs"
+"obj\Release\.NETCoreApp,Version=v10.0.AssemblyAttributes.cs"
 /warnaserror+:NU1605,SYSLIB0011

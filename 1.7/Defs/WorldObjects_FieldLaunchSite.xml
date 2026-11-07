@@ -287,6 +287,15 @@
             </li>
           </loadouts>
         </rackSupply>
+        <!-- 砲塔彈藥（37 mm／機砲彈等 CompRefuelable）：低於半個基數的砲塔每 0.5 天在旁邊空投一次實體彈藥，
+             落地後由守軍親自搬去裝填（同時最多 1 人）；守軍全滅就不會再有人碰這批彈藥。 -->
+        <turretAmmo>
+          <intervalDays>0.5</intervalDays>
+          <refillBelowPercent>0.5</refillBelowPercent>
+          <refillToPercent>1</refillToPercent>
+          <haulDelayTicks>300</haulDelayTicks>
+          <maxHaulers>1</maxHaulers>
+        </turretAmmo>
       </li>
     </comps>
   </WorldObjectDef>

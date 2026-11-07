@@ -17,6 +17,10 @@ namespace DMSE.BVRAcceptance
             .GetField("nextSupplyDropTick", BindingFlags.Instance | BindingFlags.NonPublic);
         private static readonly FieldInfo NextRackSupply = typeof(MapComponent_MissileBase)
             .GetField("nextRackSupplyTick", BindingFlags.Instance | BindingFlags.NonPublic);
+        private static readonly FieldInfo NextTurretAmmo = typeof(MapComponent_MissileBase)
+            .GetField("nextTurretAmmoTick", BindingFlags.Instance | BindingFlags.NonPublic);
+        private static readonly FieldInfo PendingTurretRefuels = typeof(MapComponent_MissileBase)
+            .GetField("pendingTurretRefuels", BindingFlags.Instance | BindingFlags.NonPublic);
 
         /// <summary>
         /// Packed-dirt road cells, how many world launchers have a road cell within 20 cells (launchers deep inside an 18-cell layout sit far from its doorstep), and how many separate
@@ -234,11 +238,13 @@ namespace DMSE.BVRAcceptance
             bool sawJob = false;
             var waitHaul = new WaitUntil(() =>
             {
-                sawJob |= map.mapPawns.SpawnedPawnsInFaction(industrial).Any(p => p.CurJobDef == DMSE_MissileJobDefOf.DMSE_LoadMissileLauncher);
+                sawJob |= map.mapPawns.SpawnedPawnsInFaction(industrial).Any(p =>
+                    p.CurJobDef == DMSE_MissileJobDefOf.DMSE_LoadMissileLauncher
+                    || p.CurJobDef == DMSE_MissileJobDefOf.DMSE_HaulMissileToRack);
                 return launcher.StoredCount > 0;
             }, 5000);
             yield return waitHaul;
-            t.Check(sawJob, "a crew member took the load-launcher job");
+            t.Check(sawJob, "a crew member took a missile-hauling job");
             t.Check(!waitHaul.TimedOut, $"the crew loaded {launcher.RackThing.def.defName} from storage ({launcher.StoredCount}/{launcher.MaxStored})");
             int storedAfter = all.Where(r => !MissileBaseRackSupplyUtility.IsLauncher(r)).Sum(r => r.StoredCount);
             t.Check(storedAfter < storedBefore, $"the missiles came out of storage ({storedBefore} → {storedAfter})");
@@ -668,7 +674,11 @@ namespace DMSE.BVRAcceptance
             return thing;
         }
 
-        /// <summary>Cannon rounds are CompRefuelable and NPCs never refuel: the garrison keeps turrets and CIWS stocked while it lives.</summary>
+        /// <summary>
+        /// Cannon rounds are <see cref="CompRefuelable"/> and NPCs never refuel on their own. The garrison now gets a
+        /// pod dropped beside a dry gun and hauls the rounds over itself — nothing is teleported into a gun, a gun that
+        /// still has over half its magazine gets no pod at all, and without a crew the rounds just stay on the ground.
+        /// </summary>
         public static IEnumerable<Wait> GarrisonKeepsTurretsStocked(TestContext t)
         {
             Faction industrial = Industrial(t);
@@ -678,6 +688,10 @@ namespace DMSE.BVRAcceptance
                 Map map = MissileWorldUtility.ResolveArrivalMap(site.Tile, site, true);
                 t.Require(map != null, $"{site.def.defName}: map generated");
                 KeepMapAlive(map);
+                MapComponent_MissileBase comp = map.GetComponent<MapComponent_MissileBase>();
+                t.Require(comp != null && NextTurretAmmo != null && PendingTurretRefuels != null,
+                    "MapComponent_MissileBase with turret-ammo state");
+
                 IntVec3 hub = map.listerBuildings.allBuildingsNonColonist.First(b => b.Faction == industrial && MapComponent_MissileBase.IsObjectiveRadar(b)).Position;
                 // Layouts are random: place both guns so each is always covered.
                 foreach (string def in new[] { "DMSE_Turret_LegacyFlak", "DMSE_Building_FieldAirDefense" })
@@ -685,31 +699,83 @@ namespace DMSE.BVRAcceptance
                     t.Require(SpawnStation(map, def, industrial, hub) != null, $"{def} placed");
                 }
                 CompRefuelable Ammo(Building b) => b.TryGetComp<CompRefuelable>();
+                float Cap(Building b) => Ammo(b).Props.fuelCapacity;
                 List<Building> guns = map.listerBuildings.allBuildingsNonColonist.Where(b => b.Faction == industrial && Ammo(b) != null
                     && (b is Building_Turret || b.TryGetComp<CompTerminalCIWS>() != null)).ToList();
+                t.Require(guns.Count > 0, $"{site.def.defName}: the site has armed turrets");
+                int Steel() => map.listerThings.ThingsOfDef(ThingDefOf.Steel).Sum(x => x.stackCount);
+                int RefuelJobs() => map.mapPawns.SpawnedPawnsInFaction(industrial)
+                    .Count(p => p.CurJobDef == JobDefOf.Refuel || p.CurJobDef == JobDefOf.RefuelAtomic);
+                string Rounds() => string.Join(", ", guns.Select(g => $"{g.def.defName} {Ammo(g).Fuel:0}/{Cap(g):0}"));
+
                 t.Note($"{site.def.defName}: {string.Join(", ", guns.GroupBy(g => g.def.defName).Select(g => $"{g.Key}×{g.Count()}"))}");
+                t.Note($"rounds at generation: {Rounds()}");
 
-                t.Note($"rounds at generation: {string.Join(", ", guns.Select(g => $"{g.def.defName} {Ammo(g).Fuel:0}/{Ammo(g).Props.fuelCapacity:0}"))}");
-                List<Building> notFull = guns.Where(g => !Ammo(g).IsFull).ToList();
-                t.Check(notFull.Count == 0, $"{site.def.defName}: every gun spawns fully loaded{(notFull.Count > 0 ? ": " + string.Join(", ", notFull.Select(g => $"{g.def.defName} {Ammo(g).Fuel:0}/{Ammo(g).Props.fuelCapacity:0}")) : "")}");
+                // ── The first check only schedules; nothing is teleported into a gun on the site's own clock ──
+                // Normalise the rig first: the two guns spawned above arrive full, generated ones sit at initialFuelPercent,
+                // and half a magazine is exactly the threshold the site ignores.
+                foreach (Building g in guns.Where(g => !g.Destroyed)) { SetRounds(Ammo(g), Cap(g) * 0.5f); }
+                yield return new WaitTicks(700);
+                List<Building> toppedUp = guns.Where(g => !g.Destroyed && Ammo(g).Fuel > Cap(g) * 0.5f + 1f).ToList();
+                t.Check(toppedUp.Count == 0, $"{site.def.defName}: guns are not refilled on the tick{(toppedUp.Count > 0 ? ": " + string.Join(", ", toppedUp.Select(g => $"{g.def.defName} {Ammo(g).Fuel:0}/{Cap(g):0}")) : "")}");
 
-                // Half a magazine or more is left alone; below half is topped up.
-                foreach (Building g in guns.Where(g => !g.Destroyed)) { Ammo(g).ConsumeFuel(Ammo(g).Fuel - Ammo(g).Props.fuelCapacity * 0.6f); }
-                yield return new WaitTicks(520);
-                t.Check(guns.Where(g => !g.Destroyed).All(g => !Ammo(g).IsFull), $"{site.def.defName}: a gun with over half its rounds is not topped up");
+                // ── Over half a magazine: no pod is worth dropping ──
+                foreach (Building g in guns.Where(g => !g.Destroyed)) { SetRounds(Ammo(g), Cap(g) * 0.6f); }
+                int steelBefore = Steel();
+                ForceTurretAmmoCheck(comp);
+                yield return new WaitTicks(700);
+                t.Check(guns.Where(g => !g.Destroyed).All(g => Ammo(g).Fuel <= Cap(g) * 0.6f + 1f),
+                    $"{site.def.defName}: a gun with over half its rounds is not topped up ({Rounds()})");
+                t.Check(Steel() == steelBefore, $"{site.def.defName}: no ammo pod for a gun that still has rounds ({steelBefore} → {Steel()})");
 
-                foreach (Building g in guns.Where(g => !g.Destroyed)) { Ammo(g).ConsumeFuel(Ammo(g).Fuel); }
-                yield return new WaitTicks(520);
-                // Has rounds, not full: a gun may fire at wildlife in the ticks after its refill.
-                List<Building> dry = guns.Where(g => !g.Destroyed && !Ammo(g).HasFuel).ToList();
-                t.Check(dry.Count == 0, $"{site.def.defName}: emptied guns are restocked while the crew lives{(dry.Count > 0 ? ": " + string.Join(", ", dry.Select(g => g.def.defName)) : "")}");
+                // ── Dry guns: a pod lands nearby, then the crew carries the rounds over ──
+                foreach (Building g in guns.Where(g => !g.Destroyed)) { SetRounds(Ammo(g), 0f); }
+                steelBefore = Steel();
+                ForceTurretAmmoCheck(comp);
+                var waitDrop = new WaitUntil(() => Steel() > steelBefore, 1500);
+                yield return waitDrop;
+                int dropped = Steel() - steelBefore;
+                t.Check(dropped > 0, $"{site.def.defName}: an ammo pod delivers rounds to the dry guns (+{dropped} steel)");
+                t.Check(guns.Where(g => !g.Destroyed).All(g => !Ammo(g).HasFuel),
+                    $"{site.def.defName}: the rounds are not teleported into the guns ({Rounds()})");
 
+                bool sawRefuel = false;
+                var waitHaul = new WaitUntil(() =>
+                {
+                    sawRefuel |= RefuelJobs() > 0;
+                    return guns.Any(g => !g.Destroyed && Ammo(g).IsFull);
+                }, 3500);
+                yield return waitHaul;
+                t.Check(sawRefuel, $"{site.def.defName}: a crew member took the refuel job for the dropped rounds");
+                t.Check(!waitHaul.TimedOut, $"{site.def.defName}: the crew hauls the rounds into a gun ({Rounds()})");
+                t.Check(Steel() < steelBefore + dropped, $"{site.def.defName}: the hauled rounds leave the ground ({steelBefore + dropped} → {Steel()})");
+                t.Screenshot("turret_ammo_haul");
+
+                // ── No crew: the rounds rot where they landed ──
+                ((List<PendingTurretRefuel>)PendingTurretRefuels.GetValue(comp))?.Clear();
                 foreach (Pawn p in map.mapPawns.SpawnedPawnsInFaction(industrial).ToList()) { p.Destroy(DestroyMode.Vanish); }
-                foreach (Building g in guns.Where(g => !g.Destroyed)) { Ammo(g).ConsumeFuel(Ammo(g).Fuel); }
-                yield return new WaitTicks(520);
+                foreach (Building g in guns.Where(g => !g.Destroyed)) { SetRounds(Ammo(g), 0f); }
+                steelBefore = Steel();
+                ForceTurretAmmoCheck(comp);
+                yield return new WaitTicks(1500);
+                t.Check(Steel() == steelBefore, $"{site.def.defName}: no pod is dropped without a crew ({steelBefore} → {Steel()})");
                 t.Check(guns.Where(g => !g.Destroyed).All(g => !Ammo(g).HasFuel), $"{site.def.defName}: without a crew nobody restocks them");
             }
         }
+
+        /// <summary>
+        /// Sets a refuelable's rounds to an exact amount. <see cref="CompRefuelable.Refuel(float)"/> takes fuel <i>items</i>
+        /// and multiplies them by <see cref="CompProperties_Refuelable.FuelMultiplierCurrentDifficulty"/>, so divide first.
+        /// </summary>
+        private static void SetRounds(CompRefuelable comp, float amount)
+        {
+            if (comp.Fuel > amount) { comp.ConsumeFuel(comp.Fuel - amount); }
+            else { comp.Refuel((amount - comp.Fuel) / Mathf.Max(0.001f, comp.Props.FuelMultiplierCurrentDifficulty)); }
+        }
+
+        /// <summary>Makes the turret-ammo schedule come due on the site's next 500-tick pass.</summary>
+        private static void ForceTurretAmmoCheck(MapComponent_MissileBase comp)
+            => NextTurretAmmo?.SetValue(comp, Find.TickManager.TicksGame + 1);
 
         /// <summary>
         /// NPC gunners man every kind of mannable station (missile launcher, radar, gun turret), leave the post

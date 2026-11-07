@@ -336,7 +336,7 @@ namespace DMSE
 
                     CompRefuelable ammo = e.turret?.TryGetComp<CompRefuelable>();
                     if (ammo == null || ammo.IsFull) continue;
-                    Thing fuel = e.fuel?.FirstOrDefault(t => t != null && !t.Destroyed && t.Spawned && t.Map == map);
+                    Thing fuel = e.fuel?.FirstOrDefault(IsHaulableOnMap);
                     if (fuel == null) continue;
 
                     Pawn p = FindHauler(crew, fuel, e.turret, PathEndMode.ClosestTouch, PathEndMode.Touch);
@@ -556,9 +556,21 @@ namespace DMSE
                 CompRefuelable ammo = e.turret.TryGetComp<CompRefuelable>();
                 if (ammo == null) { pendingTurretRefuels.RemoveAt(i); continue; }
                 if (ammo.IsFull || e.fuel.Count == 0) { pendingTurretRefuels.RemoveAt(i); continue; }
+                // 還在補給艙裡（剛空投，艙門未開）、正被本陣營守軍搬著 → 繼續追蹤；
                 // 全部被搬離這張圖（存進容器、被玩家帶走）→ 不再追蹤。
-                if (!e.fuel.Any(t => t.Spawned && t.Map == map)) pendingTurretRefuels.RemoveAt(i);
+                if (!e.fuel.Any(t => IsHaulableOnMap(t) || IsInTransit(t))) pendingTurretRefuels.RemoveAt(i);
             }
+        }
+
+        /// <summary>躺在地圖上、可以走過去撿的東西（不在容器／補給艙／pawn 手裡）。</summary>
+        private bool IsHaulableOnMap(Thing t) => t != null && !t.Destroyed && t.Spawned && t.Map == map;
+
+        /// <summary>還在補給艙裡或正被本陣營守軍搬著 —— 東西存在，只是還沒落地或還在路上。</summary>
+        private bool IsInTransit(Thing t)
+        {
+            if (t == null || t.Destroyed) return false;
+            if (t.ParentHolder is ActiveTransporterInfo) return true;
+            return t.ParentHolder is Pawn_CarryTracker carry && carry.pawn?.Faction == map.ParentFaction;
         }
 
         // ──────────────── 定時補給空投 ────────────────

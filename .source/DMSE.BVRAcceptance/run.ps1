@@ -8,7 +8,9 @@
      takes screenshots, deletes its temporary save and quits the game.
   4. Removes the DLL again (also when the game crashes or times out) and copies the screenshots into OutDir.
 
-  Usage:  powershell -ExecutionPolicy Bypass -File .source/DMSE.BVRAcceptance/run.ps1 -OutDir <dir> [-TimeoutMinutes 45] [-Only S3,W6] [-SaveDataFolder <dir>]
+  Usage:  powershell -ExecutionPolicy Bypass -File .source/DMSE.BVRAcceptance/run.ps1 -OutDir <dir> [-TimeoutMinutes 45] [-Only S3,W6] [-SaveDataFolder <dir>] [-SkipBuild]
+         -SkipBuild uses the DLL that state/build_project.py already produced in obj\Debug (the sandboxed MSBuild
+         cannot run the Csc task, so `dotnet build` fails there).
   RimWorld must not be running (it locks 1.7/Assemblies). The active mod list is used as is, unless -SaveDataFolder points
   the game at another save-data folder (RimWorld's -savedatafolder): copy your Config folder there and edit its
   ModsConfig.xml to run with a different mod list without touching your own.
@@ -18,7 +20,8 @@ param(
     [int]$TimeoutMinutes = 45,
     [string]$GameExe = '',
     [string]$Only = '',   # comma-separated test ids, e.g. 'S3,W6'; empty runs every test
-    [string]$SaveDataFolder = ''   # optional RimWorld -savedatafolder (own Config/ModsConfig.xml)
+    [string]$SaveDataFolder = '',   # optional RimWorld -savedatafolder (own Config/ModsConfig.xml)
+    [switch]$SkipBuild              # use the DLL already built into obj\Debug by state/build_project.py
 )
 
 $ErrorActionPreference = 'Stop'
@@ -31,10 +34,16 @@ $runnerDll = Join-Path $assemblies 'DMSE.BVRAcceptance.dll'
 if (Get-Process -Name 'RimWorld', 'RimWorldWin64' -ErrorAction SilentlyContinue) { throw 'RimWorld is running; close it first.' }
 New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
 
-dotnet build (Join-Path $here 'DMSE.BVRAcceptance.csproj') -nologo -v q
-if ($LASTEXITCODE -ne 0) { throw 'acceptance build failed' }
+if ($SkipBuild) {
+    $built = Join-Path $here 'obj\Debug\DMSE.BVRAcceptance.dll'
+    if (-not (Test-Path $built)) { throw "no prebuilt DLL at $built; run state/build_project.py first" }
+} else {
+    dotnet build (Join-Path $here 'DMSE.BVRAcceptance.csproj') -nologo -v q
+    if ($LASTEXITCODE -ne 0) { throw 'acceptance build failed' }
+    $built = Join-Path $here 'bin\DMSE.BVRAcceptance.dll'
+}
 
-Copy-Item (Join-Path $here 'bin\DMSE.BVRAcceptance.dll') $runnerDll -Force
+Copy-Item $built $runnerDll -Force
 $started = Get-Date
 
 try {

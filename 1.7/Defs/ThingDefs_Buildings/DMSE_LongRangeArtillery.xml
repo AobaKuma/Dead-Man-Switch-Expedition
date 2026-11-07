@@ -20,7 +20,7 @@
     <description>The NK-30 "Empero" is a heavy long-range cannon with an extremely high muzzle velocity. It shells distant targets with precision, suppressing enemy fire and destroying installations. At close range it fires reduced charges at low velocity for plunging fire, still with very high accuracy. When shelling a target on the world map, it keeps firing until stopped, out of power, or out of shells. Each shot uses one high-explosive mortar shell.\n\nUnguided shells scatter widely at long range and only land near the middle of the target area. If a fire-control radar that supports artillery guidance has a free channel when the gun fires, the shell is radar-guided onto enemy turrets, powered buildings or people in the area, and lands much closer to them. Each guided shell holds one channel for a while.\n\nFire mode toggle: ranging shells scatter around the middle of the target area and log each impact; fire for effect shells scatter around the last logged impact on that map (every friendly gun shelling it shares that point) and tighten their scatter by a quarter of the base scatter per shot.\n\nCannot strike targets in high orbit across layers.</description>
     <thingClass>Building</thingClass>
     <category>Building</category>
-    <uiIconPath>Things/Turrets/DMSE_Weapon_Empero</uiIconPath>
+    <uiIconPath>Things/Turrets/DMSE_Weapon_Empero_icon</uiIconPath>
     <uiIconScale>0.9</uiIconScale>
     <graphicData>
       <texPath>Things/Building/FacilityBase</texPath>

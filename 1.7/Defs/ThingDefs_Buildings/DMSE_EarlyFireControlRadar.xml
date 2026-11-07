@@ -6,6 +6,7 @@
     <label>early fire control radar</label>
     <!-- 老資歷：仍得靠人手操作的早期火控雷達，一次只能導引一枚攔截彈（1 火力通道），鎖定慢、精度差。 -->
     <description>An early fire-control radar, aimed by hand with handwheels and an optical sight. It can guide only one interceptor at a time, locks on slowly and is not very accurate.\n\nRequires an operator.</description>
+    <uiIconPath>Things/Building/icon_Radar_EarlyFC</uiIconPath>
     <graphicData>
       <texPath>Things/Building/FacilityBase</texPath>
       <graphicClass>Graphic_Single</graphicClass>

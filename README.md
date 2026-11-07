@@ -174,6 +174,11 @@ dotnet run --project .source/DMSE.BVRTests/DMSE.BVRTests.csproj -c Release --no-
 ### 5. 敵方導彈發射陣地（Missile Base）
 世界地圖任務地點（`DMSE_MissileBase` / `DMSE_MissileBaseSitePart`）：敵方機動彈道導彈陣地，持續向殖民地發射導彈並透過補給空投補彈，一段時間後轉移位置。含專用 GenStep（地形、FFF 結構、駐守人員、戰爭迷霧）與 `LordJob_MissileCrewDuty`。
 
+野戰發射陣地（`DMSE_FieldLaunchSite` / `DMSE_EarlyLaunchSite`）的補給是**實體流程**，不是把數字塞進容器：
+
+- **彈架補彈**：每座空彈架（每 `rackSupply.intervalDays` 天）空投一艙導彈，落地後守軍親自搬進彈架（`JobDriver_HaulMissileToRack`，同時最多 `maxCrewLoaders` 人）。發射架打空時優先用彈藥庫存貨、由守軍搬彈裝填，彈藥庫打空才靠空投。空投落地到開始搬之間有 `loadDelayTicks`，玩家可以搶走或打爛那批導彈；離彈架超過 `loadRadius` 的彈藥會被放棄追蹤。
+- **砲塔彈藥**：砲塔／終端攔截平台的 `CompRefuelable`（37 mm 砲彈、機砲彈、裝甲砲管…）低於 `turretAmmo.refillBelowPercent` 時，每 `intervalDays` 天在砲塔旁空投一次實體彈藥，落地後守軍走過去用原版 `JobDefOf.Refuel` 裝填（同時最多 `maxHaulers` 人）。**不會**直接把燃料補滿：守軍全滅後彈藥就躺在地上，砲塔打完就是打完（`MapComponent_MissileBase.TickTurretAmmoSupply` / `TickCrewHaul`）。
+
 ### 6. 真空製造與軌道環境
 - **真空密封室**：`MapPortal` 地下密室，可在大氣層內維持真空；搭配真空泵、氧氣蠟燭；廢棄後可回填（`CompLandFillable`），填埋入口沿用原陣營、可拆除或重新開挖。房間地圖由 `GenStep_Prefab.terrain` 鋪滿 `DMSE_VacuumRoomFloor` 基底；沒有地形時直接讀 `topGrid` 的模組（ReGrowth Core、Simple FX: Splashes）會在 `Map.FinalizeInit` NRE，入口每次點擊都多生一張地圖。舊存檔的房間由 `Map.FinalizeInit` prefix 補地形（acceptance `VR1`）。
 - **軌道平台地形**（`Terrain_OrbitalPlatform_DMS`）與微重力設施。另有輕型平台（`DMS_LightPlatform`，只承載輕型 / 中型建築）。不需 Orbital Platforms 模組即可在太空虛空上建造（`Patch_OrbitalPlatform.xml`）；Odyssey 分頁的「拆除平台」指令可把 DMS 平台與原版軌道平台、機械體平台拆回虛空並回收材料（`RemovablePlatformExtension`）。
