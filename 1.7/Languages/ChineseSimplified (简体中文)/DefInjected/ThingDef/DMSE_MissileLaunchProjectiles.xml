@@ -15,6 +15,7 @@
   <DMSE_Launch_Maverick.label>对地攻击导弹（升空）</DMSE_Launch_Maverick.label>
   <DMSE_Launch_Sparrow.label>先进防空导弹（升空）</DMSE_Launch_Sparrow.label>
   <DMSE_Launch_Moskit.label>超音速反舰导弹（升空）</DMSE_Launch_Moskit.label>
+  <DMSE_Launch_Oniks.label>先进反舰巡航导弹（升空）</DMSE_Launch_Oniks.label>
   <DMSE_Launch_Yj.label>高超音速反舰导弹（升空）</DMSE_Launch_Yj.label>
   <DMSE_Launch_Tochka.label>战术弹道导弹（升空）</DMSE_Launch_Tochka.label>
 </LanguageData>

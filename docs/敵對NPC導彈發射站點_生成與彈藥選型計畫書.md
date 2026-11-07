@@ -10,7 +10,20 @@
 - **守軍**：`LordJob_MissileStationCrew`＋`JobGiver_ManMissileStation` 操作己方 `CompMannable`（原版 `JobGiver_ManTurrets` 只會操作迫擊砲）。
 - MapGen 改繼承原版 `MapCommonBase`；道路 `GenStep_FieldLaunchSiteRoads`。
 - 坑：MapGeneratorDef 內的 GenStep 拿到 `parms.sitePart == null`，威脅點數改從 `MapGenerator.mapBeingGenerated.Parent as Site` 讀。
-- 驗收 N1–N4。尚未做：雷達網前的低機率「舊式導彈站」事件、§3 的 doctrine／庫存帳本、搬遷、海上平台、其他 archetype。
+- 驗收 N1–N4。尚未做：§3 的 doctrine／庫存帳本、搬遷、海上平台、其他 archetype。
+
+## 1.1 舊式導彈陣地（2026-11-06）
+
+`DMSE_EarlyLaunchSite`／`DMSE_EarlyLaunchSitePart`（`1.7/Defs/WorldObjects_EarlyLaunchSite.xml`），結構來自 `LaunchSite_Early.xml`，沿用 `GenStep_FieldLaunchSite` 的分級布局。
+
+- **觸發**：ThreatBig 事件 `DMSE_EarlyLaunchSiteDeployed`（`IncidentWorker_EarlyLaunchSite`）。未完成 `DMSE_RadarNetwork`：點數 ≥ 1500，工業派系或海盜；已完成：無點數門檻，只有海盜，機率 ×0.5。與所有 NPC 導彈站共用「同時一座」上限。
+- **海盜判定**：`SitePartWorker_EarlyLaunchSite.IsPirate`：人類派系、`permanentEnemy`、至少工業等級。原版海盜是 Spacer，不能只看科技等級。
+- **彈種**：`DMSE_Missile_LegacyLoiter`（固定構型，只有 `MissileItemExtension`）。地圖層 `MapComponent_MissileBase` 原本只認 `CompMissileConfig`，已改為也接受固定構型對地彈。世界層設 `missileBody`。
+- **火力條件**：老式火控雷達要有電且有人操作。炮手選崗順序：火控雷達 → 世界選靶發射架 → 其他。需人操作的發射架沒人時不發射（`NeedsOperator`）；第一座陣位固定 `LaunchSite_B`（傾斜發射軌不需人）。
+- **電力**：火控站兩座燒木發電機（單座 1000 W 帶不動 1200 W 雷達加探照燈）；`CompProperties_MissileBase.refuelGenerators` 讓守軍抽象補燃料。
+- **防空**：不掛 `CompProperties_WorldAirDefense`，只有地圖上的老式高射砲。
+- 驗收 N7（開火）、N8（事件門檻）。
+
 
 ## 2. 設計原則
 

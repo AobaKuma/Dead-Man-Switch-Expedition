@@ -27,6 +27,8 @@
   <DMSE_MissileBody_Sparrow.description>一種細長的半主動雷達導引導彈。即使在急轉彎時也能持續追隨火控雷達的訊號，攔截命中率遠高於舊式導彈。\n\n可裝配彈頭、導引與酬載。</DMSE_MissileBody_Sparrow.description>
   <DMSE_MissileBody_Moskit.label>超音速反艦導彈彈體</DMSE_MissileBody_Moskit.label>
   <DMSE_MissileBody_Moskit.description>一種衝壓引擎推進的超音速反艦導彈。末段貼著海面飛行，近迫防禦只剩幾秒鐘能反應。\n\n可裝配彈頭、導引、推進與酬載，出廠時配備反艦雷達尋標器。</DMSE_MissileBody_Moskit.description>
+  <DMSE_MissileBody_Oniks.label>先進反艦巡航導彈彈體</DMSE_MissileBody_Oniks.label>
+  <DMSE_MissileBody_Oniks.description>一種以火箭助推、衝壓引擎巡航的先進反艦巡航導彈。比舊式超音速導彈更快、更難偵測、射程也更遠，傾斜發射架與垂直發射井都能發射。\n\n可裝配彈頭、導引、推進與酬載，出廠時配備反艦雷達尋標器。</DMSE_MissileBody_Oniks.description>
   <DMSE_MissileBody_Yj.label>高超音速反艦導彈彈體</DMSE_MissileBody_Yj.label>
   <DMSE_MissileBody_Yj.description>一種以火箭助推、衝壓引擎巡航的高超音速反艦導彈。雷達訊號小、末段飛得極低，防禦方幾乎沒有反應時間。\n\n可裝配彈頭、導引、推進與酬載，出廠時配備反艦雷達尋標器。</DMSE_MissileBody_Yj.description>
   <DMSE_MissileBody_Tochka.label>戰術彈道導彈彈體</DMSE_MissileBody_Tochka.label>

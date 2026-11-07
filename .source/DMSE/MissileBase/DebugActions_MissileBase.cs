@@ -32,6 +32,17 @@ namespace DMSE
             Find.WindowStack.Add(new FloatMenu(options));
         }
 
+        /// <summary>舊式導彈陣地（雷達網之前的早期導彈襲擊）：工業等級派系或海盜。</summary>
+        [DebugAction(Category, "Spawn early launch site near this map...", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void SpawnEarlySiteNearPlayer()
+        {
+            Map map = Find.CurrentMap;
+            var options = new[] { (5f, 10f), (10f, 15f) }
+                .Select(r => new FloatMenuOption($"{r.Item1:0}–{r.Item2:0} tiles", () => Spawn(map.Tile, r.Item1, r.Item2,
+                    "DMSE_EarlyLaunchSite", "DMSE_EarlyLaunchSitePart", StorytellerUtility.DefaultThreatPointsNow(map), StorytellerUtility.DefaultThreatPointsNow(map)))).ToList();
+            Find.WindowStack.Add(new FloatMenu(options));
+        }
+
         private static void Spawn(PlanetTile origin, float min, float max,
             string worldObjectDefName = "DMSE_MissileBase", string sitePartDefName = "DMSE_MissileBaseSitePart", float points = 2000f, float threatPoints = 0f)
         {

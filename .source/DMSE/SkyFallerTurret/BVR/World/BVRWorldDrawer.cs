@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Fortified;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -141,12 +142,14 @@ namespace DMSE
             foreach (var interceptor in Find.WorldObjects.AllWorldObjects.OfType<WorldObject_Interceptor>())
             {
                 // Dashes follow the spherical path, not a chord through the planet.
-                Vector3 here = interceptor.DrawPos;
+                Vector3 here = interceptor.GroundPos;
                 Material material = RingMaterial(interceptor.Tile);
                 float width = 3f * interceptor.Tile.LayerDef.lineWidthFactor;
+                // 從攔截彈目前的高度爬向會合點，接上目標離地的航跡線。
+                float from = interceptor.CurrentLift, meet = interceptor.MeetLift;
                 for (int i = 0; i < 16; i += 2)
-                    Line(Vector3.Slerp(here, interceptor.end, i / 16f),
-                        Vector3.Slerp(here, interceptor.end, (i + 1) / 16f), material, width);
+                    Line(AirTrackDisplay.Raised(Vector3.Slerp(here, interceptor.end, i / 16f), Mathf.Lerp(from, meet, i / 16f)),
+                        AirTrackDisplay.Raised(Vector3.Slerp(here, interceptor.end, (i + 1) / 16f), Mathf.Lerp(from, meet, (i + 1) / 16f)), material, width);
             }
             for (int f = flashes.Count - 1; f >= 0; f--)
             {
@@ -159,6 +162,64 @@ namespace DMSE
                         Find.WorldGrid.Surface.Def.WorldLineMaterialHighVis, 3f);
             }
         }
+        // ---- 高度航跡 ----
+        private const int TrackSegments = 24;
+        private static Material[] altitudeMaterials;
+        private static Material altitudeShadowMaterial;
+
+        private static Material AltitudeMaterial(int band)
+        {
+            altitudeMaterials ??= new[]
+            {
+                new Color(0.3f, 0.9f, 1f), new Color(0.45f, 1f, 0.35f), new Color(1f, 0.8f, 0.2f), new Color(1f, 0.35f, 0.75f),
+            }.Select(c => MaterialPool.MatFrom(GenDraw.OneSidedLineOpaqueTexPath, ShaderDatabase.WorldOverlayAdditiveTwoSided, c, 3590)).ToArray();
+            return altitudeMaterials[band];
+        }
+
+        /// <summary>玩家知道的航跡：自己發射的，或已被我方偵測到的。其他陣營的航跡不洩漏路線。</summary>
+        public static bool KnownToPlayer(IBVRTrack track)
+            => track.Attacker == Faction.OfPlayer || track.State.detectedByFaction == Faction.OfPlayer;
+
+        /// <summary>
+        /// 把航跡剩餘的路線畫成離地的弧線：抬升量代表飛行高度，顏色代表高度分段，
+        /// 起點就是世界圖示（DrawPos 已抬升到目前高度），不再畫連回地面的垂直線。
+        /// </summary>
+        public void DrawAltitudeTracks(IEnumerable<IBVRTrack> tracks)
+        {
+            PlanetLayer layer = Find.WorldSelector.SelectedLayer;
+            foreach (IBVRTrack track in tracks)
+            {
+                if (track.Self == null || !KnownToPlayer(track)) { continue; }
+                if (track.Self.Tile.Layer != layer && (!track.Destination.Valid || track.Destination.Layer != layer)) { continue; }
+                int eta = track.TicksToArrival;
+                if (eta <= 0) { continue; }
+                float width = 2.5f * layer.Def.lineWidthFactor;
+                float startProgress = track is Fortified.IMissileTrack missile ? missile.RouteProgress : 1f;
+                bool hasStart = track is Fortified.IMissileTrack;
+                // 地面投影（虛線）：航跡線與它之間的距離就是高度，偏離畫面中心時最明顯。
+                altitudeShadowMaterial ??= MaterialPool.MatFrom(GenDraw.OneSidedLineOpaqueTexPath, ShaderDatabase.WorldOverlayAdditiveTwoSided, new Color(0.45f, 0.45f, 0.45f), 3585);
+                for (int i = 0; i < TrackSegments; i += 2)
+                {
+                    Line(track.PositionAt(Mathf.RoundToInt(eta * (float)i / TrackSegments)),
+                        track.PositionAt(Mathf.RoundToInt(eta * (float)(i + 1) / TrackSegments)), altitudeShadowMaterial, width * 0.5f);
+                }
+                Vector3 previous = default;
+                for (int i = 0; i <= TrackSegments; i++)
+                {
+                    float along = (float)i / TrackSegments;
+                    int ahead = Mathf.RoundToInt(eta * along);
+                    float altitude = track.AltitudeAt(ahead);
+                    float progress = hasStart ? Mathf.Lerp(startProgress, 1f, along) : 1f;
+                    // 剩餘比例以整條航線計（有進度時），否則以這條線的長度計。
+                    float left = hasStart ? 1f - progress : 1f - along;
+                    Vector3 point = AirTrackDisplay.Raised(track.PositionAt(ahead), AirTrackDisplay.Lift(altitude) * AirTrackDisplay.Ramp(progress, left));
+                    float lineWidth = width * AirTrackDisplay.WidthFactor(altitude);
+                    if (i > 0) { Line(previous, point, AltitudeMaterial(AirTrackDisplay.Band(altitude)), lineWidth); }
+                    previous = point;
+                }
+            }
+        }
+
         private static Ring MakeRing(Vector3 center, float range)
         {
             float angle = Mathf.Min(Mathf.PI, range / Mathf.Max(0.001f, Find.WorldGrid.ApproxDistanceInTiles(1f)));

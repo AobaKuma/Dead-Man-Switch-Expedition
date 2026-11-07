@@ -119,6 +119,18 @@
           <radius>20~44</radius>
           <spacing>6</spacing>
         </li>
+        <!-- 戰情室：閒置守軍上去操作，提供雷達距離與發射冷卻加成。占地比休息區小，排在其後才不會擠掉休息區。 -->
+        <li>
+          <label>war room</label>
+          <pool>
+            <li>DMSE_Mid_WarRoom_A</li>
+          </pool>
+          <countByTier>
+            <li>1</li>
+          </countByTier>
+          <radius>20~44</radius>
+          <spacing>6</spacing>
+        </li>
       </groups>
     </genStep>
   </GenStepDef>

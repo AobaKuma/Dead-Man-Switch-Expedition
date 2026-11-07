@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Linq;
+using Fortified;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -43,10 +45,13 @@ namespace DMSE
         public bool IsLocalMap => local != null;
 
         /// <summary>目前實際的探測半徑（已套用警戒階段）。</summary>
-        public float DetectionRange(BVRTargetProps target) => EquipmentDetectionRange(target) * rangeFactor;
+        public float DetectionRange(BVRTargetProps target, IBVRTrack track = null) => EquipmentDetectionRange(target, track) * rangeFactor;
 
         /// <summary>設備正常有效探測半徑（不看警戒階段；仍含反隱身與雷達壓制）。</summary>
-        public float EquipmentDetectionRange(BVRTargetProps target)
+        public float EquipmentDetectionRange(BVRTargetProps target, IBVRTrack track = null)
+            => AirDefenseHooks.WorldStat(AirDefenseStat.Detection, RawDetectionRange(target), this, track, target);
+
+        private float RawDetectionRange(BVRTargetProps target)
         {
             float jam = EWEnvironment.DetectionFactor(jamEff);
             if (defense != null) { return defense.DetectionRange(target) * jam; }
@@ -65,7 +70,7 @@ namespace DMSE
         /// <summary>本節點自己的感測器是否看見這條航跡（不含資料鏈）。</summary>
         public bool CanSee(IBVRTrack track)
         {
-            float range = DetectionRange(track.TargetProps);
+            float range = DetectionRange(track.TargetProps, track);
             return range > 0f && MissileWorldUtility.SurfaceTilesBetween(Center, track.PositionAt(0)) <= range;
         }
 
@@ -77,36 +82,92 @@ namespace DMSE
                || (BVRWorldTuningDef.Current.areaDefenseEnabled && CanSee(track));
 
         /// <summary>
-        /// 威脅評估：通道不足時先接戰雷達截面最大的航跡。抽象節點看 XML 旗標；
-        /// 非玩家的 Spacer 以上地圖節點預設開啟。
+        /// 威脅評估：通道不足時先接戰雷達截面最大的航跡。抽象節點看自己的設定；
+        /// 玩家地圖節點看戰情終端，NPC 地圖節點看陣營準則。
         /// </summary>
         public bool ThreatAssessment => defense != null
             ? defense.ThreatAssessment
             : faction != null && (faction.IsPlayer
                 ? Roe?.priority == EngagePriority.LargestFirst
-                : faction.def.techLevel >= TechLevel.Spacer);
+                : MissileDoctrine.For(faction)?.threatAssessment == true);
 
-        /// <summary>有攔截彈可用（現在或冷卻後）。</summary>
-        public bool HasInterceptorAmmo => local != null
-            ? local.HasInterceptorAmmo(faction)
-            : defense != null && defense.Available && defense.Stock > 0;
+        private BVRDefenseEffector defenseEffector;
+
+        /// <summary>本節點的所有武器：抽象據點的庫存，或地圖上屬於本陣營的發射架與註冊的效果器。</summary>
+        public IEnumerable<IAirEffector> Effectors
+        {
+            get
+            {
+                if (defense != null) { yield return defenseEffector ??= new BVRDefenseEffector(defense); }
+                if (local == null) { yield break; }
+                foreach (CompMissileLauncher_Interceptor launcher in local.launchers)
+                {
+                    if (launcher.parent.Faction == faction) { yield return launcher; }
+                }
+                MapComponent_AirEffectors registered = local.map?.GetComponent<MapComponent_AirEffectors>();
+                if (registered == null) { yield break; }
+                foreach (IAirEffector effector in registered.Effectors)
+                {
+                    if (effector.Source?.Faction == faction) { yield return effector; }
+                }
+            }
+        }
+
+        /// <summary>有走火控流程的武器可用（現在或冷卻後）。</summary>
+        public bool HasInterceptorAmmo => Effectors.Any(e => e.UsesFireControl && e.Armed);
+
+        /// <summary>有點防禦式的武器：不走火控，每次掃描各自判斷。</summary>
+        public bool HasAutonomousEffector => Effectors.Any(e => !e.UsesFireControl);
+
+        /// <summary>現在能打這個目標的火控武器，最閒置的優先；沒有時回傳 null。</summary>
+        public IAirEffector ReadyEffector(int now, AirEngagement engagement)
+        {
+            IAirEffector best = null;
+            foreach (IAirEffector effector in Effectors)
+            {
+                if (!effector.UsesFireControl || !effector.CanFire(now) || !effector.CanEngage(engagement)) { continue; }
+                if (best == null || effector.ReadyTick < best.ReadyTick) { best = effector; }
+            }
+            return best;
+        }
+
+        public AirEngagement EngagementFor(IBVRTrack track, WorldObject targetObject, Vector3 position, int eta, float altitude) => new AirEngagement
+        {
+            Track = AirDefenseHooks.Public(track),
+            TargetObject = targetObject,
+            Defender = faction,
+            Site = parent,
+            Map = local?.map,
+            Origin = Center,
+            DistanceTiles = MissileWorldUtility.SurfaceTilesBetween(Center, position),
+            EtaTicks = eta,
+            Altitude = altitude,
+        };
 
         public int FreeChannels => local != null
             ? Mathf.Min(local.Channels.Free(faction), Roe?.RoeChannelsLeft(faction) ?? int.MaxValue)
             : Mathf.Max(0, (defense?.Channels ?? 0) - (WorldComponent_BVRNetwork.Current?.CountEngaged(parent, faction) ?? 0));
 
         public CompFireControlRadar BestRadar(BVRTarget target, int eta) => local?.fireControlRadars
-            .Where(fc => fc.Active && fc.parent.Faction == faction && eta <= fc.Props.maxRangeTicks)
+            .Where(fc => fc.Active && fc.parent.Faction == faction && eta <= fc.Props.maxRangeTicks
+                && fc.Props.InAltitudeEnvelope(target.altitude))
             .OrderByDescending(fc => fc.ComputeHitChance(target, eta)).FirstOrDefault();
-
-        public CompMissileLauncher_Interceptor ReadyLauncher(int now) => local?.launchers
-            .Where(l => l.parent.Faction == faction && l.ReadyToFire(now))
-            .OrderBy(l => l.CooldownUntil).FirstOrDefault();
 
         /// <summary>有可用火控：地圖上運作中的火控雷達，或抽象節點的火控設定。</summary>
         public bool HasFireControl => local != null
             ? local.fireControlRadars.Any(fc => fc.Active && fc.parent.Faction == faction)
             : defense?.FireControl != null;
+
+        /// <summary>有火控能打到這個高度。打不到時交給其他節點，不佔住接戰權。</summary>
+        public bool CanReachAltitude(float altitude)
+        {
+            if (local == null) { return defense?.FireControl?.InAltitudeEnvelope(altitude) == true; }
+            foreach (CompFireControlRadar fc in local.fireControlRadars)
+            {
+                if (fc.Active && fc.parent.Faction == faction && fc.Props.InAltitudeEnvelope(altitude)) { return true; }
+            }
+            return false;
+        }
 
         /// <summary>
         /// 這個節點依自己的規則是否會接戰此航跡（不含射程、火控與彈藥）：
@@ -123,8 +184,5 @@ namespace DMSE
               || (Roe?.engageNeutral == true && AirDefenseAlertPolicy.IsNonAlly(faction, track.Attacker));
 
         public CompProperties_FireControlRadar DefenseFireControl => defense?.FireControl;
-        public MissileConfig DefenseConfig => defense?.Config;
-        public bool DefenseReady(int now) => defense != null && defense.Ready(now);
-        public bool TryConsumeDefense(int now) => defense != null && defense.TryConsume(now);
     }
 }

@@ -47,7 +47,7 @@
     <researchPrerequisites Inherit="False">
       <li>DMSE_RadarNetwork</li>
     </researchPrerequisites>
-    <designationCategory>DMS_Category</designationCategory>
+    <designationCategory>DMSE_BVRCategory</designationCategory>
     <designatorDropdown>DMS_Turrets</designatorDropdown>
     <building>
       <turretGunDef>DMSE_Gun_HeavyMortar</turretGunDef>

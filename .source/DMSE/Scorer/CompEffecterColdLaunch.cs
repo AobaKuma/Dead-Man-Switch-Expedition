@@ -24,6 +24,10 @@ namespace DMSE
         public int burnDurationTicks = -1;
         /// <summary>火焰與煙霧尺寸倍率，套用於隨機變動之後。</summary>
         public float effectScale = 1f;
+        /// <summary>助推器分離後換上的貼圖（不含助推器，須與原貼圖同尺度對齊）；空值 = 全程同一張。需要 fxProfile 的 boosterTicks。</summary>
+        public string separatedTexPath;
+        /// <summary>分離後的噴口位置（同 <see cref="offsetY"/>）；只在 <see cref="separatedTexPath"/> 有值時使用，對到續航段尾端。</summary>
+        public float separatedOffsetY = -1.5f;
 
         public bool IsBurning(int ticksSinceSpawn, int ignitionDelayTicks)
         {
@@ -62,6 +66,16 @@ namespace DMSE
         public LaunchFxEmitter LaunchFx => launchFx;
 
         public CompProperties_EffecterLaunch Props => (CompProperties_EffecterLaunch)props;
+
+        /// <summary>助推器已分離（與 <see cref="LaunchFxEmitter"/> 同一時間軸；由存檔的 tick 推得，讀檔後暫停中也正確）。</summary>
+        public bool BoosterSeparated
+        {
+            get
+            {
+                LaunchFxProfileDef profile = Props.fxProfile;
+                return profile != null && profile.boosterTicks > 0 && ticksSinceSpawn - IgnitionDelayTicks >= profile.boosterTicks;
+            }
+        }
 
         /// <summary>點火前延遲（tick）。冷射 = Props.delayTicks；熱射覆寫為 0（立即點火）。</summary>
         protected virtual int IgnitionDelayTicks => Props.delayTicks;

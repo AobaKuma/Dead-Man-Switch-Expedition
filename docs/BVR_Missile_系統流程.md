@@ -37,7 +37,7 @@ UI 配件（不參與判定）：`CompTurretFacingRenderer`（追最緊急目標
 - `BVRTarget`：`ThingOwner<Thing>`（存檔鍵 `skyfaller`）收起空投艙或 `IIncomingMissile`（`Payload`／`Missile`／`Skyfaller`）；`position`、`stealthLevel`、`speed`、`lockUntil`、`midcourseEngagedUntil`、唯一 `id`。`ContainedPawns` 回傳艙內全部 pawn。
 - 四個裝置註冊表；`Channels`（`BVRChannelLedger`）。
 - `BVRTargetProps`（掛在空投艙或落地導彈 def）：`distanceLevel`、`stealthLevel`、`speed`、`altitude`；無擴充時 1／0／15／1000。
-- `BVRTuning`：`PowerWindowExponent=2`、`AntiStealthBonusPerLevel=0.5`、`StealthDetectFactor=0.4`、`MergeWindowTicks=600`、`WindowPenaltyPerExtraTarget=60`。
+- 地圖層波次常數在 `BVRWorldTuningDef`（`DMSE_BVRWorld.xml`）：`searchPowerWindowExponent=2`、`mapAntiStealthWindowBonusPerLevel=0.5`、`mapStealthWindowFactor=0.4`、`waveMergeTicks=600`、`windowPenaltyPerExtraTarget=60`、`loiterDiveTicks=600`。
 
 ### A-3. 目標進入
 
@@ -104,7 +104,7 @@ terminalOnly 目標只交給 CIWS。CIWS 與 SAM 可能打同一目標，先擊�
 - `MissileBodyDef`：基礎數值（爆炸半徑、傷害、散布、`baseWorldSpeedFactor`、`payloadCapacity` N）、燃料／比衝、`assembleWorkAmount`、`refundFraction`、`sizeClass`（Loitering／Light／Medium／Ballistic）、`launchMode`（Tilt／Vertical／Both）、`customizeLocation`（None／Item／StorageBuilding／Launcher）、`slots`、`incomingSkyfaller`（現為落地 Projectile def）、`launchProjectile`、`builtInGuidance`、`builtInTerminalGuidance`、`defaultParts`、`terminalUpdates`、`interceptHitFactor`、`researchPrerequisites`。
 - `MissilePartDef`（Warhead／Guidance／Propulsion／Payload）：數值修正、`signatureFactor`、`jamStrength`、`chaffCharges`、`compatibleBodies`、`researchPrerequisites`、`costList`；行為子類：
   - `warheadEffect`：ContinuousRod（攔截 +N×5%）、ExtendedFuel（射程 +N×2）、Airburst、TungstenPenetrator（坍塌厚岩頂）、Incendiary、EMP、AnimalBerserk、BerserkPulse。
-  - `guidanceType`：見 B-7。
+  - `guidanceType`：見 B-6。
   - `payloadEffect`：None、HighExplosive、Cluster、Defoliant、FireFoam、Antiparticle、ToxicGas、AirburstTungsten（射程 ×0.75）。
 - 平台 `MissileLauncherExtension`（`sizeClass`、`extraSizeClasses`、`launchMode`、`capacity`、`isStorage`）。實際能裝什麼看 storage filter；`check_missile_content.py` 第 8 條比對。只有 `defaultBody.customizeLocation == Launcher` 的建築（塔式、戰略井）開放換彈體（同 sizeClass、未研究者鎖定）；物品與儲存架彈體唯讀。
 
@@ -174,7 +174,144 @@ CompBVRDevice
 - **電網啟動中的建築**：導彈打未生成地圖的據點時建築都還沒開機（原版每 30–200 ticks 開一棟）。`GuidanceType.PowerStarting` 把符合原版開機條件的建築視為運作中；反輻射用 `ActiveForSeeker`，電磁以額定耗電計。熱訊號不受影響（房間還沒升溫）。
 - **雷射標點**（`Scorer/Guidance/LaserDesignator.cs`）：`DMSE_LaserDesignatorMark`（Ethereal、不可攻擊，預設 5000 ticks 失效）；`DMSE_Gun_LaserDesignator` 射出無傷害標定彈（`weaponTags Inherit="False"`、`ai_IsWeapon false`，AI 不會攜帶）；`CompProperties_AbilityLaserDesignate` 可掛任何 AbilityDef（未隨附）。
 
+### B-7. 飛彈行為框架（`.source/DMSE/MissileFramework/`）
+
+預定併入 Fortified，所以 `MissileFrameworkTypes.cs` 的 namespace 已是 `Fortified`，**不得引用 DMSE 型別**；搬進 `Fortified.dll` 後，XML 與存檔的 `Class="Fortified.X"` 都不必改。部件槽與尺寸 enum 不動；`GuidanceType`、`WarheadEffect`、`PayloadEffect` 暫留 DMSE。
+
+| 型別 | 職責 |
+|---|---|
+| `IMissileLoadout` | 裝配的抽象（`MissileConfig` 實作）：`PayloadCapacity`、`PenetratesThickRoof`、`BehaviorProps` |
+| `IMissileTrack` | 世界層航跡的抽象（`MissileWorldObject` 實作）：`RouteProgress`、`TicksToArrival`、`PositionAt`、`NotifyManoeuvre` 等 |
+| `AirTrackSignature`（見 B-8） | 世界層偵測看到的特徵：`distanceLevel`、`stealthLevel`、`speed`、`altitude` |
+| `MissileSeekContext` | 導引頭選目標的輸入；`GuidanceType.PickTarget` 改收它。`ClaimKey` 非 null 才分散目標並登記鎖定 |
+| `MissileImpactContext` | 引爆的輸入；戰鬥部與載荷新增 `Apply(MissileImpactContext)`，預設轉給舊的 `Apply(N, center, map, attacker)` |
+| `MissileBehaviorProps` | XML 設定（共用、無狀態），掛在 `MissileBodyDef.behaviors` 或 `MissilePartDef.behaviors`；可直接覆寫 `ModifySeekResult`、`PostDetonate` |
+| `MissileBehavior` | 單條航跡上的實例（可存檔），`behaviorClass` 有值才建立；生命週期到航跡進入目標地圖為止 |
+| `MissileBehaviorSet` | 一條航跡的行為集合：分派、彙總、存檔。順序固定為彈體在前、部件依裝配順序，存檔依序對應 |
+
+Hook 時機：
+
+| Hook | 時機 |
+|---|---|
+| `PostLaunch` | 航跡加入世界時一次，讀檔不再呼叫 |
+| `FlightTick` | 飛行推進後；可銷毀航跡，之後的行為不再執行 |
+| `SpeedFactorAt`（配 `HasSpeedProfile`） | 速度倍率，必須是航線進度的純函式，預測未來位置也會呼叫；多個行為相乘，下限 0.01 |
+| `ModifySignature` | 每次讀 `TargetProps` 時 |
+| `PostTerminalUpdate`、`OnIntercepted`、`OnJammedOut` | 終端更新後；航跡被攔截或被干擾、銷毀前 |
+| `PreArrive` | 抵達時；回傳 true 表示已自行結算，不走抽象節點與一般抵達流程 |
+| `ModifySeekResult`（Props） | 導引頭選定後；設成 `IntVec3.Invalid` 表示放棄 |
+| `PostDetonate`（Props） | 戰鬥部與載荷之後；在厚岩層表面引爆時不呼叫 |
+
+參考實作（目前沒有出貨的 Def 使用，驗收以程式掛上）：
+
+- `Fortified.MissileBehaviorProps_FlightProfile`：`phases` 依 `untilProgress` 分段，每段可改 `speedFactor`、`altitude`（負值不改）、`signatureFactor`、`stealthOffset`；`evasiveEntry` 在進入該段時計一次機動。
+- `DMSE.MissileBehaviorProps_ReleaseChildren`（`Scorer/Assembly/MissileBehavior_ReleaseChildren.cs`）：`atProgress` 釋放 `count` 枚子彈，`childBody`／`childParts` 指定內容，`retireParent` 銷毀母彈。依賴裝配系統，所以跟 `MissileBodyDef` 一起遷移。`SpawnChild` 上限 3 代，超過回傳 null。
+
+與既有系統的接點：
+
+- **變速航跡**：`IAirTrack.VariableSpeed` 為 true 時，ETA 與位置預測以 30 ticks 為步長積分，`BVRInterceptSolver.TrySolve` 改走 `TrySolveGeneral`。
+- **機動**：`RouteRevision = terminalUpdatesUsed + manoeuvres`，飛向舊會合點的在飛攔截彈判定目標脫離。
+- **`TargetProps`**：`SignatureFactor` 與行為都沒有改變特徵時回傳 Def 自己的 props；否則用 `BVRTargetProps.WithSignature` 複製，未改的欄位（如 `debrisProfile`）一律保留。以前誘餌部件的放大會遺失 `altitude` 與 `debrisProfile`。
+- **導引特性**：`HomesOnEmissions`、`UsesGroundChannel`、`ExtraGroundChannels`、`BuiltInLabel` 取代原本的型別判斷。電視導引的零件資訊卡因此開始顯示通道占用，這是有意的變更。
+- **存檔**：`manoeuvres`、`childDepth` 與 `behaviors` 節點；節點不存在時（舊存檔、新增部件）維持預設值。
+
+測試：`DMSE.BVRTests/Tests_MissileBehaviors.cs`（資料與公式）、`DMSE.BVRAcceptance/Tests_MissileBehaviors.cs` 的 MB1–MB4（遊戲內 hook、子彈、存讀檔）。尚未驗證：從 XML 載入 `behaviors`。`MissilePartDef` 目前沒有 `ConfigErrors` 覆寫，部件上的行為設定錯誤不會在載入時回報（彈體會）。
+
 ---
+
+### B-8. 防空事件、修正鏈與目標抽象（`.source/DMSE/MissileFramework/AirDefenseFramework.cs`）
+
+與 B-7 相同，namespace 是 `Fortified`，不引用 DMSE 型別。DMSE 這邊的接線在 `World/AirDefenseHooks.cs`，沒有修正或處理者時不配置物件。
+
+**修正鏈** `AirDefensePipeline`：兩層共用。
+
+| 數值 | 世界層 | 地圖層 |
+|---|---|---|
+| `Detection` | `BVRNode.EquipmentDetectionRange`（地表格） | `ComputeWarningWindow`（ticks） |
+| `LockTicks` | 開始鎖定時 | 開始鎖定時 |
+| `HitChance` | 據點攔截、封鎖攔截 | 中過程、肩射、CIWS |
+
+- 順序：全域 `AirDefenseModifier`（依 `order`）→ 目標裝配 `ModifyDefenseAsTarget` → 攔截彈裝配 `ModifyDefenseAsInterceptor` → 航跡 `IAirTrack.ModifyDefense`（只有世界層有航跡）。
+- 結果會限制範圍：命中率 0–1、鎖定至少 1 tick、偵測不小於 0。修正丟例外或回傳 NaN 時只跳過它，並記錄一次錯誤。
+- 修正會被介面與排序呼叫，不可有副作用。
+- `Detection` 修正也影響涵蓋範圍顯示（此時 `Track` 為 null，只有 `Signature`）；雷達自身的 `EffectiveWorldRange` 面板數值不經過修正鏈。
+
+**事件** `AirCombatEvents.Raised`：單一事件流，依 `Kind` 分辨，`Layer` 標示來源層。
+
+| Kind | 時機 |
+|---|---|
+| `TrackDetected` | 世界層每陣營第一次看到（中立陣營也算）；地圖層在目標進入非末端波次時 |
+| `LockStarted`、`InterceptorLaunched` | 開始鎖定；攔截彈發射 |
+| `InterceptResolved` | `Outcome` = `Hit`、`Miss`、`Evaded`、`Safed`；空爆波及的擲骰 `Secondary` = true |
+| `TrackArrived` | 飛彈航跡抵達，或地圖波次落地。外部航跡的抵達由它自己處理，不會發出 |
+| `TrackJammed` | 導引被干擾機打掉；`Removed` = 直接落在地圖外 |
+
+處理者丟例外時只跳過它。事件當下目標可能已被移除。
+
+**目標抽象** `IAirTrack`：不綁飛彈的航跡。`IBVRTrack` 是它加上網路內部資料（`TargetProps`、`Config`、`State`）。
+
+- 世界物件實作 `IAirTrack` 就會自動成為航跡，不必註冊。
+- 無法修改的世界物件用 `AirTrackProvider` 提供包裝。來源不再回傳的物件，下次掃描時狀態就被丟棄。
+- 外部航跡由 `BVRExternalTrack` 包裝，狀態存在 `WorldComponent_BVRNetwork.externalStates`（依世界物件 ID，會存檔）。
+- `Notify_Intercepted` 由航跡決定後果：可以銷毀自己，也可以只受傷繼續飛。
+- 飛彈專屬流程只走 `MissileTracks`：導引干擾、玩家飛彈警示、終端更新。
+- `WorldObject_DropPodTrack` 不再繼承飛彈，直接實作 `IBVRTrack`；存檔鍵沿用，舊存檔可讀。
+
+**武器抽象** `IAirEffector`：世界層節點只透過它使用武器（`BVRNode.Effectors`）。
+
+- 實作者：`CompMissileLauncher_Interceptor`、`BVRDefenseEffector`（抽象據點庫存），以及向 `MapComponent_AirEffectors` 註冊的第三方武器。陣營看 `Source.Faction`；該地圖要有同陣營的防空節點（搜索或火控雷達）才會被使用。
+- `UsesFireControl` 為 true：走鎖定、火力通道、火控射程與高度限制，由 `ReadyEffector` 選最閒置的一具。封鎖攔截也走這條。
+- `UsesFireControl` 為 false：點防禦式。不鎖定、不佔通道，不受火控高度限制與在飛攔截彈影響；只要節點陣營本次掃描看得到且政策允許，就詢問 `CanFire`、`CanEngage`。範圍與高度限制由武器自己在 `CanEngage` 判斷。不參與封鎖攔截。
+- `PrepareShot` 回傳 `AirEffectorShot`：`AngularSpeed` 為 0 表示瞬間命中，當場結算；否則產生攔截物。`ShotDef` 可換外觀，類別必須是 `WorldObject_Interceptor`。
+- 只涵蓋世界層。地圖層中過程、肩射與 CIWS 仍直接使用各自的 Comp，所以第三方武器打不到只存在於地圖波次的目標（空投）。
+
+**陣營準則** `MissileDoctrineDef`（`.source/DMSE/MissileBase/MissileDoctrineDef.cs`、`1.7/Defs/DMSE_MissileDoctrines.xml`）：
+
+- 陣營用 `FactionDef` 上的 `MissileDoctrineExtension` 指定；沒有時依 `defaultMinTech`–`defaultMaxTech` 選預設。出貨三套：Industrial、Spacer、Ultra 以上；Industrial 以下沒有準則。
+- `settlementDefense`：沒有地圖的一般據點的合成防空（探測半徑、反隱身、通道、庫存、補充、冷卻、火控建築、攔截彈）。null = 沒有合成防空。出貨值與先前寫在程式裡的相同。
+- `threatAssessment`：NPC 地圖節點是否先打雷達截面最大的目標；出貨 Spacer 以上開啟，與先前相同。
+- `targetWorker`（`Fortified.StrikeTargetWorker`）：導彈陣地與發射站選目標。省略 = `StrikeTargetWorker_Players`，只打玩家地圖。`StrikeTargetWorker_Hostile` 會打敵對陣營的據點，包含 NPC，可用 `includePlayer`、`includeNpc`、`requireMap` 調整；設在準則上就有 NPC 互打。射程、跨圖層與自身據點由呼叫端過濾。
+- 交戰規則（警戒階段政策）不在準則內，仍由 `AirDefenseAlertPolicy` 決定。
+
+**宣告方式**：`AirDefenseExtensionDef`（`modifiers`、`listeners`、`trackProviders`），或用程式呼叫 `AirDefensePipeline.Add`、`AirCombatEvents.Raised`、`AirDefenseExtensions.AddProvider`。不需要寫 C# 的數值調整用 `AirDefenseModifier_Factor`。目前沒有出貨的 Def 使用。
+
+已知限制：
+
+- 外部航跡的詳細資料不會進玩家介面；是否在世界地圖隱藏由物件自己決定，可用 `TrackDetected` 得知被偵測。
+- `TicksToArrival` 超過火控 `maxRangeTicks` 時不會接戰，長航程的外部航跡要等進入距離。
+- 封鎖攔截只處理 `BlockadeHitUtility.InFlight` 列出的載具，外部航跡不會被封鎖圈攔截。
+- 導引干擾只影響飛彈；外部航跡不受地面干擾機影響。
+- 地圖層沒有航跡，`MissileBehavior` 實例的狀態到不了地圖層；要兩層都生效請覆寫 Props 上的 `ModifyDefenseAs*`。
+
+### B-9. 攔截高度與高度航跡
+
+**攔截高度**：`CompProperties_FireControlRadar.minInterceptAltitude`（0 = 不限）、`maxInterceptAltitude`（負值 = 不限）。
+
+| 系統 | 範圍 | 打不到的出貨飛彈 |
+|---|---|---|
+| 早期火控 `DMSE_EarlyFireControlRadar`、野戰防空 `DMSE_Building_FieldAirDefense` | 100 m – 20 km | 掠海（50–60 m）；彈道（30 km 以上） |
+| 火控雷達 `DMSE_FireControlRadar` | 50 m – 40 km | 高空彈道（50 km、100 km） |
+| 相位陣列 `DMSE_PhaseArrayRadar` | 30 m – 150 km | 無 |
+| 肩射 SAM | 30 m – 5 km | 彈道 |
+
+抽象據點沿用對應雷達：導彈陣地是相位陣列，野戰發射站是火控雷達，一般據點看陣營準則（出貨預設：Industrial 早期火控，Spacer 以上相位陣列）。
+
+- 範圍外不鎖定也不發射；`BVRNode.CanReachAltitude` 為 false 的節點不佔接戰權，由其他節點接手。
+- 接近上下限時命中率下降：離界線不到 `altitudeEdgeRatio`（1.5 倍）開始，到界線時乘 `altitudeEdgeHitFactor`（0.6）。寫在 `ComputeHitChance`，所有呼叫端都會套用。
+- 世界層鎖定時看目前高度，發射時看會合點高度（`IAirTrack.AltitudeAt`）；會合點在範圍外就放掉鎖定。
+- 末端 CIWS 不受限：目標最後一定會俯衝。
+- 封鎖攔截的載具沒有高度資料，以 `BVRTarget` 預設的 1000 m 計算。
+- 只有防空受影響；偵測仍只看 `AltitudeFactor`。
+- 改變高度的行為要覆寫 `MissileBehavior.ModifyAltitudeAt`，否則預測不到（`ModifySignature` 只影響目前高度）。
+- 打不到時航跡狀態顯示 `DMSE.BVR.World.AltitudeDenied`；地圖層目前沒有對應顯示。
+
+**高度航跡**（`BVRWorldDrawer.DrawAltitudeTracks`）：純顯示。只畫玩家發射或已被玩家偵測的航跡，畫剩餘路線：
+
+- 抬升量依 `AirTrackDisplay.Lift`（對數縮放，在 `Fortified`）；虛線是地面投影，兩者距離就是高度。世界相機由上往下看，所以偏離畫面中心時最明顯。
+- 飛彈、空投幽靈與攔截彈的 `DrawPos` 畫在目前高度，一條垂直線連回地面位置；擊毀閃光也在該高度。判定一律用貼地的 `PositionAt`，不要讀這些物件的 `DrawPos`。外部航跡要自己用 `AirTrackDisplay.CurrentLift` 抬高。
+- 顏色分段：低空（青，500 m 以下）、中空（綠，5 km 以下）、高空（黃，20 km 以下）、彈道（洋紅）。線寬也隨高度增加。
+- 頭尾的爬升與俯衝只是線條落回地面，模擬裡沒有這段高度變化。
+- 攔截彈的點線會爬到會合點高度；檢視面板顯示目前高度，火控雷達面板顯示攔截高度。
 
 ## C. 超視距火砲（`.source/DMSE/Artillery/`）
 
@@ -204,6 +341,7 @@ Props：`departureProjectileDef`、`worldObjectDef`（必填）、`projectileDef
 - **BVR 周邊** `.source/DMSE/SkyFallerTurret/`：`InterceptProjectile`、`Patch_MakeDropPodAt`、`Alerts_*`、`Patch_QuestPart_Bossgroup`、`ManPortableSAM`。只剩 superseded 註解的空檔：`CompProperties_InterceptRadar`、`CompSkyfallerTurret`、`EarlyWarningUtility`、`InterceptSkyfallerUtility`、`MapComponent_InterceptSkyfaller`。
 - **導彈** `.source/DMSE/Scorer/`：`Assembly/`（Defs、Config、Effects、Guidance、ITab、WorkGiver／JobDriver、`MissileBVRUtility`、`MissileIncoming` 舊存檔轉換）、`Strike/`、`Ballistic/`、`Guidance/`、`MissileWorldObject`、`MissileWorldUtility`、`ScorerProjectile_WorldObject`、`GameComponent_MissileEngage`、`Patch_ShouldBeRemoved`。
 - **載體** `.source/DMSE/MissileProjectile/`；**特效** `.source/DMSE/MissileFx/`；**平台容器** `.source/DMSE/`（`CompMissileLauncher`、`Building_MissileRack`、`CompMissileRackRenderer`）。
+- **飛彈行為框架** `.source/DMSE/MissileFramework/`（namespace `Fortified`，見 B-7）。
 - **NPC 陣地** `.source/DMSE/MissileBase/`；**火砲** `.source/DMSE/Artillery/`；**VGE** `.source/GravshipExpanded/PointDefenceCompat`。
 - **Defs** `1.7/Defs/ThingDefs_Buildings/`、`ThingDefs_Items/`、`Missile/`、`WorldObjects_*.xml`、`DMSE_BVRWorld.xml`、`Effects/`。
 

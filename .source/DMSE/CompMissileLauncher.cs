@@ -279,7 +279,7 @@ namespace DMSE
                         return true;
                     },
                     canTargetTiles: true,
-                    mouseAttachment: TravelWorldObjectDef?.ExpandingIconTexture,
+                    mouseAttachment: BuildFiringConfig(NextRound)?.body?.ExpandingIcon ?? TravelWorldObjectDef?.ExpandingIconTexture,
                     closeWorldTabWhenFinished: true,
                     onUpdate: null,
                     extraLabelGetter: t =>
@@ -409,7 +409,7 @@ namespace DMSE
             }
 
             // 玩家第一次發射帶箔條或反輻射導引的導彈：教學「電子戰」。
-            if (config != null && (config.ChaffCharges > 0 || config.TargetingGuidance is GuidanceType_AntiRadiation))
+            if (config != null && (config.ChaffCharges > 0 || config.TargetingGuidance?.HomesOnEmissions == true))
             {
                 DMSE_Concepts.TeachElectronicWarfare();
             }

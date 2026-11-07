@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Fortified;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -26,11 +27,20 @@ namespace DMSE
         /// <summary>
         /// 選擇落點格。
         /// </summary>
-        /// <param name="N">載荷容量係數。</param>
-        /// <param name="map">目標地圖。</param>
-        /// <param name="attacker">發射方陣營（null = 未知）。</param>
         /// <returns>目標格；回傳 <see cref="IntVec3.Invalid"/> 時由呼叫端退化為預設慣性邏輯。</returns>
-        public abstract IntVec3 PickTarget(float N, Map map, Faction attacker);
+        public abstract IntVec3 PickTarget(MissileSeekContext context);
+
+        /// <summary>是否會鎖定主動發射源（雷達、干擾機）：命中無地圖的抽象防空節點時可壓制它，也觸發電子戰教學。</summary>
+        public virtual bool HomesOnEmissions => false;
+
+        /// <summary>飛行中是否持續占用地面火控通道（打擊規劃時預約）。</summary>
+        public virtual bool UsesGroundChannel => false;
+
+        /// <summary>在彈體基本通道數之外多占的通道。</summary>
+        public virtual int ExtraGroundChannels => 0;
+
+        /// <summary>作為彈體內建導引時顯示的名稱；null = 用彈體名稱。</summary>
+        public virtual string BuiltInLabel => null;
 
         /// <summary>
         /// 是否具備導引能力：可跨圖層打擊，並可依彈體的 terminalUpdates 追蹤移動目標。
@@ -88,28 +98,29 @@ namespace DMSE
         /// true = 導彈實際鎖定（抵達、盤旋重新搜尋）：避開同類導引頭最近已鎖定的目標，並登記這次鎖定
         /// （見 <see cref="SpreadBest{T}"/>）。false = 只查詢，永遠回傳最佳目標、不留紀錄。
         /// </param>
-        public static bool TryPickTarget(MissileConfig config, Map map, Faction attacker, out IntVec3 cell, bool claim = false)
+        public static bool TryPickTarget(MissileConfig config, Map map, Faction attacker, out IntVec3 cell, bool claim = false,
+            IMissileTrack track = null, float? approachHeading = null)
         {
             cell = IntVec3.Invalid;
             GuidanceType guidance = config?.TargetingGuidance;
             if (guidance == null || map == null) { return false; }
-            bool previous = targetsUnderThickRoof;
-            GuidanceType previousClaimer = claimingGuidance;
-            targetsUnderThickRoof = config.PenetratesThickRoof;
-            claimingGuidance = claim ? guidance : null;
-            try
+            var context = new MissileSeekContext
             {
-                IntVec3 result = guidance.PickTarget(config.PayloadCapacity, map, attacker);
-                if (result.IsValid && result.InBounds(map))
-                {
-                    cell = result;
-                    return true;
-                }
-            }
-            finally
+                Loadout = config,
+                PayloadCapacity = config.PayloadCapacity,
+                Map = map,
+                Attacker = attacker,
+                CanPenetrateThickRoof = config.PenetratesThickRoof,
+                ApproachHeading = approachHeading,
+                Track = track,
+                ClaimKey = claim ? guidance.GetType() : null,
+            };
+            IntVec3 result = guidance.PickTarget(context);
+            foreach (MissileBehaviorProps behavior in config.BehaviorProps) { behavior.ModifySeekResult(context, ref result); }
+            if (result.IsValid && result.InBounds(map))
             {
-                targetsUnderThickRoof = previous;
-                claimingGuidance = previousClaimer;
+                cell = result;
+                return true;
             }
             return false;
         }
@@ -119,10 +130,11 @@ namespace DMSE
         /// 回傳慣性落點並把 <paramref name="loiter"/> 設為 true，由呼叫端改為盤旋等待；
         /// 其餘情況直接回退慣性（與 <see cref="PickCell"/> 相同）。
         /// </summary>
-        public static IntVec3 ArrivalCell(MissileConfig config, Map map, Faction attacker, out bool loiter)
+        public static IntVec3 ArrivalCell(MissileConfig config, Map map, Faction attacker, out bool loiter,
+            IMissileTrack track = null, float? approachHeading = null)
         {
             loiter = false;
-            if (TryPickTarget(config, map, attacker, out IntVec3 cell, claim: true)) { return cell; }
+            if (TryPickTarget(config, map, attacker, out IntVec3 cell, claim: true, track: track, approachHeading: approachHeading)) { return cell; }
             if (config != null && config.LoiterTicks > 0) { loiter = true; }
             return InertialTarget(map, attacker);
         }
@@ -130,25 +142,22 @@ namespace DMSE
         // ---- 共用：厚岩頂 ----
 
         /// <summary>
-        /// <see cref="PickCell"/> 執行期間：導彈能否穿透厚岩頂（<see cref="MissileConfig.PenetratesThickRoof"/>）。
-        /// 不能穿透時導引頭不鎖定厚岩頂下的目標（打上去只會在岩層表面引爆）。PickCell 之外為 false。
+        /// 導引頭可否以該格為落點：能穿透厚岩頂，或該格不在厚岩頂下
+        /// （不能穿透時打上去只會在岩層表面引爆，所以不鎖定）。
         /// </summary>
-        private static bool targetsUnderThickRoof;
-
-        /// <summary>導引頭可否以該格為落點：能穿透厚岩頂，或該格不在厚岩頂下。</summary>
-        public static bool Strikable(IntVec3 cell, Map map)
-            => targetsUnderThickRoof || !MissileImpactUtility.UnderThickRoof(cell, map);
+        public static bool Strikable(MissileSeekContext context, IntVec3 cell)
+            => context.CanPenetrateThickRoof || !MissileImpactUtility.UnderThickRoof(cell, context.Map);
 
         /// <summary>
         /// 對物件的瞄準格：<see cref="Thing.Position"/> 可打時用它，否則用占地中任一不在厚岩頂下的格
         /// （半埋在山裡的大型建築仍可從露出的部分打）；整個都在厚岩頂下則為 Invalid。
         /// </summary>
-        public static IntVec3 AimCell(Thing t, Map map)
+        public static IntVec3 AimCell(MissileSeekContext context, Thing t)
         {
-            if (Strikable(t.Position, map)) { return t.Position; }
+            if (Strikable(context, t.Position)) { return t.Position; }
             foreach (IntVec3 cell in t.OccupiedRect())
             {
-                if (cell.InBounds(map) && Strikable(cell, map)) { return cell; }
+                if (cell.InBounds(context.Map) && Strikable(context, cell)) { return cell; }
             }
             return IntVec3.Invalid;
         }
@@ -160,7 +169,7 @@ namespace DMSE
 
         private struct Claim
         {
-            public Type guidance;
+            public object key;
             public object target;
             public int tick;
         }
@@ -168,18 +177,15 @@ namespace DMSE
         /// <summary>最近的實際鎖定紀錄（僅執行期，不存檔；過期即清除）。</summary>
         private static readonly List<Claim> claims = new List<Claim>();
 
-        /// <summary><see cref="TryPickTarget"/> 以 claim 模式執行期間的導引頭；其餘時候為 null（不分散、不登記）。</summary>
-        private static GuidanceType claimingGuidance;
-
         /// <summary>清除所有鎖定紀錄（測試用）。</summary>
         public static void ClearClaims() => claims.Clear();
 
-        private static int ClaimCount(Type guidance, object target)
+        private static int ClaimCount(object key, object target)
         {
             int count = 0;
             for (int i = 0; i < claims.Count; i++)
             {
-                if (claims[i].guidance == guidance && ReferenceEquals(claims[i].target, target)) { count++; }
+                if (Equals(claims[i].key, key) && ReferenceEquals(claims[i].target, target)) { count++; }
             }
             return count;
         }
@@ -190,9 +196,9 @@ namespace DMSE
         /// 次數少者優先、再比優劣，並登記這次鎖定——密集來襲的同類導彈因此依序分散到次佳目標，
         /// 所有候選都被鎖過後再輪回最佳者。
         /// </summary>
-        protected static T SpreadBest<T>(IEnumerable<T> candidates, Func<T, T, bool> better) where T : class
+        protected static T SpreadBest<T>(MissileSeekContext context, IEnumerable<T> candidates, Func<T, T, bool> better) where T : class
         {
-            Type guidance = claimingGuidance?.GetType();
+            object guidance = context.ClaimKey;
             int now = Find.TickManager?.TicksGame ?? 0;
             if (guidance != null)
             {
@@ -213,7 +219,7 @@ namespace DMSE
             }
             if (best != null && guidance != null)
             {
-                claims.Add(new Claim { guidance = guidance, target = best, tick = now });
+                claims.Add(new Claim { key = guidance, target = best, tick = now });
             }
             return best;
         }
@@ -233,16 +239,21 @@ namespace DMSE
 
         /// <summary>目標地圖上屬於攻擊方敵人、且導引頭打得到（<see cref="AimCell"/>）的建築（玩家與非玩家建築都會檢查）。</summary>
         public static IEnumerable<Building> HostileBuildings(Map map, Faction attacker)
+            => HostileBuildings(MissileSeekContext.Query(map, attacker));
+
+        public static IEnumerable<Building> HostileBuildings(MissileSeekContext context)
         {
+            Map map = context.Map;
+            Faction attacker = context.Attacker;
             List<Building> colonist = map.listerBuildings.allBuildingsColonist;
             for (int i = 0; i < colonist.Count; i++)
             {
-                if (IsHostileTarget(colonist[i].Faction, attacker) && AimCell(colonist[i], map).IsValid) { yield return colonist[i]; }
+                if (IsHostileTarget(colonist[i].Faction, attacker) && AimCell(context, colonist[i]).IsValid) { yield return colonist[i]; }
             }
             List<Building> others = map.listerBuildings.allBuildingsNonColonist;
             for (int i = 0; i < others.Count; i++)
             {
-                if (IsHostileTarget(others[i].Faction, attacker) && AimCell(others[i], map).IsValid) { yield return others[i]; }
+                if (IsHostileTarget(others[i].Faction, attacker) && AimCell(context, others[i]).IsValid) { yield return others[i]; }
             }
         }
 
@@ -274,36 +285,39 @@ namespace DMSE
         }
 
         /// <summary>主動雷達依占地面積鎖定最大敵對建築；沒有建築時鎖定體型最大的敵對單位。</summary>
-        public static IntVec3 LargestHostileTarget(Map map, Faction attacker)
+        public static IntVec3 LargestHostileTarget(MissileSeekContext context)
         {
-            Building largest = SpreadBest(HostileBuildings(map, attacker),
+            Building largest = SpreadBest(context, HostileBuildings(context),
                 (a, b) => a.def.size.x * a.def.size.z > b.def.size.x * b.def.size.z);
-            if (largest != null) { return AimCell(largest, map); }
-            return BiggestPawnCell(map, attacker);
+            if (largest != null) { return AimCell(context, largest); }
+            return BiggestPawnCell(context);
         }
 
         /// <summary>體型最大、打得到的敵對單位所在格；沒有則 Invalid。</summary>
-        public static IntVec3 BiggestPawnCell(Map map, Faction attacker)
+        public static IntVec3 BiggestPawnCell(MissileSeekContext context)
         {
-            Pawn biggest = SpreadBest(map.mapPawns.AllPawnsSpawned
-                    .Where(p => !p.Dead && IsHostileTarget(p.Faction, attacker) && Strikable(p.Position, map)),
+            Pawn biggest = SpreadBest(context, context.Map.mapPawns.AllPawnsSpawned
+                    .Where(p => !p.Dead && IsHostileTarget(p.Faction, context.Attacker) && Strikable(context, p.Position)),
                 (a, b) => a.BodySize > b.BodySize);
             return biggest != null ? biggest.Position : IntVec3.Invalid;
         }
 
         /// <summary>電磁訊號：耗電量最大的運作中敵對建築；沒有則回傳 Invalid。</summary>
         public static IntVec3 HighestPowerDrawTarget(Map map, Faction attacker)
+            => HighestPowerDrawTarget(MissileSeekContext.Query(map, attacker));
+
+        public static IntVec3 HighestPowerDrawTarget(MissileSeekContext context)
         {
-            Building best = SpreadBest(HostileBuildings(map, attacker).Where(b => PowerDraw(b) > 0f),
+            Building best = SpreadBest(context, HostileBuildings(context).Where(b => PowerDraw(b) > 0f),
                 (a, b) => PowerDraw(a) > PowerDraw(b));
-            return best != null ? AimCell(best, map) : IntVec3.Invalid;
+            return best != null ? AimCell(context, best) : IntVec3.Invalid;
         }
 
         /// <summary>耐久最高的敵對建築（反艦導引頭用）；沒有則回傳 Invalid。</summary>
-        public static IntVec3 ToughestHostileBuilding(Map map, Faction attacker)
+        public static IntVec3 ToughestHostileBuilding(MissileSeekContext context)
         {
-            Building best = SpreadBest(HostileBuildings(map, attacker), (a, b) => a.MaxHitPoints > b.MaxHitPoints);
-            return best != null ? AimCell(best, map) : IntVec3.Invalid;
+            Building best = SpreadBest(context, HostileBuildings(context), (a, b) => a.MaxHitPoints > b.MaxHitPoints);
+            return best != null ? AimCell(context, best) : IntVec3.Invalid;
         }
 
         /// <summary>
@@ -349,9 +363,9 @@ namespace DMSE
 
         public override string MechanismDescription => "DMSE.Card.Guidance.Inertial".Translate();
 
-        public override IntVec3 PickTarget(float N, Map map, Faction attacker)
+        public override IntVec3 PickTarget(MissileSeekContext context)
         {
-            return InertialTarget(map, attacker);
+            return InertialTarget(context.Map, context.Attacker);
         }
     }
 
@@ -372,27 +386,32 @@ namespace DMSE
 
         public override float JamVulnerability => 0f;
 
+        public override bool HomesOnEmissions => true;
+
         public override string MechanismDescription
             => "DMSE.Card.Guidance.AntiRadiation".Translate() + " "
                + (fallBackToEmissions ? "DMSE.Card.Guidance.AntiRadiationFallback" : "DMSE.Card.Guidance.AntiRadiationNoFallback").Translate();
 
-        public override IntVec3 PickTarget(float N, Map map, Faction attacker)
+        public override IntVec3 PickTarget(MissileSeekContext context)
         {
-            IntVec3 radar = BestRadarCell(map, attacker);
+            IntVec3 radar = BestRadarCell(context);
             if (radar.IsValid) { return radar; }
-            return fallBackToEmissions ? HighestPowerDrawTarget(map, attacker) : IntVec3.Invalid;
+            return fallBackToEmissions ? HighestPowerDrawTarget(context) : IntVec3.Invalid;
         }
 
         /// <summary>開機且可被反輻射尋標頭鎖定的敵對雷達中功率等級最高者；同級再比耗電。沒有則 Invalid。</summary>
         public static IntVec3 BestRadarCell(Map map, Faction attacker)
+            => BestRadarCell(MissileSeekContext.Query(map, attacker));
+
+        public static IntVec3 BestRadarCell(MissileSeekContext context)
         {
-            Building bestRadar = SpreadBest(HostileBuildings(map, attacker).Where(b => RadarPowerLevel(b) >= 0),
+            Building bestRadar = SpreadBest(context, HostileBuildings(context).Where(b => RadarPowerLevel(b) >= 0),
                 (a, b) =>
                 {
                     int pa = RadarPowerLevel(a), pb = RadarPowerLevel(b);
                     return pa > pb || (pa == pb && PowerDraw(a) > PowerDraw(b));
                 });
-            return bestRadar != null ? AimCell(bestRadar, map) : IntVec3.Invalid;
+            return bestRadar != null ? AimCell(context, bestRadar) : IntVec3.Invalid;
         }
 
         /// <summary>建築上開機且未豁免的雷達中最高的功率等級；沒有則 -1。</summary>
@@ -433,30 +452,32 @@ namespace DMSE
         public override string MechanismDescription
             => "DMSE.Card.Guidance.HeatSource".Translate(minRoomTempAboveOutdoor.ToStringTemperatureOffset());
 
-        public override IntVec3 PickTarget(float N, Map map, Faction attacker)
+        public override IntVec3 PickTarget(MissileSeekContext context)
         {
-            IntVec3 room = HottestRoomCell(map);
+            IntVec3 room = HottestRoomCell(context);
             if (room.IsValid) { return room; }
 
-            Pawn biggest = SpreadBest(map.mapPawns.AllPawnsSpawned.Where(p => !p.Dead && Strikable(p.Position, map)
+            Faction attacker = context.Attacker;
+            Pawn biggest = SpreadBest(context, context.Map.mapPawns.AllPawnsSpawned.Where(p => !p.Dead && Strikable(context, p.Position)
                     && (attacker == null || p.Faction == null || IsHostileTarget(p.Faction, attacker))),
                 (a, b) => a.BodySize > b.BodySize);
             return biggest != null ? biggest.Position : IntVec3.Invalid;
         }
 
-        private IntVec3 HottestRoomCell(Map map)
+        private IntVec3 HottestRoomCell(MissileSeekContext context)
         {
+            Map map = context.Map;
             float threshold = map.mapTemperature.OutdoorTemp + minRoomTempAboveOutdoor;
-            Room hottest = SpreadBest(map.regionGrid.AllRooms.Where(room => !room.PsychologicallyOutdoors
-                    && !room.UsesOutdoorTemperature && room.Temperature >= threshold && room.Cells.Any(c => Strikable(c, map))),
+            Room hottest = SpreadBest(context, map.regionGrid.AllRooms.Where(room => !room.PsychologicallyOutdoors
+                    && !room.UsesOutdoorTemperature && room.Temperature >= threshold && room.Cells.Any(c => Strikable(context, c))),
                 (a, b) => a.Temperature > b.Temperature);
             if (hottest == null) { return IntVec3.Invalid; }
 
-            if (hottest.Cells.Where(c => c.Standable(map) && Strikable(c, map)).TryRandomElement(out IntVec3 cell))
+            if (hottest.Cells.Where(c => c.Standable(map) && Strikable(context, c)).TryRandomElement(out IntVec3 cell))
             {
                 return cell;
             }
-            return hottest.Cells.Where(c => Strikable(c, map)).FirstOrFallback(IntVec3.Invalid);
+            return hottest.Cells.Where(c => Strikable(context, c)).FirstOrFallback(IntVec3.Invalid);
         }
     }
 
@@ -475,9 +496,9 @@ namespace DMSE
     {
         public override string MechanismDescription => "DMSE.Card.Guidance.ElectromagneticSignal".Translate();
 
-        public override IntVec3 PickTarget(float N, Map map, Faction attacker)
+        public override IntVec3 PickTarget(MissileSeekContext context)
         {
-            return HighestPowerDrawTarget(map, attacker);
+            return HighestPowerDrawTarget(context);
         }
     }
 
@@ -497,11 +518,15 @@ namespace DMSE
     {
         public override bool PlayerChoosesTarget => true;
 
+        public override bool UsesGroundChannel => true;
+
+        public override int ExtraGroundChannels => 1;
+
         public override string MechanismDescription => "DMSE.Card.Guidance.TV".Translate();
 
-        public override IntVec3 PickTarget(float N, Map map, Faction attacker)
+        public override IntVec3 PickTarget(MissileSeekContext context)
         {
-            return InertialTarget(map, attacker);
+            return InertialTarget(context.Map, context.Attacker);
         }
     }
 
@@ -514,10 +539,10 @@ namespace DMSE
     {
         public override string MechanismDescription => "DMSE.Card.Guidance.Laser".Translate();
 
-        public override IntVec3 PickTarget(float N, Map map, Faction attacker)
+        public override IntVec3 PickTarget(MissileSeekContext context)
         {
-            LaserDesignatorMark mark = LaserDesignatorUtility.LatestMarkFor(map, attacker);
-            return mark != null && Strikable(mark.Position, map) ? mark.Position : IntVec3.Invalid;
+            LaserDesignatorMark mark = LaserDesignatorUtility.LatestMarkFor(context.Map, context.Attacker);
+            return mark != null && Strikable(context, mark.Position) ? mark.Position : IntVec3.Invalid;
         }
     }
 
@@ -530,9 +555,11 @@ namespace DMSE
     {
         public override string MechanismDescription => "DMSE.Card.Guidance.FireControl".Translate();
 
-        public override IntVec3 PickTarget(float N, Map map, Faction attacker)
+        public override bool UsesGroundChannel => true;
+
+        public override IntVec3 PickTarget(MissileSeekContext context)
         {
-            return InertialTarget(map, attacker);
+            return InertialTarget(context.Map, context.Attacker);
         }
     }
 
@@ -543,6 +570,8 @@ namespace DMSE
     public class GuidanceType_RadioCommand : GuidanceType_FireControl
     {
         public override string MechanismDescription => "DMSE.Card.Guidance.RadioCommand".Translate();
+
+        public override string BuiltInLabel => "DMSE.Guidance.RadioCommand".Translate();
     }
 
     // ============================================================
@@ -553,10 +582,11 @@ namespace DMSE
     {
         public override string MechanismDescription => "DMSE.Card.Guidance.Imaging".Translate();
 
-        public override IntVec3 PickTarget(float N, Map map, Faction attacker)
+        public override IntVec3 PickTarget(MissileSeekContext context)
         {
-            Pawn best = SpreadBest(map.mapPawns.AllPawnsSpawned.Where(pawn => pawn.Spawned && !pawn.Dead
-                    && IsHostileTarget(pawn.Faction, attacker) && !map.roofGrid.Roofed(pawn.Position) && Strikable(pawn.Position, map)),
+            Map map = context.Map;
+            Pawn best = SpreadBest(context, map.mapPawns.AllPawnsSpawned.Where(pawn => pawn.Spawned && !pawn.Dead
+                    && IsHostileTarget(pawn.Faction, context.Attacker) && !map.roofGrid.Roofed(pawn.Position) && Strikable(context, pawn.Position)),
                 (a, b) =>
                 {
                     float ta = a.kindDef?.combatPower ?? 0f, tb = b.kindDef?.combatPower ?? 0f;
@@ -577,9 +607,9 @@ namespace DMSE
     {
         public override string MechanismDescription => "DMSE.Card.Guidance.ActiveRadar".Translate();
 
-        public override IntVec3 PickTarget(float N, Map map, Faction attacker)
+        public override IntVec3 PickTarget(MissileSeekContext context)
         {
-            return LargestHostileTarget(map, attacker);
+            return LargestHostileTarget(context);
         }
     }
 
@@ -596,11 +626,11 @@ namespace DMSE
 
         public override string MechanismDescription => "DMSE.Card.Guidance.AntiShip".Translate(ExtraTerminalUpdates);
 
-        public override IntVec3 PickTarget(float N, Map map, Faction attacker)
+        public override IntVec3 PickTarget(MissileSeekContext context)
         {
-            IntVec3 building = ToughestHostileBuilding(map, attacker);
+            IntVec3 building = ToughestHostileBuilding(context);
             if (building.IsValid) { return building; }
-            return BiggestPawnCell(map, attacker);
+            return BiggestPawnCell(context);
         }
     }
 }

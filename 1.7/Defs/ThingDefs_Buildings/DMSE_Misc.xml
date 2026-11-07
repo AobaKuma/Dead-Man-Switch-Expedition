@@ -50,7 +50,7 @@
     <researchPrerequisites>
       <li>DMSE_IntegratedAirDefense</li>
     </researchPrerequisites>
-    <designationCategory>DMS_Category</designationCategory>
+    <designationCategory>DMSE_BVRCategory</designationCategory>
     <!-- <minifiedDef>MinifiedThing</minifiedDef> -->
     <constructionSkillPrerequisite>10</constructionSkillPrerequisite>
     <!-- <thingCategories>
@@ -79,6 +79,8 @@
         <powerLevel>2</powerLevel>
         <guidanceAccuracyTime>600</guidanceAccuracyTime>
         <maxRangeTicks>6000</maxRangeTicks>
+        <minInterceptAltitude>30</minInterceptAltitude>
+        <maxInterceptAltitude>150000</maxInterceptAltitude>
         <maxHitChance>0.9</maxHitChance>
         <stealthMissFactor>0.5</stealthMissFactor>
         <lockOnTicks>120</lockOnTicks>

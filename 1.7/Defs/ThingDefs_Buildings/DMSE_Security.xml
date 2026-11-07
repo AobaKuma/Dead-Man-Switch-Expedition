@@ -119,6 +119,7 @@
   <ThingDef ParentName="DMS_BaseCannonBuilding">
     <defName>DMSE_Turret_Vulcan_WingBack</defName>
     <label>GAU-4 “Wing-Back”</label>
+    <designationCategory>DMSE_BVRCategory</designationCategory>
     <designatorDropdown>DMS_Turrets</designatorDropdown>
     <description>This is a gravship-based variant of the GAU-4 rotary cannon, also utilizing 20x102mm NATO ammunition. The ship-mounted turret features a longer barrel to increase effective range, but it also introduces a larger blind spot for close-range engagements.</description>
     <techLevel>Industrial</techLevel>

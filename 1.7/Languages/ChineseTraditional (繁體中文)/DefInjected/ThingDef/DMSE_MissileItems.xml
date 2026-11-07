@@ -16,6 +16,8 @@
   <DMSE_Missile_Maverick.description>一種配備電視與紅外線尋標器的輕型對地攻擊導彈。最擅長摧毀單一特定目標，而不是夷平整座基地。</DMSE_Missile_Maverick.description>
   <DMSE_Missile_Sparrow.label>先進防空導彈</DMSE_Missile_Sparrow.label>
   <DMSE_Missile_Sparrow.description>一種半主動雷達導引的中程防空導彈。比輕型防空導彈更快、射程更遠、也更準，但火控雷達必須持續照射目標直到命中。</DMSE_Missile_Sparrow.description>
+  <DMSE_Missile_Oniks.label>先進反艦巡航導彈</DMSE_Missile_Oniks.label>
+  <DMSE_Missile_Oniks.description>一種衝壓引擎推進的先進反艦巡航導彈。比舊式超音速導彈更快、更難偵測、射程也更遠，威力約為兩倍，傾斜發射架與垂直發射井都能發射。造價昂貴，但遠比高超音速導彈便宜。</DMSE_Missile_Oniks.description>
   <DMSE_Missile_Yj.label>高超音速反艦導彈</DMSE_Missile_Yj.label>
   <DMSE_Missile_Yj.description>一種以火箭助推、衝壓引擎巡航的高超音速反艦導彈。末段飛得極低又極快，防禦方幾乎沒有反應時間。造價極高。</DMSE_Missile_Yj.description>
 

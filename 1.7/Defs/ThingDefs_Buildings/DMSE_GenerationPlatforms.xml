@@ -96,7 +96,7 @@
     <researchPrerequisites>
       <li>DMSE_RadarBasis</li>
     </researchPrerequisites>
-    <designationCategory>DMS_Category</designationCategory>
+    <designationCategory>DMSE_BVRCategory</designationCategory>
     <minifiedDef>MinifiedThing</minifiedDef>
     <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
     <thingCategories>
@@ -245,7 +245,7 @@
     <researchPrerequisites>
       <li>DMSE_FireControlNetwork</li>
     </researchPrerequisites>
-    <designationCategory>DMS_Category</designationCategory>
+    <designationCategory>DMSE_BVRCategory</designationCategory>
     <designatorDropdown>DMS_Turrets</designatorDropdown>
     <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
     <modExtensions>
@@ -283,6 +283,8 @@
         <powerLevel>1</powerLevel>
         <guidanceAccuracyTime>700</guidanceAccuracyTime>
         <maxRangeTicks>3000</maxRangeTicks>
+        <minInterceptAltitude>100</minInterceptAltitude>
+        <maxInterceptAltitude>20000</maxInterceptAltitude>
         <maxHitChance>0.8</maxHitChance>
         <stealthMissFactor>0.6</stealthMissFactor>
         <lockOnTicks>150</lockOnTicks>
@@ -441,7 +443,7 @@
     <researchPrerequisites>
       <li>DMSE_RadarNetwork</li>
     </researchPrerequisites>
-    <designationCategory>DMS_Category</designationCategory>
+    <designationCategory>DMSE_BVRCategory</designationCategory>
     <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
     <comps>
       <li Class="CompProperties_Forbiddable" />
@@ -525,7 +527,7 @@
     <researchPrerequisites>
       <li>DMSE_FireControlNetwork</li>
     </researchPrerequisites>
-    <designationCategory>DMS_Category</designationCategory>
+    <designationCategory>DMSE_BVRCategory</designationCategory>
     <minifiedDef>MinifiedThing</minifiedDef>
     <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
     <thingCategories>
@@ -546,6 +548,8 @@
         <powerLevel>1</powerLevel>
         <guidanceAccuracyTime>700</guidanceAccuracyTime>
         <maxRangeTicks>5000</maxRangeTicks>
+        <minInterceptAltitude>50</minInterceptAltitude>
+        <maxInterceptAltitude>40000</maxInterceptAltitude>
         <maxHitChance>0.85</maxHitChance>
         <stealthMissFactor>0.55</stealthMissFactor>
         <lockOnTicks>150</lockOnTicks>
@@ -595,6 +599,7 @@
       <fixedStorageSettings>
         <filter>
           <thingDefs>
+            <li>DMSE_Missile_Oniks</li>
             <li>DMSE_Missile_Yj</li>
             <li>DMSE_Missile_Tochka</li>
           </thingDefs>
@@ -604,6 +609,7 @@
         <priority>Important</priority>
         <filter>
           <thingDefs>
+            <li>DMSE_Missile_Oniks</li>
             <li>DMSE_Missile_Yj</li>
             <li>DMSE_Missile_Tochka</li>
           </thingDefs>

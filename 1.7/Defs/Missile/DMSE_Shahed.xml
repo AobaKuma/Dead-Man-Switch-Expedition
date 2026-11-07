@@ -3,6 +3,7 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_Shahed</defName>
     <label>long-range loitering munition</label>
+    <expandingIconPath>UI/DMSE/TravelingMissile_Expanding_Shahed</expandingIconPath>
     <designWord>Loiter</designWord>
     <namer>DMSE_Namer_Shahed</namer>
     <description>A cheap delta-wing attack drone with a piston engine. It is slow and carries a small warhead, but it can fly a very long way.\n\nWithout a TV guidance module, it strikes somewhere around the center of the target map. The module lets you pick the impact point, but uses an extra fire-control channel. Cannot track moving targets.</description>

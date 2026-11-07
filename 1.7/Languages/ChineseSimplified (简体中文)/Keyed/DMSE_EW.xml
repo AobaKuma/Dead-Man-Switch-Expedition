@@ -19,37 +19,57 @@
   <DMSE.EW.Console.NoOperator>没有操作员：无技能加成</DMSE.EW.Console.NoOperator>
   <DMSE.EW.Console.Operator>操作员：{0}</DMSE.EW.Console.Operator>
   <DMSE.EW.Tab.NoPower>没有电力：无法遥控或修改规则，目前的规则继续生效。</DMSE.EW.Tab.NoPower>
-  <DMSE.EW.Tab.Overview>状态总览</DMSE.EW.Tab.Overview>
-  <DMSE.EW.Tab.RadarsOnline>在线雷达：{0} / {1}</DMSE.EW.Tab.RadarsOnline>
-  <DMSE.EW.Tab.JammerRow>{0}：强度 {1}，覆盖 {2} 条航迹</DMSE.EW.Tab.JammerRow>
-  <DMSE.EW.Tab.LocalJam>本地受敌方干扰：{0}</DMSE.EW.Tab.LocalJam>
-  <DMSE.EW.Tab.RadarRow>{0}：基础 {1} × 功率 {2} × 操作员 {3} = {4} 格</DMSE.EW.Tab.RadarRow>
+  <DMSE.EW.Tab.RadarsOnline>在线雷达</DMSE.EW.Tab.RadarsOnline>
+  <DMSE.EW.Tab.JammerRow>强度 {0}，覆盖 {1} 条航迹</DMSE.EW.Tab.JammerRow>
+  <DMSE.EW.Tab.LocalJam>敌方干扰</DMSE.EW.Tab.LocalJam>
+  <DMSE.EW.Tab.RadarRow>基础 {0} × 功率 {1} × 操作员 {2}</DMSE.EW.Tab.RadarRow>
   <DMSE.EW.Tab.SilencedWarning>电磁静默中：雷达与干扰机已关闭。</DMSE.EW.Tab.SilencedWarning>
-  <DMSE.EW.Tab.Remote>遥控</DMSE.EW.Tab.Remote>
+  <DMSE.EW.Tab.Remote>装置遥控</DMSE.EW.Tab.Remote>
   <DMSE.EW.Tab.PowerOn>开机</DMSE.EW.Tab.PowerOn>
   <DMSE.EW.Tab.PowerOff>关机</DMSE.EW.Tab.PowerOff>
-  <DMSE.EW.Tab.Throttle>功率…</DMSE.EW.Tab.Throttle>
   <DMSE.EW.Tab.Silence>一键静默</DMSE.EW.Tab.Silence>
-  <DMSE.EW.Tab.Restore>结束静默（还原先前开着的装置）</DMSE.EW.Tab.Restore>
+  <DMSE.EW.Tab.Restore>结束静默</DMSE.EW.Tab.Restore>
   <DMSE.EW.Tab.Roe>交战限制</DMSE.EW.Tab.Roe>
   <DMSE.EW.Tab.Operator>操作员加成</DMSE.EW.Tab.Operator>
-  <DMSE.EW.Tab.OperatorRange>智识 {0}：雷达距离 × {1}</DMSE.EW.Tab.OperatorRange>
-  <DMSE.EW.Tab.OperatorCooldown>射击 {0}：发射冷却 × {1}</DMSE.EW.Tab.OperatorCooldown>
+  <DMSE.EW.Tab.OperatorRange>智识合计 {0}／{1}：雷达距离 × {2}</DMSE.EW.Tab.OperatorRange>
+  <DMSE.EW.Tab.OperatorCooldown>射击合计 {0}／{1}：发射冷却 × {2}</DMSE.EW.Tab.OperatorCooldown>
   <DMSE.EW.Group.Jammers>干扰机</DMSE.EW.Group.Jammers>
   <DMSE.EW.Group.SearchRadars>搜索雷达</DMSE.EW.Group.SearchRadars>
   <DMSE.EW.Group.FireControlRadars>火控雷达</DMSE.EW.Group.FireControlRadars>
   <DMSE.EW.Group.All>全部</DMSE.EW.Group.All>
   <DMSE.EW.Roe.AutoEngage>自动接战</DMSE.EW.Roe.AutoEngage>
   <DMSE.EW.Roe.AutoEngageDesc>关闭时仍会侦测目标、警报照常，但不发射拦截弹。近防武器照常开火。</DMSE.EW.Roe.AutoEngageDesc>
-  <DMSE.EW.Roe.PolicyAll>全面接战（关闭＝仅自卫）</DMSE.EW.Roe.PolicyAll>
-  <DMSE.EW.Roe.PolicyAllDesc>仅自卫时只打指向本殖民地或盟友的导弹，过境的导弹不接战。</DMSE.EW.Roe.PolicyAllDesc>
+  <DMSE.EW.Roe.PolicyAll>全面</DMSE.EW.Roe.PolicyAll>
   <DMSE.EW.Roe.Neutral>对中立阵营开火</DMSE.EW.Roe.Neutral>
-  <DMSE.EW.Roe.LargestFirst>最大目标优先（关闭＝先到先打）</DMSE.EW.Roe.LargestFirst>
-  <DMSE.EW.Roe.LargestFirstDesc>通道不足时先打雷达截面最大的目标，而不是最快抵达的目标。</DMSE.EW.Roe.LargestFirstDesc>
-  <DMSE.EW.Roe.ChannelCap>防空通道上限：{0}</DMSE.EW.Roe.ChannelCap>
+  <DMSE.EW.Roe.ChannelCap>防空通道上限</DMSE.EW.Roe.ChannelCap>
   <DMSE.EW.Roe.CapUnlimited>不限</DMSE.EW.Roe.CapUnlimited>
-  <DMSE.EW.Roe.HoldFire>不拦截：</DMSE.EW.Roe.HoldFire>
   <DMSE.EW.Roe.Class.Loitering>巡飞弹</DMSE.EW.Roe.Class.Loitering>
   <DMSE.EW.Roe.Class.DropPod>空投舱</DMSE.EW.Roe.Class.DropPod>
   <DMSE.EW.Roe.Class.Ballistic>弹道导弹</DMSE.EW.Roe.Class.Ballistic>
+  <DMSE.EW.Tab.StateLabel>防空状态</DMSE.EW.Tab.StateLabel>
+  <DMSE.EW.Tab.StateSelfDefense>自动接战・仅自卫</DMSE.EW.Tab.StateSelfDefense>
+  <DMSE.EW.Tab.StateAll>自动接战・全面</DMSE.EW.Tab.StateAll>
+  <DMSE.EW.Tab.StateSilenced>电磁静默</DMSE.EW.Tab.StateSilenced>
+  <DMSE.EW.Tab.StateHold>不发射拦截弹</DMSE.EW.Tab.StateHold>
+  <DMSE.EW.Tab.StateNoRadar>无雷达运作</DMSE.EW.Tab.StateNoRadar>
+  <DMSE.EW.Tab.Channels>防空通道</DMSE.EW.Tab.Channels>
+  <DMSE.EW.Tab.ChannelsDesc>防空占用的通道数／防空目前可用的通道数。可用数已扣除炮击与打击引导占用的通道，并套用通道上限。</DMSE.EW.Tab.ChannelsDesc>
+  <DMSE.EW.Tab.Performance>装置效能</DMSE.EW.Tab.Performance>
+  <DMSE.EW.Tab.RadarRange>{0} 格</DMSE.EW.Tab.RadarRange>
+  <DMSE.EW.Tab.GroupStatus>{0}/{1} 开机</DMSE.EW.Tab.GroupStatus>
+  <DMSE.EW.Tab.NotDeployed>未部署</DMSE.EW.Tab.NotDeployed>
+  <DMSE.EW.Tab.ThrottleMixed>混合</DMSE.EW.Tab.ThrottleMixed>
+  <DMSE.EW.Tab.SilenceDesc>关闭所有开着的雷达与干扰机，之后可一键还原。</DMSE.EW.Tab.SilenceDesc>
+  <DMSE.EW.Tab.RestoreDesc>重新开启静默前开着的装置。</DMSE.EW.Tab.RestoreDesc>
+  <DMSE.EW.Tab.OperatorBonus>加成</DMSE.EW.Tab.OperatorBonus>
+  <DMSE.EW.Tab.OperatorPenalty>惩罚</DMSE.EW.Tab.OperatorPenalty>
+  <DMSE.EW.Roe.Policy>接战范围</DMSE.EW.Roe.Policy>
+  <DMSE.EW.Roe.PolicySelfDefense>仅自卫</DMSE.EW.Roe.PolicySelfDefense>
+  <DMSE.EW.Roe.PolicyDesc>仅自卫时只打指向本殖民地或盟友的导弹，过境的导弹不接战。全面时也拦截过境的导弹。</DMSE.EW.Roe.PolicyDesc>
+  <DMSE.EW.Roe.Priority>目标优先</DMSE.EW.Roe.Priority>
+  <DMSE.EW.Roe.PriorityFirstCome>先到先打</DMSE.EW.Roe.PriorityFirstCome>
+  <DMSE.EW.Roe.PriorityLargest>最大目标</DMSE.EW.Roe.PriorityLargest>
+  <DMSE.EW.Roe.PriorityDesc>通道不足时，先打最快抵达的目标，或先打雷达截面最大的目标。</DMSE.EW.Roe.PriorityDesc>
+  <DMSE.EW.Roe.ChannelCapDesc>限制防空最多占用几条火控通道，把其余通道留给炮击与打击引导。设为 0 时不发射拦截弹。</DMSE.EW.Roe.ChannelCapDesc>
+  <DMSE.EW.Roe.Intercept>拦截目标</DMSE.EW.Roe.Intercept>
 </LanguageData>

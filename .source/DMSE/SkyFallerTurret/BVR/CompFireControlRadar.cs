@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -47,9 +48,44 @@ namespace DMSE
         /// </summary>
         public bool supportsStrikeGuidance = true;
 
+        /// <summary>最低攔截高度（公尺）：低於此高度不鎖定也不發射。0 = 不限制。</summary>
+        public float minInterceptAltitude = 0f;
+
+        /// <summary>最高攔截高度（公尺）：高於此高度不鎖定也不發射。負值 = 不限制。</summary>
+        public float maxInterceptAltitude = -1f;
+
+        public bool HasAltitudeLimits => minInterceptAltitude > 0f || maxInterceptAltitude >= 0f;
+
+        public bool InAltitudeEnvelope(float altitude)
+            => altitude >= minInterceptAltitude && (maxInterceptAltitude < 0f || altitude <= maxInterceptAltitude);
+
+        /// <summary>
+        /// 高度對命中率的係數：範圍外 0；接近上下限時（邊緣寬度見 <see cref="BVRWorldTuningDef.altitudeEdgeRatio"/>，
+        /// 以倍率計，因為高度跨好幾個數量級）從 1 降到 <see cref="BVRWorldTuningDef.altitudeEdgeHitFactor"/>。
+        /// </summary>
+        public float AltitudeHitFactor(float altitude)
+        {
+            if (!InAltitudeEnvelope(altitude)) { return 0f; }
+            BVRWorldTuningDef tuning = BVRWorldTuningDef.Current;
+            float ratio = Mathf.Max(1.001f, tuning.altitudeEdgeRatio);
+            float depth = 1f;
+            if (minInterceptAltitude > 0f) { depth = Mathf.Min(depth, Mathf.Log(altitude / minInterceptAltitude) / Mathf.Log(ratio)); }
+            if (maxInterceptAltitude > 0f && altitude > 0f) { depth = Mathf.Min(depth, Mathf.Log(maxInterceptAltitude / altitude) / Mathf.Log(ratio)); }
+            return Mathf.Lerp(tuning.altitudeEdgeHitFactor, 1f, Mathf.Clamp01(depth));
+        }
+
         public CompProperties_FireControlRadar()
         {
             compClass = typeof(CompFireControlRadar);
+        }
+
+        public override IEnumerable<string> ConfigErrors(ThingDef parentDef)
+        {
+            foreach (string error in base.ConfigErrors(parentDef)) { yield return error; }
+            if (minInterceptAltitude < 0f || (maxInterceptAltitude >= 0f && maxInterceptAltitude <= minInterceptAltitude))
+            {
+                yield return $"{parentDef.defName}: intercept altitude limits need 0 <= min < max (negative max = no ceiling)";
+            }
         }
     }
 
@@ -84,6 +120,9 @@ namespace DMSE
         {
             float guide = Mathf.Clamp01(guideTimeLeft / Mathf.Max(1f, settings.guidanceAccuracyTime));
             float chance = settings.maxHitChance * guide;
+
+            // 攔截高度：範圍外為 0，接近上下限時下降。
+            chance *= settings.AltitudeHitFactor(target.altitude);
 
             // 速度：越快越難命中。
             float speedFactor = Mathf.Clamp(1f - Mathf.Max(0f, target.speed - SpeedRef) * SpeedPenaltyPerUnit, MinSpeedFactor, 1f);
@@ -120,6 +159,12 @@ namespace DMSE
         {
             string baseStr = "DMSE.BVR.FireControl".Translate(Props.maxTargets,
                 Active ? "DMSE.BVR.Online".Translate() : "DMSE.BVR.Offline".Translate());
+
+            if (Props.HasAltitudeLimits)
+            {
+                baseStr += "\n" + "DMSE.BVR.FireControlAltitude".Translate(MissileWorldMotion.AltitudeLabel(Props.minInterceptAltitude),
+                    Props.maxInterceptAltitude < 0f ? "∞" : MissileWorldMotion.AltitudeLabel(Props.maxInterceptAltitude));
+            }
 
             if (Props.supportsArtilleryGuidance)
             {

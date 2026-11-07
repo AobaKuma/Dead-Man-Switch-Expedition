@@ -259,12 +259,12 @@ namespace DMSE
             return RadarCapable(parent) ? t.baselineRadar : t.baselineNoRadar;
         }
 
-        /// <summary>據點是否具備可啟用的雷達：專屬防空元件、可合成防空的科技等級，或地圖上同陣營的搜索雷達。</summary>
+        /// <summary>據點是否具備可啟用的雷達：專屬防空元件、陣營準則的合成防空，或地圖上同陣營的搜索雷達。</summary>
         public static bool RadarCapable(MapParent parent)
         {
             if (parent == null || parent.Faction == null || parent.Faction.IsPlayer) { return false; }
             if (parent.GetComponent<WorldObjectComp_AirDefense>() != null) { return true; }
-            if (parent.Faction.def != null && parent.Faction.def.techLevel >= TechLevel.Industrial) { return true; }
+            if (WorldComponent_SettlementDefense.PropsFor(parent.Faction) != null) { return true; }
             MapComponent_BVRCombat local = parent.HasMap ? parent.Map.GetComponent<MapComponent_BVRCombat>() : null;
             return local != null && local.searchRadars.Any(r => r.parent.Faction == parent.Faction);
         }
@@ -515,8 +515,8 @@ namespace DMSE
 
         public static MapParent TargetSite(IBVRTrack track)
         {
-            if (track is MissileWorldObject missile && missile.targetParent != null && !missile.targetParent.Destroyed
-                && missile.targetParent.Tile == track.Destination) { return missile.targetParent; }
+            MapParent aimed = track.TargetParent;
+            if (aimed != null && !aimed.Destroyed && aimed.Tile == track.Destination) { return aimed; }
             return Find.WorldObjects.MapParentAt(track.Destination);
         }
 

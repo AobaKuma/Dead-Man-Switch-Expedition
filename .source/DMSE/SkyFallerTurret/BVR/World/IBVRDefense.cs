@@ -27,6 +27,21 @@ namespace DMSE
         void Degrade(int now);
     }
 
+    /// <summary>抽象據點的防空庫存作為武器：沒有實體，陣營由節點決定。</summary>
+    public sealed class BVRDefenseEffector : Fortified.IAirEffector
+    {
+        private readonly IBVRDefense defense;
+        public BVRDefenseEffector(IBVRDefense defense) { this.defense = defense; }
+        public Thing Source => null;
+        public bool UsesFireControl => true;
+        public bool Armed => defense.Available && defense.Stock > 0;
+        public int ReadyTick => 0;
+        public bool CanFire(int now) => defense.Ready(now);
+        public bool CanEngage(Fortified.AirEngagement engagement) => true;
+        public Fortified.AirEffectorShot PrepareShot(Fortified.AirEngagement engagement) => AirDefenseHooks.ShotFrom(defense.Config);
+        public bool TryFire(Fortified.AirEngagement engagement, int now, Vector3 meetingPoint) => defense.TryConsume(now);
+    }
+
     /// <summary>把實體的抽象防空元件包成 <see cref="IBVRDefense"/>。</summary>
     public sealed class WorldAirDefenseAdapter : IBVRDefense
     {
@@ -76,15 +91,18 @@ namespace DMSE
 
         public WorldComponent_SettlementDefense(World world) : base(world) { }
 
-        /// <summary>是否套用合成防空：敵方、無地圖、沒有專屬防空元件、科技達 Industrial。</summary>
+        /// <summary>是否套用合成防空：敵方、無地圖、沒有專屬防空元件，且陣營準則有合成防空。</summary>
         public static bool Eligible(MapParent parent)
         {
             if (parent == null || parent.Destroyed || parent.HasMap) { return false; }
             Faction faction = parent.Faction;
             if (faction == null || faction.IsPlayer) { return false; }
             if (parent.GetComponent<WorldObjectComp_AirDefense>() != null) { return false; }
-            return faction.def != null && faction.def.techLevel >= TechLevel.Industrial;
+            return PropsFor(faction) != null;
         }
+
+        /// <summary>陣營準則的合成防空設定；沒有時回傳 null。</summary>
+        public static SettlementAirDefenseProps PropsFor(Faction faction) => MissileDoctrine.For(faction)?.settlementDefense;
 
         public IBVRDefense DefenseFor(MapParent parent)
             => Eligible(parent) ? new SettlementDefense(this, parent) : null;
@@ -131,14 +149,14 @@ namespace DMSE
                 this.parent = parent;
             }
 
-            private TechLevel Tech => parent.Faction?.def?.techLevel ?? TechLevel.Industrial;
+            private SettlementAirDefenseProps Props => PropsFor(parent.Faction);
             private SettlementDefenseState State => owner.StateOf(parent);
 
             public bool Available => Eligible(parent);
             public bool RadarOnline => Find.TickManager.TicksGame >= State.radarDownUntil;
-            public bool ThreatAssessment => false;
+            public bool ThreatAssessment => Props?.threatAssessment ?? false;
             public int Stock { get { Refresh(); return Mathf.FloorToInt(State.stock); } }
-            public int Channels => Tech >= TechLevel.Spacer ? 2 : 1;
+            public int Channels => Props?.channels ?? 1;
 
             private void Refresh()
             {
@@ -154,20 +172,19 @@ namespace DMSE
                 state.lastRestockTick = now;
             }
 
-            private int MaxStock => Tech >= TechLevel.Ultra ? 6 : Tech >= TechLevel.Spacer ? 4 : 2;
-            private float RestockPerDay => Tech >= TechLevel.Spacer ? 1.5f : 0.5f;
+            private int MaxStock => Props?.maxStock ?? 0;
+            private float RestockPerDay => Props?.restockPerDay ?? 0f;
 
             public float DetectionRange(BVRTargetProps target)
             {
-                if (!Available || !RadarOnline) { return 0f; }
-                float range = Tech >= TechLevel.Spacer ? SettlementDefenseTuning.SpacerRange : SettlementDefenseTuning.IndustrialRange;
-                return MissileWorldMotion.DetectionRange(range, Tech >= TechLevel.Spacer ? 2 : 1, target);
+                SettlementAirDefenseProps props = Props;
+                if (props == null || !Available || !RadarOnline) { return 0f; }
+                return MissileWorldMotion.DetectionRange(props.detectionRange, props.antiStealthLevel, target);
             }
 
-            public CompProperties_FireControlRadar FireControl
-                => Tech >= TechLevel.Spacer ? SettlementDefenseTuning.SpacerRadar : SettlementDefenseTuning.IndustrialRadar;
+            public CompProperties_FireControlRadar FireControl => Props?.FireControl;
 
-            public MissileConfig Config => SettlementDefenseTuning.Interceptor;
+            public MissileConfig Config => Props?.Interceptor;
 
             public bool Ready(int now) => Available && RadarOnline && Stock > 0 && now >= State.cooldownUntil;
 
@@ -175,7 +192,7 @@ namespace DMSE
             {
                 if (!Ready(now)) { return false; }
                 State.stock -= 1;
-                State.cooldownUntil = now + (Tech >= TechLevel.Spacer ? 600 : 900);
+                State.cooldownUntil = now + (Props?.cooldownTicks ?? 900);
                 return true;
             }
 
@@ -186,39 +203,5 @@ namespace DMSE
                 State.cooldownUntil = now + 600;
             }
         }
-    }
-
-    /// <summary>合成防空的數值與攔截彈；延遲解析 Def，避免世界生成前的 DefDatabase 存取。</summary>
-    public static class SettlementDefenseTuning
-    {
-        public const float IndustrialRange = 6f;
-        public const float SpacerRange = 8f;
-
-        private static CompProperties_FireControlRadar industrialRadar, spacerRadar;
-        private static MissileConfig interceptor;
-
-        public static CompProperties_FireControlRadar IndustrialRadar
-            => industrialRadar ??= RadarOf("DMSE_EarlyFireControlRadar");
-
-        public static CompProperties_FireControlRadar SpacerRadar
-            => spacerRadar ??= RadarOf("DMSE_PhaseArrayRadar");
-
-        public static MissileConfig Interceptor
-        {
-            get
-            {
-                if (interceptor == null)
-                {
-                    MissileBodyDef body = DefDatabase<MissileBodyDef>.GetNamedSilentFail("DMSE_MissileBody_Light");
-                    MissilePartDef warhead = DefDatabase<MissilePartDef>.GetNamedSilentFail("DMSE_Light_Warhead_ContinuousRod");
-                    interceptor = new MissileConfig(body);
-                    if (warhead != null) { interceptor.SetPart(MissilePartCategory.Warhead, warhead); }
-                }
-                return interceptor;
-            }
-        }
-
-        private static CompProperties_FireControlRadar RadarOf(string thingDefName)
-            => DefDatabase<ThingDef>.GetNamedSilentFail(thingDefName)?.comps?.OfType<CompProperties_FireControlRadar>().FirstOrDefault();
     }
 }

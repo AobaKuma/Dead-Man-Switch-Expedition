@@ -7,7 +7,7 @@ namespace DMSE
     /// <summary>
     /// P4：未偵測的敵方航跡在世界地圖上隱藏。原版的展開圖示由 <see cref="ExpandableWorldObjectsUtility.HiddenByRules"/>
     /// 統一過濾，這裡接上 <see cref="MissileWorldObject.VisibleToPlayer"/>；世界物件本身的繪製與可選取性由
-    /// <see cref="MissileWorldObject"/> 覆寫。
+    /// 物件自己覆寫（<see cref="WorldObject.ExpandingIcon"/> 回傳 null 時不畫，<see cref="WorldObject_DropPodTrack"/> 靠這個隱藏）。
     /// </summary>
     [HarmonyPatch(typeof(ExpandableWorldObjectsUtility), nameof(ExpandableWorldObjectsUtility.HiddenByRules))]
     public static class Patch_HiddenTracks

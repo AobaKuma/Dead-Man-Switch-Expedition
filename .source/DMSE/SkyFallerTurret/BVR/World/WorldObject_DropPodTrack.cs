@@ -1,3 +1,4 @@
+using Fortified;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -12,7 +13,7 @@ namespace DMSE
     ///
     /// 由 <see cref="BVRWorldTuningDef.podsUseWorldTracks"/> 開啟；預設關閉，避免改變既有空投流程。
     /// </summary>
-    public class WorldObject_DropPodTrack : MissileWorldObject
+    public class WorldObject_DropPodTrack : WorldObject, IBVRTrack
     {
         public int spawnTick;
         public int arrivalTick;
@@ -22,25 +23,47 @@ namespace DMSE
         public Map targetMap;
         public int waveTargetId = -1;
         public ThingDef incomingDef;
+        private BVRTrackState bvrState = new BVRTrackState();
 
-        public override ThingDef IncomingDef => incomingDef;
-        public override PlanetTile Destination => targetTile;
-        protected override bool AllowGenerateTargetMap => false;
+        public WorldObject Self => this;
+        public Faction Attacker => Faction;
+        public PlanetTile Origin => Tile;
+        public PlanetTile Destination => targetTile;
+        public MissileConfig Config => null;
+        public BVRTrackState State => bvrState ??= new BVRTrackState();
+        public BVRTargetProps TargetProps => incomingDef?.GetModExtension<BVRTargetProps>() ?? BVRTargetProps.Default;
 
-        public override float AngularSpeed
+        public float AngularSpeed
             => arrivalTick <= spawnTick ? 0f
                 : GenMath.SphericalDistance(startPos.normalized, endPos.normalized) / (arrivalTick - spawnTick);
 
-        public override int TicksToArrival => Mathf.Max(0, arrivalTick - Find.TickManager.TicksGame);
+        public int TicksToArrival => Mathf.Max(0, arrivalTick - Find.TickManager.TicksGame);
 
-        public override Vector3 PositionAt(int ticksAhead)
+        public Vector3 PositionAt(int ticksAhead)
         {
             int total = Mathf.Max(1, arrivalTick - spawnTick);
             float pct = Mathf.Clamp01((Find.TickManager.TicksGame - spawnTick + Mathf.Max(0, ticksAhead)) / (float)total);
             return Vector3.Slerp(startPos, endPos, pct);
         }
 
-        public override Vector3 DrawPos => PositionAt(0);
+        public override Vector3 DrawPos => AirTrackDisplay.Raised(PositionAt(0), AirTrackDisplay.CurrentLift(this));
+
+        private bool VisibleToPlayer => Faction == Faction.OfPlayer || State.detectedByFaction == Faction.OfPlayer;
+        public override bool SelectableNow => VisibleToPlayer && base.SelectableNow;
+        public override void Draw()
+        {
+            if (VisibleToPlayer) { base.Draw(); }
+        }
+        public override Texture2D ExpandingIcon => VisibleToPlayer ? base.ExpandingIcon : null;
+        public override Color ExpandingIconColor => State.detectedByFaction == Faction.OfPlayer ? Color.red : Faction?.Color ?? Color.white;
+
+        public override string GetInspectString()
+        {
+            string text = base.GetInspectString();
+            if (!text.NullOrEmpty()) { text += "\n"; }
+            return text + "DMSE.BVR.World.TrackInspect".Translate(targetMap?.Parent?.Label ?? targetTile.ToString(),
+                TicksToArrival.ToStringTicksToPeriod(), State.StatusKey.Translate(), State.interceptAttempts);
+        }
 
         protected override void TickInterval(int delta)
         {
@@ -56,19 +79,26 @@ namespace DMSE
             }
             if (now >= arrivalTick)
             {
-                arrived = true;
                 Destroy();
             }
         }
 
-        protected override void OnArrived(Map map) => Destroy();
-
         /// <summary>被世界層攔截：同步移除地圖波次裡的同一個目標（不落地、不留殘骸）。</summary>
-        protected override void OnIntercepted(Faction by)
+        public void Notify_Intercepted(Faction by)
         {
-            if (targetMap == null || targetMap.Disposed) { return; }
-            MapComponent_BVRCombat bvr = targetMap.GetComponent<MapComponent_BVRCombat>();
-            if (bvr != null && bvr.GetTarget(waveTargetId) != null) { bvr.RemoveTarget(waveTargetId); }
+            if (Destroyed) { return; }
+            if (by == Faction.OfPlayer || Attacker == Faction.OfPlayer)
+            {
+                Messages.Message("DMSE.BVR.World.Intercepted".Translate(Label, by?.Name ?? "?"), new GlobalTargetInfo(targetTile),
+                    by == Faction.OfPlayer ? MessageTypeDefOf.PositiveEvent : MessageTypeDefOf.NegativeEvent, historical: false);
+            }
+            WorldComponent_BVRNetwork.Current?.AddFlash(DrawPos);
+            if (targetMap != null && !targetMap.Disposed)
+            {
+                MapComponent_BVRCombat bvr = targetMap.GetComponent<MapComponent_BVRCombat>();
+                if (bvr != null && bvr.GetTarget(waveTargetId) != null) { bvr.RemoveTarget(waveTargetId); }
+            }
+            Destroy();
         }
 
         public override void ExposeData()
@@ -82,10 +112,9 @@ namespace DMSE
             Scribe_References.Look(ref targetMap, "podTargetMap");
             Scribe_Values.Look(ref waveTargetId, "podWaveTargetId", -1);
             Scribe_Defs.Look(ref incomingDef, "podIncomingDef");
-            if (Scribe.mode == LoadSaveMode.PostLoadInit)
-            {
-                arrived = false;
-            }
+            // 與飛彈航跡相同的存檔鍵：舊存檔裡繼承自 MissileWorldObject 的幽靈航跡可以直接讀入。
+            Scribe_Deep.Look(ref bvrState, "bvrState");
+            if (Scribe.mode == LoadSaveMode.PostLoadInit) { bvrState ??= new BVRTrackState(); }
         }
     }
 }

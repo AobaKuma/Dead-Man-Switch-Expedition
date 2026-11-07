@@ -24,13 +24,13 @@ namespace DMSE
         /// <paramref name="applyScatter"/>：是否套用導引的命中偏移（護盾碰觸點引爆時不套用）。
         /// </summary>
         public static IntVec3 Detonate(MissileConfig config, IntVec3 position, Map map, Faction attacker,
-            Thing instigator = null, bool applyScatter = true)
+            Thing instigator = null, bool applyScatter = true, float? approachHeading = null)
         {
             Thing previous = Instigator;
             Instigator = instigator;
             try
             {
-                return DetonateInner(config, position, map, attacker, instigator, applyScatter);
+                return DetonateInner(config, position, map, attacker, instigator, applyScatter, approachHeading);
             }
             finally
             {
@@ -46,7 +46,7 @@ namespace DMSE
         }
 
         private static IntVec3 DetonateInner(MissileConfig config, IntVec3 position, Map map, Faction attacker,
-            Thing instigator, bool applyScatter)
+            Thing instigator, bool applyScatter, float? approachHeading)
         {
             IntVec3 center = position;
             if (applyScatter && config != null && config.Valid)
@@ -75,13 +75,23 @@ namespace DMSE
 
                 // 戰鬥部特效（WarheadEffect class）
                 MissilePartDef warheadPart = config.PartFor(MissilePartCategory.Warhead);
-                warheadPart?.warheadEffect?.Apply(N, center, map, attacker);
+                var context = new Fortified.MissileImpactContext
+                {
+                    Loadout = config,
+                    PayloadCapacity = N,
+                    Center = center,
+                    Map = map,
+                    Attacker = attacker,
+                    Instigator = instigator,
+                    ApproachHeading = approachHeading,
+                };
+                warheadPart?.warheadEffect?.Apply(context);
 
                 // 載荷效果（PayloadEffect class）
                 MissilePartDef payloadPart = config.PartFor(MissilePartCategory.Payload);
                 if (payloadPart?.payloadEffect != null)
                 {
-                    payloadPart.payloadEffect.Apply(N, center, map, attacker);
+                    payloadPart.payloadEffect.Apply(context);
                 }
                 else if (payloadPart != null)
                 {
@@ -103,6 +113,8 @@ namespace DMSE
                         }
                     }
                 }
+
+                foreach (Fortified.MissileBehaviorProps behavior in config.BehaviorProps) { behavior.PostDetonate(context); }
             }
             else
             {

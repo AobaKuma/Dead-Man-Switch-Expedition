@@ -53,7 +53,7 @@
     <researchPrerequisites>
       <li>DMSE_RadarBasis</li>
     </researchPrerequisites>
-    <designationCategory>DMS_Category</designationCategory>
+    <designationCategory>DMSE_BVRCategory</designationCategory>
     <minifiedDef>MinifiedThing</minifiedDef>
     <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
     <thingCategories>

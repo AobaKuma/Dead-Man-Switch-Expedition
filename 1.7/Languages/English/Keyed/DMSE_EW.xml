@@ -19,37 +19,57 @@
   <DMSE.EW.Console.NoOperator>No operator: no skill bonus</DMSE.EW.Console.NoOperator>
   <DMSE.EW.Console.Operator>Operator: {0}</DMSE.EW.Console.Operator>
   <DMSE.EW.Tab.NoPower>No power: remote control and rules cannot be changed. The current rules stay in effect.</DMSE.EW.Tab.NoPower>
-  <DMSE.EW.Tab.Overview>Status</DMSE.EW.Tab.Overview>
-  <DMSE.EW.Tab.RadarsOnline>Radars online: {0} / {1}</DMSE.EW.Tab.RadarsOnline>
-  <DMSE.EW.Tab.JammerRow>{0}: strength {1}, covering {2} tracks</DMSE.EW.Tab.JammerRow>
-  <DMSE.EW.Tab.LocalJam>Enemy jamming here: {0}</DMSE.EW.Tab.LocalJam>
-  <DMSE.EW.Tab.RadarRow>{0}: base {1} × power {2} × operator {3} = {4} tiles</DMSE.EW.Tab.RadarRow>
+  <DMSE.EW.Tab.RadarsOnline>Radars online</DMSE.EW.Tab.RadarsOnline>
+  <DMSE.EW.Tab.JammerRow>strength {0}, covering {1} tracks</DMSE.EW.Tab.JammerRow>
+  <DMSE.EW.Tab.LocalJam>Enemy jamming</DMSE.EW.Tab.LocalJam>
+  <DMSE.EW.Tab.RadarRow>base {0} × power {1} × operator {2}</DMSE.EW.Tab.RadarRow>
   <DMSE.EW.Tab.SilencedWarning>Emissions silence is on: radars and jammers are off.</DMSE.EW.Tab.SilencedWarning>
   <DMSE.EW.Tab.Remote>Remote control</DMSE.EW.Tab.Remote>
   <DMSE.EW.Tab.PowerOn>On</DMSE.EW.Tab.PowerOn>
   <DMSE.EW.Tab.PowerOff>Off</DMSE.EW.Tab.PowerOff>
-  <DMSE.EW.Tab.Throttle>Power...</DMSE.EW.Tab.Throttle>
   <DMSE.EW.Tab.Silence>Emissions silence</DMSE.EW.Tab.Silence>
-  <DMSE.EW.Tab.Restore>End silence (restores what was on)</DMSE.EW.Tab.Restore>
+  <DMSE.EW.Tab.Restore>End silence</DMSE.EW.Tab.Restore>
   <DMSE.EW.Tab.Roe>Rules of engagement</DMSE.EW.Tab.Roe>
   <DMSE.EW.Tab.Operator>Operator bonus</DMSE.EW.Tab.Operator>
-  <DMSE.EW.Tab.OperatorRange>Intellectual {0}: radar range × {1}</DMSE.EW.Tab.OperatorRange>
-  <DMSE.EW.Tab.OperatorCooldown>Shooting {0}: launcher cooldown × {1}</DMSE.EW.Tab.OperatorCooldown>
+  <DMSE.EW.Tab.OperatorRange>Intellectual total {0}/{1}: radar range × {2}</DMSE.EW.Tab.OperatorRange>
+  <DMSE.EW.Tab.OperatorCooldown>Shooting total {0}/{1}: launcher cooldown × {2}</DMSE.EW.Tab.OperatorCooldown>
   <DMSE.EW.Group.Jammers>Jammers</DMSE.EW.Group.Jammers>
   <DMSE.EW.Group.SearchRadars>Search radars</DMSE.EW.Group.SearchRadars>
   <DMSE.EW.Group.FireControlRadars>Fire-control radars</DMSE.EW.Group.FireControlRadars>
   <DMSE.EW.Group.All>All</DMSE.EW.Group.All>
   <DMSE.EW.Roe.AutoEngage>Automatic engagement</DMSE.EW.Roe.AutoEngage>
   <DMSE.EW.Roe.AutoEngageDesc>When off, targets are still detected and alerts still fire, but interceptors are not launched. Close-in weapons keep firing.</DMSE.EW.Roe.AutoEngageDesc>
-  <DMSE.EW.Roe.PolicyAll>Engage all targets (off: self-defense only)</DMSE.EW.Roe.PolicyAll>
-  <DMSE.EW.Roe.PolicyAllDesc>Self-defense only engages missiles aimed at this colony or an ally. Passing missiles are left alone.</DMSE.EW.Roe.PolicyAllDesc>
+  <DMSE.EW.Roe.PolicyAll>All</DMSE.EW.Roe.PolicyAll>
   <DMSE.EW.Roe.Neutral>Fire on neutral factions</DMSE.EW.Roe.Neutral>
-  <DMSE.EW.Roe.LargestFirst>Largest target first (off: first come, first served)</DMSE.EW.Roe.LargestFirst>
-  <DMSE.EW.Roe.LargestFirstDesc>When channels run short, engage the largest radar signature first instead of the soonest arrival.</DMSE.EW.Roe.LargestFirstDesc>
-  <DMSE.EW.Roe.ChannelCap>Air-defense channel limit: {0}</DMSE.EW.Roe.ChannelCap>
-  <DMSE.EW.Roe.CapUnlimited>none</DMSE.EW.Roe.CapUnlimited>
-  <DMSE.EW.Roe.HoldFire>Do not intercept:</DMSE.EW.Roe.HoldFire>
+  <DMSE.EW.Roe.ChannelCap>Air-defense channel limit</DMSE.EW.Roe.ChannelCap>
+  <DMSE.EW.Roe.CapUnlimited>No limit</DMSE.EW.Roe.CapUnlimited>
   <DMSE.EW.Roe.Class.Loitering>Loitering munitions</DMSE.EW.Roe.Class.Loitering>
   <DMSE.EW.Roe.Class.DropPod>Drop pods</DMSE.EW.Roe.Class.DropPod>
   <DMSE.EW.Roe.Class.Ballistic>Ballistic missiles</DMSE.EW.Roe.Class.Ballistic>
+  <DMSE.EW.Tab.StateLabel>Air defense</DMSE.EW.Tab.StateLabel>
+  <DMSE.EW.Tab.StateSelfDefense>Auto, self-defense</DMSE.EW.Tab.StateSelfDefense>
+  <DMSE.EW.Tab.StateAll>Auto, all targets</DMSE.EW.Tab.StateAll>
+  <DMSE.EW.Tab.StateSilenced>Emissions silence</DMSE.EW.Tab.StateSilenced>
+  <DMSE.EW.Tab.StateHold>Holding interceptors</DMSE.EW.Tab.StateHold>
+  <DMSE.EW.Tab.StateNoRadar>No radar online</DMSE.EW.Tab.StateNoRadar>
+  <DMSE.EW.Tab.Channels>AD channels</DMSE.EW.Tab.Channels>
+  <DMSE.EW.Tab.ChannelsDesc>Channels air defense is using / channels it can use now. The second number excludes channels held by artillery and strike guidance and applies the channel limit.</DMSE.EW.Tab.ChannelsDesc>
+  <DMSE.EW.Tab.Performance>Device performance</DMSE.EW.Tab.Performance>
+  <DMSE.EW.Tab.RadarRange>{0} tiles</DMSE.EW.Tab.RadarRange>
+  <DMSE.EW.Tab.GroupStatus>{0}/{1} on</DMSE.EW.Tab.GroupStatus>
+  <DMSE.EW.Tab.NotDeployed>Not deployed</DMSE.EW.Tab.NotDeployed>
+  <DMSE.EW.Tab.ThrottleMixed>Mixed</DMSE.EW.Tab.ThrottleMixed>
+  <DMSE.EW.Tab.SilenceDesc>Switch off every radar and jammer that is on. You can restore them in one click.</DMSE.EW.Tab.SilenceDesc>
+  <DMSE.EW.Tab.RestoreDesc>Switch back on the devices that were on before silence.</DMSE.EW.Tab.RestoreDesc>
+  <DMSE.EW.Tab.OperatorBonus>bonus</DMSE.EW.Tab.OperatorBonus>
+  <DMSE.EW.Tab.OperatorPenalty>penalty</DMSE.EW.Tab.OperatorPenalty>
+  <DMSE.EW.Roe.Policy>Engagement scope</DMSE.EW.Roe.Policy>
+  <DMSE.EW.Roe.PolicySelfDefense>Self-defense</DMSE.EW.Roe.PolicySelfDefense>
+  <DMSE.EW.Roe.PolicyDesc>Self-defense only engages missiles aimed at this colony or an ally and leaves passing missiles alone. All also intercepts passing missiles.</DMSE.EW.Roe.PolicyDesc>
+  <DMSE.EW.Roe.Priority>Target priority</DMSE.EW.Roe.Priority>
+  <DMSE.EW.Roe.PriorityFirstCome>First come</DMSE.EW.Roe.PriorityFirstCome>
+  <DMSE.EW.Roe.PriorityLargest>Largest</DMSE.EW.Roe.PriorityLargest>
+  <DMSE.EW.Roe.PriorityDesc>When channels run short, engage the soonest arrival first, or the largest radar signature first.</DMSE.EW.Roe.PriorityDesc>
+  <DMSE.EW.Roe.ChannelCapDesc>Limits how many fire-control channels air defense may hold, leaving the rest for artillery and strike guidance. At 0, no interceptors are launched.</DMSE.EW.Roe.ChannelCapDesc>
+  <DMSE.EW.Roe.Intercept>Intercept</DMSE.EW.Roe.Intercept>
 </LanguageData>

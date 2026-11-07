@@ -135,7 +135,9 @@ namespace DMSE
             foreach (Building b in map.listerBuildings.allBuildingsNonColonist)
             {
                 if (b.Faction != faction || b.Destroyed || !b.def.hasInteractionCell) continue;
-                if (b.TryGetComp<CompMannable>() != null) n++;
+                // 戰情終端由閒置守軍操作，不算炮手崗位。
+                CompMannable mannable = b.TryGetComp<CompMannable>();
+                if (mannable != null && !(mannable is CompWarRoomConsole)) n++;
             }
             return n;
         }

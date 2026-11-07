@@ -22,6 +22,10 @@ namespace DMSE
             return Mathf.Clamp(factor, tuning.minAltitudeFactor, Mathf.Max(tuning.minAltitudeFactor, tuning.maxAltitudeFactor));
         }
 
+        /// <summary>高度的顯示文字：不到 1 公里用公尺。</summary>
+        public static string AltitudeLabel(float meters)
+            => meters < 1000f ? $"{meters:0} m" : $"{meters / 1000f:0.#} km";
+
         /// <summary>解析度係數：distanceLevel 低於雷達解析度的目標，有效距離依比例縮水；resolutionLevel ≤ 0 不限制。</summary>
         public static float ResolutionFactor(float resolutionLevel, BVRTargetProps target)
             => resolutionLevel <= 0f ? 1f : Mathf.Min(1f, target.distanceLevel / resolutionLevel);

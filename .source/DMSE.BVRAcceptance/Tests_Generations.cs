@@ -332,7 +332,7 @@ namespace DMSE.BVRAcceptance
             {
                 ("DMSE_MissileBody_Loiter", 32), ("DMSE_MissileBody_LegacyLoiter", 24), ("DMSE_MissileBody_LegacyInterceptor", 20),
                 ("DMSE_MissileBody_Stinger", 20), ("DMSE_MissileBody_Maverick", 32), ("DMSE_MissileBody_Sparrow", 36),
-                ("DMSE_MissileBody_Moskit", 70), ("DMSE_MissileBody_Yj", 235), ("DMSE_MissileBody_Tochka", 125),
+                ("DMSE_MissileBody_Moskit", 70), ("DMSE_MissileBody_Oniks", 140), ("DMSE_MissileBody_Yj", 235), ("DMSE_MissileBody_Tochka", 125),
                 ("DMSE_MissileBody_LegacyBallistic", 95),
             };
             foreach ((string body, int range) in expected)
@@ -372,10 +372,74 @@ namespace DMSE.BVRAcceptance
                 "the Moskit recipe needs anti-ship missiles and integrated circuits");
             t.Check(DefDatabase<RecipeDef>.AllDefs.Any(r => r.ProducedThingDef == Termite && r.researchPrerequisite == antiship),
                 "the Termite recipe moved to anti-ship missiles");
+            ThingDef oniks = Def("DMSE_Missile_Oniks");
+            RecipeDef oniksRecipe = DefDatabase<RecipeDef>.AllDefs.FirstOrDefault(r => r.ProducedThingDef == oniks);
+            t.Check(oniksRecipe != null && oniksRecipe.researchPrerequisites != null && oniksRecipe.researchPrerequisites.Contains(antiship)
+                    && oniksRecipe.researchPrerequisites.Contains(ic) && oniksRecipe.researchPrerequisites.Contains(ResearchProjectDef.Named("DMSE_IntegratedAirDefense"))
+                    && !oniksRecipe.researchPrerequisites.Contains(strategic),
+                "the Oniks recipe needs anti-ship missiles, integrated circuits and integrated air defense, not strategic systems");
+            t.Check(new[] { "DMSE_Building_Scorer", "DMSE_Building_MediumVLS" }.All(b => ThingDef.Named(b).building.fixedStorageSettings.filter.Allows(oniks)),
+                "the Oniks fires from both the medium tilt launcher and the vertical launch silo");
+            MissileConfig oniksConfig = MissileConfig.NewWithDefaults(Body("DMSE_MissileBody_Oniks"));
+            t.Check(oniksConfig.TargetingGuidance is GuidanceType_AntiShip && oniksConfig.TracksMobileTargets,
+                "the Oniks comes with an anti-ship seeker that tracks moving targets");
             RecipeDef yj = DefDatabase<RecipeDef>.AllDefs.FirstOrDefault(r => r.ProducedThingDef == Def("DMSE_Missile_Yj"));
             t.Check(yj != null && yj.researchPrerequisites != null && yj.researchPrerequisites.Contains(antiship) && yj.researchPrerequisites.Contains(strategic),
                 "the YJ recipe needs both anti-ship missiles and strategic systems");
             yield break;
+        }
+
+        // ------------------------------------------------------------------
+        //  T14: Oniks fires from both launcher families and flies its own defs
+        // ------------------------------------------------------------------
+
+        public static IEnumerable<Wait> OniksLaunchersAndFlight(TestContext t)
+        {
+            ThingDef item = Def("DMSE_Missile_Oniks");
+            MissileBodyDef body = Body("DMSE_MissileBody_Oniks");
+            Building_MissileRack vls = (Building_MissileRack)SpawnBuilding(Def("DMSE_Building_MediumVLS"), 10, 10);
+            Building_MissileRack scorer = (Building_MissileRack)SpawnBuilding(Def("DMSE_Building_Scorer"), 20, 10);
+            Thing vlsRound = Load(vls, item);
+            Thing scorerRound = Load(scorer, item);
+            yield return WaitPowered(); yield return new WaitTicks(2);
+            CompMissileLauncher_Rail vlsRail = vls.TryGetComp<CompMissileLauncher_Rail>();
+            CompMissileLauncher_Rail scorerRail = scorer.TryGetComp<CompMissileLauncher_Rail>();
+            t.Require(vlsRail != null && scorerRail != null && vls.StoredCount == 1 && scorer.StoredCount == 1, "both launchers hold an Oniks");
+
+            MissileConfig config = vlsRail.BuildFiringConfig(vlsRound);
+            t.Check(config?.body == body && config.Range == 140, $"the round fires with the Oniks body and 140 tiles of range (got {config?.Range})");
+            BVRTargetProps props = body.incomingSkyfaller.GetModExtension<BVRTargetProps>();
+            BVRTargetProps moskit = Body("DMSE_MissileBody_Moskit").incomingSkyfaller.GetModExtension<BVRTargetProps>();
+            BVRTargetProps yj = Body("DMSE_MissileBody_Yj").incomingSkyfaller.GetModExtension<BVRTargetProps>();
+            t.Check(moskit.stealthLevel < props.stealthLevel && props.stealthLevel < yj.stealthLevel
+                    && moskit.speed < props.speed && props.speed < yj.speed,
+                "its stealth and speed sit between the Moskit and the YJ");
+
+            PlanetTile target = TileAtDistance(5f, 8f);
+            t.Require(target.Valid, "a target tile 5-8 tiles away exists");
+            int departingBefore = DepartingMissiles;
+            ScorerProjectile_WorldObject vlsShot = vlsRail.TryLaunchRound(new GlobalTargetInfo(target), vlsRound, false, out string vlsReason);
+            ScorerProjectile_WorldObject scorerShot = scorerRail.TryLaunchRound(new GlobalTargetInfo(target), scorerRound, false, out string scorerReason);
+            t.Require(vlsShot != null, $"the vertical launch silo fires it ({vlsReason ?? "ok"})");
+            t.Require(scorerShot != null, $"the tilt launcher fires it ({scorerReason ?? "ok"})");
+            t.Check(vlsRound.Destroyed && scorerRound.Destroyed, "both rounds left their launchers");
+            t.Check(vlsShot.config?.body == body && vlsShot.IncomingDef == body.incomingSkyfaller, "the world track carries the Oniks config and incoming def");
+            t.Check(DepartingMissiles >= departingBefore + 2, "both launches spawn departing missiles");
+            t.Check(Home.listerThings.AllThings.Any(x => x.def == body.launchProjectile), "the departing missile uses DMSE_Launch_Oniks");
+
+            Thing departing = Home.listerThings.AllThings.First(x => x.def == body.launchProjectile);
+            CompEffecterLaunch launchFx = departing.TryGetComp<CompEffecterLaunch>();
+            t.Check(departing.Graphic.path == "Things/Missile/Oniks/skyFaller", $"it lifts off with its booster (got {departing.Graphic.path})");
+            int separationLimit = Find.TickManager.TicksGame + launchFx.Props.fxProfile.boosterTicks + 10;
+            while (!launchFx.BoosterSeparated && departing.Spawned && Find.TickManager.TicksGame < separationLimit) { yield return new WaitTicks(1); }
+            t.Check(launchFx.BoosterSeparated && departing.Spawned, "the booster separates while the missile is still on the map");
+            t.Check(departing.Graphic.path == "Things/Missile/Oniks/skyFaller_incoming", $"it flies on without the booster sprite (got {departing.Graphic.path})");
+
+            int launched = Find.TickManager.TicksGame;
+            int limit = launched + 4000;
+            while (!vlsShot.Destroyed && Find.TickManager.TicksGame < limit) { yield return new WaitTicks(10); }
+            t.Check(vlsShot.Destroyed, "the track reaches the target tile");
+            t.Note($"Oniks flew {Find.WorldGrid.ApproxDistanceInTiles(Home.Tile, target):0.0} tiles in {Find.TickManager.TicksGame - launched} ticks");
         }
 
         // ------------------------------------------------------------------
@@ -943,6 +1007,7 @@ namespace DMSE.BVRAcceptance
             yield return new AcceptanceTest("T11", "SAM keeps firing inside a manned Flak 43's terminal window", RotaryRailRefireInTerminal);
             yield return new AcceptanceTest("T12", "Missile and radar research tree split / unlock gates", MissileAndRadarTechnologyTree);
             yield return new AcceptanceTest("T13", "Sabre loitering munition on the man-portable launcher", SabreOnManPortableLauncher);
+            yield return new AcceptanceTest("T14", "Oniks fires from both launcher families and flies its own defs", OniksLaunchersAndFlight);
         }
     }
 }

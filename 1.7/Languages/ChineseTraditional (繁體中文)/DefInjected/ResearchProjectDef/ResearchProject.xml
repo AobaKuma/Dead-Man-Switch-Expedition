@@ -47,7 +47,7 @@
   <DMSE_IntegratedAirDefense.description>解鎖相控陣與高容量整合防空系統，並開放紅外線影像及電磁訊號尋標器、石墨纖維電網攻擊載荷。相控陣由電腦控制複雜天線陣列，精準調度數千個發射機與接收機，無須轉動天線便能同時完成多種雷達工作；性能超越一整個世代，但需要大量 TR 組件與可觀電力。</DMSE_IntegratedAirDefense.description>
 
   <DMSE_AntishipMissiles.label>反艦導彈</DMSE_AntishipMissiles.label>
-  <DMSE_AntishipMissiles.description>解鎖反艦巡飛彈與追蹤世界地圖移動目標的反艦主動雷達尋標器。這類導彈能在鎖定目標後有限次修正彈道，命中移動中的非固定目標，特別是海上移動的導彈發射平台與戰略潛艇。</DMSE_AntishipMissiles.description>
+  <DMSE_AntishipMissiles.description>解鎖反艦巡飛彈與追蹤世界地圖移動目標的反艦主動雷達尋標器。這類導彈能在鎖定目標後有限次修正彈道，命中移動中的非固定目標，特別是海上移動的導彈發射平台與戰略潛艇。超音速反艦導彈另需進階導彈工程，先進反艦巡航導彈另需進階導彈工程與相控陣，高超音速反艦導彈另需先進導彈工程。</DMSE_AntishipMissiles.description>
 
   <DMSE_ElectronicWarfare.label>電子戰</DMSE_ElectronicWarfare.label>
   <DMSE_ElectronicWarfare.description>解鎖戰情終端與長程預警雷達。戰情終端可設定交戰限制，並遙控全圖的雷達與干擾機；長程預警雷達以解析度和全部火控通道，換取 40 格的早期預警。</DMSE_ElectronicWarfare.description>

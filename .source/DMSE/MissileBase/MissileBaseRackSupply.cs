@@ -10,7 +10,8 @@ namespace DMSE
     /// NPC 陣地彈架的裝填與補給設定（<see cref="CompProperties_MissileBase.rackSupply"/>）。<br/>
     /// ‧ 生成時依 <see cref="loadouts"/> 裝填（<see cref="GenStep_MissileBaseRackFill"/>）。<br/>
     /// ‧ 地圖存在期間每 <see cref="intervalDays"/> 天，為每座空彈架各空投一艙導彈，數量與彈種依彈架類型決定；
-    ///   落地 <see cref="loadDelayTicks"/> 後若導彈仍在彈架附近，由守軍裝入（<see cref="MapComponent_MissileBase"/>）。
+    ///   導彈落地 <see cref="loadDelayTicks"/> 後由守軍親自搬進彈架（<see cref="JobDriver_HaulMissileToRack"/>），
+    ///   不再自動裝填——導彈在空投艙、地上、pawn 手上都看得到，玩家可以搶走或摧毀。
     /// </summary>
     public class MissileBaseRackSupply
     {
@@ -19,10 +20,10 @@ namespace DMSE
         /// <summary>生成地圖時依裝填表重新裝填所有敵方彈架。</summary>
         public bool fillOnGenerate = true;
 
-        /// <summary>補給艙開艙後到守軍裝填完成的時間；期間玩家可以搶走或摧毀導彈。</summary>
+        /// <summary>補給艙落地後多久，守軍才會開始搬（tick）；期間玩家可以搶走或摧毀導彈。</summary>
         public int loadDelayTicks = 2500;
 
-        /// <summary>導彈離彈架超過此距離（格）就不會被裝填。</summary>
+        /// <summary>導彈被搬離彈架超過此距離（格）就不再追蹤，留在原地。</summary>
         public float loadRadius = 12f;
 
         /// <summary>依彈架 ThingDef 指定彈種；未列出的彈架改用該建築的 <see cref="MissileRackAutoFillExtension"/> 規則。</summary>
@@ -49,6 +50,22 @@ namespace DMSE
     {
         /// <summary>發射平台（有發射元件）；其餘導彈平台視為彈藥庫／儲存架。</summary>
         public static bool IsLauncher(IMissileRack rack) => rack.RackThing is Building b && WorkGiver_LoadMissileLauncher.IsLauncher(b);
+
+        /// <summary>
+        /// 純防空平台：能攔截但沒有對地發射元件（旋轉 SAM、野戰防空砲）。
+        /// 架上的彈（含兩用彈）是防空彈藥，陣地的對地射擊不取用。
+        /// </summary>
+        public static bool IsAirDefenseOnly(Building b)
+            => b.TryGetComp<CompMissileLauncher_Interceptor>() != null
+            && b.TryGetComp<CompMissileLauncher_WorldTargeting>() == null;
+
+        /// <summary>
+        /// 陣地可拿來對地射擊的導彈：可裝配導彈，或固定構型彈（<see cref="MissileItemExtension"/>）；
+        /// 用途標為攔截彈的不算，即使它可裝配（刺針、麻雀）。
+        /// </summary>
+        public static bool IsStrikeRound(Thing t)
+            => MissileRoleExtension.CanStrike(t)
+            && (t.def.HasComp(typeof(CompMissileConfig)) || t.def.HasModExtension<MissileItemExtension>());
 
         /// <summary><paramref name="source"/> 裡有沒有 <paramref name="launcher"/> 收得下的導彈。</summary>
         public static bool HasMissileFor(IMissileRack source, IMissileRack launcher)

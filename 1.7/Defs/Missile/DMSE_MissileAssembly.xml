@@ -12,6 +12,7 @@
     <category>Warhead</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_Moskit</li>
+      <li>DMSE_MissileBody_Oniks</li>
       <li>DMSE_MissileBody_Yj</li>
       <li>DMSE_MissileBody_Tochka</li>
     </compatibleBodies>
@@ -32,6 +33,7 @@
     <category>Warhead</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_Moskit</li>
+      <li>DMSE_MissileBody_Oniks</li>
       <li>DMSE_MissileBody_Yj</li>
       <li>DMSE_MissileBody_Tochka</li>
     </compatibleBodies>
@@ -52,6 +54,7 @@
     <category>Warhead</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_Moskit</li>
+      <li>DMSE_MissileBody_Oniks</li>
       <li>DMSE_MissileBody_Yj</li>
       <li>DMSE_MissileBody_Tochka</li>
     </compatibleBodies>
@@ -72,6 +75,7 @@
     <category>Guidance</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_Moskit</li>
+      <li>DMSE_MissileBody_Oniks</li>
       <li>DMSE_MissileBody_Yj</li>
       <li>DMSE_MissileBody_Tochka</li>
     </compatibleBodies>
@@ -89,6 +93,7 @@
       <li>DMSE_MissileBody_AdvancedBallistic</li>
       <li>DMSE_MissileBody_Light</li>
       <li>DMSE_MissileBody_Moskit</li>
+      <li>DMSE_MissileBody_Oniks</li>
       <li>DMSE_MissileBody_LegacyBallistic</li>
       <li>DMSE_MissileBody_AdvancedLight</li>
       <li>DMSE_MissileBody_AdvancedCruise</li>
@@ -117,6 +122,7 @@
     <category>Guidance</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_Moskit</li>
+      <li>DMSE_MissileBody_Oniks</li>
       <li>DMSE_MissileBody_Yj</li>
       <li>DMSE_MissileBody_Tochka</li>
     </compatibleBodies>
@@ -140,6 +146,7 @@
     <category>Guidance</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_Moskit</li>
+      <li>DMSE_MissileBody_Oniks</li>
       <li>DMSE_MissileBody_Yj</li>
       <li>DMSE_MissileBody_Tochka</li>
     </compatibleBodies>
@@ -161,6 +168,7 @@
     <category>Guidance</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_Moskit</li>
+      <li>DMSE_MissileBody_Oniks</li>
       <li>DMSE_MissileBody_Yj</li>
       <li>DMSE_MissileBody_Tochka</li>
     </compatibleBodies>
@@ -183,6 +191,7 @@
     <category>Guidance</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_Moskit</li>
+      <li>DMSE_MissileBody_Oniks</li>
       <li>DMSE_MissileBody_Yj</li>
       <li>DMSE_MissileBody_Tochka</li>
     </compatibleBodies>
@@ -206,6 +215,7 @@
     <category>Propulsion</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_Moskit</li>
+      <li>DMSE_MissileBody_Oniks</li>
       <li>DMSE_MissileBody_Yj</li>
       <li>DMSE_MissileBody_Tochka</li>
     </compatibleBodies>
@@ -219,6 +229,7 @@
     <category>Propulsion</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_Moskit</li>
+      <li>DMSE_MissileBody_Oniks</li>
       <li>DMSE_MissileBody_Yj</li>
       <li>DMSE_MissileBody_Tochka</li>
     </compatibleBodies>
@@ -239,6 +250,7 @@
     <category>Payload</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_Moskit</li>
+      <li>DMSE_MissileBody_Oniks</li>
       <li>DMSE_MissileBody_Yj</li>
       <li>DMSE_MissileBody_Tochka</li>
     </compatibleBodies>
@@ -259,6 +271,7 @@
     <category>Payload</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_Moskit</li>
+      <li>DMSE_MissileBody_Oniks</li>
       <li>DMSE_MissileBody_Yj</li>
       <li>DMSE_MissileBody_Tochka</li>
       <li>DMSE_MissileBody_Shahed</li>
@@ -276,6 +289,7 @@
     <category>Payload</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_Moskit</li>
+      <li>DMSE_MissileBody_Oniks</li>
       <li>DMSE_MissileBody_Yj</li>
       <li>DMSE_MissileBody_Tochka</li>
     </compatibleBodies>
@@ -297,6 +311,7 @@
     <category>Payload</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_Moskit</li>
+      <li>DMSE_MissileBody_Oniks</li>
       <li>DMSE_MissileBody_Yj</li>
       <li>DMSE_MissileBody_Tochka</li>
     </compatibleBodies>

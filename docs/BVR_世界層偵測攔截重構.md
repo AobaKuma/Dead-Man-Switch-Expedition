@@ -67,7 +67,7 @@ ETA    = (1 − traveledPct) × 目前航段角距離 / ω
 - **`WorldObjectComp_AirDefense`**（`DMSE_MissileBase`）：2 通道、庫存 8、每天補 4、冷卻 240、相控陣火控＋輕型連續桿攔截彈。只在 `!HasMap` 時運作；地圖生成後交給實體建築，庫存不與彈架同步。
 - **數據鏈**：`DetectorFor`——任一同陣營敵對節點看到即算偵測，同陣營節點都可接戰。
 - **區域防禦**：`BVRNode.CanEngage` = 目的地是本節點或飛越覆蓋；`NodeFor` 目的地節點優先，其餘取最近。`areaDefenseEnabled`（預設 true）。
-- **一般據點合成防空** `WorldComponent_SettlementDefense`：Industrial 6 格／1 通道／2 發；Spacer 8 格／2 通道／4 發；持久化。
+- **一般據點合成防空** `WorldComponent_SettlementDefense`：數值來自陣營準則 `MissileDoctrineDef.settlementDefense`（出貨：Industrial 6 格／1 通道／2 發；Spacer 8 格／2 通道／4 發；Ultra 6 發）；持久化。
 - **空投虛擬航跡** `WorldObject_DropPodTrack`：由覆蓋圈邊緣飛入，被攔截時移除地圖波次目標；`podsUseWorldTracks` 預設關。
 - **未偵測航跡隱藏**：`Patch_HiddenTracks`（`ExpandableWorldObjectsUtility.HiddenByRules`）＋`MissileWorldObject.VisibleToPlayer` 等。
 - **反輻射削弱抽象節點**：`TryStrikeAbstractNode`——命中無地圖防空節點時打掉 2 發庫存、壓制雷達一天，不生成地圖。

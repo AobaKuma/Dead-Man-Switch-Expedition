@@ -54,7 +54,7 @@ namespace DMSE
 
         // ── Alert 介面 ────────────────────────────────────────────────────────
 
-        private static List<MissileWorldObject> WorldTargets() => WorldComponent_BVRNetwork.Current?.Tracks
+        private static List<MissileWorldObject> WorldTargets() => WorldComponent_BVRNetwork.Current?.MissileTracks
             .Where(t => t.Attacker == Faction.OfPlayer).OrderBy(t => t.TicksToArrival).ToList()
             ?? new List<MissileWorldObject>();
 

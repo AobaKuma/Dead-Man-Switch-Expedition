@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       舊式導彈陣地：雷達網之前的早期導彈襲擊
+       ‧ 布局：LaunchSite_Early.xml 的 FFF 結構，以聲學預警站為中心向外散布。難度分級同野戰陣地（threatScale 0.5 / 0.9 / 1.4）。
+       ‧ 彈種：老式巡飛彈（固定構型）。世界層與地圖層都打同一種彈，射程 15 tile。
+       ‧ 開火條件（地圖層）：手動火控雷達有電且有人操作才有 1 個火力通道；炮手優先操作火控雷達，其次發射架。
+         手搖旋轉發射架沒人操作時不會發射；傾斜發射軌不需要人，所以第一座陣位固定用 B。
+       ‧ 電力：火控站靠兩座燒木發電機，守軍抽象補燃料（refuelGenerators）。
+       ‧ 不掛 WorldAirDefense：這個年代沒有攔截彈，防空只靠地圖上的老式高射砲。
+       ‧ 摧毀：同野戰陣地，雷達（聲學與火控）與世界選靶發射器全滅才算。
+       ══════════════════════════════════════════════════════════════ -->
+
+  <GenStepDef>
+    <defName>DMSE_EarlyLaunchSite_GS_Structures</defName>
+    <order>400</order>
+    <genStep Class="DMSE.GenStep_FieldLaunchSite">
+      <difficultyThresholds>
+        <li>0.5</li>
+        <li>0.9</li>
+        <li>1.4</li>
+      </difficultyThresholds>
+      <groups>
+        <li>
+          <label>acoustic warning post</label>
+          <pool>
+            <li>DMSE_Early_SearchRadar_A</li>
+            <li>DMSE_Early_SearchRadar_B</li>
+            <li>DMSE_Early_SearchRadar_C</li>
+          </pool>
+          <countByTier>
+            <li>1</li>
+          </countByTier>
+          <radius>0~25</radius>
+          <randomRotation>false</randomRotation>
+        </li>
+        <li>
+          <label>fire control post</label>
+          <pool>
+            <li>DMSE_Early_FireControlRadar</li>
+          </pool>
+          <countByTier>
+            <li>1</li>
+            <li>1</li>
+            <li>1</li>
+            <li>2</li>
+          </countByTier>
+          <radius>16~30</radius>
+          <spacing>6</spacing>
+        </li>
+        <li>
+          <label>launch position</label>
+          <pool>
+            <li>DMSE_Early_LaunchSite_A</li>
+            <li>DMSE_Early_LaunchSite_B</li>
+          </pool>
+          <!-- 第一座用 B：傾斜發射軌不需操作員，炮手不足時陣地仍能發射。 -->
+          <firstPool>
+            <li>DMSE_Early_LaunchSite_B</li>
+          </firstPool>
+          <countByTier>
+            <li>1~2</li>
+            <li>2</li>
+            <li>2~3</li>
+            <li>3</li>
+          </countByTier>
+          <radius>24~48</radius>
+          <spacing>6</spacing>
+        </li>
+        <li>
+          <label>munition cache</label>
+          <pool>
+            <li>DMSE_Early_AmmoCar_A</li>
+            <li>DMSE_Early_AmmoCar_B</li>
+          </pool>
+          <countByTier>
+            <li>1</li>
+            <li>1~2</li>
+            <li>2</li>
+            <li>2~3</li>
+          </countByTier>
+          <radius>18~42</radius>
+          <spacing>6</spacing>
+        </li>
+        <li>
+          <label>flak position</label>
+          <pool>
+            <li>DMSE_Early_CIWS</li>
+          </pool>
+          <countByTier>
+            <li>0</li>
+            <li>1</li>
+            <li>1~2</li>
+            <li>2</li>
+          </countByTier>
+          <radius>18~46</radius>
+          <spacing>6</spacing>
+        </li>
+        <li>
+          <label>crew quarters</label>
+          <pool>
+            <li>DMSE_Early_RestRoom_A</li>
+            <li>DMSE_Early_RestRoom_B</li>
+          </pool>
+          <countByTier>
+            <li>1</li>
+            <li>1</li>
+            <li>1~2</li>
+            <li>2</li>
+          </countByTier>
+          <radius>20~44</radius>
+          <spacing>6</spacing>
+        </li>
+      </groups>
+    </genStep>
+  </GenStepDef>
+
+  <!-- 守軍：比野戰陣地略少，但炮手比例較高（火控雷達與旋轉發射架都要人）。 -->
+  <GenStepDef>
+    <defName>DMSE_EarlyLaunchSite_GS_SpawnCrew</defName>
+    <order>450</order>
+    <genStep Class="DMSE.GenStep_FieldLaunchSiteCrew">
+      <pointsPerPawn>100</pointsPerPawn>
+      <minCrew>3</minCrew>
+      <maxCrew>12</maxCrew>
+      <crewByTier>
+        <li>3~5</li>
+        <li>4~7</li>
+        <li>6~9</li>
+        <li>8~12</li>
+      </crewByTier>
+      <gunnerFraction>0.4</gunnerFraction>
+      <spawnRadius>16</spawnRadius>
+    </genStep>
+  </GenStepDef>
+
+  <MapGeneratorDef ParentName="MapCommonBase">
+    <defName>DMSE_EarlyLaunchSite_MapGen</defName>
+    <genSteps>
+      <li>RocksFromGrid</li>
+      <li>DMSE_MissileBase_GS_ScatterLumps</li>
+      <li>DMSE_EarlyLaunchSite_GS_Structures</li>
+      <li>DMSE_FieldLaunchSite_GS_RackFill</li>
+      <li>DMSE_EarlyLaunchSite_GS_SpawnCrew</li>
+      <li>DMSE_FieldLaunchSite_GS_Roads</li>
+      <li>DMSE_MissileBase_GS_ScatterSlag</li>
+    </genSteps>
+  </MapGeneratorDef>
+
+  <WorldObjectDef>
+    <defName>DMSE_EarlyLaunchSite</defName>
+    <label>old-pattern launch position</label>
+    <description>A crude missile position built around acoustic mirrors, a hand-aimed fire-control radar and launch rails. It fires slow, inaccurate pulsejet loitering munitions, and it has no interceptors of its own.</description>
+    <worldObjectClass>RimWorld.Planet.Site</worldObjectClass>
+    <canHaveFaction>true</canHaveFaction>
+    <saved>true</saved>
+    <selectable>true</selectable>
+    <expandingIcon>true</expandingIcon>
+    <expandingIconPriority>60</expandingIconPriority>
+    <validLaunchTarget>false</validLaunchTarget>
+    <mapGenerator>DMSE_EarlyLaunchSite_MapGen</mapGenerator>
+    <comps>
+      <li Class="DMSE.CompProperties_MissileBase">
+        <missileBody>DMSE_MissileBody_LegacyLoiter</missileBody>
+        <missileFireIntervalDays>
+          <min>3</min>
+          <max>5</max>
+        </missileFireIntervalDays>
+        <missilesPerSalvo>
+          <min>1</min>
+          <max>1</max>
+        </missilesPerSalvo>
+        <range>15</range>
+        <relocationDays>
+          <min>10</min>
+          <max>20</max>
+        </relocationDays>
+        <reentryBlockedDays>
+          <min>0.5</min>
+          <max>1</max>
+        </reentryBlockedDays>
+        <incomingWorldObjectDef>DMSE_WorldObject_IncomingMissile</incomingWorldObjectDef>
+        <refuelGenerators>true</refuelGenerators>
+        <supplyDrop>
+          <intervalDays>1~1.5</intervalDays>
+          <perPawn>4</perPawn>
+          <maxStockPerPawn>10</maxStockPerPawn>
+        </supplyDrop>
+        <rackSupply>
+          <intervalDays>3</intervalDays>
+          <loadDelayTicks>2500</loadDelayTicks>
+          <maxCrewLoaders>2</maxCrewLoaders>
+          <loadouts>
+            <li>
+              <rack>DMSE_LoiteringRack</rack>
+              <missiles>
+                <li>DMSE_Missile_LegacyLoiter</li>
+              </missiles>
+            </li>
+            <li>
+              <rack>DMSE_Building_LoiteringLauncher</rack>
+              <missiles>
+                <li>DMSE_Missile_LegacyLoiter</li>
+              </missiles>
+            </li>
+            <li>
+              <rack>DMSE_Building_RotaryLauncher</rack>
+              <missiles>
+                <li>DMSE_Missile_LegacyLoiter</li>
+              </missiles>
+            </li>
+          </loadouts>
+        </rackSupply>
+      </li>
+    </comps>
+  </WorldObjectDef>
+
+  <SitePartDef>
+    <defName>DMSE_EarlyLaunchSitePart</defName>
+    <label>old-pattern launch position</label>
+    <description>A crude missile position with acoustic mirrors, a hand-aimed fire-control radar and launch rails.</description>
+    <!-- FactionCanOwn：工業等級派系，或海盜（原版海盜是太空等級）。 -->
+    <workerClass>DMSE.SitePartWorker_EarlyLaunchSite</workerClass>
+    <siteTexture>World/WorldObjects/Sites/Outpost</siteTexture>
+    <expandingIconTexture>UI/Icon/icon_LaunchSite_Loitering</expandingIconTexture>
+    <applyFactionColorToSiteTexture>true</applyFactionColorToSiteTexture>
+    <disallowsAutomaticDetectionTimerStart>true</disallowsAutomaticDetectionTimerStart>
+    <requiresFaction>true</requiresFaction>
+    <minFactionTechLevel>Industrial</minFactionTechLevel>
+    <tags>
+      <li>DMSE_EarlyLaunchSite</li>
+    </tags>
+    <wantsThreatPoints>true</wantsThreatPoints>
+    <forceExitAndRemoveMapCountdownDurationDays>0</forceExitAndRemoveMapCountdownDurationDays>
+  </SitePartDef>
+
+  <!-- 玩家未完成雷達網：事件點數 ≥ minPointsBeforeResearch 才出現，工業派系與海盜都可能部署。
+       玩家已完成雷達網：不看點數門檻，只有海盜會部署，機率 × chanceFactorAfterResearch。
+       世界上已有任何 NPC 導彈陣地時不觸發。 -->
+  <IncidentDef>
+    <defName>DMSE_EarlyLaunchSiteDeployed</defName>
+    <label>old-pattern launch position deployed</label>
+    <category>ThreatBig</category>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <workerClass>DMSE.IncidentWorker_EarlyLaunchSite</workerClass>
+    <baseChance>0.4</baseChance>
+    <earliestDay>15</earliestDay>
+    <minRefireDays>20</minRefireDays>
+    <minThreatPoints>300</minThreatPoints>
+    <letterLabel>Enemy missile position</letterLabel>
+    <letterDef>ThreatBig</letterDef>
+    <modExtensions>
+      <li Class="DMSE.EarlyLaunchSiteIncidentExtension">
+        <worldObjectDef>DMSE_EarlyLaunchSite</worldObjectDef>
+        <sitePartDef>DMSE_EarlyLaunchSitePart</sitePartDef>
+        <distance>6~12</distance>
+        <maxActiveSites>1</maxActiveSites>
+        <threatPoints>300~2000</threatPoints>
+        <spawnedLetterKey>DMSE.EarlyLaunchSite.SpawnedLetter</spawnedLetterKey>
+        <gateResearch>DMSE_RadarNetwork</gateResearch>
+        <minPointsBeforeResearch>1500</minPointsBeforeResearch>
+        <chanceFactorAfterResearch>0.5</chanceFactorAfterResearch>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+
+</Defs>

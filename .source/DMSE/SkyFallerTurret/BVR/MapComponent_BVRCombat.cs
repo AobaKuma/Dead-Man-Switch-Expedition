@@ -1,3 +1,4 @@
+using Fortified;
 using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
@@ -111,7 +112,7 @@ namespace DMSE
 
             // 短時間內（MergeWindowTicks 容差）抵達的目標合併到同一個攔截窗口（同一波次）。
             BVRWave wave = Waves.Find(w => w.defenderFaction == defender && w.targets.All(t => t.terminalOnly == terminalOnly)
-                && Mathf.Abs(w.tickToImpact - impactTick) <= BVRTuning.MergeWindowTicks);
+                && Mathf.Abs(w.tickToImpact - impactTick) <= BVRWorldTuningDef.Current.waveMergeTicks);
             if (wave == null)
             {
                 wave = new BVRWave(impactTick, new List<BVRTarget> { target });
@@ -125,7 +126,12 @@ namespace DMSE
                 wave.tickToImpact = Mathf.Min(wave.tickToImpact, impactTick);
                 wave.tickToImpact = Mathf.Max(
                     Find.TickManager.TicksGame + 1,
-                    wave.tickToImpact - BVRTuning.WindowPenaltyPerExtraTarget);
+                    wave.tickToImpact - BVRWorldTuningDef.Current.windowPenaltyPerExtraTarget);
+            }
+
+            if (!terminalOnly)
+            {
+                AirCombatEvents.Raise(AirDefenseHooks.MapEvent(AirCombatEventKind.TrackDetected, map, defender, faller));
             }
 
             // 玩家第一次被雷達偵測到的來襲波次：教學「防空攔截鏈」。
@@ -155,7 +161,7 @@ namespace DMSE
 
             // 目標數量越多，整體窗口越短（同合併規則）。
             int nowTick = Find.TickManager.TicksGame;
-            int impactTick = Mathf.Max(nowTick + 1, nowTick + window - BVRTuning.WindowPenaltyPerExtraTarget * (count - 1));
+            int impactTick = Mathf.Max(nowTick + 1, nowTick + window - BVRWorldTuningDef.Current.windowPenaltyPerExtraTarget * (count - 1));
 
             BVRWave wave = new BVRWave(impactTick, new List<BVRTarget>());
             wave.defenderFaction = defender;
@@ -172,6 +178,10 @@ namespace DMSE
             }
 
             Waves.Add(wave);
+            foreach (BVRTarget target in wave.targets)
+            {
+                AirCombatEvents.Raise(AirDefenseHooks.MapEvent(AirCombatEventKind.TrackDetected, map, defender, target.Payload));
+            }
             return true;
         }
 
@@ -194,7 +204,7 @@ namespace DMSE
             foreach (CompSearchRadar radar in active)
             {
                 // 功率對窗口的影響改為超線性（指數放大）：高功率雷達顯著拉長預警/攔截窗口。
-                float powerFactor = Mathf.Pow(Mathf.Max(1, radar.Props.powerLevel), BVRTuning.PowerWindowExponent);
+                float powerFactor = Mathf.Pow(Mathf.Max(1, radar.Props.powerLevel), BVRWorldTuningDef.Current.searchPowerWindowExponent);
                 float eff = radar.Props.searchDistance * radar.Props.ticksPerDistance * powerFactor;
                 // 解析度、功率段位與操作員：與世界層同一組係數（沒有對應設定時都是 1）。
                 eff *= MissileWorldMotion.ResolutionFactor(radar.Props.resolutionLevel, tp)
@@ -204,11 +214,11 @@ namespace DMSE
                 int antiGap = radar.Props.antiStealthLevel - tp.stealthLevel;
                 if (antiGap < 0)
                 {
-                    eff *= BVRTuning.StealthDetectFactor;
+                    eff *= BVRWorldTuningDef.Current.mapStealthWindowFactor;
                 }
                 else
                 {
-                    eff *= 1f + BVRTuning.AntiStealthBonusPerLevel * antiGap;
+                    eff *= 1f + BVRWorldTuningDef.Current.mapAntiStealthWindowBonusPerLevel * antiGap;
                 }
                 window += eff;
             }
@@ -217,12 +227,24 @@ namespace DMSE
             // 高度：低空（掠海／貼地）較晚被發現，預警窗口縮短；高空彈道目標窗口拉長。
             window *= MissileWorldMotion.AltitudeFactor(tp.altitude);
             window /= Mathf.Max(1, targetCount);
+            window = AirDefenseHooks.MapStat(AirDefenseStat.Detection, window, map, defender, faller);
             return Mathf.RoundToInt(window);
         }
 
         // ====================================================================
         //  目標查詢 / 移除（供攔截彈回呼）
         // ====================================================================
+
+        public BVRWave WaveOf(BVRTarget target) => Waves.Find(w => w.targets.Contains(target));
+
+        /// <summary>中過程攔截彈的結果（骰子由呼叫端擲，命中特效也在此之前觸發）：命中時清掉目標，並發出事件。</summary>
+        public void ResolveMidcourseHit(BVRTarget target, float hitChance, bool hit)
+        {
+            AirCombatEvent resolved = AirDefenseHooks.MapEvent(AirCombatEventKind.InterceptResolved, map, WaveOf(target)?.defenderFaction, target.Payload,
+                hitChance: hitChance, outcome: hit ? AirInterceptOutcome.Hit : AirInterceptOutcome.Miss);
+            if (hit) { RemoveTarget(target.id); }
+            AirCombatEvents.Raise(resolved);
+        }
 
         public BVRTarget GetTarget(int id)
         {
@@ -354,10 +376,10 @@ namespace DMSE
 
             target.position = MissileImpactUtility.ScatterCell(config, cell, map);
             wave.loitering = false;
-            wave.tickToImpact = now + BVRTuning.LoiterDiveTicks;
+            wave.tickToImpact = now + BVRWorldTuningDef.Current.loiterDiveTicks;
             if (Prefs.DevMode)
             {
-                Log.Message($"[DMSE BVR] 盤旋飛控鎖定目標 → {target.position}，俯衝 {BVRTuning.LoiterDiveTicks} ticks。");
+                Log.Message($"[DMSE BVR] 盤旋飛控鎖定目標 → {target.position}，俯衝 {BVRWorldTuningDef.Current.loiterDiveTicks} ticks。");
             }
         }
 
@@ -365,7 +387,7 @@ namespace DMSE
         private void EndLoiter(BVRWave wave, int now)
         {
             wave.loitering = false;
-            wave.tickToImpact = now + BVRTuning.LoiterDiveTicks;
+            wave.tickToImpact = now + BVRWorldTuningDef.Current.loiterDiveTicks;
             if (wave.targets.Count == 0) { return; }
 
             BVRTarget target = wave.targets[0];
@@ -457,6 +479,8 @@ namespace DMSE
                         {
                             hitChance = Mathf.Clamp01(hitChance + wh.warheadEffect.InterceptBonus(N));
                         }
+                        hitChance = AirDefenseHooks.MapStat(AirDefenseStat.HitChance, hitChance, map, defender, target.Payload,
+                            interceptorConfig, fcReady.parent, timeLeft);
 
                         if (!launcher.TryFireInterceptor(target, hitChance, now, out _, out int lastSpawnTick))
                         {
@@ -466,6 +490,8 @@ namespace DMSE
                         }
                         target.midcourseEngagedUntil = lastSpawnTick + launcher.Props.interceptorTravelTicks;
                         target.lockUntil = -1;
+                        AirCombatEvents.Raise(AirDefenseHooks.MapEvent(AirCombatEventKind.InterceptorLaunched, map, defender, target.Payload,
+                            interceptorConfig, launcher.parent, hitChance));
 
                         // 空爆：額外對同波次其他目標進行獨立攔截擲骰
                         if (wh?.warheadEffect != null)
@@ -474,7 +500,7 @@ namespace DMSE
                             if (extraRolls > 0)
                             {
                                 ApplyExtraInterceptRolls(wave, target, hitChance, extraRolls,
-                                    ref airburstKills);
+                                    ref airburstKills, interceptorConfig);
                             }
                         }
                     }
@@ -485,8 +511,10 @@ namespace DMSE
                 if (engaged >= capacity) { continue; }
                 CompFireControlRadar fc = SelectBestRadar(target, timeLeft, defender);
                 if (fc == null) { continue; }
-                target.lockUntil = now + fc.LockOnTicksFor(target);
+                target.lockUntil = now + Mathf.Max(1, Mathf.RoundToInt(AirDefenseHooks.MapStat(AirDefenseStat.LockTicks,
+                    fc.LockOnTicksFor(target), map, defender, target.Payload, sensor: fc.parent, eta: timeLeft)));
                 engaged++;
+                AirCombatEvents.Raise(AirDefenseHooks.MapEvent(AirCombatEventKind.LockStarted, map, defender, target.Payload, effector: fc.parent));
             }
 
             // 枚舉結束後才移除空爆額外攔截命中的目標。
@@ -536,6 +564,7 @@ namespace DMSE
             foreach (CompFireControlRadar fc in fireControlRadars)
             {
                 if (!fc.Active || fc.parent.Faction != defender || timeLeft > fc.Props.maxRangeTicks) { continue; }
+                if (!fc.Props.InAltitudeEnvelope(target.altitude)) { continue; }
                 float c = fc.ComputeHitChance(target, timeLeft);
                 if (c > bestChance) { bestChance = c; best = fc; }
             }
@@ -564,7 +593,7 @@ namespace DMSE
         /// （不得在此直接 RemoveTarget：呼叫端正在枚舉 wave.targets）。
         /// </summary>
         private void ApplyExtraInterceptRolls(BVRWave wave, BVRTarget source, float hitChance, int rolls,
-            ref List<int> kills)
+            ref List<int> kills, IMissileLoadout interceptor)
         {
             int rollsLeft = rolls;
             foreach (BVRTarget other in wave.targets)
@@ -573,7 +602,11 @@ namespace DMSE
                 if (other == source || other.midcourseEngagedUntil > Find.TickManager.TicksGame) { continue; }
                 if (kills != null && kills.Contains(other.id)) { continue; } // 已被先前空爆命中。
                 rollsLeft--;
-                if (Rand.Chance(hitChance))
+                bool hit = Rand.Chance(hitChance);
+                // 擊殺在迴圈結束後才清掉來襲物，這裡還讀得到內容。
+                AirCombatEvents.Raise(AirDefenseHooks.MapEvent(AirCombatEventKind.InterceptResolved, map, wave.defenderFaction, other.Payload,
+                    interceptor, hitChance: hitChance, outcome: hit ? AirInterceptOutcome.Hit : AirInterceptOutcome.Miss, secondary: true));
+                if (hit)
                 {
                     if (kills == null) { kills = new List<int>(); }
                     kills.Add(other.id);
@@ -610,6 +643,7 @@ namespace DMSE
         {
             foreach (BVRTarget t in wave.targets)
             {
+                AirCombatEvents.Raise(AirDefenseHooks.MapEvent(AirCombatEventKind.TrackArrived, map, wave.defenderFaction, t.Payload));
                 t.Resolve(wave);
             }
             if (wave.signal != null)
@@ -635,25 +669,4 @@ namespace DMSE
         private readonly List<BVRWave> terminalWaves = new List<BVRWave>();
     }
 
-    /// <summary>系統的可調平衡常數（集中於此方便調整）。</summary>
-    public static class BVRTuning
-    {
-        /// <summary>波次合併時，每多一個目標整體攔截窗口縮短的 ticks。</summary>
-        public const int WindowPenaltyPerExtraTarget = 60;
-
-        /// <summary>反隱身不足時，搜索窗口的折扣係數。</summary>
-        public const float StealthDetectFactor = 0.4f;
-
-        /// <summary>搜索雷達功率對預警窗口的指數（>1 即超線性，越高功率影響越顯著）。</summary>
-        public const float PowerWindowExponent = 2f;
-
-        /// <summary>反隱身等級每高出目標隱身 1 級，預警窗口的加成比例。</summary>
-        public const float AntiStealthBonusPerLevel = 0.5f;
-
-        /// <summary>預測抵達時間相差在此 ticks 內的目標，合併到同一個攔截窗口（同一波次）。</summary>
-        public const int MergeWindowTicks = 600;
-
-        /// <summary>盤旋結束（找到目標或時間用盡）後，留給末端防禦接戰的俯衝時間（ticks）。</summary>
-        public const int LoiterDiveTicks = 600;
-    }
 }

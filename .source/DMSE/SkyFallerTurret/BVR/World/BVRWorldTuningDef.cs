@@ -19,6 +19,23 @@ namespace DMSE
         public float minAltitudeFactor = 0.6f;
         /// <summary>最高高度係數（彈道／軌道目標）。</summary>
         public float maxAltitudeFactor = 1.3f;
+        /// <summary>攔截高度的邊緣寬度（倍率）：離上下限不到這個倍率時命中率下降。</summary>
+        public float altitudeEdgeRatio = 1.5f;
+        // ---- 地圖層波次（原 BVRTuning 常數）----
+        /// <summary>預測抵達時間相差在此 ticks 內的目標合併到同一個攔截窗口（同一波次）。</summary>
+        public int waveMergeTicks = 600;
+        /// <summary>波次合併時，每多一個目標整體攔截窗口縮短的 ticks。</summary>
+        public int windowPenaltyPerExtraTarget = 60;
+        /// <summary>搜索雷達功率對預警窗口的指數（大於 1 即超線性）。</summary>
+        public float searchPowerWindowExponent = 2f;
+        /// <summary>地圖層：反隱身不足時預警窗口的折扣係數（世界層是 <see cref="stealthDetectFactor"/>）。</summary>
+        public float mapStealthWindowFactor = 0.4f;
+        /// <summary>地圖層：反隱身每高出目標隱身 1 級，預警窗口的加成比例。</summary>
+        public float mapAntiStealthWindowBonusPerLevel = 0.5f;
+        /// <summary>盤旋結束後留給末端防禦接戰的俯衝時間（ticks）。</summary>
+        public int loiterDiveTicks = 600;
+        /// <summary>剛好在攔截高度上下限時的命中率係數。</summary>
+        public float altitudeEdgeHitFactor = 0.6f;
         /// <summary>箔條每次觸發的斷鎖機率係數（實際機率 = 此值 × 部件 jamStrength）。</summary>
         public float chaffBreakChance = 0.5f;
         /// <summary>箔條成功斷鎖後，防空重新鎖定的延遲（tick）。</summary>

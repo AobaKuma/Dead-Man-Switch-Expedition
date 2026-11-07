@@ -331,6 +331,9 @@ def inherited(node, path):
 texture_roots = [root / '1.7/Textures', root / 'Textures']
 launch_classes = ('DMSE.CompProperties_EffecterHotLaunch', 'DMSE.CompProperties_EffecterColdLaunch')
 for name, body in bodies.items():
+    icon = body.findtext('expandingIconPath')
+    require(icon is None or any((r / (icon + '.png')).exists() for r in texture_roots),
+            f'{name}: expandingIconPath {icon} not found')
     launch = body.findtext('launchProjectile')
     require(launch is not None, f'{name}: launchProjectile missing (run .source/Tools/gen_missile_launch_defs.py)')
     if launch is None:

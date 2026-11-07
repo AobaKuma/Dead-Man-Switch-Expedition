@@ -66,6 +66,14 @@
     <li>r_name(p=1)->[body]·[designator]-[num]</li>
   </DMSE_NamerPack_Moskit.rulePack.rulesStrings>
 
+  <!-- Oniks -->
+  <DMSE_NamerPack_Oniks.rulePack.rulesStrings>
+    <li>r_name(p=3)->[designator]-[num]·[warhead][guidance]</li>
+    <li>r_name(p=2)->[designator]-[num][suffix]·[guidance][propulsion]</li>
+    <li>r_name(p=1)->[designator]-[num][suffix]·[warhead][payload]</li>
+    <li>r_name(p=1)->[body]·[designator]-[num]</li>
+  </DMSE_NamerPack_Oniks.rulePack.rulesStrings>
+
   <!-- Yj -->
   <DMSE_NamerPack_Yj.rulePack.rulesStrings>
     <li>r_name(p=3)->[designator]-[num]·[warhead][guidance]</li>

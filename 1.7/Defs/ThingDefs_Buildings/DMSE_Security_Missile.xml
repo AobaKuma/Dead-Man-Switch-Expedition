@@ -23,7 +23,7 @@
         <tickerType>Normal</tickerType>
         <drawerType>RealtimeOnly</drawerType>
         <fillPercent>0.9</fillPercent>
-        <designationCategory>DMS_Category</designationCategory>
+        <designationCategory>DMSE_BVRCategory</designationCategory>
         <size>(1,5)</size>
         <staticSunShadowHeight>0.1</staticSunShadowHeight>
         <statBases>
@@ -47,6 +47,7 @@
                     <thingDefs>
                         <li>DMSE_Missile_Moskit</li>
                         <li>DMSE_Missile_AdvancedCruise</li>
+                        <li>DMSE_Missile_Oniks</li>
                         <li>DMSE_Missile_Yj</li>
                         <li>DMSE_Missile_Tochka</li>
                     </thingDefs>
@@ -58,6 +59,7 @@
                     <thingDefs>
                         <li>DMSE_Missile_Moskit</li>
                         <li>DMSE_Missile_AdvancedCruise</li>
+                        <li>DMSE_Missile_Oniks</li>
                         <li>DMSE_Missile_Yj</li>
                         <li>DMSE_Missile_Tochka</li>
                     </thingDefs>

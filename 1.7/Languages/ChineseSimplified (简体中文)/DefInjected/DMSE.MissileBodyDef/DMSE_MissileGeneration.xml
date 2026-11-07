@@ -27,6 +27,8 @@
   <DMSE_MissileBody_Sparrow.description>一种细长的半主动雷达制导导弹。即使在急转弯时也能持续跟随火控雷达的信号，拦截命中率远高于旧式导弹。\n\n可装配弹头、制导与载荷。</DMSE_MissileBody_Sparrow.description>
   <DMSE_MissileBody_Moskit.label>超音速反舰导弹弹体</DMSE_MissileBody_Moskit.label>
   <DMSE_MissileBody_Moskit.description>一种冲压发动机推进的超音速反舰导弹。末段贴着海面飞行，近防系统只剩几秒钟能反应。\n\n可装配弹头、制导、推进与载荷，出厂时配备反舰雷达导引头。</DMSE_MissileBody_Moskit.description>
+  <DMSE_MissileBody_Oniks.label>先进反舰巡航导弹弹体</DMSE_MissileBody_Oniks.label>
+  <DMSE_MissileBody_Oniks.description>一种以火箭助推、冲压发动机巡航的先进反舰巡航导弹。比旧式超音速导弹更快、更难探测、射程也更远，倾斜发射架与垂直发射井都能发射。\n\n可装配弹头、制导、推进与载荷，出厂时配备反舰雷达导引头。</DMSE_MissileBody_Oniks.description>
   <DMSE_MissileBody_Yj.label>高超音速反舰导弹弹体</DMSE_MissileBody_Yj.label>
   <DMSE_MissileBody_Yj.description>一种以火箭助推、冲压发动机巡航的高超音速反舰导弹。雷达信号小、末段飞得极低，防御方几乎没有反应时间。\n\n可装配弹头、制导、推进与载荷，出厂时配备反舰雷达导引头。</DMSE_MissileBody_Yj.description>
   <DMSE_MissileBody_Tochka.label>战术弹道导弹弹体</DMSE_MissileBody_Tochka.label>

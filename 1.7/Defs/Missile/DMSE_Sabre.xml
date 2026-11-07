@@ -13,6 +13,7 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_Sabre</defName>
     <label>light loitering munition</label>
+    <expandingIconPath>UI/DMSE/TravelingMissile_Expanding_V1</expandingIconPath>
     <designWord>Sabre</designWord>
     <description>A tube-launched loitering munition with folding wings and an image-recognition seeker. It is short-ranged and carries a small warhead, but it is light enough to fire from a shoulder launcher.\n\nIts seeker dives on the most dangerous enemy creature in the open. If it sees none, its loiter flight control holds it over the target area and keeps looking before it falls back to inertial guidance. Comes in a fixed configuration.</description>
     <sizeClass>Loitering</sizeClass>

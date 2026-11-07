@@ -269,7 +269,7 @@ namespace DMSE.BVRAcceptance
             t.Check(!waitLock.TimedOut, "the drone locks the new target on its next seek");
             t.Check(wave.targets[0].position.DistanceTo(designated) <= 3f,
                 $"and dives at the designated cell ({wave.targets[0].position} vs {designated})");
-            t.Check(wave.tickToImpact - Find.TickManager.TicksGame <= BVRTuning.LoiterDiveTicks,
+            t.Check(wave.tickToImpact - Find.TickManager.TicksGame <= BVRWorldTuningDef.Current.loiterDiveTicks,
                 "with only the short dive window left before impact");
             // Clean up: the projectile would otherwise land in the test map later.
             foreach (BVRTarget target in wave.targets) { target.Discard(); }
@@ -291,7 +291,7 @@ namespace DMSE.BVRAcceptance
             t.Check(!waitExpire.TimedOut, "the loiter ends when its time runs out");
             t.Check(timed.targets[0].position.InBounds(Home) && timed.targets[0].position.DistanceTo(designated) > 3f,
                 $"it falls back to an in-bounds inertial point, not the designation ({timed.targets[0].position})");
-            t.Check(timed.tickToImpact - Find.TickManager.TicksGame <= BVRTuning.LoiterDiveTicks,
+            t.Check(timed.tickToImpact - Find.TickManager.TicksGame <= BVRWorldTuningDef.Current.loiterDiveTicks,
                 "and starts the same short dive");
             foreach (BVRTarget target in timed.targets) { target.Discard(); }
             comp.Waves.Remove(timed);
@@ -370,7 +370,20 @@ namespace DMSE.BVRAcceptance
             tests.InsertRange(tests.FindIndex(x => x.id == "L1"), Tests_LaunchFx.Tests());
             // War room console, jammer station, long-range radar (docs/電子戰建築_實作計畫.md).
             tests.InsertRange(tests.FindIndex(x => x.id == "L1"), Tests_ElectronicWarfare.Tests());
-            tests.Add(Tests_MissileFlight.OldSaveTest()); // reloads the game: last
+            // Missile behavior framework (.source/DMSE/MissileFramework).
+            tests.InsertRange(tests.FindIndex(x => x.id == "L1"), Tests_MissileBehaviors.Tests());
+            // Air defense events, modifier chain and non-missile tracks (.source/DMSE/MissileFramework).
+            tests.InsertRange(tests.FindIndex(x => x.id == "L1"), Tests_AirDefenseFramework.Tests());
+            // Intercept altitude envelopes and altitude tracks.
+            tests.InsertRange(tests.FindIndex(x => x.id == "L1"), Tests_InterceptAltitude.Tests());
+            // Weapons behind IAirEffector.
+            tests.InsertRange(tests.FindIndex(x => x.id == "L1"), Tests_AirEffector.Tests());
+            // Faction doctrines and target workers.
+            tests.InsertRange(tests.FindIndex(x => x.id == "L1"), Tests_MissileDoctrine.Tests());
+            // Two NPC launch sites fight each other through every system at once.
+            tests.InsertRange(tests.FindIndex(x => x.id == "L1"), Tests_SiteDuel.Tests());
+            tests.Add(Tests_MissileFlight.OldSaveTest()); // reloads the game
+            tests.Add(Tests_SiteDuel.ReloadTest()); // reloads with three maps: after L3, so a crash on a second reload costs only this test
             return tests;
         }
 
@@ -430,6 +443,11 @@ namespace DMSE.BVRAcceptance
                 new AcceptanceTest("N4", "Missile alerts: one letter, repeats within an hour become messages", Tests_FieldLaunchSite.AlertThrottle),
                 new AcceptanceTest("N5", "Site destroyed with colonists on the map: map kept until they leave, nobody lost", Tests_FieldLaunchSite.SiteKeptWhileColonistsOnMap),
                 new AcceptanceTest("N6", "Radars are required: retreat with radars standing keeps the site and blocks re-entry", Tests_FieldLaunchSite.RetreatWithRadarsBlocksReentry),
+                new AcceptanceTest("N7", "Early launch site: built from LaunchSite_Early, racks hold legacy loiters, radar powered and manned, fires on-map and from the world layer", Tests_FieldLaunchSite.EarlySiteFires),
+                new AcceptanceTest("N8", "Early launch site incident: high points before radar network, pirates only after it", Tests_FieldLaunchSite.EarlySiteIncidentGates),
+                new AcceptanceTest("N9", "Missile site strike fire keeps interceptors and pure SAM magazines", Tests_FieldLaunchSite.SiteKeepsAirDefenseRounds),
+                new AcceptanceTest("N10", "Field site war room: generated and powered, idle garrison mans it and buffs the site's radar, leaves to fight", Tests_FieldLaunchSite.GarrisonMansWarRoom),
+                new AcceptanceTest("N11", "Garrison keeps legacy flak, field air defense and CIWS stocked while it lives", Tests_FieldLaunchSite.GarrisonKeepsTurretsStocked),
                 new AcceptanceTest("G1", "God-mode instant missile assembly", Tests_Assembly.GodModeInstantAssembly),
                 new AcceptanceTest("R1", "Empero long-range gun: defs, head, targeting rules (incl. unspawned map), out of shells", Tests_Artillery.DefsAndTargeting),
                 new AcceptanceTest("R2", "Empero unguided strike: unspawned base refused, warmup aim, departure, world track, existing map reused, edge entry near centre", Tests_Artillery.UnguidedStrike),

@@ -43,6 +43,7 @@ namespace DMSE.BVRAcceptance
             MissilePartDef airburst = DefDatabase<MissilePartDef>.GetNamed("DMSE_Ballistic_Warhead_Airburst");
             interceptor.warhead = airburst;
             interceptor.payloadCapacity = 10f;
+            interceptor.extraRolls = -1; // read the warhead just set, as an old save does
             interceptor.hitChance = 1f;
             t.Check(airburst.warheadEffect.ExtraInterceptRolls(10f) == 2, "airburst warhead with payload 10 gives 2 extra rolls");
             t.Check(twin.State.interceptor == null, "the second missile has no interceptor of its own");

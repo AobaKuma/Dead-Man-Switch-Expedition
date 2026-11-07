@@ -1,3 +1,4 @@
+using Fortified;
 using Verse;
 
 namespace DMSE
@@ -28,5 +29,24 @@ namespace DMSE
         public InterceptDebrisProfileDef debrisProfile;
 
         public static readonly BVRTargetProps Default = new BVRTargetProps();
+
+        public AirTrackSignature Signature => new AirTrackSignature
+        {
+            distanceLevel = distanceLevel,
+            stealthLevel = stealthLevel,
+            speed = speed,
+            altitude = altitude,
+        };
+
+        /// <summary>複製一份並套用新特徵；其餘欄位（含日後新增者）一律保留。</summary>
+        public BVRTargetProps WithSignature(in AirTrackSignature signature)
+        {
+            BVRTargetProps copy = (BVRTargetProps)MemberwiseClone();
+            copy.distanceLevel = signature.distanceLevel;
+            copy.stealthLevel = signature.stealthLevel;
+            copy.speed = signature.speed;
+            copy.altitude = signature.altitude;
+            return copy;
+        }
     }
 }

@@ -26,6 +26,16 @@
     <chaffLockDelayTicks>300</chaffLockDelayTicks>
     <!-- 地圖層（末端）干擾對命中率的折扣：命中率 × (1 − 此值 × jamStrength)。 -->
     <chaffMapHitPenalty>0.3</chaffMapHitPenalty>
+    <!-- 攔截高度：離上下限不到這個倍率時命中率下降，到上下限時乘上 altitudeEdgeHitFactor。 -->
+    <altitudeEdgeRatio>1.5</altitudeEdgeRatio>
+    <altitudeEdgeHitFactor>0.6</altitudeEdgeHitFactor>
+    <!-- 地圖層波次：合併容差、每多一個目標縮短的窗口、搜索雷達功率指數、反隱身折扣與加成、盤旋後的俯衝時間。 -->
+    <waveMergeTicks>600</waveMergeTicks>
+    <windowPenaltyPerExtraTarget>60</windowPenaltyPerExtraTarget>
+    <searchPowerWindowExponent>2</searchPowerWindowExponent>
+    <mapStealthWindowFactor>0.4</mapStealthWindowFactor>
+    <mapAntiStealthWindowBonusPerLevel>0.5</mapAntiStealthWindowBonusPerLevel>
+    <loiterDiveTicks>600</loiterDiveTicks>
     <!-- P4：空投也建立世界層虛擬航跡（開啟後地圖內只保留末端 CIWS）。預設關閉以維持既有空投流程。 -->
     <podsUseWorldTracks>false</podsUseWorldTracks>
     <!-- P4：區域防禦（節點可攔截飛越自己覆蓋範圍、目標是同陣營其他據點的航跡）。 -->

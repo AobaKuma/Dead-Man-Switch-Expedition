@@ -67,7 +67,7 @@
   <!--
     尾焰尺寸依 2026-10-26 實機截圖（驗收 V1／V4）放大：長 ×1.6、寬 ×1.4。
     煙的透明度（smokeColor／groundCloudColor 的 a）是「單顆」的：煙柱沿線前後重疊約 4 顆，所以單顆只給 0.3–0.4（§0.5；原本 0.6–0.9 疊起來近乎不透明）。
-    六種發射 profile（§5，使用者 2026-10-26 核准）。17 個發射體的對應寫在 .source/Tools/gen_missile_launch_defs.py 的 FX_PROFILES。
+    七種發射 profile（§5，使用者 2026-10-26 核准；Oniks 專用見 §3.6）。17 個發射體的對應寫在 .source/Tools/gen_missile_launch_defs.py 的 FX_PROFILES。
   -->
 
   <!-- 固體助推（參考圖 1）：長白熱焰、橙黃外焰、濃密灰褐煙柱、地面大塵雲。 -->
@@ -133,6 +133,71 @@
     <ejectionPuffs>8</ejectionPuffs>
     <boosterDebris>1</boosterDebris>
     <groundGlow>8</groundGlow>
+  </DMSE.LaunchFxProfileDef>
+
+  <!--
+    Oniks（P-800）：巡航導彈的完整轉向程序（docs/導彈發射特效_重製計畫.md §3.6，參考圖第 4–6 幕）。
+    助推段同 CruiseBooster → 交接後側推轉向、反推煞停 → 向前拋棄轉向推進器 → 主推力全開（大團白橘尾焰）。
+    轉向不是寫死的時間軸：以實際機頭角速度（巡航段為欠阻尼轉向，會過轉再回修）決定側推／反推與拋棄時機，
+    所以大角度、小角度、左右轉都自動對得上。
+  -->
+  <DMSE.LaunchFxProfileDef>
+    <defName>DMSE_LaunchFx_Oniks</defName>
+    <coreLength>3.52</coreLength>
+    <plumeWidth>1.12</plumeWidth>
+    <boosterTicks>45</boosterTicks>
+    <sustainThrust>0.14</sustainThrust>
+    <smokeSize>1.3</smokeSize>
+    <smokeShade>0.55</smokeShade>
+    <smokeColor>(1, 0.95, 0.88, 0.4)</smokeColor>
+    <ejectionPuffs>8</ejectionPuffs>
+    <boosterDebris>1</boosterDebris>
+    <groundGlow>8</groundGlow>
+    <turnJets>true</turnJets>
+    <turnJetRate>0.6</turnJetRate>
+    <turnJetLength>1.1</turnJetLength>
+    <turnJetWidth>0.75</turnJetWidth>
+    <turnJetColor>(1, 0.93, 0.72, 1)</turnJetColor>
+    <turnJetBrakeScale>0.75</turnJetBrakeScale>
+    <turnJetPuffs>2</turnJetPuffs>
+    <turnJetPulseTicks>3</turnJetPulseTicks>
+    <turnJetPulseGapTicks>10</turnJetPulseGapTicks>
+    <turnJetPulsePuffs>3</turnJetPulsePuffs>
+    <turnJetPulses>6</turnJetPulses>
+    <turnJetNoseCells>1.85</turnJetNoseCells>
+    <turnJetTailCells>1.81</turnJetTailCells>
+    <turnStartTick>48</turnStartTick>
+    <turnMinTicks>8</turnMinTicks>
+    <turnMaxTicks>150</turnMaxTicks>
+    <turnBrakeTicks>8</turnBrakeTicks>
+    <turnPodTexPath>Things/Effects/MissileFx/OniksNose</turnPodTexPath>
+    <turnPodLength>1.48</turnPodLength>
+    <turnPodWidth>0.725</turnPodWidth>
+    <turnPodOffset>2.64</turnPodOffset>
+    <turnPodEjectSpeed>0.12</turnPodEjectSpeed>
+    <turnPodSpin>10</turnPodSpin>
+    <turnPodLifeTicks>150</turnPodLifeTicks>
+    <mainThrust>1</mainThrust>
+    <mainThrustRampTicks>12</mainThrustRampTicks>
+    <mainPlumeScale>2.6</mainPlumeScale>
+    <mainFlameColor>(1, 0.88, 0.65, 1)</mainFlameColor>
+    <!-- §11 重新設計（2026-11-07）：氣團式點放、連續煙跡、拋棄「噗」、主推力光球。 -->
+    <turnJetBurstPuffs>5</turnJetBurstPuffs>
+    <turnJetBurstSpeed>0.24</turnJetBurstSpeed>
+    <turnJetBurstSize>0.6~1</turnJetBurstSize>
+    <smokeThrustFloor>0.75</smokeThrustFloor>
+    <mainSmokeScale>2.4</mainSmokeScale>
+    <mainSmokeWhiten>0.5</mainSmokeWhiten>
+    <mainExhaustScale>2</mainExhaustScale>
+    <mainBloomSize>7</mainBloomSize>
+    <mainBloomTicks>40</mainBloomTicks>
+    <mainBloomPuffs>12</mainBloomPuffs>
+    <mainPlumeWiden>1.5</mainPlumeWiden>
+    <!-- 2026-11-07：轉到目標方位後尾焰要明顯變大（使用者要求）。 -->
+    <mainHaloScale>0.8</mainHaloScale>
+    <jettisonRingPuffs>12</jettisonRingPuffs>
+    <turnPodDrift>0.06</turnPodDrift>
+    <turnPodBurnTicks>40</turnPodBurnTicks>
   </DMSE.LaunchFxProfileDef>
 
   <!-- 脈衝噴射（V1 類）：無高亮長焰、斷續的淡煙。 -->

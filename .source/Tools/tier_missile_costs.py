@@ -28,7 +28,7 @@ TIERS = {
            "DMSE_AcousticEarlyWarningRadar", "DMSE_EarlyFireControlRadar"],
     "T1": ["DMSE_Missile_Termite", "DMSE_Missile_Stinger", "DMSE_Missile_Maverick", "DMSE_Missile_Grison", "DMSE_Missile_Moskit",
            "DMSE_Missile_Tochka", "DMSE_InterceptorMissile", "DMSE_SearchRadar", "DMSE_FireControlRadar"],
-    "T2": ["DMSE_Missile_Sparrow", "DMSE_Missile_AdvancedLight", "DMSE_Missile_Yj", "DMSE_Missile_AdvancedCruise",
+    "T2": ["DMSE_Missile_Sparrow", "DMSE_Missile_AdvancedLight", "DMSE_Missile_Yj", "DMSE_Missile_Oniks", "DMSE_Missile_AdvancedCruise",
            "DMSE_PhaseArrayRadar"],
 }
 

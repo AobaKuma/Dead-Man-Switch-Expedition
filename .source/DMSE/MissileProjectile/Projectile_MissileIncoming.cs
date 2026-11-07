@@ -140,7 +140,8 @@ namespace DMSE
                 Log.Message($"[DMSE] {LabelCap} 被高角護盾擋下，於 {contact} 引爆（原落點 {Position}）。");
             }
             ShieldContactCell = contact;
-            MissileImpactUtility.Detonate(config, contact, map, attacker, instigator: null, applyScatter: false);
+            MissileImpactUtility.Detonate(config, contact, map, attacker, instigator: null, applyScatter: false,
+                approachHeading: HasEntryHeading ? EntryHeading : (float?)null);
             Destroy();
         }
 
@@ -170,7 +171,7 @@ namespace DMSE
             Map map = Map;
             IntVec3 position = Position;
             // 傷害歸因於發射建築；命中偏移已套用在落點上時不再偏移
-            LastImpactCell = MissileImpactUtility.Detonate(config, position, map, attacker, Instigator, applyScatter: !scatterApplied);
+            LastImpactCell = MissileImpactUtility.Detonate(config, position, map, attacker, Instigator, approachHeading: HasEntryHeading ? EntryHeading : (float?)null, applyScatter: !scatterApplied);
 
             // 同 Skyfaller.Impact 的落地表現：揚塵、鏡頭震動、落地音效。
             MissileFlightExtension f = Flight;

@@ -23,6 +23,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- Same version as DMSE; the Harmony mod provides the runtime DLL. Only Tests_SiteDuel patches anything. -->
+    <PackageReference Include="Lib.Harmony" Version="3.0.0-rc.2" ExcludeAssets="runtime" />
     <Reference Include="DMSE">
       <HintPath>$(MSBuildThisFileDirectory)..\..\1.7\Assemblies\DMSE.dll</HintPath>
       <Private>False</Private>

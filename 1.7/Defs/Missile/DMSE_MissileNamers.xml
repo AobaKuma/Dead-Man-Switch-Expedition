@@ -92,6 +92,19 @@
     </suffixes>
   </DMSE.MissileNamerDef>
 
+  <!-- 中型先進反艦巡航彈體（縞瑪瑙級）：P-800 的 8xx 編號帶。 -->
+  <DMSE.MissileNamerDef>
+    <defName>DMSE_Namer_Oniks</defName>
+    <designator>Oniks</designator>
+    <pack>DMSE_NamerPack_Oniks</pack>
+    <numberMin>800</numberMin>
+    <numberMax>899</numberMax>
+    <suffixes>
+      <li>K</li>
+      <li>M</li>
+    </suffixes>
+  </DMSE.MissileNamerDef>
+
   <!-- 中型高超音速反艦彈體（鷹擊級）：A／B／D 後綴。 -->
   <DMSE.MissileNamerDef>
     <defName>DMSE_Namer_Yj</defName>

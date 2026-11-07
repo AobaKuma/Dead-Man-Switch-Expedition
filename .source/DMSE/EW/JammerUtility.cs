@@ -1,3 +1,4 @@
+using Fortified;
 using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
@@ -75,12 +76,15 @@ namespace DMSE
             state.jamRolled = true;
             if (!Rand.Chance(BreakChance(jammer, track.Config))) { return; }
             Faction by = jammer.parent.Faction;
+            Map map = jammer.parent.Map;
             if (Rand.Chance(jammer.Props.offMapChance))
             {
                 track.Notify_JammedOut(by);
+                AirDefenseHooks.WorldEvent(AirCombatEventKind.TrackJammed, track, by, map?.Parent, map, effector: jammer.parent, removed: true);
                 return;
             }
             state.jamDenied = true;
+            AirDefenseHooks.WorldEvent(AirCombatEventKind.TrackJammed, track, by, map?.Parent, map, effector: jammer.parent);
             if (by == Faction.OfPlayer || track.Attacker == Faction.OfPlayer)
             {
                 Messages.Message("DMSE.EW.Jammer.GuidanceDenied".Translate(track.Label), new GlobalTargetInfo(track),

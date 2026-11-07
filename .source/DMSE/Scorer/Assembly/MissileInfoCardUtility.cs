@@ -278,7 +278,7 @@ namespace DMSE
                         yield return new StatDrawEntry(Mechanics, "DMSE.Bench.Stat.TerminalUpdates".Translate(),
                             part.guidanceType.ExtraTerminalUpdates.ToStringWithSign(), "DMSE.Card.TerminalUpdatesDesc".Translate(), 4680);
                     }
-                    if (part.guidanceType is GuidanceType_RadioCommand || part.guidanceType is GuidanceType_FireControl)
+                    if (part.guidanceType.UsesGroundChannel)
                     {
                         yield return new StatDrawEntry(Mechanics, "DMSE.Bench.Stat.Channels".Translate(), "DMSE.Card.ChannelsPerMissile".Translate(),
                             "DMSE.Card.ChannelsDesc".Translate(), 4670);

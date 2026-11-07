@@ -1,6 +1,7 @@
 using System.Linq;
 using RimWorld;
 using RimWorld.Planet;
+using Fortified;
 using UnityEngine;
 using Verse;
 
@@ -15,7 +16,7 @@ namespace DMSE
     /// （<see cref="MissileConfig.TerminalUpdates"/>），且改飛後的總航程不得超過射程。
     /// 次數用完或燃料不足時沿最後位置飛行，抵達時目標不在就落空。
     /// </summary>
-    public abstract class MissileWorldObject : WorldObject, IBVRTrack
+    public abstract class MissileWorldObject : WorldObject, IBVRTrack, IMissileTrack
     {
         public MissileConfig config;
         public PlanetTile destinationTile = PlanetTile.Invalid;
@@ -42,7 +43,99 @@ namespace DMSE
         /// <summary>抵達。<paramref name="map"/> 為 null 表示落空；實作需自行 <see cref="WorldObject.Destroy"/>。</summary>
         protected abstract void OnArrived(Map map);
 
-        public int RouteRevision => terminalUpdatesUsed;
+        public int RouteRevision => terminalUpdatesUsed + manoeuvres;
+
+        // ---- 飛彈行為（Fortified.MissileBehavior）----
+        private int manoeuvres;
+        private int childDepth;
+        private MissileBehaviorSet behaviors;
+        private const int MaxChildDepth = 3;
+        /// <summary>有速度剖面時，預測位置與 ETA 的積分步長（ticks）。</summary>
+        private const int SpeedStepTicks = 30;
+
+        public MissileBehaviorSet Behaviors
+        {
+            get
+            {
+                if (behaviors != null) { return behaviors; }
+                if (config == null) { return MissileBehaviorSet.Empty; }
+                return behaviors = MissileBehaviorSet.Create(config, this);
+            }
+        }
+
+        public IMissileLoadout Loadout => config;
+        public MapParent TargetParent => targetParent;
+        public bool VariableSpeed => Behaviors.HasSpeedProfile;
+        public float RouteProgress => RouteProgressAt(CurrentProgress, CurrentLegLength);
+
+        private float RouteProgressAt(float legProgress, float leg)
+        {
+            float total = rangeSpent + leg;
+            return total <= 0f ? 1f : Mathf.Clamp01((rangeSpent + leg * legProgress) / total);
+        }
+
+        public void NotifyManoeuvre() => manoeuvres++;
+
+        /// <summary>本航段進度在 <paramref name="ticks"/> 後的值（速度隨航線進度變化時逐段積分）。</summary>
+        private float AdvanceProgress(float progress, int ticks)
+        {
+            float angle = Mathf.Max(0.0000001f, GenMath.SphericalDistance(Start.normalized, End.normalized));
+            float leg = CurrentLegLength;
+            float baseSpeed = MissileWorldMotion.AngularSpeed(config);
+            while (ticks > 0 && progress < 1f)
+            {
+                int step = Mathf.Min(ticks, SpeedStepTicks);
+                progress += baseSpeed * Behaviors.SpeedFactorAt(RouteProgressAt(progress, leg)) / angle * step;
+                ticks -= step;
+            }
+            return Mathf.Clamp01(progress);
+        }
+
+        private int VariableTicksToArrival()
+        {
+            float angle = Mathf.Max(0.0000001f, GenMath.SphericalDistance(Start.normalized, End.normalized));
+            float leg = CurrentLegLength;
+            float baseSpeed = MissileWorldMotion.AngularSpeed(config);
+            float progress = CurrentProgress;
+            int ticks = 0;
+            while (progress < 1f)
+            {
+                float rate = baseSpeed * Behaviors.SpeedFactorAt(RouteProgressAt(progress, leg)) / angle;
+                float next = progress + rate * SpeedStepTicks;
+                if (next >= 1f) { return ticks + Mathf.CeilToInt((1f - progress) / rate); }
+                progress = next;
+                ticks += SpeedStepTicks;
+            }
+            return ticks;
+        }
+
+        /// <summary>
+        /// 從目前位置分出一枚子彈：同目的地、同陣營，接續母彈已消耗的射程，並有自己的攔截與抵達流程。
+        /// 超過世代上限回傳 null，避免彈體設定互相遞迴。<paramref name="inheritsRole"/> = 子彈接手母彈的戰果回報（母彈隨後銷毀時用）。
+        /// </summary>
+        public MissileWorldObject SpawnChild(MissileConfig childConfig, bool inheritsRole = false)
+        {
+            if (childConfig == null || !childConfig.Valid || childDepth >= MaxChildDepth) { return null; }
+            MissileWorldObject child = (MissileWorldObject)WorldObjectMaker.MakeWorldObject(def);
+            child.Tile = Tile;
+            child.SetFaction(Faction);
+            child.destinationTile = destinationTile;
+            child.targetParent = targetParent;
+            child.config = childConfig;
+            child.childDepth = childDepth + 1;
+            float progress = CurrentProgress;
+            float leg = CurrentLegLength;
+            child.hasLegStart = true;
+            child.legStart = Vector3.Slerp(Start, End, progress);
+            child.legLength = leg * (1f - progress);
+            child.rangeSpent = rangeSpent + leg * progress;
+            CopyToChild(child, inheritsRole);
+            Find.WorldObjects.Add(child);
+            return child;
+        }
+
+        /// <summary>子類複製自己的欄位到子彈。</summary>
+        protected virtual void CopyToChild(MissileWorldObject child, bool inheritsRole) { }
 
         /// <summary>目的地 tile；虛擬航跡（空投）會覆寫成自己的目標 tile。</summary>
         public virtual PlanetTile Destination => destinationTile;
@@ -69,7 +162,7 @@ namespace DMSE
             if (VisibleToPlayer) { base.Draw(); }
         }
 
-        public override Texture2D ExpandingIcon => VisibleToPlayer ? base.ExpandingIcon : null;
+        public override Texture2D ExpandingIcon => VisibleToPlayer ? config?.body?.ExpandingIcon ?? base.ExpandingIcon : null;
 
         public int TerminalUpdatesRemaining
         {
@@ -109,7 +202,8 @@ namespace DMSE
             }
         }
 
-        public override Vector3 DrawPos => PositionAt(0);
+        /// <summary>畫在目前飛行高度上；判定一律用貼地的 <see cref="PositionAt"/>。</summary>
+        public override Vector3 DrawPos => AirTrackDisplay.Raised(PositionAt(0), AirTrackDisplay.CurrentLift(this));
 
         public override bool ExpandingIconFlipHorizontal
             => GenWorldUI.WorldToUIPosition(Start).x > GenWorldUI.WorldToUIPosition(End).x;
@@ -136,34 +230,52 @@ namespace DMSE
         public BVRTrackState State => bvrState ??= new BVRTrackState();
         public virtual ThingDef IncomingDef => config?.body?.incomingSkyfaller;
         private BVRTargetProps signatureProps;
-        /// <summary>落點 skyfaller 的 BVR 屬性；裝了誘餌酬載時雷達截面（distanceLevel）依 <see cref="MissileConfig.SignatureFactor"/> 放大。</summary>
+        /// <summary>
+        /// 落點 skyfaller 的 BVR 屬性；裝了誘餌酬載時雷達截面（distanceLevel）依 <see cref="MissileConfig.SignatureFactor"/> 放大，
+        /// 飛行行為也可修改（<see cref="MissileBehavior.ModifySignature"/>）。
+        /// </summary>
         public BVRTargetProps TargetProps
         {
             get
             {
                 BVRTargetProps baseProps = IncomingDef?.GetModExtension<BVRTargetProps>() ?? BVRTargetProps.Default;
                 float factor = config?.SignatureFactor ?? 1f;
-                if (Mathf.Approximately(factor, 1f)) { return baseProps; }
-                if (signatureProps == null || signatureProps.stealthLevel != baseProps.stealthLevel)
+                if (Mathf.Approximately(factor, 1f) && Behaviors.Count == 0) { return baseProps; }
+                AirTrackSignature signature = baseProps.Signature;
+                signature.distanceLevel *= factor;
+                Behaviors.ModifySignature(ref signature);
+                if (signature.SameAs(baseProps.Signature)) { return baseProps; }
+                if (signatureProps == null || !signatureProps.Signature.SameAs(signature))
                 {
-                    signatureProps = new BVRTargetProps
-                    {
-                        distanceLevel = baseProps.distanceLevel * factor,
-                        stealthLevel = baseProps.stealthLevel,
-                        speed = baseProps.speed,
-                    };
+                    signatureProps = baseProps.WithSignature(signature);
                 }
                 return signatureProps;
             }
         }
-        public virtual float AngularSpeed => MissileWorldMotion.AngularSpeed(config);
+        public virtual float AngularSpeed => VariableSpeed
+            ? MissileWorldMotion.AngularSpeed(config) * Behaviors.SpeedFactorAt(RouteProgress)
+            : MissileWorldMotion.AngularSpeed(config);
         private float TraveledPctStepPerTick => AngularSpeed / Mathf.Max(0.0000001f,
             GenMath.SphericalDistance(Start.normalized, End.normalized));
-        private float CurrentProgress => Mathf.Clamp01(traveledPct + TraveledPctStepPerTick *
-            (lastMotionTick < 0 ? 0 : Mathf.Max(0, Find.TickManager.TicksGame - lastMotionTick)));
-        public virtual int TicksToArrival => Mathf.Max(0, Mathf.CeilToInt((1f - CurrentProgress) / TraveledPctStepPerTick));
-        public virtual Vector3 PositionAt(int ticksAhead) => Vector3.Slerp(Start, End,
-            Mathf.Clamp01(CurrentProgress + Mathf.Max(0, ticksAhead) * TraveledPctStepPerTick));
+        private int TicksSinceMotion => lastMotionTick < 0 ? 0 : Mathf.Max(0, Find.TickManager.TicksGame - lastMotionTick);
+        private float CurrentProgress => VariableSpeed
+            ? AdvanceProgress(traveledPct, TicksSinceMotion)
+            : Mathf.Clamp01(traveledPct + TraveledPctStepPerTick * TicksSinceMotion);
+        public virtual int TicksToArrival => VariableSpeed
+            ? VariableTicksToArrival()
+            : Mathf.Max(0, Mathf.CeilToInt((1f - CurrentProgress) / TraveledPctStepPerTick));
+        private float ProgressAhead(int ticksAhead) => VariableSpeed
+            ? AdvanceProgress(CurrentProgress, Mathf.Max(0, ticksAhead))
+            : Mathf.Clamp01(CurrentProgress + Mathf.Max(0, ticksAhead) * TraveledPctStepPerTick);
+        public virtual Vector3 PositionAt(int ticksAhead) => Vector3.Slerp(Start, End, ProgressAhead(ticksAhead));
+
+        public float AltitudeAt(int ticksAhead)
+        {
+            if (ticksAhead <= 0 || Behaviors.Count == 0) { return TargetProps.altitude; }
+            float altitude = (IncomingDef?.GetModExtension<BVRTargetProps>() ?? BVRTargetProps.Default).altitude;
+            Behaviors.ModifyAltitudeAt(RouteProgressAt(ProgressAhead(ticksAhead), CurrentLegLength), ref altitude);
+            return altitude;
+        }
         public override Color ExpandingIconColor => State.detectedByFaction == Faction.OfPlayer
             ? Color.red : Faction?.Color ?? Color.white;
         public void Notify_Intercepted(Faction by)
@@ -173,7 +285,8 @@ namespace DMSE
                 Messages.Message("DMSE.BVR.World.Intercepted".Translate(Label, by?.Name ?? "?"),
                     new GlobalTargetInfo(destinationTile), by == Faction.OfPlayer ? MessageTypeDefOf.PositiveEvent
                         : MessageTypeDefOf.NegativeEvent, historical: false);
-            WorldComponent_BVRNetwork.Current?.AddFlash(PositionAt(0));
+            WorldComponent_BVRNetwork.Current?.AddFlash(DrawPos);
+            Behaviors.OnIntercepted(by);
             OnIntercepted(by);
             Destroy();
         }
@@ -197,6 +310,7 @@ namespace DMSE
                 if (interceptor.target == this && !interceptor.Destroyed) { interceptor.Destroy(); }
             }
             State.interceptor = null;
+            Behaviors.OnJammedOut(by);
             OnJammedOut(by);
             Destroy();
         }
@@ -214,7 +328,7 @@ namespace DMSE
                 loiter = false;
                 return GuidanceType.InertialTarget(map, Faction);
             }
-            return GuidanceType.ArrivalCell(config, map, Faction, out loiter);
+            return GuidanceType.ArrivalCell(config, map, Faction, out loiter, this, ArrivalHeading);
         }
 
         private float CurrentLegLength
@@ -231,6 +345,7 @@ namespace DMSE
             base.PostAdd();
             initialTile = Tile;
             lastMotionTick = Find.TickManager.TicksGame;
+            Behaviors.PostLaunch();
         }
 
         protected override void TickInterval(int delta)
@@ -241,8 +356,12 @@ namespace DMSE
             int now = Find.TickManager.TicksGame;
             int elapsed = lastMotionTick < 0 ? delta : Mathf.Max(0, now - lastMotionTick);
             // Commit elapsed movement before a terminal update starts a new leg.
-            traveledPct = Mathf.Clamp01(traveledPct + TraveledPctStepPerTick * elapsed);
+            traveledPct = VariableSpeed
+                ? AdvanceProgress(traveledPct, elapsed)
+                : Mathf.Clamp01(traveledPct + TraveledPctStepPerTick * elapsed);
             lastMotionTick = now;
+            Behaviors.FlightTick(elapsed);
+            if (Destroyed) { return; }
             ticksUntilTerminalCheck -= elapsed;
             if (ticksUntilTerminalCheck <= 0)
             {
@@ -258,7 +377,14 @@ namespace DMSE
                 traveledPct = 1f;
                 arrived = true;
                 // 受襲通報（NPC 防空警戒）：抵達目標據點即通報，不論之後是命中地圖還是壓制抽象節點。
-                WorldComponent_FactionAirDefenseAlert.Current?.ReportHit(this, WorldComponent_FactionAirDefenseAlert.TargetSite(this));
+                MapParent site = WorldComponent_FactionAirDefenseAlert.TargetSite(this);
+                WorldComponent_FactionAirDefenseAlert.Current?.ReportHit(this, site);
+                AirDefenseHooks.WorldEvent(AirCombatEventKind.TrackArrived, this, site?.Faction, site);
+                if (Behaviors.PreArrive())
+                {
+                    if (!Destroyed) { Destroy(); }
+                    return;
+                }
                 if (!TryStrikeAbstractNode())
                 {
                     OnArrived(MissileWorldUtility.ResolveArrivalMap(destinationTile, targetParent, AllowGenerateTargetMap));
@@ -292,6 +418,7 @@ namespace DMSE
             destinationTile = targetTile;
             traveledPct = 0f;
             terminalUpdatesUsed++;
+            Behaviors.PostTerminalUpdate();
 
             if (Prefs.DevMode)
             {
@@ -312,6 +439,7 @@ namespace DMSE
             string destination = targetParent?.Label ?? Find.WorldObjects.MapParentAt(destinationTile)?.Label;
             text += "DMSE.BVR.World.TrackInspect".Translate(destination ?? destinationTile.ToString(),
                 TicksToArrival.ToStringTicksToPeriod(), State.StatusKey.Translate(), State.interceptAttempts);
+            text += "\n" + "DMSE.BVR.World.TrackAltitude".Translate(MissileWorldMotion.AltitudeLabel(AltitudeAt(0)));
             return text;
         }
 
@@ -321,7 +449,7 @@ namespace DMSE
         /// </summary>
         protected virtual bool TryStrikeAbstractNode()
         {
-            if (!(config?.TargetingGuidance is GuidanceType_AntiRadiation)) { return false; }
+            if (config?.TargetingGuidance?.HomesOnEmissions != true) { return false; }
             MapParent parent = targetParent ?? Find.WorldObjects.MapParentAt(destinationTile);
             if (parent == null || parent.Destroyed) { return false; }
             int now = Find.TickManager.TicksGame;
@@ -375,6 +503,13 @@ namespace DMSE
             Scribe_Values.Look(ref legLength, "legLength", -1f);
             Scribe_Values.Look(ref rangeSpent, "rangeSpent", 0f);
             Scribe_Values.Look(ref terminalUpdatesUsed, "terminalUpdatesUsed", 0);
+            Scribe_Values.Look(ref manoeuvres, "manoeuvres", 0);
+            Scribe_Values.Look(ref childDepth, "childDepth", 0);
+            if (Scribe.EnterNode("behaviors"))
+            {
+                try { Behaviors.ExposeData(); }
+                finally { Scribe.ExitNode(); }
+            }
         }
     }
 }

@@ -170,6 +170,47 @@ def scrap_filth(seed, n=64):
     return img
 
 
+def missile_nose(tex_path, top=2, bottom=206, width=100):
+    """Turning section cut from a missile's own launch sprite (docs/導彈轉向特效_實作規格.md §2 scene 5), so the pod
+    that flies off is visibly the missile's head. Rows top..bottom (nose tip + dark seeker ring), a `width` px column
+    centred on the sprite; nose at the TOP like the source."""
+    src = Image.open(os.path.join(ROOT, '1.7', 'Textures', tex_path + '.png')).convert('RGBA')
+    x0 = (src.width - width) // 2
+    return src.crop((x0, top, x0 + width, bottom))
+
+
+def turn_pod(n=64):
+    """Turning-thruster pod thrown forward by the Oniks launch (docs/導彈發射特效_重製計畫.md §4.6): a short solid
+    rocket seen from above, nose at the TOP (same orientation as the missile sprites). White body, dark nose cap,
+    orange band, grey nozzle, dark outline — the same flat cartoon style as the missile art."""
+    s = 8
+    N = n * s
+    img = Image.new('RGBA', (N, N), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    cx = N / 2.0
+    w = N * 0.15
+    # Silhouette (dark outline): nose tip -> shoulders -> body -> nozzle.
+    outer = [(cx, N * 0.05), (cx + w, N * 0.24), (cx + w, N * 0.84), (cx + w * 0.7, N * 0.95),
+             (cx - w * 0.7, N * 0.95), (cx - w, N * 0.84), (cx - w, N * 0.24)]
+    d.polygon(outer, fill=(38, 40, 44, 255))
+
+    # Body: white with a soft left-to-right shade so it reads as a cylinder.
+    body = [(cx, N * 0.10), (cx + w * 0.78, N * 0.25), (cx + w * 0.78, N * 0.83),
+            (cx + w * 0.52, N * 0.91), (cx - w * 0.52, N * 0.91), (cx - w * 0.78, N * 0.83),
+            (cx - w * 0.78, N * 0.25)]
+    d.polygon(body, fill=(246, 247, 250, 255))
+    # Nose cap (dark, like the missile sprite).
+    nose = [(cx, N * 0.10), (cx + w * 0.78, N * 0.25), (cx - w * 0.78, N * 0.25)]
+    d.polygon(nose, fill=(72, 76, 82, 255))
+    # Orange identification band and grey nozzle.
+    d.rectangle([cx - w * 0.78, N * 0.44, cx + w * 0.78, N * 0.52], fill=(228, 122, 40, 255))
+    d.rounded_rectangle([cx - w * 0.55, N * 0.86, cx + w * 0.55, N * 0.96], radius=w * 0.18, fill=(84, 86, 90, 255))
+    # Center seam + highlight, then a thin dark seam at the base of the nose.
+    d.line([(cx, N * 0.27), (cx, N * 0.85)], fill=(206, 208, 214, 255), width=max(1, s // 2))
+    d.line([(cx - w * 0.78, N * 0.55), (cx + w * 0.78, N * 0.55)], fill=(226, 228, 233, 255), width=max(1, s // 2))
+    return img.resize((n, n), Image.LANCZOS)
+
+
 # ---------------------------------------------------------------- launch plume / ground cloud
 
 def plume(seed, w, h, width_scale, core):
@@ -229,6 +270,8 @@ def main():
     save(plume(802, 96, 256, 0.62, False), 'Plume_Outer', 'Plume_Outer_b.png', out=OUT_LAUNCH)
     for i, ch in enumerate('abc'):
         save(ground_cloud(900 + i), 'GroundCloud', f'GroundCloud_{ch}.png', out=OUT_LAUNCH)
+    save(turn_pod(), 'TurnPod.png', out=OUT_LAUNCH)
+    save(missile_nose('Things/Missile/Oniks/skyFaller'), 'OniksNose.png', out=OUT_LAUNCH)
     print('wrote', OUT, 'and', OUT_LAUNCH)
 
 

@@ -222,12 +222,65 @@ namespace DMSE
         public static void CruiseStep(MissileFlightExtension f, ref MissileCruiseState s, int ticksToImpact, int leaveMapAfterTicks, IntVec3 mapSize = default)
         {
             s.ticks++;
-            float speed = CruiseSpeed(f, s, ticksToImpact, leaveMapAfterTicks, TurnBlend(s));
+            float blend = TurnBlend(s);
+            float speed = CruiseSpeed(f, s, ticksToImpact, leaveMapAfterTicks, blend);
             float radius = TurnRadiusAt(f, s.pos, s.motion, mapSize);
             int side = InwardSide(s.pos, s.motion, mapSize);
-            s.motion = TurnCorrectionStep(f, s.motion, s.heading, s.ticks, speed, radius, side, ref s.motionTurnRate);
-            s.nose = TurnCorrectionStep(f, s.nose, s.heading, s.ticks, speed, radius, side, ref s.noseTurnRate);
-            s.pos += MissileMapEntryUtility.HeadingVector(s.motion) * speed;
+            if (f.courseTurnsIndependently)
+            {
+                // 航向：單調轉過去，不來回擺（煙跡才不會折返）；機頭：仍用欠阻尼，側推特效看得到過轉。
+                s.motion = CourseTurnStep(f, s.motion, s.heading, s.ticks, ref s.motionTurnRate);
+                s.nose = TurnCorrectionStep(f, s.nose, s.heading, s.ticks, speed, radius, side, ref s.noseTurnRate);
+                // 轉向沒對準前不加速（＝主助推還沒點火），對準後才讓巡航速度曲線接手。
+                if (blend < 0.98f) { speed = Mathf.Min(speed, s.speed0 * 1.02f); }
+            }
+            else
+            {
+                s.motion = TurnCorrectionStep(f, s.motion, s.heading, s.ticks, speed, radius, side, ref s.motionTurnRate);
+                s.nose = TurnCorrectionStep(f, s.nose, s.heading, s.ticks, speed, radius, side, ref s.noseTurnRate);
+            }
+            float travel = f.courseTurnsIndependently && f.climbWhileTurning
+                ? ClimbTravelHeading(s.motion0, s.heading, TurnBlend(s), s.pos, mapSize)
+                : s.motion;
+            s.pos += MissileMapEntryUtility.HeadingVector(travel) * speed;
+        }
+
+        /// <summary>
+        /// 原地轉向時這一 tick 的實際位移方向（純函式）：航向對準（<paramref name="blend"/> ≥ <see cref="ClimbAlignedBlend"/>）之前
+        /// 完全沿升空方向 <paramref name="climb"/> 直直往上，對準後直接走航向 <paramref name="course"/>——煙跡是一個尖角，
+        /// 不是鉤子（使用者 2026-11-07 畫的軌跡）。沿升空方向離地圖邊緣不到 <see cref="ClimbEdgeMargin"/> 格時逐漸退回航向（不從錯的邊出圖）。
+        /// </summary>
+        public static float ClimbTravelHeading(float climb, float course, float blend, Vector3 pos, IntVec3 mapSize)
+        {
+            float w = blend >= ClimbAlignedBlend ? 1f : 0f;
+            if (mapSize.x > 0)
+            {
+                float ahead = (MissileMapEntryUtility.EdgePoint(mapSize, pos, climb) - pos).WithY(0f).magnitude;
+                w = Mathf.Max(w, 1f - Mathf.Clamp01((ahead - ClimbEdgeMargin * 0.5f) / (ClimbEdgeMargin * 0.5f)));
+            }
+            return Mathf.LerpAngle(climb, course, Mathf.Clamp01(w));
+        }
+
+        /// <summary>原地轉向在地圖邊緣前保留的距離（格）：少於一半就完全改走航向的弧。</summary>
+        public const float ClimbEdgeMargin = 20f;
+
+        /// <summary>原地轉向：航向轉到這個比例才離開垂直爬升（同 <see cref="CruiseStep"/> 開始加速的門檻）。</summary>
+        public const float ClimbAlignedBlend = 0.98f;
+
+        /// <summary>
+        /// 航向的單調轉向（比例控制＋角加速度限制）：轉速追向與誤差成比例的目標轉速，且不會超過剩餘誤差，
+        /// 所以煙跡是一條乾淨的弧，不會像欠阻尼機頭那樣繞回來。
+        /// </summary>
+        public static float CourseTurnStep(MissileFlightExtension f, float current, float target, int tick, ref float turnRate)
+        {
+            float error = Mathf.DeltaAngle(current, target);
+            if (Mathf.Abs(error) < 1e-3f) { turnRate = 0f; return target; }
+            float rateLimit = Mathf.Max(0f, f.maxTurnRate * Mathf.Clamp01((float)tick / Mathf.Max(1, f.turnRampTicks)));
+            float accel = Mathf.Max(0.05f, f.turnMaxAcceleration);
+            float desired = Mathf.Clamp(error * 0.35f, -rateLimit, rateLimit);
+            turnRate = Mathf.MoveTowards(turnRate, desired, accel);
+            if (Mathf.Abs(turnRate) > Mathf.Abs(error)) { turnRate = error; }
+            return current + turnRate;
         }
 
         public static bool InMap(Vector3 pos, IntVec3 mapSize)

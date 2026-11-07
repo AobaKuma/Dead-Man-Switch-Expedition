@@ -29,7 +29,7 @@ namespace DMSE
         public override void UpdateAllDuties()
         {
             foreach (Pawn p in lord.ownedPawns)
-                p.mindState.duty = new PawnDuty(DutyDefOf.Defend, anchor, radius);
+                p.mindState.duty = new PawnDuty(DMSE_MissileCrewDutyDefOf.DMSE_MissileCrewDefend, anchor, radius);
         }
     }
 
@@ -151,9 +151,10 @@ namespace DMSE
 
         /// <summary>
         /// 在 <paramref name="near"/> 附近以空投艙投下 <paramref name="amount"/> 個 <paramref name="def"/>（依堆疊上限分艙）。
+        /// <paramref name="dropped"/> 非 null 時把實際投下的 Thing 收集進去（供守軍搬運追蹤用）。
         /// 回傳投放中心；找不到落點時回傳 <see cref="IntVec3.Invalid"/>。
         /// </summary>
-        public static IntVec3 Drop(Map map, IntVec3 near, ThingDef def, int amount, Faction faction)
+        public static IntVec3 Drop(Map map, IntVec3 near, ThingDef def, int amount, Faction faction, List<Thing> dropped = null)
         {
             if (map == null || def == null || amount <= 0) return IntVec3.Invalid;
             if (!near.IsValid || !near.InBounds(map)) near = map.Center;
@@ -172,6 +173,7 @@ namespace DMSE
 
             DropPodUtility.DropThingsNear(dropCell, map, things,
                 openDelay: 110, canInstaDropDuringInit: true, forbid: false, faction: faction);
+            dropped?.AddRange(things);
             return dropCell;
         }
     }

@@ -10,8 +10,8 @@ namespace DMSE
     public class Alert_WorldIncoming : Alert
     {
         private int jumpIndex = -1;
-        private static List<MissileWorldObject> Targets => WorldComponent_BVRNetwork.Current?.PlayerIncoming.ToList()
-            ?? new List<MissileWorldObject>();
+        private static List<IBVRTrack> Targets => WorldComponent_BVRNetwork.Current?.PlayerIncoming.ToList()
+            ?? new List<IBVRTrack>();
         public override AlertReport GetReport() => Targets.Count > 0 ? AlertReport.Active : AlertReport.Inactive;
         public override string GetLabel()
         {
@@ -19,14 +19,14 @@ namespace DMSE
             return targets.Count == 0 ? "DMSE.BVR.World.IncomingAlert".Translate()
                 : "DMSE.BVR.World.IncomingLabel".Translate(targets.Count, targets[0].TicksToArrival.ToStringTicksToPeriod());
         }
-        public override TaggedString GetExplanation() => string.Join("\n\n", Targets.Select(t => t.Label + "\n" + t.GetInspectString()))
+        public override TaggedString GetExplanation() => string.Join("\n\n", Targets.Select(t => t.Self.Label + "\n" + t.Self.GetInspectString()))
             + "\n\n" + "DMSE.BVR.World.ClickHint".Translate();
         protected override void OnClick()
         {
             var targets = Targets;
             if (targets.Count == 0) return;
             jumpIndex = GenMath.PositiveMod(jumpIndex + (Event.current.button == 1 ? -1 : 1), targets.Count);
-            CameraJumper.TryJump(new GlobalTargetInfo(targets[jumpIndex]));
+            CameraJumper.TryJump(new GlobalTargetInfo(targets[jumpIndex].Self));
         }
     }
 

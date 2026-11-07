@@ -7,6 +7,7 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_Light</defName>
     <label>light missile body</label>
+    <expandingIconPath>UI/DMSE/TravelingMissile_Expanding_Ballistic</expandingIconPath>
     <designWord>Light</designWord>
     <namer>DMSE_Namer_Light</namer>
     <description>A compact single-stage missile airframe. It flies faster and farther than a loitering munition, but carries less than a cruise missile.\n\nHas slots for a warhead, guidance and payload.</description>

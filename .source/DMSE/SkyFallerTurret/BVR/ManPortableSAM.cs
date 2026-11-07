@@ -1,3 +1,6 @@
+using AirCombatEventKind = Fortified.AirCombatEventKind;
+using AirCombatEvents = Fortified.AirCombatEvents;
+using AirDefenseStat = Fortified.AirDefenseStat;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
@@ -161,6 +164,7 @@ namespace DMSE
                 {
                     if (target.midcourseEngagedUntil > now) { continue; }
                     if (target.position.DistanceTo(pawn.Position) > Props.maxRangeCells) { continue; }
+                    if (Props.seeker != null && !Props.seeker.InAltitudeEnvelope(target.altitude)) { continue; }
                     yield return target;
                 }
             }
@@ -182,7 +186,7 @@ namespace DMSE
             {
                 chance += warhead.warheadEffect.InterceptBonus(cfg.PayloadCapacity);
             }
-            return Mathf.Clamp01(chance);
+            return AirDefenseHooks.MapStat(AirDefenseStat.HitChance, Mathf.Clamp01(chance), pawn.Map, pawn.Faction, target.Payload, cfg, pawn, eta);
         }
 
         /// <summary>發射前的共同檢查；回傳 null 表示可以發射，否則為停用理由。</summary>
@@ -301,6 +305,8 @@ namespace DMSE
             });
             target.midcourseEngagedUntil = now + Props.interceptorTravelTicks;
             target.lockUntil = -1;
+            AirCombatEvents.Raise(AirDefenseHooks.MapEvent(AirCombatEventKind.InterceptorLaunched, pawn.Map, pawn.Faction, target.Payload,
+                NextConfig, pawn, chance));
 
             UsedOnce();
             cooldownUntil = now + Props.cooldownTicks;

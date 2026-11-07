@@ -80,6 +80,7 @@ namespace DMSE
         // 目標屬性（由 def 的 BVRTargetProps 解析）。
         public int stealthLevel;
         public float speed = 15f;
+        public float altitude = 1000f;
 
         /// <summary>電子干擾強度（0–1，來自導彈的箔條部件）：只折減地圖層的命中率。</summary>
         public float jamStrength;
@@ -112,6 +113,7 @@ namespace DMSE
                 ? faller.def.GetModExtension<BVRTargetProps>() : null) ?? BVRTargetProps.Default;
             this.stealthLevel = tp.stealthLevel;
             this.speed = tp.speed;
+            this.altitude = tp.altitude;
             this.jamStrength = faller is IIncomingMissile incoming && incoming.Config != null
                 ? incoming.Config.JamStrength
                 : 0f;
@@ -260,6 +262,7 @@ namespace DMSE
             }
             Scribe_Values.Look(ref stealthLevel, "stealthLevel", 0);
             Scribe_Values.Look(ref speed, "speed", 15f);
+            Scribe_Values.Look(ref altitude, "altitude", 1000f);
             Scribe_Values.Look(ref jamStrength, "jamStrength", 0f);
             Scribe_Values.Look(ref midcourseEngagedUntil, "midcourseEngagedUntil", -1);
             Scribe_Values.Look(ref interceptorsInFlight, "interceptorsInFlight", 0);

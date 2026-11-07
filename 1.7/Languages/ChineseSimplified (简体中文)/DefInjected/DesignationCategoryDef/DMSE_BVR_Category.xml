@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <!-- EN: BVR warfare -->
+  <DMSE_BVRCategory.label>超视距作战</DMSE_BVRCategory.label>
+  <!-- EN: Radars, electronic warfare, strike command, missile launchers and racks, long-range guns and terminal air defence. -->
+  <DMSE_BVRCategory.description>雷达、电子作战、打击指挥、导弹发射平台与弹药架、远程火炮及末端防空。</DMSE_BVRCategory.description>
+
+</LanguageData>

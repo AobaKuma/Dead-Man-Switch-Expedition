@@ -21,6 +21,11 @@ namespace DMSE
 
         protected override bool AllowGenerateTargetMap => false;
 
+        protected override void CopyToChild(MissileWorldObject child, bool inheritsRole)
+        {
+            ((WorldObject_IncomingMissile)child).incomingSkyfaller = child.config?.body?.incomingSkyfaller ?? incomingSkyfaller;
+        }
+
         protected override void OnArrived(Map map)
         {
             if (map == null)

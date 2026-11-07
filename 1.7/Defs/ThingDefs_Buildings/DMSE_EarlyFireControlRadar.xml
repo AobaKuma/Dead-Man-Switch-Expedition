@@ -55,7 +55,7 @@
     <researchPrerequisites>
       <li>DMSE_RadarBasis</li>
     </researchPrerequisites>
-    <designationCategory>DMS_Category</designationCategory>
+    <designationCategory>DMSE_BVRCategory</designationCategory>
     <minifiedDef>MinifiedThing</minifiedDef>
     <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
     <thingCategories>
@@ -84,6 +84,8 @@
         <powerLevel>1</powerLevel>
         <guidanceAccuracyTime>900</guidanceAccuracyTime>
         <maxRangeTicks>4000</maxRangeTicks>
+        <minInterceptAltitude>100</minInterceptAltitude>
+        <maxInterceptAltitude>20000</maxInterceptAltitude>
         <maxHitChance>0.75</maxHitChance>
         <stealthMissFactor>0.6</stealthMissFactor>
         <lockOnTicks>200</lockOnTicks>

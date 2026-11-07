@@ -36,6 +36,19 @@ namespace DMSE
         // 打擊尚未生成地圖的據點時，生成其地圖供玩家選落點
         protected override bool AllowGenerateTargetMap => true;
 
+        protected override void CopyToChild(MissileWorldObject child, bool inheritsRole)
+        {
+            var c = (ScorerProjectile_WorldObject)child;
+            c.skyfallerIncoming = child.config?.body?.incomingSkyfaller ?? skyfallerIncoming;
+            c.launcherThing = launcherThing;
+            c.launchSpawnTick = launchSpawnTick;
+            if (inheritsRole)
+            {
+                c.strikeMissionId = strikeMissionId;
+                c.strikeWave = strikeWave;
+            }
+        }
+
         public override void ExposeData()
         {
             base.ExposeData();

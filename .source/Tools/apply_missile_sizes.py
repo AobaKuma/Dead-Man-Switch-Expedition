@@ -42,6 +42,7 @@ MODELS = {
     "Loiter":            (4.0, "Things/Missile/Termite/missile_north", ["DMSE_SkyFaller_Loiter", "DMSE_Incoming_Loiter", "DMSE_Missile_Termite"], ["Things/Missile/Termite/missile_incoming", "Things/Missile/Termite/missile_fold"]),
     "LegacyInterceptor": (6.3, "Things/Missile/Rheintochter/skyFaller", ["DMSE_Incoming_LegacyInterceptor", "DMSE_Missile_Rheintochter"], ["Things/Missile/Rheintochter/skyFaller_incoming"]),
     "LegacyLoiter":      (8.3, "Things/Missile/V1/skyFaller_incoming", ["DMSE_Incoming_LegacyLoiter", "DMSE_Missile_LegacyLoiter"], ["Things/Missile/V1/ammo"]),
+    "Oniks":             (8.9, "Things/Missile/Oniks/skyFaller", ["DMSE_Incoming_Oniks", "DMSE_Missile_Oniks"], ["Things/Missile/Oniks/skyFaller_incoming"]),
     "Yj":                (6.3 * 494 / 281, "Things/Missile/YJ20/skyFaller", ["DMSE_Incoming_Yj", "DMSE_Missile_Yj"], ["Things/Missile/YJ20/skyFaller_incoming"]),
     "Moskit":            (9.7, "Things/Missile/Moskit/skyFaller", ["DMSE_Incoming_Moskit", "DMSE_Missile_Moskit"], ["Things/Missile/Moskit/skyFaller_incoming"]),
     "Tochka":            (6.4, "Things/Missile/Tochka/skyFaller_incoming", ["DMSE_Incoming_Tochka", "DMSE_Missile_Tochka"], []),

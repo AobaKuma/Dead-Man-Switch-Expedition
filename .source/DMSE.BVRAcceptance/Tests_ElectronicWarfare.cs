@@ -84,7 +84,7 @@ namespace DMSE.BVRAcceptance
             t.Check(warfare.prerequisites.Any(r => r.defName == "DMSE_RadarNetwork") && attack.prerequisites.Contains(warfare), "research chain radar network → EW → attack");
             t.Check(Console.researchPrerequisites.Contains(warfare) && LongRange.researchPrerequisites.Contains(warfare), "console and long-range radar need electronic warfare");
             t.Check(Jammer.researchPrerequisites.Contains(attack), "jammer needs electronic attack (JM-11)");
-            t.Check(LongRange.size == new IntVec2(5, 5) && Console.size == new IntVec2(3, 3) && Jammer.size == new IntVec2(3, 3), "building sizes");
+            t.Check(LongRange.size == new IntVec2(5, 5) && Console.size == new IntVec2(3, 2) && Jammer.size == new IntVec2(3, 3), "building sizes");
             t.Check(!"DMSE.EW.Tab".Translate().ToString().StartsWith("DMSE."), "keyed strings load");
 
             Thing jam = SpawnBuilding(Jammer, 2, 2);
@@ -200,8 +200,10 @@ namespace DMSE.BVRAcceptance
         public static IEnumerable<Wait> OperatorBonus(TestContext t)
         {
             ResetRoeAfterTest();
-            Pawn pawn = Home.mapPawns.FreeColonistsSpawned.FirstOrDefault();
-            t.Require(pawn != null, "a colonist exists");
+            // Quicktest colonists are random; one with Shooting or Intellectual disabled always reads level 0.
+            Pawn pawn = Home.mapPawns.FreeColonistsSpawned.FirstOrDefault(p =>
+                !p.skills.GetSkill(SkillDefOf.Shooting).TotallyDisabled && !p.skills.GetSkill(SkillDefOf.Intellectual).TotallyDisabled);
+            t.Require(pawn != null, "a colonist who can shoot and research exists");
             ThingWithComps radar = (ThingWithComps)SpawnBuilding(Search, 2, 2);
             Building_MissileRack launcher = SpawnLoadedLauncher(12, 2, 1);
             ThingWithComps consoleThing = (ThingWithComps)SpawnBuilding(Console, 20, 2);
@@ -236,6 +238,40 @@ namespace DMSE.BVRAcceptance
             t.Check(Near(EWControlUtility.ShootingCooldownFactor(20), 1f / 1.36f), "Shooting 20 formula");
             t.Check(Near(EWControlUtility.IntellectualRangeFactor(20), 1.24f), "Intellectual 20 formula");
 
+            // Operators at several consoles add up, capped at 40.
+            t.Check(Near(EWControlUtility.IntellectualRangeFactor(40), 1.64f) && Near(EWControlUtility.IntellectualRangeFactor(60), 1.64f), "Intellectual formula tops out at level 40");
+            t.Check(Near(EWControlUtility.ShootingCooldownFactor(40), 1f / 1.96f) && Near(EWControlUtility.ShootingCooldownFactor(60), 1f / 1.96f), "Shooting formula tops out at level 40");
+            // Temporary operators: earlier tests may have used up the quicktest colonists.
+            List<Pawn> crew = new List<Pawn>();
+            for (int i = 0; i < 40 && crew.Count < 2; i++)
+            {
+                Pawn extra = PawnGenerator.GeneratePawn(PawnKindDefOf.Colonist, Player);
+                if (extra.skills.GetSkill(SkillDefOf.Intellectual).TotallyDisabled) { extra.Destroy(DestroyMode.Vanish); continue; }
+                GenSpawn.Spawn(extra, new IntVec3(Pad.minX + 16 + crew.Count, 0, Pad.minZ + 12), Home);
+                crew.Add(extra);
+            }
+            t.Require(crew.Count == 2, "two temporary operators exist");
+            CompWarRoomConsole console2 = ((ThingWithComps)SpawnBuilding(Console, 20, 8)).GetComp<CompWarRoomConsole>();
+            CompWarRoomConsole console3 = ((ThingWithComps)SpawnBuilding(Console, 25, 8)).GetComp<CompWarRoomConsole>();
+            yield return WaitPowered(); yield return new WaitTicks(2);
+            SkillRecord i1 = crew[0].skills.GetSkill(SkillDefOf.Intellectual), i2 = crew[1].skills.GetSkill(SkillDefOf.Intellectual);
+            bool d1 = i1.TotallyDisabled, d2 = i2.TotallyDisabled;
+            intellectual.Level = 12; i1.Level = 10; i2.Level = 20;
+            int expectedTwo = 12 + i1.Level, expectedThree = Mathf.Min(40, expectedTwo + i2.Level);
+            console.ManForATick(pawn);
+            console2.ManForATick(crew[0]);
+            t.Check(Control.OperatorLevelTotal(SkillDefOf.Intellectual, Player) == expectedTwo, $"two operators add up ({Control.OperatorLevelTotal(SkillDefOf.Intellectual, Player)}, expected {expectedTwo})");
+            t.Check(Near(EWControlUtility.RadarRangeFactor(radar), EWControlUtility.IntellectualRangeFactor(expectedTwo)), "the summed level drives the radar factor");
+            console3.ManForATick(crew[1]);
+            intellectual.Level = 20; i1.Level = 20;
+            int capped = Control.OperatorLevelTotal(SkillDefOf.Intellectual, Player);
+            t.Check(capped == Mathf.Min(40, 20 + i1.Level + i2.Level), $"three operators cap at 40 ({capped}; disabled skills {d1}/{d2})");
+            intellectual.Level = 0;
+            yield return new WaitTicks(3);
+            console2.parent.Destroy(DestroyMode.Vanish);
+            console3.parent.Destroy(DestroyMode.Vanish);
+            foreach (Pawn extra in crew) { extra.Destroy(DestroyMode.Vanish); }
+
             // WR-7
             ThingWithComps npcRadar = (ThingWithComps)SpawnBuilding(Search, 26, 2, Enemy);
             t.Check(EWControlUtility.RadarRangeFactor(npcRadar) == 1f, "NPC radar is unaffected");
@@ -244,6 +280,40 @@ namespace DMSE.BVRAcceptance
             console.ManForATick(pawn);
             consoleThing.Destroy(DestroyMode.Vanish);
             t.Check(EWControlUtility.RadarRangeFactor(radar) == 1f && !Control.RoeActive, "a removed console gives no bonus and no rules");
+
+            // An NPC console buffs its own faction only and never switches on the player's rules.
+            ThingWithComps npcConsole = (ThingWithComps)SpawnBuilding(Console, 20, 2, Enemy);
+            yield return WaitPowered(); yield return new WaitTicks(2);
+            CompWarRoomConsole npc = npcConsole.GetComp<CompWarRoomConsole>();
+            t.Check(!Control.RoeActive, "an NPC console does not activate the player's rules of engagement");
+            t.Check(!new ITab_WarRoomProbe(npcConsole).Visible, "the war room tab stays hidden on an NPC console");
+            intellectual.Level = 12;
+            npc.ManForATick(pawn);
+            if (npc.Operator != null)
+            {
+                t.Check(Near(EWControlUtility.RadarRangeFactor(npcRadar), 1.08f), "an operator at an NPC console buffs the NPC radar");
+                t.Check(EWControlUtility.RadarRangeFactor(radar) == 1f, "an operator at an NPC console does not buff the player's radar");
+            }
+            else { t.Note("NPC console has no power on the test pad; faction split not exercised here (N10 covers it on a real site)"); }
+            npcConsole.Destroy(DestroyMode.Vanish);
+        }
+
+        /// <summary>ITab.IsVisible reads the current selection, so select the thing to ask about it.</summary>
+        private sealed class ITab_WarRoomProbe
+        {
+            private readonly Thing thing;
+            public ITab_WarRoomProbe(Thing thing) { this.thing = thing; }
+            public bool Visible
+            {
+                get
+                {
+                    Find.Selector.ClearSelection();
+                    Find.Selector.Select(thing, playSound: false, forceDesignatorDeselect: false);
+                    bool visible = new ITab_WarRoom().IsVisible;
+                    Find.Selector.ClearSelection();
+                    return visible;
+                }
+            }
         }
 
         public static IEnumerable<Wait> RemoteControl(TestContext t)
@@ -286,6 +356,21 @@ namespace DMSE.BVRAcceptance
             t.Check(!c.Silenced, "restore clears the snapshot");
             t.Check(radar.GetComp<CompFlickable>().SwitchIsOn == phasedOn && fc.Active, "restore turns snapshot devices back on");
             t.Check(jammer.Active, "restore turns the jammer back on");
+
+            // Switching everything back on by hand ends the silence, so the panel stops warning about it.
+            c.Silence();
+            t.Check(c.Silenced, "silence recorded again");
+            c.SetPower(EWDeviceGroup.All, true);
+            t.Check(!c.Silenced, "switching the silenced devices on ends the silence");
+            yield return WaitPowered(); yield return new WaitTicks(2);
+
+            // Channel limit steps: 0 ... capacity, then unlimited; unlimited counts as the top.
+            int unlimited = MapComponent_EWControl.ChannelCapUnlimited;
+            t.Check(EWControlUtility.NextChannelCap(unlimited, 4, 1) == unlimited, "+ on unlimited stays unlimited, not 0");
+            t.Check(EWControlUtility.NextChannelCap(unlimited, 4, -1) == 4, "- on unlimited drops to the capacity");
+            t.Check(EWControlUtility.NextChannelCap(4, 4, 1) == unlimited, "+ at capacity goes to unlimited");
+            t.Check(EWControlUtility.NextChannelCap(0, 4, -1) == 0, "- stops at 0");
+            t.Check(EWControlUtility.NextChannelCap(0, 0, 1) == unlimited && EWControlUtility.NextChannelCap(unlimited, 0, -1) == 0, "no capacity: only 0 and unlimited");
 
             // Dead ids are pruned.
             c.Silence();
@@ -696,6 +781,35 @@ namespace DMSE.BVRAcceptance
             t.Screenshot("war_room_tab");
             yield return new WaitFrames(3);
             t.Check(LogErrorCount() == errors, "drawing the tab logs no errors");
+
+            // The other panel states: silence, holding interceptors, and read-only without power.
+            MapComponent_EWControl control = Control;
+            control.Silence();
+            yield return new WaitFrames(30);
+            t.Screenshot("war_room_tab_silenced");
+            yield return new WaitFrames(3);
+            control.Restore();
+            control.autoEngage = false;
+            control.engagePolicy = EngagePolicy.All;
+            control.priority = EngagePriority.LargestFirst;
+            control.channelCap = 0;
+            control.holdFireClasses = HoldFireClass.DropPod;
+            yield return new WaitFrames(30);
+            t.Screenshot("war_room_tab_hold");
+            yield return new WaitFrames(3);
+            control.autoEngage = true;
+            control.channelCap = MapComponent_EWControl.ChannelCapUnlimited;
+            CompFlickable consoleSwitch = consoleThing.GetComp<CompFlickable>();
+            consoleSwitch.DoFlick();
+            yield return new WaitTicks(2);
+            t.Check(!console.PowerOK, "console switched off for the read-only state");
+            yield return new WaitFrames(30);
+            t.Screenshot("war_room_tab_no_power");
+            yield return new WaitFrames(3);
+            consoleSwitch.DoFlick();
+            yield return new WaitFrames(3);
+            t.Check(LogErrorCount() == errors, "the other panel states log no errors");
+
             Find.MainTabsRoot.EscapeCurrentTab(false);
             Find.Selector.ClearSelection();
             pawn.jobs.EndCurrentJob(Verse.AI.JobCondition.InterruptForced);

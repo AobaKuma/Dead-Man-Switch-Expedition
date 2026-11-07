@@ -1052,6 +1052,88 @@
     </comps>
   </ThingDef>
 
+  <!-- DMSE_MissileBody_Oniks: DMSE_SkyFaller_CruiseMissile flight, hot launch 1.05 -->
+  <ThingDef ParentName="DMSE_MissileLaunchProjectileBase">
+    <defName>DMSE_Launch_Oniks</defName>
+    <label>advanced anti-ship cruise missile (launching)</label>
+    <graphicData>
+      <texPath>Things/Missile/Oniks/skyFaller</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>3.71</drawSize>
+    </graphicData>
+    <modExtensions>
+      <li Class="DMSE.MissileFlightExtension">
+        <movementType>Accelerate</movementType>
+        <reversed>true</reversed>
+        <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
+        <shadowSize>(2, 2)</shadowSize>
+        <ticksToDiscardInReverse>300</ticksToDiscardInReverse>
+        <ticksToImpactRange>0</ticksToImpactRange>
+        <anticipationSound>DropPod_Leaving</anticipationSound>
+        <anticipationSoundTicks>-1</anticipationSoundTicks>
+        <speedCurve>
+          <points>
+            <li>(0,0.3)</li>
+            <li>(0.2,0.2)</li>
+            <li>(0.5,0.1)</li>
+            <li>(1,1)</li>
+          </points>
+        </speedCurve>
+        <rotationCurve>
+          <points>
+            <li>(0,0)</li>
+            <li>(0.35,-3)</li>
+            <li>(0.65,-2)</li>
+            <li>(1,0)</li>
+          </points>
+        </rotationCurve>
+        <zPositionCurve>
+          <points>
+            <li>(0,0)</li>
+            <li>(0.05,2)</li>
+            <li>(0.3,1)</li>
+            <li>(1,10)</li>
+          </points>
+        </zPositionCurve>
+        <courseTurnsIndependently>true</courseTurnsIndependently>
+        <climbWhileTurning>true</climbWhileTurning>
+        <maxTurnRate>1.8</maxTurnRate>
+        <turnRampTicks>12</turnRampTicks>
+        <turnNaturalFrequency>0.25</turnNaturalFrequency>
+        <turnDampingRatio>0.8</turnDampingRatio>
+        <turnMaxAcceleration>0.9</turnMaxAcceleration>
+      </li>
+    </modExtensions>
+    <comps>
+      <li Class="DMSE.CompProperties_EffecterHotLaunch">
+        <launchBlastScale>1.05</launchBlastScale>
+        <ignitionSound>DMSE_Missile_Flight</ignitionSound>
+        <ExhaustFleck>DMS_Fleck_RocketFlame</ExhaustFleck>
+        <ExhaustCurve>
+          <points>
+            <li>(0,2)</li>
+            <li>(0.1,8)</li>
+            <li>(0.5,14)</li>
+            <li>(0.9,2)</li>
+          </points>
+        </ExhaustCurve>
+        <SmokeFleck>Smoke</SmokeFleck>
+        <SmokeCurve>
+          <points>
+            <li>(0,12)</li>
+            <li>(0.5,9)</li>
+            <li>(1,2)</li>
+          </points>
+        </SmokeCurve>
+        <launchEffectTrigger>DMS_LaunchDust_Recoilless</launchEffectTrigger>
+        <offsetY>-1.81</offsetY>
+        <separatedTexPath>Things/Missile/Oniks/skyFaller_incoming</separatedTexPath>
+        <separatedOffsetY>-0.95</separatedOffsetY>
+        <fxProfile>DMSE_LaunchFx_Oniks</fxProfile>
+      </li>
+    </comps>
+  </ThingDef>
+
   <!-- DMSE_MissileBody_Yj: DMSE_SkyFaller_CruiseMissile flight, hot launch 1.1 -->
   <ThingDef ParentName="DMSE_MissileLaunchProjectileBase">
     <defName>DMSE_Launch_Yj</defName>

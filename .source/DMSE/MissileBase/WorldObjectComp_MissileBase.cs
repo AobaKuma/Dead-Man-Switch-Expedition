@@ -47,6 +47,18 @@ namespace DMSE
         /// <summary>彈架的生成裝填表與定時空投補彈（<see cref="MissileBaseRackSupply"/>）；null = 只靠建築自身的自動填充。</summary>
         public MissileBaseRackSupply rackSupply;
 
+        /// <summary>
+        /// 砲塔彈藥（<see cref="CompRefuelable"/>，例如 37 mm／35 mm 砲彈、裝甲砲管）的定時空投與守軍搬運。<br/>
+        /// 空投落地後由守軍親自搬到砲塔旁裝填；守軍全滅後不再補給。預設啟用，可在 XML 關閉。
+        /// </summary>
+        public MissileBaseTurretAmmoSupply turretAmmo = new MissileBaseTurretAmmoSupply();
+
+        /// <summary>
+        /// 燃料發電機由守軍抽象補給（NPC 不會自己加燃料）：守軍尚在就維持燃料，生成時也會加滿。
+        /// 給靠燒木發電機供電的舊式陣地用；守軍全滅後發電機才會燒盡。
+        /// </summary>
+        public bool refuelGenerators = false;
+
         // ── Inspect 字串鍵 ─────────────────────────────────────────────────────
 
         /// <summary>Inspect 字串：顯示下次發射冷卻倒計時。</summary>
@@ -78,6 +90,33 @@ namespace DMSE
         public int maxStockPerPawn = 10;
 
         public ThingDef ThingDef => thingDef ?? ThingDefOf.MealSurvivalPack;
+    }
+
+    /// <summary>
+    /// 砲塔彈藥的定時空投設定（<see cref="CompProperties_MissileBase.turretAmmo"/>）。<br/>
+    /// 彈藥本身不是抽象數字：空投艙會在砲塔附近投下 <see cref="CompRefuelable"/> 接受的實體彈藥
+    /// （例如 37 mm 砲彈用的鋼、裝甲砲管用的強化砲管），守軍再親自搬過去裝填
+    /// （<see cref="JobDriver_Refuel"/>）；守軍全滅後彈藥落地也不會自己進砲塔。
+    /// </summary>
+    public class MissileBaseTurretAmmoSupply
+    {
+        /// <summary>是否啟用砲塔彈藥補給。</summary>
+        public bool enabled = true;
+
+        /// <summary>多久檢查一次並空投彈藥（天）。</summary>
+        public float intervalDays = 0.5f;
+
+        /// <summary>砲塔彈藥低於最大量這個比例時才補（0.5 = 半個基數）。</summary>
+        public float refillBelowPercent = 0.5f;
+
+        /// <summary>空投時把砲塔補到最大量的這個比例（1 = 補滿）。</summary>
+        public float refillToPercent = 1f;
+
+        /// <summary>空投落地後多久，守軍才會開始搬（tick）；期間玩家可以搶走或打爛。</summary>
+        public int haulDelayTicks = 300;
+
+        /// <summary>同時最多幾名守軍在搬砲塔彈藥。0 = 只空投、不搬。</summary>
+        public int maxHaulers = 1;
     }
 
     /// <summary>
@@ -180,7 +219,7 @@ namespace DMSE
             List<MapParent> targets = FindTargetsInRange(cfg);
             if (targets.NullOrEmpty()) return 0;
 
-            MapParent target = targets.RandomElement();
+            MapParent target = MissileDoctrine.Choose(parent as MapParent, parent.Faction, cfg, targets);
             int count = Mathf.Max(1, Props.missilesPerSalvo.RandomInRange);
             for (int i = 0; i < count; i++)
             {
@@ -209,18 +248,8 @@ namespace DMSE
         /// 跨圖層（例：軌道上的據點或轉移飛行中的船）需導彈具備導引能力。
         /// </summary>
         private List<MapParent> FindTargetsInRange(MissileConfig cfg)
-        {
-            List<MapParent> result = new List<MapParent>();
-            foreach (WorldObject wo in Find.WorldObjects.AllWorldObjects)
-            {
-                if (!(wo is MapParent mp)) continue;
-                if (!mp.HasMap) continue;
-                if (mp.Faction == null || !mp.Faction.IsPlayer) continue;
-                if (!MissileWorldUtility.CanEngage(cfg, parent.Tile, mp.Tile, Props.range, out _)) continue;
-                result.Add(mp);
-            }
-            return result;
-        }
+            => MissileDoctrine.Targets(parent as MapParent, parent.Faction, cfg,
+                mp => MissileWorldUtility.CanEngage(cfg, parent.Tile, mp.Tile, Props.range, out _));
 
         public MissileConfig BuildFireConfig()
         {

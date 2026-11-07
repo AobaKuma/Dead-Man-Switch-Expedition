@@ -25,6 +25,24 @@ namespace DMSE
         public int TargetId => targetId;
         public float HitChance { get => hitChance; set => hitChance = value; }
 
+        private CompEffecterLaunch launchComp;
+        private Graphic separatedGraphic;
+
+        /// <summary>助推器分離後改畫不含助推器的貼圖（<see cref="CompProperties_EffecterLaunch.separatedTexPath"/>）。</summary>
+        public override Graphic Graphic
+        {
+            get
+            {
+                launchComp ??= GetComp<CompEffecterLaunch>();
+                if (launchComp != null && !launchComp.Props.separatedTexPath.NullOrEmpty() && launchComp.BoosterSeparated)
+                {
+                    return separatedGraphic ??= GraphicDatabase.Get<Graphic_Single>(launchComp.Props.separatedTexPath,
+                        def.graphic.Shader, def.graphicData.drawSize, def.graphic.Color);
+                }
+                return base.Graphic;
+            }
+        }
+
         protected override void LeaveMap()
         {
             if (isInterceptor) { ResolveIntercept(); }
@@ -45,12 +63,13 @@ namespace DMSE
             if (Rand.Chance(hitChance))
             {
                 MapComponent_InterceptEffects.Trigger(Map, InterceptEventData.From(target, Map, terminal: false, IntVec3.Invalid));
-                comp.RemoveTarget(targetId);
+                comp.ResolveMidcourseHit(target, hitChance, hit: true);
                 if (Prefs.DevMode) { Log.Message($"[DMSE BVR] 中過程攔截成功 target#{targetId}"); }
             }
-            else if (Prefs.DevMode)
+            else
             {
-                Log.Message($"[DMSE BVR] 中過程攔截失敗 target#{targetId}");
+                comp.ResolveMidcourseHit(target, hitChance, hit: false);
+                if (Prefs.DevMode) { Log.Message($"[DMSE BVR] 中過程攔截失敗 target#{targetId}"); }
             }
         }
 

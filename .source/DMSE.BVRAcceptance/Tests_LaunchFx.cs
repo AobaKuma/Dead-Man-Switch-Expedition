@@ -24,6 +24,7 @@ namespace DMSE.BVRAcceptance
             new AcceptanceTest("V4", "Launch FX L5: every launch body uses its profile; one screenshot each at the same tick", AllBodies),
             new AcceptanceTest("V5", "Launch FX L6: 12-missile ripple stays under the smoke cap; canvas draw CPU logged", RippleBudget),
             new AcceptanceTest("V6", "Lighting diag: smoke tinted 100/60/35 % on Mote (instanced) vs Transparent; sky colour logged", TintDiag),
+            new AcceptanceTest("V9", "Oniks turn (§3.6): RCS side jets, retro jets, forward jettison of the turning thruster, main thrust full open", OniksTurn),
             new AcceptanceTest("V8", "Temporary missile size tuner: items on the ground, a loaded rack and the flight sprites; a slider change resizes them live", SizeTuner),
             new AcceptanceTest("V7", "Smoke and debris follow ambient light: darker at midnight than at noon, brighter next to a lamp; launch and intercept screenshots day and night", AmbientLight),
         };
@@ -481,6 +482,93 @@ namespace DMSE.BVRAcceptance
 
         private static void CloseLog() => Find.WindowStack.TryRemove(typeof(EditWindow_Log), doCloseSound: false);
     
+        // ==================================================================
+        //  V9: Oniks turn sequence (§3.6)
+        // ==================================================================
+
+        public static IEnumerable<Wait> OniksTurn(TestContext t)
+        {
+            Map map = Home;
+            yield return WaitClearSky(map);
+            t.Check(ContentFinder<Texture2D>.Get("Things/Effects/MissileFx/TurnPod", false) != null,
+                "the turning-thruster pod texture loads");
+
+            t.allowPause = true;
+            Thing missile = null;
+            try
+            {
+                missile = Launch("Oniks", Pad.CenterCell, 120f);
+                LaunchFxEmitter fx = null;
+                TickWatch side = AcceptanceDriver.Watch(() =>
+                {
+                    fx = LaunchComp(missile)?.LaunchFx ?? fx;
+                    return fx != null && fx.TurnActive && fx.TurnJetAim > 0f
+                        && Mathf.Abs(fx.TurnRate) >= fx.Profile.turnJetRate;
+                });
+                TickWatch retro = AcceptanceDriver.Watch(() =>
+                {
+                    fx = LaunchComp(missile)?.LaunchFx ?? fx;
+                    return fx != null && fx.TurnActive && fx.TurnJetAim > 0f
+                        && Mathf.Abs(fx.TurnRate) < fx.Profile.turnJetRate;
+                });
+                TickWatch jettison = AcceptanceDriver.Watch(() =>
+                {
+                    fx = LaunchComp(missile)?.LaunchFx ?? fx;
+                    return fx != null && fx.Jettisoned && fx.PodAge >= 0;
+                });
+                TickWatch main = AcceptanceDriver.Watch(() =>
+                {
+                    fx = LaunchComp(missile)?.LaunchFx ?? fx;
+                    return fx != null && fx.MainThrustBlend > 0.9f;
+                });
+
+                Find.TickManager.CurTimeSpeed = TimeSpeed.Normal;
+                var waitSide = new WaitUntil(() => side.Seen, 300);
+                yield return waitSide;
+                t.Check(!waitSide.TimedOut, "RCS side jets fire while the missile swings onto its departure heading");
+                if (!waitSide.TimedOut)
+                {
+                    foreach (Wait w in Shot(t, fx.Nozzle + new Vector3(0f, 0f, 4f), 22f, "oniks_side_thrust")) { yield return w; }
+                }
+
+                Find.TickManager.CurTimeSpeed = TimeSpeed.Normal;
+                var waitJettison = new WaitUntil(() => jettison.Seen || missile.Destroyed, 900);
+                yield return waitJettison;
+                t.Check(jettison.Seen && !missile.Destroyed, "the turning thruster is jettisoned after the turn, before the missile leaves");
+                t.Check(retro.Seen, "retro jets fire on the other side while the turn is braked");
+                if (jettison.Seen)
+                {
+                    t.Check(fx.PodAge >= 0, $"the jettisoned thruster is drawn ({fx.PodAge} ticks old)");
+                    foreach (Wait w in Shot(t, fx.PodPos + new Vector3(0f, 0f, 2f), 20f, "oniks_pod_jettison")) { yield return w; }
+                }
+
+                Find.TickManager.CurTimeSpeed = TimeSpeed.Normal;
+                var waitMain = new WaitUntil(() => main.Seen || missile.Destroyed, 600);
+                yield return waitMain;
+                t.Check(main.Seen, "main thrust opens fully after the pod is jettisoned");
+                if (main.Seen)
+                {
+                    t.Check(fx.Thrust > 0.8f, $"the plume is back at full power ({fx.Thrust:0.##})");
+                    t.Check(fx.Profile.mainSmokeScale >= 2f && fx.Profile.mainExhaustScale >= 1.5f,
+                        $"the main-thrust trail is larger (×{fx.Profile.mainSmokeScale:0.#}) and thrown back faster (×{fx.Profile.mainExhaustScale:0.#})");
+                    t.Check(fx.Profile.mainPlumeScale >= 2f && fx.Profile.mainPlumeWiden >= 1f,
+                        $"after lining up on the target heading the tail plume grows clearly (×{fx.Profile.mainPlumeScale:0.#} long, +{fx.Profile.mainPlumeWiden:P0} wide)");
+                    // 近拍：轉到目標方位後的尾焰要明顯比轉向段大。
+                    foreach (Wait w in Shot(t, fx.Nozzle, 14f, "oniks_main_thrust_close")) { yield return w; }
+                    foreach (Wait w in Shot(t, fx.Nozzle + new Vector3(0f, 0f, 6f), 26f, "oniks_main_thrust")) { yield return w; }
+                    // 拉遠看整條煙跡：轉向是不是一條乾淨的弧（航向與機頭分開後不該折返）。
+                    foreach (Wait w in Shot(t, fx.Nozzle, 55f, "oniks_arc")) { yield return w; }
+                }
+                t.Note($"turn rate {fx?.TurnRate:0.##}°/tick, side {side.FirstTick}, retro {retro.FirstTick}, jettison {jettison.FirstTick}, main {main.FirstTick}");
+            }
+            finally
+            {
+                if (missile != null && !missile.Destroyed) { missile.Destroy(); }
+                t.allowPause = false;
+                Find.TickManager.CurTimeSpeed = TimeSpeed.Ultrafast;
+            }
+        }
+
         // ==================================================================
         //  V8: temporary missile size tuner (.source/DMSE/Dev/MissileSizeTuner.cs)
         // ==================================================================

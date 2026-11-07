@@ -34,6 +34,7 @@ ROWS = [
     ("Rheintochter", "LegacyInterceptor", "DMSE_Launch_LegacyInterceptor", "DMSE_Missile_Rheintochter", "Loitering"),
     ("V1", "LegacyLoiter", "DMSE_Launch_LegacyLoiter", "DMSE_Missile_LegacyLoiter", "Loitering"),
     ("YJ", "Yj", "DMSE_Launch_Yj", "DMSE_Missile_Yj", "Medium"),
+    ("Oniks", "Oniks", "DMSE_Launch_Oniks", "DMSE_Missile_Oniks", "Medium"),
     ("Moskit", "Moskit", "DMSE_Launch_Moskit", "DMSE_Missile_Moskit", "Medium"),
     ("Tochka", "Tochka", "DMSE_Launch_Tochka", "DMSE_Missile_Tochka", "Medium"),
     ("V2", "LegacyBallistic", "DMSE_Launch_LegacyBallistic", None, "Ballistic"),

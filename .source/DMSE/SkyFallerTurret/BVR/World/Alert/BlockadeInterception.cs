@@ -1,3 +1,4 @@
+using Fortified;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
@@ -51,28 +52,24 @@ namespace DMSE
             if (node == null || !node.HasInterceptorAmmo) { return null; }
             int ownShots = shots.Count(s => s.launchNode == zone.site && s.Faction == zone.faction);
             if (node.FreeChannels - ownShots <= 0) { return null; }
-            CompMissileLauncher_Interceptor launcher = node.ReadyLauncher(now);
-            if (launcher == null && !node.DefenseReady(now)) { return null; }
+            AirEngagement engagement = node.EngagementFor(null, flyer, position, 0, 1000f);
+            IAirEffector effector = node.ReadyEffector(now, engagement);
+            if (effector == null) { return null; }
 
-            MissileConfig config = launcher?.GetLoadedMissileConfig() ?? node.DefenseConfig;
-            float speed = MissileWorldMotion.AngularSpeed(config) * BVRWorldTuningDef.Current.interceptorSpeedMultiplier;
+            AirEffectorShot effectorShot = effector.PrepareShot(engagement);
+            // 瞬間命中的武器沒有飛行時間，封鎖攔截物仍以最短時間結算。
             float angle = GenMath.SphericalDistance(node.Center.normalized, position.normalized);
-            int ticks = Mathf.Max(BVRWorldTuningDef.Current.minInterceptMarginTicks, Mathf.CeilToInt(angle / Mathf.Max(1e-6f, speed)));
+            int ticks = Mathf.Max(BVRWorldTuningDef.Current.minInterceptMarginTicks, Mathf.CeilToInt(angle / Mathf.Max(1e-6f, effectorShot.AngularSpeed)));
+            if (effectorShot.AngularSpeed <= 0f) { ticks = BVRWorldTuningDef.Current.minInterceptMarginTicks; }
             var target = new BVRTarget();
             CompProperties_FireControlRadar settings = node.BestRadar(target, ticks)?.Props ?? node.DefenseFireControl;
             if (settings == null) { return null; }
 
             WorldObjectDef def = DefDatabase<WorldObjectDef>.GetNamedSilentFail("DMSE_BlockadeInterceptor");
             if (def == null) { return null; }
-            MissilePartDef warhead = config?.PartFor(MissilePartCategory.Warhead);
-            float payload = config?.PayloadCapacity ?? 0;
-            float chance = Mathf.Clamp01(CompFireControlRadar.ComputeHitChance(settings, target, ticks)
-                * (config?.InterceptHitFactor ?? 1f)
-                + (warhead?.warheadEffect?.InterceptBonus(payload) ?? 0));
-            bool fired = launcher != null
-                ? launcher.FireWorldInterceptor(now, MissileProjectileMaker.WorldInterceptBearing(node.Tile, position))
-                : node.TryConsumeDefense(now);
-            if (!fired) { return null; }
+            float chance = Mathf.Clamp01(CompFireControlRadar.ComputeHitChance(settings, target, ticks) * effectorShot.HitFactor + effectorShot.HitBonus);
+            chance = AirDefenseHooks.BlockadeHitChance(chance, node, flyer, effectorShot.Loadout, ticks);
+            if (!effector.TryFire(engagement, now, position)) { return null; }
 
             var shot = (WorldObject_BlockadeInterceptor)WorldObjectMaker.MakeWorldObject(def);
             shot.Tile = node.Tile;
@@ -85,6 +82,7 @@ namespace DMSE
             shot.target = flyer;
             shot.hitChance = chance;
             Find.WorldObjects.Add(shot);
+            AirDefenseHooks.BlockadeEvent(AirCombatEventKind.InterceptorLaunched, flyer, node.faction, node.parent, chance);
 
             if (flyer.Faction.IsPlayer || node.faction.IsPlayer)
             {
@@ -137,8 +135,10 @@ namespace DMSE
         private void Resolve()
         {
             bool notify = Faction == Faction.OfPlayer || target?.Faction == Faction.OfPlayer;
+            AirInterceptOutcome outcome;
             if (!TargetAlive)
             {
+                outcome = AirInterceptOutcome.Evaded;
                 if (notify && target != null && !target.Destroyed)
                 {
                     Messages.Message("DMSE.BVR.World.Evaded".Translate(target.Label), new GlobalTargetInfo(target), MessageTypeDefOf.NeutralEvent, historical: false);
@@ -147,6 +147,7 @@ namespace DMSE
             // 結算前重查友軍身分：飛行中結盟就安全解除。
             else if (AirDefenseAlertPolicy.IsFriendly(Faction, target.Faction))
             {
+                outcome = AirInterceptOutcome.Safed;
                 if (notify)
                 {
                     Messages.Message("DMSE.AirAlert.InterceptorSafed".Translate(target.Label), new GlobalTargetInfo(target), MessageTypeDefOf.NeutralEvent, historical: false);
@@ -154,13 +155,19 @@ namespace DMSE
             }
             else if (Rand.Chance(hitChance))
             {
+                outcome = AirInterceptOutcome.Hit;
                 WorldComponent_BVRNetwork.Current?.AddFlash(lastTargetPos);
                 BlockadeHitUtility.ApplyHit(target, Faction);
             }
-            else if (notify)
+            else
             {
-                Messages.Message("DMSE.BVR.World.Missed".Translate(target.Label), new GlobalTargetInfo(target), MessageTypeDefOf.NeutralEvent, historical: false);
+                outcome = AirInterceptOutcome.Miss;
+                if (notify)
+                {
+                    Messages.Message("DMSE.BVR.World.Missed".Translate(target.Label), new GlobalTargetInfo(target), MessageTypeDefOf.NeutralEvent, historical: false);
+                }
             }
+            AirDefenseHooks.BlockadeEvent(AirCombatEventKind.InterceptResolved, target, Faction, launchNode, hitChance, outcome);
             Destroy();
         }
 

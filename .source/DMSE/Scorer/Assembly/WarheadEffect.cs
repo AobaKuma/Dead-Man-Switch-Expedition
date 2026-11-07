@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Fortified;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -22,6 +23,10 @@ namespace DMSE
         /// <param name="map">目標地圖。</param>
         /// <param name="attacker">發射方陣營。</param>
         public virtual void Apply(float N, IntVec3 center, Map map, Faction attacker) { }
+
+        /// <summary>戰鬥部效果的入口。需要裝配、來襲方位或傷害歸因時覆寫這個版本；預設轉給簡化版本。</summary>
+        public virtual void Apply(MissileImpactContext context)
+            => Apply(context.PayloadCapacity, context.Center, context.Map, context.Attacker);
 
         /// <summary>
         /// 此導彈作為攔截彈使用時，對命中率的加算加成（0-1 範圍）。

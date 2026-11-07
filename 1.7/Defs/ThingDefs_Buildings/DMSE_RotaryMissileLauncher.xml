@@ -89,7 +89,7 @@
     <researchPrerequisites>
       <li>DMSE_FireControlNetwork</li>
     </researchPrerequisites>
-    <designationCategory>DMS_Category</designationCategory>
+    <designationCategory>DMSE_BVRCategory</designationCategory>
     <minifiedDef>MinifiedThing</minifiedDef>
     <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
     <thingCategories>

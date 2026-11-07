@@ -192,6 +192,8 @@
           <powerLevel>0</powerLevel>
           <guidanceAccuracyTime>600</guidanceAccuracyTime>
           <maxRangeTicks>2400</maxRangeTicks>
+          <minInterceptAltitude>30</minInterceptAltitude>
+          <maxInterceptAltitude>5000</maxInterceptAltitude>
           <maxHitChance>0.6</maxHitChance>
           <stealthMissFactor>0.5</stealthMissFactor>
           <lockOnTicks>90</lockOnTicks>

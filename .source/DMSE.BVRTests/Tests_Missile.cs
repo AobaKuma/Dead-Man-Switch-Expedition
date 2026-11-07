@@ -111,8 +111,54 @@ static partial class Test
     }
 
     // Departure turn (2026-10-26): rate-capped, ramps up, eases out, never overshoots; bigger turns take longer.
+    // Oniks (2026-11-07): while the nose swings round, the missile keeps climbing straight up, then bends onto the heading.
+    static void ClimbWhileTurning()
+    {
+        var f = new MissileFlightExtension
+        {
+            courseTurnsIndependently = true, climbWhileTurning = true,
+            maxTurnRate = 1.8f, turnRampTicks = 12, turnNaturalFrequency = 0.5f, turnDampingRatio = 0.6f, turnMaxAcceleration = 0.35f
+        };
+        var mapSize = new IntVec3(250, 1, 250);
+        MissileCruiseState Start(Vector3 pos) => new MissileCruiseState
+        {
+            active = true, pos = pos, heading = 120f, motion0 = 0f, motion = 0f, nose0 = 0f, nose = 0f, speed0 = 0.4f, progress0 = 0.3f
+        };
+        var s = Start(new Vector3(125f, 0f, 60f));
+        Vector3 start = s.pos;
+        float maxEastHalf = 0f, maxSideways = 0f;
+        int halfTurn = -1, aligned = -1;
+        for (int i = 0; i < 400 && aligned < 0; i++)
+        {
+            Vector3 before = s.pos;
+            MissileDepartureKinematics.CruiseStep(f, ref s, 100, 300, mapSize);
+            float blend = MissileDepartureKinematics.TurnBlend(s);
+            if (blend < 0.5f) { maxEastHalf = Mathf.Max(maxEastHalf, Mathf.Abs(s.pos.x - start.x)); }
+            else if (halfTurn < 0) { halfTurn = i; }
+            if (blend >= MissileDepartureKinematics.ClimbAlignedBlend) { aligned = i; }
+            else { maxSideways = Mathf.Max(maxSideways, Mathf.Abs(s.pos.x - start.x)); }
+        }
+        Vector3 climbed = s.pos - start;
+        Console.WriteLine($"  climb while turning: half turn at {halfTurn}, aligned at {aligned}, sideways {maxSideways:0.###} cells before aligning, climbed {climbed.z:0.#} cells");
+        Check(aligned > 0 && maxSideways < 0.01f && climbed.z > 6f,
+            "Oniks climbs straight up (no sideways drift at all) while its nose swings round");
+        // After lining up: a straight line along the heading (a sharp corner, not a hook).
+        Vector3 corner = s.pos;
+        for (int i = 0; i < 30; i++) { MissileDepartureKinematics.CruiseStep(f, ref s, 100, 300, mapSize); }
+        float legHeading = MissileMapEntryUtility.HeadingOf(s.pos - corner);
+        Near(Mathf.DeltaAngle(legHeading, 120f), 0f, "after lining up it flies a straight line to the target heading (sharp corner, no hook)", 0.5f);
+        var plain = new MissileFlightExtension { courseTurnsIndependently = true, maxTurnRate = 1.8f, turnRampTicks = 12, turnMaxAcceleration = 0.35f };
+        var p = Start(new Vector3(125f, 0f, 60f));
+        for (int i = 0; i < halfTurn; i++) { MissileDepartureKinematics.CruiseStep(plain, ref p, 100, 300, mapSize); }
+        Check(Mathf.Abs(p.pos.x - start.x) > 2f * maxEastHalf + 0.5f, "without climbWhileTurning the missile drifts forward along the arc");
+        var edge = Start(new Vector3(125f, 0f, 245f));
+        float travel = MissileDepartureKinematics.ClimbTravelHeading(0f, 90f, 0.1f, edge.pos, mapSize);
+        Near(travel, 90f, "near the map edge it falls back to the course instead of climbing off the wrong side", 0.5f);
+    }
+
     static void DepartureTurn()
     {
+        ClimbWhileTurning();
         var f = new MissileFlightExtension();
         // The real cruise turn carries its turn rate between ticks (underdamped: it swings past the heading and settles back).
         (int reach, int settle, float overshoot, float maxRate) Turn(float from, float to, float speed = 0f)

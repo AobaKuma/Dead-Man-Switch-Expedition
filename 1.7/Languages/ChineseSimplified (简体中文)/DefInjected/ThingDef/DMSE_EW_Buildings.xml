@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
   <DMSE_WarRoomConsole.label>战情终端</DMSE_WarRoomConsole.label>
-  <DMSE_WarRoomConsole.description>本图防空的指挥台。可为地图层与世界层的拦截设定交战限制，并遥控全图雷达与干扰机的开关与功率，包含一键电磁静默。这些都不需要有人站岗。\n\n有操作员坐镇时另有技能加成：智识延长雷达搜索距离，射击缩短导弹发射平台的冷却。\n\n交战限制只在本图有战情终端时生效。</DMSE_WarRoomConsole.description>
+  <DMSE_WarRoomConsole.description>本图防空的指挥台。可为地图层与世界层的拦截设定交战限制，并遥控全图雷达与干扰机的开关与功率，包含一键电磁静默。这些都不需要有人站岗。\n\n有操作员坐镇时另有技能加成：智识延长雷达搜索距离，射击缩短导弹发射平台的冷却。多座终端的操作员等级会叠加，合计上限 40。\n\n交战限制只在本图有战情终端时生效。</DMSE_WarRoomConsole.description>
   <DMSE_JammerStation.label>电子干扰机</DMSE_JammerStation.label>
   <DMSE_JammerStation.description>大功率地面干扰站。发射时会在世界地图上以本殖民地为中心画出半径 8 格的红圈。敌对导弹进圈时掷骰一次：导引头可能被打掉，之后不是在地图外消失，就是只能靠惯性落地。反辐射与惯性导弹免疫。圈内的敌方雷达也会失去距离与锁定速度。\n\n发射期间本图通讯台一律停用，没有例外。满段耗电 6000 瓦、待机 600 瓦，断电立刻失效，而且反辐射导弹会追着它飞。</DMSE_JammerStation.description>
   <DMSE_OTHWarningRadar.label>长程预警雷达</DMSE_OTHWarningRadar.label>

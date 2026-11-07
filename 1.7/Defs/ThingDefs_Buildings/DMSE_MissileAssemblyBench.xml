@@ -34,7 +34,7 @@
     <drawerType>MapMeshAndRealTime</drawerType>
     <tickerType>Never</tickerType>
     <constructEffect>ConstructMetal</constructEffect>
-    <designationCategory>DMS_Category</designationCategory>
+    <designationCategory>DMSE_BVRCategory</designationCategory>
     <statBases>
       <MaxHitPoints>350</MaxHitPoints>
       <WorkToBuild>6000</WorkToBuild>
@@ -59,6 +59,7 @@
             <li>DMSE_Missile_Stinger</li>
             <li>DMSE_Missile_Maverick</li>
             <li>DMSE_Missile_Sparrow</li>
+            <li>DMSE_Missile_Oniks</li>
             <li>DMSE_Missile_Yj</li>
             <li>DMSE_Missile_Tochka</li>
             <li>DMSE_Missile_AdvancedLight</li>
@@ -76,6 +77,7 @@
             <li>DMSE_Missile_Stinger</li>
             <li>DMSE_Missile_Maverick</li>
             <li>DMSE_Missile_Sparrow</li>
+            <li>DMSE_Missile_Oniks</li>
             <li>DMSE_Missile_Yj</li>
             <li>DMSE_Missile_Tochka</li>
             <li>DMSE_Missile_AdvancedLight</li>

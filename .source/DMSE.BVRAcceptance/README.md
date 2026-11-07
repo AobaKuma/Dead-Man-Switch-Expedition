@@ -39,16 +39,17 @@ for each series has the details.
 | W1–W11, D1–D4 | `Tests_World.cs`, `Tests_WorldEdge.cs`, `Tests_P4.cs` | World detection, lock, intercept, airburst, reroute, terminal handoff, NPC abstract defense, datalink, settlement defense, hidden tracks, pod ghost tracks, ETA at every speed |
 | A1–A2, X1 | `Tests_AirAlert.cs`, `Tests_DevTools.cs` | NPC alert stages and blockade; debug action categories |
 | K1–K15 | `Tests_Strike.cs` | Wave strike P0–P4 ([doc](../../docs/BVR_波次打擊規劃.md)) |
-| N1–N6 | `Tests_FieldLaunchSite.cs` | Field launch site layout, incident, gunners, alert throttle, site kept while colonists are on it, radars required + re-entry block |
+| N1–N11 | `Tests_FieldLaunchSite.cs` | Field launch site layout, incident, gunners, alert throttle, site kept while colonists are on it, radars required + re-entry block; early launch site fires and its incident gates |
 | G1 | `Tests_Assembly.cs` | God-mode instant assembly |
 | T1–T13 | `Tests_Generations.cs` | Three-generation equipment, manned launchers, research tree, Sabre ([doc](../../docs/三代裝備體系_實作計畫.md)) |
 | I1–I8 | `Tests_InterceptFx.cs` | Intercept FX ([doc](../../docs/攔截殘骸特效_實作與技術美術計畫.md)) |
 | V0–V8 | `Tests_LaunchFx.cs` | Launch FX, lighting, missile size tuner ([doc](../../docs/導彈發射特效_重製計畫.md)) |
-| F1–F12 | `Tests_MissileFlight.cs` | Skyfaller → Projectile migration ([doc](../../docs/Missile_Skyfaller轉Projectile_計畫.md)) |
+| F1–F13 | `Tests_MissileFlight.cs` | Skyfaller → Projectile migration ([doc](../../docs/Missile_Skyfaller轉Projectile_計畫.md)) |
 | R1–R7 | `Tests_Artillery.cs` | Empero long-range gun, ranging / fire-for-effect modes, heavy mortar with vanilla switchable shells |
 | E1–E13 | `Tests_ElectronicWarfare.cs` | War room console, jammer station, long-range radar, power levels, ROE ([doc](../../docs/電子戰建築_實作計畫.md)) |
 | AB1–AB3 | `Tests_AssemblyBench.cs` | Assembly bench ([doc](../../docs/導彈組裝台與裝配方案_實作計畫.md)) |
 | VR1 | `Tests_VacuumRoom.cs` | Vacuum sealed room terrain, room reuse, landfill owner and old ownerless filled entrances |
+| TD1–TD5 | `Tests_SiteDuel.cs` | Two NPC field launch sites fight each other: mutual exchange, strike to site destruction, a mapless site on the abstract layer, a jammer at one site, save/load mid-fight. Writes `site_duel_<id>_timeline.tsv` and `_events.tsv`. A test-only Harmony postfix picks the target (the mod has no NPC-versus-NPC targeting); everything after target selection is production code. |
 | L1–L3 | `Tests_Seekers.cs`, `Tests_WorldEdge.cs`, `Tests_MissileFlight.cs` | Save/load with tracks in flight; old skyfaller-era saves. L3 is last (it reloads); run it alone with `-Only L3` if a third-party mod crashes on reload |
 
 ## Test environment

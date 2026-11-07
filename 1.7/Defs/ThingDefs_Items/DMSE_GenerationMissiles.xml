@@ -356,6 +356,81 @@
     </inspectorTabs>
   </ThingDef>
 
+  <!-- ==================== 先進反艦巡航導彈「縞瑪瑙」====================
+       以白蛉為底的 T2 彈：市值、耐久、質量為白蛉 2 倍，配方走 T2 材料。研究在白蛉（反艦＋進階導彈工程）之上再要相控陣，不必走到先進導彈工程。 -->
+  <ThingDef ParentName="DMSE_ResourceBase">
+    <defName>DMSE_Missile_Oniks</defName>
+    <label>advanced anti-ship cruise missile</label>
+    <description>An advanced ramjet-powered anti-ship cruise missile. It is faster, harder to detect and longer-ranged than older supersonic designs, hits about twice as hard, and fires from inclined launchers and vertical launch silos alike. It is expensive, though far cheaper than a hypersonic missile.</description>
+    <descriptionHyperlinks>
+      <ThingDef>DMSE_Building_MediumVLS</ThingDef>
+      <ThingDef>DMSE_Building_Scorer</ThingDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Things/Missile/Oniks/skyFaller</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(3.71,3.71)</drawSize>
+      <drawOffset>(0,0,1.4)</drawOffset>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>1</stackLimit>
+    <tickerType>Rare</tickerType>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <MarketValue>6400</MarketValue>
+      <Mass>1000</Mass>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>10.0</DeteriorationRate>
+    </statBases>
+    <costList>
+      <Chemfuel>270</Chemfuel>
+      <DMSE_TantastenAlloy>50</DMSE_TantastenAlloy>
+      <DMSE_Graphene>65</DMSE_Graphene>
+      <ComponentSpacer>4</ComponentSpacer>
+    </costList>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <effectWorking>Smith</effectWorking>
+      <soundWorking>Recipe_Smith</soundWorking>
+      <recipeUsers Inherit="False">
+        <li>DMS_TableMachinePrinter</li>
+      </recipeUsers>
+      <researchPrerequisites>
+        <li>DMSE_AntishipMissiles</li>
+        <li>DMSE_IntegratedCircuits</li>
+        <li>DMSE_IntegratedAirDefense</li>
+      </researchPrerequisites>
+      <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
+    </recipeMaker>
+    <modExtensions>
+      <li Class="DMSE.MissileRoleExtension">
+        <role>Strike</role>
+      </li>
+    </modExtensions>
+    <comps>
+      <li Class="DMSE.CompProperties_Renameable" />
+      <li Class="DMSE.CompProperties_MissileConfig">
+        <defaultBody>DMSE_MissileBody_Oniks</defaultBody>
+      </li>
+      <li Class="DMSE.CompProperties_DurabilityDecay">
+        <hitPointsPerDay>5</hitPointsPerDay>
+        <destroyWhenDepleted>true</destroyWhenDepleted>
+        <shelterBuildings>
+          <li>DMSE_MissileAssemblyBench</li>
+          <li>DMSE_CruiseMissileRack</li>
+          <li>DMSE_MissileRack</li>
+          <li>DMSE_Building_Scorer</li>
+          <li>DMSE_Building_MediumVLS</li>
+        </shelterBuildings>
+      </li>
+    </comps>
+    <inspectorTabs>
+      <li>DMSE.ITab_MissileAssembly</li>
+    </inspectorTabs>
+  </ThingDef>
+
   <!-- ==================== 高超音速反艦導彈「鷹擊」==================== -->
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_Missile_Yj</defName>

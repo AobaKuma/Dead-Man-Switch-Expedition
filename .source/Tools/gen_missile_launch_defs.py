@@ -43,6 +43,7 @@ SPECS = [
     ("Maverick",          "DMSE_SkyFaller_LightMissile",     "Things/Missile/AGM65/skyFaller",              ("hot", 0.85)),
     ("Sparrow",           "DMSE_SkyFaller_Interceptor",      "Things/Missile/Aim120/skyFaller",             ("hot", 1.0)),
     ("Moskit",            "DMSE_SkyFaller_CruiseMissile",    "Things/Missile/Moskit/skyFaller",             ("hot", 1.0)),   # booster
+    ("Oniks",             "DMSE_SkyFaller_CruiseMissile",    "Things/Missile/Oniks/skyFaller",              ("hot", 1.05)),  # booster
     ("Yj",                "DMSE_SkyFaller_CruiseMissile",    "Things/Missile/YJ20/skyFaller",             ("hot", 1.1)),
     ("Tochka",            "DMSE_SkyFaller_BallisticMissile", "Things/Missile/Tochka/skyFaller_incoming",    ("hot", 1.1)),   # off a launcher vehicle
 ]
@@ -63,6 +64,8 @@ FX_PROFILES = {
     "Maverick": "SolidBooster",
     "Sparrow": "SolidBooster",
     "Moskit": "CruiseBooster",
+    # Oniks has its own profile: side/retro thrusters, forward jettison of the turning thruster, main thrust (§3.6).
+    "Oniks": "Oniks",
     "Yj": "CruiseBooster",
     "Tochka": "SolidBooster",
 }
@@ -73,8 +76,28 @@ FLIGHT_OVERRIDES = {
     "DMSE_SkyFaller_BallisticMissile": {"handoffMaxCells": "22", "maxTurnRate": "1.2"},
 }
 
+# Per-body flight overrides (docs/導彈轉向特效_實作規格.md §4): (tag, value, comment). A tag the template already has is
+# replaced in place, anything else is appended; the comment (or None) goes on the line before the tag.
+BODY_FLIGHT_OVERRIDES = {
+    "Oniks": [
+        ("rotationCurve", "<points>\n<li>(0,0)</li>\n<li>(0.35,-3)</li>\n<li>(0.65,-2)</li>\n<li>(1,0)</li>\n</points>",
+         "影片裡是筆直往上爬：升空段幾乎不後仰（原本 -25° 會讓彈體歪、煙柱折成 S 形），轉向交給巡航段。"),
+        ("courseTurnsIndependently", "true", "航向與機頭分開：煙跡是一條弧、不會折返；對準後才加速（主助推點火）。"),
+        ("climbWhileTurning", "true", "機頭轉向期間繼續垂直爬升，轉得差不多了才彎向目標方位（2026-11-07 使用者要求；靠近地圖邊緣退回弧線）。"),
+        ("maxTurnRate", "1.8", "§11（2026-11-07）放慢到約 1.5–2 秒（接近影片），六下點放、反推、拋棄、主推力每一幕都看得到。"),
+        ("turnRampTicks", "12", None),
+        ("turnNaturalFrequency", "0.5", None),
+        ("turnDampingRatio", "0.6", None),
+        ("turnMaxAcceleration", "0.35", None),
+    ],
+}
+
+# Per-body launch comp overrides: replaced in place when the template comp already has the tag, appended otherwise.
 LAUNCH_EFFECT_OVERRIDES = {
     "Shahed": {"burnDurationTicks": "30", "effectScale": "0.35"},
+    # The art is drawn so both sprites line up; the sustainer's tail is 138 of 512 px below the sprite centre at drawSize 3.71.
+    # offsetY: the main plume starts at the booster bottom, 506 of 512 px (-1.81 cells) on skyFaller.png.
+    "Oniks": {"offsetY": "-1.81", "separatedTexPath": "Things/Missile/Oniks/skyFaller_incoming", "separatedOffsetY": "-0.95"},
 }
 
 SHARED_COMP_TAGS = ["ignitionSound", "ExhaustFleck", "ExhaustCurve", "SmokeFleck", "SmokeCurve", "launchEffectTrigger", "offsetY", "effecterDef"]
@@ -112,6 +135,16 @@ def child(block, tag):
 def child_raw(block, tag):
     m = re.search(r"<%s\b[^>]*>.*?</%s>|<%s\b[^>]*/>" % (tag, tag, tag), block, re.S)
     return m.group(0) if m else None
+
+
+def set_tag(xml, tag, value, comment=None):
+    """Replace <tag>…</tag> in xml with value, or append it when absent; comment (if any) goes right before the tag."""
+    inner = "\n%s\n" % value.strip() if "\n" in value else value
+    new = ("<!-- %s -->\n" % comment if comment else "") + "<%s>%s</%s>" % (tag, inner, tag)
+    pattern = r"<%s>.*?</%s>" % (re.escape(tag), re.escape(tag))
+    if re.search(pattern, xml, re.S):
+        return re.sub(pattern, lambda _: new, xml, count=1, flags=re.S)
+    return xml.rstrip() + "\n" + new + "\n"
 
 
 def reindent(xml, indent):
@@ -275,13 +308,16 @@ def main():
         labels[name] = incoming_name
         flight = child(template, "skyfaller")
         flight = flight.rstrip() + "".join("\n<%s>%s</%s>" % (k, v, k) for k, v in FLIGHT_OVERRIDES.get(template_name, {}).items()) + "\n"
+        for tag, value, comment in BODY_FLIGHT_OVERRIDES.get(suffix, []):
+            flight = set_tag(flight, tag, value, comment)
         comp = comp_xml(template, effect)
         if comp:
-            extra = "".join("<%s>%s</%s>\n" % (key, value, key)
-                            for key, value in LAUNCH_EFFECT_OVERRIDES.get(suffix, {}).items())
+            body = comp.removesuffix("</li>")
+            for key, value in LAUNCH_EFFECT_OVERRIDES.get(suffix, {}).items():
+                body = set_tag(body, key, value)
             if suffix in FX_PROFILES:
-                extra += "<fxProfile>DMSE_LaunchFx_%s</fxProfile>\n" % FX_PROFILES[suffix]
-            comp = comp.removesuffix("</li>") + extra + "</li>"
+                body = set_tag(body, "fxProfile", "DMSE_LaunchFx_%s" % FX_PROFILES[suffix])
+            comp = body.rstrip() + "\n</li>"
         note = ("copy of %s" % template_name) if tex is None else ("%s flight, %s" % (template_name, "%s launch %s" % effect if effect else "template launch"))
         parts.append("  <!-- %s: %s -->" % (body_name, note))
         parts.append('  <ThingDef ParentName="DMSE_MissileLaunchProjectileBase">')

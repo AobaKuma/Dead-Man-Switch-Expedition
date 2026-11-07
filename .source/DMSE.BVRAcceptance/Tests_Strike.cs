@@ -524,10 +524,15 @@ namespace DMSE.BVRAcceptance
                 + $"forced {researcher.CurJob?.playerForced}, reissued {reissued}, research speed {researcher.GetStatValue(StatDefOf.ResearchSpeed):0.00}, "
                 + $"work {draft.computeWorkDone:0}/{draft.ComputeWorkTotal:0}, needs {console.NeedsManualComputation}, active {console.Active}, "
                 + $"awake {researcher.Awake()}, at {researcher.Position} (table {table.Position}, cell {table.InteractionCell})";
-            var waitSome = new WaitUntil(() => { KeepComputing(); return draft.computeWorkDone > 800f; }, Budget(800f));
+            // With -Only the colonist still stands at the map centre, a long walk from the pad (about 13 ticks a cell, more on rough ground).
+            int walk = Mathf.CeilToInt(researcher.Position.DistanceTo(table.InteractionCell) * 30f);
+            var waitSome = new WaitUntil(() => { KeepComputing(); return draft.computeWorkDone > 800f; }, Budget(800f) + walk);
             yield return waitSome;
             t.Note(Diagnose());
             t.Require(!waitSome.TimedOut, "the researcher computes at the table");
+            Find.CameraDriver.SetRootPosAndSize(table.DrawPos, 12f);
+            yield return new WaitFrames(30);
+            t.Screenshot("planning_table");
             t.Check(researcher.CurJobDef == DMSE_StrikeDefOf.DMSE_ComputeFiringSolution, "the researcher is doing the firing-solution job");
             float kept = draft.computeWorkDone;
             researcher.jobs.EndCurrentJob(Verse.AI.JobCondition.InterruptForced);

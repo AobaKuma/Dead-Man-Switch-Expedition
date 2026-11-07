@@ -26,6 +26,11 @@ static partial class Test
         Run("StrikeP3", StrikeP3);
         Run("StrikeP4", StrikeP4);
         Run("MissileContent", MissileContent);
+        Run("MissileBehaviors", MissileBehaviors);
+        Run("AirDefenseFramework", AirDefenseFramework);
+        Run("InterceptAltitude", InterceptAltitude);
+        Run("AirEffector", AirEffector);
+        Run("MissileDoctrines", MissileDoctrines);
         Run("AreaDefense", AreaDefense);
         Run("AssemblyBench", AssemblyBench);
         Run("InfoCard", InfoCard);

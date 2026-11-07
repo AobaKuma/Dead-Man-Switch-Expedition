@@ -22,7 +22,7 @@
     <passability>PassThroughOnly</passability>
     <tickerType>Normal</tickerType>
     <drawerType>RealtimeOnly</drawerType>
-    <designationCategory>DMS_Category</designationCategory>
+    <designationCategory>DMSE_BVRCategory</designationCategory>
     <selectable>true</selectable>
     <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
     <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
@@ -40,7 +40,7 @@
     <passability>PassThroughOnly</passability>
     <tickerType>Normal</tickerType>
     <drawerType>RealtimeOnly</drawerType>
-    <designationCategory>DMS_Category</designationCategory>
+    <designationCategory>DMSE_BVRCategory</designationCategory>
     <selectable>true</selectable>
     <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
     <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>

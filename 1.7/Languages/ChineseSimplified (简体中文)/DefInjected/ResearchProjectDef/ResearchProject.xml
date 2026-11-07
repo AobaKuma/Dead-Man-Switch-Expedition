@@ -41,7 +41,7 @@
   <DMSE_IntegratedAirDefense.description>解锁相控阵雷达、最高容量的整合防空系统、红外成像与电磁信号寻标器，以及可攻击电网的石墨纤维载荷。需要雷达探测网与火控网；只有实际使用航天特种材料的装备才需要航天应用研究。</DMSE_IntegratedAirDefense.description>
 
   <DMSE_AntishipMissiles.label>反舰导弹</DMSE_AntishipMissiles.label>
-  <DMSE_AntishipMissiles.description>解锁反舰巡飞弹，以及用于追踪世界地图移动目标的反舰主动雷达寻标器。超音速反舰导弹另需进阶导弹工程，高超音速反舰导弹另需先进导弹工程。</DMSE_AntishipMissiles.description>
+  <DMSE_AntishipMissiles.description>解锁反舰巡飞弹，以及用于追踪世界地图移动目标的反舰主动雷达寻标器。超音速反舰导弹另需进阶导弹工程，先进反舰巡航导弹另需进阶导弹工程及相控阵与整合防空，高超音速反舰导弹另需先进导弹工程。</DMSE_AntishipMissiles.description>
 
   <DMSE_ElectronicWarfare.label>电子战</DMSE_ElectronicWarfare.label>
   <DMSE_ElectronicWarfare.description>解锁战情终端与长程预警雷达。战情终端可设定交战限制，并遥控全图的雷达与干扰机；长程预警雷达以分辨率和全部火控通道，换取 40 格的早期预警。</DMSE_ElectronicWarfare.description>

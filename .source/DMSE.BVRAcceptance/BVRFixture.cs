@@ -230,7 +230,7 @@ namespace DMSE.BVRAcceptance
         public static void PinLegacyRadarValues()
         {
             CaptureShippedRadarValues();
-            Override(() => SetRadarValues(2, 2, 2), UseShippedRadarValues);
+            Override(() => { SetRadarValues(2, 2, 2); SetAltitudeLimits(false); }, UseShippedRadarValues);
         }
 
         /// <summary>
@@ -241,9 +241,15 @@ namespace DMSE.BVRAcceptance
         {
             CaptureShippedRadarValues();
             SetRadarValues(shippedPhaseArray, shippedEarlyFc, shippedNpcBase);
+            SetAltitudeLimits(true);
         }
 
         private static int shippedPhaseArray = -1, shippedEarlyFc = -1, shippedNpcBase = -1;
+        private static readonly Dictionary<CompProperties_FireControlRadar, (float min, float max)> shippedAltitudes
+            = new Dictionary<CompProperties_FireControlRadar, (float, float)>();
+
+        private static IEnumerable<CompProperties_FireControlRadar> AllFireControl => DefDatabase<ThingDef>.AllDefsListForReading
+            .Where(d => d.comps != null).SelectMany(d => d.comps.OfType<CompProperties_FireControlRadar>());
 
         private static CompProperties_FireControlRadar PhaseArrayFc => PhaseArray.GetCompProperties<CompProperties_FireControlRadar>();
         private static CompProperties_FireControlRadar EarlyFc => EarlyFireControl.GetCompProperties<CompProperties_FireControlRadar>();
@@ -256,6 +262,17 @@ namespace DMSE.BVRAcceptance
             shippedPhaseArray = PhaseArrayFc.maxTargets;
             shippedEarlyFc = EarlyFc.maxTargets;
             shippedNpcBase = NpcBaseDefense.channels;
+            foreach (CompProperties_FireControlRadar fc in AllFireControl) { shippedAltitudes[fc] = (fc.minInterceptAltitude, fc.maxInterceptAltitude); }
+        }
+
+        /// <summary>Mechanics tests predate intercept altitudes and fly a 60 m cruise missile at every radar.</summary>
+        private static void SetAltitudeLimits(bool shipped)
+        {
+            foreach (KeyValuePair<CompProperties_FireControlRadar, (float min, float max)> pair in shippedAltitudes)
+            {
+                pair.Key.minInterceptAltitude = shipped ? pair.Value.min : 0f;
+                pair.Key.maxInterceptAltitude = shipped ? pair.Value.max : -1f;
+            }
         }
 
         private static void SetRadarValues(int phaseArray, int earlyFc, int npcBase)

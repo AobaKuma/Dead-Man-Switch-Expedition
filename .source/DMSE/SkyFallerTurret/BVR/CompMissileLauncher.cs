@@ -1,4 +1,7 @@
 using System.Collections.Generic;
+using AirEffectorShot = Fortified.AirEffectorShot;
+using AirEngagement = Fortified.AirEngagement;
+using IAirEffector = Fortified.IAirEffector;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -32,8 +35,19 @@ namespace DMSE
     /// 世界航跡由 WorldComponent_BVRNetwork 呼叫 FireWorldInterceptor：消耗實體彈、生成純視覺升空彈，
     /// 世界物件接手會合結算；空投與舊波次仍由 MapComponent_BVRCombat 呼叫 FireInterceptor。
     /// </summary>
-    public class CompMissileLauncher_Interceptor : CompMissileLauncher
+    public class CompMissileLauncher_Interceptor : CompMissileLauncher, IAirEffector
     {
+        // ---- IAirEffector：世界層接戰 ----
+        public Thing Source => parent;
+        public bool UsesFireControl => true;
+        public bool Armed => Props.interceptorSkyfaller != null && Active;
+        public int ReadyTick => CooldownUntil;
+        public bool CanFire(int now) => ReadyToFire(now);
+        public bool CanEngage(AirEngagement engagement) => true;
+        public AirEffectorShot PrepareShot(AirEngagement engagement) => AirDefenseHooks.ShotFrom(GetLoadedMissileConfig());
+        public bool TryFire(AirEngagement engagement, int now, Vector3 meetingPoint)
+            => parent.Map != null && FireWorldInterceptor(now, MissileProjectileMaker.WorldInterceptBearing(parent.Map.Tile, meetingPoint));
+
         public CompProperties_MissileLauncher Props => (CompProperties_MissileLauncher)props;
 
         protected override int LaunchCooldownTicks => Props.reloadCooldownTicks;

@@ -69,12 +69,13 @@ namespace DMSE
                     {
                         // 地圖外攔截光效與音效（中過程）。
                         MapComponent_InterceptEffects.Trigger(Map, InterceptEventData.From(target, Map, terminal: false, IntVec3.Invalid));
-                        comp.RemoveTarget(targetId); // 中過程攔截成功：乾淨消滅，不留殘骸。
+                        comp.ResolveMidcourseHit(target, hitChance, hit: true); // 中過程攔截成功：乾淨消滅，不留殘骸。
                         if (Prefs.DevMode) { Log.Message($"[DMSE BVR] 中過程攔截成功 target#{targetId}"); }
                     }
-                    else if (Prefs.DevMode)
+                    else
                     {
-                        Log.Message($"[DMSE BVR] 中過程攔截失敗 target#{targetId}");
+                        comp.ResolveMidcourseHit(target, hitChance, hit: false);
+                        if (Prefs.DevMode) { Log.Message($"[DMSE BVR] 中過程攔截失敗 target#{targetId}"); }
                     }
                 }
             }

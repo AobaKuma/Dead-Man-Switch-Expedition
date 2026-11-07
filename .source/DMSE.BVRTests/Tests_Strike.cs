@@ -56,6 +56,44 @@ static partial class Test
         Check(rail.OwnsRound(strike), "a loaded strike round is owned");
         Check(rail.SalvoIntervalTicks == 30, "default ripple interval");
 
+        // NPC missile site: configurable interceptors (Stinger, Sparrow) are not attack rounds, and pure SAM platforms keep their magazine.
+        ThingDef WithComp(MissileRole? role)
+        {
+            ThingDef def = RoleDef(role);
+            def.comps = new List<CompProperties> { new CompProperties_MissileConfig() };
+            return def;
+        }
+        ThingDef WithItemExtension(MissileRole role)
+        {
+            ThingDef def = RoleDef(role);
+            def.comps = new List<CompProperties>();
+            def.modExtensions.Add(new MissileItemExtension());
+            return def;
+        }
+        Check(!MissileBaseRackSupplyUtility.IsStrikeRound(Round(WithComp(MissileRole.Interceptor))), "site AI: a configurable interceptor is not a strike round");
+        Check(!MissileBaseRackSupplyUtility.IsStrikeRound(Round(WithItemExtension(MissileRole.Interceptor))), "site AI: a fixed-config interceptor is not a strike round");
+        Check(MissileBaseRackSupplyUtility.IsStrikeRound(Round(WithComp(null))), "site AI: an unmarked configurable missile is a strike round");
+        Check(MissileBaseRackSupplyUtility.IsStrikeRound(Round(WithComp(MissileRole.Dual))), "site AI: a dual-role missile is a strike round");
+        Check(MissileBaseRackSupplyUtility.IsStrikeRound(Round(WithItemExtension(MissileRole.Strike))), "site AI: a fixed-config strike missile is a strike round");
+        ThingDef noMissileData = RoleDef(MissileRole.Strike);
+        noMissileData.comps = new List<CompProperties>();
+        Check(!MissileBaseRackSupplyUtility.IsStrikeRound(Round(noMissileData)), "site AI: an item with no missile data is not a strike round");
+        Check(!MissileBaseRackSupplyUtility.IsStrikeRound(null), "site AI: no missile, no strike round");
+
+        Building Platform(params ThingComp[] comps)
+        {
+            var building = new Building { def = plain, thingIDNumber = nextThingId++ };
+            // As in a real game: a thing without comps has a null list, and GetComp indexes a non-null one.
+            Field(building, "comps", comps.Length == 0 ? null : comps.ToList());
+            return building;
+        }
+        var samComp = new CompMissileLauncher_Interceptor();
+        var railComp = new CompMissileLauncher_Rail();
+        Check(MissileBaseRackSupplyUtility.IsAirDefenseOnly(Platform(samComp)), "site AI: a SAM-only launcher is air defense only");
+        Check(!MissileBaseRackSupplyUtility.IsAirDefenseOnly(Platform(samComp, railComp)), "site AI: a shared rail and SAM launcher may still strike");
+        Check(!MissileBaseRackSupplyUtility.IsAirDefenseOnly(Platform(railComp)), "site AI: a rail is not air defense only");
+        Check(!MissileBaseRackSupplyUtility.IsAirDefenseOnly(Platform()), "site AI: a plain depot is not air defense only");
+
         // Ballistic silo: the platform itself is the round once assembled.
         var silo = Round(plain);
         var ballistic = new CompMissileLauncher_Ballistic { parent = silo, props = new CompProperties_BallisticLauncher() };

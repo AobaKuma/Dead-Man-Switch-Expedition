@@ -2,18 +2,17 @@
 <Defs>
 
   <!-- 電子戰三類建築（docs/電子戰建築_實作計畫.md）：長程雷達給時間 → 戰情終端給規則 → 干擾機給優勢。
-       貼圖都是佔位（FacilityBase_Green／Radar_FC／Radar_EW），待換正式美術。 -->
+       戰情終端已換正式貼圖（FireControlConsole）；干擾機與長程雷達仍是佔位（FacilityBase_Green／Radar_FC／Radar_EW），待換正式美術。 -->
 
   <!-- ==================== 戰情終端 ==================== -->
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_WarRoomConsole</defName>
     <label>war room console</label>
-    <description>A command console for this map's air defense. It sets rules of engagement for both local and world-map interception, and remotely switches and throttles every radar and jammer on the map, including one-touch emissions silence. None of that needs a crew.\n\nAn operator adds a skill bonus while seated: Intellectual extends radar search range, Shooting shortens missile launcher cooldown.\n\nThe rules only apply while a console stands on the map.</description>
-    <!-- 佔位貼圖：待換戰情終端美術。 -->
+    <description>A command console for this map's air defense. It sets rules of engagement for both local and world-map interception, and remotely switches and throttles every radar and jammer on the map, including one-touch emissions silence. None of that needs a crew.\n\nAn operator adds a skill bonus while seated: Intellectual extends radar search range, Shooting shortens missile launcher cooldown. Operators at several consoles add their skill levels together, up to a total of 40.\n\nThe rules only apply while a console stands on the map.</description>
     <graphicData>
-      <texPath>Things/Building/FacilityBase_Green</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(3,3)</drawSize>
+      <texPath>Things/Building/FireControlConsole/building</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(4,3)</drawSize>
       <damageData>
         <cornerTL>Damage/Corner</cornerTL>
         <cornerTR>Damage/Corner</cornerTR>
@@ -28,9 +27,10 @@
     <pathCost>42</pathCost>
     <canOverlapZones>false</canOverlapZones>
     <rotatable>true</rotatable>
-    <size>(3,3)</size>
+    <size>(3,2)</size>
     <hasInteractionCell>true</hasInteractionCell>
-    <interactionCellOffset>(0,0,-2)</interactionCellOffset>
+    <!-- 操作面板在貼圖 north 的下緣，操作員站在面板前。 -->
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
     <tickerType>Normal</tickerType>
     <statBases>
       <MaxHitPoints>400</MaxHitPoints>
@@ -48,7 +48,7 @@
     <researchPrerequisites>
       <li>DMSE_ElectronicWarfare</li>
     </researchPrerequisites>
-    <designationCategory>DMS_Category</designationCategory>
+    <designationCategory>DMSE_BVRCategory</designationCategory>
     <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
     <inspectorTabs>
       <li>DMSE.ITab_WarRoom</li>
@@ -106,7 +106,7 @@
     <researchPrerequisites>
       <li>DMSE_ElectronicAttack</li>
     </researchPrerequisites>
-    <designationCategory>DMS_Category</designationCategory>
+    <designationCategory>DMSE_BVRCategory</designationCategory>
     <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
     <comps>
       <li Class="CompProperties_Forbiddable" />
@@ -185,7 +185,7 @@
     <researchPrerequisites>
       <li>DMSE_ElectronicWarfare</li>
     </researchPrerequisites>
-    <designationCategory>DMS_Category</designationCategory>
+    <designationCategory>DMSE_BVRCategory</designationCategory>
     <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
     <comps>
       <li Class="CompProperties_Forbiddable" />

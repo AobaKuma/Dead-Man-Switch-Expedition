@@ -32,7 +32,38 @@ namespace DMSE.BVRAcceptance
             new AcceptanceTest("F10", "Missile damage is attributed to the launching building, on the same map and across maps", LauncherAttribution),
             new AcceptanceTest("F11", "Interceptors turn after the ascent toward the incoming bearing (missile entry heading, pod landing cell, world meeting point) and fly out of the map", InterceptorBearing),
             new AcceptanceTest("F12", "Launches in the same tick are staggered: each map spawns its missiles at least SpacingTicks apart; backblast fires at the spawn", LaunchStagger),
+            new AcceptanceTest("F13", "Each missile body shows its own world-map icon; bodies without one use the world object's icon", BodyExpandingIcons),
         };
+
+        // ==================================================================
+        //  F13: world-map icon per missile body
+        // ==================================================================
+
+        public static IEnumerable<Wait> BodyExpandingIcons(TestContext t)
+        {
+            PlanetTile dest = TileAtDistance(8f, 12f);
+            t.Require(dest.Valid, "a destination tile exists");
+            Texture2D fallback = DefDatabase<WorldObjectDef>.GetNamed("DMSE_WorldObject_CruiseMissile").ExpandingIconTexture;
+            t.Require(fallback != null, "the world object's own icon loads");
+            int custom = 0;
+            foreach (MissileBodyDef body in DefDatabase<MissileBodyDef>.AllDefs)
+            {
+                ScorerProjectile_WorldObject wo = LaunchPlayerMissile(dest, null, new MissileConfig(body));
+                if (body.expandingIconPath.NullOrEmpty())
+                {
+                    t.Check(wo.ExpandingIcon == fallback, $"{body.defName} uses the world object's icon");
+                }
+                else
+                {
+                    custom++;
+                    t.Check(body.ExpandingIcon != null && body.ExpandingIcon != fallback, $"{body.defName}: {body.expandingIconPath} loads");
+                    t.Check(wo.ExpandingIcon == body.ExpandingIcon, $"{body.defName} track shows its own icon");
+                }
+                wo.Destroy();
+            }
+            t.Check(custom == 15, $"every body but the Tomahawk sets its own icon ({custom})");
+            yield break;
+        }
 
         // ==================================================================
         //  F11: interceptors turn toward the incoming bearing

@@ -33,4 +33,7 @@
   <DMSE.Blockade.GravshipHit>{0} was hit by {1}'s air defense. {2} structures aboard were damaged.</DMSE.Blockade.GravshipHit>
   <DMSE.Blockade.TransferHitLabel>Transfer ship hit</DMSE.Blockade.TransferHitLabel>
   <DMSE.Blockade.TransferHitText>{0} was hit by {1}'s air defense while flying through its blockade. Explosions tore through {2} spots aboard.</DMSE.Blockade.TransferHitText>
+  <DMSE.BVR.World.TrackAltitude>Flight altitude: {0}</DMSE.BVR.World.TrackAltitude>
+  <DMSE.BVR.World.AltitudeDenied>Outside intercept altitude</DMSE.BVR.World.AltitudeDenied>
+  <DMSE.BVR.FireControlAltitude>Intercept altitude: {0} – {1}</DMSE.BVR.FireControlAltitude>
 </LanguageData>

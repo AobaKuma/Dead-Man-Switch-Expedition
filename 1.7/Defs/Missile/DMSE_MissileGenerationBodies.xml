@@ -20,6 +20,7 @@
          DMSE_MissileBody_Maverick  ← 小牛（AGM-65）    ← 輕型對地彈
          DMSE_MissileBody_Sparrow   ← 麻雀（AIM-7）     ← 輕型半主動攔截彈
          DMSE_MissileBody_Moskit    ← 白蛉（P-270）     ← 中型反艦彈
+         DMSE_MissileBody_Oniks     ← 縞瑪瑙（P-800）   ← 中型先進反艦巡航彈
          DMSE_MissileBody_Yj        ← 鷹擊（YJ-12 級）  ← 中型高超音速反艦彈
          DMSE_MissileBody_Tochka    ← 圓點U（9K79-1）   ← 中型階（2026-10-27 由彈道階改），傾斜／垂直發射
 
@@ -48,6 +49,7 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_LegacyBallistic</defName>
     <label>legacy ballistic missile body</label>
+    <expandingIconPath>UI/DMSE/TravelingMissile_Expanding_Ballistic</expandingIconPath>
     <designWord>Legacy</designWord>
     <namer>DMSE_Namer_LegacyBallistic</namer>
     <description>An early liquid-fueled ballistic rocket. It is slow to prepare and wildly inaccurate, but it can be built from industrial materials long before modern guidance exists.\n\nAssembled directly on a launch tower or in a silo.</description>
@@ -92,6 +94,7 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_LegacyLoiter</defName>
     <label>legacy loitering munition</label>
+    <expandingIconPath>UI/DMSE/TravelingMissile_Expanding_V1</expandingIconPath>
     <description>An early pulsejet loitering munition flown along a preset heading by a clockwork autopilot. It is slow, loud and inaccurate, but simple enough to build from little more than steel and fuel.\n\nComes in a fixed configuration and cannot be customized.</description>
     <sizeClass>Loitering</sizeClass>
     <launchMode>Tilt</launchMode>
@@ -122,6 +125,7 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_LegacyInterceptor</defName>
     <label>legacy interceptor loitering munition</label>
+    <expandingIconPath>UI/DMSE/TravelingMissile_Expanding_Shahed</expandingIconPath>
     <description>An early guided interceptor with four oversized fins and a radio command link. After launch it circles over the target area until an operator steers it onto an incoming threat. It is slow, short-ranged and inaccurate, but it is a true guided interceptor.\n\nComes in a fixed configuration and cannot be customized.</description>
     <!-- 巡飛階：與巡飛彈發射軌／旋轉架的 sizeClass 相容；它不是輕型防空彈，而是滯空攔截彈 -->
     <sizeClass>Loitering</sizeClass>
@@ -154,6 +158,7 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_AdvancedLight</defName>
     <label>advanced general-purpose missile body</label>
+    <expandingIconPath>UI/DMSE/TravelingMissile_Expanding_AGM65</expandingIconPath>
     <designWord>Multirole</designWord>
     <namer>DMSE_Namer_AdvancedLight</namer>
     <description>A compact multi-role missile airframe. It is small enough for portable and vehicle launchers, yet more accurate and able to carry more than older light missiles.\n\nHas slots for a warhead, guidance and payload.</description>
@@ -196,6 +201,7 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_AdvancedBallistic</defName>
     <label>advanced ballistic missile body</label>
+    <expandingIconPath>UI/DMSE/TravelingMissile_Expanding_Ballistic</expandingIconPath>
     <designWord>Strategic</designWord>
     <namer>DMSE_Namer_AdvancedBallistic</namer>
     <description>A modern multi-stage strategic missile. It climbs to the edge of space, then drops its warhead onto a single building rather than a whole district.\n\nAssembled directly in a strategic silo or on a launch tower, and never exists as an item.</description>
@@ -279,6 +285,7 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_Stinger</defName>
     <label>light surface-to-air missile body</label>
+    <expandingIconPath>UI/DMSE/TravelingMissile_Expanding_Ballistic</expandingIconPath>
     <designWord>SAM</designWord>
     <namer>DMSE_Namer_Stinger</namer>
     <description>A slim, man-portable heat-seeking anti-air missile. It has a short range and a small warhead, and is a less accurate interceptor than a full-size missile, but it fits in almost any launcher.\n\nHas slots for a warhead and guidance.</description>
@@ -319,6 +326,7 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_Maverick</defName>
     <label>ground-attack missile body</label>
+    <expandingIconPath>UI/DMSE/TravelingMissile_Expanding_AGM65</expandingIconPath>
     <designWord>Strike</designWord>
     <namer>DMSE_Namer_Maverick</namer>
     <description>A light ground-attack missile airframe, built to put a heavy warhead on a single target.\n\nHas slots for a warhead, guidance and payload.</description>
@@ -359,6 +367,7 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_Sparrow</defName>
     <label>advanced surface-to-air missile body</label>
+    <expandingIconPath>UI/DMSE/TravelingMissile_Expanding_Ballistic</expandingIconPath>
     <designWord>Area SAM</designWord>
     <namer>DMSE_Namer_Sparrow</namer>
     <description>A slender semi-active radar-homing missile. It keeps following the fire-control radar's signal even through hard turns, making it a much more accurate interceptor than older missiles.\n\nHas slots for a warhead, guidance and payload.</description>
@@ -401,6 +410,7 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_Moskit</defName>
     <label>supersonic anti-ship missile body</label>
+    <expandingIconPath>UI/DMSE/TravelingMissile_Expanding_Ballistic</expandingIconPath>
     <designWord>Supersonic</designWord>
     <namer>DMSE_Namer_Moskit</namer>
     <description>A ramjet-powered supersonic anti-ship missile. It skims the sea on its final approach, leaving close-in defenses only seconds to react.\n\nHas slots for a warhead, guidance, propulsion and payload. Comes with an anti-ship radar seeker.</description>
@@ -438,11 +448,55 @@
 
 
   <!-- ══════════════════════════════════════════════════════════════
+       十之二、先進反艦巡航導彈（縞瑪瑙）— 中型階，四槽。以白蛉為底，主要數值為白蛉的 2 倍（鷹擊為 3 倍），可垂直發射
+       ══════════════════════════════════════════════════════════════ -->
+  <DMSE.MissileBodyDef>
+    <defName>DMSE_MissileBody_Oniks</defName>
+    <label>advanced anti-ship cruise missile body</label>
+    <expandingIconPath>UI/DMSE/TravelingMissile_Expanding_Ballistic</expandingIconPath>
+    <designWord>Sea-Skimming</designWord>
+    <namer>DMSE_Namer_Oniks</namer>
+    <description>An advanced anti-ship cruise missile with a rocket booster and a ramjet cruise stage. It is faster, harder to detect and longer-ranged than older supersonic designs, and it fires from inclined launchers and vertical launch silos alike.\n\nHas slots for a warhead, guidance, propulsion and payload. Comes with an anti-ship radar seeker.</description>
+    <sizeClass>Medium</sizeClass>
+    <launchMode>Both</launchMode>
+    <customizeLocation>Item</customizeLocation>
+    <payloadCapacity>10</payloadCapacity>
+    <baseExplosionRadius>12</baseExplosionRadius>
+    <baseDamageDef>Bomb</baseDamageDef>
+    <baseDamageAmount>280</baseDamageAmount>
+    <baseScatter>2</baseScatter>
+    <baseWorldSpeedFactor>2.7</baseWorldSpeedFactor>
+    <!-- 射程：200 * 3.6 * 0.1944 ≈ 140 格（以洲際彈道導彈＝民兵三型 500 格為錨點分級） -->
+    <baseRange>0</baseRange>
+    <terminalUpdates>6</terminalUpdates>
+    <baseFuel>200</baseFuel>
+    <baseSpecificImpulse>3.6</baseSpecificImpulse>
+    <rangePerFuelImpulse>0.1944</rangePerFuelImpulse>
+    <assembleWorkAmount>2400</assembleWorkAmount>
+    <incomingSkyfaller>DMSE_Incoming_Oniks</incomingSkyfaller>
+    <launchProjectile>DMSE_Launch_Oniks</launchProjectile>
+    <slots>
+      <li>Warhead</li>
+      <li>Guidance</li>
+      <li>Propulsion</li>
+      <li>Payload</li>
+    </slots>
+    <defaultParts>
+      <li>DMSE_Warhead_HE</li>
+      <li>DMSE_Guidance_AntiShip</li>
+      <li>DMSE_Propulsion_Standard</li>
+      <li>DMSE_Payload_None</li>
+    </defaultParts>
+  </DMSE.MissileBodyDef>
+
+
+  <!-- ══════════════════════════════════════════════════════════════
        十一、高超音速反艦導彈（鷹擊）— 中型階，四槽，高隱身高速
        ══════════════════════════════════════════════════════════════ -->
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_Yj</defName>
     <label>hypersonic anti-ship missile body</label>
+    <expandingIconPath>UI/DMSE/TravelingMissile_Expanding_Ballistic</expandingIconPath>
     <designWord>Hypersonic</designWord>
     <namer>DMSE_Namer_Yj</namer>
     <description>A hypersonic anti-ship missile with a rocket booster and a ramjet cruise stage. Its small radar signature and very low final approach give defenders little time to respond.\n\nHas slots for a warhead, guidance, propulsion and payload. Comes with an anti-ship radar seeker.</description>
@@ -486,6 +540,7 @@
   <DMSE.MissileBodyDef>
     <defName>DMSE_MissileBody_Tochka</defName>
     <label>tactical ballistic missile body</label>
+    <expandingIconPath>UI/DMSE/TravelingMissile_Expanding_Ballistic</expandingIconPath>
     <designWord>Tactical</designWord>
     <namer>DMSE_Namer_Tochka</namer>
     <description>A solid-fuel tactical ballistic missile. It is more accurate and much quicker to prepare than early rockets, but its range falls well short of a strategic missile.\n\nHas slots for a warhead, guidance, propulsion and payload. Comes with inertial guidance.</description>
@@ -789,6 +844,32 @@
         <stealthLevel>1</stealthLevel>
         <speed>45</speed>
         <altitude>60</altitude>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- 縞瑪瑙：超音速掠海、隱身 2。 -->
+  <ThingDef ParentName="DMSE_MissileIncomingProjectileBase">
+    <defName>DMSE_Incoming_Oniks</defName>
+    <label>advanced anti-ship cruise missile (incoming)</label>
+    <thingClass>DMSE.Projectile_MissileIncoming</thingClass>
+    <graphicData>
+      <texPath>Things/Missile/Oniks/skyFaller_incoming</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>3.71</drawSize>
+    </graphicData>
+    <size>(1,1)</size>
+    <modExtensions>
+      <li Class="DMSE.MissileFlightExtension">
+        <shadowSize>(3, 3)</shadowSize>
+        <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
+        <speed>1</speed>
+      </li>
+      <li Class="DMSE.BVRTargetProps">
+        <distanceLevel>1.55</distanceLevel>
+        <stealthLevel>2</stealthLevel>
+        <speed>90</speed>
+        <altitude>50</altitude>
       </li>
     </modExtensions>
   </ThingDef>

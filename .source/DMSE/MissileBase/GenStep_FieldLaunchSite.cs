@@ -262,4 +262,22 @@ namespace DMSE
             return "DMSE.FieldLaunchSite.ArrivedLetter".Translate();
         }
     }
+
+    /// <summary>舊式導彈陣地：工業等級派系與海盜（原版海盜是太空等級，所以不能只看科技等級）。</summary>
+    public class SitePartWorker_EarlyLaunchSite : SitePartWorker_MissileBase
+    {
+        /// <summary>海盜：永久敵對且至少工業等級的人類派系（含 Biotech／Ideology 與其他模組的海盜分支；蠻族部落是新石器等級，不算）。</summary>
+        public static bool IsPirate(Faction faction)
+            => faction != null && faction.def.humanlikeFaction && faction.def.permanentEnemy && faction.def.techLevel >= TechLevel.Industrial;
+
+        public override bool FactionCanOwn(Faction faction)
+            => base.FactionCanOwn(faction) && faction != null && faction.def.humanlikeFaction
+            && (faction.def.techLevel == TechLevel.Industrial || IsPirate(faction));
+
+        public override string GetArrivedLetterPart(Map map, out LetterDef preferredLetterDef, out LookTargets lookTargets)
+        {
+            base.GetArrivedLetterPart(map, out preferredLetterDef, out lookTargets);
+            return "DMSE.EarlyLaunchSite.ArrivedLetter".Translate();
+        }
+    }
 }

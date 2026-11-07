@@ -33,4 +33,7 @@
   <DMSE.Blockade.GravshipHit>{0}被{1}的防空火力擊中，船上 {2} 座建築受損。</DMSE.Blockade.GravshipHit>
   <DMSE.Blockade.TransferHitLabel>轉移艦被擊中</DMSE.Blockade.TransferHitLabel>
   <DMSE.Blockade.TransferHitText>{0}在飛越{1}的封鎖區時被防空火力擊中，船上有 {2} 處發生爆炸。</DMSE.Blockade.TransferHitText>
+  <DMSE.BVR.World.TrackAltitude>飛行高度：{0}</DMSE.BVR.World.TrackAltitude>
+  <DMSE.BVR.World.AltitudeDenied>超出攔截高度</DMSE.BVR.World.AltitudeDenied>
+  <DMSE.BVR.FireControlAltitude>攔截高度：{0} – {1}</DMSE.BVR.FireControlAltitude>
 </LanguageData>

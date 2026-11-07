@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Fortified;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -163,6 +164,19 @@ namespace DMSE
         /// </summary>
         public MissileNamerDef namer;
 
+        /// <summary>彈體自帶的飛彈行為（見 <see cref="MissileBehaviorProps"/>）。</summary>
+        public List<MissileBehaviorProps> behaviors;
+
+        public override IEnumerable<string> ConfigErrors()
+        {
+            foreach (string error in base.ConfigErrors()) { yield return error; }
+            if (behaviors == null) { yield break; }
+            foreach (MissileBehaviorProps props in behaviors)
+            {
+                foreach (string error in props.ConfigErrors(this)) { yield return error; }
+            }
+        }
+
         public string uiIconPath;
 
         private Texture2D iconInt;
@@ -177,6 +191,22 @@ namespace DMSE
                 return iconInt;
             }
         }
+
+        /// <summary>世界地圖上的航跡圖示；null 時用 WorldObjectDef 的 expandingIconTexture。</summary>
+        public string expandingIconPath;
+
+        private Texture2D expandingIconInt;
+        public Texture2D ExpandingIcon
+        {
+            get
+            {
+                if (expandingIconInt == null && !expandingIconPath.NullOrEmpty())
+                {
+                    expandingIconInt = ContentFinder<Texture2D>.Get(expandingIconPath, false);
+                }
+                return expandingIconInt;
+            }
+        }
     }
 
     /// <summary>
@@ -185,6 +215,9 @@ namespace DMSE
     public class MissilePartDef : Def
     {
         public MissilePartCategory category;
+
+        /// <summary>裝上此部件時加入的飛彈行為（見 <see cref="MissileBehaviorProps"/>）。</summary>
+        public List<MissileBehaviorProps> behaviors;
 
         /// <summary>裝配此部件所需資源。</summary>
         public List<ThingDefCountClass> costList;

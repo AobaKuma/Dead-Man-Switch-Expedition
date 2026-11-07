@@ -6,7 +6,8 @@
        ② 其餘基本需求同原版 ManClosestTurret；
        ③ 操作最近一座本派系需人操作的設備：砲塔、雷達、發射架（JobGiver_ManMissileStation）；
           操作工作每 600 tick 到期重新評估（約 10 秒；吃飽時沿用同一份工作），飢餓時讓位給 ①；
-       ④ 沒有可操作的設備時，防守據點並在附近徘徊。 -->
+       ④ 沒有可操作的設備時，去操作戰情終端（JobGiver_ManWarRoomConsole，到期後重新評估，有崗位空出就回去）；
+       ⑤ 都沒有時，防守據點並在附近徘徊。 -->
   <DutyDef>
     <defName>DMSE_ManMissileStations</defName>
     <alwaysShowWeapon>true</alwaysShowWeapon>
@@ -22,12 +23,48 @@
           <maxDistFromPoint>60</maxDistFromPoint>
           <expiryInterval>600</expiryInterval>
         </li>
+        <li Class="DMSE.JobGiver_ManWarRoomConsole">
+          <maxDistFromPoint>60</maxDistFromPoint>
+        </li>
         <li Class="JobGiver_AIDefendPoint">
           <targetAcquireRadius>35</targetAcquireRadius>
           <targetKeepRadius>40</targetKeepRadius>
         </li>
         <li Class="JobGiver_WanderNearDutyLocation">
           <wanderRadius>12</wanderRadius>
+          <locomotionUrgencyOutsideRadius>Sprint</locomotionUrgencyOutsideRadius>
+        </li>
+      </subNodes>
+    </thinkNode>
+  </DutyDef>
+
+  <!-- NPC 導彈陣地陣地班（LordJob_MissileCrewDuty 平時）：同原版 Defend，只在徘徊前多一步操作戰情終端。
+       操作工作每 300 tick 到期重新評估，看到敵人時 JobGiver_AIDefendPoint 會優先接手。 -->
+  <DutyDef>
+    <defName>DMSE_MissileCrewDefend</defName>
+    <alwaysShowWeapon>true</alwaysShowWeapon>
+    <thinkNode Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="JobGiver_TakeCombatEnhancingDrug">
+          <onlyIfInDanger>true</onlyIfInDanger>
+        </li>
+        <li Class="JobGiver_AIDefendPoint">
+          <targetAcquireRadius>65</targetAcquireRadius>
+          <targetKeepRadius>72</targetKeepRadius>
+        </li>
+        <li Class="ThinkNode_ForbidOutsideFlagRadius">
+          <maxDistToSquadFlag>16</maxDistToSquadFlag>
+          <subNodes>
+            <li Class="ThinkNode_Subtree">
+              <treeDef>SatisfyBasicNeedsAndWork</treeDef>
+            </li>
+          </subNodes>
+        </li>
+        <li Class="DMSE.JobGiver_ManWarRoomConsole">
+          <maxDistFromPoint>60</maxDistFromPoint>
+        </li>
+        <li Class="JobGiver_WanderNearDutyLocation">
+          <wanderRadius>8</wanderRadius>
           <locomotionUrgencyOutsideRadius>Sprint</locomotionUrgencyOutsideRadius>
         </li>
       </subNodes>

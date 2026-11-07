@@ -1,3 +1,4 @@
+using Fortified;
 using RimWorld;
 using System.Collections.Generic;
 using UnityEngine;
@@ -156,7 +157,12 @@ namespace DMSE
             // 連射全部發射完畢後，才做一次攔截判定。
             if (burstShotsLeft <= 0)
             {
-                if (Rand.Chance(Props.interceptChance))
+                float chance = AirDefenseHooks.MapStat(AirDefenseStat.HitChance, Props.interceptChance, parent.Map, parent.Faction,
+                    target.Payload, sensor: parent, eta: timeLeft, terminal: true);
+                bool hit = Rand.Chance(chance);
+                AirCombatEvent resolved = AirDefenseHooks.MapEvent(AirCombatEventKind.InterceptResolved, parent.Map, parent.Faction, target.Payload,
+                    effector: parent, hitChance: chance, outcome: hit ? AirInterceptOutcome.Hit : AirInterceptOutcome.Miss, terminal: true);
+                if (hit)
                 {
                     // 攔截表現（末端）：爆心在本輪最後一發的掃射點上空，與曳光彈一致；剛進入窗口時目標還在圖外，
                     // 改為入場邊緣外的虛擬點（不畫爆炸，殘骸淡入，見 InterceptEventData.remote）。須在 SpawnDebris / Discard 之前擷取。
@@ -173,6 +179,7 @@ namespace DMSE
                     }
                     wave.targets.Remove(target);
                 }
+                AirCombatEvents.Raise(resolved);
                 EndBurst(now);
             }
         }

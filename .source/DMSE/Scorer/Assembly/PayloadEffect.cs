@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Fortified;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -18,6 +19,10 @@ namespace DMSE
     {
         /// <summary>在落點地圖執行載荷效果。</summary>
         public virtual void Apply(float N, IntVec3 center, Map map, Faction attacker) { }
+
+        /// <summary>載荷效果的入口。需要裝配、來襲方位或傷害歸因時覆寫這個版本；預設轉給簡化版本。</summary>
+        public virtual void Apply(MissileImpactContext context)
+            => Apply(context.PayloadCapacity, context.Center, context.Map, context.Attacker);
 
         /// <summary>
         /// 對射程的乘法係數（預設 1.0）。

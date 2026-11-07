@@ -193,11 +193,11 @@
     <researchViewY>0.00</researchViewY>
   </ResearchProjectDef>
 
-  <!-- 反艦導彈（三代裝備體系 §9-2）：白蟻；白蛉另需進階導彈工程，鷹擊另需先進導彈工程。 -->
+  <!-- 反艦導彈（三代裝備體系 §9-2）：白蟻；白蛉另需進階導彈工程，縞瑪瑙另需進階導彈工程與相控陣，鷹擊另需先進導彈工程。 -->
   <ResearchProjectDef ParentName="DMS_BaseTech">
     <defName>DMSE_AntishipMissiles</defName>
     <label>anti-ship missiles</label>
-    <description>Unlocks the anti-ship loitering munition and active-radar seekers for tracking moving world-map targets. Supersonic anti-ship missiles also require advanced missile engineering; hypersonic anti-ship missiles require cutting-edge missile engineering.</description>
+    <description>Unlocks the anti-ship loitering munition and active-radar seekers for tracking moving world-map targets. Supersonic anti-ship missiles also require advanced missile engineering; advanced anti-ship cruise missiles require advanced missile engineering and phased-array and integrated air defence; hypersonic anti-ship missiles require cutting-edge missile engineering.</description>
     <baseCost>3500</baseCost>
     <requiredResearchBuilding Inherit="False" />
     <techLevel>Industrial</techLevel>

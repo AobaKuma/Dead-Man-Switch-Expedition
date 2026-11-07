@@ -341,6 +341,42 @@ static partial class Test
         var curved = new LaunchFxProfileDef { rampTicks = 1, thrustCurve = new SimpleCurve { new CurvePoint(0f, 1f), new CurvePoint(1f, 0.5f) } };
         Near(LaunchFxEmitter.ThrustAt(curved, -1, 10, 1f), 0.5f, "thrust curve scales by launch progress");
 
+        // §3.6: the Oniks turn thruster is jettisoned, then the main thrust opens up; braking jets are the opposite couple.
+        var oniks = new LaunchFxProfileDef { rampTicks = 4, boosterTicks = 45, sustainThrust = 0.14f, mainThrust = 1f, mainThrustRampTicks = 12 };
+        Near(LaunchFxEmitter.ThrustAt(oniks, -1, 100, 0.5f), 0.14f, "the sustainer holds a short plume through the turn", 0.001f);
+        Near(LaunchFxEmitter.ThrustAt(oniks, -1, 100, 0.5f, 0.5f), 0.57f, "main thrust ramps up after the pod is jettisoned", 0.001f);
+        Near(LaunchFxEmitter.ThrustAt(oniks, -1, 100, 0.5f, 1f), 1f, "main thrust full open", 0.001f);
+        Near(LaunchFxEmitter.ThrustAt(oniks, 60, 100, 0.5f, 1f), 0f, "main thrust does not revive a burned-out motor", 0.001f);
+        Check(LaunchFxEmitter.IsBraking(2f, -0.5f) && LaunchFxEmitter.IsBraking(-2f, 0.5f),
+            "a decaying turn rate is braking (retro jets)");
+        Check(!LaunchFxEmitter.IsBraking(2f, 0.5f) && !LaunchFxEmitter.IsBraking(0f, 1f) && !LaunchFxEmitter.IsBraking(2f, 0f),
+            "spinning up, still, or constant rotation is not braking");
+
+        // The Oniks def must actually select that profile, and the profile must enable the whole sequence.
+        XElement oniksLaunch = XDocument.Load("1.7/Defs/Missile/DMSE_MissileLaunchProjectiles.xml").Root.Elements()
+            .Single(x => (string)x.Element("defName") == "DMSE_Launch_Oniks");
+        string profile = oniksLaunch.Element("comps").Elements("li")
+            .SelectMany(li => li.Elements("fxProfile")).Single().Value;
+        Check(profile == "DMSE_LaunchFx_Oniks", "Oniks uses its own launch profile, not the generic cruise booster");
+        XElement profileXml = XDocument.Load("1.7/Defs/Effects/DMSE_LaunchFx.xml").Root.Elements()
+            .Single(x => (string)x.Element("defName") == profile);
+        Check((bool)profileXml.Element("turnJets") && (float)profileXml.Element("mainThrust") >= 1f
+            && profileXml.Element("turnPodEjectSpeed") != null && profileXml.Element("turnJetBrakeScale") != null,
+            "the Oniks profile drives side/retro jets, forward pod jettison and full main thrust");
+
+        // §11 redesign: each pulse is a bang that decays, gas bursts instead of tiny puffs, a visible main-thrust bloom.
+        Near(LaunchFxEmitter.PulseEnvelope(0), 1f, "a pulse starts at full strength");
+        Check(LaunchFxEmitter.PulseEnvelope(1) < 1f && LaunchFxEmitter.PulseEnvelope(2) < LaunchFxEmitter.PulseEnvelope(1)
+              && LaunchFxEmitter.PulseEnvelope(10) >= 0.4f, "and decays through the pulse, never below 0.4");
+        Check((int)profileXml.Element("turnJetBurstPuffs") > 0 && (float)profileXml.Element("mainBloomSize") > 0f
+              && (float)profileXml.Element("smokeThrustFloor") > 0f && (float)profileXml.Element("turnPodDrift") > 0f,
+            "the Oniks profile uses gas bursts, a continuous trail floor, a main-thrust bloom and a drifting pod");
+        Check((float)profileXml.Element("turnJetLength") <= 2f * (float)profileXml.Element("turnJetWidth"),
+            "RCS jets are short and fat (length at most twice the width), not thin sticks");
+        XElement oniksFlight = oniksLaunch.Element("modExtensions").Elements("li").Single();
+        Check((float)oniksFlight.Element("maxTurnRate") <= 2f && (bool)oniksFlight.Element("courseTurnsIndependently"),
+            "the Oniks turn is slowed so each beat is readable, with the course turning independently of the nose");
+
         int cap = LaunchFxBudget.SmokeCap;
         Check(LaunchFxBudget.Pressure(0) == 0 && LaunchFxBudget.Pressure((int)(cap * 0.75f)) == 1 && LaunchFxBudget.Pressure(cap) == 2,
             "smoke budget pressure: normal, over 70 %, at the cap");

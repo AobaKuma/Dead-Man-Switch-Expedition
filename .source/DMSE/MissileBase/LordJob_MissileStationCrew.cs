@@ -11,6 +11,9 @@ namespace DMSE
         /// <summary>操作陣地上需人操作的設備；飢餓時先去吃，吃完回崗（見 DMSE_MissileCrewDuties.xml）。</summary>
         public static DutyDef DMSE_ManMissileStations;
 
+        /// <summary>陣地班平時的防守；同原版 Defend，但沒事做時去操作戰情終端（見 DMSE_MissileCrewDuties.xml）。</summary>
+        public static DutyDef DMSE_MissileCrewDefend;
+
         static DMSE_MissileCrewDutyDefOf() => DefOfHelper.EnsureInitializedInCtor(typeof(DMSE_MissileCrewDutyDefOf));
     }
 
@@ -19,7 +22,8 @@ namespace DMSE
     /// 原版 <see cref="JobGiver_ManTurrets"/> 的驗證會把每個候選強制轉成 <see cref="Building_TurretGun"/>，
     /// 所以 NPC 從不操作雷達或導彈發射架。這裡依設備類型給對應工作：攔截發射架用 <c>DMSE_ManMissileLauncher</c>，
     /// 其餘（砲塔、雷達）用原版 <see cref="JobDefOf.ManTurret"/>（其 JobDriver 對非砲塔建築也適用）。<br/>
-    /// 工作每 <see cref="expiryInterval"/> tick 到期重新評估，讓思考樹中排在前面的進食節點能讓守軍下崗。
+    /// 工作每 <see cref="expiryInterval"/> tick 到期重新評估，讓思考樹中排在前面的進食節點能讓守軍下崗。<br/>
+    /// 選崗順序：火控雷達（沒人操作就沒有火力通道）→ 世界選靶發射架 → 其他；同級取最近。炮手不足時才不會全跑去操作砲塔。
     /// </summary>
     public class JobGiver_ManMissileStation : ThinkNode_JobGiver
     {
@@ -42,19 +46,24 @@ namespace DMSE
 
             Building best = null;
             float bestDist = float.MaxValue;
+            int bestRank = int.MaxValue;
             foreach (Building b in pawn.Map.listerBuildings.allBuildingsNonColonist)
             {
                 if (b.Faction != pawn.Faction || b.Destroyed || !b.def.hasInteractionCell) continue;
                 CompMannable mannable = b.GetComp<CompMannable>();
-                if (mannable == null) continue;
+                // 戰情終端是閒人的工作（JobGiver_ManWarRoomConsole），不佔炮手的崗位。
+                if (mannable == null || mannable is CompWarRoomConsole) continue;
                 if (mannable.MannedNow && mannable.ManningPawn != pawn) continue;
                 if (b.Position.DistanceTo(root) > maxDistFromPoint) continue;
                 if (b is Building_TurretGun turret && !TurretUsable(pawn, turret)) continue;
+                if (EmptyInterceptorLauncher(pawn, b)) continue;
+                int rank = StationRank(b);
                 float d = b.Position.DistanceToSquared(pawn.Position);
-                if (d >= bestDist) continue;
+                if (rank > bestRank || (rank == bestRank && d >= bestDist)) continue;
                 if (!pawn.CanReserveAndReach(b, PathEndMode.InteractionCell, Danger.Deadly)) continue;
                 best = b;
                 bestDist = d;
+                bestRank = rank;
             }
             if (best == null) return null;
 
@@ -66,6 +75,23 @@ namespace DMSE
             job.checkOverrideOnExpire = true;
             return job;
         }
+
+        /// <summary>
+        /// 空的手動發射架而且工作找不到彈源：<c>JobDriver_ManMissileLauncher</c> 會立刻以 Incompletable 結束，
+        /// 這裡若再派同一份工作，守軍就會在同一 tick 無限重開（"started 10 jobs in one tick"）。
+        /// 來源搜尋只看玩家建築，NPC 的發射架由 <see cref="MapComponent_MissileBase"/> 的守軍搬彈或空投補上後才再去操作。
+        /// </summary>
+        private static bool EmptyInterceptorLauncher(Pawn pawn, Building b)
+        {
+            if (b.TryGetComp<CompMissileLauncher_Interceptor>() == null) return false;
+            IMissileRack rack = MissileRackUtil.Of(b);
+            return rack != null && rack.StoredCount == 0 && WorkGiver_LoadMissileLauncher.FindSourceRack(pawn, rack) == null;
+        }
+
+        private static int StationRank(Building b)
+            => b.TryGetComp<CompFireControlRadar>() != null ? 0
+            : b.TryGetComp<CompMissileLauncher_WorldTargeting>() != null ? 1
+            : 2;
 
         /// <summary>
         /// 需要砲彈（迫擊砲類、尚未裝填）或燃料（彈藥以燃料表示）而附近沒有時不去操作。

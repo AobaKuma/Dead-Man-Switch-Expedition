@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using RimWorld;
 using RimWorld.Planet;
+using UnityEngine;
 using Verse;
 using Verse.AI.Group;
 using static DMSE.BVRAcceptance.BVRFixture;
@@ -427,6 +428,232 @@ namespace DMSE.BVRAcceptance
             yield break;
         }
 
+        private static Site SpawnEarlySite(Faction faction, float points)
+        {
+            WorldObjectDef def = DefDatabase<WorldObjectDef>.GetNamed("DMSE_EarlyLaunchSite");
+            SitePartDef part = DefDatabase<SitePartDef>.GetNamed("DMSE_EarlyLaunchSitePart");
+            PlanetTile home = Home.Tile;
+            for (int i = 0; i < Find.WorldGrid.TilesCount; i++)
+            {
+                PlanetTile t = new PlanetTile(i, home.Layer);
+                float d = MissileWorldUtility.RangeDistance(home, t);
+                if (d < 6f || d > 14f) { continue; }
+                Tile info = Find.WorldGrid[t];
+                if (!info.PrimaryBiome.canBuildBase || info.hilliness == Hilliness.Impassable) { continue; }
+                if (Find.WorldObjects.AnyWorldObjectAt(t) || Find.WorldObjects.AnySettlementBaseAtOrAdjacent(t)) { continue; }
+                Site site = (Site)WorldObjectMaker.MakeWorldObject(def);
+                site.Tile = t;
+                site.SetFaction(faction);
+                site.AddPart(new SitePart(site, part, new SitePartParams { points = points, threatPoints = points }));
+                Find.WorldObjects.Add(site);
+                Track(site);
+                return site;
+            }
+            return null;
+        }
+
+        /// <summary>Site strike fire skips interceptors wherever they are stored and leaves everything on a pure SAM platform alone, dual-role rounds included.</summary>
+        public static IEnumerable<Wait> SiteKeepsAirDefenseRounds(TestContext t)
+        {
+            Faction industrial = Find.FactionManager.AllFactionsListForReading.FirstOrDefault(f =>
+                !f.IsPlayer && !f.defeated && !f.Hidden && f.def.techLevel == TechLevel.Industrial && f.def.humanlikeFaction);
+            t.Require(industrial != null, "an industrial humanlike faction exists");
+
+            foreach (string defName in new[] { "DMSE_InterceptorMissile", "DMSE_Missile_Rheintochter", "DMSE_Missile_Stinger", "DMSE_Missile_Sparrow" })
+            {
+                t.Check(!MissileBaseRackSupplyUtility.IsStrikeRound(ThingMaker.MakeThing(ThingDef.Named(defName))), $"{defName} is not a strike round");
+            }
+            foreach (string defName in new[] { "DMSE_Missile_LegacyLoiter", "DMSE_Missile_Maverick", "DMSE_Missile_Grison" })
+            {
+                t.Check(MissileBaseRackSupplyUtility.IsStrikeRound(ThingMaker.MakeThing(ThingDef.Named(defName))), $"{defName} is a strike round");
+            }
+
+            Layout layout = GenerateAt(t, industrial, 1f);
+            Map map = layout.map;
+
+            Building SpawnOnSite(string defName, int x)
+            {
+                ThingDef def = ThingDef.Named(defName);
+                Thing thing = ThingMaker.MakeThing(def, def.MadeFromStuff ? GenStuff.DefaultStuffFor(def) : null);
+                thing.SetFaction(industrial);
+                GenSpawn.Spawn(thing, new IntVec3(x, 0, 12), map, Rot4.North, WipeMode.Vanish);
+                return (Building)thing;
+            }
+            Building sam = SpawnOnSite("DMSE_Building_RotaryMissileLauncher", 12);
+            Building fieldAirDefense = SpawnOnSite("DMSE_Building_FieldAirDefense", 24);
+            Building shared = SpawnOnSite("DMSE_Building_LightMissileLauncher", 36);
+            Building depot = SpawnOnSite("DMSE_MissileRack", 48);
+            // Enemy racks auto-fill on spawn, so empty them only after the test platforms are placed.
+            foreach (IMissileRack existing in MissileBaseRackSupplyUtility.RacksOf(map, industrial))
+            {
+                existing.GetDirectlyHeldThings().ClearAndDestroyContents();
+            }
+            t.Check(MissileBaseRackSupplyUtility.IsAirDefenseOnly(sam) && MissileBaseRackSupplyUtility.IsAirDefenseOnly(fieldAirDefense), "SAM launcher and field air defense are air-defense-only platforms");
+            t.Check(!MissileBaseRackSupplyUtility.IsAirDefenseOnly(shared) && !MissileBaseRackSupplyUtility.IsAirDefenseOnly(depot), "the shared launcher and the depot are not");
+
+            MapComponent_MissileBase comp = map.GetComponent<MapComponent_MissileBase>();
+            MethodInfo find = typeof(MapComponent_MissileBase).GetMethod("FindRackWithMissiles", BindingFlags.Instance | BindingFlags.NonPublic);
+            t.Require(comp != null && find != null, "the site's rack picker is reachable");
+            Thing Pick()
+            {
+                object[] args = { null };
+                find.Invoke(comp, args);
+                return (Thing)args[0];
+            }
+            Thing Load(Building rack, string defName)
+            {
+                Thing missile = ThingMaker.MakeThing(ThingDef.Named(defName));
+                t.Require(MissileRackUtil.Of(rack).GetDirectlyHeldThings().TryAdd(missile), $"{defName} loaded into {rack.def.defName}");
+                return missile;
+            }
+
+            Load(shared, "DMSE_Missile_Stinger");
+            Load(depot, "DMSE_Missile_Sparrow");
+            Load(depot, "DMSE_InterceptorMissile");
+            Load(sam, "DMSE_Missile_Stinger");
+            Thing pick = Pick();
+            t.Check(pick == null, $"only interceptors at the site: nothing to fire (picked {pick?.def.defName ?? "nothing"})");
+
+            Load(sam, "DMSE_Missile_Grison");
+            Load(fieldAirDefense, "DMSE_Missile_Grison");
+            pick = Pick();
+            t.Check(pick == null, $"a dual-role round on a pure SAM platform stays there (picked {pick?.def.defName ?? "nothing"})");
+
+            Thing dual = Load(shared, "DMSE_Missile_Grison");
+            pick = Pick();
+            t.Check(pick == dual, $"with no strike round left, a dual-role round on a shared launcher fires (picked {pick?.def.defName ?? "nothing"})");
+
+            // The shared launcher comes first in the building list, so this also proves the search does not stop at the first usable round.
+            Thing maverick = Load(depot, "DMSE_Missile_Maverick");
+            pick = Pick();
+            t.Check(pick == maverick, $"a depot strike round is picked before the dual-role round and past the interceptors beside it (picked {pick?.def.defName ?? "nothing"})");
+            yield break;
+        }
+
+        /// <summary>The site has to actually shoot: racks loaded with the fixed-config loiter, radar powered and manned, a missile off the map; plus a world-layer salvo of the same body.</summary>
+        public static IEnumerable<Wait> EarlySiteFires(TestContext t)
+        {
+            // The fixture's unlimited power would hide a generator shortfall, and power is what this site depends on.
+            DebugSettings.unlimitedPower = false;
+            try
+            {
+                foreach (Wait w in EarlySiteFiresBody(t)) { yield return w; }
+            }
+            finally { DebugSettings.unlimitedPower = true; }
+        }
+
+        private static IEnumerable<Wait> EarlySiteFiresBody(TestContext t)
+        {
+            Faction industrial = Find.FactionManager.AllFactionsListForReading.FirstOrDefault(f =>
+                !f.IsPlayer && !f.defeated && !f.Hidden && f.def.techLevel == TechLevel.Industrial && f.def.humanlikeFaction);
+            t.Require(industrial != null, "an industrial humanlike faction exists");
+
+            // World layer first: no map yet, the salvo must use the legacy body.
+            Site worldSite = SpawnEarlySite(industrial, 1000f);
+            t.Require(worldSite != null, "an early site spawned");
+            WorldObjectComp_MissileBase comp = worldSite.GetComponent<WorldObjectComp_MissileBase>();
+            t.Check(comp.BuildFireConfig()?.body?.defName == "DMSE_MissileBody_LegacyLoiter", "the world layer fires the legacy loitering munition");
+            t.Check(comp.TryFireAtPlayerColonies() == 1, "a world-layer salvo launches one missile at the colony");
+            foreach (WorldObject_IncomingMissile m in Find.WorldObjects.AllWorldObjects.OfType<WorldObject_IncomingMissile>().ToList()) { m.Destroy(); }
+
+            Map map = MissileWorldUtility.ResolveArrivalMap(worldSite.Tile, worldSite, true);
+            t.Require(map != null, "the early site map is generated");
+            GameComponent_MissileEngage.Comp.times.SetOrAdd(map, Find.TickManager.TicksGame + GenDate.TicksPerDay * 2);
+
+            List<Building> mine = map.listerBuildings.allBuildingsNonColonist.Where(b => b.Faction == industrial).ToList();
+            t.Check(mine.Any(b => b.def.defName == "DMSE_AcousticEarlyWarningRadar"), "an acoustic warning post is at the site");
+            List<Building> radars = mine.Where(b => b.def.defName == "DMSE_EarlyFireControlRadar").ToList();
+            t.Require(radars.Count >= 1, "an early fire-control radar is at the site");
+            t.Check(mine.Any(b => b.def.defName == "DMSE_Building_LoiteringLauncher"), "the guaranteed first position has a rail that needs no operator");
+            t.Check(!mine.Any(b => b.def.defName == "DMSE_SearchRadar" || b.def.defName == "DMSE_FireControlRadar"), "no mid-tier radar appears");
+
+            List<IMissileRack> racks = MissileBaseRackSupplyUtility.RacksOf(map, industrial);
+            t.Check(racks.Count > 0 && racks.All(r => r.StoredCount > 0), $"every rack starts loaded ({racks.Count(r => r.StoredCount > 0)}/{racks.Count})");
+            t.Check(racks.All(r => r.HeldThings.All(m => m.def.defName == "DMSE_Missile_LegacyLoiter")), "racks hold only legacy loitering munitions");
+            t.Note($"crew {map.mapPawns.SpawnedPawnsInFaction(industrial).Count(p => p.RaceProps.Humanlike)}, launchers {mine.Count(b => b.TryGetComp<CompMissileLauncher_WorldTargeting>() != null)}, stations {mine.Count(b => b.TryGetComp<CompMannable>() != null)}");
+
+            int stored = racks.Sum(r => r.StoredCount);
+            var waitRadar = new WaitUntil(() => radars.Any(r => r.TryGetComp<CompFireControlRadar>().Active), 6000);
+            yield return waitRadar;
+            Building radar = radars[0];
+            t.Check(!waitRadar.TimedOut, $"a fire-control radar comes online (manned {radar.TryGetComp<CompMannable>().MannedNow}, power {radar.TryGetComp<CompPowerTrader>().PowerOn}, net gain {radar.TryGetComp<CompPowerTrader>().PowerNet?.CurrentEnergyGainRate() * 60000f:0} W)");
+            List<CompRefuelable> generators = mine.Where(b => b.TryGetComp<CompPowerPlant>() != null).Select(b => b.TryGetComp<CompRefuelable>()).ToList();
+            t.Check(generators.Count >= 2 && generators.All(g => g.Fuel > 0f), $"the crew fuels the generators ({generators.Count})");
+            PowerNet radarNet = radar.TryGetComp<CompPowerTrader>().PowerNet;
+            foreach (Building g in mine.Where(b => b.TryGetComp<CompPowerPlant>() != null))
+            {
+                CompPowerPlant plant = g.TryGetComp<CompPowerPlant>();
+                t.Note($"generator {g.Position}: output {plant.PowerOutput:0} W, fuel {g.TryGetComp<CompRefuelable>().Fuel:0}, net {(plant.PowerNet == null ? "none" : plant.PowerNet == radarNet ? "radar's" : "other")}, transmitter {(plant.connectParent?.parent.def.defName ?? "none")}");
+            }
+            t.Note($"radar net: {radarNet.powerComps.Count} comps, {radarNet.batteryComps.Count} batteries, {radarNet.transmitters.Count} transmitters, stored {radarNet.CurrentStoredEnergy():0}");
+            t.Check(radar.TryGetComp<CompPowerTrader>().PowerNet.CurrentEnergyGainRate() >= 0f, "the generators cover the radar and floodlight without draining the batteries");
+            generators[0].ConsumeFuel(generators[0].Fuel - 1f);
+            var waitFuel = new WaitUntil(() => generators[0].Fuel >= generators[0].Props.fuelCapacity * 0.5f, 700);
+            yield return waitFuel;
+            t.Check(!waitFuel.TimedOut, "a nearly empty generator is topped up while the crew lives");
+
+            var waitFire = new WaitUntil(() => racks.Sum(r => r.StoredCount) < stored, 3000);
+            yield return waitFire;
+            t.Check(!waitFire.TimedOut, $"the site fires a legacy loiter from the map ({stored} -> {racks.Sum(r => r.StoredCount)} stored)");
+
+            // Empty launchers: gunners must not re-take the man job in a loop, and the crew carries munitions over from the caches.
+            List<IMissileRack> launchers = racks.Where(MissileBaseRackSupplyUtility.IsLauncher).ToList();
+            foreach (IMissileRack l in launchers) { l.GetDirectlyHeldThings().ClearAndDestroyContents(); }
+            t.Check(racks.Any(r => !MissileBaseRackSupplyUtility.IsLauncher(r) && r.StoredCount > 0), "the caches still hold munitions");
+            // Caches can also fire directly through a launcher, so only a round actually sitting in a launcher proves the carry.
+            var waitReload = new WaitUntil(() => launchers.Any(l => l.StoredCount > 0), 6000);
+            yield return waitReload;
+            t.Check(!waitReload.TimedOut, "the crew moves a munition from a cache to an emptied launcher");
+        }
+
+        public static IEnumerable<Wait> EarlySiteIncidentGates(TestContext t)
+        {
+            IncidentDef def = DefDatabase<IncidentDef>.GetNamedSilentFail("DMSE_EarlyLaunchSiteDeployed");
+            t.Require(def != null, "IncidentDef DMSE_EarlyLaunchSiteDeployed loaded");
+            MethodInfo canFireSub = typeof(IncidentWorker).GetMethod("CanFireNowSub", BindingFlags.Instance | BindingFlags.NonPublic);
+            IncidentParms parms = StorytellerUtility.DefaultParmsNow(def.category, Home);
+            t.Require(IncidentWorker_FieldLaunchSite.ActiveSiteCount() == 0, "no NPC missile site exists yet");
+
+            Faction pirate = Find.FactionManager.AllFactionsListForReading.FirstOrDefault(f => !f.defeated && !f.Hidden && SitePartWorker_EarlyLaunchSite.IsPirate(f));
+            t.Require(pirate != null, "a pirate faction exists");
+            SitePartDef part = DefDatabase<SitePartDef>.GetNamed("DMSE_EarlyLaunchSitePart");
+            t.Check(part.FactionCanOwn(pirate), "the early site part accepts pirates");
+            Faction tribe = Find.FactionManager.AllFactionsListForReading.FirstOrDefault(f => !f.IsPlayer && !f.Hidden && f.def.techLevel == TechLevel.Neolithic);
+            if (tribe != null) { t.Check(!part.FactionCanOwn(tribe), $"the early site part rejects neolithic {tribe.Name}"); }
+
+            ResearchProjectDef radarNetwork = DefDatabase<ResearchProjectDef>.GetNamed("DMSE_RadarNetwork");
+            var progress = (Dictionary<ResearchProjectDef, float>)typeof(ResearchManager)
+                .GetField("progress", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(Find.ResearchManager);
+            float saved = Find.ResearchManager.GetProgress(radarNetwork);
+
+            // Before the research: only high points.
+            progress[radarNetwork] = 0f;
+            t.Require(!radarNetwork.IsFinished, "radar network un-finished for the check");
+            parms.points = 1000f;
+            t.Check(!(bool)canFireSub.Invoke(def.Worker, new object[] { parms }), "before radar network, 1000 points is refused");
+            parms.points = 2500f;
+            t.Check((bool)canFireSub.Invoke(def.Worker, new object[] { parms }), "before radar network, 2500 points can fire");
+            t.Check(Mathf.Approximately(def.Worker.ChanceFactorNow(Home), 1f), "before radar network the chance is not reduced");
+
+            // After the research: any points, pirates only, reduced chance.
+            progress[radarNetwork] = radarNetwork.baseCost;
+            t.Require(radarNetwork.IsFinished, "radar network finished for the check");
+            EnsureNpcWorldNetwork();
+            parms.points = 1000f;
+            t.Check((bool)canFireSub.Invoke(def.Worker, new object[] { parms }), "after radar network, 1000 points can fire");
+            t.Check(def.Worker.ChanceFactorNow(Home) < 1f, "after radar network the chance is reduced");
+            List<WorldObject> before = Find.WorldObjects.AllWorldObjects.ToList();
+            t.Check(def.Worker.TryExecute(parms), "the incident executes");
+            Site site = Find.WorldObjects.Sites.FirstOrDefault(s => !before.Contains(s) && s.def.defName == "DMSE_EarlyLaunchSite");
+            t.Require(site != null, "a DMSE_EarlyLaunchSite world object was added");
+            Track(site);
+            t.Check(SitePartWorker_EarlyLaunchSite.IsPirate(site.Faction), $"owned by pirates ({site.Faction?.Name}, {site.Faction?.def.defName})");
+            t.Check(MissileWorldUtility.RangeDistance(Home.Tile, site.Tile) <= 15f, "within the site's strike range");
+            t.Check(!(bool)canFireSub.Invoke(def.Worker, new object[] { parms }), "a second site is refused while one exists");
+            if (saved < radarNetwork.baseCost) { progress[radarNetwork] = saved; }
+            yield break;
+        }
+
         /// <summary>Spawns <paramref name="def"/> for <paramref name="faction"/> on clear standable ground near <paramref name="near"/>.</summary>
         private static Thing SpawnStation(Map map, string defName, Faction faction, IntVec3 near)
         {
@@ -441,10 +668,116 @@ namespace DMSE.BVRAcceptance
             return thing;
         }
 
+        /// <summary>Cannon rounds are CompRefuelable and NPCs never refuel: the garrison keeps turrets and CIWS stocked while it lives.</summary>
+        public static IEnumerable<Wait> GarrisonKeepsTurretsStocked(TestContext t)
+        {
+            Faction industrial = Industrial(t);
+            foreach (Site site in new[] { SpawnFieldSite(industrial, 1000f), SpawnEarlySite(industrial, 1000f) })
+            {
+                t.Require(site != null, "a site spawned");
+                Map map = MissileWorldUtility.ResolveArrivalMap(site.Tile, site, true);
+                t.Require(map != null, $"{site.def.defName}: map generated");
+                KeepMapAlive(map);
+                IntVec3 hub = map.listerBuildings.allBuildingsNonColonist.First(b => b.Faction == industrial && MapComponent_MissileBase.IsObjectiveRadar(b)).Position;
+                // Layouts are random: place both guns so each is always covered.
+                foreach (string def in new[] { "DMSE_Turret_LegacyFlak", "DMSE_Building_FieldAirDefense" })
+                {
+                    t.Require(SpawnStation(map, def, industrial, hub) != null, $"{def} placed");
+                }
+                CompRefuelable Ammo(Building b) => b.TryGetComp<CompRefuelable>();
+                List<Building> guns = map.listerBuildings.allBuildingsNonColonist.Where(b => b.Faction == industrial && Ammo(b) != null
+                    && (b is Building_Turret || b.TryGetComp<CompTerminalCIWS>() != null)).ToList();
+                t.Note($"{site.def.defName}: {string.Join(", ", guns.GroupBy(g => g.def.defName).Select(g => $"{g.Key}×{g.Count()}"))}");
+
+                t.Note($"rounds at generation: {string.Join(", ", guns.Select(g => $"{g.def.defName} {Ammo(g).Fuel:0}/{Ammo(g).Props.fuelCapacity:0}"))}");
+                List<Building> notFull = guns.Where(g => !Ammo(g).IsFull).ToList();
+                t.Check(notFull.Count == 0, $"{site.def.defName}: every gun spawns fully loaded{(notFull.Count > 0 ? ": " + string.Join(", ", notFull.Select(g => $"{g.def.defName} {Ammo(g).Fuel:0}/{Ammo(g).Props.fuelCapacity:0}")) : "")}");
+
+                // Half a magazine or more is left alone; below half is topped up.
+                foreach (Building g in guns.Where(g => !g.Destroyed)) { Ammo(g).ConsumeFuel(Ammo(g).Fuel - Ammo(g).Props.fuelCapacity * 0.6f); }
+                yield return new WaitTicks(520);
+                t.Check(guns.Where(g => !g.Destroyed).All(g => !Ammo(g).IsFull), $"{site.def.defName}: a gun with over half its rounds is not topped up");
+
+                foreach (Building g in guns.Where(g => !g.Destroyed)) { Ammo(g).ConsumeFuel(Ammo(g).Fuel); }
+                yield return new WaitTicks(520);
+                // Has rounds, not full: a gun may fire at wildlife in the ticks after its refill.
+                List<Building> dry = guns.Where(g => !g.Destroyed && !Ammo(g).HasFuel).ToList();
+                t.Check(dry.Count == 0, $"{site.def.defName}: emptied guns are restocked while the crew lives{(dry.Count > 0 ? ": " + string.Join(", ", dry.Select(g => g.def.defName)) : "")}");
+
+                foreach (Pawn p in map.mapPawns.SpawnedPawnsInFaction(industrial).ToList()) { p.Destroy(DestroyMode.Vanish); }
+                foreach (Building g in guns.Where(g => !g.Destroyed)) { Ammo(g).ConsumeFuel(Ammo(g).Fuel); }
+                yield return new WaitTicks(520);
+                t.Check(guns.Where(g => !g.Destroyed).All(g => !Ammo(g).HasFuel), $"{site.def.defName}: without a crew nobody restocks them");
+            }
+        }
+
         /// <summary>
         /// NPC gunners man every kind of mannable station (missile launcher, radar, gun turret), leave the post
         /// to eat once hungry, and go back afterwards.
         /// </summary>
+        /// <summary>The war room is a low-priority post: idle garrison sits there and the site's own radar gets the bonus.</summary>
+        public static IEnumerable<Wait> GarrisonMansWarRoom(TestContext t)
+        {
+            Faction industrial = Find.FactionManager.AllFactionsListForReading.FirstOrDefault(f =>
+                !f.IsPlayer && !f.defeated && !f.Hidden && f.def.techLevel == TechLevel.Industrial && f.def.humanlikeFaction);
+            t.Require(industrial != null, "an industrial humanlike faction exists");
+            Layout site = GenerateAt(t, industrial, 1f);
+            Map map = site.map;
+            List<CompWarRoomConsole> consoles = map.listerThings.ThingsOfDef(ThingDef.Named("DMSE_WarRoomConsole"))
+                .Select(x => x.TryGetComp<CompWarRoomConsole>()).ToList();
+            t.Require(consoles.Count == 3, $"the war room structure brought three consoles ({consoles.Count})");
+            t.Check(consoles.All(c => c.parent.Faction == industrial), "the consoles belong to the site's faction");
+            t.Check(!MapComponent_EWControl.For(map).RoeActive, "NPC consoles do not switch on player rules of engagement");
+            yield return new WaitUntil(() => consoles.All(c => c.PowerOK), 600);
+            t.Check(consoles.All(c => c.PowerOK), "the field power unit runs the consoles");
+
+            var waitMan = new WaitUntil(() => consoles.Any(c => c.MannedNow), 5000);
+            yield return waitMan;
+            t.Check(!waitMan.TimedOut, "idle garrison mans a console");
+            CompWarRoomConsole manned = consoles.FirstOrDefault(c => c.MannedNow);
+            t.Require(manned != null, "a console is manned");
+            Pawn op = manned.Operator;
+            t.Note($"operator {op?.LabelShort} ({op?.GetLord()?.LordJob?.GetType().Name}), manned {consoles.Count(c => c.MannedNow)}/3");
+            t.Check(op?.CurJobDef == DMSE_EWJobDefOf.DMSE_OperateWarRoom, "the operator runs the war room job");
+
+            ThingWithComps radar = map.listerThings.ThingsOfDef(ThingDef.Named("DMSE_SearchRadar")).FirstOrDefault() as ThingWithComps;
+            t.Require(radar != null, "the site's search radar exists");
+            int total = MapComponent_EWControl.For(map).OperatorLevelTotal(SkillDefOf.Intellectual, industrial);
+            t.Check(Mathf.Approximately(EWControlUtility.RadarRangeFactor(radar), EWControlUtility.IntellectualRangeFactor(total)),
+                $"the site's radar gets the garrison's bonus (total {total}, factor {EWControlUtility.RadarRangeFactor(radar):0.00})");
+
+            // Stations still come first: every gunner-class post that was free is not displaced by consoles.
+            List<Thing> stations = map.listerBuildings.allBuildingsNonColonist
+                .Where(b => b.Faction == industrial && b.TryGetComp<CompMannable>() != null && b.TryGetComp<CompWarRoomConsole>() == null).Cast<Thing>().ToList();
+            List<Pawn> stationCrew = map.mapPawns.SpawnedPawnsInFaction(industrial).Where(p => p.GetLord()?.LordJob is LordJob_MissileStationCrew).ToList();
+            yield return new WaitTicks(1200);
+            int mannedStations = stations.Count(s => s.TryGetComp<CompMannable>().MannedNow);
+            t.Note($"{stationCrew.Count} gunners, {mannedStations}/{stations.Count} stations manned, {consoles.Count(c => c.MannedNow)}/3 consoles manned");
+            t.Check(stationCrew.Count(p => p.CurJobDef == DMSE_EWJobDefOf.DMSE_OperateWarRoom) == 0 || mannedStations == stations.Count,
+                "gunners only sit at a console when every other station is taken");
+
+            // A hostile in sight pulls the operator off: the job expires and the defend node takes over.
+            op = consoles.FirstOrDefault(c => c.MannedNow)?.Operator;
+            if (op != null)
+            {
+                // Inside the room: walls block line of sight, so a hostile outside is not seen until the lord goes on the assault.
+                // The picked faction may be neutral; goodwill drives the relation, SetRelationDirect refuses here.
+                int oldGoodwill = industrial.PlayerGoodwill;
+                Override(() => industrial.TryAffectGoodwillWith(Faction.OfPlayer, -100 - oldGoodwill, false, false),
+                    () => industrial.TryAffectGoodwillWith(Faction.OfPlayer, oldGoodwill - industrial.PlayerGoodwill, false, false));
+                t.Check(industrial.HostileTo(Faction.OfPlayer), "the site's faction is hostile for this step");
+                Pawn intruder = PawnGenerator.GeneratePawn(PawnKindDefOf.Colonist, Faction.OfPlayer);
+                IntVec3 beside = GenAdjFast.AdjacentCells8Way(op.Position).FirstOrDefault(c => c.InBounds(map) && c.Standable(map) && c.GetFirstPawn(map) == null);
+                t.Require(beside.IsValid && beside != default, "a free cell beside the operator");
+                GenSpawn.Spawn(intruder, beside, map);
+                Pawn watched = op;
+                var waitLeave = new WaitUntil(() => watched.Dead || watched.CurJobDef != DMSE_EWJobDefOf.DMSE_OperateWarRoom, 900);
+                yield return waitLeave;
+                t.Check(!waitLeave.TimedOut, $"the operator leaves the console when a hostile shows up (job {watched.CurJobDef?.defName})");
+                if (intruder.Spawned) { intruder.Destroy(DestroyMode.Vanish); }
+            }
+        }
+
         public static IEnumerable<Wait> GunnersManStationsAndEat(TestContext t)
         {
             Faction industrial = Find.FactionManager.AllFactionsListForReading.FirstOrDefault(f =>

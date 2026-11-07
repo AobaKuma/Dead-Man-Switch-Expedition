@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    陣營的飛彈與防空準則（DMSE.MissileDoctrineDef）。陣營用 FactionDef 的
+    <li Class="DMSE.MissileDoctrineExtension"><doctrine>...</doctrine></li> 指定；
+    沒有指定時依科技等級套用下面 defaultMinTech–defaultMaxTech 涵蓋的那一套。
+    數值與加入準則前寫在程式裡的相同。targetWorker 省略 = 只打玩家地圖；
+    改成 <targetWorker Class="Fortified.StrikeTargetWorker_Hostile" /> 就會攻擊敵對的 NPC 據點。
+  -->
+
+  <DMSE.MissileDoctrineDef>
+    <defName>DMSE_Doctrine_Industrial</defName>
+    <defaultMinTech>Industrial</defaultMinTech>
+    <defaultMaxTech>Industrial</defaultMaxTech>
+    <threatAssessment>false</threatAssessment>
+    <settlementDefense>
+      <detectionRange>6</detectionRange>
+      <antiStealthLevel>1</antiStealthLevel>
+      <channels>1</channels>
+      <maxStock>2</maxStock>
+      <restockPerDay>0.5</restockPerDay>
+      <cooldownTicks>900</cooldownTicks>
+      <fireControlDef>DMSE_EarlyFireControlRadar</fireControlDef>
+      <interceptorBody>DMSE_MissileBody_Light</interceptorBody>
+      <interceptorWarhead>DMSE_Light_Warhead_ContinuousRod</interceptorWarhead>
+    </settlementDefense>
+  </DMSE.MissileDoctrineDef>
+
+  <DMSE.MissileDoctrineDef>
+    <defName>DMSE_Doctrine_Spacer</defName>
+    <defaultMinTech>Spacer</defaultMinTech>
+    <defaultMaxTech>Spacer</defaultMaxTech>
+    <threatAssessment>true</threatAssessment>
+    <settlementDefense>
+      <detectionRange>8</detectionRange>
+      <antiStealthLevel>2</antiStealthLevel>
+      <channels>2</channels>
+      <maxStock>4</maxStock>
+      <restockPerDay>1.5</restockPerDay>
+      <cooldownTicks>600</cooldownTicks>
+      <fireControlDef>DMSE_PhaseArrayRadar</fireControlDef>
+      <interceptorBody>DMSE_MissileBody_Light</interceptorBody>
+      <interceptorWarhead>DMSE_Light_Warhead_ContinuousRod</interceptorWarhead>
+    </settlementDefense>
+  </DMSE.MissileDoctrineDef>
+
+  <DMSE.MissileDoctrineDef>
+    <defName>DMSE_Doctrine_Ultra</defName>
+    <defaultMinTech>Ultra</defaultMinTech>
+    <threatAssessment>true</threatAssessment>
+    <settlementDefense>
+      <detectionRange>8</detectionRange>
+      <antiStealthLevel>2</antiStealthLevel>
+      <channels>2</channels>
+      <maxStock>6</maxStock>
+      <restockPerDay>1.5</restockPerDay>
+      <cooldownTicks>600</cooldownTicks>
+      <fireControlDef>DMSE_PhaseArrayRadar</fireControlDef>
+      <interceptorBody>DMSE_MissileBody_Light</interceptorBody>
+      <interceptorWarhead>DMSE_Light_Warhead_ContinuousRod</interceptorWarhead>
+    </settlementDefense>
+  </DMSE.MissileDoctrineDef>
+</Defs>

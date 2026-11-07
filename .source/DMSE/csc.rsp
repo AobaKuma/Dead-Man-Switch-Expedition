@@ -203,6 +203,7 @@
 /analyzer:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\analyzers/dotnet/cs/System.Text.Json.SourceGeneration.dll"
 /analyzer:"C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\10.0.13\analyzers/dotnet/cs/System.Text.RegularExpressions.Generator.dll"
 Artillery\ArtilleryStrikeUtility.cs
+Artillery\Building_HeavyMortar.cs
 Artillery\CompArtilleryStrike.cs
 Artillery\MapComponent_ArtilleryStrikes.cs
 Artillery\Projectile_ArtilleryDeparture.cs
@@ -254,6 +255,7 @@ CelestialTransfer\Ship\TransferImpactUtility.cs
 CelestialTransfer\Ship\TransferLandingUtility.cs
 CelestialTransfer\Ship\TransferTakeoffCutscene.cs
 CelestialTransfer\Ship\WorldObject_TransferShip.cs
+CelestialTransfer\TransferEnvironmentExtension.cs
 CelestialTransfer\TransferFlightMath.cs
 CelestialTransfer\TransferFlightTuningDef.cs
 CelestialTransfer\TransferReadiness.cs
@@ -274,6 +276,14 @@ DefOf.cs
 Dev\MissileSizeTuner.cs
 DMSEMod.cs
 DMSEUI.cs
+EW\CompJammer.cs
+EW\CompPowerThrottle.cs
+EW\CompWarRoomConsole.cs
+EW\ITab_WarRoom.cs
+EW\JammerUtility.cs
+EW\MapComponent_EWControl.cs
+EW\Patch_CommsJammed.cs
+MissileBase\Alert_MissileBaseObjectives.cs
 MissileBase\CompMissileRackStorage.cs
 MissileBase\DebugActions_MissileBase.cs
 MissileBase\FieldLaunchSiteRoads.cs
@@ -281,14 +291,18 @@ MissileBase\GenStep_FieldLaunchSite.cs
 MissileBase\GenStep_MissileBaseCrew.cs
 MissileBase\IMissileRack.cs
 MissileBase\IncidentWorker_FieldLaunchSite.cs
+MissileBase\JobDriver_HaulMissileToRack.cs
 MissileBase\LordJob_MissileCrewDuty.cs
 MissileBase\LordJob_MissileStationCrew.cs
 MissileBase\MapComponent_MissileBase.cs
 MissileBase\MissileAutoFillUtility.cs
 MissileBase\MissileBaseRackSupply.cs
+MissileBase\MissileDoctrineDef.cs
 MissileBase\Patch_MissileBaseReentry.cs
 MissileBase\SitePartWorker_MissileBase.cs
 MissileBase\WorldObjectComp_MissileBase.cs
+MissileFramework\AirDefenseFramework.cs
+MissileFramework\MissileFrameworkTypes.cs
 MissileFx\FxCanvas.cs
 MissileFx\FxLighting.cs
 MissileFx\FxSmokeParticles.cs
@@ -347,6 +361,7 @@ Scorer\Assembly\JobDriver_UnloadMissileRack.cs
 Scorer\Assembly\MapComponent_GodModeAssembly.cs
 Scorer\Assembly\MissileAssemblyCost.cs
 Scorer\Assembly\MissileAssemblyUtility.cs
+Scorer\Assembly\MissileBehavior_ReleaseChildren.cs
 Scorer\Assembly\MissileBVRUtility.cs
 Scorer\Assembly\MissileConfig.cs
 Scorer\Assembly\MissileDefs.cs
@@ -354,6 +369,7 @@ Scorer\Assembly\MissileDesignBlueprint.cs
 Scorer\Assembly\MissileDesignNamer.cs
 Scorer\Assembly\MissileDesignUI.cs
 Scorer\Assembly\MissileIncoming.cs
+Scorer\Assembly\MissileInfoCardUtility.cs
 Scorer\Assembly\MissileItemExtension.cs
 Scorer\Assembly\MissileItemUtility.cs
 Scorer\Assembly\MissileLauncherExtension.cs
@@ -420,16 +436,19 @@ SkyFallerTurret\BVR\InterceptDebris\InterceptEventData.cs
 SkyFallerTurret\BVR\InterceptDebris\InterceptFxBudget.cs
 SkyFallerTurret\BVR\InterceptDebris\InterceptFxMaterial.cs
 SkyFallerTurret\BVR\InterceptDebris\InterceptGeometry.cs
+SkyFallerTurret\BVR\InterceptedPawnUtility.cs
 SkyFallerTurret\BVR\JobDriver_ManMissileLauncher.cs
 SkyFallerTurret\BVR\ManPortableSAM.cs
 SkyFallerTurret\BVR\MapComponent_BVRCombat.cs
 SkyFallerTurret\BVR\MapComponent_InterceptEffects.cs
 SkyFallerTurret\BVR\WeatherEvent_MissileFlash.cs
+SkyFallerTurret\BVR\World\AirDefenseHooks.cs
 SkyFallerTurret\BVR\World\Alert\AirDefenseAlertPolicy.cs
 SkyFallerTurret\BVR\World\Alert\AirDefenseAlertTuningDef.cs
 SkyFallerTurret\BVR\World\Alert\AirDefenseAlertUI.cs
 SkyFallerTurret\BVR\World\Alert\AirDefenseObservation.cs
 SkyFallerTurret\BVR\World\Alert\AirspaceRestrictionUtility.cs
+SkyFallerTurret\BVR\World\Alert\BlockadeInterception.cs
 SkyFallerTurret\BVR\World\Alert\Patch_AirspaceRestriction.cs
 SkyFallerTurret\BVR\World\Alert\WorldComponent_FactionAirDefenseAlert.cs
 SkyFallerTurret\BVR\World\Alert_WorldIncoming.cs
@@ -453,9 +472,13 @@ SkyFallerTurret\EarlyWarningUtility.cs
 SkyFallerTurret\InterceptProjectile.cs
 SkyFallerTurret\InterceptSkyfallerUtility.cs
 SkyFallerTurret\MapComponent_InterceptSkyfaller.cs
+SkyFallerTurret\Patch_InterceptRiskWarning.cs
 SkyFallerTurret\Patch_MakeDropPodAt.cs
 SkyFallerTurret\Patch_QuestPart_Bossgroup.cs
+SkyFallerTurret\Patch_ShipJobArrive.cs
+Utilities\DMSE_Concepts.cs
 Utilities\ImpactCraterUtility.cs
+Utilities\Patch_ResearchCompleted.cs
 VacuumRoom\CompLandFillable.cs
 VacuumRoom\GenStep_Prefab.cs
 VacuumRoom\JobDriver_LandFill.cs

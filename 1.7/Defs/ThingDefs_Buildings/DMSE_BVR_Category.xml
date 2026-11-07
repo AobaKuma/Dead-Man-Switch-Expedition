@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- 超視距作戰建築分頁：雷達、電戰、指揮、發射平台、彈藥架、遠程砲與末端防空砲 -->
+  <DesignationCategoryDef>
+    <defName>DMSE_BVRCategory</defName>
+    <label>BVR warfare</label>
+    <description>Radars, electronic warfare, strike command, missile launchers and racks, long-range guns and terminal air defence.</description>
+    <order>295</order>
+    <specialDesignatorClasses>
+      <li>Designator_Cancel</li>
+      <li>Designator_Deconstruct</li>
+    </specialDesignatorClasses>
+    <researchPrerequisites>
+      <li>DMSE_RadarBasis</li>
+    </researchPrerequisites>
+  </DesignationCategoryDef>
+
+</Defs>

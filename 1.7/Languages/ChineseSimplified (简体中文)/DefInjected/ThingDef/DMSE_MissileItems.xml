@@ -16,6 +16,8 @@
   <DMSE_Missile_Maverick.description>一种配备电视与红外导引头的轻型对地攻击导弹。最擅长摧毁单一特定目标，而不是夷平整座基地。</DMSE_Missile_Maverick.description>
   <DMSE_Missile_Sparrow.label>先进防空导弹</DMSE_Missile_Sparrow.label>
   <DMSE_Missile_Sparrow.description>一种半主动雷达制导的中程防空导弹。比轻型防空导弹更快、射程更远、也更准，但火控雷达必须持续照射目标直到命中。</DMSE_Missile_Sparrow.description>
+  <DMSE_Missile_Oniks.label>先进反舰巡航导弹</DMSE_Missile_Oniks.label>
+  <DMSE_Missile_Oniks.description>一种冲压发动机推进的先进反舰巡航导弹。比旧式超音速导弹更快、更难探测、射程也更远，威力约为两倍，倾斜发射架与垂直发射井都能发射。造价昂贵，但远比高超音速导弹便宜。</DMSE_Missile_Oniks.description>
   <DMSE_Missile_Yj.label>高超音速反舰导弹</DMSE_Missile_Yj.label>
   <DMSE_Missile_Yj.description>一种以火箭助推、冲压发动机巡航的高超音速反舰导弹。末段飞得极低又极快，防御方几乎没有反应时间。造价极高。</DMSE_Missile_Yj.description>
 

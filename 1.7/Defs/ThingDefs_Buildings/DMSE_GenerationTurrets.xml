@@ -13,6 +13,7 @@
   <ThingDef ParentName="DMS_BaseCannonBuilding">
     <defName>DMSE_Turret_LegacyFlak</defName>
     <label>legacy flak gun</label>
+    <designationCategory>DMSE_BVRCategory</designationCategory>
     <designatorDropdown>DMS_Turrets</designatorDropdown>
     <description>A crew-served 37 mm anti-aircraft autocannon based on the 3.7 cm Flak 43. Its gas-operated action feeds from eight-round clips; a gunner turns the handwheels and aims through an optical sight. Small high-explosive shells and rapid bursts make it useful against slow, low-flying targets, but it has no radar, electrical drive or automatic fire control.\n\nNeeds a gunner. Fires steel-supplied 37 mm rounds at ground targets and at incoming missiles in their final approach. Requires Radar and gas operation research.</description>
     <techLevel>Industrial</techLevel>
@@ -172,6 +173,7 @@
   <ThingDef ParentName="DMS_BaseCannonBuilding">
     <defName>DMSE_Turret_Millennium</defName>
     <label>advanced air-defence gun</label>
+    <designationCategory>DMSE_BVRCategory</designationCategory>
     <designatorDropdown>DMS_Turrets</designatorDropdown>
     <description>A modern 35 mm anti-aircraft gun with programmable airburst ammunition, radar and electro-optical tracking and a fire-control system that engages several targets at once, its interception rate startling and so is its draw on power and ammunition, every engagement a crate of silver poured into the sky.\n\nFires airburst rounds made from steel; each terminal-defence burst burns through dozens of them.</description>
     <techLevel>Industrial</techLevel>

@@ -18,7 +18,7 @@ namespace DMSE
     ///    ‧ 彈藥來源：地圖上敵方 <see cref="Building_MissileRack"/>；耗盡後停止射擊直到補給。<br/>
     ///    ‧ 導彈從地圖上的敵方世界選靶發射建築升空，飛出地圖邊緣後才進入世界航跡（同玩家發射）。<br/>
     /// 2. 指派 <see cref="LordJob_MissileCrewDuty"/> 給地圖內的敵方 Pawn。<br/>
-    /// 3. 偵測「保留觀察狀態 + 所有敵方雷達（<see cref="IsObjectiveRadar"/>）與世界選靶發射器
+    /// 3. 偵測「所有敵方雷達（<see cref="IsObjectiveRadar"/>）與世界選靶發射器
     ///    （<see cref="CompMissileLauncher_WorldTargeting"/>：Rail / Ballistic / Scorer）皆已摧毀」→ 哨站摧毀；
     ///    玩家單位仍在圖上時，等撤離後才移除站點。雷達尚存時撤退，站點保留並封鎖再進入（<see cref="SitePartWorker_MissileBase"/>）。
     /// </summary>
@@ -53,7 +53,13 @@ namespace DMSE
 
         // ── 彈架補彈（CompProperties_MissileBase.rackSupply）────────────────
         private int nextRackSupplyTick = -1;
+        // 空投已落地、等守軍親自搬上彈架的導彈（不再自動裝填）。
         private List<PendingRackLoad> pendingRackLoads = new List<PendingRackLoad>();
+
+        // ── 砲塔彈藥補給（CompProperties_MissileBase.turretAmmo）─────────────
+        private int nextTurretAmmoTick = -1;
+        // 空投已落地、等守軍搬去砲塔裝填的彈藥。
+        private List<PendingTurretRefuel> pendingTurretRefuels = new List<PendingTurretRefuel>();
 
         // ── 此地圖是否為導彈陣地地圖 ──────────────────────────────────────────
         // null = 尚未確認；true/false = 已快取結果
@@ -64,8 +70,13 @@ namespace DMSE
             get
             {
                 if (isMissileBaseMapCached == null)
-                    isMissileBaseMapCached = map.Parent is Site s
+                {
+                    // 讀檔時 MapInfo.parent 要到解析引用階段才有值：這時不能快取，否則陣地讀檔後永遠被當成一般地圖。
+                    MapParent parent = map.Parent;
+                    if (parent == null) return false;
+                    isMissileBaseMapCached = parent is Site s
                         && s.GetComponent<WorldObjectComp_MissileBase>() != null;
+                }
                 return isMissileBaseMapCached.Value;
             }
         }
@@ -101,21 +112,34 @@ namespace DMSE
 
         public override void ExposeData()
         {
-            if (!IsMissileBaseMap) return;
+            // 讀檔的 LoadingVars 階段還不知道 map.Parent，一律照讀；一般地圖的存檔沒有這些節點，讀到的都是預設值。
+            if (Scribe.mode == LoadSaveMode.Saving && !IsMissileBaseMap) return;
             base.ExposeData();
             Scribe_Values.Look(ref baseSiteDestroyed, "baseSiteDestroyed", false);
             Scribe_Values.Look(ref playerVisited, "playerVisited", false);
             Scribe_Values.Look(ref hasEverHadLaunchers, "hasEverHadLaunchers", false);
             Scribe_Values.Look(ref nextSupplyDropTick, "nextSupplyDropTick", -1);
             Scribe_Values.Look(ref nextRackSupplyTick, "nextRackSupplyTick", -1);
+            Scribe_Values.Look(ref nextTurretAmmoTick, "nextTurretAmmoTick", -1);
             // 已被搶走／摧毀的導彈不存引用，避免存檔時引用已銷毀的物件。
             if (Scribe.mode == LoadSaveMode.Saving)
                 pendingRackLoads.RemoveAll(e => e.missile == null || e.missile.Destroyed || e.rack == null || e.rack.Destroyed);
             Scribe_Collections.Look(ref pendingRackLoads, "pendingRackLoads", LookMode.Deep);
+            // 同樣只存還在的彈藥堆；被搬走／打爛的引用不留在存檔裡。
+            if (Scribe.mode == LoadSaveMode.Saving)
+            {
+                pendingTurretRefuels.RemoveAll(e => e.turret == null || e.turret.Destroyed);
+                foreach (PendingTurretRefuel e in pendingTurretRefuels)
+                    e.fuel?.RemoveAll(t => t == null || t.Destroyed);
+                pendingTurretRefuels.RemoveAll(e => e.fuel.NullOrEmpty());
+            }
+            Scribe_Collections.Look(ref pendingTurretRefuels, "pendingTurretRefuels", LookMode.Deep);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 pendingRackLoads ??= new List<PendingRackLoad>();
                 pendingRackLoads.RemoveAll(e => e.missile == null || e.rack == null);
+                pendingTurretRefuels ??= new List<PendingTurretRefuel>();
+                pendingTurretRefuels.RemoveAll(e => e.turret == null || e.fuel.NullOrEmpty());
             }
             Scribe_References.Look(ref crewLord, "crewLord");
             // WorldObject 引用：依賴世界物件存檔中對應的引用解析。
@@ -136,18 +160,231 @@ namespace DMSE
 
             if (!playerVisited && HasPlayerPawns(map)) playerVisited = true;
             EnsureCrewLord();
+            TickGeneratorFuel();
+            TickTurretAmmoSupply();
             CheckRadarDestruction();
             TryFireFromOnMap();
             TickSupplyDrop();
             TickRackSupply();
+            TickCrewHaul();
             TickCrewReload();
         }
 
-        // ──────────────── 守軍搬彈裝填 ────────────────
+        // ──────────────── 發電機燃料 ────────────────
+
+        /// <summary>
+        /// <see cref="CompProperties_MissileBase.refuelGenerators"/>：守軍尚在時把燃料發電機維持在半滿以上。
+        /// 舊式陣地的火控雷達靠燒木發電機供電；不補的話發電機從空槽開始，雷達永遠開不了機，陣地就打不出導彈。
+        /// </summary>
+        private void TickGeneratorFuel()
+        {
+            if (WorldComp?.Props.refuelGenerators != true) return;
+            Faction enemy = map.ParentFaction;
+            if (enemy == null || ActiveCrewCount(enemy) <= 0) return;
+
+            foreach (Building b in map.listerBuildings.allBuildingsNonColonist)
+            {
+                if (b.Faction != enemy || b.Destroyed || b.TryGetComp<CompPowerPlant>() == null) continue;
+                CompRefuelable fuel = b.TryGetComp<CompRefuelable>();
+                if (fuel != null && fuel.Fuel < fuel.Props.fuelCapacity * 0.5f)
+                    fuel.Refuel(fuel.Props.fuelCapacity - fuel.Fuel);
+            }
+        }
+
+        // ──────────────── 砲塔彈藥 ────────────────
+
+        private MissileBaseTurretAmmoSupply TurretAmmoSupply => WorldComp?.Props.turretAmmo;
+
+        /// <summary>
+        /// <see cref="MissileBaseTurretAmmoSupply"/>：砲塔彈藥（<see cref="CompRefuelable"/>）低於門檻時，
+        /// 在砲塔附近空投實體彈藥。<b>不會</b>直接把燃料塞進砲塔——落地後由守軍搬過去裝填
+        /// （見 <see cref="TickCrewHaul"/>）；守軍全滅後彈藥只會躺在地上，砲塔打完就是打完。
+        /// </summary>
+        private void TickTurretAmmoSupply()
+        {
+            MissileBaseTurretAmmoSupply supply = TurretAmmoSupply;
+            if (supply == null || !supply.enabled) return;
+
+            Faction enemy = map.ParentFaction;
+            if (enemy == null) return;
+
+            int now = Find.TickManager.TicksGame;
+            if (nextTurretAmmoTick < 0 || now >= nextTurretAmmoTick)
+            {
+                bool due = nextTurretAmmoTick >= 0;
+                nextTurretAmmoTick = now + Mathf.RoundToInt(supply.intervalDays * GenDate.TicksPerDay);
+                if (due) ResupplyTurretAmmo(supply, enemy, now);
+            }
+        }
+
+        private void ResupplyTurretAmmo(MissileBaseTurretAmmoSupply supply, Faction enemy, int now)
+        {
+            if (ActiveCrewCount(enemy) <= 0) return;
+
+            int turrets = 0, rounds = 0;
+            IntVec3 lookAt = IntVec3.Invalid;
+            ThingDef lastFuel = null;
+
+            foreach (Building b in map.listerBuildings.allBuildingsNonColonist)
+            {
+                if (b.Faction != enemy || b.Destroyed || !IsAmmoTurret(b)) continue;
+                CompRefuelable ammo = b.TryGetComp<CompRefuelable>();
+                if (ammo?.Props.fuelFilter == null || ammo.Props.fuelFilter.AllowedDefCount == 0) continue;
+                if (ammo.IsFull || ammo.FuelPercentOfMax >= supply.refillBelowPercent) continue;
+                // 上一批補給還在等守軍搬／搬運中：不要重複空投。
+                if (pendingTurretRefuels.Any(e => e.turret == b)) continue;
+
+                ThingDef fuelDef = ammo.Props.fuelFilter.AnyAllowedDef;
+                int count = FuelItemsToRefill(ammo, supply.refillToPercent);
+                if (fuelDef == null || count <= 0) continue;
+
+                List<Thing> dropped = new List<Thing>();
+                IntVec3 cell = MissileBaseSupplyUtility.Drop(map, b.Position, fuelDef, count, enemy, dropped);
+                if (!cell.IsValid || dropped.Count == 0) continue;
+
+                pendingTurretRefuels.Add(new PendingTurretRefuel
+                {
+                    turret = b,
+                    fuel = dropped,
+                    readyTick = now + Mathf.Max(0, supply.haulDelayTicks)
+                });
+
+                turrets++;
+                rounds += count;
+                lastFuel = fuelDef;
+                if (!lookAt.IsValid) lookAt = cell;
+            }
+
+            if (turrets == 0) return;
+            if (IsPlayerObserving())
+                Messages.Message("DMSE.MissileBase.TurretAmmoDrop".Translate(lastFuel?.label ?? "?", rounds, turrets),
+                    new LookTargets(lookAt, map), MessageTypeDefOf.ThreatSmall);
+            if (Prefs.DevMode)
+                Log.Message($"[DMSE MissileBase] 砲塔彈藥空投：{turrets} 座砲塔，共 {rounds} 個 {lastFuel?.defName}");
+        }
+
+        /// <summary>要補幾個彈藥物品（不是燃料單位）：依 <paramref name="fillPercent"/> 補到目標量。</summary>
+        private static int FuelItemsToRefill(CompRefuelable ammo, float fillPercent)
+        {
+            float multiplier = Mathf.Max(0.001f, ammo.Props.FuelMultiplierCurrentDifficulty);
+            float target = ammo.Props.fuelCapacity * Mathf.Clamp01(fillPercent);
+            return Mathf.Max(1, Mathf.CeilToInt((target - ammo.Fuel) / multiplier));
+        }
+
+        /// <summary>會吃 ammo 的砲塔／終端攔截平台（有 <see cref="CompRefuelable"/> 才有彈藥可補）。</summary>
+        private static bool IsAmmoTurret(Building b)
+            => b is Building_Turret || b.TryGetComp<CompTerminalCIWS>() != null;
+
+        // ──────────────── 守軍搬運 ────────────────
+
+        /// <summary>
+        /// 守軍親自搬空投落地的補給：導彈 → 彈架（<c>DMSE_HaulMissileToRack</c>）、
+        /// 砲塔彈藥 → 砲塔（原版 <see cref="JobDefOf.Refuel"/>）。<br/>
+        /// 搬運是實體流程：彈藥在地上、在 pawn 手上都看得到，玩家可以搶走或打爛；沒有守軍就沒人搬。
+        /// </summary>
+        private void TickCrewHaul()
+        {
+            Faction enemy = map.ParentFaction;
+            if (enemy == null) return;
+            MissileBaseRackSupply rackSupply = WorldComp?.Props.rackSupply;
+            MissileBaseTurretAmmoSupply ammoSupply = TurretAmmoSupply;
+            if (pendingRackLoads.Count == 0 && pendingTurretRefuels.Count == 0) return;
+
+            PrunePendingRackLoads(rackSupply);
+            PrunePendingTurretRefuels();
+
+            if (pendingRackLoads.Count == 0 && pendingTurretRefuels.Count == 0) return;
+
+            List<Pawn> crew = CrewHaulers(enemy);
+            if (crew.Count == 0) return;
+            int now = Find.TickManager.TicksGame;
+
+            // ── 導彈：地上的補給彈 → 彈架 ──
+            if (rackSupply != null && rackSupply.maxCrewLoaders > 0)
+            {
+                int busy = crew.Count(p => IsLoadJob(p.CurJobDef));
+                foreach (PendingRackLoad e in pendingRackLoads)
+                {
+                    if (busy >= rackSupply.maxCrewLoaders) break;
+                    if (now < e.loadTick) continue;   // 剛落地：留給玩家一點搶奪／摧毀的時間
+
+                    IMissileRack rack = MissileRackUtil.Of(e.rack);
+                    if (rack == null || rack.Full || !rack.Accepts(e.missile)) continue;
+                    if (!e.missile.Spawned) continue;
+
+                    Pawn p = FindHauler(crew, e.missile, e.rack, PathEndMode.ClosestTouch, PathEndMode.Touch);
+                    if (p == null) continue;
+
+                    Job job = JobMaker.MakeJob(DMSE_MissileJobDefOf.DMSE_HaulMissileToRack, e.rack, e.missile);
+                    job.count = MissileRackUtil.LoadCount(e.missile, rack);
+                    if (!p.jobs.TryTakeOrderedJob(job, JobTag.Misc)) continue;
+
+                    busy++;
+                    if (Prefs.DevMode)
+                        Log.Message($"[DMSE MissileBase] {p.LabelShort} 把地上的 {e.missile.def.defName} 搬進 {e.rack.def.defName}");
+                }
+            }
+
+            // ── 砲塔彈藥：地上的補給彈藥 → 砲塔 ──
+            if (ammoSupply != null && ammoSupply.enabled && ammoSupply.maxHaulers > 0)
+            {
+                int busy = crew.Count(p => IsRefuelJob(p.CurJobDef));
+                foreach (PendingTurretRefuel e in pendingTurretRefuels)
+                {
+                    if (busy >= ammoSupply.maxHaulers) break;
+                    if (now < e.readyTick) continue;
+
+                    CompRefuelable ammo = e.turret?.TryGetComp<CompRefuelable>();
+                    if (ammo == null || ammo.IsFull) continue;
+                    Thing fuel = e.fuel?.FirstOrDefault(t => t != null && !t.Destroyed && t.Spawned && t.Map == map);
+                    if (fuel == null) continue;
+
+                    Pawn p = FindHauler(crew, fuel, e.turret, PathEndMode.ClosestTouch, PathEndMode.Touch);
+                    if (p == null) continue;
+
+                    // 原版裝填工作：撿起彈藥 → 走到砲塔 → 讀條 → CompRefuelable.Refuel。
+                    // playerForced 讓它在砲塔被關閉／指定拆卸時也照常裝填（這是守軍的例行補給）。
+                    Job job = JobMaker.MakeJob(JobDefOf.Refuel, e.turret, fuel);
+                    job.playerForced = true;
+                    if (!p.jobs.TryTakeOrderedJob(job, JobTag.Misc)) continue;
+
+                    busy++;
+                    if (Prefs.DevMode)
+                        Log.Message($"[DMSE MissileBase] {p.LabelShort} 把地上的 {fuel.def.defName} 搬去 {e.turret.def.defName} 裝填");
+                }
+            }
+        }
+
+        /// <summary>防守中的陣地班（<see cref="LordJob_MissileCrewDuty"/>）；炮手要顧崗位，不叫去搬貨。</summary>
+        private List<Pawn> CrewHaulers(Faction enemy)
+            => map.mapPawns.SpawnedPawnsInFaction(enemy)
+                .Where(p => p.RaceProps.Humanlike && p.GetLord()?.LordJob is LordJob_MissileCrewDuty)
+                .ToList();
+
+        private static bool IsLoadJob(JobDef def)
+            => def == DMSE_MissileJobDefOf.DMSE_LoadMissileLauncher
+            || def == DMSE_MissileJobDefOf.DMSE_HaulMissileToRack;
+
+        private static bool IsRefuelJob(JobDef def)
+            => def == JobDefOf.Refuel || def == JobDefOf.RefuelAtomic;
+
+        /// <summary>在 <paramref name="crew"/> 裡找一個能現在去搬的人（可預約、可到達兩個目標）。</summary>
+        private static Pawn FindHauler(List<Pawn> crew, Thing carryTarget, Thing destination,
+            PathEndMode carryPath, PathEndMode destinationPath)
+        {
+            foreach (Pawn p in crew)
+            {
+                if (!CanHaulNow(p)) continue;
+                if (!p.CanReserveAndReach(carryTarget, carryPath, Danger.Some)) continue;
+                if (destination != null && !p.CanReserveAndReach(destination, destinationPath, Danger.Some)) continue;
+                return p;
+            }
+            return null;
+        }
 
         /// <summary>
         /// 讓防守中的守軍把彈藥庫／儲存架裡的導彈搬到未滿的發射架（沿用殖民者的 <c>DMSE_LoadMissileLauncher</c> 工作）。
-        /// 同時最多 <see cref="MissileBaseRackSupply.maxCrewLoaders"/> 人；守軍轉入進攻狀態時不搬。
+        /// 同時最多 <see cref="MissileBaseRackSupply.maxCrewLoaders"/> 人（與空投搬運共用額度）；守軍轉入進攻狀態時不搬。
         /// </summary>
         private void TickCrewReload()
         {
@@ -156,9 +393,9 @@ namespace DMSE
             if (supply == null || supply.maxCrewLoaders <= 0 || enemy == null) return;
 
             JobDef loadJob = DMSE_MissileJobDefOf.DMSE_LoadMissileLauncher;
-            List<Pawn> crew = map.mapPawns.SpawnedPawnsInFaction(enemy)
-                .Where(p => p.RaceProps.Humanlike && p.GetLord()?.LordJob is LordJob_MissileCrewDuty).ToList();
-            int busy = crew.Count(p => p.CurJobDef == loadJob);
+            List<Pawn> crew = CrewHaulers(enemy);
+            if (crew.Count == 0) return;
+            int busy = crew.Count(p => IsLoadJob(p.CurJobDef));
             if (busy >= supply.maxCrewLoaders) return;
 
             List<IMissileRack> racks = MissileBaseRackSupplyUtility.RacksOf(map, enemy);
@@ -170,7 +407,7 @@ namespace DMSE
                 if (busy >= supply.maxCrewLoaders) return;
                 foreach (Pawn p in crew)
                 {
-                    if (!CanHaulNow(p, loadJob)) continue;
+                    if (!CanHaulNow(p)) continue;
                     if (!p.CanReserveAndReach(launcher.RackThing, PathEndMode.Touch, Danger.Some)) continue;
                     IMissileRack source = sources
                         .Where(s => MissileBaseRackSupplyUtility.HasMissileFor(s, launcher)
@@ -192,10 +429,10 @@ namespace DMSE
         }
 
         /// <summary>防守狀態中、沒在戰鬥或搬運的守軍。</summary>
-        private static bool CanHaulNow(Pawn p, JobDef loadJob)
+        private static bool CanHaulNow(Pawn p)
         {
             if (!p.Spawned || p.Downed || p.InMentalState || p.carryTracker.CarriedThing != null) return false;
-            if (p.CurJobDef == loadJob) return false;
+            if (IsLoadJob(p.CurJobDef) || IsRefuelJob(p.CurJobDef)) return false;
             if (!(p.GetLord()?.CurLordToil is LordToil_MissileCrewDefend)) return false;
             if (p.mindState.enemyTarget != null) return false;
             return true;
@@ -205,14 +442,13 @@ namespace DMSE
 
         /// <summary>
         /// 每 <see cref="MissileBaseRackSupply.intervalDays"/> 天，為每座空彈架空投一艙導彈（彈種與數量依彈架類型）。
-        /// 導彈開艙後等 <see cref="MissileBaseRackSupply.loadDelayTicks"/>，仍在彈架附近且守軍尚在時才裝入。
+        /// 導彈落地後只在原地等，<see cref="MissileBaseRackSupply.loadDelayTicks"/> 過後由守軍親自搬進彈架
+        /// （見 <see cref="TickCrewHaul"/>）；沒有守軍就沒人裝填。
         /// </summary>
         private void TickRackSupply()
         {
             MissileBaseRackSupply supply = WorldComp?.Props.rackSupply;
             if (supply == null) return;
-
-            ProcessPendingRackLoads(supply);
 
             int now = Find.TickManager.TicksGame;
             if (nextRackSupplyTick < 0 || now >= nextRackSupplyTick)
@@ -265,12 +501,12 @@ namespace DMSE
                 Log.Message($"[DMSE MissileBase] 彈架補給空投：{racks} 座彈架，共 {missiles} 發");
         }
 
-        private void ProcessPendingRackLoads(MissileBaseRackSupply supply)
+        /// <summary>
+        /// 清掉已無意義的「等搬導彈」條目：導彈被搬進平台、被玩家拿走、被打爛，或平台已不再收這枚彈。
+        /// 清掉後導彈留在原地（如果還在地上），不會憑空消失。
+        /// </summary>
+        private void PrunePendingRackLoads(MissileBaseRackSupply supply)
         {
-            if (pendingRackLoads.Count == 0) return;
-            int now = Find.TickManager.TicksGame;
-            bool crew = map.ParentFaction != null && ActiveCrewCount(map.ParentFaction) > 0;
-
             for (int i = pendingRackLoads.Count - 1; i >= 0; i--)
             {
                 PendingRackLoad e = pendingRackLoads[i];
@@ -279,26 +515,49 @@ namespace DMSE
                     pendingRackLoads.RemoveAt(i);
                     continue;
                 }
-                if (!e.missile.Spawned)
-                {
-                    // 還在補給艙裡就繼續等；被人拿走（揹包、運送中）則放棄。
-                    if (!(e.missile.ParentHolder is ActiveTransporterInfo)) pendingRackLoads.RemoveAt(i);
-                    continue;
-                }
-                if (now < e.loadTick || !crew) continue;
 
                 IMissileRack rack = MissileRackUtil.Of(e.rack);
-                if (rack == null || e.missile.Map != map || e.missile.Position.DistanceTo(e.rack.Position) > supply.loadRadius
-                    || rack.Full || !rack.Accepts(e.missile))
+                if (rack == null) { pendingRackLoads.RemoveAt(i); continue; }
+
+                // 已經在平台裡 → 這條補給完成。
+                if (e.missile.ParentHolder == rack.GetDirectlyHeldThings()) { pendingRackLoads.RemoveAt(i); continue; }
+
+                if (!e.missile.Spawned)
                 {
+                    // 還在補給艙裡，或正被本陣營的守軍搬著 → 繼續追蹤；
+                    // 被玩家拿走、存進別的容器 → 不關我們的事了。
+                    if (e.missile.ParentHolder is ActiveTransporterInfo) continue;
+                    if (e.missile.ParentHolder is Pawn_CarryTracker carry && carry.pawn?.Faction == map.ParentFaction) continue;
                     pendingRackLoads.RemoveAt(i);
                     continue;
                 }
 
-                e.missile.DeSpawn();
-                if (!rack.GetDirectlyHeldThings().TryAdd(e.missile))
-                    GenPlace.TryPlaceThing(e.missile, e.rack.Position, map, ThingPlaceMode.Near);
-                pendingRackLoads.RemoveAt(i);
+                if (e.missile.Map != map || rack.Full || !rack.Accepts(e.missile)
+                    || e.missile.Position.DistanceTo(e.rack.Position) > (supply?.loadRadius ?? 12f))
+                {
+                    pendingRackLoads.RemoveAt(i);
+                }
+            }
+        }
+
+        /// <summary>清掉已無意義的「等搬砲塔彈藥」條目：砲塔已滿、被毀，或彈藥堆都不在了。</summary>
+        private void PrunePendingTurretRefuels()
+        {
+            for (int i = pendingTurretRefuels.Count - 1; i >= 0; i--)
+            {
+                PendingTurretRefuel e = pendingTurretRefuels[i];
+                if (e.turret == null || e.turret.Destroyed || !e.turret.Spawned)
+                {
+                    pendingTurretRefuels.RemoveAt(i);
+                    continue;
+                }
+                e.fuel ??= new List<Thing>();
+                e.fuel.RemoveAll(t => t == null || t.Destroyed);
+                CompRefuelable ammo = e.turret.TryGetComp<CompRefuelable>();
+                if (ammo == null) { pendingTurretRefuels.RemoveAt(i); continue; }
+                if (ammo.IsFull || e.fuel.Count == 0) { pendingTurretRefuels.RemoveAt(i); continue; }
+                // 全部被搬離這張圖（存進容器、被玩家帶走）→ 不再追蹤。
+                if (!e.fuel.Any(t => t.Spawned && t.Map == map)) pendingTurretRefuels.RemoveAt(i);
             }
         }
 
@@ -366,8 +625,7 @@ namespace DMSE
         /// <summary>雷達與世界選靶發射器都是必要目標：兩者皆全滅才判定陣地摧毀。</summary>
         private void CheckRadarDestruction()
         {
-            if (!IsPlayerObserving()) return;
-
+            // 不看玩家有沒有在看這張地圖：遠程打擊時地圖常在畫面外，等到地圖被移除才發現就來不及，站點會保留並完整重建。
             if (RemainingLaunchers.Any() || RemainingRadars.Any())
             {
                 hasEverHadLaunchers = true;
@@ -455,6 +713,7 @@ namespace DMSE
             // 導彈必須從地圖上的發射建築升空、飛出地圖邊緣後才進入世界航跡；發射建築全滅則停火
             List<CompMissileLauncher_WorldTargeting> pads = GetEnemyLaunchersCached()
                 .Where(b => b.Spawned && !b.Destroyed)
+                .Where(b => !NeedsOperator(b))
                 .Select(b => b.TryGetComp<CompMissileLauncher_WorldTargeting>())
                 .Where(c => c != null)
                 .ToList();
@@ -489,7 +748,7 @@ namespace DMSE
                 MissileRackUtil.ConsumeOne(missile);
 
                 // 選擇目標（隨機；未來可擴充為優先級排序）
-                MapParent target = targets.RandomElement();
+                MapParent target = MissileDoctrine.Choose(source, source.Faction, cfg, targets);
 
                 // 世界航跡物件先建立、不加入世界：升空彈飛出地圖時才加入（同玩家發射）
                 WorldObject_IncomingMissile wo = IncomingMissileUtility.Make(
@@ -539,10 +798,18 @@ namespace DMSE
             return total;
         }
 
+        /// <summary>需人操作的設備（手搖旋轉發射架）目前沒人操作。</summary>
+        private static bool NeedsOperator(Building b)
+        {
+            CompMannable mannable = b.TryGetComp<CompMannable>();
+            return mannable != null && !mannable.MannedNow;
+        }
+
         /// <summary>
-        /// 找到第一個屬於敵方、未摧毀且存有可發射導彈（帶 <see cref="CompMissileConfig"/>）的
+        /// 找到第一個屬於敵方、未摧毀且存有對地彈（<see cref="MissileBaseRackSupplyUtility.IsStrikeRound"/>）的
         /// <see cref="Building_MissileRack"/>，並以 <paramref name="missile"/> 回傳該枚導彈。<br/>
-        /// 只存放不帶此 comp 之彈（如攔截彈）的彈架會被跳過，不消耗任何東西。
+        /// 純防空平台、只存放攔截彈的彈架、以及沒人操作的手動發射架都會被跳過，不消耗任何東西。<br/>
+        /// 全圖優先取純對地彈；沒有時才動用兩用彈，盡量把它們留給防空。
         /// </summary>
         private IMissileRack FindRackWithMissiles(out Thing missile)
         {
@@ -550,17 +817,34 @@ namespace DMSE
             Faction enemy = map.ParentFaction;
             if (enemy == null) return null;
 
+            Thing dualRound = null;
+            IMissileRack dualRack = null;
+
             foreach (Building b in map.listerBuildings.allBuildingsNonColonist)
             {
                 if (b.Faction != enemy || b.Destroyed) continue;
                 IMissileRack rack = MissileRackUtil.Of(b);
                 if (rack == null || rack.StoredCount <= 0) continue;
+                if (MissileBaseRackSupplyUtility.IsAirDefenseOnly(b)) continue;
+                if (b.TryGetComp<CompMissileLauncher_WorldTargeting>() != null && NeedsOperator(b)) continue;
 
-                missile = rack.GetDirectlyHeldThings()
-                    .FirstOrDefault(t => t.def.HasComp(typeof(CompMissileConfig)));
-                if (missile != null) return rack;
+                foreach (Thing round in rack.GetDirectlyHeldThings())
+                {
+                    if (!MissileBaseRackSupplyUtility.IsStrikeRound(round)) continue;
+                    if (MissileRoleExtension.RoleOf(round.def) == MissileRole.Strike)
+                    {
+                        missile = round;
+                        return rack;
+                    }
+                    if (dualRound == null)
+                    {
+                        dualRound = round;
+                        dualRack = rack;
+                    }
+                }
             }
-            return null;
+            missile = dualRound;
+            return dualRack;
         }
 
         /// <summary>
@@ -577,6 +861,10 @@ namespace DMSE
                     return mcc.config.Clone();
             }
 
+            // 固定構型導彈（沒有 comp，彈體寫在 MissileItemExtension）
+            MissileConfig fixedConfig = MissileItemExtension.ConfigFor(missile);
+            if (fixedConfig != null) return fixedConfig;
+
             // 退回 WorldComp 預設（選取 CompProperties_MissileBase.missileBody）
             if (wc != null) return wc.BuildFireConfig();
 
@@ -586,22 +874,11 @@ namespace DMSE
         }
 
         /// <summary>
-        /// 找出這枚導彈打得到、具有地圖且屬於玩家陣營的 <see cref="MapParent"/>：
-        /// 射程不超過陣地射程與導彈射程；跨圖層需導彈具備導引能力。
+        /// 這枚導彈打得到的目標：誰算目標由陣營準則決定（<see cref="MissileDoctrineDef.targetWorker"/>，預設只打玩家地圖）；
+        /// 射程不超過陣地射程與導彈射程，跨圖層需導彈具備導引能力。
         /// </summary>
         private List<MapParent> FindPlayerTargetsInRange(MapParent source, int range, MissileConfig cfg)
-        {
-            List<MapParent> result = new List<MapParent>();
-            foreach (WorldObject wo in Find.WorldObjects.AllWorldObjects)
-            {
-                if (!(wo is MapParent mp)) continue;
-                if (!mp.HasMap) continue;
-                if (mp.Faction == null || !mp.Faction.IsPlayer) continue;
-                if (!MissileWorldUtility.CanEngage(cfg, source.Tile, mp.Tile, range, out _)) continue;
-                result.Add(mp);
-            }
-            return result;
-        }
+            => MissileDoctrine.Targets(source, source.Faction, cfg, mp => MissileWorldUtility.CanEngage(cfg, source.Tile, mp.Tile, range, out _));
 
         // ──────────────── Crew LordJob ────────────────
 
@@ -705,5 +982,22 @@ namespace DMSE
 
         private WorldObjectComp_MissileBase WorldComp
             => (map.Parent as Site)?.GetComponent<WorldObjectComp_MissileBase>();
+    }
+
+    /// <summary>補給艙送來、等待守軍搬去砲塔裝填的一批彈藥（一個空投可能分成好幾堆）。</summary>
+    public class PendingTurretRefuel : IExposable
+    {
+        public Thing turret;
+        public List<Thing> fuel;
+        public int readyTick;
+
+        public void ExposeData()
+        {
+            Scribe_References.Look(ref turret, "turret");
+            Scribe_Collections.Look(ref fuel, "fuel", LookMode.Reference);
+            Scribe_Values.Look(ref readyTick, "readyTick");
+            if (Scribe.mode == LoadSaveMode.PostLoadInit)
+                fuel ??= new List<Thing>();
+        }
     }
 }

@@ -18,7 +18,7 @@ namespace DMSE
 
     /// <summary>
     /// 一張地圖的電子戰狀態（docs/電子戰建築_實作計畫.md §2）：交戰限制、遙控快照與裝置註冊表。
-    /// 同一份規則給地圖層與世界層讀，多座終端共用。規則只在本圖有戰情終端時生效；
+    /// 同一份規則給地圖層與世界層讀，多座終端共用。規則只在本圖有玩家的戰情終端時生效（NPC 陣地的終端只提供守軍加成）；
     /// 沒有終端就維持舊行為。遙控只動本圖、玩家陣營的裝置。
     /// </summary>
     public class MapComponent_EWControl : MapComponent
@@ -51,7 +51,17 @@ namespace DMSE
 
         public MapComponent_EWControl(Map map) : base(map) { }
 
-        public bool RoeActive => consoles.Count > 0;
+        public bool RoeActive
+        {
+            get
+            {
+                foreach (CompWarRoomConsole console in consoles)
+                {
+                    if (console.parent.Faction == Faction.OfPlayer) { return true; }
+                }
+                return false;
+            }
+        }
 
         public static MapComponent_EWControl For(Map map) => map?.GetComponent<MapComponent_EWControl>();
 
@@ -136,6 +146,19 @@ namespace DMSE
                 CompFlickable flick = device.GetComp<CompFlickable>();
                 if (flick != null) { SetSwitch(flick, on); }
             }
+            PruneSilenced();
+        }
+
+        /// <summary>靜默期間手動重開或已拆除的裝置不再算靜默，否則警告會一直掛著、還原時也會動到它們。</summary>
+        private void PruneSilenced()
+        {
+            if (silencedIds.Count == 0) { return; }
+            List<ThingWithComps> devices = Devices(EWDeviceGroup.All).ToList();
+            silencedIds.RemoveAll(id =>
+            {
+                ThingWithComps device = devices.FirstOrDefault(d => d.thingIDNumber == id);
+                return device == null || (device.GetComp<CompFlickable>()?.SwitchIsOn ?? true);
+            });
         }
 
         public void SetThrottle(EWDeviceGroup group, int step)
@@ -176,16 +199,19 @@ namespace DMSE
         //  操作員
         // ====================================================================
 
-        /// <summary>本圖操作員中此技能最高的等級；沒有人操作時 -1。</summary>
-        public int BestOperatorLevel(SkillDef skill)
+        /// <summary>
+        /// 該陣營在本圖所有終端的操作員此技能等級總和，上限 <see cref="EWControlUtility.OperatorLevelCap"/>；沒有人操作時 -1。
+        /// </summary>
+        public int OperatorLevelTotal(SkillDef skill, Faction faction)
         {
-            int best = -1;
+            int total = -1;
             foreach (CompWarRoomConsole console in consoles)
             {
+                if (console.parent.Faction != faction) { continue; }
                 SkillRecord record = console.Operator?.skills?.GetSkill(skill);
-                if (record != null && record.Level > best) { best = record.Level; }
+                if (record != null) { total = Mathf.Max(total, 0) + record.Level; }
             }
-            return best;
+            return Mathf.Min(total, EWControlUtility.OperatorLevelCap);
         }
 
         // ====================================================================
@@ -210,6 +236,7 @@ namespace DMSE
             int now = Find.TickManager.TicksGame;
             if (now % ReapplyIntervalTicks != 0) { return; }
             foreach (CompPowerThrottle throttle in throttles) { throttle.ApplyPowerDraw(); }
+            PruneSilenced();
 
             bool blocked = CommsJammed;
             if (blocked && !commsBlockedLast && map.IsPlayerHome && now - lastCommsMessageTick >= CommsMessageCooldownTicks)
@@ -241,31 +268,51 @@ namespace DMSE
     {
         public const int NeutralSkillLevel = 8;
 
-        /// <summary>智識等級 → 雷達搜索距離係數。</summary>
-        public static float IntellectualRangeFactor(int level)
-            => Mathf.Clamp(1f + 0.02f * (level - NeutralSkillLevel), 0.8f, 1.4f);
+        /// <summary>多座終端的操作員等級疊加後的總和上限。</summary>
+        public const int OperatorLevelCap = 40;
 
-        /// <summary>射擊等級 → 發射冷卻倍率。</summary>
-        public static float ShootingCooldownFactor(int level)
-            => Mathf.Clamp(1f / (1f + 0.03f * (level - NeutralSkillLevel)), 0.6f, 1.25f);
-
-        private static MapComponent_EWControl PlayerControl(ThingWithComps thing)
+        /// <summary>
+        /// 通道上限的 -/+ 順序：0 → … → 火控容量 → 不限。「不限」視為最大值，
+        /// 否則從不限按 + 會直接變成 0，等於完全不攔截。
+        /// </summary>
+        public static int NextChannelCap(int current, int capacity, int delta)
         {
-            if (thing == null || !thing.Spawned || thing.Faction == null || !thing.Faction.IsPlayer) { return null; }
-            return MapComponent_EWControl.For(thing.Map);
+            int unlimited = MapComponent_EWControl.ChannelCapUnlimited;
+            if (delta < 0)
+            {
+                if (current < 0) { return Mathf.Max(capacity, 0); }
+                return Mathf.Max(current - 1, 0);
+            }
+            if (current < 0 || current >= capacity) { return unlimited; }
+            return current + 1;
         }
 
-        /// <summary>本圖操作員對這座玩家雷達的距離係數；沒人操作、NPC 裝置都回 1。</summary>
+        /// <summary>智識等級總和 → 雷達搜索距離係數（下限 0.8，等級 40 時 ×1.64）。</summary>
+        public static float IntellectualRangeFactor(int level)
+            => Mathf.Max(1f + 0.02f * (Mathf.Min(level, OperatorLevelCap) - NeutralSkillLevel), 0.8f);
+
+        /// <summary>射擊等級總和 → 發射冷卻倍率（上限 1.25，等級 40 時 ×0.51）。</summary>
+        public static float ShootingCooldownFactor(int level)
+            => Mathf.Min(1f / (1f + 0.03f * (Mathf.Min(level, OperatorLevelCap) - NeutralSkillLevel)), 1.25f);
+
+        /// <summary>同陣營終端操作員對這座裝置的技能等級總和；沒有陣營、未生成或沒人操作時 -1。</summary>
+        private static int LevelFor(ThingWithComps thing, SkillDef skill)
+        {
+            if (thing == null || !thing.Spawned || thing.Faction == null) { return -1; }
+            return MapComponent_EWControl.For(thing.Map)?.OperatorLevelTotal(skill, thing.Faction) ?? -1;
+        }
+
+        /// <summary>本圖同陣營操作員對這座雷達的距離係數；沒人操作時回 1。</summary>
         public static float RadarRangeFactor(ThingWithComps radar)
         {
-            int level = PlayerControl(radar)?.BestOperatorLevel(SkillDefOf.Intellectual) ?? -1;
+            int level = LevelFor(radar, SkillDefOf.Intellectual);
             return level < 0 ? 1f : IntellectualRangeFactor(level);
         }
 
-        /// <summary>本圖操作員對這座玩家發射平台的冷卻倍率；沒人操作、NPC 裝置都回 1。</summary>
+        /// <summary>本圖同陣營操作員對這座發射平台的冷卻倍率；沒人操作時回 1。</summary>
         public static float LauncherCooldownFactor(ThingWithComps launcher)
         {
-            int level = PlayerControl(launcher)?.BestOperatorLevel(SkillDefOf.Shooting) ?? -1;
+            int level = LevelFor(launcher, SkillDefOf.Shooting);
             return level < 0 ? 1f : ShootingCooldownFactor(level);
         }
 

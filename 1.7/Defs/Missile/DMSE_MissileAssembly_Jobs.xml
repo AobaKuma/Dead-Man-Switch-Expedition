@@ -50,6 +50,14 @@
     </requiredCapacities>
   </WorkGiverDef>
 
+  <!-- 把地上（空投落地）的實體導彈搬進彈架：由 MapComponent_MissileBase 指派給 NPC 陣地守軍，
+       玩家不需要 WorkGiver（玩家的地面導彈由原版搬運系統處理）。 -->
+  <JobDef>
+    <defName>DMSE_HaulMissileToRack</defName>
+    <driverClass>DMSE.JobDriver_HaulMissileToRack</driverClass>
+    <reportString>hauling a missile to TargetA.</reportString>
+  </JobDef>
+
   <!-- 取下 comp 型飛彈平台（CompMissileRackStorage）上不符合儲存設定的導彈。
        Building_MissileRack 是 IHaulSource，由原版搬運處理，不經此工作。 -->
   <JobDef>

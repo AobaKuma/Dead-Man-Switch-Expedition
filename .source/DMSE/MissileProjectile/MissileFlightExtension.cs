@@ -67,6 +67,16 @@ namespace DMSE
         /// <summary>最大角加速度（度/tick²）；調低會放慢加速與反向煞轉，增加轉向慣性。</summary>
         public float turnMaxAcceleration = 0.18f;
         /// <summary>
+        /// 航向與機頭分開控制（Oniks）：航向用單調的比例轉向（不來回擺），機頭仍保留欠阻尼的過轉／回正給側推特效看；
+        /// 轉向對準前不加速，對準後才由巡航速度曲線加速（＝主助推點火）。<c>false</c> 時兩者共用欠阻尼轉向（舊行為）。
+        /// </summary>
+        public bool courseTurnsIndependently;
+        /// <summary>
+        /// 原地轉向（Oniks，需搭配 <see cref="courseTurnsIndependently"/>）：機頭轉向期間彈體沿升空方向繼續垂直爬升，
+        /// 轉得差不多了才彎向出發方位，煙跡是「直柱＋轉角」而不是一條緩緩前進的弧。靠近地圖邊緣時退回一般的弧。
+        /// </summary>
+        public bool climbWhileTurning;
+        /// <summary>
         /// 最大轉彎半徑（格）：速度快時轉速上限提高到「速度 ÷ 此半徑」，避免巡航段沿 speedCurve 加速後繞出半張地圖、
         /// 從出發方位以外的邊離場（驗收 F5：地圖中央發射、180° 迴轉時曾從西邊出圖）。低速時仍由 maxTurnRate 決定。
         /// </summary>

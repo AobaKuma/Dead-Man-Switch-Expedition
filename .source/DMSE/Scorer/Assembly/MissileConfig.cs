@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Fortified;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -9,7 +10,7 @@ namespace DMSE
     /// 一枚導彈的裝配設定：彈體 + 每個槽位最多一個部件。提供有效數值計算。
     /// 同時用於導彈物品上的 CompMissileConfig、發射器上的「已裝填設定」、以及落點的 MissileIncoming。
     /// </summary>
-    public class MissileConfig : IExposable
+    public class MissileConfig : IExposable, IMissileLoadout
     {
         public MissileBodyDef body;
         public List<MissilePartDef> parts = new List<MissilePartDef>();
@@ -142,6 +143,24 @@ namespace DMSE
 
         public bool Valid => body != null;
 
+        /// <summary>彈體與已裝部件帶來的行為；彈體在前，部件依裝配順序。</summary>
+        public IEnumerable<MissileBehaviorProps> BehaviorProps
+        {
+            get
+            {
+                if (body?.behaviors != null)
+                {
+                    for (int i = 0; i < body.behaviors.Count; i++) { yield return body.behaviors[i]; }
+                }
+                for (int p = 0; p < parts.Count; p++)
+                {
+                    List<MissileBehaviorProps> list = parts[p]?.behaviors;
+                    if (list == null) { continue; }
+                    for (int i = 0; i < list.Count; i++) { yield return list[i]; }
+                }
+            }
+        }
+
         /// <summary>
         /// 是否具備導引能力（導引槽部件提供終端導引，或彈體的內建導引標了 <see cref="MissileBodyDef.builtInTerminalGuidance"/>）。
         /// 慣性制導、未裝導引部件、或只有選點用內建導引的彈體為 false：無法跨圖層打擊，也無法追蹤移動目標。
@@ -209,10 +228,9 @@ namespace DMSE
             get
             {
                 GuidanceType guidance = TargetingGuidance;
-                bool tv = guidance is GuidanceType_TV;
-                if (!tv && !(guidance is GuidanceType_RadioCommand) && !(guidance is GuidanceType_FireControl)) { return 0; }
+                if (guidance == null || !guidance.UsesGroundChannel) { return 0; }
                 int cost = body?.sizeClass == MissileSizeClass.Ballistic ? 2 : 1;
-                return tv ? cost + 1 : cost;
+                return cost + guidance.ExtraGroundChannels;
             }
         }
 
@@ -234,8 +252,7 @@ namespace DMSE
             {
                 MissilePartDef part = PartFor(MissilePartCategory.Guidance);
                 if (part != null) { return part.LabelCap; }
-                if (body?.builtInGuidance is GuidanceType_RadioCommand) { return "DMSE.Guidance.RadioCommand".Translate(); }
-                if (body?.builtInGuidance != null) { return body.LabelCap; }
+                if (body?.builtInGuidance != null) { return body.builtInGuidance.BuiltInLabel ?? body.LabelCap; }
                 return "DMSE.Guidance.Inertial".Translate();
             }
         }

@@ -90,6 +90,14 @@
     </rulePack>
   </RulePackDef>
 
+  <!-- Oniks：中型先進反艦巡航彈體（縞瑪瑙級）：戰頭＋導引是主體，後綴標出改型。 -->
+  <RulePackDef>
+    <defName>DMSE_NamerPack_Oniks</defName>
+    <rulePack>
+      <rulesStrings>        <li>r_name(p=3)->[designator]-[num] [warhead] [guidance]</li>        <li>r_name(p=2)->[designator]-[num][suffix] [guidance] [propulsion]</li>        <li>r_name(p=1)->[designator]-[num][suffix] [warhead] [payload]</li>        <li>r_name(p=1)->[body] [designator]-[num]</li>      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
   <!-- Yj：中型高超音速反艦彈體（鷹擊級）：導引／推進與戰頭並列。 -->
   <RulePackDef>
     <defName>DMSE_NamerPack_Yj</defName>

@@ -62,8 +62,12 @@ namespace DMSE
             lockFaction = null;
             lockNodeTile = PlanetTile.Invalid;
         }
+        /// <summary>有節點會接戰，但都打不到目前高度；每次掃描重算，不存檔。</summary>
+        public bool altitudeDenied;
+
         public string StatusKey => interceptor != null && !interceptor.Destroyed ? "DMSE.BVR.World.InFlight"
             : lockUntil >= 0 ? "DMSE.BVR.World.Locking"
+            : altitudeDenied ? "DMSE.BVR.World.AltitudeDenied"
             : detectedByFaction != null ? "DMSE.BVR.World.Detected" : "DMSE.BVR.World.Undetected";
         public void ExposeData()
         {
