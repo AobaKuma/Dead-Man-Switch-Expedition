@@ -207,10 +207,11 @@ namespace DMSE.BVRAcceptance
             NextSupplyDrop.SetValue(comp, Find.TickManager.TicksGame + 1);
             yield return new WaitTicks(1200);
             int afterDrop = Meals();
-            // 4 per pawn; leave room for meals the garrison eats meanwhile.
+            // 8 per pawn, capped by the stock limit; leave room for meals the garrison eats meanwhile.
             t.Check(afterDrop >= before + high.crew * 2, $"a timed drop delivered survival meals ({before} → {afterDrop})");
-            t.Check((int)NextSupplyDrop.GetValue(comp) > Find.TickManager.TicksGame + GenDate.TicksPerDay / 2,
-                "the next drop is scheduled about a day later");
+            int nextDrop = (int)NextSupplyDrop.GetValue(comp) - Find.TickManager.TicksGame;
+            t.Check(nextDrop > GenDate.TicksPerDay * 2 - 1300 && nextDrop <= GenDate.TicksPerDay * 4,
+                $"the next drop is scheduled 2–4 days later ({nextDrop / (float)GenDate.TicksPerDay:0.00} days)");
             t.Screenshot("supply_drop");
 
             foreach (Building r in radars) { SetFlick(r, false); }
@@ -259,7 +260,9 @@ namespace DMSE.BVRAcceptance
             var waitPod = new WaitUntil(() => map.listerThings.AllThings.Any(x => x.def == ThingDefOf.DropPodIncoming || x is Skyfaller), 600);
             yield return waitPod;
             t.Check(!waitPod.TimedOut, "a resupply pod is dropped for the empty storage");
-            t.Check((int)NextRackSupply.GetValue(comp) > Find.TickManager.TicksGame + GenDate.TicksPerDay * 3 / 2, "the next resupply is about two days later");
+            int nextRack = (int)NextRackSupply.GetValue(comp) - Find.TickManager.TicksGame;
+            t.Check(nextRack > GenDate.TicksPerDay * 2 - 700 && nextRack <= GenDate.TicksPerDay * 4,
+                $"the next resupply is 2–4 days later ({nextRack / (float)GenDate.TicksPerDay:0.00} days)");
             t.Check(storage.StoredCount == 0, "the storage is not refilled instantly");
             var waitLoad = new WaitUntil(() => storage.StoredCount > 0, 4500);
             yield return waitLoad;
@@ -529,11 +532,100 @@ namespace DMSE.BVRAcceptance
             pick = Pick();
             t.Check(pick == dual, $"with no strike round left, a dual-role round on a shared launcher fires (picked {pick?.def.defName ?? "nothing"})");
 
-            // The shared launcher comes first in the building list, so this also proves the search does not stop at the first usable round.
-            Thing maverick = Load(depot, "DMSE_Missile_Maverick");
+            // Depot rounds never fire directly: the crew has to carry them onto a launcher first (a site once fired 16 rounds from 3 launchers this way).
+            Load(depot, "DMSE_Missile_Maverick");
             pick = Pick();
-            t.Check(pick == maverick, $"a depot strike round is picked before the dual-role round and past the interceptors beside it (picked {pick?.def.defName ?? "nothing"})");
-            yield break;
+            t.Check(pick == dual, $"a strike round in the depot is not fired straight from storage (picked {pick?.def.defName ?? "nothing"})");
+
+            Thing maverick = Load(shared, "DMSE_Missile_Maverick");
+            pick = Pick();
+            t.Check(pick == maverick, $"a strike round on the launcher is picked before its dual-role round and past the interceptor beside it (picked {pick?.def.defName ?? "nothing"})");
+
+            // A launcher that just fired waits out its own cooldown, even with rounds left on the rail.
+            CompMissileLauncher_WorldTargeting pad = shared.TryGetComp<CompMissileLauncher_WorldTargeting>();
+            t.Require(pad != null, "the shared launcher has a world launch comp");
+            int now = Find.TickManager.TicksGame;
+            pad.Notify_LaunchedExternally(now);
+            int cooldown = pad.CooldownTicksRemaining(now);
+            t.Check(cooldown > 0 && cooldown == pad.CooldownTicksAfterLaunch, $"site fire starts the launcher's own cooldown ({cooldown} of {pad.CooldownTicksAfterLaunch} ticks)");
+            pick = Pick();
+            t.Check(pick == null, $"a launcher on cooldown is skipped although it still holds rounds (picked {pick?.def.defName ?? "nothing"})");
+            yield return new WaitTicks(cooldown + 1);
+            pick = Pick();
+            t.Check(pick == maverick, $"after the cooldown the launcher fires again (picked {pick?.def.defName ?? "nothing"})");
+
+            // The player must not be able to fire, re-store or re-fit an enemy launcher; claiming it gives the controls back.
+            string launchLabel = "ScorerLaunch".Translate();
+            bool HasLaunch() => shared.GetGizmos().OfType<Command>().Any(c => c.defaultLabel == launchLabel);
+            bool HasCopyPaste() => shared.GetGizmos().OfType<Command>().Any(c => c.defaultLabel == "CommandCopyZoneSettingsLabel".Translate() || c.defaultLabel == "CommandPasteZoneSettingsLabel".Translate());
+            bool AssemblyTabVisible()
+            {
+                ITab_MissileAssembly tab = (ITab_MissileAssembly)shared.GetInspectTabs().FirstOrDefault(x => x is ITab_MissileAssembly);
+                if (tab == null) return false;
+                Find.Selector.ClearSelection();
+                Find.Selector.Select(shared, playSound: false, forceDesignatorDeselect: false);
+                bool visible = tab.IsVisible;
+                Find.Selector.ClearSelection();
+                return visible;
+            }
+            t.Check(!HasLaunch(), "an enemy launcher shows no launch button");
+            t.Check(!HasCopyPaste(), "an enemy launcher shows no storage copy/paste buttons");
+            t.Check(!AssemblyTabVisible(), "an enemy launcher hides the missile assembly tab");
+            shared.SetFaction(Faction.OfPlayer);
+            t.Check(HasLaunch(), "once claimed, the launcher shows its launch button");
+            t.Check(HasCopyPaste(), "once claimed, the storage copy/paste buttons are back");
+            t.Check(AssemblyTabVisible(), "once claimed, the missile assembly tab is back");
+        }
+
+        /// <summary>
+        /// A launch still waiting in the launch queue when its launcher is destroyed must not lift off from the empty cell:
+        /// its world track is destroyed (the site's fire channel frees itself), and the round that already left keeps flying.
+        /// </summary>
+        public static IEnumerable<Wait> QueuedLaunchDiesWithLauncher(TestContext t)
+        {
+            Faction industrial = Find.FactionManager.AllFactionsListForReading.FirstOrDefault(f =>
+                !f.IsPlayer && !f.defeated && !f.Hidden && f.def.techLevel == TechLevel.Industrial && f.def.humanlikeFaction);
+            t.Require(industrial != null, "an industrial humanlike faction exists");
+            Layout layout = GenerateAt(t, industrial, 1f);
+            Map map = layout.map;
+
+            ThingDef def = ThingDef.Named("DMSE_Building_LightMissileLauncher");
+            Building launcher = (Building)ThingMaker.MakeThing(def, def.MadeFromStuff ? GenStuff.DefaultStuffFor(def) : null);
+            launcher.SetFaction(industrial);
+            GenSpawn.Spawn(launcher, new IntVec3(20, 0, 20), map, Rot4.North, WipeMode.Vanish);
+            CompMissileLauncher_WorldTargeting pad = launcher.TryGetComp<CompMissileLauncher_WorldTargeting>();
+            MapComponent_MissileLaunchQueue queue = MapComponent_MissileLaunchQueue.For(map);
+            t.Require(pad != null && queue != null, "the launcher has a world launch comp and the map a launch queue");
+
+            PlanetTile target = Home.Tile;
+            WorldObject MakeTrack()
+            {
+                WorldObject wo = WorldObjectMaker.MakeWorldObject(DefDatabase<WorldObjectDef>.GetNamed("DMSE_WorldObject_IncomingMissile"));
+                wo.Tile = map.Tile;
+                wo.SetFaction(industrial);
+                return wo;
+            }
+            WorldObject first = MakeTrack();
+            WorldObject queued = MakeTrack();
+            int firstTick = pad.LaunchDeparture(first, pad.LaunchDefFor(null), target);
+            int queuedTick = pad.LaunchDeparture(queued, pad.LaunchDefFor(null), target);
+            t.Require(queuedTick > Find.TickManager.TicksGame && queue.PendingDepartures >= 1,
+                $"the second round waits in the launch queue (spawns at {queuedTick}, first at {firstTick}, now {Find.TickManager.TicksGame})");
+
+            launcher.Destroy(DestroyMode.KillFinalize);
+            yield return new WaitTicks(MapComponent_MissileLaunchQueue.SpacingTicks * 3);
+
+            t.Check(queued.Destroyed, "the queued round's world track was destroyed with its launcher");
+            t.Check(!Find.WorldObjects.Contains(queued), "the queued round never entered the world");
+            t.Check(!map.listerThings.AllThings.OfType<Projectile_MissileLaunch>().Any(p => p.worldObject == queued),
+                "no departure lifted off from the destroyed launcher's cell");
+            t.Check(queue.PendingDepartures == 0, $"nothing is left in the launch queue ({queue.PendingDepartures})");
+            t.Check(!first.Destroyed, "the round that had already left is unaffected");
+
+            // Do not leave a live track aimed at the colony for later tests.
+            foreach (Projectile_MissileLaunch p in map.listerThings.AllThings.OfType<Projectile_MissileLaunch>().Where(p => p.worldObject == first).ToList())
+                p.Destroy();
+            if (!first.Destroyed) first.Destroy();
         }
 
         /// <summary>The site has to actually shoot: racks loaded with the fixed-config loiter, radar powered and manned, a missile off the map; plus a world-layer salvo of the same body.</summary>

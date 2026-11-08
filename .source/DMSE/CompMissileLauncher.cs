@@ -73,6 +73,12 @@ namespace DMSE
         protected void StartCooldown(int now) => cooldownUntil = now + CooldownTicksAfterLaunch;
 
         /// <summary>
+        /// 由外部流程代為發射（NPC 導彈陣地經 <see cref="CompMissileLauncher_WorldTargeting.LaunchDeparture"/> 升空）後，
+        /// 照平台自己的冷卻間隔起算冷卻，與玩家單發一致。
+        /// </summary>
+        public void Notify_LaunchedExternally(int now) => StartCooldown(now);
+
+        /// <summary>
         /// 平台當前詳情：冷卻中優先顯示剩餘時間；冷卻結束則交由子類別的
         /// <see cref="LoadedStatusText"/> 顯示裝填/裝配狀態。
         /// </summary>
@@ -255,6 +261,8 @@ namespace DMSE
 
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
         {
+            // 敵方／中立陣地的發射架（含被選取查看時）不給玩家發射鈕；佔領後才可用。
+            if (parent.Faction != Faction.OfPlayer) { yield break; }
             Command_Action command = new Command_Action
             {
                 defaultLabel = GizmoLabel,

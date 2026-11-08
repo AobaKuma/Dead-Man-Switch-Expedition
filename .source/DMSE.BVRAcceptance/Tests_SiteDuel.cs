@@ -221,6 +221,12 @@ namespace DMSE.BVRAcceptance
 
         private static readonly FieldInfo EngagedChannels = typeof(MapComponent_MissileBase)
             .GetField("engagedChannels", BindingFlags.Instance | BindingFlags.NonPublic);
+        private static readonly FieldInfo NextRackSupply = typeof(MapComponent_MissileBase)
+            .GetField("nextRackSupplyTick", BindingFlags.Instance | BindingFlags.NonPublic);
+
+        /// <summary>The tick the site's next rack resupply comes due, or -1 while the site has not scheduled one yet.</summary>
+        private static int RackSupplyDue(Side s)
+            => s.HasMap && s.Base != null && NextRackSupply != null ? (int)NextRackSupply.GetValue(s.Base) : -1;
 
         private sealed class Side
         {
@@ -459,7 +465,15 @@ namespace DMSE.BVRAcceptance
 
             int lettersBefore = LetterCount("DMSE.Missile.IncomingLetter") + LetterCount("DMSE.BVR.World.DetectedLetter");
             int start = Find.TickManager.TicksGame;
-            // Past the two-day rack resupply: the racks run dry in a few hours, so this also covers the pods.
+            // Rack resupply runs every 2–4 days, so pods are only expected if the first one comes due during the fight.
+            // The site schedules its first resupply on its first 500-tick check after the map exists; record the first value it picks.
+            int dueA = RackSupplyDue(a), dueB = RackSupplyDue(b);
+            AcceptanceDriver.Watch(() =>
+            {
+                if (dueA < 0) dueA = RackSupplyDue(a);
+                if (dueB < 0) dueB = RackSupplyDue(b);
+                return dueA >= 0 && dueB >= 0;
+            });
             int minTicks = GenDate.TicksPerDay * 5 / 2, maxTicks = GenDate.TicksPerDay * 4;
             bool shot = false;
             TickWatch podA = AcceptanceDriver.Watch(() => a.HasMap && a.Map.listerThings.ThingsOfDef(ThingDefOf.DropPodIncoming).Any(x => a.Stored < a.startStored));
@@ -522,13 +536,20 @@ namespace DMSE.BVRAcceptance
             bool anyTerminal = events.Any(e => e.kind == AirCombatEventKind.InterceptResolved && e.terminal);
             if (a.Ciws + b.Ciws > 0) { t.Check(anyTerminal, $"terminal defense engaged an arrival (CIWS A {a.Ciws}, B {b.Ciws})"); }
             bool damaged = a.Hp < a.startHp || b.Hp < b.startHp || a.Buildings.Count < a.startBuildings || b.Buildings.Count < b.startBuildings;
-            t.Check(damaged, $"impacts damage a site (A HP {a.startHp:0} → {a.Hp:0}, B HP {b.startHp:0} → {b.Hp:0})");
+            // Since launchers fire one round per cooldown, waves are small and CIWS can stop every arrival; then nothing can do damage.
+            int terminalKills = events.Count(e => e.kind == AirCombatEventKind.InterceptResolved && e.terminal && e.outcome == AirInterceptOutcome.Hit);
+            int leaked = arrivalsA + arrivalsB - terminalKills;
+            if (leaked > 0)
+                t.Check(damaged, $"impacts damage a site ({leaked} arrivals got past terminal defense; A HP {a.startHp:0} → {a.Hp:0}, B HP {b.startHp:0} → {b.Hp:0})");
+            else
+                t.Note($"terminal defense stopped every arrival ({terminalKills} kills of {arrivalsA + arrivalsB}), so no impact damage is expected (damaged {damaged})");
 
             // ── Resupply: racks that ran dry get pods while the crew lives ──
-            foreach ((Side me, TickWatch pod) in new[] { (a, podA), (b, podB) })
+            foreach ((Side me, TickWatch pod, int due) in new[] { (a, podA, dueA), (b, podB, dueB) })
             {
-                t.Note($"{me.name}: stored lowest {me.minStored}, now {me.Stored}, crew {me.Crew}, supply pod seen {pod.Seen}, launches {CountLaunches(me)}");
-                if (me.Crew > 0 && MissileBaseRackSupplyUtility.RacksOf(me.Map, me.faction).Any(r => r.StoredCount == 0))
+                bool came = due >= 0 && Find.TickManager.TicksGame >= due;
+                t.Note($"{me.name}: stored lowest {me.minStored}, now {me.Stored}, crew {me.Crew}, supply pod seen {pod.Seen}, launches {CountLaunches(me)}, first resupply due {due} ({(came ? "passed" : "not reached")})");
+                if (came && me.Crew > 0 && MissileBaseRackSupplyUtility.RacksOf(me.Map, me.faction).Any(r => r.StoredCount == 0))
                 {
                     t.Check(pod.Seen, $"{me.name}: pods come for its empty racks");
                 }

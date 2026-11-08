@@ -413,6 +413,7 @@ namespace DMSE
 
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
         {
+            if (parent.Faction != Faction.OfPlayer) { yield break; }
             if (IsSustainedFiring)
             {
                 // ---- 停止按鈕（含狀態說明）----

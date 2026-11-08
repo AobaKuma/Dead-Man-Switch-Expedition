@@ -235,17 +235,17 @@
           <max>1</max>
         </reentryBlockedDays>
         <incomingWorldObjectDef>DMSE_WorldObject_IncomingMissile</incomingWorldObjectDef>
-        <!-- 定時空投生存食品包：每 0.8–1.2 天一次，每名守軍 4 份，存量已達每人 10 份時跳過。 -->
+        <!-- 定時空投生存食品包：每 2~4 天一次，每名守軍 8 份（約四天口糧），存量已達每人 12 份時跳過。 -->
         <supplyDrop>
-          <intervalDays>0.8~1.2</intervalDays>
-          <perPawn>4</perPawn>
-          <maxStockPerPawn>10</maxStockPerPawn>
+          <intervalDays>2~4</intervalDays>
+          <perPawn>8</perPawn>
+          <maxStockPerPawn>12</maxStockPerPawn>
         </supplyDrop>
-        <!-- 彈架：生成時依類型裝填；之後每 2 天為每座空彈架空投一艙（數量 = 該彈架容量或 count）。
+        <!-- 彈架：生成時依類型裝填；之後每 2~4 天為每座空彈架空投一艙（數量 = 該彈架容量或 count）。
              未列出的彈架（劃線器、巡弋彈架）沿用建築自身的自動填充規則（工業等級 → 蚊式）。
              發射架打空後由守軍從彈藥庫（彈藥車）搬彈補上；彈藥庫打空才靠空投。 -->
         <rackSupply>
-          <intervalDays>2</intervalDays>
+          <intervalDays>2~4</intervalDays>
           <loadDelayTicks>2500</loadDelayTicks>
           <!-- 守軍自行從彈藥庫搬彈裝填發射架，同時最多 2 人。有相容彈的彈藥庫時，空發射架不另外空投。 -->
           <maxCrewLoaders>2</maxCrewLoaders>
@@ -287,10 +287,10 @@
             </li>
           </loadouts>
         </rackSupply>
-        <!-- 砲塔彈藥（37 mm／機砲彈等 CompRefuelable）：低於半個基數的砲塔每 0.5 天在旁邊空投一次實體彈藥，
+        <!-- 砲塔彈藥（37 mm／機砲彈等 CompRefuelable）：低於半個基數的砲塔每 2~4 天在旁邊空投一次實體彈藥，
              落地後由守軍親自搬去裝填（同時最多 1 人）；守軍全滅就不會再有人碰這批彈藥。 -->
         <turretAmmo>
-          <intervalDays>0.5</intervalDays>
+          <intervalDays>2~4</intervalDays>
           <refillBelowPercent>0.5</refillBelowPercent>
           <refillToPercent>1</refillToPercent>
           <haulDelayTicks>300</haulDelayTicks>

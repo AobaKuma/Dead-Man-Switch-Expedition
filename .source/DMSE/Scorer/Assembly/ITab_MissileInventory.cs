@@ -177,7 +177,7 @@ namespace DMSE
             TooltipHandler.TipRegion(new Rect(ContentLeft, curY, nameW, 20f), displayName);
             Text.Anchor = TextAnchor.UpperLeft;
 
-            if (rnComp != null)
+            if (rnComp != null && SelThing?.Faction == Faction.OfPlayer)
             {
                 Rect renameBtn = new Rect(ContentLeft + nameW + 2f, curY + 1f, RenameSize, RenameSize);
                 TooltipHandler.TipRegionByKey(renameBtn, "Rename");

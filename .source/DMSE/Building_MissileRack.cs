@@ -237,9 +237,12 @@ namespace DMSE
             {
                 yield return g;
             }
-            foreach (Gizmo g in StorageSettingsClipboard.CopyPasteGizmosFor(settings))
+            if (Faction == Faction.OfPlayer)
             {
-                yield return g;
+                foreach (Gizmo g in StorageSettingsClipboard.CopyPasteGizmosFor(settings))
+                {
+                    yield return g;
+                }
             }
             foreach (Thing t in innerContainer)
             {

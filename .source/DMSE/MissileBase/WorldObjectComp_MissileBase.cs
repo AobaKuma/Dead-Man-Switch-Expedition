@@ -78,16 +78,16 @@ namespace DMSE
     public class MissileBaseSupplyDrop
     {
         /// <summary>兩次空投的間隔（天）。</summary>
-        public FloatRange intervalDays = new FloatRange(0.8f, 1.2f);
+        public FloatRange intervalDays = new FloatRange(2f, 4f);
 
         /// <summary>投放物品（null = 生存食品包）。</summary>
         public ThingDef thingDef;
 
-        /// <summary>每名守軍每次投放的數量。</summary>
-        public int perPawn = 4;
+        /// <summary>每名守軍每次投放的數量（生存食品包約一天兩份，間隔最長 4 天）。</summary>
+        public int perPawn = 8;
 
         /// <summary>地圖上已有的存量達到「守軍數 × 此值」時跳過該次投放，避免堆積。</summary>
-        public int maxStockPerPawn = 10;
+        public int maxStockPerPawn = 12;
 
         public ThingDef ThingDef => thingDef ?? ThingDefOf.MealSurvivalPack;
     }
@@ -104,7 +104,7 @@ namespace DMSE
         public bool enabled = true;
 
         /// <summary>多久檢查一次並空投彈藥（天）。</summary>
-        public float intervalDays = 0.5f;
+        public FloatRange intervalDays = new FloatRange(2f, 4f);
 
         /// <summary>砲塔彈藥低於最大量這個比例時才補（0.5 = 半個基數）。</summary>
         public float refillBelowPercent = 0.5f;

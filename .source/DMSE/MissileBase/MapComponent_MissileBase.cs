@@ -15,7 +15,7 @@ namespace DMSE
     ///    ‧ 通道總數 = 地圖上所有活躍敵方 <see cref="CompFireControlRadar.Props.maxTargets"/> 之和。<br/>
     ///    ‧ 每個通道同時最多追蹤一枚飛行中的 <see cref="WorldObject_IncomingMissile"/>；<br/>
     ///      導彈落地或被攔截（<see cref="WorldObject.Destroyed"/>）後通道自動釋放。<br/>
-    ///    ‧ 彈藥來源：地圖上敵方 <see cref="Building_MissileRack"/>；耗盡後停止射擊直到補給。<br/>
+    ///    ‧ 彈藥來源：只有發射架自己彈艙裡的彈；彈藥車／儲存架的彈要守軍搬上架。打空後停止射擊直到裝填。<br/>
     ///    ‧ 導彈從地圖上的敵方世界選靶發射建築升空，飛出地圖邊緣後才進入世界航跡（同玩家發射）。<br/>
     /// 2. 指派 <see cref="LordJob_MissileCrewDuty"/> 給地圖內的敵方 Pawn。<br/>
     /// 3. 偵測「所有敵方雷達（<see cref="IsObjectiveRadar"/>）與世界選靶發射器
@@ -212,7 +212,7 @@ namespace DMSE
             if (nextTurretAmmoTick < 0 || now >= nextTurretAmmoTick)
             {
                 bool due = nextTurretAmmoTick >= 0;
-                nextTurretAmmoTick = now + Mathf.RoundToInt(supply.intervalDays * GenDate.TicksPerDay);
+                nextTurretAmmoTick = now + Mathf.RoundToInt(supply.intervalDays.RandomInRange * GenDate.TicksPerDay);
                 if (due) ResupplyTurretAmmo(supply, enemy, now);
             }
         }
@@ -454,7 +454,7 @@ namespace DMSE
             if (nextRackSupplyTick < 0 || now >= nextRackSupplyTick)
             {
                 bool due = nextRackSupplyTick >= 0;
-                nextRackSupplyTick = now + Mathf.RoundToInt(supply.intervalDays * GenDate.TicksPerDay);
+                nextRackSupplyTick = now + Mathf.RoundToInt(supply.intervalDays.RandomInRange * GenDate.TicksPerDay);
                 if (due) ResupplyEmptyRacks(supply);
             }
         }
@@ -722,16 +722,8 @@ namespace DMSE
             WorldObjectComp_MissileBase wc = WorldComp;
             int range = wc?.Props.range ?? 20;
 
-            // 導彈必須從地圖上的發射建築升空、飛出地圖邊緣後才進入世界航跡；發射建築全滅則停火
-            List<CompMissileLauncher_WorldTargeting> pads = GetEnemyLaunchersCached()
-                .Where(b => b.Spawned && !b.Destroyed)
-                .Where(b => !NeedsOperator(b))
-                .Select(b => b.TryGetComp<CompMissileLauncher_WorldTargeting>())
-                .Where(c => c != null)
-                .ToList();
-            if (pads.Count == 0) return;
-
-            // 4. 為每個空閒通道射出一枚導彈（輪流使用各發射建築）
+            // 4. 為每個空閒通道射出一枚導彈：只發射發射架自己彈艙裡的彈（彈藥車／儲存架要先由守軍搬上架），
+            //    導彈從該發射架升空、飛出地圖邊緣後才進入世界航跡；發射架全滅或打空則停火。
             for (int i = 0; i < freeChannels; i++)
             {
                 IMissileRack rack = FindRackWithMissiles(out Thing missile);
@@ -739,7 +731,7 @@ namespace DMSE
                 {
                     // 無可用導彈，停止嘗試
                     if (Prefs.DevMode)
-                        Log.Message("[DMSE MissileBase] 所有 MissileRack 均無可發射導彈，等待補給。");
+                        Log.Message("[DMSE MissileBase] 所有發射架均無可發射導彈，等待裝填。");
                     break;
                 }
 
@@ -751,13 +743,15 @@ namespace DMSE
                 List<MapParent> targets = FindPlayerTargetsInRange(source, range, cfg);
                 if (targets.NullOrEmpty()) break; // 這枚導彈沒有可打的目標，保留在架上
 
-                // 彈架本身就是發射平台（如發射軌）時從原處升空，否則輪流交給其他發射建築
-                CompMissileLauncher_WorldTargeting pad = rack.RackThing.TryGetComp<CompMissileLauncher_WorldTargeting>()
-                    ?? pads[nextPadIndex++ % pads.Count];
+                CompMissileLauncher_WorldTargeting pad = rack.RackThing.TryGetComp<CompMissileLauncher_WorldTargeting>();
+                if (pad == null) break;
                 ThingDef launchDef = pad.LaunchDefFor(cfg);
                 if (launchDef == null) break;
 
                 MissileRackUtil.ConsumeOne(missile);
+                // 發射架照自己的冷卻間隔：生成時滿彈的架子也不能在同一波把彈艙一次打空，下一發要等冷卻結束。
+                pad.Notify_LaunchedExternally(Find.TickManager.TicksGame);
+                nextPadIndex++;
 
                 // 選擇目標（隨機；未來可擴充為優先級排序）
                 MapParent target = MissileDoctrine.Choose(source, source.Faction, cfg, targets);
@@ -818,10 +812,12 @@ namespace DMSE
         }
 
         /// <summary>
-        /// 找到第一個屬於敵方、未摧毀且存有對地彈（<see cref="MissileBaseRackSupplyUtility.IsStrikeRound"/>）的
-        /// <see cref="Building_MissileRack"/>，並以 <paramref name="missile"/> 回傳該枚導彈。<br/>
-        /// 純防空平台、只存放攔截彈的彈架、以及沒人操作的手動發射架都會被跳過，不消耗任何東西。<br/>
-        /// 全圖優先取純對地彈；沒有時才動用兩用彈，盡量把它們留給防空。
+        /// 找一座屬於敵方、未摧毀、有人操作（如需要）且<b>自己彈艙裡</b>存有對地彈
+        /// （<see cref="MissileBaseRackSupplyUtility.IsStrikeRound"/>）的世界選靶發射架，並以 <paramref name="missile"/> 回傳該枚導彈。<br/>
+        /// 彈藥車、儲存架裡的彈不能直接發射，要先由守軍搬上發射架（<see cref="TickCrewReload"/>）；
+        /// 所以一波最多只能打出各發射架當下裝著的彈，拆掉發射架就無法再發射。<br/>
+        /// 冷卻中的發射架跳過（<see cref="CompMissileLauncher.OnCooldown"/>）：每座架子每次冷卻只打一發，生成時滿彈也一樣。<br/>
+        /// 全圖優先取純對地彈；沒有時才動用兩用彈，盡量把它們留給防空。發射架從 <see cref="nextPadIndex"/> 起輪流，讓齊射分散到各架。
         /// </summary>
         private IMissileRack FindRackWithMissiles(out Thing missile)
         {
@@ -832,13 +828,17 @@ namespace DMSE
             Thing dualRound = null;
             IMissileRack dualRack = null;
 
-            foreach (Building b in map.listerBuildings.allBuildingsNonColonist)
+            int now = Find.TickManager.TicksGame;
+            List<Building> launchers = GetEnemyLaunchersCached();
+            int n = launchers.Count;
+            for (int k = 0; k < n; k++)
             {
-                if (b.Faction != enemy || b.Destroyed) continue;
+                Building b = launchers[(nextPadIndex + k) % n];
+                if (!StillEnemy(b) || NeedsOperator(b)) continue;
+                if (b.TryGetComp<CompMissileLauncher_WorldTargeting>()?.OnCooldown(now) != false) continue;
                 IMissileRack rack = MissileRackUtil.Of(b);
                 if (rack == null || rack.StoredCount <= 0) continue;
                 if (MissileBaseRackSupplyUtility.IsAirDefenseOnly(b)) continue;
-                if (b.TryGetComp<CompMissileLauncher_WorldTargeting>() != null && NeedsOperator(b)) continue;
 
                 foreach (Thing round in rack.GetDirectlyHeldThings())
                 {

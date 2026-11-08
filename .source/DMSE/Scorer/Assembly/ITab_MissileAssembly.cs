@@ -72,7 +72,8 @@ namespace DMSE
             }
         }
 
-        public override bool IsVisible => Comp != null;
+        // 別的陣營的發射架／彈架不能改它裡面的導彈配置；地上的導彈物品照常可看。
+        public override bool IsVisible => Comp != null && (!(SelThing is Building b) || b.Faction == Faction.OfPlayer);
 
         public ITab_MissileAssembly()
         {

@@ -193,9 +193,12 @@ namespace DMSE
 
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
         {
-            foreach (Gizmo g in StorageSettingsClipboard.CopyPasteGizmosFor(GetStoreSettings()))
+            if (parent.Faction == Faction.OfPlayer)
             {
-                yield return g;
+                foreach (Gizmo g in StorageSettingsClipboard.CopyPasteGizmosFor(GetStoreSettings()))
+                {
+                    yield return g;
+                }
             }
             foreach (Thing t in innerContainer)
             {

@@ -17,8 +17,8 @@
   <DMSE.MissileBase.ArrivedLetter>你們抵達了一處導彈陣地。敵方已在此部署火控雷達與導彈發射架，不斷向周圍殖民地發射打擊。摧毀所有雷達與發射架才能瓦解此陣地；若在雷達尚存時撤退，敵方將重新整備防線，一段時間內無法再次進入。</DMSE.MissileBase.ArrivedLetter>
   <DMSE.MissileBase.SiteDesc>一處配備火控雷達與導彈發射架的機動戰術彈道導彈陣地。陣地會在完成任務後轉移，以躲避反制。</DMSE.MissileBase.SiteDesc>
   <DMSE.MissileBase.SupplyDrop>敵方補給空投：{0} ×{1}</DMSE.MissileBase.SupplyDrop>
-  <DMSE.MissileBase.RackResupply>敵方導彈補給：為 {0} 座空發射架空投了 {1} 枚導彈，守軍將自行搬運裝填。</DMSE.MissileBase.RackResupply>
-  <DMSE.MissileBase.TurretAmmoDrop>敵方彈藥補給：在 {2} 座砲塔附近空投了 {1} ×{0}，守軍將自行搬運裝填。</DMSE.MissileBase.TurretAmmoDrop>
+  <DMSE.MissileBase.RackResupply>敵方空投導彈：{1} 枚</DMSE.MissileBase.RackResupply>
+  <DMSE.MissileBase.TurretAmmoDrop>敵方空投彈藥：{1} ×{0}</DMSE.MissileBase.TurretAmmoDrop>
   <DMSE.FieldLaunchSite.ArrivedLetter>你們抵達了一處敵方野戰發射陣地。陣地以搜索雷達為中心，四周散布發射陣位、彈藥車與人員休息區。只要仍有雷達運作，敵方就會定時空投生存食品包維持守軍。摧毀所有雷達與發射架才能瓦解此陣地；若在雷達尚存時撤退，敵方將重新整備防線，一段時間內無法再次進入。</DMSE.FieldLaunchSite.ArrivedLetter>
   <DMSE.FieldLaunchSite.SpawnedLetter>{0}在{1}的{2}方 {3} 格處部署了一處野戰導彈發射陣地。其發射架能打擊你的殖民地；只要雷達仍在運作，補給艙就會持續為守軍送來食物。\n\n摧毀所有雷達與發射架才能瓦解此陣地；癱瘓雷達也能切斷其補給。</DMSE.FieldLaunchSite.SpawnedLetter>
   <DMSE.EarlyLaunchSite.ArrivedLetter>你們抵達了一處敵方舊式導彈陣地。聲學反射鏡負責監聽，手動火控雷達與發射軌負責射出緩慢的脈衝噴射巡飛彈。摧毀所有雷達與發射架才能瓦解此陣地；守軍或燒木發電機沒了，火控雷達也會停擺。若在雷達尚存時撤退，敵方將重新整備防線，一段時間內無法再次進入。</DMSE.EarlyLaunchSite.ArrivedLetter>

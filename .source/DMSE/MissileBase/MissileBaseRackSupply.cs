@@ -15,7 +15,8 @@ namespace DMSE
     /// </summary>
     public class MissileBaseRackSupply
     {
-        public float intervalDays = 2f;
+        /// <summary>兩次彈架空投的間隔（天）；每次重新隨機。</summary>
+        public FloatRange intervalDays = new FloatRange(2f, 4f);
 
         /// <summary>生成地圖時依裝填表重新裝填所有敵方彈架。</summary>
         public bool fillOnGenerate = true;

@@ -20,6 +20,9 @@ namespace DMSE
         public bool hasLaunchOffset;
         public Thing launcher;
 
+        /// <summary>存檔時發射架已被摧毀（引用存不下來，讀檔後 <see cref="launcher"/> 為 null）。</summary>
+        public bool launcherLost;
+
         // 對地離場
         public WorldObject worldObject;
 
@@ -43,8 +46,9 @@ namespace DMSE
             Scribe_Values.Look(ref launchAngle, "launchAngle", 0f);
             Scribe_Values.Look(ref launchOffset, "launchOffset");
             Scribe_Values.Look(ref hasLaunchOffset, "hasLaunchOffset", false);
-            if (Scribe.mode == LoadSaveMode.Saving && launcher != null && launcher.Destroyed) { launcher = null; }
+            if (Scribe.mode == LoadSaveMode.Saving && launcher != null && launcher.Destroyed) { launcher = null; launcherLost = true; }
             Scribe_References.Look(ref launcher, "launcher");
+            Scribe_Values.Look(ref launcherLost, "launcherLost", false);
             Scribe_Deep.Look(ref worldObject, "worldObject");
             Scribe_Values.Look(ref interceptor, "interceptor", false);
             Scribe_Values.Look(ref targetId, "targetId", -1);
@@ -126,6 +130,15 @@ namespace DMSE
         private Thing Spawn(PendingMissileLaunch launch)
         {
             if (launch.def == null) { return null; }
+            if (!launch.interceptor && DepartureLost(launch))
+            {
+                // 排隊等升空的期間發射架被摧毀、拆除或易主：導彈沒離架，不能再從原地「憑空」升空。
+                // 世界航跡還沒加入世界，直接銷毀；陣地的火力通道與打擊任務的欄位都以 Destroyed 判定它已結束。
+                if (launch.worldObject != null && !launch.worldObject.Destroyed) { launch.worldObject.Destroy(); }
+                if (Prefs.DevMode)
+                    Log.Message($"[DMSE LaunchQueue] 發射架已失去，取消一枚排隊中的 {launch.def.defName}。");
+                return null;
+            }
             Thing launcher = launch.launcher != null && !launch.launcher.Destroyed ? launch.launcher : null;
             if (launcher is ThingWithComps building && building.Spawned && building.Map == map)
             {
@@ -139,6 +152,17 @@ namespace DMSE
                 : MissileProjectileMaker.LaunchDeparture(launch.def, cell, map, launch.rotation, launcher, launch.worldObject,
                     launch.Heading, launch.hasLaunchAngle ? launch.launchAngle : (float?)null,
                     launch.hasLaunchOffset ? launch.launchOffset : Vector3.zero);
+        }
+
+        /// <summary>對地離場的發射架已不在本圖運作：被摧毀、被拆除／收起，或已不屬於發射方陣營（被佔領）。</summary>
+        private bool DepartureLost(PendingMissileLaunch launch)
+        {
+            if (launch.launcherLost) { return true; }
+            Thing launcher = launch.launcher;
+            if (launcher == null) { return false; }   // 本來就沒有發射架的發射（例如測試／腳本）照常升空
+            if (launcher.Destroyed || !launcher.Spawned || launcher.Map != map) { return true; }
+            Faction side = launch.worldObject?.Faction;
+            return side != null && launcher.Faction != side;
         }
 
         public override void ExposeData()
