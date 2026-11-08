@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+	<!-- 155mm Cluster -->
+	
+	<ThingDef Class="CombatExtended.AmmoDef" ParentName="155mmHowitzerShellBase">
+		<defName>Ammo_155mmHowitzerShell_Cluster</defName>
+		<label>155mm Howitzer shell (Cluster)</label>
+		<graphicData>
+			<texPath>Things/Ammo/Cannon/Howitzer/AB</texPath>
+			<graphicClass>Graphic_StackCount</graphicClass>
+		</graphicData>
+		<ammoClass>GrenadeCluster</ammoClass>
+		<generateAllowChance>0.1</generateAllowChance>
+		<detonateProjectile>Bullet_155mmHowitzerShell_HE</detonateProjectile>
+	</ThingDef>
+	
+	<ThingDef ParentName="Base155mmHowitzerShell">
+		<defName>Bullet_155mmHowitzerShell_Cluster</defName>
+		<label>155mm Howitzer shell (Cluster)</label>
+		<thingClass>CombatExtended.ProjectileCE_HeightFuse</thingClass>
+		<graphicData>
+			<texPath>Things/Projectile/Cannon/Howitzer/AB</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageDef>Smoke</damageDef>
+			<damageAmountBase>0</damageAmountBase>
+			<explosionRadius>16.5</explosionRadius>
+			<soundExplode>MortarBomb_Explode</soundExplode>
+			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+			<aimHeightOffset>20</aimHeightOffset>
+			<flyOverhead>true</flyOverhead>
+			<shellingProps>
+				<damage>0.85</damage>
+			</shellingProps>
+			<gravityFactor>30</gravityFactor>
+		</projectile>
+		<comps>
+			<li Class="CombatExtended.CompProperties_Fragments">
+				<fragments>
+					<Bullet_Bomblet_I>36</Bullet_Bomblet_I>
+				</fragments>
+				<fragAngleRange>-90~-45</fragAngleRange>
+			</li>
+		</comps>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseExplosiveBullet">
+		<defName>Bullet_Bomblet_I</defName>
+		<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
+		<label>Bomblet</label>
+		<graphicData>
+			<texPath>Things/Projectile/LauncherShot</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+			<shaderType>TransparentPostLight</shaderType>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageDef>Bomb</damageDef>
+			<damageAmountBase>106</damageAmountBase>
+			<speed>40</speed>
+			<gravityFactor>5</gravityFactor>
+			<flyOverhead>false</flyOverhead>
+			<explosionRadius>2.5</explosionRadius>
+			<soundExplode>MortarBomb_Explode</soundExplode>
+			<soundHitThickRoof>Artillery_HitThickRoof</soundHitThickRoof>
+			<soundImpactAnticipate>MortarRound_PreImpact</soundImpactAnticipate>
+			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+			<tickToTruePos>0</tickToTruePos>
+		</projectile>
+		<!--<comps>
+			<li Class="CombatExtended.CompProperties_Fragments">
+				<fragments>
+					<Bullet_Bomblet_II>8</Bullet_Bomblet_II>
+				</fragments>
+				<fragAngleRange>75~85</fragAngleRange>
+				<fragSpeedFactor>0.01</fragSpeedFactor>
+			</li>
+		</comps>-->
+	</ThingDef>
+
+	<ThingDef ParentName="BaseExplosiveBullet">
+		<defName>Bullet_Bomblet_II</defName>
+		<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
+		<label>Bomblet</label>
+		<graphicData>
+			<texPath>Things/Projectile/LauncherShot</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+			<shaderType>TransparentPostLight</shaderType>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageDef>Bomb</damageDef>
+			<damageAmountBase>20</damageAmountBase>
+			<speed>20</speed>
+			<gravityFactor>10</gravityFactor>
+			<flyOverhead>false</flyOverhead>
+			<explosionRadius>2</explosionRadius>
+			<soundExplode>MortarBomb_Explode</soundExplode>
+			<soundHitThickRoof>Artillery_HitThickRoof</soundHitThickRoof>
+			<soundImpactAnticipate>MortarRound_PreImpact</soundImpactAnticipate>
+			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+			<fuze_delay>2.5</fuze_delay>
+			<explosionDelay>15</explosionDelay>
+			<airborneSuppressionFactor>0.25</airborneSuppressionFactor>
+			<tickToTruePos>0</tickToTruePos>
+		</projectile>
+	</ThingDef>
+	
+	<RecipeDef ParentName="ArtilleryAmmoRecipeBase">
+		<defName>MakeAmmo_155mmHowitzerShell_Cluster</defName>
+		<label>make 155mm (Cluster) howitzer shells x1</label>
+		<description>Craft a 155mm (Cluster) howitzer shell.</description>
+		<jobString>Making 155mm (Cluster) howitzer shells.</jobString>
+		<researchPrerequisite Inherit="False" />
+		<researchPrerequisites>
+			<li>Mortars</li>
+			<li>CE_TurretHeavyWeapons</li>
+		</researchPrerequisites>
+		<workAmount>18600</workAmount>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Steel</li>
+					</thingDefs>
+				</filter>
+				<count>94</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>ComponentIndustrial</li>
+					</thingDefs>
+				</filter>
+				<count>4</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>FSX</li>
+					</thingDefs>
+				</filter>
+				<count>21</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Steel</li>
+				<li>ComponentIndustrial</li>
+				<li>FSX</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<Ammo_155mmHowitzerShell_Cluster>1</Ammo_155mmHowitzerShell_Cluster>
+		</products>
+		<skillRequirements>
+			<Crafting>5</Crafting>
+		</skillRequirements>
+	</RecipeDef>
+	
+	<CombatExtended.AmmoCategoryDef>
+		<defName>GrenadeCluster</defName>
+		<label>Cluster</label>
+		<labelShort>Cluster</labelShort>
+		<description>Grenade with a timed fuze designed to detonate mid-flight for maxiumum effectiveness.</description>
+	</CombatExtended.AmmoCategoryDef>
+
+</Defs>

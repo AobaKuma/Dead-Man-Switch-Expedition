@@ -119,6 +119,15 @@
 				</value>
 			</li>
 			
+			<li Class="PatchOperationAdd">
+				<xpath>Defs/ThingDef[defName="DMSE_Gun_Vulcan_WingBack"]/comps</xpath>
+				<value>
+					<li>
+						<compClass>CombatExtended.CompVerbDisabler</compClass>
+					</li>
+				</value>
+			</li>
+			
 			<li Class="CombatExtended.PatchOperationMakeGunCECompatible">
 				<defName>DMSE_Gun_Vulcan_WingBack</defName>
 				<statBases>

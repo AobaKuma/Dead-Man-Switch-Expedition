@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+	<Operation Class="PatchOperationSequence">
+		<operations>
+
+			<!-- All Patch-->
+
+			<li Class="PatchOperationRemove">
+				<xpath>Defs/ThingDef[defName="DMSE_Turret_Empero"]/comps/li[@Class="CompProperties_Refuelable"]</xpath>
+			</li>
+
+      <!-- Empero -->
+
+      <li Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="DMSE_Turret_Empero"]/statBases/ShootingAccuracyTurret</xpath>
+        <value>
+          <ShootingAccuracyTurret>1</ShootingAccuracyTurret>
+        </value>
+      </li>
+
+      <li Class="CombatExtended.PatchOperationMakeGunCECompatible">
+        <defName>DMSE_Gun_Empero</defName>
+        <statBases>
+          <Mass>13000</Mass>
+          <Bulk>5000</Bulk>
+          <RangedWeapon_Cooldown>8</RangedWeapon_Cooldown>
+          <SightsEfficiency>2.18</SightsEfficiency>
+          <ShotSpread>0.01</ShotSpread>
+          <SwayFactor>3.07</SwayFactor>
+        </statBases>
+        <Properties>
+          <recoilAmount>0</recoilAmount>
+          <verbClass>CombatExtended.Verb_ShootMortarCE</verbClass>
+          <hasStandardCommand>true</hasStandardCommand>
+          <defaultProjectile>Bullet_155mmHowitzerShell_HE</defaultProjectile>
+          <warmupTime>4</warmupTime>
+		  <minRange>12.9</minRange>
+          <range>1000</range>
+		  <requireLineOfSight>false</requireLineOfSight>
+          <soundCast>Mortar_LaunchA</soundCast>
+          <soundCastTail>GunTail_Medium</soundCastTail>
+          <targetParams>
+            <canTargetLocations>true</canTargetLocations>
+          </targetParams>
+          <muzzleFlashScale>20</muzzleFlashScale>
+		  <circularError>1.1</circularError>
+		  <indirectFirePenalty>0.3</indirectFirePenalty>
+          <recoilPattern>Mounted</recoilPattern>
+        </Properties>
+        <AmmoUser>
+          <magazineSize>12</magazineSize>
+          <reloadTime>5</reloadTime>
+          <ammoSet>AmmoSet_155mmHowitzerShell</ammoSet>
+        </AmmoUser>
+        <FireModes>
+          <aiUseBurstMode>false</aiUseBurstMode>
+        </FireModes>
+      </li>
+	  
+	  <li Class="PatchOperationAdd">
+		<xpath>Defs/ThingDef[defName="DMSE_Turret_Empero"]/comps</xpath>
+		<value>
+			<li Class="CombatExtended.CompProperties_Charges">
+				<chargeSpeeds>
+					<li>60</li><!--1-->
+					<li>80</li><!--2-->
+					<li>100</li><!--3-->
+					<li>120</li><!--4-->
+					<li>140</li><!--5-->
+					<li>160</li><!--6-->
+					<li>180</li><!--7-->
+					<li>200</li><!--8-->
+				</chargeSpeeds>
+			</li>
+		</value>
+	  </li>
+			
+		</operations>
+	</Operation>
+</Patch>
+
