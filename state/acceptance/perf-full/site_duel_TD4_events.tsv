@@ -1,0 +1,11 @@
+tick	kind	layer	defender	attacker	site	outcome	terminal	secondary	removed	effector	hitChance
+409200	TrackJammed	World	6	0	562	None	False	False	True	True	0.00
+409230	TrackJammed	World	6	0	562	None	False	False	True	True	0.00
+409230	TrackJammed	World	6	0	562	None	False	False	True	True	0.00
+409230	TrackDetected	World	0	6	561	None	False	False	False	False	0.00
+409230	LockStarted	World	0	6	561	None	False	False	False	True	0.00
+409245	TrackDetected	World	0	6	561	None	False	False	False	False	0.00
+409245	LockStarted	World	0	6	561	None	False	False	False	True	0.00
+409260	TrackJammed	World	6	0	562	None	False	False	True	True	0.00
+409260	TrackDetected	World	0	6	561	None	False	False	False	False	0.00
+409260	LockStarted	World	0	6	561	None	False	False	False	True	0.00

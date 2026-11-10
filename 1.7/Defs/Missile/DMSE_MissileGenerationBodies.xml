@@ -610,6 +610,8 @@
         <stealthLevel>0</stealthLevel>
         <speed>25</speed>
         <altitude>30000</altitude>
+        <!-- 彈道再入：迫近防禦（CIWS）幾乎來不及反應，命中率只剩 15%。 -->
+        <terminalInterceptFactor>0.15</terminalInterceptFactor>
       </li>
     </modExtensions>
   </ThingDef>
@@ -714,6 +716,8 @@
         <stealthLevel>2</stealthLevel>
         <speed>95</speed>
         <altitude>100000</altitude>
+        <!-- 高超音速再入彈頭：迫近防禦（CIWS）命中率只剩 5%。 -->
+        <terminalInterceptFactor>0.05</terminalInterceptFactor>
       </li>
     </modExtensions>
   </ThingDef>
@@ -922,6 +926,8 @@
         <stealthLevel>1</stealthLevel>
         <speed>60</speed>
         <altitude>50000</altitude>
+        <!-- 戰術彈道導彈：迫近防禦（CIWS）命中率只剩 10%。 -->
+        <terminalInterceptFactor>0.1</terminalInterceptFactor>
       </li>
     </modExtensions>
   </ThingDef>

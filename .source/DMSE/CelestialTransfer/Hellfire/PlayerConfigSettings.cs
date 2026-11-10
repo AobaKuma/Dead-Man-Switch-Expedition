@@ -14,6 +14,8 @@ namespace DMSE
         public bool interceptDebrisDamage;
         /// <summary>攔截特效密度：0 = 低、1 = 中（預設）、2 = 高（§8）。</summary>
         public int interceptFxDensity = 1;
+        /// <summary>迫近防禦砲塔（CIWS）整體攔截率倍率：1 = 原值，0 = 永不擊落，2 = 加倍（仍以 100% 為上限）。</summary>
+        public float ciwsInterceptMultiplier = 1f;
 
         public override void ExposeData()
         {
@@ -23,6 +25,7 @@ namespace DMSE
             Scribe_Values.Look(ref godModeInstantAssembly, "godModeInstantAssembly", true);
             Scribe_Values.Look(ref interceptDebrisDamage, "interceptDebrisDamage", false);
             Scribe_Values.Look(ref interceptFxDensity, "interceptFxDensity", 1);
+            Scribe_Values.Look(ref ciwsInterceptMultiplier, "ciwsInterceptMultiplier", 1f);
             Scribe_Collections.Look(ref records, "records", LookMode.Deep);
             if (Scribe.mode == LoadSaveMode.LoadingVars && records == null)
                 records = new List<ImpactCraterRecord>();

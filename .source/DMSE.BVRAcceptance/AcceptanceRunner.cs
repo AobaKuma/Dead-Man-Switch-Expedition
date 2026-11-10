@@ -256,6 +256,7 @@ namespace DMSE.BVRAcceptance
                 return;
             }
             if (Current.ProgramState != ProgramState.Playing || Find.CurrentMap == null) { return; }
+            PerfProfile.Sample();
             if (LongEventHandler.AnyEventNowOrWaiting) { return; }
 
             if (Current.Game != lastGame)
@@ -267,12 +268,14 @@ namespace DMSE.BVRAcceptance
                 {
                     BVRFixture.PrepareGameOnce();
                     tests = AcceptanceSuite.Build();
+                    if (PerfProfile.Requested) { tests.InsertRange(0, PerfTests.Build()); }
                     if (GenCommandLine.TryGetCommandLineArg(OnlyArgKey, out string only) && !only.NullOrEmpty())
                     {
                         HashSet<string> ids = new HashSet<string>(only.Split(',').Select(s => s.Trim()));
                         tests = tests.Where(x => ids.Contains(x.id)).ToList();
                     }
                     Log($"Running {tests.Count} acceptance tests.");
+                    PerfProfile.Begin();
                 }
                 else
                 {
@@ -304,6 +307,7 @@ namespace DMSE.BVRAcceptance
                     // Mechanics tests keep the radar values they were written against; T tests use the shipped ones.
                     if (test.id.StartsWith("T")) { BVRFixture.UseShippedRadarValues(); }
                     else { BVRFixture.PinLegacyRadarValues(); }
+                    PerfProfile.StartSection(test.id);
                     routine = test.body(ctx).GetEnumerator();
                 }
                 catch (Exception ex)
@@ -347,6 +351,7 @@ namespace DMSE.BVRAcceptance
             results.Add((ctx.test.id, ctx.test.title, pass, detail));
             Log($"--- {ctx.test.id}: {(pass ? "PASS" : "FAIL")} ({detail})");
 
+            PerfProfile.StartSection("(between tests)");
             try { BVRFixture.CleanupAfterTest(); }
             catch (Exception cleanupEx) { Log($"    cleanup exception: {cleanupEx}"); }
 
@@ -359,6 +364,7 @@ namespace DMSE.BVRAcceptance
         private static void Finish()
         {
             finished = true;
+            PerfProfile.Write(outDir);
             int passed = results.Count(r => r.pass);
             Log("");
             Log($"=== SUMMARY: {passed}/{results.Count} passed");

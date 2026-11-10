@@ -415,6 +415,7 @@ namespace DMSE.BVRAcceptance
                 new AcceptanceTest("W9", "Moving target: reroute, lock reset, re-engagement", Tests_WorldEdge.TerminalUpdateReroute),
                 new AcceptanceTest("W10", "Terminal CIWS power loss", Tests_WorldEdge.TerminalCiwsPowerLoss),
                 new AcceptanceTest("W11", "ETA at player speeds and view switches", Tests_WorldEdge.EtaAtPlayerSpeeds),
+                new AcceptanceTest("W12", "World scan idles without tracks and wakes only the nodes on a track's path", Tests_World.ScanActivity),
                 new AcceptanceTest("D1", "Datalink and area defense (crossing target)", Tests_P4.AreaDefense),
                 new AcceptanceTest("D2", "Synthetic settlement air defense and radar suppression", Tests_P4.SettlementDefense),
                 new AcceptanceTest("D3", "Undetected tracks are hidden", Tests_P4.HiddenTracks),

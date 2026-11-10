@@ -25,6 +25,12 @@ namespace DMSE
         /// </summary>
         public float altitude = 1000f;
 
+        /// <summary>
+        /// 末端（CIWS 迫近防禦）攔截率倍率。彈道導彈再入時速度極快、近乎垂直俯衝，砲塔幾乎來不及反應，
+        /// 所以彈道彈種設得很低；預設 1 = 不影響。只作用在地圖層末端攔截，中過程與世界層不受影響。
+        /// </summary>
+        public float terminalInterceptFactor = 1f;
+
         /// <summary>被攔截後的殘骸外觀與數量；null = 依種類取預設（導彈／空投艙）。</summary>
         public InterceptDebrisProfileDef debrisProfile;
 

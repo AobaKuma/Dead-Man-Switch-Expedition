@@ -10,7 +10,7 @@
        ‧ 地形：keepNaturalTerrain（預設開）不鋪結構地板、不剷平岩石，各結構散落在可直接施工的原地面上。
        ‧ 補給：地圖生成後依 supplyDrop 定時空投生存食品包，所有敵方雷達停止運作後不再投放。
        ‧ 彈藥：rackSupply 在生成時依彈架類型裝填；之後每兩天為每座空彈架空投一艙導彈，守軍於落地後裝填。
-       ‧ 摧毀：雷達（搜索／火控，不含自帶雷達的防空砲塔）與世界選靶發射器全滅才算摧毀；
+       ‧ 摧毀：火控雷達（不含自帶火控的防空砲塔）全滅即算摧毀，搜索雷達與發射架不必摧毀；
          雷達尚存時撤退，站點保留並封鎖再進入 reentryBlockedDays，下次進入時完整重建。
        一般地圖步驟繼承原版 MapCommonBase；礦塊與殘渣步驟沿用 WorldObjects_MissileBase.xml 的 GenStepDef。
        ══════════════════════════════════════════════════════════════ -->
@@ -202,6 +202,8 @@
     <validLaunchTarget>false</validLaunchTarget>
     <mapGenerator>DMSE_FieldLaunchSite_MapGen</mapGenerator>
     <comps>
+      <!-- 原版 Site 的整隊元件：沒有它，世界地圖上不會出現「重組遠行隊」。 -->
+      <li Class="WorldObjectCompProperties_FormCaravan" />
       <!-- 只在尚未生成地圖時使用；地圖生成後由實際雷達與發射架接手。 -->
       <li Class="DMSE.CompProperties_WorldAirDefense">
         <worldDetectionRange>10</worldDetectionRange>

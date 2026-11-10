@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using Verse;
 
@@ -49,6 +51,8 @@ namespace DMSE
             public Vector3 pos;
             public Vector3 velocity;
             public int age;
+            /// <summary><see cref="fleck"/> 的外觀是照哪個年齡算的；和 <see cref="age"/> 不同時，下次繪製前重算。</summary>
+            public int appliedAge;
         }
 
         /// <summary>淡入（tick）。</summary>
@@ -92,36 +96,40 @@ namespace DMSE
             });
             var puff = new Puff { fleck = fleck, spec = spec, pos = spec.pos, velocity = spec.velocity, age = Mathf.Max(0, spec.ageOffset) };
             Apply(ref puff, default);
+            puff.appliedAge = -1; // 這次沒有環境光：第一次繪製前重算
             puffs.Add(puff);
         }
 
         /// <summary>
-        /// 每遊戲 tick 推進一次。<paramref name="map"/> 有值時套用環境光（<see cref="FxLighting"/>：煙在光照層之後畫，原版光照照不到它）；
-        /// 剛出噴口的熾熱期是被尾焰照亮的，漸進套用。
+        /// 每遊戲 tick 推進一次：只算運動、年齡與移除。外觀（大小、顏色、環境光、淡出）留到 <see cref="Draw"/> 才算，
+        /// 所以沒在看的地圖、視野外的煙團、以及高速時同一幀內多出來的 tick 都不付這筆成本。
+        /// 移除時原地往前壓實，清單維持出生先後（繪製順序靠它）。
         /// </summary>
-        public void Tick(IntVec3 mapSize, Vector3 wind, Map map = null)
+        public void Tick(IntVec3 mapSize, Vector3 wind)
         {
-            FxLighting.Sampler light = FxLighting.For(map);
-            for (int i = puffs.Count - 1; i >= 0; i--)
+            Span<Puff> span = CollectionsMarshal.AsSpan(puffs);
+            int kept = 0;
+            for (int i = 0; i < span.Length; i++)
             {
-                Puff p = puffs[i];
+                ref Puff p = ref span[i];
                 Step(ref p.pos, ref p.velocity, p.spec, wind);
                 p.age++;
                 if (p.age >= p.spec.lifeTicks)
                 {
                     expiredCount++;
-                    puffs.RemoveAt(i);
                     continue;
                 }
-                if (InterceptGeometry.DistanceOutside(mapSize, new Vector3(p.pos.x, 0f, p.pos.z)) > OffMapCull)
+                // 圖內的（絕大多數）不必算距離。
+                if ((p.pos.x < 0f || p.pos.x > mapSize.x || p.pos.z < 0f || p.pos.z > mapSize.z)
+                    && InterceptGeometry.DistanceOutside(mapSize, new Vector3(p.pos.x, 0f, p.pos.z)) > OffMapCull)
                 {
                     culledCount++;
-                    puffs.RemoveAt(i);
                     continue;
                 }
-                Apply(ref p, light);
-                puffs[i] = p;
+                if (kept != i) { span[kept] = p; }
+                kept++;
             }
+            if (kept < span.Length) { puffs.RemoveRange(kept, span.Length - kept); }
         }
 
         /// <summary>一 tick 的運動（純函式，單元測試用）：阻力、浮力（畫面 +z）、風，然後位移。</summary>
@@ -160,6 +168,7 @@ namespace DMSE
             c = FxLighting.Apply(c, light.At(p.pos), cooled);
             c.a *= AlphaAt(p.spec, p.age);
             p.fleck.instanceColor = c;
+            p.appliedAge = p.age;
         }
 
         /// <summary>
@@ -168,10 +177,14 @@ namespace DMSE
         /// 先後順序（docs/導彈發射特效_重製計畫.md §0.5）：清單依出生先後（移除不改順序），同一材質的 instanced 繪製依加入順序畫，
         /// 所以舊的在下、新的在上；高度再依清單位置墊一點（<see cref="OrderAltitudeSpan"/>），讓拆開的多批也照這個順序。
         /// 每種煙只用一張貼圖：同高度的不同材質之間的先後由 Unity 任意決定，會一塊塊亂蓋、逐幀跳動。
+        /// 外觀在這裡才算，而且只算要畫的、年齡自上次繪製後變過的煙團。<paramref name="map"/> 有值時套用環境光
+        /// （<see cref="FxLighting"/>：煙在光照層之後畫，原版光照照不到它）；剛出噴口的熾熱期是被尾焰照亮的，漸進套用。
         /// </summary>
-        public void Draw(DrawBatch batch, CellRect? view = null)
+        public void Draw(DrawBatch batch, CellRect? view = null, Map map = null)
         {
             if (puffs.Count == 0) { return; }
+            FxLighting.Sampler light = FxLighting.For(map);
+            Span<Puff> span = CollectionsMarshal.AsSpan(puffs);
             for (int i = 0; i < handledDefs.Count; i++)
             {
                 handledDefs[i].graphicData?.ExplicitlyInitCachedGraphic();
@@ -180,17 +193,19 @@ namespace DMSE
                     foreach (GraphicData g in handledDefs[i].randomGraphics) { g.ExplicitlyInitCachedGraphic(); }
                 }
             }
-            for (int i = 0; i < puffs.Count; i++)
+            for (int i = 0; i < span.Length; i++)
             {
+                ref Puff puff = ref span[i];
                 if (view.HasValue)
                 {
-                    Vector3 p = puffs[i].pos;
-                    float r = puffs[i].fleck.linearScale.x * 0.5f;
+                    Vector3 p = puff.pos;
+                    float r = SizeAt(puff.spec, puff.age) * 0.5f;
                     CellRect v = view.Value;
                     if (p.x + r < v.minX || p.x - r > v.maxX + 1 || p.z + r < v.minZ || p.z - r > v.maxZ + 1) { continue; }
                 }
-                FleckStatic f = puffs[i].fleck;
-                f.Draw(OrderedAltitude(f.def, i, puffs.Count), batch);
+                if (puff.appliedAge != puff.age) { Apply(ref puff, light); }
+                FleckStatic f = puff.fleck;
+                f.Draw(OrderedAltitude(f.def, i, span.Length), batch);
             }
         }
     }

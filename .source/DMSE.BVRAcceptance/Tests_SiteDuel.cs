@@ -605,8 +605,9 @@ namespace DMSE.BVRAcceptance
             foreach (Wait w in BringUp(t, a)) { yield return w; }
             foreach (Wait w in BringUp(t, b)) { yield return w; }
 
-            // B cannot shoot back or defend: no fire control, no CIWS, so everything A fires must reach the map.
-            foreach (CompFireControlRadar fc in b.Combat.fireControlRadars.Where(x => x.parent.Faction == b.faction).ToList()) { fc.parent.Destroy(DestroyMode.Vanish); }
+            // B cannot shoot back or defend: fire control switched off (destroying it would destroy the site, it is the objective), no CIWS,
+            // so everything A fires must reach the map.
+            foreach (CompFireControlRadar fc in b.Combat.fireControlRadars.Where(x => x.parent.Faction == b.faction).ToList()) { SetFlick(fc.parent, false); }
             foreach (CompTerminalCIWS c in b.Combat.ciwsTurrets.Where(x => x.parent.Faction == b.faction).ToList()) { c.parent.Destroy(DestroyMode.Vanish); }
             foreach (Building turret in b.Buildings.Where(x => x is Building_Turret).ToList()) { turret.Destroy(DestroyMode.Vanish); }
             yield return new WaitTicks(5);
@@ -636,10 +637,17 @@ namespace DMSE.BVRAcceptance
             t.Check((b.Alert?.Threat ?? 0f) > 0f, $"the hits raise B's alert pressure ({b.Alert?.Threat ?? 0f:0.0})");
             t.Screenshot("strike_damage");
 
-            // ── Objectives: every radar and world launcher gone, and nobody ever looked at this map ──
+            // ── Objectives: every fire-control radar gone, and nobody ever looked at this map ──
             MapParent bParent = b.site;
             t.Check(Find.CurrentMap == Home, "site B's map is off screen");
+            if (bParent.Destroyed || b.Base.BaseSiteDestroyed)
+            {
+                t.Note("A's strikes already destroyed B's fire-control radars, so the site fell before the scripted kill; skipping the rest");
+                CheckNoErrors(t);
+                yield break;
+            }
             t.Check(b.Base.ShowsObjectives, "an unobserved site still registers its objectives");
+            t.Check(b.Base.RemainingRadars.Any(), "B's switched-off fire-control radars still count as objectives");
 
             // A missile in flight when the site goes away must end quietly.
             MissileConfig cfg = a.site.GetComponent<WorldObjectComp_MissileBase>().BuildFireConfig();
@@ -648,7 +656,8 @@ namespace DMSE.BVRAcceptance
             int ticksLeft = inFlight.TicksToArrival;
 
             int destroyedLetters = LetterCount("DMSE.MissileBase.Destroyed");
-            foreach (Building x in b.Base.RemainingRadars.Concat(b.Base.RemainingLaunchers).ToList()) { if (!x.Destroyed) { x.Kill(); } }
+            // Only the fire-control radars: launchers and search radars stay up.
+            foreach (Building x in b.Base.RemainingRadars.ToList()) { if (!x.Destroyed) { x.Kill(); } }
             var waitGone = new WaitUntil(() => { KeepAlive(a); return bParent.Destroyed; }, 1100);
             yield return waitGone;
             t.Check(!waitGone.TimedOut, "with no objective left the site is destroyed, though its map is off screen");

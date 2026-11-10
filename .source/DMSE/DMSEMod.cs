@@ -35,6 +35,10 @@ namespace DMSE
                     Settings.interceptFxDensity = level;
                 }
             }
+            listing.Gap(6f);
+            listing.Label("DMSE.BVR.Settings.CiwsInterceptMultiplier".Translate(Settings.ciwsInterceptMultiplier.ToStringPercent()),
+                tooltip: "DMSE.BVR.Settings.CiwsInterceptMultiplierDesc".Translate());
+            Settings.ciwsInterceptMultiplier = Mathf.Round(listing.Slider(Settings.ciwsInterceptMultiplier, 0f, 2f) * 20f) / 20f;
             listing.End();
         }
 

@@ -87,7 +87,7 @@ namespace DMSE
             if (Debris.Count == 0 && Smoke.Count == 0) { return; }
             Vector3 wind = Wind;
             if (Debris.Count > 0) { Debris.Tick(map, map.Size, wind); }
-            if (Smoke.Count > 0) { Smoke.Tick(map.Size, wind, map); }
+            if (Smoke.Count > 0) { Smoke.Tick(map.Size, wind); }
         }
 
         /// <summary>每幀（MapComponentUpdate）呼叫：只在玩家看著的地圖上推進即時 fleck 並繪製。</summary>
@@ -100,7 +100,7 @@ namespace DMSE
                 staticFlecks.Update(Time.deltaTime);
                 staticFlecks.ForceDraw(drawBatch);
             }
-            Smoke.Draw(drawBatch, Find.CameraDriver.CurrentViewRect.ExpandedBy(2));
+            Smoke.Draw(drawBatch, Find.CameraDriver.CurrentViewRect.ExpandedBy(2), map);
             Debris.Draw(drawBatch);
             drawBatch.Flush(true);
             drawCpuMs += (Stopwatch.GetTimestamp() - start) * 1000.0 / Stopwatch.Frequency;

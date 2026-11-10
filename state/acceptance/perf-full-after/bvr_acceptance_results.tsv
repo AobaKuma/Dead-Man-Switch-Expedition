@@ -1,0 +1,162 @@
+﻿id	result	title	detail
+PF0	PASS	Perf baseline: colony with no DMSE things, idle	1 checks
+PF1	PASS	Perf: one of every DMSE building on the pad, idle	1 checks
+PF2	PASS	Perf: NPC missile base on the world map, nothing in flight	2 checks
+PF3	PASS	Perf: twelve enemy cruise missiles against a defended colony	2 checks
+M0	PASS	Environment and defs	17 checks
+M1	PASS	Device registration and Active	7 checks
+M2	PASS	Manned fire-control radar	5 checks
+M3	PASS	Drop pod capture, window, landing	7 checks
+M4	PASS	Map midcourse SAM intercept	9 checks
+M5	PASS	CIWS terminal intercept with multi-pawn debris	10 checks
+M6	PASS	CIWS multi-wave priority	6 checks
+M7	PASS	No radar: pod lands	3 checks
+M8	FAIL	Shared fire-control channels (local + world)	world missile is detected
+S1	PASS	Seeker target selection	20 checks
+S2	PASS	Laser designator mark lifecycle	10 checks
+S3	PASS	Seekers on a map generated at arrival	14 checks
+S4	FAIL	Loiter flight control: wait, re-seek, dive, fall back	the drone locks the new target on its next seek | and dives at the designated cell ((103, 0, 137) vs (64, 0, 64)) | with only the short dive window left before impact
+W1	FAIL	World detection, ETA, landing without CIWS	phased array range vs cruise missile is 22.5 tiles (got 13.50) | flight time follows 150 ticks per tile at speed 1
+W2	FAIL	World interception hit	fire control locks the world track
+W3	PASS	World interception miss and re-lock	8 checks
+W4	PASS	Terminal-only handoff with CIWS	9 checks
+W5	PASS	Radar loss during engagement	5 checks
+W6	PASS	NPC abstract defense, map handoff, EM seeker	16 checks
+W7	PASS	TV guidance manual target	7 checks
+W8	FAIL	World airburst	enough time to launch the trailing missile
+W9	PASS	Moving target: reroute, lock reset, re-engagement	18 checks
+W10	PASS	Terminal CIWS power loss	8 checks
+W11	PASS	ETA at player speeds and view switches	8 checks
+W12	PASS	World scan idles without tracks and wakes only the nodes on a track's path	9 checks
+D1	FAIL	Datalink and area defense (crossing target)	the track survives long enough to be engaged
+D2	PASS	Synthetic settlement air defense and radar suppression	6 checks
+D3	PASS	Undetected tracks are hidden	2 checks
+D4	PASS	Drop-pod ghost track and abstract-node degradation	6 checks
+A1	FAIL	Alert stage 3 lets transit pass, stage 4 engages it	stage 4 engages the same transit missile
+X1	FAIL	Developer debug actions	missile and missile-base tools are registered | exception: TargetParameterCountException: Parameter count mismatch.
+A2	PASS	Alert pressure, regional spread, blockade notice, zone and routes	22 checks
+K1	FAIL	Strike rounds, reservation, per-round and ripple launch	the reserved missile launches by reference (在架導彈已全數保留給打擊任務) | the world track carries the light config, target and faction | the launch starts the cooldown | a second single launch waits for the cooldown () | a ripple continuation ignores the cooldown (未裝填導彈) | both launches spawn departing missiles
+K2	PASS	Reserved rounds skip assembly; silo as a round	12 checks
+K3	PASS	World defense engages the soonest arrival first	8 checks
+K4	FAIL	Decoy waves against NPC abstract stock (plan B)	plan B: the cruise wave arrives after every decoy
+K5	PASS	No interceptor ammo, no lock; release when the last one is fired	12 checks
+K6	FAIL	Auto strike console: plan, reserve, compute, ripple waves, guidance period, cancel	the loitering munition is listed as out of range | candidates carry flight time and a light-missile group label | a wave above the guidance limit is refused | queued missiles book all four channels at once | wave 2 is refused for lack of guidance channels | launched missiles hold their channels in the guidance period | all channels free only after the guidance period (23 ticks after the last launch)
+K7	FAIL	Strike mission save/load mid-ripple, then completion	one guidance hold and one queued launch book both channels | the saved guidance hold and the new one book both channels | the saved guidance hold expires on schedule
+K8	FAIL	Strike window draws in planning and execution modes	auto-assign makes four waves of two (two channels) | the execution window stays open while wave 1 launches
+K9	PASS	Manual planning table: research work, wave-by-wave solving, alert	20 checks
+K10	PASS	Adjust waves during execution; incremental computation	19 checks
+K11	PASS	Arrival timeline, wave-ready alert, alert grouping, results letter	20 checks
+K12	PASS	Timed launch waits to land after the earlier wave	6 checks
+K13	PASS	Firing solutions are recomputed after a large target move	8 checks
+K14	PASS	Decoy payload and threat assessment	6 checks
+K15	PASS	NPC missile base salvo	3 checks
+N1	FAIL	Industrial field launch site: difficulty layout, garrison, radar-gated supply drops	vegetation generated (156 / 5522 plants)
+N2	PASS	Field launch site incident: spawns in range, letter, one at a time	11 checks
+N3	PASS	Missile site gunners man launchers, radars and guns; leave to eat when hungry	9 checks
+N4	PASS	Missile alerts: one letter, repeats within an hour become messages	5 checks
+N5	PASS	Site destroyed with colonists on the map: map kept until they leave, nobody lost	18 checks
+N6	PASS	Radars are required: retreat with radars standing keeps the site and blocks re-entry	19 checks
+N7	PASS	Early launch site: built from LaunchSite_Early, racks hold legacy loiters, radar powered and manned, fires on-map and from the world layer	18 checks
+N8	PASS	Early launch site incident: high points before radar network, pirates only after it	17 checks
+N9	PASS	Missile site strike fire keeps interceptors and pure SAM magazines	37 checks
+N10	PASS	Field site war room: generated and powered, idle garrison mans it and buffs the site's radar, leaves to fight	16 checks
+N12	PASS	A launch still queued when its launcher is destroyed is cancelled, not fired from the empty cell	10 checks
+N11	PASS	Garrison keeps legacy flak, field air defense and CIWS stocked while it lives	33 checks
+G1	PASS	God-mode instant missile assembly	15 checks
+R1	PASS	Empero long-range gun: defs, head, targeting rules (incl. unspawned map), out of shells	19 checks
+R2	PASS	Empero unguided strike: unspawned base refused, warmup aim, departure, world track, existing map reused, edge entry near centre	29 checks
+R3	PASS	Empero radar-guided strike: channel per gun, scatter 3 on a hostile building, release, full pool unguided	24 checks
+R4	PASS	Empero local reduced-charge fire: head turns, shared shells, held during world fire	15 checks
+R5	PASS	Empero local fire controls: min range, hold fire, forced target, buttons	13 checks
+R6	PASS	Empero fire modes: ranging logs its impact, fire for effect shares it, scatter tightens per shot, unregistered map refused	39 checks
+R7	PASS	Heavy mortar: vanilla switchable shell (gunner-loaded) is the BVR warhead, reload pauses the mission, crew required	39 checks
+AB1	FAIL	Assembly bench: facilities, info card, labor speed	ten bodies are producible (13)
+AB2	PASS	Assembly bench: colonist hauls and assembles an order	22 checks
+AB3	PASS	Assembly bench: cancel, send to storage, designs, window	11 checks
+VR1	PASS	Vacuum sealed room: terrain, one room per entrance, landfill keeps the owner	12 checks
+T1	PASS	Launch tower backblast; sealed silo	13 checks
+T2	PASS	Rotary and launch rails: manning, item airframes, roles	18 checks
+T3	PASS	SAM takes only interceptor / dual-role rounds	5 checks
+T4	FAIL	Shipped channel counts and new radars	exception: InvalidCastException: Unable to cast object of type 'RimWorld.Building_TurretGun' to type 'DMSE.Building_MissileRack'.
+T5	PASS	Built-in anti-ship guidance, ranges, research gates	28 checks
+T6	PASS	Interceptor hit factors	8 checks
+T7	PASS	Millennium and Flak 43	10 checks
+T8	PASS	Man-portable SAM	21 checks
+T9	FAIL	Field air defence: on-map cannon turns before firing	exception: InvalidCastException: Unable to cast object of type 'RimWorld.Building_TurretGun' to type 'DMSE.Building_MissileRack'.
+T10	PASS	Manned rotary rail reloads from a rack and fires again	8 checks
+T11	FAIL	SAM keeps firing inside a manned Flak 43's terminal window	the manned rail fires its first interceptor
+T12	PASS	Missile and radar research tree split / unlock gates	16 checks
+T13	PASS	Sabre loitering munition on the man-portable launcher	25 checks
+T14	PASS	Oniks fires from both launcher families and flies its own defs	14 checks
+F1	PASS	Projectile ascent replays the skyfaller ascent tick for tick (pose, timeline, exhaust inputs)	18 checks
+F2	PASS	Old and new ascent screenshots at the same ticks	4 checks
+F3	PASS	Entry heading follows the world track's last leg and maps to the vanilla caravan edge	6 checks
+F4	FAIL	Every missile body launches its own projectile with its own texture and launch effect	DepthRim_AntiTorpedoBody has its own launch projectile (none) | 17 distinct launch projectiles for 18 bodies
+F5	FAIL	Departures turn to the world heading after the ascent, accelerate on the speed curve and fly out of the map edge	DMSE_Launch_LegacyBallistic/南方/0°: exits the 2 edge, heading points at the 0 edge (handoff (37.5,10.9756,14.9929) nose 180°, never finished the turn, exit (39.7716,10.9756,-0.042) after 16 cruise ticks) | DMSE_Launch_LegacyBallistic/西方/60°: exits the 3 edge, heading points at the 1 edge (handoff (15.9929,10.9756,40.2333) nose 270°, never finished the turn, exit (-0.1537,10.9756,42.581) after 17 cruise ticks) | DMSE_Launch_LegacyBallistic/東方/225°: exits the 3 edge, heading points at the 2 edge (handoff (63.0071,10.9756,40.2333) nose 90°, never finished the turn, exit (-1.1611,10.9756,55.3957) after 88 cruise ticks) | DMSE_Launch_LegacyBallistic/南方/300°: exits the 2 edge, heading points at the 3 edge (handoff (41.5,10.9756,14.9929) nose 180°, never finished the turn, exit (39.2284,10.9756,-0.042) after 16 cruise ticks) | DMSE_Launch_AdvancedBallistic/南方/0°: exits the 2 edge, heading points at the 0 edge (handoff (39.5,10.9756,16.9929) nose 180°, never finished the turn, exit (42.7841,10.9756,-0.1162) after 18 cruise ticks) | DMSE_Launch_AdvancedBallistic/西方/60°: exits the 3 edge, heading points at the 1 edge (handoff (17.9929,10.9756,42.2333) nose 270°, never finished the turn, exit (-0.2248,10.9756,45.6706) after 19 cruise ticks) | DMSE_Launch_AdvancedBallistic/東方/225°: exits the 3 edge, heading points at the 2 edge (handoff (65.0071,10.9756,42.2333) nose 90°, never finished the turn, exit (-2.0214,10.9756,57.5091) after 89 cruise ticks) | DMSE_Launch_AdvancedBallistic/南方/300°: exits the 2 edge, heading points at the 3 edge (handoff (43.5,10.9756,16.9929) nose 180°, never finished the turn, exit (40.2159,10.9756,-0.1162) after 18 cruise ticks) | DMSE_Launch_Sparrow/北方/135°: exit direction 135.8° ≠ heading 135° | nose 135.8° ≠ heading at exit | DMSE_Launch_Moskit/南方/225°: exit direction 216.4° ≠ heading 225° | nose 216.4° ≠ heading at exit | DMSE_Launch_Oniks/東方/60°: direction jumps 35.1° in one tick around the handoff | DMSE_Launch_Oniks/北方/300°: direction jumps 60° in one tick around the handoff | DMSE_Launch_Tochka/南方/0°: exits the 2 edge, heading points at the 0 edge (handoff (43.5,10.9756,20.9929) nose 180°, never finished the turn, exit (49.652,10.9756,-0.0365) after 22 cruise ticks) | DMSE_Launch_Tochka/西方/60°: exits the 3 edge, heading points at the 1 edge (handoff (21.9929,10.9756,46.2333) nose 270°, never finished the turn, exit (-0.1103,10.9756,52.7567) after 23 cruise ticks) | DMSE_Launch_Tochka/東方/225°: exits the 3 edge, heading points at the 2 edge (handoff (60.0071,10.9756,47.2333) nose 90°, never finished the turn, exit (-1.3585,10.9756,51.5254) after 86 cruise ticks) | DMSE_Launch_Tochka/南方/300°: exits the 2 edge, heading points at the 3 edge (handoff (38.5,10.9756,21.9929) nose 180°, never finished the turn, exit (30.4345,10.9756,-0.7819) after 24 cruise ticks) | 74/90 departures: correct exit heading, speed on the speed curve, continuous handoff, exhaust until exit, estimate = actual
+F6	PASS	Departure cruise screenshots (east-launched light missile heading north-west)	1 checks
+F7	FAIL	Incoming missiles fly in from the map edge the world heading points at, straight to the target; BVR release keeps the heading	DMSE_Incoming_LightMissile/0°: nose off the heading by 180° | DMSE_Incoming_LightMissile/60°: nose off the heading by 180° | DMSE_Incoming_LightMissile/135°: nose off the heading by 180° | DMSE_Incoming_LightMissile/225°: nose off the heading by 180° | DMSE_Incoming_LightMissile/300°: nose off the heading by 180° | DMSE_Incoming_Loiter/0°: nose off the heading by 180° | DMSE_Incoming_Loiter/60°: nose off the heading by 180° | DMSE_Incoming_Loiter/135°: nose off the heading by 180° | DMSE_Incoming_Loiter/225°: nose off the heading by 180° | DMSE_Incoming_Loiter/300°: nose off the heading by 180° | DMSE_Incoming_LegacyBallisticMissile/0°: nose off the heading by 180° | DMSE_Incoming_LegacyBallisticMissile/60°: nose off the heading by 180° | DMSE_Incoming_LegacyBallisticMissile/135°: nose off the heading by 180° | DMSE_Incoming_LegacyBallisticMissile/225°: nose off the heading by 180° | DMSE_Incoming_LegacyBallisticMissile/300°: nose off the heading by 180° | DMSE_Incoming_LegacyLoiter/0°: nose off the heading by 180° | DMSE_Incoming_LegacyLoiter/60°: nose off the heading by 180° | DMSE_Incoming_LegacyLoiter/135°: nose off the heading by 180° | DMSE_Incoming_LegacyLoiter/225°: nose off the heading by 180° | DMSE_Incoming_LegacyLoiter/300°: nose off the heading by 180° | DMSE_Incoming_LegacyInterceptor/0°: nose off the heading by 180° | DMSE_Incoming_LegacyInterceptor/60°: nose off the heading by 180° | DMSE_Incoming_LegacyInterceptor/135°: nose off the heading by 180° | DMSE_Incoming_LegacyInterceptor/225°: nose off the heading by 180° | DMSE_Incoming_LegacyInterceptor/300°: nose off the heading by 180° | DMSE_Incoming_AdvancedLightMissile/0°: nose off the heading by 180° | DMSE_Incoming_AdvancedLightMissile/60°: nose off the heading by 180° | DMSE_Incoming_AdvancedLightMissile/135°: nose off the heading by 180° | DMSE_Incoming_AdvancedLightMissile/225°: nose off the heading by 180° | DMSE_Incoming_AdvancedLightMissile/300°: nose off the heading by 180° | DMSE_Incoming_AdvancedBallisticMissile/0°: nose off the heading by 180° | DMSE_Incoming_AdvancedBallisticMissile/60°: nose off the heading by 180° | DMSE_Incoming_AdvancedBallisticMissile/135°: nose off the heading by 180° | DMSE_Incoming_AdvancedBallisticMissile/225°: nose off the heading by 180° | DMSE_Incoming_AdvancedBallisticMissile/300°: nose off the heading by 180° | DMSE_Incoming_AdvancedCruiseMissile/0°: nose off the heading by 180° | DMSE_Incoming_AdvancedCruiseMissile/60°: nose off the heading by 180° | DMSE_Incoming_AdvancedCruiseMissile/135°: nose off the heading by 180° | DMSE_Incoming_AdvancedCruiseMissile/225°: nose off the heading by 180° | DMSE_Incoming_AdvancedCruiseMissile/300°: nose off the heading by 180° | DMSE_Incoming_Stinger/0°: nose off the heading by 180° | DMSE_Incoming_Stinger/60°: nose off the heading by 180° | DMSE_Incoming_Stinger/135°: nose off the heading by 180° | DMSE_Incoming_Stinger/225°: nose off the heading by 180° | DMSE_Incoming_Stinger/300°: nose off the heading by 180° | DMSE_Incoming_Maverick/0°: nose off the heading by 180° | DMSE_Incoming_Maverick/60°: nose off the heading by 180° | DMSE_Incoming_Maverick/135°: nose off the heading by 180° | DMSE_Incoming_Maverick/225°: nose off the heading by 180° | DMSE_Incoming_Maverick/300°: nose off the heading by 180° | DMSE_Incoming_Sparrow/0°: nose off the heading by 180° | DMSE_Incoming_Sparrow/60°: nose off the heading by 180° | DMSE_Incoming_Sparrow/135°: nose off the heading by 180° | DMSE_Incoming_Sparrow/225°: nose off the heading by 180° | DMSE_Incoming_Sparrow/300°: nose off the heading by 180° | DMSE_Incoming_Moskit/0°: nose off the heading by 180° | DMSE_Incoming_Moskit/60°: nose off the heading by 180° | DMSE_Incoming_Moskit/135°: nose off the heading by 180° | DMSE_Incoming_Moskit/225°: nose off the heading by 180° | DMSE_Incoming_Moskit/300°: nose off the heading by 180° | DMSE_Incoming_Oniks/0°: nose off the heading by 180° | DMSE_Incoming_Oniks/60°: nose off the heading by 180° | DMSE_Incoming_Oniks/135°: nose off the heading by 180° | DMSE_Incoming_Oniks/225°: nose off the heading by 180° | DMSE_Incoming_Oniks/300°: nose off the heading by 180° | DMSE_Incoming_Yj/0°: nose off the heading by 180° | DMSE_Incoming_Yj/60°: nose off the heading by 180° | DMSE_Incoming_Yj/135°: nose off the heading by 180° | DMSE_Incoming_Yj/225°: nose off the heading by 180° | DMSE_Incoming_Yj/300°: nose off the heading by 180° | DMSE_Incoming_Tochka/0°: nose off the heading by 180° | DMSE_Incoming_Tochka/60°: nose off the heading by 180° | DMSE_Incoming_Tochka/135°: nose off the heading by 180° | DMSE_Incoming_Tochka/225°: nose off the heading by 180° | DMSE_Incoming_Tochka/300°: nose off the heading by 180° | DMSE_Incoming_Sabre/0°: nose off the heading by 180° | DMSE_Incoming_Sabre/60°: nose off the heading by 180° | DMSE_Incoming_Sabre/135°: nose off the heading by 180° | DMSE_Incoming_Sabre/225°: nose off the heading by 180° | DMSE_Incoming_Sabre/300°: nose off the heading by 180° | DMSE_Incoming_Shahed/0°: nose off the heading by 180° | DMSE_Incoming_Shahed/60°: nose off the heading by 180° | DMSE_Incoming_Shahed/135°: nose off the heading by 180° | DMSE_Incoming_Shahed/225°: nose off the heading by 180° | DMSE_Incoming_Shahed/300°: nose off the heading by 180° | DMSE_Incoming_LightMissile/0°: nose off the heading by 180° | DMSE_Incoming_LightMissile/60°: nose off the heading by 180° | DMSE_Incoming_LightMissile/135°: nose off the heading by 180° | DMSE_Incoming_LightMissile/225°: nose off the heading by 180° | DMSE_Incoming_LightMissile/300°: nose off the heading by 180° | DMSE_Incoming_LightMissile/0°: nose off the heading by 180° | DMSE_Incoming_LightMissile/60°: nose off the heading by 180° | DMSE_Incoming_LightMissile/135°: nose off the heading by 180° | DMSE_Incoming_LightMissile/225°: nose off the heading by 180° | DMSE_Incoming_LightMissile/300°: nose off the heading by 180° | 0/95 incoming missiles: start off-map, enter through the heading's edge, fly straight on the heading, reach the target
+F8	PASS	Incoming entry screenshots (cruise missile arriving from the north-east)	1 checks
+F9	PASS	High-angle shields stop incoming missiles at the contact point (no attribution, shield HP, strike report); ground shields and friendly shields do not	10 checks
+F10	FAIL	Missile damage is attributed to the launching building, on the same map and across maps	the enemy pawn on the base map inside the blast is harmed (3 cells from (141, 0, 131), radius 5)
+F11	FAIL	Interceptors turn after the ascent toward the incoming bearing (missile entry heading, pod landing cell, world meeting point) and fly out of the map	a target without a heading is bearing 90° (toward its landing cell) | each interceptor carries its target's bearing (300°, 0°) | interceptor A turns and leaves the map on 300° (exit direction 288.9°) | interceptor B turns and leaves the map on 90° (exit direction 0°)
+F12	PASS	Launches in the same tick are staggered: each map spawns its missiles at least SpacingTicks apart; backblast fires at the spawn	6 checks
+F13	FAIL	Each missile body shows its own world-map icon; bodies without one use the world object's icon	every body but the Tomahawk sets its own icon (18)
+I1	FAIL	Intercept airburst screenshots: terminal/midcourse/drop pod at several headings, early and late	midcourse_from_N: burst is drawn inside the map margin | midcourse_from_N: burst created 0 flecks (>= 13) | midcourse_from_E: burst is drawn inside the map margin | midcourse_from_E: burst created 0 flecks (>= 13) | midcourse_from_E: burst threw 0 debris fragments
+I2	PASS	Fleck render A/B: intercept smoke def via own system vs vanilla system vs vanilla dust puff	1 checks
+I3	PASS	Major debris chunks: spawn with a hulk, save/load mid-flight, land or cull in time, damage only with the setting (roofs stop it), trail screenshots	11 checks
+I4	PASS	Drop-pod debris profile: no fireball, pod counts and tint, hulk draws the pod texture; missiles keep the missile profile	8 checks
+I5	PASS	Intercept FX draw above fog of war: own materials between fog and the edge clipper, vanilla untouched, burst over fog screenshots	3 checks
+I6	PASS	Intercept FX budget: density setting scales fragment counts; a 40-burst salvo stays under the live caps (frame time logged)	3 checks
+I7	PASS	Smoke instancing A/B on the same 40-burst salvo (same seeds, same map): frame time with Mote instancing on vs off	2 checks
+I8	PASS	Remote terminal intercepts: approach-0 bursts from N/E/S/W are virtual points beyond the entry edge with no airburst; every chunk reaches the screen and fragments fade in; edge screenshots	28 checks
+V0	PASS	Launch FX L0: 3000 smoke quads per variant (Transparent, Transparent instanced, Mote instanced): frame time and per-instance colour	2 checks
+V1	PASS	Launch FX L2: plume registers, ramps to full thrust and is drawn; old vs new solid-booster launch at the same ticks	4 checks
+V2	PASS	Launch FX L3: cold vertical launch leaves a continuous smoke column that lingers after the missile leaves	4 checks
+V3	PASS	Launch FX L4: hot ground cloud at ignition, cold ejection puff before ignition, booster separation drops debris	5 checks
+V4	PASS	Launch FX L5: every launch body uses its profile; one screenshot each at the same tick	19 checks
+V5	PASS	Launch FX L6: 12-missile ripple stays under the smoke cap; canvas draw CPU logged	2 checks
+V6	PASS	Lighting diag: smoke tinted 100/60/35 % on Mote (instanced) vs Transparent; sky colour logged	1 checks
+V9	PASS	Oniks turn (§3.6): RCS side jets, retro jets, forward jettison of the turning thruster, main thrust full open	9 checks
+V8	PASS	Temporary missile size tuner: items on the ground, a loaded rack and the flight sprites; a slider change resizes them live	7 checks
+V7	PASS	Smoke and debris follow ambient light: darker at midnight than at noon, brighter next to a lamp; launch and intercept screenshots day and night	2 checks
+E1	PASS	EW defs, research chain, jammer power curve	13 checks
+E2	PASS	Long-range radar: resolution, no fire control, warning window, power level (OTH-1..5)	15 checks
+E3	PASS	Power level comp on a radar: full is unchanged, scaled factors, standby (EC-15)	15 checks
+E4	FAIL	Console: no crew needed, operator skill factors, boundaries (WR-1, WR-2, WR-7)	a colonist who can shoot and research exists
+E5	PASS	Console: remote switch, throttle groups, silence and restore (WR-6)	19 checks
+E6	PASS	ROE on the world layer: hold fire, self-defense, classes, no console (WR-3, WR-4)	20 checks
+E7	PASS	ROE on the map layer: hold fire and channel cap (WR-3, WR-5)	9 checks
+E8	PASS	Jammer ring: one roll on entry, saved, immune seekers (JM-1..3, JM-9)	16 checks
+E9	PASS	Jammer outcomes: off-map removal and inertial landing (JM-4..6)	10 checks
+E10	PASS	Jammer ring drawing (JM-7)	5 checks
+E11	PASS	Comms block, map layer untouched, power and stun, ARM target (JM-8, JM-10, JM-11)	16 checks
+E12	FAIL	Jammer suppresses enemy radars on the world layer (§3.3)	jammer off: suppression gone
+E13	PASS	A colonist takes the console by order; the war room tab draws	8 checks
+MB1	PASS	A flight profile changes speed and altitude, and the ETA predicts the real arrival	10 checks
+MB2	PASS	Children release mid-flight from the parent's position; a self-releasing body stops at the depth limit	7 checks
+MB3	PASS	Lifecycle, seek and detonation hooks fire with their context	9 checks
+MB4	PASS	Behavior state and manoeuvres survive save and load	7 checks
+AD1	PASS	World layer: modifiers change detection, lock time and hit chance, and the full event sequence fires	12 checks
+AD2	PASS	Map layer: the same modifiers and events apply, with the missile's own behavior hook	10 checks
+AD3	PASS	A non-missile world object is detected, engaged and damaged, and its state survives save and load	15 checks
+AD4	PASS	A provider turns an object it does not own into a track; dropping it discards the state	7 checks
+AD5	PASS	The drop-pod ghost is a track without being a missile	6 checks
+AD6	PASS	Extensions and behaviors load from XML	9 checks
+AE1	PASS	World layer: a track outside the envelope is seen but not engaged, and is engaged once it enters it	12 checks
+AE2	PASS	Map layer: a target outside the envelope takes no lock; inside it does	4 checks
+AE3	PASS	Shipped envelopes give each generation its reach	21 checks
+AE4	PASS	Altitude tracks draw on the globe	5 checks
+AF1	PASS	A registered laser shoots down a track inside its range, without a lock, a channel or an interceptor	11 checks
+AF2	PASS	A missed point-defense weapon keeps its cooldown; another faction's weapon stays silent	7 checks
+AF3	PASS	A third-party fire-control weapon goes through lock, channel and a flying interceptor	10 checks
+AF4	FAIL	Blockade interception fires through the node's weapon	the blockade fires
+AG1	PASS	Shipped doctrines reproduce the former tech-level settlement defense and threat assessment	15 checks
+AG2	PASS	A doctrine's hostile worker picks enemy NPC maps; the default picks only player maps	11 checks
+TD1	PASS	Two field sites exchange fire: launch, detect, alert, lock, intercept, arrive, damage, no errors	39 checks
+TD2	PASS	One-way strike on a disarmed site, then destruction: no friendly fire, site removed, attacker ceases fire	28 checks
+TD3	PASS	A site without a map: its world salvo meets real radars, its abstract defense meets real missiles, no map generated	17 checks
+TD4	PASS	A jammer at one site suppresses the enemy radar and missiles, and leaves its own side's alone	16 checks
+L1	PASS	Save/load mid-engagement	13 checks
+L2	PASS	Save/load after a reroute	15 checks
+L3	PASS	Old saves: skyfaller-era incoming missiles (flying and BVR-held) convert to projectiles; old departure and interceptor skyfallers still resolve	10 checks
+TD5	PASS	Save and load in the middle of the exchange: tracks, channels and hostility survive, the fight goes on	19 checks

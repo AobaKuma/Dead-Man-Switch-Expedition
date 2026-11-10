@@ -177,6 +177,8 @@
 
     <!-- 導彈陣地行為元件 -->
     <comps>
+      <!-- 原版 Site 的整隊元件：沒有它，世界地圖上不會出現「重組遠行隊」。 -->
+      <li Class="WorldObjectCompProperties_FormCaravan" />
       <!-- Used only while no local map exists. A generated map uses its real radars and missile racks. -->
       <li Class="DMSE.CompProperties_WorldAirDefense">
         <worldDetectionRange>12</worldDetectionRange>

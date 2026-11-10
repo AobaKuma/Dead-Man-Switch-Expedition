@@ -348,5 +348,51 @@ namespace DMSE.BVRAcceptance
                 || baseMap.listerThings.ThingsOfDef(CruiseIncoming).Any();
             t.Check(onMap, "cancelling the targeter drops the missile at the map center");
         }
+
+        /// <summary>
+        /// The world network only scans while tracks exist, and only the abstract nodes a track will pass
+        /// (WorldComponent_BVRNetwork.CheckPresence). A launch wakes it at once; an empty sky lets it go idle again.
+        /// </summary>
+        public static IEnumerable<Wait> ScanActivity(TestContext t)
+        {
+            WorldComponent_BVRNetwork network = WorldComponent_BVRNetwork.Current;
+            Site near = SpawnMissileBase(8f, 14f);
+            Site far = SpawnMissileBase(70f, 400f);
+            t.Require(near != null && far != null, "two NPC missile bases spawned, one 8–14 tiles away and one beyond 70");
+            int idleTimeout = WorldComponent_BVRNetwork.PresenceCheckIntervalTicks + 200;
+            var idle = new WaitUntil(() => !network.ScanActive, idleTimeout);
+            yield return idle;
+            t.Require(!idle.TimedOut, "with nothing in the air the network stops scanning");
+            t.Check(!network.NodeScanActive(near) && !network.NodeScanActive(far), "no abstract node is kept active");
+            t.Check(network.NodeOf(near) != null && network.NodeOf(far) != null, "both bases are still nodes for the interface and blockades");
+
+            ScorerProjectile_WorldObject wo = LaunchPlayerMissile(near.Tile, near, CruiseConfig("DMSE_Guidance_EMSignal"));
+            int scanInterval = BVRWorldTuningDef.Current.scanIntervalTicks;
+            yield return new WaitTicks(scanInterval + 1);
+            t.Check(network.ScanActive, "a launch wakes the network by the next scan tick");
+            t.Check(network.NodeScanActive(near), "the base on the missile's path is scanning");
+            t.Check(!network.NodeScanActive(far), "the base far from the path stays idle");
+
+            // A salvo on the same route: the later missiles find the node already active and add no full check.
+            int evaluations = network.routeEvaluations;
+            for (int i = 0; i < 8; i++)
+            {
+                LaunchPlayerMissile(near.Tile, near, CruiseConfig("DMSE_Guidance_EMSignal"));
+                yield return new WaitTicks(scanInterval + 1); // one launch per scan period, so each is handled on its own
+            }
+            t.Check(network.routeEvaluations - evaluations <= 1,
+                $"eight more launches on the same route cost at most one route evaluation ({network.routeEvaluations - evaluations})");
+            t.Check(network.NodeScanActive(near) && !network.NodeScanActive(far), "a salvo on the same route keeps the same nodes active and wakes no others");
+            var engaged = new WaitUntil(() => wo.Destroyed || wo.State.interceptor != null, 3000);
+            yield return engaged;
+            t.Check(!wo.Destroyed && wo.State.interceptor != null && wo.State.detectedByFaction == Enemy,
+                "the woken base detects the missile and launches an interceptor");
+
+            foreach (MissileWorldObject m in Find.WorldObjects.AllWorldObjects.OfType<MissileWorldObject>().ToList()) { m.Destroy(); }
+            foreach (WorldObject_Interceptor i in Find.WorldObjects.AllWorldObjects.OfType<WorldObject_Interceptor>().ToList()) { i.Destroy(); }
+            var idleAgain = new WaitUntil(() => !network.ScanActive, idleTimeout);
+            yield return idleAgain;
+            t.Check(!idleAgain.TimedOut, "once the sky is empty the network goes idle again within one check interval");
+        }
     }
 }

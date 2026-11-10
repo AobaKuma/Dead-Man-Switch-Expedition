@@ -1,0 +1,6 @@
+﻿id	result	title	detail
+PF0	PASS	Perf baseline: colony with no DMSE things, idle	1 checks
+PF2	PASS	Perf: NPC missile base on the world map, nothing in flight	2 checks
+PF3	PASS	Perf: twelve enemy cruise missiles against a defended colony	2 checks
+W6	FAIL	NPC abstract defense, map handoff, EM seeker	EM seeker locked it on arrival (landing (121, 0, 120) within 2.5 of (124, 0, 121))
+W12	PASS	World scan idles without tracks and wakes only the nodes on a track's path	9 checks

@@ -40,7 +40,7 @@ namespace DMSE
 
     /// <summary>
     /// 原版 <see cref="Site.ShouldRemoveMapNow"/> 在玩家離開後總是連同站點一起刪除；
-    /// 導彈陣地只在雷達與世界選靶發射器全滅（<see cref="MapComponent_MissileBase.BaseSiteDestroyed"/>）後才刪除，
+    /// 導彈陣地只在火控雷達全滅（<see cref="MapComponent_MissileBase.BaseSiteDestroyed"/>）後才刪除，
     /// 否則只移除地圖、保留站點（世界層恢復開火，下次進入時陣地完整重建）。
     /// </summary>
     [HarmonyPatch(typeof(Site), nameof(Site.ShouldRemoveMapNow))]

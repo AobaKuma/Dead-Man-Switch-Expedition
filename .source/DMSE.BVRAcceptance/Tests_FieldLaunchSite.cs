@@ -297,6 +297,22 @@ namespace DMSE.BVRAcceptance
             done(map, colonist);
         }
 
+        /// <summary>
+        /// Player report 2026-11-09: garrison dead and radars gone, but the world map offered no "reform caravan". Vanilla hides
+        /// it while <see cref="GenHostility.AnyHostileActiveThreatToPlayer"/> finds a threat (any powered hostile turret counts).
+        /// </summary>
+        private static void CheckCanReform(TestContext t, Site site, Map map)
+        {
+            FormCaravanComp form = site.GetComponent<FormCaravanComp>();
+            t.Require(form != null, "the site has FormCaravanComp");
+            List<string> threats = map.attackTargetsCache.TargetsHostileToFaction(Faction.OfPlayer)
+                .Where(a => GenHostility.IsActiveThreatTo(a, Faction.OfPlayer, true, !site.CanReformFoggedEnemies))
+                .Select(a => $"{a.Thing.def.defName}({a.Thing.GetType().Name})").ToList();
+            t.Check(threats.Count == 0, $"no active threats remain ({string.Join(", ", threats)})");
+            t.Check(form.CanReformNow() && form.GetGizmos().Any(g => g is Command_Action c && !c.Disabled && c.icon == FormCaravanComp.FormCaravanCommand),
+                "the world map offers an enabled reform-caravan command");
+        }
+
         private static Faction Industrial(TestContext t)
         {
             Faction industrial = Find.FactionManager.AllFactionsListForReading.FirstOrDefault(f =>
@@ -306,7 +322,7 @@ namespace DMSE.BVRAcceptance
         }
 
         /// <summary>
-        /// Garrison, every radar and every world launcher wiped out with a colonist on the site map: the site is destroyed, but its map
+        /// Every fire-control radar destroyed (launchers and search radars left standing) with a colonist on the site map: the site is destroyed, but its map
         /// stays until the colonist leaves (before, the site was destroyed at once and vanilla's map close took the colonist
         /// as kidnapped). After the colonist leaves by caravan, vanilla removes the map and the site.
         /// </summary>
@@ -322,16 +338,27 @@ namespace DMSE.BVRAcceptance
 
             List<Building> launchers = comp.RemainingLaunchers.ToList();
             List<Building> radars = comp.RemainingRadars.ToList();
-            t.Require(launchers.Count > 0 && radars.Count > 0, $"the site has world launchers ({launchers.Count}) and radars ({radars.Count})");
-            foreach (Building b in launchers.Concat(radars)) { b.Destroy(DestroyMode.Vanish); }
+            t.Require(launchers.Count > 0 && radars.Count > 0, $"the site has world launchers ({launchers.Count}) and fire-control radars ({radars.Count})");
+            t.Check(radars.All(b => b.TryGetComp<CompFireControlRadar>() != null), "only fire-control radars are objectives");
+            List<Building> searchRadars = map.listerBuildings.allBuildingsNonColonist
+                .Where(b => b.Faction == industrial && !(b is Building_Turret) && b.TryGetComp<CompSearchRadar>() != null && b.TryGetComp<CompFireControlRadar>() == null).ToList();
+            // Only the fire-control radars go: launchers and search radars are left standing.
+            foreach (Building b in radars) { b.Destroy(DestroyMode.Vanish); }
 
             var waitDestroyed = new WaitUntil(() => (bool)BaseSiteDestroyed.GetValue(comp), 1100);
             yield return waitDestroyed;
-            t.Check(!waitDestroyed.TimedOut, "with the garrison dead and every radar and launcher gone, the site counts as destroyed");
+            t.Check(!waitDestroyed.TimedOut, "with every fire-control radar gone, the site counts as destroyed");
+            t.Check(launchers.All(b => b.Spawned) && searchRadars.All(b => b.Spawned),
+                $"its launchers ({launchers.Count}) and search radars ({searchRadars.Count}) did not have to be destroyed");
+            int launchesBefore = Find.WorldObjects.AllWorldObjects.OfType<WorldObject_IncomingMissile>().Count(w => w.Faction == industrial);
+            yield return new WaitTicks(1000);
+            t.Check(Find.WorldObjects.AllWorldObjects.OfType<WorldObject_IncomingMissile>().Count(w => w.Faction == industrial) <= launchesBefore,
+                "a destroyed site with launchers standing fires no more");
             yield return new WaitTicks(300);
             t.Check(!site.Destroyed && site.HasMap && site.Map == map, "the site and its map stay while the colonist is there");
             t.Check(colonist.Spawned && colonist.Map == map && !colonist.Dead, "the colonist is still on the site map");
             t.Check(!industrial.kidnapped.KidnappedPawnsListForReading.Contains(colonist), "the colonist was not taken as kidnapped");
+            CheckCanReform(t, site, map);
 
             Caravan caravan = CaravanExitMapUtility.ExitMapAndCreateCaravan(new List<Pawn> { colonist }, Faction.OfPlayer, map.Tile, map.Tile, PlanetTile.Invalid);
             Track(caravan);
@@ -342,7 +369,7 @@ namespace DMSE.BVRAcceptance
         }
 
         /// <summary>
-        /// Radars are a required objective: with every launcher gone but a radar standing the site is not destroyed, and a retreat
+        /// Fire-control radars are the only objective: with every launcher gone but a fire-control radar standing the site is not destroyed, and a retreat
         /// keeps the site (vanilla would delete it) and blocks caravans and transport pods for reentryBlockedDays. No world salvo
         /// fires straight after the retreat, and once the block runs out the site can be visited again.
         /// </summary>
@@ -367,14 +394,14 @@ namespace DMSE.BVRAcceptance
             Alert_MissileBaseObjectives alert = new Alert_MissileBaseObjectives();
             Current.Game.CurrentMap = map;
             AlertReport report = alert.GetReport();
-            t.Check(report.active && report.AllCulprits.Count() == launchers.Count + radars.Count,
-                $"the objectives alert lists every radar and launcher ({alert.GetLabel()})");
+            t.Check(report.active && report.AllCulprits.Count() == radars.Count && report.AllCulprits.All(c => c.Thing is Building cb && radars.Contains(cb)),
+                $"the objectives alert lists only the fire-control radars ({alert.GetLabel()})");
 
             foreach (Building b in launchers) { b.Destroy(DestroyMode.Vanish); }
             yield return new WaitTicks(1100);
-            t.Check(!comp.BaseSiteDestroyed && !site.Destroyed, "with every launcher gone but radars standing, the site is not destroyed");
+            t.Check(!comp.BaseSiteDestroyed && !site.Destroyed, "with every launcher gone but fire-control radars standing, the site is not destroyed");
             report = alert.GetReport();
-            t.Check(report.active && report.AllCulprits.Count() == radars.Count, $"the alert now lists only the radars ({alert.GetLabel()})");
+            t.Check(report.active && report.AllCulprits.Count() == radars.Count, $"the alert still lists the fire-control radars ({alert.GetLabel()})");
             Current.Game.CurrentMap = Home;
 
             Caravan caravan = CaravanExitMapUtility.ExitMapAndCreateCaravan(new List<Pawn> { colonist }, Faction.OfPlayer, map.Tile, map.Tile, PlanetTile.Invalid);

@@ -36,7 +36,11 @@ namespace DMSE
         private static int cacheTick = -1;
 
         /// <summary>階段、關係或設備改變時呼叫；下一次查詢重建封鎖圈。</summary>
-        public static void Invalidate() => cacheTick = -1;
+        public static void Invalidate()
+        {
+            cacheTick = -1;
+            WorldComponent_BVRNetwork.Current?.MarkNodesDirty();
+        }
 
         /// <summary>目前生效的封鎖圈（每 tick 最多重建一次）。</summary>
         public static List<BlockadeZone> ActiveZones

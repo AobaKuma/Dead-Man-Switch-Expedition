@@ -18,6 +18,63 @@ namespace DMSE
         private readonly BVRWorldDrawer drawer = new BVRWorldDrawer();
         private bool rebuild = true;
 
+        // ---- 掃描的活躍期（效能）----
+        // 世界上沒有航跡時完全不掃描。每 PresenceCheckIntervalTicks 檢查一次有沒有航跡；有的話整個網路保持掃描到下一次檢查，
+        // 而且只有「航線在這段時間內會經過其探測範圍」的 NPC 抽象節點參與（scanNodes）。地圖上的實體雷達節點一律參與。
+        // 航跡加入世界或改靶時不必等下一次（NotifyTrackChanged）：只替「那一條」航跡啟動它航線上的節點，而且等到下一個掃描 tick
+        // 才一起處理（反正掃描之前節點活不活躍沒有差別），所以齊射時同一個掃描週期內的多枚只付一次固定成本，
+        // 也不會每枚都重看全部航跡、重建節點清單。這些都不存檔：讀檔後第一 tick 做一次完整檢查。
+        public const int PresenceCheckIntervalTicks = GenTicks.TickLongInterval;
+        /// <summary>節點探測半徑之外再多算的距離（格）：預測位置與實際航線的誤差。</summary>
+        public const float ActivationPaddingTiles = 2f;
+        /// <summary>
+        /// 介面與封鎖圈讀到的完整節點清單最多可以舊這麼久（和以前每個掃描週期重建一次的新鮮度相同，但只在有人讀的時候才重建）；
+        /// 階段改變或據點加入世界時由 <see cref="MarkNodesDirty"/> 立刻作廢。
+        /// </summary>
+        private static int NodeListMaxAgeTicks => Mathf.Max(1, BVRWorldTuningDef.Current.scanIntervalTicks);
+        private readonly List<BVRNode> scanNodes = new List<BVRNode>();
+        private readonly Dictionary<int, int> nodeActiveUntil = new Dictionary<int, int>();
+        private readonly List<Vector3> pathScratch = new List<Vector3>();
+        private int scanActiveUntil = -1;
+        private bool presenceCheckDue = true;
+        private bool nodesDirty = true;
+        private readonly List<WorldObject> pendingTracks = new List<WorldObject>();
+
+        /// <summary>
+        /// 這個長週期內已經判定過的航線。齊射的後續幾枚（同起點、同目的地、同一種目標特性、從差不多的位置出發、
+        /// 這段時間內飛得不比它遠）會啟動的節點完全相同，直接略過，連「不在航線上的節點」也不必再算一次。
+        /// </summary>
+        private struct EvaluatedRoute
+        {
+            public PlanetTile origin, destination;
+            public AirTrackSignature signature;
+            public Vector3 start;
+            public float reachTiles;
+            public int until;
+        }
+        private readonly List<EvaluatedRoute> evaluatedRoutes = new List<EvaluatedRoute>();
+        /// <summary>航線判定實際執行的次數（測試用）。</summary>
+        public int routeEvaluations;
+
+        /// <summary>不知道是哪一條航跡變了（例如 <see cref="AirTrackProvider"/> 開始提供新物件）：下一 tick 做一次完整檢查。</summary>
+        public void NotifyTrackChanged() => presenceCheckDue = true;
+
+        /// <summary>這條航跡剛加入世界或改了目的地：下一個掃描 tick 啟動它航線上的節點。</summary>
+        public void NotifyTrackChanged(WorldObject track)
+        {
+            if (track != null && !pendingTracks.Contains(track)) { pendingTracks.Add(track); }
+        }
+
+        /// <summary>節點的來源（階段、關係、設備）變了：下一次讀 <see cref="Nodes"/> 時重建。</summary>
+        public void MarkNodesDirty() => nodesDirty = true;
+
+        /// <summary>目前是否在掃描（有航跡在飛）。</summary>
+        public bool ScanActive => Find.TickManager.TicksGame <= scanActiveUntil;
+
+        /// <summary>這個據點的抽象節點目前是否參與掃描（測試與開發工具用）。</summary>
+        public bool NodeScanActive(MapParent parent)
+            => parent != null && nodeActiveUntil.TryGetValue(parent.ID, out int until) && until >= Find.TickManager.TicksGame;
+
         // ---- 移動目標登錄（反艦）----
         private const int MotionSampleIntervalTicks = 60;
         private const int MotionMemoryTicks = 900;
@@ -144,7 +201,7 @@ namespace DMSE
             BVRNode best = null;
             float altitude = track.AltitudeAt(0);
             float bestDistance = float.MaxValue;
-            foreach (BVRNode n in nodes)
+            foreach (BVRNode n in scanNodes)
             {
                 if (n.parent == null || n.faction == null || !n.PolicyAllows(track)) { continue; }
                 if (intelSince != int.MinValue && !track.State.FactionSees(n.faction, intelSince)) { continue; }
@@ -173,7 +230,7 @@ namespace DMSE
             WorldComponent_FactionAirDefenseAlert alert = WorldComponent_FactionAirDefenseAlert.Current;
             MapParent targetSite = null;
             bool targetResolved = false;
-            foreach (BVRNode n in nodes)
+            foreach (BVRNode n in scanNodes)
             {
                 if (n.parent == null || n.faction == null || !n.MayObserve(track)) { continue; }
                 if (!n.CanSee(track)) { continue; }
@@ -220,8 +277,28 @@ namespace DMSE
                 .Count(i => !i.Destroyed && i.usesChannel && i.launchNode == parent && i.Faction == faction);
             return locks + flying;
         }
+        /// <summary>完整的節點清單（介面、封鎖圈、開發工具）。</summary>
         private void RebuildNodes()
         {
+            BuildNodes(nodes, activeOnly: false);
+            nodesDirty = false;
+            lastRebuildTick = Find.TickManager.TicksGame;
+        }
+
+        /// <summary>掃描用的節點：地圖節點，加上目前在活躍期內的抽象節點。</summary>
+        private void RebuildScanNodes()
+        {
+            BuildNodes(scanNodes, activeOnly: true);
+            autonomousNodes.Clear();
+            foreach (BVRNode node in scanNodes)
+            {
+                if (node.HasAutonomousEffector) { autonomousNodes.Add(node); }
+            }
+        }
+
+        private void BuildNodes(List<BVRNode> nodes, bool activeOnly)
+        {
+            int now = Find.TickManager.TicksGame;
             nodes.Clear();
             foreach (Map map in Find.Maps)
             {
@@ -239,6 +316,7 @@ namespace DMSE
             foreach (MapParent parent in Find.WorldObjects.AllWorldObjects.OfType<MapParent>())
             {
                 if (parent == null || parent.Destroyed) { continue; }
+                if (activeOnly && !(nodeActiveUntil.TryGetValue(parent.ID, out int until) && until >= now)) { continue; }
                 WorldObjectComp_AirDefense comp = parent.GetComponent<WorldObjectComp_AirDefense>();
                 if (comp?.Available == true)
                 {
@@ -252,21 +330,141 @@ namespace DMSE
                     nodes.Add(new BVRNode { parent = parent, faction = parent.Faction, defense = synthetic });
                 }
             }
-            ApplyAlertStages();
-            autonomousNodes.Clear();
+            ApplyAlertStages(nodes);
             foreach (BVRNode node in nodes)
             {
                 node.jamEff = EWEnvironment.NodeJam(node);
-                if (node.HasAutonomousEffector) { autonomousNodes.Add(node); }
             }
-            lastRebuildTick = Find.TickManager.TicksGame;
+        }
+
+        /// <summary>
+        /// 完整檢查（長週期、讀檔後、或來源不明的變動）：世界上有航跡就讓掃描保持到下一次長週期檢查，並替每條航跡啟動航線上的節點。
+        /// 沒有航跡時什麼都不做，活躍期自然過期。
+        /// </summary>
+        private void CheckPresence(int now)
+        {
+            presenceCheckDue = false;
+            pendingTracks.Clear();
+            List<IBVRTrack> live = Tracks.ToList();
+            PruneExternal(live);
+            if (live.Count == 0) { return; }
+            EnsureActivationNodes(now);
+            foreach (IBVRTrack track in live) { ActivateNodesFor(track, now); }
+            if (nodeActiveUntil.Count > 64)
+            {
+                foreach (int id in nodeActiveUntil.Where(p => p.Value < now).Select(p => p.Key).ToList()) { nodeActiveUntil.Remove(id); }
+            }
+        }
+
+        /// <summary>只處理剛加入或剛改靶的航跡（<see cref="NotifyTrackChanged(WorldObject)"/>）。</summary>
+        private void ActivatePending(int now)
+        {
+            bool prepared = false;
+            for (int i = 0; i < pendingTracks.Count; i++)
+            {
+                WorldObject o = pendingTracks[i];
+                if (o == null || o.Destroyed) { continue; }
+                IBVRTrack track = TrackOf(o);
+                if (track == null) { continue; }
+                if (!prepared) { EnsureActivationNodes(now); prepared = true; }
+                ActivateNodesFor(track, now);
+            }
+            pendingTracks.Clear();
+        }
+
+        /// <summary>
+        /// 啟動判定只需要「有哪些抽象節點、各在哪裡、設備探測半徑多大」，不必每次重建：清單被作廢（階段改變、新據點）或
+        /// 已經過了一個長週期才重建。
+        /// </summary>
+        private void EnsureActivationNodes(int now)
+        {
+            if (nodesDirty || lastRebuildTick < 0 || now - lastRebuildTick >= PresenceCheckIntervalTicks)
+            {
+                RebuildNodes();
+                evaluatedRoutes.Clear(); // 節點可能變了：航線要對新的清單重新判定
+            }
+        }
+
+        /// <summary>下一次長週期檢查的 tick；掃描與節點的活躍期都對齊到它，所以同一個週期內啟動過的節點不必重算。</summary>
+        private static int NextPresenceCheck(int now) => (now / PresenceCheckIntervalTicks + 1) * PresenceCheckIntervalTicks;
+
+        /// <summary>
+        /// 讓掃描保持到下一次長週期檢查，並把這條航線在那之前會進入其探測範圍（或以它為目的地）的抽象節點標成活躍。
+        /// </summary>
+        private void ActivateNodesFor(IBVRTrack track, int now)
+        {
+            int nextCheck = NextPresenceCheck(now);
+            if (scanActiveUntil < nextCheck) { scanActiveUntil = nextCheck; }
+            int until = nextCheck + Mathf.Max(1, BVRWorldTuningDef.Current.scanIntervalTicks);
+            int horizon = Mathf.Clamp(track.TicksToArrival, 0, until - now);
+            Vector3 start = track.PositionAt(0);
+            float straight = MissileWorldUtility.SurfaceTilesBetween(start, track.PositionAt(horizon));
+            AirTrackSignature signature = track.TargetProps.Signature;
+            for (int i = evaluatedRoutes.Count - 1; i >= 0; i--)
+            {
+                EvaluatedRoute known = evaluatedRoutes[i];
+                if (known.until != until) { evaluatedRoutes.RemoveAt(i); continue; } // 上一個週期的
+                if (known.origin == track.Origin && known.destination == track.Destination && known.signature.SameAs(signature)
+                    && straight <= known.reachTiles + 0.25f
+                    && MissileWorldUtility.SurfaceTilesBetween(known.start, start) <= 0.5f)
+                {
+                    return;
+                }
+            }
+            evaluatedRoutes.Add(new EvaluatedRoute { origin = track.Origin, destination = track.Destination, signature = signature, start = start, reachTiles = straight, until = until });
+            routeEvaluations++;
+            bool sampled = false;
+            float pathLength = 0f, slack = 0f;
+            foreach (BVRNode node in nodes)
+            {
+                if (node.defense == null || node.parent == null || node.parent.Destroyed) { continue; }
+                int id = node.parent.ID;
+                // 齊射：前一枚已經啟動過的節點直接跳過。
+                if (nodeActiveUntil.TryGetValue(id, out int known) && known >= until) { continue; }
+                bool near = node.DestinationIs(track);
+                if (!near)
+                {
+                    if (!sampled)
+                    {
+                        // 沿預測航線每格左右取一點（第一個需要的節點才算，全部節點都已活躍時整條省掉）。
+                        sampled = true;
+                        int steps = Mathf.Clamp(Mathf.CeilToInt(straight), 1, 96);
+                        pathScratch.Clear();
+                        pathScratch.Add(start);
+                        float longest = 0f;
+                        for (int i = 1; i <= steps; i++)
+                        {
+                            Vector3 point = track.PositionAt(Mathf.RoundToInt((float)horizon * i / steps));
+                            float segment = MissileWorldUtility.SurfaceTilesBetween(pathScratch[i - 1], point);
+                            pathLength += segment;
+                            longest = Mathf.Max(longest, segment);
+                            pathScratch.Add(point);
+                        }
+                        // 取樣間距的一半也算進去：航線從兩個取樣點之間擦過探測圈時不會漏掉。
+                        slack = ActivationPaddingTiles + longest * 0.5f;
+                    }
+                    float reach = node.EquipmentDetectionRange(track.TargetProps, track) + slack;
+                    Vector3 center = node.Center;
+                    float fromStart = MissileWorldUtility.SurfaceTilesBetween(center, start);
+                    // 離起點比「整條航線長度＋探測半徑」還遠的節點不可能碰到航線：絕大多數節點只算這一次距離。
+                    if (fromStart <= reach) { near = true; }
+                    else if (fromStart <= pathLength + reach)
+                    {
+                        for (int i = 1; i < pathScratch.Count && !near; i++)
+                        {
+                            near = MissileWorldUtility.SurfaceTilesBetween(center, pathScratch[i]) <= reach;
+                        }
+                    }
+                }
+                if (near) { nodeActiveUntil[id] = until; }
+            }
         }
 
         /// <summary>
         /// NPC 節點套用警戒階段（docs/NPC防空警戒五階段_執行計畫.md §3）。只套用在節點陣營等於據點陣營的情況；
         /// 玩家節點、或別的陣營放在這張地圖上的裝置維持舊規則。
         /// </summary>
-        private void ApplyAlertStages()
+        private static void ApplyAlertStages(List<BVRNode> nodes)
         {
             WorldComponent_FactionAirDefenseAlert alert = WorldComponent_FactionAirDefenseAlert.Current;
             bool enabled = alert != null && WorldComponent_FactionAirDefenseAlert.Enabled;
@@ -284,12 +482,20 @@ namespace DMSE
 
         private int lastRebuildTick = -1;
 
-        /// <summary>目前的節點（封鎖圈與介面使用）；本 tick 還沒建立時先建立一次。</summary>
+        /// <summary>
+        /// 所有節點（封鎖圈與介面使用）。掃描不再每個週期重建這份清單，所以讀的時候才更新：
+        /// 被標成過期（<see cref="MarkNodesDirty"/>）、讀檔後、或已經舊了 <see cref="NodeListMaxAgeTicks"/> 就重建，同一 tick 內最多一次。
+        /// </summary>
         public List<BVRNode> Nodes
         {
             get
             {
-                if (lastRebuildTick != Find.TickManager.TicksGame && (nodes.Count == 0 || rebuild)) { RebuildNodes(); }
+                int now = Find.TickManager.TicksGame;
+                if (lastRebuildTick != now
+                    && (nodesDirty || rebuild || lastRebuildTick < 0 || now - lastRebuildTick >= NodeListMaxAgeTicks))
+                {
+                    RebuildNodes();
+                }
                 return nodes;
             }
         }
@@ -315,10 +521,13 @@ namespace DMSE
                 pending.RemoveAt(0);
                 if (!interceptor.Destroyed) Resolve(interceptor);
             }
+            if (presenceCheckDue || now % PresenceCheckIntervalTicks == 0) { CheckPresence(now); }
             if (now % Mathf.Max(1, BVRWorldTuningDef.Current.scanIntervalTicks) != 0) return;
+            if (pendingTracks.Count > 0) { ActivatePending(now); }
+            if (now > scanActiveUntil) return;
             // 先做干擾機進圈判定：被判定消失的彈不會先被鎖定、白射一枚攔截彈（docs/電子戰建築_實作計畫.md §3.2）。
             JammerUtility.ProcessTracks(MissileTracks);
-            RebuildNodes();
+            RebuildScanNodes();
             List<IBVRTrack> live = Tracks.ToList();
             PruneExternal(live);
             // 排序只看哪個節點會接手（不看本次掃描的情報），與接戰時的情報檢查分開。
@@ -338,6 +547,7 @@ namespace DMSE
             {
                 state.ClearLock();
                 state.lastKnownDestination = track.Destination;
+                NotifyTrackChanged(track.Self); // 新航線可能經過還沒活躍的節點
             }
             // 數據鏈：任何會觀測它的節點看到就算該陣營偵測到，不要求「目的地節點」自己看到。
             BVRNode detector = Observe(track, now);
@@ -536,8 +746,7 @@ namespace DMSE
             if (Find.WorldObjects.AllWorldObjects.OfType<WorldObject_DropPodTrack>()
                 .Any(t => !t.Destroyed && t.targetMap == map && t.waveTargetId == target.id)) { return; }
 
-            if (nodes.Count == 0) { RebuildNodes(); }
-            BVRNode node = nodes
+            BVRNode node = Nodes
                 .Where(n => n.faction == defender && n.DetectionRange(BVRTargetProps.Default) > 0f)
                 .OrderByDescending(n => n.faction.IsPlayer)
                 .FirstOrDefault();
@@ -770,7 +979,7 @@ namespace DMSE
             base.WorldComponentUpdate();
             if (WorldRendererUtility.WorldSelected)
             {
-                drawer.Draw(nodes, ShowAllCoverage);
+                drawer.Draw(Nodes, ShowAllCoverage);
                 drawer.DrawAltitudeTracks(Tracks);
             }
         }

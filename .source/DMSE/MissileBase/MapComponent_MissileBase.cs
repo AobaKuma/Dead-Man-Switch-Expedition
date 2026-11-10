@@ -18,9 +18,8 @@ namespace DMSE
     ///    ‧ 彈藥來源：只有發射架自己彈艙裡的彈；彈藥車／儲存架的彈要守軍搬上架。打空後停止射擊直到裝填。<br/>
     ///    ‧ 導彈從地圖上的敵方世界選靶發射建築升空，飛出地圖邊緣後才進入世界航跡（同玩家發射）。<br/>
     /// 2. 指派 <see cref="LordJob_MissileCrewDuty"/> 給地圖內的敵方 Pawn。<br/>
-    /// 3. 偵測「所有敵方雷達（<see cref="IsObjectiveRadar"/>）與世界選靶發射器
-    ///    （<see cref="CompMissileLauncher_WorldTargeting"/>：Rail / Ballistic / Scorer）皆已摧毀」→ 哨站摧毀；
-    ///    玩家單位仍在圖上時，等撤離後才移除站點。雷達尚存時撤退，站點保留並封鎖再進入（<see cref="SitePartWorker_MissileBase"/>）。
+    /// 3. 偵測「所有敵方火控雷達（<see cref="IsObjectiveRadar"/>）皆已摧毀」→ 哨站摧毀（搜索雷達與發射架不必摧毀）；
+    ///    玩家單位仍在圖上時，等撤離後才移除站點。火控雷達尚存時撤退，站點保留並封鎖再進入（<see cref="SitePartWorker_MissileBase"/>）。
     /// </summary>
     public class MapComponent_MissileBase : MapComponent
     {
@@ -35,7 +34,7 @@ namespace DMSE
             = new List<WorldObject_IncomingMissile>();
 
         // ── 建築快取 ──────────────────────────────────────────────────────────
-        // 「曾見過陣地目標」標記：只有在至少一次 cache 時看到雷達或發射器，
+        // 「曾見過陣地目標」標記：只有在至少一次 cache 時看到火控雷達（存檔欄位沿用舊名），
         // 才啟動「全滅即摧毀」邏輯，避免 FFF 佔位符（0 建築）在地圖進入後立刻觸發摧毀。
         private bool hasEverHadLaunchers = false;
 
@@ -85,7 +84,7 @@ namespace DMSE
 
         // ──────────────── 陣地目標 API ────────────────
 
-        /// <summary>陣地已判定摧毀（雷達與世界選靶發射器全滅）；地圖移除時站點一併刪除。</summary>
+        /// <summary>陣地已判定摧毀（火控雷達全滅）；地圖移除時站點一併刪除。</summary>
         public bool BaseSiteDestroyed => baseSiteDestroyed;
 
         /// <summary>曾有玩家單位進入此地圖（地面突擊）。</summary>
@@ -94,16 +93,18 @@ namespace DMSE
         /// <summary>此圖是導彈陣地、尚未摧毀且已見過陣地目標：顯示剩餘目標的警示。</summary>
         public bool ShowsObjectives => IsMissileBaseMap && !baseSiteDestroyed && hasEverHadLaunchers;
 
-        /// <summary>尚存的敵方雷達（<see cref="IsObjectiveRadar"/>）。</summary>
+        /// <summary>尚存的陣地目標：敵方火控雷達（<see cref="IsObjectiveRadar"/>）。</summary>
         public IEnumerable<Building> RemainingRadars => GetEnemyRadarsCached().Where(StillEnemy);
 
-        /// <summary>尚存的敵方世界選靶發射器。</summary>
+        /// <summary>尚存的敵方世界選靶發射器（不是摧毀條件，只供射擊與介面參考）。</summary>
         public IEnumerable<Building> RemainingLaunchers => GetEnemyLaunchersCached().Where(StillEnemy);
 
-        /// <summary>陣地目標雷達：搜索或火控雷達建築；自帶雷達的防空砲塔（如野戰防空系統）不算。</summary>
+        /// <summary>
+        /// 陣地目標：火控雷達建築（含相控陣雷達）。搜索雷達、聲學預警鏡不算；
+        /// 自帶火控的防空砲塔（如野戰防空系統）也不算。
+        /// </summary>
         public static bool IsObjectiveRadar(Building b)
-            => !(b is Building_Turret)
-            && (b.TryGetComp<CompSearchRadar>() != null || b.TryGetComp<CompFireControlRadar>() != null);
+            => !(b is Building_Turret) && b.TryGetComp<CompFireControlRadar>() != null;
 
         // 快取最多晚 500 tick：期間被摧毀、拆除或被玩家佔領的建築不算尚存。
         private bool StillEnemy(Building b) => b.Spawned && !b.Destroyed && b.Faction == map.ParentFaction;
@@ -634,11 +635,11 @@ namespace DMSE
 
         // ──────────────── 雷達摧毀偵測 ────────────────
 
-        /// <summary>雷達與世界選靶發射器都是必要目標：兩者皆全滅才判定陣地摧毀。</summary>
+        /// <summary>火控雷達是唯一必要目標：全滅即判定陣地摧毀，發射架與搜索雷達還在也一樣（沒有火控就打不出去）。</summary>
         private void CheckRadarDestruction()
         {
             // 不看玩家有沒有在看這張地圖：遠程打擊時地圖常在畫面外，等到地圖被移除才發現就來不及，站點會保留並完整重建。
-            if (RemainingLaunchers.Any() || RemainingRadars.Any())
+            if (RemainingRadars.Any())
             {
                 hasEverHadLaunchers = true;
                 return;

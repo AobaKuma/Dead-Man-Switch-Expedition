@@ -15,6 +15,9 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .source/DMSE.BVRAcceptance/r
 - The game starts with `-quicktest` and the active mod list. The runner deletes its temporary
   save (`DMSE_BVR_Acceptance`) and quits when done. A full run takes about 20 minutes.
 - `-Only` takes comma-separated ids and runs them in suite order.
+- `-Profile` turns on the game's frame profiler with every DMSE method instrumented, adds the
+  steady-state tests PF0–PF3 and writes `perf_sections.tsv` (one row per test), `perf_entries.tsv`
+  (DMSE entry points, time including callees) and `perf_self.tsv` (`PerfProfile.cs`).
 - K7, L1–L3 write to the game's `Saves` folder; a sandbox without file access fails them.
 
 ## Output (`<dir>`)
@@ -36,7 +39,7 @@ for each series has the details.
 |---|---|---|
 | M0–M8 | `Tests_Map.cs` | Defs, device registration and Active, drop pod window, SAM lock and kill, CIWS bursts and debris, shared channel ledger |
 | S1–S4 | `Tests_Seekers.cs` | Seeker target rules, laser designator, seekers on a freshly generated map, loiter flight control |
-| W1–W11, D1–D4 | `Tests_World.cs`, `Tests_WorldEdge.cs`, `Tests_P4.cs` | World detection, lock, intercept, airburst, reroute, terminal handoff, NPC abstract defense, datalink, settlement defense, hidden tracks, pod ghost tracks, ETA at every speed |
+| W1–W12, D1–D4 | `Tests_World.cs`, `Tests_WorldEdge.cs`, `Tests_P4.cs` | World detection, lock, intercept, airburst, reroute, terminal handoff, NPC abstract defense, datalink, settlement defense, hidden tracks, pod ghost tracks, ETA at every speed, world scan idling without tracks (W12) |
 | A1–A2, X1 | `Tests_AirAlert.cs`, `Tests_DevTools.cs` | NPC alert stages and blockade; debug action categories |
 | K1–K15 | `Tests_Strike.cs` | Wave strike P0–P4 ([doc](../../docs/BVR_波次打擊規劃.md)) |
 | N1–N11 | `Tests_FieldLaunchSite.cs` | Field launch site layout, incident, gunners, alert throttle, site kept while colonists are on it, radars required + re-entry block; early launch site fires and its incident gates. N1/N11 cover the physical resupply: pods land beside empty racks and dry guns, a crew member takes `DMSE_HaulMissileToRack` / `JobDefOf.Refuel` and carries the goods over, nothing is teleported into a rack or gun, and without a crew nothing gets restocked |

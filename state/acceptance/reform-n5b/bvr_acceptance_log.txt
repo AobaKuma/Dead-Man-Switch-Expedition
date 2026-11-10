@@ -1,0 +1,29 @@
+﻿[t=      1] Game ready (map 0, tile 1897,0).
+[t=      1] Enemy faction: 瘴氣雨衣者
+[t=      1] Test pad (20,20,59,59) on map size (250, 1, 250); safe impact cell (235, 0, 235).
+[t=      1] Running 1 acceptance tests.
+[t=    107] 
+[t=    107] === N5: Site destroyed with colonists on the map: map kept until they leave, nobody lost
+[t=    107]     ok:   an industrial humanlike faction exists
+[t=    107]     ok:   a field launch site spawned (threatScale 0.3)
+[t=    107]     ok:   the field site map is generated
+[t=    107]     note: threatScale 0.3: 326 buildings, 3 world launchers, 1 search radars, 4 beds, 5 crew; natural map: 25660 plants, 55 wild animals, 3530 rock cells, biome TemperateForest, hilliness Flat
+[t=    107]     ok:   a standable map-edge cell
+[t=   1224]     ok:   MapComponent_MissileBase with baseSiteDestroyed
+[t=   1224]     ok:   the site has world launchers (3) and fire-control radars (2)
+[t=   1224]     ok:   only fire-control radars are objectives
+[t=   1508]     ok:   with every fire-control radar gone, the site counts as destroyed
+[t=   1508]     ok:   its launchers (3) and search radars (1) did not have to be destroyed
+[t=   2516]     ok:   a destroyed site with launchers standing fires no more
+[t=   2828]     ok:   the site and its map stay while the colonist is there
+[t=   2828]     ok:   the colonist is still on the site map
+[t=   2828]     ok:   the colonist was not taken as kidnapped
+[t=   2828]     ok:   the site has FormCaravanComp
+[t=   2828]     ok:   no active threats remain ()
+[t=   2828]     ok:   the world map offers an enabled reform-caravan command
+[t=   2838]     ok:   after the colonist leaves, vanilla removes the map together with the site
+[t=   2838]     ok:   the colonist is in the caravan
+[t=   2838] --- N5: PASS (18 checks)
+[t=   2868] 
+[t=   2868] === SUMMARY: 1/1 passed
+[t=   2868] PASS  N5  Site destroyed with colonists on the map: map kept until they leave, nobody lost  -- 18 checks

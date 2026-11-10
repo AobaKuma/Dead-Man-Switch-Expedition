@@ -21,7 +21,8 @@ param(
     [string]$GameExe = '',
     [string]$Only = '',   # comma-separated test ids, e.g. 'S3,W6'; empty runs every test
     [string]$SaveDataFolder = '',   # optional RimWorld -savedatafolder (own Config/ModsConfig.xml)
-    [switch]$SkipBuild              # use the DLL already built into obj\Debug by state/build_project.py
+    [switch]$SkipBuild,             # use the DLL already built into obj\Debug by state/build_project.py
+    [switch]$Profile                # capture DMSE timings with the game's frame profiler (perf_*.tsv) and add the PF tests
 )
 
 $ErrorActionPreference = 'Stop'
@@ -49,6 +50,7 @@ $started = Get-Date
 try {
     $gameArgs = @('-quicktest', "-dmse-bvr-acceptance=$OutDir")
     if ($Only -ne '') { $gameArgs += "-dmse-bvr-only=$Only" }
+    if ($Profile) { $gameArgs += '-dmse-bvr-profile' }
     if ($SaveDataFolder -ne '') { $gameArgs += "-savedatafolder=$SaveDataFolder" }
     $proc = Start-Process -FilePath $GameExe -ArgumentList $gameArgs -WorkingDirectory (Split-Path $GameExe) -PassThru
     Write-Output "RimWorld started (pid $($proc.Id)); waiting up to $TimeoutMinutes min..."

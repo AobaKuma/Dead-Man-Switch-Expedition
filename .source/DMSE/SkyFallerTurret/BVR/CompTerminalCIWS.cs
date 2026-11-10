@@ -159,6 +159,7 @@ namespace DMSE
             {
                 float chance = AirDefenseHooks.MapStat(AirDefenseStat.HitChance, Props.interceptChance, parent.Map, parent.Faction,
                     target.Payload, sensor: parent, eta: timeLeft, terminal: true);
+                chance = FinalHitChance(chance, target.Payload);
                 bool hit = Rand.Chance(chance);
                 AirCombatEvent resolved = AirDefenseHooks.MapEvent(AirCombatEventKind.InterceptResolved, parent.Map, parent.Faction, target.Payload,
                     effector: parent, hitChance: chance, outcome: hit ? AirInterceptOutcome.Hit : AirInterceptOutcome.Miss, terminal: true);
@@ -182,6 +183,20 @@ namespace DMSE
                 AirCombatEvents.Raise(resolved);
                 EndBurst(now);
             }
+        }
+
+        /// <summary>目標的末端攔截倍率（<see cref="BVRTargetProps.terminalInterceptFactor"/>）；空投艙等沒有擴充的目標為 1。</summary>
+        public static float TargetFactor(Thing payload)
+            => Mathf.Max(0f, (payload?.def?.GetModExtension<BVRTargetProps>() ?? BVRTargetProps.Default).terminalInterceptFactor);
+
+        /// <summary>
+        /// 修正鏈之後的最終命中率：乘上目標倍率（彈道導彈極難被迫近防禦擊落）與模組設定的整體倍率，夾在 0~1。
+        /// 放在修正鏈之後，外部加成無法把彈道目標的命中率拉回一般水準。
+        /// </summary>
+        public static float FinalHitChance(float chance, Thing payload)
+        {
+            float global = DMSEMod.Settings?.ciwsInterceptMultiplier ?? 1f;
+            return Mathf.Clamp01(chance * TargetFactor(payload) * Mathf.Max(0f, global));
         }
 
         private void EndBurst(int now)

@@ -8,21 +8,25 @@
   <DMSE.MissileBase.Relocated>Missile position relocated</DMSE.MissileBase.Relocated>
   <DMSE.MissileBase.RelocatedDesc>An enemy missile launch position has completed its strike mission and relocated to avoid counteraction.</DMSE.MissileBase.RelocatedDesc>
   <DMSE.MissileBase.Destroyed>Missile position destroyed</DMSE.MissileBase.Destroyed>
-  <DMSE.MissileBase.DestroyedDesc>Your colonists have destroyed all radars and launch facilities at the enemy missile position. The missile threat from this position has been neutralized.</DMSE.MissileBase.DestroyedDesc>
+  <DMSE.MissileBase.DestroyedDesc>Your colonists have destroyed every fire-control radar at the enemy missile position. Without fire control it can no longer launch, and the missile threat from this position has been neutralized.</DMSE.MissileBase.DestroyedDesc>
   <DMSE.MissileBase.ReentryBlockedIn>Ground access denied: enemy regrouping ({0})</DMSE.MissileBase.ReentryBlockedIn>
   <DMSE.MissileBase.ReentryBlocked>Access denied: enemy regrouping ({0})</DMSE.MissileBase.ReentryBlocked>
-  <DMSE.MissileBase.ReentryBlockStarted>{0}: its radars still stand and the enemy is regrouping. Ground access is blocked for {1}; the position will be fully rebuilt.</DMSE.MissileBase.ReentryBlockStarted>
-  <DMSE.MissileBase.ObjectivesAlert>Missile position: {0} radars, {1} launchers left</DMSE.MissileBase.ObjectivesAlert>
-  <DMSE.MissileBase.ObjectivesAlertDesc>Destroy every radar and world-targeting launcher to neutralize this position ({0} radars and {1} launchers left).\n\nIf you withdraw while a radar still stands, the enemy regroups: the position stays on the world map and keeps firing, your return is blocked for a while, and it is fully rebuilt on your next visit.\n\nClick to cycle through the remaining targets.</DMSE.MissileBase.ObjectivesAlertDesc>
-  <DMSE.MissileBase.ArrivedLetter>Your pawns have arrived at a missile launch position. The enemy has deployed fire control radars and launch vehicles here, continuously striking nearby colonies. Destroy every radar and launcher to neutralize the position; if you withdraw while a radar still stands, the enemy regroups and blocks your return for a while.</DMSE.MissileBase.ArrivedLetter>
+  <DMSE.MissileBase.ReentryBlockStarted>{0}: its fire-control radars still stand and the enemy is regrouping. Ground access is blocked for {1}; the position will be fully rebuilt.</DMSE.MissileBase.ReentryBlockStarted>
+  <DMSE.MissileBase.ObjectivesAlert>Missile position: {0} fire-control radars left</DMSE.MissileBase.ObjectivesAlert>
+  <DMSE.MissileBase.ObjectivesAlertDesc>Destroy every fire-control radar to neutralize this position ({0} left). Launchers and search radars do not need to be destroyed.
+
+If you withdraw while a fire-control radar still stands, the enemy regroups: the position stays on the world map and keeps firing, your return is blocked for a while, and it is fully rebuilt on your next visit.
+
+Click to cycle through the remaining targets.</DMSE.MissileBase.ObjectivesAlertDesc>
+  <DMSE.MissileBase.ArrivedLetter>Your pawns have arrived at a missile launch position. The enemy has deployed fire control radars and launch vehicles here, continuously striking nearby colonies. Destroy every fire-control radar to neutralize the position; if you withdraw while a fire-control radar still stands, the enemy regroups and blocks your return for a while.</DMSE.MissileBase.ArrivedLetter>
   <DMSE.MissileBase.SiteDesc>A mobile tactical ballistic missile launch position equipped with fire control radar and missile launchers. The position will relocate after completing its mission.</DMSE.MissileBase.SiteDesc>
   <DMSE.MissileBase.SupplyDrop>Enemy supply drop: {0} ×{1}</DMSE.MissileBase.SupplyDrop>
   <DMSE.MissileBase.RackResupply>Enemy missile airdrop: {1} missiles</DMSE.MissileBase.RackResupply>
   <DMSE.MissileBase.TurretAmmoDrop>Enemy ammo airdrop: {1} ×{0}</DMSE.MissileBase.TurretAmmoDrop>
-  <DMSE.FieldLaunchSite.ArrivedLetter>Your pawns have arrived at an enemy field launch position. A search radar sits at its centre, with launch positions, ammunition carriers and crew shelters spread around it. Supply pods keep the garrison fed while any radar is operational. Destroy every radar and launcher to neutralize the position; if you withdraw while a radar still stands, the enemy regroups and blocks your return for a while.</DMSE.FieldLaunchSite.ArrivedLetter>
-  <DMSE.FieldLaunchSite.SpawnedLetter>{0} has deployed a field missile launch position {3} tiles {2} of {1}. Its launchers can strike your colony; supply pods will keep its garrison fed while its radars run.\n\nDestroy every radar and launcher to neutralize it; knocking out its radars also cuts off its supplies.</DMSE.FieldLaunchSite.SpawnedLetter>
-  <DMSE.EarlyLaunchSite.ArrivedLetter>Your pawns have arrived at an enemy missile position. Acoustic mirrors listen for aircraft while a hand-aimed fire-control radar and launch rails send out slow pulsejet loitering munitions. Destroy every radar and launcher to neutralize it; the radar stops firing if its crew or its wood-fired generators are lost. If you retreat with a radar still standing, the enemy will rebuild its defenses and you cannot return for a while.</DMSE.EarlyLaunchSite.ArrivedLetter>
-  <DMSE.EarlyLaunchSite.SpawnedLetter>{0} has set up a missile position {3} tiles {2} of {1}. Its slow pulsejet loitering munitions can strike your colony, and it has no interceptors of its own.\n\nDestroy every radar and launcher to neutralize it.</DMSE.EarlyLaunchSite.SpawnedLetter>
+  <DMSE.FieldLaunchSite.ArrivedLetter>Your pawns have arrived at an enemy field launch position. A search radar sits at its centre, with launch positions, ammunition carriers and crew shelters spread around it. Supply pods keep the garrison fed while any radar is operational. Destroy every fire-control radar to neutralize the position; if you withdraw while a fire-control radar still stands, the enemy regroups and blocks your return for a while.</DMSE.FieldLaunchSite.ArrivedLetter>
+  <DMSE.FieldLaunchSite.SpawnedLetter>{0} has deployed a field missile launch position {3} tiles {2} of {1}. Its launchers can strike your colony; supply pods will keep its garrison fed while its radars run.\n\nDestroy every fire-control radar to neutralize it; knocking out all its radars also cuts off its supplies.</DMSE.FieldLaunchSite.SpawnedLetter>
+  <DMSE.EarlyLaunchSite.ArrivedLetter>Your pawns have arrived at an enemy missile position. Acoustic mirrors listen for aircraft while a hand-aimed fire-control radar and launch rails send out slow pulsejet loitering munitions. Destroy its fire-control radar to neutralize it; the radar stops firing if its crew or its wood-fired generators are lost. If you retreat with a fire-control radar still standing, the enemy will rebuild its defenses and you cannot return for a while.</DMSE.EarlyLaunchSite.ArrivedLetter>
+  <DMSE.EarlyLaunchSite.SpawnedLetter>{0} has set up a missile position {3} tiles {2} of {1}. Its slow pulsejet loitering munitions can strike your colony, and it has no interceptors of its own.\n\nDestroy its fire-control radar to neutralize it.</DMSE.EarlyLaunchSite.SpawnedLetter>
 
   <ScorerLaunch>Launch Missile</ScorerLaunch>
 
@@ -132,6 +136,8 @@
   <DMSE.BVR.Settings.InterceptDebrisDamageDesc>Large debris from intercepted missiles and drop pods deals light blunt damage where it lands. Roofs stop it. When off, debris only leaves dust, sparks and rubble.</DMSE.BVR.Settings.InterceptDebrisDamageDesc>
   <DMSE.BVR.Settings.InterceptFxDensity>Intercept effect density</DMSE.BVR.Settings.InterceptFxDensity>
   <DMSE.BVR.Settings.InterceptFxDensityDesc>How many fragments, smoke puffs and trail puffs an interception makes. Lower it if large salvos slow the game down. Large debris still lands at every setting.</DMSE.BVR.Settings.InterceptFxDensityDesc>
+  <DMSE.BVR.Settings.CiwsInterceptMultiplier>CIWS intercept rate: {0}</DMSE.BVR.Settings.CiwsInterceptMultiplier>
+  <DMSE.BVR.Settings.CiwsInterceptMultiplierDesc>Scales the hit chance of every close-in defense turret (CIWS). 100% keeps each turret's own rate; 0% means they never shoot anything down. Ballistic missiles stay very hard to hit whatever this is set to.</DMSE.BVR.Settings.CiwsInterceptMultiplierDesc>
   <DMSE.BVR.Settings.InterceptFxDensity0>Low</DMSE.BVR.Settings.InterceptFxDensity0>
   <DMSE.BVR.Settings.InterceptFxDensity1>Medium</DMSE.BVR.Settings.InterceptFxDensity1>
   <DMSE.BVR.Settings.InterceptFxDensity2>High</DMSE.BVR.Settings.InterceptFxDensity2>

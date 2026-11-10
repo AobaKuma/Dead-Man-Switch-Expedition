@@ -1,0 +1,5 @@
+﻿id	result	title	detail
+PF0	PASS	Perf baseline: colony with no DMSE things, idle	1 checks
+PF1	PASS	Perf: one of every DMSE building on the pad, idle	1 checks
+PF2	PASS	Perf: NPC missile base on the world map, nothing in flight	2 checks
+PF3	PASS	Perf: twelve enemy cruise missiles against a defended colony	2 checks

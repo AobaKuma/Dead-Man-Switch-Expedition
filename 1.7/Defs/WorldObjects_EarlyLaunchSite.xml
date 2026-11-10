@@ -161,6 +161,8 @@
     <validLaunchTarget>false</validLaunchTarget>
     <mapGenerator>DMSE_EarlyLaunchSite_MapGen</mapGenerator>
     <comps>
+      <!-- 原版 Site 的整隊元件：沒有它，世界地圖上不會出現「重組遠行隊」。 -->
+      <li Class="WorldObjectCompProperties_FormCaravan" />
       <li Class="DMSE.CompProperties_MissileBase">
         <missileBody>DMSE_MissileBody_LegacyLoiter</missileBody>
         <missileFireIntervalDays>

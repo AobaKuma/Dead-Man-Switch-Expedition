@@ -1,0 +1,38 @@
+﻿id	result	title	detail
+PF0	PASS	Perf baseline: colony with no DMSE things, idle	1 checks
+PF2	PASS	Perf: NPC missile base on the world map, nothing in flight	2 checks
+PF3	PASS	Perf: twelve enemy cruise missiles against a defended colony	2 checks
+M8	PASS	Shared fire-control channels (local + world)	9 checks
+W1	FAIL	World detection, ETA, landing without CIWS	phased array range vs cruise missile is 22.5 tiles (got 13.50) | flight time follows 150 ticks per tile at speed 1
+W2	FAIL	World interception hit	fire control locks the world track
+W3	PASS	World interception miss and re-lock	8 checks
+W4	PASS	Terminal-only handoff with CIWS	9 checks
+W5	PASS	Radar loss during engagement	5 checks
+W6	PASS	NPC abstract defense, map handoff, EM seeker	16 checks
+W8	FAIL	World airburst	enough time to launch the trailing missile
+W9	PASS	Moving target: reroute, lock reset, re-engagement	18 checks
+W12	PASS	World scan idles without tracks and wakes only the nodes on a track's path	11 checks
+D1	FAIL	Datalink and area defense (crossing target)	the track survives long enough to be engaged
+D2	PASS	Synthetic settlement air defense and radar suppression	6 checks
+D3	PASS	Undetected tracks are hidden	2 checks
+D4	PASS	Drop-pod ghost track and abstract-node degradation	6 checks
+A1	FAIL	Alert stage 3 lets transit pass, stage 4 engages it	stage 4 engages the same transit missile
+A2	PASS	Alert pressure, regional spread, blockade notice, zone and routes	22 checks
+K1	FAIL	Strike rounds, reservation, per-round and ripple launch	the reserved missile launches by reference (在架導彈已全數保留給打擊任務) | the world track carries the light config, target and faction | the launch starts the cooldown | a second single launch waits for the cooldown () | a ripple continuation ignores the cooldown (未裝填導彈) | both launches spawn departing missiles
+K2	PASS	Reserved rounds skip assembly; silo as a round	12 checks
+K3	PASS	World defense engages the soonest arrival first	8 checks
+K4	FAIL	Decoy waves against NPC abstract stock (plan B)	plan B: the cruise wave arrives after every decoy
+K5	PASS	No interceptor ammo, no lock; release when the last one is fired	12 checks
+K6	FAIL	Auto strike console: plan, reserve, compute, ripple waves, guidance period, cancel	the loitering munition is listed as out of range | candidates carry flight time and a light-missile group label | a wave above the guidance limit is refused | queued missiles book all four channels at once | wave 2 is refused for lack of guidance channels | launched missiles hold their channels in the guidance period | all channels free only after the guidance period (20 ticks after the last launch)
+E11	PASS	Comms block, map layer untouched, power and stun, ARM target (JM-8, JM-10, JM-11)	16 checks
+E12	PASS	Jammer suppresses enemy radars on the world layer (§3.3)	9 checks
+E13	FAIL	A colonist takes the console by order; the war room tab draws	the ordered colonist reaches the console and mans it | the job is the war room job | the job itself drives the operator bonus
+AD1	PASS	World layer: modifiers change detection, lock time and hit chance, and the full event sequence fires	12 checks
+AD2	PASS	Map layer: the same modifiers and events apply, with the missile's own behavior hook	11 checks
+AD3	PASS	A non-missile world object is detected, engaged and damaged, and its state survives save and load	15 checks
+AD4	PASS	A provider turns an object it does not own into a track; dropping it discards the state	7 checks
+AD5	PASS	The drop-pod ghost is a track without being a missile	6 checks
+AF1	PASS	A registered laser shoots down a track inside its range, without a lock, a channel or an interceptor	11 checks
+AF2	PASS	A missed point-defense weapon keeps its cooldown; another faction's weapon stays silent	7 checks
+AF3	PASS	A third-party fire-control weapon goes through lock, channel and a flying interceptor	10 checks
+AF4	PASS	Blockade interception fires through the node's weapon	7 checks

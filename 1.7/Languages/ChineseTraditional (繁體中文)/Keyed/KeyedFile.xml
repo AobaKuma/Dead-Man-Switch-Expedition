@@ -8,21 +8,25 @@
   <DMSE.MissileBase.Relocated>導彈陣地轉移</DMSE.MissileBase.Relocated>
   <DMSE.MissileBase.RelocatedDesc>一處敵方導彈陣地在部署後完成射擊任務並轉移，防止殖民地反制。</DMSE.MissileBase.RelocatedDesc>
   <DMSE.MissileBase.Destroyed>導彈陣地已摧毀</DMSE.MissileBase.Destroyed>
-  <DMSE.MissileBase.DestroyedDesc>殖民者已摧毀敵方導彈陣地的所有雷達與發射設施。來自該陣地的導彈威脅已解除。</DMSE.MissileBase.DestroyedDesc>
+  <DMSE.MissileBase.DestroyedDesc>殖民者已摧毀敵方導彈陣地的所有火控雷達。失去火控後陣地無法再發射，來自該陣地的導彈威脅已解除。</DMSE.MissileBase.DestroyedDesc>
   <DMSE.MissileBase.ReentryBlockedIn>地面通道封鎖中，敵方整備防線（{0}）</DMSE.MissileBase.ReentryBlockedIn>
   <DMSE.MissileBase.ReentryBlocked>通道封鎖，敵方整備防線（{0}）</DMSE.MissileBase.ReentryBlocked>
-  <DMSE.MissileBase.ReentryBlockStarted>{0}：雷達仍在，敵方正重新整備防線。{1}內無法再次進入，陣地將完整重建。</DMSE.MissileBase.ReentryBlockStarted>
-  <DMSE.MissileBase.ObjectivesAlert>導彈陣地：剩餘雷達 {0}、發射器 {1}</DMSE.MissileBase.ObjectivesAlert>
-  <DMSE.MissileBase.ObjectivesAlertDesc>摧毀所有雷達與世界選靶發射器才能瓦解此陣地（剩餘雷達 {0}、發射器 {1}）。\n\n若在雷達尚存時撤退，敵方將重新整備：陣地留在世界地圖上繼續發射，一段時間內無法再次進入，下次進入時陣地完整重建。\n\n點擊依序檢視剩餘目標。</DMSE.MissileBase.ObjectivesAlertDesc>
-  <DMSE.MissileBase.ArrivedLetter>你們抵達了一處導彈陣地。敵方已在此部署火控雷達與導彈發射架，不斷向周圍殖民地發射打擊。摧毀所有雷達與發射架才能瓦解此陣地；若在雷達尚存時撤退，敵方將重新整備防線，一段時間內無法再次進入。</DMSE.MissileBase.ArrivedLetter>
+  <DMSE.MissileBase.ReentryBlockStarted>{0}：火控雷達仍在，敵方正重新整備防線。{1}內無法再次進入，陣地將完整重建。</DMSE.MissileBase.ReentryBlockStarted>
+  <DMSE.MissileBase.ObjectivesAlert>導彈陣地：剩餘火控雷達 {0}</DMSE.MissileBase.ObjectivesAlert>
+  <DMSE.MissileBase.ObjectivesAlertDesc>摧毀所有火控雷達即可瓦解此陣地（剩餘 {0}），發射架與搜索雷達不必摧毀。
+
+若在火控雷達尚存時撤退，敵方將重新整備：陣地留在世界地圖上繼續發射，一段時間內無法再次進入，下次進入時陣地完整重建。
+
+點擊依序檢視剩餘目標。</DMSE.MissileBase.ObjectivesAlertDesc>
+  <DMSE.MissileBase.ArrivedLetter>你們抵達了一處導彈陣地。敵方已在此部署火控雷達與導彈發射架，不斷向周圍殖民地發射打擊。摧毀所有火控雷達即可瓦解此陣地；若在火控雷達尚存時撤退，敵方將重新整備防線，一段時間內無法再次進入。</DMSE.MissileBase.ArrivedLetter>
   <DMSE.MissileBase.SiteDesc>一處配備火控雷達與導彈發射架的機動戰術彈道導彈陣地。陣地會在完成任務後轉移，以躲避反制。</DMSE.MissileBase.SiteDesc>
   <DMSE.MissileBase.SupplyDrop>敵方補給空投：{0} ×{1}</DMSE.MissileBase.SupplyDrop>
   <DMSE.MissileBase.RackResupply>敵方空投導彈：{1} 枚</DMSE.MissileBase.RackResupply>
   <DMSE.MissileBase.TurretAmmoDrop>敵方空投彈藥：{1} ×{0}</DMSE.MissileBase.TurretAmmoDrop>
-  <DMSE.FieldLaunchSite.ArrivedLetter>你們抵達了一處敵方野戰發射陣地。陣地以搜索雷達為中心，四周散布發射陣位、彈藥車與人員休息區。只要仍有雷達運作，敵方就會定時空投生存食品包維持守軍。摧毀所有雷達與發射架才能瓦解此陣地；若在雷達尚存時撤退，敵方將重新整備防線，一段時間內無法再次進入。</DMSE.FieldLaunchSite.ArrivedLetter>
-  <DMSE.FieldLaunchSite.SpawnedLetter>{0}在{1}的{2}方 {3} 格處部署了一處野戰導彈發射陣地。其發射架能打擊你的殖民地；只要雷達仍在運作，補給艙就會持續為守軍送來食物。\n\n摧毀所有雷達與發射架才能瓦解此陣地；癱瘓雷達也能切斷其補給。</DMSE.FieldLaunchSite.SpawnedLetter>
-  <DMSE.EarlyLaunchSite.ArrivedLetter>你們抵達了一處敵方舊式導彈陣地。聲學反射鏡負責監聽，手動火控雷達與發射軌負責射出緩慢的脈衝噴射巡飛彈。摧毀所有雷達與發射架才能瓦解此陣地；守軍或燒木發電機沒了，火控雷達也會停擺。若在雷達尚存時撤退，敵方將重新整備防線，一段時間內無法再次進入。</DMSE.EarlyLaunchSite.ArrivedLetter>
-  <DMSE.EarlyLaunchSite.SpawnedLetter>{0}在{1}的{2}方 {3} 格處架設了一處舊式導彈陣地。它緩慢的脈衝噴射巡飛彈能打擊你的殖民地，陣地本身沒有攔截彈。\n\n摧毀所有雷達與發射架才能瓦解此陣地。</DMSE.EarlyLaunchSite.SpawnedLetter>
+  <DMSE.FieldLaunchSite.ArrivedLetter>你們抵達了一處敵方野戰發射陣地。陣地以搜索雷達為中心，四周散布發射陣位、彈藥車與人員休息區。只要仍有雷達運作，敵方就會定時空投生存食品包維持守軍。摧毀所有火控雷達即可瓦解此陣地；若在火控雷達尚存時撤退，敵方將重新整備防線，一段時間內無法再次進入。</DMSE.FieldLaunchSite.ArrivedLetter>
+  <DMSE.FieldLaunchSite.SpawnedLetter>{0}在{1}的{2}方 {3} 格處部署了一處野戰導彈發射陣地。其發射架能打擊你的殖民地；只要雷達仍在運作，補給艙就會持續為守軍送來食物。\n\n摧毀所有火控雷達即可瓦解此陣地；癱瘓所有雷達也能切斷其補給。</DMSE.FieldLaunchSite.SpawnedLetter>
+  <DMSE.EarlyLaunchSite.ArrivedLetter>你們抵達了一處敵方舊式導彈陣地。聲學反射鏡負責監聽，手動火控雷達與發射軌負責射出緩慢的脈衝噴射巡飛彈。摧毀火控雷達即可瓦解此陣地；守軍或燒木發電機沒了，火控雷達也會停擺。若在雷達尚存時撤退，敵方將重新整備防線，一段時間內無法再次進入。</DMSE.EarlyLaunchSite.ArrivedLetter>
+  <DMSE.EarlyLaunchSite.SpawnedLetter>{0}在{1}的{2}方 {3} 格處架設了一處舊式導彈陣地。它緩慢的脈衝噴射巡飛彈能打擊你的殖民地，陣地本身沒有攔截彈。\n\n摧毀火控雷達即可瓦解此陣地。</DMSE.EarlyLaunchSite.SpawnedLetter>
 
   <!-- EN: Launch Missile -->
   <ScorerLaunch>發射導彈</ScorerLaunch>
@@ -163,6 +167,8 @@
   <DMSE.BVR.Settings.InterceptDebrisDamageDesc>被攔截的導彈與空投艙所掉落的大塊殘骸，落地時對該格造成輕微鈍傷，屋頂可以擋下。關閉時殘骸只留下揚塵、火花與碎屑。</DMSE.BVR.Settings.InterceptDebrisDamageDesc>
   <DMSE.BVR.Settings.InterceptFxDensity>攔截特效密度</DMSE.BVR.Settings.InterceptFxDensity>
   <DMSE.BVR.Settings.InterceptFxDensityDesc>攔截時產生的碎片、煙團與煙跡數量。大規模齊射造成卡頓時可調低；任何設定下大塊殘骸都仍會落地。</DMSE.BVR.Settings.InterceptFxDensityDesc>
+  <DMSE.BVR.Settings.CiwsInterceptMultiplier>迫近防禦砲塔攔截率：{0}</DMSE.BVR.Settings.CiwsInterceptMultiplier>
+  <DMSE.BVR.Settings.CiwsInterceptMultiplierDesc>調整所有迫近防禦砲塔（CIWS）的命中率。100% 為各砲塔原本的數值；0% 則永遠無法擊落目標。不論設定為何，彈道導彈都極難被迫近防禦攔截。</DMSE.BVR.Settings.CiwsInterceptMultiplierDesc>
   <DMSE.BVR.Settings.InterceptFxDensity0>低</DMSE.BVR.Settings.InterceptFxDensity0>
   <DMSE.BVR.Settings.InterceptFxDensity1>中</DMSE.BVR.Settings.InterceptFxDensity1>
   <DMSE.BVR.Settings.InterceptFxDensity2>高</DMSE.BVR.Settings.InterceptFxDensity2>
