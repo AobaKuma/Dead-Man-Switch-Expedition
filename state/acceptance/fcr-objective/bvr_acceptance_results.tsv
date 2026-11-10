@@ -1,6 +1,0 @@
-﻿id	result	title	detail
-N5	PASS	Site destroyed with colonists on the map: map kept until they leave, nobody lost	15 checks
-N6	PASS	Radars are required: retreat with radars standing keeps the site and blocks re-entry	19 checks
-N7	PASS	Early launch site: built from LaunchSite_Early, racks hold legacy loiters, radar powered and manned, fires on-map and from the world layer	18 checks
-N11	PASS	Garrison keeps legacy flak, field air defense and CIWS stocked while it lives	33 checks
-TD2	FAIL	One-way strike on a disarmed site, then destruction: no friendly fire, site removed, attacker ceases fire	an unobserved site still registers its objectives | with no objective left the site is destroyed, though its map is off screen | the destroyed site is gone from the world | its map is removed | one letter reports it

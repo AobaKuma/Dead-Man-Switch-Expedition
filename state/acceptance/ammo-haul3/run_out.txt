@@ -1,3 +1,0 @@
-RimWorld started (pid 35976); waiting up to 40 min...
-id	result	title	detail
-N11	PASS	Garrison keeps legacy flak, field air defense and CIWS stocked while it lives	33 checks

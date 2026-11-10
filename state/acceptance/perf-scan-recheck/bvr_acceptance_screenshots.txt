@@ -1,9 +1,0 @@
-C:\Users\user\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Screenshots\DMSE_BVR_W1_world_detected_track.png
-C:\Users\user\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Screenshots\DMSE_BVR_W1_world_always_show_coverage.png
-C:\Users\user\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Screenshots\DMSE_BVR_N1_site_overview.png
-C:\Users\user\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Screenshots\DMSE_BVR_N1_supply_drop.png
-C:\Users\user\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Screenshots\DMSE_BVR_N1_crew_reload.png
-C:\Users\user\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Screenshots\DMSE_BVR_E13_war_room_tab.png
-C:\Users\user\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Screenshots\DMSE_BVR_E13_war_room_tab_silenced.png
-C:\Users\user\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Screenshots\DMSE_BVR_E13_war_room_tab_hold.png
-C:\Users\user\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Screenshots\DMSE_BVR_E13_war_room_tab_no_power.png

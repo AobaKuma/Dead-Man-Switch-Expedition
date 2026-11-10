@@ -1,6 +1,0 @@
-﻿id	result	title	detail
-N7	PASS	Early launch site: built from LaunchSite_Early, racks hold legacy loiters, radar powered and manned, fires on-map and from the world layer	18 checks
-N9	PASS	Missile site strike fire keeps interceptors and pure SAM magazines	27 checks
-TD1	PASS	Two field sites exchange fire: launch, detect, alert, lock, intercept, arrive, damage, no errors	40 checks
-TD2	PASS	One-way strike on a disarmed site, then destruction: no friendly fire, site removed, attacker ceases fire	27 checks
-TD3	PASS	A site without a map: its world salvo meets real radars, its abstract defense meets real missiles, no map generated	17 checks

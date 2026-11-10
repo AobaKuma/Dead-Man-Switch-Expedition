@@ -1,4 +1,0 @@
-RimWorld started (pid 50076); waiting up to 40 min...
-id	result	title	detail
-N1	PASS	Industrial field launch site: difficulty layout, garrison, radar-gated supply drops	36 checks
-N11	FAIL	Garrison keeps legacy flak, field air defense and CIWS stocked while it lives	DMSE_FieldLaunchSite: a gun with over half its rounds is not topped up (DMSE_Turret_LegacyFlak 72/80, DMSE_Building_FieldAirDefense 180/200, DMSE_Turret_LegacyFlak 72/80, DMSE_Building_FieldAirDefense 180/200) | DMSE_EarlyLaunchSite: a gun with over half its rounds is not topped up (DMSE_Turret_LegacyFlak 72/80, DMSE_Turret_LegacyFlak 72/80, DMSE_Building_FieldAirDefense 180/200)
