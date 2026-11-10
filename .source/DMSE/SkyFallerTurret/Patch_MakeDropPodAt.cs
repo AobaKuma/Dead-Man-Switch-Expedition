@@ -70,6 +70,15 @@ namespace DMSE
                 yield return pawn;
                 yield break;
             }
+            // 其他 mod 自己的載具（例如自帶容器的突擊艇）
+            if (innerThing is IBVRPayloadHolder holder)
+            {
+                foreach (Pawn aboard in holder.PawnsAboard)
+                {
+                    if (aboard != null) { yield return aboard; }
+                }
+                yield break;
+            }
             ThingOwner contents = (innerThing as ActiveTransporter)?.Contents?.innerContainer
                 ?? innerThing.TryGetComp<CompTransporter>()?.innerContainer; // 穿梭機
             if (contents == null) { yield break; }
@@ -81,5 +90,33 @@ namespace DMSE
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// 空投／來襲物的內容物不是 <see cref="ActiveTransporter"/> 或 <see cref="CompTransporter"/> 時，由它自己列出載著的 pawn：
+    /// 地圖層 BVR 用來判定陣營（決定誰攔截）與擊落時處理艇上人員（<see cref="BVRDetection.PawnsIn"/>）。
+    /// </summary>
+    public interface IBVRPayloadHolder
+    {
+        IEnumerable<Pawn> PawnsAboard { get; }
+    }
+
+    /// <summary>
+    /// 地圖層來襲物在警報裡顯示的名稱（<see cref="BVRTarget.DisplayLabel"/>）：例如聲納在遠處只聽得到「未知接觸」，靠近才分得出是什麼。
+    /// 回傳 null 或空字串用預設名稱。
+    /// </summary>
+    public interface IBVRContactLabel
+    {
+        string ContactLabel(BVRTarget target, int ticksToImpact);
+    }
+
+    /// <summary>
+    /// 來襲物被攔截成功時，由它自己決定結果（例如水下的「沉沒」），不用預設的殘骸空投艙。
+    /// 實作在來襲物的內容物上（<see cref="BVRTarget.Payload"/> 的 skyfaller 裡第一件）。回傳 true 表示已處理，預設流程不再執行；
+    /// 處理時自己呼叫 <see cref="BVRTarget.HandleInterceptedPawns"/> 與 <see cref="BVRTarget.Discard"/>。
+    /// </summary>
+    public interface IInterceptResolver
+    {
+        bool TryResolveIntercept(BVRTarget target, Map map, IntVec3 debrisCell);
     }
 }

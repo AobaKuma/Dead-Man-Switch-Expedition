@@ -20,6 +20,13 @@ namespace DMSE
     {
         public static TransferFlightTuningDef Tuning => DMSE_DefOf.DMSE_TransferFlightTuning;
 
+        /// <summary>這艘船飛這段距離要收的燃料：所在圖層有 <see cref="TransferEnergyWorker"/> 就問它，否則用下面的公式。</summary>
+        public static float FuelRequired(TransferShipSurvey survey, int distance)
+        {
+            TransferEnergyWorker worker = TransferEnvironment.EnergyWorker(survey?.network?.map);
+            return worker != null ? worker.FuelRequired(survey, distance) : FuelRequired(survey.MassWeight, survey.Eta, distance);
+        }
+
         public static float FuelRequired(float massWeight, float eta, int distance)
         {
             TransferFlightTuningDef t = Tuning;
@@ -70,7 +77,8 @@ namespace DMSE
 
         public static int Distance(PlanetTile from, PlanetTile to)
         {
-            return Find.WorldGrid.TraversalDistanceBetween(from, to, passImpassable: true);
+            TransferRouteWorker worker = TransferEnvironment.RouteWorker(from);
+            return worker != null ? worker.Distance(from, to) : Find.WorldGrid.TraversalDistanceBetween(from, to, passImpassable: true);
         }
     }
 
@@ -130,10 +138,11 @@ namespace DMSE
             if (distance >= 0)
             {
                 e.distance = distance;
-                e.fuelRequired = TransferFlightMath.FuelRequired(e.massWeight, e.eta, distance);
+                e.fuelRequired = TransferFlightMath.FuelRequired(survey, distance);
                 e.coastHours = TransferFlightMath.CoastHours(distance);
                 e.totalHours = e.burnHours + e.coastHours + (impact ? 0.5f : 1f) * e.arrivalBurnHours;
             }
+            TransferEnvironment.EnergyWorker(survey.network?.map)?.AdjustEstimate(survey, e);
             return e;
         }
     }

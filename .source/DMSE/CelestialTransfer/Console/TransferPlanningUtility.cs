@@ -79,6 +79,10 @@ namespace DMSE
             {
                 reason = "DMSE.Transfer.Dest.OtherLayer".Translate();
             }
+            else if (TransferEnvironment.RouteWorker(origin)?.DestinationBlockReason(origin, tile) is string routeReason)
+            {
+                reason = routeReason;
+            }
             else if (!DebugSettings.ignoreGravshipRange && TransferFlightMath.Distance(origin, tile) > maxDistance)
             {
                 reason = "DMSE.Transfer.Dest.OutOfRange".Translate(UnityEngine.Mathf.Max(0, maxDistance));

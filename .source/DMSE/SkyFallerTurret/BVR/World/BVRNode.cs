@@ -116,6 +116,9 @@ namespace DMSE
         /// <summary>有走火控流程的武器可用（現在或冷卻後）。</summary>
         public bool HasInterceptorAmmo => Effectors.Any(e => e.UsesFireControl && e.Armed);
 
+        /// <summary>有能打這個領域的火控武器可用（現在或冷卻後）。</summary>
+        public bool HasInterceptorAmmoFor(CombatDomain domain) => Effectors.Any(e => e.UsesFireControl && e.Armed && CombatDomainUtility.Engages(e, domain));
+
         /// <summary>有點防禦式的武器：不走火控，每次掃描各自判斷。</summary>
         public bool HasAutonomousEffector => Effectors.Any(e => !e.UsesFireControl);
 
@@ -142,6 +145,7 @@ namespace DMSE
             DistanceTiles = MissileWorldUtility.SurfaceTilesBetween(Center, position),
             EtaTicks = eta,
             Altitude = altitude,
+            Domain = (byte)CombatDomainUtility.Of(track),
         };
 
         public int FreeChannels => local != null
@@ -150,13 +154,24 @@ namespace DMSE
 
         public CompFireControlRadar BestRadar(BVRTarget target, int eta) => local?.fireControlRadars
             .Where(fc => fc.Active && fc.parent.Faction == faction && eta <= fc.Props.maxRangeTicks
-                && fc.Props.InAltitudeEnvelope(target.altitude))
+                && fc.Props.InAltitudeEnvelope(target.altitude) && fc.Props.Covers(target.domain))
             .OrderByDescending(fc => fc.ComputeHitChance(target, eta)).FirstOrDefault();
 
         /// <summary>有可用火控：地圖上運作中的火控雷達，或抽象節點的火控設定。</summary>
         public bool HasFireControl => local != null
             ? local.fireControlRadars.Any(fc => fc.Active && fc.parent.Faction == faction)
             : defense?.FireControl != null;
+
+        /// <summary>有火控能導引這個領域（<see cref="CombatDomain"/>）。不行時這個節點完全不接戰，交給其他節點。</summary>
+        public bool CoversDomain(CombatDomain domain)
+        {
+            if (local == null) { return defense?.FireControl?.Covers(domain) == true; }
+            foreach (CompFireControlRadar fc in local.fireControlRadars)
+            {
+                if (fc.Active && fc.parent.Faction == faction && fc.Props.Covers(domain)) { return true; }
+            }
+            return false;
+        }
 
         /// <summary>有火控能打到這個高度。打不到時交給其他節點，不佔住接戰權。</summary>
         public bool CanReachAltitude(float altitude)

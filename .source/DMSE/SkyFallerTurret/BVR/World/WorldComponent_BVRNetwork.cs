@@ -206,6 +206,7 @@ namespace DMSE
                 if (n.parent == null || n.faction == null || !n.PolicyAllows(track)) { continue; }
                 if (intelSince != int.MinValue && !track.State.FactionSees(n.faction, intelSince)) { continue; }
                 if (!n.CanEngage(track)) { continue; }
+                if (!n.CoversDomain(CombatDomainUtility.Of(track))) { continue; }
                 if (checkAltitude && !n.CanReachAltitude(altitude)) { continue; }
                 float distance = MissileWorldUtility.SurfaceTilesBetween(n.Center, track.PositionAt(0));
                 bool better = best == null
@@ -311,13 +312,14 @@ namespace DMSE
             // Abstract NPC air-defence nodes are a world-map radar-network feature. Keep physical map
             // radars above active for local combat, but do not synthesize or register remote NPC nodes
             // until the player has researched the radar detection network.
+            // 例外：標記 ignoreNetworkResearch 的抽象防空（別的 mod 的核心敵人）不等研究就建立；合成防空仍要研究。
             bool npcWorldNetworkEnabled = WorldComponent_FactionAirDefenseAlert.Enabled;
-            if (npcWorldNetworkEnabled)
             foreach (MapParent parent in Find.WorldObjects.AllWorldObjects.OfType<MapParent>())
             {
                 if (parent == null || parent.Destroyed) { continue; }
-                if (activeOnly && !(nodeActiveUntil.TryGetValue(parent.ID, out int until) && until >= now)) { continue; }
                 WorldObjectComp_AirDefense comp = parent.GetComponent<WorldObjectComp_AirDefense>();
+                if (!npcWorldNetworkEnabled && comp?.Props.ignoreNetworkResearch != true) { continue; }
+                if (activeOnly && !(nodeActiveUntil.TryGetValue(parent.ID, out int until) && until >= now)) { continue; }
                 if (comp?.Available == true)
                 {
                     nodes.Add(new BVRNode { parent = parent, faction = parent.Faction, defense = new WorldAirDefenseAdapter(comp) });
@@ -586,16 +588,17 @@ namespace DMSE
             }
             if (state.lockUntil >= 0 && (state.lockNode != node.parent || state.lockFaction != node.faction)) state.ClearLock();
             int eta = track.TicksToArrival;
-            var target = new BVRTarget { stealthLevel = track.TargetProps.stealthLevel, speed = track.TargetProps.speed, altitude = track.AltitudeAt(0) };
+            var target = new BVRTarget { stealthLevel = track.TargetProps.stealthLevel, speed = track.TargetProps.speed, altitude = track.AltitudeAt(0),
+                domain = CombatDomainUtility.Of(track) };
             CompFireControlRadar radar = node.BestRadar(target, eta);
             CompProperties_FireControlRadar settings = radar?.Props ?? node.DefenseFireControl;
-            if (settings == null || eta > settings.maxRangeTicks || !settings.InAltitudeEnvelope(target.altitude))
+            if (settings == null || eta > settings.maxRangeTicks || !settings.InAltitudeEnvelope(target.altitude) || !settings.Covers(target.domain))
             {
                 state.ClearLock();
                 return;
             }
             // No interceptor that can fire now or after reloading: do not lock, and drop any lock (frees the channel).
-            bool armed = node.HasInterceptorAmmo;
+            bool armed = node.HasInterceptorAmmoFor(target.domain);
             if (state.lockUntil < 0)
             {
                 if (!armed || node.FreeChannels <= 0) return;
@@ -652,9 +655,10 @@ namespace DMSE
             {
                 if (node.parent == null || node.faction == null || !track.State.FactionSees(node.faction, now) || !node.PolicyAllows(track)) { continue; }
                 AirEngagement engagement = node.EngagementFor(track, track.Self, position, eta, altitude);
+                CombatDomain domain = (CombatDomain)engagement.Domain;
                 foreach (IAirEffector effector in node.Effectors.Where(e => !e.UsesFireControl).ToList())
                 {
-                    if (!effector.CanFire(now) || !effector.CanEngage(engagement)) { continue; }
+                    if (!CombatDomainUtility.Engages(effector, domain) || !effector.CanFire(now) || !effector.CanEngage(engagement)) { continue; }
                     AirEffectorShot shot = effector.PrepareShot(engagement);
                     if (!SolveShot(node, track, shot, out int ticks, out Vector3 point)) { continue; }
                     float chance = ShotChance(shot.BaseHitChance, shot, node, track, effector.Source, eta);

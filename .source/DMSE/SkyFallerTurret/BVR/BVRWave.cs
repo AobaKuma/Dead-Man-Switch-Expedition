@@ -82,6 +82,9 @@ namespace DMSE
         public float speed = 15f;
         public float altitude = 1000f;
 
+        /// <summary>交戰領域：建立時由來襲物解析（<see cref="CombatDomainUtility.Of(Thing)"/>）；世界層掃描用的暫時目標由航跡填入。</summary>
+        public CombatDomain domain = CombatDomain.Air;
+
         /// <summary>電子干擾強度（0–1，來自導彈的箔條部件）：只折減地圖層的命中率。</summary>
         public float jamStrength;
 
@@ -114,6 +117,7 @@ namespace DMSE
             this.stealthLevel = tp.stealthLevel;
             this.speed = tp.speed;
             this.altitude = tp.altitude;
+            this.domain = CombatDomainUtility.Of(faller);
             this.jamStrength = faller is IIncomingMissile incoming && incoming.Config != null
                 ? incoming.Config.JamStrength
                 : 0f;
@@ -121,6 +125,22 @@ namespace DMSE
 
         /// <summary>持有的來襲物（空投艙或導彈）。</summary>
         public Thing Payload => skyfaller != null ? skyfaller.InnerListForReading.FirstOrDefault() : null;
+
+        /// <summary>
+        /// 給玩家看的名稱（警報清單）：來襲物或空投艙裡的東西實作 <see cref="IBVRContactLabel"/> 時由它決定（例如聲納還分不出是什麼），
+        /// 否則用來襲物的 def 名稱。
+        /// </summary>
+        public string DisplayLabel(int ticksToImpact)
+        {
+            Thing payload = Payload;
+            Thing inner = (payload as Skyfaller)?.innerContainer.FirstOrDefault();
+            if ((inner ?? payload) is IBVRContactLabel custom)
+            {
+                string label = custom.ContactLabel(this, ticksToImpact);
+                if (!label.NullOrEmpty()) { return label; }
+            }
+            return (payload?.def?.label).NullOrEmpty() ? "?" : payload.def.label;
+        }
 
         /// <summary>持有的導彈；空投艙時為 null。</summary>
         public IIncomingMissile Missile => Payload as IIncomingMissile;
@@ -168,6 +188,10 @@ namespace DMSE
         /// <inheritdoc cref="SpawnDebris(Map)"/>
         public void SpawnDebris(Map map, IntVec3 debrisCell)
         {
+            if (Skyfaller?.innerContainer.FirstOrDefault() is IInterceptResolver resolver && resolver.TryResolveIntercept(this, map, debrisCell))
+            {
+                return;
+            }
             List<Pawn> pawns = HandleInterceptedPawns();
             ActiveTransporterInfo info = new ActiveTransporterInfo();
             foreach (Pawn pawn in pawns)
@@ -263,6 +287,7 @@ namespace DMSE
             Scribe_Values.Look(ref stealthLevel, "stealthLevel", 0);
             Scribe_Values.Look(ref speed, "speed", 15f);
             Scribe_Values.Look(ref altitude, "altitude", 1000f);
+            Scribe_Values.Look(ref domain, "domain", CombatDomain.Air);
             Scribe_Values.Look(ref jamStrength, "jamStrength", 0f);
             Scribe_Values.Look(ref midcourseEngagedUntil, "midcourseEngagedUntil", -1);
             Scribe_Values.Look(ref interceptorsInFlight, "interceptorsInFlight", 0);

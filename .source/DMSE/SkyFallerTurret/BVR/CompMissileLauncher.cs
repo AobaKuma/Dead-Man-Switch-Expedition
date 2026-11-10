@@ -35,7 +35,7 @@ namespace DMSE
     /// 世界航跡由 WorldComponent_BVRNetwork 呼叫 FireWorldInterceptor：消耗實體彈、生成純視覺升空彈，
     /// 世界物件接手會合結算；空投與舊波次仍由 MapComponent_BVRCombat 呼叫 FireInterceptor。
     /// </summary>
-    public class CompMissileLauncher_Interceptor : CompMissileLauncher, IAirEffector
+    public class CompMissileLauncher_Interceptor : CompMissileLauncher, IAirEffector, IDomainAwareEffector
     {
         // ---- IAirEffector：世界層接戰 ----
         public Thing Source => parent;
@@ -43,7 +43,10 @@ namespace DMSE
         public bool Armed => Props.interceptorSkyfaller != null && Active;
         public int ReadyTick => CooldownUntil;
         public bool CanFire(int now) => ReadyToFire(now);
-        public bool CanEngage(AirEngagement engagement) => true;
+        /// <summary>只打和裝填中的攔截彈同一領域的目標（<see cref="MissileBodyDef.domain"/>）。</summary>
+        public bool CanEngage(AirEngagement engagement) => engagement == null || Engages((CombatDomain)engagement.Domain);
+
+        public bool Engages(CombatDomain domain) => (GetLoadedMissileConfig()?.body?.domain ?? CombatDomain.Air) == domain;
         public AirEffectorShot PrepareShot(AirEngagement engagement) => AirDefenseHooks.ShotFrom(GetLoadedMissileConfig());
         public bool TryFire(AirEngagement engagement, int now, Vector3 meetingPoint)
             => parent.Map != null && FireWorldInterceptor(now, MissileProjectileMaker.WorldInterceptBearing(parent.Map.Tile, meetingPoint));

@@ -113,7 +113,7 @@ namespace DMSE
             }
             if (plan != null)
             {
-                float required = TransferFlightMath.FuelRequired(survey.MassWeight, survey.Eta, plan.distance);
+                float required = TransferFlightMath.FuelRequired(survey, plan.distance);
                 if (survey.totalFuel < required)
                 {
                     issues.Add(new TransferIssue(TransferIssueSeverity.Error, "DMSE.Transfer.Issue.NotEnoughFuel".Translate(survey.totalFuel.ToString("0"), required.ToString("0"))));

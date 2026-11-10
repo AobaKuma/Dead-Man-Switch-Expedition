@@ -125,6 +125,11 @@ namespace DMSE
         /// <summary>從起點走向終點的貪婪鄰格路徑（設計稿 §6-4）；確定性，所以不存檔、讀檔後重建。</summary>
         public static List<PlanetTile> BuildPath(PlanetTile from, PlanetTile to)
         {
+            List<PlanetTile> custom = TransferEnvironment.RouteWorker(from)?.BuildPath(from, to);
+            if (custom != null)
+            {
+                return custom;
+            }
             List<PlanetTile> result = new List<PlanetTile> { from };
             if (!from.Valid || !to.Valid || from.Layer != to.Layer)
             {

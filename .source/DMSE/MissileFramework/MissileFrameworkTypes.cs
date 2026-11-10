@@ -149,6 +149,16 @@ namespace Fortified
         public bool HasSpeedProfile { get; }
         public int Count => behaviors.Count;
 
+        /// <summary>第一個指定型別的行為；沒有時回傳 null。給別的 mod 讀自己掛上的行為狀態用。</summary>
+        public T Get<T>() where T : MissileBehavior
+        {
+            for (int i = 0; i < behaviors.Count; i++)
+            {
+                if (behaviors[i] is T found) { return found; }
+            }
+            return null;
+        }
+
         private MissileBehaviorSet(List<MissileBehavior> behaviors)
         {
             this.behaviors = behaviors;

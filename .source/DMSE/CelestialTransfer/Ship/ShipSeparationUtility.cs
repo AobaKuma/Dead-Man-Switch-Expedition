@@ -227,7 +227,7 @@ namespace DMSE
                 {
                     targetTile = TransferPlanningUtility.FindFreeNeighbor(origin.Tile, plan.destination, int.MaxValue);
                 }
-                fuel = TransferFlightMath.FuelRequired(survey.MassWeight, survey.Eta, plan.distance);
+                fuel = TransferFlightMath.FuelRequired(survey, plan.distance);
                 burnTicks = TransferFlightMath.HoursToTicks(TransferFlightMath.BurnHours(survey.TWR));
                 arrivalBurnTicks = TransferFlightMath.HoursToTicks(TransferFlightMath.BurnHours(survey.ArrivalTWR));
                 coastTicks = TransferFlightMath.HoursToTicks(TransferFlightMath.CoastHours(plan.distance));

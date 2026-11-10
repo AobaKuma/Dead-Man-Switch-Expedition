@@ -35,8 +35,14 @@ namespace DMSE
         /// <summary>發射時使用的彈體（null = 取第一個 MissileBodyDef）。</summary>
         public MissileBodyDef missileBody;
 
-        /// <summary>發射使用的 WorldObjectDef（預設 DMSE_WorldObject_IncomingMissile）。</summary>
+        /// <summary>發射使用的 WorldObjectDef（預設 DMSE_WorldObject_IncomingMissile）；worldObjectClass 必須是 <see cref="WorldObject_IncomingMissile"/> 或其子類。</summary>
         public WorldObjectDef incomingWorldObjectDef;
+
+        /// <summary>
+        /// 每次發射時，對列出的部件類別從清單隨機選一個（只用相容於彈體的部件）；沒列的類別用彈體的預設部件。
+        /// <c>&lt;partOptions&gt;&lt;li&gt;&lt;category&gt;Guidance&lt;/category&gt;&lt;parts&gt;&lt;li&gt;...&lt;/li&gt;&lt;/parts&gt;&lt;/li&gt;&lt;/partOptions&gt;</c>
+        /// </summary>
+        public List<MissileBasePartOption> partOptions;
 
         /// <summary>
         /// 地圖生成後的定時補給空投（<see cref="MapComponent_MissileBase"/>）；只在地圖上仍有運作中的敵方雷達時投放。<br/>
@@ -70,8 +76,38 @@ namespace DMSE
         /// <summary>Inspect 字串：顯示陣地轉移倒計時。</summary>
         public string relocationInspectKey = "DMSE.MissileBase.RelocationIn";
 
+        /// <summary>陣地轉移（站點消失）時的信件標題與內文鍵；別的 mod 的移動單位（例如潛艇）可換成「離開」。</summary>
+        public string relocatedLetterLabelKey = "DMSE.MissileBase.Relocated";
+        public string relocatedLetterTextKey = "DMSE.MissileBase.RelocatedDesc";
+
+        public override IEnumerable<string> ConfigErrors(WorldObjectDef parentDef)
+        {
+            foreach (string error in base.ConfigErrors(parentDef)) { yield return error; }
+            if (incomingWorldObjectDef != null && !typeof(WorldObject_IncomingMissile).IsAssignableFrom(incomingWorldObjectDef.worldObjectClass))
+            {
+                yield return $"{parentDef.defName}: incomingWorldObjectDef {incomingWorldObjectDef.defName} must use {nameof(WorldObject_IncomingMissile)} (or a subclass) as worldObjectClass.";
+            }
+            if (partOptions != null)
+            {
+                foreach (MissileBasePartOption option in partOptions)
+                {
+                    if (option?.parts.NullOrEmpty() != false)
+                    {
+                        yield return $"{parentDef.defName}: partOptions entry for {option?.category} has no parts.";
+                    }
+                }
+            }
+        }
+
         /// <summary>Inspect 字串：顯示再進入封鎖剩餘時間。</summary>
         public string reentryBlockedInspectKey = "DMSE.MissileBase.ReentryBlockedIn";
+    }
+
+    /// <summary><see cref="CompProperties_MissileBase.partOptions"/> 的一項：一個部件類別與可選部件。</summary>
+    public class MissileBasePartOption
+    {
+        public MissilePartCategory category;
+        public List<MissilePartDef> parts = new List<MissilePartDef>();
     }
 
     /// <summary>導彈陣地的定時補給空投設定。</summary>
@@ -256,7 +292,16 @@ namespace DMSE
             MissileBodyDef body = Props.missileBody
                 ?? DefDatabase<MissileBodyDef>.AllDefsListForReading.FirstOrDefault();
             if (body == null) return null;
-            return new MissileConfig(body);
+            MissileConfig config = new MissileConfig(body);
+            if (Props.partOptions != null)
+            {
+                foreach (MissileBasePartOption option in Props.partOptions)
+                {
+                    MissilePartDef part = option?.parts?.Where(p => p != null && p.category == option.category && p.CompatibleWith(body)).RandomElementWithFallback();
+                    if (part != null) { config.SetPart(option.category, part); }
+                }
+            }
+            return config;
         }
 
         // ──────────────── 陣地轉移 ────────────────
@@ -266,8 +311,8 @@ namespace DMSE
             if (FindTargetsInRange(BuildFireConfig()).Any())
             {
                 Find.LetterStack.ReceiveLetter(
-                    "DMSE.MissileBase.Relocated".Translate(),
-                    "DMSE.MissileBase.RelocatedDesc".Translate(),
+                    Props.relocatedLetterLabelKey.Translate(),
+                    Props.relocatedLetterTextKey.Translate(),
                     LetterDefOf.NeutralEvent,
                     new GlobalTargetInfo(parent.Tile));
             }

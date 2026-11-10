@@ -24,6 +24,11 @@ namespace DMSE
         public TechLevel minTechLevel = TechLevel.Undefined;
         /// <summary>世界攔截（封鎖）半徑；&lt; 0 用 <see cref="AirDefenseAlertTuningDef.interceptRadiusTiles"/>。與探測半徑分開。</summary>
         public float worldInterceptRange = -1f;
+        /// <summary>
+        /// true：不等玩家研究雷達網（<c>DMSE_RadarNetwork</c>）就建立這個抽象節點。給別的 mod 的核心敵人用（例如海洋層的海盜潛艇）；
+        /// DMSE 自己的導彈陣地維持 false。
+        /// </summary>
+        public bool ignoreNetworkResearch = false;
         public CompProperties_WorldAirDefense() { compClass = typeof(WorldObjectComp_AirDefense); }
         public override IEnumerable<string> ConfigErrors(WorldObjectDef parentDef)
         {

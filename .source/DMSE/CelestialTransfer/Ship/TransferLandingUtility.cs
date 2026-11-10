@@ -252,6 +252,12 @@ namespace DMSE
             {
                 return;
             }
+            string landingBlock = TransferEnvironment.LandingWorker(ship.landingTarget)?.LandingBlockReason(ship, ship.landingTarget);
+            if (landingBlock != null)
+            {
+                Messages.Message(landingBlock, ship, MessageTypeDefOf.RejectInput, historical: false);
+                return;
+            }
             MapParent site = Find.WorldObjects.MapParentAt(ship.landingTarget);
             if (site == null || site.Destroyed)
             {

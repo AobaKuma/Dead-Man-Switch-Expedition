@@ -25,6 +25,9 @@ namespace DMSE
         /// </summary>
         public float altitude = 1000f;
 
+        /// <summary>交戰領域（<see cref="CombatDomain"/>）：沒有彈體的來襲物（空投艙、其他 mod 的載具）用這個；導彈看彈體。</summary>
+        public CombatDomain domain = CombatDomain.Air;
+
         /// <summary>
         /// 末端（CIWS 迫近防禦）攔截率倍率。彈道導彈再入時速度極快、近乎垂直俯衝，砲塔幾乎來不及反應，
         /// 所以彈道彈種設得很低；預設 1 = 不影響。只作用在地圖層末端攔截，中過程與世界層不受影響。

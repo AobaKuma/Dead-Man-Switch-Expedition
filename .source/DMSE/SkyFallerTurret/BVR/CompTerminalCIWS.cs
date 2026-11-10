@@ -1,6 +1,7 @@
 using Fortified;
 using RimWorld;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Verse;
 using Verse.Sound;
@@ -42,6 +43,9 @@ namespace DMSE
 
         /// <summary>每輪連射結束後擊落目標的機率（整輪只判定一次）。</summary>
         public float interceptChance = 0.5f;
+
+        /// <summary>能攔截的領域（<see cref="CombatDomain"/>）；空 = 只有空中（防空砲不打水下的魚雷）。</summary>
+        public List<CombatDomain> domains;
 
         /// <summary>擊落成功後生成殘骸（碎片）的機率。碎片僅在末端攔截中可能生成。</summary>
         public float debrisChance = 0.3f;
@@ -100,13 +104,13 @@ namespace DMSE
             for (int i = 0; i < terminalWaves.Count; i++)
             {
                 BVRWave w = terminalWaves[i];
-                if (w.defenderFaction != parent.Faction || w.targets.Count == 0) { continue; }
+                if (w.defenderFaction != parent.Faction || !w.targets.Any(t => CombatDomainUtility.Covers(Props.domains, t.domain))) { continue; }
                 if (soonest == null || w.tickToImpact < soonest.tickToImpact) { soonest = w; }
             }
             if (soonest == null) { return; }
 
             burstShotsLeft = Props.shotsPerBurst;
-            burstTargetId = soonest.targets[0].id;
+            burstTargetId = soonest.targets.First(t => CombatDomainUtility.Covers(Props.domains, t.domain)).id;
             FireBurstShot(terminalWaves, now);
         }
 

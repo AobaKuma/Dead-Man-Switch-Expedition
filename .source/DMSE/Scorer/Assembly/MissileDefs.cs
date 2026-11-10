@@ -121,6 +121,18 @@ namespace DMSE
         public float interceptHitFactor = 1f;
 
         /// <summary>
+        /// 交戰領域（<see cref="CombatDomain"/>）：這個彈體的航跡屬於哪個領域、當攔截彈時打哪個領域。
+        /// DMSE 的導彈全是空中；其他 mod 的魚雷可設成 Underwater，只會被打水下的火控與攔截彈接戰。
+        /// </summary>
+        public CombatDomain domain = CombatDomain.Air;
+
+        /// <summary>
+        /// 交戰判定（能不能從 A 打 B、射程怎麼算）；null = DMSE 預設（直線射程、跨圖層要有導引）。
+        /// <c>&lt;engageWorker Class="..." /&gt;</c>
+        /// </summary>
+        public MissileEngageWorker engageWorker;
+
+        /// <summary>
         /// 在發射架上選用此彈體所需的研究（只對 <see cref="MissileCustomizeLocation.Launcher"/> 型彈體有意義：
         /// 物品型彈體由配方的研究擋住）。
         /// </summary>
@@ -358,5 +370,14 @@ namespace DMSE
             if (compatibleBodies != null && compatibleBodies.Count > 0 && !compatibleBodies.Contains(body)) { return false; }
             return true;
         }
+    }
+
+    /// <summary>
+    /// 彈體的交戰判定（<see cref="MissileBodyDef.engageWorker"/>）：取代 <see cref="MissileWorldUtility.CanEngage"/> 的預設規則。
+    /// <paramref name="maxRange"/> 是發射方的射程上限（0 = 不限），實作通常取它和 <see cref="MissileConfig.Range"/> 較小者。
+    /// </summary>
+    public abstract class MissileEngageWorker
+    {
+        public abstract bool CanEngage(MissileConfig config, RimWorld.Planet.PlanetTile from, RimWorld.Planet.PlanetTile to, float maxRange, out string reason);
     }
 }

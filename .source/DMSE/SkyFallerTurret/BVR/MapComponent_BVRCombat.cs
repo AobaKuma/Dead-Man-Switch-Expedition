@@ -57,6 +57,15 @@ namespace DMSE
         /// 防禦方是否有可用的攔截彈：任一可運作（有未保留彈藥、通電、有人操作）的 SAM，裝填冷卻中也算。
         /// 沒有時中過程不鎖定、已有的鎖定也釋放，避免空占火力通道（docs/BVR_波次打擊規劃.md §15-4）。
         /// </summary>
+        public bool HasInterceptorAmmo(Faction defender, CombatDomain domain)
+        {
+            foreach (CompMissileLauncher_Interceptor l in launchers)
+            {
+                if (l.parent.Faction == defender && l.Props.interceptorSkyfaller != null && l.Active && l.Engages(domain)) { return true; }
+            }
+            return false;
+        }
+
         public bool HasInterceptorAmmo(Faction defender)
         {
             foreach (CompMissileLauncher_Interceptor l in launchers)
@@ -429,7 +438,6 @@ namespace DMSE
 
             capacity -= Channels.World(defender);
             int engaged = CountEngaged(defender);
-            bool armed = HasInterceptorAmmo(defender);
 
             // 空爆額外攔截命中的目標：先收集、待 foreach 結束後統一移除，
             // 避免在枚舉 wave.targets 期間修改集合（InvalidOperationException）。
@@ -452,7 +460,7 @@ namespace DMSE
                     target.lockUntil = -1;
                     continue;
                 }
-                if (!armed)
+                if (!HasInterceptorAmmo(defender, target.domain))
                 {
                     // 沒有可用的攔截彈：不鎖定，已有的鎖定也釋放，不空占火力通道。
                     target.lockUntil = -1;
@@ -464,7 +472,7 @@ namespace DMSE
                 {
                     // 鎖定完成 → 嘗試發射（已占用通道，不受 capacity 限制）。
                     CompFireControlRadar fcReady = SelectBestRadar(target, timeLeft, defender);
-                    CompMissileLauncher_Interceptor launcher = SelectReadyLauncher(now, defender);
+                    CompMissileLauncher_Interceptor launcher = SelectReadyLauncher(now, defender, target.domain);
                     if (fcReady != null && launcher != null)
                     {
                         // 基礎命中率 × 攔截彈彈體係數（老式攔截彈較低、半主動彈較高）
@@ -564,19 +572,19 @@ namespace DMSE
             foreach (CompFireControlRadar fc in fireControlRadars)
             {
                 if (!fc.Active || fc.parent.Faction != defender || timeLeft > fc.Props.maxRangeTicks) { continue; }
-                if (!fc.Props.InAltitudeEnvelope(target.altitude)) { continue; }
+                if (!fc.Props.InAltitudeEnvelope(target.altitude) || !fc.Props.Covers(target.domain)) { continue; }
                 float c = fc.ComputeHitChance(target, timeLeft);
                 if (c > bestChance) { bestChance = c; best = fc; }
             }
             return best;
         }
 
-        private CompMissileLauncher_Interceptor SelectReadyLauncher(int now, Faction defender)
+        private CompMissileLauncher_Interceptor SelectReadyLauncher(int now, Faction defender, CombatDomain domain = CombatDomain.Air)
         {
             CompMissileLauncher_Interceptor best = null;
             foreach (CompMissileLauncher_Interceptor l in launchers)
             {
-                if (l.parent.Faction == defender && l.ReadyToFire(now))
+                if (l.parent.Faction == defender && l.ReadyToFire(now) && l.Engages(domain))
                 {
                     // 偏好冷卻最早結束（最閒置）的發射裝置。
                     if (best == null || l.CooldownUntil < best.CooldownUntil) { best = l; }

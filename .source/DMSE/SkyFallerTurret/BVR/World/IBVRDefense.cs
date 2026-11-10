@@ -28,7 +28,7 @@ namespace DMSE
     }
 
     /// <summary>抽象據點的防空庫存作為武器：沒有實體，陣營由節點決定。</summary>
-    public sealed class BVRDefenseEffector : Fortified.IAirEffector
+    public sealed class BVRDefenseEffector : Fortified.IAirEffector, IDomainAwareEffector
     {
         private readonly IBVRDefense defense;
         public BVRDefenseEffector(IBVRDefense defense) { this.defense = defense; }
@@ -37,7 +37,9 @@ namespace DMSE
         public bool Armed => defense.Available && defense.Stock > 0;
         public int ReadyTick => 0;
         public bool CanFire(int now) => defense.Ready(now);
-        public bool CanEngage(Fortified.AirEngagement engagement) => true;
+        /// <summary>只打和庫存攔截彈同一領域的目標。</summary>
+        public bool CanEngage(Fortified.AirEngagement engagement) => engagement == null || Engages((CombatDomain)engagement.Domain);
+        public bool Engages(CombatDomain domain) => (defense.Config?.body?.domain ?? CombatDomain.Air) == domain;
         public Fortified.AirEffectorShot PrepareShot(Fortified.AirEngagement engagement) => AirDefenseHooks.ShotFrom(defense.Config);
         public bool TryFire(Fortified.AirEngagement engagement, int now, Vector3 meetingPoint) => defense.TryConsume(now);
     }

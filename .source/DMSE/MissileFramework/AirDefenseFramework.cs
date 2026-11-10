@@ -312,6 +312,9 @@ namespace Fortified
 
         /// <summary>目標目前的飛行高度（公尺）。</summary>
         public float Altitude { get; set; }
+
+        /// <summary>目標的交戰領域（DMSE.CombatDomain，以 byte 存：Fortified 層不依賴 DMSE 型別）；0 = 空中。</summary>
+        public byte Domain { get; set; }
     }
 
     /// <summary>效果器這一發的參數。</summary>

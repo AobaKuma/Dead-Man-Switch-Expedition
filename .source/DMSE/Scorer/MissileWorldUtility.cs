@@ -63,6 +63,12 @@ namespace DMSE
                 reason = "MessageTransportPodsDestinationIsInvalid".Translate();
                 return false;
             }
+            // 彈體自己的交戰規則（例如其他 mod 的魚雷只走海路）：整個取代下面的直線射程與跨圖層規則。
+            MissileEngageWorker worker = config?.body?.engageWorker;
+            if (worker != null)
+            {
+                return worker.CanEngage(config, from, to, maxRange, out reason);
+            }
             if (!SameLayer(from, to) && (config == null || !config.HasTerminalGuidance))
             {
                 reason = "DMSE.Missile.CrossLayerNeedsGuidance".Translate();

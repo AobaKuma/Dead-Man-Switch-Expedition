@@ -180,8 +180,10 @@ namespace DMSE
         public static void Remove(IntVec3 c, Map map, bool doLeavings)
         {
             TerrainDef terrain = map.terrainGrid.TopTerrainAt(c);
+            // 拆完露出的是這個圖層的虛空（太空；其他 mod 的圖層可用 TransferEnvironmentExtension.voidTerrain 換掉，例如海洋層的深淵）
+            TerrainDef voidTerrain = TransferEnvironment.VoidTerrain(map);
             // 太空可行走後也算 Standable；物品與回收材料仍放在實地上，不要飄到虛空
-            System.Predicate<IntVec3> elsewhere = cell => cell != c && cell.Standable(map) && cell.GetTerrain(map) != TerrainDefOf.Space;
+            System.Predicate<IntVec3> elsewhere = cell => cell != c && cell.Standable(map) && cell.GetTerrain(map) != voidTerrain;
             List<Thing> things = c.GetThingList(map).ListFullCopy();
             for (int i = 0; i < things.Count; i++)
             {
@@ -218,7 +220,7 @@ namespace DMSE
                     GenPlace.TryPlaceThing(thing, c, map, ThingPlaceMode.Near, null, elsewhere);
                 }
             }
-            map.terrainGrid.SetTerrain(c, TerrainDefOf.Space);
+            map.terrainGrid.SetTerrain(c, voidTerrain);
             FilthMaker.RemoveAllFilth(c, map);
         }
     }

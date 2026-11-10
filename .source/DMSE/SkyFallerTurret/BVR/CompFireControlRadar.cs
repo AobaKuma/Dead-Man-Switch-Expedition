@@ -54,6 +54,11 @@ namespace DMSE
         /// <summary>最高攔截高度（公尺）：高於此高度不鎖定也不發射。負值 = 不限制。</summary>
         public float maxInterceptAltitude = -1f;
 
+        /// <summary>能導引攔截的領域（<see cref="CombatDomain"/>）；空 = 只有空中。</summary>
+        public List<CombatDomain> domains;
+
+        public bool Covers(CombatDomain domain) => CombatDomainUtility.Covers(domains, domain);
+
         public bool HasAltitudeLimits => minInterceptAltitude > 0f || maxInterceptAltitude >= 0f;
 
         public bool InAltitudeEnvelope(float altitude)

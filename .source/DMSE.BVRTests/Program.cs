@@ -36,6 +36,7 @@ static partial class Test
         Run("InfoCard", InfoCard);
         Run("VacuumRoom", VacuumRoom);
         Run("MissileStacks", MissileStacks);
+        Run("ExtensionPoints", ExtensionPoints);
         foreach (string failure in failures) { Console.WriteLine("FAIL: " + failure); }
         Console.WriteLine($"{(failures.Count == 0 ? "PASS" : "FAILED")}: {count} BVR checks passed, {failures.Count} failed (real game/DMSE assemblies).");
         return failures.Count == 0 ? 0 : 1;
