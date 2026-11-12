@@ -355,7 +355,8 @@
     </slots>
     <defaultParts>
       <li>DMSE_Light_Warhead_HE</li>
-      <li>DMSE_Light_Guidance_IR</li>
+      <!-- 物品描述為「電視與紅外線尋標器」：用光電影像尋標，而非單純熱源尋標。 -->
+      <li>DMSE_AdvLight_Guidance_Imaging</li>
       <li>DMSE_Light_Payload_None</li>
     </defaultParts>
   </DMSE.MissileBodyDef>

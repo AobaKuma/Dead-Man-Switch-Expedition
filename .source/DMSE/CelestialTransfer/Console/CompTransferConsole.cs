@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using RimWorld;
+using RimWorld.Planet;
 using Verse;
 using Verse.Sound;
 
@@ -198,11 +199,14 @@ namespace DMSE
             }
             if (name.NullOrEmpty())
             {
-                name = WorldObject_TransferShip.NextDefaultName();
+                name = WorldObject_TransferShip.NextDefaultName(ShipLayer);
             }
             ApplyShipName(name);
             return name;
         }
+
+        /// <summary>船所在圖層（預設船名的文字覆寫用，例如潛艇）。</summary>
+        private PlanetLayerDef ShipLayer => parent.MapHeld != null && parent.MapHeld.Tile.Valid ? parent.MapHeld.Tile.LayerDef : null;
 
         private void ApplyShipName(string name)
         {
@@ -222,7 +226,7 @@ namespace DMSE
 
         public string RenamableLabel
         {
-            get => ShipName ?? WorldObject_TransferShip.NextDefaultName();
+            get => ShipName ?? WorldObject_TransferShip.NextDefaultName(ShipLayer);
             set => SetShipName(value);
         }
 
@@ -263,7 +267,7 @@ namespace DMSE
             lockedPiles.Clear();
             separationQueued = false;
             cachedIssues = null;
-            Find.LetterStack.ReceiveLetter("DMSE.Transfer.Letter.AbortedLabel".Translate(), "DMSE.Transfer.Letter.AbortedText".Translate(reason), LetterDefOf.NegativeEvent, parent);
+            Find.LetterStack.ReceiveLetter(TransferText.Key("DMSE.Transfer.Letter.AbortedLabel", parent).Translate(), TransferText.Key("DMSE.Transfer.Letter.AbortedText", parent).Translate(reason), LetterDefOf.NegativeEvent, parent);
         }
 
         /// <summary>Planned → AwaitingOperator：等殖民者到控制台執行點火程序（設計稿 §4-2 步驟 3）。</summary>
@@ -277,7 +281,7 @@ namespace DMSE
             }
             state = TransferConsoleState.AwaitingOperator;
             cachedIssues = null;
-            Messages.Message("DMSE.Transfer.Console.AwaitingOperatorMsg".Translate(), parent, MessageTypeDefOf.NeutralEvent, historical: false);
+            Messages.Message(TransferText.Key("DMSE.Transfer.Console.AwaitingOperatorMsg", parent).Translate(), parent, MessageTypeDefOf.NeutralEvent, historical: false);
         }
 
         /// <summary>點火程序作業完成：AwaitingOperator → Countdown，鎖定本船結構樁。</summary>
@@ -290,7 +294,7 @@ namespace DMSE
             PileNetwork net = Network;
             if (net == null)
             {
-                AbortLaunch("DMSE.Transfer.Issue.ConsoleNotOnShip".Translate());
+                AbortLaunch(TransferText.Key("DMSE.Transfer.Issue.ConsoleNotOnShip", parent).Translate());
                 return;
             }
             state = TransferConsoleState.Countdown;
@@ -321,7 +325,7 @@ namespace DMSE
         {
             if (plan == null || state != TransferConsoleState.Planned)
             {
-                return "DMSE.Transfer.Abort.NoPlan".Translate();
+                return TransferText.Key("DMSE.Transfer.Abort.NoPlan", parent).Translate();
             }
             List<TransferIssue> issues = TransferReadiness.Check(this, plan, includeWarnings: false);
             TransferIssue error = issues.FirstOrDefault(i => i.IsError);
@@ -378,14 +382,14 @@ namespace DMSE
                 PileNetwork net = Network;
                 if (net == null || net.piles.Count != lockedPiles.Count)
                 {
-                    return "DMSE.Transfer.Abort.NetworkChanged".Translate();
+                    return TransferText.Key("DMSE.Transfer.Abort.NetworkChanged", parent).Translate();
                 }
                 for (int i = 0; i < lockedPiles.Count; i++)
                 {
                     Thing p = lockedPiles[i];
                     if (p == null || !p.Spawned || !net.Contains(p.TryGetComp<CompStructuralPile>()))
                     {
-                        return "DMSE.Transfer.Abort.NetworkChanged".Translate();
+                        return TransferText.Key("DMSE.Transfer.Abort.NetworkChanged", parent).Translate();
                     }
                 }
             }
@@ -460,27 +464,27 @@ namespace DMSE
             TransferShipSurvey survey = Survey;
             if (survey == null)
             {
-                sb.Append("DMSE.Transfer.Console.NotOnShip".Translate().Colorize(ColorLibrary.RedReadable));
+                sb.Append(TransferText.Key("DMSE.Transfer.Console.NotOnShip", parent).Translate().Colorize(ColorLibrary.RedReadable));
             }
             else
             {
-                sb.Append(IsPrimary ? "DMSE.Transfer.Console.Primary".Translate() : "DMSE.Transfer.Console.Backup".Translate());
+                sb.Append(IsPrimary ? TransferText.Key("DMSE.Transfer.Console.Primary", parent).Translate() : TransferText.Key("DMSE.Transfer.Console.Backup", parent).Translate());
                 sb.AppendLine();
                 string name = ShipName;
-                sb.Append("DMSE.Transfer.Console.ShipName".Translate(name.NullOrEmpty() ? "DMSE.Transfer.Console.Unnamed".Translate().ToString() : name));
+                sb.Append(TransferText.Key("DMSE.Transfer.Console.ShipName", parent).Translate(name.NullOrEmpty() ? TransferText.Key("DMSE.Transfer.Console.Unnamed", parent).Translate().ToString() : name));
                 sb.AppendLine();
-                sb.Append("DMSE.Transfer.Console.ShipSummary".Translate(survey.network.piles.Count, survey.operationalEngines, survey.TWR.ToString("0.##"), survey.totalFuel.ToString("0")));
+                sb.Append(TransferText.Key("DMSE.Transfer.Console.ShipSummary", parent).Translate(survey.network.piles.Count, survey.operationalEngines, survey.TWR.ToString("0.##"), survey.totalFuel.ToString("0")));
             }
             if (plan != null && state != TransferConsoleState.Idle)
             {
                 sb.AppendLine();
                 if (plan.isImpact)
                 {
-                    sb.Append("DMSE.Transfer.Console.PlanSummaryImpact".Translate(plan.destination.ToString(), plan.distance).Colorize(ColorLibrary.RedReadable));
+                    sb.Append(TransferText.Key("DMSE.Transfer.Console.PlanSummaryImpact", parent).Translate(plan.destination.ToString(), plan.distance).Colorize(ColorLibrary.RedReadable));
                 }
                 else
                 {
-                    sb.Append("DMSE.Transfer.Console.PlanSummary".Translate(plan.destination.ToString(), plan.distance));
+                    sb.Append(TransferText.Key("DMSE.Transfer.Console.PlanSummary", parent).Translate(plan.destination.ToString(), plan.distance));
                 }
             }
             WorldObject_TransferShip flying = parent.Map.Parent as WorldObject_TransferShip;
@@ -492,12 +496,12 @@ namespace DMSE
             if (state == TransferConsoleState.AwaitingOperator)
             {
                 sb.AppendLine();
-                sb.Append("DMSE.Transfer.Console.StateAwaitingOperator".Translate());
+                sb.Append(TransferText.Key("DMSE.Transfer.Console.StateAwaitingOperator", parent).Translate());
             }
             else if (state == TransferConsoleState.Countdown)
             {
                 sb.AppendLine();
-                sb.Append("DMSE.Transfer.Console.StateCountdown".Translate(CountdownTicksLeft.ToStringTicksToPeriod()));
+                sb.Append(TransferText.Key("DMSE.Transfer.Console.StateCountdown", parent).Translate(CountdownTicksLeft.ToStringTicksToPeriod()));
             }
             return sb.ToString();
         }
@@ -519,8 +523,8 @@ namespace DMSE
             {
                 Command_Action launch = new Command_Action
                 {
-                    defaultLabel = "DMSE.Transfer.Console.Launch".Translate(),
-                    defaultDesc = "DMSE.Transfer.Console.LaunchDesc".Translate(),
+                    defaultLabel = TransferText.Key("DMSE.Transfer.Console.Launch", parent).Translate(),
+                    defaultDesc = TransferText.Key("DMSE.Transfer.Console.LaunchDesc", parent).Translate(),
                     icon = PileResources.LaunchTransferIcon,
                     alsoClickIfOtherInGroupClicked = false,
                     action = BeginLaunchSequence
@@ -535,8 +539,8 @@ namespace DMSE
 
             Command_Action planCmd = new Command_Action
             {
-                defaultLabel = "DMSE.Transfer.Console.Plan".Translate(),
-                defaultDesc = "DMSE.Transfer.Console.PlanDesc".Translate(),
+                defaultLabel = TransferText.Key("DMSE.Transfer.Console.Plan", parent).Translate(),
+                defaultDesc = TransferText.Key("DMSE.Transfer.Console.PlanDesc", parent).Translate(),
                 icon = PileResources.PlanTransferIcon,
                 alsoClickIfOtherInGroupClicked = false,
                 action = delegate { TransferPlanningUtility.StartPlanning(this); }
@@ -553,8 +557,8 @@ namespace DMSE
             {
                 Command_Action impactCmd = new Command_Action
                 {
-                    defaultLabel = "DMSE.Transfer.Console.PlanImpact".Translate(),
-                    defaultDesc = "DMSE.Transfer.Console.PlanImpactDesc".Translate(TransferFlightMath.Tuning.impactMinEngines, TransferFlightMath.Tuning.planetkillerMinEngines),
+                    defaultLabel = TransferText.Key("DMSE.Transfer.Console.PlanImpact", parent).Translate(),
+                    defaultDesc = TransferText.Key("DMSE.Transfer.Console.PlanImpactDesc", parent).Translate(TransferFlightMath.Tuning.impactMinEngines, TransferFlightMath.Tuning.planetkillerMinEngines),
                     icon = PileResources.PlanImpactIcon,
                     alsoClickIfOtherInGroupClicked = false,
                     action = delegate { TransferPlanningUtility.StartPlanningImpact(this); }
@@ -570,8 +574,8 @@ namespace DMSE
             {
                 yield return new Command_Action
                 {
-                    defaultLabel = "DMSE.Transfer.Console.Abort".Translate(),
-                    defaultDesc = "DMSE.Transfer.Console.AbortDesc".Translate(),
+                    defaultLabel = TransferText.Key("DMSE.Transfer.Console.Abort", parent).Translate(),
+                    defaultDesc = TransferText.Key("DMSE.Transfer.Console.AbortDesc", parent).Translate(),
                     icon = PileResources.AbortTransferIcon,
                     alsoClickIfOtherInGroupClicked = false,
                     action = AbortPlan
@@ -580,8 +584,8 @@ namespace DMSE
 
             yield return new Command_Action
             {
-                defaultLabel = "DMSE.Transfer.Console.Rename".Translate(),
-                defaultDesc = "DMSE.Transfer.Console.RenameDesc".Translate(),
+                defaultLabel = TransferText.Key("DMSE.Transfer.Console.Rename", parent).Translate(),
+                defaultDesc = TransferText.Key("DMSE.Transfer.Console.RenameDesc", parent).Translate(),
                 icon = TexButton.Rename,
                 alsoClickIfOtherInGroupClicked = false,
                 action = delegate { Find.WindowStack.Add(new Dialog_RenameTransferShip(this)); }
@@ -589,8 +593,8 @@ namespace DMSE
 
             yield return new Command_Toggle
             {
-                defaultLabel = "DMSE.Transfer.Console.ShowFootprint".Translate(),
-                defaultDesc = "DMSE.Transfer.Console.ShowFootprintDesc".Translate(),
+                defaultLabel = TransferText.Key("DMSE.Transfer.Console.ShowFootprint", parent).Translate(),
+                defaultDesc = TransferText.Key("DMSE.Transfer.Console.ShowFootprintDesc", parent).Translate(),
                 icon = PileResources.ShowFootprintIcon,
                 isActive = () => showFootprint,
                 toggleAction = delegate { showFootprint = !showFootprint; }

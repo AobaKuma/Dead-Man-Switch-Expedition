@@ -7,6 +7,8 @@ using Verse;
 namespace DMSE
 {
     // A modal, real-time cutscene: simulation and saving remain paused until completion.
+    // 外部模組可以繼承（TransferPresentation.takeoffCutsceneClass）：演出的每一段（音效與震動、鏡頭縮放、船體位移、
+    // 顏色與淡出、縮放、火焰、額外繪製）都是 protected virtual，預設是太空船的離場（火箭音、震動、加速飛出畫面）。
     public class TransferTakeoffCutscene : Window
     {
         private readonly Map displayMap;
@@ -31,8 +33,86 @@ namespace DMSE
         private TransferShipSurvey survey;
         private Vector3 thrustDirection = Vector3.forward;
         private readonly TransferEngineEffects engineEffects = new TransferEngineEffects();
-        private const float Duration = 10f;
         private const float IgnitionTime = 0.08f;
+
+        /// <summary>動畫長度（實際秒數）。</summary>
+        protected virtual float Duration => 10f;
+
+        protected Map DisplayMap => displayMap;
+        protected Vector3 Center => center;
+        protected CellRect Bounds => bounds;
+        protected float InitialZoom => initialZoom;
+        protected float MaxZoom => maxZoom;
+        protected float Elapsed => elapsed;
+        protected Vector3 ThrustDirection => thrustDirection;
+        protected TransferShipSurvey Survey => survey;
+        protected TransferPresentation Presentation => TransferEnvironment.Presentation(captureMap ?? displayMap);
+
+        /// <summary>動畫開始：鏡頭震動與起飛音效。</summary>
+        protected virtual void StartEffects()
+        {
+            float shake = Presentation.cameraShake;
+            if (shake > 0f)
+            {
+                Find.CameraDriver.shaker.DoShake(0.2f * shake, 120);
+            }
+            audio.BeginTakeoff();
+        }
+
+        protected virtual void UpdateEffects(float elapsed, float progress)
+        {
+            audio.Update(elapsed, progress, true);
+        }
+
+        protected virtual void StopEffects()
+        {
+            audio.EndTakeoff();
+        }
+
+        /// <summary>鏡頭大小：逐漸拉遠。</summary>
+        protected virtual float ZoomAt(float progress)
+        {
+            return Mathf.Lerp(initialZoom, Mathf.Min(initialZoom * 1.6f, maxZoom), Mathf.SmoothStep(0f, 1f, progress));
+        }
+
+        /// <summary>船體位移：沿推進方向，前段幾乎不動、引擎全開，之後加速出畫面。</summary>
+        protected virtual Vector3 ShipOffset(float progress)
+        {
+            return thrustDirection * (initialZoom * 4f * Mathf.Pow(progress, 3.5f));
+        }
+
+        /// <summary>船體顏色（含透明度）：最後 15% 淡出。</summary>
+        protected virtual Color ShipColor(float progress)
+        {
+            return new Color(1f, 1f, 1f, 1f - FadeAt(progress));
+        }
+
+        /// <summary>淡出比例（0 = 完全顯示），火焰與排氣跟著收掉。</summary>
+        protected virtual float FadeAt(float progress)
+        {
+            return Mathf.InverseLerp(0.85f, 1f, progress);
+        }
+
+        /// <summary>船體縮放（1 = 原尺寸）。</summary>
+        protected virtual float ShipScale(float progress)
+        {
+            return 1f;
+        }
+
+        /// <summary>火焰長度比例：點火時短暫閃爍增強到全推力。</summary>
+        protected virtual float FlameAt(float progress)
+        {
+            if (progress < IgnitionTime)
+            {
+                return Mathf.Lerp(0.3f, 1f, progress / IgnitionTime) * Mathf.Lerp(0.6f, 1f, Mathf.PerlinNoise1D(elapsed * 20f));
+            }
+            return 1f;
+        }
+
+        /// <summary>船體之後的額外繪製（例如水泡），預設沒有。</summary>
+        protected virtual void DrawExtras(Vector3 offset, float progress)
+        {
+        }
 
         public TransferTakeoffCutscene(Map displayMap, Vector3 center, Action onComplete,
             Map captureMap = null, HashSet<IntVec3> cells = null)
@@ -138,8 +218,7 @@ namespace DMSE
             initialZoom = Mathf.Clamp(Mathf.Max(Find.CameraDriver.RootSize,
                 texture == null ? 20f : Mathf.Max(bounds.Height, bounds.Width / Find.Camera.aspect) * 0.6f), sizeRange.min, maxZoom);
             Find.CameraDriver.SetRootSize(initialZoom);
-            Find.CameraDriver.shaker.DoShake(0.2f, 120);
-            audio.BeginTakeoff();
+            StartEffects();
             ready = true;
         }
 
@@ -158,30 +237,25 @@ namespace DMSE
                 }
                 elapsed += Time.unscaledDeltaTime;
                 float progress = Mathf.Clamp01(elapsed / Duration);
-                audio.Update(elapsed, progress, true);
-                Find.CameraDriver.SetRootSize(Mathf.Lerp(initialZoom, Mathf.Min(initialZoom * 1.6f, maxZoom),
-                    Mathf.SmoothStep(0f, 1f, progress)));
-                // 沿推進方向加速離開（前段幾乎不動、引擎全開，之後加速出畫面）
-                Vector3 offset = thrustDirection * (initialZoom * 4f * Mathf.Pow(progress, 3.5f));
-                float fade = Mathf.InverseLerp(0.85f, 1f, progress);
+                UpdateEffects(elapsed, progress);
+                Find.CameraDriver.SetRootSize(ZoomAt(progress));
+                Vector3 offset = ShipOffset(progress);
+                float fade = FadeAt(progress);
                 if (material != null)
                 {
-                    material.color = new Color(1f, 1f, 1f, 1f - fade);
+                    float scale = ShipScale(progress);
+                    material.color = ShipColor(progress);
                     GenDraw.DrawQuad(material, (center + offset).WithY(AltitudeLayer.Skyfaller.AltitudeFor()),
-                        Quaternion.identity, new Vector3(bounds.Width, 1f, bounds.Height));
+                        Quaternion.identity, new Vector3(bounds.Width * scale, 1f, bounds.Height * scale));
                 }
                 if (survey != null)
                 {
-                    // 點火：開頭短暫閃爍增強到全推力；淡出時火焰一起收掉
-                    float flame = 1f;
-                    if (progress < IgnitionTime)
-                    {
-                        flame = Mathf.Lerp(0.3f, 1f, progress / IgnitionTime) * Mathf.Lerp(0.6f, 1f, Mathf.PerlinNoise1D(elapsed * 20f));
-                    }
+                    // 淡出時火焰與排氣一起收掉
                     engineEffects.Begin(displayMap);
-                    engineEffects.DrawEngines(survey, flame * (1f - fade), 1f - fade, offset);
+                    engineEffects.DrawEngines(survey, FlameAt(progress) * (1f - fade), 1f - fade, offset);
                     engineEffects.End();
                 }
+                DrawExtras(offset, progress);
                 if (elapsed >= Duration || !Prefs.GravshipCutscenes) Finish();
             }
             catch (Exception ex)
@@ -201,7 +275,7 @@ namespace DMSE
 
         public override void PostClose()
         {
-            audio.EndTakeoff();
+            StopEffects();
             if (capturer != null && !ready)
                 GravshipCapturer.IsGravshipRenderInProgress = false;
             Find.CameraDriver.shaker.StopAllShaking();
@@ -210,6 +284,12 @@ namespace DMSE
             if (material != null) UnityEngine.Object.Destroy(material);
             if (texture != null) UnityEngine.Object.Destroy(texture);
             base.PostClose();
+            // 被外部關掉（其他模組、測試、WindowStack 清空）時也要完成離場：原地圖去留、分離信件、相機
+            if (!finished)
+            {
+                finished = true;
+                onComplete?.Invoke();
+            }
         }
     }
 }

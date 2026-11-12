@@ -238,23 +238,27 @@ namespace DMSE
             StringBuilder sb = new StringBuilder();
             if (Props.expendable)
             {
-                sb.Append("DMSE.Transfer.Engine.BoosterStats".Translate(Props.thrust.ToString("0.#")));
+                sb.Append(TransferText.Key("DMSE.Transfer.Engine.BoosterStats", parent).Translate(Props.thrust.ToString("0.#")));
             }
             else
             {
-                sb.Append("DMSE.Transfer.Engine.Stats".Translate(Props.thrust.ToString("0.#"), Props.fuelFactor.ToStringPercent()));
+                sb.Append(TransferText.Key("DMSE.Transfer.Engine.Stats", parent).Translate(Props.thrust.ToString("0.#"), Props.fuelFactor.ToStringPercent()));
             }
             if (Props.requiresReactorSupport)
             {
                 sb.AppendLine();
-                sb.Append("DMSE.Transfer.Engine.RequiresReactor".Translate());
+                sb.Append(TransferText.Key("DMSE.Transfer.Engine.RequiresReactor", parent).Translate());
             }
             if (parent.Spawned)
             {
                 Thing blocker;
                 TransferEngineStatus status = CurrentStatus(out blocker);
                 sb.AppendLine();
-                string label = StatusLabel(status, blocker);
+                string label;
+                using (TransferText.Using(parent.Map))
+                {
+                    label = StatusLabel(status, blocker);
+                }
                 sb.Append(status == TransferEngineStatus.Operational ? label : label.Colorize(ColorLibrary.RedReadable));
             }
             return sb.ToString();
@@ -265,19 +269,19 @@ namespace DMSE
             switch (status)
             {
                 case TransferEngineStatus.Operational:
-                    return "DMSE.Transfer.Engine.Status.Operational".Translate();
+                    return TransferText.Key("DMSE.Transfer.Engine.Status.Operational").Translate();
                 case TransferEngineStatus.NotOnShip:
-                    return "DMSE.Transfer.Engine.Status.NotOnShip".Translate();
+                    return TransferText.Key("DMSE.Transfer.Engine.Status.NotOnShip").Translate();
                 case TransferEngineStatus.BrokenDown:
-                    return "DMSE.Transfer.Engine.Status.BrokenDown".Translate();
+                    return TransferText.Key("DMSE.Transfer.Engine.Status.BrokenDown").Translate();
                 case TransferEngineStatus.SwitchedOff:
-                    return "DMSE.Transfer.Engine.Status.SwitchedOff".Translate();
+                    return TransferText.Key("DMSE.Transfer.Engine.Status.SwitchedOff").Translate();
                 case TransferEngineStatus.NoPower:
-                    return "DMSE.Transfer.Engine.Status.NoPower".Translate();
+                    return TransferText.Key("DMSE.Transfer.Engine.Status.NoPower").Translate();
                 case TransferEngineStatus.ExhaustBlocked:
-                    return "DMSE.Transfer.Engine.Status.ExhaustBlocked".Translate(blocker != null ? blocker.LabelShort : "?");
+                    return TransferText.Key("DMSE.Transfer.Engine.Status.ExhaustBlocked").Translate(blocker != null ? blocker.LabelShort : "?");
                 case TransferEngineStatus.NoReactorSupport:
-                    return "DMSE.Transfer.Engine.Status.NoReactorSupport".Translate();
+                    return TransferText.Key("DMSE.Transfer.Engine.Status.NoReactorSupport").Translate();
                 default:
                     return status.ToString();
             }

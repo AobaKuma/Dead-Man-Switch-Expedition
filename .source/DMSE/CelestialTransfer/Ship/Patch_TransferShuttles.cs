@@ -22,7 +22,7 @@ namespace DMSE
             WorldObject_TransferShip ship = __instance.parent?.MapHeld?.Parent as WorldObject_TransferShip;
             if (ship != null && ship.IsBurning)
             {
-                __result = "DMSE.Transfer.ShuttleBlockedBurn".Translate();
+                __result = TransferText.Key("DMSE.Transfer.ShuttleBlockedBurn", __instance.parent).Translate();
             }
         }
     }

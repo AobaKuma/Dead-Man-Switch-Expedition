@@ -8,6 +8,9 @@ namespace DMSE
     {
         private readonly List<Thing> culprits = new List<Thing>();
 
+        /// <summary>文字用的地圖（第一艘倒數中的船；潛艇用航海用語）。</summary>
+        private Map textMap;
+
         public Alert_TransferCountdown()
         {
             defaultPriority = AlertPriority.High;
@@ -25,7 +28,7 @@ namespace DMSE
 
         public override TaggedString GetExplanation()
         {
-            return "DMSE.Transfer.Alert.CountdownDesc".Translate();
+            return TransferText.Key("DMSE.Transfer.Alert.CountdownDesc", textMap).Translate();
         }
 
         public override AlertReport GetReport()
@@ -33,6 +36,7 @@ namespace DMSE
             culprits.Clear();
             foreach (CompTransferConsole console in TransferAlertUtility.LaunchingConsoles())
                 if (console.State == TransferConsoleState.Countdown) culprits.Add(console.parent);
+            textMap = culprits.Count > 0 ? culprits[0].MapHeld : null;
             return AlertReport.CulpritsAre(culprits);
         }
     }
@@ -67,6 +71,9 @@ namespace DMSE
     {
         private readonly List<Pawn> culprits = new List<Pawn>();
 
+        /// <summary>文字用的地圖（第一艘起飛程序中的船；潛艇用航海用語）。</summary>
+        private Map textMap;
+
         public Alert_TransferPawnsOutside()
         {
             defaultLabel = "DMSE.Transfer.Alert.PawnsOutside".Translate();
@@ -74,11 +81,17 @@ namespace DMSE
             defaultPriority = AlertPriority.High;
         }
 
+        public override string GetLabel() => TransferText.Key("DMSE.Transfer.Alert.PawnsOutside", textMap).Translate();
+
+        public override TaggedString GetExplanation() => TransferText.Key("DMSE.Transfer.Alert.PawnsOutsideDesc", textMap).Translate();
+
         public override AlertReport GetReport()
         {
             culprits.Clear();
+            textMap = null;
             foreach (CompTransferConsole console in TransferAlertUtility.LaunchingConsoles())
             {
+                textMap = textMap ?? console.parent.Map;
                 PileNetwork net = console.Network;
                 if (net == null)
                 {
@@ -118,7 +131,8 @@ namespace DMSE
             foreach (CompTransferConsole console in TransferAlertUtility.LaunchingConsoles())
             {
                 TransferShipSurvey survey = console.Survey;
-                if (survey == null)
+                // 尾焰不傷人的圖層（例如潛艇）不警告
+                if (survey == null || TransferEnvironment.Presentation(console.parent.Map).exhaustDamage <= 0f)
                 {
                     continue;
                 }

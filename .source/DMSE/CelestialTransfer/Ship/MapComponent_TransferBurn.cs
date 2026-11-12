@@ -23,8 +23,6 @@ namespace DMSE
     [StaticConstructorOnStartup]
     public class MapComponent_TransferBurn : MapComponent
     {
-        private const float ExhaustDamage = 30f;
-
         private const int ShakeInterval = 60;
 
         private const float ShakeMagnitude = 0.04f;
@@ -51,6 +49,9 @@ namespace DMSE
         public MapComponent_TransferBurn(Map map) : base(map)
         {
         }
+
+        /// <summary>這張地圖所在圖層的演出（太空船預設：火箭音、震動、火花、尾焰燒傷）。</summary>
+        private TransferPresentation Presentation => TransferEnvironment.Presentation(map);
 
         private WorldObject_TransferShip BurningShip
         {
@@ -91,7 +92,7 @@ namespace DMSE
             if (ship != null)
             {
                 int interval = Mathf.Max(1, TransferFlightMath.Tuning.exhaustDamageIntervalTicks);
-                if (now % interval == 0)
+                if (now % interval == 0 && Presentation.exhaustDamage > 0f)
                 {
                     TransferShipSurvey survey = ship.FlightSurvey();
                     if (survey != null)
@@ -99,9 +100,9 @@ namespace DMSE
                         DamageExhaustZones(survey);
                     }
                 }
-                if (now % ShakeInterval == 0 && Find.CurrentMap == map)
+                if (now % ShakeInterval == 0 && Find.CurrentMap == map && Presentation.cameraShake > 0f)
                 {
-                    Find.CameraDriver.shaker.DoShake(ShakeMagnitude);
+                    Find.CameraDriver.shaker.DoShake(ShakeMagnitude * Presentation.cameraShake);
                 }
                 return;
             }
@@ -113,15 +114,15 @@ namespace DMSE
                 float t = consoles[i].CountdownProgress;
                 maxProgress = Mathf.Max(maxProgress, t);
                 TransferShipSurvey survey = consoles[i].Survey;
-                if (survey != null && now % WarmUpSparkInterval == 0)
+                if (survey != null && now % WarmUpSparkInterval == 0 && Presentation.nozzleSparks)
                 {
                     WarmUpSparks(survey, t);
                 }
             }
             // 震動從暖機三成開始，逐漸增強到接近點火時的強度
-            if (maxProgress > 0.3f && now % WarmUpShakeInterval == 0 && Find.CurrentMap == map)
+            if (maxProgress > 0.3f && now % WarmUpShakeInterval == 0 && Find.CurrentMap == map && Presentation.cameraShake > 0f)
             {
-                Find.CameraDriver.shaker.DoShake(Mathf.Lerp(0.005f, ShakeMagnitude * 0.75f, Mathf.InverseLerp(0.3f, 1f, maxProgress)));
+                Find.CameraDriver.shaker.DoShake(Mathf.Lerp(0.005f, ShakeMagnitude * 0.75f, Mathf.InverseLerp(0.3f, 1f, maxProgress)) * Presentation.cameraShake);
             }
         }
 
@@ -150,7 +151,7 @@ namespace DMSE
                         {
                             continue;
                         }
-                        t.TakeDamage(new DamageInfo(DamageDefOf.Flame, ExhaustDamage, 0f, -1f, e.engine.parent));
+                        t.TakeDamage(new DamageInfo(DamageDefOf.Flame, Presentation.exhaustDamage, 0f, -1f, e.engine.parent));
                     }
                 }
             }
@@ -252,9 +253,14 @@ namespace DMSE
                 thrusterSustainer = null;
                 return;
             }
+            SoundDef loop = Presentation.thrusterLoopSound;
+            if (loop == null)
+            {
+                return;
+            }
             if (thrusterSustainer == null || thrusterSustainer.Ended)
             {
-                thrusterSustainer = SoundDefOf.Gravship_RetroThruster_Loop.TrySpawnSustainer(SoundInfo.OnCamera(MaintenanceType.PerFrame));
+                thrusterSustainer = loop.TrySpawnSustainer(SoundInfo.OnCamera(MaintenanceType.PerFrame));
                 if (thrusterSustainer == null)
                 {
                     return;

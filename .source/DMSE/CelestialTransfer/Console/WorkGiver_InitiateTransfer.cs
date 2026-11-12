@@ -44,7 +44,7 @@ namespace DMSE
             }
             if (!console.IsAvailable)
             {
-                JobFailReason.Is("DMSE.Transfer.Issue.ConsoleUnavailable".Translate());
+                JobFailReason.Is(TransferText.Key("DMSE.Transfer.Issue.ConsoleUnavailable", t).Translate());
                 return null;
             }
             if (t.IsForbidden(pawn) || t.IsBurning() || !pawn.CanReserve(t, 1, -1, null, forced))

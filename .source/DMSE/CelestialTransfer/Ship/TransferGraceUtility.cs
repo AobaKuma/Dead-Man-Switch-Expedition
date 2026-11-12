@@ -80,7 +80,7 @@ namespace DMSE
                 return;
             }
             BeginGrace(ship.Map, ticks);
-            Messages.Message("DMSE.Transfer.Grace.Begin".Translate(ship.Label, ticks.ToStringTicksToPeriod(), cells), ship, MessageTypeDefOf.PositiveEvent);
+            Messages.Message(TransferText.Key("DMSE.Transfer.Grace.Begin", ship).Translate(ship.Label, ticks.ToStringTicksToPeriod(), cells), ship, MessageTypeDefOf.PositiveEvent);
         }
 
         /// <summary>降落：把船體地圖剩餘的安全期轉移到降落的地圖（不重新計時）。</summary>

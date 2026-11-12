@@ -390,11 +390,11 @@ namespace DMSE
                         BurnOutBoosters();
                         if (isImpact)
                         {
-                            Messages.Message("DMSE.Transfer.Flight.ImpactCourseBegin".Translate(Label, (ImpactTick - now).ToStringTicksToPeriod()), this, MessageTypeDefOf.ThreatBig);
+                            Messages.Message(TransferText.Key("DMSE.Transfer.Flight.ImpactCourseBegin", this).Translate(Label, (ImpactTick - now).ToStringTicksToPeriod()), this, MessageTypeDefOf.ThreatBig);
                         }
                         else
                         {
-                            Messages.Message("DMSE.Transfer.Flight.CoastBegin".Translate(Label), this, MessageTypeDefOf.NeutralEvent);
+                            Messages.Message(TransferText.Key("DMSE.Transfer.Flight.CoastBegin", this).Translate(Label), this, MessageTypeDefOf.NeutralEvent);
                         }
                     }
                     break;
@@ -448,7 +448,7 @@ namespace DMSE
                     nets[i].InvalidateSurvey();
                 }
             }
-            Messages.Message("DMSE.Transfer.Flight.BoostersBurnedOut".Translate(Label, count), this, MessageTypeDefOf.NeutralEvent);
+            Messages.Message(TransferText.Key("DMSE.Transfer.Flight.BoostersBurnedOut", this).Translate(Label, count), this, MessageTypeDefOf.NeutralEvent);
         }
 
         /// <summary>
@@ -464,7 +464,7 @@ namespace DMSE
             if (survey == null || survey.totalThrust <= 0f)
             {
                 arrivalBurnTicks = TransferFlightMath.HoursToTicks(tuning.maxBurnHours * 2f);
-                Find.LetterStack.ReceiveLetter("DMSE.Transfer.Flight.NoThrustLabel".Translate(), "DMSE.Transfer.Flight.NoThrustText".Translate(Label, arrivalBurnTicks.ToStringTicksToPeriod()), LetterDefOf.NegativeEvent, this);
+                Find.LetterStack.ReceiveLetter(TransferText.Key("DMSE.Transfer.Flight.NoThrustLabel", this).Translate(), TransferText.Key("DMSE.Transfer.Flight.NoThrustText", this).Translate(Label, arrivalBurnTicks.ToStringTicksToPeriod()), LetterDefOf.NegativeEvent, this);
             }
             else
             {
@@ -482,11 +482,11 @@ namespace DMSE
                     path = null;
                     float total = PathLength;
                     progressAtArrivalStart = total > 0f ? Mathf.Clamp01(traveled / total) : 1f;
-                    Messages.Message("DMSE.Transfer.Flight.Rerouted".Translate(Label), this, MessageTypeDefOf.CautionInput);
+                    Messages.Message(TransferText.Key("DMSE.Transfer.Flight.Rerouted", this).Translate(Label), this, MessageTypeDefOf.CautionInput);
                 }
             }
             phase = TransferPhase.ArrivalBurn;
-            Messages.Message("DMSE.Transfer.Flight.ArrivalBurnBegin".Translate(Label), this, MessageTypeDefOf.NeutralEvent);
+            Messages.Message(TransferText.Key("DMSE.Transfer.Flight.ArrivalBurnBegin", this).Translate(Label), this, MessageTypeDefOf.NeutralEvent);
         }
 
         private void Arrive()
@@ -502,17 +502,17 @@ namespace DMSE
             MapParent site = landingTarget.Valid ? Find.WorldObjects.MapParentAt(landingTarget) : null;
             if (site != null)
             {
-                Find.LetterStack.ReceiveLetter("DMSE.Transfer.Flight.ArrivedLabel".Translate(), "DMSE.Transfer.Land.ArrivedText".Translate(Label, site.Label), LetterDefOf.PositiveEvent, this);
+                Find.LetterStack.ReceiveLetter(TransferText.Key("DMSE.Transfer.Flight.ArrivedLabel", this).Translate(), TransferText.Key("DMSE.Transfer.Land.ArrivedText", this).Translate(Label, site.Label), LetterDefOf.PositiveEvent, this);
                 LongEventHandler.ExecuteWhenFinished(delegate { TransferLandingUtility.BeginLanding(this); });
                 return;
             }
             if (landingTarget.Valid)
             {
                 // 飛行途中目標地點消失（例如小行星被移除）：改為停在原處
-                Messages.Message("DMSE.Transfer.Land.SiteGone".Translate(), this, MessageTypeDefOf.NegativeEvent);
+                Messages.Message(TransferText.Key("DMSE.Transfer.Land.SiteGone", this).Translate(), this, MessageTypeDefOf.NegativeEvent);
             }
             landingTarget = PlanetTile.Invalid;
-            Find.LetterStack.ReceiveLetter("DMSE.Transfer.Flight.ArrivedLabel".Translate(), "DMSE.Transfer.Flight.ArrivedText".Translate(Label), LetterDefOf.PositiveEvent, this);
+            Find.LetterStack.ReceiveLetter(TransferText.Key("DMSE.Transfer.Flight.ArrivedLabel", this).Translate(), TransferText.Key("DMSE.Transfer.Flight.ArrivedText", this).Translate(Label), LetterDefOf.PositiveEvent, this);
         }
 
         /// <summary>撞擊前 impactFadeSeconds（實際時間）畫面淡出為白色，時間到即撞擊（沿用舊 WorldObject_ImpactGravship）。</summary>
@@ -664,28 +664,28 @@ namespace DMSE
 
         // ── UI ───────────────────────────────────────────────────────────────
 
-        public static string PhaseLabel(TransferPhase phase)
+        public static string PhaseLabel(TransferPhase phase, PlanetLayerDef layer = null)
         {
             switch (phase)
             {
                 case TransferPhase.DepartureBurn:
-                    return "DMSE.Transfer.Phase.DepartureBurn".Translate();
+                    return TransferText.Key("DMSE.Transfer.Phase.DepartureBurn", layer).Translate();
                 case TransferPhase.Coast:
-                    return "DMSE.Transfer.Phase.Coast".Translate();
+                    return TransferText.Key("DMSE.Transfer.Phase.Coast", layer).Translate();
                 case TransferPhase.ArrivalBurn:
-                    return "DMSE.Transfer.Phase.ArrivalBurn".Translate();
+                    return TransferText.Key("DMSE.Transfer.Phase.ArrivalBurn", layer).Translate();
                 default:
-                    return "DMSE.Transfer.Phase.Arrived".Translate();
+                    return TransferText.Key("DMSE.Transfer.Phase.Arrived", layer).Translate();
             }
         }
 
         /// <summary>目前階段名稱；撞擊飛行的滑行段顯示為「撞擊航程」。</summary>
-        public string CurrentPhaseLabel => isImpact && phase == TransferPhase.Coast ? "DMSE.Transfer.Phase.ImpactCourse".Translate().ToString() : PhaseLabel(phase);
+        public string CurrentPhaseLabel => isImpact && phase == TransferPhase.Coast ? TransferText.Key("DMSE.Transfer.Phase.ImpactCourse", this).Translate().ToString() : PhaseLabel(phase, Tile.Valid ? Tile.LayerDef : null);
 
         public string FlightStatusText()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("DMSE.Transfer.Flight.Status".Translate(CurrentPhaseLabel, PhaseTicksLeft.ToStringTicksToPeriod()));
+            sb.Append(TransferText.Key("DMSE.Transfer.Flight.Status", this).Translate(CurrentPhaseLabel, PhaseTicksLeft.ToStringTicksToPeriod()));
             sb.AppendLine();
             string key = isImpact ? "DMSE.Transfer.Flight.ImpactProgress" : "DMSE.Transfer.Flight.Progress";
             sb.Append(key.Translate(Progress.ToStringPercent(), destination.ToString(), TotalTicksLeft.ToStringTicksToPeriod()));
@@ -724,34 +724,34 @@ namespace DMSE
             {
                 yield return new Command_Action
                 {
-                    defaultLabel = "DMSE.Transfer.Land.Gizmo".Translate(landingSite.Label),
-                    defaultDesc = "DMSE.Transfer.Land.GizmoDesc".Translate(landingSite.Label),
+                    defaultLabel = TransferText.Key("DMSE.Transfer.Land.Gizmo", this).Translate(landingSite.Label),
+                    defaultDesc = TransferText.Key("DMSE.Transfer.Land.GizmoDesc", this).Translate(landingSite.Label),
                     icon = PileResources.LaunchTransferIcon,
                     action = delegate { TransferLandingUtility.BeginLanding(this); }
                 };
                 yield return new Command_Action
                 {
-                    defaultLabel = "DMSE.Transfer.Land.Auto".Translate(),
-                    defaultDesc = "DMSE.Transfer.Land.AutoDesc".Translate(),
+                    defaultLabel = TransferText.Key("DMSE.Transfer.Land.Auto", this).Translate(),
+                    defaultDesc = TransferText.Key("DMSE.Transfer.Land.AutoDesc", this).Translate(),
                     icon = PileResources.LaunchTransferIcon,
                     action = delegate { TransferLandingUtility.LandAutomatically(this); }
                 };
                 yield return new Command_Action
                 {
-                    defaultLabel = "DMSE.Transfer.Land.Cancel".Translate(),
-                    defaultDesc = "DMSE.Transfer.Land.CancelDesc".Translate(),
+                    defaultLabel = TransferText.Key("DMSE.Transfer.Land.Cancel", this).Translate(),
+                    defaultDesc = TransferText.Key("DMSE.Transfer.Land.CancelDesc", this).Translate(),
                     icon = PileResources.AbortTransferIcon,
                     action = delegate { landingTarget = PlanetTile.Invalid; }
                 };
             }
             Command_Action abandon = new Command_Action
             {
-                defaultLabel = "DMSE.Transfer.Ship.Abandon".Translate(),
-                defaultDesc = "DMSE.Transfer.Ship.AbandonDesc".Translate(),
+                defaultLabel = TransferText.Key("DMSE.Transfer.Ship.Abandon", this).Translate(),
+                defaultDesc = TransferText.Key("DMSE.Transfer.Ship.AbandonDesc", this).Translate(),
                 icon = AbandonCommandTex,
                 action = delegate
                 {
-                    Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation("DMSE.Transfer.Ship.AbandonConfirm".Translate(Label), delegate
+                    Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(TransferText.Key("DMSE.Transfer.Ship.AbandonConfirm", this).Translate(Label), delegate
                     {
                         GravshipUtility.AbandonMap(Map);
                     }, destructive: true));
@@ -759,7 +759,7 @@ namespace DMSE
             };
             if (Map.mapPawns.FreeColonistsSpawnedCount > 0)
             {
-                abandon.Disable("DMSE.Transfer.Ship.AbandonHasColonists".Translate());
+                abandon.Disable(TransferText.Key("DMSE.Transfer.Ship.AbandonHasColonists", this).Translate());
             }
             yield return abandon;
         }
@@ -801,7 +801,7 @@ namespace DMSE
                     {
                         text += "\n";
                     }
-                    text += "DMSE.Transfer.Ship.Inspect".Translate(comp.Piles.Count, comp.Networks.Count);
+                    text += TransferText.Key("DMSE.Transfer.Ship.Inspect", this).Translate(comp.Piles.Count, comp.Networks.Count);
                 }
             }
             return text;
@@ -830,10 +830,10 @@ namespace DMSE
         }
 
         /// <summary>預設船名：「轉移艦 N」，N 為目前存在的轉移艦數 + 1。</summary>
-        public static string NextDefaultName()
+        public static string NextDefaultName(PlanetLayerDef layer = null)
         {
             int count = Find.WorldObjects.AllWorldObjects.Count(w => w is WorldObject_TransferShip);
-            return "DMSE.Transfer.Ship.DefaultName".Translate(count + 1);
+            return TransferText.Key("DMSE.Transfer.Ship.DefaultName", layer).Translate(count + 1);
         }
     }
 }

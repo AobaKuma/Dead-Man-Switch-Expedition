@@ -40,9 +40,17 @@ namespace DMSE
 
         public override void DoWindowContents(Rect inRect)
         {
+            using (TransferText.Using(console.parent.MapHeld))
+            {
+                DoContents(inRect);
+            }
+        }
+
+        private void DoContents(Rect inRect)
+        {
             const float ButtonHeight = 38f;
             bool blocked = TransferReadiness.AnyError(issues);
-            string blockedText = "DMSE.Transfer.Dialog.ConfirmBlocked".Translate();
+            string blockedText = TransferText.Key("DMSE.Transfer.Dialog.ConfirmBlocked", console).Translate();
             float noticeHeight = blocked ? Text.CalcHeight(blockedText, inRect.width) + DMSEUI.Gap : 0f;
             Rect contentRect = new Rect(inRect.x, inRect.y, inRect.width, inRect.height - ButtonHeight - DMSEUI.SectionGap - noticeHeight);
             GlobalTargetInfo pendingJump = GlobalTargetInfo.Invalid;
@@ -55,28 +63,28 @@ namespace DMSE
             TransferShipSurvey survey = console.Survey;
             if (plan.isImpact)
             {
-                TransferUIUtility.Header(listing, "DMSE.Transfer.Dialog.ImpactTitle".Translate());
+                TransferUIUtility.Header(listing, TransferText.Key("DMSE.Transfer.Dialog.ImpactTitle", console).Translate());
                 GUI.color = ImpactColor;
-                listing.Label("DMSE.Transfer.Dialog.ImpactWarning".Translate());
+                listing.Label(TransferText.Key("DMSE.Transfer.Dialog.ImpactWarning", console).Translate());
                 if (survey != null && TransferImpactUtility.IsPlanetkiller(survey.impactEngines))
                 {
-                    listing.Label("DMSE.Transfer.Dialog.ImpactPlanetkiller".Translate(survey.impactEngines));
+                    listing.Label(TransferText.Key("DMSE.Transfer.Dialog.ImpactPlanetkiller", console).Translate(survey.impactEngines));
                 }
                 GUI.color = Color.white;
-                listing.Label("DMSE.Transfer.Dialog.ImpactRoute".Translate(plan.destination.ToString(), plan.distance));
+                listing.Label(TransferText.Key("DMSE.Transfer.Dialog.ImpactRoute", console).Translate(plan.destination.ToString(), plan.distance));
             }
             else
             {
-                TransferUIUtility.Header(listing, "DMSE.Transfer.Dialog.Title".Translate());
-                listing.Label("DMSE.Transfer.Dialog.Route".Translate(plan.origin.ToString(), plan.destination.ToString(), plan.distance));
+                TransferUIUtility.Header(listing, TransferText.Key("DMSE.Transfer.Dialog.Title", console).Translate());
+                listing.Label(TransferText.Key("DMSE.Transfer.Dialog.Route", console).Translate(plan.origin.ToString(), plan.destination.ToString(), plan.distance));
                 if (plan.parkedAtNeighbor)
                 {
-                    listing.Label("DMSE.Transfer.UI.ParkedAtNeighbor".Translate());
+                    listing.Label(TransferText.Key("DMSE.Transfer.UI.ParkedAtNeighbor", console).Translate());
                 }
                 MapParent site = plan.landOnSite ? Find.WorldObjects.MapParentAt(plan.destination) : null;
                 if (site != null)
                 {
-                    listing.Label("DMSE.Transfer.UI.LandOnSite".Translate(site.Label));
+                    listing.Label(TransferText.Key("DMSE.Transfer.UI.LandOnSite", console).Translate(site.Label));
                 }
             }
             listing.GapLine();
@@ -87,7 +95,7 @@ namespace DMSE
                 TransferUIUtility.DrawSummary(listing, TransferEstimate.For(survey, plan.distance, plan.isImpact));
                 listing.Gap(DMSEUI.SectionGap);
             }
-            TransferUIUtility.Header(listing, "DMSE.Transfer.UI.IssuesHeader".Translate());
+            TransferUIUtility.Header(listing, TransferText.Key("DMSE.Transfer.UI.IssuesHeader", console).Translate());
             TransferUIUtility.DrawIssues(listing, issues, ref pendingJump);
             if (survey != null)
             {
@@ -109,7 +117,7 @@ namespace DMSE
             // §2.8: reselect/cancel are secondary; confirmation keeps its background.
             float buttonWidth = (inRect.width - 20f) / 3f;
             float y = inRect.yMax - ButtonHeight;
-            if (Widgets.ButtonText(new Rect(inRect.x, y, buttonWidth, ButtonHeight), "DMSE.Transfer.Dialog.Reselect".Translate(), drawBackground: false))
+            if (Widgets.ButtonText(new Rect(inRect.x, y, buttonWidth, ButtonHeight), TransferText.Key("DMSE.Transfer.Dialog.Reselect", console).Translate(), drawBackground: false))
             {
                 Close();
                 TransferPlanningUtility.Reselect(console, plan);
@@ -126,7 +134,7 @@ namespace DMSE
                 GUI.color = DMSEUI.Muted;
                 Widgets.ButtonText(confirmRect, confirmLabel, active: false);
                 GUI.color = Color.white;
-                TooltipHandler.TipRegion(confirmRect, "DMSE.Transfer.Dialog.ConfirmBlocked".Translate());
+                TooltipHandler.TipRegion(confirmRect, TransferText.Key("DMSE.Transfer.Dialog.ConfirmBlocked", console).Translate());
             }
             else
             {
@@ -139,7 +147,7 @@ namespace DMSE
                 if (clicked)
                 {
                     console.SetPlan(plan);
-                    Messages.Message("DMSE.Transfer.Dialog.PlanSet".Translate(), console.parent, MessageTypeDefOf.TaskCompletion, historical: false);
+                    Messages.Message(TransferText.Key("DMSE.Transfer.Dialog.PlanSet", console).Translate(), console.parent, MessageTypeDefOf.TaskCompletion, historical: false);
                     Close();
                     ReturnToMap();
                 }

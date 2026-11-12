@@ -74,29 +74,29 @@ namespace DMSE
             Map map = consoleThing.MapHeld;
             if (map == null || !consoleThing.Spawned)
             {
-                issues.Add(new TransferIssue(TransferIssueSeverity.Error, "DMSE.Transfer.Issue.ConsoleUnavailable".Translate()));
+                issues.Add(new TransferIssue(TransferIssueSeverity.Error, TransferText.Key("DMSE.Transfer.Issue.ConsoleUnavailable", console).Translate()));
                 return issues;
             }
 
             if (!TransferEnvironment.AllowsTransfer(map))
             {
-                issues.Add(new TransferIssue(TransferIssueSeverity.Error, "DMSE.Transfer.Issue.NotInSpace".Translate()));
+                issues.Add(new TransferIssue(TransferIssueSeverity.Error, TransferText.Key("DMSE.Transfer.Issue.NotInSpace", console).Translate()));
             }
             WorldObject_TransferShip flyingShip = map.Parent as WorldObject_TransferShip;
             if (flyingShip != null && flyingShip.InFlight)
             {
-                issues.Add(new TransferIssue(TransferIssueSeverity.Error, "DMSE.Transfer.Issue.InFlight".Translate()));
+                issues.Add(new TransferIssue(TransferIssueSeverity.Error, TransferText.Key("DMSE.Transfer.Issue.InFlight", console).Translate()));
             }
 
             PileNetwork net = console.Network;
             if (net == null)
             {
-                issues.Add(new TransferIssue(TransferIssueSeverity.Error, "DMSE.Transfer.Issue.ConsoleNotOnShip".Translate()).With(consoleThing));
+                issues.Add(new TransferIssue(TransferIssueSeverity.Error, TransferText.Key("DMSE.Transfer.Issue.ConsoleNotOnShip", console).Translate()).With(consoleThing));
                 return issues;
             }
             if (!console.IsAvailable)
             {
-                issues.Add(new TransferIssue(TransferIssueSeverity.Error, "DMSE.Transfer.Issue.ConsoleUnavailable".Translate()).With(consoleThing));
+                issues.Add(new TransferIssue(TransferIssueSeverity.Error, TransferText.Key("DMSE.Transfer.Issue.ConsoleUnavailable", console).Translate()).With(consoleThing));
             }
 
             TransferShipSurvey survey = net.Survey;
@@ -105,30 +105,30 @@ namespace DMSE
             // ── 推進與燃料 ──
             if (survey.operationalEngines == 0)
             {
-                issues.Add(new TransferIssue(TransferIssueSeverity.Error, "DMSE.Transfer.Issue.NoEngines".Translate()));
+                issues.Add(new TransferIssue(TransferIssueSeverity.Error, TransferText.Key("DMSE.Transfer.Issue.NoEngines", console).Translate()));
             }
             else if (survey.TWR < tuning.minTWR)
             {
-                issues.Add(new TransferIssue(TransferIssueSeverity.Error, "DMSE.Transfer.Issue.LowTWR".Translate(survey.TWR.ToString("0.##"), tuning.minTWR.ToString("0.##"))));
+                issues.Add(new TransferIssue(TransferIssueSeverity.Error, TransferText.Key("DMSE.Transfer.Issue.LowTWR", console).Translate(survey.TWR.ToString("0.##"), tuning.minTWR.ToString("0.##"))));
             }
             if (plan != null)
             {
                 float required = TransferFlightMath.FuelRequired(survey, plan.distance);
                 if (survey.totalFuel < required)
                 {
-                    issues.Add(new TransferIssue(TransferIssueSeverity.Error, "DMSE.Transfer.Issue.NotEnoughFuel".Translate(survey.totalFuel.ToString("0"), required.ToString("0"))));
+                    issues.Add(new TransferIssue(TransferIssueSeverity.Error, TransferText.Key("DMSE.Transfer.Issue.NotEnoughFuel", console).Translate(survey.totalFuel.ToString("0"), required.ToString("0"))));
                 }
                 if (plan.isImpact)
                 {
                     // 撞擊飛行（設計稿 §9）：撞擊用引擎門檻；撞擊點在計畫後可能出現地圖（例如任務據點被造訪）
                     if (survey.operationalImpactEngines < tuning.impactMinEngines)
                     {
-                        issues.Add(new TransferIssue(TransferIssueSeverity.Error, "DMSE.Transfer.Issue.ImpactEngines".Translate(survey.operationalImpactEngines, tuning.impactMinEngines)));
+                        issues.Add(new TransferIssue(TransferIssueSeverity.Error, TransferText.Key("DMSE.Transfer.Issue.ImpactEngines", console).Translate(survey.operationalImpactEngines, tuning.impactMinEngines)));
                     }
                     string targetProblem = TransferPlanningUtility.ImpactTargetBasicProblem(plan.destination);
                     if (targetProblem == null && !plan.approachTile.Valid)
                     {
-                        targetProblem = "DMSE.Transfer.Dest.Invalid".Translate();
+                        targetProblem = TransferText.Key("DMSE.Transfer.Dest.Invalid", console).Translate();
                     }
                     if (targetProblem != null)
                     {
@@ -150,7 +150,7 @@ namespace DMSE
                 CompTransferConsole other = consoles[i];
                 if (other != console && (other.State == TransferConsoleState.AwaitingOperator || other.State == TransferConsoleState.Countdown))
                 {
-                    issues.Add(new TransferIssue(TransferIssueSeverity.Error, "DMSE.Transfer.Issue.OtherShipDeparting".Translate()).With(other.parent));
+                    issues.Add(new TransferIssue(TransferIssueSeverity.Error, TransferText.Key("DMSE.Transfer.Issue.OtherShipDeparting", console).Translate()).With(other.parent));
                     break;
                 }
             }
@@ -176,7 +176,7 @@ namespace DMSE
             }
             if (leftBehind.Count > 0)
             {
-                issues.Add(new TransferIssue(TransferIssueSeverity.Warning, "DMSE.Transfer.Issue.PawnsLeftBehind".Translate(leftBehind.Count)).With(leftBehind));
+                issues.Add(new TransferIssue(TransferIssueSeverity.Warning, TransferText.Key("DMSE.Transfer.Issue.PawnsLeftBehind", console).Translate(leftBehind.Count)).With(leftBehind));
             }
 
             // ── 不隨船移動的物件、站在尾焰區的 pawn ──
@@ -196,11 +196,13 @@ namespace DMSE
             }
             if (notCarried.Count > 0)
             {
-                issues.Add(new TransferIssue(TransferIssueSeverity.Warning, "DMSE.Transfer.Issue.NotCarried".Translate(notCarried.Count)).With(notCarried));
+                issues.Add(new TransferIssue(TransferIssueSeverity.Warning, TransferText.Key("DMSE.Transfer.Issue.NotCarried", console).Translate(notCarried.Count)).With(notCarried));
             }
 
             List<Pawn> inExhaust = new List<Pawn>();
-            for (int i = 0; i < survey.engines.Count; i++)
+            // 尾焰不傷人的圖層（presentation.exhaustDamage = 0，例如潛艇）不警告
+            bool exhaustHurts = TransferEnvironment.Presentation(console.parent.MapHeld).exhaustDamage > 0f;
+            for (int i = 0; exhaustHurts && i < survey.engines.Count; i++)
             {
                 if (!survey.engines[i].Operational)
                 {
@@ -226,7 +228,7 @@ namespace DMSE
             }
             if (inExhaust.Count > 0)
             {
-                issues.Add(new TransferIssue(TransferIssueSeverity.Warning, "DMSE.Transfer.Issue.PawnsInExhaust".Translate(inExhaust.Count)).With(inExhaust));
+                issues.Add(new TransferIssue(TransferIssueSeverity.Warning, TransferText.Key("DMSE.Transfer.Issue.PawnsInExhaust", console).Translate(inExhaust.Count)).With(inExhaust));
             }
 
             // ── 結構網路相關 ──
@@ -237,13 +239,13 @@ namespace DMSE
                 {
                     piles.Add(net.nearbyUnlinkedPiles[i].parent);
                 }
-                issues.Add(new TransferIssue(TransferIssueSeverity.Warning, "DMSE.Transfer.Issue.NearbyUnlinkedPiles".Translate(piles.Count)).With(piles));
+                issues.Add(new TransferIssue(TransferIssueSeverity.Warning, TransferText.Key("DMSE.Transfer.Issue.NearbyUnlinkedPiles", console).Translate(piles.Count)).With(piles));
             }
 
             List<Thing> tornApart = net.TornApartThings;
             if (tornApart.Count > 0)
             {
-                issues.Add(new TransferIssue(TransferIssueSeverity.Warning, "DMSE.Transfer.Issue.TornApart".Translate(tornApart.Count)).With(tornApart));
+                issues.Add(new TransferIssue(TransferIssueSeverity.Warning, TransferText.Key("DMSE.Transfer.Issue.TornApart", console).Translate(tornApart.Count)).With(tornApart));
                 List<Thing> withPawns = new List<Thing>();
                 for (int i = 0; i < tornApart.Count; i++)
                 {
@@ -254,7 +256,7 @@ namespace DMSE
                 }
                 if (withPawns.Count > 0)
                 {
-                    issues.Add(new TransferIssue(TransferIssueSeverity.Warning, "DMSE.Transfer.Issue.TornApartWithPawns".Translate(withPawns.Count)).With(withPawns));
+                    issues.Add(new TransferIssue(TransferIssueSeverity.Warning, TransferText.Key("DMSE.Transfer.Issue.TornApartWithPawns", console).Translate(withPawns.Count)).With(withPawns));
                 }
             }
 
@@ -282,7 +284,7 @@ namespace DMSE
                         }
                     }
                 }
-                issues.Add(new TransferIssue(TransferIssueSeverity.Warning, "DMSE.Transfer.Issue.Contested".Translate(contested.Count, buildings, foreignPiles.Count)).With(foreignPiles));
+                issues.Add(new TransferIssue(TransferIssueSeverity.Warning, TransferText.Key("DMSE.Transfer.Issue.Contested", console).Translate(contested.Count, buildings, foreignPiles.Count)).With(foreignPiles));
             }
 
             List<Thing> pendingOrders = new List<Thing>();
@@ -295,7 +297,7 @@ namespace DMSE
             }
             if (pendingOrders.Count > 0)
             {
-                issues.Add(new TransferIssue(TransferIssueSeverity.Warning, "DMSE.Transfer.Issue.PendingBeamOrders".Translate(pendingOrders.Count)).With(pendingOrders));
+                issues.Add(new TransferIssue(TransferIssueSeverity.Warning, TransferText.Key("DMSE.Transfer.Issue.PendingBeamOrders", console).Translate(pendingOrders.Count)).With(pendingOrders));
             }
 
             return issues;

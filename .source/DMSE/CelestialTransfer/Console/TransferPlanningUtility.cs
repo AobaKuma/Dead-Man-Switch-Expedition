@@ -17,7 +17,7 @@ namespace DMSE
         {
             if (console.State == TransferConsoleState.AwaitingOperator || console.State == TransferConsoleState.Countdown)
             {
-                return "DMSE.Transfer.Console.AlreadyLaunching".Translate();
+                return TransferText.Key("DMSE.Transfer.Console.AlreadyLaunching", console).Translate();
             }
             List<TransferIssue> issues = TransferReadiness.Check(console, null, includeWarnings: false);
             for (int i = 0; i < issues.Count; i++)
@@ -73,11 +73,11 @@ namespace DMSE
             string reason = null;
             if (!tile.Valid || tile == origin)
             {
-                reason = "DMSE.Transfer.Dest.Invalid".Translate();
+                reason = TransferText.Key("DMSE.Transfer.Dest.Invalid", origin).Translate();
             }
             else if (tile.Layer != origin.Layer)
             {
-                reason = "DMSE.Transfer.Dest.OtherLayer".Translate();
+                reason = TransferText.Key("DMSE.Transfer.Dest.OtherLayer", origin).Translate();
             }
             else if (TransferEnvironment.RouteWorker(origin)?.DestinationBlockReason(origin, tile) is string routeReason)
             {
@@ -85,11 +85,11 @@ namespace DMSE
             }
             else if (!DebugSettings.ignoreGravshipRange && TransferFlightMath.Distance(origin, tile) > maxDistance)
             {
-                reason = "DMSE.Transfer.Dest.OutOfRange".Translate(UnityEngine.Mathf.Max(0, maxDistance));
+                reason = TransferText.Key("DMSE.Transfer.Dest.OutOfRange", origin).Translate(UnityEngine.Mathf.Max(0, maxDistance));
             }
             else if (Find.WorldObjects.AnyWorldObjectAt(tile) && !FindFreeNeighbor(origin, tile, maxDistance).Valid)
             {
-                reason = "DMSE.Transfer.Dest.Occupied".Translate();
+                reason = TransferText.Key("DMSE.Transfer.Dest.Occupied", origin).Translate();
             }
             // 防空封鎖已改為主動攔截：航線可以穿越，整備檢查以警告提示（TransferReadiness）。
             if (reason != null)
@@ -191,11 +191,11 @@ namespace DMSE
             PlanetTile approach = TransferPlan.ApproachTileFor(origin, tile);
             if (!approach.Valid)
             {
-                return "DMSE.Transfer.Dest.Invalid".Translate();
+                return TransferText.Key("DMSE.Transfer.Dest.Invalid", origin).Translate();
             }
             if (!DebugSettings.ignoreGravshipRange && TransferFlightMath.Distance(origin, approach) > maxDistance)
             {
-                return "DMSE.Transfer.Dest.OutOfRange".Translate(UnityEngine.Mathf.Max(0, maxDistance));
+                return TransferText.Key("DMSE.Transfer.Dest.OutOfRange", origin).Translate(UnityEngine.Mathf.Max(0, maxDistance));
             }
             return null;
         }
@@ -219,16 +219,16 @@ namespace DMSE
         {
             if (!tile.Valid)
             {
-                return "DMSE.Transfer.Dest.Invalid".Translate();
+                return TransferText.Key("DMSE.Transfer.Dest.Invalid", tile).Translate();
             }
             if (tile.LayerDef != PlanetLayerDefOf.Surface)
             {
-                return "DMSE.Transfer.Dest.NotSurface".Translate();
+                return TransferText.Key("DMSE.Transfer.Dest.NotSurface", tile).Translate();
             }
             MapParent mapParent = Find.WorldObjects.MapParentAt(tile);
             if (mapParent != null && mapParent.HasMap)
             {
-                return "DMSE.Transfer.Dest.ImpactHasMap".Translate();
+                return TransferText.Key("DMSE.Transfer.Dest.ImpactHasMap", tile).Translate();
             }
             return null;
         }

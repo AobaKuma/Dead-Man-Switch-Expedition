@@ -60,5 +60,21 @@ static partial class Test
         Check(route.BuildPath(PlanetTile.Invalid, PlanetTile.Invalid) == null, "the base route worker falls back to DMSE's path");
         Check(route.DestinationBlockReason(PlanetTile.Invalid, PlanetTile.Invalid) == null, "the base route worker adds no destination checks");
         Check(new TransferLandingWorker().LandingBlockReason(null, PlanetTile.Invalid) == null, "the base landing worker never blocks");
+
+        // 轉移飛行的演出（2026-11-11）：沒掛的圖層照太空船；掛了的照欄位字面值
+        Check(env.presentation == null, "transfer environments use the spaceship presentation unless one is set");
+        TransferPresentation p = new TransferPresentation();
+        Check(p.cameraShake == 1f && p.nozzleSparks && p.exhaustDamage == 30f && p.takeoffCutsceneClass == null,
+            "a presentation's defaults match the spaceship (shake, sparks, 30 exhaust damage, DMSE's cutscene)");
+        Check(new List<string>(p.ConfigErrors()).Count == 0, "a default presentation has no config errors");
+        Check(new List<string>(new TransferPresentation { takeoffCutsceneClass = typeof(string) }.ConfigErrors()).Count == 1, "a cutscene class that is not a TransferTakeoffCutscene is a config error");
+        Check(new List<string>(new TransferPresentation { cameraShake = -1f }.ConfigErrors()).Count == 1, "a negative shake is a config error");
+        // 文字覆寫（TransferText）：預設不覆寫，沒有前綴或不是轉移文字的鍵原樣傳回
+        Check(p.textKeyPrefix == null, "a presentation keeps DMSE's wording unless textKeyPrefix is set");
+        Check(TransferText.Key("DMSE.Transfer.Phase.Coast", (TransferPresentation)null) == "DMSE.Transfer.Phase.Coast" && TransferText.Key("DMSE.Transfer.Phase.Coast", p) == "DMSE.Transfer.Phase.Coast",
+            "without a text prefix the transfer keys are unchanged");
+        Check(TransferText.Key("DMSE.UI.ShowDetails", new TransferPresentation { textKeyPrefix = "Test.Sub" }) == "DMSE.UI.ShowDetails", "only DMSE.Transfer keys are overridden");
+        Check(typeof(TransferTakeoffCutscene).GetConstructor(new[] { typeof(Map), typeof(UnityEngine.Vector3), typeof(System.Action), typeof(Map), typeof(HashSet<IntVec3>) }) != null,
+            "the cutscene constructor that MakeTakeoffCutscene calls exists");
     }
 }

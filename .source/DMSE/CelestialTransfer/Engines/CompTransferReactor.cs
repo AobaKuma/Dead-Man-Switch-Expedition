@@ -52,10 +52,10 @@ namespace DMSE
             PileNetwork net = MapComponent_PileNetwork.For(parent.Map)?.NetworkContaining(parent);
             if (net == null)
             {
-                return "DMSE.Transfer.Reactor.NotOnShip".Translate(Props.supportedEngines);
+                return TransferText.Key("DMSE.Transfer.Reactor.NotOnShip", parent).Translate(Props.supportedEngines);
             }
             TransferShipSurvey survey = net.Survey;
-            return "DMSE.Transfer.Reactor.Support".Translate(Props.supportedEngines, survey.reactorDemand, survey.reactorCapacity);
+            return TransferText.Key("DMSE.Transfer.Reactor.Support", parent).Translate(Props.supportedEngines, survey.reactorDemand, survey.reactorCapacity);
         }
     }
 }

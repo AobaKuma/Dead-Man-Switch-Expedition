@@ -173,6 +173,12 @@
           <min>1</min>
           <max>1</max>
         </missilesPerSalvo>
+        <!-- 舊式陣地只會多射，不換彈種：目標防空 E 越高最多齊射到 2 枚。 -->
+        <adaptiveSalvo>
+          <alpha>0.4</alpha>
+          <exponent>0.7</exponent>
+          <maxPerSalvo>2</maxPerSalvo>
+        </adaptiveSalvo>
         <range>15</range>
         <relocationDays>
           <min>10</min>

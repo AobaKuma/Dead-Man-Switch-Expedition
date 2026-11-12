@@ -17,6 +17,12 @@ namespace DMSE
         /// <summary>波次（P4）：地圖未生成時每次開火同時射向同一目標的枚數。</summary>
         public IntRange missilesPerSalvo = new IntRange(1, 1);
 
+        /// <summary>
+        /// 依目標防空能力（E = min(火控通道, 攔截發射平台)）調整世界層齊射的枚數與彈種組成；null = 固定 <see cref="missilesPerSalvo"/>。
+        /// 見 <see cref="AdaptiveSalvoProps"/>。
+        /// </summary>
+        public AdaptiveSalvoProps adaptiveSalvo;
+
         /// <summary>波次（P4）：地圖已生成時，等上一波全部結束（通道全空）才整波發射，而不是有空通道就補射。</summary>
         public bool fireInWaves = true;
 
@@ -96,6 +102,10 @@ namespace DMSE
                         yield return $"{parentDef.defName}: partOptions entry for {option?.category} has no parts.";
                     }
                 }
+            }
+            if (adaptiveSalvo != null)
+            {
+                foreach (string error in adaptiveSalvo.ConfigErrors(parentDef.defName)) { yield return error; }
             }
         }
 
@@ -256,13 +266,16 @@ namespace DMSE
             if (targets.NullOrEmpty()) return 0;
 
             MapParent target = MissileDoctrine.Choose(parent as MapParent, parent.Faction, cfg, targets);
-            int count = Mathf.Max(1, Props.missilesPerSalvo.RandomInRange);
+            AdaptiveSalvoProps adaptive = Props.adaptiveSalvo;
+            AirDefenseAssessment defense = adaptive != null ? AirDefenseAssessment.Of(target) : AirDefenseAssessment.None;
+            int baseCount = Mathf.Max(1, Props.missilesPerSalvo.RandomInRange);
+            int count = adaptive?.Count(baseCount, defense.Effective, adaptive.DifficultyFactor) ?? baseCount;
             for (int i = 0; i < count; i++)
             {
                 IncomingMissileUtility.Launch(
                     parent.Tile,
                     target.Tile,
-                    BuildFireConfig(),
+                    BuildSalvoConfig(target, adaptive?.PickTier(defense.Effective, Rand.Chance)),
                     parent.Faction,
                     worldObjectDef: Props.incomingWorldObjectDef,
                     target: target);
@@ -275,8 +288,24 @@ namespace DMSE
             }
 
             if (Prefs.DevMode)
-                Log.Message($"[DMSE MissileBase] 世界層齊射 {count} 枚：{parent.Tile} → {target.Tile}");
+                Log.Message($"[DMSE MissileBase] 世界層齊射 {count} 枚：{parent.Tile} → {target.Tile}（目標防空 {defense}）");
             return count;
+        }
+
+        /// <summary>
+        /// 一枚齊射導彈的設定：有梯次時換用梯次的彈體／部件，但換完打不到目標（射程、跨圖層）就退回陣地基本設定。
+        /// </summary>
+        private MissileConfig BuildSalvoConfig(MapParent target, AdaptiveSalvoTier tier)
+        {
+            if (tier != null)
+            {
+                MissileConfig upgraded = BuildFireConfig(tier.missileBody, tier.partOptions);
+                if (upgraded != null && MissileWorldUtility.CanEngage(upgraded, parent.Tile, target.Tile, Props.range, out _))
+                {
+                    return upgraded;
+                }
+            }
+            return BuildFireConfig();
         }
 
         /// <summary>
@@ -287,15 +316,19 @@ namespace DMSE
             => MissileDoctrine.Targets(parent as MapParent, parent.Faction, cfg,
                 mp => MissileWorldUtility.CanEngage(cfg, parent.Tile, mp.Tile, Props.range, out _));
 
-        public MissileConfig BuildFireConfig()
+        public MissileConfig BuildFireConfig() => BuildFireConfig(null, null);
+
+        /// <summary>以指定彈體與部件選項組裝（null = 沿用陣地設定）；不相容於彈體的部件略過。</summary>
+        public MissileConfig BuildFireConfig(MissileBodyDef bodyOverride, List<MissileBasePartOption> partOptionsOverride)
         {
-            MissileBodyDef body = Props.missileBody
+            MissileBodyDef body = bodyOverride ?? Props.missileBody
                 ?? DefDatabase<MissileBodyDef>.AllDefsListForReading.FirstOrDefault();
             if (body == null) return null;
             MissileConfig config = new MissileConfig(body);
-            if (Props.partOptions != null)
+            List<MissileBasePartOption> options = partOptionsOverride ?? Props.partOptions;
+            if (options != null)
             {
-                foreach (MissileBasePartOption option in Props.partOptions)
+                foreach (MissileBasePartOption option in options)
                 {
                     MissilePartDef part = option?.parts?.Where(p => p != null && p.category == option.category && p.CompatibleWith(body)).RandomElementWithFallback();
                     if (part != null) { config.SetPart(option.category, part); }

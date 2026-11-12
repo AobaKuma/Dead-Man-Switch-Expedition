@@ -45,13 +45,13 @@ namespace DMSE
 
         public static void DrawSummary(Listing_Standard listing, TransferEstimate e)
         {
-            Row(listing, "DMSE.Transfer.UI.MaxDistance".Translate(), e.maxDistance >= 0 ? e.maxDistance.ToString() : "DMSE.Transfer.UI.CannotDepart".Translate().ToString());
+            Row(listing, TransferText.Key("DMSE.Transfer.UI.MaxDistance").Translate(), e.maxDistance >= 0 ? e.maxDistance.ToString() : TransferText.Key("DMSE.Transfer.UI.CannotDepart").Translate().ToString());
             Row(listing, (e.HasDestination ? "DMSE.UI.FuelRequiredAvailable" : "DMSE.Transfer.UI.FuelAvailable").Translate(), e.HasDestination
                 ? e.fuelRequired.ToString("0") + " / " + e.fuelAvailable.ToString("0")
                 : e.fuelAvailable.ToString("0"), e.EnoughFuel ? (Color?)null : ErrorColor);
             if (e.HasDestination)
             {
-                Row(listing, "DMSE.Transfer.UI.TotalTime".Translate(), Hours(e.totalHours));
+                Row(listing, TransferText.Key("DMSE.Transfer.UI.TotalTime").Translate(), Hours(e.totalHours));
             }
         }
 
@@ -59,30 +59,30 @@ namespace DMSE
         public static void DrawEstimate(Listing_Standard listing, TransferEstimate e, int pileCount)
         {
             TransferFlightTuningDef tuning = TransferFlightMath.Tuning;
-            Row(listing, "DMSE.Transfer.UI.MassWeight".Translate(), "DMSE.Transfer.UI.MassWeightValue".Translate(e.massWeight.ToString("0.##"), pileCount));
-            Row(listing, "DMSE.Transfer.UI.Thrust".Translate(), e.boosterThrust > 0f
-                ? "DMSE.Transfer.UI.ThrustWithBoosters".Translate(e.thrust.ToString("0.##"), e.boosterThrust.ToString("0.##")).ToString()
+            Row(listing, TransferText.Key("DMSE.Transfer.UI.MassWeight").Translate(), TransferText.Key("DMSE.Transfer.UI.MassWeightValue").Translate(e.massWeight.ToString("0.##"), pileCount));
+            Row(listing, TransferText.Key("DMSE.Transfer.UI.Thrust").Translate(), e.boosterThrust > 0f
+                ? TransferText.Key("DMSE.Transfer.UI.ThrustWithBoosters").Translate(e.thrust.ToString("0.##"), e.boosterThrust.ToString("0.##")).ToString()
                 : e.thrust.ToString("0.##"));
-            Row(listing, "DMSE.Transfer.UI.TWR".Translate(tuning.minTWR.ToString("0.##")), e.twr.ToString("0.##"), e.twr < tuning.minTWR ? ErrorColor : (Color?)null);
-            Row(listing, "DMSE.Transfer.UI.Eta".Translate(), e.eta.ToStringPercent());
-            Row(listing, "DMSE.Transfer.UI.FuelAvailable".Translate(), e.fuelAvailable.ToString("0"));
-            Row(listing, "DMSE.Transfer.UI.MaxDistance".Translate(), e.maxDistance >= 0 ? e.maxDistance.ToString() : "DMSE.Transfer.UI.CannotDepart".Translate().ToString(), e.maxDistance < 1 ? ErrorColor : (Color?)null);
+            Row(listing, TransferText.Key("DMSE.Transfer.UI.TWR").Translate(tuning.minTWR.ToString("0.##")), e.twr.ToString("0.##"), e.twr < tuning.minTWR ? ErrorColor : (Color?)null);
+            Row(listing, TransferText.Key("DMSE.Transfer.UI.Eta").Translate(), e.eta.ToStringPercent());
+            Row(listing, TransferText.Key("DMSE.Transfer.UI.FuelAvailable").Translate(), e.fuelAvailable.ToString("0"));
+            Row(listing, TransferText.Key("DMSE.Transfer.UI.MaxDistance").Translate(), e.maxDistance >= 0 ? e.maxDistance.ToString() : TransferText.Key("DMSE.Transfer.UI.CannotDepart").Translate().ToString(), e.maxDistance < 1 ? ErrorColor : (Color?)null);
             if (e.boosterThrust > 0f)
             {
                 // 助推器只在離軌點火：兩次點火時間不同
-                Row(listing, "DMSE.Transfer.Phase.DepartureBurn".Translate(), Hours(e.burnHours));
-                Row(listing, "DMSE.Transfer.Phase.ArrivalBurn".Translate(), Hours(e.arrivalBurnHours));
+                Row(listing, TransferText.Key("DMSE.Transfer.Phase.DepartureBurn").Translate(), Hours(e.burnHours));
+                Row(listing, TransferText.Key("DMSE.Transfer.Phase.ArrivalBurn").Translate(), Hours(e.arrivalBurnHours));
             }
             else
             {
-                Row(listing, "DMSE.Transfer.UI.BurnTime".Translate(), Hours(e.burnHours));
+                Row(listing, TransferText.Key("DMSE.Transfer.UI.BurnTime").Translate(), Hours(e.burnHours));
             }
             if (e.HasDestination)
             {
-                Row(listing, "DMSE.Transfer.UI.Distance".Translate(), e.distance.ToString());
-                Row(listing, "DMSE.Transfer.UI.FuelRequired".Translate(), e.fuelRequired.ToString("0"), e.EnoughFuel ? (Color?)null : ErrorColor);
-                Row(listing, "DMSE.Transfer.UI.CoastTime".Translate(), Hours(e.coastHours));
-                Row(listing, "DMSE.Transfer.UI.TotalTime".Translate(), Hours(e.totalHours));
+                Row(listing, TransferText.Key("DMSE.Transfer.UI.Distance").Translate(), e.distance.ToString());
+                Row(listing, TransferText.Key("DMSE.Transfer.UI.FuelRequired").Translate(), e.fuelRequired.ToString("0"), e.EnoughFuel ? (Color?)null : ErrorColor);
+                Row(listing, TransferText.Key("DMSE.Transfer.UI.CoastTime").Translate(), Hours(e.coastHours));
+                Row(listing, TransferText.Key("DMSE.Transfer.UI.TotalTime").Translate(), Hours(e.totalHours));
             }
         }
 
@@ -92,7 +92,7 @@ namespace DMSE
             if (issues.Count == 0)
             {
                 GUI.color = DMSEUI.Success;
-                listing.Label("DMSE.Transfer.UI.NoIssues".Translate());
+                listing.Label(TransferText.Key("DMSE.Transfer.UI.NoIssues").Translate());
                 GUI.color = Color.white;
                 return;
             }

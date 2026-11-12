@@ -244,7 +244,9 @@
     <costList>
       <Chemfuel>140</Chemfuel>
       <Tungsteel>50</Tungsteel>
-      <ComponentStamped>2</ComponentStamped>
+      <!-- 2 → 6：預設導引由熱源尋標（工業零件 2）改為自動影像尋標（工業零件 4＋太空零件 1），
+           差額 264 銀依二代換算（沖壓零件 60）≈ +4。 -->
+      <ComponentStamped>6</ComponentStamped>
     </costList>
     <recipeMaker>
       <workSpeedStat>GeneralLaborSpeed</workSpeedStat>

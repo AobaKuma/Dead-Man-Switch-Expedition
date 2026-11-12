@@ -129,7 +129,8 @@
     <scatterOffset>1</scatterOffset>
   </DMSE.MissilePartDef>
 
-  <!-- 自動影像尋標：優先攻擊屋頂外具威脅的敵方生物。 -->
+  <!-- 自動影像尋標：優先攻擊屋頂外具威脅的敵方生物。
+       亦供對地攻擊導彈（小牛）使用：其描述的「電視與紅外線尋標器」即此光電影像尋標，並作為小牛的預設導引。 -->
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvLight_Guidance_Imaging</defName>
     <label>automatic imaging seeker</label>
@@ -138,6 +139,7 @@
     <category>Guidance</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedLight</li>
+      <li>DMSE_MissileBody_Maverick</li>
     </compatibleBodies>
     <guidanceType Class="DMSE.GuidanceType_Imaging" />
     <scatterOffset>-1</scatterOffset>

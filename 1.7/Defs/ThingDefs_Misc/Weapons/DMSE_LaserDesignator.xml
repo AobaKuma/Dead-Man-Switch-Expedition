@@ -95,7 +95,8 @@
         <hasStandardCommand>true</hasStandardCommand>
         <defaultProjectile>DMSE_Bullet_LaserDesignator</defaultProjectile>
         <warmupTime>2.5</warmupTime>
-        <range>49.9</range>
+        <!-- 1.7 GenRadial 圖樣為 20000 格，MaxRadialPatternRadius ≈ 79.81；射程須小於此值，否則射程圈與 NumCellsInRadius 報錯。 -->
+        <range>79.8</range>
         <soundCast>Shot_ChargeRifle</soundCast>
         <muzzleFlashScale>0</muzzleFlashScale>
         <ai_IsWeapon>false</ai_IsWeapon>

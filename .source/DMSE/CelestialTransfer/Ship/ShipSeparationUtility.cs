@@ -145,13 +145,13 @@ namespace DMSE
         /// <summary>倒數結束：正式起飛。分離後船從航線第一格開始離軌點火（<see cref="WorldObject_TransferShip.BeginFlight"/>）。</summary>
         public static void Launch(CompTransferConsole console)
         {
-            LongEventHandler.QueueLongEvent(delegate { Separate(console, debugPark: false); }, "DMSE.Transfer.Separating", doAsynchronously: false, HandleException);
+            LongEventHandler.QueueLongEvent(delegate { Separate(console, debugPark: false); }, TransferText.Key("DMSE.Transfer.Separating", console), doAsynchronously: false, HandleException);
         }
 
         /// <summary>開發者指令：不檢查整備、不耗燃料，把船分離後停在起點旁的空格。</summary>
         public static void DebugSeparateNow(CompTransferConsole console)
         {
-            LongEventHandler.QueueLongEvent(delegate { Separate(console, debugPark: true); }, "DMSE.Transfer.Separating", doAsynchronously: false, HandleException);
+            LongEventHandler.QueueLongEvent(delegate { Separate(console, debugPark: true); }, TransferText.Key("DMSE.Transfer.Separating", console), doAsynchronously: false, HandleException);
         }
 
         private static void HandleException(Exception ex)
@@ -180,7 +180,7 @@ namespace DMSE
             PileNetwork net = netComp.NetworkContaining(consoleThing);
             if (net == null)
             {
-                Abort(console, "DMSE.Transfer.Issue.ConsoleNotOnShip".Translate());
+                Abort(console, TransferText.Key("DMSE.Transfer.Issue.ConsoleNotOnShip", console).Translate());
                 return;
             }
             net.RecalculateFootprint();
@@ -206,7 +206,7 @@ namespace DMSE
                 TransferPlan plan = console.plan;
                 if (plan == null)
                 {
-                    Abort(console, "DMSE.Transfer.Abort.NoPlan".Translate());
+                    Abort(console, TransferText.Key("DMSE.Transfer.Abort.NoPlan", console).Translate());
                     return;
                 }
                 List<TransferIssue> issues = TransferReadiness.Check(console, plan, includeWarnings: false);
@@ -236,7 +236,7 @@ namespace DMSE
             }
             if (!targetTile.Valid || !startTile.Valid)
             {
-                Abort(console, "DMSE.Transfer.Abort.NoFreeTile".Translate());
+                Abort(console, TransferText.Key("DMSE.Transfer.Abort.NoFreeTile", console).Translate());
                 return;
             }
 
@@ -349,11 +349,12 @@ namespace DMSE
                     SendLetter(ship, report);
                     if (consoleThing.Spawned) CameraJumper.TryJump(consoleThing);
                 };
+                TransferPresentation presentation = TransferEnvironment.Presentation(origin);
                 if (!debugPark)
                 {
-                    SoundDefOf.Gravship_Launch.PlayOneShotOnCamera();
+                    presentation.launchSound?.PlayOneShotOnCamera();
                 }
-                Find.WindowStack.Add(new TransferTakeoffCutscene(origin,
+                Find.WindowStack.Add(presentation.MakeTakeoffCutscene(origin,
                     CellRect.FromCellList(footprint).CenterVector3, finish, shipMap, shownCells));
             });
         }
@@ -1452,35 +1453,35 @@ namespace DMSE
         private static void SendLetter(WorldObject_TransferShip ship, Report report)
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("DMSE.Transfer.Letter.SeparatedText".Translate(ship.Label));
+            sb.Append(TransferText.Key("DMSE.Transfer.Letter.SeparatedText", ship).Translate(ship.Label));
             if (report.destroyed.Count > 0)
             {
                 sb.AppendLine().AppendLine();
-                sb.Append("DMSE.Transfer.Letter.Destroyed".Translate()).AppendLine();
+                sb.Append(TransferText.Key("DMSE.Transfer.Letter.Destroyed", ship).Translate()).AppendLine();
                 sb.Append(report.destroyed.ToLineList("  - "));
             }
             if (report.leftBehind.Count > 0)
             {
                 sb.AppendLine().AppendLine();
-                sb.Append("DMSE.Transfer.Letter.LeftBehind".Translate()).AppendLine();
+                sb.Append(TransferText.Key("DMSE.Transfer.Letter.LeftBehind", ship).Translate()).AppendLine();
                 sb.Append(report.leftBehind.Select(p => p.LabelShortCap).ToLineList("  - "));
             }
             if (report.brokenLinks > 0 || report.cancelledOrders > 0)
             {
                 sb.AppendLine().AppendLine();
-                sb.Append("DMSE.Transfer.Letter.BrokenLinks".Translate(report.brokenLinks, report.cancelledOrders));
+                sb.Append(TransferText.Key("DMSE.Transfer.Letter.BrokenLinks", ship).Translate(report.brokenLinks, report.cancelledOrders));
             }
             if (report.lostThings > 0)
             {
                 sb.AppendLine().AppendLine();
-                sb.Append("DMSE.Transfer.Letter.LostThings".Translate(report.lostThings));
+                sb.Append(TransferText.Key("DMSE.Transfer.Letter.LostThings", ship).Translate(report.lostThings));
             }
             if (report.originAbandoned)
             {
                 sb.AppendLine().AppendLine();
-                sb.Append("DMSE.Transfer.Letter.OriginAbandoned".Translate());
+                sb.Append(TransferText.Key("DMSE.Transfer.Letter.OriginAbandoned", ship).Translate());
             }
-            Find.LetterStack.ReceiveLetter("DMSE.Transfer.Letter.SeparatedLabel".Translate(), sb.ToString(), LetterDefOf.PositiveEvent, ship);
+            Find.LetterStack.ReceiveLetter(TransferText.Key("DMSE.Transfer.Letter.SeparatedLabel", ship).Translate(), sb.ToString(), LetterDefOf.PositiveEvent, ship);
         }
     }
 }

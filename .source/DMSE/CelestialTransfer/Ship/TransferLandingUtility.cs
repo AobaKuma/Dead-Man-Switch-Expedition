@@ -261,7 +261,7 @@ namespace DMSE
             MapParent site = Find.WorldObjects.MapParentAt(ship.landingTarget);
             if (site == null || site.Destroyed)
             {
-                Messages.Message("DMSE.Transfer.Land.SiteGone".Translate(), ship, MessageTypeDefOf.RejectInput, historical: false);
+                Messages.Message(TransferText.Key("DMSE.Transfer.Land.SiteGone", ship).Translate(), ship, MessageTypeDefOf.RejectInput, historical: false);
                 ship.landingTarget = PlanetTile.Invalid;
                 return;
             }
@@ -328,7 +328,7 @@ namespace DMSE
             }
             else
             {
-                Messages.Message("DMSE.Transfer.Land.NoRoom".Translate(site.Label), ship, MessageTypeDefOf.RejectInput, historical: false);
+                Messages.Message(TransferText.Key("DMSE.Transfer.Land.NoRoom", ship).Translate(site.Label), ship, MessageTypeDefOf.RejectInput, historical: false);
             }
         }
 
@@ -357,13 +357,13 @@ namespace DMSE
                 ship.Destroy();
                 Current.Game.CurrentMap = dest;
                 CameraJumper.TryJump(center, dest);
-                TaggedString text = "DMSE.Transfer.Land.LandedText".Translate(shipLabel, siteLabel);
+                TaggedString text = TransferText.Key("DMSE.Transfer.Land.LandedText", ship).Translate(shipLabel, siteLabel);
                 if (moved)
                 {
-                    text += "\n\n" + "DMSE.Transfer.Land.Moved".Translate();
+                    text += "\n\n" + TransferText.Key("DMSE.Transfer.Land.Moved", ship).Translate();
                 }
-                Find.LetterStack.ReceiveLetter("DMSE.Transfer.Land.LandedLabel".Translate(), text, LetterDefOf.PositiveEvent, new TargetInfo(center, dest));
-            }, "DMSE.Transfer.Landing", doAsynchronously: false, null);
+                Find.LetterStack.ReceiveLetter(TransferText.Key("DMSE.Transfer.Land.LandedLabel", ship).Translate(), text, LetterDefOf.PositiveEvent, new TargetInfo(center, dest));
+            }, TransferText.Key("DMSE.Transfer.Landing", ship), doAsynchronously: false, null);
         }
     }
 
@@ -413,7 +413,7 @@ namespace DMSE
             {
                 if (!pendingShip.Destroyed)
                 {
-                    Messages.Message("DMSE.Transfer.Land.SiteGone".Translate(), pendingShip, MessageTypeDefOf.RejectInput, historical: false);
+                    Messages.Message(TransferText.Key("DMSE.Transfer.Land.SiteGone", pendingShip).Translate(), pendingShip, MessageTypeDefOf.RejectInput, historical: false);
                 }
                 pendingShip = null;
                 pendingMap = null;
@@ -471,8 +471,8 @@ namespace DMSE
             this.map = map;
             cells = TransferLandingUtility.LandingCells(ship.Map);
             center = cells.Count > 0 ? CellRect.FromCellList(cells).CenterCell : IntVec3.Zero;
-            defaultLabel = "DMSE.Transfer.Land.Designator".Translate();
-            defaultDesc = "DMSE.Transfer.Land.DesignatorDesc".Translate();
+            defaultLabel = TransferText.Key("DMSE.Transfer.Land.Designator", ship).Translate();
+            defaultDesc = TransferText.Key("DMSE.Transfer.Land.DesignatorDesc", ship).Translate();
             useMouseIcon = false;
         }
 
@@ -500,7 +500,7 @@ namespace DMSE
             {
                 if (!TransferLandingUtility.TryFindLandingOffset(map, cells, offset, out offset))
                 {
-                    Messages.Message("DMSE.Transfer.Land.NoRoom".Translate(map.Parent?.Label ?? string.Empty), MessageTypeDefOf.RejectInput, historical: false);
+                    Messages.Message(TransferText.Key("DMSE.Transfer.Land.NoRoom", map).Translate(map.Parent?.Label ?? string.Empty), MessageTypeDefOf.RejectInput, historical: false);
                     return;
                 }
                 moved = true;
@@ -511,6 +511,12 @@ namespace DMSE
 
         public override void SelectedUpdate()
         {
+            // 船已經降落（例如按了自動降落）或消失：選位不再有意義，不要留下跟著滑鼠的船體輪廓
+            if (ship.Destroyed || !ship.HasMap)
+            {
+                Find.DesignatorManager.Deselect();
+                return;
+            }
             if (Find.CurrentMap != map)
             {
                 return;
@@ -528,7 +534,7 @@ namespace DMSE
         {
             if (!lastReport.Accepted)
             {
-                GenUI.DrawMouseAttachment(null, lastReport.Reason + "\n" + "DMSE.Transfer.Land.WillMove".Translate(), 0f, default(Vector2), null, ColorLibrary.RedReadable, drawTextBackground: true, new Color(0f, 0f, 0f, 0.5f));
+                GenUI.DrawMouseAttachment(null, lastReport.Reason + "\n" + TransferText.Key("DMSE.Transfer.Land.WillMove", map).Translate(), 0f, default(Vector2), null, ColorLibrary.RedReadable, drawTextBackground: true, new Color(0f, 0f, 0f, 0.5f));
             }
         }
     }

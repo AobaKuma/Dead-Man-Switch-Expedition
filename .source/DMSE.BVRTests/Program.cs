@@ -31,6 +31,7 @@ static partial class Test
         Run("InterceptAltitude", InterceptAltitude);
         Run("AirEffector", AirEffector);
         Run("MissileDoctrines", MissileDoctrines);
+        Run("AdaptiveSalvo", AdaptiveSalvo);
         Run("AreaDefense", AreaDefense);
         Run("AssemblyBench", AssemblyBench);
         Run("InfoCard", InfoCard);

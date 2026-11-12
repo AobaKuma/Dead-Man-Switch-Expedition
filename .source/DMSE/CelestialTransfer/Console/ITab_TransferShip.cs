@@ -30,7 +30,16 @@ namespace DMSE
             labelKey = "DMSE.Transfer.Tab";
         }
 
+        // 介面文字跟著船所在圖層（潛艇用航海用語，TransferText）
         protected override void FillTab()
+        {
+            using (TransferText.Using(Console?.parent.MapHeld))
+            {
+                FillTabInner();
+            }
+        }
+
+        private void FillTabInner()
         {
             CompTransferConsole console = Console;
             if (console == null)
@@ -55,11 +64,11 @@ namespace DMSE
             WorldObject_TransferShip flying = console.parent.MapHeld?.Parent as WorldObject_TransferShip;
             if (flying != null && flying.InFlight)
             {
-                TransferUIUtility.Header(listing, "DMSE.Transfer.UI.FlightHeader".Translate(flying.Label));
-                TransferUIUtility.Row(listing, "DMSE.Transfer.UI.Phase".Translate(), flying.CurrentPhaseLabel);
-                TransferUIUtility.Row(listing, "DMSE.Transfer.UI.PhaseLeft".Translate(), flying.PhaseTicksLeft.ToStringTicksToPeriod());
-                TransferUIUtility.Row(listing, "DMSE.Transfer.UI.FlightProgress".Translate(), flying.Progress.ToStringPercent());
-                TransferUIUtility.Row(listing, "DMSE.Transfer.UI.Destination".Translate(), flying.destination.ToString());
+                TransferUIUtility.Header(listing, TransferText.Key("DMSE.Transfer.UI.FlightHeader").Translate(flying.Label));
+                TransferUIUtility.Row(listing, TransferText.Key("DMSE.Transfer.UI.Phase").Translate(), flying.CurrentPhaseLabel);
+                TransferUIUtility.Row(listing, TransferText.Key("DMSE.Transfer.UI.PhaseLeft").Translate(), flying.PhaseTicksLeft.ToStringTicksToPeriod());
+                TransferUIUtility.Row(listing, TransferText.Key("DMSE.Transfer.UI.FlightProgress").Translate(), flying.Progress.ToStringPercent());
+                TransferUIUtility.Row(listing, TransferText.Key("DMSE.Transfer.UI.Destination").Translate(), flying.destination.ToString());
                 TransferUIUtility.Row(listing, (flying.isImpact ? "DMSE.Transfer.UI.ImpactIn" : "DMSE.Transfer.UI.ArrivalIn").Translate(), flying.TotalTicksLeft.ToStringTicksToPeriod());
                 listing.GapLine();
             }
@@ -68,7 +77,7 @@ namespace DMSE
             if (net == null)
             {
                 GUI.color = ColorLibrary.RedReadable;
-                listing.Label("DMSE.Transfer.Console.NotOnShip".Translate());
+                listing.Label(TransferText.Key("DMSE.Transfer.Console.NotOnShip").Translate());
                 GUI.color = Color.white;
             }
             else
@@ -82,7 +91,7 @@ namespace DMSE
                 string planHeader;
                 if (plan == null)
                 {
-                    planHeader = "DMSE.Transfer.UI.EstimateHeader".Translate();
+                    planHeader = TransferText.Key("DMSE.Transfer.UI.EstimateHeader").Translate();
                 }
                 else
                 {
@@ -91,7 +100,7 @@ namespace DMSE
                 TransferUIUtility.Header(listing, planHeader);
                 if (plan != null && plan.parkedAtNeighbor)
                 {
-                    listing.Label("DMSE.Transfer.UI.ParkedAtNeighbor".Translate());
+                    listing.Label(TransferText.Key("DMSE.Transfer.UI.ParkedAtNeighbor").Translate());
                 }
                 TransferEstimate estimate = TransferEstimate.For(survey, plan != null ? plan.distance : -1, plan != null && plan.isImpact);
                 TransferUIUtility.DrawSummary(listing, estimate);
@@ -99,11 +108,11 @@ namespace DMSE
                 {
                     // 轉移後安全期（以本船船體範圍估算；實際以抵達時船體地圖上的格數計算）
                     int graceTicks = TransferGraceUtility.GraceTicksFor(net.Footprint.Count);
-                    TransferUIUtility.Row(listing, "DMSE.Transfer.UI.GracePeriod".Translate(), graceTicks > 0 ? graceTicks.ToStringTicksToPeriod() : "-");
+                    TransferUIUtility.Row(listing, TransferText.Key("DMSE.Transfer.UI.GracePeriod").Translate(), graceTicks > 0 ? graceTicks.ToStringTicksToPeriod() : "-");
                 }
                 listing.GapLine();
 
-                TransferUIUtility.Header(listing, "DMSE.Transfer.UI.IssuesHeader".Translate());
+                TransferUIUtility.Header(listing, TransferText.Key("DMSE.Transfer.UI.IssuesHeader").Translate());
                 TransferUIUtility.DrawIssues(listing, console.Issues, ref pendingJump);
                 listing.Gap(DMSEUI.SectionGap);
                 if (listing.ButtonText((showDetails ? "DMSE.UI.HideDetails" : "DMSE.UI.ShowDetails").Translate())) { showDetails = !showDetails; }
@@ -141,7 +150,7 @@ namespace DMSE
             if (name.NullOrEmpty())
             {
                 GUI.color = DMSEUI.Muted;
-                Widgets.Label(labelRect, "DMSE.Transfer.Console.Unnamed".Translate());
+                Widgets.Label(labelRect, TransferText.Key("DMSE.Transfer.Console.Unnamed").Translate());
                 GUI.color = Color.white;
             }
             else
@@ -149,7 +158,7 @@ namespace DMSE
                 Widgets.Label(labelRect, name.Truncate(labelRect.width));
             }
             Text.Font = GameFont.Small;
-            TooltipHandler.TipRegion(btnRect, "DMSE.Transfer.Console.Rename".Translate());
+            TooltipHandler.TipRegion(btnRect, TransferText.Key("DMSE.Transfer.Console.Rename").Translate());
             if (Widgets.ButtonImage(btnRect, TexButton.Rename))
             {
                 Find.WindowStack.Add(new Dialog_RenameTransferShip(console));
@@ -159,18 +168,18 @@ namespace DMSE
 
         private static void DrawNetwork(Listing_Standard listing, PileNetwork net, ref GlobalTargetInfo pendingJump)
         {
-            TransferUIUtility.Header(listing, "DMSE.Transfer.UI.NetworkHeader".Translate());
-            TransferUIUtility.Row(listing, "DMSE.Transfer.UI.Piles".Translate(), net.piles.Count.ToString());
-            TransferUIUtility.Row(listing, "DMSE.Transfer.UI.Beams".Translate(), net.links.Count.ToString());
-            TransferUIUtility.Row(listing, "DMSE.Transfer.UI.Footprint".Translate(), net.Footprint.Count.ToString());
-            ClickableCount(listing, "DMSE.Transfer.UI.TornApart".Translate(), net.TornApartThings, ref pendingJump);
-            TransferUIUtility.Row(listing, "DMSE.Transfer.UI.Contested".Translate(), net.ContestedFootprintCells.Count.ToString());
+            TransferUIUtility.Header(listing, TransferText.Key("DMSE.Transfer.UI.NetworkHeader").Translate());
+            TransferUIUtility.Row(listing, TransferText.Key("DMSE.Transfer.UI.Piles").Translate(), net.piles.Count.ToString());
+            TransferUIUtility.Row(listing, TransferText.Key("DMSE.Transfer.UI.Beams").Translate(), net.links.Count.ToString());
+            TransferUIUtility.Row(listing, TransferText.Key("DMSE.Transfer.UI.Footprint").Translate(), net.Footprint.Count.ToString());
+            ClickableCount(listing, TransferText.Key("DMSE.Transfer.UI.TornApart").Translate(), net.TornApartThings, ref pendingJump);
+            TransferUIUtility.Row(listing, TransferText.Key("DMSE.Transfer.UI.Contested").Translate(), net.ContestedFootprintCells.Count.ToString());
             List<Thing> unlinked = new List<Thing>();
             for (int i = 0; i < net.nearbyUnlinkedPiles.Count; i++)
             {
                 unlinked.Add(net.nearbyUnlinkedPiles[i].parent);
             }
-            ClickableCount(listing, "DMSE.Transfer.UI.UnlinkedPiles".Translate(), unlinked, ref pendingJump);
+            ClickableCount(listing, TransferText.Key("DMSE.Transfer.UI.UnlinkedPiles").Translate(), unlinked, ref pendingJump);
             List<Thing> ordered = new List<Thing>();
             for (int i = 0; i < net.piles.Count; i++)
             {
@@ -179,15 +188,15 @@ namespace DMSE
                     ordered.Add(net.piles[i].parent);
                 }
             }
-            ClickableCount(listing, "DMSE.Transfer.UI.PendingOrders".Translate(), ordered, ref pendingJump);
+            ClickableCount(listing, TransferText.Key("DMSE.Transfer.UI.PendingOrders").Translate(), ordered, ref pendingJump);
         }
 
         private static void DrawPropulsion(Listing_Standard listing, TransferShipSurvey survey, ref GlobalTargetInfo pendingJump)
         {
-            TransferUIUtility.Header(listing, "DMSE.Transfer.UI.PropulsionHeader".Translate());
+            TransferUIUtility.Header(listing, TransferText.Key("DMSE.Transfer.UI.PropulsionHeader").Translate());
             if (survey.engines.Count == 0)
             {
-                listing.Label("DMSE.Transfer.UI.NoEngines".Translate());
+                listing.Label(TransferText.Key("DMSE.Transfer.UI.NoEngines").Translate());
             }
             for (int i = 0; i < survey.engines.Count; i++)
             {
@@ -199,16 +208,16 @@ namespace DMSE
                     pendingJump = e.engine.parent;
                 }
             }
-            TransferUIUtility.Row(listing, "DMSE.Transfer.UI.ReactorSupport".Translate(), survey.reactorDemand + " / " + survey.reactorCapacity,
+            TransferUIUtility.Row(listing, TransferText.Key("DMSE.Transfer.UI.ReactorSupport").Translate(), survey.reactorDemand + " / " + survey.reactorCapacity,
                 survey.reactorDemand > survey.reactorCapacity ? ColorLibrary.RedReadable : (Color?)null);
         }
 
         private static void DrawFuel(Listing_Standard listing, TransferShipSurvey survey, ref GlobalTargetInfo pendingJump)
         {
-            TransferUIUtility.Header(listing, "DMSE.Transfer.UI.FuelHeader".Translate());
+            TransferUIUtility.Header(listing, TransferText.Key("DMSE.Transfer.UI.FuelHeader").Translate());
             if (survey.fuelSources.Count == 0)
             {
-                listing.Label("DMSE.Transfer.UI.NoFuelSources".Translate());
+                listing.Label(TransferText.Key("DMSE.Transfer.UI.NoFuelSources").Translate());
             }
             for (int i = 0; i < survey.fuelSources.Count; i++)
             {

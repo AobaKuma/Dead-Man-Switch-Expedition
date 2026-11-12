@@ -226,6 +226,56 @@
           <min>1</min>
           <max>2</max>
         </missilesPerSalvo>
+        <!-- 依目標防空能力調整：E = min(火控通道, 有彈攔截發射平台)。枚數 = 基礎 + round(alpha·E^exponent·威脅倍率)，上限 maxPerSalvo；
+             E 達到梯次門檻時，每枚依 chance 混編誘餌彈、反輻射彈或匿蹤巡航彈（從高梯次往下擲，打不到目標時退回基本彈）。 -->
+        <adaptiveSalvo>
+          <alpha>0.8</alpha>
+          <exponent>0.7</exponent>
+          <maxPerSalvo>4</maxPerSalvo>
+          <tiers>
+            <li>
+              <minEffective>3</minEffective>
+              <chance>0.35</chance>
+              <missileBody>DMSE_MissileBody_Light</missileBody>
+              <partOptions>
+                <li>
+                  <category>Payload</category>
+                  <parts>
+                    <li>DMSE_Light_Payload_Decoy</li>
+                  </parts>
+                </li>
+              </partOptions>
+            </li>
+            <!-- 反輻射彈：通道多代表雷達多，混入專打運作中雷達的輕型彈，逼玩家輪流關機或用被動預警。 -->
+            <li>
+              <minEffective>4</minEffective>
+              <chance>0.25</chance>
+              <missileBody>DMSE_MissileBody_Light</missileBody>
+              <partOptions>
+                <li>
+                  <category>Guidance</category>
+                  <parts>
+                    <li>DMSE_Light_Guidance_AntiRadiation</li>
+                  </parts>
+                </li>
+              </partOptions>
+            </li>
+            <li>
+              <minEffective>6</minEffective>
+              <chance>0.25</chance>
+              <missileBody>DMSE_MissileBody_AdvancedCruise</missileBody>
+              <partOptions>
+                <li>
+                  <category>Payload</category>
+                  <parts>
+                    <li>DMSE_AdvCruise_Payload_None</li>
+                    <li>DMSE_AdvCruise_Payload_Decoy</li>
+                  </parts>
+                </li>
+              </partOptions>
+            </li>
+          </tiers>
+        </adaptiveSalvo>
         <range>15</range>
         <relocationDays>
           <min>10</min>

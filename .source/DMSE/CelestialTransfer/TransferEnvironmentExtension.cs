@@ -30,6 +30,9 @@ namespace DMSE
         /// <summary>降落：額外的不能降落條件；null = 沒有。</summary>
         public TransferLandingWorker landingWorker;
 
+        /// <summary>演出：音效、震動、火花、尾焰傷害、離場動畫；null = 太空船（<see cref="TransferPresentation.Space"/>）。</summary>
+        public TransferPresentation presentation;
+
         public override IEnumerable<string> ConfigErrors()
         {
             foreach (string e in base.ConfigErrors())
@@ -39,6 +42,13 @@ namespace DMSE
             if (shipWorldObject != null && !typeof(WorldObject_TransferShip).IsAssignableFrom(shipWorldObject.worldObjectClass))
             {
                 yield return $"shipWorldObject {shipWorldObject.defName} must use {nameof(WorldObject_TransferShip)} or a subclass as worldObjectClass.";
+            }
+            if (presentation != null)
+            {
+                foreach (string e in presentation.ConfigErrors())
+                {
+                    yield return e;
+                }
             }
         }
     }
@@ -87,6 +97,9 @@ namespace DMSE
         public static TransferEnergyWorker EnergyWorker(Map map) => map != null && map.Tile.Valid ? For(map.Tile.LayerDef)?.energyWorker : null;
 
         public static TransferLandingWorker LandingWorker(PlanetTile tile) => tile.Valid ? For(tile.LayerDef)?.landingWorker : null;
+
+        /// <summary>這張地圖所在圖層的演出（沒掛時是太空船的預設）。</summary>
+        public static TransferPresentation Presentation(Map map) => (map != null && map.Tile.Valid ? For(map.Tile.LayerDef)?.presentation : null) ?? TransferPresentation.Space;
     }
 
     /// <summary>

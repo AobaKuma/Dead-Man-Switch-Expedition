@@ -37,7 +37,7 @@ namespace DMSE
             Thing blocker;
             if (thingDef != null && CompTransferEngine.IsExhaustBlocked(thingDef, map, loc, rot, null, out blocker))
             {
-                Messages.Message("DMSE.Transfer.Engine.PlacedBlocked".Translate(def.LabelCap, blocker.LabelShort), MessageTypeDefOf.CautionInput, historical: false);
+                Messages.Message(TransferText.Key("DMSE.Transfer.Engine.PlacedBlocked", map).Translate(def.LabelCap, blocker.LabelShort), MessageTypeDefOf.CautionInput, historical: false);
             }
         }
     }
