@@ -164,6 +164,80 @@ namespace DMSE.BVRAcceptance
             t.Check(made.DesignName == null, "refitting the missile drops its design name");
         }
 
+        private static int JobLoopErrors() => Verse.Log.Messages.Count(m => m.type == LogMessageType.Error
+            && m.text != null && m.text.Contains("started 10 jobs in one tick"));
+
+        /// <summary>
+        /// 2026-11-15 玩家日誌：彈道發射架有未確認的待裝配構型時，WorkGiver_AssembleBallisticSilo 只看 NeedsAssembly
+        /// 就派出搬料工作，而 JobDriver_DeliverMissileResource 要求 WantsWork（含 assemblyConfirmed），
+        /// 第一個 toil 即失敗 → 「started 10 jobs in one tick」迴圈。未確認時不派工、確認後正常搬料裝填。
+        /// </summary>
+        public static IEnumerable<Wait> BallisticRackNeedsConfirmation(TestContext t)
+        {
+            Thing silo = SpawnBuilding(ThingDef.Named("DMSE_Building_BallisticRack"), 6, 4);
+            yield return WaitPowered(); yield return new WaitTicks(2);
+            CompMissileConfig cfg = silo.TryGetComp<CompMissileConfig>();
+            CompMissileLauncher_Ballistic launcher = silo.TryGetComp<CompMissileLauncher_Ballistic>();
+            t.Require(cfg != null && launcher != null, "the ballistic rack has a config and a ballistic launcher");
+            cfg.EnsureInit();
+            cfg.pending.SetPart(MissilePartCategory.Warhead, Part("DMSE_Ballistic_Warhead_TungstenPenetrator"));
+            cfg.assemblyConfirmed = false;
+            t.Require(!launcher.IsLoaded && cfg.NeedsAssembly && !cfg.WantsWork, "the rack has an unconfirmed pending config");
+            Dictionary<ThingDef, int> need = cfg.StillNeeded();
+            t.Require(need.Count > 0, "the pending config needs resources");
+            foreach (KeyValuePair<ThingDef, int> kv in need) { SpawnStack(kv.Key, kv.Value * 2, silo.Position + new IntVec3(5, 0, 0)); }
+
+            Pawn pawn = Home.mapPawns.FreeColonistsSpawned.FirstOrDefault(p => !p.WorkTypeIsDisabled(WorkTypeDefOf.Crafting)
+                && p.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation));
+            t.Require(pawn != null, "a colonist can craft");
+            var giver = (WorkGiver_Scanner)DefDatabase<WorkGiverDef>.GetNamed("DMSE_AssembleBallisticSilo").Worker;
+            t.Check(!giver.PotentialWorkThingsGlobal(pawn).Contains(silo), "an unconfirmed rack is not scanned");
+            t.Check(!giver.HasJobOnThing(pawn, silo, true) && giver.JobOnThing(pawn, silo, true) == null,
+                "an unconfirmed rack gives no job");
+
+            int loopsBefore = JobLoopErrors();
+            bool sawDeliverEarly = false;
+            var idle = new WaitUntil(() =>
+            {
+                if (pawn.Drafted) { pawn.drafter.Drafted = false; }
+                sawDeliverEarly |= pawn.CurJob?.def == DMSE_MissileJobDefOf.DMSE_DeliverMissileResource && pawn.CurJob.targetA.Thing == silo;
+                return false;
+            }, 1500);
+            yield return idle;
+            t.Check(!sawDeliverEarly, "no colonist hauls to the rack before confirmation");
+            t.Check(JobLoopErrors() == loopsBefore, $"no job-loop errors while unconfirmed ({JobLoopErrors() - loopsBefore})");
+
+            cfg.assemblyConfirmed = true;
+            t.Check(giver.HasJobOnThing(pawn, silo, true), "a confirmed rack gives a job");
+            bool sawDeliver = false, sawAssemble = false;
+            var loaded = new WaitUntil(() =>
+            {
+                if (launcher.IsLoaded) { return true; }
+                if (pawn.Drafted) { pawn.drafter.Drafted = false; }
+                JobDef cur = pawn.CurJobDef;
+                sawDeliver |= cur == DMSE_MissileJobDefOf.DMSE_DeliverMissileResource;
+                sawAssemble |= cur == DMSE_BallisticJobDefOf.DMSE_AssembleBallisticSilo;
+                if (cur != DMSE_MissileJobDefOf.DMSE_DeliverMissileResource && cur != DMSE_BallisticJobDefOf.DMSE_AssembleBallisticSilo
+                    && giver.HasJobOnThing(pawn, silo, true))
+                {
+                    Job job = giver.JobOnThing(pawn, silo, true);
+                    if (job != null) { pawn.jobs.TryTakeOrderedJob(job, JobTag.Misc); }
+                }
+                return false;
+            }, 60000);
+            yield return loaded;
+            if (loaded.TimedOut)
+            {
+                string still = string.Join(", ", cfg.StillNeeded().Select(kv => kv.Key.defName + " x" + kv.Value));
+                t.Note($"timeout: pawn job {pawn.CurJobDef?.defName ?? "none"}, still needed [{still}], "
+                    + $"has job {giver.HasJobOnThing(pawn, silo, true)} ({JobFailReason.Reason ?? "-"})");
+            }
+            t.Require(!loaded.TimedOut, "the colonist hauls and assembles the confirmed rack");
+            t.Check(sawDeliver && sawAssemble, "both the delivery and the silo assembly job ran");
+            t.Check(!cfg.NeedsAssembly, "the pending config is applied");
+            t.Check(JobLoopErrors() == loopsBefore, "no job-loop errors during the whole test");
+        }
+
         public static IEnumerable<Wait> BenchOutputCancelAndDesigns(TestContext t)
         {
             Thing bench = SpawnBuilding(Bench, 2, 2);

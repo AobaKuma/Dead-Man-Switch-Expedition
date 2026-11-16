@@ -16,6 +16,12 @@ namespace DMSE
         /// <summary>點火程序完成後到分離的倒數（引擎暖機，效果見 <see cref="MapComponent_TransferBurn"/>）。</summary>
         public int countdownTicks = 600;
 
+        /// <summary>
+        /// 顯示「制定轉移計畫」與撞擊計畫指令（預設顯示）。其他模組用自己的指令建立計畫時設成 false
+        /// （計畫可以用 <see cref="TransferPlan.reselect"/> 讓確認視窗的「重新選擇」回到自己的選擇流程）。
+        /// </summary>
+        public bool showPlanGizmo = true;
+
         public CompProperties_TransferConsole()
         {
             compClass = typeof(CompTransferConsole);
@@ -537,37 +543,40 @@ namespace DMSE
                 yield return launch;
             }
 
-            Command_Action planCmd = new Command_Action
+            if (((CompProperties_TransferConsole)props).showPlanGizmo)
             {
-                defaultLabel = TransferText.Key("DMSE.Transfer.Console.Plan", parent).Translate(),
-                defaultDesc = TransferText.Key("DMSE.Transfer.Console.PlanDesc", parent).Translate(),
-                icon = PileResources.PlanTransferIcon,
-                alsoClickIfOtherInGroupClicked = false,
-                action = delegate { TransferPlanningUtility.StartPlanning(this); }
-            };
-            string reason = TransferPlanningUtility.CannotPlanReason(this);
-            if (reason != null)
-            {
-                planCmd.Disable(reason);
-            }
-            yield return planCmd;
-
-            // 撞擊飛行（設計稿 §9）：與舊版模式選單相同，撞擊用引擎未達門檻時不顯示
-            if (TransferPlanningUtility.ImpactAvailable(this))
-            {
-                Command_Action impactCmd = new Command_Action
+                Command_Action planCmd = new Command_Action
                 {
-                    defaultLabel = TransferText.Key("DMSE.Transfer.Console.PlanImpact", parent).Translate(),
-                    defaultDesc = TransferText.Key("DMSE.Transfer.Console.PlanImpactDesc", parent).Translate(TransferFlightMath.Tuning.impactMinEngines, TransferFlightMath.Tuning.planetkillerMinEngines),
-                    icon = PileResources.PlanImpactIcon,
+                    defaultLabel = TransferText.Key("DMSE.Transfer.Console.Plan", parent).Translate(),
+                    defaultDesc = TransferText.Key("DMSE.Transfer.Console.PlanDesc", parent).Translate(),
+                    icon = PileResources.PlanTransferIcon,
                     alsoClickIfOtherInGroupClicked = false,
-                    action = delegate { TransferPlanningUtility.StartPlanningImpact(this); }
+                    action = delegate { TransferPlanningUtility.StartPlanning(this); }
                 };
+                string reason = TransferPlanningUtility.CannotPlanReason(this);
                 if (reason != null)
                 {
-                    impactCmd.Disable(reason);
+                    planCmd.Disable(reason);
                 }
-                yield return impactCmd;
+                yield return planCmd;
+
+                // 撞擊飛行（設計稿 §9）：與舊版模式選單相同，撞擊用引擎未達門檻時不顯示
+                if (TransferPlanningUtility.ImpactAvailable(this))
+                {
+                    Command_Action impactCmd = new Command_Action
+                    {
+                        defaultLabel = TransferText.Key("DMSE.Transfer.Console.PlanImpact", parent).Translate(),
+                        defaultDesc = TransferText.Key("DMSE.Transfer.Console.PlanImpactDesc", parent).Translate(TransferFlightMath.Tuning.impactMinEngines, TransferFlightMath.Tuning.planetkillerMinEngines),
+                        icon = PileResources.PlanImpactIcon,
+                        alsoClickIfOtherInGroupClicked = false,
+                        action = delegate { TransferPlanningUtility.StartPlanningImpact(this); }
+                    };
+                    if (reason != null)
+                    {
+                        impactCmd.Disable(reason);
+                    }
+                    yield return impactCmd;
+                }
             }
 
             if (state != TransferConsoleState.Idle)

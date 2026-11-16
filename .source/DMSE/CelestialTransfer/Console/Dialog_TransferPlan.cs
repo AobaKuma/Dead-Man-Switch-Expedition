@@ -120,7 +120,14 @@ namespace DMSE
             if (Widgets.ButtonText(new Rect(inRect.x, y, buttonWidth, ButtonHeight), TransferText.Key("DMSE.Transfer.Dialog.Reselect", console).Translate(), drawBackground: false))
             {
                 Close();
-                TransferPlanningUtility.Reselect(console, plan);
+                if (plan.reselect != null)
+                {
+                    plan.reselect();
+                }
+                else
+                {
+                    TransferPlanningUtility.Reselect(console, plan);
+                }
             }
             if (Widgets.ButtonText(new Rect(inRect.x + buttonWidth + 10f, y, buttonWidth, ButtonHeight), "CancelButton".Translate(), drawBackground: false))
             {
@@ -150,6 +157,10 @@ namespace DMSE
                     Messages.Message(TransferText.Key("DMSE.Transfer.Dialog.PlanSet", console).Translate(), console.parent, MessageTypeDefOf.TaskCompletion, historical: false);
                     Close();
                     ReturnToMap();
+                    if (plan.launchOnConfirm && console.LaunchBlockedReason() == null)
+                    {
+                        console.BeginLaunchSequence();
+                    }
                 }
             }
 

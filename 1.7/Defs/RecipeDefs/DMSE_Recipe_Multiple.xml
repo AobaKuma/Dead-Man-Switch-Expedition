@@ -82,7 +82,7 @@
     </skillRequirements>
     <workSkill>Crafting</workSkill>
     <researchPrerequisite>DMSE_Microgravity</researchPrerequisite>
-    <workAmount>90000</workAmount>
+    <workAmount>60000</workAmount>
     <ingredients>
       <li>
         <filter>
@@ -90,7 +90,7 @@
             <li>Jade</li>
           </thingDefs>
         </filter>
-        <count>75</count>
+        <count>50</count>
       </li>
     </ingredients>
     <fixedIngredientFilter>

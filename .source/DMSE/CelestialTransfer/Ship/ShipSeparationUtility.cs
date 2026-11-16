@@ -20,6 +20,60 @@ namespace DMSE
     /// </summary>
     public static class ShipSeparationUtility
     {
+        // ── 給其他模組的擴充點 ───────────────────────────────────────────────
+
+        /// <summary>一次船體搬移：<see cref="cells"/> 是原地圖上的格子，放到 <see cref="to"/> 的 cell + <see cref="offset"/>。</summary>
+        public readonly struct HullMove
+        {
+            public readonly Map from;
+            public readonly Map to;
+            public readonly IReadOnlyList<IntVec3> cells;
+            public readonly IntVec3 offset;
+
+            public HullMove(Map from, Map to, IReadOnlyList<IntVec3> cells, IntVec3 offset)
+            {
+                this.from = from;
+                this.to = to;
+                this.cells = cells;
+                this.offset = offset;
+            }
+        }
+
+        /// <summary>
+        /// 船體的格子、物件放到新地圖之後（分離到船體地圖、降落到目的地都會觸發），原地圖的格子資料還沒被下一次更新改掉；
+        /// 其他模組在這裡把自己的逐格資料（水位、氣壓…）跟著搬過去。
+        /// </summary>
+        public static event Action<HullMove> HullPlaced;
+
+        /// <summary>船體範圍（<paramref name="cells"/>）要移多少才會在 <paramref name="mapSize"/> 的地圖正中央；不會推出界外。</summary>
+        public static IntVec3 CenteringOffset(IEnumerable<IntVec3> cells, IntVec3 mapSize)
+        {
+            CellRect rect = CellRect.FromCellList(cells);
+            if (rect.Area == 0)
+            {
+                return IntVec3.Zero;
+            }
+            int dx = mapSize.x / 2 - (rect.minX + rect.Width / 2);
+            int dz = mapSize.z / 2 - (rect.minZ + rect.Height / 2);
+            dx = ClampOffset(dx, -rect.minX, mapSize.x - 1 - rect.maxX);
+            dz = ClampOffset(dz, -rect.minZ, mapSize.z - 1 - rect.maxZ);
+            return new IntVec3(dx, 0, dz);
+        }
+
+        private static int ClampOffset(int v, int min, int max)
+        {
+            return min > max ? v : v < min ? min : v > max ? max : v;
+        }
+
+        /// <summary>
+        /// 把 <paramref name="from"/> 上的船體格子搬到 <paramref name="to"/>（座標加 <paramref name="offset"/>），
+        /// 與降落共用的流程（擷取、移除、生成、收尾）。給其他模組自己的出入水、換地圖流程用。
+        /// </summary>
+        public static void RelocateHull(Map from, Map to, HashSet<IntVec3> cells, IntVec3 offset)
+        {
+            MoveHull(from, to, cells, offset);
+        }
+
         // ── 快照 ─────────────────────────────────────────────────────────────
 
         private class CellData
@@ -308,18 +362,19 @@ namespace DMSE
             // ── 步驟 7：原地圖清理
             ClearOrigin(origin, footprint, snap, report);
 
-            // ── 步驟 8、9：船體地圖生成與收尾（同座標：位移為零）
+            // ── 步驟 8、9：船體地圖生成與收尾（同座標；圖層要求置中時加上置中位移）
+            IntVec3 shipOffset = TransferEnvironment.CenterHullOnShipMap(origin.Tile.LayerDef) ? CenteringOffset(footprint, shipMap.Size) : IntVec3.Zero;
             GravshipPlacementUtility.placingGravship = true;
             List<Thing> spawned;
             try
             {
-                spawned = PlaceOnShip(shipMap, origin, snap, IntVec3.Zero);
+                spawned = PlaceOnShip(shipMap, origin, snap, shipOffset);
             }
             finally
             {
                 GravshipPlacementUtility.placingGravship = false;
             }
-            FinalizeShip(shipMap, origin, snap, spawned, IntVec3.Zero, newMap: true);
+            FinalizeShip(shipMap, origin, snap, spawned, shipOffset, newMap: true);
 
             // ── 步驟 10：口袋地圖改掛到船上
             RelinkPocketMaps(origin, shipMap, snap);
@@ -335,9 +390,9 @@ namespace DMSE
             }
             console.AbortPlan();
             Current.Game.CurrentMap = shipMap;
-            // 起飛演出只顯示傳入的格子，船體外側的附掛物也要一起顯示
-            HashSet<IntVec3> shownCells = new HashSet<IntVec3>(footprint);
-            shownCells.UnionWith(OuterAttachmentCells(shipMap, footprint));
+            // 起飛演出只顯示傳入的格子（船體地圖上的座標），船體外側的附掛物也要一起顯示
+            HashSet<IntVec3> shownCells = new HashSet<IntVec3>(footprint.Select(c => c + shipOffset));
+            shownCells.UnionWith(OuterAttachmentCells(shipMap, new HashSet<IntVec3>(shownCells)));
 
             // ── 步驟 11：原地圖去留
             LongEventHandler.ExecuteWhenFinished(delegate
@@ -1088,6 +1143,18 @@ namespace DMSE
                 for (int j = 0; j < g.members.Count; j++)
                 {
                     g.members[j].SetStorageGroup(group);
+                }
+            }
+            if (HullPlaced != null)
+            {
+                HullMove move = new HullMove(origin, ship, snap.cells.Keys.ToList(), offset);
+                try
+                {
+                    HullPlaced(move);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error("[DMSE] Exception in HullPlaced handler: " + ex);
                 }
             }
             return spawned;

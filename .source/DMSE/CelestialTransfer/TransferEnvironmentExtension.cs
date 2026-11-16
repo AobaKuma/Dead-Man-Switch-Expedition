@@ -33,6 +33,12 @@ namespace DMSE
         /// <summary>演出：音效、震動、火花、尾焰傷害、離場動畫；null = 太空船（<see cref="TransferPresentation.Space"/>）。</summary>
         public TransferPresentation presentation;
 
+        /// <summary>
+        /// 分離時把船體放到船體地圖正中央（預設保留原地圖座標）。船體貼著原地圖邊緣時，船體地圖上看得到的四周會一邊寬一邊窄；
+        /// 例如會把船外畫成一片水域的圖層，置中後四周看起來才一樣。
+        /// </summary>
+        public bool centerHullOnShipMap;
+
         public override IEnumerable<string> ConfigErrors()
         {
             foreach (string e in base.ConfigErrors())
@@ -99,6 +105,8 @@ namespace DMSE
         public static TransferLandingWorker LandingWorker(PlanetTile tile) => tile.Valid ? For(tile.LayerDef)?.landingWorker : null;
 
         /// <summary>這張地圖所在圖層的演出（沒掛時是太空船的預設）。</summary>
+        public static bool CenterHullOnShipMap(PlanetLayerDef layer) => For(layer)?.centerHullOnShipMap ?? false;
+
         public static TransferPresentation Presentation(Map map) => (map != null && map.Tile.Valid ? For(map.Tile.LayerDef)?.presentation : null) ?? TransferPresentation.Space;
     }
 

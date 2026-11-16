@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
   
-  <!-- EN: make advanced component with graphene -->
-  <DMSE_Make_ComponentSpacer.label>使用石墨烯製作高級零件</DMSE_Make_ComponentSpacer.label>
+  <!-- EN: make advanced component with nitrogallium -->
+  <DMSE_Make_ComponentSpacer.label>使用氮化鎵製作高級零件</DMSE_Make_ComponentSpacer.label>
   <!-- EN: Make an advanced component. -->
   <DMSE_Make_ComponentSpacer.description>製作一個高級零件。</DMSE_Make_ComponentSpacer.description>
   <!-- EN: Making advanced component. -->
   <DMSE_Make_ComponentSpacer.jobString>正在製作高級零件</DMSE_Make_ComponentSpacer.jobString>
   
-  <!-- EN: make advanced component with graphene x4 -->
-  <DMSE_Make_ComponentSpacerBulk.label>使用石墨烯製作高級零件x4</DMSE_Make_ComponentSpacerBulk.label>
+  <!-- EN: make advanced component with nitrogallium x4 -->
+  <DMSE_Make_ComponentSpacerBulk.label>使用氮化鎵製作高級零件x4</DMSE_Make_ComponentSpacerBulk.label>
   <!-- EN: Make advanced component x4 -->
   <DMSE_Make_ComponentSpacerBulk.description>製作高級零件x4。</DMSE_Make_ComponentSpacerBulk.description>
   <!-- EN: Making advanced component. -->

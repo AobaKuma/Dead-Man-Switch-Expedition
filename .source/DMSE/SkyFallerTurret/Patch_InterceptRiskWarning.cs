@@ -27,12 +27,15 @@ namespace DMSE
             if (!tile.Valid || traveller == null) { return null; }
             MapParent parent = Find.WorldObjects.MapParentAt(tile);
             if (parent == null) { return null; }
+            // 只有仍具攔截能力（有雷達且有可用攔截彈）時才警告；彈盡或雷達全毀的陣地可放心降落。
             if (parent.HasMap)
             {
-                return parent.Map.GetComponent<MapComponent_BVRCombat>()?.ResolveDefender(traveller);
+                MapComponent_BVRCombat combat = parent.Map.GetComponent<MapComponent_BVRCombat>();
+                Faction mapDefender = combat?.ResolveDefender(traveller);
+                return mapDefender != null && combat.HasInterceptorAmmo(mapDefender) ? mapDefender : null;
             }
             WorldObjectComp_AirDefense defense = parent.GetComponent<WorldObjectComp_AirDefense>();
-            return defense != null && defense.Available && parent.Faction.HostileTo(traveller) ? parent.Faction : null;
+            return defense != null && defense.Available && defense.Stock > 0 && parent.Faction.HostileTo(traveller) ? parent.Faction : null;
         }
 
         /// <summary>

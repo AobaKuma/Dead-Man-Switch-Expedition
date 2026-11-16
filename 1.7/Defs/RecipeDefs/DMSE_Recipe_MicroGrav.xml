@@ -170,7 +170,7 @@
   <!-- Advanced component (ComponentSpacer) -->
   <RecipeDef ParentName="DMSE_MicroGrav_Recipe">
     <defName>DMSE_Make_ComponentSpacer</defName>
-    <label>make advanced component with graphene</label>
+    <label>make advanced component with nitrogallium</label>
     <description>Make an advanced component.</description>
     <jobString>Making advanced component.</jobString>
     <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -197,19 +197,10 @@
         </filter>
         <count>1</count>
       </li>
-      <li>
-        <filter>
-          <thingDefs>
-            <li>DMSE_Graphene</li>
-          </thingDefs>
-        </filter>
-        <count>5</count>
-      </li>
     </ingredients>
     <fixedIngredientFilter>
       <thingDefs>
         <li>DMSE_Nitrogallium</li>
-        <li>DMSE_Graphene</li>
       </thingDefs>
     </fixedIngredientFilter>
     <products>
@@ -222,7 +213,7 @@
   <!-- Advanced component (bulk) (ComponentSpacer) -->
   <RecipeDef ParentName="DMSE_MicroGrav_Recipe">
     <defName>DMSE_Make_ComponentSpacerBulk</defName>
-    <label>make advanced component with graphene x4</label>
+    <label>make advanced component with nitrogallium x4</label>
     <description>Make advanced component x4</description>
     <jobString>Making advanced component.</jobString>
     <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -249,19 +240,10 @@
         </filter>
         <count>4</count>
       </li>
-      <li>
-        <filter>
-          <thingDefs>
-            <li>DMSE_Graphene</li>
-          </thingDefs>
-        </filter>
-        <count>20</count>
-      </li>
     </ingredients>
     <fixedIngredientFilter>
       <thingDefs>
         <li>DMSE_Nitrogallium</li>
-        <li>DMSE_Graphene</li>
       </thingDefs>
     </fixedIngredientFilter>
     <products>

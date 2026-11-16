@@ -25,7 +25,7 @@ namespace DMSE
                 if (launcher == null || launcher.IsLoaded) { continue; }
 
                 CompMissileConfig cfg = b.TryGetComp<CompMissileConfig>();
-                if (cfg == null || !cfg.NeedsAssembly) { continue; }
+                if (cfg == null || !cfg.WantsWork) { continue; }
 
                 yield return b;
             }
@@ -38,7 +38,7 @@ namespace DMSE
 
             if (launcher == null || cfg == null) { return false; }
             if (launcher.IsLoaded) { return false; }
-            if (!cfg.NeedsAssembly) { return false; }
+            if (!cfg.WantsWork) { return false; }
             if (t.IsForbidden(pawn) || !pawn.CanReserve(t, 1, -1, null, forced)) { return false; }
 
             // 資源全齊 → 可裝配
@@ -60,7 +60,7 @@ namespace DMSE
             CompMissileLauncher_Ballistic launcher = t.TryGetComp<CompMissileLauncher_Ballistic>();
             CompMissileConfig cfg = t.TryGetComp<CompMissileConfig>();
 
-            if (launcher == null || cfg == null || launcher.IsLoaded || !cfg.NeedsAssembly)
+            if (launcher == null || cfg == null || launcher.IsLoaded || !cfg.WantsWork)
             {
                 return null;
             }

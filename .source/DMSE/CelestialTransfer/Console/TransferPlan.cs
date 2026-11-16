@@ -29,6 +29,13 @@ namespace DMSE
         /// <summary>撞擊飛行時，起點太空層中最接近撞擊點的格子；船在太空層沿航線飛到這裡。</summary>
         public PlanetTile approachTile = PlanetTile.Invalid;
 
+        /// <summary>確認視窗按下確認後直接開始點火程序（不用再按一次「啟航」）。給其他模組自己的規劃指令用。</summary>
+        public bool launchOnConfirm;
+
+        /// <summary>確認視窗的「重新選擇」改呼叫這個（null = DMSE 的選目的地）。不存檔：只在確認視窗開著時有用。</summary>
+        [Unsaved(false)]
+        public System.Action reselect;
+
         /// <summary>船在起點太空層中的航線終點。</summary>
         public PlanetTile FlightTarget => isImpact ? approachTile : destination;
 
@@ -76,6 +83,7 @@ namespace DMSE
             Scribe_Values.Look(ref landOnSite, "landOnSite");
             Scribe_Values.Look(ref isImpact, "isImpact");
             Scribe_Values.Look(ref approachTile, "approachTile", PlanetTile.Invalid);
+            Scribe_Values.Look(ref launchOnConfirm, "launchOnConfirm");
         }
     }
 }

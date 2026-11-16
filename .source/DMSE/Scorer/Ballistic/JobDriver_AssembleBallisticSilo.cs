@@ -44,7 +44,7 @@ namespace DMSE
                 CompMissileConfig config = MissileCfg;
                 return launcher == null || config == null
                     || launcher.IsLoaded
-                    || !config.NeedsAssembly
+                    || !config.WantsWork
                     || !config.ResourcesComplete;
             });
 

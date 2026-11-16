@@ -29,6 +29,9 @@ namespace DMSE
         private bool ready;
         private bool finished;
         private bool previousScreenshotMode;
+        // 擷取延到下一次 WindowUpdate 才開始（見 StartCaptureOrAnimation）
+        private bool capturePending;
+        private int captureFrames;
         // 離場方向與引擎效果：船沿推進方向（運作中引擎的推力加權朝向）移動，引擎火焰與排氣跟著船體
         private TransferShipSurvey survey;
         private Vector3 thrustDirection = Vector3.forward;
@@ -47,6 +50,9 @@ namespace DMSE
         protected Vector3 ThrustDirection => thrustDirection;
         protected TransferShipSurvey Survey => survey;
         protected TransferPresentation Presentation => TransferEnvironment.Presentation(captureMap ?? displayMap);
+
+        /// <summary>擷取到的船體影像（還沒擷取完時 null）；子類別可以拿來做柔邊、分條等額外演出。</summary>
+        public Texture2D CapturedTexture => texture;
 
         /// <summary>動畫開始：鏡頭震動與起飛音效。</summary>
         protected virtual void StartEffects()
@@ -169,14 +175,33 @@ namespace DMSE
                 // 地圖只繪製主鏡頭視野內的區塊；原版 BeginGravshipRender 會設定 GravshipCaptureBounds 讓擷取範圍一併繪製，
                 // BeginTerrainRender 不會，所以這裡自己設定，並把鏡頭移到船體中心
                 GravshipCapturer.GravshipCaptureBounds = bounds;
-                Find.CameraDriver.JumpToCurrentMapLoc(bounds.CenterVector3);
-                capturer = new GravshipCapturer();
-                capturer.BeginTerrainRender(bounds, CaptureComplete);
+                FrameCapture();
+                // 不在這裡開始擷取：視窗可能是在地圖這一幀已經畫完之後才開的（遊戲邏輯、長時間事件、其他模組），
+                // 這時開的擷取鏡頭在這一幀結束時就拍，只拍到主鏡頭視野內已送出的區塊，其他部分是一片黑（只剩全域圖層，例如鋼樑）。
+                // 延到下一次 WindowUpdate（在 Game.UpdatePlay 繪製地圖之前）才開始，MapDrawer 才會把整個擷取範圍畫進去。
+                capturePending = true;
             }
             else
             {
                 BeginAnimation();
             }
+        }
+
+        /// <summary>
+        /// 擷取期間主鏡頭框住整個擷取範圍（縮放限制在允許範圍內）。MapDrawer 在擷取中會把擷取範圍一起畫，
+        /// 這是保險：長船超出主鏡頭視野的那一截也一定在畫的範圍內。
+        /// </summary>
+        private void FrameCapture()
+        {
+            if (captureMap == null || bounds.Area <= 0 || Find.CurrentMap != captureMap)
+            {
+                return;
+            }
+            FloatRange range = Find.CameraDriver.config.sizeRange;
+            float aspect = Mathf.Max(0.1f, Find.Camera.aspect);
+            float fit = Mathf.Max(bounds.Height * 0.5f, bounds.Width * 0.5f / aspect) + 2f;
+            Find.CameraDriver.JumpToCurrentMapLoc(bounds.CenterVector3);
+            Find.CameraDriver.SetRootSize(Mathf.Clamp(Mathf.Max(fit, Find.CameraDriver.RootSize), range.min, range.max));
         }
 
         private void CaptureComplete(Capture capture)
@@ -230,6 +255,19 @@ namespace DMSE
             {
                 if (!ready)
                 {
+                    if (capturePending)
+                    {
+                        // 等鏡頭與地圖切換穩定一幀再開始擷取
+                        FrameCapture();
+                        if (++captureFrames >= 2)
+                        {
+                            capturePending = false;
+                            capturer = new GravshipCapturer();
+                            capturer.BeginTerrainRender(bounds, CaptureComplete);
+                        }
+                        return;
+                    }
+                    FrameCapture();
                     capturer?.Update();
                     captureWait += Time.unscaledDeltaTime;
                     if (captureWait > 10f) Finish();
@@ -276,7 +314,7 @@ namespace DMSE
         public override void PostClose()
         {
             StopEffects();
-            if (capturer != null && !ready)
+            if ((capturer != null || capturePending) && !ready)
                 GravshipCapturer.IsGravshipRenderInProgress = false;
             Find.CameraDriver.shaker.StopAllShaking();
             Find.CameraDriver.SetRootSize(previousZoom);

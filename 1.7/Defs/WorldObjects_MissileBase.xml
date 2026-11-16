@@ -170,7 +170,7 @@
     <expandingIcon>true</expandingIcon>
     <expandingIconPriority>60</expandingIconPriority>
     <expandingIconTexture>World/WorldObjects/Expanding/Settlement</expandingIconTexture>
-    <validLaunchTarget>false</validLaunchTarget>
+    <!-- 可作為運輸艙／穿梭機目的地；仍具攔截能力時由 InterceptRiskUtility 在起飛前警告。 -->
     <!-- Site 渲染使用 SitePartDef.siteTexture；WorldObjectDef.texture 對 Site 類型無效，已移除避免材質警告 -->
     <!-- 地圖生成器（SitePartDef 無此欄位；由 WorldObjectDef 指定） -->
     <mapGenerator>DMSE_MissileBase_MapGen</mapGenerator>

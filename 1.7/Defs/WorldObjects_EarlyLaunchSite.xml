@@ -158,7 +158,7 @@
     <selectable>true</selectable>
     <expandingIcon>true</expandingIcon>
     <expandingIconPriority>60</expandingIconPriority>
-    <validLaunchTarget>false</validLaunchTarget>
+    <!-- 可作為運輸艙／穿梭機目的地；仍具攔截能力時由 InterceptRiskUtility 在起飛前警告。 -->
     <mapGenerator>DMSE_EarlyLaunchSite_MapGen</mapGenerator>
     <comps>
       <!-- 原版 Site 的整隊元件：沒有它，世界地圖上不會出現「重組遠行隊」。 -->
