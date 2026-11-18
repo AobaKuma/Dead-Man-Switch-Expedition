@@ -251,12 +251,14 @@ namespace DMSE
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
+            MapComponent_MissileRacks.Register(this, parent.Map);
             // 讀檔後訂單已作廢（例如彈體 Def 被移除）卻仍有已到料：退回台旁。
             if (!OrderActive && delivered.Count > 0) { RefundDelivered(); }
         }
 
         public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
         {
+            MapComponent_MissileRacks.Deregister(this, map);
             if (mode != DestroyMode.WillReplace && delivered.Count > 0)
             {
                 // 已到料就地掉落；被摧毀時依原版慣例只剩一半。

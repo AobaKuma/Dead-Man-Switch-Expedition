@@ -28,16 +28,25 @@ namespace DMSE
 
             // 架內 unspawned 導彈：以儲存架本身作為工作目標（架已生成且有 map 位置）。
             // 被打擊任務保留的導彈不裝配（GetAssemblyComp 同樣略過），待裝配的變更擱置到保留解除。
-            foreach (Building b in pawn.Map.listerBuildings.AllBuildingsColonistOfClass<Building>())
+            // 平台與組裝台從註冊表取，不再掃描殖民地全部建築。
+            MapComponent_MissileRacks registry = MapComponent_MissileRacks.For(pawn.Map);
+            if (registry == null) { yield break; }
+
+            // 有訂單的組裝台：以台本身為工作目標（GetAssemblyTarget 先看組裝台）。
+            IReadOnlyList<CompMissileAssemblyBench> benches = registry.Benches;
+            for (int i = 0; i < benches.Count; i++)
             {
-                // 有訂單的組裝台：以台本身為工作目標（GetAssemblyTarget 先看組裝台）。
-                if (b.TryGetComp<CompMissileAssemblyBench>()?.WantsWork == true)
-                {
-                    yield return b;
-                    continue;
-                }
-                IMissileRack rack = MissileRackUtil.Of(b);
-                if (rack == null) { continue; }
+                CompMissileAssemblyBench bench = benches[i];
+                if (bench.parent.Faction == Faction.OfPlayer && bench.WantsWork) { yield return bench.parent; }
+            }
+
+            IReadOnlyList<IMissileRack> racks = registry.Racks;
+            for (int r = 0; r < racks.Count; r++)
+            {
+                IMissileRack rack = racks[r];
+                Thing b = rack.RackThing;
+                if (b == null || b.Faction != Faction.OfPlayer) { continue; }
+                if (b.TryGetComp<CompMissileAssemblyBench>()?.WantsWork == true) { continue; } // 已以組裝台身分列出
                 IReadOnlyList<Thing> held = rack.HeldThings;
                 if (held == null) { continue; }
                 for (int i = 0; i < held.Count; i++)
@@ -45,7 +54,7 @@ namespace DMSE
                     CompMissileConfig c = held[i]?.TryGetComp<CompMissileConfig>();
                     if (c != null && c.NeedsAssembly && c.assemblyConfirmed && !StrikeReservation.IsReserved(held[i]))
                     {
-                        yield return rack.RackThing;
+                        yield return b;
                         break; // 一個架只 yield 一次，JobOnThing 會取第一枚待裝配的導彈
                     }
                 }

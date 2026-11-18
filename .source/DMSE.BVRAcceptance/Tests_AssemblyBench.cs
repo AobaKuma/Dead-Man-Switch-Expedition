@@ -32,6 +32,44 @@ namespace DMSE.BVRAcceptance
             }
         }
 
+        /// <summary>
+        /// 「維持 X 個」把架內導彈算進現有數量：無篩選帳單走原版資源計數器（原本漏算架內），
+        /// 有耐久篩選時走一般路徑（原版已數 IHaulSource 容器，不可重複計算）。
+        /// </summary>
+        public static IEnumerable<Wait> RecipeCountsRackMissiles(TestContext t)
+        {
+            ThingDef missile = LightMissileItem;
+            RecipeDef recipe = DefDatabase<RecipeDef>.AllDefsListForReading
+                .FirstOrDefault(r => r.products != null && r.products.Count > 0 && r.products[0].thingDef == missile);
+            t.Require(recipe != null, $"a recipe makes {missile.defName}");
+            ThingDef tableDef = recipe.AllRecipeUsers.FirstOrDefault(d => d.size.x <= 6 && d.size.z <= 6);
+            t.Require(tableDef != null, "the recipe has a workbench");
+            Thing table = SpawnBuilding(tableDef, 30, 30);
+            Bill_Production bill = (Bill_Production)recipe.MakeNewBill();
+            bill.repeatMode = BillRepeatModeDefOf.TargetCount;
+            bill.targetCount = 10;
+            ((IBillGiver)table).BillStack.AddBill(bill);
+            yield return new WaitTicks(2);
+
+            int before = recipe.WorkerCounter.CountProducts(bill);
+            bill.hpRange = new FloatRange(0.01f, 1f);
+            int beforeFiltered = recipe.WorkerCounter.CountProducts(bill);
+            bill.hpRange = new FloatRange(0f, 1f);
+
+            Building_MissileRack vls = (Building_MissileRack)SpawnBuilding(ThingDef.Named("DMSE_Building_LightMissileVLS"), 2, 2);
+            for (int i = 0; i < 3; i++) { vls.GetDirectlyHeldThings().TryAdd(ThingMaker.MakeThing(missile)); }
+            yield return new WaitTicks(2);
+
+            int after = recipe.WorkerCounter.CountProducts(bill);
+            bill.hpRange = new FloatRange(0.01f, 1f);
+            int afterFiltered = recipe.WorkerCounter.CountProducts(bill);
+            bill.hpRange = new FloatRange(0f, 1f);
+            t.Note($"counts without filter {before}->{after}, with HP filter {beforeFiltered}->{afterFiltered}");
+            t.Check(after - before == 3, "the plain do-until count includes the three missiles in the launch cell");
+            t.Check(afterFiltered - beforeFiltered == 3, "the filtered count includes them once, not twice");
+            ((IBillGiver)table).BillStack.Delete(bill);
+        }
+
         public static IEnumerable<Wait> BenchFacilitiesAndInfoCard(TestContext t)
         {
             Thing bench = SpawnBuilding(Bench, 2, 2);

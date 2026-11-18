@@ -17,14 +17,15 @@ namespace DMSE
 
         public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn)
         {
-            foreach (Building b in pawn.Map.listerBuildings.AllBuildingsColonistOfClass<Building>())
+            IReadOnlyList<IMissileRack> racks = MapComponent_MissileRacks.For(pawn.Map)?.Racks;
+            if (racks == null) { yield break; }
+            for (int i = 0; i < racks.Count; i++)
             {
-                if (b is IHaulSource) { continue; }
-                CompMissileRackStorage rack = b.TryGetComp<CompMissileRackStorage>();
-                if (rack != null && FirstDisallowed(rack) != null)
-                {
-                    yield return b;
-                }
+                // 只處理 comp 型平台；建築型平台是 IHaulSource，原版搬運會處理。
+                if (!(racks[i] is CompMissileRackStorage rack)) { continue; }
+                Thing b = rack.RackThing;
+                if (b is IHaulSource || b.Faction != Faction.OfPlayer) { continue; }
+                if (FirstDisallowed(rack) != null) { yield return b; }
             }
         }
 

@@ -158,6 +158,8 @@ namespace DMSE
         {
             base.PostSpawnSetup(respawningAfterLoad);
             EnsureInitialized();
+            // 建築本身就是平台時由建築登記（MissileRackUtil.Of 也優先取建築）。
+            if (!(parent is IMissileRack)) { MapComponent_MissileRacks.Register(this, parent.Map); }
             // 敵方陣地自動填充：def 沒掛 MissileRackAutoFillExtension 就直接返回，玩家建築不受影響。
             MissileAutoFillUtility.TryAutoFill(this, respawningAfterLoad);
         }
@@ -165,6 +167,7 @@ namespace DMSE
         public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
         {
             base.PostDeSpawn(map, mode);
+            MapComponent_MissileRacks.Deregister(this, map);
             if (mode != DestroyMode.WillReplace && innerContainer != null)
             {
                 innerContainer.TryDropAll(parent.Position, map, ThingPlaceMode.Near);

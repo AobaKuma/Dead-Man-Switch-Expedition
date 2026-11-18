@@ -462,6 +462,7 @@ namespace DMSE.BVRAcceptance
                 new AcceptanceTest("AB2", "Assembly bench: colonist hauls and assembles an order", Tests_AssemblyBench.BenchProducesWithColonist),
                 new AcceptanceTest("AB3", "Assembly bench: cancel, send to storage, designs, window", Tests_AssemblyBench.BenchOutputCancelAndDesigns),
                 new AcceptanceTest("AB4", "Ballistic rack: no hauling before confirmation, then loads", Tests_AssemblyBench.BallisticRackNeedsConfirmation),
+                new AcceptanceTest("AB5", "Do-until-X bills count missiles loaded in launchers", Tests_AssemblyBench.RecipeCountsRackMissiles),
                 new AcceptanceTest("VR1", "Vacuum sealed room: terrain, one room per entrance, landfill keeps the owner", Tests_VacuumRoom.TerrainAndLandfill),
                 new AcceptanceTest("L1", "Save/load mid-engagement", Tests_Seekers.SaveLoadMidEngagement),
                 new AcceptanceTest("L2", "Save/load after a reroute", Tests_WorldEdge.SaveLoadAfterReroute),

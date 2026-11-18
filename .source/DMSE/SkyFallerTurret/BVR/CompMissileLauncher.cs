@@ -94,8 +94,9 @@ namespace DMSE
             return MissileItemExtension.ConfigFor(LoadedMissile);
         }
 
+        // 便宜的條件在前；Active 已包含 HasAmmo（找彈要掃容器與打擊保留），不再重算一次。
         public bool ReadyToFire(int now)
-            => Active && HasAmmo && !OnCooldown(now) && Props.interceptorSkyfaller != null;
+            => Props.interceptorSkyfaller != null && !OnCooldown(now) && Active;
 
         /// <summary>
         /// 發射一枚攔截彈。<paramref name="heading"/> 為來襲方位（升空後轉向飛出地圖）；不給時以

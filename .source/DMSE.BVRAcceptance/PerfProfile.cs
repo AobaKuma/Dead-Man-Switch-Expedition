@@ -282,7 +282,38 @@ namespace DMSE.BVRAcceptance
                 new AcceptanceTest("PF1", "Perf: one of every DMSE building on the pad, idle", EveryBuilding),
                 new AcceptanceTest("PF2", "Perf: NPC missile base on the world map, nothing in flight", WorldSiteIdle),
                 new AcceptanceTest("PF3", "Perf: twelve enemy cruise missiles against a defended colony", Saturation),
+                new AcceptanceTest("PF4", "Perf: 120 light vertical launch cells, mostly empty, colonists idle", ManyVls),
             };
+        }
+
+        /// <summary>
+        /// Workshop report (2026-11): the game stutters once a colony has 96+ vertical launch cells. Most cells are
+        /// empty or part-loaded, and one storage rack holds missiles none of them accept, so colonists looking for
+        /// work keep asking every cell whether it can be loaded.
+        /// </summary>
+        private static IEnumerable<Wait> ManyVls(TestContext t)
+        {
+            ThingDef vls = ThingDef.Named("DMSE_Building_LightMissileVLS");
+            int placed = 0;
+            for (int row = 0; row < 10; row++)
+            {
+                for (int col = 0; col < 12; col++)
+                {
+                    Building_MissileRack cell = (Building_MissileRack)BVRFixture.SpawnBuilding(vls, 1 + col * 2, 1 + row * 2);
+                    placed++;
+                    if (placed % 5 == 0) // every fifth cell holds two interceptors, so the BVR layer has armed launchers
+                    {
+                        for (int i = 0; i < 2; i++) { cell.GetDirectlyHeldThings().TryAdd(ThingMaker.MakeThing(BVRFixture.LightMissileItem)); }
+                    }
+                }
+            }
+            Building_MissileRack store = (Building_MissileRack)BVRFixture.SpawnBuilding(ThingDef.Named("DMSE_CruiseMissileRack"), 32, 30);
+            for (int i = 0; i < 2; i++) { store.GetDirectlyHeldThings().TryAdd(ThingMaker.MakeThing(ThingDef.Named("DMSE_Missile_Oniks"))); }
+            BVRFixture.SpawnBuilding(BVRFixture.PhaseArray, 30, 2);
+            t.Note($"spawned {placed} light VLS cells and a cruise-missile rack holding {store.StoredCount} missiles");
+            yield return BVRFixture.WaitPowered();
+            yield return new WaitTicks(2500);
+            t.Check(placed == 120, "120 VLS cells stood for 2500 ticks");
         }
 
         private static IEnumerable<Wait> Idle(TestContext t)

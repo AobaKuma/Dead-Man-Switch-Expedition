@@ -9,9 +9,23 @@ namespace DMSE
     /// </summary>
     public static class StrikeReservation
     {
+        private static Map cachedMap;
+        private static MapComponent_StrikePlanner cachedPlanner;
+
+        /// <summary>
+        /// 防空每 tick 對每座發射器查一次（找可用攔截彈時要略過保留彈），
+        /// Map.GetComponent 是線性搜尋，所以記住上一張地圖的結果。
+        /// </summary>
         public static MapComponent_StrikePlanner PlannerFor(Thing thing)
         {
-            return thing?.MapHeld?.GetComponent<MapComponent_StrikePlanner>();
+            Map map = thing?.MapHeld;
+            if (map == null) { return null; }
+            if (cachedMap != map || cachedPlanner == null || cachedPlanner.map != map)
+            {
+                cachedPlanner = map.GetComponent<MapComponent_StrikePlanner>();
+                cachedMap = map;
+            }
+            return cachedPlanner;
         }
 
         public static bool IsReserved(Thing round)

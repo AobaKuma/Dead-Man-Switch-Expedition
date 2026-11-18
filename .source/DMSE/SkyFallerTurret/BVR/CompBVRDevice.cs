@@ -29,44 +29,71 @@ namespace DMSE
         /// </summary>
         public bool ActiveForSeeker => Operational(countPowerStarting: true);
 
-        private bool Operational(bool countPowerStarting) => IsOperational(parent, countPowerStarting);
+        // 可運作判定用到的 comp：建築的 comp 組成在生成後不變，第一次判定時取一次即可
+        //（火控每 tick 對每座發射器判定，數十座時每次 6 個 GetComp 的線性搜尋很可觀）。
+        private bool operationalCompsCached;
+        private CompBreakdownable cBreakdownable;
+        private CompFlickable cFlickable;
+        private CompPowerThrottle cThrottle;
+        private CompPowerTrader cPower;
+        private CompStunnable cStunnable;
+        private CompMannable cMannable;
+
+        private bool Operational(bool countPowerStarting)
+        {
+            if (parent == null) { return false; }
+            if (!operationalCompsCached)
+            {
+                cBreakdownable = parent.GetComp<CompBreakdownable>();
+                cFlickable = parent.GetComp<CompFlickable>();
+                cThrottle = parent.GetComp<CompPowerThrottle>();
+                cPower = parent.GetComp<CompPowerTrader>();
+                cStunnable = parent.GetComp<CompStunnable>();
+                cMannable = parent.GetComp<CompMannable>();
+                operationalCompsCached = true;
+            }
+            return Evaluate(parent, cBreakdownable, cFlickable, cThrottle, cPower, cStunnable, cMannable, countPowerStarting);
+        }
 
         /// <summary>
         /// 共用的可運作判定，供無法繼承本類的 Comp（例如 <see cref="CompBuildingTurretGun"/>）沿用同一套規則。
         /// </summary>
         public static bool IsOperational(ThingWithComps parent, bool countPowerStarting = false)
         {
+            if (parent == null) { return false; }
+            return Evaluate(parent, parent.GetComp<CompBreakdownable>(), parent.GetComp<CompFlickable>(), parent.GetComp<CompPowerThrottle>(),
+                parent.GetComp<CompPowerTrader>(), parent.GetComp<CompStunnable>(), parent.GetComp<CompMannable>(), countPowerStarting);
+        }
+
+        private static bool Evaluate(ThingWithComps parent, CompBreakdownable breakdownable, CompFlickable flickable,
+            CompPowerThrottle throttle, CompPowerTrader power, CompStunnable stunnable, CompMannable mannable, bool countPowerStarting)
+        {
             if (parent == null || !parent.Spawned || parent.Destroyed)
             {
                 return false;
             }
 
-            CompBreakdownable breakdownable = parent.GetComp<CompBreakdownable>();
             if (breakdownable != null && breakdownable.BrokenDown)
             {
                 return false;
             }
 
-            CompFlickable flickable = parent.GetComp<CompFlickable>();
             if (flickable != null && !flickable.SwitchIsOn)
             {
                 return false;
             }
 
             // 功率段位 0 是待機：不偵測、不干擾、不佔通道、不被反輻射鎖定，但仍吃待機電。
-            CompPowerThrottle throttle = parent.GetComp<CompPowerThrottle>();
             if (throttle != null && throttle.IsStandby)
             {
                 return false;
             }
 
-            CompPowerTrader power = parent.GetComp<CompPowerTrader>();
             if (power != null && !power.PowerOn && !(countPowerStarting && GuidanceType.PowerStarting(power)))
             {
                 return false;
             }
 
-            CompStunnable stunnable = parent.GetComp<CompStunnable>();
             if (stunnable != null && stunnable.StunHandler != null && stunnable.StunHandler.Stunned)
             {
                 return false;
@@ -75,7 +102,6 @@ namespace DMSE
             // 若掛有 CompMannable（例如需操作員手動操作的旋轉發射架／早期型雷達），
             // 未有人操作時裝置視為不可運作。與 CompTurretFacingRenderer.DeviceActive 的判定保持一致，
             // 使「視覺停止轉向」與「實際停止鎖定／發射」同步發生，而非僅視覺表現。
-            CompMannable mannable = parent.GetComp<CompMannable>();
             if (mannable != null && !mannable.MannedNow)
             {
                 return false;

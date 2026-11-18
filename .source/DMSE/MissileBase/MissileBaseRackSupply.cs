@@ -80,11 +80,14 @@ namespace DMSE
         {
             List<IMissileRack> result = new List<IMissileRack>();
             if (faction == null) return result;
-            foreach (Building b in map.listerBuildings.allBuildingsNonColonist)
+            IReadOnlyList<IMissileRack> racks = MapComponent_MissileRacks.For(map)?.Racks;
+            if (racks == null) return result;
+            for (int i = 0; i < racks.Count; i++)
             {
-                if (b.Faction != faction || b.Destroyed) continue;
-                IMissileRack rack = MissileRackUtil.Of(b);
-                if (rack != null && rack.MaxStored > 0) result.Add(rack);
+                IMissileRack rack = racks[i];
+                Thing b = rack.RackThing;
+                if (!(b is Building) || b.Faction != faction || b.Destroyed) continue;
+                if (rack.MaxStored > 0) result.Add(rack);
             }
             return result;
         }

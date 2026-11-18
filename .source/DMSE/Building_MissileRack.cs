@@ -194,6 +194,7 @@ namespace DMSE
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
             base.SpawnSetup(map, respawningAfterLoad);
+            MapComponent_MissileRacks.Register(this, map);
             // 敵方陣地生成後自動填充：讀取 MissileRackAutoFillExtension 規則，依 Faction TechLevel 選彈。
             // 載入存檔（respawningAfterLoad=true）時跳過，容器內容已由 ExposeData 還原。
             MissileAutoFillUtility.TryAutoFill(this, respawningAfterLoad);
@@ -205,6 +206,7 @@ namespace DMSE
             {
                 innerContainer.TryDropAll(Position, Map, ThingPlaceMode.Near);
             }
+            MapComponent_MissileRacks.Deregister(this, Map);
             base.DeSpawn(mode);
         }
 
