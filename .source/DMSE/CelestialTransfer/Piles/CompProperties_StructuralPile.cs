@@ -64,6 +64,12 @@ namespace DMSE
         public float beamCenterDrawSize = 3f;
 
         /// <summary>
+        /// 選取時畫出連結線（<see cref="PileDrawUtility.DrawNetworkOverlay"/>）；任一端為 false 就不畫那一條。
+        /// 只影響疊加層，船體範圍、爭議格、斷裂格與未連結樁的提示照常畫。一船有很多座樁的模組（例如 DepthRim 的龍骨）可以關掉。
+        /// </summary>
+        public bool drawLinkLines = true;
+
+        /// <summary>
         /// 鋼樑材質的 renderQueue。地形為 2000 + renderPrecedence，低於 2000 才會被地板蓋住、只在虛空處透出。
         /// </summary>
         public int beamRenderQueue = 1990;

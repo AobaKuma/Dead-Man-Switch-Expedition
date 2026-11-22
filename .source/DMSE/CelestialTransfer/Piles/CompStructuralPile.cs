@@ -11,8 +11,27 @@ namespace DMSE
     /// 殖民者送料施工完成後才生效。已送達的鋼樑材料存在本 Comp 的容器內，
     /// 原版 HaulToContainer 會經由 <see cref="IThingHolder"/> 找到它。
     /// </summary>
-    public class CompStructuralPile : ThingComp, IThingHolder
+    public class CompStructuralPile : ThingComp, IThingHolder, Fortified.Structures.IFFF_StructureLinkable
     {
+        // ── FFF 結構導出／生成：保存鋼樑連結（船體骨架） ─────────────────────
+
+        IEnumerable<Thing> Fortified.Structures.IFFF_StructureLinkable.StructureLinks => links;
+
+        /// <summary>FFF 結構生成時直接建立連結（不消耗材料、不走施工）。跨陣營的連結會被網路的 Validate 解除。</summary>
+        bool Fortified.Structures.IFFF_StructureLinkable.TryLinkForStructure(Thing other)
+        {
+            CompStructuralPile otherComp = other?.TryGetComp<CompStructuralPile>();
+            if (otherComp == null || otherComp == this || !parent.Spawned || other.Map != parent.Map)
+            {
+                return false;
+            }
+            if (!links.Contains(other))
+            {
+                PileLinkUtility.CompleteLink(this, otherComp);
+            }
+            return true;
+        }
+
         /// <summary>已完工連結，雙向各存一份。</summary>
         private List<Thing> links = new List<Thing>();
 

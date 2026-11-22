@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       海上發射站（2026-11-23）：武裝殖民艦隊（DMS_Army）在近海的海上平台上部署的導彈陣地。
+       ‧ 地圖：海上平台地圖（DMSE_SeaPlatform.xml 的高空 + 海面背景），沒有原版地形步驟、霧與玩家起點。
+       ‧ 布局：沿用野戰陣地的 LaunchSite_Mid.xml 結構與分組（DMSE.GenStep_SeaLaunchSite）；
+         每座結構底下先鋪一塊外擴 2 格的甲板，結構之間以 3 格寬的甲板走道連通（道路步驟 openTerrain = 高空），
+         最後由 DMSE.GenStep_SeaLaunchSitePillars 補上撐住所有甲板的敵方支柱。
+       ‧ 支柱是可以打的弱點：支柱被毀後撐不住的甲板 15 秒後連同上面的雷達與發射架塌進海裡。
+       ‧ 難度：與野戰陣地同一套門檻，但殖民艦隊是太空等級，各組數量與守軍都比野戰陣地多一級。
+       ‧ 進出：站點在水域 tile 上，遠行隊到不了（也沒有「重組遠行隊」）；只能用運輸艙、穿梭機或重力船登陸與撤離。
+       ‧ 摧毀條件、補給、彈架與砲塔彈藥規則同野戰陣地（MapComponent_MissileBase）。
+       ══════════════════════════════════════════════════════════════ -->
+
+  <!-- 整張鋪高空；不放玩家的起始平台與支柱 -->
+  <GenStepDef>
+    <defName>DMSE_SeaLaunchSite_GS_Ocean</defName>
+    <order>200</order>
+    <genStep Class="DMSE.GenStep_SeaPlatform">
+      <platformSize>(0,0)</platformSize>
+    </genStep>
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>DMSE_SeaLaunchSite_GS_Structures</defName>
+    <order>400</order>
+    <genStep Class="DMSE.GenStep_SeaLaunchSite">
+      <deckMargin>2</deckMargin>
+      <centerJitter>4</centerJitter>
+      <difficultyThresholds>
+        <li>0.5</li>
+        <li>0.9</li>
+        <li>1.4</li>
+      </difficultyThresholds>
+      <groups>
+        <li>
+          <label>search radar</label>
+          <pool>
+            <li>DMSE_Mid_SearchRadar</li>
+          </pool>
+          <countByTier>
+            <li>1</li>
+          </countByTier>
+          <radius>0~10</radius>
+          <randomRotation>false</randomRotation>
+        </li>
+        <li>
+          <label>fire control radar</label>
+          <pool>
+            <li>DMSE_Mid_FireControlRadar</li>
+          </pool>
+          <countByTier>
+            <li>1</li>
+            <li>2</li>
+            <li>2</li>
+            <li>3</li>
+          </countByTier>
+          <radius>14~26</radius>
+          <spacing>5</spacing>
+        </li>
+        <li>
+          <label>launch position</label>
+          <pool>
+            <li>DMSE_Mid_LaunchSite_A</li>
+            <li>DMSE_Mid_LaunchSite_B</li>
+            <li>DMSE_Mid_LaunchSite_C</li>
+            <li>DMSE_Mid_LaunchSite_D</li>
+          </pool>
+          <!-- 第一座必帶世界選靶發射器（C 沒有） -->
+          <firstPool>
+            <li>DMSE_Mid_LaunchSite_A</li>
+            <li>DMSE_Mid_LaunchSite_B</li>
+            <li>DMSE_Mid_LaunchSite_D</li>
+          </firstPool>
+          <countByTier>
+            <li>2</li>
+            <li>2~3</li>
+            <li>3~4</li>
+            <li>4~5</li>
+          </countByTier>
+          <radius>22~44</radius>
+          <spacing>5</spacing>
+        </li>
+        <li>
+          <label>ammo carrier</label>
+          <pool>
+            <li>DMSE_Mid_AmmoCar_A</li>
+            <li>DMSE_Mid_AmmoCar_B</li>
+          </pool>
+          <countByTier>
+            <li>1~2</li>
+            <li>2</li>
+            <li>2~3</li>
+            <li>3</li>
+          </countByTier>
+          <radius>16~36</radius>
+          <spacing>5</spacing>
+        </li>
+        <li>
+          <label>CIWS</label>
+          <pool>
+            <li>DMSE_Mid_CIWS</li>
+          </pool>
+          <countByTier>
+            <li>1</li>
+            <li>1~2</li>
+            <li>2</li>
+            <li>2~3</li>
+          </countByTier>
+          <radius>16~40</radius>
+          <spacing>5</spacing>
+        </li>
+        <li>
+          <label>rest room</label>
+          <pool>
+            <li>DMSE_Mid_RestRoom_A</li>
+            <li>DMSE_Mid_RestRoom_B</li>
+          </pool>
+          <countByTier>
+            <li>1</li>
+            <li>1~2</li>
+            <li>2</li>
+            <li>2</li>
+          </countByTier>
+          <radius>16~38</radius>
+          <spacing>5</spacing>
+        </li>
+        <li>
+          <label>war room</label>
+          <pool>
+            <li>DMSE_Mid_WarRoom_A</li>
+          </pool>
+          <countByTier>
+            <li>1</li>
+          </countByTier>
+          <radius>16~38</radius>
+          <spacing>5</spacing>
+        </li>
+      </groups>
+    </genStep>
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>DMSE_SeaLaunchSite_GS_SpawnCrew</defName>
+    <order>450</order>
+    <genStep Class="DMSE.GenStep_FieldLaunchSiteCrew">
+      <pointsPerPawn>110</pointsPerPawn>
+      <minCrew>4</minCrew>
+      <maxCrew>16</maxCrew>
+      <crewByTier>
+        <li>4~6</li>
+        <li>6~9</li>
+        <li>8~12</li>
+        <li>11~16</li>
+      </crewByTier>
+      <gunnerFraction>0.3</gunnerFraction>
+      <spawnRadius>14</spawnRadius>
+    </genStep>
+  </GenStepDef>
+
+  <!-- 甲板走道：道路步驟把高空當成可通行，鋪上的「路面」就是海上平台。不通往地圖邊緣（外面只有海）。
+       這張圖沒有原版遺跡與地標，所以不用等到 800；走道與支柱排在守軍（450）之前，支柱才不會蓋在人身上。 -->
+  <GenStepDef>
+    <defName>DMSE_SeaLaunchSite_GS_Walkways</defName>
+    <order>430</order>
+    <genStep Class="DMSE.GenStep_FieldLaunchSiteRoads">
+      <roadTerrain>DMSE_SeaPlatform</roadTerrain>
+      <openTerrain>DMSE_OpenAir</openTerrain>
+      <roadWidth>3</roadWidth>
+      <roadToMapEdge>false</roadToMapEdge>
+    </genStep>
+  </GenStepDef>
+
+  <!-- 支柱：在走道之後，甲板形狀已經定了 -->
+  <GenStepDef>
+    <defName>DMSE_SeaLaunchSite_GS_Pillars</defName>
+    <order>440</order>
+    <genStep Class="DMSE.GenStep_SeaLaunchSitePillars">
+      <pillarDef>DMSE_SeaPlatformPillar</pillarDef>
+    </genStep>
+  </GenStepDef>
+
+  <MapGeneratorDef>
+    <defName>DMSE_SeaLaunchSite_MapGen</defName>
+    <label>sea launch station</label>
+    <genSteps>
+      <li>DMSE_SeaLaunchSite_GS_Ocean</li>
+      <li>DMSE_SeaLaunchSite_GS_Structures</li>
+      <li>DMSE_FieldLaunchSite_GS_RackFill</li>
+      <li>DMSE_SeaLaunchSite_GS_SpawnCrew</li>
+      <li>DMSE_SeaLaunchSite_GS_Walkways</li>
+      <li>DMSE_SeaLaunchSite_GS_Pillars</li>
+    </genSteps>
+    <modExtensions>
+      <li Class="DMSE.SeaPlatformMapExtension">
+        <voidTerrain>DMSE_OpenAir</voidTerrain>
+        <deckTerrain>DMSE_SeaPlatform</deckTerrain>
+        <seaDrop>14.1</seaDrop>
+      </li>
+    </modExtensions>
+  </MapGeneratorDef>
+
+  <WorldObjectDef>
+    <defName>DMSE_SeaLaunchSite</defName>
+    <label>sea launch station</label>
+    <description>An offshore missile station of the armed colonial fleet, built on sea platforms raised above the waves on steel pillars: radars, launch positions, ammunition carriers and crew quarters joined by deck walkways. It can only be reached by air. Knocking out its pillars sends the decks they hold up into the sea.</description>
+    <worldObjectClass>RimWorld.Planet.Site</worldObjectClass>
+    <canHaveFaction>true</canHaveFaction>
+    <saved>true</saved>
+    <selectable>true</selectable>
+    <expandingIcon>true</expandingIcon>
+    <expandingIconPriority>60</expandingIconPriority>
+    <mapGenerator>DMSE_SeaLaunchSite_MapGen</mapGenerator>
+    <comps>
+      <!-- 沒有 WorldObjectCompProperties_FormCaravan：水域 tile 上不能組遠行隊，只能空中撤離。 -->
+      <li Class="DMSE.CompProperties_WorldAirDefense">
+        <worldDetectionRange>12</worldDetectionRange>
+        <antiStealthLevel>2</antiStealthLevel>
+        <fireControlDef>DMSE_FireControlRadar</fireControlDef>
+        <channels>3</channels>
+        <interceptorStock>6</interceptorStock>
+        <restockPerDay>3</restockPerDay>
+        <interceptorBody>DMSE_MissileBody_Light</interceptorBody>
+        <interceptorWarhead>DMSE_Light_Warhead_ContinuousRod</interceptorWarhead>
+        <launchCooldownTicks>300</launchCooldownTicks>
+        <worldInterceptRange>7</worldInterceptRange>
+      </li>
+      <li Class="DMSE.CompProperties_MissileBase">
+        <missileFireIntervalDays>
+          <min>2.5</min>
+          <max>4</max>
+        </missileFireIntervalDays>
+        <missilesPerSalvo>
+          <min>1</min>
+          <max>3</max>
+        </missilesPerSalvo>
+        <adaptiveSalvo>
+          <alpha>0.8</alpha>
+          <exponent>0.7</exponent>
+          <maxPerSalvo>5</maxPerSalvo>
+          <tiers>
+            <li>
+              <minEffective>2</minEffective>
+              <chance>0.35</chance>
+              <missileBody>DMSE_MissileBody_Light</missileBody>
+              <partOptions>
+                <li>
+                  <category>Payload</category>
+                  <parts>
+                    <li>DMSE_Light_Payload_Decoy</li>
+                  </parts>
+                </li>
+              </partOptions>
+            </li>
+            <li>
+              <minEffective>3</minEffective>
+              <chance>0.3</chance>
+              <missileBody>DMSE_MissileBody_Light</missileBody>
+              <partOptions>
+                <li>
+                  <category>Guidance</category>
+                  <parts>
+                    <li>DMSE_Light_Guidance_AntiRadiation</li>
+                  </parts>
+                </li>
+              </partOptions>
+            </li>
+            <li>
+              <minEffective>5</minEffective>
+              <chance>0.35</chance>
+              <missileBody>DMSE_MissileBody_AdvancedCruise</missileBody>
+              <partOptions>
+                <li>
+                  <category>Payload</category>
+                  <parts>
+                    <li>DMSE_AdvCruise_Payload_None</li>
+                    <li>DMSE_AdvCruise_Payload_Decoy</li>
+                  </parts>
+                </li>
+              </partOptions>
+            </li>
+          </tiers>
+        </adaptiveSalvo>
+        <range>18</range>
+        <relocationDays>
+          <min>12</min>
+          <max>24</max>
+        </relocationDays>
+        <reentryBlockedDays>
+          <min>0.5</min>
+          <max>1</max>
+        </reentryBlockedDays>
+        <incomingWorldObjectDef>DMSE_WorldObject_IncomingMissile</incomingWorldObjectDef>
+        <!-- 補給、彈架與砲塔彈藥同野戰陣地 -->
+        <supplyDrop>
+          <intervalDays>2~4</intervalDays>
+          <perPawn>8</perPawn>
+          <maxStockPerPawn>12</maxStockPerPawn>
+        </supplyDrop>
+        <rackSupply>
+          <intervalDays>2~4</intervalDays>
+          <loadDelayTicks>2500</loadDelayTicks>
+          <!-- 守軍自行從彈藥庫搬彈裝填發射架，同時最多 2 人。有相容彈的彈藥庫時，空發射架不另外空投。 -->
+          <maxCrewLoaders>2</maxCrewLoaders>
+          <loadouts>
+            <li>
+              <rack>DMSE_FieldStructure_AmmoStorage</rack>
+              <missiles>
+                <li>DMSE_Missile_Maverick</li>
+                <li>DMSE_Missile_Grison</li>
+              </missiles>
+            </li>
+            <li>
+              <rack>DMSE_Building_LightMissileLauncher</rack>
+              <missiles>
+                <li>DMSE_Missile_Maverick</li>
+                <li>DMSE_Missile_Grison</li>
+              </missiles>
+            </li>
+            <li>
+              <rack>DMSE_MissileRack</rack>
+              <missiles>
+                <li>DMSE_Missile_Maverick</li>
+                <li>DMSE_Missile_Grison</li>
+              </missiles>
+            </li>
+            <li>
+              <rack>DMSE_Building_RotaryMissileLauncher</rack>
+              <missiles>
+                <li>DMSE_InterceptorMissile</li>
+                <li>DMSE_Missile_Grison</li>
+              </missiles>
+            </li>
+            <li>
+              <rack>DMSE_Building_FieldAirDefense</rack>
+              <missiles>
+                <li>DMSE_InterceptorMissile</li>
+                <li>DMSE_Missile_Stinger</li>
+              </missiles>
+            </li>
+          </loadouts>
+        </rackSupply>
+        <turretAmmo>
+          <intervalDays>2~4</intervalDays>
+          <refillBelowPercent>0.5</refillBelowPercent>
+          <refillToPercent>1</refillToPercent>
+          <haulDelayTicks>300</haulDelayTicks>
+          <maxHaulers>1</maxHaulers>
+        </turretAmmo>
+      </li>
+    </comps>
+  </WorldObjectDef>
+
+  <SitePartDef>
+    <defName>DMSE_SeaLaunchSitePart</defName>
+    <label>sea launch station</label>
+    <description>An offshore missile station on pillar-supported sea platforms, with radars, launch positions, ammunition carriers and crew quarters.</description>
+    <workerClass>DMSE.SitePartWorker_SeaLaunchSite</workerClass>
+    <siteTexture>World/WorldObjects/Sites/Outpost</siteTexture>
+    <expandingIconTexture>UI/Icon/icon_Marine_cruiser</expandingIconTexture>
+    <applyFactionColorToSiteTexture>true</applyFactionColorToSiteTexture>
+    <disallowsAutomaticDetectionTimerStart>true</disallowsAutomaticDetectionTimerStart>
+    <requiresFaction>true</requiresFaction>
+    <tags>
+      <li>DMSE_SeaLaunchSite</li>
+    </tags>
+    <wantsThreatPoints>true</wantsThreatPoints>
+    <forceExitAndRemoveMapCountdownDurationDays>0</forceExitAndRemoveMapCountdownDurationDays>
+    <modExtensions>
+      <!-- 只有武裝殖民艦隊（DMS 本體）會部署 -->
+      <li Class="DMSE.SeaLaunchSiteFactionExtension">
+        <factions>
+          <li>DMS_Army</li>
+        </factions>
+      </li>
+    </modExtensions>
+  </SitePartDef>
+
+  <!-- 說書人觸發的大型威脅：敵對的武裝殖民艦隊在殖民地附近海面部署海上發射站。
+       需要雷達網研究、殖民艦隊與玩家敵對、附近有空的水域 tile；世界上已有 NPC 導彈陣地（任何種類）時不觸發。 -->
+  <IncidentDef>
+    <defName>DMSE_SeaLaunchSiteDeployed</defName>
+    <label>sea launch station deployed</label>
+    <category>ThreatBig</category>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+      <li>World</li>
+    </targetTags>
+    <!-- World 只給開發者在世界地圖上強制觸發（以目前或任一家園地圖為基準）；說書人觸發仍只認家園地圖（CanFireNowSub）。 -->
+    <workerClass>DMSE.IncidentWorker_SeaLaunchSite</workerClass>
+    <baseChance>0.5</baseChance>
+    <earliestDay>20</earliestDay>
+    <minRefireDays>25</minRefireDays>
+    <minThreatPoints>500</minThreatPoints>
+    <letterLabel>Colonial fleet sea launch station</letterLabel>
+    <letterDef>ThreatBig</letterDef>
+    <modExtensions>
+      <li Class="DMSE.FieldLaunchSiteIncidentExtension">
+        <worldObjectDef>DMSE_SeaLaunchSite</worldObjectDef>
+        <sitePartDef>DMSE_SeaLaunchSitePart</sitePartDef>
+        <distance>4~14</distance>
+        <maxActiveSites>1</maxActiveSites>
+        <threatPoints>500~3500</threatPoints>
+        <requiredResearch>DMSE_RadarNetwork</requiredResearch>
+        <spawnedLetterKey>DMSE.SeaLaunchSite.SpawnedLetter</spawnedLetterKey>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+
+</Defs>

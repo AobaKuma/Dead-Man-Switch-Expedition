@@ -51,13 +51,13 @@ namespace DMSE
                 .Count(p => !p.Dead && p.Faction != null && p.Faction.HostileTo(Faction.OfPlayer));
             sb.AppendLine("DMSE.Alert.Exist.EnemiesAlive".Translate(enemyCount));
 
-            // 若為導彈陣地，加入額外說明
-            bool isMissileBase = map.Parent is Site s
-                && s.GetComponent<WorldObjectComp_MissileBase>() != null;
-            if (isMissileBase)
+            // 若為導彈陣地，加入額外說明（已摧毀的陣地不會重整，改提示可趁觀察結束前派人搜刮）
+            if (IsMissileBase(map))
             {
                 sb.AppendLine();
-                sb.AppendLine("DMSE.Alert.Exist.IsMissileBase".Translate());
+                sb.AppendLine((IsDestroyedMissileBase(map)
+                    ? "DMSE.Alert.Exist.MissileBaseDestroyed"
+                    : "DMSE.Alert.Exist.IsMissileBase").Translate());
             }
 
             // 點擊提示
@@ -72,10 +72,7 @@ namespace DMSE
             Map map = Find.CurrentMap;
             if (map == null || !GameComponent_MissileEngage.Comp.times.ContainsKey(map)) return;
 
-            bool isMissileBase = map.Parent is Site site
-                && site.GetComponent<WorldObjectComp_MissileBase>() != null;
-
-            string confirmText = isMissileBase
+            string confirmText = IsMissileBase(map) && !IsDestroyedMissileBase(map)
                 ? "DMSE.Alert.Exist.EndEarly.Confirm.MissileBase".Translate()
                 : "DMSE.Alert.Exist.EndEarly.Confirm".Translate();
 
@@ -84,6 +81,13 @@ namespace DMSE
                 () => EndObservationEarly(map),
                 destructive: true));
         }
+
+        private static bool IsMissileBase(Map map)
+            => map.Parent is Site s && s.GetComponent<WorldObjectComp_MissileBase>() != null;
+
+        /// <summary>火控雷達已全滅的導彈陣地：站點等觀察結束、玩家撤離後才隨地圖移除。</summary>
+        private static bool IsDestroyedMissileBase(Map map)
+            => map.GetComponent<MapComponent_MissileBase>()?.BaseSiteDestroyed == true;
 
         private static void EndObservationEarly(Map map)
         {

@@ -282,14 +282,15 @@ namespace DMSE
             for (int i = 0; i < piles.Count; i++)
             {
                 CompStructuralPile p = piles[i];
-                if (p.parent.Faction != Faction.OfPlayer)
+                // 非玩家樁：施工單是玩家的工作，取消；已完工連結保留（FFF 結構生成的 NPC 船體骨架）。
+                // 跨陣營的連結由下方逐條檢查解除，所以佔領其中一根樁時，它與未佔領的樁之間的連結仍會斷開。
+                if (p.parent.Faction != Faction.OfPlayer && p.Orders.Count > 0)
                 {
-                    if (p.Links.Count > 0 || p.Orders.Count > 0)
+                    for (int j = p.Orders.Count - 1; j >= 0; j--)
                     {
-                        p.ClearAllLinksAndOrders();
-                        changed = true;
+                        p.CancelOrder(p.Orders[j]);
                     }
-                    continue;
+                    changed = true;
                 }
                 for (int j = p.Links.Count - 1; j >= 0; j--)
                 {

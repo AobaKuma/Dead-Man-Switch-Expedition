@@ -8,7 +8,7 @@
   <DMSE.MissileBase.Relocated>导弹阵地转移</DMSE.MissileBase.Relocated>
   <DMSE.MissileBase.RelocatedDesc>一处敌方导弹阵地在部署后完成射击任务并转移，防止殖民地反制。</DMSE.MissileBase.RelocatedDesc>
   <DMSE.MissileBase.Destroyed>导弹阵地已摧毁</DMSE.MissileBase.Destroyed>
-  <DMSE.MissileBase.DestroyedDesc>殖民者已摧毁敌方导弹阵地的所有火控雷达。失去火控后阵地无法再发射，来自该阵地的导弹威胁已解除。</DMSE.MissileBase.DestroyedDesc>
+  <DMSE.MissileBase.DestroyedDesc>殖民者已摧毁敌方导弹阵地的所有火控雷达。失去火控后阵地无法再发射，来自该阵地的导弹威胁已解除。\n\n阵地地图会保留到观察结束、且当地没有殖民者为止，仍可派穿梭机前往搜刮。</DMSE.MissileBase.DestroyedDesc>
   <DMSE.MissileBase.ReentryBlockedIn>地面通道封锁中，敌方整备防线（{0}）</DMSE.MissileBase.ReentryBlockedIn>
   <DMSE.MissileBase.ReentryBlocked>通道封锁，敌方整备防线（{0}）</DMSE.MissileBase.ReentryBlocked>
   <DMSE.MissileBase.ReentryBlockStarted>{0}：火控雷达仍在，敌方正重新整备防线。{1}内无法再次进入，阵地将完整重建。</DMSE.MissileBase.ReentryBlockStarted>
@@ -139,6 +139,7 @@
   <DMSE.Alert.Exist.TimeLeft>观察结束倒数：{0}</DMSE.Alert.Exist.TimeLeft>
   <DMSE.Alert.Exist.EnemiesAlive>剩余敌方战斗人员：{0}</DMSE.Alert.Exist.EnemiesAlive>
   <DMSE.Alert.Exist.IsMissileBase>这是一处运作中的导弹阵地。提前结束观察将让敌方人员得以重整并重置其防御。</DMSE.Alert.Exist.IsMissileBase>
+  <DMSE.Alert.Exist.MissileBaseDestroyed>此导弹阵地的火控雷达已全数摧毁。地图会保留到观察结束、且当地没有殖民者为止；在此之前可派穿梭机或运输舱前往搜刮。</DMSE.Alert.Exist.MissileBaseDestroyed>
   <DMSE.Alert.Exist.ClickHint>点击以提前结束观察。</DMSE.Alert.Exist.ClickHint>
   <DMSE.Alert.Exist.EndEarly.Confirm>现在就结束观察？地图将不再被保留，可能会被游戏清理。</DMSE.Alert.Exist.EndEarly.Confirm>
   <DMSE.Alert.Exist.EndEarly.Confirm.MissileBase>提前结束观察？\n\n敌方人员将有机会重整，该导弹阵地的防御与计时器都会重置，如同观察从未发生。\n\n此操作无法复原。</DMSE.Alert.Exist.EndEarly.Confirm.MissileBase>
@@ -287,7 +288,11 @@
   <DMSE.Artillery.NoCrew>需要炮手操作：右键选择“操作”指派人员，炮手会自动装填炮弹。</DMSE.Artillery.NoCrew>
   <DMSE.Artillery.NoLoadedShell>尚未装填炮弹：先让炮手装填迫击炮弹再开火。</DMSE.Artillery.NoLoadedShell>
   <DMSE.Artillery.WaitingForShell>等待炮手补弹，射击任务暂停中。</DMSE.Artillery.WaitingForShell>
+  <DMSE.Artillery.WaitingForAutoloader>等待自动装填架补弹，射击任务暂停中。</DMSE.Artillery.WaitingForAutoloader>
+  <DMSE.Artillery.NoLoadedShellAutoloader>尚未装填炮弹：先在连接的自动装填架上存放迫击炮弹再开火。</DMSE.Artillery.NoLoadedShellAutoloader>
+  <DMSE.Artillery.WaitingForBarrel>炮管已耗损，等待更换强化炮管，射击任务暂停中。</DMSE.Artillery.WaitingForBarrel>
   <DMSE.Artillery.NoRegistration>这张地图还没有校射落点，无法效力射；请先以校射模式打一发。</DMSE.Artillery.NoRegistration>
+  <DMSE.Artillery.GroupPartial>选中的 {1} 门炮中，{0} 门可以射击此目标；其余：{2}</DMSE.Artillery.GroupPartial>
   <DMSE.BVR.DeviceInactive>装置不可用（无电、损坏或已关闭）。</DMSE.BVR.DeviceInactive>
   <!-- 状态字符串（用于 StopDesc） -->
   <DMSE.Artillery.StateCooldown>装填冷却中，剩余 {0}</DMSE.Artillery.StateCooldown>

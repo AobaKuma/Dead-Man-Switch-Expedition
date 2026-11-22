@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Sea launch station (DMSE.SeaLaunchSite) -->
+  <DMSE.SeaLaunchSite.ArrivedLetter>Your pawns have arrived at a colonial fleet sea launch station. Its radars, launch positions, ammunition carriers and crew quarters stand on sea platforms joined by deck walkways, held up above the waves by steel pillars. Destroy every fire-control radar to neutralize the station; destroying a pillar sends the decks it alone supports into the sea, along with everything on them. There is no way back by land: leave by shuttle or transport pod.</DMSE.SeaLaunchSite.ArrivedLetter>
+  <DMSE.SeaLaunchSite.SpawnedLetter>{0} has deployed a sea launch station on the water {3} tiles {2} of {1}. Its launchers can strike your colony; supply pods will keep its garrison fed while its radars run.\n\nThe station can only be reached by air. Destroy every fire-control radar to neutralize it, or bring down the pillars that hold its decks above the sea.</DMSE.SeaLaunchSite.SpawnedLetter>
+</LanguageData>

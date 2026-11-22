@@ -62,6 +62,17 @@ namespace DMSE
         public float jamDetectionPenalty = 0.6f;
         public float jamMinDetectionFactor = 0.15f;
         public float jamLockPenalty = 0.8f;
+        // ---- 末端落點標記與重新鎖定（docs/末端落點顯示與導引頭重新鎖定_實作計畫.md）----
+        /// <summary>防禦方沒有能接戰的 CIWS 時，當作末端窗口的 ticks（標記與重鎖共用）。</summary>
+        public int terminalMarkerFallbackTicks = 1800;
+        /// <summary>同一陣營、落點相距在此格數內的導彈合併成一個標記。</summary>
+        public float terminalMarkerMergeCells = 3f;
+        /// <summary>末端窗口內剩這麼多 ticks 時，自主尋標頭重新鎖定一次（上限為窗口本身）。</summary>
+        public int terminalRetargetTicks = 900;
+        /// <summary>是否啟用末端重新鎖定。</summary>
+        public bool terminalRetargetEnabled = true;
+        /// <summary>重鎖的新落點離原落點超過這麼多格就放棄；0 = 不限。</summary>
+        public int terminalRetargetMaxShiftCells;
         public static BVRWorldTuningDef Current => DefDatabase<BVRWorldTuningDef>.GetNamedSilentFail("DMSE_BVRWorldTuning") ?? fallback;
         private static readonly BVRWorldTuningDef fallback = new BVRWorldTuningDef();
         public override IEnumerable<string> ConfigErrors()
@@ -70,6 +81,8 @@ namespace DMSE
             if (ticksPerTileAtSpeed1 <= 0 || interceptorSpeedMultiplier <= 0 || scanIntervalTicks < 1
                 || minInterceptMarginTicks < 0 || airburstRadiusTiles < 0 || strikeGuidanceTicks < 0)
                 yield return "BVR motion, interval and range values must be positive (margin/radius may be zero).";
+            if (terminalMarkerFallbackTicks < 0 || terminalMarkerMergeCells < 0 || terminalRetargetTicks < 0 || terminalRetargetMaxShiftCells < 0)
+                yield return "Terminal marker / retarget ticks and cell values must not be negative.";
         }
     }
 }

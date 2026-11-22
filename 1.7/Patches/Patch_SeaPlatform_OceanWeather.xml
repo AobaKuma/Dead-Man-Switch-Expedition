@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+  <!-- 海上平台地圖的生態區通常是原版 Ocean，原版沒有天氣表（會警告「所有天氣的機率都是 0」然後一直晴天）。
+       DepthRim 有自己的海上天氣表（含惡劣海況），所以只在沒有 DepthRim、Ocean 也還沒有天氣表時補一份原版天氣。 -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>DepthRim</li>
+    </mods>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>Defs/BiomeDef[defName="Ocean"]/baseWeatherCommonalities</xpath>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/BiomeDef[defName="Ocean"]</xpath>
+        <value>
+          <baseWeatherCommonalities>
+            <Clear>14</Clear>
+            <Fog>1.5</Fog>
+            <Rain>3</Rain>
+            <FoggyRain>1</FoggyRain>
+            <SnowGentle>2</SnowGentle>
+            <SnowHard>0.6</SnowHard>
+          </baseWeatherCommonalities>
+        </value>
+      </nomatch>
+    </nomatch>
+  </Operation>
+
+</Patch>

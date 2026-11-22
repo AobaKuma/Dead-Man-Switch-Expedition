@@ -10,15 +10,19 @@
        射擊模式（Gizmo 切換，狀態存檔）：校射＝散佈於目標地圖中心，每個落點都登錄成該地圖的效力射落點；
        效力射＝以該地圖最後一次校射的落點為散佈中心（同陣營共用這個落點），散佈從 scatterRadius 起算、
        每發再收束 25%（最低 1 格，每門砲各自累計），且不使用雷達導引。
-       砲身（10x4，貼圖朝東）由 CompTurretFacingRenderer 繪製：原版 TurretTop 只能畫正方形。
-       彈藥：原版高爆迫擊砲彈（CompRefuelable，refuelableIsAmmo），每發 1 枚。
-       本地圖：CompBuildingTurretGun 持有 DMSE_Gun_Empero（減裝藥低初速曲射），自動攻擊本地圖敵人，
-       與世界砲擊共用同一份砲彈；世界持續射擊期間本地砲暫停（砲管只有一根）。 -->
+       砲身（10x4，貼圖朝東）由 CompTurretFacingRenderer 繪製：原版 TurretTop 只能畫正方形，
+       DMSE.Building_LongRangeGun 把它改畫透明，並在砲身轉到目標方位前撐住原版預熱。
+       彈藥（2026-11-22 起同重型迫擊砲）：原版可換彈藥（gun 上的 CompChangeableProjectile），裝填哪種迫擊砲彈，
+       本地與世界打出去就是那種彈的 projectileWhenLoaded；沒有砲手，由連結的自動裝填架（DMSE_ShellAutoloader，
+       CompShellAutoloader）從架上取彈裝填，砲塔的「砲彈」頁決定允許的彈種。
+       砲管耐久：原版強化砲管（CompRefuelable、fuelIsMortarBarrel），本地與世界每發扣 1，用完由殖民者換管（WorkGiver_Refuel_Turret）。
+       本地圖：真砲塔，Building_TurretGun 持有 DMSE_Gun_Empero（減裝藥低初速曲射，building/turretGunDef），
+       原版的索敵、強制目標、停火、射程環照常；與世界砲擊共用同一發裝填的砲彈，世界持續射擊期間本地砲暫停（砲管只有一根）。 -->
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_Turret_Empero</defName>
     <label>long-range cannon</label>
-    <description>The NK-30 "Empero" is a heavy long-range cannon with an extremely high muzzle velocity. It shells distant targets with precision, suppressing enemy fire and destroying installations. At close range it fires reduced charges at low velocity for plunging fire, still with very high accuracy. When shelling a target on the world map, it keeps firing until stopped, out of power, or out of shells. Each shot uses one high-explosive mortar shell.\n\nUnguided shells scatter widely at long range and only land near the middle of the target area. If a fire-control radar that supports artillery guidance has a free channel when the gun fires, the shell is radar-guided onto enemy turrets, powered buildings or people in the area, and lands much closer to them. Each guided shell holds one channel for a while.\n\nFire mode toggle: ranging shells scatter around the middle of the target area and log each impact; fire for effect shells scatter around the last logged impact on that map (every friendly gun shelling it shares that point) and tighten their scatter by a quarter of the base scatter per shot.\n\nCannot strike targets in high orbit across layers.</description>
-    <thingClass>Building</thingClass>
+    <description>The NK-30 "Empero" is a heavy long-range cannon with an extremely high muzzle velocity. It shells distant targets with precision, suppressing enemy fire and destroying installations. At close range it fires reduced charges at low velocity for plunging fire, still with very high accuracy. When shelling a target on the world map, it keeps firing until stopped or out of power, pausing while it waits for a shell or a new barrel.\n\nThe gun has no crew: it fires whatever mortar shell is loaded, at local targets and on the world map. A linked shell autoloader loads one shell at a time from its own stock; set the allowed shell types on the gun's shells tab. Each shot wears the barrel, which colonists replace with a reinforced barrel when it is worn out.\n\nUnguided shells scatter widely at long range and only land near the middle of the target area. If a fire-control radar that supports artillery guidance has a free channel when the gun fires, the shell is radar-guided onto enemy turrets, powered buildings or people in the area, and lands much closer to them. Each guided shell holds one channel for a while.\n\nFire mode toggle: ranging shells scatter around the middle of the target area and log each impact; fire for effect shells scatter around the last logged impact on that map (every friendly gun shelling it shares that point) and tighten their scatter by a quarter of the base scatter per shot.\n\nCannot strike targets in high orbit across layers.</description>
+    <thingClass>DMSE.Building_LongRangeGun</thingClass>
     <category>Building</category>
     <uiIconPath>Things/Turrets/DMSE_Weapon_Empero_icon</uiIconPath>
     <uiIconScale>0.9</uiIconScale>
@@ -63,6 +67,11 @@
     </costList>
     <building>
       <destroySound>BuildingDestroyed_Metal_Big</destroySound>
+      <!-- 本地圖減裝藥曲射：打裝填的那一發，verb 的 consumeFuelPerShot 扣下面的砲管耐久。
+           建築射擊不讀 verb 的 warmupTime，預熱寫在這裡；冷卻讀 verb 的 defaultCooldownTime。
+           砲身轉速 0.6°/tick（半圈 300 ticks），轉到目標方位（ModExtension_TurretTraverse）後才開始預熱。 -->
+      <turretGunDef>DMSE_Gun_Empero</turretGunDef>
+      <turretBurstWarmupTime>3</turretBurstWarmupTime>
     </building>
     <researchPrerequisites>
       <li>DMSE_FireControlNetwork</li>
@@ -70,6 +79,10 @@
     <designationCategory>DMSE_BVRCategory</designationCategory>
     <designatorDropdown>DMS_Turrets</designatorDropdown>
     <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+    <!-- 「砲彈」頁：gun 上 CompChangeableProjectile 的允許彈種，自動裝填架只裝這些。 -->
+    <inspectorTabs>
+      <li>ITab_Shells</li>
+    </inspectorTabs>
     <comps>
       <li Class="CompProperties_Forbiddable" />
       <li Class="CompProperties_Breakdownable" />
@@ -78,28 +91,34 @@
         <compClass>CompPowerTrader</compClass>
         <basePowerConsumption>500</basePowerConsumption>
       </li>
-      <!-- 砲彈存量：原版高爆迫擊砲彈，1 枚 = 1 發。 -->
+      <!-- 砲管耐久（同重型迫擊砲／原版迫擊砲）：20 發，本地與世界每發扣 1；
+           用完由殖民者拿強化砲管更換（建築是 Building_Turret，走原版 WorkGiver_Refuel_Turret）。 -->
       <li Class="CompProperties_Refuelable">
-        <fuelLabel>Shells</fuelLabel>
-        <fuelGizmoLabel>Shells</fuelGizmoLabel>
-        <outOfFuelMessage>Cannot fire: no shells.</outOfFuelMessage>
-        <fuelFilter>
-          <thingDefs>
-            <li>Shell_HighExplosive</li>
-          </thingDefs>
-        </fuelFilter>
-        <fuelCapacity>12</fuelCapacity>
-        <initialFuelPercent>0</initialFuelPercent>
+        <fuelLabel>Shots until barrel change</fuelLabel>
+        <fuelGizmoLabel>Barrel durability</fuelGizmoLabel>
+        <outOfFuelMessage>Needs new reinforced barrel</outOfFuelMessage>
+        <fuelFilter><thingDefs><li>ReinforcedBarrel</li></thingDefs></fuelFilter>
+        <fuelIsMortarBarrel>true</fuelIsMortarBarrel>
+        <fuelCapacity>20</fuelCapacity>
+        <fuelMultiplier>20</fuelMultiplier>
+        <initialFuelPercent>1</initialFuelPercent>
         <showFuelGizmo>true</showFuelGizmo>
+        <minimumFueledThreshold>1</minimumFueledThreshold>
         <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
         <initialAllowAutoRefuel>true</initialAllowAutoRefuel>
-        <autoRefuelPercent>0.5</autoRefuelPercent>
-        <drawOutOfFuelOverlay>false</drawOutOfFuelOverlay>
+        <autoRefuelPercent>0</autoRefuelPercent>
+        <fuelIconPath>Things/Item/Resource/ReinforcedBarrel/ReinforcedBarrel</fuelIconPath>
       </li>
+      <!-- 自動裝填架（DMSE_ShellAutoloader）：連結後從架上替空膛的砲裝填。 -->
+      <li Class="CompProperties_AffectedByFacilities">
+        <linkableFacilities>
+          <li>DMSE_ShellAutoloader</li>
+        </linkableFacilities>
+      </li>
+      <!-- 超視距砲擊：砲彈 def 由裝填的彈種決定（不設 projectileDef），換彈種就換彈頭。 -->
       <li Class="DMSE.CompProperties_ArtilleryStrike">
         <departureProjectileDef>DMSE_ArtilleryDeparture_Empero</departureProjectileDef>
         <worldObjectDef>DMSE_WorldObject_ArtilleryStrike</worldObjectDef>
-        <projectileDef>DMSE_Bullet_Shell_Empero</projectileDef>
         <cooldownTicks>1800</cooldownTicks>
         <warmupTicks>300</warmupTicks>
         <scatterRadius>14</scatterRadius>
@@ -109,14 +128,6 @@
         <maxRangeTiles>20</maxRangeTiles>
         <!-- 世界航跡每格 60 tick（導彈基準 150）：10 格約 10 秒。 -->
         <worldTicksPerTile>60</worldTicksPerTile>
-        <refuelableIsAmmo>true</refuelableIsAmmo>
-      </li>
-      <!-- 本地圖減裝藥曲射：由 verb 的 consumeFuelPerShot 扣上面的砲彈存量；
-           砲塔頭轉到目標方位（aimToleranceDeg）並穩定 warmupTime 後才開火。轉速 0.6°/tick，半圈 300 ticks。 -->
-      <li Class="DMSE.CompProperties_BuildingTurretGun">
-        <turretDef>DMSE_Gun_Empero</turretDef>
-        <aimToleranceDeg>4</aimToleranceDeg>
-        <maxAimTicks>450</maxAimTicks>
       </li>
       <!-- 砲身：DMSE_Weapon_Empero 1280x512（10x4 格），砲口朝東 → artworkRotation -90。
            沒在射擊時只做緩慢的閒置擺動；射擊中由 CompArtilleryStrike 每 tick 指向世界方位。 -->
@@ -132,10 +143,19 @@
     </comps>
     <placeWorkers>
       <li>DMSE.PlaceWorker_NoAdjacentSameLayer</li>
+      <li>PlaceWorker_ShowFacilitiesConnections</li>
     </placeWorkers>
+    <modExtensions>
+      <!-- 砲身與目標方位夾角 4° 內才開始預熱；最多等 450 ticks，追不上就放掉目標重新索敵。 -->
+      <li Class="DMSE.ModExtension_TurretTraverse">
+        <aimToleranceDeg>4</aimToleranceDeg>
+        <maxAimTicks>450</maxAimTicks>
+      </li>
+    </modExtensions>
   </ThingDef>
 
-  <!-- 本地圖武器（減裝藥曲射）：飛越牆頂，散佈遠小於迫擊砲。CompBuildingTurretGun 讀 verb 的 defaultCooldownTime。 -->
+  <!-- 本地圖武器（減裝藥曲射）：飛越牆頂，散佈遠小於迫擊砲。Building_TurretGun 讀 verb 的 defaultCooldownTime 當冷卻。
+       同重型迫擊砲：沒有 defaultProjectile，打的是 CompChangeableProjectile 裝填的那一發；沒裝填時 Available() 為 false，不會索敵。 -->
   <ThingDef ParentName="BaseWeaponTurret">
     <defName>DMSE_Gun_Empero</defName>
     <label>NK-30 cannon (reduced charge)</label>
@@ -154,7 +174,6 @@
     <verbs>
       <li>
         <verbClass>Verb_Shoot</verbClass>
-        <defaultProjectile>DMSE_Bullet_Shell_EmperoReduced</defaultProjectile>
         <isMortar>true</isMortar>
         <requireLineOfSight>false</requireLineOfSight>
         <warmupTime>3</warmupTime>
@@ -172,30 +191,134 @@
         </targetParams>
       </li>
     </verbs>
+    <comps>
+      <!-- 原版 switchable projectile：自動裝填架裝的彈種記在這裡，也提供砲塔的「砲彈」設定頁。 -->
+      <li Class="CompProperties_ChangeableProjectile" />
+    </comps>
+    <building>
+      <fixedStorageSettings>
+        <filter>
+          <categories>
+            <li>MortarShells</li>
+          </categories>
+        </filter>
+      </fixedStorageSettings>
+      <defaultStorageSettings>
+        <filter>
+          <categories>
+            <li>MortarShells</li>
+          </categories>
+          <disallowedThingDefs>
+            <li>Shell_Firefoam</li>
+            <li>Shell_AntigrainWarhead</li>
+          </disallowedThingDefs>
+        </filter>
+      </defaultStorageSettings>
+    </building>
   </ThingDef>
 
-  <ThingDef ParentName="BaseBullet">
-    <defName>DMSE_Bullet_Shell_EmperoReduced</defName>
-    <label>reduced-charge shell</label>
-    <thingClass>Projectile_Explosive</thingClass>
+  <!-- ==================== 自動裝填架（1x3，可連結設施）====================
+       讓不需砲手的可換彈藥火砲（遠程加農砲）也能用原版 CompChangeableProjectile：
+       Building_Storage 存放迫擊砲彈（殖民者照一般存放規則搬來），CompFacility 連結砲塔，
+       CompShellAutoloader 每 60 tick 檢查一次，連結的砲空膛就從架上取一發該砲「砲彈」頁允許的砲彈裝填；
+       已裝的彈種被砲塔設定排除時先退到架旁。斷電時 CompFacility.CanBeActive 為 false，停止裝填。
+       貼圖沿用野戰彈藥箱（DMSE_FieldStructure_AmmoStorage）的 1x3 箱體與箱蓋。 -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>DMSE_ShellAutoloader</defName>
+    <label>shell autoloader</label>
+    <description>A powered ammunition rack that feeds mortar shells into linked guns that have no crew, such as the long-range cannon. Colonists stock it like a shelf; whenever a linked gun is empty, it loads one shell of a type the gun's shells tab allows. It stops loading without power.</description>
+    <thingClass>Building_Storage</thingClass>
     <graphicData>
-      <texPath>Things/Projectile/ShellHighExplosive</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
-      <shaderType>TransparentPostLight</shaderType>
+      <texPath>Things/Building/FieldStructures/ammoStorage</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,4)</drawSize>
+      <drawOffset>(0,-0.01,0)</drawOffset>
     </graphicData>
-    <projectile>
-      <damageDef>Bomb</damageDef>
-      <damageAmountBase>55</damageAmountBase>
-      <speed>35</speed>
-      <explosionRadius>3.4</explosionRadius>
-      <flyOverhead>true</flyOverhead>
-      <soundHitThickRoof>Artillery_HitThickRoof</soundHitThickRoof>
-      <soundExplode>MortarBomb_Explode</soundExplode>
-      <soundImpactAnticipate>MortarRound_PreImpact</soundImpactAnticipate>
-      <soundAmbient>MortarRound_Ambient</soundAmbient>
-      <preExplosionSpawnSingleThingDef>Filth_BlastMark</preExplosionSpawnSingleThingDef>
-    </projectile>
+    <size>(1,3)</size>
+    <rotatable>true</rotatable>
+    <defaultPlacingRot>South</defaultPlacingRot>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.4</fillPercent>
+    <pathCost>50</pathCost>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.5</staticSunShadowHeight>
+    <surfaceType>Item</surfaceType>
+    <canOverlapZones>false</canOverlapZones>
+    <tickerType>Normal</tickerType>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <WorkToBuild>2500</WorkToBuild>
+      <Mass>60</Mass>
+      <Flammability>0.5</Flammability>
+    </statBases>
+    <costList>
+      <Steel>80</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+    </costList>
+    <building>
+      <preventDeteriorationOnTop>true</preventDeteriorationOnTop>
+      <ignoreStoredThingsBeauty>true</ignoreStoredThingsBeauty>
+      <maxItemsInCell>2</maxItemsInCell>
+      <blueprintClass>Blueprint_Storage</blueprintClass>
+      <fixedStorageSettings>
+        <filter>
+          <categories>
+            <li>MortarShells</li>
+          </categories>
+        </filter>
+      </fixedStorageSettings>
+      <defaultStorageSettings>
+        <priority>Important</priority>
+        <filter>
+          <categories>
+            <li>MortarShells</li>
+          </categories>
+          <disallowedThingDefs>
+            <li>Shell_Firefoam</li>
+            <li>Shell_AntigrainWarhead</li>
+          </disallowedThingDefs>
+        </filter>
+      </defaultStorageSettings>
+    </building>
+    <inspectorTabs>
+      <li>ITab_Storage</li>
+    </inspectorTabs>
+    <researchPrerequisites>
+      <li>DMSE_FireControlNetwork</li>
+    </researchPrerequisites>
+    <designationCategory>DMSE_BVRCategory</designationCategory>
+    <comps>
+      <li Class="CompProperties_Forbiddable" />
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>100</basePowerConsumption>
+      </li>
+      <!-- 每門砲最多連結 1 座；一座裝填架可同時供應範圍內的多門砲。 -->
+      <li Class="CompProperties_Facility">
+        <maxSimultaneous>1</maxSimultaneous>
+        <maxDistance>6.9</maxDistance>
+      </li>
+      <li Class="DMSE.CompProperties_ShellAutoloader">
+        <checkIntervalTicks>60</checkIntervalTicks>
+      </li>
+      <li Class="DMSE.CompProperties_BuildingExtraRenderer">
+        <extraGraphic>
+          <li>
+            <texPath>Things/Building/FieldStructures/ammoStorage_top</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>(2,4)</drawSize>
+            <drawOffset>(0,0.01,0)</drawOffset>
+          </li>
+        </extraGraphic>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>PlaceWorker_ShowFacilitiesConnections</li>
+    </placeWorkers>
   </ThingDef>
+
 
   <!-- 世界航跡：WorldObject_ArtilleryStrike 從發射地 Slerp 到目標 tile，抵達後把齊射排進目標地圖。 -->
   <WorldObjectDef>
@@ -229,30 +352,6 @@
       <speed>60</speed>
       <flyOverhead>true</flyOverhead>
       <soundAmbient>MortarRound_Ambient</soundAmbient>
-    </projectile>
-  </ThingDef>
-
-  <!-- 落地砲彈：比迫擊砲彈更重。projectile.speed 也決定世界航跡速度（WorldObject_ArtilleryStrike）。 -->
-  <ThingDef ParentName="BaseBullet">
-    <defName>DMSE_Bullet_Shell_Empero</defName>
-    <label>long-range shell</label>
-    <thingClass>Projectile_Explosive</thingClass>
-    <graphicData>
-      <texPath>Things/Projectile/ShellHighExplosive</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
-      <shaderType>TransparentPostLight</shaderType>
-    </graphicData>
-    <projectile>
-      <damageDef>Bomb</damageDef>
-      <damageAmountBase>70</damageAmountBase>
-      <speed>60</speed>
-      <explosionRadius>3.9</explosionRadius>
-      <flyOverhead>true</flyOverhead>
-      <soundHitThickRoof>Artillery_HitThickRoof</soundHitThickRoof>
-      <soundExplode>MortarBomb_Explode</soundExplode>
-      <soundImpactAnticipate>MortarRound_PreImpact</soundImpactAnticipate>
-      <soundAmbient>MortarRound_Ambient</soundAmbient>
-      <preExplosionSpawnSingleThingDef>Filth_BlastMark</preExplosionSpawnSingleThingDef>
     </projectile>
   </ThingDef>
 

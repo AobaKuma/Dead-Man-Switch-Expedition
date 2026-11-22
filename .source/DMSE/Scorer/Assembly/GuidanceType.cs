@@ -63,6 +63,12 @@ namespace DMSE
         /// <summary>是否以世界層移動目標為對象（反艦）：航跡會縮短終端檢查間隔。</summary>
         public virtual bool TracksMobileTargets => false;
 
+        /// <summary>
+        /// 末段（CIWS 窗口）能否重新搜尋目標（docs/末端落點顯示與導引頭重新鎖定_實作計畫.md §4.1）：
+        /// 自主尋標頭覆寫為 true；需要外部照射、玩家手選或地面指令的維持 false（預設 false，第三方導引頭需自行開啟）。
+        /// </summary>
+        public virtual bool CanRetargetInTerminal => false;
+
         /// <summary>資訊卡用的選目標機制說明；null = 不顯示。</summary>
         public virtual string MechanismDescription => null;
 
@@ -98,8 +104,12 @@ namespace DMSE
         /// true = 導彈實際鎖定（抵達、盤旋重新搜尋）：避開同類導引頭最近已鎖定的目標，並登記這次鎖定
         /// （見 <see cref="SpreadBest{T}"/>）。false = 只查詢，永遠回傳最佳目標、不留紀錄。
         /// </param>
+        /// <param name="claimKey">
+        /// 分散鎖定的鍵；null = 導引頭型別（抵達、盤旋）。末端重鎖傳 <see cref="TerminalClaimKey.For"/>（攻擊方），
+        /// 讓同一攻擊方不同型別的導引頭也互相避開。
+        /// </param>
         public static bool TryPickTarget(MissileConfig config, Map map, Faction attacker, out IntVec3 cell, bool claim = false,
-            IMissileTrack track = null, float? approachHeading = null)
+            IMissileTrack track = null, float? approachHeading = null, object claimKey = null)
         {
             cell = IntVec3.Invalid;
             GuidanceType guidance = config?.TargetingGuidance;
@@ -113,7 +123,7 @@ namespace DMSE
                 CanPenetrateThickRoof = config.PenetratesThickRoof,
                 ApproachHeading = approachHeading,
                 Track = track,
-                ClaimKey = claim ? guidance.GetType() : null,
+                ClaimKey = claim ? (claimKey ?? guidance.GetType()) : null,
             };
             IntVec3 result = guidance.PickTarget(context);
             foreach (MissileBehaviorProps behavior in config.BehaviorProps) { behavior.ModifySeekResult(context, ref result); }
@@ -347,6 +357,17 @@ namespace DMSE
         }
     }
 
+    /// <summary>
+    /// 末端重鎖的分散鎖定鍵：以攻擊方陣營為鍵，同一攻擊方的不同導引頭型別共用 claim
+    /// （docs/末端落點顯示與導引頭重新鎖定_實作計畫.md §4.4）。攻擊方不明的導彈共用一個鍵。
+    /// </summary>
+    public static class TerminalClaimKey
+    {
+        private static readonly object NoAttacker = new object();
+
+        public static object For(Faction attacker) => attacker ?? NoAttacker;
+    }
+
     // ============================================================
     //  慣性制導（Inertial）
     //  地圖中心的圓形截斷正態分布，不搜尋建築或單位。
@@ -385,6 +406,8 @@ namespace DMSE
         public override float JamVulnerability => 0f;
 
         public override bool HomesOnEmissions => true;
+
+        public override bool CanRetargetInTerminal => true;
 
         public override string MechanismDescription
             => "DMSE.Card.Guidance.AntiRadiation".Translate() + " "
@@ -447,6 +470,8 @@ namespace DMSE
         /// <summary>房間需比室外溫度高出多少度（°C）才會被選為目標。</summary>
         public float minRoomTempAboveOutdoor = 15f;
 
+        public override bool CanRetargetInTerminal => true;
+
         public override string MechanismDescription
             => "DMSE.Card.Guidance.HeatSource".Translate(minRoomTempAboveOutdoor.ToStringTemperatureOffset());
 
@@ -492,6 +517,8 @@ namespace DMSE
     // ============================================================
     public class GuidanceType_ElectromagneticSignal : GuidanceType
     {
+        public override bool CanRetargetInTerminal => true;
+
         public override string MechanismDescription => "DMSE.Card.Guidance.ElectromagneticSignal".Translate();
 
         public override IntVec3 PickTarget(MissileSeekContext context)
@@ -578,6 +605,8 @@ namespace DMSE
     // ============================================================
     public class GuidanceType_Imaging : GuidanceType
     {
+        public override bool CanRetargetInTerminal => true;
+
         public override string MechanismDescription => "DMSE.Card.Guidance.Imaging".Translate();
 
         public override IntVec3 PickTarget(MissileSeekContext context)
@@ -603,6 +632,8 @@ namespace DMSE
     // ============================================================
     public class GuidanceType_ActiveRadar : GuidanceType
     {
+        public override bool CanRetargetInTerminal => true;
+
         public override string MechanismDescription => "DMSE.Card.Guidance.ActiveRadar".Translate();
 
         public override IntVec3 PickTarget(MissileSeekContext context)
@@ -621,6 +652,8 @@ namespace DMSE
         public override int ExtraTerminalUpdates => 2;
 
         public override bool TracksMobileTargets => true;
+
+        public override bool CanRetargetInTerminal => true;
 
         public override string MechanismDescription => "DMSE.Card.Guidance.AntiShip".Translate(ExtraTerminalUpdates);
 

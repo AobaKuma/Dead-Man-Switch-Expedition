@@ -128,7 +128,7 @@ namespace DMSE
                         : bag.RandomElement();
                     bag.Remove(def);
 
-                    if (TryPlace(map, def, group, origin, usable, occupied, faction, keepNaturalTerrain, out CellRect placed))
+                    if (TryPlace(map, def, group, origin, usable, occupied, faction, out CellRect placed))
                     {
                         // 第一座（中心雷達）落在哪，其餘各組就繞著它散布。
                         if (placedTotal == 0) origin = placed.CenterCell;
@@ -154,8 +154,8 @@ namespace DMSE
                     + $"placed {placedTotal}/{wantedTotal} structures.");
         }
 
-        private static bool TryPlace(Map map, FFF_StructureDef def, FieldLaunchSitePieceGroup group, IntVec3 origin,
-            CellRect usable, List<CellRect> occupied, Faction faction, bool keepNaturalTerrain, out CellRect placed)
+        private bool TryPlace(Map map, FFF_StructureDef def, FieldLaunchSitePieceGroup group, IntVec3 origin,
+            CellRect usable, List<CellRect> occupied, Faction faction, out CellRect placed)
         {
             placed = default;
             Dictionary<Rot4, Sketch> sketches = new Dictionary<Rot4, Sketch>();
@@ -180,8 +180,9 @@ namespace DMSE
                 if (rect.minX < usable.minX || rect.maxX > usable.maxX || rect.minZ < usable.minZ || rect.maxZ > usable.maxZ) continue;
                 if (occupied.Any(o => o.ExpandedBy(group.spacing).Overlaps(rect))) continue;
                 if (FFF_StructureUtility.OverlapsUsedRect(map, rect)) continue;
-                if (keepNaturalTerrain && !FitsNaturalGround(map, sketch, offset)) continue;
+                if (keepNaturalTerrain && !GroundFits(map, sketch, offset, rect)) continue;
 
+                PrepareGround(map, rect);
                 if (keepNaturalTerrain)
                     SpawnKeepingTerrain(map, def, sketch, offset, rot, faction);
                 else
@@ -195,8 +196,14 @@ namespace DMSE
             return false;
         }
 
+        /// <summary>保留自然地形時，這個位置能不能放（預設：<see cref="FitsNaturalGround"/>）。</summary>
+        protected virtual bool GroundFits(Map map, Sketch sketch, IntVec3 offset, CellRect rect) => FitsNaturalGround(map, sketch, offset);
+
+        /// <summary>位置決定後、生成結構之前呼叫（海上陣地在這裡先鋪甲板）。</summary>
+        protected virtual void PrepareGround(Map map, CellRect rect) { }
+
         /// <summary>每座建築都能直接蓋在原地形上（不需改鋪地板），且占用格沒有岩石或其他建築。</summary>
-        private static bool FitsNaturalGround(Map map, Sketch sketch, IntVec3 offset)
+        protected static bool FitsNaturalGround(Map map, Sketch sketch, IntVec3 offset)
         {
             foreach (SketchThing st in sketch.Things)
             {

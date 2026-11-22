@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Terminal impact markers (docs/末端落點顯示與導引頭重新鎖定_實作計畫.md). {0} = missile count, {1} = time left. -->
+  <DMSE.BVR.Marker.Hostile>{0} hostile · {1}</DMSE.BVR.Marker.Hostile>
+  <DMSE.BVR.Marker.Friendly>{0} friendly · {1}</DMSE.BVR.Marker.Friendly>
+  <DMSE.BVR.Marker.Loitering>{0} loitering · {1}</DMSE.BVR.Marker.Loitering>
+  <DMSE.BVR.Settings.TerminalImpactMarkers>Terminal impact markers</DMSE.BVR.Settings.TerminalImpactMarkers>
+  <DMSE.BVR.Settings.TerminalImpactMarkersDesc>Marks the predicted impact point of incoming and outgoing missiles on the map once they enter the terminal (close-in defense) window, while the missile itself cannot be seen.</DMSE.BVR.Settings.TerminalImpactMarkersDesc>
+  <DMSE.BVR.Settings.TerminalImpactMarkers0>Off</DMSE.BVR.Settings.TerminalImpactMarkers0>
+  <DMSE.BVR.Settings.TerminalImpactMarkers1>Hostile missiles only</DMSE.BVR.Settings.TerminalImpactMarkers1>
+  <DMSE.BVR.Settings.TerminalImpactMarkers2>Hostile and friendly missiles</DMSE.BVR.Settings.TerminalImpactMarkers2>
+</LanguageData>

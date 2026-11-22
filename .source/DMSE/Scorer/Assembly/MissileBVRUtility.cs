@@ -67,11 +67,11 @@ namespace DMSE
             return true;
         }
 
-        /// <summary>負責攔截此導彈的防禦方：世界層已結算的導彈只找有 CIWS 的敵對陣營，其餘找搜索雷達。</summary>
+        /// <summary>負責攔截此導彈的防禦方：世界層已結算的導彈只找有能接戰 CIWS（運作中且未停火）的敵對陣營，其餘找搜索雷達。</summary>
         private static Faction ResolveDefender(MapComponent_BVRCombat comp, IIncomingMissile missile)
         {
             if (!missile.WorldPhaseDone) { return comp.ResolveDefender(missile.Attacker); }
-            return comp.ciwsTurrets.Where(c => c.Active && c.parent.Faction != null
+            return comp.ciwsTurrets.Where(c => c.CanEngage && c.parent.Faction != null
                 && missile.Attacker != null && c.parent.Faction.HostileTo(missile.Attacker))
                 .OrderByDescending(c => c.parent.Faction.IsPlayer).Select(c => c.parent.Faction).FirstOrDefault();
         }

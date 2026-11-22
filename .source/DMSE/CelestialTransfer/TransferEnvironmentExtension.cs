@@ -39,6 +39,12 @@ namespace DMSE
         /// </summary>
         public bool centerHullOnShipMap;
 
+        /// <summary>
+        /// 這個圖層的地圖也畫地形崖壁（原版 <see cref="SectionLayer_TerrainEdges"/>，地形的 <c>spaceEdgeGraphicData</c>）。
+        /// 原版只在太空圖層畫；例如虛空是深淵的水下圖層要讓海床邊緣也有崖壁。見 <see cref="Patch_TerrainEdgesOnTransferLayers"/>。
+        /// </summary>
+        public bool drawTerrainEdges;
+
         public override IEnumerable<string> ConfigErrors()
         {
             foreach (string e in base.ConfigErrors())
@@ -85,7 +91,8 @@ namespace DMSE
 
         public static TerrainDef VoidTerrain(Map map)
         {
-            return VoidTerrain(map?.Tile.LayerDef);
+            // 海上平台地圖（SeaPlatformMapExtension）的「空」是高空，不看圖層：拆平台、船體分離都鋪回高空
+            return SeaPlatformUtility.Ext(map)?.voidTerrain ?? VoidTerrain(map?.Tile.LayerDef);
         }
 
         public static MapGeneratorDef ShipMapGenerator(PlanetLayerDef layer)
@@ -106,6 +113,9 @@ namespace DMSE
 
         /// <summary>這張地圖所在圖層的演出（沒掛時是太空船的預設）。</summary>
         public static bool CenterHullOnShipMap(PlanetLayerDef layer) => For(layer)?.centerHullOnShipMap ?? false;
+
+        /// <summary>這個圖層的地圖畫地形崖壁：原版的太空圖層，加上設了 <see cref="TransferEnvironmentExtension.drawTerrainEdges"/> 的圖層。</summary>
+        public static bool DrawsTerrainEdges(PlanetLayerDef layer) => layer != null && (layer.isSpace || (For(layer)?.drawTerrainEdges ?? false));
 
         public static TransferPresentation Presentation(Map map) => (map != null && map.Tile.Valid ? For(map.Tile.LayerDef)?.presentation : null) ?? TransferPresentation.Space;
     }

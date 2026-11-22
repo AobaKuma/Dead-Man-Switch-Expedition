@@ -43,8 +43,34 @@ namespace DMSE
             Find.WindowStack.Add(new FloatMenu(options));
         }
 
+        /// <summary>海上發射站：在點到的水域格生成（殖民艦隊；沒有敵對的殖民艦隊時退回任一敵對派系並提示）。</summary>
+        [DebugAction(Category, "Spawn sea launch station (click water tile)", actionType = DebugActionType.ToolWorld, allowedGameStates = AllowedGameStates.PlayingOnWorld)]
+        private static void SpawnSeaSite()
+        {
+            PlanetTile tile = GenWorld.MouseTile();
+            if (!tile.Valid || !tile.Tile.WaterCovered || Find.WorldObjects.AnyWorldObjectAt(tile))
+            {
+                Messages.Message("DMSE: pick an empty water tile.", MessageTypeDefOf.RejectInput, false);
+                return;
+            }
+            Map home = Find.AnyPlayerHomeMap;
+            float points = home != null ? StorytellerUtility.DefaultThreatPointsNow(home) : 1000f;
+            SpawnAt(tile, "DMSE_SeaLaunchSite", "DMSE_SeaLaunchSitePart", points, points);
+        }
+
         private static void Spawn(PlanetTile origin, float min, float max,
             string worldObjectDefName = "DMSE_MissileBase", string sitePartDefName = "DMSE_MissileBaseSitePart", float points = 2000f, float threatPoints = 0f)
+        {
+            PlanetTile tile = DebugMissileUtility.TileAtDistance(origin, min, max, buildable: true);
+            if (!tile.Valid)
+            {
+                Messages.Message($"DMSE: no buildable tile {min:0}–{max:0} tiles away.", MessageTypeDefOf.RejectInput, false);
+                return;
+            }
+            SpawnAt(tile, worldObjectDefName, sitePartDefName, points, threatPoints);
+        }
+
+        private static void SpawnAt(PlanetTile tile, string worldObjectDefName, string sitePartDefName, float points, float threatPoints)
         {
             WorldObjectDef baseDef = DefDatabase<WorldObjectDef>.GetNamedSilentFail(worldObjectDefName);
             SitePartDef partDef = DefDatabase<SitePartDef>.GetNamedSilentFail(sitePartDefName);
@@ -59,12 +85,6 @@ namespace DMSE
             if (faction != null && !partDef.FactionCanOwn(faction))
                 Messages.Message($"DMSE: no hostile faction can own {sitePartDefName}; using {faction.Name} ({faction.def.techLevel}).",
                     MessageTypeDefOf.CautionInput, false);
-            PlanetTile tile = DebugMissileUtility.TileAtDistance(origin, min, max, buildable: true);
-            if (!tile.Valid)
-            {
-                Messages.Message($"DMSE: no buildable tile {min:0}–{max:0} tiles away.", MessageTypeDefOf.RejectInput, false);
-                return;
-            }
             Site site = (Site)WorldObjectMaker.MakeWorldObject(baseDef);
             site.Tile = tile;
             if (faction != null) { site.SetFaction(faction); }

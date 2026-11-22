@@ -22,12 +22,15 @@ namespace DMSE
         /// <summary>另從中心結構鋪一條路到最近的地圖邊緣（補給車隊的進出路線）。</summary>
         public bool roadToMapEdge = true;
 
+        /// <summary>不可通行但可以鋪路的地形（海上陣地的高空：走道就是鋪上去的甲板）。</summary>
+        public TerrainDef openTerrain;
+
         public override int SeedPart => 0x5B13D0A7;
 
         public override void Generate(Map map, GenStepParams parms)
         {
             if (!MapGenerator.TryGetVar(FieldLaunchSiteRoads.RectsVar, out List<CellRect> rects) || rects.NullOrEmpty()) return;
-            int painted = FieldLaunchSiteRoads.Build(map, rects, roadTerrain, roadWidth, roadToMapEdge);
+            int painted = FieldLaunchSiteRoads.Build(map, rects, roadTerrain, roadWidth, roadToMapEdge, openTerrain);
             if (Prefs.DevMode)
                 Log.Message($"[DMSE FieldLaunchSite] {painted} road cells between {rects.Count} structures.");
         }
@@ -49,9 +52,19 @@ namespace DMSE
         };
 
         /// <summary>鋪路並回傳鋪上的格數。<paramref name="rects"/>[0] 視為中心（通往地圖邊緣的那一座）。</summary>
-        public static int Build(Map map, List<CellRect> rects, TerrainDef road, int width, bool toMapEdge)
+        /// <summary>這次鋪路期間視為可通行的地形（見 <see cref="GenStep_FieldLaunchSiteRoads.openTerrain"/>）；地圖生成是單執行緒。</summary>
+        private static TerrainDef buildOpenTerrain;
+
+        public static int Build(Map map, List<CellRect> rects, TerrainDef road, int width, bool toMapEdge, TerrainDef openTerrain = null)
         {
             if (map == null || road == null || rects.NullOrEmpty()) return 0;
+            buildOpenTerrain = openTerrain;
+            try { return BuildInt(map, rects, road, width, toMapEdge); }
+            finally { buildOpenTerrain = null; }
+        }
+
+        private static int BuildInt(Map map, List<CellRect> rects, TerrainDef road, int width, bool toMapEdge)
+        {
             int painted = 0;
 
             // Prim 最小生成樹決定連接順序：每次把最近的未連結構接上。新路從「已鋪好的整個路網」分岔出去，
@@ -119,7 +132,7 @@ namespace DMSE
         {
             if (!c.InBounds(map) || c.GetEdifice(map) != null) return false;
             TerrainDef t = c.GetTerrain(map);
-            if (t.passability == Traversability.Impassable) return false;
+            if (t.passability == Traversability.Impassable && t != buildOpenTerrain) return false;
             for (int i = 0; i < rects.Count; i++)
                 if (rects[i].Contains(c)) return false;
             return true;

@@ -66,9 +66,16 @@ namespace DMSE
         protected override bool TryExecuteWorker(IncidentParms parms)
         {
             FieldLaunchSiteIncidentExtension ext = Ext;
-            if (ext == null || !(parms.target is Map map)) return false;
-            if (!TryFindFaction(ext, out Faction faction)) return false;
-            if (!TryFindTile(ext, map, out PlanetTile tile)) return false;
+            if (ext == null) return false;
+            Map map = HomeMapFor(parms);
+            if (map == null)
+                return ForcedFailure(parms, "no player home map to deploy near");
+            if (!TryFindFaction(ext, out Faction faction))
+                return ForcedFailure(parms, $"no hostile faction can own {ext.sitePartDef?.defName} "
+                    + $"(allowed: {SitePartFactionHint(ext.sitePartDef)})");
+            if (!TryFindTile(ext, map, out PlanetTile tile))
+                return ForcedFailure(parms, $"no free tile {ext.distance.min}–{ext.distance.max} tiles from {map.Parent.LabelCap}"
+                    + $" within range {SiteRange(ext)}{TileHint}");
 
             float points = ext.threatPoints.ClampToRange(PointsOf(parms, map));
             Site site = SiteMaker.MakeSite(ext.sitePartDef, tile, faction, threatPoints: points, worldObjectDef: ext.worldObjectDef);
@@ -81,6 +88,47 @@ namespace DMSE
                 faction.NameColored, map.Parent.LabelCap, direction, distance.ToString("0"));
             SendStandardLetter(def.letterLabel, text, def.letterDef ?? LetterDefOf.ThreatBig, parms, site);
             return true;
+        }
+
+        /// <summary>
+        /// 部署的基準殖民地：目標是地圖時用它；開發者從世界地圖強制觸發（目標是 World）時，改用目前畫面上的家園地圖，沒有就任一家園地圖。
+        /// 說書人不會以 World 為目標觸發（<see cref="CanFireNowSub"/> 只接受家園地圖）。
+        /// </summary>
+        protected static Map HomeMapFor(IncidentParms parms)
+        {
+            if (parms.target is Map m) return m.IsPlayerHome ? m : (parms.forced ? Find.AnyPlayerHomeMap : null);
+            if (parms.forced && parms.target is World)
+                return Find.CurrentMap != null && Find.CurrentMap.IsPlayerHome ? Find.CurrentMap : Find.AnyPlayerHomeMap;
+            return null;
+        }
+
+        /// <summary>強制觸發（開發者）失敗時說明原因；說書人觸發時 CanFireNow 已先擋掉，不會走到這裡。</summary>
+        protected bool ForcedFailure(IncidentParms parms, string reason)
+        {
+            if (parms.forced)
+            {
+                string text = $"DMSE: {def.defName} did not fire: {reason}.";
+                Log.Warning(text);
+                Messages.Message(text, MessageTypeDefOf.RejectInput, false);
+            }
+            return false;
+        }
+
+        /// <summary>找不到落點時附在說明後面的提示。</summary>
+        protected virtual string TileHint => string.Empty;
+
+        private static string SitePartFactionHint(SitePartDef part)
+        {
+            System.Collections.Generic.List<FactionDef> list = part?.GetModExtension<SeaLaunchSiteFactionExtension>()?.factions;
+            if (!list.NullOrEmpty())
+            {
+                return string.Join(", ", list.Select(f =>
+                {
+                    Faction fa = Find.FactionManager.FirstFactionOfDef(f);
+                    return fa == null ? $"{f.defName} (not in this world)" : $"{f.defName} ({(fa.HostileTo(Faction.OfPlayer) ? "hostile" : "not hostile")})";
+                }));
+            }
+            return part?.minFactionTechLevel.ToString() ?? "?";
         }
 
         /// <summary>世界上現存的 NPC 導彈陣地數（含原本的要塞化陣地）。</summary>
@@ -104,9 +152,13 @@ namespace DMSE
                 .TryRandomElement(out faction);
         }
 
-        private static bool TryFindTile(FieldLaunchSiteIncidentExtension ext, Map map, out PlanetTile tile)
+        protected static int SiteRange(FieldLaunchSiteIncidentExtension ext)
+            => ext.worldObjectDef.comps?.OfType<CompProperties_MissileBase>().FirstOrDefault()?.range ?? 0;
+
+        /// <summary>陣地落點：預設是陸地上可建據點的 tile（<see cref="TileFinder.TryFindNewSiteTile"/>）。</summary>
+        protected virtual bool TryFindTile(FieldLaunchSiteIncidentExtension ext, Map map, out PlanetTile tile)
         {
-            int range = ext.worldObjectDef.comps?.OfType<CompProperties_MissileBase>().FirstOrDefault()?.range ?? 0;
+            int range = SiteRange(ext);
             PlanetTile home = map.Tile;
             return TileFinder.TryFindNewSiteTile(out tile, home, ext.distance.min, ext.distance.max,
                 selectLandmarkChance: 0f, exitOnFirstTileFound: false,

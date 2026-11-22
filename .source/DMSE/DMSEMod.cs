@@ -39,6 +39,15 @@ namespace DMSE
             listing.Label("DMSE.BVR.Settings.CiwsInterceptMultiplier".Translate(Settings.ciwsInterceptMultiplier.ToStringPercent()),
                 tooltip: "DMSE.BVR.Settings.CiwsInterceptMultiplierDesc".Translate());
             Settings.ciwsInterceptMultiplier = Mathf.Round(listing.Slider(Settings.ciwsInterceptMultiplier, 0f, 2f) * 20f) / 20f;
+            listing.Gap(6f);
+            listing.Label("DMSE.BVR.Settings.TerminalImpactMarkers".Translate(), tooltip: "DMSE.BVR.Settings.TerminalImpactMarkersDesc".Translate());
+            for (int mode = 0; mode <= 2; mode++)
+            {
+                if (listing.RadioButton(("DMSE.BVR.Settings.TerminalImpactMarkers" + mode).Translate(), Settings.terminalImpactMarkerMode == mode, 12f))
+                {
+                    Settings.terminalImpactMarkerMode = mode;
+                }
+            }
             listing.End();
         }
 

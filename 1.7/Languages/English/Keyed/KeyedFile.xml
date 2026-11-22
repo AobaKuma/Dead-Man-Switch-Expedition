@@ -8,7 +8,7 @@
   <DMSE.MissileBase.Relocated>Missile position relocated</DMSE.MissileBase.Relocated>
   <DMSE.MissileBase.RelocatedDesc>An enemy missile launch position has completed its strike mission and relocated to avoid counteraction.</DMSE.MissileBase.RelocatedDesc>
   <DMSE.MissileBase.Destroyed>Missile position destroyed</DMSE.MissileBase.Destroyed>
-  <DMSE.MissileBase.DestroyedDesc>Your colonists have destroyed every fire-control radar at the enemy missile position. Without fire control it can no longer launch, and the missile threat from this position has been neutralized.</DMSE.MissileBase.DestroyedDesc>
+  <DMSE.MissileBase.DestroyedDesc>Your colonists have destroyed every fire-control radar at the enemy missile position. Without fire control it can no longer launch, and the missile threat from this position has been neutralized.\n\nThe position's map stays open until observation ends and no colonists remain there, so you can still send a shuttle to loot it.</DMSE.MissileBase.DestroyedDesc>
   <DMSE.MissileBase.ReentryBlockedIn>Ground access denied: enemy regrouping ({0})</DMSE.MissileBase.ReentryBlockedIn>
   <DMSE.MissileBase.ReentryBlocked>Access denied: enemy regrouping ({0})</DMSE.MissileBase.ReentryBlocked>
   <DMSE.MissileBase.ReentryBlockStarted>{0}: its fire-control radars still stand and the enemy is regrouping. Ground access is blocked for {1}; the position will be fully rebuilt.</DMSE.MissileBase.ReentryBlockStarted>
@@ -105,6 +105,7 @@ Click to cycle through the remaining targets.</DMSE.MissileBase.ObjectivesAlertD
   <DMSE.Alert.Exist.TimeLeft>Observation ends in: {0}</DMSE.Alert.Exist.TimeLeft>
   <DMSE.Alert.Exist.EnemiesAlive>Enemy combatants remaining: {0}</DMSE.Alert.Exist.EnemiesAlive>
   <DMSE.Alert.Exist.IsMissileBase>This is an active missile launch position. Ending observation early will allow the crew to regroup and reset their defenses.</DMSE.Alert.Exist.IsMissileBase>
+  <DMSE.Alert.Exist.MissileBaseDestroyed>This missile position's fire-control radars are destroyed. Its map stays open until observation ends and no colonists remain there; send a shuttle or transport pods before then to loot it.</DMSE.Alert.Exist.MissileBaseDestroyed>
   <DMSE.Alert.Exist.ClickHint>Click to end observation early.</DMSE.Alert.Exist.ClickHint>
   <DMSE.Alert.Exist.EndEarly.Confirm>End observation now? The map will no longer be held open and may be cleaned up by the game.</DMSE.Alert.Exist.EndEarly.Confirm>
   <DMSE.Alert.Exist.EndEarly.Confirm.MissileBase>End observation early?\n\nThe enemy crew will have the opportunity to regroup. The launch position's defenses and timers will reset, as if the observation never happened.\n\nThis cannot be undone.</DMSE.Alert.Exist.EndEarly.Confirm.MissileBase>
@@ -261,7 +262,11 @@ Click to cycle through the remaining targets.</DMSE.MissileBase.ObjectivesAlertD
   <DMSE.Artillery.NoCrew>Needs a gunner: right-click the mortar and order a pawn to man it; the gunner loads shells automatically.</DMSE.Artillery.NoCrew>
   <DMSE.Artillery.NoLoadedShell>No shell loaded: have a gunner load a mortar shell before firing.</DMSE.Artillery.NoLoadedShell>
   <DMSE.Artillery.WaitingForShell>Waiting for the gunner to reload: the mission is paused.</DMSE.Artillery.WaitingForShell>
+  <DMSE.Artillery.WaitingForAutoloader>Waiting for the shell autoloader to load a shell: the mission is paused.</DMSE.Artillery.WaitingForAutoloader>
+  <DMSE.Artillery.NoLoadedShellAutoloader>No shell loaded: stock mortar shells on a linked shell autoloader before firing.</DMSE.Artillery.NoLoadedShellAutoloader>
+  <DMSE.Artillery.WaitingForBarrel>Barrel worn out: waiting for a new reinforced barrel. The mission is paused.</DMSE.Artillery.WaitingForBarrel>
   <DMSE.Artillery.NoRegistration>No ranging impact has been logged on this map: fire a ranging shot first.</DMSE.Artillery.NoRegistration>
+  <DMSE.Artillery.GroupPartial>{0} of {1} selected guns can fire at this target. Others: {2}</DMSE.Artillery.GroupPartial>
   <DMSE.BVR.DeviceInactive>Device is inactive (no power, broken down, or switched off).</DMSE.BVR.DeviceInactive>
   <!-- State strings (used in StopDesc) -->
   <DMSE.Artillery.StateCooldown>reloading, {0} remaining</DMSE.Artillery.StateCooldown>

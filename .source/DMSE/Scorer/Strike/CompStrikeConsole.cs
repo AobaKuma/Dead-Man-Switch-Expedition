@@ -89,10 +89,12 @@ namespace DMSE
             return t.WorldObject as MapParent ?? Find.WorldObjects.MapParentAt(t.Tile);
         }
 
-        /// <summary>選靶驗證，同發射平台：排除水域與已有非 MapParent 世界物件的 tile。</summary>
+        /// <summary>選靶驗證，同發射平台：排除水域（上面有站點的除外）與已有非 MapParent 世界物件的 tile。</summary>
         private static bool CanTargetTile(GlobalTargetInfo t)
         {
-            if (!t.IsValid || !t.Tile.Valid || t.Tile.Tile.PrimaryBiome.isWaterBiome) { return false; }
+            if (!t.IsValid || !t.Tile.Valid) { return false; }
+            // 水域：只有站點在上面時可選（海上發射站、海上平台這類生成在水域 tile 的 MapParent）。
+            if (t.Tile.Tile.PrimaryBiome.isWaterBiome && TargetParentAt(t) == null) { return false; }
             return !(Find.World.worldObjects.WorldObjectAt<WorldObject>(t.Tile) is WorldObject wo) || wo is MapParent;
         }
 

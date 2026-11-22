@@ -96,6 +96,9 @@ namespace DMSE
         // 火控鎖定：>= 0 表示已占用一個火力通道（> now 鎖定中，<= now 鎖定完成待發）。-1 = 未鎖定（含已發射）。
         public int lockUntil = -1;
 
+        /// <summary>末端重新鎖定已嘗試過（不論成功與否，每枚只做一次；盤旋鎖定／到期時也設為 true）。</summary>
+        public bool terminalRetargeted;
+
         public void NotifyInterceptorResolved()
         {
             if (interceptorsInFlight > 0) { interceptorsInFlight--; }
@@ -292,6 +295,7 @@ namespace DMSE
             Scribe_Values.Look(ref midcourseEngagedUntil, "midcourseEngagedUntil", -1);
             Scribe_Values.Look(ref interceptorsInFlight, "interceptorsInFlight", 0);
             Scribe_Values.Look(ref lockUntil, "lockUntil", -1);
+            Scribe_Values.Look(ref terminalRetargeted, "terminalRetargeted", false);
         }
     }
 }

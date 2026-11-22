@@ -43,6 +43,10 @@ namespace DMSE
             for (int i = 0; i < net.links.Count; i++)
             {
                 PileNetwork.Link link = net.links[i];
+                if (!link.a.Props.drawLinkLines || !link.b.Props.drawLinkLines)
+                {
+                    continue;
+                }
                 GenDraw.DrawLineBetween(link.a.parent.TrueCenter().WithY(alt), link.b.parent.TrueCenter().WithY(alt), PileResources.LinkLineMat, 0.3f);
             }
         }

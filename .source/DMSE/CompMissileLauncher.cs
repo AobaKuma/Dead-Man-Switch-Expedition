@@ -109,7 +109,7 @@ namespace DMSE
     ///   - 發射 Gizmo（世界選靶、射程檢查與標示、無彈藥／全數保留／裝置不可用／冷卻中停用）。
     ///   - <see cref="TryLaunchRound"/>：發射指定彈藥——生成離場 skyfaller 與世界旅行物件、掛上發射設定、
     ///     消耗該彈藥（<see cref="ConsumeAmmo"/>）並起算冷卻。單發 Gizmo 與波次打擊共用。
-    ///   - <see cref="CanTargetTile"/>：預設排除水域與已有非 MapParent 世界物件的 tile，
+    ///   - <see cref="CanTargetTile"/>：預設排除水域（上面有站點的除外）與已有非 MapParent 世界物件的 tile，
     ///     三平台選靶規則一致。
     ///   - 向 <see cref="MapComponent_StrikePlanner"/> 註冊，供波次打擊列舉在架彈藥。
     ///
@@ -238,7 +238,7 @@ namespace DMSE
                     : "DMSE.Guidance.AutoTarget").Translate(config.TargetingLabel);
         }
 
-        /// <summary>選靶驗證：預設排除水域與已有非 MapParent 世界物件的 tile。</summary>
+        /// <summary>選靶驗證：預設排除水域（上面有站點的除外）與已有非 MapParent 世界物件的 tile。</summary>
         protected virtual bool CanTargetTile(GlobalTargetInfo t)
         {
             // 反艦：移動中的據點（艦艇）可能停在海上，移動目標不受水域限制。
@@ -248,7 +248,8 @@ namespace DMSE
             {
                 return true;
             }
-            if (t.Tile.Tile.PrimaryBiome.isWaterBiome)
+            // 水域：只有站點在上面時可選（海上發射站、海上平台這類生成在水域 tile 的 MapParent）。
+            if (t.Tile.Tile.PrimaryBiome.isWaterBiome && TargetParentAt(t) == null)
             {
                 return false;
             }

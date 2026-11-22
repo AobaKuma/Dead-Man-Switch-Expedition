@@ -289,13 +289,14 @@ namespace DMSE
             ThingDef projDef = ResolveProjectileDef();
             if (projDef == null)
             {
-                // 可換彈藥的砲（原版迫擊砲）：砲手補彈要離開砲位再回來，任務暫停等他，不要取消
+                // 可換彈藥的砲（原版迫擊砲）：砲手補彈要離開砲位再回來、自動砲等連結的自動裝填架補彈，
+                // 任務暫停等待，不要取消
                 if (ChangeableProjectile != null)
                 {
                     warmupEndTick = -1;
                     if (now >= nextNoShellMessageTick)
                     {
-                        Messages.Message("DMSE.Artillery.WaitingForShell".Translate(),
+                        Messages.Message((HasCrew ? "DMSE.Artillery.WaitingForShell" : "DMSE.Artillery.WaitingForAutoloader").Translate(),
                             parent, MessageTypeDefOf.NeutralEvent, historical: false);
                         nextNoShellMessageTick = now + 600;
                     }
@@ -312,9 +313,21 @@ namespace DMSE
             if (barrel != null && !barrel.HasFuel)
             {
                 // 有砲手的裝置：砲手會去拿強化砲管換上，等他就位就好
-                if (parent.GetComp<CompMannable>() != null)
+                if (HasCrew)
                 {
                     warmupEndTick = -1;
+                    return;
+                }
+                // 自動砲的砲管耐久（不是砲彈存量）：殖民者照原版換管工作（WorkGiver_Refuel_Turret）補上，任務暫停等待
+                if (!Props.refuelableIsAmmo)
+                {
+                    warmupEndTick = -1;
+                    if (now >= nextNoShellMessageTick)
+                    {
+                        Messages.Message("DMSE.Artillery.WaitingForBarrel".Translate(),
+                            parent, MessageTypeDefOf.NeutralEvent, historical: false);
+                        nextNoShellMessageTick = now + 600;
+                    }
                     return;
                 }
                 Messages.Message((Props.refuelableIsAmmo ? "DMSE.Artillery.NoAmmo" : "DMSE.Artillery.NoBarrel").Translate(),
@@ -427,13 +440,12 @@ namespace DMSE
             }
             else
             {
-                // ---- 開火按鈕（選世界目標）----
-                Command_Action cmd = new Command_Action
+                // ---- 開火按鈕（選世界目標；多選時一次選靶套用到所有選取的砲）----
+                Command_ArtilleryFire cmd = new Command_ArtilleryFire(this)
                 {
                     defaultLabel = "DMSE.Artillery.Fire".Translate(),
                     defaultDesc  = "DMSE.Artillery.FireDesc".Translate(),
                     icon         = CompLaunchable.LaunchCommandTex,
-                    action       = BeginWorldTargeting,
                 };
 
                 if (!CanFireGizmo(out string reason))
@@ -513,7 +525,7 @@ namespace DMSE
             if (ResolveProjectileDef() == null)
             {
                 reason = ChangeableProjectile != null
-                    ? "DMSE.Artillery.NoLoadedShell".Translate().ToString()
+                    ? (HasCrew ? "DMSE.Artillery.NoLoadedShell" : "DMSE.Artillery.NoLoadedShellAutoloader").Translate().ToString()
                     : NotConfiguredReason;
                 return false;
             }
@@ -548,6 +560,9 @@ namespace DMSE
                 return (parent as Building_TurretGun)?.gun?.TryGetComp<CompChangeableProjectile>();
             }
         }
+
+        /// <summary>需要砲手的砲（原版迫擊砲、重型迫擊砲）；沒有的是自動砲，砲彈由自動裝填架補（<see cref="CompShellAutoloader"/>）。</summary>
+        private bool HasCrew => parent.GetComp<CompMannable>() != null;
 
         private ThingDef ResolveProjectileDef()
         {
@@ -585,36 +600,67 @@ namespace DMSE
         //  世界地圖目標選取
         // =====================================================================
 
-        private void BeginWorldTargeting()
+        /// <summary>
+        /// 開始世界選靶。<paramref name="guns"/> 是要一起開火的砲（多選時為按鈕群組裡所有可開火的砲，第一門是被點的那門）；
+        /// 選定的目標套用到每一門各自可射擊的砲（射程、圖層、校射落點各自判定）。
+        /// </summary>
+        public static void BeginWorldTargeting(List<CompArtilleryStrike> guns)
         {
-            if (!CanFireGizmo(out _)) { return; }
+            guns = guns.Where(g => g?.parent != null && g.CanFireGizmo(out _)).Distinct().ToList();
+            if (guns.Count == 0) { return; }
+            CompArtilleryStrike lead = guns[0];
 
-            CameraJumper.TryJump(CameraJumper.GetWorldTarget(parent));
+            CameraJumper.TryJump(CameraJumper.GetWorldTarget(lead.parent));
 
-            PlanetTile origin = parent.Map?.Tile ?? PlanetTile.Invalid;
+            // 射程圈：多選只會在同一張地圖上，起點相同；不同 def 的砲射程不同，各畫一圈（同射程只畫一次）。
+            List<(PlanetTile origin, int radius)> rings = guns
+                .Where(g => g.Props.maxRangeTiles > 0f && g.parent.Map != null)
+                .Select(g => (g.parent.Map.Tile, Mathf.FloorToInt(g.Props.maxRangeTiles)))
+                .Distinct().ToList();
+
             Find.WorldTargeter.BeginTargeting(
-                action:                    ChooseWorldTarget,
+                action:                    t => ChooseWorldTarget(guns, t),
                 canTargetTiles:            true,
                 closeWorldTabWhenFinished: true,
                 onUpdate: () =>
                 {
-                    if (Props.maxRangeTiles > 0f && origin.Valid)
+                    for (int i = 0; i < rings.Count; i++)
                     {
-                        GenDraw.DrawWorldRadiusRing(origin, Mathf.FloorToInt(Props.maxRangeTiles));
+                        if (rings[i].origin.Valid) { GenDraw.DrawWorldRadiusRing(rings[i].origin, rings[i].radius); }
                     }
                 },
                 extraLabelGetter: t =>
                 {
                     if (!t.IsValid || !t.Tile.Valid) { return null; }
-                    // 沒有載入中的地圖 = 打不了（抵達時不生成地圖），游標先告訴玩家原因
-                    if (Current.Game.FindMap(t.Tile) == null) { return "DMSE.Artillery.MapNotSpawned".Translate(); }
-                    // 效力射要有校射落點，否則先告訴玩家去校射
-                    if (fireForEffect && !TryGetRegisteredImpact(t.Tile, out _)) { return "DMSE.Artillery.NoRegistration".Translate(); }
-                    if (Props.maxRangeTiles <= 0f || !origin.Valid) { return null; }
-                    return "DMSE.MissileLauncher.RangeLabel".Translate(
-                        MissileWorldUtility.RangeDistance(origin, t.Tile).ToString("0.#"), Props.maxRangeTiles.ToString("0.#"));
+                    string own = lead.TargetLabel(t.Tile);
+                    if (guns.Count == 1) { return own; }
+
+                    // 多選：只有部分砲能打（射程不同、效力射缺校射落點…）時補一行說明。
+                    int ready = 0;
+                    string blocked = null;
+                    for (int i = 0; i < guns.Count; i++)
+                    {
+                        if (guns[i].CanTargetTile(t.Tile, out string reason)) { ready++; }
+                        else if (blocked == null) { blocked = reason; }
+                    }
+                    if (ready == 0 || ready == guns.Count) { return own; }
+                    string partial = "DMSE.Artillery.GroupPartial".Translate(ready, guns.Count, blocked ?? "");
+                    return own.NullOrEmpty() ? partial : own + "\n" + partial;
                 }
             );
+        }
+
+        /// <summary>選靶游標旁的說明：目標地圖未載入、效力射缺校射落點，或與本砲的距離／射程。</summary>
+        private string TargetLabel(PlanetTile tile)
+        {
+            // 沒有載入中的地圖 = 打不了（抵達時不生成地圖），游標先告訴玩家原因
+            if (Current.Game.FindMap(tile) == null) { return "DMSE.Artillery.MapNotSpawned".Translate(); }
+            // 效力射要有校射落點，否則先告訴玩家去校射
+            if (fireForEffect && !TryGetRegisteredImpact(tile, out _)) { return "DMSE.Artillery.NoRegistration".Translate(); }
+            PlanetTile origin = parent.Map?.Tile ?? PlanetTile.Invalid;
+            if (Props.maxRangeTiles <= 0f || !origin.Valid) { return null; }
+            return "DMSE.MissileLauncher.RangeLabel".Translate(
+                MissileWorldUtility.RangeDistance(origin, tile).ToString("0.#"), Props.maxRangeTiles.ToString("0.#"));
         }
 
         /// <summary>世界目標是否可射擊（同一圖層、不是本地圖、射程內、目標地圖已生成、效力射需先校射）；不可時給出原因。供選靶與測試共用。</summary>
@@ -662,18 +708,43 @@ namespace DMSE
             return true;
         }
 
-        private bool ChooseWorldTarget(GlobalTargetInfo target)
+        /// <summary>
+        /// 把選定的目標交給每一門可射擊的砲；一門都不行就拒絕並維持選靶，部分可以就開火並提示其餘的原因。
+        /// </summary>
+        private static bool ChooseWorldTarget(List<CompArtilleryStrike> guns, GlobalTargetInfo target)
         {
-            string reason = null;
-            if (!target.IsValid || !CanTargetTile(target.Tile, out reason))
+            int fired = 0;
+            string blocked = null;
+            if (target.IsValid)
+            {
+                for (int i = 0; i < guns.Count; i++)
+                {
+                    CompArtilleryStrike gun = guns[i];
+                    if (!gun.parent.Spawned) { continue; } // 選靶期間被拆掉或摧毀
+                    if (gun.CanTargetTile(target.Tile, out string reason))
+                    {
+                        gun.StartSustainedFire(target.Tile);
+                        fired++;
+                    }
+                    else if (blocked == null)
+                    {
+                        blocked = reason;
+                    }
+                }
+            }
+
+            if (fired == 0)
             {
                 Messages.Message(
-                    reason ?? "MessageTransportPodsDestinationIsInvalid".Translate(),
+                    blocked ?? "MessageTransportPodsDestinationIsInvalid".Translate(),
                     MessageTypeDefOf.RejectInput, historical: false);
                 return false;
             }
-
-            StartSustainedFire(target.Tile);
+            if (fired < guns.Count)
+            {
+                Messages.Message("DMSE.Artillery.GroupPartial".Translate(fired, guns.Count, blocked ?? ""),
+                    MessageTypeDefOf.CautionInput, historical: false);
+            }
             return true;
         }
 

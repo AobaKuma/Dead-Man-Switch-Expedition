@@ -50,6 +50,13 @@
     <jamDetectionPenalty>0.6</jamDetectionPenalty>
     <jamMinDetectionFactor>0.15</jamMinDetectionFactor>
     <jamLockPenalty>0.8</jamLockPenalty>
+    <!-- 末端落點標記與重新鎖定（docs/末端落點顯示與導引頭重新鎖定_實作計畫.md）：
+         沒有能接戰 CIWS 時的末端窗口、標記合併半徑（格）、剩多少 ticks 時自主尋標頭重鎖一次、開關、重鎖位移上限（0 = 不限）。 -->
+    <terminalMarkerFallbackTicks>1800</terminalMarkerFallbackTicks>
+    <terminalMarkerMergeCells>3</terminalMarkerMergeCells>
+    <terminalRetargetTicks>900</terminalRetargetTicks>
+    <terminalRetargetEnabled>true</terminalRetargetEnabled>
+    <terminalRetargetMaxShiftCells>0</terminalRetargetMaxShiftCells>
   </DMSE.BVRWorldTuningDef>
 
   <!-- NPC 防空警戒五階段（docs/NPC防空警戒五階段_執行計畫.md）。數值為首輪測試起點，不是已驗證的平衡值。 -->

@@ -14,8 +14,8 @@
   <DMSE.MissileBase.RelocatedDesc>一處敵方導彈陣地在部署後完成射擊任務並轉移，防止殖民地反制。</DMSE.MissileBase.RelocatedDesc>
   <!-- EN: Missile position destroyed -->
   <DMSE.MissileBase.Destroyed>導彈陣地已摧毀</DMSE.MissileBase.Destroyed>
-  <!-- EN: Your colonists have destroyed every fire-control radar at the enemy missile position. Without fire control it can no longer launch, and the missile threat from this position has been neutralized. -->
-  <DMSE.MissileBase.DestroyedDesc>殖民者已摧毀敵方導彈陣地的所有火控雷達。失去火控後陣地無法再發射，來自該陣地的導彈威脅已解除。</DMSE.MissileBase.DestroyedDesc>
+  <!-- EN: Your colonists have destroyed every fire-control radar at the enemy missile position. Without fire control it can no longer launch, and the missile threat from this position has been neutralized.\n\nThe position's map stays open until observation ends and no colonists remain there, so you can still send a shuttle to loot it. -->
+  <DMSE.MissileBase.DestroyedDesc>殖民者已摧毀敵方導彈陣地的所有火控雷達。失去火控後陣地無法再發射，來自該陣地的導彈威脅已解除。\n\n陣地地圖會保留到觀察結束、且當地沒有殖民者為止，仍可派穿梭機前往搜刮。</DMSE.MissileBase.DestroyedDesc>
   <!-- EN: Ground access denied: enemy regrouping ({0}) -->
   <DMSE.MissileBase.ReentryBlockedIn>地面通道封鎖中，敵方整備防線（{0}）</DMSE.MissileBase.ReentryBlockedIn>
   <!-- EN: Access denied: enemy regrouping ({0}) -->
@@ -182,6 +182,8 @@ Click to cycle through the remaining targets. -->
   <DMSE.Alert.Exist.EnemiesAlive>剩餘敵方戰鬥人員：{0}</DMSE.Alert.Exist.EnemiesAlive>
   <!-- EN: This is an active missile launch position. Ending observation early will allow the crew to regroup and reset their defenses. -->
   <DMSE.Alert.Exist.IsMissileBase>這是一處運作中的導彈陣地。提前結束觀察將讓敵方人員得以重整並重置其防禦。</DMSE.Alert.Exist.IsMissileBase>
+  <!-- EN: This missile position's fire-control radars are destroyed. Its map stays open until observation ends and no colonists remain there; send a shuttle or transport pods before then to loot it. -->
+  <DMSE.Alert.Exist.MissileBaseDestroyed>此導彈陣地的火控雷達已全數摧毀。地圖會保留到觀察結束、且當地沒有殖民者為止；在此之前可派穿梭機或運輸艙前往搜刮。</DMSE.Alert.Exist.MissileBaseDestroyed>
   <!-- EN: Click to end observation early. -->
   <DMSE.Alert.Exist.ClickHint>點擊以提前結束觀察。</DMSE.Alert.Exist.ClickHint>
   <!-- EN: End observation now? The map will no longer be held open and may be cleaned up by the game. -->
@@ -472,8 +474,12 @@ Click to cycle through the remaining targets. -->
   <DMSE.Artillery.NoLoadedShell>尚未裝填砲彈：先讓砲手裝填迫擊砲彈再開火。</DMSE.Artillery.NoLoadedShell>
   <!-- EN: Waiting for the gunner to reload: the mission is paused. -->
   <DMSE.Artillery.WaitingForShell>等待砲手補彈，射擊任務暫停中。</DMSE.Artillery.WaitingForShell>
+  <DMSE.Artillery.WaitingForAutoloader>等待自動裝填架補彈，射擊任務暫停中。</DMSE.Artillery.WaitingForAutoloader>
+  <DMSE.Artillery.NoLoadedShellAutoloader>尚未裝填砲彈：先在連結的自動裝填架上存放迫擊砲彈再開火。</DMSE.Artillery.NoLoadedShellAutoloader>
+  <DMSE.Artillery.WaitingForBarrel>砲管已耗損，等待更換強化砲管，射擊任務暫停中。</DMSE.Artillery.WaitingForBarrel>
   <!-- EN: No ranging impact has been logged on this map: fire a ranging shot first. -->
   <DMSE.Artillery.NoRegistration>這張地圖還沒有校射落點，無法效力射；請先以校射模式打一發。</DMSE.Artillery.NoRegistration>
+  <DMSE.Artillery.GroupPartial>選取的 {1} 門砲中，{0} 門可以射擊此目標；其餘：{2}</DMSE.Artillery.GroupPartial>
   <!-- EN: Device is inactive (no power, broken down, or switched off). -->
   <DMSE.BVR.DeviceInactive>裝置不可用（無電力、損壞或已關閉）。</DMSE.BVR.DeviceInactive>
   <!-- State strings (used in StopDesc) -->

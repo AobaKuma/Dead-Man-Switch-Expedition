@@ -35,19 +35,26 @@ namespace DMSE
         public readonly HashSet<CompTerminalCIWS> ciwsTurrets = new HashSet<CompTerminalCIWS>();
 
         /// <summary>地圖上是否存在任何運作中的搜索雷達（決定是否啟用攔截流程）。</summary>
-        /// <summary>末端攔截窗口：取防禦方所有 CIWS 中最大的窗口；沒有則為 0。</summary>
+        /// <summary>末端攔截窗口：取防禦方所有能接戰（運作中且未停火）的 CIWS 中最大的窗口；沒有則為 0。</summary>
         public int TerminalWindowTicks(Faction defender)
         {
             int max = 0;
             foreach (CompTerminalCIWS c in ciwsTurrets)
             {
-                if (c.Active && c.parent.Faction == defender && c.Props.terminalWindowTicks > max)
+                if (c.CanEngage && c.parent.Faction == defender && c.Props.terminalWindowTicks > max)
                 {
                     max = c.Props.terminalWindowTicks;
                 }
             }
             return max;
         }
+
+        /// <summary>
+        /// 末端落點標記與末端重鎖共用的窗口：防禦方能接戰 CIWS 的窗口；沒有時用
+        /// <see cref="BVRWorldTuningDef.terminalMarkerFallbackTicks"/>（docs/末端落點顯示與導引頭重新鎖定_實作計畫.md §3.1、§4.2）。
+        /// </summary>
+        public int EffectiveTerminalWindow(Faction defender)
+            => TerminalTiming.EffectiveWindow(TerminalWindowTicks(defender), BVRWorldTuningDef.Current.terminalMarkerFallbackTicks);
 
         /// <summary>
         /// 決定有資格攔截此空投的「防禦方」：擁有運作中搜索雷達、且與空投內容物敵對的陣營。
@@ -308,6 +315,10 @@ namespace DMSE
                 }
 
                 int terminalWindow = TerminalWindowTicks(wave.defenderFaction);
+
+                // 末端重鎖：只改落點，不改 tickToImpact／目標集合／末端分流（在分流之前做，CIWS 本 tick 就用新落點瞄準）。
+                TryTerminalRetarget(wave, timeLeft, terminalWindow);
+
                 if (wave.loitering || wave.TerminalOnly || timeLeft <= terminalWindow)
                 {
                     // 盤旋中的導彈仍在目標上空：末端防禦（CIWS）照常接戰，不受末端窗口限制。
@@ -325,6 +336,49 @@ namespace DMSE
             }
 
             TerminalDefense(now);
+        }
+
+        // ====================================================================
+        //  末端重新鎖定（docs/末端落點顯示與導引頭重新鎖定_實作計畫.md §4）
+        // ====================================================================
+
+        /// <summary>
+        /// 自主尋標頭在末端窗口內剩 <see cref="BVRWorldTuningDef.terminalRetargetTicks"/> 時重新執行一次導引頭，
+        /// 以攻擊方為 claim 鍵分散目標。只改 <see cref="BVRTarget.position"/>（自己套一次命中偏移）；
+        /// 找不到目標、導引頭不支援或超出位移上限時保留原落點。每枚只嘗試一次。盤旋中的波次由盤旋飛控負責，不在此重鎖。
+        /// </summary>
+        private void TryTerminalRetarget(BVRWave wave, int timeLeft, int ciwsWindow)
+        {
+            BVRWorldTuningDef tuning = BVRWorldTuningDef.Current;
+            if (!tuning.terminalRetargetEnabled || wave.loitering || wave.targets.Count == 0) { return; }
+
+            int window = TerminalTiming.EffectiveWindow(ciwsWindow, tuning.terminalMarkerFallbackTicks);
+            if (!TerminalTiming.RetargetDue(timeLeft, window, tuning.terminalRetargetTicks)) { return; }
+
+            for (int i = 0; i < wave.targets.Count; i++)
+            {
+                BVRTarget target = wave.targets[i];
+                if (target.terminalRetargeted) { continue; }
+                target.terminalRetargeted = true; // 不論成功與否都只嘗試一次。
+
+                IIncomingMissile missile = target.Missile;
+                MissileConfig config = missile?.Config;
+                GuidanceType guidance = config?.TargetingGuidance;
+                if (guidance == null || !guidance.CanRetargetInTerminal || !target.position.IsValid) { continue; }
+
+                if (!GuidanceType.TryPickTarget(config, map, missile.Attacker, out IntVec3 aim,
+                        claim: true, claimKey: TerminalClaimKey.For(missile.Attacker))) { continue; }
+                if (!TerminalTiming.WithinShift(target.position, aim, tuning.terminalRetargetMaxShiftCells)) { continue; }
+
+                IntVec3 old = target.position;
+                target.position = MissileImpactUtility.ScatterCell(config, aim, map); // 命中偏移只套這一次。
+                // 落地時不再偏移（正常流程抵達時已設；直接生成的後備目標在這裡補上，避免落地再偏移一次）。
+                if (missile is Projectile_MissileIncoming projectile) { projectile.LandingScatterApplied = true; }
+                if (Prefs.DevMode && old != target.position)
+                {
+                    Log.Message($"[DMSE BVR] 末端重鎖 #{target.id}（{guidance.GetType().Name}）：{old} → {target.position}（剩餘 {timeLeft} ticks）");
+                }
+            }
         }
 
         // ====================================================================
@@ -384,6 +438,7 @@ namespace DMSE
             if (!GuidanceType.TryPickTarget(config, map, missile.Attacker, out IntVec3 cell, claim: true)) { return; }
 
             target.position = MissileImpactUtility.ScatterCell(config, cell, map);
+            target.terminalRetargeted = true; // 剛鎖定的俯衝點不再被末端重鎖改掉。
             wave.loitering = false;
             wave.tickToImpact = now + BVRWorldTuningDef.Current.loiterDiveTicks;
             if (Prefs.DevMode)
@@ -403,6 +458,7 @@ namespace DMSE
             Faction attacker = target.Missile?.Attacker;
             IntVec3 cell = GuidanceType.InertialTarget(map, attacker);
             target.position = MissileImpactUtility.ScatterCell(target.Missile?.Config, cell, map);
+            target.terminalRetargeted = true; // 盤旋全程都沒有目標：慣性俯衝，不再重鎖。
             if (Prefs.DevMode)
             {
                 Log.Message($"[DMSE BVR] 盤旋時間用盡，退化為慣性落點 {target.position}。");

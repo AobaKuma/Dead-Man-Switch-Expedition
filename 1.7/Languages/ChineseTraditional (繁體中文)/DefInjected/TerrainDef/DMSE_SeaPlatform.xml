@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <DMSE_OpenAir.label>高空</DMSE_OpenAir.label>
+  <DMSE_OpenAir.description>遠高於海面的半空中。在平台支柱的支撐範圍內可以鋪海上平台。</DMSE_OpenAir.description>
+  <DMSE_SeaPlatform.label>海上平台</DMSE_SeaPlatform.label>
+  <DMSE_SeaPlatform.description>架在支柱上、高高離開浪頭的鋼製甲板，什麼都能蓋在上面。只能鋪在平台支柱的支撐範圍內，失去支撐就會塌進海裡。\n\n可以用「拆除平台」指令拆掉，露出底下的高空。</DMSE_SeaPlatform.description>
+</LanguageData>

@@ -19,7 +19,7 @@ namespace DMSE
     ///    ‧ 導彈從地圖上的敵方世界選靶發射建築升空，飛出地圖邊緣後才進入世界航跡（同玩家發射）。<br/>
     /// 2. 指派 <see cref="LordJob_MissileCrewDuty"/> 給地圖內的敵方 Pawn。<br/>
     /// 3. 偵測「所有敵方火控雷達（<see cref="IsObjectiveRadar"/>）皆已摧毀」→ 哨站摧毀（搜索雷達與發射架不必摧毀）；
-    ///    玩家單位仍在圖上時，等撤離後才移除站點。火控雷達尚存時撤退，站點保留並封鎖再進入（<see cref="SitePartWorker_MissileBase"/>）。
+    ///    玩家單位仍在圖上或觀察時長未結束時，等撤離／觀察結束後才移除站點（保留搜刮時間）。火控雷達尚存時撤退，站點保留並封鎖再進入（<see cref="SitePartWorker_MissileBase"/>）。
     /// </summary>
     public class MapComponent_MissileBase : MapComponent
     {
@@ -671,10 +671,16 @@ namespace DMSE
                     LetterDefOf.PositiveEvent,
                     new GlobalTargetInfo(mp.Tile));
                 // 玩家單位還在圖上時不能直接摧毀站點：原版關圖（MapDeiniter.PassPawnsToWorld）會把殖民者
-                // 當成被敵對派系俘虜、其餘玩家單位當成失蹤。改等玩家撤離後由 Site.ShouldRemoveMapNow 連同站點一起移除。
-                if (!AnyPlayerUnitAtMap()) mp.Destroy();
+                // 當成被敵對派系俘虜、其餘玩家單位當成失蹤。
+                // 觀察時長（遠程打擊命中後的 GameComponent_MissileEngage.times）未結束時也不摧毀：
+                // 直接刪站點會連地圖一起關掉，玩家就來不及派穿梭機去搜刮。
+                // 兩種情況都等撤離／觀察結束後由 Site.ShouldRemoveMapNow 連同站點一起移除（Patch_MissileBaseSiteKept 放行）。
+                if (!AnyPlayerUnitAtMap() && !UnderObservation) mp.Destroy();
             }
         }
+
+        /// <summary>此圖仍在導彈／砲擊命中後的觀察時長內（<see cref="GameComponent_MissileEngage.times"/>，由 <see cref="Patch_ShouldBeRemoved"/> 保留地圖）。</summary>
+        private bool UnderObservation => GameComponent_MissileEngage.Comp.times.ContainsKey(map);
 
         /// <summary>地圖（含子口袋地圖）上是否還有關圖時會失蹤的玩家單位，或正飛往此圖的玩家運輸艙。</summary>
         private bool AnyPlayerUnitAtMap()

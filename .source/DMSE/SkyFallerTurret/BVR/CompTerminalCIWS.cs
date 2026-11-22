@@ -1,7 +1,10 @@
 using Fortified;
+using HarmonyLib;
 using RimWorld;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using Verse;
 using Verse.Sound;
@@ -81,6 +84,75 @@ namespace DMSE
             }
         }
 
+        // ---- 停火 ----
+        // 原版 Building_TurretGun 的「停火」gizmo 只切換私有欄位 holdFire；原版 TryStartShootSomething 以
+        // holdFire && CanToggleHoldFire（= 私有的 PlayerControlled）判定是否停火。這裡照抄同一條件，
+        // NPC 砲塔或被非殖民者操作時，殘留的停火旗標不會讓它停止攔截。
+        private static readonly AccessTools.FieldRef<Building_TurretGun, bool> TurretHoldFireRef = TryHoldFireRef();
+        private static readonly Func<Building_TurretGun, bool> TurretPlayerControlled = TryPlayerControlledGetter();
+        private static readonly Dictionary<Type, FieldInfo> otherHoldFireFields = new Dictionary<Type, FieldInfo>();
+
+        private static AccessTools.FieldRef<Building_TurretGun, bool> TryHoldFireRef()
+        {
+            try { return AccessTools.FieldRefAccess<Building_TurretGun, bool>("holdFire"); }
+            catch (Exception e) { Log.Warning($"[DMSE] Building_TurretGun.holdFire not found; hold fire will not stop terminal interception. {e.Message}"); return null; }
+        }
+
+        private static Func<Building_TurretGun, bool> TryPlayerControlledGetter()
+        {
+            try
+            {
+                MethodInfo getter = AccessTools.PropertyGetter(typeof(Building_TurretGun), "PlayerControlled");
+                return getter != null ? AccessTools.MethodDelegate<Func<Building_TurretGun, bool>>(getter) : null;
+            }
+            catch { return null; }
+        }
+
+        private CompBuildingTurretGun turretGunComp;
+        private bool turretGunCompCached;
+
+        /// <summary>
+        /// 玩家對此砲塔下了停火：不參與末端攔截。
+        /// 原版砲塔讀原版的停火 gizmo；非 Building_TurretGun 的平台讀 <see cref="CompBuildingTurretGun"/> 的停火；
+        /// 其他砲塔類別（例如 CE 的 Building_TurretGunCE）讀同名的 holdFire 欄位，只認玩家陣營。
+        /// </summary>
+        public bool HoldingFire
+        {
+            get
+            {
+                if (parent is Building_TurretGun turret)
+                {
+                    if (TurretHoldFireRef == null || !TurretHoldFireRef(turret)) { return false; }
+                    return TurretPlayerControlled != null ? TurretPlayerControlled(turret) : turret.Faction == Faction.OfPlayer;
+                }
+                if (!turretGunCompCached)
+                {
+                    turretGunComp = parent?.GetComp<CompBuildingTurretGun>();
+                    turretGunCompCached = true;
+                }
+                if (turretGunComp != null) { return turretGunComp.HoldFire; }
+                return parent is Building_Turret && parent.Faction == Faction.OfPlayer && OtherTurretHoldFire(parent);
+            }
+        }
+
+        private static bool OtherTurretHoldFire(Thing turret)
+        {
+            Type type = turret.GetType();
+            if (!otherHoldFireFields.TryGetValue(type, out FieldInfo field))
+            {
+                field = AccessTools.Field(type, "holdFire");
+                if (field != null && field.FieldType != typeof(bool)) { field = null; }
+                otherHoldFireFields[type] = field;
+            }
+            return field != null && (bool)field.GetValue(turret);
+        }
+
+        /// <summary>
+        /// 能參與末端攔截：運作中且未停火。停火的 CIWS 對末端階段等同不存在：
+        /// 不算進末端窗口（<see cref="MapComponent_BVRCombat.TerminalWindowTicks"/>），中段攔截照常打到落地。
+        /// </summary>
+        public bool CanEngage => Active && !HoldingFire;
+
         /// <summary>
         /// 每 tick 由 <see cref="MapComponent_BVRCombat"/> 呼叫一次，管理連射節奏。
         /// <paramref name="terminalWaves"/> 為本 tick 所有處於末端窗口的波次（含其他防禦方的，於此過濾）。
@@ -88,6 +160,13 @@ namespace DMSE
         public void TryEngage(List<BVRWave> terminalWaves, int now)
         {
             if (!Active) { return; }
+
+            // 停火：不開新的連射；進行中的連射立即中止、不判定，剩下的砲彈不再發射。
+            if (HoldingFire)
+            {
+                if (burstShotsLeft > 0) { EndBurst(now); }
+                return;
+            }
 
             // 連射進行中：每 tick 保持砲管朝向（避免兩發之間閒置漂移），到時間就發下一發。
             if (burstShotsLeft > 0)

@@ -54,6 +54,16 @@ namespace DMSE
     {
         private static readonly List<IntVec3> tmpCells = new List<IntVec3>();
 
+        /// <summary>
+        /// 其他模組的額外整備檢查（例如 DepthRim：潛水鐘沒收回就不能出港）。在 DMSE 的檢查之後呼叫，
+        /// 主控台不可用或不在船上而提早結束時也會呼叫；往 <c>issues</c> 加項目即可，Error 一樣會擋下起飛。
+        /// <c>includeWarnings</c> 為 false 時是每幀呼叫的便宜檢查，只做阻擋性的判斷。
+        /// </summary>
+        public delegate void ExtraCheck(CompTransferConsole console, TransferPlan plan, bool includeWarnings, List<TransferIssue> issues);
+
+        /// <summary>見 <see cref="ExtraCheck"/>。訂閱前先 <c>-=</c> 一次，避免重複訂閱。</summary>
+        public static event ExtraCheck ExtraChecks;
+
         public static bool AnyError(List<TransferIssue> issues)
         {
             for (int i = 0; i < issues.Count; i++)
@@ -68,6 +78,13 @@ namespace DMSE
 
         /// <param name="includeWarnings">false 時只做便宜的阻擋性檢查（Gizmo 每幀呼叫用）；Warning 需掃描整個船體範圍。</param>
         public static List<TransferIssue> Check(CompTransferConsole console, TransferPlan plan, bool includeWarnings = true)
+        {
+            List<TransferIssue> issues = CheckCore(console, plan, includeWarnings);
+            ExtraChecks?.Invoke(console, plan, includeWarnings, issues);
+            return issues;
+        }
+
+        private static List<TransferIssue> CheckCore(CompTransferConsole console, TransferPlan plan, bool includeWarnings)
         {
             List<TransferIssue> issues = new List<TransferIssue>();
             Thing consoleThing = console.parent;

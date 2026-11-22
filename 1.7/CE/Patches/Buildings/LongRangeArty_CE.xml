@@ -9,6 +9,18 @@
 				<xpath>Defs/ThingDef[defName="DMSE_Turret_Empero"]/comps/li[@Class="CompProperties_Refuelable"]</xpath>
 			</li>
 
+			<!-- 原版下 Empero 用原版可換彈藥（自動裝填架裝彈）；CE 改用 CE 彈匣（下面的 AmmoUser），
+			     所以拿掉 gun 上的 CompChangeableProjectile，世界砲擊改打固定的原版高爆迫擊砲彈。未在遊戲中驗證（1.7 尚無 CE）。 -->
+			<li Class="PatchOperationRemove">
+				<xpath>Defs/ThingDef[defName="DMSE_Gun_Empero"]/comps/li[@Class="CompProperties_ChangeableProjectile"]</xpath>
+			</li>
+			<li Class="PatchOperationAdd">
+				<xpath>Defs/ThingDef[defName="DMSE_Turret_Empero"]/comps/li[@Class="DMSE.CompProperties_ArtilleryStrike"]</xpath>
+				<value>
+					<projectileDef>Bullet_Shell_HighExplosive</projectileDef>
+				</value>
+			</li>
+
       <!-- Empero -->
 
       <li Class="PatchOperationReplace">

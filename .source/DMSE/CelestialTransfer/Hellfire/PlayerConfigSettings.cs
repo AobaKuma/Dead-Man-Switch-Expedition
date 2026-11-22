@@ -16,6 +16,8 @@ namespace DMSE
         public int interceptFxDensity = 1;
         /// <summary>迫近防禦砲塔（CIWS）整體攔截率倍率：1 = 原值，0 = 永不擊落，2 = 加倍（仍以 100% 為上限）。</summary>
         public float ciwsInterceptMultiplier = 1f;
+        /// <summary>末端落點標記：0 關閉、1 只顯示敵方、2 敵我雙方（預設；docs/末端落點顯示與導引頭重新鎖定_實作計畫.md §3.4）。</summary>
+        public int terminalImpactMarkerMode = 2;
 
         public override void ExposeData()
         {
@@ -26,6 +28,7 @@ namespace DMSE
             Scribe_Values.Look(ref interceptDebrisDamage, "interceptDebrisDamage", false);
             Scribe_Values.Look(ref interceptFxDensity, "interceptFxDensity", 1);
             Scribe_Values.Look(ref ciwsInterceptMultiplier, "ciwsInterceptMultiplier", 1f);
+            Scribe_Values.Look(ref terminalImpactMarkerMode, "terminalImpactMarkerMode", 2);
             Scribe_Collections.Look(ref records, "records", LookMode.Deep);
             if (Scribe.mode == LoadSaveMode.LoadingVars && records == null)
                 records = new List<ImpactCraterRecord>();

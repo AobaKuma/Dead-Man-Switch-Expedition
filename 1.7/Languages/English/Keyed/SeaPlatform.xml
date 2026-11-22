@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- 海上平台（DMSE.SeaPlatform） -->
+  <DMSE.SeaPlatform.SupportRadius>Supports sea platform within {0} cells.</DMSE.SeaPlatform.SupportRadius>
+  <DMSE.SeaPlatform.NeedsSupport>Must be within the support radius of a platform pillar.</DMSE.SeaPlatform.NeedsSupport>
+  <DMSE.SeaPlatform.OnlySeaPlatformMap>Can only be built on a sea platform map.</DMSE.SeaPlatform.OnlySeaPlatformMap>
+  <DMSE.SeaPlatform.PillarNeedsOpenAir>Must be built over open air or sea platform.</DMSE.SeaPlatform.PillarNeedsOpenAir>
+  <DMSE.SeaPlatform.PillarNeedsAccess>Needs a spot next to it that a builder can stand on.</DMSE.SeaPlatform.PillarNeedsAccess>
+  <DMSE.SeaPlatform.Unsupported>{0} cells of sea platform have lost their support (out of pillar range, or cut off from the platform on a pillar) and will collapse in {1} seconds unless they are joined back or a platform pillar is built in range.</DMSE.SeaPlatform.Unsupported>
+  <DMSE.SeaPlatform.PillarDestroyed>A platform pillar was destroyed. {0} cells of sea platform are no longer supported and will collapse in {1} seconds unless they are joined to another pillar or a new platform pillar is built in range.</DMSE.SeaPlatform.PillarDestroyed>
+  <DMSE.SeaPlatform.Collapsed>{0} cells of sea platform collapsed into the sea.</DMSE.SeaPlatform.Collapsed>
+  <DMSE.SeaPlatform.PawnFell>{0} fell with the collapsing platform and climbed back up, injured.</DMSE.SeaPlatform.PawnFell>
+  <DMSE.SeaPlatform.PawnLost>{0} fell into the sea with the collapsing platform and was lost.</DMSE.SeaPlatform.PawnLost>
+  <DMSE.SeaPlatform.NeedWaterTile>Pick a water tile on the surface.</DMSE.SeaPlatform.NeedWaterTile>
+  <DMSE.SeaPlatform.TileOccupied>There is already a map on that tile.</DMSE.SeaPlatform.TileOccupied>
+</LanguageData>

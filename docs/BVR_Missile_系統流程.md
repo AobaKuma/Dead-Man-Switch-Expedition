@@ -79,7 +79,14 @@ timeLeft > 0（非 terminalOnly）→ SAM 中過程（MidcourseDefense），2026
 timeLeft ≤ 末端窗口（或 terminalOnly）→ 另加 CIWS（TerminalDefense）
   • 每具 CIWS 每 tick 只處理一次；新連射選 tickToImpact 最早的末端波次 targets[0]；連射中以 burstTargetId 跨波次找目標
   • 每發耗 fuelPerShot；目標消失或斷料則中止不判定
+  • 停火（2026-11-22）：原版砲塔的停火 gizmo（holdFire 且 PlayerControlled，同原版判定）、CompBuildingTurretGun 的停火、
+    其他砲塔類別的同名 holdFire 欄位（CE，只認玩家）→ CompTerminalCIWS.CanEngage = false：不開新連射、進行中的連射中止不判定，
+    且不算進 TerminalWindowTicks 與世界層已結算導彈的防禦方（ResolveDefender），全部停火時等同沒有 CIWS
   • 整輪打完擲一次 interceptChance；命中後擲 debrisChance → SpawnDebris（殺死艙內 pawn、屍體合併成一個殘骸空投；無 pawn 則乾淨清除）
+末端重鎖（2026-11-22，在末端／中過程分流之前）：有效窗口 W = 能接戰 CIWS 窗口，沒有時 terminalMarkerFallbackTicks（1800）；
+  剩 min(terminalRetargetTicks 900, W) ticks 時，每枚 CanRetargetInTerminal 的導彈（自主尋標頭）重跑一次導引頭，
+  claim 鍵 = 攻擊方（TerminalClaimKey，不同導引頭型別共用）→ ScatterCell 一次寫進 position；不改 tickToImpact、目標集合與分流。
+  terminalRetargeted 每枚只試一次（存檔）；盤旋中跳過，盤旋鎖定／到期時直接標記已重鎖
 timeLeft ≤ 0 → ResolveWave：未攔截者落地（空投 TryDrop；導彈依保存的進入方位從邊緣飛入），發 signal；wave.lord 只收編 skyfaller 直接持有的 pawn
 ```
 
@@ -94,6 +101,7 @@ terminalOnly 目標只交給 CIWS。CIWS 與 SAM 可能打同一目標，先擊�
 ### A-7. 重點設計
 
 - **陣營相對防禦**：`ResolveDefender` 找擁有運作中搜索雷達、與來襲方敵對的陣營（玩家優先）；玩家打敵方基地也會被攔截。
+- **末端落點標記**（`TerminalImpactMarkers.cs`，2026-11-22）：`MapComponent_TerminalImpactMarkers` 只讀 `Waves`、不存檔。顯示條件：盤旋中、terminalOnly 波次（整段都是末端）、或其餘波次 `0 < timeLeft ≤ W`；只畫導彈（空投艙不畫）。陣營以玩家為基準：玩家發射＝我方（青）、對玩家敵對或攻擊方不明但打玩家＝敵方（紅）、其餘中立不畫。圖示是 `1.7/Textures/Visual/Effect_LockOn.png`（白色警示三角形，依陣營著色；盤旋群組改琥珀色，標籤仍用陣營色），邊長 2.4 格、每多一枚 +0.24、上限 4.8，1 quad／標記。同陣營 3 格內（`terminalMarkerMergeCells`）合併、ETA 升冪，圖示最多 32、標籤最多 16 且螢幕重疊就跳過；render queue 3176（霧格可見）。Mod 設定 `terminalImpactMarkerMode` 0 關閉／1 只敵方／2 雙方。
 - **隱身雙層對衝**：搜索段對 `antiStealthLevel`（窗口），火控段對 `powerLevel`（命中與鎖定）。
 - **電子對抗**：反輻射導引打開機中 `powerLevel` 最高的敵對雷達；`immuneToAntiRadiationSeeker` 豁免（聲學雷達）。箔條 `jamStrength`／`chaffCharges`：世界層斷鎖（`chaffBreakChance × jam`，不論成敗扣一發）、地圖層命中 × `(1 − chaffMapHitPenalty × jam)`。地面干擾機、功率段位與戰情終端見[電子戰建築](_archive/implemented/電子戰建築_實作計畫.md)；ECCM 等後續見 [ECM 計畫](ECM與ECCM_實作計畫.md)。
 - **VGE 近防**（`1.7/GravshipExpanded/PointDefence`）：`CompPointDefence` 與 `CompTerminalCIWS` 並存、共用砲管，判定互不相通。
@@ -189,6 +197,7 @@ CompBVRDevice
 | 影像 | `Imaging` | 露天存活敵對 Pawn（戰力、體型、ID 排序） | 慣性 |
 | 反艦 | `AntiShip` | 船圖上耐久最高的敵對建築 → 最大 Pawn；+2 終端更新、20 ticks 檢查 | 慣性 |
 
+- **末端重鎖**：`CanRetargetInTerminal`（預設 false）只有自主尋標頭為 true：主動雷達、反艦、影像、反輻射、熱訊號、電磁訊號；慣性、電視、雷射、火控、無線電指令不重鎖。抵達時的 claim 鍵仍是導引頭型別，末端重鎖用攻擊方（`TryPickTarget(..., claimKey:)`），見 A-5。
 - **電網啟動中的建築**：導彈打未生成地圖的據點時建築都還沒開機（原版每 30–200 ticks 開一棟）。`GuidanceType.PowerStarting` 把符合原版開機條件的建築視為運作中；反輻射用 `ActiveForSeeker`，電磁以額定耗電計。熱訊號不受影響（房間還沒升溫）。
 - **雷射標點**（`Scorer/Guidance/LaserDesignator.cs`）：`DMSE_LaserDesignatorMark`（Ethereal、不可攻擊，預設 5000 ticks 失效）；`DMSE_Gun_LaserDesignator` 射出無傷害標定彈（`weaponTags Inherit="False"`、`ai_IsWeapon false`，AI 不會攜帶）；`CompProperties_AbilityLaserDesignate` 可掛任何 AbilityDef（未隨附）。
 
@@ -341,7 +350,7 @@ Hook 時機：
 | 排程 | `MapComponent_ArtilleryStrikes`＋`ArtilleryShellRequest` | `fireTick`、`targetCell`、`entryEdgeCell`、`projectileDef`、`attackerFaction`、`scatterRadius`、`guided`、`fireForEffect`；各地圖各陣營的效力射落點（`ArtilleryImpactRegistration`） |
 | 工具 | `ArtilleryStrikeUtility` | `WorldDirectionAngle`（原版 `PlanetLayer.GetHeadingFromTo`，與世界地圖畫面上的方位一致）、`EdgeCellFromAngle`、`CalcEntryEdgeCell`、`QueueSalvo`、`FindGuidedTarget`、`SpawnShell`（校射彈登錄落點） |
 
-Props：`departureProjectileDef`、`worldObjectDef`（必填）、`projectileDef`（可留空：可換彈藥的砲由砲手載入的彈種決定）、`cooldownTicks`、`warmupTicks`、`scatterRadius`、`salvoCount`、`salvoIntervalTicks`、`requiresFireControlChannel`（無 Def 使用）、`fireControlHoldTicks`、`guidedScatterRadius`（<0 不支援導引）、`maxRangeTiles`、`refuelableIsAmmo`。Empero：冷卻 1800、瞄準 300、散布 14／導引 3、射程 20、砲彈 12；另有本地圖減裝藥曲射（共用砲彈、世界射擊期間停火）、hold fire／強制目標。
+Props：`departureProjectileDef`、`worldObjectDef`（必填）、`projectileDef`（可留空：可換彈藥的砲由砲手載入的彈種決定）、`cooldownTicks`、`warmupTicks`、`scatterRadius`、`salvoCount`、`salvoIntervalTicks`、`requiresFireControlChannel`（無 Def 使用）、`fireControlHoldTicks`、`guidedScatterRadius`（<0 不支援導引）、`maxRangeTiles`、`refuelableIsAmmo`。Empero：冷卻 1800、瞄準 300、散布 14／導引 3、射程 20；另有本地圖減裝藥曲射（共用裝填的那一發、世界射擊期間停火）、hold fire／強制目標。2026-11-22 起彈藥同重型迫擊砲：gun 上原版 `CompChangeableProjectile`（裝哪種迫擊砲彈就打哪種 `projectileWhenLoaded`，不設 `projectileDef`），砲管耐久為原版強化砲管 20 發（殖民者以 `WorkGiver_Refuel_Turret` 換管；自動砲換管期間任務暫停而非取消）。沒有砲手，由連結的自動裝填架 `DMSE_ShellAutoloader`（1x3 `Building_Storage` + `CompFacility` + `CompShellAutoloader`，100 W，每 60 tick）從架上取砲塔「砲彈」頁允許的砲彈逐發裝填；被排除的已裝彈退到架旁。CE 補丁移除 `CompChangeableProjectile`、世界砲擊改打 `Bullet_Shell_HighExplosive`。2026-11-22 起本體是 `Building_LongRangeGun : Building_TurretGun`（`building/turretGunDef`，原版索敵／強制目標／停火）；砲身仍由 `CompTurretFacingRenderer` 畫（原版 TurretTop 改畫透明），砲身轉到 `ModExtension_TurretTraverse.aimToleranceDeg` 內才開始原版預熱。多選時「開火」是 `Command_ArtilleryFire`：只開一次世界選靶，選定後每門砲各自以 `CanTargetTile` 判定，能打的全部開火，部分不能打時提示 `DMSE.Artillery.GroupPartial`。
 
 流程：Gizmo 選靶（同圖層、非本地圖、射程內、**目標地圖已載入（spawned）**、**效力射需該地圖已有校射落點**）→ 持續射擊（`!Active` 暫停、無彈停止、等通道、效力射無落點待命）→ 瞄準 warmup（砲管轉向世界方位）→ `FireSingleShot`（耗彈、出口格 = 世界方位、校射＝`targetCell` 地圖中心／效力射＝已登錄落點且每發收束 25%；效力射不找導引，校射開火瞬間搶到通道則 guided）→ 離場 → 世界航跡 → `QueueSalvo`（進入邊 = 從發射地一側）→ `SpawnShell`（guided 每發重挑 `FindGuidedTarget`：砲塔 → 用電設備 → 人員；散布；校射彈把實際落點登錄到地圖（每陣營一筆，同陣營共用）；`launcher = null`）→ 原版爆炸。
 
@@ -349,7 +358,7 @@ Props：`departureProjectileDef`、`worldObjectDef`（必填）、`projectileDef
 - 與 BVR 共用火控通道：`FreeArtilleryChannels = maxTargets − 借給火砲 − 按比例分攤的 BVR 占用`；`MidcourseDefense` 反向扣除。
 - 砲彈是 Projectile，**BVR 不攔截**。不可跨圖層。
 - 存檔：冷卻、`targetTile`（`PlanetTile` 完整 tileId,layerId）、`channelReleaseTick`、借用雷達、在途齊射、射擊模式（`artilleryFireForEffect`）與效力射收束發數、各地圖各陣營的落點。
-- 已知：傷害歸因 `launcher: null`（`attackerFaction` 未參與）；`DMSE_Turret_Empero` 是 `Building` 不是 `Building_Turret`，`FindGuidedTarget` 不會把它當 tier 0。見[反砲兵提案](反砲兵雷達_實作計畫.md)。
+- 已知：傷害歸因 `launcher: null`（`attackerFaction` 未參與）。`DMSE_Turret_Empero` 2026-11-22 起是 `Building_Turret`，`FindGuidedTarget` 會把它當 tier 0。見[反砲兵提案](反砲兵雷達_實作計畫.md)。
 
 ---
 
@@ -378,3 +387,4 @@ Props：`departureProjectileDef`、`worldObjectDef`（必填）、`projectileDef
 |---|---|---|
 | 1.0（第一版） | 2026-11-20 | 第一版定稿：以既有內容整份回寫，加入版本標記；技術內容未變。 |
 | 1.1 | 2026-11-20 | 新增 A-8 攔截表現：空爆、遠距末端、主殘骸、細碎片、屍體空投、預算與音效；連結攔截殘骸特效計畫的歸檔位置。 |
+| 1.2 | 2026-11-22 | A-5 加末端重鎖、A-7 加末端落點標記、B-6 加 `CanRetargetInTerminal`（[末端落點顯示與導引頭重新鎖定](末端落點顯示與導引頭重新鎖定_實作計畫.md)）。 |
