@@ -56,7 +56,7 @@
         <!-- Player starting stuff spawn method-->
         <li Class="Fortified.ScenPart_PlayerPawnsArriveGravship">
           <def>FFF_PlayerPawnsArriveGravship</def>
-          <gravshipStructure>DMSE_ScenarioGravship</gravshipStructure>
+          <gravshipStructure>DMSE_Vessel_Eagle</gravshipStructure>
         </li>
 
         <li Class="DMSE.ScenPart_Huntdown">

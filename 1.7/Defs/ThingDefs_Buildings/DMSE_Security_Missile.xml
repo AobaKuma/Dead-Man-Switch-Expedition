@@ -105,6 +105,20 @@
                 <launchCooldownTicks>300</launchCooldownTicks>
                 <launchForwardCells>2</launchForwardCells>
             </li>
+            <!-- 發射管上層：貼圖高 2 格但占地 1 格，並排時下一座的底座會蓋住上一座的發射管；
+                 把發射管（building_top_*）畫在較高的 altitude，所有發射管都在所有底座之上。 -->
+            <li Class="DMSE.CompProperties_BuildingExtraRenderer">
+                <extraGraphic>
+                    <li>
+                        <texPath>Things/Building/MissileLauncher/building_top</texPath>
+                        <graphicClass>Graphic_Multi</graphicClass>
+                        <drawSize>(2,6)</drawSize>
+                        <drawOffset>(0,0.01875,0)</drawOffset>
+                        <drawOffsetEast>(0,0.01875,0.35)</drawOffsetEast>
+                        <drawOffsetWest>(0,0.01875,0.35)</drawOffsetWest>
+                    </li>
+                </extraGraphic>
+            </li>
         </comps>
         <inspectorTabs>
             <li>RimWorld.ITab_Storage</li>

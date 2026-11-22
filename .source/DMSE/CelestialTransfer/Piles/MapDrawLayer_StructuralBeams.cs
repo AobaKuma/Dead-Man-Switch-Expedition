@@ -62,11 +62,19 @@ namespace DMSE
                 PileNetwork net = networks[n];
                 for (int i = 0; i < net.links.Count; i++)
                 {
-                    PrintBeam(net.links[i].a, net.links[i].b, alt);
+                    // 任一端不畫鋼樑（小型結構樁）時整條不畫
+                    if (net.links[i].a.Props.drawBeams && net.links[i].b.Props.drawBeams)
+                    {
+                        PrintBeam(net.links[i].a, net.links[i].b, alt);
+                    }
                 }
                 for (int i = 0; i < net.piles.Count; i++)
                 {
                     CompStructuralPile p = net.piles[i];
+                    if (!p.Props.drawBeams)
+                    {
+                        continue;
+                    }
                     float size = p.Props.beamCenterDrawSize * DrawScale;
                     Printer_Plane.PrintPlane(this, (p.parent.TrueCenter() + DrawOffset).WithY(alt + CenterAltitudeOffset), new Vector2(size, size), p.Props.BeamCenterMat);
                 }

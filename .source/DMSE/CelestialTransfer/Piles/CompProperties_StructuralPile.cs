@@ -63,6 +63,9 @@ namespace DMSE
 
         public float beamCenterDrawSize = 3f;
 
+        /// <summary>是否畫地板下鋼樑。false：本樁的中心板與連到本樁的鋼樑都不畫（連結仍照常生效）。</summary>
+        public bool drawBeams = true;
+
         /// <summary>
         /// 選取時畫出連結線（<see cref="PileDrawUtility.DrawNetworkOverlay"/>）；任一端為 false 就不畫那一條。
         /// 只影響疊加層，船體範圍、爭議格、斷裂格與未連結樁的提示照常畫。一船有很多座樁的模組（例如 DepthRim 的龍骨）可以關掉。

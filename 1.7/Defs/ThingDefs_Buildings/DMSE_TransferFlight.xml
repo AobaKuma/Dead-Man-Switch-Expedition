@@ -113,6 +113,8 @@
         <coverageRadius>7</coverageRadius>
         <!-- 不提供連結範圍：只能建在大樁的連結範圍內，也只能連到大樁 -->
         <linkRange>0</linkRange>
+        <!-- 小型樁不畫地板下鋼樑與中心板（連結仍生效） -->
+        <drawBeams>false</drawBeams>
         <excludedTerrains>
           <li>OrbitalPlatform</li>
         </excludedTerrains>
