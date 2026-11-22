@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: anti-ship loitering munition -->
+  <DMSE_Missile_Termite.label>反艦巡飛彈</DMSE_Missile_Termite.label>
+  <!-- EN: A folding-wing anti-ship loitering munition powered by a small turbojet. It is slow and lightly armed, but cheap, fires from a ground rail and chases moving ships with its own seeker. -->
+  <DMSE_Missile_Termite.description>一種以小型渦輪噴射引擎推進的折疊翼反艦巡飛彈。速度慢、火力弱，但便宜，可從地面發射軌發射，並以彈上尋標器追擊移動中的船艦。</DMSE_Missile_Termite.description>
+  
+</LanguageData>

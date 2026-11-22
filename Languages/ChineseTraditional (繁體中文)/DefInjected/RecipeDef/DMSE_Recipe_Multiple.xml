@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: Make Cluster Control Chipsets -->
+  <DMSE_Make_ComponentControlChip.label>製作集群控制晶片組</DMSE_Make_ComponentControlChip.label>
+  <!-- EN: Producing a Cluster Control Chipsets. -->
+  <DMSE_Make_ComponentControlChip.description>生產一組集群控制晶片組。</DMSE_Make_ComponentControlChip.description>
+  <!-- EN: Producing. -->
+  <DMSE_Make_ComponentControlChip.jobString>正在生產</DMSE_Make_ComponentControlChip.jobString>
+  
+  <!-- EN: Make Fire Control System -->
+  <DMSE_Make_ComponentFireControl.label>製作火控系統</DMSE_Make_ComponentFireControl.label>
+  <!-- EN: Producing a Fire Control System. -->
+  <DMSE_Make_ComponentFireControl.description>生產一套火控系統。</DMSE_Make_ComponentFireControl.description>
+  <!-- EN: Producing. -->
+  <DMSE_Make_ComponentFireControl.jobString>正在生產</DMSE_Make_ComponentFireControl.jobString>
+  
+  <!-- EN: Make T/R Component -->
+  <DMSE_Make_ComponentTransmitter.label>製作T/R組件</DMSE_Make_ComponentTransmitter.label>
+  <!-- EN: Producing a T/R Component. -->
+  <DMSE_Make_ComponentTransmitter.description>生產一個T/R組件。</DMSE_Make_ComponentTransmitter.description>
+  <!-- EN: Producing. -->
+  <DMSE_Make_ComponentTransmitter.jobString>正在生產</DMSE_Make_ComponentTransmitter.jobString>
+  
+  <!-- EN: Make glitterworld medicine -->
+  <DMSE_Make_MedicineUltratech.label>製作閃耀世界藥物</DMSE_Make_MedicineUltratech.label>
+  <!-- EN: todo -->
+  <DMSE_Make_MedicineUltratech.description>生產一批閃耀世界藥物。</DMSE_Make_MedicineUltratech.description>
+  <!-- EN: Producing. -->
+  <DMSE_Make_MedicineUltratech.jobString>正在生產</DMSE_Make_MedicineUltratech.jobString>
+  
+  <!-- EN: Make Nitrogallium -->
+  <DMSE_Make_Nitrogallium.label>製作氮化鎵晶體</DMSE_Make_Nitrogallium.label>
+  <!-- EN: Grow a Nitrogallium mono-crystal -->
+  <DMSE_Make_Nitrogallium.description>培育一枚氮化鎵單晶。</DMSE_Make_Nitrogallium.description>
+  <!-- EN: Producing. -->
+  <DMSE_Make_Nitrogallium.jobString>正在生產</DMSE_Make_Nitrogallium.jobString>
+  
+  <!-- EN: Make Shuttle Engine -->
+  <DMSE_Make_ShuttleEngine.label>製作穿梭機引擎</DMSE_Make_ShuttleEngine.label>
+  <!-- EN: Producing a shuttle engine. -->
+  <DMSE_Make_ShuttleEngine.description>生產一具穿梭機引擎。</DMSE_Make_ShuttleEngine.description>
+  <!-- EN: Producing. -->
+  <DMSE_Make_ShuttleEngine.jobString>正在生產</DMSE_Make_ShuttleEngine.jobString>
+  
+</LanguageData>

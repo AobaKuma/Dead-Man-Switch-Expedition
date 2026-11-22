@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: light platform -->
+  <DMS_LightPlatform.label>輕型平台</DMS_LightPlatform.label>
+  <!-- EN: A lightweight lattice deck for open space. Cheap and quick to lay, but only supports light and medium structures. -->
+  <DMS_LightPlatform.description>可在太空中行走的輕量桁架甲板。便宜又快，但只能承載輕型與中型結構。</DMS_LightPlatform.description>
+  
+  <!-- EN: orbital platform -->
+  <DMS_OrbitalPlatform.label>軌道平台</DMS_OrbitalPlatform.label>
+  <!-- EN: A solid orbital surface that allows walking in outer space. You can build all kinds of structures on it. -->
+  <DMS_OrbitalPlatform.description>可在外太空行走的堅固軌道地表。你可以在其上建造各類結構。</DMS_OrbitalPlatform.description>
+  
+</LanguageData>

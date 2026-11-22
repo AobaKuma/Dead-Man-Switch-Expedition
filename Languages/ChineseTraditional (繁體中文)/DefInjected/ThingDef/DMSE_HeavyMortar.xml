@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: departing mortar shell -->
+  <DMSE_ArtilleryDeparture_HeavyMortar.label>離場的迫擊砲彈</DMSE_ArtilleryDeparture_HeavyMortar.label>
+  
+  <!-- EN: heavy mortar tube -->
+  <DMSE_Gun_HeavyMortar.label>重型迫擊砲砲管</DMSE_Gun_HeavyMortar.label>
+  <!-- EN: The tube of a heavy mortar. It fires whatever shell the gunner has loaded, at local targets or - through the fire-control crew - across the world map. -->
+  <DMSE_Gun_HeavyMortar.description>重型迫擊砲的砲管，發射砲手裝填的砲彈，也能透過火控組打擊世界地圖目標。</DMSE_Gun_HeavyMortar.description>
+  <!-- EN: heavy mortar tube -->
+  <DMSE_Gun_HeavyMortar.verbs.Verb_Shoot.label>TODO</DMSE_Gun_HeavyMortar.verbs.Verb_Shoot.label>
+  
+  <!-- EN: heavy mortar -->
+  <DMSE_Turret_HeavyMortar.label>重型迫擊砲</DMSE_Turret_HeavyMortar.label>
+  <!-- EN: A towed heavy mortar on a wheeled carriage. A gunner loads any mortar shell from the stockpile and the crew can also shell targets on the world map: whatever shell is loaded becomes the long-range round. Switch the stockpile filter to change shell types. While a world mission is running the tube stays on the world bearing and the crew does not engage local targets. -->
+  <DMSE_Turret_HeavyMortar.description>裝在輪式砲架上的重型迫擊砲。砲手會從附近庫存搬來迫擊砲彈並裝填，這一發也能當超視距砲彈打向世界地圖目標：裝填哪一種彈，長程打出去就是哪一種，改「砲彈」儲存設定就能換彈種。世界砲擊進行中砲管固定朝向世界目標方位，砲手不會接戰本地目標。</DMSE_Turret_HeavyMortar.description>
+  <!-- EN: Barrel durability -->
+  <DMSE_Turret_HeavyMortar.comps.CompRefuelable.fuelGizmoLabel>砲管耐久</DMSE_Turret_HeavyMortar.comps.CompRefuelable.fuelGizmoLabel>
+  <!-- EN: Shots until barrel change -->
+  <DMSE_Turret_HeavyMortar.comps.CompRefuelable.fuelLabel>換管前可射擊次數</DMSE_Turret_HeavyMortar.comps.CompRefuelable.fuelLabel>
+  <!-- EN: Needs new reinforced barrel -->
+  <DMSE_Turret_HeavyMortar.comps.CompRefuelable.outOfFuelMessage>需要新的強化砲管</DMSE_Turret_HeavyMortar.comps.CompRefuelable.outOfFuelMessage>
+  
+</LanguageData>

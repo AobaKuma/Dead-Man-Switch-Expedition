@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: departing long-range shell -->
+  <DMSE_ArtilleryDeparture_Empero.label>離場的長程砲彈</DMSE_ArtilleryDeparture_Empero.label>
+  
+  <!-- EN: long-range shell -->
+  <DMSE_Bullet_Shell_Empero.label>長程砲彈</DMSE_Bullet_Shell_Empero.label>
+  
+  <!-- EN: reduced-charge shell -->
+  <DMSE_Bullet_Shell_EmperoReduced.label>減裝藥砲彈</DMSE_Bullet_Shell_EmperoReduced.label>
+  
+  <!-- EN: NK-30 cannon (reduced charge) -->
+  <DMSE_Gun_Empero.label>NK-30 加農砲（減裝藥）</DMSE_Gun_Empero.label>
+  <!-- EN: The main gun of the NK-30 Empero, firing reduced charges at low muzzle velocity for plunging fire on targets close by. -->
+  <DMSE_Gun_Empero.description>NK-30「帝王」的主砲，以減裝藥、低初速對近距離目標進行曲射。</DMSE_Gun_Empero.description>
+  <!-- EN: NK-30 cannon (reduced charge) -->
+  <DMSE_Gun_Empero.verbs.Verb_Shoot.label>TODO</DMSE_Gun_Empero.verbs.Verb_Shoot.label>
+  
+  <!-- EN: long-range cannon -->
+  <DMSE_Turret_Empero.label>遠程加農砲</DMSE_Turret_Empero.label>
+  <!-- EN: The NK-30 "Empero" is a heavy long-range cannon with an extremely high muzzle velocity. It shells distant targets with precision, suppressing enemy fire and destroying installations. At close range it fires reduced charges at low velocity for plunging fire, still with very high accuracy. When shelling a target on the world map, it keeps firing until stopped, out of power, or out of shells. Each shot uses one high-explosive mortar shell.\n\nUnguided shells scatter widely at long range and only land near the middle of the target area. If a fire-control radar that supports artillery guidance has a free channel when the gun fires, the shell is radar-guided onto enemy turrets, powered buildings or people in the area, and lands much closer to them. Each guided shell holds one channel for a while.\n\nFire mode toggle: ranging shells scatter around the middle of the target area and log each impact; fire for effect shells scatter around the last logged impact on that map (every friendly gun shelling it shares that point) and tighten their scatter by a quarter of the base scatter per shot.\n\nCannot strike targets in high orbit across layers. -->
+  <DMSE_Turret_Empero.description>NK-30 "帝王"是一種砲口初速極高的重型遠程加農砲，能夠精確砲擊遠程目標來極大壓制敵方火力及摧毀設施，在近距離發射時下會使用減裝彈藥來透過低初速進行曲射，但仍有極高的精度。在砲擊世界地圖目標時會持續射擊直到下令停止、斷電或砲彈耗盡。每次發射消耗一枚高爆迫擊砲彈。\n\n無導引的砲彈在遠距離散佈極大，只會落在目標區域中央附近。開火時若有支援砲擊引導的火控雷達空出通道，就能夠由雷達導引瞄準該區域的敵方砲塔、用電設備或人員，落點也近得多。每發導引砲彈會佔用一條通道一段時間。\n\n無法跨層砲擊高空軌道目標。</DMSE_Turret_Empero.description>
+  <!-- EN: Shells -->
+  <DMSE_Turret_Empero.comps.CompRefuelable.fuelGizmoLabel>砲彈</DMSE_Turret_Empero.comps.CompRefuelable.fuelGizmoLabel>
+  <!-- EN: Shells -->
+  <DMSE_Turret_Empero.comps.CompRefuelable.fuelLabel>砲彈</DMSE_Turret_Empero.comps.CompRefuelable.fuelLabel>
+  <!-- EN: Cannot fire: no shells. -->
+  <DMSE_Turret_Empero.comps.CompRefuelable.outOfFuelMessage>無法開火：沒有砲彈。</DMSE_Turret_Empero.comps.CompRefuelable.outOfFuelMessage>
+  
+</LanguageData>

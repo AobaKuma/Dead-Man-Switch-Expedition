@@ -3,7 +3,7 @@ using Verse;
 namespace DMSE
 {
     /// <summary>
-    /// 攔截殘骸的物理參數（docs/攔截殘骸特效_實作與技術美術計畫.md §4、§6）。
+    /// 攔截殘骸的物理參數（docs/_archive/implemented/攔截殘骸特效_實作與技術美術計畫.md §4、§6）。
     /// 之後由 InterceptDebrisProfileDef 持有並在 XML 調參；未指定時用 <see cref="Default"/>。
     /// 單位：格、tick。高度 h 為假想高度，畫成往畫面上方（+z）的偏移。
     /// </summary>

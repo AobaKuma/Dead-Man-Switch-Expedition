@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: tilt-launch container -->
+  <DMSE_Building_LightMissileLauncher.label>傾斜發射箱</DMSE_Building_LightMissileLauncher.label>
+  <!-- EN: An angled launch box that holds four light missiles. It loads and fires on its own, giving a solid salvo from a small footprint.\n\nRequires power. Strike missiles are launched at targets beyond the map. Surface-to-air and dual-role missiles are also fired by the fire-control network as interceptors. -->
+  <DMSE_Building_LightMissileLauncher.description>一座傾斜的發射箱，可容納四枚輕型導彈。能自動裝填與發射，以很小的占地提供可觀的齊射火力。\n\n需要電力。打擊用導彈會射向地圖以外的目標；防空與兩用導彈也會由火控網當作攔截彈發射。</DMSE_Building_LightMissileLauncher.description>
+  
+  <!-- EN: light vertical launch cell -->
+  <DMSE_Building_LightMissileVLS.label>小型垂直發射井</DMSE_Building_LightMissileVLS.label>
+  <!-- EN: A ground-level vertical launcher with four cells for light missiles. It fits on a single tile, so it is easy to place along a perimeter, but each cell must be loaded separately.\n\nCannot be built on a gravship. -->
+  <DMSE_Building_LightMissileVLS.description>一座與地面齊平的垂直發射器，有四個輕型導彈發射格。只占一格，很容易沿防線布置，但每個發射格都得分別裝填。\n\n無法建造在重力船上。</DMSE_Building_LightMissileVLS.description>
+  
+  <!-- EN: light missile (incoming) -->
+  <DMSE_Incoming_LightMissile.label>輕型導彈（來襲）</DMSE_Incoming_LightMissile.label>
+  
+  <!-- EN: light missile (leaving) -->
+  <DMSE_SkyFaller_LightMissile.label>輕型導彈（升空）</DMSE_SkyFaller_LightMissile.label>
+  
+</LanguageData>

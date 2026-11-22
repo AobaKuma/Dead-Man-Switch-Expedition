@@ -6,7 +6,7 @@ using Verse;
 namespace DMSE
 {
     /// <summary>
-    /// 攔截特效調參用的開發指令（docs/攔截殘骸特效_實作與技術美術計畫.md §9 P2）：
+    /// 攔截特效調參用的開發指令（docs/_archive/implemented/攔截殘骸特效_實作與技術美術計畫.md §9 P2）：
     /// 點選落點 → 選來襲方位 → 選攔截型態，直接觸發 <see cref="MapComponent_InterceptEffects"/>，不需要真的有來襲物。
     /// </summary>
     public static class DebugActions_InterceptFx

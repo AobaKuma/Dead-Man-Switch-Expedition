@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: airburst fragmentation submunition -->
+  <DMSE_Bullet_AirburstFrag.label>TODO</DMSE_Bullet_AirburstFrag.label>
+  
+  <!-- EN: 37 mm HE round -->
+  <DMSE_Bullet_LegacyFlak.label>37毫米高爆彈</DMSE_Bullet_LegacyFlak.label>
+  
+  <!-- EN: 37 mm tracer round -->
+  <DMSE_Bullet_LegacyFlak_CIWS.label>37毫米曳光彈</DMSE_Bullet_LegacyFlak_CIWS.label>
+  
+  <!-- EN: 35 mm airburst round -->
+  <DMSE_Bullet_Millennium.label>35毫米空爆彈</DMSE_Bullet_Millennium.label>
+  
+  <!-- EN: 35 mm airburst fragmentation shell -->
+  <DMSE_Bullet_MillenniumAirburst.label>TODO</DMSE_Bullet_MillenniumAirburst.label>
+  
+  <!-- EN: 37 mm flak autocannon -->
+  <DMSE_Gun_LegacyFlak.label>37毫米防空機砲</DMSE_Gun_LegacyFlak.label>
+  <!-- EN: A crew-served, gas-operated 37 mm anti-aircraft autocannon based on the 3.7 cm Flak 43, fed from eight-round clips. -->
+  <DMSE_Gun_LegacyFlak.description>一門以 3.7 cm Flak 43 為原型、由 8 發彈夾供彈的氣動式 37 毫米防空機砲，需要砲手操作。</DMSE_Gun_LegacyFlak.description>
+  <!-- EN: 37 mm flak autocannon -->
+  <DMSE_Gun_LegacyFlak.verbs.Verb_Shoot.label>TODO</DMSE_Gun_LegacyFlak.verbs.Verb_Shoot.label>
+  
+  <!-- EN: 35 mm revolver cannon -->
+  <DMSE_Gun_Millennium.label>35毫米轉膛砲</DMSE_Gun_Millennium.label>
+  <!-- EN: A 35 mm revolver cannon firing programmable airburst rounds. -->
+  <DMSE_Gun_Millennium.description>一門發射可編程空爆彈的 35 毫米轉膛砲。</DMSE_Gun_Millennium.description>
+  <!-- EN: 35 mm revolver cannon -->
+  <DMSE_Gun_Millennium.verbs.Verb_Shoot.label>TODO</DMSE_Gun_Millennium.verbs.Verb_Shoot.label>
+  
+  <!-- EN: legacy flak gun -->
+  <DMSE_Turret_LegacyFlak.label>老式防空砲</DMSE_Turret_LegacyFlak.label>
+  <!-- EN: A crew-served 37 mm anti-aircraft autocannon based on the 3.7 cm Flak 43. Its gas-operated action feeds from eight-round clips; a gunner turns the handwheels and aims through an optical sight. Small high-explosive shells and rapid bursts make it useful against slow, low-flying targets, but it has no radar, electrical drive or automatic fire control.\n\nNeeds a gunner. Fires steel-supplied 37 mm rounds at ground targets and at incoming missiles in their final approach. Requires Radar and gas operation research. -->
+  <DMSE_Turret_LegacyFlak.description>一門以 3.7 cm Flak 43 為原型的 37 毫米防空機砲。氣動式自動機構由 8 發彈夾供彈，砲手以手輪轉向並透過光學瞄準具計算提前量。小型高爆彈配合快速連射，適合對付低空慢速目標；沒有雷達、電動驅動或自動火控。\n\n需要砲手操作。以鋼補充 37 毫米砲彈，可射擊地面目標與進入最後進場階段的來襲導彈。需要雷達與氣動作用科技。</DMSE_Turret_LegacyFlak.description>
+  <!-- EN: 37 mm rounds -->
+  <DMSE_Turret_LegacyFlak.comps.CompRefuelable.fuelGizmoLabel>37毫米砲彈</DMSE_Turret_LegacyFlak.comps.CompRefuelable.fuelGizmoLabel>
+  <!-- EN: 37 mm rounds -->
+  <DMSE_Turret_LegacyFlak.comps.CompRefuelable.fuelLabel>37毫米砲彈</DMSE_Turret_LegacyFlak.comps.CompRefuelable.fuelLabel>
+  <!-- EN: Cannot fire: no shells. -->
+  <DMSE_Turret_LegacyFlak.comps.CompRefuelable.outOfFuelMessage>無法開火：沒有砲彈。</DMSE_Turret_LegacyFlak.comps.CompRefuelable.outOfFuelMessage>
+  
+  <!-- EN: advanced air-defence gun -->
+  <DMSE_Turret_Millennium.label>先進防空砲</DMSE_Turret_Millennium.label>
+  <!-- EN: A modern 35 mm anti-aircraft gun with programmable airburst ammunition, radar and electro-optical tracking and a fire-control system that engages several targets at once, its interception rate startling and so is its draw on power and ammunition, every engagement a crate of silver poured into the sky.\n\nFires airburst rounds made from steel; each terminal-defence burst burns through dozens of them. -->
+  <DMSE_Turret_Millennium.description>一門 35 毫米的現代化防空砲，配備可編程空爆彈、雷達與光電追蹤以及一套能同時接戰多目標的火控系統，攔截率高得驚人，代價是驚人的耗電與彈藥消耗，每一次接戰都像把一整箱白銀倒進天空。\n\n以鋼材製作的空爆彈開火；每一輪末端防禦連射都會燒掉數十發。</DMSE_Turret_Millennium.description>
+  <!-- EN: 35 mm rounds -->
+  <DMSE_Turret_Millennium.comps.CompRefuelable.fuelGizmoLabel>35毫米彈藥</DMSE_Turret_Millennium.comps.CompRefuelable.fuelGizmoLabel>
+  <!-- EN: 35 mm airburst rounds -->
+  <DMSE_Turret_Millennium.comps.CompRefuelable.fuelLabel>35毫米空爆彈</DMSE_Turret_Millennium.comps.CompRefuelable.fuelLabel>
+  <!-- EN: Cannot fire: no rounds. -->
+  <DMSE_Turret_Millennium.comps.CompRefuelable.outOfFuelMessage>無法開火：沒有彈藥。</DMSE_Turret_Millennium.comps.CompRefuelable.outOfFuelMessage>
+  
+</LanguageData>

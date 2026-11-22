@@ -222,6 +222,8 @@ Click to cycle through the remaining targets.</DMSE.MissileBase.ObjectivesAlertD
   <!-- {0} = blast radius, {1} = damage -->
   <DMSE.MissileInventory.Stats>Blast {0}  ·  Dmg {1}</DMSE.MissileInventory.Stats>
   <DMSE.MissileInventory.Pending>assembly pending</DMSE.MissileInventory.Pending>
+  <DMSE.MissileInventory.EjectDesc>Eject this missile as an item onto the ground next to the rack. It is dropped forbidden so haulers do not carry it straight back.</DMSE.MissileInventory.EjectDesc>
+  <DMSE.MissileInventory.EjectFailed>No room next to the rack to eject the missile.</DMSE.MissileInventory.EjectFailed>
 
   <!-- ==================== Ballistic silo (CompMissileLauncher_Ballistic) ==================== -->
   <!-- Gizmo: fire button -->

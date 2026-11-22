@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: ballistic missile -->
+  <DMSE_WorldObject_BallisticMissile.label>彈道導彈</DMSE_WorldObject_BallisticMissile.label>
+  <!-- EN: A ballistic missile following a lofted trajectory. -->
+  <DMSE_WorldObject_BallisticMissile.description>一枚沿高拋彈道飛行的彈道導彈。</DMSE_WorldObject_BallisticMissile.description>
+  
+</LanguageData>

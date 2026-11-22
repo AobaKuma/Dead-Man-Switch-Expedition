@@ -6,7 +6,7 @@ using Verse.Sound;
 namespace DMSE
 {
     /// <summary>
-    /// A 層主殘骸（docs/攔截殘骸特效_實作與技術美術計畫.md §4.4、§5.2、§5.4）：攔截後掉落的大塊碎片或斷裂彈體，可存檔。
+    /// A 層主殘骸（docs/_archive/implemented/攔截殘骸特效_實作與技術美術計畫.md §4.4、§5.2、§5.4）：攔截後掉落的大塊碎片或斷裂彈體，可存檔。
     ///
     /// 計畫原寫 Projectile 子類；實作改為一般 Thing：Projectile 的發射、直線運動、出界銷毀與護盾攔截全都用不到
     /// （<see cref="Projectile_MissileIncoming"/> 也是用 landed 把它們關掉）。

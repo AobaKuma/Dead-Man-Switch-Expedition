@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: anti-ship loitering munition -->
+  <DMSE_MissileBody_Loiter.label>反艦巡飛彈</DMSE_MissileBody_Loiter.label>
+  <!-- EN: A folding-wing anti-ship loitering munition powered by a small turbojet. It is slow and easy to detect, but its own radar seeker picks the impact point on the final approach and keeps chasing a moving ship.\n\nCan strike targets on other map layers. -->
+  <DMSE_MissileBody_Loiter.description>一種折疊翼反艦巡飛彈，以小型渦輪噴射引擎推進。速度慢、容易被發現，但末段會由彈上雷達自行選定落點，並持續追擊移動中的船艦。\n\n能打擊其他地圖層的目標。</DMSE_MissileBody_Loiter.description>
+  
+</LanguageData>

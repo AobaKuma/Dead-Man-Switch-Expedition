@@ -115,7 +115,6 @@ namespace DMSE
                     hasIgnited = true;
                     Props.launchEffectTrigger?.Spawn(flight.VisualPos.ToIntVec3(), parent.Map).Trigger(parent, parent);
                     Props.ignitionSound?.PlayOneShot(new TargetInfo(flight.LaunchDrawPos.ToIntVec3(), parent.Map));
-                    MissileFlightTrace.RecordIgnition(parent);
                 }
                 if (effecter == null)
                 {
@@ -149,15 +148,9 @@ namespace DMSE
                 {
                     Props.ignitionSound?.PlayOneShot(new TargetInfo(flight.LaunchDrawPos.ToIntVec3(), parent.Map));
                 }
-                MissileFlightTrace.RecordIgnition(parent);
             }
             float evaluate = flight.EffectEvaluate(ticksSinceSpawn, IgnitionDelayTicks);
             launchFx.Tick(ticksSinceSpawn, IgnitionDelayTicks, evaluate, IgnitionDelayTicks == 0);
-            // 飛行追蹤（驗收 F1／F4／F5）：與舊路徑相同的「排氣中」條件（燃燒中、彈體在圖內、玩家看著這張地圖）。
-            if (Props.IsBurning(ticksSinceSpawn, IgnitionDelayTicks) && flight.VisualPos.InBounds(parent.Map) && parent.Map == Find.CurrentMap)
-            {
-                MissileFlightTrace.RecordExhaust(parent, flight.LaunchDrawPos, flight.LaunchRotation, evaluate, flight.EffectSpeed(evaluate));
-            }
         }
 
         public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
@@ -169,7 +162,6 @@ namespace DMSE
 
         public void ThrowExhaust(Vector3 drawPos, float rotation, float evaluate, float speed)
         {
-            MissileFlightTrace.RecordExhaust(parent, drawPos, rotation, evaluate, speed);
             var offset = new Vector3(Mathf.Sin(rotation * Mathf.Deg2Rad), 0, Mathf.Cos(rotation * Mathf.Deg2Rad)) * Props.offsetY;
 
             if (!flight.GroundCell.ShouldSpawnMotesAt(parent.MapHeld))

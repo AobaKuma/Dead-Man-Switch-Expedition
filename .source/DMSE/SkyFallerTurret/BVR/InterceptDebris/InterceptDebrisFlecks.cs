@@ -6,7 +6,7 @@ using Verse;
 namespace DMSE
 {
     /// <summary>
-    /// B 層細碎片（docs/攔截殘骸特效_實作與技術美術計畫.md §5.3）：純視覺、不存檔，每 tick 依 <see cref="InterceptGeometry.Step"/> 推進，
+    /// B 層細碎片（docs/_archive/implemented/攔截殘骸特效_實作與技術美術計畫.md §5.3）：純視覺、不存檔，每 tick 依 <see cref="InterceptGeometry.Step"/> 推進，
     /// 落地或出界就移除。
     ///
     /// 不用原版 <see cref="FleckSystemBase{TFleck}"/>：它只從 <see cref="FleckCreationData"/> 建 fleck，帶不進高度、垂直速度與質量；

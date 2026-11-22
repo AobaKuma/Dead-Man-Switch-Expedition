@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: long-range loitering munition -->
+  <DMSE_MissileBody_Shahed.label>長程巡飛彈</DMSE_MissileBody_Shahed.label>
+  <!-- EN: A cheap delta-wing attack drone with a piston engine. It is slow and carries a small warhead, but it can fly a very long way.\n\nWithout a TV guidance module, it strikes somewhere around the center of the target map. The module lets you pick the impact point, but uses an extra fire-control channel. Cannot track moving targets. -->
+  <DMSE_MissileBody_Shahed.description>一種廉價的三角翼攻擊無人機，以活塞引擎推進。速度慢、彈頭小，但航程很遠。\n\n未加裝電視導引模組時，落點散布在目標地圖中央附近。加裝後可自行指定落點，但會多佔用一條火控通道。無法追蹤移動目標。</DMSE_MissileBody_Shahed.description>
+  <!-- EN: Loiter -->
+  <DMSE_MissileBody_Shahed.designWord>巡飛</DMSE_MissileBody_Shahed.designWord>
+  
+</LanguageData>

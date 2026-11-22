@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: SAM launcher -->
+  <DMSE_Building_RotaryMissileLauncher.label>防空導彈發射架</DMSE_Building_RotaryMissileLauncher.label>
+  <!-- EN: A four-round surface-to-air launcher on a rotating base. It has no radar of its own and fires only at targets handed to it by a fire-control radar.\n\nRequires an operator. -->
+  <DMSE_Building_RotaryMissileLauncher.description>一座裝在旋轉底座上的四聯裝防空導彈發射架。本身沒有雷達，只會射擊火控雷達交給它的目標。\n\n需要操作員。</DMSE_Building_RotaryMissileLauncher.description>
+  
+</LanguageData>

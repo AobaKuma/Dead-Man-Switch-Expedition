@@ -1,30 +1,57 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
+  <!-- EN: no detection -->
   <DMSE.AirAlert.Stage1>無探測</DMSE.AirAlert.Stage1>
+  <!-- EN: early warning -->
   <DMSE.AirAlert.Stage2>預警</DMSE.AirAlert.Stage2>
+  <!-- EN: passive intercept -->
   <DMSE.AirAlert.Stage3>被動攔截</DMSE.AirAlert.Stage3>
+  <!-- EN: active intercept -->
   <DMSE.AirAlert.Stage4>主動攔截</DMSE.AirAlert.Stage4>
+  <!-- EN: blockade -->
   <DMSE.AirAlert.Stage5>封鎖</DMSE.AirAlert.Stage5>
+  <!-- EN: Air alert: {0} ({1}) -->
   <DMSE.AirAlert.InspectStage>防空警戒：{0}（{1}）</DMSE.AirAlert.InspectStage>
+  <!-- EN: Disabled: {0} -->
   <DMSE.AirAlert.InspectUnavailable>失能：{0}</DMSE.AirAlert.InspectUnavailable>
+  <!-- EN: Blockade in {0} -->
   <DMSE.AirAlert.InspectBlockadePending>封鎖將於 {0} 後生效</DMSE.AirAlert.InspectBlockadePending>
+  <!-- EN: Blockade: {0} tiles -->
   <DMSE.AirAlert.InspectBlockadeActive>封鎖中：{0} 格</DMSE.AirAlert.InspectBlockadeActive>
+  <!-- EN: no air defense -->
   <DMSE.AirAlert.Unavailable.NoEquipment>無防空設備</DMSE.AirAlert.Unavailable.NoEquipment>
+  <!-- EN: no air-defense node -->
   <DMSE.AirAlert.Unavailable.NoNode>無防空節點</DMSE.AirAlert.Unavailable.NoNode>
+  <!-- EN: radar starting -->
   <DMSE.AirAlert.Unavailable.WarmingUp>雷達啟動中</DMSE.AirAlert.Unavailable.WarmingUp>
+  <!-- EN: radar suppressed -->
   <DMSE.AirAlert.Unavailable.RadarDown>雷達遭壓制</DMSE.AirAlert.Unavailable.RadarDown>
+  <!-- EN: no interceptors -->
   <DMSE.AirAlert.Unavailable.NoAmmo>攔截彈耗盡</DMSE.AirAlert.Unavailable.NoAmmo>
+  <!-- EN: no fire control -->
   <DMSE.AirAlert.Unavailable.NoFireControl>無火控</DMSE.AirAlert.Unavailable.NoFireControl>
+  <!-- EN: no radar coverage -->
   <DMSE.AirAlert.Unavailable.NoTracking>無雷達覆蓋</DMSE.AirAlert.Unavailable.NoTracking>
+  <!-- EN: Blockade announced -->
   <DMSE.AirAlert.BlockadeNoticeLabel>防空封鎖公告</DMSE.AirAlert.BlockadeNoticeLabel>
+  <!-- EN: In {3}, {0} will close the airspace within {2} tiles of {1}. Its air defense will fire on any non-allied craft flying through. -->
   <DMSE.AirAlert.BlockadeNoticeText>{0}將於 {3} 後封鎖{1}周邊 {2} 格空域，防空火力會攻擊飛越的非盟友載具。</DMSE.AirAlert.BlockadeNoticeText>
+  <!-- EN: Blockade in effect -->
   <DMSE.AirAlert.BlockadeActiveLabel>防空封鎖生效</DMSE.AirAlert.BlockadeActiveLabel>
+  <!-- EN: {0} has closed the airspace within {2} tiles of {1}. Non-allied craft flying through will be fired on. -->
   <DMSE.AirAlert.BlockadeActiveText>{0}已封鎖{1}周邊 {2} 格空域，飛越的非盟友載具會遭到攻擊。</DMSE.AirAlert.BlockadeActiveText>
+  <!-- EN: {0} called off the blockade at {1}. -->
   <DMSE.AirAlert.BlockadeCancelled>{0}取消了{1}的封鎖。</DMSE.AirAlert.BlockadeCancelled>
+  <!-- EN: {0} lifted the blockade at {1}. -->
   <DMSE.AirAlert.BlockadeLifted>{0}解除了{1}的封鎖。</DMSE.AirAlert.BlockadeLifted>
+  <!-- EN: {1} is intercepting your missile. -->
   <DMSE.AirAlert.EngagingPlayer>{1}正在攔截你的導彈。</DMSE.AirAlert.EngagingPlayer>
+  <!-- EN: Neutral air defense -->
   <DMSE.AirAlert.NeutralInterceptLabel>中立防空攔截</DMSE.AirAlert.NeutralInterceptLabel>
+  <!-- EN: {1} ({0}) will intercept non-allied missiles in its airspace, including yours. -->
   <DMSE.AirAlert.NeutralInterceptText>{0}的{1}會攔截飛越其空域的非盟友導彈，包括你的。</DMSE.AirAlert.NeutralInterceptText>
+  <!-- EN: Interceptor disarmed: {0} is allied. -->
   <DMSE.AirAlert.InterceptorSafed>攔截彈已解除：{0}屬於盟友。</DMSE.AirAlert.InterceptorSafed>
+  <!-- EN: Route crosses {0}'s blockade ({1}, {2} tiles); its air defense will fire on you. -->
   <DMSE.Airspace.Blocked>航線穿越{0}的封鎖區（{1}，{2} 格），會遭到防空火力攻擊。</DMSE.Airspace.Blocked>
 </LanguageData>

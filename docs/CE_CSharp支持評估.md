@@ -1,5 +1,9 @@
 # Combat Extended 支持評估（1.7）
 
+版本：1.0（第一版）｜定稿日期：2026-11-20｜狀態：第一版定稿
+
+實作狀態：評估完成（CE 尚無 1.7 版，移植後須重查 API）
+
 證據：CE **1.6.7.4.0**（`2890901044/Assemblies/CombatExtended.dll`）＋ DMSE 1.7 ＋ RimWorld 1.7 反編譯交叉核對。⚠️ CE 目前**沒有 1.7 版**，以下 API 名稱都是 1.6 的，CE 移植後須重新核對。原始完整評估在 `docs/_archive/`。
 
 ## 1. 結論
@@ -44,3 +48,11 @@ CE 不管的子系統：BVR 世界層、導彈飛行、組裝、發射架、氣�
 ## 5. CE 1.7 移植時要重查的符號
 
 `Building_TurretGunCE`、`Building_CIWS_CE`、`Verb_ShootCE`／`VerbCIWSSkyfaller`、`CompAmmoUser`、`CompCIWSImpactHandler`、`GenExplosionCE`、`ArmorUtilityCE`、`PatchOperationMakeGunCECompatible`。千禧年彈匣 300 發 vs 原版 600 燃料／1800 發仍待平衡。
+
+---
+
+## 變更紀錄
+
+| 版本 | 日期 | 內容 |
+|---|---|---|
+| 1.0（第一版） | 2026-11-20 | 第一版定稿：以既有內容整份回寫，加入版本標記；技術內容未變。 |

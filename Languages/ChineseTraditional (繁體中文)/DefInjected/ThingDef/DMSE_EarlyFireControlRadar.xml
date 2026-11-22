@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: early fire control radar -->
+  <DMSE_EarlyFireControlRadar.label>老式火控雷達</DMSE_EarlyFireControlRadar.label>
+  <!-- EN: An early fire-control radar, aimed by hand with handwheels and an optical sight. It can guide only one interceptor at a time, locks on slowly and is not very accurate.\n\nRequires an operator. -->
+  <DMSE_EarlyFireControlRadar.description>一座以手輪與光學瞄準具人工瞄準的早期火控雷達。一次只能導引一枚攔截彈，鎖定慢、精度也不高。\n\n需要操作員。</DMSE_EarlyFireControlRadar.description>
+  
+</LanguageData>

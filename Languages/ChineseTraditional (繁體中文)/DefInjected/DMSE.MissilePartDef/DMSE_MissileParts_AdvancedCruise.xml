@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: anti-ship radar seeker -->
+  <DMSE_AdvCruise_Guidance_AntiShip.label>反艦雷達導引頭</DMSE_AdvCruise_Guidance_AntiShip.label>
+  <!-- EN: An active radar seeker built for moving targets, such as ships and other mobile bases on the world map. It updates its aim more often than a normal seeker, but the missile still misses if the target moves out of its remaining range. -->
+  <DMSE_AdvCruise_Guidance_AntiShip.description>一種專為移動目標設計的主動雷達尋標器，對付船艦與世界地圖上其他可移動的據點。修正航向的次數比一般尋標器多，但目標若移出剩餘射程，導彈仍會落空。</DMSE_AdvCruise_Guidance_AntiShip.description>
+  <!-- EN: Anti-ship -->
+  <DMSE_AdvCruise_Guidance_AntiShip.designWord>反艦</DMSE_AdvCruise_Guidance_AntiShip.designWord>
+  
+  <!-- EN: two-way datalink -->
+  <DMSE_AdvCruise_Guidance_Datalink.label>雙向資料鏈</DMSE_AdvCruise_Guidance_Datalink.label>
+  <!-- EN: A two-way satellite datalink. The missile can be retargeted in flight, and when it reaches the target map the game pauses so you can pick the impact point. The most accurate option, and the only one that can chase a moving target mid-flight. -->
+  <DMSE_AdvCruise_Guidance_Datalink.description>一套雙向衛星資料鏈。導彈可在飛行中更改目標；抵達目標地圖時遊戲會暫停，讓你選擇落點。是精度最高的選項，也是唯一能在飛行途中追擊移動目標的選項。</DMSE_AdvCruise_Guidance_Datalink.description>
+  <!-- EN: Datalink -->
+  <DMSE_AdvCruise_Guidance_Datalink.designWord>數據鏈</DMSE_AdvCruise_Guidance_Datalink.designWord>
+  
+  <!-- EN: terrain-matching guidance -->
+  <DMSE_AdvCruise_Guidance_TerrainMatch.label>地形比對導引</DMSE_AdvCruise_Guidance_TerrainMatch.label>
+  <!-- EN: Guidance that compares the ground below with a stored map, giving very tight dispersion. It cannot be retargeted in flight and has no terminal guidance, so a moving target is simply missed. Impacts scatter around the center of the target map. It does not lock onto buildings or creatures. -->
+  <DMSE_AdvCruise_Guidance_TerrainMatch.description>把下方地形與預存地圖比對的導引方式，落點散布非常小。飛行中無法更改目標，也沒有末端導引，目標一旦移動就會落空。落點散布在目標地圖中央附近，不會鎖定建築或生物。</DMSE_AdvCruise_Guidance_TerrainMatch.description>
+  <!-- EN: TERCOM -->
+  <DMSE_AdvCruise_Guidance_TerrainMatch.designWord>地形匹配</DMSE_AdvCruise_Guidance_TerrainMatch.designWord>
+  
+  <!-- EN: bunker buster payload -->
+  <DMSE_AdvCruise_Payload_BunkerBuster.label>反碉堡酬載</DMSE_AdvCruise_Payload_BunkerBuster.label>
+  <!-- EN: A hardened penetrator charge with a delayed fuze. It bores through thick rock roofs and detonates inside, wrecking nearby structures.\n\nWithout this or a penetrator warhead, a missile that hits a mountain detonates on the rock surface, and its seeker ignores targets under thick roofs. -->
+  <DMSE_AdvCruise_Payload_BunkerBuster.description>一種強化外殼、延時引信的穿透裝藥。能鑽穿厚岩頂後在內部引爆，摧毀附近的建築。\n\n沒有它或穿透彈頭時，擊中山體的導彈只會在岩石表面爆炸，尋標器也會忽略厚頂之下的目標。</DMSE_AdvCruise_Payload_BunkerBuster.description>
+  <!-- EN: Bunker -->
+  <DMSE_AdvCruise_Payload_BunkerBuster.designWord>反碉堡</DMSE_AdvCruise_Payload_BunkerBuster.designWord>
+  
+  <!-- EN: chaff dispenser -->
+  <DMSE_AdvCruise_Payload_Chaff.label>箔條投放器</DMSE_AdvCruise_Payload_Chaff.label>
+  <!-- EN: A larger dispenser of chaff and radar-absorbing streamers. Each bundle can break one enemy fire-control lock. It holds more bundles than the light version, but they cannot be reloaded in flight. -->
+  <DMSE_AdvCruise_Payload_Chaff.description>一具較大的箔條與雷達吸收絲帶撒布器。每一束都能擺脫一次敵方火控鎖定；數量比輕型版多，但飛行中無法補充。</DMSE_AdvCruise_Payload_Chaff.description>
+  <!-- EN: Chaff -->
+  <DMSE_AdvCruise_Payload_Chaff.designWord>干擾</DMSE_AdvCruise_Payload_Chaff.designWord>
+  
+  <!-- EN: decoy payload -->
+  <DMSE_AdvCruise_Payload_Decoy.label>誘餌酬載</DMSE_AdvCruise_Payload_Decoy.label>
+  <!-- EN: Radar reflectors and a signal booster in place of a secondary charge. The missile looks twice as large on enemy radar, so it is detected earlier and drawn fire from air defenses that rank threats by size. Adds no damage. -->
+  <DMSE_AdvCruise_Payload_Decoy.description>以雷達反射器與訊號增強器取代二次裝藥。導彈在敵方雷達上看起來大上一倍，會更早被偵測，也會優先吸引依大小排序威脅的防空火力。不增加傷害。</DMSE_AdvCruise_Payload_Decoy.description>
+  <!-- EN: Decoy -->
+  <DMSE_AdvCruise_Payload_Decoy.designWord>誘餌</DMSE_AdvCruise_Payload_Decoy.designWord>
+  
+  <!-- EN: graphite filament payload -->
+  <DMSE_AdvCruise_Payload_Graphite.label>石墨纖維酬載</DMSE_AdvCruise_Payload_Graphite.label>
+  <!-- EN: A payload of carbon fibers that shorts out the power grid around the impact instead of exploding. It disables powered buildings and stuns mechanoids over a wide area. -->
+  <DMSE_AdvCruise_Payload_Graphite.description>一種碳纖維酬載，不靠爆炸，而是讓落點周圍的電網短路。能在大範圍內癱瘓通電建築並擊暈機械體。</DMSE_AdvCruise_Payload_Graphite.description>
+  <!-- EN: Graphite -->
+  <DMSE_AdvCruise_Payload_Graphite.designWord>石墨</DMSE_AdvCruise_Payload_Graphite.designWord>
+  
+  <!-- EN: no payload -->
+  <DMSE_AdvCruise_Payload_None.label>無酬載</DMSE_AdvCruise_Payload_None.label>
+  <!-- EN: No secondary charge. The warhead and fuel tank get all the space. -->
+  <DMSE_AdvCruise_Payload_None.description>沒有二次裝藥，彈體空間全部留給彈頭與油箱。</DMSE_AdvCruise_Payload_None.description>
+  
+  <!-- EN: submunition dispenser -->
+  <DMSE_AdvCruise_Payload_Submunition.label>子彈藥投放器</DMSE_AdvCruise_Payload_Submunition.label>
+  <!-- EN: A dispenser that opens over the target and scatters small bomblets across the area instead of one concentrated blast. -->
+  <DMSE_AdvCruise_Payload_Submunition.description>一具在目標上空開啟的子母彈撒布器，把小型子彈灑向整片區域，而不是集中在一點爆炸。</DMSE_AdvCruise_Payload_Submunition.description>
+  <!-- EN: Cluster -->
+  <DMSE_AdvCruise_Payload_Submunition.designWord>子彈</DMSE_AdvCruise_Payload_Submunition.designWord>
+  
+  <!-- EN: solid rocket booster -->
+  <DMSE_AdvCruise_Propulsion_Booster.label>固態火箭助推器</DMSE_AdvCruise_Propulsion_Booster.label>
+  <!-- EN: A solid rocket booster that pushes the missile to high speed, then burns out. It is very fast and very easy to spot, and its weight cuts the missile's range. -->
+  <DMSE_AdvCruise_Propulsion_Booster.description>一具把導彈推到高速後燒盡的固態火箭助推器。速度極快、也極容易被發現，而且它的重量會縮短導彈射程。</DMSE_AdvCruise_Propulsion_Booster.description>
+  <!-- EN: Boost -->
+  <DMSE_AdvCruise_Propulsion_Booster.designWord>助推</DMSE_AdvCruise_Propulsion_Booster.designWord>
+  
+  <!-- EN: turbofan sustainer -->
+  <DMSE_AdvCruise_Propulsion_Turbofan.label>渦輪扇續航引擎</DMSE_AdvCruise_Propulsion_Turbofan.label>
+  <!-- EN: A small fuel-efficient turbofan engine. It flies much farther than a rocket motor and is harder to spot on radar, but it is slow. -->
+  <DMSE_AdvCruise_Propulsion_Turbofan.description>一具省油的小型渦輪扇引擎。航程遠勝火箭發動機，也較難被雷達發現，但速度慢。</DMSE_AdvCruise_Propulsion_Turbofan.description>
+  
+  <!-- EN: extended-range turbofan -->
+  <DMSE_AdvCruise_Propulsion_TurbofanER.label>增程渦輪扇</DMSE_AdvCruise_Propulsion_TurbofanER.label>
+  <!-- EN: A fuel-saving turbofan with a larger tank. It has the longest range of any cruise setup, but it is the slowest to arrive and the most expensive to build. -->
+  <DMSE_AdvCruise_Propulsion_TurbofanER.description>一具配有加大油箱的省油渦輪扇引擎。是所有巡航配置中射程最遠的，但抵達最慢、造價也最高。</DMSE_AdvCruise_Propulsion_TurbofanER.description>
+  <!-- EN: ER -->
+  <DMSE_AdvCruise_Propulsion_TurbofanER.designWord>增程</DMSE_AdvCruise_Propulsion_TurbofanER.designWord>
+  
+  <!-- EN: hard-target penetrator -->
+  <DMSE_AdvCruise_Warhead_Penetrator.label>硬目標穿透彈頭</DMSE_AdvCruise_Warhead_Penetrator.label>
+  <!-- EN: A dense tungsten penetrator that punches through thick roofs and overhead mountain before detonating inside. Underground shelters offer no protection against it. -->
+  <DMSE_AdvCruise_Warhead_Penetrator.description>一種高密度鎢製穿透體，能貫穿厚頂與上方山體後在內部引爆。地下掩體擋不住它。</DMSE_AdvCruise_Warhead_Penetrator.description>
+  <!-- EN: Penetrator -->
+  <DMSE_AdvCruise_Warhead_Penetrator.designWord>鑽地</DMSE_AdvCruise_Warhead_Penetrator.designWord>
+  
+  <!-- EN: unitary penetrating warhead -->
+  <DMSE_AdvCruise_Warhead_Unitary.label>單一穿透彈頭</DMSE_AdvCruise_Warhead_Unitary.label>
+  <!-- EN: A single large charge in a light, tough casing. It hits harder than the old Scorer warhead and can punch through a roof before it detonates. -->
+  <DMSE_AdvCruise_Warhead_Unitary.description>一枚以輕量堅固外殼包覆的單一大型裝藥。威力勝過舊式射門手彈頭，並能在引爆前貫穿屋頂。</DMSE_AdvCruise_Warhead_Unitary.description>
+  <!-- EN: Unitary -->
+  <DMSE_AdvCruise_Warhead_Unitary.designWord>整體</DMSE_AdvCruise_Warhead_Unitary.designWord>
+  
+</LanguageData>

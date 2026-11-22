@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: imaging infra-red seeker -->
+  <DMSE_AdvLight_Guidance_IIR.label>影像紅外線導引頭</DMSE_AdvLight_Guidance_IIR.label>
+  <!-- EN: An imaging infrared seeker. It targets the hottest enclosed room if it is at least 15°C warmer than outside, otherwise the largest creature on the target map. Fire-and-forget: no operator, line of sight or laser needed. -->
+  <DMSE_AdvLight_Guidance_IIR.description>一種紅外線成像尋標器。若有封閉房間比室外熱至少 15°C，會鎖定其中最熱的一間；否則鎖定目標地圖上體型最大的生物。射後不理，不需要操作員、視線或雷射。</DMSE_AdvLight_Guidance_IIR.description>
+  <!-- EN: IIR -->
+  <DMSE_AdvLight_Guidance_IIR.designWord>紅外成像</DMSE_AdvLight_Guidance_IIR.designWord>
+  
+  <!-- EN: automatic imaging seeker -->
+  <DMSE_AdvLight_Guidance_Imaging.label>自動影像尋標器</DMSE_AdvLight_Guidance_Imaging.label>
+  <!-- EN: An automatic imaging seeker that targets enemy creatures in the open, choosing the most dangerous first, then the largest. It ignores anyone under a roof, and falls back to inertial guidance if it finds no target. -->
+  <DMSE_AdvLight_Guidance_Imaging.description>一種自動影像尋標器，會鎖定露天的敵方生物，優先選擇威脅最大者，其次是體型最大者。會忽略屋頂下的目標；找不到目標時改用慣性導引。</DMSE_AdvLight_Guidance_Imaging.description>
+  <!-- EN: Imaging -->
+  <DMSE_AdvLight_Guidance_Imaging.designWord>影像</DMSE_AdvLight_Guidance_Imaging.designWord>
+  
+  <!-- EN: inertial guidance -->
+  <DMSE_AdvLight_Guidance_Inertial.label>慣性導引</DMSE_AdvLight_Guidance_Inertial.label>
+  <!-- EN: Cheap inertial guidance with no seeker and no terminal guidance. Cannot strike other map layers. Impacts scatter around the center of the target map. It does not lock onto buildings or creatures. -->
+  <DMSE_AdvLight_Guidance_Inertial.description>廉價的慣性導引，沒有尋標器也沒有末端導引，無法打擊其他地圖層。落點散布在目標地圖中央附近，不會鎖定建築或生物。</DMSE_AdvLight_Guidance_Inertial.description>
+  
+  <!-- EN: semi-active laser seeker -->
+  <DMSE_AdvLight_Guidance_Laser.label>半主動雷射導引頭</DMSE_AdvLight_Guidance_Laser.label>
+  <!-- EN: A semi-active laser seeker that homes on the most recent point your colony marked on the target map with a laser target designator. The most accurate seeker for this missile, but someone has to mark the target. -->
+  <DMSE_AdvLight_Guidance_Laser.description>一種半主動雷射尋標器，會追向殖民地最近一次在目標地圖上以雷射目標標定器標記的位置。是這款導彈精度最高的尋標器，但必須有人標定目標。</DMSE_AdvLight_Guidance_Laser.description>
+  <!-- EN: Laser -->
+  <DMSE_AdvLight_Guidance_Laser.designWord>雷射</DMSE_AdvLight_Guidance_Laser.designWord>
+  
+  <!-- EN: millimetre-wave radar seeker -->
+  <DMSE_AdvLight_Guidance_MMW.label>毫米波雷達導引頭</DMSE_AdvLight_Guidance_MMW.label>
+  <!-- EN: A fire-and-forget millimeter-wave radar seeker. It targets the largest enemy building, or the largest enemy creature if there are no buildings. It needs no designator, no operator and no clear weather. -->
+  <DMSE_AdvLight_Guidance_MMW.description>一種射後不理的毫米波雷達尋標器。會鎖定佔地最大的敵方建築；沒有建築時鎖定體型最大的敵方生物。不需要標定器、操作員，也不怕壞天氣。</DMSE_AdvLight_Guidance_MMW.description>
+  <!-- EN: MMW -->
+  <DMSE_AdvLight_Guidance_MMW.designWord>毫米波</DMSE_AdvLight_Guidance_MMW.designWord>
+  
+  <!-- EN: chaff dispenser -->
+  <DMSE_AdvLight_Payload_Chaff.label>箔條投放器</DMSE_AdvLight_Payload_Chaff.label>
+  <!-- EN: A dispenser of chaff and radar-absorbing streamers. Each bundle can break one enemy fire-control lock, but the bundles run out and do nothing to hide the missile before it is locked. -->
+  <DMSE_AdvLight_Payload_Chaff.description>一具箔條與雷達吸收絲帶撒布器。每一束都能擺脫一次敵方火控鎖定，但數量有限，在被鎖定前也無法讓導彈更難被發現。</DMSE_AdvLight_Payload_Chaff.description>
+  <!-- EN: Chaff -->
+  <DMSE_AdvLight_Payload_Chaff.designWord>干擾</DMSE_AdvLight_Payload_Chaff.designWord>
+  
+  <!-- EN: fragmentation sleeve -->
+  <DMSE_AdvLight_Payload_FragSleeve.label>破片套筒</DMSE_AdvLight_Payload_FragSleeve.label>
+  <!-- EN: A pre-fragmented sleeve wrapped around the warhead. It sprays dense fragments over the impact area, badly wounding exposed infantry, but its weight costs a quarter of the missile's range. -->
+  <DMSE_AdvLight_Payload_FragSleeve.description>一圈包在彈頭外的預製破片套筒。會在落點灑出密集破片，重創暴露在外的步兵，但重量會讓導彈射程少四分之一。</DMSE_AdvLight_Payload_FragSleeve.description>
+  <!-- EN: Sleeve -->
+  <DMSE_AdvLight_Payload_FragSleeve.designWord>破片套</DMSE_AdvLight_Payload_FragSleeve.designWord>
+  
+  <!-- EN: secondary high-explosive charge -->
+  <DMSE_AdvLight_Payload_HE.label>次級高爆裝藥</DMSE_AdvLight_Payload_HE.label>
+  <!-- EN: A small second charge that detonates after the warhead, widening the damage radius a little. -->
+  <DMSE_AdvLight_Payload_HE.description>在彈頭之後引爆的小型第二道裝藥，能稍微擴大傷害半徑。</DMSE_AdvLight_Payload_HE.description>
+  <!-- EN: Blast -->
+  <DMSE_AdvLight_Payload_HE.designWord>加強爆破</DMSE_AdvLight_Payload_HE.designWord>
+  
+  <!-- EN: no payload -->
+  <DMSE_AdvLight_Payload_None.label>無酬載</DMSE_AdvLight_Payload_None.label>
+  <!-- EN: No secondary charge. The warhead does all the work, keeping the missile light and its range long. -->
+  <DMSE_AdvLight_Payload_None.description>沒有二次裝藥，全靠彈頭本身，讓導彈保持輕巧、射程更遠。</DMSE_AdvLight_Payload_None.description>
+  
+  <!-- EN: blast-fragmentation warhead -->
+  <DMSE_AdvLight_Warhead_BlastFrag.label>破片殺傷彈頭</DMSE_AdvLight_Warhead_BlastFrag.label>
+  <!-- EN: A blast-fragmentation warhead with a heavy pre-fragmented casing. It gives up penetration for a wider lethal radius against infantry and light structures. -->
+  <DMSE_AdvLight_Warhead_BlastFrag.description>一枚外殼厚重、預製破片的爆破殺傷彈頭。犧牲穿透力，換取對步兵與輕型建築更大的殺傷半徑。</DMSE_AdvLight_Warhead_BlastFrag.description>
+  <!-- EN: Frag -->
+  <DMSE_AdvLight_Warhead_BlastFrag.designWord>破片</DMSE_AdvLight_Warhead_BlastFrag.designWord>
+  
+  <!-- EN: tandem shaped-charge warhead -->
+  <DMSE_AdvLight_Warhead_HEAT.label>串聯成型裝藥彈頭</DMSE_AdvLight_Warhead_HEAT.label>
+  <!-- EN: A tandem shaped-charge warhead. A small first charge defeats reactive armor so the main charge can do its damage inside the target. Small blast, concentrated damage. -->
+  <DMSE_AdvLight_Warhead_HEAT.description>一枚串聯聚能彈頭。前置的小裝藥先破除反應裝甲，主裝藥再把傷害送進目標內部。爆炸範圍小，但傷害集中。</DMSE_AdvLight_Warhead_HEAT.description>
+  <!-- EN: HEAT -->
+  <DMSE_AdvLight_Warhead_HEAT.designWord>串聯破甲</DMSE_AdvLight_Warhead_HEAT.designWord>
+  
+  <!-- EN: kinetic blade warhead -->
+  <DMSE_AdvLight_Warhead_Kinetic.label>動能刀刃彈頭</DMSE_AdvLight_Warhead_Kinetic.label>
+  <!-- EN: An inert warhead with pop-out blades and almost no explosive. It kills the creature it hits and leaves the surroundings mostly intact. -->
+  <DMSE_AdvLight_Warhead_Kinetic.description>一枚幾乎不含炸藥、會彈出刀片的惰性彈頭。能殺死被擊中的生物，同時讓周圍幾乎毫髮無傷。</DMSE_AdvLight_Warhead_Kinetic.description>
+  <!-- EN: Blade -->
+  <DMSE_AdvLight_Warhead_Kinetic.designWord>動能刃</DMSE_AdvLight_Warhead_Kinetic.designWord>
+  
+  <!-- EN: thermobaric warhead -->
+  <DMSE_AdvLight_Warhead_Thermobaric.label>溫壓彈頭</DMSE_AdvLight_Warhead_Thermobaric.label>
+  <!-- EN: A thermobaric warhead that burns instead of fragmenting. The blast is small, but its burns and fires are far worse inside a room or bunker than in the open. -->
+  <DMSE_AdvLight_Warhead_Thermobaric.description>一枚以燃燒取代破片的溫壓彈頭。爆炸範圍小，但在房間或掩體內造成的燒傷與火災遠比在空曠處嚴重。</DMSE_AdvLight_Warhead_Thermobaric.description>
+  <!-- EN: Thermobaric -->
+  <DMSE_AdvLight_Warhead_Thermobaric.designWord>溫壓</DMSE_AdvLight_Warhead_Thermobaric.designWord>
+  
+</LanguageData>

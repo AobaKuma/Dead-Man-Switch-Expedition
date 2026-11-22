@@ -1,6 +1,8 @@
 # 敵對 NPC 導彈發射站點：生成與彈藥選型
 
-適用：1.7。狀態：**提案，部分已實作**（工業級野戰發射場，見 §1）。盤點 2026-10-29。原始完整計畫書（含 12 個 SitePart 的繁中 label／description 草稿 XML）在 `docs/_archive/`。
+版本：1.0（第一版）｜定稿日期：2026-11-20｜狀態：第一版定稿
+
+適用：1.7。實作狀態：**提案，部分已實作**（工業級野戰發射場，見 §1）。盤點 2026-10-29。原始完整計畫書（含 12 個 SitePart 的繁中 label／description 草稿 XML）在 `docs/_archive/`。
 
 ## 1. 已實作（2026-10-31）
 
@@ -124,3 +126,11 @@
 ## 9. 主要位置
 
 `.source/DMSE/MissileBase/`（`WorldObjectComp_MissileBase`、`MapComponent_MissileBase`、`MissileAutoFillUtility`、`CompMissileRackStorage`、`LordJob_MissileCrewDuty`、`SitePartWorker_MissileBase`）；`1.7/Defs/WorldObjects_MissileBase.xml`、`WorldObjects_FieldLaunchSite.xml`；彈種 `1.7/Defs/ThingDefs_Items/DMSE_GenerationMissiles.xml`、`DMSE_AdvancedMissiles.xml`、`1.7/Defs/Missile/DMSE_Shahed.xml`。
+
+---
+
+## 變更紀錄
+
+| 版本 | 日期 | 內容 |
+|---|---|---|
+| 1.0（第一版） | 2026-11-20 | 第一版定稿：以既有內容整份回寫，加入版本標記；技術內容未變。 |

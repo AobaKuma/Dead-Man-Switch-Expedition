@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: artillery shell -->
+  <DMSE_WorldObject_ArtilleryStrike.label>砲彈</DMSE_WorldObject_ArtilleryStrike.label>
+  <!-- EN: A long-range artillery shell in flight. -->
+  <DMSE_WorldObject_ArtilleryStrike.description>飛行中的長程砲彈。</DMSE_WorldObject_ArtilleryStrike.description>
+  
+</LanguageData>

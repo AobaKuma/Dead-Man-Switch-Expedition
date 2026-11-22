@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: remove platforms -->
+  <DMSE_ConstructRemovePlatform.label>拆除平台</DMSE_ConstructRemovePlatform.label>
+  <!-- EN: removing platform -->
+  <DMSE_ConstructRemovePlatform.gerund>正在拆除平台</DMSE_ConstructRemovePlatform.gerund>
+  <!-- EN: remove platform -->
+  <DMSE_ConstructRemovePlatform.verb>拆除平台</DMSE_ConstructRemovePlatform.verb>
+  
+</LanguageData>

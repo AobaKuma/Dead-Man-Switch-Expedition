@@ -10,7 +10,7 @@ namespace DMSE
         public bool allowSpaceTraversal;
         public bool strikeWaveReadyAlert = true;
         public bool godModeInstantAssembly = true;
-        /// <summary>攔截殘骸落地造成小額鈍傷（docs/攔截殘骸特效_實作與技術美術計畫.md §1-3，預設關閉：只有視覺）。</summary>
+        /// <summary>攔截殘骸落地造成小額鈍傷（docs/_archive/implemented/攔截殘骸特效_實作與技術美術計畫.md §1-3，預設關閉：只有視覺）。</summary>
         public bool interceptDebrisDamage;
         /// <summary>攔截特效密度：0 = 低、1 = 中（預設）、2 = 高（§8）。</summary>
         public int interceptFxDensity = 1;

@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: light missile -->
+  <DMSE_WorldObject_LightMissile.label>輕型導彈</DMSE_WorldObject_LightMissile.label>
+  <!-- EN: A light missile in flight. -->
+  <DMSE_WorldObject_LightMissile.description>一枚飛行中的輕型導彈。</DMSE_WorldObject_LightMissile.description>
+  
+</LanguageData>

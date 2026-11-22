@@ -1,11 +1,15 @@
 # DMSE 遠程作戰系統 — 流程與實作總覽
 
+版本：1.1｜定稿日期：2026-11-20｜狀態：第一版定稿
+
+實作狀態：總覽（三套系統皆已實作；各子系統進度見連結文件）
+
 最後全面校對 2026-10-18；之後各子系統變更以連結文件為準。`1.6/` 已凍結，不在範圍。原始完整版（含逐輪審查紀錄、19 項手動測試清單）在 `docs/_archive/`。
 
 三套系統：
 
-- **A. 地圖層超視距攔截（BVR）**：偵測並攔截來襲空投與導彈。世界層的偵測／中過程攔截見 [BVR 世界層](BVR_世界層偵測攔截重構.md)；本節的完整地圖內窗口仍用於空投、舊波次與直接生成的後備導彈。
-- **B. 導彈裝配與發射**：玩家自組導彈、小人裝配、打擊地圖外目標；NPC 陣地共用同一條導彈鏈。波次打擊見[波次打擊](BVR_波次打擊規劃.md)；載體見 [Skyfaller→Projectile](Missile_Skyfaller轉Projectile_計畫.md)；裝備名冊見[三代裝備](三代裝備體系_實作計畫.md)。
+- **A. 地圖層超視距攔截（BVR）**：偵測並攔截來襲空投與導彈。世界層的偵測／中過程攔截見 [BVR 世界層](_archive/implemented/BVR_世界層偵測攔截重構.md)；本節的完整地圖內窗口仍用於空投、舊波次與直接生成的後備導彈。
+- **B. 導彈裝配與發射**：玩家自組導彈、小人裝配、打擊地圖外目標；NPC 陣地共用同一條導彈鏈。波次打擊見[波次打擊](_archive/implemented/BVR_波次打擊規劃.md)；載體見 [Skyfaller→Projectile](_archive/implemented/Missile_Skyfaller轉Projectile_計畫.md)；裝備名冊見[三代裝備](_archive/implemented/三代裝備體系_實作計畫.md)。
 - **C. 超視距火砲**：世界選靶持續砲擊，`DMSE_Turret_Empero`。
 
 全部以 ThingComp 組合到建築／物品上（單一建築複合功能）。SAM 用裝配系統產出的實體導彈，戰鬥部影響攔截；進攻導彈可掛反輻射導引頭打雷達；火砲與 BVR 共用火控通道；所有發射平台共用 `CompMissileLauncher` 基類與 `CompBVRDevice` 可用性判定。
@@ -25,9 +29,9 @@
 
 `CompBVRDevice.Active`：已生成、未損壞、開關開、通電、未擊暈、**有 `CompMannable` 時必須有人操作**。四類裝置在 `PostSpawnSetup`／`PostDeSpawn` 自行註冊。SAM 屬發射平台家族，`HasAmmo` 為 Active 的一部分；其他平台與火砲只借用可用性判定，不註冊。
 
-現行雷達與防空砲數值見[三代裝備](三代裝備體系_實作計畫.md)與 `1.7/Defs`。攔截器只取 `Interceptor`／`Dual` 彈（`MissileRoleExtension.CanIntercept`），命中率再乘 `interceptHitFactor`。單兵防空具消耗背包刺針攔截本地圖波次，不占通道。
+現行雷達與防空砲數值見[三代裝備](_archive/implemented/三代裝備體系_實作計畫.md)與 `1.7/Defs`。攔截器只取 `Interceptor`／`Dual` 彈（`MissileRoleExtension.CanIntercept`），命中率再乘 `interceptHitFactor`。單兵防空具消耗背包刺針攔截本地圖波次，不占通道。
 
-UI 配件（不參與判定）：`CompTurretFacingRenderer`（追最緊急目標；`drawLoadedAmmo`）、`MapComponent_InterceptEffects`（攔截特效，見[攔截殘骸特效](攔截殘骸特效_實作與技術美術計畫.md)）、`WeatherEvent_MissileFlash`、`Alerts_BVRStatus`（雷達與通道分項）、`Alerts_Pods`（防禦方波次）、`Alerts_PlayerMissiles`（攻擊方，左右鍵跳轉）、`CompEffecterColdLaunch`／`HotLaunch`（經 `IMissileFlight`，見[發射特效](導彈發射特效_重製計畫.md)）。
+UI 配件（不參與判定）：`CompTurretFacingRenderer`（追最緊急目標；`drawLoadedAmmo`）、`MapComponent_InterceptEffects`（攔截特效，見[攔截殘骸特效](_archive/implemented/攔截殘骸特效_實作與技術美術計畫.md)）、`WeatherEvent_MissileFlash`、`Alerts_BVRStatus`（雷達與通道分項）、`Alerts_Pods`（防禦方波次）、`Alerts_PlayerMissiles`（攻擊方，左右鍵跳轉）、`CompEffecterColdLaunch`／`HotLaunch`（經 `IMissileFlight`，見[發射特效](_archive/implemented/導彈發射特效_重製計畫.md)）。
 
 ### A-2. 資料模型
 
@@ -71,7 +75,7 @@ timeLeft > 0（非 terminalOnly）→ SAM 中過程（MidcourseDefense），2026
               × interceptHitFactor × 箔條折減 + 戰鬥部加成（連續桿 N×0.05），clamp01
         FireInterceptor：發射 Projectile（攔截模式）、消耗首枚未保留彈、進冷卻
         空爆：額外 floor(N/5) 次擲骰攔截同波次其他目標（先收集，迴圈後移除）
-  ③ 結算：攔截彈出圖 → 釋放通道 → 擲骰；成功 RemoveTarget＋攔截特效；落空則下一 tick 重排
+  ③ 結算：攔截彈出圖 → 釋放通道 → 擲骰；成功 RemoveTarget＋攔截特效（見 A-8）；落空則下一 tick 重排
 timeLeft ≤ 末端窗口（或 terminalOnly）→ 另加 CIWS（TerminalDefense）
   • 每具 CIWS 每 tick 只處理一次；新連射選 tickToImpact 最早的末端波次 targets[0]；連射中以 burstTargetId 跨波次找目標
   • 每發耗 fuelPerShot；目標消失或斷料則中止不判定
@@ -91,9 +95,23 @@ terminalOnly 目標只交給 CIWS。CIWS 與 SAM 可能打同一目標，先擊�
 
 - **陣營相對防禦**：`ResolveDefender` 找擁有運作中搜索雷達、與來襲方敵對的陣營（玩家優先）；玩家打敵方基地也會被攔截。
 - **隱身雙層對衝**：搜索段對 `antiStealthLevel`（窗口），火控段對 `powerLevel`（命中與鎖定）。
-- **電子對抗**：反輻射導引打開機中 `powerLevel` 最高的敵對雷達；`immuneToAntiRadiationSeeker` 豁免（聲學雷達）。箔條 `jamStrength`／`chaffCharges`：世界層斷鎖（`chaffBreakChance × jam`，不論成敗扣一發）、地圖層命中 × `(1 − chaffMapHitPenalty × jam)`。地面干擾機、功率段位與戰情終端見[電子戰建築](電子戰建築_實作計畫.md)；ECCM 等後續見 [ECM 計畫](ECM與ECCM_實作計畫.md)。
+- **電子對抗**：反輻射導引打開機中 `powerLevel` 最高的敵對雷達；`immuneToAntiRadiationSeeker` 豁免（聲學雷達）。箔條 `jamStrength`／`chaffCharges`：世界層斷鎖（`chaffBreakChance × jam`，不論成敗扣一發）、地圖層命中 × `(1 − chaffMapHitPenalty × jam)`。地面干擾機、功率段位與戰情終端見[電子戰建築](_archive/implemented/電子戰建築_實作計畫.md)；ECCM 等後續見 [ECM 計畫](ECM與ECCM_實作計畫.md)。
 - **VGE 近防**（`1.7/GravshipExpanded/PointDefence`）：`CompPointDefence` 與 `CompTerminalCIWS` 並存、共用砲管，判定互不相通。
 - **存檔**：波次、目標、CIWS 連射狀態、冷卻皆持久化。
+
+### A-8. 攔截表現（爆散與殘骸）
+
+攔截判定成功後、目標被 `RemoveTarget`／`Discard`／`SpawnDebris` 清掉之前，先以 `InterceptEventData.From` 記下來襲物 def、落點、進入方位與速度，再交給 `MapComponent_InterceptEffects.Trigger`。表現分兩層：
+
+- **空爆**：末端爆心在 CIWS 本輪最後瞄準的掃射點，高度依迫近進度由 18 格降到 10 格；中過程爆心在入場邊緣**內側** 4–8 格（雲團越界部分被裁掉，看起來像在邊緣外擊落）。閃光、火球、煙團、四芒星火花畫在共用 `FxCanvas` 上（自持 fleck 系統，不經 FleckMaker／`map.flecks`，不受「地圖內＋視野內」檢查）。空投艙沒有火球；中過程整體 ×1.4。齊射時 6 tick 內第 3 次起改用精簡版。
+- **遠距末端**：`approach < 0.2`，或爆心畫面位置在圖外／離外框不到 4 格時，不畫爆散（閃光、火球、煙團、火花全部略過），天空閃光降為 0.25；殘骸從入場邊緣外的虛擬點起飛，生成前先用實際風場模擬會不會飛進畫面，進畫面時淡入（淡入不到 0.5 的不生成）。
+- **主殘骸**：`InterceptDebrisChunk`（一般 `Thing`，存檔）2–4 塊＋60% 一段斷裂彈體（畫來襲物貼圖 ×0.7）；空投艙 2–3 塊＋50% 艙體板件。拖煙跡、熾熱期火光與前 60 tick 的跡頭火花；落地依地面／屋頂／水面給碎屑、揚塵、火花、水花與原版金屬撞擊音。可選 `interceptDebrisDamage` 造成 5–12 鈍傷（斷裂彈體 ×1.5，預設關）。
+- **細碎片**：`InterceptDebrisFlecks` 純視覺，導彈 14–24 片、空投艙 8–14 片；繼承來襲動量，30 tick 內由熾熱橙轉金屬色，落地或飛出畫面即剔除。
+- **屍體空投**：`Trigger` 回傳載屍殘骸（斷裂彈體／艙體優先，否則最重的一塊）的預測落點；CIWS 據此在附近找可空投、不穿屋頂的格，找不到就沿殘骸落點→原落點每 6 格再找。
+- **預算與密度**：主殘骸上限 40、細碎片 400、煙跡每圖每 tick 3／6／9 團；`interceptFxDensity` 低／中／高（0.4／1／1.5）。攔截特效材質的 render queue 在戰爭迷霧之上、地圖邊緣遮罩之下（3176–3181），地圖外仍被裁掉。
+- **音效與天光**：末端播放攔截彈音效（預設 `DMSE_Missile_Shot`）＋暖色 `WeatherEvent_MissileFlash`；天氣閃光 12 tick 節流。中過程在地圖外，不播音、不觸發天光。
+
+舊的 `glowMat`／`Flash` 方形暫位符已在 P2 移除，P7 查核無殘留。程式在 `.source/DMSE/SkyFallerTurret/BVR/InterceptDebris/`；Def 在 `1.7/Defs/Effects/DMSE_InterceptFx.xml`；貼圖由 `.source/Tools/gen_intercept_fx_textures.py` 以固定種子產生。詳見[攔截殘骸特效](_archive/implemented/攔截殘骸特效_實作與技術美術計畫.md)。
 
 ---
 
@@ -125,7 +143,7 @@ WorkGiver_AssembleMissile（地上導彈＋架內待裝配者，後者以儲存�
 彈道：WorkGiver_AssembleBallisticSilo → JobDriver_AssembleBallisticSilo → MarkLoaded
 ```
 
-`MissileAssemblyUtility.MissileDefs` 只收 Item 類別，建築上的 `CompMissileConfig` 不會被當物品。舊 Scorer 平台由 `Patch_Refuel_CarryConfig` 同步設定。被打擊任務保留的導彈不派工。導彈組裝台見[組裝台計畫](導彈組裝台與裝配方案_實作計畫.md)。
+`MissileAssemblyUtility.MissileDefs` 只收 Item 類別，建築上的 `CompMissileConfig` 不會被當物品。舊 Scorer 平台由 `Patch_Refuel_CarryConfig` 同步設定。被打擊任務保留的導彈不派工。導彈組裝台見[組裝台計畫](_archive/implemented/導彈組裝台與裝配方案_實作計畫.md)。
 
 ### B-4. 發射
 
@@ -351,3 +369,12 @@ Props：`departureProjectileDef`、`worldObjectDef`（必填）、`projectileDef
 - `ImpactCraterUtility`（撞擊飛行）仍用 `ApproxDistanceInTiles(PlanetTile, PlanetTile)`，跨圖層錯誤。
 - 原版事實：新接上電網的耗電建築逐一開啟（30–200 ticks），`DebugSettings.unlimitedPower` 只對已在電網內的有效；非世界畫面時世界物件每 15 ticks 更新。
 - 自動驗收未涵蓋、仍需手動：裝配 UI、發射 UI、地圖層空爆一彈多殺、導彈陣地摧毀信件、跨圖層拒絕／允許、逃逸區用完次數後落空、對空白 tile 發射落空、雷射標點完整流程、舊存檔。驗收與單元測試見 `.source/DMSE.BVRAcceptance/README.md`、`.source/DMSE.BVRTests/README.md`。
+
+---
+
+## 變更紀錄
+
+| 版本 | 日期 | 內容 |
+|---|---|---|
+| 1.0（第一版） | 2026-11-20 | 第一版定稿：以既有內容整份回寫，加入版本標記；技術內容未變。 |
+| 1.1 | 2026-11-20 | 新增 A-8 攔截表現：空爆、遠距末端、主殘骸、細碎片、屍體空投、預算與音效；連結攔截殘骸特效計畫的歸檔位置。 |

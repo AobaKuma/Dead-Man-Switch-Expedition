@@ -1,39 +1,75 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
+  <!-- EN: Undetected -->
   <DMSE.BVR.World.Undetected>未偵測</DMSE.BVR.World.Undetected>
+  <!-- EN: Detected -->
   <DMSE.BVR.World.Detected>已偵測</DMSE.BVR.World.Detected>
+  <!-- EN: Fire-control lock -->
   <DMSE.BVR.World.Locking>火控鎖定中</DMSE.BVR.World.Locking>
+  <!-- EN: Interceptor inbound -->
   <DMSE.BVR.World.InFlight>攔截彈接近中</DMSE.BVR.World.InFlight>
+  <!-- EN: Destination: {0}\nETA: {1}\nStatus: {2}\nIntercept attempts: {3} -->
   <DMSE.BVR.World.TrackInspect>目的地：{0}\n預計抵達：{1}\n狀態：{2}\n已嘗試攔截：{3} 次</DMSE.BVR.World.TrackInspect>
+  <!-- EN: World search radius: {0} tiles (before target modifiers) -->
   <DMSE.BVR.World.RadarRange>世界搜索半徑：{0} 格（目標修正前）</DMSE.BVR.World.RadarRange>
+  <!-- EN: Effective radius: loitering {0}, light {1}, cruise {2}, ballistic {3} tiles -->
   <DMSE.BVR.World.EffectiveRanges>有效半徑：巡飛彈 {0}、輕型 {1}、巡航 {2}、彈道 {3} 格</DMSE.BVR.World.EffectiveRanges>
+  <!-- EN: Incoming missile detected -->
   <DMSE.BVR.World.DetectedLetter>偵測到來襲導彈</DMSE.BVR.World.DetectedLetter>
+  <!-- EN: Radar has detected {0} approaching {1}.\n\nEstimated arrival: {2}. World air defense is attempting to engage; any surviving missile will face local terminal defenses. -->
   <DMSE.BVR.World.DetectedLetterText>雷達偵測到 {0} 正接近 {1}。\n\n預計於 {2} 後抵達。世界層防空正嘗試接戰，漏網導彈抵達後將交由當地末端防禦處理。</DMSE.BVR.World.DetectedLetterText>
+  <!-- EN: {0} was intercepted by {1}. -->
   <DMSE.BVR.World.Intercepted>{0} 已被 {1} 攔截。</DMSE.BVR.World.Intercepted>
+  <!-- EN: An interceptor missed {0}. -->
   <DMSE.BVR.World.Missed>攔截彈未能命中 {0}。</DMSE.BVR.World.Missed>
+  <!-- EN: {0} changed course and evaded the interceptor. -->
   <DMSE.BVR.World.Evaded>{0} 改變航向，避開了攔截彈。</DMSE.BVR.World.Evaded>
+  <!-- EN: {0} dispensed chaff and broke the fire-control lock. -->
   <DMSE.BVR.World.Chaff>{0} 施放箔條／干擾絲，打斷了火控鎖定。</DMSE.BVR.World.Chaff>
+  <!-- EN: {0} hit the air-defense node at {1}: stocks damaged, radar suppressed. -->
   <DMSE.BVR.World.AbstractStrike>{0} 命中 {1} 的防空節點：庫存受損、雷達被壓制。</DMSE.BVR.World.AbstractStrike>
+  <!-- EN: Target: {0}\nTime to intercept: {1} -->
   <DMSE.BVR.World.InterceptorInspect>目標：{0}\n預計會合：{1}</DMSE.BVR.World.InterceptorInspect>
+  <!-- EN: Air defense: {0}/{1} interceptors\nSearch radius: {2} tiles; fire-control channels: {3} -->
   <DMSE.BVR.World.AbstractInspect>防空庫存：{0}/{1} 枚攔截彈\n搜索半徑：{2} 格；火控通道：{3}</DMSE.BVR.World.AbstractInspect>
+  <!-- EN: Detected incoming missiles -->
   <DMSE.BVR.World.IncomingAlert>已偵測來襲導彈</DMSE.BVR.World.IncomingAlert>
+  <!-- EN: Incoming missiles: {0} ({1}) -->
   <DMSE.BVR.World.IncomingLabel>來襲導彈：{0}（{1}）</DMSE.BVR.World.IncomingLabel>
+  <!-- EN: Left/right click to cycle between world missile tracks. -->
   <DMSE.BVR.World.ClickHint>左／右鍵循環檢視世界導彈航跡。</DMSE.BVR.World.ClickHint>
+  <!-- EN: Show air-defense coverage -->
   <DMSE.BVR.World.ShowCoverage>顯示防空覆蓋</DMSE.BVR.World.ShowCoverage>
+  <!-- EN: Always display all player radar coverage circles on the world map. Selected sites always show their own coverage. Circles assume an unstealthed target of size 1. -->
   <DMSE.BVR.World.ShowCoverageDesc>在世界地圖常駐顯示所有玩家雷達覆蓋圈。選取據點時一律顯示該據點的覆蓋圈。圈線以隱身 0、尺寸 1 的目標為準。</DMSE.BVR.World.ShowCoverageDesc>
+  <!-- EN: Channels: artillery {0}, local {1}, world {2}, strike {3}; free {4} -->
   <DMSE.BVR.World.ChannelBreakdown>通道：火砲 {0}、地圖內 {1}、世界層 {2}、打擊導引 {3}；空閒 {4}</DMSE.BVR.World.ChannelBreakdown>
+  <!-- EN: Missile type: {0} -->
   <DMSE.BVR.World.MissileType>導彈類型：{0}</DMSE.BVR.World.MissileType>
+  <!-- EN: Pod shot down: colonists missing -->
   <DMSE.BVR.PawnsMissingLabel>運輸艙被擊落：人員失蹤</DMSE.BVR.PawnsMissingLabel>
+  <!-- EN: A transport carrying your people was shot down by air defense. No bodies were recovered; the following are missing:\n\n{0} -->
   <DMSE.BVR.PawnsMissingText>一艘載有你的人員的運輸艙被防空火力擊落。沒有找到遺體，以下人員失蹤：\n\n{0}</DMSE.BVR.PawnsMissingText>
+  <!-- EN: The route crosses {0}'s blockade around {1} ({2} tiles). Its air defense fires on anything flying through. -->
   <DMSE.BVR.InterceptRiskRoute>航線穿越{0}在{1}周邊的封鎖區（{2} 格）。其防空火力會攻擊所有飛越的載具。</DMSE.BVR.InterceptRiskRoute>
+  <!-- EN: {0} is covered by {1} air-defense radar. Drop pods and shuttles landing there may be shot down. -->
   <DMSE.BVR.InterceptRiskDestination>{0}處於{1}的防空雷達覆蓋之下。降落到那裡的運輸艙和穿梭機可能會被擊落。</DMSE.BVR.InterceptRiskDestination>
+  <!-- EN: Anyone aboard a downed drop pod or shuttle goes missing. Gravships and transfer ships are damaged instead of destroyed.\n\nLaunch anyway? -->
   <DMSE.BVR.InterceptRiskFooter>被擊落的運輸艙或穿梭機上的人員將會失蹤。重力船和轉移艦被擊中只會受損，不會被摧毀。\n\n仍要發射嗎？</DMSE.BVR.InterceptRiskFooter>
+  <!-- EN: {0}'s air defense at {1} fired on {2}. -->
   <DMSE.Blockade.Engaging>{0}在{1}的防空系統向{2}開火。</DMSE.Blockade.Engaging>
+  <!-- EN: {0}: one transport was shot down by {1}. {2} remaining. -->
   <DMSE.Blockade.PodDown>{0}：一艘運輸工具被{1}擊落，剩餘 {2} 艘。</DMSE.Blockade.PodDown>
+  <!-- EN: {0} was hit by {1}'s air defense. {2} structures aboard were damaged. -->
   <DMSE.Blockade.GravshipHit>{0}被{1}的防空火力擊中，船上 {2} 座建築受損。</DMSE.Blockade.GravshipHit>
+  <!-- EN: Transfer ship hit -->
   <DMSE.Blockade.TransferHitLabel>轉移艦被擊中</DMSE.Blockade.TransferHitLabel>
+  <!-- EN: {0} was hit by {1}'s air defense while flying through its blockade. Explosions tore through {2} spots aboard. -->
   <DMSE.Blockade.TransferHitText>{0}在飛越{1}的封鎖區時被防空火力擊中，船上有 {2} 處發生爆炸。</DMSE.Blockade.TransferHitText>
+  <!-- EN: Flight altitude: {0} -->
   <DMSE.BVR.World.TrackAltitude>飛行高度：{0}</DMSE.BVR.World.TrackAltitude>
+  <!-- EN: Outside intercept altitude -->
   <DMSE.BVR.World.AltitudeDenied>超出攔截高度</DMSE.BVR.World.AltitudeDenied>
+  <!-- EN: Intercept altitude: {0} – {1} -->
   <DMSE.BVR.FireControlAltitude>攔截高度：{0} – {1}</DMSE.BVR.FireControlAltitude>
 </LanguageData>

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: assemble ballistic missiles -->
+  <DMSE_AssembleBallisticSilo.label>裝配彈道導彈</DMSE_AssembleBallisticSilo.label>
+  <!-- EN: assembling -->
+  <DMSE_AssembleBallisticSilo.gerund>裝配</DMSE_AssembleBallisticSilo.gerund>
+  <!-- EN: assemble -->
+  <DMSE_AssembleBallisticSilo.verb>裝配</DMSE_AssembleBallisticSilo.verb>
+  
+</LanguageData>

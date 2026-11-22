@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: stellar-inertial guidance -->
+  <DMSE_AdvBallistic_Guidance_Stellar.label>星光慣性導引</DMSE_AdvBallistic_Guidance_Stellar.label>
+  <!-- EN: Inertial guidance corrected by star sightings during flight, cutting dispersion to almost nothing. It has no terminal seeker, so a moving target is still missed. Impacts scatter around the center of the target map. It does not lock onto buildings or creatures. -->
+  <DMSE_AdvBallistic_Guidance_Stellar.description>飛行途中以觀星修正的慣性導引，幾乎沒有落點散布。但沒有末端尋標器，目標一旦移動仍會落空。落點散布在目標地圖中央附近，不會鎖定建築或生物。</DMSE_AdvBallistic_Guidance_Stellar.description>
+  <!-- EN: Stellar -->
+  <DMSE_AdvBallistic_Guidance_Stellar.designWord>星光</DMSE_AdvBallistic_Guidance_Stellar.designWord>
+  
+  <!-- EN: multiple re-entry vehicles -->
+  <DMSE_AdvBallistic_Payload_MIRV.label>多彈頭重返載具</DMSE_AdvBallistic_Payload_MIRV.label>
+  <!-- EN: Several separate warheads released before the final dive. They spread out and land around a single impact point. -->
+  <DMSE_AdvBallistic_Payload_MIRV.description>在最後俯衝前釋放的多枚獨立彈頭，會散開並落在同一個落點周圍。</DMSE_AdvBallistic_Payload_MIRV.description>
+  <!-- EN: MIRV -->
+  <DMSE_AdvBallistic_Payload_MIRV.designWord>多彈頭</DMSE_AdvBallistic_Payload_MIRV.designWord>
+  
+  <!-- EN: penetration aids -->
+  <DMSE_AdvBallistic_Payload_Penaids.label>突防誘餌</DMSE_AdvBallistic_Payload_Penaids.label>
+  <!-- EN: Chaff, radar decoys and a stealth shroud released with the warhead. The missile looks much smaller on the way in, so enemy radars spot it later and have less time to respond. -->
+  <DMSE_AdvBallistic_Payload_Penaids.description>隨彈頭一起釋放的箔條、雷達誘餌與匿蹤罩。導彈在來襲途中看起來小得多，敵方雷達發現得更晚，反應時間也更短。</DMSE_AdvBallistic_Payload_Penaids.description>
+  <!-- EN: PenAids -->
+  <DMSE_AdvBallistic_Payload_Penaids.designWord>突防</DMSE_AdvBallistic_Payload_Penaids.designWord>
+  
+  <!-- EN: low-yield warhead -->
+  <DMSE_AdvBallistic_Warhead_LowYield.label>低當量彈頭</DMSE_AdvBallistic_Warhead_LowYield.label>
+  <!-- EN: A smaller strategic warhead scaled down for tactical use. It does less damage than a full thermonuclear warhead, but it is much cheaper. -->
+  <DMSE_AdvBallistic_Warhead_LowYield.description>一枚縮小成戰術用途的戰略彈頭。傷害不如完整的熱核彈頭，但便宜得多。</DMSE_AdvBallistic_Warhead_LowYield.description>
+  <!-- EN: Low Yield -->
+  <DMSE_AdvBallistic_Warhead_LowYield.designWord>低當量</DMSE_AdvBallistic_Warhead_LowYield.designWord>
+  
+  <!-- EN: Amatol warhead -->
+  <DMSE_LegacyBallistic_Warhead_Amatol.label>阿馬托炸藥彈頭</DMSE_LegacyBallistic_Warhead_Amatol.label>
+  <!-- EN: A large, simple warhead of amatol explosive, stable and cheap enough to make from industrial materials. It leaves a big hole and nothing more. -->
+  <DMSE_LegacyBallistic_Warhead_Amatol.description>一枚裝填阿瑪托炸藥的大型簡易彈頭，穩定又便宜，用工業材料就能製造。除了炸出一個大洞，沒有別的效果。</DMSE_LegacyBallistic_Warhead_Amatol.description>
+  <!-- EN: Amatol -->
+  <DMSE_LegacyBallistic_Warhead_Amatol.designWord>阿馬托</DMSE_LegacyBallistic_Warhead_Amatol.designWord>
+  
+  <!-- EN: Trialen warhead -->
+  <DMSE_LegacyBallistic_Warhead_Trialen.label>特里亞倫炸藥彈頭</DMSE_LegacyBallistic_Warhead_Trialen.label>
+  <!-- EN: A warhead of trialen explosive with an incendiary component, so the impact starts fires around the crater. Slightly more expensive than amatol. -->
+  <DMSE_LegacyBallistic_Warhead_Trialen.description>一枚裝填特里亞倫炸藥的彈頭，帶有燃燒成分，爆炸會在彈坑周圍引發火災。比阿瑪托彈頭稍貴。</DMSE_LegacyBallistic_Warhead_Trialen.description>
+  <!-- EN: Trialen -->
+  <DMSE_LegacyBallistic_Warhead_Trialen.designWord>特里亞倫</DMSE_LegacyBallistic_Warhead_Trialen.designWord>
+  
+</LanguageData>

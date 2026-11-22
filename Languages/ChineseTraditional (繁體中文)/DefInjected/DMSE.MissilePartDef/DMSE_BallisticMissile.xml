@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: fire-control guidance -->
+  <DMSE_Ballistic_Guidance_FireControl.label>火控導引</DMSE_Ballistic_Guidance_FireControl.label>
+  <!-- EN: Terminal guidance assisted by the colony's fire-control radar network. It greatly tightens impact dispersion. -->
+  <DMSE_Ballistic_Guidance_FireControl.description>由殖民地火控雷達網協助的末端導引，能大幅縮小落點散布。</DMSE_Ballistic_Guidance_FireControl.description>
+  <!-- EN: FireControl -->
+  <DMSE_Ballistic_Guidance_FireControl.designWord>火控</DMSE_Ballistic_Guidance_FireControl.designWord>
+  
+  <!-- EN: inertial guidance -->
+  <DMSE_Ballistic_Guidance_Inertial.label>慣性導引</DMSE_Ballistic_Guidance_Inertial.label>
+  <!-- EN: Basic inertial guidance. With a big enough warhead, precision hardly matters. Impacts scatter around the center of the target map. It does not lock onto buildings or creatures. -->
+  <DMSE_Ballistic_Guidance_Inertial.description>基本的慣性導引。彈頭夠大時，精度幾乎無關緊要。落點散布在目標地圖中央附近，不會鎖定建築或生物。</DMSE_Ballistic_Guidance_Inertial.description>
+  <!-- EN: Inertial -->
+  <DMSE_Ballistic_Guidance_Inertial.designWord>慣性</DMSE_Ballistic_Guidance_Inertial.designWord>
+  
+  <!-- EN: laser terminal seeker -->
+  <DMSE_Ballistic_Guidance_Laser.label>雷射末端導引頭</DMSE_Ballistic_Guidance_Laser.label>
+  <!-- EN: A semi-active laser seeker. It homes on the most recent point your colony marked on the target map with a laser target designator, and falls back to inertial guidance if there is none. -->
+  <DMSE_Ballistic_Guidance_Laser.description>一種半主動雷射尋標器。會追向殖民地最近一次在目標地圖上以雷射目標標定器標記的位置；沒有標記時改用慣性導引。</DMSE_Ballistic_Guidance_Laser.description>
+  <!-- EN: Laser -->
+  <DMSE_Ballistic_Guidance_Laser.designWord>雷射</DMSE_Ballistic_Guidance_Laser.designWord>
+  
+  <!-- EN: antiparticle payload -->
+  <DMSE_Ballistic_Payload_Antiparticle.label>反粒子酬載</DMSE_Ballistic_Payload_Antiparticle.label>
+  <!-- EN: A secondary antiparticle burst that destroys almost everything in range. The most destructive payload available. -->
+  <DMSE_Ballistic_Payload_Antiparticle.description>二次釋放的反粒子爆發，幾乎摧毀範圍內的一切。是威力最大的酬載。</DMSE_Ballistic_Payload_Antiparticle.description>
+  <!-- EN: Antiparticle -->
+  <DMSE_Ballistic_Payload_Antiparticle.designWord>反物質</DMSE_Ballistic_Payload_Antiparticle.designWord>
+  
+  <!-- EN: bunker buster payload -->
+  <DMSE_Ballistic_Payload_BunkerBuster.label>反碉堡酬載</DMSE_Ballistic_Payload_BunkerBuster.label>
+  <!-- EN: A hardened penetrator charge with a delayed fuze. It bores through thick rock roofs and detonates inside, wrecking nearby structures.\n\nWithout this or a penetrator warhead, a missile that hits a mountain detonates on the rock surface, and its seeker ignores targets under thick roofs. -->
+  <DMSE_Ballistic_Payload_BunkerBuster.description>一種強化外殼、延時引信的穿透裝藥。能鑽穿厚岩頂後在內部引爆，摧毀附近的建築。\n\n沒有它或穿透彈頭時，擊中山體的導彈只會在岩石表面爆炸，尋標器也會忽略厚頂之下的目標。</DMSE_Ballistic_Payload_BunkerBuster.description>
+  <!-- EN: Bunker -->
+  <DMSE_Ballistic_Payload_BunkerBuster.designWord>反碉堡</DMSE_Ballistic_Payload_BunkerBuster.designWord>
+  
+  <!-- EN: cluster payload -->
+  <DMSE_Ballistic_Payload_Cluster.label>集束酬載</DMSE_Ballistic_Payload_Cluster.label>
+  <!-- EN: Scatters submunitions across a wide area, trading concentrated blast for coverage. -->
+  <DMSE_Ballistic_Payload_Cluster.description>把子彈藥灑向大範圍，以集中的爆炸威力換取覆蓋面積。</DMSE_Ballistic_Payload_Cluster.description>
+  <!-- EN: Cluster -->
+  <DMSE_Ballistic_Payload_Cluster.designWord>集束</DMSE_Ballistic_Payload_Cluster.designWord>
+  
+  <!-- EN: no payload -->
+  <DMSE_Ballistic_Payload_None.label>無酬載</DMSE_Ballistic_Payload_None.label>
+  <!-- EN: No secondary charge. The warhead does all the work. -->
+  <DMSE_Ballistic_Payload_None.description>沒有二次裝藥，全靠彈頭本身。</DMSE_Ballistic_Payload_None.description>
+  
+  <!-- EN: airburst warhead -->
+  <DMSE_Ballistic_Warhead_Airburst.label>空爆彈頭</DMSE_Ballistic_Warhead_Airburst.label>
+  <!-- EN: A warhead that detonates above the target to spread fragments over a wide area. When used on an interceptor, it gets extra chances to hit in each engagement. -->
+  <DMSE_Ballistic_Warhead_Airburst.description>在目標上空引爆、把破片灑向大範圍的彈頭。用於攔截彈時，每次接戰都能多擲幾次命中判定。</DMSE_Ballistic_Warhead_Airburst.description>
+  <!-- EN: Airburst -->
+  <DMSE_Ballistic_Warhead_Airburst.designWord>空爆</DMSE_Ballistic_Warhead_Airburst.designWord>
+  
+  <!-- EN: cluster bomblet warhead -->
+  <DMSE_Ballistic_Warhead_ClusterBomblet.label>子母彈彈頭</DMSE_Ballistic_Warhead_ClusterBomblet.label>
+  <!-- EN: A warhead that opens over the target and scatters many small fragmentation bomblets. Each bomblet falls on its own, spreading damage across a whole compound instead of a single point. -->
+  <DMSE_Ballistic_Warhead_ClusterBomblet.description>在目標上空開啟、灑出大量小型破片子彈的彈頭。每枚子彈各自落下，把傷害分散到整片區域，而不是集中在一點。</DMSE_Ballistic_Warhead_ClusterBomblet.description>
+  <!-- EN: Bomblet -->
+  <DMSE_Ballistic_Warhead_ClusterBomblet.designWord>子母</DMSE_Ballistic_Warhead_ClusterBomblet.designWord>
+  
+  <!-- EN: thermonuclear warhead -->
+  <DMSE_Ballistic_Warhead_Thermonuclear.label>熱核彈頭</DMSE_Ballistic_Warhead_Thermonuclear.label>
+  <!-- EN: A thermonuclear warhead. It has no special effects. It does not need any. -->
+  <DMSE_Ballistic_Warhead_Thermonuclear.description>一枚熱核彈頭。沒有任何特殊效果，也不需要。</DMSE_Ballistic_Warhead_Thermonuclear.description>
+  <!-- EN: Thermonuclear -->
+  <DMSE_Ballistic_Warhead_Thermonuclear.designWord>熱核</DMSE_Ballistic_Warhead_Thermonuclear.designWord>
+  
+  <!-- EN: tungsten penetrator -->
+  <DMSE_Ballistic_Warhead_TungstenPenetrator.label>鎢合金穿透彈頭</DMSE_Ballistic_Warhead_TungstenPenetrator.label>
+  <!-- EN: A dense tungsten rod that punches through thick roofs before detonating inside. Underground shelters offer no protection against it. -->
+  <DMSE_Ballistic_Warhead_TungstenPenetrator.description>一根高密度鎢棒，能貫穿厚頂後在內部引爆。地下掩體擋不住它。</DMSE_Ballistic_Warhead_TungstenPenetrator.description>
+  <!-- EN: Tungsten -->
+  <DMSE_Ballistic_Warhead_TungstenPenetrator.designWord>鎢芯</DMSE_Ballistic_Warhead_TungstenPenetrator.designWord>
+  
+</LanguageData>

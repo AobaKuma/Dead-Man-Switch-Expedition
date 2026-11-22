@@ -11,6 +11,11 @@
 !/docs/
 /docs/*
 !/docs/敵對NPC導彈發射站點_生成與彈藥選型計畫書.md
+# 實作完成後歸檔的文件仍留在版本控制內
+!/docs/_archive/
+/docs/_archive/*
+!/docs/_archive/implemented/
+!/docs/_archive/implemented/*.md
 # RimWorld 1.7 asset packs baked on Workshop upload (and their local sidecars)
 Assets.zip
 Assets.zip.*

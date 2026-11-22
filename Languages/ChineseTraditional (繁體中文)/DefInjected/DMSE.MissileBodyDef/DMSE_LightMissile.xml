@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: light missile body -->
+  <DMSE_MissileBody_Light.label>輕型導彈彈體</DMSE_MissileBody_Light.label>
+  <!-- EN: A compact single-stage missile airframe. It flies faster and farther than a loitering munition, but carries less than a cruise missile.\n\nHas slots for a warhead, guidance and payload. -->
+  <DMSE_MissileBody_Light.description>一種小型單節導彈彈體。飛得比巡飛彈快、也更遠，但載重不如巡航導彈。\n\n可裝配彈頭、導引與酬載。</DMSE_MissileBody_Light.description>
+  <!-- EN: Light -->
+  <DMSE_MissileBody_Light.designWord>輕型</DMSE_MissileBody_Light.designWord>
+  
+</LanguageData>

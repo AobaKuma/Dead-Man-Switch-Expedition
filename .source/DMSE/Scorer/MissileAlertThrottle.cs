@@ -28,8 +28,5 @@ namespace DMSE
             lastLetterTick[key] = now;
             Find.LetterStack.ReceiveLetter(label, text, letterDef, lookTargets);
         }
-
-        /// <summary>測試用：清除冷卻。</summary>
-        public static void Reset() => lastLetterTick.Clear();
     }
 }

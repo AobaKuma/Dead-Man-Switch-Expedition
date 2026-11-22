@@ -177,8 +177,6 @@ namespace DMSE
         /// <summary>最近的實際鎖定紀錄（僅執行期，不存檔；過期即清除）。</summary>
         private static readonly List<Claim> claims = new List<Claim>();
 
-        /// <summary>清除所有鎖定紀錄（測試用）。</summary>
-        public static void ClearClaims() => claims.Clear();
 
         private static int ClaimCount(object key, object target)
         {

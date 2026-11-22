@@ -1,37 +1,58 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
 
-  <!-- NPC 導彈陣地 (WorldObjectComp_MissileBase) -->
+  <!-- NPC Missile Base -->
+  <!-- EN: Next missile strike in: {0} -->
   <DMSE.MissileBase.NextFireIn>下次導彈打擊：{0}</DMSE.MissileBase.NextFireIn>
+  <!-- EN: Position detected (local map under observation) -->
   <DMSE.MissileBase.LocalMonitoring>陣地已被偵測（本地地圖觀察中）</DMSE.MissileBase.LocalMonitoring>
+  <!-- EN: Position relocating in: {0} -->
   <DMSE.MissileBase.RelocationIn>陣地轉移倒計時：{0}</DMSE.MissileBase.RelocationIn>
+  <!-- EN: Missile position relocated -->
   <DMSE.MissileBase.Relocated>導彈陣地轉移</DMSE.MissileBase.Relocated>
+  <!-- EN: An enemy missile launch position has completed its strike mission and relocated to avoid counteraction. -->
   <DMSE.MissileBase.RelocatedDesc>一處敵方導彈陣地在部署後完成射擊任務並轉移，防止殖民地反制。</DMSE.MissileBase.RelocatedDesc>
+  <!-- EN: Missile position destroyed -->
   <DMSE.MissileBase.Destroyed>導彈陣地已摧毀</DMSE.MissileBase.Destroyed>
+  <!-- EN: Your colonists have destroyed every fire-control radar at the enemy missile position. Without fire control it can no longer launch, and the missile threat from this position has been neutralized. -->
   <DMSE.MissileBase.DestroyedDesc>殖民者已摧毀敵方導彈陣地的所有火控雷達。失去火控後陣地無法再發射，來自該陣地的導彈威脅已解除。</DMSE.MissileBase.DestroyedDesc>
+  <!-- EN: Ground access denied: enemy regrouping ({0}) -->
   <DMSE.MissileBase.ReentryBlockedIn>地面通道封鎖中，敵方整備防線（{0}）</DMSE.MissileBase.ReentryBlockedIn>
+  <!-- EN: Access denied: enemy regrouping ({0}) -->
   <DMSE.MissileBase.ReentryBlocked>通道封鎖，敵方整備防線（{0}）</DMSE.MissileBase.ReentryBlocked>
+  <!-- EN: {0}: its fire-control radars still stand and the enemy is regrouping. Ground access is blocked for {1}; the position will be fully rebuilt. -->
   <DMSE.MissileBase.ReentryBlockStarted>{0}：火控雷達仍在，敵方正重新整備防線。{1}內無法再次進入，陣地將完整重建。</DMSE.MissileBase.ReentryBlockStarted>
+  <!-- EN: Missile position: {0} fire-control radars left -->
   <DMSE.MissileBase.ObjectivesAlert>導彈陣地：剩餘火控雷達 {0}</DMSE.MissileBase.ObjectivesAlert>
-  <DMSE.MissileBase.ObjectivesAlertDesc>摧毀所有火控雷達即可瓦解此陣地（剩餘 {0}），發射架與搜索雷達不必摧毀。
+  <!-- EN: Destroy every fire-control radar to neutralize this position ({0} left). Launchers and search radars do not need to be destroyed.
 
-若在火控雷達尚存時撤退，敵方將重新整備：陣地留在世界地圖上繼續發射，一段時間內無法再次進入，下次進入時陣地完整重建。
+If you withdraw while a fire-control radar still stands, the enemy regroups: the position stays on the world map and keeps firing, your return is blocked for a while, and it is fully rebuilt on your next visit.
 
-點擊依序檢視剩餘目標。</DMSE.MissileBase.ObjectivesAlertDesc>
+Click to cycle through the remaining targets. -->
+  <DMSE.MissileBase.ObjectivesAlertDesc>摧毀所有火控雷達即可瓦解此陣地（剩餘 {0}），發射架與搜索雷達不必摧毀。\n\n若在火控雷達尚存時撤退，敵方將重新整備：陣地留在世界地圖上繼續發射，一段時間內無法再次進入，下次進入時陣地完整重建。\n\n點擊依序檢視剩餘目標。</DMSE.MissileBase.ObjectivesAlertDesc>
+  <!-- EN: Your pawns have arrived at a missile launch position. The enemy has deployed fire control radars and launch vehicles here, continuously striking nearby colonies. Destroy every fire-control radar to neutralize the position; if you withdraw while a fire-control radar still stands, the enemy regroups and blocks your return for a while. -->
   <DMSE.MissileBase.ArrivedLetter>你們抵達了一處導彈陣地。敵方已在此部署火控雷達與導彈發射架，不斷向周圍殖民地發射打擊。摧毀所有火控雷達即可瓦解此陣地；若在火控雷達尚存時撤退，敵方將重新整備防線，一段時間內無法再次進入。</DMSE.MissileBase.ArrivedLetter>
+  <!-- EN: A mobile tactical ballistic missile launch position equipped with fire control radar and missile launchers. The position will relocate after completing its mission. -->
   <DMSE.MissileBase.SiteDesc>一處配備火控雷達與導彈發射架的機動戰術彈道導彈陣地。陣地會在完成任務後轉移，以躲避反制。</DMSE.MissileBase.SiteDesc>
+  <!-- EN: Enemy supply drop: {0} ×{1} -->
   <DMSE.MissileBase.SupplyDrop>敵方補給空投：{0} ×{1}</DMSE.MissileBase.SupplyDrop>
+  <!-- EN: Enemy missile airdrop: {1} missiles -->
   <DMSE.MissileBase.RackResupply>敵方空投導彈：{1} 枚</DMSE.MissileBase.RackResupply>
+  <!-- EN: Enemy ammo airdrop: {1} ×{0} -->
   <DMSE.MissileBase.TurretAmmoDrop>敵方空投彈藥：{1} ×{0}</DMSE.MissileBase.TurretAmmoDrop>
+  <!-- EN: Your pawns have arrived at an enemy field launch position. A search radar sits at its centre, with launch positions, ammunition carriers and crew shelters spread around it. Supply pods keep the garrison fed while any radar is operational. Destroy every fire-control radar to neutralize the position; if you withdraw while a fire-control radar still stands, the enemy regroups and blocks your return for a while. -->
   <DMSE.FieldLaunchSite.ArrivedLetter>你們抵達了一處敵方野戰發射陣地。陣地以搜索雷達為中心，四周散布發射陣位、彈藥車與人員休息區。只要仍有雷達運作，敵方就會定時空投生存食品包維持守軍。摧毀所有火控雷達即可瓦解此陣地；若在火控雷達尚存時撤退，敵方將重新整備防線，一段時間內無法再次進入。</DMSE.FieldLaunchSite.ArrivedLetter>
+  <!-- EN: {0} has deployed a field missile launch position {3} tiles {2} of {1}. Its launchers can strike your colony; supply pods will keep its garrison fed while its radars run.\n\nDestroy every fire-control radar to neutralize it; knocking out all its radars also cuts off its supplies. -->
   <DMSE.FieldLaunchSite.SpawnedLetter>{0}在{1}的{2}方 {3} 格處部署了一處野戰導彈發射陣地。其發射架能打擊你的殖民地；只要雷達仍在運作，補給艙就會持續為守軍送來食物。\n\n摧毀所有火控雷達即可瓦解此陣地；癱瘓所有雷達也能切斷其補給。</DMSE.FieldLaunchSite.SpawnedLetter>
+  <!-- EN: Your pawns have arrived at an enemy missile position. Acoustic mirrors listen for aircraft while a hand-aimed fire-control radar and launch rails send out slow pulsejet loitering munitions. Destroy its fire-control radar to neutralize it; the radar stops firing if its crew or its wood-fired generators are lost. If you retreat with a fire-control radar still standing, the enemy will rebuild its defenses and you cannot return for a while. -->
   <DMSE.EarlyLaunchSite.ArrivedLetter>你們抵達了一處敵方舊式導彈陣地。聲學反射鏡負責監聽，手動火控雷達與發射軌負責射出緩慢的脈衝噴射巡飛彈。摧毀火控雷達即可瓦解此陣地；守軍或燒木發電機沒了，火控雷達也會停擺。若在雷達尚存時撤退，敵方將重新整備防線，一段時間內無法再次進入。</DMSE.EarlyLaunchSite.ArrivedLetter>
+  <!-- EN: {0} has set up a missile position {3} tiles {2} of {1}. Its slow pulsejet loitering munitions can strike your colony, and it has no interceptors of its own.\n\nDestroy its fire-control radar to neutralize it. -->
   <DMSE.EarlyLaunchSite.SpawnedLetter>{0}在{1}的{2}方 {3} 格處架設了一處舊式導彈陣地。它緩慢的脈衝噴射巡飛彈能打擊你的殖民地，陣地本身沒有攔截彈。\n\n摧毀火控雷達即可瓦解此陣地。</DMSE.EarlyLaunchSite.SpawnedLetter>
 
   <!-- EN: Launch Missile -->
   <ScorerLaunch>發射導彈</ScorerLaunch>
 
-  <!-- EN: Launches the loaded tactical missile. The missile will be able to strike targets outside the large map at long range and retain map visibility for 3 days to assess the strike's effectiveness. Re-launching resets this time. -->
+  <!-- EN: Launch the loaded tactical missile at a target beyond this map. The target map stays visible for 2 days to assess damage; launching again resets the timer. -->
   <ScorerLaunchDesc>發射已裝填的戰術導彈，可遠程打擊地圖外的目標；目標地圖保留 2 天視野以評估戰果，再次發射會重置計時。</ScorerLaunchDesc>
 
   <!-- EN: Huntdown -->
@@ -50,27 +71,44 @@
   <!-- EN: the position of Stele has been tracked down, hunting squad and possible air strike will arrive in no time, transfer before it's too late. -->
   <DMSE.Alert.HuntdownThreatCritical.Desc>石碑的位置已被追蹤，追捕小隊和可能的空襲將很快到達，請在為時已晚之前轉移。</DMSE.Alert.HuntdownThreatCritical.Desc>
 
-  <!-- EN: {0} drop pods will breach in {1} -->
+  <!-- EN: {0} incoming threats, interception window: {1} left -->
   <DMSE.Alert.Pods>{0} 個來襲目標，攔截窗口剩餘 {1}</DMSE.Alert.Pods>
+  <!-- EN: {0} missiles loitering overhead, {1} before they dive -->
   <DMSE.Alert.Pods.Loitering>{0} 枚飛彈在上空盤旋，剩餘盤旋 {1}</DMSE.Alert.Pods.Loitering>
+  <!-- Tooltip detail lines for incoming-threat alert -->
+  <!-- EN: Midcourse intercept window: {0} -->
   <DMSE.Alert.Pods.Window.Midcourse>中過程攔截窗口：{0}</DMSE.Alert.Pods.Window.Midcourse>
+  <!-- EN: Terminal (CIWS) window: {0} -->
   <DMSE.Alert.Pods.Window.Terminal>末端攔截窗口（CIWS）：{0}</DMSE.Alert.Pods.Window.Terminal>
+  <!-- EN: Loiter time left: {0} -->
   <DMSE.Alert.Pods.Window.Loitering>盤旋剩餘：{0}</DMSE.Alert.Pods.Window.Loitering>
+  <!-- EN:   · {0}  [{1}] -->
   <DMSE.Alert.Pods.Target>  · {0}  【{1}】</DMSE.Alert.Pods.Target>
+  <!-- EN: interceptor in flight -->
   <DMSE.Alert.Pods.Status.InFlight>攔截彈飛行中</DMSE.Alert.Pods.Status.InFlight>
+  <!-- EN: fire control locking -->
   <DMSE.Alert.Pods.Status.Locking>火控鎖定中</DMSE.Alert.Pods.Status.Locking>
+  <!-- EN: unengaged -->
   <DMSE.Alert.Pods.Status.Unengaged>未接戰</DMSE.Alert.Pods.Status.Unengaged>
+  <!-- EN: loitering, waiting for a target -->
   <DMSE.Alert.Pods.Status.Loitering>盤旋等待目標</DMSE.Alert.Pods.Status.Loitering>
-  <!-- BVR 系統狀態提示（獨立於來襲威脅提示） -->
+  <!-- BVR system status alert (independent from incoming-threat alert) -->
+  <!-- EN: BVR System -->
   <DMSE.Alert.BVRStatus.Label>BVR 系統</DMSE.Alert.BVRStatus.Label>
+  <!-- EN: Search radars: -->
   <DMSE.Alert.BVRStatus.SearchRadars>搜索雷達：</DMSE.Alert.BVRStatus.SearchRadars>
+  <!-- EN:   · {0}  range {1}, anti-stealth {2}, power {3}  [{4}] -->
   <DMSE.Alert.BVRStatus.SearchRadar.Line>  · {0}  搜索距離 {1}，反隱身 {2}，功率 {3}  [{4}]</DMSE.Alert.BVRStatus.SearchRadar.Line>
+  <!-- EN: Fire control radars: -->
   <DMSE.Alert.BVRStatus.FireControlRadars>火控雷達：</DMSE.Alert.BVRStatus.FireControlRadars>
+  <!-- EN:   · {0}  {1} ch, power {2}  [{3}] -->
   <DMSE.Alert.BVRStatus.FireControl.Line>  · {0}  {1} 條通道，功率 {2}  [{3}]</DMSE.Alert.BVRStatus.FireControl.Line>
+  <!-- EN:   Channels occupied: {0} / {1} -->
   <DMSE.Alert.BVRStatus.FireControl.Occupied>  已占用通道：{0} / {1}</DMSE.Alert.BVRStatus.FireControl.Occupied>
+  <!-- EN:   (none installed) -->
   <DMSE.Alert.BVRStatus.None>  （未安裝）</DMSE.Alert.BVRStatus.None>
 
-  <!-- 建築重新命名：按鈕由 Patch_InspectPaneRename 繪製，對話框沿用原版 Dialog_Rename -->
+  <!-- Building rename (button drawn by Patch_InspectPaneRename; uses vanilla Dialog_Rename) -->
 
   <!-- EN: Select flight mode -->
   <DMSE.Flight.Select>選擇巡航模式</DMSE.Flight.Select>
@@ -120,7 +158,6 @@
   <!-- EN: We may never know whether the crew aboard the gravship escaped at the last moment, or vanished entirely in the impact. -->
   <DMSE.Impact.Ending.Aboard>我們無法得知重力船上的船員們是否在最後一刻逃出生天，又或者徹底地隨著撞擊煙飛灰滅。</DMSE.Impact.Ending.Aboard>
 
-  <!-- EN: The gravship streaked across the sky with a blazing trail, carrying immense mass into the ground. The horizon turned to light, and violent shockwaves followed, becoming storms and earthquakes that swept across the planet's surface. In a short span, countless lives and landscapes were erased in this world-shattering impact. -->
   <!-- EN: After assessing the damage, colonial fleet command could only evacuate surface survivors. The projected terraforming cost forced the fleet to abandon development of this planet. Whatever the purpose behind it, both the fleet and this world will remember this impact forever. -->
   <DMSE.Impact.Ending.FleetFailed.Outro>殖民艦隊本部在評估災情後只能夠撤離地面上倖存的人員，可預估的星球改造成本使得殖民艦隊不得不中止對這顆星球的開發。無論其背後的目的如何，殖民艦隊與這顆星球的歷史都將永遠記住這一場撞擊。</DMSE.Impact.Ending.FleetFailed.Outro>
 
@@ -133,169 +170,329 @@
 
   <!-- EN: {0} Crater -->
   <DMSE_Crater>{0}撞擊坑</DMSE_Crater>
-
+  
+  <!-- EN: Map visible countdown:{0} -->
   <DMS_Exist>地圖可見計時:{0}</DMS_Exist>
+  <!-- Alerts_Exist tooltip and end-observation dialog -->
+  <!-- EN: Observing: {0} -->
   <DMSE.Alert.Exist.Observing>觀察中：{0}</DMSE.Alert.Exist.Observing>
+  <!-- EN: Observation ends in: {0} -->
   <DMSE.Alert.Exist.TimeLeft>觀察結束倒數：{0}</DMSE.Alert.Exist.TimeLeft>
+  <!-- EN: Enemy combatants remaining: {0} -->
   <DMSE.Alert.Exist.EnemiesAlive>剩餘敵方戰鬥人員：{0}</DMSE.Alert.Exist.EnemiesAlive>
+  <!-- EN: This is an active missile launch position. Ending observation early will allow the crew to regroup and reset their defenses. -->
   <DMSE.Alert.Exist.IsMissileBase>這是一處運作中的導彈陣地。提前結束觀察將讓敵方人員得以重整並重置其防禦。</DMSE.Alert.Exist.IsMissileBase>
+  <!-- EN: Click to end observation early. -->
   <DMSE.Alert.Exist.ClickHint>點擊以提前結束觀察。</DMSE.Alert.Exist.ClickHint>
+  <!-- EN: End observation now? The map will no longer be held open and may be cleaned up by the game. -->
   <DMSE.Alert.Exist.EndEarly.Confirm>現在就結束觀察？地圖將不再被保留，可能會被遊戲清理。</DMSE.Alert.Exist.EndEarly.Confirm>
+  <!-- EN: End observation early?\n\nThe enemy crew will have the opportunity to regroup. The launch position's defenses and timers will reset, as if the observation never happened.\n\nThis cannot be undone. -->
   <DMSE.Alert.Exist.EndEarly.Confirm.MissileBase>提前結束觀察？\n\n敵方人員將有機會重整，該導彈陣地的防禦與計時器都會重置，如同觀察從未發生。\n\n此操作無法復原。</DMSE.Alert.Exist.EndEarly.Confirm.MissileBase>
+  <!-- EN: Observation ended early. Enemy forces may regroup. -->
   <DMSE.Alert.Exist.ObservationEnded>觀察已提前結束。敵軍可能會重整。</DMSE.Alert.Exist.ObservationEnded>
+
+  <!-- Alerts_PlayerMissiles: player attacking, enemy BVR tracking our missiles -->
+  <!-- EN: {0} missiles outbound: first impact in {1} -->
   <DMSE.Alert.PlayerMissiles.Label>{0} 枚導彈飛行中，首波落地倒數 {1}</DMSE.Alert.PlayerMissiles.Label>
+  <!-- EN: Target: {0} -->
   <DMSE.Alert.PlayerMissiles.MapHeader>目標：{0}</DMSE.Alert.PlayerMissiles.MapHeader>
+  <!-- EN:   Impact in {0}: -->
   <DMSE.Alert.PlayerMissiles.WaveImpact>  落地倒數 {0}：</DMSE.Alert.PlayerMissiles.WaveImpact>
+  <!-- {0}=missile label, {1}=col, {2}=row, {3}=intercept status -->
+  <!-- EN:     · {0}  ({1},{2})  [{3}] -->
   <DMSE.Alert.PlayerMissiles.Target>    · {0}  ({1},{2})  【{3}】</DMSE.Alert.PlayerMissiles.Target>
+  <!-- EN: Left-click to cycle to next impact site. Right-click to cycle back. -->
   <DMSE.Alert.PlayerMissiles.ClickHint>左鍵切換至下一個落點，右鍵切換回上一個。</DMSE.Alert.PlayerMissiles.ClickHint>
 
+  <!-- EN: online -->
   <DMSE.BVR.Online>運作中</DMSE.BVR.Online>
+  <!-- EN: offline -->
   <DMSE.BVR.Offline>離線</DMSE.BVR.Offline>
+  <!-- EN: Search radar: range {0}, anti-stealth {1} ({2}) -->
   <DMSE.BVR.SearchRadar>搜索雷達：搜索距離 {0}，反隱身 {1}（{2}）</DMSE.BVR.SearchRadar>
+  <!-- EN: Fire control: {0} channel(s) ({1}) -->
   <DMSE.BVR.FireControl>火控雷達：{0} 條火力通道（{1}）</DMSE.BVR.FireControl>
+  <!-- EN: Artillery guidance channels: {0} / {1} free -->
   <DMSE.BVR.ArtilleryChannels>火砲引導通道：{0} / {1} 空閒</DMSE.BVR.ArtilleryChannels>
 
+  <!-- EN: Assembly -->
   <DMSE.Missile.Tab>裝配</DMSE.Missile.Tab>
+  <!-- EN: Missile body -->
   <DMSE.Missile.Body>導彈彈體</DMSE.Missile.Body>
+  <!-- EN: fixed by the launch platform -->
   <DMSE.Missile.BodyFixed>由發射平台固定</DMSE.Missile.BodyFixed>
+  <!-- EN: None -->
   <DMSE.Missile.None>無</DMSE.Missile.None>
+  <!-- EN: locked -->
   <DMSE.Missile.Locked>未解鎖</DMSE.Missile.Locked>
+  <!-- EN: God mode: changes are assembled at once, free and without research. -->
   <DMSE.Missile.GodModeInstant>上帝模式：變更立即裝配完成，不耗資源、不需研究。</DMSE.Missile.GodModeInstant>
+  <!-- EN: God mode: instant missile assembly -->
   <DMSE.Missile.Settings.GodModeInstantAssembly>上帝模式：導彈即時裝配</DMSE.Missile.Settings.GodModeInstantAssembly>
+  <!-- EN: While god mode is on, missile and ballistic silo refits finish immediately: no confirmation, hauling or assembly work, and no resources are used. Parts are available without research. Removed parts are not refunded. -->
   <DMSE.Missile.Settings.GodModeInstantAssemblyDesc>開啟上帝模式時，導彈與彈道導彈發射井的裝配立即完成：不需確認、搬運或裝配工作，也不消耗資源；部件不需研究即可選用。移除的部件不退還資源。</DMSE.Missile.Settings.GodModeInstantAssemblyDesc>
+  <!-- EN: Intercept debris causes damage -->
   <DMSE.BVR.Settings.InterceptDebrisDamage>攔截殘骸造成傷害</DMSE.BVR.Settings.InterceptDebrisDamage>
+  <!-- EN: Large debris from intercepted missiles and drop pods deals light blunt damage where it lands. Roofs stop it. When off, debris only leaves dust, sparks and rubble. -->
   <DMSE.BVR.Settings.InterceptDebrisDamageDesc>被攔截的導彈與空投艙所掉落的大塊殘骸，落地時對該格造成輕微鈍傷，屋頂可以擋下。關閉時殘骸只留下揚塵、火花與碎屑。</DMSE.BVR.Settings.InterceptDebrisDamageDesc>
+  <!-- EN: Intercept effect density -->
   <DMSE.BVR.Settings.InterceptFxDensity>攔截特效密度</DMSE.BVR.Settings.InterceptFxDensity>
+  <!-- EN: How many fragments, smoke puffs and trail puffs an interception makes. Lower it if large salvos slow the game down. Large debris still lands at every setting. -->
   <DMSE.BVR.Settings.InterceptFxDensityDesc>攔截時產生的碎片、煙團與煙跡數量。大規模齊射造成卡頓時可調低；任何設定下大塊殘骸都仍會落地。</DMSE.BVR.Settings.InterceptFxDensityDesc>
+  <!-- EN: CIWS intercept rate: {0} -->
   <DMSE.BVR.Settings.CiwsInterceptMultiplier>迫近防禦砲塔攔截率：{0}</DMSE.BVR.Settings.CiwsInterceptMultiplier>
+  <!-- EN: Scales the hit chance of every close-in defense turret (CIWS). 100% keeps each turret's own rate; 0% means they never shoot anything down. Ballistic missiles stay very hard to hit whatever this is set to. -->
   <DMSE.BVR.Settings.CiwsInterceptMultiplierDesc>調整所有迫近防禦砲塔（CIWS）的命中率。100% 為各砲塔原本的數值；0% 則永遠無法擊落目標。不論設定為何，彈道導彈都極難被迫近防禦攔截。</DMSE.BVR.Settings.CiwsInterceptMultiplierDesc>
+  <!-- EN: Low -->
   <DMSE.BVR.Settings.InterceptFxDensity0>低</DMSE.BVR.Settings.InterceptFxDensity0>
+  <!-- EN: Medium -->
   <DMSE.BVR.Settings.InterceptFxDensity1>中</DMSE.BVR.Settings.InterceptFxDensity1>
+  <!-- EN: High -->
   <DMSE.BVR.Settings.InterceptFxDensity2>高</DMSE.BVR.Settings.InterceptFxDensity2>
+  <!-- EN: Pending stats (after assembly) -->
   <DMSE.Missile.Stats>待裝配數值（裝配後生效）</DMSE.Missile.Stats>
+  <!-- EN: Blast radius: {0} -->
   <DMSE.Missile.Stat.Radius>爆炸半徑：{0}</DMSE.Missile.Stat.Radius>
+  <!-- EN: Warhead: {0} ({1}) -->
   <DMSE.Missile.Stat.Damage>彈頭：{0}（{1}）</DMSE.Missile.Stat.Damage>
+  <!-- EN: Impact dispersion: {0} -->
   <DMSE.Missile.Stat.Scatter>命中偏移：{0}</DMSE.Missile.Stat.Scatter>
+  <!-- EN: Travel speed: x{0} -->
   <DMSE.Missile.Stat.Speed>飛行速度：x{0}</DMSE.Missile.Stat.Speed>
+  <!-- EN: Fuel: {0} -->
   <DMSE.Missile.Stat.Fuel>燃料量：{0}</DMSE.Missile.Stat.Fuel>
+  <!-- EN: Specific impulse: {0} -->
   <DMSE.Missile.Stat.Impulse>比衝（推進效率）：{0}</DMSE.Missile.Stat.Impulse>
+  <!-- EN: Range: {0} tiles -->
   <DMSE.Missile.Stat.Range>射程：{0} 格</DMSE.Missile.Stat.Range>
+  <!-- EN: Guided: can update its target position {0} time(s) in flight and strike across orbital layers -->
   <DMSE.Missile.Stat.TerminalGuidance>具導引能力：飛行中可更新目標位置 {0} 次，可跨圖層打擊</DMSE.Missile.Stat.TerminalGuidance>
+  <!-- EN: Unguided: cannot track moving targets or strike across orbital layers -->
   <DMSE.Missile.Stat.NoTerminalGuidance>無導引能力：無法追蹤移動目標，也無法跨圖層打擊</DMSE.Missile.Stat.NoTerminalGuidance>
+  <!-- EN: Loiter flight control: waits up to {0} before falling back -->
   <DMSE.Missile.Stat.Loiter>盤旋飛控：找不到目標時可盤旋等待 {0}，之後才回退慣性落點</DMSE.Missile.Stat.Loiter>
+  <!-- EN: Target is beyond missile range ({0} tiles). -->
   <DMSE.MissileLauncher.OutOfRange>目標超出導彈射程（{0} 格）。</DMSE.MissileLauncher.OutOfRange>
+  <!-- EN: {0} / {1} tiles -->
   <DMSE.MissileLauncher.RangeLabel>{0} / {1} 格</DMSE.MissileLauncher.RangeLabel>
+  <!-- EN: No target at this location: the missile will be wasted -->
   <DMSE.MissileLauncher.NoTargetHere>此處沒有目標，導彈將會落空</DMSE.MissileLauncher.NoTargetHere>
+  <!-- EN: Striking across orbital layers requires a guided missile. Inertial guidance and unguided munitions cannot. -->
   <DMSE.Missile.CrossLayerNeedsGuidance>跨圖層打擊需要具導引能力的導彈；慣性制導與無導引彈藥無法做到。</DMSE.Missile.CrossLayerNeedsGuidance>
+  <!-- EN: Warhead -->
   <DMSE.Missile.Cat.Warhead>彈頭</DMSE.Missile.Cat.Warhead>
+  <!-- EN: Guidance -->
   <DMSE.Missile.Cat.Guidance>導引</DMSE.Missile.Cat.Guidance>
+  <!-- EN: Propulsion -->
   <DMSE.Missile.Cat.Propulsion>推進／射程</DMSE.Missile.Cat.Propulsion>
+  <!-- EN: Payload -->
   <DMSE.Missile.Cat.Payload>特殊酬載</DMSE.Missile.Cat.Payload>
+  <!-- EN: Body: {0}\nWarhead: {1}\nBlast: {2} / {3} dmg -->
   <DMSE.Missile.Inspect>彈體：{0}\n彈頭：{1}\n爆炸：半徑 {2} / 傷害 {3}</DMSE.Missile.Inspect>
+  <!-- EN: Needs (for assembly): {0} -->
   <DMSE.Missile.NeedResources>裝配所需：{0}</DMSE.Missile.NeedResources>
+  <!-- EN: Resources ready: confirm to begin assembly -->
   <DMSE.Missile.ReadyToAssemble>資源已備齊，確認後開始裝配</DMSE.Missile.ReadyToAssemble>
+  <!-- EN: No resources available to assemble -->
   <DMSE.Missile.NoResources>沒有可用於裝配的資源</DMSE.Missile.NoResources>
+  <!-- EN: Editing missile 1 of {0} in rack -->
   <DMSE.Missile.EditingSlot>正在編輯架上第 1 枚（共 {0} 枚）</DMSE.Missile.EditingSlot>
+  <!-- EN: Queue for assembly -->
   <DMSE.Missile.ConfirmAssembly>加入裝配佇列</DMSE.Missile.ConfirmAssembly>
+  <!-- EN: Assembly queued: colonists will begin shortly -->
   <DMSE.Missile.AssemblyQueued>已加入佇列，殖民者即將開始裝配</DMSE.Missile.AssemblyQueued>
+  <!-- EN: Reset to assembled config -->
   <DMSE.Missile.ResetToCurrent>還原為已裝配設定</DMSE.Missile.ResetToCurrent>
+  <!-- EN: Reloading launch rail: {0} -->
   <DMSE.MissileLauncher.LaunchCooldown>發射軌重新裝填中：{0}</DMSE.MissileLauncher.LaunchCooldown>
+  <!-- EN: No missile loaded -->
   <DMSE.MissileLauncher.Rail.NoMissileLoaded>未裝填導彈</DMSE.MissileLauncher.Rail.NoMissileLoaded>
+  <!-- EN: No missile rack with compatible missiles found -->
   <DMSE.Missile.NoRackAvailable>找不到含相容導彈的儲存架</DMSE.Missile.NoRackAvailable>
+  <!-- EN: Reloading: {0} -->
   <DMSE.MissileLauncher.Interceptor.Reloading>裝填中：{0}</DMSE.MissileLauncher.Interceptor.Reloading>
+  <!-- EN: Ready to fire -->
   <DMSE.MissileLauncher.Interceptor.Ready>可發射</DMSE.MissileLauncher.Interceptor.Ready>
+  <!-- EN: Incoming missile -->
   <DMSE.Missile.IncomingLetter>導彈來襲</DMSE.Missile.IncomingLetter>
+  <!-- EN: A missile launched by {0} is inbound and will strike the colony shortly. -->
   <DMSE.Missile.IncomingLetterDesc>{0} 發射的導彈正在接近，即將打擊殖民地。</DMSE.Missile.IncomingLetterDesc>
+  <!-- EN: Our missile found no target and was wasted. -->
   <DMSE.Missile.Missed>我方導彈找不到目標，已落空。</DMSE.Missile.Missed>
+  <!-- EN: A missile launched by {0} lost its target and missed. -->
   <DMSE.Missile.IncomingMissed>{0} 發射的導彈失去目標，已落空。</DMSE.Missile.IncomingMissed>
 
   <!-- 導引頭選目標 -->
+  <!-- EN: {0} locked onto a target. The missile is coming down. -->
   <DMSE.Missile.SeekerLocked>{0}已鎖定目標，導彈正在落下。</DMSE.Missile.SeekerLocked>
+  <!-- EN: The seeker found no target: the missile is loitering overhead and will wait {0} before falling back to inertial guidance. -->
   <DMSE.Missile.Loitering>導引頭沒有找到目標：飛彈在上空盤旋等待，最多 {0} 後才回退慣性導引。</DMSE.Missile.Loitering>
+  <!-- EN: inertial guidance -->
   <DMSE.Guidance.Inertial>慣性導引</DMSE.Guidance.Inertial>
+  <!-- EN: radio-command guidance -->
   <DMSE.Guidance.RadioCommand>無線電指令導引</DMSE.Guidance.RadioCommand>
+  <!-- EN: {0}: you choose the impact point on arrival -->
   <DMSE.Guidance.ManualTarget>{0}：抵達後由你選擇落點</DMSE.Guidance.ManualTarget>
+  <!-- EN: {0}: locks a target automatically on arrival -->
   <DMSE.Guidance.AutoTarget>{0}：抵達後自動鎖定目標</DMSE.Guidance.AutoTarget>
+  <!-- EN: Designated by: {0}\nExpires in: {1} -->
   <DMSE.LaserMark.Inspect>標定方：{0}\n剩餘時間：{1}</DMSE.LaserMark.Inspect>
+  <!-- EN: Designated by: {0} -->
   <DMSE.LaserMark.InspectPermanent>標定方：{0}</DMSE.LaserMark.InspectPermanent>
+  <!-- EN: Laser designation placed. It expires in {0}. -->
   <DMSE.LaserMark.Placed>已標定雷射引導點，{0}後失效。</DMSE.LaserMark.Placed>
+  <!-- EN: Laser designation placed. -->
   <DMSE.LaserMark.PlacedPermanent>已標定雷射引導點。</DMSE.LaserMark.PlacedPermanent>
+  <!-- EN: Terminal updates remaining: {0} / {1} -->
   <DMSE.Missile.TerminalUpdatesRemaining>剩餘終端更新：{0} / {1}</DMSE.Missile.TerminalUpdatesRemaining>
 
+  <!-- EN: {0} has degraded beyond use and fallen apart. -->
   <DMSE_MissileDecayedAway>{0} 已劣化至無法使用而解體。</DMSE_MissileDecayedAway>
+  <!-- EN: Sheltered: durability stable -->
   <DMSE_MissileDecaySheltered>已庇護：耐久穩定</DMSE_MissileDecaySheltered>
+  <!-- EN: Unsheltered: losing {0} durability/day -->
   <DMSE_MissileDecayUnsheltered>未庇護：每日損失 {0} 點耐久</DMSE_MissileDecayUnsheltered>
 
+  <!-- EN: Stored missiles: {0} / {1} -->
   <DMSE_MissileRackStored>已存放導彈：{0} / {1}</DMSE_MissileRackStored>
 
-  <!-- ITab_MissileInventory（建築庫存分頁） -->
+  <!-- ITab_MissileInventory: building-level missile management tab -->
+  <!-- EN: Inventory -->
   <DMSE.Tab.MissileInventory>庫存</DMSE.Tab.MissileInventory>
+  <!-- EN: Features -->
   <DMSE.MissileInventory.Features>特性</DMSE.MissileInventory.Features>
+  <!-- EN: Blast -->
   <DMSE.MissileInventory.Stat.BlastRadius>爆炸半徑</DMSE.MissileInventory.Stat.BlastRadius>
+  <!-- EN: Damage -->
   <DMSE.MissileInventory.Stat.Damage>傷害</DMSE.MissileInventory.Stat.Damage>
+  <!-- EN: tiles -->
   <DMSE.MissileInventory.Unit.Tiles>格</DMSE.MissileInventory.Unit.Tiles>
+  <!-- EN: Active mechanics for this missile -->
   <DMSE.MissileInventory.Feature.Mechanics>本枚導彈的生效機制</DMSE.MissileInventory.Feature.Mechanics>
+  <!-- EN: Primary warhead damage type: {0}; damage: {1}; blast radius: {2} tiles. Payload capacity N = {3}. -->
   <DMSE.MissileInventory.Feature.Warhead>主要彈頭傷害類型：{0}；傷害值：{1}；爆炸半徑：{2} 格。載荷容量係數 N = {3}。</DMSE.MissileInventory.Feature.Warhead>
+  <!-- EN: Intercept hit chance bonus: {0}% -->
   <DMSE.MissileInventory.Feature.InterceptBonus>攔截命中率加成：{0}%</DMSE.MissileInventory.Feature.InterceptBonus>
+  <!-- EN: Additional intercept rolls per engagement: {0} -->
   <DMSE.MissileInventory.Feature.ExtraRolls>每次攔截額外擲骰：{0} 次</DMSE.MissileInventory.Feature.ExtraRolls>
+  <!-- EN: Warhead range adjustment: {0} tiles -->
   <DMSE.MissileInventory.Feature.RangeOffset>戰鬥部射程修正：{0} 格</DMSE.MissileInventory.Feature.RangeOffset>
+  <!-- EN: Can penetrate thick rock roofs and target objects beneath them. -->
   <DMSE.MissileInventory.Feature.PenetratesRoof>可穿透厚岩頂，命中岩頂下目標。</DMSE.MissileInventory.Feature.PenetratesRoof>
+  <!-- EN: Scatter radius: {0} tiles; terminal position updates: {1}; {2} -->
   <DMSE.MissileInventory.Feature.Guidance>散布半徑：{0} 格；終端位置更新：{1} 次；{2}</DMSE.MissileInventory.Feature.Guidance>
+  <!-- EN: Terminal guidance can update the target position in flight. -->
   <DMSE.MissileInventory.Feature.Guided>具終端導引，可追蹤目標位置。</DMSE.MissileInventory.Feature.Guided>
+  <!-- EN: No terminal guidance; uses the default impact point dispersion. -->
   <DMSE.MissileInventory.Feature.Unguided>不具終端導引，依預設落點散布。</DMSE.MissileInventory.Feature.Unguided>
+  <!-- EN: Effective range: {0} tiles; world speed factor: {1}; fuel: {2}; specific impulse: {3}. -->
   <DMSE.MissileInventory.Feature.Propulsion>有效射程：{0} 格；世界移動速度倍率：{1}；燃料：{2}；比衝：{3}。</DMSE.MissileInventory.Feature.Propulsion>
+  <!-- EN: Payload effect scales with body capacity N = {0}; effective range: {1} tiles. -->
   <DMSE.MissileInventory.Feature.Payload>載荷效果依彈體容量 N = {0} 縮放；有效射程：{1} 格。</DMSE.MissileInventory.Feature.Payload>
+  <!-- EN: Radar cross-section factor: {0}. -->
   <DMSE.MissileInventory.Feature.Signature>雷達截面倍率：{0}。</DMSE.MissileInventory.Feature.Signature>
+  <!-- EN: Jamming strength: {0}%. -->
   <DMSE.MissileInventory.Feature.Jamming>干擾強度：{0}%。</DMSE.MissileInventory.Feature.Jamming>
+  <!-- EN: Chaff / streamer charges: {0}. -->
   <DMSE.MissileInventory.Feature.Chaff>攜帶干擾箔／絲：{0} 次。</DMSE.MissileInventory.Feature.Chaff>
+  <!-- EN: Loaded: {0} / {1} -->
   <DMSE.MissileInventory.Count>已裝填：{0} / {1}</DMSE.MissileInventory.Count>
+  <!-- EN: No missiles loaded. -->
   <DMSE.MissileInventory.Empty>未裝填任何導彈。</DMSE.MissileInventory.Empty>
-  <!-- {0} = 爆炸半徑, {1} = 傷害 -->
+  <!-- {0} = blast radius, {1} = damage -->
+  <!-- EN: Blast {0}  ·  Dmg {1} -->
   <DMSE.MissileInventory.Stats>爆炸 {0}  ·  傷害 {1}</DMSE.MissileInventory.Stats>
+  <!-- EN: assembly pending -->
   <DMSE.MissileInventory.Pending>裝配待定</DMSE.MissileInventory.Pending>
+  <!-- EN: Eject this missile as an item onto the ground next to the rack. It is dropped forbidden so haulers do not carry it straight back. -->
+  <DMSE.MissileInventory.EjectDesc>將這枚導彈彈出為物品，放在儲存架旁的地上。彈出後為禁用狀態，避免搬運工立刻搬回原架。</DMSE.MissileInventory.EjectDesc>
+  <!-- EN: No room next to the rack to eject the missile. -->
+  <DMSE.MissileInventory.EjectFailed>儲存架旁沒有空位，無法彈出導彈。</DMSE.MissileInventory.EjectFailed>
 
-  <!-- 彈道發射井（CompMissileLauncher_Ballistic） -->
+  <!-- ==================== Ballistic silo (CompMissileLauncher_Ballistic) ==================== -->
+  <!-- Gizmo: fire button -->
+  <!-- EN: Fire Ballistic Missile -->
   <DMSE.MissileLauncher.Ballistic.Fire>發射彈道導彈</DMSE.MissileLauncher.Ballistic.Fire>
+  <!-- EN: Launch the assembled ballistic missile at a world-map target. The missile follows a lofted trajectory and is nearly impossible to intercept once launched. -->
   <DMSE.MissileLauncher.Ballistic.FireDesc>向世界地圖目標發射已裝配的彈道導彈。導彈以拋物線彈道飛行，一旦發射幾乎無法被攔截。</DMSE.MissileLauncher.Ballistic.FireDesc>
+  <!-- Disabled reasons -->
+  <!-- EN: Missile not assembled. Set it up in the Assembly tab; colonists will deliver materials and assemble it. -->
   <DMSE.MissileLauncher.Ballistic.NotLoaded>導彈尚未裝配。請在「裝配」分頁設定，殖民者會搬運材料完成裝配。</DMSE.MissileLauncher.Ballistic.NotLoaded>
+  <!-- Inspect strings -->
+  <!-- EN: Ballistic missile: assembled and ready -->
   <DMSE.MissileLauncher.Ballistic.Loaded>彈道導彈：已裝配，可發射</DMSE.MissileLauncher.Ballistic.Loaded>
+  <!-- EN: Ballistic missile loaded: {0} -->
   <DMSE.MissileLauncher.Ballistic.LoadedWith>彈道導彈已裝填：{0}</DMSE.MissileLauncher.Ballistic.LoadedWith>
+  <!-- EN: Ballistic missile: awaiting assembly by colonists -->
   <DMSE.MissileLauncher.Ballistic.AwaitingAssembly>彈道導彈：等待殖民者完成裝配</DMSE.MissileLauncher.Ballistic.AwaitingAssembly>
+  <!-- EN: Ballistic missile silo: unloaded, configure in Assembly tab -->
   <DMSE.MissileLauncher.Ballistic.Unloaded>彈道發射井：未裝配</DMSE.MissileLauncher.Ballistic.Unloaded>
 
-  <!-- 火砲打擊（CompArtilleryStrike） -->
+  <!-- ==================== Artillery strike (CompArtilleryStrike) ==================== -->
+  <!-- Gizmo -->
+  <!-- EN: Fire Artillery -->
   <DMSE.Artillery.Fire>火砲射擊</DMSE.Artillery.Fire>
+  <!-- EN: Select a target on the world map. Keeps firing until stopped. -->
   <DMSE.Artillery.FireDesc>選擇世界地圖上的目標持續砲擊，直到下令停止。</DMSE.Artillery.FireDesc>
+  <!-- EN: Stop Firing -->
   <DMSE.Artillery.Stop>停止射擊</DMSE.Artillery.Stop>
+  <!-- EN: Halt sustained fire. Current status: {0} -->
   <DMSE.Artillery.StopDesc>停止持續射擊。目前狀態：{0}</DMSE.Artillery.StopDesc>
-  <!-- 射擊模式（校射／效力射） -->
+  <!-- Fire mode (ranging / fire for effect) -->
+  <!-- EN: Fire mode: Ranging -->
   <DMSE.Artillery.ModeRanging>射擊模式：校射</DMSE.Artillery.ModeRanging>
+  <!-- EN: Fire mode: Fire for effect -->
   <DMSE.Artillery.ModeEffect>射擊模式：效力射</DMSE.Artillery.ModeEffect>
+  <!-- EN: Switch fire mode. Ranging: scatter around the centre of the target map; every impact is logged as that map's fire-for-effect point. Fire for effect: scatter around the last logged ranging impact on that map, shared by every gun of the same faction shelling it; each shot tightens the scatter by a quarter of the base scatter (per gun, minimum 1 cell) and radar guidance is not used. -->
   <DMSE.Artillery.ModeDesc>切換射擊模式。校射：以目標地圖中心為散佈中心，每個落點都會登錄成該地圖的效力射落點。效力射：以該地圖最後一次校射的落點為散佈中心，同陣營對同一地圖的砲共用這個落點；每發再收束基礎散佈的 25%（每門砲各自累計，最低 1 格），且不佔用雷達通道。</DMSE.Artillery.ModeDesc>
+  <!-- EN: Impact point ({0}, {1}), next shot scatters {2} cells -->
   <DMSE.Artillery.EffectPoint>落點 ({0}, {1})，下一發散佈 {2} 格</DMSE.Artillery.EffectPoint>
+  <!-- Disabled / error reasons -->
+  <!-- EN: Target is too close: minimum range is {0} cells. -->
   <DMSE.Artillery.TooClose>目標距離太近，最小射程為 {0} 格。</DMSE.Artillery.TooClose>
+  <!-- EN: No fire control radar with a free guidance channel available. -->
   <DMSE.Artillery.NoFireControl>沒有具備空閒引導通道的火控雷達。</DMSE.Artillery.NoFireControl>
+  <!-- EN: No shell loaded: sustained fire halted. -->
   <DMSE.Artillery.NoAmmo>未裝填砲彈，持續射擊已停止。</DMSE.Artillery.NoAmmo>
+  <!-- EN: Artillery shells are unguided and cannot strike across orbital layers. -->
   <DMSE.Artillery.CrossLayer>砲彈沒有導引能力，無法跨圖層打擊。</DMSE.Artillery.CrossLayer>
+  <!-- EN: The artillery salvo found no target and was wasted. -->
   <DMSE.Artillery.Missed>砲擊找不到目標，已落空。</DMSE.Artillery.Missed>
+  <!-- EN: Barrel worn out: sustained fire halted. Replace the reinforced barrel. -->
   <DMSE.Artillery.NoBarrel>砲管已耗損，持續射擊已停止，請更換強化砲管。</DMSE.Artillery.NoBarrel>
+  <!-- EN: Cannot shell your own map tile. -->
   <DMSE.Artillery.TargetIsHome>不能砲擊自己所在的地塊。</DMSE.Artillery.TargetIsHome>
+  <!-- EN: Target is beyond gun range ({0} tiles). -->
   <DMSE.Artillery.OutOfRange>目標超出射程（{0} 格）。</DMSE.Artillery.OutOfRange>
+  <!-- EN: The target map is not loaded. Artillery can only shell a map that is currently active. -->
   <DMSE.Artillery.MapNotSpawned>目標地圖尚未載入，只能砲擊已生成的地圖。</DMSE.Artillery.MapNotSpawned>
+  <!-- EN: Needs a gunner: right-click the mortar and order a pawn to man it; the gunner loads shells automatically. -->
   <DMSE.Artillery.NoCrew>需要砲手操作：右鍵選擇「操作」指派人員，砲手會自動裝填砲彈。</DMSE.Artillery.NoCrew>
+  <!-- EN: No shell loaded: have a gunner load a mortar shell before firing. -->
   <DMSE.Artillery.NoLoadedShell>尚未裝填砲彈：先讓砲手裝填迫擊砲彈再開火。</DMSE.Artillery.NoLoadedShell>
+  <!-- EN: Waiting for the gunner to reload: the mission is paused. -->
   <DMSE.Artillery.WaitingForShell>等待砲手補彈，射擊任務暫停中。</DMSE.Artillery.WaitingForShell>
+  <!-- EN: No ranging impact has been logged on this map: fire a ranging shot first. -->
   <DMSE.Artillery.NoRegistration>這張地圖還沒有校射落點，無法效力射；請先以校射模式打一發。</DMSE.Artillery.NoRegistration>
+  <!-- EN: Device is inactive (no power, broken down, or switched off). -->
   <DMSE.BVR.DeviceInactive>裝置不可用（無電力、損壞或已關閉）。</DMSE.BVR.DeviceInactive>
-  <!-- 狀態字串（用於 StopDesc） -->
+  <!-- State strings (used in StopDesc) -->
+  <!-- EN: reloading, {0} remaining -->
   <DMSE.Artillery.StateCooldown>裝填冷卻中，剩餘 {0}</DMSE.Artillery.StateCooldown>
+  <!-- EN: aiming ({0}%) -->
   <DMSE.Artillery.StateAiming>瞄準中（{0}%）</DMSE.Artillery.StateAiming>
+  <!-- EN: ready to fire -->
   <DMSE.Artillery.StateReady>可發射</DMSE.Artillery.StateReady>
+  <!-- Inspect strings -->
+  <!-- EN: Artillery: ready to fire -->
   <DMSE.Artillery.Ready>火砲：可發射</DMSE.Artillery.Ready>
+  <!-- EN: Radar guidance: available (scatter {0} cells) -->
   <DMSE.Artillery.GuidanceOnline>雷達導引：可用（散佈 {0} 格）</DMSE.Artillery.GuidanceOnline>
+  <!-- EN: Radar guidance: no free fire-control channel (unguided, scatter {0} cells) -->
   <DMSE.Artillery.GuidanceOffline>雷達導引：無導引（散佈 {0} 格）</DMSE.Artillery.GuidanceOffline>
 
   <!-- PlaceWorker -->
+  <!-- EN: Too close to {0} (same placement layer). -->
   <DMSE.PlaceWorker.TooCloseSameLayer>與 {0} 太近。</DMSE.PlaceWorker.TooCloseSameLayer>
 
 

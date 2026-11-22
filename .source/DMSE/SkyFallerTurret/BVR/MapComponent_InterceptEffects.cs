@@ -7,7 +7,7 @@ namespace DMSE
 {
     /// <summary>
     /// 地圖特效類：導彈/空投攔截成功時，在來襲航線上的爆心（可在地圖外）生成空爆特效與音效
-    /// （docs/攔截殘骸特效_實作與技術美術計畫.md §5）。爆心由 <see cref="InterceptEventData"/> 決定：
+    /// （docs/_archive/implemented/攔截殘骸特效_實作與技術美術計畫.md §5）。爆心由 <see cref="InterceptEventData"/> 決定：
     /// 末端在 CIWS 掃射點上空，中過程在入場邊緣外。遠距末端攔截（<see cref="InterceptEventData.remote"/>）的爆心看不見：
     /// 不畫爆炸，只丟會飛進畫面的殘骸，進入畫面時淡入。
     ///

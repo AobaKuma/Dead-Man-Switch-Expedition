@@ -28,7 +28,7 @@ namespace DMSE
     }
 
     /// <summary>
-    /// 攔截殘骸的幾何與運動學（docs/攔截殘骸特效_實作與技術美術計畫.md §3–§4）。純數學，不碰繪製，供 DMSE.BVRTests 驗證。
+    /// 攔截殘骸的幾何與運動學（docs/_archive/implemented/攔截殘骸特效_實作與技術美術計畫.md §3–§4）。純數學，不碰繪製。
     /// 方位慣例同 <see cref="MissileMapEntryUtility"/>：0 = 北、順時針，heading 是「從哪裡來」，前進方向 = -HeadingVector(heading)。
     /// 用到 <see cref="Rand"/> 的函式由呼叫端負責 PushState（純視覺，不可擾動遊戲亂數序列）。
     /// </summary>

@@ -1,71 +1,138 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
   <!-- 導彈組裝台與裝配方案（docs/導彈組裝台與裝配方案_實作計畫.md） -->
+  <!-- EN: {0} "{1}" -->
   <DMSE.Missile.DesignNameLabel>{0}「{1}」</DMSE.Missile.DesignNameLabel>
+  <!-- EN: Configure assembly -->
   <DMSE.Bench.Open>裝配設定</DMSE.Bench.Open>
+  <!-- EN: Choose a missile body and its parts, name the design and place an order. Colonists bring the materials and assemble the missiles here. -->
   <DMSE.Bench.OpenDesc>選擇彈體與部件、命名設計並下單。小人會把材料搬來，在這裡組裝導彈。</DMSE.Bench.OpenDesc>
+  <!-- EN: Cancel order -->
   <DMSE.Bench.CancelOrder>取消訂單</DMSE.Bench.CancelOrder>
+  <!-- EN: Cancel the current order. Materials already delivered are returned next to the bench. -->
   <DMSE.Bench.CancelOrderDesc>取消目前的訂單。已送達的材料會全數退回台旁。</DMSE.Bench.CancelOrderDesc>
+  <!-- EN: Cancel this order? Materials already delivered will be returned next to the bench. -->
   <DMSE.Bench.CancelOrderConfirm>確定取消這張訂單？已送達的材料會全數退回台旁。</DMSE.Bench.CancelOrderConfirm>
+  <!-- EN: Missile order finished: {0}. -->
   <DMSE.Bench.OrderDone>導彈訂單完成：{0}。</DMSE.Bench.OrderDone>
+  <!-- EN: Output rack full: move finished missiles off the bench. -->
   <DMSE.Bench.OutputFull>出廠暫存已滿：請先搬走台上的成品。</DMSE.Bench.OutputFull>
+  <!-- EN: Order: {0} ({1} left) -->
   <DMSE.Bench.InspectOrder>訂單：{0}（剩 {1} 枚）</DMSE.Bench.InspectOrder>
+  <!-- EN: Assembly progress: {0} -->
   <DMSE.Bench.InspectProgress>施工進度：{0}</DMSE.Bench.InspectProgress>
+  <!-- EN: This missile body cannot be built at an assembly bench. -->
   <DMSE.Bench.NotProducible>這種彈體無法在組裝台生產。</DMSE.Bench.NotProducible>
+  <!-- EN: Requires research: {0} -->
   <DMSE.Bench.NeedsResearch>需要研究：{0}</DMSE.Bench.NeedsResearch>
+  <!-- EN: Choose a missile body on the left to start a design. -->
   <DMSE.Bench.EmptyHint>從左側選擇彈體開始設計。</DMSE.Bench.EmptyHint>
+  <!-- EN: Load design -->
   <DMSE.Bench.LoadDesign>載入方案</DMSE.Bench.LoadDesign>
+  <!-- EN: Save design -->
   <DMSE.Bench.SaveDesign>保存方案</DMSE.Bench.SaveDesign>
+  <!-- EN: Order in progress. Cancel the order to change the design. -->
   <DMSE.Bench.LockedWhileOrdered>訂單進行中，取消訂單後才能修改。</DMSE.Bench.LockedWhileOrdered>
+  <!-- EN: If equipped: -->
   <DMSE.Bench.IfEquipped>換上後：</DMSE.Bench.IfEquipped>
+  <!-- EN: Name suggestions -->
   <DMSE.Bench.NameCandidates>名稱候選</DMSE.Bench.NameCandidates>
+  <!-- EN: Strike -->
   <DMSE.Bench.Group.Strike>打擊</DMSE.Bench.Group.Strike>
+  <!-- EN: Guidance -->
   <DMSE.Bench.Group.Guidance>導引</DMSE.Bench.Group.Guidance>
+  <!-- EN: Survivability -->
   <DMSE.Bench.Group.Survival>生存</DMSE.Bench.Group.Survival>
+  <!-- EN: Blast radius -->
   <DMSE.Bench.Stat.Radius>爆炸半徑</DMSE.Bench.Stat.Radius>
+  <!-- EN: Targeting -->
   <DMSE.Bench.Stat.Guidance>導引方式</DMSE.Bench.Stat.Guidance>
+  <!-- EN: Scatter -->
   <DMSE.Bench.Stat.Scatter>散布</DMSE.Bench.Stat.Scatter>
+  <!-- EN: Damage type -->
   <DMSE.Bench.Stat.DamageType>傷害類型</DMSE.Bench.Stat.DamageType>
+  <!-- EN: Penetrates thick roof -->
   <DMSE.Bench.Stat.ThickRoof>穿透厚岩頂</DMSE.Bench.Stat.ThickRoof>
+  <!-- EN: World speed -->
   <DMSE.Bench.Stat.Speed>世界航速</DMSE.Bench.Stat.Speed>
+  <!-- EN: Terminal updates -->
   <DMSE.Bench.Stat.TerminalUpdates>終端更新次數</DMSE.Bench.Stat.TerminalUpdates>
+  <!-- EN: Fire-control channels -->
   <DMSE.Bench.Stat.Channels>火控通道</DMSE.Bench.Stat.Channels>
+  <!-- EN: Loiter time -->
   <DMSE.Bench.Stat.Loiter>盤旋時間</DMSE.Bench.Stat.Loiter>
+  <!-- EN: Radar signature -->
   <DMSE.Bench.Stat.Signature>雷達截面</DMSE.Bench.Stat.Signature>
+  <!-- EN: Chaff charges -->
   <DMSE.Bench.Stat.Chaff>干擾次數</DMSE.Bench.Stat.Chaff>
+  <!-- EN: Jamming strength -->
   <DMSE.Bench.Stat.Jam>干擾強度</DMSE.Bench.Stat.Jam>
+  <!-- EN: No materials needed -->
   <DMSE.Bench.NoMaterials>不需要材料</DMSE.Bench.NoMaterials>
+  <!-- EN: short {0} -->
   <DMSE.Bench.Short>缺 {0}</DMSE.Bench.Short>
+  <!-- EN: Keep on bench -->
   <DMSE.Bench.Output.KeepOnBench>留在台上</DMSE.Bench.Output.KeepOnBench>
+  <!-- EN: Finished missiles wait on the bench. Launchers that accept them load straight from it. -->
   <DMSE.Bench.Output.KeepOnBenchDesc>成品留在台上，接受它的發射平台會直接從台上裝填。</DMSE.Bench.Output.KeepOnBenchDesc>
+  <!-- EN: Finished missiles are taken off the bench and hauled to the best storage. -->
   <DMSE.Bench.Output.SendToStorageDesc>成品出廠後會被取下並搬到最合適的倉儲。</DMSE.Bench.Output.SendToStorageDesc>
+  <!-- EN: Missile {0} of {1} · {2} -->
   <DMSE.Bench.Progress>第 {0} / {1} 枚 · {2}</DMSE.Bench.Progress>
+  <!-- EN: gathering materials -->
   <DMSE.Bench.State.Collecting>正在蒐集材料</DMSE.Bench.State.Collecting>
+  <!-- EN: ready to assemble -->
   <DMSE.Bench.State.Ready>待施工</DMSE.Bench.State.Ready>
+  <!-- EN: assembling -->
   <DMSE.Bench.State.Working>施工中</DMSE.Bench.State.Working>
+  <!-- EN: waiting for space on the bench -->
   <DMSE.Bench.State.OutputBlocked>等待台上騰出空位</DMSE.Bench.State.OutputBlocked>
+  <!-- EN: Place order -->
   <DMSE.Bench.PlaceOrder>下單</DMSE.Bench.PlaceOrder>
+  <!-- EN: Complete now -->
   <DMSE.Bench.InstantComplete>立即完成</DMSE.Bench.InstantComplete>
+  <!-- EN: Choose a missile body. -->
   <DMSE.Bench.Block.NoBody>請選擇彈體。</DMSE.Bench.Block.NoBody>
+  <!-- EN: The design name contains unsupported characters. -->
   <DMSE.Bench.Block.BadName>設計名稱含有不支援的字元。</DMSE.Bench.Block.BadName>
+  <!-- EN: Not enough {0} yet (short {1}); colonists will wait for it. -->
   <DMSE.Bench.Warn.Short>{0} 目前不足（缺 {1}），小人會等到有料再做。</DMSE.Bench.Warn.Short>
+  <!-- EN: No launcher on this map accepts this missile yet. -->
   <DMSE.Bench.Warn.NoLauncher>這張地圖上還沒有接受此導彈的發射平台。</DMSE.Bench.Warn.NoLauncher>
+  <!-- EN: {0} missile(s), about {1} h of work -->
   <DMSE.Bench.Summary>共 {0} 枚，約 {1} 小時工時</DMSE.Bench.Summary>
+  <!-- EN: Lock or unlock the design's name. When locked, the name will not regenerate when parts are changed. -->
   <DMSE.Bench.LockNameButtonDesc>鎖定或解鎖設計名稱。鎖定時，設計名稱不會因為更換部件而自動產生。</DMSE.Bench.LockNameButtonDesc>
+  <!-- EN: Design name lock is on. The name will not regenerate when changing parts. -->
   <DMSE.Bench.LockNameOn>設計名稱鎖定。設計名稱不會因為更換部件而自動產生。</DMSE.Bench.LockNameOn>
+  <!-- EN: Design name lock is off. The name will regenerate when changing parts. -->
   <DMSE.Bench.LockNameOff>設計名稱解鎖。設計名稱會因為更換部件而自動產生。</DMSE.Bench.LockNameOff>
+  <!-- EN: Per missile: {0}\nThis order: {1}\nIn storage: {2} -->
   <DMSE.Bench.MaterialTip>每枚：{0}\n本次訂單：{1}\n倉庫現有：{2}</DMSE.Bench.MaterialTip>
+  <!-- EN: About {0} h with your fastest available crafter (work speed {1}). -->
   <DMSE.Bench.WorkTimeTip>以目前最快可用的殖民者估算約 {0} 小時（工作速度 {1}）。</DMSE.Bench.WorkTimeTip>
+  <!-- EN: Loitering munitions -->
   <DMSE.Bench.Size.Loitering>巡飛彈</DMSE.Bench.Size.Loitering>
+  <!-- EN: Light missiles -->
   <DMSE.Bench.Size.Light>輕型導彈</DMSE.Bench.Size.Light>
+  <!-- EN: Medium missiles -->
   <DMSE.Bench.Size.Medium>中型導彈</DMSE.Bench.Size.Medium>
+  <!-- EN: Ballistic missiles -->
   <DMSE.Bench.Size.Ballistic>彈道導彈</DMSE.Bench.Size.Ballistic>
+  <!-- EN: Missile designs -->
   <DMSE.Blueprint.Title>裝配方案</DMSE.Blueprint.Title>
+  <!-- EN: No saved designs yet. Use "Save design" at an assembly bench. -->
   <DMSE.Blueprint.Empty>還沒有方案。可在組裝台按「保存方案」。</DMSE.Blueprint.Empty>
+  <!-- EN: Open folder -->
   <DMSE.Blueprint.OpenFolder>打開資料夾</DMSE.Blueprint.OpenFolder>
+  <!-- EN: A design named "{0}" already exists. Overwrite it? -->
   <DMSE.Blueprint.OverwriteConfirm>已有名為「{0}」的方案，要覆蓋嗎？</DMSE.Blueprint.OverwriteConfirm>
+  <!-- EN: Design saved: {0} -->
   <DMSE.Blueprint.Saved>方案已儲存：{0}</DMSE.Blueprint.Saved>
+  <!-- EN: Could not save the design: {0} -->
   <DMSE.Blueprint.SaveFailed>無法儲存方案：{0}</DMSE.Blueprint.SaveFailed>
+  <!-- EN: Missing definition: {0} -->
   <DMSE.Blueprint.MissingDef>缺少定義：{0}</DMSE.Blueprint.MissingDef>
+  <!-- EN: Part does not fit this body: {0} -->
   <DMSE.Blueprint.Incompatible>部件不適用此彈體：{0}</DMSE.Blueprint.Incompatible>
 </LanguageData>

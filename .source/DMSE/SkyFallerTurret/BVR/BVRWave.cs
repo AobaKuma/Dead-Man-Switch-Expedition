@@ -180,7 +180,7 @@ namespace DMSE
         /// <summary>
         /// 末端攔截成功且擲骰通過時呼叫：殺死內部所有 pawn（玩家 pawn 改為失蹤，見 <see cref="HandleInterceptedPawns"/>），
         /// 屍體以一個殘骸空投（碎片）落下，其餘內容物隨艙體清除。
-        /// <paramref name="debrisCell"/> 是攔截特效預測的艙體殘骸落點（docs/攔截殘骸特效_實作與技術美術計畫.md §1-4）：
+        /// <paramref name="debrisCell"/> 是攔截特效預測的艙體殘骸落點（docs/_archive/implemented/攔截殘骸特效_實作與技術美術計畫.md §1-4）：
         /// 屍體空投落在它附近可空投的格；沒有預測或找不到格時落在原落點。
         /// </summary>
         public void SpawnDebris(Map map) => SpawnDebris(map, IntVec3.Invalid);

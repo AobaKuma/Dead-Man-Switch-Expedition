@@ -7,7 +7,7 @@ namespace DMSE
     public enum InterceptPayloadKind { Other, Missile, DropPod }
 
     /// <summary>
-    /// 一次攔截成功的表現資料（docs/攔截殘骸特效_實作與技術美術計畫.md §2–§3）。
+    /// 一次攔截成功的表現資料（docs/_archive/implemented/攔截殘骸特效_實作與技術美術計畫.md §2–§3）。
     /// 必須在目標被 RemoveTarget / Discard / SpawnDebris 清掉之前以 <see cref="From"/> 擷取，因為要讀來襲物的 def、方位與速度。
     /// </summary>
     public struct InterceptEventData

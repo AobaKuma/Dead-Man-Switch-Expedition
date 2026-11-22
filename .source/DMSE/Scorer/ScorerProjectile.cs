@@ -27,27 +27,6 @@ namespace DMSE
         public float EffectSpeed(float evaluate) => def.skyfaller.speedCurve.Evaluate(evaluate);
         public float EffectEvaluate(int ticksSinceSpawn, int ignitionDelayTicks) => (float)ticksSinceSpawn / (float)(ticksToDiscard + ignitionDelayTicks);
 
-        /// <summary>
-        /// 依目前時間軸計算 <see cref="DrawAt"/> 會得到的彈體位置與朝向（不依賴是否已繪製）。
-        /// 供新舊軌跡比對（<see cref="MissileFlightTrace"/>）使用。
-        /// </summary>
-        public void ComputeLaunchPose(out Vector3 pos, out float rotation)
-        {
-            pos = DrawPos;
-            GetDrawPositionAndRotation(ref pos, out float extraRotation);
-            rotation = GetThingForGraphic().Rotation.AsAngle + extraRotation;
-        }
-
-        protected override void Tick()
-        {
-            base.Tick();
-            if (MissileFlightTrace.Active)
-            {
-                ComputeLaunchPose(out Vector3 pos, out float rot);
-                MissileFlightTrace.RecordTick(this, ticksToImpact, pos, rot);
-            }
-        }
-
         protected override void LeaveMap()
         {
             base.LeaveMap();

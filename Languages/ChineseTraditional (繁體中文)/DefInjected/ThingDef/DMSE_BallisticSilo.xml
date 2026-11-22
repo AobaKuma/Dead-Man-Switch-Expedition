@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: strategic missile silo -->
+  <DMSE_Building_BallisticSilo.label>戰略導彈發射井</DMSE_Building_BallisticSilo.label>
+  <!-- EN: A semi-buried strategic missile silo with heavy concrete hatches and blast suppression, so a launch does not harm its surroundings. It is very expensive and very tough, and holds a single missile.\n\nMissiles are assembled in the silo from raw materials, then launched at a target on the world map.\n\nCannot be built on a gravship. -->
+  <DMSE_Building_BallisticSilo.description>一座半埋入地下的戰略導彈發射井，配有厚重的混凝土艙蓋與爆震抑制結構，發射時不會波及周圍。造價極高、非常堅固，只能容納一枚導彈。\n\n導彈直接在發射井內以原料裝配，再對世界地圖上的目標發射。\n\n無法建造在重力船上。</DMSE_Building_BallisticSilo.description>
+  
+</LanguageData>

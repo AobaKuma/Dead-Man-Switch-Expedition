@@ -5,7 +5,7 @@ using Verse;
 namespace DMSE
 {
     /// <summary>
-    /// 讓攔截特效畫在戰爭迷霧之上（docs/攔截殘骸特效_實作與技術美術計畫.md §9 P6，使用者 2026-10-26 決定）。
+    /// 讓攔截特效畫在戰爭迷霧之上（docs/_archive/implemented/攔截殘骸特效_實作與技術美術計畫.md §9 P6，使用者 2026-10-26 決定）。
     /// 掛在 FleckDef 上：啟動時把它的材質 render queue 設成「迷霧 + <see cref="renderQueueOffset"/>」。
     ///
     /// 實測（rw17，驗收 I5）：Transparent 2900、Mote 3000、光照遮罩 3100、MoteGlow 3151、迷霧 3175、地圖邊緣遮罩 4000。

@@ -4,7 +4,7 @@ using Verse;
 namespace DMSE
 {
     /// <summary>
-    /// 一種來襲物被攔截後的殘骸外觀與數量（docs/攔截殘骸特效_實作與技術美術計畫.md §6）。
+    /// 一種來襲物被攔截後的殘骸外觀與數量（docs/_archive/implemented/攔截殘骸特效_實作與技術美術計畫.md §6）。
     /// 來襲物 def 可用 <see cref="BVRTargetProps.debrisProfile"/> 指定；沒有指定時導彈用 <c>DMSE_InterceptDebris_Missile</c>，
     /// 空投艙用 <c>DMSE_InterceptDebris_DropPod</c>。彈道物理仍是 <see cref="InterceptDebrisPhysics.Default"/>（P6 再決定是否分 profile）。
     /// </summary>

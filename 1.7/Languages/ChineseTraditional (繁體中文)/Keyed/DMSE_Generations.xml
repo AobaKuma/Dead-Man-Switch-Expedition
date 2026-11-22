@@ -1,16 +1,29 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
 
+  <!-- 三代裝備體系：單兵防空導彈發射具（DMSE.CompManPortableSAM） -->
+  <!-- EN: fire SAM -->
   <DMSE.ManPortableSAM.Fire>發射防空導彈</DMSE.ManPortableSAM.Fire>
+  <!-- EN: Lock onto an incoming threat that your radar network is tracking on this map and fire a light surface-to-air missile at it. The wielder stands still while locking on; no fire-control channel is used.\n\nMissiles loaded: {0} -->
   <DMSE.ManPortableSAM.FireDesc>鎖定雷達網正在本地圖追蹤的來襲威脅，並對它發射一枚輕型防空導彈。鎖定期間裝備者會站在原地；不占用火控通道。\n\n已裝填導彈：{0}</DMSE.ManPortableSAM.FireDesc>
+  <!-- EN: No radar-tracked incoming threat in range. -->
   <DMSE.ManPortableSAM.NoTargets>射程內沒有雷達正在追蹤的來襲威脅。</DMSE.ManPortableSAM.NoTargets>
+  <!-- EN: The wielder cannot fire right now. -->
   <DMSE.ManPortableSAM.NotReady>裝備者目前無法發射。</DMSE.ManPortableSAM.NotReady>
+  <!-- EN: The target is gone or already engaged by another interceptor. -->
   <DMSE.ManPortableSAM.TargetLost>目標已消失或已被其他攔截彈接戰。</DMSE.ManPortableSAM.TargetLost>
+  <!-- EN: {0} (arrives in {1}, hit chance {2}) -->
   <DMSE.ManPortableSAM.TargetOption>{0}（{1}後抵達，命中率 {2}）</DMSE.ManPortableSAM.TargetOption>
+  <!-- EN: The next round loaded is a {0}, which cannot intercept. Fire it at a ground target first. -->
   <DMSE.ManPortableSAM.CannotIntercept>下一發裝填的是{0}，無法用於攔截。請先對地面目標發射。</DMSE.ManPortableSAM.CannotIntercept>
+  <!-- EN: Engaging: {0} -->
   <DMSE.TurretGun.Engaging>交戰中：{0}</DMSE.TurretGun.Engaging>
+  <!-- EN: Target is too close: minimum range is {0} cells. -->
   <DMSE.TurretGun.TooClose>目標太近，最小射程為 {0} 格。</DMSE.TurretGun.TooClose>
+  <!-- EN: Target is out of range: maximum range is {0} cells. -->
   <DMSE.TurretGun.OutOfRange>目標超出射程，最大射程為 {0} 格。</DMSE.TurretGun.OutOfRange>
+  <!-- EN: Range: {0} to {1} cells. Targets inside the minimum range cannot be engaged. -->
   <DMSE.TurretGun.RangeBand>射程：{0} 至 {1} 格，最小射程內的目標無法攻擊。</DMSE.TurretGun.RangeBand>
+  <!-- EN: The gun is busy shelling a world map target. -->
   <DMSE.TurretGun.BarrelBusy>火砲正在砲擊世界地圖目標。</DMSE.TurretGun.BarrelBusy>
 </LanguageData>

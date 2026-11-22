@@ -1,14 +1,15 @@
 # The Dead Man's Switch - Expedition (DMSE)
 
 > 開發文檔：https://docs.qq.com/doc/DRnhtVGJYVU5SUndD
+> 文件索引（現行與歸檔文件皆為第一版，2026-11-20 定稿）：[docs/README.md](docs/README.md)
 > 遠程作戰系統技術說明：[docs/BVR_Missile_系統流程.md](docs/BVR_Missile_系統流程.md)
-> 導彈與雷達科技重整執行狀態：[docs/導彈與雷達科技重整_執行計畫.md](docs/導彈與雷達科技重整_執行計畫.md)
-> 天體轉移飛行設計與實作進度：[docs/CelestialTransfer_轉移飛行重構.md](docs/CelestialTransfer_轉移飛行重構.md)
-> 三代裝備體系（老資歷／中登／小登）設計與實作計畫：[docs/三代裝備體系_實作計畫.md](docs/三代裝備體系_實作計畫.md)
+> 導彈與雷達科技重整執行狀態（已歸檔）：[docs/_archive/implemented/導彈與雷達科技重整_執行計畫.md](docs/_archive/implemented/導彈與雷達科技重整_執行計畫.md)
+> 天體轉移飛行設計與實作進度（已歸檔）：[docs/_archive/implemented/CelestialTransfer_轉移飛行重構.md](docs/_archive/implemented/CelestialTransfer_轉移飛行重構.md)
+> 三代裝備體系（老資歷／中登／小登）設計與實作計畫（已歸檔）：[docs/_archive/implemented/三代裝備體系_實作計畫.md](docs/_archive/implemented/三代裝備體系_實作計畫.md)
 > 三代裝備物品介紹文本：[docs/三代裝備體系_物品介紹.md](docs/三代裝備體系_物品介紹.md)
 > 反砲兵雷達與反砲兵作戰實作計畫（提案）：[docs/反砲兵雷達_實作計畫.md](docs/反砲兵雷達_實作計畫.md)
 > ECM／ECCM／EMCON（干擾、反干擾、發射管制）實作計畫（部分實作，ECCM／HoJ 未做）：[docs/ECM與ECCM_實作計畫.md](docs/ECM與ECCM_實作計畫.md)
-> 電子戰三類建築（戰情終端／干擾機／長程預警雷達）規格（已實作）：[docs/電子戰建築_實作計畫.md](docs/電子戰建築_實作計畫.md)
+> 電子戰三類建築（戰情終端／干擾機／長程預警雷達）規格（已歸檔）：[docs/_archive/implemented/電子戰建築_實作計畫.md](docs/_archive/implemented/電子戰建築_實作計畫.md)
 
 《Dead Man's Switch》的 Odyssey 擴充。以太空 / 軌道 / 遠程作戰為主題，在 DMS Core 的基礎上加入超視距攔截、導彈裝配與發射、天體轉移飛行、真空製造與軌道平台等內容。
 
@@ -84,7 +85,7 @@ _Dead-Man-Switch-Expedition/
 
 流程：**偵測 → 波次合併 → 火控鎖定 → SAM 中過程攔截 → CIWS 末端連射 → 未攔截者落地**。攔截判定考慮隱身 / 反隱身、目標速度、攔截彈彈體係數（`interceptHitFactor`：萊茵女兒 0.6、刺針 0.85、麻雀 1.25）、戰鬥部加成（連續桿、空爆）。防禦為陣營相對：玩家攻擊有雷達的敵方基地時，己方導彈同樣會被攔截。
 
-**三代裝備體系**（老資歷／中登／小登）：裝備依人力、電力、通道三條軸分成三代，名冊、數值、研究與驗收見 [三代裝備體系_實作計畫](docs/三代裝備體系_實作計畫.md)，資訊卡文本見 [物品介紹](docs/三代裝備體系_物品介紹.md)。
+**三代裝備體系**（老資歷／中登／小登）：裝備依人力、電力、通道三條軸分成三代，名冊、數值、研究與驗收見 [三代裝備體系_實作計畫](docs/_archive/implemented/三代裝備體系_實作計畫.md)，資訊卡文本見 [物品介紹](docs/三代裝備體系_物品介紹.md)。
 
 ### 2. 導彈自定義裝配系統
 玩家在導彈物品的 ITab 中選擇部件（戰鬥部 / 導引 / 推進 / 酬載），由小人搬料、施工裝配（Crafting 工種）；彈體由發射平台或物品 def 的 `defaultBody` 固定，物品端不可更換；固定構型的物品（V1、白蟻、萊茵女兒）以 `MissileItemExtension` 宣告彈體，同一條發射軌可裝不同型號。彈道導彈沒有物品型態，所以在**塔式發射架／戰略導彈發射井**的裝配分頁選彈體（老式 V2 / 圓點U / 現役 / 先進民兵三型，共用同一組部件；各彈體有研究門檻，未研究的在選單上顯示為鎖定）。射程由 `燃料 × 比衝` 決定，發射時於世界地圖選靶並強制受射程限制。
@@ -115,7 +116,7 @@ _Dead-Man-Switch-Expedition/
 
 **建造時自帶零件**：**物品型態**的彈體在 `MissileBodyDef.defaultParts` 宣告一組預設零件，新造的導彈物品會直接套用（`MissileConfig.NewWithDefaults()`）；零件材料已併入該物品的 `costList` 與 `MarketValue`。**發射井／發射架建造完成時是空的**（不帶彈體），彈道彈體都在井／塔上裝配、材料依所選零件另計。之後換部件或發射後重新裝填也要另外收費。舊存檔不會白送零件（`CompMissileConfig.defaultsSeeded` 讀檔時視為已播種）。
 
-**導彈組裝台**（`DMSE_MissileAssemblyBench`，2×4，研究「基本導彈工程」）：從零生產可自定義的物品型導彈。按台上的「裝配設定」打開窗口，選彈體與部件、命名設計、選數量與出廠去向（留在台上供發射平台直接裝填／送往倉儲）後下單；小人一次收一枚份的料、施工、出廠一枚，成品出廠即為完成彈。材料與工作量都與「在列印台做預設彈再用 ITab 改裝」相同——組裝台是便利、不是折扣。施工速度＝小人 `GeneralLaborSpeed` × 台的工作速度係數：工具櫃（+6%，最多 2 個）、DMS 機械櫃（+5%，最多 8 個，需電）加速，戶外 ×0.8、溫度不在 9–35°C ×0.7，算式在台的資訊卡上逐條可見。改裝（ITab）也依小人工作速度施工，進度中斷可接續。設計可存成跨存檔的方案檔（`Config/DMSE_MissileDesigns/*.xml`，可直接分享）。命名依彈體各有一套規則：型號代字＋編號（鷹擊-16、沙赫德-143、民兵-4）＋部件詞，改部件只換詞、不換編號。設計與驗收見 [導彈組裝台與裝配方案_實作計畫](docs/導彈組裝台與裝配方案_實作計畫.md)。
+**導彈組裝台**（`DMSE_MissileAssemblyBench`，2×4，研究「基本導彈工程」）：從零生產可自定義的物品型導彈。按台上的「裝配設定」打開窗口，選彈體與部件、命名設計、選數量與出廠去向（留在台上供發射平台直接裝填／送往倉儲）後下單；小人一次收一枚份的料、施工、出廠一枚，成品出廠即為完成彈。材料與工作量都與「在列印台做預設彈再用 ITab 改裝」相同——組裝台是便利、不是折扣。施工速度＝小人 `GeneralLaborSpeed` × 台的工作速度係數：工具櫃（+6%，最多 2 個）、DMS 機械櫃（+5%，最多 8 個，需電）加速，戶外 ×0.8、溫度不在 9–35°C ×0.7，算式在台的資訊卡上逐條可見。改裝（ITab）也依小人工作速度施工，進度中斷可接續。設計可存成跨存檔的方案檔（`Config/DMSE_MissileDesigns/*.xml`，可直接分享）。命名依彈體各有一套規則：型號代字＋編號（鷹擊-16、沙赫德-143、民兵-4）＋部件詞，改部件只換詞、不換編號。設計與驗收見 [導彈組裝台與裝配方案_實作計畫](docs/_archive/implemented/導彈組裝台與裝配方案_實作計畫.md)。
 
 **世界層 P4**：
 - **數據鏈**：同陣營任一節點看到航跡，全陣營都能接戰（不必是目的地節點自己看到）。
@@ -135,19 +136,18 @@ _Dead-Man-Switch-Expedition/
 ```bash
 python .source/Tools/check_missile_content.py .   # 槽位覆蓋、預設零件、建造成本、收納、高度、Class 參照、翻譯、組裝台產品／命名樣板／庇護
 python .source/Tools/check_bvr_world.py .
-dotnet run --project .source/DMSE.BVRTests/DMSE.BVRTests.csproj -c Release --no-restore -p:RimWorldDir=<RimWorld>/
 ```
 
 發射平台共用抽象基類 `CompMissileLauncher`（冷卻、有彈判定）；世界選靶平台再繼承 `CompMissileLauncher_WorldTargeting`，分為 `CompMissileLauncher_Rail`（實體導彈容器）、`CompMissileLauncher_Ballistic`（發射井，就地裝配）、`CompMissileLauncher_Scorer`（CompRefuelable 裝填，1.7 無 Def 使用）。反輻射導引頭會自動鎖定敵方運作中的雷達，與 BVR 構成電子對抗閉環。
 
-世界導彈的偵測與 SAM 中過程攔截現由世界層處理：雷達覆蓋圈 → 火控鎖定 → 實體攔截彈升空 → 世界會合，漏網彈抵達後只交給 CIWS。玩家導彈也會受到未生成地圖的敵方導彈陣地抽象防空攔截。速度與平衡數值集中在 `1.7/Defs/DMSE_BVRWorld.xml`（預設 150 ticks/格）；覆蓋圈預設選取據點時顯示，可用世界 Gizmo 或 Mod 設定改為常駐。空投／舊地圖內波次保留原流程，與世界航跡、火砲共用通道。P0–P3 程式與自動檢查已完成，遊戲內驗收待進行；細節見 [BVR 重構與驗收記錄](docs/BVR_世界層偵測攔截重構.md)。
+世界導彈的偵測與 SAM 中過程攔截現由世界層處理：雷達覆蓋圈 → 火控鎖定 → 實體攔截彈升空 → 世界會合，漏網彈抵達後只交給 CIWS。玩家導彈也會受到未生成地圖的敵方導彈陣地抽象防空攔截。速度與平衡數值集中在 `1.7/Defs/DMSE_BVRWorld.xml`（預設 150 ticks/格）；覆蓋圈預設選取據點時顯示，可用世界 Gizmo 或 Mod 設定改為常駐。空投／舊地圖內波次保留原流程，與世界航跡、火砲共用通道。P0–P3 程式與自動檢查已完成，遊戲內驗收待進行；細節見 [BVR 重構與驗收記錄](docs/_archive/implemented/BVR_世界層偵測攔截重構.md)。
 
 ### 3. 超視距火砲（Artillery）
 `CompArtilleryStrike` 選靶後建立世界航跡，抵達時排程齊射，砲彈以 `Projectile` 從地圖邊緣飛入落點。1.7 已提供實際建築 `DMSE_Turret_Empero`（NK-30「帝王」遠程加農砲，3×3，`1.7/Defs/ThingDefs_Buildings/DMSE_LongRangeArtillery.xml`）：射程 20 tile、限同圖層且非本地圖、**目標地圖必須已載入（spawned）**、無導引散佈 14 格，每發消耗一枚高爆迫擊砲彈（存量 12）。
 
 目標地圖的判定在選靶時（`CompArtilleryStrike.CanTargetTile`，游標與點擊都會顯示 `DMSE.Artillery.MapNotSpawned`）與抵達時（`WorldObject_ArtilleryStrike.Arrived`，`allowGenerateMap: false`）各做一次：砲擊不會為了一個 tile 生成整張地圖，飛行途中地圖被移除就落空。可打的目標是當下存在於 `Current.Game.Maps` 的地圖，實務上就是有我方人員所在、或仍被保留的地圖（例如突擊隊正在攻打、暫時留下的據點），純世界層的未生成據點不行。
 
-開火瞬間若同陣營有支援砲擊引導（`supportsArtilleryGuidance`）的火控雷達空出一條通道，該發散佈縮到 3 格，且**每一發落彈時重新挑目標**（敵方砲塔 → 用電設備 → 人員，`ArtilleryStrikeUtility.FindGuidedTarget`）；沒有通道就照 14 格散佈打目標地圖中心（校射模式）。同一門砲另有減裝藥曲射 verb 打本地圖近距離目標，與世界砲擊共用同一份砲彈；跨圖層（如軌道）一律拒絕。自動驗收見 `.source/DMSE.BVRAcceptance` 的 `Tests_Artillery`（R1–R6）。
+開火瞬間若同陣營有支援砲擊引導（`supportsArtilleryGuidance`）的火控雷達空出一條通道，該發散佈縮到 3 格，且**每一發落彈時重新挑目標**（敵方砲塔 → 用電設備 → 人員，`ArtilleryStrikeUtility.FindGuidedTarget`）；沒有通道就照 14 格散佈打目標地圖中心（校射模式）。同一門砲另有減裝藥曲射 verb 打本地圖近距離目標，與世界砲擊共用同一份砲彈；跨圖層（如軌道）一律拒絕。
 
 每門砲有兩個射擊模式（Gizmo 切換、狀態存檔）：**校射**維持上述行為，散佈中心是目標地圖中心；每一發校射彈的實際落點都會登錄在該地圖上（同陣營覆蓋，`MapComponent_ArtilleryStrikes.RegisterImpact`），雷達導引彈也照樣登錄。**效力射**改以該地圖最後一次校射的落點為散佈中心，同陣營對同一地圖效力射的砲共用這個落點；散佈從 `scatterRadius` 起算、每發再減 25%（最低 1 格，`CompArtilleryStrike.EffectScatterStep`／`EffectScatterFloor`），收束進度每門砲各自累計，停止射擊／換目標／切換模式都重置。效力射優先於雷達導引：效力射不找通道、不佔通道，一律打登錄落點；尚未校射過的地圖在選靶時就回 `DMSE.Artillery.NoRegistration`（射擊中切到效力射則停在待命）。
 
@@ -180,7 +180,7 @@ dotnet run --project .source/DMSE.BVRTests/DMSE.BVRTests.csproj -c Release --no-
 - **砲塔彈藥**：砲塔／終端攔截平台的 `CompRefuelable`（37 mm 砲彈、機砲彈、裝甲砲管…）低於 `turretAmmo.refillBelowPercent` 時，每 `intervalDays` 天在砲塔旁空投一次實體彈藥，落地後守軍走過去用原版 `JobDefOf.Refuel` 裝填（同時最多 `maxHaulers` 人）。**不會**直接把燃料補滿：守軍全滅後彈藥就躺在地上，砲塔打完就是打完（`MapComponent_MissileBase.TickTurretAmmoSupply` / `TickCrewHaul`）。
 
 ### 6. 真空製造與軌道環境
-- **真空密封室**：`MapPortal` 地下密室，可在大氣層內維持真空；搭配真空泵、氧氣蠟燭；廢棄後可回填（`CompLandFillable`），填埋入口沿用原陣營、可拆除或重新開挖。房間地圖由 `GenStep_Prefab.terrain` 鋪滿 `DMSE_VacuumRoomFloor` 基底；沒有地形時直接讀 `topGrid` 的模組（ReGrowth Core、Simple FX: Splashes）會在 `Map.FinalizeInit` NRE，入口每次點擊都多生一張地圖。舊存檔的房間由 `Map.FinalizeInit` prefix 補地形（acceptance `VR1`）。
+- **真空密封室**：`MapPortal` 地下密室，可在大氣層內維持真空；搭配真空泵、氧氣蠟燭；廢棄後可回填（`CompLandFillable`），填埋入口沿用原陣營、可拆除或重新開挖。房間地圖由 `GenStep_Prefab.terrain` 鋪滿 `DMSE_VacuumRoomFloor` 基底；沒有地形時直接讀 `topGrid` 的模組（ReGrowth Core、Simple FX: Splashes）會在 `Map.FinalizeInit` NRE，入口每次點擊都多生一張地圖。舊存檔的房間由 `Map.FinalizeInit` prefix 補地形。
 - **軌道平台地形**（`Terrain_OrbitalPlatform_DMS`）與微重力設施。另有輕型平台（`DMS_LightPlatform`，只承載輕型 / 中型建築）。不需 Orbital Platforms 模組即可在太空虛空上建造（`Patch_OrbitalPlatform.xml`）；Odyssey 分頁的「拆除平台」指令可把 DMS 平台與原版軌道平台、機械體平台拆回虛空並回收材料（`RemovablePlatformExtension`）。
 - **環境限定配方**：潔淨室、微重力、真空（`DMSE_Recipe_*.xml`），對應材料：碳水化合物、鉭鎢合金、石墨烯、氮化鎵。
 - 生產建築：精密製造中心、旋轉鍛造機、石墨烯生物反應器、有機組裝機；電力：石墨烯電池、光伏板。

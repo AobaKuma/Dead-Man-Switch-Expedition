@@ -253,6 +253,8 @@
   <!-- {0} = 爆炸半径, {1} = 伤害 -->
   <DMSE.MissileInventory.Stats>爆炸 {0}  ·  伤害 {1}</DMSE.MissileInventory.Stats>
   <DMSE.MissileInventory.Pending>装配待定</DMSE.MissileInventory.Pending>
+  <DMSE.MissileInventory.EjectDesc>将这枚导弹弹出为物品，放在储存架旁的地上。弹出后为禁用状态，避免搬运工立刻搬回原架。</DMSE.MissileInventory.EjectDesc>
+  <DMSE.MissileInventory.EjectFailed>储存架旁没有空位，无法弹出导弹。</DMSE.MissileInventory.EjectFailed>
 
   <!-- 弹道发射井（CompMissileLauncher_Ballistic） -->
   <DMSE.MissileLauncher.Ballistic.Fire>发射弹道导弹</DMSE.MissileLauncher.Ballistic.Fire>

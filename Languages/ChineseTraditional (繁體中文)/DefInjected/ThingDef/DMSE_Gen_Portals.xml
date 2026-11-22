@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: ancient stockpile entrance -->
+  <DMSE_StaircaseEntrance.label>遠古儲藏庫入口</DMSE_StaircaseEntrance.label>
+  <!-- EN: The entrance to a long-abandoned subterranean facility. Hack it to open the hatch. -->
+  <DMSE_StaircaseEntrance.description>一處廢棄已久的地下設施入口。駭入以開啟艙門。</DMSE_StaircaseEntrance.description>
+  
+  <!-- EN: ancient stockpile entrance -->
+  <DMSE_StaircaseEntrance_Ancient.label>遠古儲藏庫入口</DMSE_StaircaseEntrance_Ancient.label>
+  <!-- EN: The entrance to a long-abandoned subterranean facility. Hack it to open the hatch. -->
+  <DMSE_StaircaseEntrance_Ancient.description>一處廢棄已久的地下設施入口。駭入以開啟艙門。</DMSE_StaircaseEntrance_Ancient.description>
+  
+  <!-- EN: ancient stockpile entrance -->
+  <DMSE_StaircaseEntrance_White.label>遠古儲藏庫入口</DMSE_StaircaseEntrance_White.label>
+  <!-- EN: The entrance to a long-abandoned subterranean facility. Hack it to open the hatch. -->
+  <DMSE_StaircaseEntrance_White.description>一處廢棄已久的地下設施入口。駭入以開啟艙門。</DMSE_StaircaseEntrance_White.description>
+  
+  <!-- EN: staircase exit -->
+  <DMSE_StaircaseExit.label>樓梯出口</DMSE_StaircaseExit.label>
+  <!-- EN: A ladder which links to the surface above. -->
+  <DMSE_StaircaseExit.description>一道通往上方地表的梯子。</DMSE_StaircaseExit.description>
+  
+  <!-- EN: ancient staircase exit -->
+  <DMSE_StaircaseExit_Ancient.label>遠古樓梯出口</DMSE_StaircaseExit_Ancient.label>
+  <!-- EN: A ladder which links to the surface above. -->
+  <DMSE_StaircaseExit_Ancient.description>一道通往上方地表的梯子。</DMSE_StaircaseExit_Ancient.description>
+  
+  <!-- EN: staircase exit -->
+  <DMSE_StaircaseExit_White.label>樓梯出口</DMSE_StaircaseExit_White.label>
+  <!-- EN: A ladder which links to the surface above. -->
+  <DMSE_StaircaseExit_White.description>一道通往上方地表的梯子。</DMSE_StaircaseExit_White.description>
+  
+</LanguageData>

@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: crude missile position -->
+  <DMSE_EarlyLaunchSite.label>舊式導彈陣地</DMSE_EarlyLaunchSite.label>
+  <!-- EN: A crude missile position built around acoustic mirrors, a hand-aimed fire-control radar and launch rails. It fires slow, inaccurate pulsejet loitering munitions, and it has no interceptors of its own. -->
+  <DMSE_EarlyLaunchSite.description>一處以聲學反射鏡、手動火控雷達與發射軌構成的簡陋導彈陣地。它發射緩慢且不精準的脈衝噴射巡飛彈，本身沒有攔截彈。</DMSE_EarlyLaunchSite.description>
+  
+</LanguageData>

@@ -53,8 +53,6 @@ namespace DMSE
             public int until;
         }
         private readonly List<EvaluatedRoute> evaluatedRoutes = new List<EvaluatedRoute>();
-        /// <summary>航線判定實際執行的次數（測試用）。</summary>
-        public int routeEvaluations;
 
         /// <summary>不知道是哪一條航跡變了（例如 <see cref="AirTrackProvider"/> 開始提供新物件）：下一 tick 做一次完整檢查。</summary>
         public void NotifyTrackChanged() => presenceCheckDue = true;
@@ -414,7 +412,6 @@ namespace DMSE
                 }
             }
             evaluatedRoutes.Add(new EvaluatedRoute { origin = track.Origin, destination = track.Destination, signature = signature, start = start, reachTiles = straight, until = until });
-            routeEvaluations++;
             bool sampled = false;
             float pathLength = 0f, slack = 0f;
             foreach (BVRNode node in nodes)

@@ -154,7 +154,7 @@ namespace DMSE
         }
 
         /// <summary>
-        /// 直接生成一個含 count 枚導彈的單一攔截波次（測試用，繞過世界航跡）。
+        /// 直接生成一個含 count 枚導彈的單一攔截波次（開發工具用，繞過世界航跡）。
         /// 需要有運作中的防禦方搜索雷達；成功回傳 true。
         /// </summary>
         public bool RegisterSalvo(ThingDef incomingDef, int count, MissileConfig config, Faction attacker, Faction defender)

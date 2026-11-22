@@ -1,9 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
+  <!-- EN: Landfill -->
   <DMSE.Landfill.Fill>填埋</DMSE.Landfill.Fill>
+  <!-- EN: Mark this entrance to be filled in, then right-click it with a colonist to start.\n\nFilling destroys the sealed room. Anyone and anything still inside is lost. The filled entrance can be deconstructed or reopened as a new, empty room. -->
   <DMSE.Landfill.FillDesc>標記這個入口準備填埋，再選取殖民者右鍵點擊入口開始施工。\n\n填埋會摧毀密封艙室，仍在裡面的人員與物品都會消失。填埋後的入口可以拆除，或重新開挖成一間新的空艙室。</DMSE.Landfill.FillDesc>
+  <!-- EN: Reopen -->
   <DMSE.Landfill.Reopen>重新開挖</DMSE.Landfill.Reopen>
+  <!-- EN: Mark this filled entrance to be dug out again, then right-click it with a colonist to start. The room behind it will be new and empty. -->
   <DMSE.Landfill.ReopenDesc>標記這個填埋入口準備重新開挖，再選取殖民者右鍵點擊開始施工。開挖後會是一間新的空艙室。</DMSE.Landfill.ReopenDesc>
+  <!-- EN: Cancel -->
   <DMSE.Landfill.Cancel>取消</DMSE.Landfill.Cancel>
+  <!-- EN: Remove the mark. -->
   <DMSE.Landfill.CancelDesc>取消標記。</DMSE.Landfill.CancelDesc>
 </LanguageData>

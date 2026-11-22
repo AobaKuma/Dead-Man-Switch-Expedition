@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
+using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 
@@ -31,6 +32,7 @@ namespace DMSE
         private Vector2 scrollPos;
         private float   lastDrawnHeight;
         private Thing   thingToSelect;   // SelectLater 模式
+        private Thing   thingToEject;    // 同上：迭代容器時不改動它，EndScrollView 後才取出
 
         private IMissileRack Rack => MissileRackUtil.Of(SelThing);
 
@@ -71,6 +73,7 @@ namespace DMSE
         protected override void FillTab()
         {
             thingToSelect = null;
+            thingToEject  = null;
 
             IMissileRack rack = Rack;
             if (rack == null) { return; }
@@ -139,6 +142,47 @@ namespace DMSE
                 Find.Selector.Select(thingToSelect);
                 thingToSelect = null;
             }
+
+            if (thingToEject != null)
+            {
+                Thing missile = thingToEject;
+                thingToEject = null;
+                if (missile.stackCount > 1)
+                {
+                    // 堆疊模組放寬上限時可能整疊存放：比照原版 ITab_ContentsBase 用滑桿選數量
+                    Find.WindowStack.Add(new Dialog_Slider(
+                        "RemoveSliderText".Translate(missile.LabelNoCount), 1, missile.stackCount,
+                        count => EjectMissile(rack, missile, count)));
+                }
+                else
+                {
+                    EjectMissile(rack, missile, 1);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 把容器內的導彈取出成地上的物品（平台旁就近放置）。
+        /// 落地即設為禁用：彈架本身是 IHaulDestination，不禁用的話搬運工會立刻把它搬回原架。
+        /// </summary>
+        private static void EjectMissile(IMissileRack rack, Thing missile, int count)
+        {
+            Thing holder = rack?.RackThing;
+            if (holder == null || !holder.Spawned) { return; }
+            ThingOwner owner = rack.GetDirectlyHeldThings();
+            if (owner == null || !owner.Contains(missile)) { return; }   // 滑桿開著時已被發射或搬走
+
+            count = Mathf.Clamp(count, 1, missile.stackCount);
+            if (owner.TryDrop(missile, holder.Position, holder.Map, ThingPlaceMode.Near, count, out Thing dropped)
+                && dropped != null)
+            {
+                dropped.SetForbidden(true, false);
+            }
+            else
+            {
+                Messages.Message("DMSE.MissileInventory.EjectFailed".Translate(), holder,
+                    MessageTypeDefOf.RejectInput, false);
+            }
         }
 
         // ── 單列 ────────────────────────────────────────────────────
@@ -162,10 +206,15 @@ namespace DMSE
             float iconY = curY + (height - IconSize) * 0.5f;
             Widgets.ThingIcon(new Rect(IconLeft, iconY, IconSize, IconSize), missile, scale: 0.75f);
 
-            // ── 名稱 + 重命名按鈕 ──────────────────────────────────
-            const float RenameSize = 20f;
+            // ── 名稱 + 重命名／彈出按鈕（靠右排列：彈出在最右）──────
+            const float BtnSize = 20f;
+            const float BtnGap  = 4f;
             CompRenameable rnComp = missile.TryGetComp<CompRenameable>();
-            float nameW    = contentW - (rnComp != null ? RenameSize + 4f : 0f);
+            bool playerOwned = SelThing?.Faction == Faction.OfPlayer;
+            bool canEject    = playerOwned && SelThing.Spawned;
+            int  btnCount    = (rnComp != null ? 1 : 0) + (canEject ? 1 : 0);
+            float nameW    = contentW - btnCount * (BtnSize + BtnGap);
+            float btnX     = width - 2f - BtnSize;
 
             string displayName = rnComp != null ? rnComp.RenamableLabel : missile.LabelNoCount;
 
@@ -177,9 +226,20 @@ namespace DMSE
             TooltipHandler.TipRegion(new Rect(ContentLeft, curY, nameW, 20f), displayName);
             Text.Anchor = TextAnchor.UpperLeft;
 
-            if (rnComp != null && SelThing?.Faction == Faction.OfPlayer)
+            if (canEject)
             {
-                Rect renameBtn = new Rect(ContentLeft + nameW + 2f, curY + 1f, RenameSize, RenameSize);
+                Rect ejectBtn = new Rect(btnX, curY + 1f, BtnSize, BtnSize);
+                TooltipHandler.TipRegion(ejectBtn, "DMSE.MissileInventory.EjectDesc".Translate());
+                if (Widgets.ButtonImage(ejectBtn, CaravanThingsTabUtility.AbandonButtonTex))
+                {
+                    thingToEject = missile;
+                }
+                btnX -= BtnSize + BtnGap;
+            }
+
+            if (rnComp != null && playerOwned)
+            {
+                Rect renameBtn = new Rect(btnX, curY + 1f, BtnSize, BtnSize);
                 TooltipHandler.TipRegionByKey(renameBtn, "Rename");
                 if (Widgets.ButtonImage(renameBtn, TexButton.Rename))
                 {

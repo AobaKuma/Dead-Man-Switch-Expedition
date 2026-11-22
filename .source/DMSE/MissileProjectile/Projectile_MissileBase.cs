@@ -293,20 +293,17 @@ namespace DMSE
                 if (ticksToImpact <= 0 && !hasImpacted)
                 {
                     hasImpacted = true;
-                    RecordTrace();
                     MissileImpact();
                     ageTicks++;
                     return;
                 }
             }
             ageTicks++;
-            RecordTrace();
         }
 
         private void Depart()
         {
             hasLeftMap = true;
-            RecordTrace();
             LeaveMap();
             ageTicks++;
         }
@@ -323,13 +320,6 @@ namespace DMSE
             {
                 f.anticipationSound.PlayOneShot(target);
             }
-        }
-
-        private void RecordTrace()
-        {
-            if (!MissileFlightTrace.Active) { return; }
-            GetLaunchPose(out Vector3 pos, out float rot);
-            MissileFlightTrace.RecordTick(this, ticksToImpact, pos, rot, cruise.active);
         }
 
         /// <summary>離場動畫結束（reversed）。預設直接消失；離場彈在此建立世界航跡。</summary>

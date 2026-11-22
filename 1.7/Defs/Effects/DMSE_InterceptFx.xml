@@ -2,7 +2,7 @@
 <Defs>
 
   <!--
-    攔截空爆特效（docs/攔截殘骸特效_實作與技術美術計畫.md §5）。
+    攔截空爆特效（docs/_archive/implemented/攔截殘骸特效_實作與技術美術計畫.md §5）。
     由 MapComponent_InterceptEffects 自持的 fleck 系統產生與繪製，不經 FleckMaker。
     貼圖：Textures/Things/Effects/InterceptDebris/，由 .source/Tools/gen_intercept_fx_textures.py 產生（P6），可用同名手繪檔替換。
     Shader：煙團、煙跡、火球用 Mote＋renderInstanced（GPU instancing；docs/導彈發射特效_重製計畫.md §0.1-3：

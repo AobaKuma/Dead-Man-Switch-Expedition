@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: active radar seeker -->
+  <DMSE_Guidance_ActiveRadar.label>主動雷達尋標器</DMSE_Guidance_ActiveRadar.label>
+  <!-- EN: A fire-and-forget active radar seeker. It targets the largest enemy building, or the largest enemy creature if there are no buildings, and falls back to inertial guidance if it finds nothing. Provides terminal guidance. -->
+  <DMSE_Guidance_ActiveRadar.description>一種射後不理的主動雷達尋標器。會鎖定佔地最大的敵方建築；沒有建築時鎖定體型最大的敵方生物，都找不到則改用慣性導引。具備末端導引能力。</DMSE_Guidance_ActiveRadar.description>
+  <!-- EN: ARH -->
+  <DMSE_Guidance_ActiveRadar.designWord>主動雷達</DMSE_Guidance_ActiveRadar.designWord>
+  
+  <!-- EN: anti-ship radar seeker -->
+  <DMSE_Guidance_AntiShip.label>反艦雷達導引頭</DMSE_Guidance_AntiShip.label>
+  <!-- EN: An active radar seeker built for moving targets, such as ships and other mobile bases on the world map. It updates its aim more often than a normal seeker, but the missile still misses if the target moves out of its remaining range. -->
+  <DMSE_Guidance_AntiShip.description>一種專為移動目標設計的主動雷達尋標器，對付船艦與世界地圖上其他可移動的據點。修正航向的次數比一般尋標器多，但目標若移出剩餘射程，導彈仍會落空。</DMSE_Guidance_AntiShip.description>
+  <!-- EN: Anti-ship -->
+  <DMSE_Guidance_AntiShip.designWord>反艦</DMSE_Guidance_AntiShip.designWord>
+  
+  <!-- EN: electromagnetic-signal seeker -->
+  <DMSE_Guidance_EMSignal.label>電磁訊號導引頭</DMSE_Guidance_EMSignal.label>
+  <!-- EN: A passive seeker that homes on electrical activity. It targets the powered enemy building drawing the most electricity, and falls back to inertial guidance if nothing is powered. -->
+  <DMSE_Guidance_EMSignal.description>一種追蹤電力活動的被動尋標器。會鎖定耗電最多的通電敵方建築；沒有任何通電建築時改用慣性導引。</DMSE_Guidance_EMSignal.description>
+  <!-- EN: EM -->
+  <DMSE_Guidance_EMSignal.designWord>電磁</DMSE_Guidance_EMSignal.designWord>
+  
+  <!-- EN: inertial guidance -->
+  <DMSE_Guidance_Inertial.label>慣性導引</DMSE_Guidance_Inertial.label>
+  <!-- EN: Inertial guidance with no target recognition and no terminal guidance. Impacts scatter around the center of the target map. It does not lock onto buildings or creatures. -->
+  <DMSE_Guidance_Inertial.description>沒有目標辨識、也沒有末端導引的慣性導引。落點散布在目標地圖中央附近，不會鎖定建築或生物。</DMSE_Guidance_Inertial.description>
+  
+  <!-- EN: laser seeker -->
+  <DMSE_Guidance_Laser.label>雷射導引頭</DMSE_Guidance_Laser.label>
+  <!-- EN: A semi-active laser seeker. It homes on the most recent point your colony marked on the target map with a laser target designator, and falls back to inertial guidance if there is none. -->
+  <DMSE_Guidance_Laser.description>一種半主動雷射尋標器。會追向殖民地最近一次在目標地圖上以雷射目標標定器標記的位置；沒有標記時改用慣性導引。</DMSE_Guidance_Laser.description>
+  <!-- EN: Laser -->
+  <DMSE_Guidance_Laser.designWord>雷射</DMSE_Guidance_Laser.designWord>
+  
+  <!-- EN: TV guidance -->
+  <DMSE_Guidance_Precision.label>電視制導</DMSE_Guidance_Precision.label>
+  <!-- EN: An operator-guided TV seeker with a datalink to the launch site. When the missile reaches the target map, the game pauses and you choose the impact point. Greatly tightens dispersion. Enemy TV missiles have no operator and use inertial guidance instead. -->
+  <DMSE_Guidance_Precision.description>一種透過資料鏈由操作員操控的電視尋標器。導彈抵達目標地圖時遊戲會暫停，由你選擇落點，散布也大幅縮小。敵方發射的電視導引導彈沒有操作員，會改用慣性導引。</DMSE_Guidance_Precision.description>
+  <!-- EN: TV -->
+  <DMSE_Guidance_Precision.designWord>電視</DMSE_Guidance_Precision.designWord>
+  
+  <!-- EN: bunker buster payload -->
+  <DMSE_Payload_BunkerBuster.label>反碉堡酬載</DMSE_Payload_BunkerBuster.label>
+  <!-- EN: A hardened penetrator charge with a delayed fuze. It bores through thick rock roofs and detonates inside, wrecking nearby structures.\n\nWithout this or a penetrator warhead, a missile that hits a mountain detonates on the rock surface, and its seeker ignores targets under thick roofs. -->
+  <DMSE_Payload_BunkerBuster.description>一種強化外殼、延時引信的穿透裝藥。能鑽穿厚岩頂後在內部引爆，摧毀附近的建築。\n\n沒有它或穿透彈頭時，擊中山體的導彈只會在岩石表面爆炸，尋標器也會忽略厚頂之下的目標。</DMSE_Payload_BunkerBuster.description>
+  <!-- EN: Bunker -->
+  <DMSE_Payload_BunkerBuster.designWord>反碉堡</DMSE_Payload_BunkerBuster.designWord>
+  
+  <!-- EN: cluster submunitions -->
+  <DMSE_Payload_Cluster.label>集束子彈藥</DMSE_Payload_Cluster.label>
+  <!-- EN: Releases submunitions that cause a second blast across the impact area. -->
+  <DMSE_Payload_Cluster.description>釋放子彈藥，在落點周圍造成第二波爆炸。</DMSE_Payload_Cluster.description>
+  <!-- EN: Cluster -->
+  <DMSE_Payload_Cluster.designWord>集束</DMSE_Payload_Cluster.designWord>
+  
+  <!-- EN: EMP submunitions -->
+  <DMSE_Payload_EMP.label>EMP 子彈藥</DMSE_Payload_EMP.label>
+  <!-- EN: A secondary EMP burst that stuns and disables electronics around the impact. -->
+  <DMSE_Payload_EMP.description>在落點周圍釋放第二波電磁脈衝，癱瘓並擊暈電子設備。</DMSE_Payload_EMP.description>
+  <!-- EN: Pulse -->
+  <DMSE_Payload_EMP.designWord>脈衝子彈</DMSE_Payload_EMP.designWord>
+  
+  <!-- EN: no payload -->
+  <DMSE_Payload_None.label>無酬載</DMSE_Payload_None.label>
+  <!-- EN: No secondary charge. The warhead does all the work, keeping the missile light and its range long. -->
+  <DMSE_Payload_None.description>沒有二次裝藥，全靠彈頭本身，讓導彈保持輕巧、射程更遠。</DMSE_Payload_None.description>
+  
+  <!-- EN: boosted motor -->
+  <DMSE_Propulsion_Booster.label>增推發動機</DMSE_Propulsion_Booster.label>
+  <!-- EN: A more powerful motor that reaches the target faster and flies farther. -->
+  <DMSE_Propulsion_Booster.description>推力更強的發動機，能更快抵達目標、飛得也更遠。</DMSE_Propulsion_Booster.description>
+  <!-- EN: Boost -->
+  <DMSE_Propulsion_Booster.designWord>增程</DMSE_Propulsion_Booster.designWord>
+  
+  <!-- EN: standard motor -->
+  <DMSE_Propulsion_Standard.label>標準發動機</DMSE_Propulsion_Standard.label>
+  <!-- EN: A standard solid-fuel rocket motor. -->
+  <DMSE_Propulsion_Standard.description>標準的固態燃料火箭發動機。</DMSE_Propulsion_Standard.description>
+  
+  <!-- EN: armor-piercing warhead -->
+  <DMSE_Warhead_AP.label>穿甲彈頭</DMSE_Warhead_AP.label>
+  <!-- EN: A focused penetrating warhead. Its blast radius is smaller, but it does far more damage. -->
+  <DMSE_Warhead_AP.description>一枚集中威力的穿甲彈頭。爆炸半徑較小，但傷害高得多。</DMSE_Warhead_AP.description>
+  <!-- EN: AP -->
+  <DMSE_Warhead_AP.designWord>破甲</DMSE_Warhead_AP.designWord>
+  
+  <!-- EN: EMP warhead -->
+  <DMSE_Warhead_EMP.label>EMP 彈頭</DMSE_Warhead_EMP.label>
+  <!-- EN: An EMP warhead that disables mechanoids and electronics over a wide area without a lethal blast. -->
+  <DMSE_Warhead_EMP.description>一枚電磁脈衝彈頭，能在大範圍內癱瘓機械體與電子設備，但不會造成致命爆炸。</DMSE_Warhead_EMP.description>
+  <!-- EN: EMP -->
+  <DMSE_Warhead_EMP.designWord>EMP</DMSE_Warhead_EMP.designWord>
+  
+  <!-- EN: high-explosive warhead -->
+  <DMSE_Warhead_HE.label>高爆彈頭</DMSE_Warhead_HE.label>
+  <!-- EN: A large high-explosive warhead with a wide blast radius. -->
+  <DMSE_Warhead_HE.description>一枚爆炸半徑大的大型高爆彈頭。</DMSE_Warhead_HE.description>
+  <!-- EN: HE -->
+  <DMSE_Warhead_HE.designWord>高爆</DMSE_Warhead_HE.designWord>
+  
+</LanguageData>

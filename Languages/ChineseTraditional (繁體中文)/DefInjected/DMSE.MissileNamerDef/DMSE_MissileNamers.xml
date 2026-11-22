@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  
+  <!-- EN: Minuteman -->
+  <DMSE_Namer_AdvancedBallistic.designator>民兵</DMSE_Namer_AdvancedBallistic.designator>
+  
+  <!-- EN: Tomahawk -->
+  <DMSE_Namer_AdvancedCruise.designator>戰斧</DMSE_Namer_AdvancedCruise.designator>
+  
+  <!-- EN: Hellfire -->
+  <DMSE_Namer_AdvancedLight.designator>地獄火</DMSE_Namer_AdvancedLight.designator>
+  
+  <!-- EN: V2 -->
+  <DMSE_Namer_LegacyBallistic.designator>V2</DMSE_Namer_LegacyBallistic.designator>
+  
+  <!-- EN: Lancer -->
+  <DMSE_Namer_Light.designator>長槍</DMSE_Namer_Light.designator>
+  
+  <!-- EN: Maverick -->
+  <DMSE_Namer_Maverick.designator>小牛</DMSE_Namer_Maverick.designator>
+  
+  <!-- EN: Moskit -->
+  <DMSE_Namer_Moskit.designator>白蛉</DMSE_Namer_Moskit.designator>
+  
+  <!-- EN: Oniks -->
+  <DMSE_Namer_Oniks.designator>縞瑪瑙</DMSE_Namer_Oniks.designator>
+  
+  <!-- EN: Shahed -->
+  <DMSE_Namer_Shahed.designator>沙赫德</DMSE_Namer_Shahed.designator>
+  
+  <!-- EN: Sparrow -->
+  <DMSE_Namer_Sparrow.designator>麻雀</DMSE_Namer_Sparrow.designator>
+  
+  <!-- EN: Stinger -->
+  <DMSE_Namer_Stinger.designator>刺針</DMSE_Namer_Stinger.designator>
+  
+  <!-- EN: Tochka -->
+  <DMSE_Namer_Tochka.designator>圓點</DMSE_Namer_Tochka.designator>
+  
+  <!-- EN: YJ -->
+  <DMSE_Namer_Yj.designator>鷹擊</DMSE_Namer_Yj.designator>
+  
+</LanguageData>
