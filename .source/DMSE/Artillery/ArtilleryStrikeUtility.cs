@@ -229,6 +229,17 @@ namespace DMSE
                 map.GetComponent<MapComponent_ArtilleryStrikes>()?.RegisterImpact(req.attackerFaction, finalTarget);
             }
 
+            // 相容層的投射物（CE 的 ProjectileCE）由相容層發射；它不是原版 Projectile，不能走下面的轉型
+            if (CombatCompat.Active != null && CombatCompat.Active.TryLaunchIncomingShell(req.projectileDef, map, entry, finalTarget))
+            {
+                return;
+            }
+            if (!typeof(Projectile).IsAssignableFrom(req.projectileDef.thingClass))
+            {
+                Log.Error($"[DMSE Artillery] {req.projectileDef.defName} 不是 Projectile（thingClass={req.projectileDef.thingClass}），已跳過。");
+                return;
+            }
+
             // 生成 Projectile，從邊緣格朝目標格發射
             Projectile proj = (Projectile)GenSpawn.Spawn(req.projectileDef, entry, map);
             proj.Launch(

@@ -17,9 +17,11 @@
 	</v1.6>
 	<!--
 		1.7 = 開發版：所有內容（含 Textures/、Languages/ 與 .NET 10 組件）都在 1.7/，不讀 1.6；根目錄 / 只提供 Sounds/。
-		Combat Extended 尚無 1.7 版，1.7/CE 與依賴它的 1.7/Cinders（CE 彈藥）暫不載入。
+		Combat Extended 啟用時載入 1.7/CE（XML 補丁＋1.7/CE/Assemblies/DMSE_CE.dll 相容組件，依 CE 1.7 / 17.0 撰寫）；
+		1.7/Cinders 是 Cinders 模組的 CE 彈藥。
 		1.7 = development version: everything (including Textures/, Languages/ and the .NET 10 assemblies) lives in 1.7/ and 1.6 is not read;
-		/ only provides Sounds/. Combat Extended has no 1.7 release yet, so 1.7/CE and 1.7/Cinders (CE ammo) are not loaded.
+		/ only provides Sounds/. With Combat Extended active, 1.7/CE loads (XML patches plus the DMSE_CE.dll compatibility
+		assembly in 1.7/CE/Assemblies, written against CE 1.7 / 17.0); 1.7/Cinders holds CE ammo for the Cinders mod.
 	-->
 	<v1.7>
 		<li>/</li>

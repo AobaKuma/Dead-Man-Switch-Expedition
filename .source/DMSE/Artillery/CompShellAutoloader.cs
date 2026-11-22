@@ -52,7 +52,10 @@ namespace DMSE
             List<Thing> linked = facility.LinkedBuildings;
             for (int i = 0; i < linked.Count; i++)
             {
-                if (linked[i] is Building_TurretGun turret && turret.Spawned && turret.Faction == parent.Faction)
+                if (!(linked[i] is Building_Turret anyTurret) || !anyTurret.Spawned || anyTurret.Faction != parent.Faction) { continue; }
+                // 相容層的彈匣砲（CE：CompAmmoUser）：由相容層從架上取彈裝匣
+                if (CombatCompat.Active != null && CombatCompat.Active.TryAutoload(anyTurret, storage)) { continue; }
+                if (anyTurret is Building_TurretGun turret)
                 {
                     TryLoad(storage, turret);
                 }

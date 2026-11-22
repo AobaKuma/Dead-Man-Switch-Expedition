@@ -291,7 +291,7 @@ namespace DMSE
             {
                 // 可換彈藥的砲（原版迫擊砲）：砲手補彈要離開砲位再回來、自動砲等連結的自動裝填架補彈，
                 // 任務暫停等待，不要取消
-                if (ChangeableProjectile != null)
+                if (WaitsForReload)
                 {
                     warmupEndTick = -1;
                     if (now >= nextNoShellMessageTick)
@@ -524,7 +524,7 @@ namespace DMSE
             }
             if (ResolveProjectileDef() == null)
             {
-                reason = ChangeableProjectile != null
+                reason = WaitsForReload
                     ? (HasCrew ? "DMSE.Artillery.NoLoadedShell" : "DMSE.Artillery.NoLoadedShellAutoloader").Translate().ToString()
                     : NotConfiguredReason;
                 return false;
@@ -564,9 +564,17 @@ namespace DMSE
         /// <summary>需要砲手的砲（原版迫擊砲、重型迫擊砲）；沒有的是自動砲，砲彈由自動裝填架補（<see cref="CompShellAutoloader"/>）。</summary>
         private bool HasCrew => parent.GetComp<CompMannable>() != null;
 
+        /// <summary>
+        /// 砲彈由裝填決定的砲（原版可換彈藥，或相容層的彈匣，例如 CE 的 CompAmmoUser）：
+        /// 沒彈時暫停等待補彈，不取消任務。
+        /// </summary>
+        private bool WaitsForReload => ChangeableProjectile != null || CombatCompat.HasMagazine(parent);
+
         private ThingDef ResolveProjectileDef()
         {
             // 可換彈藥的砲：只用砲手載入的那種砲彈；未裝填時回 null（等砲手補彈）
+            // 相容層彈匣（CE）：打彈匣目前那一種彈的投射物；空匣回 null（等補彈）
+            if (CombatCompat.HasMagazine(parent)) { return CombatCompat.Active.LoadedProjectile(parent); }
             CompChangeableProjectile loaded = ChangeableProjectile;
             if (loaded != null) { return loaded.Projectile; }
             return Props.projectileDef;
@@ -791,7 +799,11 @@ namespace DMSE
         private void SetTurretRotation(float angleDeg)
         {
             if (float.IsNaN(angleDeg)) { return; }
-            if (parent is Building_TurretGun turret && TurretTopRef(turret) is TurretTop top)
+            if (CombatCompat.Active != null && CombatCompat.Active.TrySetTurretRotation(parent, angleDeg))
+            {
+                // 相容層砲塔（CE）：砲塔頭已設定；下面只補 CompTurretFacingRenderer
+            }
+            else if (parent is Building_TurretGun turret && TurretTopRef(turret) is TurretTop top)
             {
                 top.CurRotation = angleDeg;
             }
@@ -836,7 +848,14 @@ namespace DMSE
             if (projDef == null) { StopSustainedFire(); return; }
 
             // 消耗彈藥與砲管（可換彈藥的砲：扣掉砲手載入的那一發，之後由砲手補彈）
-            ChangeableProjectile?.Notify_ProjectileLaunched();
+            if (CombatCompat.HasMagazine(parent))
+            {
+                if (!CombatCompat.Active.TryConsumeRounds(parent, 1)) { return; }
+            }
+            else
+            {
+                ChangeableProjectile?.Notify_ProjectileLaunched();
+            }
             parent.GetComp<CompRefuelable>()?.ConsumeFuel(1f);
 
             // 一門砲同時只佔一條通道：上一發的通道若還沒到期，先釋放再重新找

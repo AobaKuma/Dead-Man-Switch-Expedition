@@ -149,7 +149,7 @@
 	<!-- ==================== Recipes ========================== -->
 
 	<RecipeDef ParentName="AmmoRecipeBase">
-		<defName>MakeAmmo_37x250mmFlak_AP</defName>
+		<defName>MakeDMSE_Ammo_37x250mmFlak_AP</defName>
 		<label>make 37x250mmR flak cartridge (AP) x50</label>
 		<description>Craft 50 37x250mmR flak cartridges (AP).</description>
 		<jobString>Making 37x250mmR flak cartridges (AP).</jobString>
@@ -175,7 +175,7 @@
 	</RecipeDef>
 
 	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
-		<defName>MakeAmmo_37x250mmFlak_Incendiary</defName>
+		<defName>MakeDMSE_Ammo_37x250mmFlak_Incendiary</defName>
 		<label>make 37x250mmR flak cartridge (AP-I) x50</label>
 		<description>Craft 50 37x250mmR flak cartridges (AP-I).</description>
 		<jobString>Making 37x250mmR flak cartridges (AP-I).</jobString>
@@ -210,7 +210,7 @@
 	</RecipeDef>
 
 	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
-		<defName>MakeAmmo_37x250mmFlak_HE</defName>
+		<defName>MakeDMSE_Ammo_37x250mmFlak_HE</defName>
 		<label>make 37x250mmR flak cartridge (AP-HE) x50</label>
 		<description>Craft 50 37x250mmR flak cartridges (AP-HE).</description>
 		<jobString>Making 37x250mmR flak cartridges (AP-HE).</jobString>

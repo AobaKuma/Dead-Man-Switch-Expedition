@@ -74,14 +74,29 @@ namespace DMSE
 
         private CompRefuelable Refuelable => parent.GetComp<CompRefuelable>();
 
-        /// <summary>是否有足夠燃料再發一發（無 CompRefuelable 則視為無限）。</summary>
+        /// <summary>
+        /// 是否有足夠燃料再發一發。有 CompRefuelable 時扣它；沒有、但砲有相容層彈匣（CE 的 CompAmmoUser）時
+        /// 每發扣 <see cref="RoundsPerShot"/> 發彈匣彈藥；兩者都沒有則視為無限。
+        /// </summary>
         private bool HasFuel
         {
             get
             {
                 CompRefuelable r = Refuelable;
-                return r == null || r.Fuel >= Props.fuelPerShot;
+                if (r != null) { return r.Fuel >= Props.fuelPerShot; }
+                if (CombatCompat.HasMagazine(parent)) { return CombatCompat.Active.LoadedRounds(parent) >= RoundsPerShot; }
+                return true;
             }
+        }
+
+        /// <summary>相容層彈匣每發扣幾發（fuelPerShot 取整，至少 1）。</summary>
+        private int RoundsPerShot => System.Math.Max(1, (int)System.Math.Ceiling(Props.fuelPerShot));
+
+        private void ConsumeShot()
+        {
+            CompRefuelable r = Refuelable;
+            if (r != null) { r.ConsumeFuel(Props.fuelPerShot); return; }
+            if (CombatCompat.HasMagazine(parent)) { CombatCompat.Active.TryConsumeRounds(parent, RoundsPerShot); }
         }
 
         // ---- 停火 ----
@@ -221,7 +236,7 @@ namespace DMSE
 
             // 燃料耗盡：中止本輪、不判定。
             if (!HasFuel) { EndBurst(now); return; }
-            Refuelable?.ConsumeFuel(Props.fuelPerShot);
+            ConsumeShot();
 
             // 虛擬迫近進度：剛進入末端窗口=0（入場邊緣），即將落地=1（沿航線靠近落點）。
             // 盤旋中的導彈就停在目標上空，迫近進度視為已到位。
@@ -293,10 +308,7 @@ namespace DMSE
         private void AimTopAt(IntVec3 cell)
         {
             if (!cell.IsValid) { return; }
-            if (parent is Building_TurretGun turret)
-            {
-                turret.Top.ForceFaceTarget(new LocalTargetInfo(cell));
-            }
+            CombatCompat.FaceTurret(parent, new LocalTargetInfo(cell));
             // 非 Building_TurretGun 的平台（例如野戰防空砲）由 CompTurretFacingRenderer 畫砲塔頭。
             parent.GetComp<CompTurretFacingRenderer>()?.ForceFaceTarget(cell.ToVector3Shifted());
         }
@@ -344,9 +356,10 @@ namespace DMSE
 
             // 砲塔轉向天空目標 + 槍口閃光 + 射擊音效。
             float muzzleScale = 9f;
-            if (parent is Building_TurretGun turret)
+            if (parent is Building_Turret turret)
             {
-                turret.Top.ForceFaceTarget(skyTarget);
+                // Building_TurretGun 與相容層砲塔（CE 的 Building_TurretGunCE）都是 Building_Turret
+                CombatCompat.FaceTurret(parent, skyTarget);
                 Verb verb = turret.AttackVerb;
                 if (verb != null && verb.verbProps != null)
                 {

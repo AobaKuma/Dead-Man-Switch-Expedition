@@ -383,11 +383,12 @@
     <defName>DMSE_SeaLaunchSiteDeployed</defName>
     <label>sea launch station deployed</label>
     <category>ThreatBig</category>
+    <!-- 只認家園地圖（同 DMSE_FieldLaunchSiteDeployed）。原本另列 World 給開發者在世界地圖上強制觸發，
+         但 1.7 的設定檢查不允許 World 與其他目標並列（Config error：World targeting incidents should only target the world）；
+         開發者改在家園地圖上用「執行事件」強制觸發即可。 -->
     <targetTags>
       <li>Map_PlayerHome</li>
-      <li>World</li>
     </targetTags>
-    <!-- World 只給開發者在世界地圖上強制觸發（以目前或任一家園地圖為基準）；說書人觸發仍只認家園地圖（CanFireNowSub）。 -->
     <workerClass>DMSE.IncidentWorker_SeaLaunchSite</workerClass>
     <baseChance>0.5</baseChance>
     <earliestDay>20</earliestDay>

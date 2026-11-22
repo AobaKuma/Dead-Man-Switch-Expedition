@@ -21,7 +21,7 @@
 	<!-- ================== Projectiles ================== -->
 
 
-	<ThingDef ParentName="Base5x50mmCaselessBullet" MayRequire="Ludeon.RimWorld.Biotech">
+	<ThingDef ParentName="DMSE_Base5x50mmCaselessBullet" MayRequire="Ludeon.RimWorld.Biotech">
 		<defName>Bullet_5x50mmCaseless_Erosion</defName>
 		<label>5x50mm Caseless bullet (Erosion)</label>
 		<graphicData>
@@ -38,7 +38,7 @@
 	</ThingDef>
 
 	
-	<ThingDef ParentName="Base5x50mmCaselessBullet" MayRequire="Ludeon.RimWorld.Biotech">
+	<ThingDef ParentName="DMSE_Base5x50mmCaselessBullet" MayRequire="Ludeon.RimWorld.Biotech">
 		<defName>Bullet_5x50mmCaseless_Erosion_LV</defName>
 		<label>5x50mm Caseless bullet (Erosion)</label>
 		<graphicData>
@@ -54,7 +54,7 @@
 		</projectile>
 	</ThingDef>
 
-	<ThingDef ParentName="Base5x50mmCaselessBullet" MayRequire="Ludeon.RimWorld.Biotech">
+	<ThingDef ParentName="DMSE_Base5x50mmCaselessBullet" MayRequire="Ludeon.RimWorld.Biotech">
 		<defName>Bullet_5x50mmCaseless_Erosion_HV</defName>
 		<label>5x50mm Caseless bullet (Erosion)</label>
 		<graphicData>
@@ -74,7 +74,7 @@
 
 <!-- 5x50mm Caseless Sabot Projectile From Combat Extended(including LV and HV)
 
-	<ThingDef ParentName="Base5x50mmCaselessBullet">
+	<ThingDef ParentName="DMSE_Base5x50mmCaselessBullet">
 		<defName>Bullet_5x50mmCaseless_Sabot</defName>
 		<label>5x50mm Caseless bullet (Sabot)</label>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">
@@ -86,7 +86,7 @@
 		</projectile>
 	</ThingDef>
 
-	<ThingDef ParentName="Base5x50mmCaselessBullet">
+	<ThingDef ParentName="DMSE_Base5x50mmCaselessBullet">
 		<defName>Bullet_5x50mmCaseless_Sabot_LV</defName>
 		<label>5x50mm Caseless bullet (Sabot)</label>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">
@@ -98,7 +98,7 @@
 		</projectile>
 	</ThingDef>
 
-	<ThingDef ParentName="Base5x50mmCaselessBullet">
+	<ThingDef ParentName="DMSE_Base5x50mmCaselessBullet">
 		<defName>Bullet_5x50mmCaseless_Sabot_HV</defName>
 		<label>5x50mm Caseless bullet (Sabot)</label>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">

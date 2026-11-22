@@ -209,6 +209,7 @@
   <DMSE.Transfer.Dest.NotSurface>Must be on the planet's surface.</DMSE.Transfer.Dest.NotSurface>
   <DMSE.Transfer.Dest.ImpactHasMap>Cannot target a site with a map.</DMSE.Transfer.Dest.ImpactHasMap>
   <DMSE.Transfer.Issue.ImpactEngines>Needs {1} working nuclear thermal thrusters ({0}).</DMSE.Transfer.Issue.ImpactEngines>
+  <DMSE.Transfer.Issue.ImpactResearch>Needs the sealed file "terminal cruise" to be researched.</DMSE.Transfer.Issue.ImpactResearch>
   <DMSE.Transfer.Dialog.ImpactTitle>Impact flight</DMSE.Transfer.Dialog.ImpactTitle>
   <DMSE.Transfer.Dialog.ImpactWarning>The ship will not brake. Everyone aboard will be lost and the game ends.</DMSE.Transfer.Dialog.ImpactWarning>
   <DMSE.Transfer.Dialog.ImpactPlanetkiller>{0} nuclear thermal thrusters: the impact will destroy the planet.</DMSE.Transfer.Dialog.ImpactPlanetkiller>

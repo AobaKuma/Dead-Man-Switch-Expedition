@@ -56,6 +56,9 @@ namespace DMSE
                 if (mannable.MannedNow && mannable.ManningPawn != pawn) continue;
                 if (b.Position.DistanceTo(root) > maxDistFromPoint) continue;
                 if (b is Building_TurretGun turret && !TurretUsable(pawn, turret)) continue;
+                // 相容層砲塔（CE 的 Building_TurretGunCE 不是 Building_TurretGun）：彈匣空、附近又沒彈就不去
+                if (!(b is Building_TurretGun) && b is Building_Turret && CombatCompat.Active != null
+                    && !CombatCompat.Active.TurretUsable(pawn, b)) continue;
                 if (EmptyInterceptorLauncher(pawn, b)) continue;
                 int rank = StationRank(b);
                 float d = b.Position.DistanceToSquared(pawn.Position);

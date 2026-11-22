@@ -122,6 +122,22 @@
 					</li>
 				</value>
 			</li>
+		
+			<!-- IVA suit（中層布料半加壓服）：CE 的 Bulk／WornBulk，布料護甲倍率拉到 CE 布料衣物的量級。 -->
+			<li Class="PatchOperationReplace">
+				<xpath>Defs/ThingDef[defName="DMSE_Apparel_IVASuit"]/statBases/StuffEffectMultiplierArmor</xpath>
+				<value>
+					<StuffEffectMultiplierArmor>1</StuffEffectMultiplierArmor>
+				</value>
+			</li>
+			<li Class="PatchOperationAdd">
+				<xpath>Defs/ThingDef[defName="DMSE_Apparel_IVASuit"]/statBases</xpath>
+				<value>
+					<Bulk>6</Bulk>
+					<WornBulk>2</WornBulk>
+				</value>
+			</li>
+
 		</operations>
 	</Operation>
 	

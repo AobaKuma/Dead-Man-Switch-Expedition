@@ -1,0 +1,63 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    DMSE 的 Combat Extended 相容組件：只建置 RimWorld 1.7 → 1.7/CE/Assemblies/DMSE_CE.dll
+    （LoadFolders 只在 CE 啟用時載入 1.7/CE），參考 1.7/Assemblies/DMSE.dll 與 CE 的 CombatExtended.dll。
+    CE 1.7（17.0）是 net10 組件，Unity 型別同樣來自遊戲的 UnityStubs，所以不需要 FFF 那種 UnityEngine.CoreModule 轉送組件。
+    CE 預設找 <RimWorld>/Mods/CombatExtended，找不到時改用 Steam 創意工坊（2890901044）；
+    裝在別處時以 -p:CEAssemblies=<CE 的 Assemblies 資料夾>\ 覆寫。
+    Combat Extended compatibility assembly for DMSE: RimWorld 1.7 only → 1.7/CE/Assemblies/DMSE_CE.dll
+    (LoadFolders loads 1.7/CE only while CE is active). References 1.7/Assemblies/DMSE.dll and CE's CombatExtended.dll.
+    CE 1.7 (17.0) is a net10 assembly whose Unity types also come from the game's UnityStubs, so no
+    UnityEngine.CoreModule forwarding facade is needed (unlike FFF's CE project).
+    CE is looked up in <RimWorld>/Mods/CombatExtended, then in the Steam Workshop folder (2890901044);
+    override with -p:CEAssemblies=<CE's Assemblies folder>\ when it lives elsewhere.
+  -->
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>DMSE.CE</RootNamespace>
+    <AssemblyName>DMSE_CE</AssemblyName>
+    <OutputPath>$(MSBuildThisFileDirectory)..\..\1.7\CE\Assemblies\</OutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <LangVersion>10.0</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <Deterministic>true</Deterministic>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <DebugType>none</DebugType>
+    <DefineConstants>$(DefineConstants);RW_1_7</DefineConstants>
+    <GenerateDependencyFile>false</GenerateDependencyFile>
+    <RimWorldDir Condition="'$(RimWorldDir)' == ''">$(MSBuildThisFileDirectory)..\..\..\..\</RimWorldDir>
+    <CEAssemblies Condition="'$(CEAssemblies)' == '' And Exists('$(RimWorldDir)Mods\CombatExtended\Assemblies\CombatExtended.dll')">$(RimWorldDir)Mods\CombatExtended\Assemblies\</CEAssemblies>
+    <CEAssemblies Condition="'$(CEAssemblies)' == ''">$(RimWorldDir)..\..\workshop\content\294100\2890901044\Assemblies\</CEAssemblies>
+    <!-- DMSE.dll 預設取已部署的 1.7/Assemblies；先把 DMSE 建到別處時以 -p:DMSEAssembly=<路徑> 覆寫。
+         DMSE.dll defaults to the deployed copy; override with -p:DMSEAssembly=<path> when DMSE was built elsewhere. -->
+    <DMSEAssembly Condition="'$(DMSEAssembly)' == ''">$(MSBuildThisFileDirectory)..\..\1.7\Assemblies\DMSE.dll</DMSEAssembly>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldDir)Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityStubs">
+      <HintPath>$(RimWorldDir)UnityStubs.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Waylith">
+      <HintPath>$(RimWorldDir)Waylith.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DMSE">
+      <HintPath>$(DMSEAssembly)</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="CombatExtended">
+      <HintPath>$(CEAssemblies)CombatExtended.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

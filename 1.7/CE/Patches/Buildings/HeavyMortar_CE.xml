@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+	<!-- ==================================================================
+	     重型迫擊砲（DMSE_Turret_HeavyMortar）的 CE 補丁（2026-11-23，依本地 CE 1.7 / 17.0）。
+
+	     CE 把原版迫擊砲彈（Shell_HighExplosive 等）改成 81 mm 的 CE 彈藥（AmmoDef），原版可換彈藥
+	     裝不進去；thingClass 也是 DMSE 自己的 Building_HeavyMortar（不吃 CE 對 BaseArtilleryBuilding
+	     的 thingClass 替換）。所以整座砲 CE 化：
+	       1) thingClass → DMSE_CE.dll 的 DMSE.CE.Building_HeavyMortarCE（CE 砲塔＋世界砲擊共用砲管）。
+	       2) gun → CE 迫擊砲 verb，120 mm 迫擊砲彈匣（1 發，砲手裝填，同 CE 的 81 mm 迫擊砲）。
+	          世界砲擊打的就是裝填的那一發（CompArtilleryStrike 經 CombatCompat 讀 CE 彈匣）。
+	       3) CE 沒有砲管耐久：拿掉強化砲管（CompRefuelable）與 CompChangeableProjectile。
+	     ================================================================== -->
+
+	<Operation Class="PatchOperationSequence">
+		<operations>
+
+			<li Class="PatchOperationReplace">
+				<xpath>Defs/ThingDef[defName="DMSE_Turret_HeavyMortar"]/thingClass</xpath>
+				<value>
+					<thingClass>DMSE.CE.Building_HeavyMortarCE</thingClass>
+				</value>
+			</li>
+
+			<li Class="PatchOperationRemove">
+				<xpath>Defs/ThingDef[defName="DMSE_Turret_HeavyMortar"]/comps/li[@Class="CompProperties_Refuelable"]</xpath>
+			</li>
+
+			<!-- CE 對 BaseArtilleryBuilding 的冷卻是 2 秒（裝填時間另計）；這門砲自己寫了 28 秒，壓回 CE 的節奏。 -->
+			<li Class="PatchOperationReplace">
+				<xpath>Defs/ThingDef[defName="DMSE_Turret_HeavyMortar"]/building/turretBurstCooldownTime</xpath>
+				<value>
+					<turretBurstCooldownTime>2</turretBurstCooldownTime>
+				</value>
+			</li>
+
+			<li Class="PatchOperationRemove">
+				<xpath>Defs/ThingDef[defName="DMSE_Gun_HeavyMortar"]/comps/li[@Class="CompProperties_ChangeableProjectile"]</xpath>
+			</li>
+
+			<li Class="PatchOperationRemove">
+				<xpath>Defs/ThingDef[defName="DMSE_Gun_HeavyMortar"]/building</xpath>
+			</li>
+
+			<li Class="CombatExtended.PatchOperationMakeGunCECompatible">
+				<defName>DMSE_Gun_HeavyMortar</defName>
+				<statBases>
+					<SightsEfficiency>0.5</SightsEfficiency>
+					<RangedWeapon_Cooldown>2</RangedWeapon_Cooldown>
+				</statBases>
+				<Properties>
+					<verbClass>CombatExtended.Verb_ShootMortarCE</verbClass>
+					<forceNormalTimeSpeed>false</forceNormalTimeSpeed>
+					<hasStandardCommand>true</hasStandardCommand>
+					<defaultProjectile>Bullet_120mmMortarShell_HE</defaultProjectile>
+					<warmupTime>6</warmupTime>
+					<minRange>32</minRange>
+					<range>750</range>
+					<burstShotCount>1</burstShotCount>
+					<requireLineOfSight>false</requireLineOfSight>
+					<soundCast>Mortar_LaunchA</soundCast>
+					<soundCastTail>GunTail_Heavy</soundCastTail>
+					<muzzleFlashScale>16</muzzleFlashScale>
+					<circularError>1.2</circularError>
+					<indirectFirePenalty>0.2</indirectFirePenalty>
+					<targetParams>
+						<canTargetLocations>true</canTargetLocations>
+					</targetParams>
+				</Properties>
+				<AmmoUser>
+					<magazineSize>1</magazineSize>
+					<reloadTime>6</reloadTime>
+					<ammoSet>AmmoSet_120mmMortarShell</ammoSet>
+				</AmmoUser>
+				<FireModes>
+					<aiUseBurstMode>false</aiUseBurstMode>
+				</FireModes>
+			</li>
+
+			<li Class="PatchOperationAdd">
+				<xpath>Defs/ThingDef[defName="DMSE_Gun_HeavyMortar"]/comps</xpath>
+				<value>
+					<li Class="CombatExtended.CompProperties_Charges">
+						<chargeSpeeds>
+							<li>35</li>
+							<li>55</li>
+							<li>75</li>
+							<li>95</li>
+						</chargeSpeeds>
+					</li>
+				</value>
+			</li>
+
+		</operations>
+	</Operation>
+</Patch>

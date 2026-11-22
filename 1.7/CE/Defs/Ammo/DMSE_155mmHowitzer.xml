@@ -99,7 +99,7 @@
 			<soundHitThickRoof>Artillery_HitThickRoof</soundHitThickRoof>
 			<soundImpactAnticipate>MortarRound_PreImpact</soundImpactAnticipate>
 			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
-			<fuze_delay>2.5</fuze_delay>
+			<fuze_delay>2</fuze_delay>
 			<explosionDelay>15</explosionDelay>
 			<airborneSuppressionFactor>0.25</airborneSuppressionFactor>
 			<tickToTruePos>0</tickToTruePos>

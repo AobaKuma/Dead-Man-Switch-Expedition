@@ -394,6 +394,7 @@
   <DMSE.Transfer.Dest.ImpactHasMap>無法以已有地圖的地點為目標。</DMSE.Transfer.Dest.ImpactHasMap>
   <!-- EN: Needs {1} working nuclear thermal thrusters ({0}). -->
   <DMSE.Transfer.Issue.ImpactEngines>需要 {1} 具運作中的核熱推進器（目前 {0}）。</DMSE.Transfer.Issue.ImpactEngines>
+  <DMSE.Transfer.Issue.ImpactResearch>需要先完成封存檔案「終結巡航」的研究。</DMSE.Transfer.Issue.ImpactResearch>
   <!-- EN: Impact flight -->
   <DMSE.Transfer.Dialog.ImpactTitle>終結巡航</DMSE.Transfer.Dialog.ImpactTitle>
   <!-- EN: The ship will not brake. Everyone aboard will be lost and the game ends. -->

@@ -1,93 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Patch>
+
+	<!-- ==================================================================
+	     皇帝長程砲（DMSE_Turret_Empero）的 CE 補丁（2026-11-23 依本地 CE 1.7 / 17.0 改寫）。
+
+	     原版下它是 DMSE.Building_LongRangeGun（繼承原版 Building_TurretGun）＋可換彈藥＋強化砲管。
+	     CE 的武器 verb 只能掛在 CE 砲塔上（CompAmmoUser 要由 Building_TurretGunCE 交叉連結，
+	     掛在原版砲塔上每發都會報「without a wielder」），所以：
+	       1) thingClass 換成 DMSE_CE.dll 的 DMSE.CE.Building_LongRangeGunCE（CE 砲塔＋同一套 10x4 砲身與轉向預熱）。
+	       2) gun 改成 CE 迫擊砲 verb＋155 mm 榴彈砲彈匣（12 發）。世界砲擊（CompArtilleryStrike）透過
+	          DMSE 的 CombatCompat 讀同一個彈匣：彈匣目前那種彈就是世界砲擊打出去的彈，每發扣 1；
+	          落彈由 CE 的 ProjectileCE 從地圖邊緣高空飛入（同 CE 自己的世界砲擊）。
+	       3) CE 沒有砲管耐久：拿掉強化砲管（CompRefuelable）。拿掉 CompChangeableProjectile 與「砲彈」頁。
+	       4) 補彈：連結的 DMSE 自動裝填架（下面改成存放 155 mm 砲彈）在彈匣打空時整匣裝填，
+	          或照 CE 規則在砲旁 8 格內放 Building_AutoloaderCE。
+	       5) CE 自己的世界砲擊按鈕由 Building_LongRangeGunCE 拿掉，世界射擊只走 DMSE（雷達導引、校射／效力射）。
+	     ================================================================== -->
+
 	<Operation Class="PatchOperationSequence">
 		<operations>
 
-			<!-- All Patch-->
+			<li Class="PatchOperationReplace">
+				<xpath>Defs/ThingDef[defName="DMSE_Turret_Empero"]/thingClass</xpath>
+				<value>
+					<thingClass>DMSE.CE.Building_LongRangeGunCE</thingClass>
+				</value>
+			</li>
 
 			<li Class="PatchOperationRemove">
 				<xpath>Defs/ThingDef[defName="DMSE_Turret_Empero"]/comps/li[@Class="CompProperties_Refuelable"]</xpath>
 			</li>
 
-			<!-- 原版下 Empero 用原版可換彈藥（自動裝填架裝彈）；CE 改用 CE 彈匣（下面的 AmmoUser），
-			     所以拿掉 gun 上的 CompChangeableProjectile，世界砲擊改打固定的原版高爆迫擊砲彈。未在遊戲中驗證（1.7 尚無 CE）。 -->
 			<li Class="PatchOperationRemove">
 				<xpath>Defs/ThingDef[defName="DMSE_Gun_Empero"]/comps/li[@Class="CompProperties_ChangeableProjectile"]</xpath>
 			</li>
-			<li Class="PatchOperationAdd">
-				<xpath>Defs/ThingDef[defName="DMSE_Turret_Empero"]/comps/li[@Class="DMSE.CompProperties_ArtilleryStrike"]</xpath>
+
+			<!-- 「砲彈」頁讀 CompChangeableProjectile 的設定；CE 改用彈藥 Gizmo 選彈種。 -->
+			<li Class="PatchOperationRemove">
+				<xpath>Defs/ThingDef[defName="DMSE_Turret_Empero"]/inspectorTabs</xpath>
+			</li>
+
+			<li Class="PatchOperationReplace">
+				<xpath>Defs/ThingDef[defName="DMSE_Turret_Empero"]/statBases/ShootingAccuracyTurret</xpath>
 				<value>
-					<projectileDef>Bullet_Shell_HighExplosive</projectileDef>
+					<ShootingAccuracyTurret>1</ShootingAccuracyTurret>
 				</value>
 			</li>
 
-      <!-- Empero -->
-
-      <li Class="PatchOperationReplace">
-        <xpath>Defs/ThingDef[defName="DMSE_Turret_Empero"]/statBases/ShootingAccuracyTurret</xpath>
-        <value>
-          <ShootingAccuracyTurret>1</ShootingAccuracyTurret>
-        </value>
-      </li>
-
-      <li Class="CombatExtended.PatchOperationMakeGunCECompatible">
-        <defName>DMSE_Gun_Empero</defName>
-        <statBases>
-          <Mass>13000</Mass>
-          <Bulk>5000</Bulk>
-          <RangedWeapon_Cooldown>8</RangedWeapon_Cooldown>
-          <SightsEfficiency>2.18</SightsEfficiency>
-          <ShotSpread>0.01</ShotSpread>
-          <SwayFactor>3.07</SwayFactor>
-        </statBases>
-        <Properties>
-          <recoilAmount>0</recoilAmount>
-          <verbClass>CombatExtended.Verb_ShootMortarCE</verbClass>
-          <hasStandardCommand>true</hasStandardCommand>
-          <defaultProjectile>Bullet_155mmHowitzerShell_HE</defaultProjectile>
-          <warmupTime>4</warmupTime>
-		  <minRange>12.9</minRange>
-          <range>1000</range>
-		  <requireLineOfSight>false</requireLineOfSight>
-          <soundCast>Mortar_LaunchA</soundCast>
-          <soundCastTail>GunTail_Medium</soundCastTail>
-          <targetParams>
-            <canTargetLocations>true</canTargetLocations>
-          </targetParams>
-          <muzzleFlashScale>20</muzzleFlashScale>
-		  <circularError>1.1</circularError>
-		  <indirectFirePenalty>0.3</indirectFirePenalty>
-          <recoilPattern>Mounted</recoilPattern>
-        </Properties>
-        <AmmoUser>
-          <magazineSize>12</magazineSize>
-          <reloadTime>5</reloadTime>
-          <ammoSet>AmmoSet_155mmHowitzerShell</ammoSet>
-        </AmmoUser>
-        <FireModes>
-          <aiUseBurstMode>false</aiUseBurstMode>
-        </FireModes>
-      </li>
-	  
-	  <li Class="PatchOperationAdd">
-		<xpath>Defs/ThingDef[defName="DMSE_Turret_Empero"]/comps</xpath>
-		<value>
-			<li Class="CombatExtended.CompProperties_Charges">
-				<chargeSpeeds>
-					<li>60</li><!--1-->
-					<li>80</li><!--2-->
-					<li>100</li><!--3-->
-					<li>120</li><!--4-->
-					<li>140</li><!--5-->
-					<li>160</li><!--6-->
-					<li>180</li><!--7-->
-					<li>200</li><!--8-->
-				</chargeSpeeds>
+			<li Class="CombatExtended.PatchOperationMakeGunCECompatible">
+				<defName>DMSE_Gun_Empero</defName>
+				<statBases>
+					<Mass>13000</Mass>
+					<Bulk>5000</Bulk>
+					<RangedWeapon_Cooldown>8</RangedWeapon_Cooldown>
+					<SightsEfficiency>2.18</SightsEfficiency>
+					<ShotSpread>0.01</ShotSpread>
+					<SwayFactor>3.07</SwayFactor>
+				</statBases>
+				<Properties>
+					<recoilAmount>0</recoilAmount>
+					<verbClass>CombatExtended.Verb_ShootMortarCE</verbClass>
+					<hasStandardCommand>true</hasStandardCommand>
+					<defaultProjectile>Bullet_155mmHowitzerShell_HE</defaultProjectile>
+					<warmupTime>4</warmupTime>
+					<minRange>12.9</minRange>
+					<range>1000</range>
+					<requireLineOfSight>false</requireLineOfSight>
+					<soundCast>Mortar_LaunchA</soundCast>
+					<soundCastTail>GunTail_Medium</soundCastTail>
+					<targetParams>
+						<canTargetLocations>true</canTargetLocations>
+					</targetParams>
+					<muzzleFlashScale>20</muzzleFlashScale>
+					<circularError>1.1</circularError>
+					<indirectFirePenalty>0.3</indirectFirePenalty>
+					<recoilPattern>Mounted</recoilPattern>
+				</Properties>
+				<AmmoUser>
+					<magazineSize>12</magazineSize>
+					<reloadTime>5</reloadTime>
+					<ammoSet>AmmoSet_155mmHowitzerShell</ammoSet>
+				</AmmoUser>
+				<FireModes>
+					<aiUseBurstMode>false</aiUseBurstMode>
+				</FireModes>
 			</li>
-		</value>
-	  </li>
-			
+
+			<!-- CE 迫擊砲 verb 以裝藥號數決定初速（同 CE 對原版迫擊砲的做法，裝在 gun 上）。 -->
+			<li Class="PatchOperationAdd">
+				<xpath>Defs/ThingDef[defName="DMSE_Gun_Empero"]/comps</xpath>
+				<value>
+					<li Class="CombatExtended.CompProperties_Charges">
+						<chargeSpeeds>
+							<li>60</li>
+							<li>80</li>
+							<li>100</li>
+							<li>120</li>
+							<li>140</li>
+							<li>160</li>
+							<li>180</li>
+							<li>200</li>
+						</chargeSpeeds>
+					</li>
+				</value>
+			</li>
+
+			<!-- ==================== 自動裝填架 ====================
+			     CE 下存放 CE 的 155 mm 榴彈砲彈（皇帝長程砲的彈藥組）。
+			     裝填由 DMSE_CE.dll 的相容層處理：連結的砲彈匣空了才整匣裝填，優先砲選定的彈種。 -->
+			<li Class="PatchOperationReplace">
+				<xpath>Defs/ThingDef[defName="DMSE_ShellAutoloader"]/building/fixedStorageSettings</xpath>
+				<value>
+					<fixedStorageSettings>
+						<filter>
+							<categories>
+								<li>Ammo155mmHowitzerShells</li>
+							</categories>
+						</filter>
+					</fixedStorageSettings>
+				</value>
+			</li>
+			<li Class="PatchOperationReplace">
+				<xpath>Defs/ThingDef[defName="DMSE_ShellAutoloader"]/building/defaultStorageSettings</xpath>
+				<value>
+					<defaultStorageSettings>
+						<priority>Important</priority>
+						<filter>
+							<categories>
+								<li>Ammo155mmHowitzerShells</li>
+							</categories>
+						</filter>
+					</defaultStorageSettings>
+				</value>
+			</li>
+
 		</operations>
 	</Operation>
 </Patch>
-

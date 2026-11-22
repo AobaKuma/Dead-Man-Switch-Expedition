@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+
+  <!-- EN: terminal cruise -->
+  <DMSE_Occultech_TerminalCruise.label>终结巡航</DMSE_Occultech_TerminalCruise.label>
+  <DMSE_Occultech_TerminalCruise.description>一套拆除转移飞船航路主机全部安全联锁的飞行协议。聚变核心将在超载功率下输出使得核热引擎以最大功率朝下方的星球加速。整艘船以及它推动的天体将成为一件动能武器撞击星球表面，任何地貌改造计划都无法再将其愈合。\n在殖民世界██与同星系殖民世界████的冲突中，一颗被高度要塞化的小行星██被转移飞船牵引至撞击轨道并抹去了████上的一切生命迹象。\n\n经 ████、████ 与 ███ 批准，终结巡航协议被列为 III 级封存技术，并在一定程度上限制热核引擎在发展中世界的推广。任何试图启动该协议的船只都必须在进入撞击轨道前彻底摧毁。</DMSE_Occultech_TerminalCruise.description>
+  <DMSE_Occultech_TerminalCruise.discoveredLetterTitle>封存档案 III：终结巡航</DMSE_Occultech_TerminalCruise.discoveredLetterTitle>
+  <DMSE_Occultech_TerminalCruise.discoveredLetterText>研究人员利用收集到的资料，完成了封存技术的解码。这是隐藏在航路主机当中的应急协议：让转移飞船的航路主机规划一条撞入星球的终结航线。\n\n研究完成后，搭载足够运作中核热推进器的飞船，其转移控制台便能规划终结巡航，驱使整艘船撞向地表。\n\n舰队封存是因为它让一船人得以左右一整个世界的存续，当然的世界也不会坐以待毙。</DMSE_Occultech_TerminalCruise.discoveredLetterText>
+
+</LanguageData>

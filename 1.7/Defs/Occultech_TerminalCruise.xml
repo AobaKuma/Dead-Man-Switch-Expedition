@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ============================================================= -->
+  <!-- 終結巡航：封存檔案 III 級（隱匿級，DMS_Occulted）               -->
+  <!-- 放在 DMS 的 Occultech 分頁 (5, 3)，零點能基礎 (5, 2) 的下方。   -->
+  <!-- 完成前轉移控制台不提供「規劃終結巡航」，已排定的撞擊計畫也會被   -->
+  <!-- 整備檢查擋下（TransferPlanningUtility.ImpactResearched）。      -->
+  <!-- 完成即觸發 DMS 的隱匿級制裁：永久敵對、襲擊、追殺、連坐。        -->
+  <!-- ============================================================= -->
+  <ResearchProjectDef>
+    <defName>DMSE_Occultech_TerminalCruise</defName>
+    <label>terminal cruise</label>
+    <description>A flight protocol that strips every safety interlock from a transfer ship's route computer. The fusion core is driven past its rated output so that the nuclear thermal engines accelerate at full power toward the planet below. The ship and whatever body it is pushing become a kinetic weapon that strikes the planet's surface, leaving damage no terraforming program can ever heal.\nIn the conflict between colonial world ██ and ████, another colonial world in the same star system, ██, a heavily fortified asteroid, was towed onto an impact trajectory by a transfer ship and erased every sign of life on ████.\n\nApproved by ████, ████ and ███, the terminal cruise protocol is designated class III sealed technology, and the spread of nuclear thermal engines to developing worlds is restricted to a degree. Any vessel attempting to activate the protocol is to be completely destroyed before it enters an impact trajectory.</description>
+    <tab>DMS_ExpeditionalKnowledge</tab>
+    <knowledgeCategory>DMS_Occulted</knowledgeCategory>
+    <knowledgeCost>1500</knowledgeCost>
+    <techLevel>Spacer</techLevel>
+    <researchViewX>5.00</researchViewX>
+    <researchViewY>3.00</researchViewY>
+    <prerequisites>
+      <li>DMS_Occultech_QubitDecryption</li>
+      <li>DMSE_Aerospace</li>
+    </prerequisites>
+    <discoveredLetterTitle>Sealed file III: terminal cruise</discoveredLetterTitle>
+    <discoveredLetterText>Using the data they have gathered, researchers have finished decoding the sealed technology. It is an emergency protocol hidden inside the route computer, one that lets a transfer ship's route computer plot a terminal course into the planet.\n\nOnce this research is complete, the transfer console of a ship with enough working nuclear thermal thrusters can plan a terminal cruise and drive the entire ship into the surface.\n\nThe fleets sealed it because it lets one crew decide whether an entire world survives. Of course, the world will not simply wait for its end.</discoveredLetterText>
+  </ResearchProjectDef>
+
+</Defs>

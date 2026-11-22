@@ -230,6 +230,36 @@
                     <aimedBurstShotCount>5</aimedBurstShotCount>
                 </FireModes>
             </li>
-        </operations>
+        
+            <!-- 雷射標定器：不造成傷害，投射物是 DMSE 自己的 Projectile_LaserDesignator（CE 的自動補丁也會跳過它）。
+                 刻意保留原版 Verb_Shoot（CE 彈藥會把標定換成真子彈），只補 CE 的重量體積、瞄準數值與近戰。 -->
+            <li Class="PatchOperationAdd">
+                <xpath>Defs/ThingDef[defName="DMSE_Gun_LaserDesignator"]/statBases</xpath>
+                <value>
+                    <Bulk>3</Bulk>
+                    <SightsEfficiency>2</SightsEfficiency>
+                    <ShotSpread>0.01</ShotSpread>
+                    <SwayFactor>0.9</SwayFactor>
+                </value>
+            </li>
+            <li Class="PatchOperationReplace">
+                <xpath>Defs/ThingDef[defName="DMSE_Gun_LaserDesignator"]/tools</xpath>
+                <value>
+                    <tools>
+                        <li Class="CombatExtended.ToolCE">
+                            <label>grip</label>
+                            <capacities>
+                                <li>Blunt</li>
+                            </capacities>
+                            <power>2</power>
+                            <cooldownTime>1.54</cooldownTime>
+                            <armorPenetrationBlunt>0.555</armorPenetrationBlunt>
+                            <linkedBodyPartsGroup>Grip</linkedBodyPartsGroup>
+                        </li>
+                    </tools>
+                </value>
+            </li>
+
+		</operations>
     </Operation>
 </Patch>

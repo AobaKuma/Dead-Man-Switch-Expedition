@@ -53,7 +53,7 @@ namespace DMSE
                 {
                     if (maxDistance > 0)
                     {
-                        GenDraw.DrawWorldRadiusRing(origin, maxDistance, CompPilotConsole.GetThrusterRadiusMat(origin));
+                        TransferRangeRing.Draw(origin, maxDistance, CompPilotConsole.GetThrusterRadiusMat(origin));
                     }
                 },
                 true,
@@ -105,11 +105,28 @@ namespace DMSE
 
         // ── 撞擊飛行（設計稿 §9） ────────────────────────────────────────────
 
-        /// <summary>船上運作中的撞擊用引擎達門檻時才提供撞擊飛行（與舊版模式選單相同，未達門檻時不顯示）。</summary>
+        /// <summary>
+        /// 完成 III 級封存檔案「終結巡航」且船上運作中的撞擊用引擎達門檻時才提供撞擊飛行（未達條件時不顯示）。
+        /// </summary>
         public static bool ImpactAvailable(CompTransferConsole console)
         {
             TransferShipSurvey survey = console.Survey;
-            return survey != null && survey.operationalImpactEngines >= TransferFlightMath.Tuning.impactMinEngines;
+            return ImpactResearched && survey != null && survey.operationalImpactEngines >= TransferFlightMath.Tuning.impactMinEngines;
+        }
+
+        private static ResearchProjectDef impactResearch;
+
+        /// <summary>III 級封存檔案「終結巡航」（DMSE_Occultech_TerminalCruise）是否已完成；Def 不存在時不設限。</summary>
+        public static bool ImpactResearched
+        {
+            get
+            {
+                if (impactResearch == null)
+                {
+                    impactResearch = DefDatabase<ResearchProjectDef>.GetNamedSilentFail("DMSE_Occultech_TerminalCruise");
+                }
+                return impactResearch == null || impactResearch.IsFinished;
+            }
         }
 
         /// <summary>確認視窗（6 秒後才能確認）→ 世界地圖選地表撞擊點 → <see cref="Dialog_TransferPlan"/>。</summary>
@@ -151,7 +168,7 @@ namespace DMSE
                 {
                     if (maxDistance > 0)
                     {
-                        GenDraw.DrawWorldRadiusRing(origin, maxDistance, CompPilotConsole.GetThrusterRadiusMat(origin));
+                        TransferRangeRing.Draw(origin, maxDistance, CompPilotConsole.GetThrusterRadiusMat(origin));
                     }
                 },
                 true,

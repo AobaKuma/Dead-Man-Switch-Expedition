@@ -229,31 +229,48 @@ namespace DMSE
             foreach (Building b in map.listerBuildings.allBuildingsNonColonist)
             {
                 if (b.Faction != enemy || b.Destroyed || !IsAmmoTurret(b)) continue;
-                CompRefuelable ammo = b.TryGetComp<CompRefuelable>();
-                if (ammo?.Props.fuelFilter == null || ammo.Props.fuelFilter.AllowedDefCount == 0) continue;
-                if (ammo.IsFull || ammo.FuelPercentOfMax >= supply.refillBelowPercent) continue;
-                // 上一批補給還在等守軍搬／搬運中：不要重複空投。
-                if (pendingTurretRefuels.Any(e => e.turret == b)) continue;
 
-                ThingDef fuelDef = ammo.Props.fuelFilter.AnyAllowedDef;
-                int count = FuelItemsToRefill(ammo, supply.refillToPercent);
-                if (fuelDef == null || count <= 0) continue;
-
-                List<Thing> dropped = new List<Thing>();
-                IntVec3 cell = MissileBaseSupplyUtility.Drop(map, b.Position, fuelDef, count, enemy, dropped);
-                if (!cell.IsValid || dropped.Count == 0) continue;
-
-                pendingTurretRefuels.Add(new PendingTurretRefuel
+                // 一座砲塔可能有兩種彈藥：CompRefuelable（原版／DMSE 的末端攔截彈藥）與相容層彈匣（CE 的 CompAmmoUser）。
+                for (int pass = 0; pass < 2; pass++)
                 {
-                    turret = b,
-                    fuel = dropped,
-                    readyTick = now + Mathf.Max(0, supply.haulDelayTicks)
-                });
+                    bool magazine = pass == 1;
+                    ThingDef fuelDef;
+                    int count;
+                    if (!magazine)
+                    {
+                        CompRefuelable ammo = b.TryGetComp<CompRefuelable>();
+                        if (ammo?.Props.fuelFilter == null || ammo.Props.fuelFilter.AllowedDefCount == 0) continue;
+                        if (ammo.IsFull || ammo.FuelPercentOfMax >= supply.refillBelowPercent) continue;
+                        fuelDef = ammo.Props.fuelFilter.AnyAllowedDef;
+                        count = FuelItemsToRefill(ammo, supply.refillToPercent);
+                    }
+                    else
+                    {
+                        if (CombatCompat.Active == null
+                            || !CombatCompat.Active.TryGetMagazineRefill(b, supply.refillBelowPercent, supply.refillToPercent, out fuelDef, out count))
+                            continue;
+                    }
+                    // 上一批補給還在等守軍搬／搬運中：不要重複空投。
+                    if (pendingTurretRefuels.Any(e => e.turret == b && e.magazine == magazine)) continue;
+                    if (fuelDef == null || count <= 0) continue;
 
-                turrets++;
-                rounds += count;
-                lastFuel = fuelDef;
-                if (!lookAt.IsValid) lookAt = cell;
+                    List<Thing> dropped = new List<Thing>();
+                    IntVec3 cell = MissileBaseSupplyUtility.Drop(map, b.Position, fuelDef, count, enemy, dropped);
+                    if (!cell.IsValid || dropped.Count == 0) continue;
+
+                    pendingTurretRefuels.Add(new PendingTurretRefuel
+                    {
+                        turret = b,
+                        fuel = dropped,
+                        readyTick = now + Mathf.Max(0, supply.haulDelayTicks),
+                        magazine = magazine
+                    });
+
+                    turrets++;
+                    rounds += count;
+                    lastFuel = fuelDef;
+                    if (!lookAt.IsValid) lookAt = cell;
+                }
             }
 
             if (turrets == 0) return;
@@ -335,18 +352,27 @@ namespace DMSE
                     if (busy >= ammoSupply.maxHaulers) break;
                     if (now < e.readyTick) continue;
 
-                    CompRefuelable ammo = e.turret?.TryGetComp<CompRefuelable>();
-                    if (ammo == null || ammo.IsFull) continue;
+                    if (!(e.turret is Building turretBuilding) || StoreFull(e)) continue;
                     Thing fuel = e.fuel?.FirstOrDefault(IsHaulableOnMap);
                     if (fuel == null) continue;
 
                     Pawn p = FindHauler(crew, fuel, e.turret, PathEndMode.ClosestTouch, PathEndMode.Touch);
                     if (p == null) continue;
 
-                    // 原版裝填工作：撿起彈藥 → 走到砲塔 → 讀條 → CompRefuelable.Refuel。
-                    // playerForced 讓它在砲塔被關閉／指定拆卸時也照常裝填（這是守軍的例行補給）。
-                    Job job = JobMaker.MakeJob(JobDefOf.Refuel, e.turret, fuel);
-                    job.playerForced = true;
+                    Job job;
+                    if (e.magazine)
+                    {
+                        // 相容層彈匣（CE）：相容層的裝彈工作（CE 的 ReloadTurret：撿彈 → 走到砲塔 → 裝匣）。
+                        job = CombatCompat.Active?.MakeMagazineLoadJob(p, turretBuilding, fuel);
+                        if (job == null) continue;
+                    }
+                    else
+                    {
+                        // 原版裝填工作：撿起彈藥 → 走到砲塔 → 讀條 → CompRefuelable.Refuel。
+                        // playerForced 讓它在砲塔被關閉／指定拆卸時也照常裝填（這是守軍的例行補給）。
+                        job = JobMaker.MakeJob(JobDefOf.Refuel, e.turret, fuel);
+                        job.playerForced = true;
+                    }
                     if (!p.jobs.TryTakeOrderedJob(job, JobTag.Misc)) continue;
 
                     busy++;
@@ -367,7 +393,17 @@ namespace DMSE
             || def == DMSE_MissileJobDefOf.DMSE_HaulMissileToRack;
 
         private static bool IsRefuelJob(JobDef def)
-            => def == JobDefOf.Refuel || def == JobDefOf.RefuelAtomic;
+            => def == JobDefOf.Refuel || def == JobDefOf.RefuelAtomic
+            || (def != null && CombatCompat.Active != null && CombatCompat.Active.IsMagazineLoadJob(def));
+
+        /// <summary>這筆補給要裝的彈藥倉已滿（或已不存在）。</summary>
+        private static bool StoreFull(PendingTurretRefuel e)
+        {
+            if (e.magazine)
+                return !(e.turret is Building b) || CombatCompat.Active == null || CombatCompat.Active.MagazineFull(b);
+            CompRefuelable ammo = e.turret?.TryGetComp<CompRefuelable>();
+            return ammo == null || ammo.IsFull;
+        }
 
         /// <summary>在 <paramref name="crew"/> 裡找一個能現在去搬的人（可預約、可到達兩個目標）。</summary>
         private static Pawn FindHauler(List<Pawn> crew, Thing carryTarget, Thing destination,
@@ -554,9 +590,7 @@ namespace DMSE
                 }
                 e.fuel ??= new List<Thing>();
                 e.fuel.RemoveAll(t => t == null || t.Destroyed);
-                CompRefuelable ammo = e.turret.TryGetComp<CompRefuelable>();
-                if (ammo == null) { pendingTurretRefuels.RemoveAt(i); continue; }
-                if (ammo.IsFull || e.fuel.Count == 0) { pendingTurretRefuels.RemoveAt(i); continue; }
+                if (StoreFull(e) || e.fuel.Count == 0) { pendingTurretRefuels.RemoveAt(i); continue; }
                 // 還在補給艙裡（剛空投，艙門未開）、正被本陣營守軍搬著 → 繼續追蹤；
                 // 全部被搬離這張圖（存進容器、被玩家帶走）→ 不再追蹤。
                 if (!e.fuel.Any(t => IsHaulableOnMap(t) || IsInTransit(t))) pendingTurretRefuels.RemoveAt(i);
@@ -1010,9 +1044,13 @@ namespace DMSE
         public List<Thing> fuel;
         public int readyTick;
 
+        /// <summary>補的是相容層彈匣（CE 的 CompAmmoUser），不是 CompRefuelable。</summary>
+        public bool magazine;
+
         public void ExposeData()
         {
             Scribe_References.Look(ref turret, "turret");
+            Scribe_Values.Look(ref magazine, "magazine");
             Scribe_Collections.Look(ref fuel, "fuel", LookMode.Reference);
             Scribe_Values.Look(ref readyTick, "readyTick");
             if (Scribe.mode == LoadSaveMode.PostLoadInit)

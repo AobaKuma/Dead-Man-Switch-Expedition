@@ -138,6 +138,10 @@ namespace DMSE
                 if (plan.isImpact)
                 {
                     // 撞擊飛行（設計稿 §9）：撞擊用引擎門檻；撞擊點在計畫後可能出現地圖（例如任務據點被造訪）
+                    if (!TransferPlanningUtility.ImpactResearched)
+                    {
+                        issues.Add(new TransferIssue(TransferIssueSeverity.Error, TransferText.Key("DMSE.Transfer.Issue.ImpactResearch", console).Translate()));
+                    }
                     if (survey.operationalImpactEngines < tuning.impactMinEngines)
                     {
                         issues.Add(new TransferIssue(TransferIssueSeverity.Error, TransferText.Key("DMSE.Transfer.Issue.ImpactEngines", console).Translate(survey.operationalImpactEngines, tuning.impactMinEngines)));
