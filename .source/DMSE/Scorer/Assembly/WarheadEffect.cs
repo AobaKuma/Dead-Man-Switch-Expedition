@@ -101,7 +101,7 @@ namespace DMSE
         public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
         {
             if (map == null || !center.InBounds(map)) { return; }
-            GenExplosion.DoExplosion(center, map, N, DamageDefOf.Bomb, MissileImpactUtility.Instigator, groundDamageAmount);
+            MissileExplosion.Do(center, map, N, DamageDefOf.Bomb, MissileImpactUtility.Instigator, groundDamageAmount);
         }
     }
 
@@ -121,7 +121,7 @@ namespace DMSE
         public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
         {
             if (map == null || !center.InBounds(map)) { return; }
-            GenExplosion.DoExplosion(center, map, 2f, DamageDefOf.Bomb, MissileImpactUtility.Instigator, damageAmount);
+            MissileExplosion.Do(center, map, 2f, DamageDefOf.Bomb, MissileImpactUtility.Instigator, damageAmount);
         }
     }
 
@@ -160,7 +160,7 @@ namespace DMSE
         public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
         {
             if (map == null || !center.InBounds(map)) { return; }
-            GenExplosion.DoExplosion(center, map, N, DamageDefOf.EMP, MissileImpactUtility.Instigator, empDamage);
+            MissileExplosion.Do(center, map, N, DamageDefOf.EMP, MissileImpactUtility.Instigator, empDamage);
         }
     }
 
@@ -332,7 +332,8 @@ namespace DMSE
             foreach (Pawn pawn in map.mapPawns.AllPawnsSpawned)
             {
                 if (pawn.Dead || !pawn.Position.InHorDistOf(center, radius)) { continue; }
-                pawn.TakeDamage(new DamageInfo(DamageDefOf.Burn, pawnDamage, 0.3f, -1f, MissileImpactUtility.Instigator));
+                pawn.TakeDamage(new DamageInfo(DamageDefOf.Burn, pawnDamage,
+                    MissileExplosion.DirectArmorPenetration(0.3f, DamageDefOf.Burn), -1f, MissileImpactUtility.Instigator));
             }
 
             int cells = Mathf.Max(1, Mathf.RoundToInt(radius));
@@ -386,7 +387,8 @@ namespace DMSE
             int damage = BladeDamage(N);
             for (int i = 0; i < blades; i++)
             {
-                nearest.TakeDamage(new DamageInfo(DamageDefOf.Cut, damage, 0.6f, -1f, MissileImpactUtility.Instigator));
+                nearest.TakeDamage(new DamageInfo(DamageDefOf.Cut, damage,
+                    MissileExplosion.DirectArmorPenetration(0.6f, DamageDefOf.Cut), -1f, MissileImpactUtility.Instigator));
                 if (nearest.Dead) { break; }
             }
         }

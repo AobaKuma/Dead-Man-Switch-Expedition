@@ -62,7 +62,7 @@ namespace DMSE
         public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
         {
             if (map == null || !center.InBounds(map)) { return; }
-            GenExplosion.DoExplosion(center, map, N, DamageDefOf.Bomb, MissileImpactUtility.Instigator, damageAmount);
+            MissileExplosion.Do(center, map, N, DamageDefOf.Bomb, MissileImpactUtility.Instigator, damageAmount);
         }
     }
 
@@ -92,7 +92,7 @@ namespace DMSE
         {
             if (map == null || !center.InBounds(map)) { return; }
             float radius = Radius(N);
-            GenExplosion.DoExplosion(center, map, radius, DamageDefOf.Bomb, MissileImpactUtility.Instigator,
+            MissileExplosion.Do(center, map, radius, DamageDefOf.Bomb, MissileImpactUtility.Instigator,
                 damageAmount, armorPenetration);
 
             // 取快照：傷害可能摧毀建築而改動格子上的物件清單。
@@ -141,7 +141,7 @@ namespace DMSE
             for (int i = 0; i < count; i++)
             {
                 IntVec3 c = CellFinder.RandomClosewalkCellNear(center, map, spreadRadius);
-                GenExplosion.DoExplosion(c, map, subRadius, DamageDefOf.Bomb, MissileImpactUtility.Instigator, subDamageAmount);
+                MissileExplosion.Do(c, map, subRadius, DamageDefOf.Bomb, MissileImpactUtility.Instigator, subDamageAmount);
             }
         }
     }
@@ -231,7 +231,7 @@ namespace DMSE
         public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
         {
             if (map == null || !center.InBounds(map)) { return; }
-            GenExplosion.DoExplosion(center, map, N, DamageDefOf.Vaporize, MissileImpactUtility.Instigator, damageAmount);
+            MissileExplosion.Do(center, map, N, DamageDefOf.Vaporize, MissileImpactUtility.Instigator, damageAmount);
         }
     }
 
@@ -273,7 +273,7 @@ namespace DMSE
         public override void Apply(float N, IntVec3 center, Map map, Faction attacker)
         {
             if (map == null || !center.InBounds(map)) { return; }
-            GenExplosion.DoExplosion(center, map, N, DamageDefOf.EMP, MissileImpactUtility.Instigator, empDamage);
+            MissileExplosion.Do(center, map, N, DamageDefOf.EMP, MissileImpactUtility.Instigator, empDamage);
         }
     }
 
@@ -307,7 +307,7 @@ namespace DMSE
                     DamageInfo dinfo = new DamageInfo(
                         DamageDefOf.Stab,
                         damagePerHit,
-                        armorPenetration,
+                        MissileExplosion.DirectArmorPenetration(armorPenetration, DamageDefOf.Stab),
                         instigator: MissileImpactUtility.Instigator,
                         hitPart: null,
                         weapon: null);

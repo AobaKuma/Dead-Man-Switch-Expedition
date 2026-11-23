@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+	<!-- ==================================================================
+	     導彈爆炸的 CE 化（2026-11-23）。
+
+	     導彈的爆炸都在 DMSE 的 C# 裡呼叫（MissileImpactUtility、WarheadEffect、PayloadEffect），
+	     CE 下由 DMSE_CE.dll 改成 CE 的 ExplosionCE＋CE 彈片（DMSE.MissileExplosion → MissileExplosionCE）：
+	       - 爆炸穿甲：沒有設定時用 CE 的傷害類型預設值（Bomb 62 MPa，同 CE 的砲彈）。
+	         原版下 DMSE 給的是「傷害 × 0.015」，CE 會讀成 1～6 MPa，打裝甲幾乎無效。
+	       - 彈片：Bomb 類爆炸依傷害自動丟出 Fragment_Large／Fragment_Small
+	         （比例同 CE 155 mm 榴彈：546 傷害 → 40 大＋80 小；上限 60 大＋120 小）。
+	       - 直接傷害（動能刀刃、鎢針套筒）：沒有設定時原版穿甲 × 25 換成 mm RHA。
+	     這裡只調整性質不同的部件。每個部件可用的欄位（DMSE.CE.ModExtension_CEExplosion）：
+	       armorPenetration（MPa，-1＝預設）、armorPenetrationFactor、directArmorPenetration、
+	       fragments（明確指定彈片，空清單＝不丟）、fragmentScale（自動彈片倍率，0＝不丟）、fragSpeedFactor。
+	     主爆炸依序讀戰鬥部→彈體；戰鬥部效果讀戰鬥部；酬載效果讀酬載。每個欄位取第一個有設定的部件；
+	     fragmentScale 同時縮放明確指定的彈片（例如溫壓戰鬥部 0 會讓任何彈體都不丟彈片）。
+
+	     彈體數值依原型飛彈的實際戰鬥部推估，換算成 CE 自己砲彈的刻度（2026-11-23）：
+	       - CE 砲彈的傷害約為 160×√(炸藥 kg)：81 mm（0.95 kg）156、120 mm（約 2.5 kg）237、155 mm（10.8 kg）546；
+	         ExplosionCE 的有效穿甲＝max(傷害×0.3, armorPenetration)。
+	         → 穿甲＝48×√(炸藥 kg TNT 當量)，夾在 [62, 320]（CE 的 Bomb 預設值到 BombSuper）。
+	           遊戲內的傷害與半徑不改（DMSE 的平衡），只讓穿甲反映真實裝藥量。
+	       - CE 砲彈的彈片數約為 20×√(彈殼鋼重 kg)：81 mm 41、120 mm 90、155 mm 120，約三分之一為大彈片。
+	         → 彈片＝20×√(形成破片的金屬 kg)；穿甲／半穿甲殼體大彈片比例較高，環形破片戰鬥部小彈片較多；
+	           上限 60 大＋120 小（彈片是真實投射物，太多會拖慢遊戲）。
+	       - 公開資料彼此出入大（例如 YJ-12 205～500 kg、Oniks 250～300 kg），取中間或較常見的值；
+	         炸藥量查不到時以戰鬥部重量的 40～50% 估計（註記「估」）。
+	     ================================================================== -->
+
+	<Operation Class="PatchOperationSequence">
+		<operations>
+
+			<!-- ==================== 彈體（主爆炸的實際戰鬥部）==================== -->
+
+			<!-- FIM-92 Stinger：3 kg 環形爆破破片戰鬥部，炸藥約 1 kg。穿甲 48×√1=48→下限 62；彈片 20×√2≈28 -->
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/DMSE.MissileBodyDef[defName="DMSE_MissileBody_Stinger"]</xpath>
+				<value>
+					<li Class="DMSE.CE.ModExtension_CEExplosion">
+						<armorPenetration>62</armorPenetration>
+						<fragments>
+							<Fragment_Large>7</Fragment_Large>
+							<Fragment_Small>21</Fragment_Small>
+						</fragments>
+					</li>
+				</value>
+			</li>
+			<!-- AIM-7F/M Sparrow：40 kg 環形爆破破片戰鬥部，炸藥約 15 kg TNT 當量。穿甲 48×√15=186；彈片 20×√25≈100 -->
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/DMSE.MissileBodyDef[defName="DMSE_MissileBody_Sparrow"]</xpath>
+				<value>
+					<li Class="DMSE.CE.ModExtension_CEExplosion">
+						<armorPenetration>186</armorPenetration>
+						<fragments>
+							<Fragment_Large>25</Fragment_Large>
+							<Fragment_Small>75</Fragment_Small>
+						</fragments>
+					</li>
+				</value>
+			</li>
+			<!-- AGM-65E/G Maverick：136 kg 穿甲爆破戰鬥部（WDU-24/B），炸藥約 39 kg。穿甲 48×√39=300；彈片 20×√97≈197 -->
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/DMSE.MissileBodyDef[defName="DMSE_MissileBody_Maverick"]</xpath>
+				<value>
+					<li Class="DMSE.CE.ModExtension_CEExplosion">
+						<armorPenetration>300</armorPenetration>
+						<fragments>
+							<Fragment_Large>60</Fragment_Large>
+							<Fragment_Small>108</Fragment_Small>
+						</fragments>
+					</li>
+				</value>
+			</li>
+			<!-- P-270 Moskit：320 kg 半穿甲高爆戰鬥部，炸藥估約 150 kg。穿甲 48×√150=588→上限 320；彈片 20×√170≈261 -->
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/DMSE.MissileBodyDef[defName="DMSE_MissileBody_Moskit"]</xpath>
+				<value>
+					<li Class="DMSE.CE.ModExtension_CEExplosion">
+						<armorPenetration>320</armorPenetration>
+						<fragments>
+							<Fragment_Large>60</Fragment_Large>
+							<Fragment_Small>120</Fragment_Small>
+						</fragments>
+					</li>
+				</value>
+			</li>
+			<!-- P-800 Oniks：250～300 kg 半穿甲高爆戰鬥部（取 250 kg），炸藥估約 100 kg。穿甲 48×√100=480→上限 320；彈片 20×√150≈245 -->
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/DMSE.MissileBodyDef[defName="DMSE_MissileBody_Oniks"]</xpath>
+				<value>
+					<li Class="DMSE.CE.ModExtension_CEExplosion">
+						<armorPenetration>320</armorPenetration>
+						<fragments>
+							<Fragment_Large>60</Fragment_Large>
+							<Fragment_Small>120</Fragment_Small>
+						</fragments>
+					</li>
+				</value>
+			</li>
+			<!-- YJ-12：205～500 kg 戰鬥部（各來源差異大，取 400 kg），炸藥估約 180 kg。穿甲 48×√180=644→上限 320；彈片 20×√220≈297 -->
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/DMSE.MissileBodyDef[defName="DMSE_MissileBody_Yj"]</xpath>
+				<value>
+					<li Class="DMSE.CE.ModExtension_CEExplosion">
+						<armorPenetration>320</armorPenetration>
+						<fragments>
+							<Fragment_Large>60</Fragment_Large>
+							<Fragment_Small>120</Fragment_Small>
+						</fragments>
+					</li>
+				</value>
+			</li>
+			<!-- OTR-21 Tochka：9N123F 482 kg 高爆破片戰鬥部，炸藥 162.5 kg，約 14,500 片破片。穿甲 48×√162.5=612→上限 320；彈片 20×√320≈358 -->
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/DMSE.MissileBodyDef[defName="DMSE_MissileBody_Tochka"]</xpath>
+				<value>
+					<li Class="DMSE.CE.ModExtension_CEExplosion">
+						<armorPenetration>320</armorPenetration>
+						<fragments>
+							<Fragment_Large>60</Fragment_Large>
+							<Fragment_Small>120</Fragment_Small>
+						</fragments>
+					</li>
+				</value>
+			</li>
+			<!-- Shahed-136：約 50 kg 高爆破片戰鬥部（48.5 kg），炸藥約 28 kg。穿甲 48×√28=254；彈片 20×√20≈89 -->
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/DMSE.MissileBodyDef[defName="DMSE_MissileBody_Shahed"]</xpath>
+				<value>
+					<li Class="DMSE.CE.ModExtension_CEExplosion">
+						<armorPenetration>254</armorPenetration>
+						<fragments>
+							<Fragment_Large>30</Fragment_Large>
+							<Fragment_Small>60</Fragment_Small>
+						</fragments>
+					</li>
+				</value>
+			</li>
+			<!-- 肩射輕型巡飛彈（Switchblade 300／Hero-30 級）：約 0.5 kg 戰鬥部。穿甲 48×√0.3=26→下限 62；彈片 20×√0.2≈9 -->
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/DMSE.MissileBodyDef[defName="DMSE_MissileBody_Sabre"]</xpath>
+				<value>
+					<li Class="DMSE.CE.ModExtension_CEExplosion">
+						<armorPenetration>62</armorPenetration>
+						<fragments>
+							<Fragment_Large>2</Fragment_Large>
+							<Fragment_Small>7</Fragment_Small>
+						</fragments>
+					</li>
+				</value>
+			</li>
+			<!-- 輕型通用彈體（Hellfire 級）：約 9 kg 戰鬥部，炸藥約 4 kg。穿甲 48×√4=96；彈片 20×√5≈45 -->
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/DMSE.MissileBodyDef[defName="DMSE_MissileBody_Light"]</xpath>
+				<value>
+					<li Class="DMSE.CE.ModExtension_CEExplosion">
+						<armorPenetration>96</armorPenetration>
+						<fragments>
+							<Fragment_Large>15</Fragment_Large>
+							<Fragment_Small>30</Fragment_Small>
+						</fragments>
+					</li>
+				</value>
+			</li>
+			<!-- 反艦巡飛彈（Harop 級）：約 23 kg 戰鬥部，炸藥估約 10 kg。穿甲 48×√10=152；彈片 20×√13≈72 -->
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/DMSE.MissileBodyDef[defName="DMSE_MissileBody_Loiter"]</xpath>
+				<value>
+					<li Class="DMSE.CE.ModExtension_CEExplosion">
+						<armorPenetration>152</armorPenetration>
+						<fragments>
+							<Fragment_Large>24</Fragment_Large>
+							<Fragment_Small>48</Fragment_Small>
+						</fragments>
+					</li>
+				</value>
+			</li>
+			<!-- 先進通用彈體（JAGM／Brimstone 級多用途戰鬥部）：約 9～11 kg，炸藥估約 5 kg。穿甲 48×√5=107；彈片 20×√6≈49 -->
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/DMSE.MissileBodyDef[defName="DMSE_MissileBody_AdvancedLight"]</xpath>
+				<value>
+					<li Class="DMSE.CE.ModExtension_CEExplosion">
+						<armorPenetration>107</armorPenetration>
+						<fragments>
+							<Fragment_Large>16</Fragment_Large>
+							<Fragment_Small>33</Fragment_Small>
+						</fragments>
+					</li>
+				</value>
+			</li>
+			<!-- 先進匿蹤巡弋飛彈（JASSM 級）：WDU-42/B 450 kg 穿透戰鬥部，炸藥 109 kg AFX-757。穿甲 48×√109=501→上限 320；彈片 20×√340≈369 -->
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/DMSE.MissileBodyDef[defName="DMSE_MissileBody_AdvancedCruise"]</xpath>
+				<value>
+					<li Class="DMSE.CE.ModExtension_CEExplosion">
+						<armorPenetration>320</armorPenetration>
+						<fragments>
+							<Fragment_Large>60</Fragment_Large>
+							<Fragment_Small>120</Fragment_Small>
+						</fragments>
+					</li>
+				</value>
+			</li>
+			<!-- 先進彈道飛彈（傳統精確打擊彈頭）：估約 500 kg，炸藥約 250 kg。穿甲 48×√250=759→上限 320；彈片 20×√250≈316 -->
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/DMSE.MissileBodyDef[defName="DMSE_MissileBody_AdvancedBallistic"]</xpath>
+				<value>
+					<li Class="DMSE.CE.ModExtension_CEExplosion">
+						<armorPenetration>320</armorPenetration>
+						<fragments>
+							<Fragment_Large>60</Fragment_Large>
+							<Fragment_Small>120</Fragment_Small>
+						</fragments>
+					</li>
+				</value>
+			</li>
+			<!-- 早期液體彈道火箭（V-2）：1000 kg 戰鬥部，910 kg 阿馬托炸藥，薄鋼殼以爆震為主。穿甲 48×√820=1375→上限 320；彈片 20×√40≈126 -->
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/DMSE.MissileBodyDef[defName="DMSE_MissileBody_LegacyBallistic"]</xpath>
+				<value>
+					<li Class="DMSE.CE.ModExtension_CEExplosion">
+						<armorPenetration>320</armorPenetration>
+						<fragments>
+							<Fragment_Large>42</Fragment_Large>
+							<Fragment_Small>85</Fragment_Small>
+						</fragments>
+					</li>
+				</value>
+			</li>
+			<!-- 早期脈衝噴射巡飛彈（V-1）：850 kg 阿馬托炸藥，薄鋼板彈頭，破片少。穿甲 48×√770=1332→上限 320；彈片 20×√25≈100 -->
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/DMSE.MissileBodyDef[defName="DMSE_MissileBody_LegacyLoiter"]</xpath>
+				<value>
+					<li Class="DMSE.CE.ModExtension_CEExplosion">
+						<armorPenetration>320</armorPenetration>
+						<fragments>
+							<Fragment_Large>30</Fragment_Large>
+							<Fragment_Small>70</Fragment_Small>
+						</fragments>
+					</li>
+				</value>
+			</li>
+			<!-- 早期無線電指令攔截彈（Wasserfall）：235～306 kg 液體炸藥爆震戰鬥部。穿甲 48×√200=679→上限 320；彈片 20×√50≈141 -->
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/DMSE.MissileBodyDef[defName="DMSE_MissileBody_LegacyInterceptor"]</xpath>
+				<value>
+					<li Class="DMSE.CE.ModExtension_CEExplosion">
+						<armorPenetration>320</armorPenetration>
+						<fragments>
+							<Fragment_Large>47</Fragment_Large>
+							<Fragment_Small>95</Fragment_Small>
+						</fragments>
+					</li>
+				</value>
+			</li>
+
+			<!-- ==================== 部件 ==================== -->
+
+			<!-- 鎢芯穿甲戰鬥部：彈體穿甲 ×1.5（彈芯先穿入再引爆）、彈片減半（能量集中在彈芯）。
+			     用倍率而不是絕對值，大型彈體的實際裝藥量才不會被蓋掉。 -->
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/DMSE.MissilePartDef[defName="DMSE_Ballistic_Warhead_TungstenPenetrator" or defName="DMSE_AdvCruise_Warhead_Penetrator"]</xpath>
+				<value>
+					<li Class="DMSE.CE.ModExtension_CEExplosion">
+						<armorPenetrationFactor>1.5</armorPenetrationFactor>
+						<fragmentScale>0.5</fragmentScale>
+					</li>
+				</value>
+			</li>
+
+			<!-- 反碉堡酬載：原版設定 100% 穿甲，CE 下給接近重型爆破彈的穿甲。 -->
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/DMSE.MissilePartDef[defName="DMSE_Payload_BunkerBuster" or defName="DMSE_Ballistic_Payload_BunkerBuster" or defName="DMSE_AdvCruise_Payload_BunkerBuster"]</xpath>
+				<value>
+					<li Class="DMSE.CE.ModExtension_CEExplosion">
+						<armorPenetration>120</armorPenetration>
+						<fragmentScale>0.75</fragmentScale>
+					</li>
+				</value>
+			</li>
+
+			<!-- 子母／多彈頭酬載：一次打出很多次小爆炸，每次的彈片減半，避免投射物數量爆量。 -->
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/DMSE.MissilePartDef[defName="DMSE_Ballistic_Payload_Cluster" or defName="DMSE_AdvCruise_Payload_Submunition" or defName="DMSE_AdvBallistic_Payload_MIRV"]</xpath>
+				<value>
+					<li Class="DMSE.CE.ModExtension_CEExplosion">
+						<fragmentScale>0.5</fragmentScale>
+					</li>
+				</value>
+			</li>
+
+			<!-- 空爆戰鬥部：以破片殺傷為主。 -->
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/DMSE.MissilePartDef[defName="DMSE_Ballistic_Warhead_Airburst"]</xpath>
+				<value>
+					<li Class="DMSE.CE.ModExtension_CEExplosion">
+						<fragmentScale>1.5</fragmentScale>
+					</li>
+				</value>
+			</li>
+
+			<!-- 燃燒戰鬥部：殼體薄，彈片少。 -->
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/DMSE.MissilePartDef[defName="DMSE_Light_Warhead_Incendiary" or defName="DMSE_LegacyBallistic_Warhead_Trialen"]</xpath>
+				<value>
+					<li Class="DMSE.CE.ModExtension_CEExplosion">
+						<fragmentScale>0.5</fragmentScale>
+					</li>
+				</value>
+			</li>
+
+			<!-- 溫壓戰鬥部：靠壓力與燃燒，不丟彈片。 -->
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/DMSE.MissilePartDef[defName="DMSE_AdvLight_Warhead_Thermobaric"]</xpath>
+				<value>
+					<li Class="DMSE.CE.ModExtension_CEExplosion">
+						<fragmentScale>0</fragmentScale>
+					</li>
+				</value>
+			</li>
+
+			<!-- 動能刀刃戰鬥部：刀刃是精確殺傷（直接傷害，銳器 mm RHA），主爆炸彈片減半。 -->
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/DMSE.MissilePartDef[defName="DMSE_AdvLight_Warhead_Kinetic"]</xpath>
+				<value>
+					<li Class="DMSE.CE.ModExtension_CEExplosion">
+						<directArmorPenetration>20</directArmorPenetration>
+						<fragmentScale>0.5</fragmentScale>
+					</li>
+				</value>
+			</li>
+
+			<!-- 鎢針破片套筒：每發鎢針是直接傷害（銳器 mm RHA，約等於 CE 的 AP 步槍彈）。 -->
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/DMSE.MissilePartDef[defName="DMSE_AdvLight_Payload_FragSleeve"]</xpath>
+				<value>
+					<li Class="DMSE.CE.ModExtension_CEExplosion">
+						<directArmorPenetration>12</directArmorPenetration>
+					</li>
+				</value>
+			</li>
+
+			<!-- ==================== 直接生成的原版爆炸投射物 ====================
+			     這三種由 DMSE 直接生成（子母戰鬥部的子彈、肩射防空飛彈的兩種彈），爆炸走原版／FFF 的 Projectile，
+			     穿甲讀 def 的 armorPenetrationBase：給 CE Bomb 的預設 62 MPa。不丟 CE 彈片。 -->
+			<li Class="PatchOperationAdd">
+				<xpath>Defs/ThingDef[defName="DMSE_Bullet_AirburstFrag" or defName="DMSE_Projectile_Stinger" or defName="DMSE_Projectile_Sabre"]/projectile</xpath>
+				<value>
+					<armorPenetrationBase>62</armorPenetrationBase>
+				</value>
+			</li>
+
+		</operations>
+	</Operation>
+</Patch>

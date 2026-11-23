@@ -70,11 +70,18 @@ namespace DMSE
             {
                 float N = config.PayloadCapacity;
 
-                // 主彈體爆炸（Body explosion：基礎參數 + Warhead 數值修正）
-                GenExplosion.DoExplosion(center, map, config.ExplosionRadius, config.DamageDef, instigator, config.DamageAmount);
+                MissilePartDef warheadPart = config.PartFor(MissilePartCategory.Warhead);
+                MissilePartDef payloadPart = config.PartFor(MissilePartCategory.Payload);
+
+                // 主彈體爆炸（Body explosion：基礎參數 + Warhead 數值修正）。來源＝戰鬥部、彈體（戰鬥相容層讀它們的設定）。
+                var oldSources = MissileExplosion.SetSources(warheadPart, config.body);
+                try
+                {
+                    MissileExplosion.Do(center, map, config.ExplosionRadius, config.DamageDef, instigator, config.DamageAmount);
+                }
+                finally { MissileExplosion.RestoreSources(oldSources); }
 
                 // 戰鬥部特效（WarheadEffect class）
-                MissilePartDef warheadPart = config.PartFor(MissilePartCategory.Warhead);
                 var context = new Fortified.MissileImpactContext
                 {
                     Loadout = config,
@@ -85,41 +92,47 @@ namespace DMSE
                     Instigator = instigator,
                     ApproachHeading = approachHeading,
                 };
-                warheadPart?.warheadEffect?.Apply(context);
+                oldSources = MissileExplosion.SetSources(warheadPart);
+                try { warheadPart?.warheadEffect?.Apply(context); }
+                finally { MissileExplosion.RestoreSources(oldSources); }
 
                 // 載荷效果（PayloadEffect class）
-                MissilePartDef payloadPart = config.PartFor(MissilePartCategory.Payload);
-                if (payloadPart?.payloadEffect != null)
+                oldSources = MissileExplosion.SetSources(payloadPart);
+                try
                 {
-                    payloadPart.payloadEffect.Apply(context);
-                }
-                else if (payloadPart != null)
-                {
-                    // 向後相容：舊式數值欄位（payloadExplosionRadius 等）仍可使用。
-                    if (payloadPart.payloadExplosionRadius > 0f && payloadPart.payloadDamageDef != null)
+                    if (payloadPart?.payloadEffect != null)
                     {
-                        GenExplosion.DoExplosion(center, map, payloadPart.payloadExplosionRadius,
-                            payloadPart.payloadDamageDef, instigator,
-                            payloadPart.payloadDamageAmount > 0 ? payloadPart.payloadDamageAmount : -1);
+                        payloadPart.payloadEffect.Apply(context);
                     }
-                    if (payloadPart.payloadSpawnThing != null && Rand.Chance(payloadPart.payloadSpawnChance))
+                    else if (payloadPart != null)
                     {
-                        int spawnN = Mathf.Max(1, payloadPart.payloadSpawnCount);
-                        int spread = Mathf.Max(1, Mathf.RoundToInt(config.ExplosionRadius));
-                        for (int i = 0; i < spawnN; i++)
+                        // 向後相容：舊式數值欄位（payloadExplosionRadius 等）仍可使用。
+                        if (payloadPart.payloadExplosionRadius > 0f && payloadPart.payloadDamageDef != null)
                         {
-                            IntVec3 c = CellFinder.RandomClosewalkCellNear(center, map, spread);
-                            GenSpawn.Spawn(payloadPart.payloadSpawnThing, c, map);
+                            MissileExplosion.Do(center, map, payloadPart.payloadExplosionRadius,
+                                payloadPart.payloadDamageDef, instigator,
+                                payloadPart.payloadDamageAmount > 0 ? payloadPart.payloadDamageAmount : -1);
+                        }
+                        if (payloadPart.payloadSpawnThing != null && Rand.Chance(payloadPart.payloadSpawnChance))
+                        {
+                            int spawnN = Mathf.Max(1, payloadPart.payloadSpawnCount);
+                            int spread = Mathf.Max(1, Mathf.RoundToInt(config.ExplosionRadius));
+                            for (int i = 0; i < spawnN; i++)
+                            {
+                                IntVec3 c = CellFinder.RandomClosewalkCellNear(center, map, spread);
+                                GenSpawn.Spawn(payloadPart.payloadSpawnThing, c, map);
+                            }
                         }
                     }
                 }
+                finally { MissileExplosion.RestoreSources(oldSources); }
 
                 foreach (Fortified.MissileBehaviorProps behavior in config.BehaviorProps) { behavior.PostDetonate(context); }
             }
             else
             {
                 // 無設定時的後備爆炸。
-                GenExplosion.DoExplosion(center, map, 5f, DamageDefOf.Bomb, instigator);
+                MissileExplosion.Do(center, map, 5f, DamageDefOf.Bomb, instigator);
             }
 
             Flash(config, map);

@@ -215,6 +215,13 @@ namespace DMSE.CE
 
         public bool IsMagazineLoadJob(JobDef def) => def == CE_JobDefOf.ReloadTurret;
 
+        // ── 導彈爆炸與直接傷害 ──
+
+        public bool TryDoMissileExplosion(MissileExplosionArgs args) => MissileExplosionCE.TryDo(args);
+
+        public float MissileDirectArmorPenetration(float vanillaPen, DamageDef damageDef, IReadOnlyList<Def> sources)
+            => MissileExplosionCE.DirectPen(vanillaPen, damageDef, sources);
+
         public bool TurretUsable(Pawn pawn, Building turret)
         {
             CompAmmoUser ammo = AmmoOf(turret);

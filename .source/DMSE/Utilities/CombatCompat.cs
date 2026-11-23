@@ -70,6 +70,76 @@ namespace DMSE
 
         /// <summary>NPC 炮手是否值得去操作這座相容層砲塔（彈匣空且附近沒彈時回 false）。</summary>
         bool TurretUsable(Pawn pawn, Building turret);
+
+        // ── 導彈爆炸與直接傷害 ──
+
+        /// <summary>
+        /// 由相容層執行一次導彈爆炸（CE：ExplosionCE 的穿甲＋CE 彈片）。回 false 時呼叫端照原版 GenExplosion 處理。
+        /// </summary>
+        bool TryDoMissileExplosion(MissileExplosionArgs args);
+
+        /// <summary>導彈效果直接造成傷害（不經爆炸）時使用的穿甲值；<paramref name="vanillaPen"/> 是原版刻度的設定值。</summary>
+        float MissileDirectArmorPenetration(float vanillaPen, DamageDef damageDef, System.Collections.Generic.IReadOnlyList<Def> sources);
+    }
+
+    /// <summary>一次導彈爆炸的參數（<see cref="MissileExplosion.Do"/> 傳給相容層）。</summary>
+    public class MissileExplosionArgs
+    {
+        public IntVec3 center;
+        public Map map;
+        public float radius;
+        public DamageDef damageDef;
+        public Thing instigator;
+        public int damageAmount;
+        /// <summary>原版刻度的穿甲（-1 = 未指定）。</summary>
+        public float armorPenetration = -1f;
+        /// <summary>造成這次爆炸的部件 def，越前面越具體（戰鬥部／酬載部件在前，彈體在後）；相容層從這裡讀各自的設定。</summary>
+        public System.Collections.Generic.IReadOnlyList<Def> sources;
+    }
+
+    /// <summary>
+    /// 導彈的爆炸與直接傷害一律經過這裡：原版照舊呼叫 GenExplosion，戰鬥相容層（CE）可接手改成自己的爆炸與彈片。
+    /// 「來源」是目前正在套用的導彈部件（<see cref="MissileImpactUtility"/> 在主爆炸、戰鬥部、酬載前後設定），
+    /// 戰鬥部／酬載效果類別不必知道自己掛在哪個 def 上。
+    /// </summary>
+    public static class MissileExplosion
+    {
+        private static readonly Def[] NoSources = new Def[0];
+        private static System.Collections.Generic.IReadOnlyList<Def> currentSources = NoSources;
+
+        /// <summary>目前套用中的部件（沒有時為空清單）。</summary>
+        public static System.Collections.Generic.IReadOnlyList<Def> CurrentSources => currentSources;
+
+        /// <summary>設定目前的來源部件（null 項會略過）；回傳舊值，呼叫端在 finally 用 <see cref="RestoreSources"/> 還原。</summary>
+        public static System.Collections.Generic.IReadOnlyList<Def> SetSources(params Def[] sources)
+        {
+            System.Collections.Generic.IReadOnlyList<Def> old = currentSources;
+            System.Collections.Generic.List<Def> list = new System.Collections.Generic.List<Def>();
+            if (sources != null) { foreach (Def d in sources) { if (d != null) list.Add(d); } }
+            currentSources = list;
+            return old;
+        }
+
+        public static void RestoreSources(System.Collections.Generic.IReadOnlyList<Def> old) => currentSources = old ?? NoSources;
+
+        public static void Do(IntVec3 center, Map map, float radius, DamageDef damageDef, Thing instigator,
+            int damageAmount = -1, float armorPenetration = -1f)
+        {
+            if (CombatCompat.Active != null && damageDef != null)
+            {
+                MissileExplosionArgs args = new MissileExplosionArgs
+                {
+                    center = center, map = map, radius = radius, damageDef = damageDef, instigator = instigator,
+                    damageAmount = damageAmount, armorPenetration = armorPenetration, sources = currentSources,
+                };
+                if (CombatCompat.Active.TryDoMissileExplosion(args)) return;
+            }
+            GenExplosion.DoExplosion(center, map, radius, damageDef, instigator, damageAmount, armorPenetration);
+        }
+
+        /// <summary>直接傷害（刀刃、鎢針等）的穿甲：原版回傳 <paramref name="vanillaPen"/>，相容層換成自己的刻度。</summary>
+        public static float DirectArmorPenetration(float vanillaPen, DamageDef damageDef)
+            => CombatCompat.Active != null ? CombatCompat.Active.MissileDirectArmorPenetration(vanillaPen, damageDef, currentSources) : vanillaPen;
     }
 
     public static class CombatCompat
