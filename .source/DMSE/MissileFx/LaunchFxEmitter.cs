@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.Sound;
 
 namespace DMSE
 {
@@ -59,6 +60,8 @@ namespace DMSE
         private bool hasPose;
         private Vector3 launchPos;
         private bool ignited, separated, hot;
+        /// <summary>發射井冷射：閉氣托盤已脫落（讀檔後已過時機也視為已脫落）。</summary>
+        private bool palletDropped;
         private int ticksSinceIgnition = -1;
         /// <summary>熱射點火時決定的地面雲煙舌（之後的持續揚塵沿用同一組，形狀才連貫）。</summary>
         private GroundLobe[] lobes;
@@ -124,6 +127,7 @@ namespace DMSE
             seed = parent.thingIDNumber;
             // 讀檔後才建立：已經點過火的不再重播點火與彈射。
             if (ticksSinceSpawn - ignitionDelay > 1) { ignited = true; }
+            if (ticksSinceSpawn > 1 && ticksSinceSpawn - ignitionDelay > -profile.palletDropLeadTicks) { palletDropped = true; }
             if (profile.boosterTicks > 0 && ticksSinceSpawn - ignitionDelay > profile.boosterTicks) { separated = true; }
         }
 
@@ -185,7 +189,16 @@ namespace DMSE
             Rand.PushState(Gen.HashCombineInt(seed, ticksSinceSpawn));
             try
             {
-                if (ticksSinceSpawn == 1 && ignitionDelay > 0 && visible) { EjectionPuff(canvas); }
+                if (ticksSinceSpawn == 1 && ignitionDelay > 0 && visible) { EjectionPuff(map, canvas); }
+                if (visible && ignitionDelay > 0 && ticksSinceSpawn <= profile.ejectionColumnTicks)
+                {
+                    EjectionColumn(canvas, ticksSinceSpawn);
+                }
+                if (!palletDropped && profile.palletDebris > 0 && ignitionDelay > 0 && t >= -profile.palletDropLeadTicks)
+                {
+                    palletDropped = true;
+                    DropPallet(map);
+                }
                 if (!ignited && t >= 1)
                 {
                     ignited = true;
@@ -199,13 +212,13 @@ namespace DMSE
                     Separate(map, canvas, visible);
                 }
                 UpdateTurn(canvas, visible, t);
-                if (visible && hot && lobes != null && ticksSinceIgnition > 0 && ticksSinceIgnition <= GroundFeedTicks
+                if (visible && (hot || profile.downwash) && lobes != null && ticksSinceIgnition > 0 && ticksSinceIgnition <= GroundFeedTicks
                     && ticksSinceIgnition % GroundFeedInterval == 0 && curThrust > 0.3f
                     && LaunchFxBudget.Pressure(canvas.Smoke.Count) < 2 && Rand.Chance(LaunchFxBudget.Density == 0 ? 0.5f : 1f))
                 {
                     // 持續揚塵：越晚越慢、越靠近發射點（彈體升高，噴流打到地面的力道變小）。
                     float late = (float)ticksSinceIgnition / GroundFeedTicks;
-                    GroundCloudPuff(canvas, GroundCloudPlacement(lobes), 1f - 0.6f * late);
+                    GroundCloudPuff(canvas, GroundCloudPlacement(lobes), (1f - 0.6f * late) * (hot ? 1f : profile.downwashStrength));
                 }
                 if (visible) { EmitSmoke(map, canvas); }
                 else { streamActive = false; }
@@ -611,32 +624,165 @@ namespace DMSE
 
         // ---- 一次性爆發（§4.4） ----
 
-        /// <summary>冷射彈射：發射點一團白色燃氣（沒有火焰）。</summary>
-        private void EjectionPuff(FxCanvas canvas)
+        /// <summary>
+        /// 冷射彈射：發射點一團白色燃氣（沒有火焰）。
+        /// 發射井（<see cref="LaunchFxProfileDef.ejectionColumnTicks"/> &gt; 0）：燃氣發生器在井底點火——井口閃一下橘光、鏡頭震一下、悶響，
+        /// 燃氣被井壁擠成一圈貼地往外衝（地面雲貼圖），上升的燃氣柱另由 <see cref="EjectionColumn"/> 逐 tick 補。
+        /// </summary>
+        private void EjectionPuff(Map map, FxCanvas canvas)
         {
             int n = LaunchFxBudget.BurstCount(profile.ejectionPuffs, canvas.Smoke.Count);
-            Burst(canvas, launchPos, n, 0.18f, new FloatRange(1.5f, 2.5f), 1.6f, 240, DMSE_DefOf.DMSE_LaunchSmokeLight,
-                new Color(1f, 1f, 1f, 0.5f), new Color(1f, 1f, 1f, 0.5f), Vector3.zero, 0f);
+            if (profile.ejectionColumnTicks <= 0)
+            {
+                Burst(canvas, launchPos, n, 0.18f, new FloatRange(1.5f, 2.5f), 1.6f, 240, DMSE_DefOf.DMSE_LaunchSmokeLight,
+                    new Color(1f, 1f, 1f, 0.5f), new Color(1f, 1f, 1f, 0.5f), Vector3.zero, 0f);
+                return;
+            }
+            if (profile.ejectionFlash > 0f)
+            {
+                canvas.Emit(DMSE_DefOf.DMSE_InterceptFlash, launchPos, profile.ejectionFlash * Scale, 0f, new Color(1f, 0.8f, 0.55f, 1f));
+            }
+            if (profile.ejectionShake > 0f) { Find.CameraDriver.shaker.DoShake(profile.ejectionShake); }
+            profile.ejectionSound?.PlayOneShot(new TargetInfo(launchPos.ToIntVec3(), map));
+            // 貼地燃氣環：均勻一圈（井口是圓的），速度與大小各自隨機，邊緣才不會是一個正圓。
+            for (int i = 0; i < n; i++)
+            {
+                float heading = (360f / Mathf.Max(1, n)) * i + Rand.Range(-12f, 12f);
+                Vector3 dir = MissileMapEntryUtility.HeadingVector(heading);
+                canvas.Smoke.Spawn(new SmokePuffSpec
+                {
+                    def = DMSE_DefOf.DMSE_LaunchGroundCloud,
+                    pos = launchPos + dir * Rand.Range(0.6f, 1.2f) * Scale,
+                    velocity = dir * profile.ejectionRingSpeed * Rand.Range(0.7f, 1.3f) * Scale,
+                    size = profile.ejectionColumnSize.RandomInRange * Scale * 0.9f,
+                    growth = 1.4f,
+                    lifeTicks = Mathf.Max(30, Mathf.RoundToInt(profile.groundCloudLifeTicks * LaunchFxBudget.LifeFactor * Rand.Range(0.8f, 1.2f))),
+                    drag = 0.07f,
+                    buoyancy = 0.001f,
+                    windFactor = 0.002f,
+                    hotColor = profile.ejectionHotColor,
+                    color = ShadeTint(profile.ejectionColor, 0.15f, Rand.Range(-1f, 1f)),
+                    hotTicks = 8,
+                    rotation = heading + Rand.Range(-20f, 20f),
+                    spin = Rand.Range(-0.2f, 0.2f)
+                });
+                burstPuffs++;
+            }
+        }
+
+        /// <summary>
+        /// 發射井燃氣柱：彈射段每 tick 從井口往上（畫面 +z）噴燃氣，初速隨時間降到三成；
+        /// 剛噴出時帶燃氣發生器的熱色，彈體就在這團雲裡被推出井口。煙量受 <see cref="LaunchFxBudget"/> 限制。
+        /// </summary>
+        private void EjectionColumn(FxCanvas canvas, int tick)
+        {
+            int pressure = LaunchFxBudget.Pressure(canvas.Smoke.Count);
+            if (pressure >= 2) { return; }
+            float rate = profile.ejectionColumnPuffs * (pressure >= 1 ? 0.5f : 1f);
+            int n = Mathf.FloorToInt(rate) + (Rand.Chance(rate - Mathf.Floor(rate)) ? 1 : 0);
+            float k = Mathf.Clamp01((tick - 1f) / Mathf.Max(1, profile.ejectionColumnTicks));
+            float speed = profile.ejectionColumnSpeed * Mathf.Lerp(1f, 0.3f, k) * Scale;
+            for (int i = 0; i < n; i++)
+            {
+                Vector3 jitter = new Vector3(Rand.Range(-0.45f, 0.45f), 0f, Rand.Range(-0.3f, 0.3f)) * Scale;
+                canvas.Smoke.Spawn(new SmokePuffSpec
+                {
+                    def = DMSE_DefOf.DMSE_LaunchSmokeLight,
+                    pos = launchPos + jitter,
+                    velocity = new Vector3(Rand.Range(-0.05f, 0.05f) * Scale, 0f, speed * Rand.Range(0.7f, 1.15f)) + jitter * 0.04f,
+                    size = profile.ejectionColumnSize.RandomInRange * Scale * Mathf.Lerp(0.8f, 1.15f, k),
+                    growth = 2.2f,
+                    lifeTicks = Mathf.Max(30, Mathf.RoundToInt(profile.trailLifeTicks * 0.75f * LaunchFxBudget.LifeFactor * Rand.Range(0.85f, 1.15f))),
+                    drag = 0.06f,
+                    buoyancy = profile.buoyancy,
+                    windFactor = 0.002f,
+                    hotColor = profile.ejectionHotColor,
+                    color = ShadeTint(profile.ejectionColor, 0.25f, Rand.Range(-1f, 1f)),
+                    hotTicks = 10,
+                    rotation = Rand.Range(0f, 360f),
+                    spin = Rand.Range(-1f, 1f)
+                });
+                burstPuffs++;
+            }
+        }
+
+        /// <summary>
+        /// 閉氣托盤（與井口護蓋）脫落：在彈體底部（噴口）的位置生成殘骸，往兩側甩開後掉回井邊，
+        /// 落點離井口 1.5 格以上，不會砸在井上。純視覺殘骸，沿用攔截殘骸的落地處理。
+        /// </summary>
+        private void DropPallet(Map map)
+        {
+            if (map == null) { return; }
+            float height = Mathf.Max(1f, curNozzle.z - launchPos.z);
+            for (int i = 0; i < profile.palletDebris; i++)
+            {
+                float side = (i % 2 == 0 ? 1f : -1f) * Rand.Range(0.6f, 1f);
+                Vector3 throwDir = new Vector3(side, 0f, Rand.Range(-0.4f, 0.4f)).normalized;
+                var s = new DebrisState
+                {
+                    ground = new Vector3(curNozzle.x, 0f, launchPos.z) + throwDir * 1.5f,
+                    height = height,
+                    velocity = throwDir * Rand.Range(0.04f, 0.08f),
+                    verticalSpeed = Rand.Range(0.02f, 0.06f),
+                    rotation = Rand.Range(0f, 360f),
+                    spin = Rand.Range(-10f, 10f),
+                    mass = Rand.Range(1.5f, 2.5f)
+                };
+                if (!s.ground.ToIntVec3().InBounds(map)) { continue; }
+                InterceptDebrisChunk.SpawnChunk(map, s, profile.palletScale * Scale, false, null, profile.palletColor, profile.palletTexPath);
+                debrisSpawned++;
+            }
         }
 
         private void Ignite(Map map, FxCanvas canvas)
         {
             Vector3 back = -Forward(curRot);
             canvas.Emit(DMSE_DefOf.DMSE_InterceptFlash, curNozzle, profile.ignitionFlash * Scale * (hot ? 1f : 0.6f), 0f, new Color(1f, 0.95f, 0.8f, 1f));
-            if (hot)
+            if (hot || profile.downwash)
             {
                 // 熱射：地面雲沿地面衝出幾道不等長的煙舌，加上發射點一團濃核心（§0.6）；之後 GroundFeedTicks 內持續補揚塵。
-                int n = LaunchFxBudget.BurstCount(profile.groundCloudCount, canvas.Smoke.Count);
+                // 冷射＋下洗（發射井）：空中點火時噴口離地很近，尾焰打到地面，掀起較弱的同款地面雲。
+                float strength = hot ? 1f : profile.downwashStrength;
+                int n = LaunchFxBudget.BurstCount(Mathf.RoundToInt(profile.groundCloudCount * strength), canvas.Smoke.Count);
                 lobes = PlanLobes(MissileMapEntryUtility.HeadingOf(back));
-                for (int i = 0; i < n; i++) { GroundCloudPuff(canvas, GroundCloudPlacement(lobes), 1f); }
+                for (int i = 0; i < n; i++) { GroundCloudPuff(canvas, GroundCloudPlacement(lobes), strength); }
             }
-            else
+            if (!hot)
             {
                 // 冷射：空中點火，噴口一圈小煙環。
                 int n = LaunchFxBudget.BurstCount(profile.airIgnitionRing, canvas.Smoke.Count);
                 Burst(canvas, curNozzle, n, 0.12f * Scale, new FloatRange(0.8f, 1.4f) * Scale, 1.8f, 200, DMSE_DefOf.DMSE_LaunchSmokeLight,
                     profile.smokeHotColor, profile.smokeColor, Vector3.zero, 0f);
+                if (profile.ignitionShockRing > 0)
+                {
+                    // 點火震波：一圈薄而快的白環，往外衝後被阻力停住（像點火瞬間把周圍燃氣雲推開）。
+                    int m = LaunchFxBudget.BurstCount(profile.ignitionShockRing, canvas.Smoke.Count);
+                    for (int i = 0; i < m; i++)
+                    {
+                        float heading = (360f / m) * i + Rand.Range(-8f, 8f);
+                        Vector3 dir = MissileMapEntryUtility.HeadingVector(heading);
+                        canvas.Smoke.Spawn(new SmokePuffSpec
+                        {
+                            def = DMSE_DefOf.DMSE_LaunchSmokeLight,
+                            pos = curNozzle + dir * 0.4f * Scale,
+                            velocity = dir * profile.ignitionShockSpeed * Rand.Range(0.85f, 1.15f) * Scale,
+                            size = Rand.Range(0.7f, 1.1f) * Scale,
+                            growth = 2.6f,
+                            lifeTicks = Mathf.Max(30, Mathf.RoundToInt(150 * LaunchFxBudget.LifeFactor * Rand.Range(0.85f, 1.15f))),
+                            drag = 0.12f,
+                            buoyancy = 0.001f,
+                            windFactor = 0.002f,
+                            hotColor = profile.smokeHotColor,
+                            color = new Color(1f, 1f, 1f, profile.smokeColor.a * 0.8f),
+                            hotTicks = 6,
+                            rotation = Rand.Range(0f, 360f),
+                            spin = Rand.Range(-1f, 1f)
+                        });
+                        burstPuffs++;
+                    }
+                }
             }
+            if (profile.ignitionShake > 0f) { Find.CameraDriver.shaker.DoShake(profile.ignitionShake); }
             // 夜間：整圖微亮一下（同攔截空爆，強度很小）。
             if (map.skyManager.CurSkyGlow < 0.35f)
             {
@@ -808,7 +954,7 @@ namespace DMSE
 
             if (ticksSinceIgnition >= 0 && ticksSinceIgnition < profile.groundGlowTicks && profile.groundGlow > 0f)
             {
-                float k = (1f - (ticksSinceIgnition + alpha) / profile.groundGlowTicks) * thrust * (hot ? 1f : 0.4f);
+                float k = (1f - (ticksSinceIgnition + alpha) / profile.groundGlowTicks) * thrust * (hot ? 1f : profile.coldGlowFactor);
                 if (k > 0.01f)
                 {
                     Color c = profile.flameColor;

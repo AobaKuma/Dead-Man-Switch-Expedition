@@ -196,7 +196,7 @@
   <DMSE.Missile.NeedResources>装配所需：{0}</DMSE.Missile.NeedResources>
   <DMSE.Missile.ReadyToAssemble>资源已备齐，确认后开始装配</DMSE.Missile.ReadyToAssemble>
   <DMSE.Missile.NoResources>没有可用于装配的资源</DMSE.Missile.NoResources>
-  <DMSE.Missile.EditingSlot>正在编辑架上第 1 枚（共 {0} 枚）</DMSE.Missile.EditingSlot>
+  <DMSE.Missile.EditingSlot>正在编辑架上第 {0} 枚（共 {1} 枚）</DMSE.Missile.EditingSlot>
   <DMSE.Missile.ConfirmAssembly>加入装配队列</DMSE.Missile.ConfirmAssembly>
   <DMSE.Missile.AssemblyQueued>已加入队列，殖民者即将开始装配</DMSE.Missile.AssemblyQueued>
   <DMSE.Missile.ResetToCurrent>还原为已装配设定</DMSE.Missile.ResetToCurrent>
@@ -306,5 +306,24 @@
   <!-- PlaceWorker -->
   <DMSE.PlaceWorker.TooCloseSameLayer>与 {0} 太近（同一放置图层）。</DMSE.PlaceWorker.TooCloseSameLayer>
 
+  <!-- 裝配分頁：切換導彈、方案載入／保存；彈道發射井井蓋 -->
+  <DMSE.Missile.PreviousMissile>架上上一枚</DMSE.Missile.PreviousMissile>
+  <DMSE.Missile.NextMissile>架上下一枚</DMSE.Missile.NextMissile>
+  <DMSE.Missile.SaveDesignTip>把正在编辑的构型存成装配方案。方案与组装台共用，跨存档保留。</DMSE.Missile.SaveDesignTip>
+  <DMSE.Missile.LoadDesignTip>把已存的方案载入这枚导弹。只能载入相同弹体的方案；部件仍需小人装配。</DMSE.Missile.LoadDesignTip>
+  <DMSE.Missile.DesignBodyMismatch>弹体不同：{0}</DMSE.Missile.DesignBodyMismatch>
+  <DMSE.Missile.ApplyDesignThis>应用到这一枚</DMSE.Missile.ApplyDesignThis>
+  <DMSE.Missile.ApplyDesignAll>应用到架上全部 {0} 枚同型导弹</DMSE.Missile.ApplyDesignAll>
+  <DMSE.Missile.DesignApplied>已将方案「{0}」载入{1}。</DMSE.Missile.DesignApplied>
+  <DMSE.SiloHatch.KeepClosed>保持井盖关闭</DMSE.SiloHatch.KeepClosed>
+  <DMSE.SiloHatch.KeepClosedDesc>开启时，除了发射期间，井盖一律关闭。井盖完全关闭时，发射井受到的伤害降为 {0}。\n\n发射时会先开盖，井盖全开后导弹才升空，几秒后再关回。\n\n井盖没有完全打开时无法装配导弹。</DMSE.SiloHatch.KeepClosedDesc>
+  <DMSE.SiloHatch.Closed>井盖：关闭（受到伤害 {0}）</DMSE.SiloHatch.Closed>
+  <DMSE.SiloHatch.Open>井盖：开启</DMSE.SiloHatch.Open>
+  <DMSE.SiloHatch.Opening>井盖：开启中</DMSE.SiloHatch.Opening>
+  <DMSE.SiloHatch.Closing>井盖：关闭中</DMSE.SiloHatch.Closing>
+  <DMSE.SiloHatch.StatLabel>井盖关闭时受到的伤害</DMSE.SiloHatch.StatLabel>
+  <DMSE.SiloHatch.StatDesc>井盖完全关闭时，发射井受到的伤害占正常伤害的比例。井盖开关途中或发射后开启期间不生效。</DMSE.SiloHatch.StatDesc>
 
+  <DMSE.SiloHatch.OpeningForLaunch>井盖：发射前开盖中</DMSE.SiloHatch.OpeningForLaunch>
+  <DMSE.SiloHatch.AssemblyBlocked>井盖关闭中：打开井盖才能装配导弹。</DMSE.SiloHatch.AssemblyBlocked>
 </LanguageData>

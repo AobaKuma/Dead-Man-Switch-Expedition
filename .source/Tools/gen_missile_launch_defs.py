@@ -37,7 +37,7 @@ SPECS = [
     ("Sabre",             "DMSE_SkyFaller_Loiter",           "Things/Missile/S570/skyFaller",               ("cold", 6)),    # tube ejection, wings unfold
     ("LegacyInterceptor", "DMSE_SkyFaller_Interceptor",      "Things/Missile/Rheintochter/skyFaller",       ("hot", 1.0)),   # boosted SAM
     ("AdvancedLight",     "DMSE_SkyFaller_LightMissile",     "Things/Missile/Hellfire/skyFaller_incoming",  ("hot", 0.75)),  # small rail missile
-    ("AdvancedBallistic", "DMSE_SkyFaller_BallisticMissile", "Things/Missile/Minuteman/skyFaller_incoming", ("cold", 20)),   # silo ejection
+    ("AdvancedBallistic", "DMSE_SkyFaller_BallisticMissile", "Things/Missile/Minuteman/skyFaller_incoming", ("cold", 75)),   # silo ejection: delay = emergeTicks (ignite while hovering above the mouth)
     ("AdvancedCruise",    "DMSE_SkyFaller_CruiseMissile",    "Things/Missile/Tomahawk/skyFaller_incoming",  ("cold", 40)),   # canister ejection
     ("Stinger",           "DMSE_SkyFaller_Interceptor",      "Things/Weapons/DMSE_Projectile_Stinger",      ("cold", 8)),    # MANPADS soft launch
     ("Maverick",          "DMSE_SkyFaller_LightMissile",     "Things/Missile/AGM65/skyFaller",              ("hot", 0.85)),
@@ -58,7 +58,7 @@ FX_PROFILES = {
     "Sabre": "Manpads",
     "LegacyInterceptor": "SolidBooster",
     "AdvancedLight": "SolidBooster",
-    "AdvancedBallistic": "ColdVls",
+    "AdvancedBallistic": "SiloColdLaunch",   # strategic silo: gas-generator ejection, pallet drop, air ignition with downwash
     "AdvancedCruise": "ColdVls",
     "Stinger": "Manpads",
     "Maverick": "SolidBooster",
@@ -79,6 +79,12 @@ FLIGHT_OVERRIDES = {
 # Per-body flight overrides (docs/導彈轉向特效_實作規格.md §4): (tag, value, comment). A tag the template already has is
 # replaced in place, anything else is appended; the comment (or None) goes on the line before the tag.
 BODY_FLIGHT_OVERRIDES = {
+    "AdvancedBallistic": [
+        ("emergeTicks", "75", "出井：燃氣把彈體從井裡推出（只畫井口以上），減速懸停後點火；鼻尖／彈尾比例量自 Minuteman 貼圖（1024 px 中 2–998）。"),
+        ("emergeNoseFraction", "0.498", None),
+        ("emergeTailFraction", "0.475", None),
+        ("emergeClearance", "0.8", None),
+    ],
     "Oniks": [
         ("rotationCurve", "<points>\n<li>(0,0)</li>\n<li>(0.35,-3)</li>\n<li>(0.65,-2)</li>\n<li>(1,0)</li>\n</points>",
          "影片裡是筆直往上爬：升空段幾乎不後仰（原本 -25° 會讓彈體歪、煙柱折成 S 形），轉向交給巡航段。"),
@@ -95,6 +101,8 @@ BODY_FLIGHT_OVERRIDES = {
 # Per-body launch comp overrides: replaced in place when the template comp already has the tag, appended otherwise.
 LAUNCH_EFFECT_OVERRIDES = {
     "Shahed": {"burnDurationTicks": "30", "effectScale": "0.35"},
+    # The nozzle sits at the tail: 998 of 1024 px on Minuteman skyFaller_incoming at drawSize 6.43 (3.05 cells behind the centre).
+    "AdvancedBallistic": {"offsetY": "-3.05"},
     # The art is drawn so both sprites line up; the sustainer's tail is 138 of 512 px below the sprite centre at drawSize 3.71.
     # offsetY: the main plume starts at the booster bottom, 506 of 512 px (-1.81 cells) on skyFaller.png.
     "Oniks": {"offsetY": "-1.81", "separatedTexPath": "Things/Missile/Oniks/skyFaller_incoming", "separatedOffsetY": "-0.95"},

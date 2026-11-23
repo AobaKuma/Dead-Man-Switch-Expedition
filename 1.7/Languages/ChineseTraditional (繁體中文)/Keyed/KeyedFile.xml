@@ -298,7 +298,7 @@ Click to cycle through the remaining targets. -->
   <!-- EN: No resources available to assemble -->
   <DMSE.Missile.NoResources>沒有可用於裝配的資源</DMSE.Missile.NoResources>
   <!-- EN: Editing missile 1 of {0} in rack -->
-  <DMSE.Missile.EditingSlot>正在編輯架上第 1 枚（共 {0} 枚）</DMSE.Missile.EditingSlot>
+  <DMSE.Missile.EditingSlot>正在編輯架上第 {0} 枚（共 {1} 枚）</DMSE.Missile.EditingSlot>
   <!-- EN: Queue for assembly -->
   <DMSE.Missile.ConfirmAssembly>加入裝配佇列</DMSE.Missile.ConfirmAssembly>
   <!-- EN: Assembly queued: colonists will begin shortly -->
@@ -502,5 +502,24 @@ Click to cycle through the remaining targets. -->
   <!-- EN: Too close to {0} (same placement layer). -->
   <DMSE.PlaceWorker.TooCloseSameLayer>與 {0} 太近。</DMSE.PlaceWorker.TooCloseSameLayer>
 
+  <!-- 裝配分頁：切換導彈、方案載入／保存；彈道發射井井蓋 -->
+  <DMSE.Missile.PreviousMissile>架上上一枚</DMSE.Missile.PreviousMissile>
+  <DMSE.Missile.NextMissile>架上下一枚</DMSE.Missile.NextMissile>
+  <DMSE.Missile.SaveDesignTip>把正在編輯的構型存成裝配方案。方案與組裝台共用，跨存檔保留。</DMSE.Missile.SaveDesignTip>
+  <DMSE.Missile.LoadDesignTip>把已存的方案載入這枚導彈。只能載入相同彈體的方案；部件仍需小人裝配。</DMSE.Missile.LoadDesignTip>
+  <DMSE.Missile.DesignBodyMismatch>彈體不同：{0}</DMSE.Missile.DesignBodyMismatch>
+  <DMSE.Missile.ApplyDesignThis>套用到這一枚</DMSE.Missile.ApplyDesignThis>
+  <DMSE.Missile.ApplyDesignAll>套用到架上全部 {0} 枚同型導彈</DMSE.Missile.ApplyDesignAll>
+  <DMSE.Missile.DesignApplied>已將方案「{0}」載入{1}。</DMSE.Missile.DesignApplied>
+  <DMSE.SiloHatch.KeepClosed>保持井蓋關閉</DMSE.SiloHatch.KeepClosed>
+  <DMSE.SiloHatch.KeepClosedDesc>開啟時，除了發射期間，井蓋一律關閉。井蓋完全關閉時，發射井受到的傷害降為 {0}。\n\n發射時會先開蓋，井蓋全開後導彈才升空，幾秒後再關回。\n\n井蓋沒有完全打開時無法裝配導彈。</DMSE.SiloHatch.KeepClosedDesc>
+  <DMSE.SiloHatch.Closed>井蓋：關閉（受到傷害 {0}）</DMSE.SiloHatch.Closed>
+  <DMSE.SiloHatch.Open>井蓋：開啟</DMSE.SiloHatch.Open>
+  <DMSE.SiloHatch.Opening>井蓋：開啟中</DMSE.SiloHatch.Opening>
+  <DMSE.SiloHatch.Closing>井蓋：關閉中</DMSE.SiloHatch.Closing>
+  <DMSE.SiloHatch.StatLabel>井蓋關閉時受到的傷害</DMSE.SiloHatch.StatLabel>
+  <DMSE.SiloHatch.StatDesc>井蓋完全關閉時，發射井受到的傷害佔正常傷害的比例。井蓋開關途中或發射後開啟期間不生效。</DMSE.SiloHatch.StatDesc>
 
+  <DMSE.SiloHatch.OpeningForLaunch>井蓋：發射前開蓋中</DMSE.SiloHatch.OpeningForLaunch>
+  <DMSE.SiloHatch.AssemblyBlocked>井蓋關閉中：打開井蓋才能裝配導彈。</DMSE.SiloHatch.AssemblyBlocked>
 </LanguageData>

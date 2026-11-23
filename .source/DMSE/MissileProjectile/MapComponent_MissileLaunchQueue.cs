@@ -34,6 +34,9 @@ namespace DMSE
         public bool hasHeading;
         public float heading;
 
+        /// <summary>發射架有井蓋、下令時還沒全開：等井蓋全開才升空（不佔排程時段，到時再補間隔）。</summary>
+        public bool holdForHatch;
+
         public float? Heading => hasHeading ? heading : (float?)null;
 
         public void ExposeData()
@@ -55,6 +58,7 @@ namespace DMSE
             Scribe_Values.Look(ref hitChance, "hitChance", 0f);
             Scribe_Values.Look(ref hasHeading, "hasHeading", false);
             Scribe_Values.Look(ref heading, "heading", 0f);
+            Scribe_Values.Look(ref holdForHatch, "holdForHatch", false);
         }
     }
 
@@ -105,6 +109,17 @@ namespace DMSE
         public Thing Request(PendingMissileLaunch launch, out int spawnTick)
         {
             int now = Find.TickManager.TicksGame;
+            // 發射井：井蓋還沒全開就先開蓋，升空彈等全開才生成（預估時刻回報給打擊時間軸）。
+            CompSiloHatch hatch = launch.interceptor ? null : CompSiloHatch.For(launch.launcher);
+            int hold = hatch?.TicksUntilOpen ?? 0;
+            if (hold > 0)
+            {
+                launch.holdForHatch = true;
+                spawnTick = Mathf.Max(now + hold, lastSlotTick + SpacingTicks);
+                launch.tick = spawnTick;
+                pending.Add(launch);
+                return null;
+            }
             spawnTick = NextSlot(now);
             lastSlotTick = spawnTick;
             launch.tick = spawnTick;
@@ -121,6 +136,22 @@ namespace DMSE
             {
                 PendingMissileLaunch launch = pending[i];
                 if (launch.tick > now) { continue; }
+                if (launch.holdForHatch && !DepartureLost(launch))
+                {
+                    CompSiloHatch hatch = CompSiloHatch.For(launch.launcher);
+                    if (hatch != null && !hatch.FullyOpen)
+                    {
+                        hatch.EnsureLaunchOpen();
+                        continue;
+                    }
+                    // 井蓋開好了，但別的發射剛升空：補上最小間隔。
+                    if (now < lastSlotTick + SpacingTicks)
+                    {
+                        launch.tick = lastSlotTick + SpacingTicks;
+                        continue;
+                    }
+                    lastSlotTick = now;
+                }
                 pending.RemoveAt(i);
                 i--;
                 Spawn(launch);
@@ -135,6 +166,7 @@ namespace DMSE
                 // 排隊等升空的期間發射架被摧毀、拆除或易主：導彈沒離架，不能再從原地「憑空」升空。
                 // 世界航跡還沒加入世界，直接銷毀；陣地的火力通道與打擊任務的欄位都以 Destroyed 判定它已結束。
                 if (launch.worldObject != null && !launch.worldObject.Destroyed) { launch.worldObject.Destroy(); }
+                if (launch.launcher != null && !launch.launcher.Destroyed) { CompSiloHatch.For(launch.launcher)?.Notify_LaunchSpawned(); }
                 if (Prefs.DevMode)
                     Log.Message($"[DMSE LaunchQueue] 發射架已失去，取消一枚排隊中的 {launch.def.defName}。");
                 return null;
@@ -143,6 +175,7 @@ namespace DMSE
             if (launcher is ThingWithComps building && building.Spawned && building.Map == map)
             {
                 CompLaunchBackblast.TryTrigger(building);
+                if (!launch.interceptor) { CompSiloHatch.For(building)?.Notify_LaunchSpawned(); }
             }
             IntVec3 cell = launch.cell.InBounds(map) ? launch.cell : launch.cell.ClampInsideMap(map);
             return launch.interceptor

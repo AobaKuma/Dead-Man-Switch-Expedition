@@ -103,6 +103,57 @@
     <groundGlow>6</groundGlow>
   </DMSE.LaunchFxProfileDef>
 
+  <!--
+    戰略導彈發射井冷射（2026-11-23，參考真實井式「迫擊炮式」冷射）：
+      t=0   井底燃氣發生器點火：井口橘光一閃、鏡頭震動、悶響；燃氣被井壁擠成一圈貼地往外衝，
+            另有一道偏黃灰白的燃氣柱從井口往上噴（ejectionColumnTicks 內持續），彈體在雲裡被推出井口。
+      t≈-4  閉氣托盤脫落，往兩側甩開、掉回井邊（palletDebris）。
+      t=0'  空中點火（delayTicks 之後）：大閃光、震動、水平震波環（ignitionShockRing）；
+            噴口離地很近，尾焰打到地面掀起下洗塵雲（downwash），井口被照亮（coldGlowFactor）。
+      之後   第一級固體燃料：長焰、濃灰白煙柱。
+    井蓋的彈開由 CompSiloHatch 處理（偵測到導彈離井就彈開）。
+  -->
+  <DMSE.LaunchFxProfileDef>
+    <defName>DMSE_LaunchFx_SiloColdLaunch</defName>
+    <coreLength>6</coreLength>
+    <plumeWidth>1.8</plumeWidth>
+    <coreColor>(1, 0.98, 0.9, 1)</coreColor>
+    <flameColor>(1, 0.65, 0.28, 1)</flameColor>
+    <rampTicks>3</rampTicks>
+    <exhaustSpeed>0.42</exhaustSpeed>
+    <smokeSize>2</smokeSize>
+    <smokeGrowth>3.2</smokeGrowth>
+    <smokeShade>0.3</smokeShade>
+    <smokeColor>(1, 0.97, 0.92, 0.42)</smokeColor>
+    <trailLifeTicks>600</trailLifeTicks>
+    <buoyancy>0.0025</buoyancy>
+    <ejectionPuffs>16</ejectionPuffs>
+    <ejectionColumnTicks>75</ejectionColumnTicks>
+    <ejectionColumnPuffs>0.9</ejectionColumnPuffs>
+    <ejectionColumnSpeed>0.24</ejectionColumnSpeed>
+    <ejectionColumnSize>1.6~2.6</ejectionColumnSize>
+    <ejectionColor>(1, 0.94, 0.84, 0.45)</ejectionColor>
+    <ejectionHotColor>(1, 0.7, 0.45, 0.6)</ejectionHotColor>
+    <ejectionRingSpeed>0.2</ejectionRingSpeed>
+    <ejectionFlash>3</ejectionFlash>
+    <ejectionShake>0.6</ejectionShake>
+    <ejectionSound>Explosion_Thump</ejectionSound>
+    <palletDebris>2</palletDebris>
+    <palletDropLeadTicks>4</palletDropLeadTicks>
+    <palletScale>1.1</palletScale>
+    <airIgnitionRing>12</airIgnitionRing>
+    <ignitionFlash>7</ignitionFlash>
+    <ignitionShake>1.2</ignitionShake>
+    <ignitionShockRing>18</ignitionShockRing>
+    <ignitionShockSpeed>0.45</ignitionShockSpeed>
+    <downwash>true</downwash>
+    <downwashStrength>0.6</downwashStrength>
+    <groundCloudCount>16</groundCloudCount>
+    <groundCloudColor>(1, 0.95, 0.88, 0.5)</groundCloudColor>
+    <groundGlow>14</groundGlow>
+    <coldGlowFactor>1</coldGlowFactor>
+  </DMSE.LaunchFxProfileDef>
+
   <!-- 液體彈道（V2）：淡藍白焰、煙少而淺、地面雲大。 -->
   <DMSE.LaunchFxProfileDef>
     <defName>DMSE_LaunchFx_LiquidBallistic</defName>

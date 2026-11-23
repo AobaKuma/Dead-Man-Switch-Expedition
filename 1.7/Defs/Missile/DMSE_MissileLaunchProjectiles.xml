@@ -663,11 +663,18 @@
         </zPositionCurve>
         <handoffMaxCells>22</handoffMaxCells>
         <maxTurnRate>1.2</maxTurnRate>
+        <!-- 出井：燃氣把彈體從井裡推出（只畫井口以上），減速懸停後點火；鼻尖／彈尾比例量自 Minuteman 貼圖（1024 px 中 2–998）。 -->
+        <emergeTicks>75</emergeTicks>
+        <emergeNoseFraction>0.498</emergeNoseFraction>
+        <emergeTailFraction>0.475</emergeTailFraction>
+        <emergeClearance>0.8</emergeClearance>
       </li>
     </modExtensions>
     <comps>
       <li Class="DMSE.CompProperties_EffecterColdLaunch">
-        <delayTicks>20</delayTicks>
+        <delayTicks>75</delayTicks>
+        <!-- 噴口在彈尾（貼圖中心後 3.05 格）。 -->
+        <offsetY>-3.05</offsetY>
         <ignitionSound>DMSE_Missile_Flight</ignitionSound>
         <ExhaustFleck>DMS_Fleck_RocketFlame</ExhaustFleck>
         <ExhaustCurve>
@@ -687,7 +694,7 @@
           </points>
         </SmokeCurve>
         <launchEffectTrigger>DMS_LaunchDust_Recoilless</launchEffectTrigger>
-        <fxProfile>DMSE_LaunchFx_ColdVls</fxProfile>
+        <fxProfile>DMSE_LaunchFx_SiloColdLaunch</fxProfile>
       </li>
     </comps>
   </ThingDef>

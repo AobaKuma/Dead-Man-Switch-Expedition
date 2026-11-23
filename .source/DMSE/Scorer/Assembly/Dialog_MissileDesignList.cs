@@ -19,14 +19,17 @@ namespace DMSE
         private const float DeleteButSize = 36f;
 
         private readonly Action<MissileDesignBlueprint> onLoad;
+        // 呼叫端額外的載入條件（例如裝配分頁：彈體須與這枚導彈相同）；回傳不能載入的原因，null＝可載入。
+        private readonly Func<MissileDesignBlueprint, string> loadBlocker;
         private Vector2 scrollPosition;
 
         public override Vector2 InitialSize
             => new Vector2(Mathf.Min(620f, UI.screenWidth), Mathf.Min(700f, UI.screenHeight));
 
-        public Dialog_MissileDesignList(Action<MissileDesignBlueprint> onLoad)
+        public Dialog_MissileDesignList(Action<MissileDesignBlueprint> onLoad, Func<MissileDesignBlueprint, string> loadBlocker = null)
         {
             this.onLoad = onLoad;
+            this.loadBlocker = loadBlocker;
             doCloseButton = true;
             doCloseX = true;
             forcePause = true;
@@ -83,7 +86,9 @@ namespace DMSE
             TooltipHandler.TipRegion(delete, "Delete".Translate());
 
             Rect load = new Rect(delete.x - InteractButWidth, (row.height - DeleteButSize) / 2f, InteractButWidth, DeleteButSize);
-            if (Widgets.ButtonText(load, "Load".Translate(), active: bp.Usable) && bp.Usable)
+            string blocked = bp.Usable ? loadBlocker?.Invoke(bp) : bp.unusableReason;
+            bool loadable = blocked == null;
+            if (Widgets.ButtonText(load, "Load".Translate(), active: loadable) && loadable)
             {
                 onLoad?.Invoke(bp);
                 Close();
@@ -92,11 +97,11 @@ namespace DMSE
             MissileBodyDef body = DefDatabase<MissileBodyDef>.GetNamedSilentFail(bp.bodyDefName ?? string.Empty);
             if (body != null) { MissileDesignUI.DrawBodyIcon(new Rect(4f, 4f, 32f, 32f), body); }
             Rect text = new Rect(44f, 0f, load.x - 44f - DMSEUI.Gap, row.height);
-            GUI.color = bp.Usable ? Color.white : DMSEUI.Muted;
+            GUI.color = loadable ? Color.white : DMSEUI.Muted;
             Widgets.Label(new Rect(text.x, 2f, text.width, 22f), (bp.name ?? "?").Truncate(text.width));
             Text.Font = GameFont.Tiny;
-            GUI.color = bp.Usable ? DMSEUI.Muted : DMSEUI.Error;
-            string sub = bp.Usable ? (body?.LabelCap.ToString() ?? string.Empty) : "✕ " + bp.unusableReason;
+            GUI.color = loadable ? DMSEUI.Muted : DMSEUI.Error;
+            string sub = loadable ? (body?.LabelCap.ToString() ?? string.Empty) : "✕ " + blocked;
             Widgets.Label(new Rect(text.x, 22f, text.width, 16f), sub.Truncate(text.width));
             Text.Font = GameFont.Small;
             GUI.color = Color.white;

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
 using RimWorld.Planet;
@@ -63,7 +64,45 @@ namespace DMSE
         /// <summary>把升空彈的軌跡起點偏移到發射架實際繪製的彈藥槽位置。</summary>
         public void SetLaunchOffset(Vector3 offset) => launchOffset = offset;
 
-        private Vector3 AscentCenter => this.TrueCenter() + launchOffset;
+        private Vector3 AscentCenter => LaunchMouthCenter + MissileMapEntryUtility.HeadingVector(angle) * EmergeLift;
+
+        /// <summary>發射點（井口中心／彈藥槽）：沒有出井段時就是升空起點。</summary>
+        private Vector3 LaunchMouthCenter => this.TrueCenter() + launchOffset;
+
+        // ---- 出井（MissileFlightExtension.emergeTicks） ----
+        /// <summary>出井段已經過的 tick；到 emergeTicks 後才推進升空時間軸。</summary>
+        private int emergeAge;
+
+        /// <summary>正在出井（升空時間軸尚未開始）。</summary>
+        public bool Emerging => Flight.reversed && emergeAge < Flight.emergeTicks && !cruise.active;
+
+        /// <summary>彈體長邊的繪製尺寸（格）。</summary>
+        private float BodyLength => def.graphicData != null ? Mathf.Max(def.graphicData.drawSize.x, def.graphicData.drawSize.y) : 1f;
+
+        /// <summary>升空起點比發射點沿機身軸線高出多少格：彈尾離井口 emergeClearance（沒有出井段 = 0）。</summary>
+        private float EmergeLift
+        {
+            get
+            {
+                MissileFlightExtension f = Flight;
+                return f.emergeTicks > 0 ? f.emergeMouthOffset + f.emergeTailFraction * BodyLength + f.emergeClearance : 0f;
+            }
+        }
+
+        /// <summary>出井段的彈體中心：從「鼻尖在井口」沿軸線推到升空起點（<see cref="MissileFlightExtension.EmergeProgress"/>）。</summary>
+        private Vector3 EmergeDrawPos
+        {
+            get
+            {
+                MissileFlightExtension f = Flight;
+                Vector3 dir = MissileMapEntryUtility.HeadingVector(angle);
+                Vector3 mouth = LaunchMouthCenter + dir * f.emergeMouthOffset;
+                Vector3 start = mouth - dir * (f.emergeNoseFraction * BodyLength);
+                Vector3 end = AscentCenter;
+                float k = MissileFlightExtension.EmergeProgress((float)emergeAge / Mathf.Max(1, f.emergeTicks));
+                return Vector3.Lerp(start, end, k);
+            }
+        }
 
         public bool Cruising => cruise.active;
         public float CruiseNoseAngle => cruise.nose;
@@ -116,6 +155,7 @@ namespace DMSE
             get
             {
                 if (cruise.active) { return cruise.pos; }
+                if (Emerging) { return EmergeDrawPos; }
                 if (Flight.reversed)
                 {
                     return MissileDepartureKinematics.AscentDrawPos(Flight, AscentCenter, ticksToImpact, angle, LeaveMapAfterTicks);
@@ -143,6 +183,12 @@ namespace DMSE
             {
                 // 巡航：位置已含高度，機頭角為絕對方位（換算成相對 Rotation 的額外旋轉）。
                 extraRotation = cruise.nose - Rotation.AsAngle;
+                return;
+            }
+            if (Emerging)
+            {
+                // 出井：沿機身軸線直直推出，不套升空曲線。
+                extraRotation = angle - Rotation.AsAngle;
                 return;
             }
             if (f.reversed)
@@ -232,6 +278,13 @@ namespace DMSE
             }
             floatingSoundPlaying?.Maintain();
 
+            if (f.reversed && Emerging)
+            {
+                // 出井段：升空時間軸不動，只推進出井進度（彈體懸停點＝升空起點，結束時無縫接上）。
+                emergeAge++;
+                ageTicks++;
+                return;
+            }
             if (f.reversed)
             {
                 // 推進前的姿態：交接時用來求交接速度（與 SimulateDepartureTicks 同順序）。
@@ -428,7 +481,8 @@ namespace DMSE
             GetDrawPositionAndRotation(ref drawLoc, out float extraRotation);
             if (!WorldComponent_GravshipController.GravshipRenderInProgess)
             {
-                Graphic.Draw(drawLoc, flip ? Rotation.Opposite : Rotation, this, extraRotation);
+                if (Emerging) { DrawEmerging(drawLoc); }
+                else { Graphic.Draw(drawLoc, flip ? Rotation.Opposite : Rotation, this, extraRotation); }
             }
             Material shadow = ShadowMaterial;
             if (shadow != null)
@@ -438,6 +492,49 @@ namespace DMSE
                     ? launchCell.ToVector3Shifted().WithY(def.Altitude) : this.TrueCenter();
                 Skyfaller.DrawDropSpotShadow(shadowCenter, Rotation, shadow, Flight.shadowSize, ticksToImpact);
             }
+        }
+
+        /// <summary>
+        /// 出井段：只畫井口以上的部分。沿機身軸線算出井口落在貼圖的哪個比例，用裁掉彈尾那一截的四邊形（UV 同步裁切）來畫，
+        /// 所以彈體像是從井裡被推出來，而不是整枚浮在井上。
+        /// </summary>
+        private void DrawEmerging(Vector3 drawLoc)
+        {
+            MissileFlightExtension f = Flight;
+            Vector2 size = def.graphicData.drawSize;
+            Vector3 dir = MissileMapEntryUtility.HeadingVector(angle);
+            Vector3 mouth = LaunchMouthCenter + dir * f.emergeMouthOffset;
+            Vector3 rel = mouth - drawLoc;
+            rel.y = 0f;
+            // 井口在貼圖長軸上的位置（−0.5 = 彈尾端、0.5 = 鼻尖端）；它以下（彈尾側）的部分還在井裡。
+            float hidden = Mathf.Clamp01(Vector3.Dot(rel, dir) / Mathf.Max(0.01f, size.y) + 0.5f);
+            if (hidden >= 0.999f) { return; }
+            Material mat = Graphic.MatAt(Rotation, this);
+            Matrix4x4 matrix = Matrix4x4.TRS(drawLoc, Quaternion.AngleAxis(angle, Vector3.up), new Vector3(size.x, 1f, size.y));
+            Graphics.DrawMesh(ClippedPlane(hidden), matrix, mat, 0);
+        }
+
+        private const int ClipSteps = 128;
+        private static readonly Dictionary<int, Mesh> clippedPlanes = new Dictionary<int, Mesh>();
+
+        /// <summary>單位平面（同原版 plane：x、z ∈ [−0.5, 0.5]、機頭朝 +z）裁掉下方 <paramref name="hiddenFraction"/>，UV 一起裁。</summary>
+        private static Mesh ClippedPlane(float hiddenFraction)
+        {
+            int key = Mathf.Clamp(Mathf.RoundToInt(hiddenFraction * ClipSteps), 0, ClipSteps - 1);
+            if (clippedPlanes.TryGetValue(key, out Mesh mesh) && mesh != null) { return mesh; }
+            float v0 = (float)key / ClipSteps;
+            float z0 = v0 - 0.5f;
+            mesh = new Mesh
+            {
+                name = "DMSE_ClippedPlane_" + key,
+                vertices = new[] { new Vector3(-0.5f, 0f, z0), new Vector3(-0.5f, 0f, 0.5f), new Vector3(0.5f, 0f, 0.5f), new Vector3(0.5f, 0f, z0) },
+                uv = new[] { new Vector2(0f, v0), new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(1f, v0) },
+                triangles = new[] { 0, 1, 2, 0, 2, 3 }
+            };
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
+            clippedPlanes[key] = mesh;
+            return mesh;
         }
 
         // ====================================================================
@@ -460,6 +557,8 @@ namespace DMSE
             Scribe_Values.Look(ref launchCell, "launchCell", IntVec3.Invalid);
             Scribe_Values.Look(ref launchOffset, "launchOffset", Vector3.zero);
             Scribe_Values.Look(ref effectHoldTicks, "effectHoldTicks", int.MaxValue);
+            // 舊存檔沒有這個欄位：已在飛的導彈視為出井完成。
+            Scribe_Values.Look(ref emergeAge, "emergeAge", int.MaxValue);
             cruise.Expose();
         }
     }

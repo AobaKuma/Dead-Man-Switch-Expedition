@@ -42,6 +42,29 @@ namespace DMSE
         public int motesPerCell = 3;
         public float cameraShake;
 
+        // ---- 出井（發射井冷射，2026-11-23）----
+        // 升空時間軸開始前多一段「出井」：彈體從井內沿機身軸線被燃氣推出（只畫井口以上的部分），
+        // 推力消退後懸在井口上方，出井結束時（＝點火）才接上原本的升空時間軸。
+        // 升空起點因此抬到「彈尾離井口 emergeClearance 格」的位置，尾焰從井口正上方開始。
+
+        /// <summary>出井 tick 數（0 = 沒有出井段，照舊直接升空）。發射 comp 的 delayTicks 應等於它（出井結束才點火）。</summary>
+        public int emergeTicks;
+        /// <summary>彈體貼圖中心到鼻尖／彈尾的距離（以貼圖 drawSize 長邊為 1 的比例）。</summary>
+        public float emergeNoseFraction = 0.5f;
+        public float emergeTailFraction = 0.5f;
+        /// <summary>出井結束時彈尾離井口的距離（格）。</summary>
+        public float emergeClearance = 1f;
+        /// <summary>井口位置：發射點沿機身軸線的偏移（格，正 = 機頭方向）。</summary>
+        public float emergeMouthOffset;
+
+        /// <summary>出井段的位移比例（0 = 鼻尖在井口、1 = 懸停點）：燃氣壓力先在井內建立（緩起步），出井後重力讓它減速到幾乎懸停。</summary>
+        public static float EmergeProgress(float u)
+        {
+            u = Mathf.Clamp01(u);
+            float coast = 1f - (1f - u) * (1f - u);
+            return coast * Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(u / 0.15f));
+        }
+
         // ---- 離場巡航（docs/Missile_Skyfaller轉Projectile_計畫.md §8.3）----
         // 對地離場彈在升空段中途交接，轉向世界航跡的出發方位，沿 speedCurve 加速飛出地圖邊緣。
         // 攔截彈與沒有水平方位的發射（跨圖層）不交接，照原本跑完升空動畫。

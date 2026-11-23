@@ -165,7 +165,7 @@ Click to cycle through the remaining targets.</DMSE.MissileBase.ObjectivesAlertD
   <DMSE.Missile.NeedResources>Needs (for assembly): {0}</DMSE.Missile.NeedResources>
   <DMSE.Missile.ReadyToAssemble>Resources ready: confirm to begin assembly</DMSE.Missile.ReadyToAssemble>
   <DMSE.Missile.NoResources>No resources available to assemble</DMSE.Missile.NoResources>
-  <DMSE.Missile.EditingSlot>Editing missile 1 of {0} in rack</DMSE.Missile.EditingSlot>
+  <DMSE.Missile.EditingSlot>Editing missile {0} of {1} in rack</DMSE.Missile.EditingSlot>
   <DMSE.Missile.ConfirmAssembly>Queue for assembly</DMSE.Missile.ConfirmAssembly>
   <DMSE.Missile.AssemblyQueued>Assembly queued: colonists will begin shortly</DMSE.Missile.AssemblyQueued>
   <DMSE.Missile.ResetToCurrent>Reset to assembled config</DMSE.Missile.ResetToCurrent>
@@ -281,5 +281,24 @@ Click to cycle through the remaining targets.</DMSE.MissileBase.ObjectivesAlertD
   <!-- PlaceWorker -->
   <DMSE.PlaceWorker.TooCloseSameLayer>Too close to {0} (same placement layer).</DMSE.PlaceWorker.TooCloseSameLayer>
 
+  <!-- 裝配分頁：切換導彈、方案載入／保存；彈道發射井井蓋 -->
+  <DMSE.Missile.PreviousMissile>Previous missile in rack</DMSE.Missile.PreviousMissile>
+  <DMSE.Missile.NextMissile>Next missile in rack</DMSE.Missile.NextMissile>
+  <DMSE.Missile.SaveDesignTip>Save the configuration being edited as a design. Designs are shared with the assembly bench and kept across saves.</DMSE.Missile.SaveDesignTip>
+  <DMSE.Missile.LoadDesignTip>Load a saved design into this missile. Only designs for the same airframe can be loaded; the parts still have to be assembled.</DMSE.Missile.LoadDesignTip>
+  <DMSE.Missile.DesignBodyMismatch>Different airframe: {0}</DMSE.Missile.DesignBodyMismatch>
+  <DMSE.Missile.ApplyDesignThis>Apply to this missile</DMSE.Missile.ApplyDesignThis>
+  <DMSE.Missile.ApplyDesignAll>Apply to all {0} matching missiles in this rack</DMSE.Missile.ApplyDesignAll>
+  <DMSE.Missile.DesignApplied>Design "{0}" loaded into {1}.</DMSE.Missile.DesignApplied>
+  <DMSE.SiloHatch.KeepClosed>Keep hatch closed</DMSE.SiloHatch.KeepClosed>
+  <DMSE.SiloHatch.KeepClosedDesc>When on, the silo hatch stays shut except while launching. A fully closed hatch reduces damage to the silo to {0}.\n\nA launch opens the hatch first; the missile leaves only once it is fully open, and the hatch closes again a few seconds later.\n\nMissiles cannot be assembled while the hatch is not fully open.</DMSE.SiloHatch.KeepClosedDesc>
+  <DMSE.SiloHatch.Closed>Hatch: closed (damage taken {0})</DMSE.SiloHatch.Closed>
+  <DMSE.SiloHatch.Open>Hatch: open</DMSE.SiloHatch.Open>
+  <DMSE.SiloHatch.Opening>Hatch: opening</DMSE.SiloHatch.Opening>
+  <DMSE.SiloHatch.Closing>Hatch: closing</DMSE.SiloHatch.Closing>
+  <DMSE.SiloHatch.StatLabel>Damage taken with hatch closed</DMSE.SiloHatch.StatLabel>
+  <DMSE.SiloHatch.StatDesc>Damage the silo takes while its hatch is fully closed, as a share of normal damage. It does not apply while the hatch is opening, closing or open after a launch.</DMSE.SiloHatch.StatDesc>
 
+  <DMSE.SiloHatch.OpeningForLaunch>Hatch: opening for launch</DMSE.SiloHatch.OpeningForLaunch>
+  <DMSE.SiloHatch.AssemblyBlocked>Hatch closed: open the hatch to assemble the missile.</DMSE.SiloHatch.AssemblyBlocked>
 </LanguageData>

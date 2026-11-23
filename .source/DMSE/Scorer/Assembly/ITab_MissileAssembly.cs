@@ -3,6 +3,7 @@ using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.Sound;
 
 namespace DMSE
 {
@@ -24,6 +25,7 @@ namespace DMSE
         private Vector2 scrollPos;
         private float lastHeight;
         private Thing lastThing;
+        private Thing lastSel;
         private bool showStats;
 
         /// <summary>
@@ -45,10 +47,66 @@ namespace DMSE
                     IReadOnlyList<Thing> held = rack.HeldThings;
                     if (held != null && held.Count > 0)
                     {
-                        return held[0].TryGetComp<CompMissileConfig>();
+                        return held[RackIndexFor(held.Count)].TryGetComp<CompMissileConfig>();
                     }
                 }
                 return null;
+            }
+        }
+
+        // ---------------- 架上導彈切換（上一枚／下一枚） ----------------
+
+        /// <summary>正在編輯架上第幾枚（0 起算）；換選取物時歸零。</summary>
+        private int rackIndex;
+        private Thing rackIndexOwner;
+
+        /// <summary>依目前選取物回傳夾在 [0, count) 的索引；換了選取物則重設為第一枚。</summary>
+        private int RackIndexFor(int count)
+        {
+            if (rackIndexOwner != SelThing)
+            {
+                rackIndexOwner = SelThing;
+                rackIndex = 0;
+            }
+            if (count <= 0) { return 0; }
+            rackIndex = ((rackIndex % count) + count) % count;
+            return rackIndex;
+        }
+
+        /// <summary>架上有 2 枚以上導彈時可切換。</summary>
+        private bool CanCycle
+        {
+            get
+            {
+                IReadOnlyList<Thing> held = MissileRackUtil.Of(SelThing)?.HeldThings;
+                return held != null && held.Count > 1;
+            }
+        }
+
+        /// <summary>切到上一枚（-1）或下一枚（+1），循環。</summary>
+        private void Cycle(int step)
+        {
+            IReadOnlyList<Thing> held = MissileRackUtil.Of(SelThing)?.HeldThings;
+            if (held == null || held.Count < 2) { return; }
+            rackIndex = RackIndexFor(held.Count) + step;
+            RackIndexFor(held.Count);
+            SoundDefOf.Tick_Tiny.PlayOneShotOnCamera();
+        }
+
+        /// <summary>快捷鍵：分頁開著且架上有多枚導彈時，上一枚／下一枚（預設 - / =，可在原版按鍵設定改）。</summary>
+        protected override void ExtraOnGUI()
+        {
+            base.ExtraOnGUI();
+            if (!StillValid || !IsVisible || !CanCycle) { return; }
+            // 正在打字（文字框有焦點）或有吃掉輸入的對話框時不攔截，免得命名時輸入「-」「=」切走導彈。
+            if (GUIUtility.keyboardControl != 0 || Find.WindowStack.WindowsPreventCameraMotion) { return; }
+            if (DMSE_KeyBindingDefOf.DMSE_MissileAssemblyPrevious != null && DMSE_KeyBindingDefOf.DMSE_MissileAssemblyPrevious.KeyDownEvent)
+            {
+                Cycle(-1);
+            }
+            else if (DMSE_KeyBindingDefOf.DMSE_MissileAssemblyNext != null && DMSE_KeyBindingDefOf.DMSE_MissileAssemblyNext.KeyDownEvent)
+            {
+                Cycle(1);
             }
         }
 
@@ -65,7 +123,7 @@ namespace DMSE
                     IReadOnlyList<Thing> held = rack.HeldThings;
                     if (held != null && held.Count > 0)
                     {
-                        return "DMSE.Missile.EditingSlot".Translate(held.Count);
+                        return "DMSE.Missile.EditingSlot".Translate(RackIndexFor(held.Count) + 1, held.Count);
                     }
                 }
                 return null;
@@ -132,10 +190,12 @@ namespace DMSE
             // §2.1 / §3.3: configuration scrolls; the decision stays visible.
             if (lastThing != comp.parent)
             {
+                bool sameRack = lastSel == SelThing && lastThing != null;
                 lastThing = comp.parent;
+                lastSel = SelThing;
                 scrollPos = Vector2.zero;
                 lastHeight = 0f;
-                showStats = false;
+                if (!sameRack) { showStats = false; }
                 // 第一次打開裝配介面：彈道平台與一般導彈分開教學。
                 if (CanChooseBody)
                 {
@@ -149,7 +209,8 @@ namespace DMSE
             // §2.1: a short resource/status summary stays with the action, even when scrolled.
             string footerStatus = reserved ? "DMSE.Strike.ReservedNoEdit".Translate().ToString()
                 : !comp.NeedsAssembly ? "DMSE.UI.ActiveConfig".Translate().ToString()
-                : comp.assemblyConfirmed ? "DMSE.Missile.AssemblyQueued".Translate().ToString()
+                : comp.assemblyConfirmed && comp.AssemblyBlockedByHatch ? "DMSE.SiloHatch.AssemblyBlocked".Translate().ToString()
+            : comp.assemblyConfirmed ? "DMSE.Missile.AssemblyQueued".Translate().ToString()
                 : "DMSE.UI.PendingConfig".Translate().ToString();
             Rect footer = new Rect(rect.x, rect.yMax - DMSEUI.ButtonHeight, rect.width, DMSEUI.ButtonHeight);
             Rect content = new Rect(rect.x, rect.y, rect.width, rect.height - DMSEUI.ButtonHeight - DMSEUI.SectionGap - Text.LineHeight - DMSEUI.Gap);
@@ -158,9 +219,7 @@ namespace DMSE
             Listing_Standard list = new Listing_Standard();
             list.Begin(new Rect(0f, 0f, view.width, 99999f));
 
-            Text.Font = GameFont.Medium;
-            list.Label("DMSE.Missile.Tab".Translate());
-            Text.Font = GameFont.Small;
+            DrawTitleRow(list.GetRect(DesignButtonHeight + 6f), comp, cfg, reserved);
 
             GUI.color = comp.NeedsAssembly ? DMSEUI.Warning : DMSEUI.Success;
             list.Label((comp.NeedsAssembly
@@ -172,9 +231,8 @@ namespace DMSE
             string rackLabel = RackIndexLabel;
             if (rackLabel != null)
             {
-                GUI.color = DMSEUI.Muted;
-                list.Label(rackLabel);
-                GUI.color = Color.white;
+                DrawRackRow(list.GetRect(DesignButtonHeight), rackLabel, comp);
+                list.Gap(2f);
             }
 
             // 上帝模式即時裝配：變更立即套用，不耗資源、不需研究
@@ -191,6 +249,14 @@ namespace DMSE
             {
                 GUI.color = ColorLibrary.RedReadable;
                 list.Label("DMSE.Strike.ReservedNoEdit".Translate());
+                GUI.color = Color.white;
+            }
+
+            // 發射井井蓋沒有全開：可以改配置，但小人不會來裝配。
+            if (comp.NeedsAssembly && comp.AssemblyBlockedByHatch)
+            {
+                GUI.color = DMSEUI.Warning;
+                list.Label("DMSE.SiloHatch.AssemblyBlocked".Translate());
                 GUI.color = Color.white;
             }
 
@@ -351,6 +417,182 @@ namespace DMSE
 
             if (instant) { MissileAssemblyUtility.TryInstantAssemble(SelThing); }
         }
+
+        private const float DesignButtonHeight = 24f;
+        private const float DesignButtonWidth = 92f;
+
+        /// <summary>標題列：左側標題，右側「保存方案」「載入方案」（與組裝台共用方案庫）。</summary>
+        private void DrawTitleRow(Rect row, CompMissileConfig comp, MissileConfig cfg, bool reserved)
+        {
+            Rect load = new Rect(row.xMax - DesignButtonWidth, row.y + 2f, DesignButtonWidth, DesignButtonHeight);
+            Rect save = new Rect(load.x - DMSEUI.Gap / 2f - DesignButtonWidth, load.y, DesignButtonWidth, DesignButtonHeight);
+            Text.Font = GameFont.Medium;
+            Rect title = new Rect(row.x, row.y, save.x - row.x - DMSEUI.Gap, row.height);
+            Widgets.Label(title, "DMSE.Missile.Tab".Translate().ToString().Truncate(title.width));
+            Text.Font = GameFont.Small;
+
+            if (Widgets.ButtonText(save, "DMSE.Bench.SaveDesign".Translate(), active: cfg.body != null) && cfg.body != null)
+            {
+                SaveDesign(comp, cfg);
+            }
+            TooltipHandler.TipRegion(save, "DMSE.Missile.SaveDesignTip".Translate());
+            if (Widgets.ButtonText(load, "DMSE.Bench.LoadDesign".Translate(), active: !reserved) && !reserved)
+            {
+                OpenDesignList(comp);
+            }
+            TooltipHandler.TipRegion(load, reserved ? "DMSE.Strike.ReservedNoEdit".Translate() : "DMSE.Missile.LoadDesignTip".Translate());
+        }
+
+        /// <summary>儲存架列：「◀ 第 i / n 枚 · 導彈名 ▶」，按鈕提示顯示快捷鍵。</summary>
+        private void DrawRackRow(Rect row, string label, CompMissileConfig comp)
+        {
+            bool cycle = CanCycle;
+            Rect prev = new Rect(row.x, row.y, DesignButtonHeight + 8f, row.height);
+            Rect next = new Rect(row.xMax - prev.width, row.y, prev.width, row.height);
+            if (cycle)
+            {
+                if (Widgets.ButtonText(prev, "◀")) { Cycle(-1); }
+                if (Widgets.ButtonText(next, "▶")) { Cycle(1); }
+                TooltipHandler.TipRegion(prev, KeyTip("DMSE.Missile.PreviousMissile", DMSE_KeyBindingDefOf.DMSE_MissileAssemblyPrevious));
+                TooltipHandler.TipRegion(next, KeyTip("DMSE.Missile.NextMissile", DMSE_KeyBindingDefOf.DMSE_MissileAssemblyNext));
+            }
+            Rect text = cycle ? new Rect(prev.xMax + DMSEUI.Gap, row.y, next.x - prev.xMax - 2f * DMSEUI.Gap, row.height) : row;
+            string full = label + " · " + comp.parent.LabelCap;
+            GUI.color = DMSEUI.Muted;
+            Text.Anchor = cycle ? TextAnchor.MiddleCenter : TextAnchor.MiddleLeft;
+            Widgets.Label(text, full.Truncate(text.width));
+            Text.Anchor = TextAnchor.UpperLeft;
+            GUI.color = Color.white;
+            TooltipHandler.TipRegion(text, full);
+        }
+
+        private static string KeyTip(string key, KeyBindingDef binding)
+        {
+            string tip = key.Translate();
+            if (binding != null && binding.MainKey != KeyCode.None)
+            {
+                tip += " (" + "HotKeyTip".Translate() + ": " + binding.MainKeyLabel + ")";
+            }
+            return tip;
+        }
+
+        // ---------------- 裝配方案（與組裝台共用 Config/DMSE_MissileDesigns） ----------------
+
+        /// <summary>方案不能套用在這枚導彈／這座井的原因；null＝可套用。</summary>
+        private string BlueprintBlocker(MissileDesignBlueprint bp, MissileConfig cfg)
+        {
+            MissileConfig design = bp.ToConfig();
+            if (design == null) { return bp.unusableReason; }
+            bool god = MissileAssemblyUtility.GodModeInstant;
+            if (CanChooseBody)
+            {
+                if (!SelectableBodies().Contains(design.body)) { return "DMSE.Missile.DesignBodyMismatch".Translate(design.body.LabelCap); }
+                if (design.body != cfg.body && !design.body.ResearchSatisfied && !god)
+                {
+                    return design.body.LabelCap + ": " + "DMSE.Missile.Locked".Translate();
+                }
+            }
+            else if (design.body != cfg.body)
+            {
+                return "DMSE.Missile.DesignBodyMismatch".Translate(design.body.LabelCap);
+            }
+            foreach (MissilePartDef p in design.parts)
+            {
+                if (!MissileItemUtility.PartUsable(p, out string reason)) { return p.LabelCap + ": " + reason; }
+            }
+            return null;
+        }
+
+        private void OpenDesignList(CompMissileConfig comp)
+        {
+            Thing sel = SelThing;
+            Find.WindowStack.Add(new Dialog_MissileDesignList(bp =>
+            {
+                if (SelThing != sel || comp.parent.Destroyed) { return; }
+                MissileConfig design = bp.ToConfig();
+                if (design == null || BlueprintBlocker(bp, comp.pending) != null) { return; }
+                List<CompMissileConfig> sameType = SameTypeInRack(comp);
+                if (sameType.Count > 1)
+                {
+                    List<FloatMenuOption> opts = new List<FloatMenuOption>
+                    {
+                        new FloatMenuOption("DMSE.Missile.ApplyDesignThis".Translate(), () => ApplyDesign(comp, design, bp.name)),
+                        new FloatMenuOption("DMSE.Missile.ApplyDesignAll".Translate(sameType.Count), () =>
+                        {
+                            foreach (CompMissileConfig c in sameType) { ApplyDesign(c, design, bp.name); }
+                        })
+                    };
+                    Find.WindowStack.Add(new FloatMenu(opts));
+                }
+                else
+                {
+                    ApplyDesign(comp, design, bp.name);
+                }
+            }, bp => BlueprintBlocker(bp, comp.pending)));
+        }
+
+        /// <summary>架上同彈體、且未被打擊任務保留的導彈（含目前這枚，排第一）。</summary>
+        private List<CompMissileConfig> SameTypeInRack(CompMissileConfig comp)
+        {
+            List<CompMissileConfig> result = new List<CompMissileConfig> { comp };
+            IReadOnlyList<Thing> held = MissileRackUtil.Of(SelThing)?.HeldThings;
+            if (held == null) { return result; }
+            foreach (Thing t in held)
+            {
+                CompMissileConfig c = t.TryGetComp<CompMissileConfig>();
+                if (c == null || c == comp || StrikeReservation.IsReserved(t)) { continue; }
+                c.EnsureInit();
+                if (c.pending.body == comp.pending.body) { result.Add(c); }
+            }
+            return result;
+        }
+
+        private static void ApplyDesign(CompMissileConfig comp, MissileConfig design, string name)
+        {
+            comp.pending.CopyFrom(design);
+            comp.pending.PruneIncompatible();
+            comp.assemblyConfirmed = false;
+            comp.RefundDeliveredIfIdle();
+            Messages.Message("DMSE.Missile.DesignApplied".Translate(name ?? "?", comp.parent.LabelShort), MessageTypeDefOf.SilentInput, historical: false);
+        }
+
+        /// <summary>保存待裝配構型為方案：先問名稱（預設＝這枚的設計名稱或隨機名），同名則確認覆蓋。</summary>
+        private static void SaveDesign(CompMissileConfig comp, MissileConfig cfg)
+        {
+            MissileConfig snapshot = cfg.Clone();
+            string ruleString = null;
+            string suggested = !comp.NeedsAssembly ? comp.DesignName : null;
+            if (suggested.NullOrEmpty())
+            {
+                suggested = MissileDesignNamer.Generate(snapshot, null, MissileDesignNamer.UsedNames(comp.parent.MapHeld), out ruleString);
+            }
+            Find.WindowStack.Add(new Dialog_NameMissileDesign(suggested ?? string.Empty, name =>
+            {
+                bool locked = name != suggested;
+                MissileDesignBlueprint bp = MissileDesignBlueprint.From(snapshot, name, locked, locked ? null : ruleString);
+                void DoSave()
+                {
+                    if (MissileDesignBlueprintDatabase.Save(bp, out string error))
+                    {
+                        Messages.Message("DMSE.Blueprint.Saved".Translate(bp.name), MessageTypeDefOf.TaskCompletion, historical: false);
+                    }
+                    else
+                    {
+                        Messages.Message("DMSE.Blueprint.SaveFailed".Translate(error), MessageTypeDefOf.RejectInput, historical: false);
+                    }
+                }
+                if (MissileDesignBlueprintDatabase.FindByName(name) != null)
+                {
+                    Find.WindowStack.Add(new Dialog_MessageBox("DMSE.Blueprint.OverwriteConfirm".Translate(name),
+                        "OverwriteButton".Translate(), DoSave, "Cancel".Translate(), null, null, true));
+                }
+                else
+                {
+                    DoSave();
+                }
+            }));
+        }
+
 
         private void DrawSlot(Listing_Standard list, CompMissileConfig comp, MissileConfig cfg, MissilePartCategory cat)
         {

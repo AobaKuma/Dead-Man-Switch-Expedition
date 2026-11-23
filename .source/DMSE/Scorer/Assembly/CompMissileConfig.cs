@@ -167,7 +167,28 @@ namespace DMSE
         // ---- IMissileAssemblyTarget ----
         public Thing Parent => parent;
 
-        public bool WantsWork => assemblyConfirmed && NeedsAssembly;
+        /// <summary>
+        /// 小人要不要來搬料／裝配。發射井井蓋沒有完全打開時不行（<see cref="CompSiloHatch.BlocksAssembly"/>）：
+        /// 工作派發、搬料與裝配的 job 都看這一個屬性，所以井蓋關上時進行中的 job 也會中止。
+        /// </summary>
+        public bool WantsWork => assemblyConfirmed && NeedsAssembly && !AssemblyBlockedByHatch;
+
+        private CompSiloHatch hatchInt;
+        private bool hatchResolved;
+
+        /// <summary>這個 Comp 掛在有井蓋的發射井上，且井蓋沒有完全打開。</summary>
+        public bool AssemblyBlockedByHatch
+        {
+            get
+            {
+                if (!hatchResolved)
+                {
+                    hatchInt = parent.GetComp<CompSiloHatch>();
+                    hatchResolved = true;
+                }
+                return hatchInt != null && hatchInt.BlocksAssembly;
+            }
+        }
 
         public int WorkAmount
         {

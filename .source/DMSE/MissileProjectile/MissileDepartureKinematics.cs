@@ -292,6 +292,10 @@ namespace DMSE
         /// 沒有出發方位（<paramref name="heading"/> 為 null）時回傳升空動畫長度。
         /// </summary>
         public static int SimulateDepartureTicks(MissileFlightExtension f, IntVec3 cell, IntVec3 mapSize, Rot4 rot, float? heading, float? launchAngle = null)
+            => (f.reversed ? Mathf.Max(0, f.emergeTicks) : 0) + SimulateAscentTicks(f, cell, mapSize, rot, heading, launchAngle);
+
+        /// <summary>出井段之後（升空時間軸開始）到飛出地圖的 tick 數。</summary>
+        private static int SimulateAscentTicks(MissileFlightExtension f, IntVec3 cell, IntVec3 mapSize, Rot4 rot, float? heading, float? launchAngle)
         {
             int leave = f.ticksToDiscardInReverse != IntRange.Zero ? f.ticksToDiscardInReverse.min : 220;
             if (leave <= 0) { leave = 220; }

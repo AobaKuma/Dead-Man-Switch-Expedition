@@ -74,6 +74,18 @@
         <launchCooldownTicks>2400</launchCooldownTicks>
         <launchForwardCells>0</launchForwardCells>
       </li>
+      <!-- 井蓋：開關動畫、「保持關閉」開關、發射時自動彈開；完全關閉時受到的傷害 ×closedDamageFactor。 -->
+      <li Class="DMSE.CompProperties_SiloHatch">
+        <closedTexPath>Things/Building/MissileSiloHatch_Closed</closedTexPath>
+        <openedTexPath>Things/Building/MissileSiloHatch_Opened</openedTexPath>
+        <!-- 鉸鏈在井蓋上緣：打開的蓋子翻到井北側，露出井口。 -->
+        <hingeZ>0.39</hingeZ>
+        <openedHingeZ>-0.33</openedHingeZ>
+        <transitionTicks>180</transitionTicks>
+        <closedDamageFactor>0.4</closedDamageFactor>
+        <holdOpenAfterLaunchTicks>600</holdOpenAfterLaunchTicks>
+        <moveSound>Door_OpenPowered</moveSound>
+      </li>
     </comps>
     <inspectorTabs>
       <!-- 複用現有裝配 ITab（讀取 CompMissileConfig）來設定彈頭/導引/酬載 -->

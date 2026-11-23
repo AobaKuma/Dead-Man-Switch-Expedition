@@ -462,6 +462,8 @@ namespace DMSE
                 CompMissileRackRenderer rackRenderer = parent.TryGetComp<CompMissileRackRenderer>();
                 hasLaunchOffset = rackRenderer != null && rackRenderer.TryGetRenderedAmmoOffset(round, out launchOffset);
             }
+            // 發射井：先下令開蓋；發射排程會扣住升空彈直到井蓋全開（CompSiloHatch）。
+            CompSiloHatch.For(parent)?.RequestLaunchOpen();
             return MapComponent_MissileLaunchQueue.Launch(parent.Map, new PendingMissileLaunch
             {
                 def = launchDef,

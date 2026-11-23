@@ -63,6 +63,44 @@ namespace DMSE
         /// <summary>助推器燒完時掉落的殘骸片數（用攔截特效的主殘骸）。</summary>
         public int boosterDebris;
 
+        // ---- 發射井冷射（燃氣發生器彈射；2026-11-23） ----
+        // 真實的井式冷射（迫擊炮式）：燃氣發生器在井底點火 → 井口噴出一圈貼地燃氣與一道上升的燃氣柱，
+        // 導彈被推出井口、在燃氣雲中上升 → 底部的閉氣托盤脫落、掉回井邊 → 彈體在空中點火（閃光＋水平震波環），
+        // 尾焰離地很近，打到地面掀起下洗塵雲 → 第一級固體燃料的濃煙柱爬升。
+        /// <summary>燃氣柱持續 tick（自生成起；0 = 不用燃氣柱，只有舊的彈射白煙）。</summary>
+        public int ejectionColumnTicks;
+        /// <summary>燃氣柱每 tick 的煙團數（可有小數：小數部分以機率補一顆）。</summary>
+        public float ejectionColumnPuffs = 1.5f;
+        /// <summary>燃氣柱的上升初速（格/tick，畫面 +z＝向上）；隨時間遞減到 30%。</summary>
+        public float ejectionColumnSpeed = 0.22f;
+        public FloatRange ejectionColumnSize = new FloatRange(1.6f, 2.6f);
+        /// <summary>彈射燃氣的顏色（火藥燃氣：偏黃的灰白）與剛噴出時的熱色。</summary>
+        public Color ejectionColor = new Color(1f, 0.95f, 0.85f, 0.45f);
+        public Color ejectionHotColor = new Color(1f, 0.72f, 0.45f, 0.6f);
+        /// <summary>貼地燃氣環（顆數沿用 <see cref="ejectionPuffs"/>）的外衝速度。</summary>
+        public float ejectionRingSpeed = 0.18f;
+        /// <summary>井口燃氣閃光大小（0 = 不閃）。</summary>
+        public float ejectionFlash;
+        /// <summary>彈射與點火時的鏡頭震動強度（0 = 不震）。</summary>
+        public float ejectionShake;
+        public float ignitionShake;
+        /// <summary>彈射瞬間的音效（燃氣發生器的悶響）。</summary>
+        public SoundDef ejectionSound;
+        /// <summary>冷射點火時尾焰離地很近：照熱射的方式掀起地面雲與持續揚塵，強度乘 <see cref="downwashStrength"/>。</summary>
+        public bool downwash;
+        public float downwashStrength = 0.6f;
+        /// <summary>冷射時地面光暈的倍率（舊固定 0.4；發射井點火就在井口上方，所以照得很亮）。</summary>
+        public float coldGlowFactor = 0.4f;
+        /// <summary>點火瞬間的水平震波環（顆數）與外衝速度：比 <see cref="airIgnitionRing"/> 快、薄。</summary>
+        public int ignitionShockRing;
+        public float ignitionShockSpeed = 0.45f;
+        /// <summary>閉氣托盤（及護蓋）片數：點火前 <see cref="palletDropLeadTicks"/> tick 脫落，掉回井邊（純視覺殘骸）。</summary>
+        public int palletDebris;
+        public int palletDropLeadTicks = 4;
+        public string palletTexPath = "Things/Effects/InterceptDebris/Pod";
+        public Color palletColor = new Color(0.45f, 0.47f, 0.45f, 1f);
+        public float palletScale = 1f;
+
         // ---- 照明（§4.5） ----
         /// <summary>點火後發射點的地面光暈直徑（熱射；冷射 × 0.4）。</summary>
         public float groundGlow = 10f;
