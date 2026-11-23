@@ -291,6 +291,7 @@
   <DMSE.Artillery.WaitingForAutoloader>等待自动装填架补弹，射击任务暂停中。</DMSE.Artillery.WaitingForAutoloader>
   <DMSE.Artillery.NoLoadedShellAutoloader>尚未装填炮弹：先在连接的自动装填架上存放迫击炮弹再开火。</DMSE.Artillery.NoLoadedShellAutoloader>
   <DMSE.Artillery.WaitingForBarrel>炮管已耗损，等待更换强化炮管，射击任务暂停中。</DMSE.Artillery.WaitingForBarrel>
+  <DMSE.Artillery.HoldFirePaused>停火中：世界炮击任务暂停，解除停火后继续。</DMSE.Artillery.HoldFirePaused>
   <DMSE.Artillery.NoRegistration>这张地图还没有校射落点，无法效力射；请先以校射模式打一发。</DMSE.Artillery.NoRegistration>
   <DMSE.Artillery.GroupPartial>选中的 {1} 门炮中，{0} 门可以射击此目标；其余：{2}</DMSE.Artillery.GroupPartial>
   <DMSE.BVR.DeviceInactive>装置不可用（无电、损坏或已关闭）。</DMSE.BVR.DeviceInactive>

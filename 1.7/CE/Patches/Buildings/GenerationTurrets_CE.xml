@@ -10,18 +10,22 @@
 	     1) 建築的 thingClass 不在這裡改。DMS 核心的 1.7/CE/Patches/Buildings/Security_CE.xml
 	        已經把 DMS_BaseCannonBuilding 換成 CombatExtended.Building_TurretGunCE，
 	        本模組的兩座砲塔都繼承它，重複設定只會多一次覆寫。
-	     2) CompProperties_Refuelable 不刪。這兩座砲的末端攔截走 DMSE 自己的
-	        CompProperties_TerminalCIWS（BVR 波次），它從 Refuelable 扣 37mm 砲彈；
-	        刪掉會讓 BVR 攔截變成免費。CE 只接手「對地射擊」那一條 Verb
-	        （MakeGunCECompatible 會移除 Verb_Shoot 並換成 Verb_ShootCE，
-	         連帶把 consumeFuelPerShot 一起帶走，所以地面射擊不會重複吃鋼鐵）。
+	     2) 「砲彈」CompProperties_Refuelable（鋼鐵當砲彈）在 CE 下刪掉（2026-11-23 起）：
+	        末端攔截（DMSE 的 CompProperties_TerminalCIWS）建築上沒有 Refuelable 時，改從 CE 彈匣扣彈
+	        （DMSE_CE.dll 的相容層；每發扣 fuelPerShot 發：老式 1 發 37mm、千禧年 2 發 35mm、野戰防空 1 發 30mm）。
+	        對地射擊與末端攔截共用同一個 CE 彈匣，不再有兩套彈藥；NPC 陣地的補給也改成空投 CE 彈藥、守軍用 CE 的裝填工作。
 	     3) 野戰防空砲（DMSE_Building_FieldAirDefense）已改成真砲塔、維持全自動（無 CompMannable），
 	        機砲接 CE 彈藥；CE 下要持續開火需在旁邊放一台 Building_AutoloaderCE。
-	        飛彈儲存與末端 CIWS 仍走 DMSE 自己的 comp，不吃 CE 彈藥。
+	        飛彈儲存仍走 DMSE 自己的 comp，不吃 CE 彈藥。
 	     ================================================================== -->
 
 	<Operation Class="PatchOperationSequence">
 		<operations>
+
+			<!-- 三座有末端 CIWS 的砲：刪掉鋼鐵「砲彈」，CIWS 改吃 CE 彈匣（見檔頭第 2 點）。 -->
+			<li Class="PatchOperationRemove">
+				<xpath>Defs/ThingDef[defName="DMSE_Turret_LegacyFlak" or defName="DMSE_Turret_Millennium" or defName="DMSE_Building_FieldAirDefense"]/comps/li[@Class="CompProperties_Refuelable"]</xpath>
+			</li>
 
 			<!-- ==================== 老式防空砲「Flak 43」==================== -->
 
@@ -139,7 +143,7 @@
 			     沒有自動裝彈機時，彈匣（300 發）打完就停火——這是 CE 對所有無人砲塔的規則，
 			     不是本模組的 bug；彈藥量在 CE 的彈藥 Gizmo 上看得到。
 			     飛彈（CompMissileLauncher＋CompMissileRackStorage）與末端 CIWS 走 DMSE 自己的
-			     系統，不吃 CE 彈藥；鋼鐵燃料（CompProperties_Refuelable）留給 CIWS 用。 -->
+			     系統，不吃 CE 彈藥；末端 CIWS 改吃機砲的 CE 彈匣（鋼鐵砲彈 Refuelable 在下面刪除）。 -->
 			<!-- 它的 thingClass 直接寫 Building_TurretGun（不繼承 DMS_BaseCannonBuilding），CE 不會自動換；
 			     CE 的 verb／彈匣只能由 CE 砲塔交叉連結，原版砲塔上每發都會報錯。 -->
 			<li Class="PatchOperationReplace">

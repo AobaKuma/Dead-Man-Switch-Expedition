@@ -100,67 +100,9 @@ namespace DMSE
         }
 
         // ---- 停火 ----
-        // 原版 Building_TurretGun 的「停火」gizmo 只切換私有欄位 holdFire；原版 TryStartShootSomething 以
-        // holdFire && CanToggleHoldFire（= 私有的 PlayerControlled）判定是否停火。這裡照抄同一條件，
-        // NPC 砲塔或被非殖民者操作時，殘留的停火旗標不會讓它停止攔截。
-        private static readonly AccessTools.FieldRef<Building_TurretGun, bool> TurretHoldFireRef = TryHoldFireRef();
-        private static readonly Func<Building_TurretGun, bool> TurretPlayerControlled = TryPlayerControlledGetter();
-        private static readonly Dictionary<Type, FieldInfo> otherHoldFireFields = new Dictionary<Type, FieldInfo>();
 
-        private static AccessTools.FieldRef<Building_TurretGun, bool> TryHoldFireRef()
-        {
-            try { return AccessTools.FieldRefAccess<Building_TurretGun, bool>("holdFire"); }
-            catch (Exception e) { Log.Warning($"[DMSE] Building_TurretGun.holdFire not found; hold fire will not stop terminal interception. {e.Message}"); return null; }
-        }
-
-        private static Func<Building_TurretGun, bool> TryPlayerControlledGetter()
-        {
-            try
-            {
-                MethodInfo getter = AccessTools.PropertyGetter(typeof(Building_TurretGun), "PlayerControlled");
-                return getter != null ? AccessTools.MethodDelegate<Func<Building_TurretGun, bool>>(getter) : null;
-            }
-            catch { return null; }
-        }
-
-        private CompBuildingTurretGun turretGunComp;
-        private bool turretGunCompCached;
-
-        /// <summary>
-        /// 玩家對此砲塔下了停火：不參與末端攔截。
-        /// 原版砲塔讀原版的停火 gizmo；非 Building_TurretGun 的平台讀 <see cref="CompBuildingTurretGun"/> 的停火；
-        /// 其他砲塔類別（例如 CE 的 Building_TurretGunCE）讀同名的 holdFire 欄位，只認玩家陣營。
-        /// </summary>
-        public bool HoldingFire
-        {
-            get
-            {
-                if (parent is Building_TurretGun turret)
-                {
-                    if (TurretHoldFireRef == null || !TurretHoldFireRef(turret)) { return false; }
-                    return TurretPlayerControlled != null ? TurretPlayerControlled(turret) : turret.Faction == Faction.OfPlayer;
-                }
-                if (!turretGunCompCached)
-                {
-                    turretGunComp = parent?.GetComp<CompBuildingTurretGun>();
-                    turretGunCompCached = true;
-                }
-                if (turretGunComp != null) { return turretGunComp.HoldFire; }
-                return parent is Building_Turret && parent.Faction == Faction.OfPlayer && OtherTurretHoldFire(parent);
-            }
-        }
-
-        private static bool OtherTurretHoldFire(Thing turret)
-        {
-            Type type = turret.GetType();
-            if (!otherHoldFireFields.TryGetValue(type, out FieldInfo field))
-            {
-                field = AccessTools.Field(type, "holdFire");
-                if (field != null && field.FieldType != typeof(bool)) { field = null; }
-                otherHoldFireFields[type] = field;
-            }
-            return field != null && (bool)field.GetValue(turret);
-        }
+        /// <summary>玩家對此砲塔下了停火：不參與末端攔截（規則見 <see cref="TurretHoldFireUtility"/>）。</summary>
+        public bool HoldingFire => TurretHoldFireUtility.HoldingFire(parent);
 
         /// <summary>
         /// 能參與末端攔截：運作中且未停火。停火的 CIWS 對末端階段等同不存在：

@@ -277,6 +277,13 @@ namespace DMSE
                 return;
             }
 
+            // 玩家按了砲塔的停火（同末端 CIWS、攔截彈，見 TurretHoldFireUtility）→ 暫停，保留目標，解除停火後繼續
+            if (TurretHoldFireUtility.HoldingFire(parent))
+            {
+                warmupEndTick = -1;
+                return;
+            }
+
             // 裝填冷卻中 → 重置瞄準計時，砲管維持在上一發的方位，等待冷卻結束
             if (cooldownUntil > now)
             {
@@ -401,6 +408,15 @@ namespace DMSE
             !fireForEffect && Props.SupportsRadarGuidance && FindAvailableRadar() != null;
 
         public override string CompInspectStringExtra()
+        {
+            string held = IsSustainedFiring && TurretHoldFireUtility.HoldingFire(parent)
+                ? "DMSE.Artillery.HoldFirePaused".Translate().ToString() : null;
+            string body = CompInspectStringBody();
+            if (held == null) { return body; }
+            return body.NullOrEmpty() ? held : held + "\n" + body;
+        }
+
+        private string CompInspectStringBody()
         {
             if (fireForEffect)
             {

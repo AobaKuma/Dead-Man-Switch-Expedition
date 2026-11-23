@@ -265,6 +265,7 @@ Click to cycle through the remaining targets.</DMSE.MissileBase.ObjectivesAlertD
   <DMSE.Artillery.WaitingForAutoloader>Waiting for the shell autoloader to load a shell: the mission is paused.</DMSE.Artillery.WaitingForAutoloader>
   <DMSE.Artillery.NoLoadedShellAutoloader>No shell loaded: stock mortar shells on a linked shell autoloader before firing.</DMSE.Artillery.NoLoadedShellAutoloader>
   <DMSE.Artillery.WaitingForBarrel>Barrel worn out: waiting for a new reinforced barrel. The mission is paused.</DMSE.Artillery.WaitingForBarrel>
+  <DMSE.Artillery.HoldFirePaused>Hold fire: the world fire mission is paused and resumes when hold fire is lifted.</DMSE.Artillery.HoldFirePaused>
   <DMSE.Artillery.NoRegistration>No ranging impact has been logged on this map: fire a ranging shot first.</DMSE.Artillery.NoRegistration>
   <DMSE.Artillery.GroupPartial>{0} of {1} selected guns can fire at this target. Others: {2}</DMSE.Artillery.GroupPartial>
   <DMSE.BVR.DeviceInactive>Device is inactive (no power, broken down, or switched off).</DMSE.BVR.DeviceInactive>

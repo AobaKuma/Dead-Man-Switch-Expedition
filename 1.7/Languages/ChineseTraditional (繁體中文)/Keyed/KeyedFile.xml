@@ -477,6 +477,7 @@ Click to cycle through the remaining targets. -->
   <DMSE.Artillery.WaitingForAutoloader>等待自動裝填架補彈，射擊任務暫停中。</DMSE.Artillery.WaitingForAutoloader>
   <DMSE.Artillery.NoLoadedShellAutoloader>尚未裝填砲彈：先在連結的自動裝填架上存放迫擊砲彈再開火。</DMSE.Artillery.NoLoadedShellAutoloader>
   <DMSE.Artillery.WaitingForBarrel>砲管已耗損，等待更換強化砲管，射擊任務暫停中。</DMSE.Artillery.WaitingForBarrel>
+  <DMSE.Artillery.HoldFirePaused>停火中：世界砲擊任務暫停，解除停火後繼續。</DMSE.Artillery.HoldFirePaused>
   <!-- EN: No ranging impact has been logged on this map: fire a ranging shot first. -->
   <DMSE.Artillery.NoRegistration>這張地圖還沒有校射落點，無法效力射；請先以校射模式打一發。</DMSE.Artillery.NoRegistration>
   <DMSE.Artillery.GroupPartial>選取的 {1} 門砲中，{0} 門可以射擊此目標；其餘：{2}</DMSE.Artillery.GroupPartial>

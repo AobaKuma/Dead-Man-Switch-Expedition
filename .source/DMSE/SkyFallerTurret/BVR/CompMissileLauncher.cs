@@ -40,7 +40,8 @@ namespace DMSE
         // ---- IAirEffector：世界層接戰 ----
         public Thing Source => parent;
         public bool UsesFireControl => true;
-        public bool Armed => Props.interceptorSkyfaller != null && Active;
+        /// <summary>玩家對這座建築的砲塔按了停火：攔截彈同樣不發射（同末端 CIWS，見 <see cref="TurretHoldFireUtility"/>）。</summary>
+        public bool Armed => Props.interceptorSkyfaller != null && Active && !TurretHoldFireUtility.HoldingFire(parent);
         public int ReadyTick => CooldownUntil;
         public bool CanFire(int now) => ReadyToFire(now);
         /// <summary>只打和裝填中的攔截彈同一領域的目標（<see cref="MissileBodyDef.domain"/>）。</summary>
@@ -96,7 +97,7 @@ namespace DMSE
 
         // 便宜的條件在前；Active 已包含 HasAmmo（找彈要掃容器與打擊保留），不再重算一次。
         public bool ReadyToFire(int now)
-            => Props.interceptorSkyfaller != null && !OnCooldown(now) && Active;
+            => Props.interceptorSkyfaller != null && !OnCooldown(now) && Active && !TurretHoldFireUtility.HoldingFire(parent);
 
         /// <summary>
         /// 發射一枚攔截彈。<paramref name="heading"/> 為來襲方位（升空後轉向飛出地圖）；不給時以
