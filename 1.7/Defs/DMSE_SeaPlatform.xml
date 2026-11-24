@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
-  <!--
-    海上平台（2026-11-23 從 DepthRim 的海面地圖簡化而來，C# 在 .source/DMSE/SeaPlatform/）。
-    只有一張地圖：整張是高空 DMSE_OpenAir（dontRender、不可通行），往下 14.1 格看到的海由 DMSE.SectionLayer_SeaPlatformSea 畫
-    （著色器 DMSE_SeaPlatformSea，queue 1900，在地形 2000 之前；平台的影子也在裡面算）。
-    玩家站在支柱（DMSE_SeaPlatformPillar）撐起的平台（DMSE_SeaPlatform）上；柱身是往下畫的背景（DMSE_SeaPlatformPillar 著色器，1950）。
-    沒有 DepthRim 的水面層、浮船、舷梯、跨層電力、惡劣海況、航跡與鏡頭擺動。
-    地圖要用掛了 DMSE.SeaPlatformMapExtension 的 MapGeneratorDef 生成（例如下面的 DMSE_SeaPlatform）。
-  -->
-
   <!-- 只有高空有：海上平台只能鋪在這裡 -->
   <TerrainAffordanceDef>
     <defName>DMSE_OpenAir</defName>

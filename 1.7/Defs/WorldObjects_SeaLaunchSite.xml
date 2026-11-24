@@ -2,13 +2,16 @@
 <Defs>
 
   <!-- ══════════════════════════════════════════════════════════════
-       海上發射站（2026-11-23）：武裝殖民艦隊（DMS_Army）在近海的海上平台上部署的導彈陣地。
+       海上發射站（2026-11-23，2026-11-24 改用 LaunchSite_Ocean.xml 的海上平台）：武裝殖民艦隊（DMS_Army）在近海部署的導彈陣地。
        ‧ 地圖：海上平台地圖（DMSE_SeaPlatform.xml 的高空 + 海面背景），沒有原版地形步驟、霧與玩家起點。
-       ‧ 布局：沿用野戰陣地的 LaunchSite_Mid.xml 結構與分組（DMSE.GenStep_SeaLaunchSite）；
-         每座結構底下先鋪一塊外擴 2 格的甲板，結構之間以 3 格寬的甲板走道連通（道路步驟 openTerrain = 高空），
-         最後由 DMSE.GenStep_SeaLaunchSitePillars 補上撐住所有甲板的敵方支柱。
+       ‧ 布局（DMSE.GenStep_SeaLaunchSite）：中央搜索雷達，外圈 2～4 座發射平台（DMSE_Platform_A／B／C，自帶甲板形狀、
+         彈架、火控雷達、戰情室、居住艙與一根支柱），再補野戰陣地的火控雷達與近防。
+         平台照自己的甲板形狀生成（含地板、屋頂）；其他野戰結構底下鋪一塊外擴 deckMargin 格的甲板。
+         結構之間以 3 格寬的甲板走道連通（道路步驟 openTerrain = 高空，走道接在平台甲板的邊上），
+         最後由 DMSE.GenStep_SeaLaunchSitePillars 補上支柱，撐住平台自帶支柱範圍以外的甲板。
        ‧ 支柱是可以打的弱點：支柱被毀後撐不住的甲板 15 秒後連同上面的雷達與發射架塌進海裡。
-       ‧ 難度：與野戰陣地同一套門檻，但殖民艦隊是太空等級，各組數量與守軍都比野戰陣地多一級。
+       ‧ 彈種：殖民艦隊是太空等級，彈架裝先進通用導彈、先進巡航導彈與縞瑪瑙；世界層齊射以先進通用導彈為基本彈，
+         目標防空越強越常混入匿蹤巡航彈與縞瑪瑙。
        ‧ 進出：站點在水域 tile 上，遠行隊到不了（也沒有「重組遠行隊」）；只能用運輸艙、穿梭機或重力船登陸與撤離。
        ‧ 摧毀條件、補給、彈架與砲塔彈藥規則同野戰陣地（MapComponent_MissileBase）。
        ══════════════════════════════════════════════════════════════ -->
@@ -26,6 +29,8 @@
     <defName>DMSE_SeaLaunchSite_GS_Structures</defName>
     <order>400</order>
     <genStep Class="DMSE.GenStep_SeaLaunchSite">
+      <!-- 海上沒有自然地形可保留：完整生成結構（地板、屋頂），甲板由 PrepareGround 先鋪好 -->
+      <keepNaturalTerrain>false</keepNaturalTerrain>
       <deckMargin>2</deckMargin>
       <centerJitter>4</centerJitter>
       <difficultyThresholds>
@@ -33,6 +38,8 @@
         <li>0.9</li>
         <li>1.4</li>
       </difficultyThresholds>
+      <!-- 發射平台很大（31×29、69×19、37×36），排在中央雷達之後先放，小結構再補空隙。
+           半徑與數量以 200～250 格地圖模擬過：最高難度 4 座約 99% 放得下；150 格的小圖放不下的會跳過。 -->
       <groups>
         <li>
           <label>search radar</label>
@@ -46,55 +53,35 @@
           <randomRotation>false</randomRotation>
         </li>
         <li>
+          <!-- 三種平台都帶世界選靶發射器（A 輕型發射箱／垂直發射單元、B 中型垂直發射單元、C 輕型垂直發射單元），不需要 firstPool -->
+          <label>launch platform</label>
+          <pool>
+            <li>DMSE_Platform_A</li>
+            <li>DMSE_Platform_B</li>
+            <li>DMSE_Platform_C</li>
+          </pool>
+          <countByTier>
+            <li>2</li>
+            <li>2~3</li>
+            <li>3</li>
+            <li>3~4</li>
+          </countByTier>
+          <radius>36~62</radius>
+          <spacing>15</spacing>
+        </li>
+        <li>
+          <!-- 平台已各帶火控／相控陣雷達，這裡只補中央雷達旁的通道 -->
           <label>fire control radar</label>
           <pool>
             <li>DMSE_Mid_FireControlRadar</li>
           </pool>
           <countByTier>
+            <li>0</li>
+            <li>1</li>
             <li>1</li>
             <li>2</li>
-            <li>2</li>
-            <li>3</li>
           </countByTier>
-          <radius>14~26</radius>
-          <spacing>5</spacing>
-        </li>
-        <li>
-          <label>launch position</label>
-          <pool>
-            <li>DMSE_Mid_LaunchSite_A</li>
-            <li>DMSE_Mid_LaunchSite_B</li>
-            <li>DMSE_Mid_LaunchSite_C</li>
-            <li>DMSE_Mid_LaunchSite_D</li>
-          </pool>
-          <!-- 第一座必帶世界選靶發射器（C 沒有） -->
-          <firstPool>
-            <li>DMSE_Mid_LaunchSite_A</li>
-            <li>DMSE_Mid_LaunchSite_B</li>
-            <li>DMSE_Mid_LaunchSite_D</li>
-          </firstPool>
-          <countByTier>
-            <li>2</li>
-            <li>2~3</li>
-            <li>3~4</li>
-            <li>4~5</li>
-          </countByTier>
-          <radius>22~44</radius>
-          <spacing>5</spacing>
-        </li>
-        <li>
-          <label>ammo carrier</label>
-          <pool>
-            <li>DMSE_Mid_AmmoCar_A</li>
-            <li>DMSE_Mid_AmmoCar_B</li>
-          </pool>
-          <countByTier>
-            <li>1~2</li>
-            <li>2</li>
-            <li>2~3</li>
-            <li>3</li>
-          </countByTier>
-          <radius>16~36</radius>
+          <radius>14~30</radius>
           <spacing>5</spacing>
         </li>
         <li>
@@ -109,32 +96,6 @@
             <li>2~3</li>
           </countByTier>
           <radius>16~40</radius>
-          <spacing>5</spacing>
-        </li>
-        <li>
-          <label>rest room</label>
-          <pool>
-            <li>DMSE_Mid_RestRoom_A</li>
-            <li>DMSE_Mid_RestRoom_B</li>
-          </pool>
-          <countByTier>
-            <li>1</li>
-            <li>1~2</li>
-            <li>2</li>
-            <li>2</li>
-          </countByTier>
-          <radius>16~38</radius>
-          <spacing>5</spacing>
-        </li>
-        <li>
-          <label>war room</label>
-          <pool>
-            <li>DMSE_Mid_WarRoom_A</li>
-          </pool>
-          <countByTier>
-            <li>1</li>
-          </countByTier>
-          <radius>16~38</radius>
           <spacing>5</spacing>
         </li>
       </groups>
@@ -204,7 +165,7 @@
   <WorldObjectDef>
     <defName>DMSE_SeaLaunchSite</defName>
     <label>sea launch station</label>
-    <description>An offshore missile station of the armed colonial fleet, built on sea platforms raised above the waves on steel pillars: radars, launch positions, ammunition carriers and crew quarters joined by deck walkways. It can only be reached by air. Knocking out its pillars sends the decks they hold up into the sea.</description>
+    <description>An offshore missile station of the armed colonial fleet, built on sea platforms raised above the waves on steel pillars: radars and launch platforms armed with advanced missiles, joined by deck walkways. It can only be reached by air. Knocking out its pillars sends the decks they hold up into the sea.</description>
     <worldObjectClass>RimWorld.Planet.Site</worldObjectClass>
     <canHaveFaction>true</canHaveFaction>
     <saved>true</saved>
@@ -235,6 +196,33 @@
           <min>1</min>
           <max>3</max>
         </missilesPerSalvo>
+        <!-- 基本彈：先進通用導彈（地獄火，射程約 48 格），成像或紅外導引 -->
+        <missileBody>DMSE_MissileBody_AdvancedLight</missileBody>
+        <partOptions>
+          <li>
+            <category>Warhead</category>
+            <parts>
+              <li>DMSE_AdvLight_Warhead_HEAT</li>
+              <li>DMSE_AdvLight_Warhead_BlastFrag</li>
+            </parts>
+          </li>
+          <li>
+            <category>Guidance</category>
+            <parts>
+              <li>DMSE_AdvLight_Guidance_Imaging</li>
+              <li>DMSE_AdvLight_Guidance_IIR</li>
+            </parts>
+          </li>
+          <li>
+            <category>Payload</category>
+            <parts>
+              <li>DMSE_AdvLight_Payload_None</li>
+            </parts>
+          </li>
+        </partOptions>
+        <!-- 依目標防空能力調整（E = min(火控通道, 有彈攔截發射平台)），從高梯次往下擲，打不到目標時退回基本彈：
+             E≥2 帶干擾絲的先進通用彈；E≥3 反輻射彈（只有輕型彈體有）；E≥4 縞瑪瑙（2.7 倍世界速度，攔截窗口短）；
+             E≥5 匿蹤先進巡航彈（含誘餌型）。 -->
         <adaptiveSalvo>
           <alpha>0.8</alpha>
           <exponent>0.7</exponent>
@@ -243,12 +231,24 @@
             <li>
               <minEffective>2</minEffective>
               <chance>0.35</chance>
-              <missileBody>DMSE_MissileBody_Light</missileBody>
+              <missileBody>DMSE_MissileBody_AdvancedLight</missileBody>
               <partOptions>
+                <li>
+                  <category>Warhead</category>
+                  <parts>
+                    <li>DMSE_AdvLight_Warhead_HEAT</li>
+                  </parts>
+                </li>
+                <li>
+                  <category>Guidance</category>
+                  <parts>
+                    <li>DMSE_AdvLight_Guidance_MMW</li>
+                  </parts>
+                </li>
                 <li>
                   <category>Payload</category>
                   <parts>
-                    <li>DMSE_Light_Payload_Decoy</li>
+                    <li>DMSE_AdvLight_Payload_Chaff</li>
                   </parts>
                 </li>
               </partOptions>
@@ -267,10 +267,48 @@
               </partOptions>
             </li>
             <li>
+              <minEffective>4</minEffective>
+              <chance>0.3</chance>
+              <missileBody>DMSE_MissileBody_Oniks</missileBody>
+              <partOptions>
+                <li>
+                  <category>Warhead</category>
+                  <parts>
+                    <li>DMSE_Warhead_HE</li>
+                  </parts>
+                </li>
+                <li>
+                  <category>Guidance</category>
+                  <parts>
+                    <li>DMSE_Guidance_AntiShip</li>
+                  </parts>
+                </li>
+                <li>
+                  <category>Propulsion</category>
+                  <parts>
+                    <li>DMSE_Propulsion_Standard</li>
+                  </parts>
+                </li>
+                <li>
+                  <category>Payload</category>
+                  <parts>
+                    <li>DMSE_Payload_None</li>
+                  </parts>
+                </li>
+              </partOptions>
+            </li>
+            <li>
               <minEffective>5</minEffective>
               <chance>0.35</chance>
               <missileBody>DMSE_MissileBody_AdvancedCruise</missileBody>
               <partOptions>
+                <li>
+                  <category>Guidance</category>
+                  <parts>
+                    <li>DMSE_AdvCruise_Guidance_TerrainMatch</li>
+                    <li>DMSE_AdvCruise_Guidance_Datalink</li>
+                  </parts>
+                </li>
                 <li>
                   <category>Payload</category>
                   <parts>
@@ -303,26 +341,56 @@
           <loadDelayTicks>2500</loadDelayTicks>
           <!-- 守軍自行從彈藥庫搬彈裝填發射架，同時最多 2 人。有相容彈的彈藥庫時，空發射架不另外空投。 -->
           <maxCrewLoaders>2</maxCrewLoaders>
+          <!-- 太空等級：彈架裝先進彈。可裝配彈（先進通用、先進巡航）裝填時依彈體預設部件組裝；清單內重複的項目＝較高權重。
+               兩用的灰熊留一些在輕型架上，讓火控網路有彈可攔截。 -->
           <loadouts>
             <li>
+              <!-- 平台 C 的彈藥庫：供輕型垂直發射單元 -->
               <rack>DMSE_FieldStructure_AmmoStorage</rack>
               <missiles>
-                <li>DMSE_Missile_Maverick</li>
+                <li>DMSE_Missile_AdvancedLight</li>
+                <li>DMSE_Missile_AdvancedLight</li>
+                <li>DMSE_Missile_AdvancedCruise</li>
                 <li>DMSE_Missile_Grison</li>
               </missiles>
             </li>
             <li>
               <rack>DMSE_Building_LightMissileLauncher</rack>
               <missiles>
-                <li>DMSE_Missile_Maverick</li>
+                <li>DMSE_Missile_AdvancedLight</li>
+                <li>DMSE_Missile_AdvancedLight</li>
+                <li>DMSE_Missile_AdvancedCruise</li>
+                <li>DMSE_Missile_Grison</li>
+              </missiles>
+            </li>
+            <li>
+              <rack>DMSE_Building_LightMissileVLS</rack>
+              <missiles>
+                <li>DMSE_Missile_AdvancedLight</li>
+                <li>DMSE_Missile_AdvancedCruise</li>
+                <li>DMSE_Missile_AdvancedCruise</li>
                 <li>DMSE_Missile_Grison</li>
               </missiles>
             </li>
             <li>
               <rack>DMSE_MissileRack</rack>
               <missiles>
-                <li>DMSE_Missile_Maverick</li>
+                <li>DMSE_Missile_AdvancedLight</li>
+                <li>DMSE_Missile_AdvancedLight</li>
                 <li>DMSE_Missile_Grison</li>
+              </missiles>
+            </li>
+            <li>
+              <!-- 平台 B 的巡航導彈架：供中型垂直發射單元 -->
+              <rack>DMSE_CruiseMissileRack</rack>
+              <missiles>
+                <li>DMSE_Missile_Oniks</li>
+              </missiles>
+            </li>
+            <li>
+              <rack>DMSE_Building_MediumVLS</rack>
+              <missiles>
+                <li>DMSE_Missile_Oniks</li>
               </missiles>
             </li>
             <li>
@@ -355,7 +423,7 @@
   <SitePartDef>
     <defName>DMSE_SeaLaunchSitePart</defName>
     <label>sea launch station</label>
-    <description>An offshore missile station on pillar-supported sea platforms, with radars, launch positions, ammunition carriers and crew quarters.</description>
+    <description>An offshore missile station on pillar-supported sea platforms, with radars and launch platforms armed with advanced missiles.</description>
     <workerClass>DMSE.SitePartWorker_SeaLaunchSite</workerClass>
     <siteTexture>World/WorldObjects/Sites/Outpost</siteTexture>
     <expandingIconTexture>UI/Icon/icon_Marine_cruiser</expandingIconTexture>

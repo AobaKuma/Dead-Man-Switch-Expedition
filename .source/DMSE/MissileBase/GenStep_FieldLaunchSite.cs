@@ -180,9 +180,9 @@ namespace DMSE
                 if (rect.minX < usable.minX || rect.maxX > usable.maxX || rect.minZ < usable.minZ || rect.maxZ > usable.maxZ) continue;
                 if (occupied.Any(o => o.ExpandedBy(group.spacing).Overlaps(rect))) continue;
                 if (FFF_StructureUtility.OverlapsUsedRect(map, rect)) continue;
-                if (keepNaturalTerrain && !GroundFits(map, sketch, offset, rect)) continue;
+                if (CheckGround && !GroundFits(map, sketch, offset, rect)) continue;
 
-                PrepareGround(map, rect);
+                PrepareGround(map, sketch, offset, rect);
                 if (keepNaturalTerrain)
                     SpawnKeepingTerrain(map, def, sketch, offset, rot, faction);
                 else
@@ -196,11 +196,14 @@ namespace DMSE
             return false;
         }
 
-        /// <summary>保留自然地形時，這個位置能不能放（預設：<see cref="FitsNaturalGround"/>）。</summary>
+        /// <summary>擺放前要不要以 <see cref="GroundFits"/> 檢查地面（預設：保留自然地形時才檢查）。</summary>
+        protected virtual bool CheckGround => keepNaturalTerrain;
+
+        /// <summary>這個位置的地面能不能放（預設：<see cref="FitsNaturalGround"/>）。</summary>
         protected virtual bool GroundFits(Map map, Sketch sketch, IntVec3 offset, CellRect rect) => FitsNaturalGround(map, sketch, offset);
 
         /// <summary>位置決定後、生成結構之前呼叫（海上陣地在這裡先鋪甲板）。</summary>
-        protected virtual void PrepareGround(Map map, CellRect rect) { }
+        protected virtual void PrepareGround(Map map, Sketch sketch, IntVec3 offset, CellRect rect) { }
 
         /// <summary>每座建築都能直接蓋在原地形上（不需改鋪地板），且占用格沒有岩石或其他建築。</summary>
         protected static bool FitsNaturalGround(Map map, Sketch sketch, IntVec3 offset)

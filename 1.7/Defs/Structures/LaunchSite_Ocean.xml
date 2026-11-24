@@ -1,0 +1,2644 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <Fortified.Structures.FFF_StructureDef>
+    <defName>DMSE_Platform_A</defName>
+    <size>(31, 29)</size>
+    <disableSuggestedRoof>True</disableSuggestedRoof>
+    <elements>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(25, 0, 0)</pos>
+        <size>(5, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(6, 0, 1)</pos>
+        <size>(5, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(16, 0, 1)</pos>
+        <size>(10, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(29, 0, 1)</pos>
+        <size>(1, 3)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(6, 0, 2)</pos>
+        <size>(1, 2)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(6, 0, 6)</pos>
+        <size>(1, 2)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(6, 0, 9)</pos>
+        <size>(1, 4)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(10, 0, 2)</pos>
+        <size>(1, 3)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(16, 0, 3)</pos>
+        <size>(9, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(2, 0, 4)</pos>
+        <size>(5, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(16, 0, 4)</pos>
+        <size>(1, 6)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>PowerConduit</def>
+        <pos>(2, 0, 4)</pos>
+        <size>(5, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>PowerConduit</def>
+        <pos>(26, 0, 6)</pos>
+        <size>(1, 8)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(28, 0, 4)</pos>
+        <size>(2, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(28, 0, 12)</pos>
+        <size>(2, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(2, 0, 5)</pos>
+        <size>(1, 8)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(6, 0, 5)</pos>
+        <size>(2, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(9, 0, 5)</pos>
+        <size>(3, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(24, 0, 5)</pos>
+        <size>(3, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>PowerConduit</def>
+        <pos>(6, 0, 5)</pos>
+        <size>(11, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>PowerConduit</def>
+        <pos>(19, 0, 5)</pos>
+        <size>(1, 3)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>PowerConduit</def>
+        <pos>(19, 0, 15)</pos>
+        <size>(1, 4)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>PowerConduit</def>
+        <pos>(24, 0, 5)</pos>
+        <size>(3, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(28, 0, 5)</pos>
+        <size>(1, 7)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>DiningChair</def>
+        <pos>(9, 0, 6)</pos>
+        <size>(1, 4)</size>
+        <rot>1</rot>
+        <stuff>WoodLog</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(11, 0, 7)</pos>
+        <size>(1, 3)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(11, 0, 11)</pos>
+        <size>(1, 2)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(26, 0, 7)</pos>
+        <size>(1, 7)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Sandbags</def>
+        <pos>(12, 0, 7)</pos>
+        <size>(1, 3)</size>
+        <stuff>Cloth</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>DMS_CrateSmall_Ration</def>
+        <pos>(20, 0, 7)</pos>
+        <size>(2, 1)</size>
+        <rot>2</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(21, 0, 8)</pos>
+        <size>(1, 2)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Battery</def>
+        <pos>(17, 0, 8)</pos>
+        <size>(4, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>PowerConduit</def>
+        <pos>(11, 0, 9)</pos>
+        <size>(6, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(16, 0, 10)</pos>
+        <size>(6, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>PowerConduit</def>
+        <pos>(11, 0, 10)</pos>
+        <size>(1, 3)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Sandbags</def>
+        <pos>(1, 0, 12)</pos>
+        <size>(1, 2)</size>
+        <stuff>Cloth</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(2, 0, 13)</pos>
+        <size>(10, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>PowerConduit</def>
+        <pos>(2, 0, 13)</pos>
+        <size>(10, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Sandbags</def>
+        <pos>(1, 0, 14)</pos>
+        <size>(3, 1)</size>
+        <stuff>Cloth</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(7, 0, 14)</pos>
+        <size>(1, 5)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(19, 0, 14)</pos>
+        <size>(1, 5)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(21, 0, 14)</pos>
+        <size>(7, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(29, 0, 14)</pos>
+        <size>(1, 2)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(29, 0, 17)</pos>
+        <size>(1, 2)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>PowerConduit</def>
+        <pos>(19, 0, 14)</pos>
+        <size>(11, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>PowerConduit</def>
+        <pos>(19, 0, 19)</pos>
+        <size>(11, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>PowerConduit</def>
+        <pos>(29, 0, 15)</pos>
+        <size>(1, 4)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Sandbags</def>
+        <pos>(13, 0, 17)</pos>
+        <size>(3, 1)</size>
+        <stuff>Cloth</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(19, 0, 19)</pos>
+        <size>(11, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(30, 0, 19)</pos>
+        <size>(1, 6)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(23, 0, 20)</pos>
+        <size>(1, 2)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(23, 0, 23)</pos>
+        <size>(1, 2)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Sandbags</def>
+        <pos>(20, 0, 25)</pos>
+        <size>(3, 1)</size>
+        <stuff>Cloth</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(23, 0, 25)</pos>
+        <size>(8, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>WallLamp</def>
+        <posList>
+          <li>(8, 0, 0)</li>
+          <li>(20, 0, 2)</li>
+          <li>(9, 0, 4)</li>
+          <li>(23, 0, 13)</li>
+          <li>(23, 0, 18)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMSE_FieldStructure_MediumFrame</def>
+        <pos>(3, 0, 1)</pos>
+        <rot>2</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>DMSE_Building_LightMissileLauncher</def>
+        <rot>2</rot>
+        <posList>
+          <li>(12, 0, 2)</li>
+          <li>(14, 0, 2)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>Fence</def>
+        <pos>(29, 0, 13)</pos>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMSE_FireControlRadar</def>
+        <pos>(27, 0, 2)</pos>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMSE_Building_LightMissileLauncher</def>
+        <pos>(3, 0, 2)</pos>
+        <rot>3</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>Shelf</def>
+        <pos>(7, 0, 2)</pos>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>Shelf</def>
+        <pos>(9, 0, 2)</pos>
+        <rot>3</rot>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMSE_FieldStructure_MediumFrame</def>
+        <pos>(2, 0, 3)</pos>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>Shelf</def>
+        <rot>1</rot>
+        <stuff>Steel</stuff>
+        <posList>
+          <li>(7, 0, 4)</li>
+          <li>(22, 0, 9)</li>
+          <li>(22, 0, 11)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>Wall</def>
+        <stuff>Steel</stuff>
+        <posList>
+          <li>(24, 0, 4)</li>
+          <li>(21, 0, 11)</li>
+          <li>(21, 0, 13)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>PowerConduit</def>
+        <pos>(26, 0, 4)</pos>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>FirefoamPopper</def>
+        <posList>
+          <li>(9, 0, 4)</li>
+          <li>(19, 0, 5)</li>
+          <li>(23, 0, 15)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>ChemfuelPoweredGenerator</def>
+        <posList>
+          <li>(17, 0, 4)</li>
+          <li>(20, 0, 4)</li>
+          <li>(22, 0, 4)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>Bed</def>
+        <rot>1</rot>
+        <stuff>WoodLog</stuff>
+        <posList>
+          <li>(3, 0, 5)</li>
+          <li>(3, 0, 7)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>Door</def>
+        <stuff>Steel</stuff>
+        <posList>
+          <li>(8, 0, 5)</li>
+          <li>(20, 0, 14)</li>
+          <li>(28, 0, 14)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>EndTable</def>
+        <rot>2</rot>
+        <stuff>WoodLog</stuff>
+        <posList>
+          <li>(3, 0, 6)</li>
+          <li>(4, 0, 9)</li>
+          <li>(4, 0, 12)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>Heater</def>
+        <targetTemperature>21</targetTemperature>
+        <posList>
+          <li>(7, 0, 6)</li>
+          <li>(26, 0, 15)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>Table1x2c</def>
+        <stuff>WoodLog</stuff>
+        <posList>
+          <li>(10, 0, 6)</li>
+          <li>(10, 0, 8)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>Cooler</def>
+        <rot>1</rot>
+        <targetTemperature>21</targetTemperature>
+        <posList>
+          <li>(11, 0, 6)</li>
+          <li>(29, 0, 16)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>Door</def>
+        <rot>1</rot>
+        <stuff>Steel</stuff>
+        <posList>
+          <li>(26, 0, 6)</li>
+          <li>(6, 0, 8)</li>
+          <li>(11, 0, 10)</li>
+          <li>(21, 0, 12)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>TubeTelevision</def>
+        <pos>(7, 0, 7)</pos>
+        <rot>1</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMSE_MissileRack</def>
+        <pos>(15, 0, 8)</pos>
+        <rot>2</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>WallLamp</def>
+        <rot>3</rot>
+        <posList>
+          <li>(17, 0, 7)</li>
+          <li>(3, 0, 9)</li>
+          <li>(7, 0, 9)</li>
+          <li>(27, 0, 9)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>ToolCabinet</def>
+        <rot>1</rot>
+        <posList>
+          <li>(25, 0, 8)</li>
+          <li>(25, 0, 13)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>Dresser</def>
+        <pos>(4, 0, 8)</pos>
+        <rot>2</rot>
+        <stuff>WoodLog</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>Bed</def>
+        <pos>(3, 0, 9)</pos>
+        <stuff>WoodLog</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>TableMachining</def>
+        <pos>(25, 0, 10)</pos>
+        <rot>1</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>Bed</def>
+        <rot>2</rot>
+        <stuff>WoodLog</stuff>
+        <posList>
+          <li>(3, 0, 12)</li>
+          <li>(5, 0, 12)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMS_Building_VentSmall</def>
+        <pos>(19, 0, 11)</pos>
+        <rot>2</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMS_CrateSmall_Ration</def>
+        <pos>(7, 0, 12)</pos>
+        <rot>2</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>DMSE_MissileRack</def>
+        <rot>1</rot>
+        <posList>
+          <li>(9, 0, 12)</li>
+          <li>(21, 0, 20)</li>
+          <li>(17, 0, 24)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMS_Building_Camera</def>
+        <pos>(12, 0, 12)</pos>
+        <rot>3</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>Shelf</def>
+        <pos>(23, 0, 13)</pos>
+        <rot>2</rot>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMS_Waterdispenser</def>
+        <pos>(24, 0, 13)</pos>
+        <rot>2</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>Turret_MiniTurret</def>
+        <stuff>Steel</stuff>
+        <posList>
+          <li>(6, 0, 14)</li>
+          <li>(21, 0, 24)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>DMS_Building_VentLarge</def>
+        <posList>
+          <li>(10, 0, 14)</li>
+          <li>(10, 0, 16)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMS_Benches</def>
+        <pos>(18, 0, 15)</pos>
+        <rot>3</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMSE_StrikePlanningTable</def>
+        <pos>(21, 0, 17)</pos>
+        <rot>3</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>WallLamp</def>
+        <pos>(18, 0, 17)</pos>
+        <rot>1</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>CommsConsole</def>
+        <pos>(24, 0, 18)</pos>
+        <rot>2</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMSE_WarRoomConsole</def>
+        <pos>(27, 0, 17)</pos>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>Sandbags</def>
+        <stuff>Cloth</stuff>
+        <posList>
+          <li>(13, 0, 18)</li>
+          <li>(20, 0, 24)</li>
+          <li>(22, 0, 24)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMS_Building_Camera</def>
+        <pos>(18, 0, 19)</pos>
+        <rot>1</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>DMS_LogisticContainer</def>
+        <posList>
+          <li>(8, 0, 20)</li>
+          <li>(10, 0, 20)</li>
+          <li>(13, 0, 23)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>PodLauncher</def>
+        <pos>(14, 0, 20)</pos>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>TransportPod</def>
+        <pos>(15, 0, 20)</pos>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>DMSE_Building_LightMissileVLS</def>
+        <posList>
+          <li>(25, 0, 21)</li>
+          <li>(25, 0, 23)</li>
+          <li>(27, 0, 21)</li>
+          <li>(27, 0, 23)</li>
+          <li>(29, 0, 21)</li>
+          <li>(29, 0, 23)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>FloodLight</def>
+        <pos>(15, 0, 22)</pos>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(1, 0, 0)</pos>
+        <size>(15, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(25, 0, 0)</pos>
+        <size>(5, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(1, 0, 1)</pos>
+        <size>(29, 4)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(1, 0, 5)</pos>
+        <size>(28, 7)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(1, 0, 12)</pos>
+        <size>(12, 3)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(18, 0, 12)</pos>
+        <size>(12, 5)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>MetalTile</def>
+        <pos>(13, 0, 12)</pos>
+        <size>(5, 5)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(7, 0, 15)</pos>
+        <size>(6, 2)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(7, 0, 17)</pos>
+        <size>(23, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(6, 0, 18)</pos>
+        <size>(24, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>PavedTile</def>
+        <pos>(0, 0, 19)</pos>
+        <size>(19, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>PavedTile</def>
+        <pos>(0, 0, 25)</pos>
+        <size>(19, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(19, 0, 19)</pos>
+        <size>(11, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>PavedTile</def>
+        <pos>(0, 0, 20)</pos>
+        <size>(1, 5)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>PavedTile</def>
+        <pos>(6, 0, 20)</pos>
+        <size>(1, 5)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>PavedTile</def>
+        <pos>(12, 0, 20)</pos>
+        <size>(1, 5)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>PavedTile</def>
+        <pos>(18, 0, 20)</pos>
+        <size>(1, 5)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>PavedTile</def>
+        <pos>(23, 0, 20)</pos>
+        <size>(8, 6)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>Concrete</def>
+        <pos>(1, 0, 20)</pos>
+        <size>(5, 5)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>Concrete</def>
+        <pos>(7, 0, 20)</pos>
+        <size>(5, 5)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>Concrete</def>
+        <pos>(13, 0, 20)</pos>
+        <size>(5, 5)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(19, 0, 20)</pos>
+        <size>(4, 6)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(6, 0, 26)</pos>
+        <size>(25, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(29, 0, 27)</pos>
+        <size>(2, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(7, 0, 28)</pos>
+        <size>(24, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Terrain">
+        <def>PavedTile</def>
+        <pos>(30, 0, 19)</pos>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainScatter">
+        <def>DMSE_SeaPlatform</def>
+        <posList>
+          <li>(7, 0, 27)</li>
+          <li>(15, 0, 27)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainColorRect">
+        <color>Structure_OrangePastel</color>
+        <pos>(1, 0, 20)</pos>
+        <size>(1, 2)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainColorRect">
+        <color>Structure_OrangePastel</color>
+        <pos>(1, 0, 23)</pos>
+        <size>(1, 2)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainColorRect">
+        <color>Structure_OrangePastel</color>
+        <pos>(5, 0, 20)</pos>
+        <size>(1, 2)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainColorRect">
+        <color>Structure_OrangePastel</color>
+        <pos>(5, 0, 23)</pos>
+        <size>(1, 2)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainColorRect">
+        <color>Structure_OrangePastel</color>
+        <pos>(1, 0, 22)</pos>
+        <size>(5, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_RoofRect">
+        <def>RoofConstructed</def>
+        <pos>(6, 0, 1)</pos>
+        <size>(5, 3)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_RoofRect">
+        <def>RoofConstructed</def>
+        <pos>(16, 0, 3)</pos>
+        <size>(9, 2)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_RoofRect">
+        <def>RoofConstructed</def>
+        <pos>(2, 0, 4)</pos>
+        <size>(9, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_RoofRect">
+        <def>RoofConstructed</def>
+        <pos>(2, 0, 5)</pos>
+        <size>(10, 9)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_RoofRect">
+        <def>RoofConstructed</def>
+        <pos>(16, 0, 5)</pos>
+        <size>(11, 6)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_RoofRect">
+        <def>RoofConstructed</def>
+        <pos>(21, 0, 11)</pos>
+        <size>(6, 3)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_RoofRect">
+        <def>RoofConstructed</def>
+        <pos>(19, 0, 14)</pos>
+        <size>(11, 6)</size>
+      </li>
+      <!-- 支柱放在地形之後：地形元素會把需要 DMSE_SeaPlatformPillarBase 的建築從 sketch 擦掉（Sketch.WipeColliding）；支柱最後加入時只會擦掉它底下的地板 -->
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMSE_SeaPlatformPillar</def>
+        <pos>(15, 0, 14)</pos>
+      </li>
+    </elements>
+  </Fortified.Structures.FFF_StructureDef>
+
+  <Fortified.Structures.FFF_StructureDef>
+    <defName>DMSE_Platform_B</defName>
+    <size>(69, 19)</size>
+    <disableSuggestedRoof>True</disableSuggestedRoof>
+    <elements>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Sandbags</def>
+        <pos>(51, 0, 0)</pos>
+        <size>(4, 1)</size>
+        <stuff>Cloth</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Sandbags</def>
+        <pos>(51, 0, 1)</pos>
+        <size>(1, 2)</size>
+        <stuff>Cloth</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(31, 0, 3)</pos>
+        <size>(8, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(31, 0, 15)</pos>
+        <size>(8, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(2, 0, 4)</pos>
+        <size>(2, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(5, 0, 4)</pos>
+        <size>(5, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(31, 0, 7)</pos>
+        <size>(1, 5)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(38, 0, 7)</pos>
+        <size>(1, 5)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(60, 0, 4)</pos>
+        <size>(4, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(60, 0, 14)</pos>
+        <size>(4, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(65, 0, 4)</pos>
+        <size>(3, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(65, 0, 14)</pos>
+        <size>(3, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(10, 0, 4)</pos>
+        <size>(6, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(17, 0, 4)</pos>
+        <size>(2, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(51, 0, 4)</pos>
+        <size>(2, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(51, 0, 14)</pos>
+        <size>(2, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(54, 0, 4)</pos>
+        <size>(6, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(54, 0, 14)</pos>
+        <size>(6, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>HiddenConduit</def>
+        <pos>(10, 0, 4)</pos>
+        <size>(50, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(67, 0, 5)</pos>
+        <size>(1, 9)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(10, 0, 5)</pos>
+        <size>(1, 7)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(18, 0, 5)</pos>
+        <size>(1, 9)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(51, 0, 5)</pos>
+        <size>(1, 9)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(59, 0, 5)</pos>
+        <size>(1, 9)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>HiddenConduit</def>
+        <pos>(10, 0, 5)</pos>
+        <size>(1, 2)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>HiddenConduit</def>
+        <pos>(10, 0, 8)</pos>
+        <size>(1, 6)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>HiddenConduit</def>
+        <pos>(59, 0, 5)</pos>
+        <size>(1, 9)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(0, 0, 6)</pos>
+        <size>(3, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(0, 0, 12)</pos>
+        <size>(3, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(19, 0, 6)</pos>
+        <size>(13, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(19, 0, 12)</pos>
+        <size>(13, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(38, 0, 6)</pos>
+        <size>(13, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(38, 0, 12)</pos>
+        <size>(13, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(0, 0, 7)</pos>
+        <size>(1, 5)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>HiddenConduit</def>
+        <pos>(3, 0, 7)</pos>
+        <size>(8, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>PowerConduit</def>
+        <pos>(17, 0, 11)</pos>
+        <size>(1, 3)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(2, 0, 14)</pos>
+        <size>(6, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(10, 0, 14)</pos>
+        <size>(9, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>HiddenConduit</def>
+        <pos>(10, 0, 14)</pos>
+        <size>(6, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>HiddenConduit</def>
+        <pos>(17, 0, 14)</pos>
+        <size>(43, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Sandbags</def>
+        <pos>(15, 0, 16)</pos>
+        <size>(1, 2)</size>
+        <stuff>Cloth</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Sandbags</def>
+        <pos>(18, 0, 16)</pos>
+        <size>(1, 2)</size>
+        <stuff>Cloth</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Sandbags</def>
+        <pos>(15, 0, 18)</pos>
+        <size>(4, 1)</size>
+        <stuff>Cloth</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>Sandbags</def>
+        <pos>(54, 0, 1)</pos>
+        <stuff>Cloth</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMSE_Turret_Vulcan_WingBack</def>
+        <pos>(53, 0, 2)</pos>
+        <rot>2</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>Turret_MiniTurret</def>
+        <stuff>Steel</stuff>
+        <posList>
+          <li>(9, 0, 2)</li>
+          <li>(50, 0, 2)</li>
+          <li>(19, 0, 16)</li>
+          <li>(60, 0, 16)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>DMS_SubstationCabinet</def>
+        <posList>
+          <li>(12, 0, 3)</li>
+          <li>(56, 0, 3)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>WallLamp</def>
+        <posList>
+          <li>(14, 0, 3)</li>
+          <li>(52, 0, 3)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMS_Turret_Sentry</def>
+        <pos>(18, 0, 3)</pos>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>Fence</def>
+        <stuff>Steel</stuff>
+        <posList>
+          <li>(31, 0, 4)</li>
+          <li>(31, 0, 14)</li>
+          <li>(38, 0, 4)</li>
+          <li>(38, 0, 14)</li>
+          <li>(2, 0, 5)</li>
+          <li>(2, 0, 13)</li>
+          <li>(9, 0, 14)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>Door</def>
+        <stuff>Steel</stuff>
+        <posList>
+          <li>(16, 0, 4)</li>
+          <li>(53, 0, 4)</li>
+          <li>(53, 0, 14)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>DMSE_StructuralFrame_Section</def>
+        <rot>3</rot>
+        <posList>
+          <li>(20, 0, 4)</li>
+          <li>(20, 0, 14)</li>
+          <li>(50, 0, 4)</li>
+          <li>(50, 0, 14)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>DMSE_StructuralFrame_End</def>
+        <rot>1</rot>
+        <posList>
+          <li>(21, 0, 4)</li>
+          <li>(21, 0, 14)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>DMS_Building_VentMedium</def>
+        <posList>
+          <li>(27, 0, 4)</li>
+          <li>(29, 0, 14)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>DMSE_Building_MediumVLS</def>
+        <posList>
+          <li>(33, 0, 4)</li>
+          <li>(33, 0, 7)</li>
+          <li>(33, 0, 10)</li>
+          <li>(33, 0, 13)</li>
+          <li>(35, 0, 4)</li>
+          <li>(35, 0, 7)</li>
+          <li>(35, 0, 10)</li>
+          <li>(35, 0, 13)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMS_Building_Machine_Medium</def>
+        <pos>(43, 0, 4)</pos>
+        <rot>2</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMS_Building_Machine_Medium</def>
+        <pos>(46, 0, 4)</pos>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>DMSE_StructuralFrame_End</def>
+        <rot>3</rot>
+        <posList>
+          <li>(48, 0, 4)</li>
+          <li>(48, 0, 14)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>Wall</def>
+        <pos>(10, 0, 13)</pos>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>Bed</def>
+        <rot>2</rot>
+        <stuff>WoodLog</stuff>
+        <posList>
+          <li>(11, 0, 6)</li>
+          <li>(11, 0, 11)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>DiningChair</def>
+        <rot>1</rot>
+        <stuff>WoodLog</stuff>
+        <posList>
+          <li>(12, 0, 5)</li>
+          <li>(12, 0, 7)</li>
+          <li>(15, 0, 12)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>Table2x4c</def>
+        <pos>(13, 0, 6)</pos>
+        <stuff>WoodLog</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>Shelf</def>
+        <rot>3</rot>
+        <stuff>Steel</stuff>
+        <posList>
+          <li>(17, 0, 5)</li>
+          <li>(17, 0, 7)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMS_Building_Camera</def>
+        <pos>(50, 0, 5)</pos>
+        <rot>1</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMS_TableStampManual</def>
+        <pos>(52, 0, 6)</pos>
+        <rot>3</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMSE_CruiseMissileRack</def>
+        <pos>(62, 0, 5)</pos>
+        <rot>3</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMSE_CruiseMissileRack</def>
+        <pos>(65, 0, 6)</pos>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>DMS_LogisticContainer</def>
+        <posList>
+          <li>(8, 0, 6)</li>
+          <li>(5, 0, 12)</li>
+          <li>(60, 0, 12)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DiningChair</def>
+        <pos>(15, 0, 6)</pos>
+        <rot>3</rot>
+        <stuff>WoodLog</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>DMSE_CruiseMissileRack</def>
+        <rot>1</rot>
+        <posList>
+          <li>(55, 0, 7)</li>
+          <li>(55, 0, 10)</li>
+          <li>(55, 0, 12)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>EndTable</def>
+        <pos>(11, 0, 7)</pos>
+        <rot>2</rot>
+        <stuff>WoodLog</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMSE_FireControlRadar</def>
+        <pos>(3, 0, 9)</pos>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>Bed</def>
+        <pos>(11, 0, 8)</pos>
+        <stuff>WoodLog</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>WallLamp</def>
+        <pos>(9, 0, 9)</pos>
+        <rot>1</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>WallLamp</def>
+        <rot>3</rot>
+        <posList>
+          <li>(11, 0, 9)</li>
+          <li>(52, 0, 9)</li>
+          <li>(60, 0, 9)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DiningChair</def>
+        <pos>(13, 0, 9)</pos>
+        <rot>2</rot>
+        <stuff>WoodLog</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>ChemfuelPoweredGenerator</def>
+        <pos>(16, 0, 9)</pos>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>DMS_MachineCabinet</def>
+        <rot>3</rot>
+        <posList>
+          <li>(52, 0, 9)</li>
+          <li>(52, 0, 12)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMSE_CruiseMissileRack</def>
+        <pos>(66, 0, 12)</pos>
+        <rot>2</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>FlatscreenTelevision</def>
+        <pos>(14, 0, 11)</pos>
+        <rot>2</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMSE_WarRoomConsole</def>
+        <pos>(16, 0, 12)</pos>
+        <rot>1</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>Door</def>
+        <pos>(10, 0, 12)</pos>
+        <rot>1</rot>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>Bed</def>
+        <pos>(11, 0, 13)</pos>
+        <rot>1</rot>
+        <stuff>WoodLog</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMS_Building_Camera</def>
+        <pos>(19, 0, 13)</pos>
+        <rot>3</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMSE_FieldStructure_ExtinguisherUnit</def>
+        <pos>(51, 0, 15)</pos>
+        <rot>1</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>WallLamp</def>
+        <pos>(52, 0, 15)</pos>
+        <rot>2</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>DMSE_FieldStructure_Frame</def>
+        <posList>
+          <li>(55, 0, 15)</li>
+          <li>(58, 0, 15)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMSE_FieldStructure_PowerUnit</def>
+        <pos>(57, 0, 15)</pos>
+        <rot>3</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMSE_Turret_Vulcan_WingBack</def>
+        <pos>(16, 0, 16)</pos>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(51, 0, 0)</pos>
+        <size>(4, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(50, 0, 1)</pos>
+        <size>(6, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(9, 0, 2)</pos>
+        <size>(11, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(9, 0, 16)</pos>
+        <size>(11, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(50, 0, 2)</pos>
+        <size>(11, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(50, 0, 16)</pos>
+        <size>(11, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(1, 0, 3)</pos>
+        <size>(68, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(1, 0, 15)</pos>
+        <size>(68, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(1, 0, 4)</pos>
+        <size>(9, 2)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(1, 0, 13)</pos>
+        <size>(9, 2)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(30, 0, 4)</pos>
+        <size>(2, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(30, 0, 14)</pos>
+        <size>(2, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(38, 0, 4)</pos>
+        <size>(2, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(38, 0, 14)</pos>
+        <size>(2, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(60, 0, 4)</pos>
+        <size>(9, 3)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(60, 0, 12)</pos>
+        <size>(9, 3)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>PavedTile</def>
+        <pos>(10, 0, 4)</pos>
+        <size>(9, 11)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>PavedTile</def>
+        <pos>(51, 0, 4)</pos>
+        <size>(9, 11)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>MetalTile</def>
+        <pos>(19, 0, 4)</pos>
+        <size>(5, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>MetalTile</def>
+        <pos>(19, 0, 14)</pos>
+        <size>(5, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>MetalTile</def>
+        <pos>(25, 0, 4)</pos>
+        <size>(5, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>MetalTile</def>
+        <pos>(25, 0, 14)</pos>
+        <size>(5, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>MetalTile</def>
+        <pos>(32, 0, 4)</pos>
+        <size>(6, 11)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>MetalTile</def>
+        <pos>(40, 0, 4)</pos>
+        <size>(5, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>MetalTile</def>
+        <pos>(40, 0, 14)</pos>
+        <size>(5, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>MetalTile</def>
+        <pos>(46, 0, 4)</pos>
+        <size>(5, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>MetalTile</def>
+        <pos>(46, 0, 14)</pos>
+        <size>(5, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(19, 0, 5)</pos>
+        <size>(13, 2)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(19, 0, 12)</pos>
+        <size>(13, 2)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(38, 0, 5)</pos>
+        <size>(13, 2)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(38, 0, 12)</pos>
+        <size>(13, 2)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(0, 0, 6)</pos>
+        <size>(10, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(0, 0, 12)</pos>
+        <size>(10, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(0, 0, 7)</pos>
+        <size>(1, 5)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(31, 0, 7)</pos>
+        <size>(1, 5)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(38, 0, 7)</pos>
+        <size>(1, 5)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(65, 0, 7)</pos>
+        <size>(4, 5)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>MetalTile</def>
+        <pos>(1, 0, 7)</pos>
+        <size>(9, 5)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>MetalTile</def>
+        <pos>(60, 0, 7)</pos>
+        <size>(5, 5)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(14, 0, 17)</pos>
+        <size>(6, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(15, 0, 18)</pos>
+        <size>(4, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainScatter">
+        <def>DMSE_SeaPlatform</def>
+        <posList>
+          <li>(24, 0, 4)</li>
+          <li>(24, 0, 14)</li>
+          <li>(45, 0, 4)</li>
+          <li>(45, 0, 14)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainColorRect">
+        <color>Structure_White</color>
+        <pos>(32, 0, 4)</pos>
+        <size>(6, 11)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_RoofRect">
+        <def>RoofConstructed</def>
+        <pos>(10, 0, 4)</pos>
+        <size>(9, 11)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_RoofRect">
+        <def>RoofConstructed</def>
+        <pos>(51, 0, 4)</pos>
+        <size>(9, 11)</size>
+      </li>
+      <!-- 支柱放在地形之後：地形元素會把需要 DMSE_SeaPlatformPillarBase 的建築從 sketch 擦掉（Sketch.WipeColliding）；支柱最後加入時只會擦掉它底下的地板 -->
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>DMSE_SeaPlatformPillar</def>
+        <posList>
+          <li>(7, 0, 9)</li>
+          <li>(62, 0, 9)</li>
+        </posList>
+      </li>
+    </elements>
+  </Fortified.Structures.FFF_StructureDef>
+
+  <Fortified.Structures.FFF_StructureDef>
+    <defName>DMSE_Platform_C</defName>
+    <size>(37, 36)</size>
+    <disableSuggestedRoof>True</disableSuggestedRoof>
+    <elements>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(21, 0, 0)</pos>
+        <size>(7, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(21, 0, 1)</pos>
+        <size>(1, 4)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(27, 0, 1)</pos>
+        <size>(1, 2)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(4, 0, 4)</pos>
+        <size>(17, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>PowerConduit</def>
+        <pos>(9, 0, 4)</pos>
+        <size>(14, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(27, 0, 4)</pos>
+        <size>(7, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(4, 0, 5)</pos>
+        <size>(1, 4)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(4, 0, 15)</pos>
+        <size>(1, 2)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(17, 0, 5)</pos>
+        <size>(1, 5)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(17, 0, 31)</pos>
+        <size>(1, 3)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(20, 0, 5)</pos>
+        <size>(1, 5)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>PowerConduit</def>
+        <pos>(9, 0, 5)</pos>
+        <size>(1, 4)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>PowerConduit</def>
+        <pos>(9, 0, 10)</pos>
+        <size>(1, 7)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>PowerConduit</def>
+        <pos>(9, 0, 18)</pos>
+        <size>(1, 3)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>PowerConduit</def>
+        <pos>(24, 0, 5)</pos>
+        <size>(1, 5)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>PowerConduit</def>
+        <pos>(24, 0, 11)</pos>
+        <size>(1, 5)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>PowerConduit</def>
+        <pos>(24, 0, 17)</pos>
+        <size>(1, 4)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>MealSurvivalPack</def>
+        <pos>(14, 0, 5)</pos>
+        <size>(2, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>MealSurvivalPack</def>
+        <pos>(14, 0, 9)</pos>
+        <size>(2, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>MealSurvivalPack</def>
+        <pos>(15, 0, 5)</pos>
+        <size>(2, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Battery</def>
+        <pos>(19, 0, 5)</pos>
+        <size>(1, 5)</size>
+        <rot>3</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(33, 0, 5)</pos>
+        <size>(1, 14)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(33, 0, 29)</pos>
+        <size>(1, 4)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(9, 0, 6)</pos>
+        <size>(1, 3)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(9, 0, 10)</pos>
+        <size>(1, 2)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(9, 0, 14)</pos>
+        <size>(1, 3)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(9, 0, 18)</pos>
+        <size>(1, 2)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>DiningChair</def>
+        <pos>(11, 0, 6)</pos>
+        <size>(1, 2)</size>
+        <rot>1</rot>
+        <stuff>WoodLog</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Sandbags</def>
+        <pos>(21, 0, 8)</pos>
+        <size>(1, 3)</size>
+        <stuff>Cloth</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Sandbags</def>
+        <pos>(31, 0, 8)</pos>
+        <size>(2, 1)</size>
+        <stuff>Cloth</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Sandbags</def>
+        <pos>(31, 0, 11)</pos>
+        <size>(2, 1)</size>
+        <stuff>Cloth</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(1, 0, 9)</pos>
+        <size>(4, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(1, 0, 12)</pos>
+        <size>(4, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(1, 0, 17)</pos>
+        <size>(4, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(6, 0, 9)</pos>
+        <size>(5, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(12, 0, 9)</pos>
+        <size>(2, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>PowerConduit</def>
+        <pos>(9, 0, 9)</pos>
+        <size>(5, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Sandbags</def>
+        <pos>(32, 0, 9)</pos>
+        <size>(1, 2)</size>
+        <stuff>Cloth</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(1, 0, 10)</pos>
+        <size>(1, 2)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(1, 0, 18)</pos>
+        <size>(1, 2)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(13, 0, 10)</pos>
+        <size>(8, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>PowerConduit</def>
+        <pos>(13, 0, 10)</pos>
+        <size>(12, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Sandbags</def>
+        <pos>(18, 0, 11)</pos>
+        <size>(4, 1)</size>
+        <stuff>Cloth</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(6, 0, 12)</pos>
+        <size>(4, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(6, 0, 17)</pos>
+        <size>(4, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>DMSE_FieldStructure_AmmoStorage</def>
+        <pos>(29, 0, 12)</pos>
+        <size>(1, 2)</size>
+        <rot>3</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(12, 0, 13)</pos>
+        <size>(11, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(12, 0, 22)</pos>
+        <size>(11, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(12, 0, 14)</pos>
+        <size>(1, 8)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(22, 0, 14)</pos>
+        <size>(1, 8)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>DMSE_FieldStructure_AmmoStorage</def>
+        <pos>(29, 0, 15)</pos>
+        <size>(1, 2)</size>
+        <rot>1</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>PowerConduit</def>
+        <pos>(1, 0, 17)</pos>
+        <size>(9, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Sandbags</def>
+        <pos>(10, 0, 18)</pos>
+        <size>(1, 3)</size>
+        <stuff>Cloth</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Sandbags</def>
+        <pos>(25, 0, 18)</pos>
+        <size>(4, 1)</size>
+        <stuff>Cloth</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(26, 0, 19)</pos>
+        <size>(3, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(30, 0, 19)</pos>
+        <size>(6, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Sandbags</def>
+        <pos>(25, 0, 19)</pos>
+        <size>(1, 3)</size>
+        <stuff>Cloth</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(1, 0, 20)</pos>
+        <size>(9, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(26, 0, 20)</pos>
+        <size>(1, 3)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(26, 0, 24)</pos>
+        <size>(1, 4)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(32, 0, 20)</pos>
+        <size>(4, 2)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(32, 0, 26)</pos>
+        <size>(4, 2)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(4, 0, 21)</pos>
+        <size>(1, 12)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Sandbags</def>
+        <pos>(8, 0, 21)</pos>
+        <size>(3, 1)</size>
+        <stuff>Cloth</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>PowerConduit</def>
+        <pos>(24, 0, 21)</pos>
+        <size>(3, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(32, 0, 24)</pos>
+        <size>(1, 2)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>HiddenConduit</def>
+        <pos>(27, 0, 22)</pos>
+        <size>(1, 2)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>HiddenConduit</def>
+        <pos>(30, 0, 22)</pos>
+        <size>(1, 2)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>DMSE_FieldStructure_AmmoStorage</def>
+        <pos>(19, 0, 25)</pos>
+        <size>(2, 1)</size>
+        <rot>2</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>DMSE_FieldStructure_AmmoStorage</def>
+        <pos>(22, 0, 25)</pos>
+        <size>(2, 1)</size>
+        <rot>2</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>PowerConduit</def>
+        <pos>(23, 0, 28)</pos>
+        <size>(4, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(26, 0, 28)</pos>
+        <size>(10, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(11, 0, 29)</pos>
+        <size>(7, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>PowerConduit</def>
+        <pos>(11, 0, 29)</pos>
+        <size>(7, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(11, 0, 30)</pos>
+        <size>(1, 5)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(17, 0, 30)</pos>
+        <size>(3, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(21, 0, 30)</pos>
+        <size>(3, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>PowerConduit</def>
+        <pos>(17, 0, 30)</pos>
+        <size>(7, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(23, 0, 31)</pos>
+        <size>(1, 4)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(4, 0, 33)</pos>
+        <size>(7, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Fence</def>
+        <pos>(25, 0, 33)</pos>
+        <size>(9, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(11, 0, 35)</pos>
+        <size>(10, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingRect">
+        <def>Wall</def>
+        <pos>(22, 0, 35)</pos>
+        <size>(2, 1)</size>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMSE_PhaseArrayRadar</def>
+        <pos>(24, 0, 3)</pos>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>Wall</def>
+        <stuff>Steel</stuff>
+        <posList>
+          <li>(4, 0, 13)</li>
+          <li>(32, 0, 22)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>Door</def>
+        <rot>1</rot>
+        <stuff>Steel</stuff>
+        <posList>
+          <li>(9, 0, 5)</li>
+          <li>(4, 0, 14)</li>
+          <li>(26, 0, 23)</li>
+          <li>(32, 0, 23)</li>
+          <li>(17, 0, 34)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>DiningChair</def>
+        <stuff>WoodLog</stuff>
+        <posList>
+          <li>(12, 0, 5)</li>
+          <li>(7, 0, 14)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>Shelf</def>
+        <pos>(14, 0, 5)</pos>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>MealSurvivalPack</def>
+        <posList>
+          <li>(14, 0, 5)</li>
+          <li>(16, 0, 6)</li>
+          <li>(16, 0, 6)</li>
+          <li>(22, 0, 32)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>Shelf</def>
+        <pos>(16, 0, 5)</pos>
+        <rot>3</rot>
+        <stuff>Steel</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>Table1x2c</def>
+        <pos>(12, 0, 6)</pos>
+        <stuff>WoodLog</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>DMSE_FieldStructure_PowerUnit</def>
+        <rot>2</rot>
+        <posList>
+          <li>(21, 0, 7)</li>
+          <li>(10, 0, 16)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>DMS_LogisticContainer</def>
+        <posList>
+          <li>(27, 0, 6)</li>
+          <li>(27, 0, 8)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DiningChair</def>
+        <pos>(13, 0, 7)</pos>
+        <rot>3</rot>
+        <stuff>WoodLog</stuff>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>FirefoamPopper</def>
+        <posList>
+          <li>(16, 0, 7)</li>
+          <li>(10, 0, 12)</li>
+          <li>(10, 0, 25)</li>
+          <li>(26, 0, 14)</li>
+          <li>(29, 0, 23)</li>
+          <li>(21, 0, 29)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>DMS_EmergencyLamp</def>
+        <rot>3</rot>
+        <posList>
+          <li>(21, 0, 7)</li>
+          <li>(10, 0, 17)</li>
+          <li>(36, 0, 20)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>Door</def>
+        <stuff>Steel</stuff>
+        <posList>
+          <li>(5, 0, 9)</li>
+          <li>(5, 0, 12)</li>
+          <li>(5, 0, 17)</li>
+          <li>(11, 0, 9)</li>
+          <li>(29, 0, 19)</li>
+          <li>(20, 0, 30)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>Shelf</def>
+        <rot>2</rot>
+        <stuff>Steel</stuff>
+        <posList>
+          <li>(15, 0, 9)</li>
+          <li>(12, 0, 28)</li>
+          <li>(14, 0, 28)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>Heater</def>
+        <targetTemperature>21</targetTemperature>
+        <posList>
+          <li>(16, 0, 9)</li>
+          <li>(8, 0, 14)</li>
+          <li>(22, 0, 34)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>Turret_RocketswarmLauncher</def>
+        <pos>(30, 0, 9)</pos>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>EndTable</def>
+        <rot>1</rot>
+        <stuff>WoodLog</stuff>
+        <posList>
+          <li>(2, 0, 10)</li>
+          <li>(2, 0, 19)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>Bed</def>
+        <rot>3</rot>
+        <stuff>WoodLog</stuff>
+        <posList>
+          <li>(8, 0, 10)</li>
+          <li>(8, 0, 19)</li>
+          <li>(22, 0, 31)</li>
+          <li>(22, 0, 33)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>DMS_EmergencyLamp</def>
+        <rot>1</rot>
+        <posList>
+          <li>(0, 0, 11)</li>
+          <li>(25, 0, 26)</li>
+          <li>(10, 0, 31)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>Bed</def>
+        <rot>1</rot>
+        <stuff>WoodLog</stuff>
+        <posList>
+          <li>(2, 0, 11)</li>
+          <li>(2, 0, 18)</li>
+          <li>(18, 0, 31)</li>
+          <li>(18, 0, 33)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>WallLamp</def>
+        <posList>
+          <li>(6, 0, 11)</li>
+          <li>(6, 0, 19)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>EndTable</def>
+        <rot>3</rot>
+        <stuff>WoodLog</stuff>
+        <posList>
+          <li>(8, 0, 11)</li>
+          <li>(8, 0, 18)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>DMS_EmergencyLamp</def>
+        <rot>2</rot>
+        <posList>
+          <li>(16, 0, 11)</li>
+          <li>(6, 0, 21)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>Cooler</def>
+        <pos>(9, 0, 13)</pos>
+        <rot>1</rot>
+        <targetTemperature>21</targetTemperature>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMSE_Turret_Vulcan_WingBack</def>
+        <pos>(2, 0, 14)</pos>
+        <rot>3</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMS_PerimeterScanner</def>
+        <pos>(10, 0, 14)</pos>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>DMSE_FieldStructure_Frame</def>
+        <posList>
+          <li>(28, 0, 14)</li>
+          <li>(30, 0, 14)</li>
+          <li>(21, 0, 24)</li>
+          <li>(21, 0, 26)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMSE_WarRoomConsole</def>
+        <pos>(7, 0, 15)</pos>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>PowerSwitch</def>
+        <pos>(24, 0, 16)</pos>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>DMS_EmergencyLamp</def>
+        <posList>
+          <li>(27, 0, 18)</li>
+          <li>(29, 0, 27)</li>
+          <li>(15, 0, 28)</li>
+          <li>(14, 0, 34)</li>
+          <li>(20, 0, 34)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMSE_FieldStructure_PowerUnit</def>
+        <pos>(31, 0, 18)</pos>
+        <rot>3</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>ChemfuelPoweredGenerator</def>
+        <posList>
+          <li>(27, 0, 20)</li>
+          <li>(27, 0, 24)</li>
+          <li>(27, 0, 26)</li>
+          <li>(30, 0, 20)</li>
+          <li>(30, 0, 24)</li>
+          <li>(30, 0, 26)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>HiddenConduit</def>
+        <posList>
+          <li>(29, 0, 21)</li>
+          <li>(29, 0, 24)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>DMSE_Building_LightMissileVLS</def>
+        <posList>
+          <li>(5, 0, 23)</li>
+          <li>(5, 0, 25)</li>
+          <li>(5, 0, 27)</li>
+          <li>(7, 0, 23)</li>
+          <li>(7, 0, 25)</li>
+          <li>(7, 0, 27)</li>
+          <li>(26, 0, 30)</li>
+          <li>(26, 0, 32)</li>
+          <li>(28, 0, 30)</li>
+          <li>(28, 0, 32)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMSE_Turret_Vulcan_WingBack</def>
+        <pos>(34, 0, 24)</pos>
+        <rot>1</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>PowerConduit</def>
+        <pos>(26, 0, 27)</pos>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>DMS_SubstationCabinet</def>
+        <posList>
+          <li>(18, 0, 29)</li>
+          <li>(22, 0, 29)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMS_MobileCrewLifter</def>
+        <pos>(14, 0, 32)</pos>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>EndTable</def>
+        <rot>2</rot>
+        <stuff>WoodLog</stuff>
+        <posList>
+          <li>(18, 0, 32)</li>
+          <li>(22, 0, 32)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>Cooler</def>
+        <pos>(21, 0, 35)</pos>
+        <targetTemperature>21</targetTemperature>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(21, 0, 0)</pos>
+        <size>(7, 4)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(4, 0, 4)</pos>
+        <size>(25, 5)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>PavedTile</def>
+        <pos>(29, 0, 4)</pos>
+        <size>(5, 5)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>PavedTile</def>
+        <pos>(29, 0, 29)</pos>
+        <size>(5, 5)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(1, 0, 9)</pos>
+        <size>(28, 3)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(33, 0, 9)</pos>
+        <size>(1, 9)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>MetalTile</def>
+        <pos>(29, 0, 9)</pos>
+        <size>(4, 9)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(0, 0, 12)</pos>
+        <size>(29, 2)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(0, 0, 14)</pos>
+        <size>(13, 4)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(22, 0, 14)</pos>
+        <size>(7, 4)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(1, 0, 18)</pos>
+        <size>(12, 3)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(22, 0, 18)</pos>
+        <size>(12, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(22, 0, 19)</pos>
+        <size>(14, 2)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(4, 0, 21)</pos>
+        <size>(9, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(22, 0, 21)</pos>
+        <size>(15, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(4, 0, 22)</pos>
+        <size>(1, 7)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(8, 0, 22)</pos>
+        <size>(29, 5)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>MetalTile</def>
+        <pos>(5, 0, 22)</pos>
+        <size>(3, 7)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(8, 0, 27)</pos>
+        <size>(28, 2)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>PavedTile</def>
+        <pos>(4, 0, 29)</pos>
+        <size>(5, 5)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(9, 0, 29)</pos>
+        <size>(20, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(9, 0, 33)</pos>
+        <size>(20, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(9, 0, 30)</pos>
+        <size>(16, 3)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>MetalTile</def>
+        <pos>(25, 0, 30)</pos>
+        <size>(4, 3)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(11, 0, 34)</pos>
+        <size>(14, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainRect">
+        <def>DMSE_SeaPlatform</def>
+        <pos>(11, 0, 35)</pos>
+        <size>(13, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainColorRect">
+        <color>Structure_White</color>
+        <pos>(5, 0, 22)</pos>
+        <size>(3, 7)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_TerrainColorRect">
+        <color>Structure_White</color>
+        <pos>(25, 0, 30)</pos>
+        <size>(4, 3)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_RoofRect">
+        <def>RoofConstructed</def>
+        <pos>(4, 0, 4)</pos>
+        <size>(17, 5)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_RoofRect">
+        <def>RoofConstructed</def>
+        <pos>(1, 0, 9)</pos>
+        <size>(20, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_RoofRect">
+        <def>RoofConstructed</def>
+        <pos>(1, 0, 10)</pos>
+        <size>(9, 3)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_RoofRect">
+        <def>RoofConstructed</def>
+        <pos>(1, 0, 17)</pos>
+        <size>(9, 4)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_RoofRect">
+        <def>RoofConstructed</def>
+        <pos>(13, 0, 10)</pos>
+        <size>(8, 1)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_RoofRect">
+        <def>RoofConstructed</def>
+        <pos>(4, 0, 13)</pos>
+        <size>(6, 4)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_RoofRect">
+        <def>RoofConstructed</def>
+        <pos>(26, 0, 19)</pos>
+        <size>(10, 3)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_RoofRect">
+        <def>RoofConstructed</def>
+        <pos>(26, 0, 26)</pos>
+        <size>(10, 3)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_RoofRect">
+        <def>RoofConstructed</def>
+        <pos>(26, 0, 22)</pos>
+        <size>(7, 4)</size>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_RoofRect">
+        <def>RoofConstructed</def>
+        <pos>(17, 0, 30)</pos>
+        <size>(7, 6)</size>
+      </li>
+      <!-- 支柱放在地形之後：地形元素會把需要 DMSE_SeaPlatformPillarBase 的建築從 sketch 擦掉（Sketch.WipeColliding）；支柱最後加入時只會擦掉它底下的地板 -->
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>DMSE_SeaPlatformPillar</def>
+        <posList>
+          <li>(6, 0, 6)</li>
+          <li>(6, 0, 31)</li>
+          <li>(31, 0, 6)</li>
+          <li>(31, 0, 31)</li>
+        </posList>
+      </li>
+    </elements>
+  </Fortified.Structures.FFF_StructureDef>
+</Defs>

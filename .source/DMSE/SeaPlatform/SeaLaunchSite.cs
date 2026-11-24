@@ -34,15 +34,42 @@ namespace DMSE
             return true;
         }
 
-        protected override void PrepareGround(Map map, CellRect rect)
+        /// <summary>海上沒有自然地形：不論 keepNaturalTerrain，都要確認整塊（含外擴）是空的高空或甲板。</summary>
+        protected override bool CheckGround => true;
+
+        /// <summary>
+        /// 結構自己畫了甲板（LaunchSite_Ocean.xml 的海上平台）：照它的形狀鋪，只在它的地形格與建築佔地底下補甲板，
+        /// 讓地板（鋪面、混凝土）疊在甲板上，平台外形不被填成整個矩形。<br/>
+        /// 其他結構（野戰陣地的雷達、近防）：整個範圍外擴 <see cref="deckMargin"/> 格鋪甲板。
+        /// </summary>
+        protected override void PrepareGround(Map map, Sketch sketch, IntVec3 offset, CellRect rect)
         {
             SeaPlatformMapExtension ext = SeaPlatformUtility.Ext(map);
             if (ext == null) return;
-            foreach (IntVec3 c in rect.ExpandedBy(deckMargin).ClipInsideMap(map))
+            if (HasOwnDeck(sketch, ext))
             {
-                if (map.terrainGrid.BaseTerrainAt(c) == ext.voidTerrain)
-                    map.terrainGrid.SetTerrain(c, ext.deckTerrain);
+                foreach (SketchTerrain st in sketch.Terrain)
+                    LayDeck(map, ext, st.pos + offset);
+                foreach (SketchThing st in sketch.Things)
+                    foreach (IntVec3 c in GenAdj.OccupiedRect(st.pos + offset, st.rot, st.def.size))
+                        LayDeck(map, ext, c);
+                return;
             }
+            foreach (IntVec3 c in rect.ExpandedBy(deckMargin).ClipInsideMap(map))
+                LayDeck(map, ext, c);
+        }
+
+        private static bool HasOwnDeck(Sketch sketch, SeaPlatformMapExtension ext)
+        {
+            foreach (SketchTerrain st in sketch.Terrain)
+                if (st.def == ext.deckTerrain) return true;
+            return false;
+        }
+
+        private static void LayDeck(Map map, SeaPlatformMapExtension ext, IntVec3 c)
+        {
+            if (c.InBounds(map) && map.terrainGrid.BaseTerrainAt(c) == ext.voidTerrain)
+                map.terrainGrid.SetTerrain(c, ext.deckTerrain);
         }
     }
 
@@ -78,11 +105,14 @@ namespace DMSE
             float radius = pillarExt.supportRadius;
             List<CellRect> structures = MapGenerator.TryGetVar(FieldLaunchSiteRoads.RectsVar, out List<CellRect> rects) ? rects : new List<CellRect>();
 
+            // 結構自帶的支柱（海上平台各有一根）已經撐住一部分甲板，只補它們範圍以外的
+            List<Vector3> existing = map.listerThings.ThingsOfDef(pillarDef).Select(t => t.TrueCenter()).ToList();
+
             int placed = 0, uncoveredLeft = 0;
             foreach (List<IntVec3> island in DeckIslands(map, ext))
             {
                 HashSet<IntVec3> island1 = new HashSet<IntVec3>(island);
-                List<IntVec3> uncovered = new List<IntVec3>(island);
+                List<IntVec3> uncovered = island.Where(c => !existing.Any(p => SeaPlatformGeometry.Supports(p, c, radius))).ToList();
                 // 候選位置一定碰得到這塊甲板，所以撐住所有格子時也一定接上了支柱
                 while (uncovered.Count > 0 && placed < maxPillars)
                 {
@@ -105,7 +135,7 @@ namespace DMSE
             }
 
             if (Prefs.DevMode)
-                Log.Message($"[DMSE SeaLaunchSite] {placed} pillars; {uncoveredLeft} deck cells left without a pillar in range.");
+                Log.Message($"[DMSE SeaLaunchSite] {existing.Count} structure pillars + {placed} placed; {uncoveredLeft} deck cells left without a pillar in range.");
         }
 
         /// <summary>以共邊相連分出每一塊甲板。</summary>

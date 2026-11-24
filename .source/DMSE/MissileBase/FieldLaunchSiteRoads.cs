@@ -108,13 +108,37 @@ namespace DMSE
             return painted;
         }
 
-        /// <summary>結構外圍一圈中可通行、離 <paramref name="toward"/> 最近的格。</summary>
+        /// <summary>
+        /// 結構外圍一圈中可通行、離 <paramref name="toward"/> 最近的格。<br/>
+        /// 有 <see cref="buildOpenTerrain"/>（海上陣地）時，優先挑緊鄰結構內可站立地面的格：結構的甲板不一定填滿整個範圍，
+        /// 接在範圍角落的高空上，走道就碰不到結構。
+        /// </summary>
         private static IntVec3 Doorstep(Map map, List<CellRect> rects, CellRect rect, IntVec3 toward)
         {
-            return rect.ExpandedBy(1).EdgeCells
-                .Where(c => Passable(map, rects, c))
-                .OrderBy(c => c.DistanceToSquared(toward))
-                .FirstOrFallback(IntVec3.Invalid);
+            List<IntVec3> cells = rect.ExpandedBy(1).EdgeCells.Where(c => Passable(map, rects, c)).ToList();
+            if (buildOpenTerrain != null)
+            {
+                IntVec3 touching = cells.Where(c => TouchesStandable(map, rect, c))
+                    .OrderBy(c => c.DistanceToSquared(toward))
+                    .FirstOrFallback(IntVec3.Invalid);
+                if (touching.IsValid) return touching;
+            }
+            return cells.OrderBy(c => c.DistanceToSquared(toward)).FirstOrFallback(IntVec3.Invalid);
+        }
+
+        /// <summary><paramref name="c"/> 有一個共邊鄰格在 <paramref name="rect"/> 內，而且那格不是高空、也沒有擋路的建築。</summary>
+        private static bool TouchesStandable(Map map, CellRect rect, IntVec3 c)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                IntVec3 n = c + GenAdj.CardinalDirections[i];
+                if (!rect.Contains(n) || !n.InBounds(map)) continue;
+                if (n.GetTerrain(map) == buildOpenTerrain) continue;
+                Building b = n.GetEdifice(map);
+                if (b != null && b.def.passability == Traversability.Impassable) continue;
+                return true;
+            }
+            return false;
         }
 
         private static IntVec3 NearestEdgeCell(Map map, IntVec3 c)
