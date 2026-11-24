@@ -72,4 +72,46 @@
   <DMSE.BVR.World.AltitudeDenied>超出攔截高度</DMSE.BVR.World.AltitudeDenied>
   <!-- EN: Intercept altitude: {0} – {1} -->
   <DMSE.BVR.FireControlAltitude>攔截高度：{0} – {1}</DMSE.BVR.FireControlAltitude>
+  <!-- EN: MIRV warhead (group #{0}) -->
+  <DMSE.Mirv.Role.Warhead>分導彈頭（群組 #{0}）</DMSE.Mirv.Role.Warhead>
+  <!-- EN: MIRV decoy (group #{0}) -->
+  <DMSE.Mirv.Role.Decoy>分導誘餌（群組 #{0}）</DMSE.Mirv.Role.Decoy>
+  <!-- EN: Releases {0} warheads and {1} decoys in {2} -->
+  <DMSE.Mirv.WillRelease>將於 {2} 後釋放 {0} 枚彈頭、{1} 枚誘餌</DMSE.Mirv.WillRelease>
+  <!-- EN: Releasing: {0}/{1} -->
+  <DMSE.Mirv.Releasing>釋放中：{0}/{1}</DMSE.Mirv.Releasing>
+  <!-- EN: Decoy identified: {0} is not a real warhead. Our air defense will ignore it. -->
+  <DMSE.BVR.World.DecoyIdentified>識破誘餌：{0} 不是真彈頭，我方防空將不再理會它。</DMSE.BVR.World.DecoyIdentified>
+  <!-- EN: Identified as a decoy -->
+  <DMSE.BVR.World.Status.DecoyIdentified>已識破為誘餌</DMSE.BVR.World.Status.DecoyIdentified>
+  <!-- EN: Decoy recognition: {0} -->
+  <DMSE.BVR.FireControlDecoy>誘餌識別率：{0}</DMSE.BVR.FireControlDecoy>
+  <!-- EN: {0} warheads -->
+  <DMSE.Mirv.Short.Warheads>{0} 枚彈頭</DMSE.Mirv.Short.Warheads>
+  <!-- EN: warhead flies on -->
+  <DMSE.Mirv.Short.Continues>彈頭續飛</DMSE.Mirv.Short.Continues>
+  <!-- EN: {0} + {1} decoys -->
+  <DMSE.Mirv.Short.WithDecoys>{0}＋{1} 枚誘餌</DMSE.Mirv.Short.WithDecoys>
+  <!-- EN: Releases {0} before arrival, one every {1} ticks in random order. -->
+  <DMSE.Mirv.Detail.WhenTicks>抵達前 {0} 開始釋放，每 {1} tick 一枚，順序隨機。</DMSE.Mirv.Detail.WhenTicks>
+  <!-- EN: Releases at {0} of the flight, one every {1} ticks in random order. -->
+  <DMSE.Mirv.Detail.WhenProgress>飛到航程的 {0} 時開始釋放，每 {1} tick 一枚，順序隨機。</DMSE.Mirv.Detail.WhenProgress>
+  <!-- EN: {0}× {1} -->
+  <DMSE.Mirv.Detail.Group>{0}× {1}</DMSE.Mirv.Detail.Group>
+  <!-- EN: (carries the missile's {0}) -->
+  <DMSE.Mirv.Detail.Inherits>（帶著導彈的{0}）</DMSE.Mirv.Detail.Inherits>
+  <!-- EN: (survives re-entry and falls on the target, inert) -->
+  <DMSE.Mirv.Detail.DecoyReachesMap>（能撐過再入並落到目標，不爆炸）</DMSE.Mirv.Detail.DecoyReachesMap>
+  <!-- EN: (burns up on re-entry) -->
+  <DMSE.Mirv.Detail.DecoyBurnsUp>（再入時燒毀）</DMSE.Mirv.Detail.DecoyBurnsUp>
+  <!-- EN: ({0} chance to survive re-entry) -->
+  <DMSE.Mirv.Detail.DecoySurvives>（{0} 機率撐過再入）</DMSE.Mirv.Detail.DecoySurvives>
+  <!-- EN: The bus is gone once everything is released; shooting it down earlier destroys all warheads at once. -->
+  <DMSE.Mirv.Detail.BusRetires>全部放完後匯流排消失；在那之前被擊落，所有彈頭一次全毀。</DMSE.Mirv.Detail.BusRetires>
+  <!-- EN: The missile itself keeps flying as the real warhead. -->
+  <DMSE.Mirv.Detail.BusContinues>導彈本身繼續飛行，是真正的彈頭。</DMSE.Mirv.Detail.BusContinues>
+  <!-- EN: All warheads strike the same target. Decoys look like the warhead on radar until a fire control radar recognises them. -->
+  <DMSE.Mirv.Detail.SameTarget>所有彈頭打擊同一目標。在被火控雷達識破之前，誘餌在雷達上和彈頭一模一樣。</DMSE.Mirv.Detail.SameTarget>
+  <!-- EN: MIRV group #{0}: {1} tracks ({2} warheads, {3} decoys), arriving in {4}–{5} -->
+  <DMSE.Mirv.AlertLine>分導群組 #{0}：{1} 條航跡（彈頭 {2}、誘餌 {3}），{4}–{5} 後抵達</DMSE.Mirv.AlertLine>
 </LanguageData>

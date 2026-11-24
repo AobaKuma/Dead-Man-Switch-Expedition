@@ -126,6 +126,8 @@ namespace DMSE
                     IIncomingMissile missile = target.Missile;
                     if (missile == null) { continue; }
                     if (!target.position.IsValid || !target.position.InBounds(map)) { continue; }
+                    // 玩家防空已識破的誘餌不是威脅：不畫落點。
+                    if (target.decoyIdentified && wave.defenderFaction != null && wave.defenderFaction.IsPlayer) { continue; }
                     ImpactMarkerSide side = SideOf(missile.Attacker, wave.defenderFaction, map);
                     if (!ShowSide(side, mode)) { continue; }
                     Add(target.position, side, Mathf.Max(0, timeLeft), loitering, merge);

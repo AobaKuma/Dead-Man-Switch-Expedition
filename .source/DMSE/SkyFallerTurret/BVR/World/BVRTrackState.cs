@@ -39,6 +39,21 @@ namespace DMSE
         /// <summary>齊射／攻擊波分組 id（警戒事件去重用）；null = 尚未分組。</summary>
         public string alertWaveId;
 
+        /// <summary>已對這條航跡擲過誘餌識別骰的陣營（loadID）；每陣營只擲一次，存檔以免讀檔重擲。</summary>
+        public List<int> decoyRolledFactions;
+        /// <summary>已識破這條誘餌的陣營（loadID）；這些陣營不再接戰它。</summary>
+        public List<int> decoyIdentifiedFactions;
+
+        public bool DecoyRolledBy(Faction faction) => faction != null && decoyRolledFactions != null && decoyRolledFactions.Contains(faction.loadID);
+        public bool DecoyIdentifiedBy(Faction faction) => faction != null && decoyIdentifiedFactions != null && decoyIdentifiedFactions.Contains(faction.loadID);
+
+        public void RecordDecoyRoll(Faction faction, bool identified)
+        {
+            if (faction == null) { return; }
+            (decoyRolledFactions ??= new List<int>()).Add(faction.loadID);
+            if (identified) { (decoyIdentifiedFactions ??= new List<int>()).Add(faction.loadID); }
+        }
+
         public AirDefenseObservation ObservationOf(Faction faction, bool create = false)
         {
             if (faction == null) { return null; }
@@ -65,7 +80,8 @@ namespace DMSE
         /// <summary>有節點會接戰，但都打不到目前高度；每次掃描重算，不存檔。</summary>
         public bool altitudeDenied;
 
-        public string StatusKey => interceptor != null && !interceptor.Destroyed ? "DMSE.BVR.World.InFlight"
+        public string StatusKey => DecoyIdentifiedBy(Faction.OfPlayer) ? "DMSE.BVR.World.Status.DecoyIdentified"
+            : interceptor != null && !interceptor.Destroyed ? "DMSE.BVR.World.InFlight"
             : lockUntil >= 0 ? "DMSE.BVR.World.Locking"
             : altitudeDenied ? "DMSE.BVR.World.AltitudeDenied"
             : detectedByFaction != null ? "DMSE.BVR.World.Detected" : "DMSE.BVR.World.Undetected";
@@ -88,6 +104,8 @@ namespace DMSE
             Scribe_Values.Look(ref jamDenied, "jamDenied", false);
             Scribe_Collections.Look(ref observations, "observations", LookMode.Deep);
             Scribe_Values.Look(ref alertWaveId, "alertWaveId");
+            Scribe_Collections.Look(ref decoyRolledFactions, "decoyRolledFactions", LookMode.Value);
+            Scribe_Collections.Look(ref decoyIdentifiedFactions, "decoyIdentifiedFactions", LookMode.Value);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 observations ??= new List<AirDefenseObservation>();

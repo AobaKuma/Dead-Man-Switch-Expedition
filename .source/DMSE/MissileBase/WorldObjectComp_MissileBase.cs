@@ -33,6 +33,18 @@ namespace DMSE
         public IntRange relocationDays = new IntRange(15, 30);
 
         /// <summary>
+        /// 這個站點的分導梯次（<see cref="AdaptiveSalvoTier.mirv"/>）不看陣營準則，任何擁有者都能用；仍需 Mod 設定「NPC 分導」開啟。
+        /// 彈道發射場用（docs/彈道發射場_實作計畫.md §3）。
+        /// </summary>
+        public bool mirvIgnoresDoctrine;
+
+        /// <summary>是否計入其他 NPC 陣地事件的共同上限（<see cref="FieldLaunchSiteIncidentExtension.maxActiveSites"/>）。</summary>
+        public bool countsTowardSiteLimit = true;
+
+        /// <summary>地圖上的 NPC 彈道發射井發射後，守軍重新裝配所需天數（<see cref="MapComponent_MissileBase"/>）。</summary>
+        public float siloReloadDays = 3f;
+
+        /// <summary>
         /// 玩家地面突擊後撤退時，若敵方雷達仍在，陣地封鎖再進入的持續時間（天數範圍）。<br/>
         /// 封鎖期間，玩家車隊與運輸艙無法進入陣地（模擬敵方重新整備防線，見 <see cref="Patch_MissileBaseReentry"/>）。
         /// </summary>
@@ -224,8 +236,14 @@ namespace DMSE
                     + Mathf.RoundToInt(Props.missileFireIntervalDays.RandomInRange * GenDate.TicksPerDay);
         }
 
+        /// <summary>安排下一次轉移；<see cref="CompProperties_MissileBase.relocationDays"/> 上限 ≤ 0 表示永不轉移（固定式戰略站點）。</summary>
         private void ScheduleRelocation()
         {
+            if (Props.relocationDays.max <= 0)
+            {
+                relocationTick = -1;
+                return;
+            }
             relocationTick = Find.TickManager.TicksGame
                 + Mathf.RoundToInt(Props.relocationDays.RandomInRange * GenDate.TicksPerDay);
         }
@@ -269,16 +287,29 @@ namespace DMSE
             AdaptiveSalvoProps adaptive = Props.adaptiveSalvo;
             AirDefenseAssessment defense = adaptive != null ? AirDefenseAssessment.Of(target) : AirDefenseAssessment.None;
             int baseCount = Mathf.Max(1, Props.missilesPerSalvo.RandomInRange);
-            int count = adaptive?.Count(baseCount, defense.Effective, adaptive.DifficultyFactor) ?? baseCount;
-            for (int i = 0; i < count; i++)
+            int budget = adaptive?.Count(baseCount, defense.Effective, adaptive.DifficultyFactor) ?? baseCount;
+            // 預算以「世界層航跡數」計：一枚分導彈（例：2 彈頭＋3 誘餌）吃掉 5 枚的額度，放不下就換回基本設定。
+            bool mirvAllowed = Props.mirvIgnoresDoctrine ? NpcMirvUtility.SettingEnabled : NpcMirvUtility.Allowed(parent.Faction);
+            int count = 0;
+            while (budget > 0)
             {
+                AdaptiveSalvoTier tier = adaptive?.PickTier(defense.Effective, Rand.Chance, t => !t.mirv || mirvAllowed);
+                MissileConfig config = BuildSalvoConfig(target, tier);
+                int tracks = NpcMirvUtility.TrackCount(config);
+                if (tracks > budget)
+                {
+                    config = BuildFireConfig();
+                    tracks = 1;
+                }
                 IncomingMissileUtility.Launch(
                     parent.Tile,
                     target.Tile,
-                    BuildSalvoConfig(target, adaptive?.PickTier(defense.Effective, Rand.Chance)),
+                    config,
                     parent.Faction,
                     worldObjectDef: Props.incomingWorldObjectDef,
                     target: target);
+                budget -= tracks;
+                count++;
             }
 
             // 敵方導彈陣地第一次向玩家殖民地發射：教學「敵方導彈陣地」。

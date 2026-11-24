@@ -55,6 +55,13 @@ namespace DMSE
                 center = ScatterCell(config, position, map);
             }
 
+            // 惰性誘餌：不爆炸、不觸發戰鬥部與載荷（docs/MIRV分導彈頭與誘餌載荷_實作計畫.md §7.5）。
+            if (config?.body?.decoy != null && config.body.decoy.inertImpact)
+            {
+                DecoyImpactUtility.InertImpact(center, map);
+                return center;
+            }
+
             // 厚岩頂：沒有穿甲彈頭／反碉堡酬載的導彈在岩層表面引爆，下方不受傷害；能穿透的先在岩層開孔再於內部引爆。
             if (UnderThickRoof(center, map))
             {

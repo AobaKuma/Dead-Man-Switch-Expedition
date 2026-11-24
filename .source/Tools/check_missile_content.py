@@ -15,7 +15,8 @@ Checks:
   9. every body and item reference (defaultBody, MissileItemExtension.body, defaultParts,
      incomingSkyfaller, researchPrerequisites) resolves;
  10. every body has its own launchProjectile (DMSE.Projectile_MissileLaunch, reversed MissileFlightExtension,
-     existing texture, hot/cold launch effect, translated label).
+     existing texture, hot/cold launch effect, translated label); bodies with releasedInFlight have none
+     and use customizeLocation None.
  11. the missile assembly bench's fixed and default storage filters both equal the set of producible missiles
      (items whose defaultBody is customizeLocation=Item), and none of those items is made from stuff;
  12. every designWord and every namer designator has zh-TW and zh-CN translations;
@@ -335,6 +336,11 @@ for name, body in bodies.items():
     require(icon is None or any((r / (icon + '.png')).exists() for r in texture_roots),
             f'{name}: expandingIconPath {icon} not found')
     launch = body.findtext('launchProjectile')
+    # Bodies only released in flight (MIRV re-entry vehicles, decoys) never leave the ground.
+    if (body.findtext('releasedInFlight') or '').strip().lower() == 'true':
+        require(launch is None, f'{name}: releasedInFlight body must not declare a launchProjectile')
+        require(body.findtext('customizeLocation') == 'None', f'{name}: releasedInFlight body must use customizeLocation None')
+        continue
     require(launch is not None, f'{name}: launchProjectile missing (run .source/Tools/gen_missile_launch_defs.py)')
     if launch is None:
         continue

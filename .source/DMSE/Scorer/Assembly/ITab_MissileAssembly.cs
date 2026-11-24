@@ -342,6 +342,12 @@ namespace DMSE
                 {
                     list.Label("DMSE.Missile.Stat.Signature".Translate(cfg.SignatureFactor.ToString("0.#")));
                 }
+                MissileBehaviorProps_ReleaseChildren release = MirvText.ReleaseOf(cfg);
+                if (release != null)
+                {
+                    Rect releaseRect = list.Label("DMSE.Missile.Stat.Release".Translate(MirvText.Short(release)));
+                    TooltipHandler.TipRegion(releaseRect, MirvText.Detail(release));
+                }
                 if (cfg.ChaffCharges > 0)
                 {
                     list.Label("DMSE.Missile.Stat.Chaff".Translate(cfg.ChaffCharges, cfg.JamStrength.ToString("0.##")));

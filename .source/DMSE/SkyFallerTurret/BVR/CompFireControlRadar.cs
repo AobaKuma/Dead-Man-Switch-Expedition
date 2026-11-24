@@ -11,6 +11,12 @@ namespace DMSE
         /// <summary>最大目標數 = 同時可導引的火力通道數。</summary>
         public int maxTargets = 1;
 
+        /// <summary>
+        /// 誘餌識別率（0–1）：鎖定完成時識破誘餌的基礎機率，再乘擬真等級與功率修正
+        /// （<see cref="DecoyDiscrimination.BaseChance"/>；docs/MIRV分導彈頭與誘餌載荷_實作計畫.md §7.3）。0 = 無法識別。
+        /// </summary>
+        public float decoyDiscrimination = 0f;
+
         /// <summary>功率等級：與目標隱身值對衝；每超出 1 級隱身（stealthLevel - powerLevel）以 stealthMissFactor 遞減命中率，並延長鎖定時間。</summary>
         public int powerLevel = 1;
 
@@ -169,6 +175,12 @@ namespace DMSE
             {
                 baseStr += "\n" + "DMSE.BVR.FireControlAltitude".Translate(MissileWorldMotion.AltitudeLabel(Props.minInterceptAltitude),
                     Props.maxInterceptAltitude < 0f ? "∞" : MissileWorldMotion.AltitudeLabel(Props.maxInterceptAltitude));
+            }
+
+            if (Props.decoyDiscrimination > 0f)
+            {
+                // 對擬真等級 1 的誘餌（輕型）的識別率，含功率加成；不含修正鏈。
+                baseStr += "\n" + "DMSE.BVR.FireControlDecoy".Translate(DecoyDiscrimination.BaseChance(Props, 1).ToStringPercent());
             }
 
             if (Props.supportsArtilleryGuidance)

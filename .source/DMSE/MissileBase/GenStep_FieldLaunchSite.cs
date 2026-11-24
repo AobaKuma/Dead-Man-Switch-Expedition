@@ -273,6 +273,21 @@ namespace DMSE
         }
     }
 
+    /// <summary>
+    /// 彈道發射場（docs/彈道發射場_實作計畫.md）：至少工業等級的人類派系（含海盜）。到達信函說明要打掉的是火控雷達，發射井會重新裝填。
+    /// </summary>
+    public class SitePartWorker_BallisticLaunchSite : SitePartWorker_MissileBase
+    {
+        public override bool FactionCanOwn(Faction faction)
+            => base.FactionCanOwn(faction) && faction != null && faction.def.humanlikeFaction && faction.def.techLevel >= TechLevel.Industrial;
+
+        public override string GetArrivedLetterPart(Map map, out LetterDef preferredLetterDef, out LookTargets lookTargets)
+        {
+            base.GetArrivedLetterPart(map, out preferredLetterDef, out lookTargets);
+            return "DMSE.BallisticLaunchSite.ArrivedLetter".Translate();
+        }
+    }
+
     /// <summary>舊式導彈陣地：工業等級派系與海盜（原版海盜是太空等級，所以不能只看科技等級）。</summary>
     public class SitePartWorker_EarlyLaunchSite : SitePartWorker_MissileBase
     {

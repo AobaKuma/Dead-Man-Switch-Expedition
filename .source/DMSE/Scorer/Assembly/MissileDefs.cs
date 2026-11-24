@@ -179,9 +179,27 @@ namespace DMSE
         /// <summary>彈體自帶的飛彈行為（見 <see cref="MissileBehaviorProps"/>）。</summary>
         public List<MissileBehaviorProps> behaviors;
 
+        /// <summary>
+        /// 只在飛行中由母彈釋放（分導重返載具、誘餌）：不從地面發射、不在任何地方裝配，所以不需要
+        /// <see cref="launchProjectile"/>，<see cref="customizeLocation"/> 應為 None
+        /// （docs/MIRV分導彈頭與誘餌載荷_實作計畫.md §5）。
+        /// </summary>
+        public bool releasedInFlight;
+
+        /// <summary>誘餌設定；null = 不是誘餌（docs/MIRV分導彈頭與誘餌載荷_實作計畫.md §7.1）。</summary>
+        public DecoyProps decoy;
+
         public override IEnumerable<string> ConfigErrors()
         {
             foreach (string error in base.ConfigErrors()) { yield return error; }
+            if (releasedInFlight && customizeLocation != MissileCustomizeLocation.None)
+            {
+                yield return $"{defName}: releasedInFlight bodies must use customizeLocation None";
+            }
+            if (decoy != null && !releasedInFlight)
+            {
+                yield return $"{defName}: decoy bodies must be releasedInFlight";
+            }
             if (behaviors == null) { yield break; }
             foreach (MissileBehaviorProps props in behaviors)
             {
@@ -360,6 +378,17 @@ namespace DMSE
         {
             foreach (StatDrawEntry e in base.SpecialDisplayStats(req)) { yield return e; }
             foreach (StatDrawEntry e in MissileInfoCardUtility.PartStats(this)) { yield return e; }
+        }
+
+        public override IEnumerable<string> ConfigErrors()
+        {
+            foreach (string error in base.ConfigErrors()) { yield return error; }
+            if (behaviors == null) { yield break; }
+            foreach (MissileBehaviorProps props in behaviors)
+            {
+                if (props == null) { yield return $"{defName}: null entry in behaviors"; continue; }
+                foreach (string error in props.ConfigErrors(this)) { yield return error; }
+            }
         }
 
         public bool CompatibleWith(MissileBodyDef body)

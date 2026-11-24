@@ -301,4 +301,8 @@ Click to cycle through the remaining targets.</DMSE.MissileBase.ObjectivesAlertD
 
   <DMSE.SiloHatch.OpeningForLaunch>Hatch: opening for launch</DMSE.SiloHatch.OpeningForLaunch>
   <DMSE.SiloHatch.AssemblyBlocked>Hatch closed: open the hatch to assemble the missile.</DMSE.SiloHatch.AssemblyBlocked>
+  <DMSE.BVR.Settings.NpcMirv>NPC MIRV and decoy warheads</DMSE.BVR.Settings.NpcMirv>
+  <DMSE.BVR.Settings.NpcMirvDesc>Let NPC sites fire strategic missiles with MIRV or decoy payloads at strong air defenses: ballistic launch sites of any faction, and missile bases of factions whose doctrine allows it (by default only ultra-tech factions). Each one splits into several tracks in flight.</DMSE.BVR.Settings.NpcMirvDesc>
+  <DMSE.BallisticLaunchSite.ArrivedLetter>Your pawns have arrived at an enemy ballistic launch site. Hardened strategic silos are spread around a search radar and its fire-control radars; the garrison reloads each silo a few days after it fires. Destroy every fire-control radar to neutralize the site; if you withdraw while a fire-control radar still stands, the enemy blocks your return for a while.</DMSE.BallisticLaunchSite.ArrivedLetter>
+  <DMSE.BallisticLaunchSite.SpawnedLetter>{0} has established a ballistic launch site {3} tiles {2} of {1}. Its strategic missiles can reach your colony from far beyond the range of ordinary launch positions, and it will stay there, firing every few days, until it is destroyed.\n\nDestroy every fire-control radar to neutralize it. Strong air defense will make it mix in penetration aids.</DMSE.BallisticLaunchSite.SpawnedLetter>
 </LanguageData>

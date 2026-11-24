@@ -131,6 +131,10 @@
   <DMSE.Strike.Report.Wave>第 {0} 波：发射 {1} 枚，飞行中被拦截 {2}、命中 {3}、在目标上空被击落 {4}、落空 {5}</DMSE.Strike.Report.Wave>
   <DMSE.Strike.Report.WaveShieldBlocked>、被护盾挡下 {0}</DMSE.Strike.Report.WaveShieldBlocked>
   <DMSE.Strike.Report.Unknown>另有 {0} 枚已抵达，但结果不明。</DMSE.Strike.Report.Unknown>
+  <!-- EN: Wave {0} MIRV: {1} warheads – {2} hit, {3} intercepted, {4} killed near the target, {5} missed. -->
+  <DMSE.Strike.Report.Mirv>第 {0} 波分导：弹头 {1} 枚，命中 {2}、被拦截 {3}、末端被毁 {4}、落空 {5}。</DMSE.Strike.Report.Mirv>
+  <!-- EN: Decoys: {0} released, {1} drew interceptors and were shot down, {2} were identified by enemy radar. -->
+  <DMSE.Strike.Report.MirvDecoys>诱饵：放出 {0} 枚，其中 {1} 枚吸引拦截弹击落，{2} 枚被敌方雷达识破。</DMSE.Strike.Report.MirvDecoys>
   <DMSE.Strike.Settings.WaveReadyAlert>打击波次可发射警报</DMSE.Strike.Settings.WaveReadyAlert>
   <DMSE.Strike.Settings.WaveReadyAlertDesc>打击任务的下一波可以发射时显示警报。</DMSE.Strike.Settings.WaveReadyAlertDesc>
 
@@ -146,4 +150,8 @@
   <DMSE.Strike.MissionDefault>打击任务 #{0}</DMSE.Strike.MissionDefault>
   <DMSE.Strike.RenameTip>重新命名这个打击任务（可掷随机名称）。</DMSE.Strike.RenameTip>
   <DMSE.Strike.ChannelCost>每枚导弹需求：{0} 条导引通道</DMSE.Strike.ChannelCost>
+  <!-- EN: Mid-flight release: {0} -->
+  <DMSE.Missile.Stat.Release>飞行中释放：{0}</DMSE.Missile.Stat.Release>
+  <!-- EN: Mid-flight release: {0} ({1} tracks for enemy air defense) -->
+  <DMSE.Strike.Plan.Release>飞行中释放：{0}（对敌方防空是 {1} 条航迹）</DMSE.Strike.Plan.Release>
 </LanguageData>

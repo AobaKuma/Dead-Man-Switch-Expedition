@@ -78,6 +78,82 @@ namespace DMSE
             });
         }
 
+        // ---- 分導（docs/MIRV分導彈頭與誘餌載荷_實作計畫.md §16）----
+
+        /// <summary>民兵三型＋熱核＋星光慣性＋指定載荷（預設 MIRV）。</summary>
+        private static MissileConfig MirvConfig(string payload = "DMSE_AdvBallistic_Payload_MIRV")
+        {
+            MissileBodyDef body = DefDatabase<MissileBodyDef>.GetNamedSilentFail("DMSE_MissileBody_AdvancedBallistic");
+            if (body == null) { return null; }
+            MissileConfig config = new MissileConfig(body);
+            foreach (string name in new[] { "DMSE_Ballistic_Warhead_Thermonuclear", "DMSE_AdvBallistic_Guidance_Stellar", payload })
+            {
+                MissilePartDef part = DefDatabase<MissilePartDef>.GetNamedSilentFail(name);
+                if (part != null) { config.SetPart(part.category, part); }
+            }
+            return config;
+        }
+
+        /// <summary>敵方 MIRV 打本地圖：30–45 格外發射，讓匯流排在抵達前（約 27 格）分導。</summary>
+        private static readonly string[] MirvPayloads =
+            { "DMSE_AdvBallistic_Payload_MIRV", "DMSE_AdvBallistic_Payload_MIRVDecoy", "DMSE_AdvBallistic_Payload_Decoys" };
+
+        private static void ChooseMirvPayload(System.Action<string> action)
+        {
+            Find.WindowStack.Add(new FloatMenu(MirvPayloads
+                .Select(name => new FloatMenuOption(name, () => action(name))).ToList()));
+        }
+
+        [DebugAction(Category, "World MIRV strike on this map...", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void WorldMirvStrike() => ChooseMirvPayload(WorldMirvStrike);
+
+        private static void WorldMirvStrike(string payload)
+        {
+            Map map = Find.CurrentMap;
+            MissileConfig config = MirvConfig(payload);
+            Faction attacker = DebugMissileUtility.HostileFaction();
+            PlanetTile source = DebugMissileUtility.TileAtDistance(map.Tile, 30f, 45f);
+            if (config == null || !source.Valid)
+            {
+                Messages.Message("DMSE: no MIRV config or no launch tile 30–45 tiles away.", MessageTypeDefOf.RejectInput, false);
+                return;
+            }
+            IncomingMissileUtility.Launch(source, map.Tile, config, attacker, target: map.Parent);
+            Messages.Message($"DMSE: MIRV launched from {source} by {attacker?.Name ?? "no faction"}.",
+                new GlobalTargetInfo(source), MessageTypeDefOf.ThreatBig, false);
+        }
+
+        /// <summary>玩家 MIRV：從本地圖打最近、距離至少 30 格的敵對據點（不經發射井，沒有離場彈）。</summary>
+        [DebugAction(Category, "Player MIRV at nearest hostile settlement...", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void PlayerMirvStrike() => ChooseMirvPayload(PlayerMirvStrike);
+
+        private static void PlayerMirvStrike(string payload)
+        {
+            Map map = Find.CurrentMap;
+            MissileConfig config = MirvConfig(payload);
+            WorldObjectDef def = DefDatabase<WorldObjectDef>.GetNamedSilentFail("DMSE_WorldObject_BallisticMissile");
+            Settlement target = Find.WorldObjects.Settlements
+                .Where(s => s.Faction != null && s.Faction.HostileTo(Faction.OfPlayer) && s.Tile.Layer == map.Tile.Layer)
+                .Select(s => (s, d: MissileWorldUtility.RangeDistance(map.Tile, s.Tile)))
+                .Where(p => p.d >= 30f && (config == null || config.Range <= 0 || p.d <= config.Range))
+                .OrderBy(p => p.d).Select(p => p.s).FirstOrDefault();
+            if (config == null || def == null || target == null)
+            {
+                Messages.Message("DMSE: no MIRV config, world object def, or hostile settlement 30+ tiles away in range.", MessageTypeDefOf.RejectInput, false);
+                return;
+            }
+            var wo = (ScorerProjectile_WorldObject)WorldObjectMaker.MakeWorldObject(def);
+            wo.skyfallerIncoming = config.body.incomingSkyfaller;
+            wo.SetFaction(Faction.OfPlayer);
+            wo.Tile = map.Tile;
+            wo.destinationTile = target.Tile;
+            wo.targetParent = target;
+            wo.config = config;
+            Find.WorldObjects.Add(wo);
+            Messages.Message($"DMSE: player MIRV launched at {target.Label} ({MissileWorldUtility.RangeDistance(map.Tile, target.Tile):0} tiles).",
+                new GlobalTargetInfo(wo), MessageTypeDefOf.NeutralEvent, false);
+        }
+
         private static void SpawnAt(Map map, IntVec3 cell, MissileBodyDef body, Faction attacker)
         {
             if (MissileProjectileMaker.SpawnIncoming(body.incomingSkyfaller, cell, map) is IIncomingMissile incoming)

@@ -252,6 +252,36 @@
                 </li>
               </partOptions>
             </li>
+            <!-- 分導（docs/MIRV分導彈頭與誘餌載荷_實作計畫.md §10）：只有準則允許（出貨 Ultra）且 Mod 設定開啟時出現。
+                 一枚會變成 3–6 條航跡，齊射預算依航跡數扣除，放不下就換回基本彈。低當量彈頭，避免一發熱核清空殖民地。 -->
+            <li>
+              <minEffective>4</minEffective>
+              <chance>0.25</chance>
+              <mirv>true</mirv>
+              <missileBody>DMSE_MissileBody_AdvancedBallistic</missileBody>
+              <partOptions>
+                <li>
+                  <category>Warhead</category>
+                  <parts>
+                    <li>DMSE_AdvBallistic_Warhead_LowYield</li>
+                  </parts>
+                </li>
+                <li>
+                  <category>Guidance</category>
+                  <parts>
+                    <li>DMSE_AdvBallistic_Guidance_Stellar</li>
+                  </parts>
+                </li>
+                <li>
+                  <category>Payload</category>
+                  <parts>
+                    <li>DMSE_AdvBallistic_Payload_MIRV</li>
+                    <li>DMSE_AdvBallistic_Payload_MIRVDecoy</li>
+                    <li>DMSE_AdvBallistic_Payload_Decoys</li>
+                  </parts>
+                </li>
+              </partOptions>
+            </li>
           </tiers>
         </adaptiveSalvo>
         <range>20</range>

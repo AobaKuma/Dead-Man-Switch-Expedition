@@ -46,6 +46,11 @@ namespace DMSE
         /// <summary>波次打擊的任務 id 與波次（-1 = 非波次打擊）。</summary>
         int StrikeMissionId { get; set; }
         int StrikeWave { get; set; }
+        /// <summary>
+        /// 所屬分導群組（docs/MIRV分導彈頭與誘餌載荷_實作計畫.md §6）；-1 = 不屬於任何群組。
+        /// 群組成員不做末端重鎖，戰果交給群組彙整。
+        /// </summary>
+        int MirvGroupId { get; set; }
     }
 
     /// <summary>地圖上飛行中的攔截彈（舊 <see cref="InterceptProjectile"/> 或攔截用途的 <see cref="Projectile_MissileLaunch"/>）。</summary>

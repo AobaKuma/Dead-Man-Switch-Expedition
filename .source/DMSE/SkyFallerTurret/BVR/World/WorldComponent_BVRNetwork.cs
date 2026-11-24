@@ -583,6 +583,12 @@ namespace DMSE
                 state.ClearLock();
                 return;
             }
+            // 已被這個陣營識破的誘餌：不再鎖定或發射（docs/MIRV分導彈頭與誘餌載荷_實作計畫.md §7.3）。
+            if (state.DecoyIdentifiedBy(node.faction))
+            {
+                state.ClearLock();
+                return;
+            }
             if (state.lockUntil >= 0 && (state.lockNode != node.parent || state.lockFaction != node.faction)) state.ClearLock();
             int eta = track.TicksToArrival;
             var target = new BVRTarget { stealthLevel = track.TargetProps.stealthLevel, speed = track.TargetProps.speed, altitude = track.AltitudeAt(0),
@@ -616,6 +622,12 @@ namespace DMSE
                 return;
             }
             if (state.lockUntil > now) return;
+            // 鎖定完成：識別誘餌（每陣營一次）。識破就放掉鎖定，代價是已花掉的鎖定時間。
+            if (TryDiscriminate(track, node, settings, radar, eta, now))
+            {
+                state.ClearLock();
+                return;
+            }
             AirEngagement engagement = node.EngagementFor(track, track.Self, track.PositionAt(0), eta, target.altitude);
             IAirEffector effector = node.ReadyEffector(now, engagement);
             if (effector == null) return;
@@ -641,6 +653,33 @@ namespace DMSE
             state.interceptAttempts++;
         }
 
+        /// <summary>
+        /// 誘餌識別骰：只對誘餌、每陣營一次。回傳 true 表示這次識破。
+        /// </summary>
+        private static bool TryDiscriminate(IBVRTrack track, BVRNode node, CompProperties_FireControlRadar settings,
+            CompFireControlRadar radar, int eta, int now)
+        {
+            BVRTrackState state = track.State;
+            if (!DecoyDiscrimination.IsDecoy(track, out int fidelity) || state.DecoyRolledBy(node.faction)) { return false; }
+            bool firstForAnyone = state.decoyIdentifiedFactions.NullOrEmpty();
+            float chance = AirDefenseHooks.WorldStat(AirDefenseStat.Discrimination, DecoyDiscrimination.BaseChance(settings, fidelity),
+                node, track, null, sensor: radar?.parent, eta: eta);
+            bool identified = Rand.Chance(chance);
+            state.RecordDecoyRoll(node.faction, identified);
+            if (Prefs.DevMode)
+            {
+                Log.Message($"[DMSE MIRV] {node.faction?.Name} 對誘餌 #{track.Self.ID} 識別骰 {chance:P0} → {(identified ? "識破" : "未識破")}");
+            }
+            if (!identified) { return false; }
+            if (firstForAnyone && track.Self is MissileWorldObject missile)
+            {
+                WorldComponent_MirvGroups.RecordDecoyIdentified(missile.mirvGroupId);
+            }
+            AirDefenseHooks.WorldEvent(AirCombatEventKind.DecoyIdentified, track, node.faction, node.parent, node.local?.map, effector: radar?.parent);
+            DecoyDiscrimination.NotifyIdentified(node.faction, track.Self.LabelCap, new GlobalTargetInfo(track.Self));
+            return true;
+        }
+
         /// <summary>點防禦式武器：不鎖定、不佔通道，也不受在飛的攔截彈影響。回傳 true 表示航跡已被移除。</summary>
         private bool FireAutonomous(IBVRTrack track, int now)
         {
@@ -651,6 +690,7 @@ namespace DMSE
             foreach (BVRNode node in autonomousNodes)
             {
                 if (node.parent == null || node.faction == null || !track.State.FactionSees(node.faction, now) || !node.PolicyAllows(track)) { continue; }
+                if (track.State.DecoyIdentifiedBy(node.faction)) { continue; } // 點防禦不識別，但不打陣營已識破的誘餌
                 AirEngagement engagement = node.EngagementFor(track, track.Self, position, eta, altitude);
                 CombatDomain domain = (CombatDomain)engagement.Domain;
                 foreach (IAirEffector effector in node.Effectors.Where(e => !e.UsesFireControl).ToList())

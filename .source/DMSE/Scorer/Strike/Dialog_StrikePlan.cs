@@ -287,6 +287,12 @@ namespace DMSE
 
             string tip = first.groupLabel + "\n" + "DMSE.Strike.Plan.Flight".Translate(first.flightTicks.ToStringTicksToPeriod())
                 + "\n" + "DMSE.Strike.ChannelCost".Translate(first.config?.StrikeChannelCost ?? 1);
+            MissileBehaviorProps_ReleaseChildren release = MirvText.ReleaseOf(first.config);
+            if (release != null)
+            {
+                // 分導：對敵方防空來說，一枚會變成好幾條航跡（計畫 §11）。
+                tip += "\n" + "DMSE.Strike.Plan.Release".Translate(MirvText.Short(release), NpcMirvUtility.TrackCount(first.config));
+            }
             foreach (string issue in list.Where(c => c.issue != StrikeRoundIssue.None).Select(c => c.issueText).Distinct())
             {
                 tip += "\n" + "DMSE.Strike.Plan.NotReadyTag".Translate() + " " + issue;

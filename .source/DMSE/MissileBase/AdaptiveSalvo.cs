@@ -86,11 +86,15 @@ namespace DMSE
             return Mathf.Clamp(baseCount + extra, baseCount, Math.Max(baseCount, maxPerSalvo));
         }
 
-        /// <summary>為一枚導彈挑選梯次：從 E 已達標的最高梯次往下，各擲一次 <see cref="AdaptiveSalvoTier.chance"/>；都沒中回傳 null。</summary>
-        public AdaptiveSalvoTier PickTier(int effective, Func<float, bool> chance)
+        /// <summary>
+        /// 為一枚導彈挑選梯次：從 E 已達標的最高梯次往下，各擲一次 <see cref="AdaptiveSalvoTier.chance"/>；都沒中回傳 null。
+        /// <paramref name="allowed"/> 篩掉這個陣地不能用的梯次（例：分導梯次要準則與設定允許）。
+        /// </summary>
+        public AdaptiveSalvoTier PickTier(int effective, Func<float, bool> chance, Func<AdaptiveSalvoTier, bool> allowed = null)
         {
             if (tiers.NullOrEmpty()) { return null; }
-            foreach (AdaptiveSalvoTier tier in tiers.Where(t => t != null && effective >= t.minEffective).OrderByDescending(t => t.minEffective))
+            foreach (AdaptiveSalvoTier tier in tiers.Where(t => t != null && effective >= t.minEffective && (allowed == null || allowed(t)))
+                         .OrderByDescending(t => t.minEffective))
             {
                 if (chance(tier.chance)) { return tier; }
             }
@@ -130,5 +134,37 @@ namespace DMSE
 
         /// <summary>換用的部件選項；null = 沿用陣地的 partOptions（不相容的部件自動略過）。</summary>
         public List<MissileBasePartOption> partOptions;
+
+        /// <summary>分導梯次：只有準則 <see cref="MissileDoctrineDef.allowsMirv"/> 且 Mod 設定開啟時才會出現。</summary>
+        public bool mirv;
+    }
+
+    /// <summary>NPC 分導的開關與齊射計數（docs/MIRV分導彈頭與誘餌載荷_實作計畫.md §10）。</summary>
+    public static class NpcMirvUtility
+    {
+        /// <summary>Mod 設定「NPC 分導彈頭與誘餌」。</summary>
+        public static bool SettingEnabled => DMSEMod.Settings != null && DMSEMod.Settings.npcMirvEnabled;
+
+        /// <summary>設定開啟且陣營準則允許（站點另有 <see cref="CompProperties_MissileBase.mirvIgnoresDoctrine"/> 例外）。</summary>
+        public static bool Allowed(Faction faction)
+            => SettingEnabled && MissileDoctrine.For(faction)?.allowsMirv == true;
+
+        /// <summary>
+        /// 一枚導彈在世界層會變成幾條航跡：分導匯流排退場時 = 放出的子彈數，繼續飛時再加母彈；一般導彈 = 1。
+        /// 自適應齊射用它計數，玩家的通道壓力才不會因為一枚分導彈而失控。
+        /// </summary>
+        public static int TrackCount(MissileConfig config)
+        {
+            if (config == null) { return 1; }
+            int tracks = 1;
+            foreach (Fortified.MissileBehaviorProps props in config.BehaviorProps)
+            {
+                if (props is MissileBehaviorProps_ReleaseChildren release)
+                {
+                    tracks = release.TotalCount + (release.retireParent ? 0 : 1);
+                }
+            }
+            return Math.Max(1, tracks);
+        }
     }
 }

@@ -132,4 +132,6 @@
   <DMSE.Card.AssembleWorkDesc>Work needed to apply one configuration change. Affected by the working colonist's work speed.</DMSE.Card.AssembleWorkDesc>
   <DMSE.Card.Refund>Removal refund</DMSE.Card.Refund>
   <DMSE.Card.RefundDesc>Share of a part's materials returned when it is removed or replaced.</DMSE.Card.RefundDesc>
+  <DMSE.Card.Release>Mid-flight release</DMSE.Card.Release>
+  <DMSE.Card.ReleaseDesc>The missile carries a post-boost bus. Before arrival it releases separate tracks that enemy air defense must engage one by one.</DMSE.Card.ReleaseDesc>
 </LanguageData>

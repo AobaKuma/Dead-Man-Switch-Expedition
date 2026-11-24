@@ -17,6 +17,12 @@ namespace DMSE
         /// <summary>沒有地圖、也沒有專屬防空元件的據點用的合成防空；null = 沒有。</summary>
         public SettlementAirDefenseProps settlementDefense;
 
+        /// <summary>
+        /// 這套準則的陣營可以發射分導彈頭與誘餌（齊射梯次 <see cref="AdaptiveSalvoTier.mirv"/>）；另需 Mod 設定開啟。
+        /// 出貨只有 Ultra。
+        /// </summary>
+        public bool allowsMirv;
+
         /// <summary>地圖上的防空節點在通道不足時先打雷達截面最大的目標（玩家節點看戰情終端，不看這裡）。</summary>
         public bool threatAssessment;
 

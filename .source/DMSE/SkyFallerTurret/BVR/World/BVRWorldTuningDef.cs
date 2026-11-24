@@ -69,6 +69,12 @@ namespace DMSE
         public float terminalMarkerMergeCells = 3f;
         /// <summary>末端窗口內剩這麼多 ticks 時，自主尋標頭重新鎖定一次（上限為窗口本身）。</summary>
         public int terminalRetargetTicks = 900;
+
+        /// <summary>誘餌每一級擬真等級讓識別率乘上的係數（docs/MIRV分導彈頭與誘餌載荷_實作計畫.md §7.3）。</summary>
+        public float decoyFidelityFactor = 0.6f;
+
+        /// <summary>火控功率等級每高於 1 級，誘餌識別率增加的比例。</summary>
+        public float decoyPowerBonusPerLevel = 0.15f;
         /// <summary>是否啟用末端重新鎖定。</summary>
         public bool terminalRetargetEnabled = true;
         /// <summary>重鎖的新落點離原落點超過這麼多格就放棄；0 = 不限。</summary>

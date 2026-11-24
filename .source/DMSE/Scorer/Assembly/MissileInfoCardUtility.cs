@@ -294,6 +294,12 @@ namespace DMSE
                     + "DMSE.Card.LoiterRetry".Translate(Mathf.Max(1, part.loiterRetryTicks).ToStringTicksToPeriod()) + "\n"
                     + "DMSE.Card.LoiterOnlyLoitering".Translate(), 4660);
             }
+            MissileBehaviorProps_ReleaseChildren release = MirvText.ReleaseOf(part);
+            if (release != null)
+            {
+                yield return new StatDrawEntry(Mechanics, "DMSE.Card.Release".Translate(), MirvText.Short(release),
+                    "DMSE.Card.ReleaseDesc".Translate() + "\n\n" + MirvText.Detail(release), 4655);
+            }
             if (part.signatureFactor != 1f)
             {
                 yield return new StatDrawEntry(Mechanics, "DMSE.Bench.Stat.Signature".Translate(),

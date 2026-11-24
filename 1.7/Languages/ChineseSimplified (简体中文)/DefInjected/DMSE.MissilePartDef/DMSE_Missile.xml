@@ -124,7 +124,7 @@
   <DMSE_AdvBallistic_Payload_Penaids.label>突防诱饵</DMSE_AdvBallistic_Payload_Penaids.label>
   <DMSE_AdvBallistic_Payload_Penaids.description>随弹头一起释放的箔条、雷达诱饵与隐身罩。导弹在来袭途中看起来小得多，敌方雷达发现得更晚，反应时间也更短。</DMSE_AdvBallistic_Payload_Penaids.description>
   <DMSE_AdvBallistic_Payload_MIRV.label>多弹头重返载具</DMSE_AdvBallistic_Payload_MIRV.label>
-  <DMSE_AdvBallistic_Payload_MIRV.description>在最后俯冲前释放的多枚独立弹头，会散开并落在同一个落点周围。</DMSE_AdvBallistic_Payload_MIRV.description>
+  <DMSE_AdvBallistic_Payload_MIRV.description>在飞行途中释放三枚独立重返载具的弹头母舱。每枚都带着导弹的战斗部与制导，沿自己的航迹飞行，必须逐一击落，敌方每枚弹头都要用掉一条火控通道与一枚拦截弹。三枚全部打击同一目标。\n\n在释放前击落母舱，所有弹头会一次全毁。</DMSE_AdvBallistic_Payload_MIRV.description>
   <DMSE_LegacyBallistic_Warhead_Amatol.label>阿马托炸药弹头</DMSE_LegacyBallistic_Warhead_Amatol.label>
   <DMSE_LegacyBallistic_Warhead_Amatol.description>一枚装填阿玛托炸药的大型简易弹头，稳定又便宜，用工业材料就能制造。除了炸出一个大洞，没有别的效果。</DMSE_LegacyBallistic_Warhead_Amatol.description>
   <DMSE_LegacyBallistic_Warhead_Trialen.label>特里亚伦炸药弹头</DMSE_LegacyBallistic_Warhead_Trialen.label>
@@ -146,4 +146,10 @@
   <DMSE_Ballistic_Payload_BunkerBuster.description>一种强化外壳、延时引信的穿透装药。能钻穿厚岩顶后在内部引爆，摧毁附近的建筑。\n\n没有它或穿透弹头时，击中山体的导弹只会在岩石表面爆炸，导引头也会忽略厚顶之下的目标。</DMSE_Ballistic_Payload_BunkerBuster.description>
   <DMSE_AdvCruise_Payload_BunkerBuster.label>反碉堡酬载</DMSE_AdvCruise_Payload_BunkerBuster.label>
   <DMSE_AdvCruise_Payload_BunkerBuster.description>一种强化外壳、延时引信的穿透装药。能钻穿厚岩顶后在内部引爆，摧毁附近的建筑。\n\n没有它或穿透弹头时，击中山体的导弹只会在岩石表面爆炸，导引头也会忽略厚顶之下的目标。</DMSE_AdvCruise_Payload_BunkerBuster.description>
+  <!-- EN: MIRV with decoys -->
+  <DMSE_AdvBallistic_Payload_MIRVDecoy.label>分导突防载具</DMSE_AdvBallistic_Payload_MIRVDecoy.label>
+  <DMSE_AdvBallistic_Payload_MIRVDecoy.description>弹头母舱以随机顺序放出两枚重返载具与三枚重型诱饵。诱饵在雷达上和弹头一模一样，而且会一路落到目标，敌方会把火控通道、拦截弹与近防火力浪费在它们身上。两枚弹头都带着导弹的战斗部与制导，打击同一目标。\n\n在释放前击落母舱，所有东西会一次全毁。</DMSE_AdvBallistic_Payload_MIRVDecoy.description>
+  <!-- EN: decoy warheads -->
+  <DMSE_AdvBallistic_Payload_Decoys.label>诱饵弹头</DMSE_AdvBallistic_Payload_Decoys.label>
+  <DMSE_AdvBallistic_Payload_Decoys.description>真导弹继续飞行时，途中放出四枚充气诱饵与一枚重型假弹头。在雷达上每一枚都像导弹本身，敌方必须把火控通道与拦截弹分给它们。轻型诱饵在重返大气层时烧毁；重型诱饵会落到目标，但不会爆炸。</DMSE_AdvBallistic_Payload_Decoys.description>
 </LanguageData>

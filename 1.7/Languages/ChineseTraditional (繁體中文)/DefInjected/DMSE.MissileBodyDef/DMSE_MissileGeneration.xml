@@ -33,4 +33,13 @@
   <DMSE_MissileBody_Yj.description>一種以火箭助推、衝壓引擎巡航的高超音速反艦導彈。雷達訊號小、末段飛得極低，防禦方幾乎沒有反應時間。\n\n可裝配彈頭、導引、推進與酬載，出廠時配備反艦雷達尋標器。</DMSE_MissileBody_Yj.description>
   <DMSE_MissileBody_Tochka.label>戰術彈道導彈彈體</DMSE_MissileBody_Tochka.label>
   <DMSE_MissileBody_Tochka.description>一種固態燃料戰術彈道導彈。比早期火箭更準、準備也快得多，但射程遠不及戰略導彈。\n\n可裝配彈頭、導引、推進與酬載，出廠時配備慣性導引。</DMSE_MissileBody_Tochka.description>
+  <!-- EN: re-entry vehicle -->
+  <DMSE_MissileBody_ReentryVehicle.label>重返載具</DMSE_MissileBody_ReentryVehicle.label>
+  <DMSE_MissileBody_ReentryVehicle.description>從戰略導彈的彈頭匯流排釋放的單枚彈頭。沿彈道落下，帶著運載它的導彈的戰鬥部與導引。</DMSE_MissileBody_ReentryVehicle.description>
+  <!-- EN: light decoy -->
+  <DMSE_MissileBody_DecoyLight.label>輕型誘餌</DMSE_MissileBody_DecoyLight.label>
+  <DMSE_MissileBody_DecoyLight.description>外形像彈頭的充氣雷達反射器。在太空中，敵方雷達看起來和真彈頭一模一樣，但它太輕，重返大氣層時就會燒毀，到不了目標。</DMSE_MissileBody_DecoyLight.description>
+  <!-- EN: heavy decoy -->
+  <DMSE_MissileBody_DecoyHeavy.label>重型誘餌</DMSE_MissileBody_DecoyHeavy.label>
+  <DMSE_MissileBody_DecoyHeavy.description>與彈頭同形同重的配重假再入體。能撐過再入，一路落到目標，吸引迫近防禦開火，但沒有裝藥。</DMSE_MissileBody_DecoyHeavy.description>
 </LanguageData>

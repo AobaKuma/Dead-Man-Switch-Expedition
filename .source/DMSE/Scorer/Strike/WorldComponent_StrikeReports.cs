@@ -41,6 +41,8 @@ namespace DMSE
         public List<int> hit = new List<int>();
         public List<int> terminalKilled = new List<int>();
         public List<int> shieldBlocked = new List<int>();
+        /// <summary>附加說明（分導群組的逐彈頭戰果等），附在戰果信最後。</summary>
+        public List<string> notes = new List<string>();
 
         private IEnumerable<List<int>> Lists => new[] { launched, intercepted, missed, arrived, hit, terminalKilled, shieldBlocked };
 
@@ -92,6 +94,11 @@ namespace DMSE
                 sb.AppendLine();
                 sb.Append("DMSE.Strike.Report.Unknown".Translate(unknown));
             }
+            foreach (string note in notes)
+            {
+                sb.AppendLine();
+                sb.Append(note);
+            }
             return sb.ToString();
         }
 
@@ -110,8 +117,10 @@ namespace DMSE
             Scribe_Collections.Look(ref hit, "hit", LookMode.Value);
             Scribe_Collections.Look(ref terminalKilled, "terminalKilled", LookMode.Value);
             Scribe_Collections.Look(ref shieldBlocked, "shieldBlocked", LookMode.Value);
+            Scribe_Collections.Look(ref notes, "notes", LookMode.Value);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
+                notes ??= new List<string>();
                 launched ??= new List<int>(); intercepted ??= new List<int>(); missed ??= new List<int>();
                 arrived ??= new List<int>(); hit ??= new List<int>(); terminalKilled ??= new List<int>(); shieldBlocked ??= new List<int>();
             }
@@ -173,6 +182,15 @@ namespace DMSE
             StrikeReport report = outcome == StrikeOutcome.Launched ? GetOrCreate(missionId) : ReportFor(missionId);
             if (report == null) { return; }
             report.Record(wave, outcome);
+            report.lastEventTick = Find.TickManager.TicksGame;
+        }
+
+        /// <summary>在戰果信最後附一行說明（分導群組戰果）；任務帳不存在時忽略。</summary>
+        public void AddNote(int missionId, string note)
+        {
+            StrikeReport report = ReportFor(missionId);
+            if (report == null || note.NullOrEmpty()) { return; }
+            report.notes.Add(note);
             report.lastEventTick = Find.TickManager.TicksGame;
         }
 

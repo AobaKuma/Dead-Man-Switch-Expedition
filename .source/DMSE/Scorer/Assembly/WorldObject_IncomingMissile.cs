@@ -23,7 +23,7 @@ namespace DMSE
 
         protected override void CopyToChild(MissileWorldObject child, bool inheritsRole)
         {
-            ((WorldObject_IncomingMissile)child).incomingSkyfaller = child.config?.body?.incomingSkyfaller ?? incomingSkyfaller;
+            ((WorldObject_IncomingMissile)child).incomingSkyfaller = child.mimicIncoming ?? child.config?.body?.incomingSkyfaller ?? incomingSkyfaller;
         }
 
         protected override void OnArrived(Map map)
@@ -54,6 +54,7 @@ namespace DMSE
                     incoming.Config = config != null ? config.Clone() : null;
                     incoming.WorldPhaseDone = true;
                     incoming.Attacker = base.Faction;
+                    incoming.MirvGroupId = mirvRole == MirvRole.Warhead ? mirvGroupId : -1;
                     // 命中偏移套在落點上（每枚各自落在不同格），BVR 以偏移後的落點登記
                     if (thing is Projectile_MissileIncoming p)
                     {

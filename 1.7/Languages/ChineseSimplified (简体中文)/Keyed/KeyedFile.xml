@@ -326,4 +326,12 @@
 
   <DMSE.SiloHatch.OpeningForLaunch>井盖：发射前开盖中</DMSE.SiloHatch.OpeningForLaunch>
   <DMSE.SiloHatch.AssemblyBlocked>井盖关闭中：打开井盖才能装配导弹。</DMSE.SiloHatch.AssemblyBlocked>
+  <!-- EN: NPC MIRV and decoy warheads -->
+  <DMSE.BVR.Settings.NpcMirv>NPC 分导弹头与诱饵</DMSE.BVR.Settings.NpcMirv>
+  <!-- EN: Let NPC sites fire strategic missiles with MIRV or decoy payloads at strong air defenses: ballistic launch sites of any faction, and missile bases of factions whose doctrine allows it (by default only ultra-tech factions). Each one splits into several tracks in flight. -->
+  <DMSE.BVR.Settings.NpcMirvDesc>让 NPC 站点面对强大防空时发射带分导或诱饵载荷的战略导弹：任何阵营的弹道发射场，以及准则允许的阵营（默认只有超凡科技阵营）的导弹阵地。每枚会在飞行途中分成数条航迹。</DMSE.BVR.Settings.NpcMirvDesc>
+  <!-- EN: Your pawns have arrived at an enemy ballistic launch site. Hardened strategic silos are spread around a search radar and its fire-control radars; the garrison reloads each silo a few days after it fires. Destroy every fire-control radar to neutralize the site; if you withdraw while a fire-control radar still stands, the enemy blocks your return for a while. -->
+  <DMSE.BallisticLaunchSite.ArrivedLetter>你们抵达了一处敌方弹道发射场。加固的战略发射井散布在搜索雷达与火控雷达周围；每座发射井发射后，守军会在几天内重新装填。摧毁所有火控雷达即可瘫痪发射场；若在火控雷达尚存时撤退，敌方会在一段时间内封锁你们再次进入。</DMSE.BallisticLaunchSite.ArrivedLetter>
+  <!-- EN: {0} has established a ballistic launch site {3} tiles {2} of {1}. Its strategic missiles can reach your colony from far beyond the range of ordinary launch positions, and it will stay there, firing every few days, until it is destroyed.\n\nDestroy every fire-control radar to neutralize it. Strong air defense will make it mix in penetration aids. -->
+  <DMSE.BallisticLaunchSite.SpawnedLetter>{0}在{1}的{2}方 {3} 格处建立了一座弹道发射场。它的战略导弹射程远超一般发射阵地，能从远处打到你的殖民地，而且会一直留在那里、每隔几天发射一次，直到被摧毁。\n\n摧毁所有火控雷达即可瘫痪它。你的防空越强，它越会混入突防载荷。</DMSE.BallisticLaunchSite.SpawnedLetter>
 </LanguageData>

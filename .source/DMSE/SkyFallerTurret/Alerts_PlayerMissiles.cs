@@ -126,7 +126,17 @@ namespace DMSE
             {
                 sb.AppendLine(StrikeWaveLine(group.ToList()));
             }
-            foreach (var track in world.Where(t => !(t is ScorerProjectile_WorldObject s && s.strikeMissionId >= 0)))
+            // 不屬於打擊任務的分導群組：整組彙整成一行，不逐一列出每枚子彈（計畫 §11）。
+            var loose = world.Where(t => !(t is ScorerProjectile_WorldObject s && s.strikeMissionId >= 0)).ToList();
+            foreach (var group in loose.OfType<MissileWorldObject>().Where(t => t.mirvGroupId >= 0)
+                .GroupBy(t => t.mirvGroupId).OrderBy(g => g.Min(t => t.TicksToArrival)))
+            {
+                List<MissileWorldObject> members = group.ToList();
+                sb.AppendLine("DMSE.Mirv.AlertLine".Translate(group.Key, members.Count,
+                    members.Count(m => m.mirvRole == MirvRole.Warhead), members.Count(m => m.mirvRole == MirvRole.Decoy),
+                    members.Min(m => m.TicksToArrival).ToStringTicksToPeriod(), members.Max(m => m.TicksToArrival).ToStringTicksToPeriod()));
+            }
+            foreach (var track in loose.Where(t => !(t is MissileWorldObject m && m.mirvGroupId >= 0)))
                 sb.AppendLine(track.Label + "\n" + track.GetInspectString() + "\n");
 
             // ── 按目標地圖分組 ──

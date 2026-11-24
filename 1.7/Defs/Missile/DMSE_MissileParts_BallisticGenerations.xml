@@ -80,23 +80,131 @@
     </researchPrerequisites>
   </DMSE.MissilePartDef>
 
-  <!-- 多彈頭：在大氣層外釋放多枚獨立再入載具；目前實作為單一落點周圍散布子彈藥
-       （真正的多目標需要不同的落點模型）。 -->
+  <!-- 多彈頭（MIRV）：彈頭匯流排在抵達前 2400 ticks 放出 3 枚重返載具（DMSE_MissileBody_ReentryVehicle），
+       每枚是獨立的世界航跡，各自被偵測、鎖定、攔截；全部瞄準同一目標。
+       重返載具繼承母彈的戰鬥部與導引部件，效果強度以重返載具的 N=4 計。
+       見 docs/MIRV分導彈頭與誘餌載荷_實作計畫.md §5、§9。 -->
   <DMSE.MissilePartDef>
     <defName>DMSE_AdvBallistic_Payload_MIRV</defName>
     <label>multiple re-entry vehicles</label>
     <designWord>MIRV</designWord>
-    <description>Several separate warheads released before the final dive. They spread out and land around a single impact point.</description>
+    <description>A post-boost bus that releases three separate re-entry vehicles in mid-flight. Each one carries the missile's warhead and guidance, flies its own track and must be shot down on its own, so the enemy needs a fire control channel and an interceptor for every warhead. All three strike the same target.\n\nShooting the bus down before it releases destroys every warhead at once.</description>
     <category>Payload</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedBallistic</li>
     </compatibleBodies>
-    <payloadEffect Class="DMSE.PayloadEffect_Cluster">
-      <subDamageAmount>150</subDamageAmount>
-    </payloadEffect>
+    <payloadEffect Class="DMSE.PayloadEffect_None" />
+    <behaviors>
+      <li Class="DMSE.MissileBehaviorProps_ReleaseChildren">
+        <ticksBeforeArrival>2400</ticksBeforeArrival>
+        <minProgress>0.25</minProgress>
+        <releaseIntervalTicks>20</releaseIntervalTicks>
+        <retireParent>true</retireParent>
+        <children>
+          <li>
+            <role>Warhead</role>
+            <body>DMSE_MissileBody_ReentryVehicle</body>
+            <count>3</count>
+            <inheritCategories>
+              <li>Warhead</li>
+              <li>Guidance</li>
+            </inheritCategories>
+          </li>
+        </children>
+      </li>
+    </behaviors>
     <costList>
       <DMSE_TantastenAlloy>40</DMSE_TantastenAlloy>
       <ComponentSpacer>4</ComponentSpacer>
+      <Steel>60</Steel>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_MIRV</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
+  <!-- 分導突防（MIRV＋誘餌）：2 枚重返載具＋3 枚重型誘餌，釋放順序打亂。誘餌模仿重返載具。
+       見 docs/MIRV分導彈頭與誘餌載荷_實作計畫.md §9.3。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_AdvBallistic_Payload_MIRVDecoy</defName>
+    <label>MIRV with decoys</label>
+    <designWord>MIRV Decoy</designWord>
+    <description>A post-boost bus that releases two re-entry vehicles mixed in with three heavy decoys, in random order. The decoys look exactly like the warheads on radar and fall all the way to the target, so the enemy wastes channels, interceptors and close-in fire on them. Both warheads carry the missile's warhead and guidance and strike the same target.\n\nShooting the bus down before it releases destroys everything at once.</description>
+    <category>Payload</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_AdvancedBallistic</li>
+    </compatibleBodies>
+    <payloadEffect Class="DMSE.PayloadEffect_None" />
+    <behaviors>
+      <li Class="DMSE.MissileBehaviorProps_ReleaseChildren">
+        <ticksBeforeArrival>2400</ticksBeforeArrival>
+        <minProgress>0.25</minProgress>
+        <releaseIntervalTicks>20</releaseIntervalTicks>
+        <retireParent>true</retireParent>
+        <children>
+          <li>
+            <role>Warhead</role>
+            <body>DMSE_MissileBody_ReentryVehicle</body>
+            <count>2</count>
+            <inheritCategories>
+              <li>Warhead</li>
+              <li>Guidance</li>
+            </inheritCategories>
+          </li>
+          <li>
+            <role>Decoy</role>
+            <body>DMSE_MissileBody_DecoyHeavy</body>
+            <count>3</count>
+          </li>
+        </children>
+      </li>
+    </behaviors>
+    <costList>
+      <DMSE_TantastenAlloy>30</DMSE_TantastenAlloy>
+      <ComponentSpacer>4</ComponentSpacer>
+      <Steel>80</Steel>
+      <ComponentIndustrial>6</ComponentIndustrial>
+    </costList>
+    <researchPrerequisites>
+      <li>DMSE_MIRV</li>
+    </researchPrerequisites>
+  </DMSE.MissilePartDef>
+
+  <!-- 誘餌彈頭（特殊載荷）：主彈頭照常飛向目標，途中放出 4 枚輕型誘餌＋1 枚重型誘餌，外觀模仿整枚導彈。
+       輕型誘餌只在中段有用（再入時燒毀），重型誘餌會一路落到目標。 -->
+  <DMSE.MissilePartDef>
+    <defName>DMSE_AdvBallistic_Payload_Decoys</defName>
+    <label>decoy warheads</label>
+    <designWord>Decoy</designWord>
+    <description>Releases four inflatable decoys and one heavy dummy warhead in mid-flight while the real missile flies on. On radar every one of them looks like the missile itself, so the enemy has to split its fire control channels and interceptors between them. The light decoys burn up on re-entry; the heavy one falls to the target without exploding.</description>
+    <category>Payload</category>
+    <compatibleBodies>
+      <li>DMSE_MissileBody_AdvancedBallistic</li>
+    </compatibleBodies>
+    <payloadEffect Class="DMSE.PayloadEffect_None" />
+    <behaviors>
+      <li Class="DMSE.MissileBehaviorProps_ReleaseChildren">
+        <ticksBeforeArrival>2400</ticksBeforeArrival>
+        <minProgress>0.25</minProgress>
+        <releaseIntervalTicks>20</releaseIntervalTicks>
+        <retireParent>false</retireParent>
+        <children>
+          <li>
+            <role>Decoy</role>
+            <body>DMSE_MissileBody_DecoyLight</body>
+            <count>4</count>
+          </li>
+          <li>
+            <role>Decoy</role>
+            <body>DMSE_MissileBody_DecoyHeavy</body>
+            <count>1</count>
+          </li>
+        </children>
+      </li>
+    </behaviors>
+    <costList>
+      <Steel>50</Steel>
+      <ComponentIndustrial>8</ComponentIndustrial>
     </costList>
     <researchPrerequisites>
       <li>DMSE_Ballistics</li>

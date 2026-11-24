@@ -131,6 +131,8 @@ Enable research work for a colonist on that map.</DMSE.Strike.Alert.ComputationP
   <DMSE.Strike.Report.Wave>Wave {0}: {1} launched: {2} intercepted in flight, {3} hit, {4} shot down at the target, {5} missed</DMSE.Strike.Report.Wave>
   <DMSE.Strike.Report.WaveShieldBlocked>, {0} stopped by shields</DMSE.Strike.Report.WaveShieldBlocked>
   <DMSE.Strike.Report.Unknown>{0} arrived but their result is unknown.</DMSE.Strike.Report.Unknown>
+  <DMSE.Strike.Report.Mirv>Wave {0} MIRV: {1} warheads – {2} hit, {3} intercepted, {4} killed near the target, {5} missed.</DMSE.Strike.Report.Mirv>
+  <DMSE.Strike.Report.MirvDecoys>Decoys: {0} released, {1} drew interceptors and were shot down, {2} were identified by enemy radar.</DMSE.Strike.Report.MirvDecoys>
   <DMSE.Strike.Settings.WaveReadyAlert>Strike wave ready alert</DMSE.Strike.Settings.WaveReadyAlert>
   <DMSE.Strike.Settings.WaveReadyAlertDesc>Show an alert when a strike mission can fire its next wave.</DMSE.Strike.Settings.WaveReadyAlertDesc>
 
@@ -146,4 +148,6 @@ Enable research work for a colonist on that map.</DMSE.Strike.Alert.ComputationP
   <DMSE.Strike.MissionDefault>Strike mission #{0}</DMSE.Strike.MissionDefault>
   <DMSE.Strike.RenameTip>Rename this strike mission (you can roll a random name).</DMSE.Strike.RenameTip>
   <DMSE.Strike.ChannelCost>Guidance channels per missile: {0}</DMSE.Strike.ChannelCost>
+  <DMSE.Missile.Stat.Release>Mid-flight release: {0}</DMSE.Missile.Stat.Release>
+  <DMSE.Strike.Plan.Release>Mid-flight release: {0} ({1} tracks for enemy air defense)</DMSE.Strike.Plan.Release>
 </LanguageData>

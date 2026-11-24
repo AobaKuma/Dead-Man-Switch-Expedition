@@ -15,4 +15,6 @@
   <DMSE_Incoming_Oniks.label>先进反舰巡航导弹（来袭）</DMSE_Incoming_Oniks.label>
   <DMSE_Incoming_Yj.label>高超音速反舰导弹（来袭）</DMSE_Incoming_Yj.label>
   <DMSE_Incoming_Tochka.label>战术弹道导弹（来袭）</DMSE_Incoming_Tochka.label>
+  <!-- EN: re-entry vehicle (incoming) -->
+  <DMSE_Incoming_ReentryVehicle.label>重返载具（来袭）</DMSE_Incoming_ReentryVehicle.label>
 </LanguageData>

@@ -281,9 +281,9 @@
 				</value>
 			</li>
 
-			<!-- 子母／多彈頭酬載：一次打出很多次小爆炸，每次的彈片減半，避免投射物數量爆量。 -->
+			<!-- 子母酬載：一次打出很多次小爆炸，每次的彈片減半，避免投射物數量爆量。 -->
 			<li Class="PatchOperationAddModExtension">
-				<xpath>Defs/DMSE.MissilePartDef[defName="DMSE_Ballistic_Payload_Cluster" or defName="DMSE_AdvCruise_Payload_Submunition" or defName="DMSE_AdvBallistic_Payload_MIRV"]</xpath>
+				<xpath>Defs/DMSE.MissilePartDef[defName="DMSE_Ballistic_Payload_Cluster" or defName="DMSE_AdvCruise_Payload_Submunition"]</xpath>
 				<value>
 					<li Class="DMSE.CE.ModExtension_CEExplosion">
 						<fragmentScale>0.5</fragmentScale>

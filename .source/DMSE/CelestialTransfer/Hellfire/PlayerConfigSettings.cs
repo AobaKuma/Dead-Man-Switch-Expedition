@@ -18,6 +18,10 @@ namespace DMSE
         public float ciwsInterceptMultiplier = 1f;
         /// <summary>末端落點標記：0 關閉、1 只顯示敵方、2 敵我雙方（預設；docs/末端落點顯示與導引頭重新鎖定_實作計畫.md §3.4）。</summary>
         public int terminalImpactMarkerMode = 2;
+        /// <summary>
+        /// NPC 可發射分導彈頭與誘餌（只有準則允許的陣營，出貨為 Ultra；docs/MIRV分導彈頭與誘餌載荷_實作計畫.md §10）。預設關。
+        /// </summary>
+        public bool npcMirvEnabled;
 
         public override void ExposeData()
         {
@@ -29,6 +33,7 @@ namespace DMSE
             Scribe_Values.Look(ref interceptFxDensity, "interceptFxDensity", 1);
             Scribe_Values.Look(ref ciwsInterceptMultiplier, "ciwsInterceptMultiplier", 1f);
             Scribe_Values.Look(ref terminalImpactMarkerMode, "terminalImpactMarkerMode", 2);
+            Scribe_Values.Look(ref npcMirvEnabled, "npcMirvEnabled", false);
             Scribe_Collections.Look(ref records, "records", LookMode.Deep);
             if (Scribe.mode == LoadSaveMode.LoadingVars && records == null)
                 records = new List<ImpactCraterRecord>();

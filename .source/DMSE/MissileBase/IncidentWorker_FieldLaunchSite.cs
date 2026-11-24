@@ -18,6 +18,12 @@ namespace DMSE
         /// <summary>世界上同時存在的 NPC 導彈陣地（任何種類）上限；達到時不觸發。</summary>
         public int maxActiveSites = 1;
 
+        /// <summary>
+        /// true：<see cref="maxActiveSites"/> 只數同一種站點（<see cref="worldObjectDef"/>）。給長期存在的戰略站點用，
+        /// 它不會因為附近有野戰陣地而不出現，也不會擋住其他陣地（另見 <see cref="CompProperties_MissileBase.countsTowardSiteLimit"/>）。
+        /// </summary>
+        public bool countOwnKindOnly;
+
         /// <summary>威脅點數的下限與上限，傳給站點（守軍人數由此換算）。</summary>
         public FloatRange threatPoints = new FloatRange(300f, 3000f);
 
@@ -58,7 +64,7 @@ namespace DMSE
             if (ext?.worldObjectDef == null || ext.sitePartDef == null) return false;
             if (ext.requiredResearch != null && !ext.requiredResearch.IsFinished) return false;
             if (!(parms.target is Map map) || !map.IsPlayerHome) return false;
-            if (ActiveSiteCount() >= ext.maxActiveSites) return false;
+            if (ActiveSiteCount(ext) >= ext.maxActiveSites) return false;
             if (!ConditionsMet(ext, parms, map)) return false;
             return TryFindFaction(ext, out _) && TryFindTile(ext, map, out _);
         }
@@ -131,9 +137,19 @@ namespace DMSE
             return part?.minFactionTechLevel.ToString() ?? "?";
         }
 
-        /// <summary>世界上現存的 NPC 導彈陣地數（含原本的要塞化陣地）。</summary>
+        /// <summary>
+        /// 世界上現存、計入共同上限的 NPC 導彈陣地數（含原本的要塞化陣地）。
+        /// <see cref="CompProperties_MissileBase.countsTowardSiteLimit"/> 為 false 的站點（彈道發射場）不算。
+        /// </summary>
         public static int ActiveSiteCount()
-            => Find.WorldObjects.AllWorldObjects.Count(o => !o.Destroyed && o.GetComponent<WorldObjectComp_MissileBase>() != null);
+            => Find.WorldObjects.AllWorldObjects.Count(o => !o.Destroyed
+                && o.GetComponent<WorldObjectComp_MissileBase>() is WorldObjectComp_MissileBase comp && comp.Props.countsTowardSiteLimit);
+
+        /// <summary>這個事件要比較的站點數：只數同種（<see cref="FieldLaunchSiteIncidentExtension.countOwnKindOnly"/>）或共同上限。</summary>
+        public static int ActiveSiteCount(FieldLaunchSiteIncidentExtension ext)
+            => ext.countOwnKindOnly
+                ? Find.WorldObjects.AllWorldObjects.Count(o => !o.Destroyed && o.def == ext.worldObjectDef)
+                : ActiveSiteCount();
 
         protected static float PointsOf(IncidentParms parms, Map map)
             => parms.points > 0f ? parms.points : StorytellerUtility.DefaultThreatPointsNow(map);

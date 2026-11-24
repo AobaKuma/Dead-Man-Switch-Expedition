@@ -148,6 +148,9 @@ namespace DMSE
             Scribe_Collections.Look(ref engagedChannels, "engagedChannels", LookMode.Reference);
             if (Scribe.mode == LoadSaveMode.PostLoadInit && engagedChannels == null)
                 engagedChannels = new List<WorldObject_IncomingMissile>();
+            Scribe_Collections.Look(ref siloReloadTicks, "siloReloadTicks", LookMode.Value, LookMode.Value, ref siloReloadKeys, ref siloReloadValues);
+            if (Scribe.mode == LoadSaveMode.PostLoadInit && siloReloadTicks == null)
+                siloReloadTicks = new Dictionary<int, int>();
         }
 
         // ──────────────── Tick 主邏輯（500 tick 週期）────────────────
@@ -164,6 +167,7 @@ namespace DMSE
             TickGeneratorFuel();
             TickTurretAmmoSupply();
             CheckRadarDestruction();
+            TickSiloReload();
             TryFireFromOnMap();
             TickSupplyDrop();
             TickRackSupply();
@@ -768,6 +772,10 @@ namespace DMSE
             for (int i = 0; i < freeChannels; i++)
             {
                 IMissileRack rack = FindRackWithMissiles(out Thing missile);
+                if (rack == null && TryFireSilo(source, range, wc))
+                {
+                    continue; // 彈架打空時改用裝好的彈道發射井（彈道發射場）
+                }
                 if (rack == null)
                 {
                     // 無可用導彈，停止嘗試
@@ -815,6 +823,83 @@ namespace DMSE
                             + $"（已用 {engagedChannels.Count}/{totalChannels} 通道）");
                 }
             }
+        }
+
+        // ──────────────── 彈道發射井（NPC）────────────────
+
+        /// <summary>發射井 thingID → 可重新裝配的 tick（發射後才有；生成時直接裝好）。</summary>
+        private Dictionary<int, int> siloReloadTicks = new Dictionary<int, int>();
+        private List<int> siloReloadKeys, siloReloadValues;
+
+        private IEnumerable<CompMissileLauncher_Ballistic> EnemySilos()
+        {
+            foreach (Building b in GetEnemyLaunchersCached())
+            {
+                if (!StillEnemy(b)) continue;
+                CompMissileLauncher_Ballistic silo = b.TryGetComp<CompMissileLauncher_Ballistic>();
+                if (silo != null) yield return silo;
+            }
+        }
+
+        /// <summary>
+        /// 空的發射井：生成後第一次看到就裝好；發射後等 <see cref="CompProperties_MissileBase.siloReloadDays"/>，守軍還在才重新裝配。
+        /// 彈體與部件照站點的 <see cref="WorldObjectComp_MissileBase.BuildFireConfig()"/>。
+        /// </summary>
+        private void TickSiloReload()
+        {
+            WorldObjectComp_MissileBase wc = WorldComp;
+            if (wc == null) return;
+            int now = Find.TickManager.TicksGame;
+            foreach (CompMissileLauncher_Ballistic silo in EnemySilos())
+            {
+                if (silo.IsLoaded) continue;
+                int id = silo.parent.thingIDNumber;
+                if (siloReloadTicks.TryGetValue(id, out int readyTick))
+                {
+                    if (now < readyTick || !AnyCrewAlive()) continue;
+                }
+                MissileConfig config = wc.BuildFireConfig();
+                if (config == null) continue;
+                silo.NpcLoad(config);
+                siloReloadTicks.Remove(id);
+                if (Prefs.DevMode)
+                    Log.Message($"[DMSE MissileBase] 發射井 {silo.parent} 裝配完成：{config.body?.defName}");
+            }
+        }
+
+        private bool AnyCrewAlive()
+        {
+            Faction enemy = map.ParentFaction;
+            return enemy != null && map.mapPawns.SpawnedPawnsInFaction(enemy).Any(p => !p.Dead && !p.Downed && p.RaceProps.Humanlike);
+        }
+
+        /// <summary>從一座裝好、通電、不在冷卻的敵方發射井發射一枚；回傳是否發射。</summary>
+        private bool TryFireSilo(MapParent source, int range, WorldObjectComp_MissileBase wc)
+        {
+            int now = Find.TickManager.TicksGame;
+            foreach (CompMissileLauncher_Ballistic silo in EnemySilos())
+            {
+                if (!silo.IsLoaded || !silo.Active || silo.OnCooldown(now)) continue;
+                MissileConfig cfg = silo.BuildFiringConfig(silo.parent);
+                if (cfg == null) continue;
+                List<MapParent> targets = FindPlayerTargetsInRange(source, range, cfg);
+                if (targets.NullOrEmpty()) return false;
+                ThingDef launchDef = silo.LaunchDefFor(cfg);
+                if (launchDef == null) continue;
+                MapParent target = MissileDoctrine.Choose(source, source.Faction, cfg, targets);
+                WorldObject_IncomingMissile wo = IncomingMissileUtility.Make(source.Tile, target.Tile, cfg, source.Faction,
+                    worldObjectDef: wc?.Props.incomingWorldObjectDef, target: target);
+                if (wo == null) continue;
+                silo.NpcUnload();
+                silo.Notify_LaunchedExternally(now);
+                siloReloadTicks[silo.parent.thingIDNumber] = now + Mathf.RoundToInt((wc?.Props.siloReloadDays ?? 3f) * GenDate.TicksPerDay);
+                silo.LaunchDeparture(wo, launchDef, target.Tile);
+                engagedChannels.Add(wo);
+                if (Prefs.DevMode)
+                    Log.Message($"[DMSE MissileBase] 發射井射擊：{source.Tile} → {target.Tile}");
+                return true;
+            }
+            return false;
         }
 
         // ──────────────── 火力通道工具 ────────────────

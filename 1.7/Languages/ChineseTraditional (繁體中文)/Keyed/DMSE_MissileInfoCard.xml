@@ -247,4 +247,8 @@
   <DMSE.Card.Refund>拆除退還</DMSE.Card.Refund>
   <!-- EN: Share of a part's materials returned when it is removed or replaced. -->
   <DMSE.Card.RefundDesc>移除或更換部件時，退還該部件材料的比例。</DMSE.Card.RefundDesc>
+  <!-- EN: Mid-flight release -->
+  <DMSE.Card.Release>飛行中釋放</DMSE.Card.Release>
+  <!-- EN: The missile carries a post-boost bus. Before arrival it releases separate tracks that enemy air defense must engage one by one. -->
+  <DMSE.Card.ReleaseDesc>導彈帶有彈頭匯流排，抵達前會放出多條獨立航跡，敵方防空必須逐一接戰。</DMSE.Card.ReleaseDesc>
 </LanguageData>

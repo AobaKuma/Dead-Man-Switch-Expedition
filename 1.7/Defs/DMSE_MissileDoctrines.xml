@@ -47,6 +47,8 @@
   <DMSE.MissileDoctrineDef>
     <defName>DMSE_Doctrine_Ultra</defName>
     <defaultMinTech>Ultra</defaultMinTech>
+    <!-- 可發射分導彈頭與誘餌（另需 Mod 設定「NPC 分導」開啟；docs/MIRV分導彈頭與誘餌載荷_實作計畫.md §10） -->
+    <allowsMirv>true</allowsMirv>
     <threatAssessment>true</threatAssessment>
     <settlementDefense>
       <detectionRange>8</detectionRange>

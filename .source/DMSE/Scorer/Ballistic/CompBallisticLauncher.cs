@@ -55,6 +55,29 @@ namespace DMSE
         /// <summary>裝配作業完成後由 <see cref="JobDriver_AssembleBallisticSilo"/> 呼叫。</summary>
         public void MarkLoaded() { isAssembled = true; }
 
+        /// <summary>NPC 站點直接裝好一枚（不搬料、不派工）：設定與目標設定都設成 <paramref name="config"/>。</summary>
+        public void NpcLoad(MissileConfig config)
+        {
+            CompMissileConfig cfg = MissileCfg;
+            if (cfg == null || config == null) { return; }
+            cfg.config = config.Clone();
+            cfg.pending = config.Clone();
+            cfg.assemblyConfirmed = true;
+            isAssembled = true;
+        }
+
+        /// <summary>NPC 站點發射後清空（不走玩家的上帝模式即時裝配）。</summary>
+        public void NpcUnload()
+        {
+            isAssembled = false;
+            CompMissileConfig cfg = MissileCfg;
+            if (cfg != null)
+            {
+                cfg.config = new MissileConfig { body = cfg.config?.body };
+                cfg.delivered.Clear();
+            }
+        }
+
         protected override int LaunchCooldownTicks => Props.launchCooldownTicks;
 
         protected override string CooldownScribeKey => "ballisticCooldownUntil";

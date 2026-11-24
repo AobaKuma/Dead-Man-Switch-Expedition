@@ -124,6 +124,21 @@ namespace Fortified
 
         /// <summary>單次攔截的命中率（0–1）。</summary>
         HitChance,
+
+        /// <summary>火控鎖定完成時識破誘餌的機率（0–1）；目標實作 <see cref="IDecoyTrack"/> 且是誘餌時才會計算。</summary>
+        Discrimination,
+    }
+
+    /// <summary>
+    /// 可能是誘餌的航跡。防空在火控鎖定完成時以 <see cref="AirDefenseStat.Discrimination"/> 擲一次識別骰，
+    /// 識破後該陣營不再接戰它。外部航跡實作這個介面就能被識別。
+    /// </summary>
+    public interface IDecoyTrack
+    {
+        bool IsDecoy { get; }
+
+        /// <summary>擬真等級（0–3），越高越難識別。</summary>
+        int DecoyFidelity { get; }
     }
 
     /// <summary>一次防空數值計算的情境；只有該層與該數值用得到的欄位會有值。</summary>
@@ -285,7 +300,8 @@ namespace Fortified
         {
             switch (stat)
             {
-                case AirDefenseStat.HitChance: return Mathf.Clamp01(value);
+                case AirDefenseStat.HitChance:
+                case AirDefenseStat.Discrimination: return Mathf.Clamp01(value);
                 case AirDefenseStat.LockTicks: return Mathf.Max(1f, value);
                 default: return Mathf.Max(0f, value);
             }
@@ -480,6 +496,9 @@ namespace Fortified
 
         /// <summary>導引被干擾機打掉。<see cref="AirCombatEvent.Removed"/> = 直接落在地圖外。</summary>
         TrackJammed,
+
+        /// <summary>火控識破誘餌（<see cref="IDecoyTrack"/>）；該陣營之後不再接戰它。</summary>
+        DecoyIdentified,
     }
 
     public enum AirInterceptOutcome

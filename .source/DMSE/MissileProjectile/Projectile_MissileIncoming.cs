@@ -23,6 +23,9 @@ namespace DMSE
         public bool worldPhaseDone;
         public int strikeMissionId = -1;
         public int strikeWave = -1;
+        public int mirvGroupId = -1;
+        /// <summary>誘餌：在世界層已識破它的陣營（loadID），進入地圖層後這些陣營不必再擲一次。</summary>
+        public System.Collections.Generic.List<int> decoyIdentifiedFactions;
         private bool strikeReported;
         private bool checkedBvr;
 
@@ -36,6 +39,23 @@ namespace DMSE
         public bool WorldPhaseDone { get => worldPhaseDone; set => worldPhaseDone = value; }
         public int StrikeMissionId { get => strikeMissionId; set => strikeMissionId = value; }
         public int StrikeWave { get => strikeWave; set => strikeWave = value; }
+        public int MirvGroupId { get => mirvGroupId; set => mirvGroupId = value; }
+
+        /// <summary>
+        /// 地圖層戰果：分導群組成員交給群組彙整（不論有沒有打擊任務），其餘直接回報打擊任務。每枚只回報一次。
+        /// </summary>
+        private void ReportStrike(StrikeOutcome outcome)
+        {
+            if (strikeReported) { return; }
+            if (mirvGroupId >= 0 && WorldComponent_MirvGroups.RecordMapOutcome(mirvGroupId, outcome))
+            {
+                strikeReported = true;
+                return;
+            }
+            if (strikeMissionId < 0) { return; }
+            strikeReported = true;
+            WorldComponent_StrikeReports.Report(strikeMissionId, strikeWave, outcome);
+        }
 
         /// <summary>命中偏移已處理（套在落點上，落地不再偏移）。設為 true 可讓落點固定不偏移（驗收測試用）。</summary>
         public bool LandingScatterApplied { get => scatterApplied; set => scatterApplied = value; }
@@ -129,11 +149,7 @@ namespace DMSE
         private void InterceptedByShield(IntVec3 contact)
         {
             hasImpacted = true;
-            if (!strikeReported && strikeMissionId >= 0)
-            {
-                strikeReported = true;
-                WorldComponent_StrikeReports.Report(strikeMissionId, strikeWave, StrikeOutcome.ShieldBlocked);
-            }
+            ReportStrike(StrikeOutcome.ShieldBlocked);
             Map map = Map;
             if (Prefs.DevMode)
             {
@@ -153,21 +169,13 @@ namespace DMSE
 
         public override void Destroy(DestroyMode mode = DestroyMode.Vanish)
         {
-            if (!strikeReported && strikeMissionId >= 0)
-            {
-                strikeReported = true;
-                WorldComponent_StrikeReports.Report(strikeMissionId, strikeWave, StrikeOutcome.TerminalKilled);
-            }
+            ReportStrike(StrikeOutcome.TerminalKilled);
             base.Destroy(mode);
         }
 
         protected override void MissileImpact()
         {
-            if (!strikeReported && strikeMissionId >= 0)
-            {
-                strikeReported = true;
-                WorldComponent_StrikeReports.Report(strikeMissionId, strikeWave, StrikeOutcome.Hit);
-            }
+            ReportStrike(StrikeOutcome.Hit);
             Map map = Map;
             IntVec3 position = Position;
             // 傷害歸因於發射建築；命中偏移已套用在落點上時不再偏移
@@ -200,6 +208,8 @@ namespace DMSE
             Scribe_Values.Look(ref strikeMissionId, "strikeMissionId", -1);
             Scribe_Values.Look(ref strikeWave, "strikeWave", -1);
             Scribe_Values.Look(ref strikeReported, "strikeReported", false);
+            Scribe_Values.Look(ref mirvGroupId, "mirvGroupId", -1);
+            Scribe_Collections.Look(ref decoyIdentifiedFactions, "decoyIdentifiedFactions", LookMode.Value);
             Scribe_Values.Look(ref checkedBvr, "checkedBvr", false);
             Scribe_Values.Look(ref hasEntryHeading, "hasEntryHeading", false);
             Scribe_Values.Look(ref entryHeading, "entryHeading", 0f);

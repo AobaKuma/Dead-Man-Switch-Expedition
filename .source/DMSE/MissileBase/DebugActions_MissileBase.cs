@@ -3,6 +3,7 @@ using System.Text;
 using LudeonTK;
 using RimWorld;
 using RimWorld.Planet;
+using UnityEngine;
 using Verse;
 
 namespace DMSE
@@ -40,6 +41,18 @@ namespace DMSE
             var options = new[] { (5f, 10f), (10f, 15f) }
                 .Select(r => new FloatMenuOption($"{r.Item1:0}–{r.Item2:0} tiles", () => Spawn(map.Tile, r.Item1, r.Item2,
                     "DMSE_EarlyLaunchSite", "DMSE_EarlyLaunchSitePart", StorytellerUtility.DefaultThreatPointsNow(map), StorytellerUtility.DefaultThreatPointsNow(map)))).ToList();
+            Find.WindowStack.Add(new FloatMenu(options));
+        }
+
+        /// <summary>彈道發射場（docs/彈道發射場_實作計畫.md）：不看研究與事件條件，直接在指定距離生成。</summary>
+        [DebugAction(Category, "Spawn ballistic launch site near this map...", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void SpawnBallisticSiteNearPlayer()
+        {
+            Map map = Find.CurrentMap;
+            var options = new[] { (10f, 20f), (25f, 45f) }
+                .Select(r => new FloatMenuOption($"{r.Item1:0}–{r.Item2:0} tiles", () => Spawn(map.Tile, r.Item1, r.Item2,
+                    "DMSE_BallisticLaunchSite", "DMSE_BallisticLaunchSitePart",
+                    Mathf.Max(1000f, StorytellerUtility.DefaultThreatPointsNow(map)), Mathf.Max(1000f, StorytellerUtility.DefaultThreatPointsNow(map))))).ToList();
             Find.WindowStack.Add(new FloatMenu(options));
         }
 

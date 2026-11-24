@@ -77,6 +77,8 @@
       <li Class="DMSE.CompProperties_FireControlRadar">
         <maxTargets>24</maxTargets>
         <powerLevel>2</powerLevel>
+        <!-- 誘餌識別率（docs/MIRV分導彈頭與誘餌載荷_實作計畫.md §7.3） -->
+        <decoyDiscrimination>0.5</decoyDiscrimination>
         <guidanceAccuracyTime>600</guidanceAccuracyTime>
         <maxRangeTicks>6000</maxRangeTicks>
         <minInterceptAltitude>30</minInterceptAltitude>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- 彈道發射場的發射井陣位（docs/彈道發射場_實作計畫.md）。
+       版型沿用 LaunchSite_Mid.xml 的 DMSE_Mid_FireControlRadar（兩座 1500 W 電源單元、支架與框架），
+       中央 3×3 換成戰略發射井（1200 W）。手寫，不是 FFF 匯出；改版型時保持發射井在 (2, 0, 4)。 -->
+  <Fortified.Structures.FFF_StructureDef>
+    <defName>DMSE_Ballistic_SiloPad</defName>
+    <size>(5, 7)</size>
+    <disableSuggestedRoof>True</disableSuggestedRoof>
+    <elements>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>DMSE_FieldStructure_Support</def>
+        <rot>3</rot>
+        <posList>
+          <li>(0, 0, 0)</li>
+          <li>(0, 0, 6)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMSE_FieldStructure_PowerUnit</def>
+        <pos>(1, 0, 0)</pos>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMSE_FieldStructure_PowerUnit</def>
+        <pos>(2, 0, 1)</pos>
+        <rot>2</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMSE_FieldStructure_ExtinguisherUnit</def>
+        <pos>(3, 0, 0)</pos>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_ThingScatter">
+        <def>DMSE_FieldStructure_Support</def>
+        <rot>1</rot>
+        <posList>
+          <li>(4, 0, 0)</li>
+          <li>(4, 0, 6)</li>
+        </posList>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMSE_FieldStructure_MediumSection</def>
+        <pos>(1, 0, 2)</pos>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMSE_FieldStructure_Frame</def>
+        <pos>(3, 0, 2)</pos>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMSE_Building_BallisticSilo</def>
+        <pos>(2, 0, 4)</pos>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMSE_FieldStructure_Frame</def>
+        <pos>(1, 0, 6)</pos>
+        <rot>1</rot>
+      </li>
+      <li Class="Fortified.Structures.FFF_Element_Thing">
+        <def>DMSE_FieldStructure_Frame</def>
+        <pos>(3, 0, 6)</pos>
+        <rot>3</rot>
+      </li>
+    </elements>
+  </Fortified.Structures.FFF_StructureDef>
+
+</Defs>

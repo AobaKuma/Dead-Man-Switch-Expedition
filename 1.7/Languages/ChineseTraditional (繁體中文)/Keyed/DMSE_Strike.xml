@@ -241,6 +241,10 @@ Enable research work for a colonist on that map. -->
   <DMSE.Strike.Report.WaveShieldBlocked>、被護盾擋下 {0}</DMSE.Strike.Report.WaveShieldBlocked>
   <!-- EN: {0} arrived but their result is unknown. -->
   <DMSE.Strike.Report.Unknown>另有 {0} 枚已抵達，但結果不明。</DMSE.Strike.Report.Unknown>
+  <!-- EN: Wave {0} MIRV: {1} warheads – {2} hit, {3} intercepted, {4} killed near the target, {5} missed. -->
+  <DMSE.Strike.Report.Mirv>第 {0} 波分導：彈頭 {1} 枚，命中 {2}、被攔截 {3}、末端被毀 {4}、落空 {5}。</DMSE.Strike.Report.Mirv>
+  <!-- EN: Decoys: {0} released, {1} drew interceptors and were shot down, {2} were identified by enemy radar. -->
+  <DMSE.Strike.Report.MirvDecoys>誘餌：放出 {0} 枚，其中 {1} 枚吸引攔截彈擊落，{2} 枚被敵方雷達識破。</DMSE.Strike.Report.MirvDecoys>
   <!-- EN: Strike wave ready alert -->
   <DMSE.Strike.Settings.WaveReadyAlert>打擊波次可發射警報</DMSE.Strike.Settings.WaveReadyAlert>
   <!-- EN: Show an alert when a strike mission can fire its next wave. -->
@@ -267,4 +271,8 @@ Enable research work for a colonist on that map. -->
   <DMSE.Strike.RenameTip>重新命名這個打擊任務（可擲隨機名稱）。</DMSE.Strike.RenameTip>
   <!-- EN: Guidance channels per missile: {0} -->
   <DMSE.Strike.ChannelCost>每枚導彈需求：{0} 條導引通道</DMSE.Strike.ChannelCost>
+  <!-- EN: Mid-flight release: {0} -->
+  <DMSE.Missile.Stat.Release>飛行中釋放：{0}</DMSE.Missile.Stat.Release>
+  <!-- EN: Mid-flight release: {0} ({1} tracks for enemy air defense) -->
+  <DMSE.Strike.Plan.Release>飛行中釋放：{0}（對敵方防空是 {1} 條航跡）</DMSE.Strike.Plan.Release>
 </LanguageData>

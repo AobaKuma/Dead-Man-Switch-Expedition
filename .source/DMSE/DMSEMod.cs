@@ -48,6 +48,8 @@ namespace DMSE
                     Settings.terminalImpactMarkerMode = mode;
                 }
             }
+            listing.Gap(6f);
+            listing.CheckboxLabeled("DMSE.BVR.Settings.NpcMirv".Translate(), ref Settings.npcMirvEnabled, "DMSE.BVR.Settings.NpcMirvDesc".Translate());
             listing.End();
         }
 

@@ -338,6 +338,38 @@ namespace DMSE
             TerminalDefense(now);
         }
 
+        /// <summary>
+        /// 地圖層誘餌識別：每個目標只擲一次；世界層已被同陣營識破的直接算識破。回傳 true 表示這次識破。
+        /// </summary>
+        private bool TryDiscriminateOnMap(BVRTarget target, CompFireControlRadar radar, Faction defender, int timeLeft)
+        {
+            if (target.decoyRolled || !DecoyDiscrimination.IsDecoy(target.Payload, out int fidelity)) { return false; }
+            target.decoyRolled = true;
+            bool identified;
+            if (defender != null && target.Payload is Projectile_MissileIncoming p
+                && p.decoyIdentifiedFactions != null && p.decoyIdentifiedFactions.Contains(defender.loadID))
+            {
+                identified = true;
+            }
+            else
+            {
+                if (radar == null) { return false; }
+                float chance = AirDefenseHooks.MapStat(AirDefenseStat.Discrimination, DecoyDiscrimination.BaseChance(radar.Props, fidelity),
+                    map, defender, target.Payload, null, radar.parent, timeLeft);
+                identified = Rand.Chance(chance);
+                if (Prefs.DevMode)
+                {
+                    Log.Message($"[DMSE MIRV] {defender?.Name} 地圖層對誘餌（目標 {target.id}）識別骰 {chance:P0} → {(identified ? "識破" : "未識破")}");
+                }
+            }
+            if (!identified) { return false; }
+            target.decoyIdentified = true;
+            AirCombatEvents.Raise(AirDefenseHooks.MapEvent(AirCombatEventKind.DecoyIdentified, map, defender, target.Payload,
+                effector: radar?.parent));
+            DecoyDiscrimination.NotifyIdentified(defender, target.Payload?.LabelCap ?? "?", new RimWorld.Planet.GlobalTargetInfo(target.position, map));
+            return true;
+        }
+
         // ====================================================================
         //  末端重新鎖定（docs/末端落點顯示與導引頭重新鎖定_實作計畫.md §4）
         // ====================================================================
@@ -362,6 +394,8 @@ namespace DMSE
                 target.terminalRetargeted = true; // 不論成功與否都只嘗試一次。
 
                 IIncomingMissile missile = target.Missile;
+                // 分導群組成員共用落點，不各自重鎖（計畫 §6.6）。
+                if (missile != null && missile.MirvGroupId >= 0) { continue; }
                 MissileConfig config = missile?.Config;
                 GuidanceType guidance = config?.TargetingGuidance;
                 if (guidance == null || !guidance.CanRetargetInTerminal || !target.position.IsValid) { continue; }
@@ -505,6 +539,12 @@ namespace DMSE
             foreach (BVRTarget target in engagementOrder)
             {
                 if (target.terminalOnly) continue;
+                if (target.decoyIdentified)
+                {
+                    // 已識破的誘餌：SAM 不再接戰，釋放通道（CIWS 不識別，末端仍會打）。
+                    target.lockUntil = -1;
+                    continue;
+                }
                 if (target.midcourseEngagedUntil <= now && target.interceptorsInFlight > 0)
                 {
                     // 防止遭移除／失去地圖的攔截彈讓舊存計數永久占住目標。
@@ -528,6 +568,12 @@ namespace DMSE
                 {
                     // 鎖定完成 → 嘗試發射（已占用通道，不受 capacity 限制）。
                     CompFireControlRadar fcReady = SelectBestRadar(target, timeLeft, defender);
+                    // 鎖定完成：識別誘餌（docs/MIRV分導彈頭與誘餌載荷_實作計畫.md §7.3）。
+                    if (TryDiscriminateOnMap(target, fcReady, defender, timeLeft))
+                    {
+                        target.lockUntil = -1;
+                        continue;
+                    }
                     CompMissileLauncher_Interceptor launcher = SelectReadyLauncher(now, defender, target.domain);
                     if (fcReady != null && launcher != null)
                     {

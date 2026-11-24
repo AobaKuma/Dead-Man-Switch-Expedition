@@ -28,6 +28,28 @@ namespace DMSE
         public int strikeMissionId = -1;
         public int strikeWave = -1;
 
+        public override int MissionId => strikeMissionId;
+        protected override Thing LaunchingThing => launcherThing;
+        public override int MissionWave => strikeWave;
+
+        // ---- 分導彈頭等同組的電視選點（計畫 §6.3）----
+        private bool waitingForAim;
+        private Map waitMap;
+        private int waitStartTick = -1;
+        /// <summary>等同組選點的上限；逾時落在地圖中心。</summary>
+        private const int AimWaitTicks = 2500;
+
+        /// <summary>
+        /// 打擊任務的戰果：屬於分導群組（匯流排已開始釋放，或是群組成員）時由群組彙整後一次回報，自己不回報。
+        /// </summary>
+        private void ReportStrike(StrikeOutcome outcome)
+        {
+            if (mirvGroupId >= 0) { return; }
+            WorldComponent_StrikeReports.Report(strikeMissionId, strikeWave, outcome);
+        }
+
+        private ThingDef IncomingThingDef => skyfallerIncoming ?? ThingDef.Named(ProjectileDefName);
+
         // 選中並生成的墜落物定義，用原版的隕石當佔位符
         private const string ProjectileDefName = "MeteoriteIncoming";
 
@@ -39,7 +61,8 @@ namespace DMSE
         protected override void CopyToChild(MissileWorldObject child, bool inheritsRole)
         {
             var c = (ScorerProjectile_WorldObject)child;
-            c.skyfallerIncoming = child.config?.body?.incomingSkyfaller ?? skyfallerIncoming;
+            // 誘餌用它模仿的落地彈（雷達特徵與進圖外觀）。
+            c.skyfallerIncoming = child.mimicIncoming ?? child.config?.body?.incomingSkyfaller ?? skyfallerIncoming;
             c.launcherThing = launcherThing;
             c.launchSpawnTick = launchSpawnTick;
             if (inheritsRole)
@@ -58,6 +81,9 @@ namespace DMSE
             Scribe_Values.Look(ref launchSpawnTick, "launchSpawnTick", -1);
             Scribe_Values.Look(ref strikeMissionId, "strikeMissionId", -1);
             Scribe_Values.Look(ref strikeWave, "strikeWave", -1);
+            Scribe_Values.Look(ref waitingForAim, "waitingForAim", false);
+            Scribe_References.Look(ref waitMap, "waitMap");
+            Scribe_Values.Look(ref waitStartTick, "waitStartTick", -1);
 
             // 舊存檔只存了 tileId（圖層遺失），無從得知原圖層，只能視為地表
             if (Scribe.mode == LoadSaveMode.LoadingVars)
@@ -79,17 +105,17 @@ namespace DMSE
 
         protected override void OnIntercepted(Faction by)
         {
-            WorldComponent_StrikeReports.Report(strikeMissionId, strikeWave, StrikeOutcome.Intercepted);
+            ReportStrike(StrikeOutcome.Intercepted);
         }
 
         protected override void OnJammedOut(Faction by)
         {
-            WorldComponent_StrikeReports.Report(strikeMissionId, strikeWave, StrikeOutcome.Missed);
+            ReportStrike(StrikeOutcome.Missed);
         }
 
         protected override void OnArrived(Map map)
         {
-            WorldComponent_StrikeReports.Report(strikeMissionId, strikeWave, map == null ? StrikeOutcome.Missed : StrikeOutcome.Arrived);
+            ReportStrike(map == null ? StrikeOutcome.Missed : StrikeOutcome.Arrived);
             if (map == null)
             {
                 Messages.Message("DMSE.Missile.Missed".Translate(), new GlobalTargetInfo(destinationTile),
@@ -106,7 +132,7 @@ namespace DMSE
             }
             Current.Game.GetComponent<GameComponent_MissileEngage>().times.SetOrAdd(map, Find.TickManager.TicksGame + (GenDate.TicksPerDay * 2));
 
-            ThingDef def = skyfallerIncoming ?? ThingDef.Named(ProjectileDefName);
+            ThingDef def = IncomingThingDef;
 
             // 只有電視制導由玩家手動選點；其餘導引頭（含慣性）依導引頭規則自動鎖定，不暫停遊戲。
             // 導引被干擾機打掉時也不選點：已經沒有導引頭了。
@@ -120,9 +146,31 @@ namespace DMSE
                     : loiterStarted
                     ? "DMSE.Missile.Loitering".Translate(config.LoiterTicks.ToStringTicksToPeriod()).ToString()
                     : "DMSE.Missile.SeekerLocked".Translate(config != null ? config.TargetingLabel : "DMSE.Guidance.Inertial".Translate().ToString()).ToString();
-                Messages.Message(message, new TargetInfo(cell, map), MessageTypeDefOf.NeutralEvent, historical: false);
+                // 同組後續彈頭沿用第一枚的落點：不重複發訊息。
+                if (!aimFromGroup) { Messages.Message(message, new TargetInfo(cell, map), MessageTypeDefOf.NeutralEvent, historical: false); }
                 Destroy();
                 return;
+            }
+
+            // 電視導引的分導彈頭：整組只選一次點（計畫 §6.3）。
+            MirvGroup group = MirvWarheadGroup;
+            if (group != null)
+            {
+                if (group.HasAim(map))
+                {
+                    SpawnIncoming(def, group.aimCell, map);
+                    Destroy();
+                    return;
+                }
+                if (group.aimPending)
+                {
+                    waitingForAim = true;
+                    waitMap = map;
+                    waitStartTick = Find.TickManager.TicksGame;
+                    return; // 不銷毀：TickWhileArrived 等選點
+                }
+                group.aimPending = true;
+                group.aimMap = map;
             }
 
             Find.TickManager.CurTimeSpeed = TimeSpeed.Paused;
@@ -147,6 +195,7 @@ namespace DMSE
                 },
             action: t =>
                 {
+                    group?.SetAim(map, t.Cell, false);
                     SpawnIncoming(def, t.Cell, map);
                     Find.TickManager.CurTimeSpeed = TimeSpeed.Normal;
                     launch = true;
@@ -158,6 +207,7 @@ namespace DMSE
                 {
                     if (!launch)
                     {
+                        group?.SetAim(map, map.Center, false);
                         SpawnIncoming(def, map.Center, map);
                         Find.TickManager.CurTimeSpeed = TimeSpeed.Normal;
                     }
@@ -166,6 +216,30 @@ namespace DMSE
             true,
             t => Find.TickManager.CurTimeSpeed = TimeSpeed.Paused);
             Destroy();
+        }
+
+        /// <summary>等同組彈頭的電視選點：選好就沿用，地圖消失就放棄，逾時落在地圖中心。</summary>
+        protected override void TickWhileArrived()
+        {
+            if (!waitingForAim) { return; }
+            if (waitMap == null || !Find.Maps.Contains(waitMap))
+            {
+                Destroy();
+                return;
+            }
+            MirvGroup group = MirvWarheadGroup;
+            if (group != null && group.HasAim(waitMap))
+            {
+                SpawnIncoming(IncomingThingDef, group.aimCell, waitMap);
+                Destroy();
+                return;
+            }
+            if (group == null || Find.TickManager.TicksGame - waitStartTick > AimWaitTicks)
+            {
+                group?.SetAim(waitMap, waitMap.Center, false);
+                SpawnIncoming(IncomingThingDef, waitMap.Center, waitMap);
+                Destroy();
+            }
         }
 
         /// <summary>生成落點導彈（從世界航跡最後一段的方向飛入地圖），並把裝配設定交給它。</summary>
@@ -181,6 +255,7 @@ namespace DMSE
                 incoming.Attacker = base.Faction; // 玩家的巡航導彈，供敵方 BVR 攔截判定。
                 incoming.StrikeMissionId = strikeMissionId;
                 incoming.StrikeWave = strikeWave;
+                incoming.MirvGroupId = mirvRole == MirvRole.Warhead ? mirvGroupId : -1;
                 if (thing is Projectile_MissileIncoming p)
                 {
                     p.SetLauncher(launcherThing); // 傷害歸因於發射建築

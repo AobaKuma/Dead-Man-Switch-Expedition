@@ -16,7 +16,7 @@ namespace DMSE
     /// （<see cref="MissileConfig.TerminalUpdates"/>），且改飛後的總航程不得超過射程。
     /// 次數用完或燃料不足時沿最後位置飛行，抵達時目標不在就落空。
     /// </summary>
-    public abstract class MissileWorldObject : WorldObject, IBVRTrack, IMissileTrack
+    public abstract class MissileWorldObject : WorldObject, IBVRTrack, IMissileTrack, IDecoyTrack
     {
         public MissileConfig config;
         public PlanetTile destinationTile = PlanetTile.Invalid;
@@ -44,6 +44,26 @@ namespace DMSE
         protected abstract void OnArrived(Map map);
 
         public int RouteRevision => terminalUpdatesUsed + manoeuvres;
+
+        // ---- 分導（docs/MIRV分導彈頭與誘餌載荷_實作計畫.md §5.5）----
+        /// <summary>所屬分導群組（釋放它的母彈 ID）；-1 = 不屬於任何群組。</summary>
+        public int mirvGroupId = -1;
+        public MirvRole mirvRole = MirvRole.None;
+        /// <summary>子彈沿用母彈的世界速度倍率（RV／誘餌必須與母彈同速，否則 ETA 一眼識破）；≤0 = 依自己的設定。</summary>
+        private float inheritedSpeedFactor = -1f;
+        /// <summary>子彈沿用母彈的射程上限（終端更新的射程檢查用）；-1 = 依自己的設定。</summary>
+        private int inheritedRange = -1;
+        /// <summary>誘餌沿用母彈的終端更新次數（沒有導引也要跟著目標改飛，否則立刻露餡）；-1 = 依自己的設定。</summary>
+        private int inheritedTerminalUpdates = -1;
+
+        /// <summary>終端更新總次數。</summary>
+        public int TerminalUpdatesTotal => inheritedTerminalUpdates >= 0 ? inheritedTerminalUpdates : (config != null ? config.TerminalUpdates : 0);
+
+        /// <summary>實際使用的世界速度倍率。</summary>
+        public float EffectiveSpeedFactor => inheritedSpeedFactor > 0f ? inheritedSpeedFactor : (config?.WorldSpeedFactor ?? 1f);
+        /// <summary>實際使用的射程上限（0 = 不限）。</summary>
+        public int EffectiveRange => inheritedRange >= 0 ? inheritedRange : (config != null ? config.Range : 0);
+        private float BaseAngularSpeed => MissileWorldMotion.BaseAngularSpeed * EffectiveSpeedFactor;
 
         // ---- 飛彈行為（Fortified.MissileBehavior）----
         private int manoeuvres;
@@ -81,7 +101,7 @@ namespace DMSE
         {
             float angle = Mathf.Max(0.0000001f, GenMath.SphericalDistance(Start.normalized, End.normalized));
             float leg = CurrentLegLength;
-            float baseSpeed = MissileWorldMotion.AngularSpeed(config);
+            float baseSpeed = BaseAngularSpeed;
             while (ticks > 0 && progress < 1f)
             {
                 int step = Mathf.Min(ticks, SpeedStepTicks);
@@ -95,7 +115,7 @@ namespace DMSE
         {
             float angle = Mathf.Max(0.0000001f, GenMath.SphericalDistance(Start.normalized, End.normalized));
             float leg = CurrentLegLength;
-            float baseSpeed = MissileWorldMotion.AngularSpeed(config);
+            float baseSpeed = BaseAngularSpeed;
             float progress = CurrentProgress;
             int ticks = 0;
             while (progress < 1f)
@@ -114,6 +134,14 @@ namespace DMSE
         /// 超過世代上限回傳 null，避免彈體設定互相遞迴。<paramref name="inheritsRole"/> = 子彈接手母彈的戰果回報（母彈隨後銷毀時用）。
         /// </summary>
         public MissileWorldObject SpawnChild(MissileConfig childConfig, bool inheritsRole = false)
+            => SpawnChild(childConfig, MirvRole.None, -1, inheritsRole);
+
+        /// <summary>
+        /// 分導釋放：子彈屬於 <paramref name="groupId"/> 群組、扮演 <paramref name="role"/>。
+        /// 子彈一律沿用母彈的世界速度與射程上限，終端更新次數也從母彈已用的次數接續。
+        /// </summary>
+        public MissileWorldObject SpawnChild(MissileConfig childConfig, MirvRole role, int groupId, bool inheritsRole = false,
+            MissileBodyDef mimic = null, ThingDef mimicIncomingDef = null)
         {
             if (childConfig == null || !childConfig.Valid || childDepth >= MaxChildDepth) { return null; }
             MissileWorldObject child = (MissileWorldObject)WorldObjectMaker.MakeWorldObject(def);
@@ -129,6 +157,25 @@ namespace DMSE
             child.legStart = Vector3.Slerp(Start, End, progress);
             child.legLength = leg * (1f - progress);
             child.rangeSpent = rangeSpent + leg * progress;
+            child.inheritedSpeedFactor = EffectiveSpeedFactor;
+            child.inheritedRange = EffectiveRange;
+            child.terminalUpdatesUsed = terminalUpdatesUsed;
+            child.mirvRole = role;
+            child.mirvGroupId = groupId;
+            if (childConfig.body?.decoy != null)
+            {
+                // 誘餌模仿的對象：呼叫端指定（同組彈頭或繼續飛的母彈），否則用誘餌設定的後備外觀。
+                child.mimicBody = mimic ?? childConfig.body.decoy.mimicBody;
+                child.mimicIncoming = mimicIncomingDef ?? child.mimicBody?.incomingSkyfaller;
+                child.inheritedTerminalUpdates = TerminalUpdatesTotal;
+            }
+            // 狀態沿用：已被偵測的母彈分出的子彈不必重新觸發第一次偵測信件。
+            child.State.detectedByFaction = State.detectedByFaction;
+            child.State.playerNotified = State.playerNotified;
+            child.State.firstDetectedTick = State.firstDetectedTick;
+            // 母彈的導引已被干擾機打掉時，繼承同一套導引的子彈也一樣。
+            child.State.jamRolled = State.jamRolled;
+            child.State.jamDenied = State.jamDenied;
             CopyToChild(child, inheritsRole);
             Find.WorldObjects.Add(child);
             return child;
@@ -162,13 +209,41 @@ namespace DMSE
             if (VisibleToPlayer) { base.Draw(); }
         }
 
-        public override Texture2D ExpandingIcon => VisibleToPlayer ? config?.body?.ExpandingIcon ?? base.ExpandingIcon : null;
+        public override Texture2D ExpandingIcon => VisibleToPlayer ? DisplayBody?.ExpandingIcon ?? base.ExpandingIcon : null;
+
+        // ---- 誘餌（計畫 §5.6、§7）----
+        /// <summary>誘餌模仿的彈體（標籤、圖示）；不是誘餌為 null。</summary>
+        public MissileBodyDef mimicBody;
+        /// <summary>誘餌模仿的落地彈：雷達特徵（<see cref="TargetProps"/>）與進入地圖時的外觀都取自它。</summary>
+        public ThingDef mimicIncoming;
+
+        public bool IsDecoy => config?.body?.decoy != null;
+        public int DecoyFidelity => config?.body?.decoy?.fidelity ?? 0;
+
+        /// <summary>玩家的防空已識破這枚誘餌（P4）。</summary>
+        public bool DecoyKnownToPlayer => IsDecoy && State.DecoyIdentifiedBy(Faction.OfPlayer);
+
+        /// <summary>
+        /// 介面上顯示的彈體：誘餌對攻擊方以外的人顯示它模仿的彈體（P4 識別後才露出原形）。
+        /// </summary>
+        public MissileBodyDef DisplayBody
+        {
+            get
+            {
+                MissileBodyDef body = config?.body;
+                if (IsDecoy && mimicBody != null && Attacker != Faction.OfPlayer && !DecoyKnownToPlayer) { return mimicBody; }
+                return body;
+            }
+        }
+
+        /// <summary>落地彈的傷害歸因（發射建築）；只有玩家發射的有。</summary>
+        protected virtual Thing LaunchingThing => null;
 
         public int TerminalUpdatesRemaining
         {
             get
             {
-                int total = config != null ? config.TerminalUpdates : 0;
+                int total = TerminalUpdatesTotal;
                 return Mathf.Max(0, total - terminalUpdatesUsed);
             }
         }
@@ -228,7 +303,7 @@ namespace DMSE
         public PlanetTile Origin => initialTile;
         public MissileConfig Config => config;
         public BVRTrackState State => bvrState ??= new BVRTrackState();
-        public virtual ThingDef IncomingDef => config?.body?.incomingSkyfaller;
+        public virtual ThingDef IncomingDef => mimicIncoming ?? config?.body?.incomingSkyfaller;
         private BVRTargetProps signatureProps;
         /// <summary>
         /// 落點 skyfaller 的 BVR 屬性；裝了誘餌酬載時雷達截面（distanceLevel）依 <see cref="MissileConfig.SignatureFactor"/> 放大，
@@ -253,8 +328,8 @@ namespace DMSE
             }
         }
         public virtual float AngularSpeed => VariableSpeed
-            ? MissileWorldMotion.AngularSpeed(config) * Behaviors.SpeedFactorAt(RouteProgress)
-            : MissileWorldMotion.AngularSpeed(config);
+            ? BaseAngularSpeed * Behaviors.SpeedFactorAt(RouteProgress)
+            : BaseAngularSpeed;
         private float TraveledPctStepPerTick => AngularSpeed / Mathf.Max(0.0000001f,
             GenMath.SphericalDistance(Start.normalized, End.normalized));
         private int TicksSinceMotion => lastMotionTick < 0 ? 0 : Mathf.Max(0, Find.TickManager.TicksGame - lastMotionTick);
@@ -276,8 +351,9 @@ namespace DMSE
             Behaviors.ModifyAltitudeAt(RouteProgressAt(ProgressAhead(ticksAhead), CurrentLegLength), ref altitude);
             return altitude;
         }
-        public override Color ExpandingIconColor => State.detectedByFaction == Faction.OfPlayer
-            ? Color.red : Faction?.Color ?? Color.white;
+        /// <summary>已識破的敵方誘餌畫成灰色；其餘已偵測的敵方航跡畫紅色。</summary>
+        public override Color ExpandingIconColor => DecoyKnownToPlayer ? new Color(0.55f, 0.55f, 0.55f, 0.7f)
+            : State.detectedByFaction == Faction.OfPlayer ? Color.red : Faction?.Color ?? Color.white;
         public void Notify_Intercepted(Faction by)
         {
             if (Destroyed) return;
@@ -287,6 +363,7 @@ namespace DMSE
                         : MessageTypeDefOf.NegativeEvent, historical: false);
             WorldComponent_BVRNetwork.Current?.AddFlash(DrawPos);
             Behaviors.OnIntercepted(by);
+            WorldComponent_MirvGroups.RecordWorldOutcome(this, StrikeOutcome.Intercepted);
             OnIntercepted(by);
             Destroy();
         }
@@ -311,6 +388,7 @@ namespace DMSE
             }
             State.interceptor = null;
             Behaviors.OnJammedOut(by);
+            WorldComponent_MirvGroups.RecordWorldOutcome(this, StrikeOutcome.Missed);
             OnJammedOut(by);
             Destroy();
         }
@@ -323,13 +401,35 @@ namespace DMSE
         /// </summary>
         protected IntVec3 ArrivalCellFor(Map map, out bool loiter)
         {
+            aimFromGroup = false;
             if (State.jamDenied)
             {
                 loiter = false;
                 return GuidanceType.InertialTarget(map, Faction);
             }
-            return GuidanceType.ArrivalCell(config, map, Faction, out loiter, this, ArrivalHeading);
+            // 分導彈頭共用一個落點（計畫 §6.3）：第一枚跑導引頭並登記 claim，同組其他彈頭沿用，
+            // 不會被導引頭的分散鎖定拆到不同目標。各枚之後仍各自套命中散布。
+            MirvGroup group = MirvWarheadGroup;
+            if (group != null && group.HasAim(map))
+            {
+                aimFromGroup = true;
+                loiter = group.aimLoiter;
+                return group.aimCell;
+            }
+            IntVec3 cell = GuidanceType.ArrivalCell(config, map, Faction, out loiter, this, ArrivalHeading);
+            group?.SetAim(map, cell, loiter);
+            return cell;
         }
+
+        /// <summary>上一次 <see cref="ArrivalCellFor"/> 沿用了同組彈頭的落點（子類用來省略重複訊息）。</summary>
+        protected bool aimFromGroup;
+
+        /// <summary>這枚是分導群組裡的彈頭時回傳群組；否則 null。</summary>
+        public MirvGroup MirvWarheadGroup => mirvRole == MirvRole.Warhead ? WorldComponent_MirvGroups.Get(mirvGroupId) : null;
+
+        /// <summary>打擊任務 id 與波次（玩家波次打擊才有；-1 = 無）。分導群組建立時記下。</summary>
+        public virtual int MissionId => -1;
+        public virtual int MissionWave => -1;
 
         private float CurrentLegLength
         {
@@ -351,7 +451,11 @@ namespace DMSE
         protected override void TickInterval(int delta)
         {
             base.TickInterval(delta);
-            if (arrived) { return; }
+            if (arrived)
+            {
+                if (!Destroyed) { TickWhileArrived(); }
+                return;
+            }
 
             int now = Find.TickManager.TicksGame;
             int elapsed = lastMotionTick < 0 ? delta : Mathf.Max(0, now - lastMotionTick);
@@ -380,17 +484,74 @@ namespace DMSE
                 MapParent site = WorldComponent_FactionAirDefenseAlert.TargetSite(this);
                 WorldComponent_FactionAirDefenseAlert.Current?.ReportHit(this, site);
                 AirDefenseHooks.WorldEvent(AirCombatEventKind.TrackArrived, this, site?.Faction, site);
+                if (IsDecoy)
+                {
+                    ResolveDecoyArrival();
+                    if (!Destroyed) { Destroy(); }
+                    return;
+                }
                 if (Behaviors.PreArrive())
                 {
                     if (!Destroyed) { Destroy(); }
                     return;
                 }
-                if (!TryStrikeAbstractNode())
+                if (TryStrikeAbstractNode())
                 {
-                    OnArrived(MissileWorldUtility.ResolveArrivalMap(destinationTile, targetParent, AllowGenerateTargetMap));
+                    // 打掉抽象防空節點：對分導群組算抵達並命中。
+                    WorldComponent_MirvGroups.RecordWorldOutcome(this, StrikeOutcome.Arrived);
+                    if (mirvRole == MirvRole.Warhead) { WorldComponent_MirvGroups.RecordMapOutcome(mirvGroupId, StrikeOutcome.Hit); }
+                }
+                else
+                {
+                    Map map = MissileWorldUtility.ResolveArrivalMap(destinationTile, targetParent, AllowGenerateTargetMap);
+                    WorldComponent_MirvGroups.RecordWorldOutcome(this, map == null ? StrikeOutcome.Missed : StrikeOutcome.Arrived);
+                    OnArrived(map);
                 }
             }
         }
+
+        /// <summary>
+        /// 誘餌抵達（計畫 §7.2）：絕不生成目標地圖。地圖不存在就無聲消失；有地圖時依 <see cref="DecoyProps.reentrySurvivalChance"/>
+        /// 在大氣層燒毀，或以模仿對象的落地彈（惰性）進入地圖層 BVR，落在同組彈頭的落點附近。
+        /// </summary>
+        private void ResolveDecoyArrival()
+        {
+            DecoyProps decoy = config.body.decoy;
+            MapParent parent = targetParent != null && !targetParent.Destroyed ? targetParent : Find.WorldObjects.MapParentAt(destinationTile);
+            Map map = parent != null && parent.HasMap ? parent.Map : null;
+            if (map == null || !Rand.Chance(decoy.reentrySurvivalChance))
+            {
+                if (Prefs.DevMode) { Log.Message($"[DMSE MIRV] 誘餌 #{ID} " + (map == null ? "抵達時目標沒有地圖，消失" : "在大氣層燒毀")); }
+                return;
+            }
+            ThingDef def = mimicIncoming ?? IncomingDef;
+            if (def == null) { return; }
+            MirvGroup group = WorldComponent_MirvGroups.Get(mirvGroupId);
+            IntVec3 cell = group != null && group.HasAim(map) ? group.aimCell : GuidanceType.InertialTarget(map, Faction);
+            Thing thing = MissileProjectileMaker.SpawnIncoming(def, cell, map, ArrivalHeading);
+            if (!(thing is IIncomingMissile incoming)) { return; }
+            incoming.Config = config.Clone();
+            incoming.WorldPhaseDone = true;
+            incoming.Attacker = Faction;
+            incoming.MirvGroupId = -1; // 誘餌的地圖層結果不算彈頭戰果
+            if (thing is Projectile_MissileIncoming p)
+            {
+                p.SetLauncher(LaunchingThing); // 原版護盾以 launcher 判斷敵我
+                if (!State.decoyIdentifiedFactions.NullOrEmpty())
+                {
+                    p.decoyIdentifiedFactions = new System.Collections.Generic.List<int>(State.decoyIdentifiedFactions);
+                }
+                p.ApplyLandingScatter();
+                cell = p.Position;
+            }
+            MissileBVRUtility.TryRegister(thing, cell);
+            if (Prefs.DevMode) { Log.Message($"[DMSE MIRV] 誘餌 #{ID} 以 {def.defName} 進入地圖層，落點 {cell}"); }
+        }
+
+        /// <summary>
+        /// 已抵達但還沒銷毀時每次 tick 呼叫（例：分導彈頭等同組的電視選點）。子類負責最後 <see cref="WorldObject.Destroy"/>。
+        /// </summary>
+        protected virtual void TickWhileArrived() { }
 
         /// <summary>目標換了 tile 時嘗試改飛；不符合條件就維持原航線（之後落空）。</summary>
         private void TryTerminalUpdate()
@@ -408,7 +569,7 @@ namespace DMSE
             {
                 newLeg += MissileWorldUtility.CrossLayerRangeCost;
             }
-            int range = config != null ? config.Range : 0;
+            int range = EffectiveRange;
             if (range > 0 && spent + newLeg > range) { return; }
 
             rangeSpent = spent;
@@ -429,17 +590,27 @@ namespace DMSE
         public override string GetInspectString()
         {
             string text = base.GetInspectString();
-            if (config != null && config.HasTerminalGuidance)
+            if ((config != null && config.HasTerminalGuidance) || inheritedTerminalUpdates > 0)
             {
                 if (!text.NullOrEmpty()) { text += "\n"; }
-                text += "DMSE.Missile.TerminalUpdatesRemaining".Translate(TerminalUpdatesRemaining, config.TerminalUpdates);
+                text += "DMSE.Missile.TerminalUpdatesRemaining".Translate(TerminalUpdatesRemaining, TerminalUpdatesTotal);
             }
             if (!text.NullOrEmpty()) text += "\n";
-            text += "DMSE.BVR.World.MissileType".Translate(config?.body?.LabelCap ?? Label) + "\n";
+            text += "DMSE.BVR.World.MissileType".Translate(DisplayBody?.LabelCap ?? Label) + "\n";
             string destination = targetParent?.Label ?? Find.WorldObjects.MapParentAt(destinationTile)?.Label;
             text += "DMSE.BVR.World.TrackInspect".Translate(destination ?? destinationTile.ToString(),
                 TicksToArrival.ToStringTicksToPeriod(), State.StatusKey.Translate(), State.interceptAttempts);
             text += "\n" + "DMSE.BVR.World.TrackAltitude".Translate(MissileWorldMotion.AltitudeLabel(AltitudeAt(0)));
+            // 分導資訊只給攻擊方看：防守方不該從面板得知哪條是彈頭、何時分導。
+            if (Attacker == Faction.OfPlayer || Prefs.DevMode)
+            {
+                if (mirvRole != MirvRole.None)
+                {
+                    text += "\n" + ("DMSE.Mirv.Role." + mirvRole).Translate(mirvGroupId);
+                }
+                string release = Behaviors.Get<MissileBehavior_ReleaseChildren>()?.InspectLine();
+                if (!release.NullOrEmpty()) { text += "\n" + release; }
+            }
             return text;
         }
 
@@ -505,11 +676,31 @@ namespace DMSE
             Scribe_Values.Look(ref terminalUpdatesUsed, "terminalUpdatesUsed", 0);
             Scribe_Values.Look(ref manoeuvres, "manoeuvres", 0);
             Scribe_Values.Look(ref childDepth, "childDepth", 0);
+            Scribe_Values.Look(ref mirvGroupId, "mirvGroupId", -1);
+            Scribe_Values.Look(ref mirvRole, "mirvRole", MirvRole.None);
+            Scribe_Values.Look(ref inheritedSpeedFactor, "inheritedSpeedFactor", -1f);
+            Scribe_Values.Look(ref inheritedRange, "inheritedRange", -1);
+            Scribe_Values.Look(ref inheritedTerminalUpdates, "inheritedTerminalUpdates", -1);
+            Scribe_Defs.Look(ref mimicBody, "mimicBody");
+            Scribe_Defs.Look(ref mimicIncoming, "mimicIncoming");
             if (Scribe.EnterNode("behaviors"))
             {
                 try { Behaviors.ExposeData(); }
                 finally { Scribe.ExitNode(); }
             }
         }
+    }
+}
+
+namespace DMSE
+{
+    /// <summary>分導群組成員的角色（docs/MIRV分導彈頭與誘餌載荷_實作計畫.md §5.5）。</summary>
+    public enum MirvRole : byte
+    {
+        None,
+        /// <summary>真彈頭（重返載具，或只放誘餌時繼續飛的母彈）。</summary>
+        Warhead,
+        /// <summary>誘餌：外觀與彈頭相同、無殺傷。</summary>
+        Decoy
     }
 }

@@ -31,6 +31,8 @@ namespace DMSE
         public bool WorldPhaseDone { get => worldPhaseDone; set => worldPhaseDone = value; }
         public int StrikeMissionId { get => strikeMissionId; set => strikeMissionId = value; }
         public int StrikeWave { get => strikeWave; set => strikeWave = value; }
+        /// <summary>舊載體不參與分導（只為介面相容）。</summary>
+        public int MirvGroupId { get => -1; set { } }
 
         /// <summary>只顯示 def.label 且剔除括號後綴（如「cruise missile (incoming)」→「cruise missile」）。</summary>
         public override string Label => MissileImpactUtility.StripSuffix(def.label);

@@ -190,6 +190,7 @@ namespace DMSE
             foreach (IBVRTrack track in tracks)
             {
                 if (track.Self == null || !KnownToPlayer(track)) { continue; }
+                if (track.Self is MissileWorldObject known && known.DecoyKnownToPlayer) { continue; } // 已識破的誘餌不畫航線
                 if (track.Self.Tile.Layer != layer && (!track.Destination.Valid || track.Destination.Layer != layer)) { continue; }
                 int eta = track.TicksToArrival;
                 if (eta <= 0) { continue; }

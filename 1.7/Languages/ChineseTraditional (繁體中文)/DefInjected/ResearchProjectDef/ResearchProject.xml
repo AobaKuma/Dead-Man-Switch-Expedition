@@ -53,4 +53,7 @@
   <DMSE_ElectronicWarfare.description>解鎖戰情終端與長程預警雷達。戰情終端可設定交戰限制，並遙控全圖的雷達與干擾機；長程預警雷達以解析度和全部火控通道，換取 40 格的早期預警。</DMSE_ElectronicWarfare.description>
   <DMSE_ElectronicAttack.label>電子攻擊</DMSE_ElectronicAttack.label>
   <DMSE_ElectronicAttack.description>解鎖電子干擾機。它能打掉世界地圖上 8 格紅圈內敵對導彈的導引頭，並壓制敵方雷達；代價是滿段 6000 瓦的耗電，以及所在地圖的通訊台停用。</DMSE_ElectronicAttack.description>
+  <!-- EN: multiple independent re-entry vehicles -->
+  <DMSE_MIRV.label>分導式多彈頭</DMSE_MIRV.label>
+  <DMSE_MIRV.description>解鎖民兵三型級導彈的彈頭匯流排：一種在飛行途中放出三枚重返載具，另一種放出兩枚重返載具並混入重型誘餌。每枚彈頭都走自己的航跡、必須逐一擊落，但全部打擊同一目標。</DMSE_MIRV.description>
 </LanguageData>

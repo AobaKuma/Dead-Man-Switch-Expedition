@@ -132,4 +132,8 @@
   <DMSE.Card.AssembleWorkDesc>套用一次装配变更所需的工作量，受施工小人的工作速度影响。</DMSE.Card.AssembleWorkDesc>
   <DMSE.Card.Refund>拆除退还</DMSE.Card.Refund>
   <DMSE.Card.RefundDesc>移除或更换部件时，退还该部件材料的比例。</DMSE.Card.RefundDesc>
+  <!-- EN: Mid-flight release -->
+  <DMSE.Card.Release>飞行中释放</DMSE.Card.Release>
+  <!-- EN: The missile carries a post-boost bus. Before arrival it releases separate tracks that enemy air defense must engage one by one. -->
+  <DMSE.Card.ReleaseDesc>导弹带有弹头母舱，抵达前会放出多条独立航迹，敌方防空必须逐一接战。</DMSE.Card.ReleaseDesc>
 </LanguageData>

@@ -105,7 +105,7 @@
   <ResearchProjectDef ParentName="DMS_BaseTech">
     <defName>DMSE_Ballistics</defName>
     <label>ballistic platform research</label>
-    <description>Unlocks the Minuteman III-class advanced ballistic missile body and its dedicated parts: low-yield and stellar-guided packages, penetration aids, and MIRV buses. Assembled directly in strategic silos and launch towers.</description>
+    <description>Unlocks the Minuteman III-class advanced ballistic missile body and its dedicated parts: low-yield and stellar-guided packages, penetration aids, and decoy warheads. Assembled directly in strategic silos and launch towers.</description>
     <baseCost>2500</baseCost>
     <requiredResearchBuilding Inherit="False" />
     <techLevel>Industrial</techLevel>
@@ -114,6 +114,22 @@
       <li>DMSE_IntegratedAirDefense</li>
     </prerequisites>
     <researchViewX>7.00</researchViewX>
+    <researchViewY>0.00</researchViewY>
+  </ResearchProjectDef>
+
+  <!-- 分導彈頭（docs/MIRV分導彈頭與誘餌載荷_實作計畫.md §9.1）：彈道平台之後，解鎖 MIRV 與 MIRV＋誘餌兩種匯流排載荷。
+       純誘餌載荷仍只需彈道平台研究。成本為彈道平台的 1.5 倍。 -->
+  <ResearchProjectDef ParentName="DMS_BaseTech">
+    <defName>DMSE_MIRV</defName>
+    <label>multiple independent re-entry vehicles</label>
+    <description>Unlocks post-boost buses for the Minuteman III-class missile: one releases three re-entry vehicles in mid-flight, the other two re-entry vehicles mixed in with heavy decoys. Every warhead flies its own track and must be shot down on its own, but all of them strike the same target.</description>
+    <baseCost>3750</baseCost>
+    <requiredResearchBuilding Inherit="False" />
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>DMSE_Ballistics</li>
+    </prerequisites>
+    <researchViewX>8.00</researchViewX>
     <researchViewY>0.00</researchViewY>
   </ResearchProjectDef>
 

@@ -495,11 +495,17 @@ namespace DMSE
                     working.LoiterTicks > 0 ? working.LoiterTicks.ToStringTicksToPeriod() : "-", working.LoiterTicks != baseline.LoiterTicks);
             }
 
+            MissileBehaviorProps_ReleaseChildren release = MirvText.ReleaseOf(working);
+            MissileBehaviorProps_ReleaseChildren baselineRelease = MirvText.ReleaseOf(baseline);
             bool survival = working.ChaffCharges > 0 || baseline.ChaffCharges > 0 || !Mathf.Approximately(working.SignatureFactor, 1f)
-                            || !Mathf.Approximately(baseline.SignatureFactor, 1f);
+                            || !Mathf.Approximately(baseline.SignatureFactor, 1f) || release != null || baselineRelease != null;
             if (survival)
             {
                 y = SectionLabel(view.width, y, "DMSE.Bench.Group.Survival".Translate());
+                if (release != null || baselineRelease != null)
+                {
+                    y = TextRow(view.width, y, "DMSE.Card.Release".Translate(), MirvText.Short(release) ?? "-", release != baselineRelease);
+                }
                 y = StatRow(view.width, y, "DMSE.Bench.Stat.Signature".Translate(), working.SignatureFactor, baseline.SignatureFactor, "0.00", null);
                 if (working.ChaffCharges > 0 || baseline.ChaffCharges > 0)
                 {

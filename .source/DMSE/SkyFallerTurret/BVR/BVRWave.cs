@@ -99,6 +99,11 @@ namespace DMSE
         /// <summary>末端重新鎖定已嘗試過（不論成功與否，每枚只做一次；盤旋鎖定／到期時也設為 true）。</summary>
         public bool terminalRetargeted;
 
+        /// <summary>防禦方已對這個目標擲過誘餌識別骰（地圖層，每目標一次）。</summary>
+        public bool decoyRolled;
+        /// <summary>防禦方已識破這個誘餌：中過程 SAM 不再接戰（CIWS 仍會打）。</summary>
+        public bool decoyIdentified;
+
         public void NotifyInterceptorResolved()
         {
             if (interceptorsInFlight > 0) { interceptorsInFlight--; }
@@ -296,6 +301,8 @@ namespace DMSE
             Scribe_Values.Look(ref interceptorsInFlight, "interceptorsInFlight", 0);
             Scribe_Values.Look(ref lockUntil, "lockUntil", -1);
             Scribe_Values.Look(ref terminalRetargeted, "terminalRetargeted", false);
+            Scribe_Values.Look(ref decoyRolled, "decoyRolled", false);
+            Scribe_Values.Look(ref decoyIdentified, "decoyIdentified", false);
         }
     }
 }
