@@ -93,10 +93,17 @@ namespace DMSE
 
         public WorldComponent_SettlementDefense(World world) : base(world) { }
 
-        /// <summary>是否套用合成防空：敵方、無地圖、沒有專屬防空元件，且陣營準則有合成防空。</summary>
+        /// <summary>
+        /// 合成防空只給正式據點（<see cref="Settlement"/>）。遠古機械師陵墓等任務／探索站點（<see cref="Site"/>）
+        /// 雖然掛著敵對陣營，也不該憑空擁有攔截能力；DMS 自己的軍事站點走 <see cref="WorldObjectComp_AirDefense"/>。
+        /// </summary>
+        public static bool IsSettlement(MapParent parent) => parent is Settlement;
+
+        /// <summary>是否套用合成防空：敵方據點、無地圖、沒有專屬防空元件，且陣營準則有合成防空。</summary>
         public static bool Eligible(MapParent parent)
         {
             if (parent == null || parent.Destroyed || parent.HasMap) { return false; }
+            if (!IsSettlement(parent)) { return false; }
             Faction faction = parent.Faction;
             if (faction == null || faction.IsPlayer) { return false; }
             if (parent.GetComponent<WorldObjectComp_AirDefense>() != null) { return false; }

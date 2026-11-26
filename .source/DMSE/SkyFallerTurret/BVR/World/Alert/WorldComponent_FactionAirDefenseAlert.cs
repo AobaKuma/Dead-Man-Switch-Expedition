@@ -264,7 +264,8 @@ namespace DMSE
         {
             if (parent == null || parent.Faction == null || parent.Faction.IsPlayer) { return false; }
             if (parent.GetComponent<WorldObjectComp_AirDefense>() != null) { return true; }
-            if (WorldComponent_SettlementDefense.PropsFor(parent.Faction) != null) { return true; }
+            if (WorldComponent_SettlementDefense.IsSettlement(parent)
+                && WorldComponent_SettlementDefense.PropsFor(parent.Faction) != null) { return true; }
             MapComponent_BVRCombat local = parent.HasMap ? parent.Map.GetComponent<MapComponent_BVRCombat>() : null;
             return local != null && local.searchRadars.Any(r => r.parent.Faction == parent.Faction);
         }

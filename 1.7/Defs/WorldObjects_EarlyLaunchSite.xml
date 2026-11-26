@@ -151,7 +151,7 @@
   <WorldObjectDef>
     <defName>DMSE_EarlyLaunchSite</defName>
     <label>crude missile position</label>
-    <description>A crude missile position built around acoustic mirrors, a hand-aimed fire-control radar and launch rails. It fires slow, inaccurate pulsejet loitering munitions, and it has no interceptors of its own.</description>
+    <description>A crude missile position built around acoustic mirrors, a hand-aimed fire-control radar and launch rails. It fires slow, inaccurate pulsejet loitering munitions and defends itself with a few radio-guided legacy interceptors.</description>
     <worldObjectClass>RimWorld.Planet.Site</worldObjectClass>
     <canHaveFaction>true</canHaveFaction>
     <saved>true</saved>
@@ -163,6 +163,19 @@
     <comps>
       <!-- 原版 Site 的整隊元件：沒有它，世界地圖上不會出現「重組遠行隊」。 -->
       <li Class="WorldObjectCompProperties_FormCaravan" />
+      <!-- 抽象防空：萊茵女兒（無線電指令導引、命中 ×0.6）。只在尚未生成地圖時使用；地圖生成後由實際雷達與發射架接手。
+           聲學預警＋手動火控：探測近、單通道、庫存少、補給慢，明顯弱於工業野戰陣地。 -->
+      <li Class="DMSE.CompProperties_WorldAirDefense">
+        <worldDetectionRange>6</worldDetectionRange>
+        <antiStealthLevel>0</antiStealthLevel>
+        <fireControlDef>DMSE_EarlyFireControlRadar</fireControlDef>
+        <channels>1</channels>
+        <interceptorStock>2</interceptorStock>
+        <restockPerDay>1</restockPerDay>
+        <interceptorBody>DMSE_MissileBody_LegacyInterceptor</interceptorBody>
+        <launchCooldownTicks>600</launchCooldownTicks>
+        <worldInterceptRange>3</worldInterceptRange>
+      </li>
       <li Class="DMSE.CompProperties_MissileBase">
         <missileBody>DMSE_MissileBody_LegacyLoiter</missileBody>
         <missileFireIntervalDays>

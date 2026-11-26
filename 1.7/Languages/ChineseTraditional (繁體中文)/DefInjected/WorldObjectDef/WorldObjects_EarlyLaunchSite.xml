@@ -2,6 +2,6 @@
 <LanguageData>
 
   <DMSE_EarlyLaunchSite.label>舊式導彈陣地</DMSE_EarlyLaunchSite.label>
-  <DMSE_EarlyLaunchSite.description>一處以聲學反射鏡、手動火控雷達與發射軌構成的簡陋導彈陣地。它發射緩慢且不精準的脈衝噴射巡飛彈，本身沒有攔截彈。</DMSE_EarlyLaunchSite.description>
+  <DMSE_EarlyLaunchSite.description>一處以聲學反射鏡、手動火控雷達與發射軌構成的簡陋導彈陣地。它發射緩慢且不精準的脈衝噴射巡飛彈，並以少量無線電指令導引的老式攔截巡飛彈自衛。</DMSE_EarlyLaunchSite.description>
 
 </LanguageData>
