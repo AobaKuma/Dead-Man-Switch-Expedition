@@ -53,7 +53,7 @@ namespace DMSE
         int MirvGroupId { get; set; }
     }
 
-    /// <summary>地圖上飛行中的攔截彈（舊 <see cref="InterceptProjectile"/> 或攔截用途的 <see cref="Projectile_MissileLaunch"/>）。</summary>
+    /// <summary>地圖上飛行中的攔截彈（攔截用途的 <see cref="Projectile_MissileLaunch"/>）。</summary>
     public interface IInterceptorShot
     {
         /// <summary>攔截目標 <see cref="BVRTarget.id"/>；-1 = 世界層攔截的純視覺升空彈。</summary>

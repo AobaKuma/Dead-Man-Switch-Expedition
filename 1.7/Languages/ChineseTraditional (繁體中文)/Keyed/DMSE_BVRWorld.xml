@@ -12,8 +12,18 @@
   <DMSE.BVR.World.TrackInspect>目的地：{0}\n預計抵達：{1}\n狀態：{2}\n已嘗試攔截：{3} 次</DMSE.BVR.World.TrackInspect>
   <!-- EN: World search radius: {0} tiles (before target modifiers) -->
   <DMSE.BVR.World.RadarRange>世界搜索半徑：{0} 格（目標修正前）</DMSE.BVR.World.RadarRange>
-  <!-- EN: Effective radius: loitering {0}, light {1}, cruise {2}, ballistic {3} tiles -->
-  <DMSE.BVR.World.EffectiveRanges>有效半徑：巡飛彈 {0}、輕型 {1}、巡航 {2}、彈道 {3} 格</DMSE.BVR.World.EffectiveRanges>
+  <!-- EN: Effective radius: {0} tiles -->
+  <DMSE.BVR.World.EffectiveRanges>有效半徑：{0} 格</DMSE.BVR.World.EffectiveRanges>
+  <!-- EN: {0} {1} -->
+  <DMSE.BVR.World.EffectiveRangeEntry>{0} {1}</DMSE.BVR.World.EffectiveRangeEntry>
+  <!-- EN: loitering -->
+  <DMSE.BVR.World.RangeClass.Loitering>巡飛彈</DMSE.BVR.World.RangeClass.Loitering>
+  <!-- EN: light -->
+  <DMSE.BVR.World.RangeClass.Light>輕型</DMSE.BVR.World.RangeClass.Light>
+  <!-- EN: cruise -->
+  <DMSE.BVR.World.RangeClass.Cruise>巡航</DMSE.BVR.World.RangeClass.Cruise>
+  <!-- EN: ballistic -->
+  <DMSE.BVR.World.RangeClass.Ballistic>彈道</DMSE.BVR.World.RangeClass.Ballistic>
   <!-- EN: Incoming missile detected -->
   <DMSE.BVR.World.DetectedLetter>偵測到來襲導彈</DMSE.BVR.World.DetectedLetter>
   <!-- EN: Radar has detected {0} approaching {1}.\n\nEstimated arrival: {2}. World air defense is attempting to engage; any surviving missile will face local terminal defenses. -->

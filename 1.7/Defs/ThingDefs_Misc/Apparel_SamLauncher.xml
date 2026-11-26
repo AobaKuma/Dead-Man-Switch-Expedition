@@ -179,7 +179,7 @@
         <chargeNoun>missile</chargeNoun>
         <displayGizmoWhileUndrafted>false</displayGizmoWhileUndrafted>
         <!-- 防空 -->
-        <interceptorSkyfaller>DMSE_SkyFaller_Interceptor</interceptorSkyfaller>
+        <interceptorSkyfaller>DMSE_Launch_Stinger</interceptorSkyfaller>
         <aimTicks>90</aimTicks>
         <cooldownTicks>300</cooldownTicks>
         <interceptorTravelTicks>180</interceptorTravelTicks>

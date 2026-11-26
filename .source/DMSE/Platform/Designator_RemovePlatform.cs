@@ -28,7 +28,7 @@ namespace DMSE
             {
                 return false;
             }
-            if (Map.designationManager.DesignationAt(c, DMSE_DefOf.DMSE_RemovePlatform) != null)
+            if (Map.designationManager.DesignationAt(c, DMSE_FrameworkDefOf.DMSE_RemovePlatform) != null)
             {
                 return false;
             }
@@ -47,7 +47,7 @@ namespace DMSE
             }
             else
             {
-                Map.designationManager.AddDesignation(new Designation(c, DMSE_DefOf.DMSE_RemovePlatform));
+                Map.designationManager.AddDesignation(new Designation(c, DMSE_FrameworkDefOf.DMSE_RemovePlatform));
             }
         }
 

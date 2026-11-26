@@ -8,6 +8,13 @@ namespace DMSE
     public class CompPropertiesScorer : CompProperties
     {
         public CompPropertiesScorer() => this.compClass = typeof(CompMissileLauncher_Scorer);
+
+        public override System.Collections.Generic.IEnumerable<string> ConfigErrors(ThingDef parentDef)
+        {
+            foreach (string e in base.ConfigErrors(parentDef)) { yield return e; }
+            string launchError = MissileProjectileMaker.LaunchDefError(skyfaller, "skyfaller");
+            if (launchError != null) { yield return launchError; }
+        }
         public ThingDef skyfaller;
         public ThingDef skyfallerIncoming;
         public WorldObjectDef worldObjectDef;

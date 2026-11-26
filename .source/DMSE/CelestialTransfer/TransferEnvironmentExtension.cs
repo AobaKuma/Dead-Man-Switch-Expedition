@@ -97,12 +97,12 @@ namespace DMSE
 
         public static MapGeneratorDef ShipMapGenerator(PlanetLayerDef layer)
         {
-            return For(layer)?.shipMapGenerator ?? DMSE_DefOf.DMSE_ShipVoid;
+            return For(layer)?.shipMapGenerator ?? DMSE_FrameworkDefOf.DMSE_ShipVoid;
         }
 
         public static WorldObjectDef ShipWorldObject(PlanetLayerDef layer)
         {
-            return For(layer)?.shipWorldObject ?? DMSE_DefOf.DMSE_TransferShip;
+            return For(layer)?.shipWorldObject ?? DMSE_FrameworkDefOf.DMSE_TransferShip;
         }
 
         public static TransferRouteWorker RouteWorker(PlanetTile tile) => tile.Valid ? For(tile.LayerDef)?.routeWorker : null;

@@ -6,7 +6,12 @@
   <DMSE.BVR.World.InFlight>Interceptor inbound</DMSE.BVR.World.InFlight>
   <DMSE.BVR.World.TrackInspect>Destination: {0}\nETA: {1}\nStatus: {2}\nIntercept attempts: {3}</DMSE.BVR.World.TrackInspect>
   <DMSE.BVR.World.RadarRange>World search radius: {0} tiles (before target modifiers)</DMSE.BVR.World.RadarRange>
-  <DMSE.BVR.World.EffectiveRanges>Effective radius: loitering {0}, light {1}, cruise {2}, ballistic {3} tiles</DMSE.BVR.World.EffectiveRanges>
+  <DMSE.BVR.World.EffectiveRanges>Effective radius: {0} tiles</DMSE.BVR.World.EffectiveRanges>
+  <DMSE.BVR.World.EffectiveRangeEntry>{0} {1}</DMSE.BVR.World.EffectiveRangeEntry>
+  <DMSE.BVR.World.RangeClass.Loitering>loitering</DMSE.BVR.World.RangeClass.Loitering>
+  <DMSE.BVR.World.RangeClass.Light>light</DMSE.BVR.World.RangeClass.Light>
+  <DMSE.BVR.World.RangeClass.Cruise>cruise</DMSE.BVR.World.RangeClass.Cruise>
+  <DMSE.BVR.World.RangeClass.Ballistic>ballistic</DMSE.BVR.World.RangeClass.Ballistic>
   <DMSE.BVR.World.DetectedLetter>Incoming missile detected</DMSE.BVR.World.DetectedLetter>
   <DMSE.BVR.World.DetectedLetterText>Radar has detected {0} approaching {1}.\n\nEstimated arrival: {2}. World air defense is attempting to engage; any surviving missile will face local terminal defenses.</DMSE.BVR.World.DetectedLetterText>
   <DMSE.BVR.World.Intercepted>{0} was intercepted by {1}.</DMSE.BVR.World.Intercepted>

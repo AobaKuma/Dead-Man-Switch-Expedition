@@ -42,7 +42,7 @@ namespace DMSE
             {
                 return null;
             }
-            return JobMaker.MakeJob(DMSE_DefOf.DMSE_BuildPileBeam, t);
+            return JobMaker.MakeJob(DMSE_FrameworkDefOf.DMSE_BuildPileBeam, t);
         }
     }
 }

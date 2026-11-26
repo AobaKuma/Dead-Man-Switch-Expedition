@@ -10,8 +10,11 @@ namespace DMSE
     /// </summary>
     public static class IncomingMissileUtility
     {
-        public const string DefaultWorldObjectDef = "DMSE_WorldObject_IncomingMissile";
-        public const string DefaultIncomingDef = "DMSE_Incoming_Moskit"; // 原 DMSE_Incoming_CruiseMissile，2026-10-27 併入 Moskit
+        /// <summary>呼叫端沒指定世界物件 Def 時用的預設（<see cref="BVRWorldTuningDef.defaultIncomingWorldObject"/>）。</summary>
+        public static WorldObjectDef DefaultWorldObjectDef => BVRWorldTuningDef.Current.defaultIncomingWorldObject;
+
+        /// <summary>呼叫端與彈體都沒指定抵達 skyfaller 時用的預設（<see cref="BVRWorldTuningDef.defaultIncomingMissile"/>）。</summary>
+        public static ThingDef DefaultIncomingDef => BVRWorldTuningDef.Current.defaultIncomingMissile;
 
         public static WorldObject_IncomingMissile Launch(
             PlanetTile source,
@@ -40,11 +43,10 @@ namespace DMSE
             WorldObjectDef worldObjectDef = null,
             MapParent target = null)
         {
-            WorldObjectDef woDef = worldObjectDef
-                ?? DefDatabase<WorldObjectDef>.GetNamedSilentFail(DefaultWorldObjectDef);
+            WorldObjectDef woDef = worldObjectDef ?? DefaultWorldObjectDef;
             if (woDef == null)
             {
-                Log.Error("[DMSE] Missing WorldObjectDef " + DefaultWorldObjectDef);
+                Log.Error("[DMSE] No incoming-missile WorldObjectDef: pass one, or set defaultIncomingWorldObject on the BVRWorldTuningDef.");
                 return null;
             }
 
@@ -55,7 +57,7 @@ namespace DMSE
             wo.targetParent = target;
             wo.incomingSkyfaller = incomingDef
                 ?? (config != null && config.body != null ? config.body.incomingSkyfaller : null)
-                ?? DefDatabase<ThingDef>.GetNamedSilentFail(DefaultIncomingDef);
+                ?? DefaultIncomingDef;
             if (attacker != null) { wo.SetFaction(attacker); }
             return wo;
         }

@@ -1,11 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
 
-  <DMSE_SkyFaller_Loiter.label>巡飞弹（升空）</DMSE_SkyFaller_Loiter.label>
   <DMSE_Incoming_Loiter.label>巡飞弹（来袭）</DMSE_Incoming_Loiter.label>
   <DMSE_Building_LoiteringLauncher.label>轨道发射架</DMSE_Building_LoiteringLauncher.label>
   <DMSE_Building_LoiteringLauncher.description>一条只放得下一枚巡飞弹的简易倾斜发射轨。不需要电力，便宜到可以沿着防线排满，但挨一发就可能整座报销。\n\n打击用巡飞弹会射向地图以外的目标；拦截用巡飞弹则由火控网自动发射。</DMSE_Building_LoiteringLauncher.description>
-  <DMSE_SkyFaller_LightMissile.label>轻型导弹（升空）</DMSE_SkyFaller_LightMissile.label>
   <DMSE_Incoming_LightMissile.label>轻型导弹（来袭）</DMSE_Incoming_LightMissile.label>
   <DMSE_Building_LightMissileLauncher.label>倾斜发射箱</DMSE_Building_LightMissileLauncher.label>
   <DMSE_Building_LightMissileLauncher.description>一座倾斜的发射箱，可容纳四枚轻型导弹。能自动装填与发射，以很小的占地提供可观的齐射火力。\n\n需要电力。打击用导弹会射向地图以外的目标；防空与两用导弹也会由火控网当作拦截弹发射。</DMSE_Building_LightMissileLauncher.description>

@@ -18,7 +18,6 @@ namespace DMSE
         public static void postfix(Skyfaller __result, Thing innerThing, IntVec3 pos, Map map)
         {
             if (__result == null || map == null) { return; }
-            if (__result is InterceptProjectile) { return; } // 別攔截自己的攔截彈。
 
             Faction dropFaction = BVRDetection.GetDropFaction(innerThing);
             if (dropFaction == null) { return; } // 內容物無可判定陣營，不介入。

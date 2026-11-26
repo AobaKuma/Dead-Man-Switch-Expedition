@@ -40,6 +40,11 @@ namespace DMSE
             "DMSE_SkyFaller_BallisticMissile",
             "DMSE_SkyFaller_CruiseMissile",
             "DMSE_InterceptProjectile",
+            // 2026-11-26：平台備援的升空 skyfaller 退役（類別 ScorerProjectile／InterceptProjectile 刪除），
+            // 備援改用 DMSE_Launch_*；只剩產生器範本。
+            "DMSE_SkyFaller_LightMissile",
+            "DMSE_SkyFaller_Loiter",
+            "DMSE_SkyFaller_Interceptor",
         };
 
         /// <summary>舊名換新名；不是退役的名字、型別不符或舊名其實還存在時回傳原名。</summary>

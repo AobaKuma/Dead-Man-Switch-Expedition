@@ -66,7 +66,7 @@ namespace DMSE
                 if (liveChunksTick != now)
                 {
                     liveChunksTick = now;
-                    liveChunks = map.listerThings.ThingsOfDef(DMSE_DefOf.DMSE_InterceptDebrisChunk).Count;
+                    liveChunks = map.listerThings.ThingsOfDef(DMSE_FrameworkDefOf.DMSE_InterceptDebrisChunk).Count;
                 }
                 return liveChunks;
             }
@@ -149,7 +149,7 @@ namespace DMSE
             bool fire = profile.fireball;
 
             // 尺寸（格）依 2026-10-26 實機截圖放大：原本 2–3 格的煙團在一般縮放下幾乎看不到。
-            Emit(DMSE_DefOf.DMSE_InterceptFlash, center, 10f * size, 0f, new Color(1f, 0.95f, 0.85f, 1f));
+            Emit(DMSE_FrameworkDefOf.DMSE_InterceptFlash, center, 10f * size, 0f, new Color(1f, 0.95f, 0.85f, 1f));
 
             if (fire)
             {
@@ -158,9 +158,9 @@ namespace DMSE
                 {
                     // 貼圖自帶火色漸層（P6），tint 只做一點冷暖變化。
                     Color c = Color.Lerp(new Color(1f, 1f, 1f, 0.95f), new Color(1f, 0.85f, 0.75f, 0.95f), Rand.Value);
-                    Emit(DMSE_DefOf.DMSE_InterceptFireball, center + Jitter(1f * size), Rand.Range(3f, 4.5f) * size, Rand.Range(0f, 360f), c);
+                    Emit(DMSE_FrameworkDefOf.DMSE_InterceptFireball, center + Jitter(1f * size), Rand.Range(3f, 4.5f) * size, Rand.Range(0f, 360f), c);
                 }
-                Emit(DMSE_DefOf.DMSE_InterceptFireGlow, center, 7f * size, 0f, new Color(1f, 0.7f, 0.35f, 1f));
+                Emit(DMSE_FrameworkDefOf.DMSE_InterceptFireGlow, center, 7f * size, 0f, new Color(1f, 0.7f, 0.35f, 1f));
             }
 
             int smokes = dense ? 2 : InterceptFxBudget.Scale(Rand.RangeInclusive(4, 7), 2);
@@ -169,14 +169,14 @@ namespace DMSE
                 // 灰階在貼圖裡（淺灰／中灰，P6）；tint 只做 ±10% 明暗變化。P2 的 Mote shader 上深色 tint 會消失，現在改 Transparent。
                 float grey = Rand.Range(0.9f, 1f);
                 // 煙受環境光（FxLighting）；火球、光暈、閃光、火花是自己發光，不套用。
-                Canvas.EmitLit(DMSE_DefOf.DMSE_InterceptSmokeBall, center + Jitter(2f * size), Rand.Range(4f, 6.5f) * size,
+                Canvas.EmitLit(DMSE_FrameworkDefOf.DMSE_InterceptSmokeBall, center + Jitter(2f * size), Rand.Range(4f, 6.5f) * size,
                     Rand.Range(0f, 360f), new Color(grey, grey, grey, 0.85f));
             }
 
             int sparks = dense ? 4 : InterceptFxBudget.Scale(Rand.RangeInclusive(6, 12), 2);
             for (int i = 0; i < sparks; i++)
             {
-                Emit(DMSE_DefOf.DMSE_InterceptSparkStar, center + Jitter(3f * size), Rand.Range(1.2f, 2.2f) * size,
+                Emit(DMSE_FrameworkDefOf.DMSE_InterceptSparkStar, center + Jitter(3f * size), Rand.Range(1.2f, 2.2f) * size,
                     Rand.Range(0f, 360f), new Color(1f, 0.9f, 0.55f, 1f));
             }
 
@@ -199,7 +199,7 @@ namespace DMSE
                 DebrisState s = InterceptGeometry.Launch(data.burstGround, data.burstHeight, data.heading, speed, mass, p);
                 if (data.remote && !InterceptGeometry.BecomesVisible(s, map.Size, p, wind)) { continue; }
                 float scale = 0.45f + 0.5f * Mathf.Sqrt(mass);
-                Canvas.Debris.Spawn(DMSE_DefOf.DMSE_InterceptDebrisMinor, s, scale, new Color(1f, 0.75f, 0.45f, 1f), profile.minorTint, 30, data.remote);
+                Canvas.Debris.Spawn(DMSE_FrameworkDefOf.DMSE_InterceptDebrisMinor, s, scale, new Color(1f, 0.75f, 0.45f, 1f), profile.minorTint, 30, data.remote);
             }
         }
 
@@ -273,7 +273,7 @@ namespace DMSE
                 if (!resolvedSound)
                 {
                     resolvedSound = true;
-                    defaultSound = DefDatabase<SoundDef>.GetNamedSilentFail("DMSE_Missile_Shot");
+                    defaultSound = BVRWorldTuningDef.Current.defaultInterceptSound;
                 }
                 return defaultSound;
             }

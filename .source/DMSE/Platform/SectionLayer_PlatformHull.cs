@@ -147,7 +147,7 @@ namespace DMSE
 
         private static bool IsPlatform(IntVec3 c, Map map)
         {
-            return map.terrainGrid.BaseTerrainAt(c)?.affordances?.Contains(DMSE_DefOf.DMSE_Platform) ?? false;
+            return map.terrainGrid.BaseTerrainAt(c)?.affordances?.Contains(DMSE_FrameworkDefOf.DMSE_Platform) ?? false;
         }
 
         private static bool ShouldDrawCornerPiece(IntVec3 pos, Map map, out CornerType cornerType, out Color color)

@@ -403,24 +403,24 @@ namespace DMSE
             if (profile.mainBloomSize <= 0f)
             {
                 // 舊版：pod 位置一閃＋小煙。
-                canvas.Emit(DMSE_DefOf.DMSE_InterceptFlash, podPos, profile.ignitionFlash * 0.35f * Scale, 0f,
+                canvas.Emit(DMSE_FrameworkDefOf.DMSE_InterceptFlash, podPos, profile.ignitionFlash * 0.35f * Scale, 0f,
                     new Color(1f, 0.92f, 0.78f, 1f));
                 int n0 = LaunchFxBudget.BurstCount(8, canvas.Smoke.Count);
                 Burst(canvas, podPos, n0, 0.12f * Scale, new FloatRange(0.7f, 1.2f) * Scale, 1.8f, 200,
-                    DMSE_DefOf.DMSE_LaunchSmokeLight, new Color(1f, 0.9f, 0.72f, 0.6f), new Color(1f, 1f, 1f, 0.5f), f, 0.6f);
+                    DMSE_FrameworkDefOf.DMSE_LaunchSmokeLight, new Color(1f, 0.9f, 0.72f, 0.6f), new Color(1f, 1f, 1f, 0.5f), f, 0.6f);
                 return;
             }
             Vector3 seam = center + f * profile.turnJetNoseCells;
-            canvas.Emit(DMSE_DefOf.DMSE_InterceptFlash, seam, profile.ignitionFlash * 0.35f * Scale, 0f,
+            canvas.Emit(DMSE_FrameworkDefOf.DMSE_InterceptFlash, seam, profile.ignitionFlash * 0.35f * Scale, 0f,
                 new Color(1f, 0.92f, 0.78f, 1f));
             // 接縫一圈白氣（「噗」），一半往前。
             int n = LaunchFxBudget.BurstCount(profile.jettisonRingPuffs, canvas.Smoke.Count);
             Burst(canvas, seam, n, 0.2f * Scale, new FloatRange(0.7f, 1.2f) * Scale, 2.2f, 220,
-                DMSE_DefOf.DMSE_LaunchSmokeLight, new Color(1f, 0.92f, 0.72f, 0.7f), new Color(1f, 1f, 1f, 0.55f), f, 0.5f);
+                DMSE_FrameworkDefOf.DMSE_LaunchSmokeLight, new Color(1f, 0.92f, 0.72f, 0.7f), new Color(1f, 1f, 1f, 0.55f), f, 0.5f);
             // 主發動機點火的一大團熱煙（幕 6「白橘色一大團」），偏向尾後。
             int m = LaunchFxBudget.BurstCount(profile.mainBloomPuffs, canvas.Smoke.Count);
             Burst(canvas, curNozzle, m, 0.1f * Scale, new FloatRange(1.2f, 1.8f) * Scale, 2.4f, 260,
-                DMSE_DefOf.DMSE_LaunchSmokeLight, new Color(1f, 0.82f, 0.55f, 0.75f), new Color(1f, 1f, 1f, 0.5f), -f, 0.7f);
+                DMSE_FrameworkDefOf.DMSE_LaunchSmokeLight, new Color(1f, 0.82f, 0.55f, 0.75f), new Color(1f, 1f, 1f, 0.5f), -f, 0.7f);
         }
 
         /// <summary>拋棄後的轉向推進器：阻力減速、自轉，壽命到就消失（純視覺，§3.6）。</summary>
@@ -439,7 +439,7 @@ namespace DMSE
                 Vector3 back = -Forward(podRot);
                 canvas.Smoke.Spawn(new SmokePuffSpec
                 {
-                    def = DMSE_DefOf.DMSE_LaunchSmokeLight,
+                    def = DMSE_FrameworkDefOf.DMSE_LaunchSmokeLight,
                     pos = podPos + back * (profile.turnPodLength * 0.5f * Scale),
                     velocity = back * 0.04f * Scale,
                     size = Rand.Range(0.3f, 0.45f) * Scale,
@@ -481,7 +481,7 @@ namespace DMSE
             Vector3 d = MissileMapEntryUtility.HeadingVector(MissileMapEntryUtility.HeadingOf(dir) + Rand.Range(-25f, 25f));
             canvas.Smoke.Spawn(new SmokePuffSpec
             {
-                def = DMSE_DefOf.DMSE_LaunchSmokeLight,
+                def = DMSE_FrameworkDefOf.DMSE_LaunchSmokeLight,
                 pos = mouth + d * Rand.Range(0.1f, 0.3f) * Scale,
                 velocity = d * profile.turnJetBurstSpeed * Rand.Range(0.6f, 1.2f) * power * Scale + missileVel * 0.3f,
                 size = profile.turnJetBurstSize.RandomInRange * power * Scale,
@@ -517,7 +517,7 @@ namespace DMSE
         {
             canvas.Smoke.Spawn(new SmokePuffSpec
             {
-                def = DMSE_DefOf.DMSE_LaunchSmokeLight,
+                def = DMSE_FrameworkDefOf.DMSE_LaunchSmokeLight,
                 pos = mouth + dir * Rand.Range(0.05f, 0.2f) * Scale,
                 velocity = dir * 0.05f * Scale + missileVel * 0.15f,
                 size = Rand.Range(0.22f, 0.34f) * Scale,
@@ -581,7 +581,7 @@ namespace DMSE
                 }
                 var spec = new SmokePuffSpec
                 {
-                    def = DMSE_DefOf.DMSE_LaunchSmokeLight,
+                    def = DMSE_FrameworkDefOf.DMSE_LaunchSmokeLight,
                     pos = p + side * Rand.Range(-0.08f, 0.08f) * size0,
                     velocity = (-f * exhaust * Rand.Range(0.6f, 1f) * curThrust
                                 + side * Rand.Range(-0.15f, 0.15f) * exhaust
@@ -634,13 +634,13 @@ namespace DMSE
             int n = LaunchFxBudget.BurstCount(profile.ejectionPuffs, canvas.Smoke.Count);
             if (profile.ejectionColumnTicks <= 0)
             {
-                Burst(canvas, launchPos, n, 0.18f, new FloatRange(1.5f, 2.5f), 1.6f, 240, DMSE_DefOf.DMSE_LaunchSmokeLight,
+                Burst(canvas, launchPos, n, 0.18f, new FloatRange(1.5f, 2.5f), 1.6f, 240, DMSE_FrameworkDefOf.DMSE_LaunchSmokeLight,
                     new Color(1f, 1f, 1f, 0.5f), new Color(1f, 1f, 1f, 0.5f), Vector3.zero, 0f);
                 return;
             }
             if (profile.ejectionFlash > 0f)
             {
-                canvas.Emit(DMSE_DefOf.DMSE_InterceptFlash, launchPos, profile.ejectionFlash * Scale, 0f, new Color(1f, 0.8f, 0.55f, 1f));
+                canvas.Emit(DMSE_FrameworkDefOf.DMSE_InterceptFlash, launchPos, profile.ejectionFlash * Scale, 0f, new Color(1f, 0.8f, 0.55f, 1f));
             }
             if (profile.ejectionShake > 0f) { Find.CameraDriver.shaker.DoShake(profile.ejectionShake); }
             profile.ejectionSound?.PlayOneShot(new TargetInfo(launchPos.ToIntVec3(), map));
@@ -651,7 +651,7 @@ namespace DMSE
                 Vector3 dir = MissileMapEntryUtility.HeadingVector(heading);
                 canvas.Smoke.Spawn(new SmokePuffSpec
                 {
-                    def = DMSE_DefOf.DMSE_LaunchGroundCloud,
+                    def = DMSE_FrameworkDefOf.DMSE_LaunchGroundCloud,
                     pos = launchPos + dir * Rand.Range(0.6f, 1.2f) * Scale,
                     velocity = dir * profile.ejectionRingSpeed * Rand.Range(0.7f, 1.3f) * Scale,
                     size = profile.ejectionColumnSize.RandomInRange * Scale * 0.9f,
@@ -687,7 +687,7 @@ namespace DMSE
                 Vector3 jitter = new Vector3(Rand.Range(-0.45f, 0.45f), 0f, Rand.Range(-0.3f, 0.3f)) * Scale;
                 canvas.Smoke.Spawn(new SmokePuffSpec
                 {
-                    def = DMSE_DefOf.DMSE_LaunchSmokeLight,
+                    def = DMSE_FrameworkDefOf.DMSE_LaunchSmokeLight,
                     pos = launchPos + jitter,
                     velocity = new Vector3(Rand.Range(-0.05f, 0.05f) * Scale, 0f, speed * Rand.Range(0.7f, 1.15f)) + jitter * 0.04f,
                     size = profile.ejectionColumnSize.RandomInRange * Scale * Mathf.Lerp(0.8f, 1.15f, k),
@@ -737,7 +737,7 @@ namespace DMSE
         private void Ignite(Map map, FxCanvas canvas)
         {
             Vector3 back = -Forward(curRot);
-            canvas.Emit(DMSE_DefOf.DMSE_InterceptFlash, curNozzle, profile.ignitionFlash * Scale * (hot ? 1f : 0.6f), 0f, new Color(1f, 0.95f, 0.8f, 1f));
+            canvas.Emit(DMSE_FrameworkDefOf.DMSE_InterceptFlash, curNozzle, profile.ignitionFlash * Scale * (hot ? 1f : 0.6f), 0f, new Color(1f, 0.95f, 0.8f, 1f));
             if (hot || profile.downwash)
             {
                 // 熱射：地面雲沿地面衝出幾道不等長的煙舌，加上發射點一團濃核心（§0.6）；之後 GroundFeedTicks 內持續補揚塵。
@@ -751,7 +751,7 @@ namespace DMSE
             {
                 // 冷射：空中點火，噴口一圈小煙環。
                 int n = LaunchFxBudget.BurstCount(profile.airIgnitionRing, canvas.Smoke.Count);
-                Burst(canvas, curNozzle, n, 0.12f * Scale, new FloatRange(0.8f, 1.4f) * Scale, 1.8f, 200, DMSE_DefOf.DMSE_LaunchSmokeLight,
+                Burst(canvas, curNozzle, n, 0.12f * Scale, new FloatRange(0.8f, 1.4f) * Scale, 1.8f, 200, DMSE_FrameworkDefOf.DMSE_LaunchSmokeLight,
                     profile.smokeHotColor, profile.smokeColor, Vector3.zero, 0f);
                 if (profile.ignitionShockRing > 0)
                 {
@@ -763,7 +763,7 @@ namespace DMSE
                         Vector3 dir = MissileMapEntryUtility.HeadingVector(heading);
                         canvas.Smoke.Spawn(new SmokePuffSpec
                         {
-                            def = DMSE_DefOf.DMSE_LaunchSmokeLight,
+                            def = DMSE_FrameworkDefOf.DMSE_LaunchSmokeLight,
                             pos = curNozzle + dir * 0.4f * Scale,
                             velocity = dir * profile.ignitionShockSpeed * Rand.Range(0.85f, 1.15f) * Scale,
                             size = Rand.Range(0.7f, 1.1f) * Scale,
@@ -796,7 +796,7 @@ namespace DMSE
             if (visible)
             {
                 int n = LaunchFxBudget.BurstCount(6, canvas.Smoke.Count);
-                Burst(canvas, curNozzle, n, 0.1f * Scale, new FloatRange(0.9f, 1.5f) * Scale, 1.5f, 240, DMSE_DefOf.DMSE_LaunchSmokeLight,
+                Burst(canvas, curNozzle, n, 0.1f * Scale, new FloatRange(0.9f, 1.5f) * Scale, 1.5f, 240, DMSE_FrameworkDefOf.DMSE_LaunchSmokeLight,
                     new Color(1f, 1f, 1f, 0.55f), new Color(1f, 1f, 1f, 0.5f), Vector3.zero, 0f);
             }
             Vector3 vel = curNozzle - prevNozzle;
@@ -890,7 +890,7 @@ namespace DMSE
             Vector3 dir = MissileMapEntryUtility.HeadingVector(g.heading);
             canvas.Smoke.Spawn(new SmokePuffSpec
             {
-                def = DMSE_DefOf.DMSE_LaunchGroundCloud,
+                def = DMSE_FrameworkDefOf.DMSE_LaunchGroundCloud,
                 pos = launchPos + dir * Rand.Range(0f, 0.6f) * Scale,
                 velocity = dir * profile.groundCloudSpeed * Scale * g.speedFactor * strength,
                 size = profile.groundCloudSize.RandomInRange * Scale * g.sizeFactor,

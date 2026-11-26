@@ -86,7 +86,7 @@ namespace DMSE
         public static InterceptDebrisChunk SpawnChunk(Map map, DebrisState s, float scale, bool hulk, ThingDef sourceDef, Color? tint = null,
             string texPath = null, bool remote = false)
         {
-            var chunk = (InterceptDebrisChunk)ThingMaker.MakeThing(DMSE_DefOf.DMSE_InterceptDebrisChunk);
+            var chunk = (InterceptDebrisChunk)ThingMaker.MakeThing(DMSE_FrameworkDefOf.DMSE_InterceptDebrisChunk);
             chunk.state = s;
             chunk.texPath = texPath;
             chunk.remote = remote;
@@ -163,16 +163,16 @@ namespace DMSE
                     // 中灰貼圖（P6）：tint 只在熾熱期偏暖，之後白色＝貼圖本身的灰。
                     Color c = hot ? new Color(1f, 0.85f, 0.7f, 0.75f) : new Color(1f, 1f, 1f, 0.7f);
                     c.a *= opacity;
-                    fx.Canvas.EmitLit(DMSE_DefOf.DMSE_DebrisTrailPuff, pos + Jitter(0.08f), (0.6f + 0.5f * m) * fade * (hulk ? 1.5f : 1f),
+                    fx.Canvas.EmitLit(DMSE_FrameworkDefOf.DMSE_DebrisTrailPuff, pos + Jitter(0.08f), (0.6f + 0.5f * m) * fade * (hulk ? 1.5f : 1f),
                         Rand.Range(0f, 360f), c, hot ? 0.5f : 1f);
                 }
                 if (hot && age % 3 == 0)
                 {
-                    fx.Emit(DMSE_DefOf.DMSE_InterceptFireGlow, pos, 1.2f * m * (hulk ? 1.6f : 1f), 0f, new Color(1f, 0.7f, 0.35f, opacity));
+                    fx.Emit(DMSE_FrameworkDefOf.DMSE_InterceptFireGlow, pos, 1.2f * m * (hulk ? 1.6f : 1f), 0f, new Color(1f, 0.7f, 0.35f, opacity));
                 }
                 if (age % 5 == 0 && age < 60)
                 {
-                    fx.Emit(DMSE_DefOf.DMSE_InterceptSparkStar, pos + Jitter(0.2f), 0.6f, Rand.Range(0f, 360f), new Color(1f, 0.9f, 0.55f, opacity));
+                    fx.Emit(DMSE_FrameworkDefOf.DMSE_InterceptSparkStar, pos + Jitter(0.2f), 0.6f, Rand.Range(0f, 360f), new Color(1f, 0.9f, 0.55f, opacity));
                 }
             }
             finally { Rand.PopState(); }
@@ -225,7 +225,7 @@ namespace DMSE
             ImpactSound?.PlayOneShot(new TargetInfo(cell, map));
             if (!roofed && !water)
             {
-                FilthMaker.TryMakeFilth(cell, map, DMSE_DefOf.DMSE_Filth_MetalScrap ?? ThingDefOf.Filth_RubbleBuilding);
+                FilthMaker.TryMakeFilth(cell, map, DMSE_FrameworkDefOf.DMSE_Filth_MetalScrap ?? ThingDefOf.Filth_RubbleBuilding);
             }
             if (!roofed && DMSEMod.Settings != null && DMSEMod.Settings.interceptDebrisDamage)
             {

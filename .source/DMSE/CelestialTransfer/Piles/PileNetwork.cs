@@ -188,7 +188,7 @@ namespace DMSE
 
         private void EnsureFootprint()
         {
-            int cacheTicks = DMSE_DefOf.DMSE_TransferFlightTuning?.footprintCacheTicks ?? 250;
+            int cacheTicks = DMSE_FrameworkDefOf.DMSE_TransferFlightTuning?.footprintCacheTicks ?? 250;
             int now = Find.TickManager.TicksGame;
             if (footprint != null && now - footprintTick <= cacheTicks)
             {

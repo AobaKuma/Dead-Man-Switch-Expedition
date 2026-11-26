@@ -22,7 +22,7 @@ namespace DMSE
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
-            this.FailOn(() => Map.designationManager.DesignationAt(TargetLocA, DMSE_DefOf.DMSE_RemovePlatform) == null);
+            this.FailOn(() => Map.designationManager.DesignationAt(TargetLocA, DMSE_FrameworkDefOf.DMSE_RemovePlatform) == null);
             this.FailOn(() => !PlatformRemovalUtility.CanRemoveAt(TargetLocA, Map, out _));
             yield return Toils_Goto.GotoCell(TargetIndex.B, PathEndMode.OnCell);
             Toil doWork = ToilMaker.MakeToil("RemovePlatform");
@@ -41,7 +41,7 @@ namespace DMSE
                 if (workLeft <= 0f && !PlatformRemovalUtility.AnyPawnAt(TargetLocA, Map))
                 {
                     PlatformRemovalUtility.Remove(TargetLocA, Map, doLeavings: true);
-                    Map.designationManager.DesignationAt(TargetLocA, DMSE_DefOf.DMSE_RemovePlatform)?.Delete();
+                    Map.designationManager.DesignationAt(TargetLocA, DMSE_FrameworkDefOf.DMSE_RemovePlatform)?.Delete();
                     ReadyForNextToil();
                 }
             };

@@ -62,18 +62,27 @@ namespace DMSE
             => MissileWorldMotion.DetectionRange(Props.worldDetectionRange, Props.antiStealthLevel, target, Props.resolutionLevel)
                * PowerThrottleUtility.RangeFactor(parent) * EWControlUtility.RadarRangeFactor(parent);
 
-        private string RangeFor(string defName)
+        // 參考目標來自調校 Def（BVRWorldTuningDef.radarRangeReferences），框架不寫死內容 mod 的彈種
+        private string EffectiveRangesLine()
         {
-            ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail(defName);
-            return EffectiveWorldRange(def?.GetModExtension<BVRTargetProps>() ?? BVRTargetProps.Default).ToString("0.#");
+            var references = BVRWorldTuningDef.Current.radarRangeReferences;
+            if (references.NullOrEmpty()) { return null; }
+            var parts = new System.Collections.Generic.List<string>(references.Count);
+            foreach (RadarRangeReference reference in references)
+            {
+                if (reference?.target == null) { continue; }
+                float range = EffectiveWorldRange(reference.target.GetModExtension<BVRTargetProps>() ?? BVRTargetProps.Default);
+                parts.Add("DMSE.BVR.World.EffectiveRangeEntry".Translate(reference.labelKey.Translate(), range.ToString("0.#")));
+            }
+            return parts.Count == 0 ? null
+                : "DMSE.BVR.World.EffectiveRanges".Translate(parts.ToCommaList());
         }
 
         public override string CompInspectStringExtra()
         {
+            string ranges = EffectiveRangesLine();
             return "DMSE.BVR.World.RadarRange".Translate(Props.worldDetectionRange) + "\n"
-                + "DMSE.BVR.World.EffectiveRanges".Translate(RangeFor("DMSE_Incoming_Loiter"),
-                    RangeFor("DMSE_Incoming_LightMissile"), RangeFor("DMSE_Incoming_Moskit"),
-                    RangeFor("DMSE_Incoming_AdvancedBallisticMissile")) + "\n"
+                + (ranges != null ? ranges + "\n" : "")
                 + "DMSE.BVR.SearchRadar".Translate(Props.searchDistance, Props.antiStealthLevel,
                     Active ? "DMSE.BVR.Online".Translate() : "DMSE.BVR.Offline".Translate());
         }

@@ -1,11 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
 
-  <DMSE_SkyFaller_Loiter.label>遊蕩彈藥（升空）</DMSE_SkyFaller_Loiter.label>
   <DMSE_Incoming_Loiter.label>遊蕩彈藥（來襲）</DMSE_Incoming_Loiter.label>
   <DMSE_Building_LoiteringLauncher.label>軌道發射架</DMSE_Building_LoiteringLauncher.label>
   <DMSE_Building_LoiteringLauncher.description>一條只放得下一枚巡飛彈的簡易傾斜發射軌。不需要電力，便宜到可以沿著防線排滿，但挨一發就可能整座報銷。\n\n打擊用巡飛彈會射向地圖以外的目標；攔截用巡飛彈則由火控網自動發射。</DMSE_Building_LoiteringLauncher.description>
-  <DMSE_SkyFaller_LightMissile.label>輕型導彈（升空）</DMSE_SkyFaller_LightMissile.label>
   <DMSE_Incoming_LightMissile.label>輕型導彈（來襲）</DMSE_Incoming_LightMissile.label>
   <DMSE_Building_LightMissileLauncher.label>傾斜發射箱</DMSE_Building_LightMissileLauncher.label>
   <DMSE_Building_LightMissileLauncher.description>一座傾斜的發射箱，可容納四枚輕型導彈。能自動裝填與發射，以很小的占地提供可觀的齊射火力。\n\n需要電力。打擊用導彈會射向地圖以外的目標；防空與兩用導彈也會由火控網當作攔截彈發射。</DMSE_Building_LightMissileLauncher.description>

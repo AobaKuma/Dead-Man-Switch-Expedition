@@ -28,7 +28,7 @@ namespace DMSE
     /// </summary>
     public class CompProperties_ManPortableSAM : CompProperties_ApparelReloadable
     {
-        /// <summary>防空發射時生成的攔截彈 skyfaller（thingClass 應為 DMSE.InterceptProjectile）。</summary>
+        /// <summary>防空發射的預設升空 def（thingClass 應為 <see cref="Projectile_MissileLaunch"/>）：裝填導彈的彈體沒有 launchProjectile 時使用；沒設定則不能發射。</summary>
         public ThingDef interceptorSkyfaller;
 
         /// <summary>原地瞄準鎖定時間（ticks）。</summary>
@@ -60,6 +60,13 @@ namespace DMSE
         public CompProperties_ManPortableSAM()
         {
             compClass = typeof(CompManPortableSAM);
+        }
+
+        public override System.Collections.Generic.IEnumerable<string> ConfigErrors(ThingDef parentDef)
+        {
+            foreach (string e in base.ConfigErrors(parentDef)) { yield return e; }
+            string launchError = MissileProjectileMaker.LaunchDefError(interceptorSkyfaller, "interceptorSkyfaller");
+            if (launchError != null) { yield return launchError; }
         }
     }
 

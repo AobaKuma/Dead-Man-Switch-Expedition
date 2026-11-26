@@ -7,7 +7,7 @@ namespace DMSE
 {
     public class CompProperties_BallisticLauncher : CompProperties
     {
-        /// <summary>離場 skyfaller（thingClass 應為 DMSE.ScorerProjectile）。</summary>
+        /// <summary>預設升空 def（thingClass 應為 DMSE.Projectile_MissileLaunch）：彈體沒有 launchProjectile 時使用。</summary>
         public ThingDef skyfaller;
 
         /// <summary>落點 incoming skyfaller（thingClass 應為 DMSE.MissileIncoming）。</summary>
@@ -25,6 +25,13 @@ namespace DMSE
         public CompProperties_BallisticLauncher()
         {
             compClass = typeof(CompMissileLauncher_Ballistic);
+        }
+
+        public override System.Collections.Generic.IEnumerable<string> ConfigErrors(ThingDef parentDef)
+        {
+            foreach (string e in base.ConfigErrors(parentDef)) { yield return e; }
+            string launchError = MissileProjectileMaker.LaunchDefError(skyfaller, "skyfaller");
+            if (launchError != null) { yield return launchError; }
         }
     }
 

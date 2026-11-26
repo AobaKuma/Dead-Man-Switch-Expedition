@@ -6,7 +6,12 @@
   <DMSE.BVR.World.InFlight>拦截弹接近中</DMSE.BVR.World.InFlight>
   <DMSE.BVR.World.TrackInspect>目的地：{0}\n预计抵达：{1}\n状态：{2}\n已尝试拦截：{3} 次</DMSE.BVR.World.TrackInspect>
   <DMSE.BVR.World.RadarRange>世界搜索半径：{0} 格（目标修正前）</DMSE.BVR.World.RadarRange>
-  <DMSE.BVR.World.EffectiveRanges>有效半径：巡飞弹 {0}、轻型 {1}、巡航 {2}、弹道 {3} 格</DMSE.BVR.World.EffectiveRanges>
+  <DMSE.BVR.World.EffectiveRanges>有效半径：{0} 格</DMSE.BVR.World.EffectiveRanges>
+  <DMSE.BVR.World.EffectiveRangeEntry>{0} {1}</DMSE.BVR.World.EffectiveRangeEntry>
+  <DMSE.BVR.World.RangeClass.Loitering>巡飞弹</DMSE.BVR.World.RangeClass.Loitering>
+  <DMSE.BVR.World.RangeClass.Light>轻型</DMSE.BVR.World.RangeClass.Light>
+  <DMSE.BVR.World.RangeClass.Cruise>巡航</DMSE.BVR.World.RangeClass.Cruise>
+  <DMSE.BVR.World.RangeClass.Ballistic>弹道</DMSE.BVR.World.RangeClass.Ballistic>
   <DMSE.BVR.World.DetectedLetter>侦测到来袭导弹</DMSE.BVR.World.DetectedLetter>
   <DMSE.BVR.World.DetectedLetterText>雷达侦测到 {0} 正接近 {1}。\n\n预计于 {2} 后抵达。世界层防空正尝试接战，漏网导弹抵达后将交由当地末端防御处理。</DMSE.BVR.World.DetectedLetterText>
   <DMSE.BVR.World.Intercepted>{0} 已被 {1} 拦截。</DMSE.BVR.World.Intercepted>

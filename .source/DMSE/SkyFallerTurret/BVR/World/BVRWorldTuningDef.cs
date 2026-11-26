@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using RimWorld;
 using Verse;
 
 namespace DMSE
@@ -79,6 +80,23 @@ namespace DMSE
         public bool terminalRetargetEnabled = true;
         /// <summary>重鎖的新落點離原落點超過這麼多格就放棄；0 = 不限。</summary>
         public int terminalRetargetMaxShiftCells;
+
+        // ---- 內容預設值：框架程式不寫死內容 mod 的 defName（docs/轉移船與BVR移植FFF_可行性評估.md §3.3）----
+        /// <summary>
+        /// NPC 世界層防空（抽象防空節點、警戒、封鎖攔截）要等玩家完成這個研究才啟用；null = 不需要研究。
+        /// 完成時也會教學 NPC 防空圈。
+        /// </summary>
+        public ResearchProjectDef networkResearch;
+        /// <summary>來襲導彈世界物件的預設 Def（呼叫端沒指定時）。</summary>
+        public WorldObjectDef defaultIncomingWorldObject;
+        /// <summary>來襲導彈抵達時的預設 skyfaller（呼叫端與彈體都沒指定時）。</summary>
+        public ThingDef defaultIncomingMissile;
+        /// <summary>末端攔截沒有指定音效時播放的音效。</summary>
+        public SoundDef defaultInterceptSound;
+        /// <summary>雷射標定沒有指定標點時用的標點 Def；null = 用第一個 thingClass 是 LaserDesignatorMark 的 ThingDef。</summary>
+        public ThingDef defaultLaserDesignatorMark;
+        /// <summary>搜索雷達資訊欄列出有效偵測半徑的參考目標（各來襲物的 BVRTargetProps 決定半徑）；空 = 不列。</summary>
+        public List<RadarRangeReference> radarRangeReferences = new List<RadarRangeReference>();
         public static BVRWorldTuningDef Current => DefDatabase<BVRWorldTuningDef>.GetNamedSilentFail("DMSE_BVRWorldTuning") ?? fallback;
         private static readonly BVRWorldTuningDef fallback = new BVRWorldTuningDef();
         public override IEnumerable<string> ConfigErrors()
@@ -89,6 +107,18 @@ namespace DMSE
                 yield return "BVR motion, interval and range values must be positive (margin/radius may be zero).";
             if (terminalMarkerFallbackTicks < 0 || terminalMarkerMergeCells < 0 || terminalRetargetTicks < 0 || terminalRetargetMaxShiftCells < 0)
                 yield return "Terminal marker / retarget ticks and cell values must not be negative.";
+            foreach (RadarRangeReference reference in radarRangeReferences)
+            {
+                if (reference?.target == null || reference.labelKey.NullOrEmpty())
+                    yield return "radarRangeReferences entries need both target and labelKey.";
+            }
         }
+    }
+
+    /// <summary>搜索雷達資訊欄的一個參考目標：<see cref="labelKey"/> 是翻譯鍵（例：巡飛彈）。</summary>
+    public class RadarRangeReference
+    {
+        public ThingDef target;
+        public string labelKey;
     }
 }

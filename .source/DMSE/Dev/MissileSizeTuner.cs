@@ -43,12 +43,11 @@ namespace DMSE
     {
         private static readonly AccessTools.FieldRef<GraphicData, Graphic> CachedGraphic = AccessTools.FieldRefAccess<GraphicData, Graphic>("cachedGraphic");
 
-        /// <summary>現役彈體的飛行貼圖也用在舊的模板 skyfaller（發射器的預設），一起改才一致。</summary>
-        private static readonly Dictionary<string, string[]> Templates = new Dictionary<string, string[]>
-        {
-            { "DMSE_MissileBody_Light", new[] { "DMSE_SkyFaller_LightMissile", "DMSE_SkyFaller_Interceptor" } },
-            { "DMSE_MissileBody_Loiter", new[] { "DMSE_SkyFaller_Loiter" } },
-        };
+        /// <summary>
+        /// 與彈體共用飛行貼圖、要一起調整的其他 def。原本是輕型與巡飛彈的升空 skyfaller（發射器的預設），
+        /// 2026-11-26 退役後發射器預設改用彈體自己的 DMSE_Launch_*（已由 launchProjectile 涵蓋），目前沒有項目。
+        /// </summary>
+        private static readonly Dictionary<string, string[]> Templates = new Dictionary<string, string[]>();
 
         private static List<MissileSizeEntry> entries;
 

@@ -81,6 +81,41 @@ namespace DMSE
         public string DesignName
             => !designName.NullOrEmpty() && designNameFor != null && ConfigsEqual(designNameFor, config) ? designName : null;
 
+        // ---- 標籤：沒有自訂名稱時附上設計名稱，「原名「設計名」」 ----
+        // 原版 ThingWithComps.LabelNoCount 依序呼叫各元件的 TransformLabel，不需要 Harmony。
+        // 標籤呼叫非常頻繁，組好的字串依 (原名, 設計名, 語言) 快取。
+
+        private CompRenameable renameable;
+        private bool renameableLooked;
+        private string cachedLabelIn;
+        private string cachedLabelDesign;
+        private LoadedLanguage cachedLabelLanguage;
+        private string cachedLabelOut;
+
+        public override string TransformLabel(string label)
+        {
+            if (!renameableLooked)
+            {
+                renameable = parent.GetComp<CompRenameable>();
+                renameableLooked = true;
+            }
+            // 玩家自訂名稱優先，不論 comps 順序。
+            if (renameable != null && renameable.HasCustomLabel) { return renameable.customLabel; }
+
+            string design = DesignName;
+            if (design == null) { return label; }
+
+            LoadedLanguage lang = LanguageDatabase.activeLanguage;
+            if (cachedLabelOut == null || cachedLabelIn != label || cachedLabelDesign != design || cachedLabelLanguage != lang)
+            {
+                cachedLabelIn = label;
+                cachedLabelDesign = design;
+                cachedLabelLanguage = lang;
+                cachedLabelOut = "DMSE.Missile.DesignNameLabel".Translate().RawText.Replace("{0}", label).Replace("{1}", design);
+            }
+            return cachedLabelOut;
+        }
+
         public void SetDesignName(string name)
         {
             EnsureInit();

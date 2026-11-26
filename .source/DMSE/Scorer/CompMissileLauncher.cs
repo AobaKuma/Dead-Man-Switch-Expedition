@@ -121,7 +121,7 @@ namespace DMSE
     public abstract class CompMissileLauncher_WorldTargeting : CompMissileLauncher
     {
         /// <summary>
-        /// 平台預設的離場 def（thingClass 為 <see cref="ScorerProjectile"/>）：只在彈體沒有
+        /// 平台預設的離場 def（thingClass 為 <see cref="Projectile_MissileLaunch"/>）：只在彈體沒有
         /// <see cref="MissileBodyDef.launchProjectile"/> 時使用（見 <see cref="LaunchDefFor"/>）。
         /// </summary>
         protected abstract ThingDef LaunchSkyfallerDef { get; }

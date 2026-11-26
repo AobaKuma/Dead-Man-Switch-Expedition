@@ -18,6 +18,9 @@
     <impactMinEngines>3</impactMinEngines>             <!-- §9 撞擊飛行 -->
     <planetkillerMinEngines>4</planetkillerMinEngines>
     <impactFadeSeconds>5</impactFadeSeconds>
+    <!-- 撞擊飛行的內容：研究前置與 DMSE 的撞擊結局（撞擊坑、DMS 軍隊、片尾）；框架不寫死（docs/轉移船與BVR移植FFF_可行性評估.md §2.1） -->
+    <impactResearch>DMSE_Occultech_TerminalCruise</impactResearch>
+    <impactWorkerClass>DMSE.TransferImpactWorker_Hellfire</impactWorkerClass>
     <!-- 轉移後安全期：船體 ≤ 門檻格數時為上限天數，超過則 上限 × 門檻 / 格數；再乘難度係數 -->
     <graceThresholdCells>2000</graceThresholdCells>
     <graceMaxDays>5</graceMaxDays>

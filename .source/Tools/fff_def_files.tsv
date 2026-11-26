@@ -1,0 +1,98 @@
+kind	framework_defs	total_defs	file	framework_def_names
+framework	8	8	1.7/Defs/Concepts.xml	DMSE_BVRChain, DMSE_BallisticPlatforms, DMSE_ElectronicWarfare, DMSE_EnemyMissileBases, DMSE_MissileAssembly, DMSE_NPCAirDefenseCircles, DMSE_SeekerTargeting, DMSE_StrikePlanning
+framework	5	5	1.7/Defs/DMSE_BVRWorld.xml	DMSE_AirDefenseAlertTuning, DMSE_BVRWorldTuning, DMSE_BlockadeInterceptor, DMSE_DropPodTrack, DMSE_Interceptor
+framework	3	3	1.7/Defs/DMSE_PlatformRemoval.xml	DMSE_ConstructRemovePlatform, DMSE_RemovePlatform, DMSE_RemovePlatformJob
+framework	1	1	1.7/Defs/DMSE_TransferFlightTuning.xml	DMSE_TransferFlightTuning
+framework	1	1	1.7/Defs/DMSE_TransferGrace.xml	DMSE_TransferGrace
+framework	2	2	1.7/Defs/DMSE_TransferShip.xml	DMSE_ShipVoid, DMSE_TransferShip
+framework	11	11	1.7/Defs/Effects/DMSE_InterceptFx.xml	DMSE_DebrisTrailPuff, DMSE_Filth_MetalScrap, DMSE_InterceptDebrisChunk, DMSE_InterceptDebrisMinor, DMSE_InterceptDebris_DropPod, DMSE_InterceptDebris_Missile, DMSE_InterceptFireGlow, DMSE_InterceptFireball, DMSE_InterceptFlash, DMSE_InterceptSmokeBall, DMSE_InterceptSparkStar
+framework	2	2	1.7/Defs/Job/DMSE_MissileCrewDuties.xml	DMSE_ManMissileStations, DMSE_MissileCrewDefend
+framework	2	2	1.7/Defs/Job/DMSE_Strike_Jobs.xml	DMSE_ComputeFiringSolution, DMSE_ComputeFiringSolution
+framework	5	5	1.7/Defs/Job/DMSE_TransferFlight_Jobs.xml	DMSE_BuildPileBeam, DMSE_BuildPileBeam, DMSE_DeliverPileBeamMaterials, DMSE_InitiateTransfer, DMSE_InitiateTransfer
+framework	9	9	1.7/Defs/Missile/DMSE_MissileAssembly_Jobs.xml	DMSE_AssembleMissile, DMSE_AssembleMissile, DMSE_DeliverMissileResource, DMSE_HaulMissileToRack, DMSE_LoadMissileLauncher, DMSE_LoadMissileLauncher, DMSE_ManMissileLauncher, DMSE_UnloadMissileRack, DMSE_UnloadMissileRack
+framework	3	3	1.7/Defs/Missile/DMSE_MissileStatCategories.xml	DMSE_MissileMechanics, DMSE_MissilePart, DMSE_MissileProfile
+framework	1	1	1.7/Defs/RulePacks/DMSE_Namer_StrikeMission.xml	DMSE_NamerStrikeMission
+mixed	2	3	1.7/Defs/DMSE_KeyBindings.xml	DMSE_MissileAssemblyNext, DMSE_MissileAssemblyPrevious
+mixed	10	12	1.7/Defs/DMSE_SeaPlatform.xml	DMSE_OpenAir, DMSE_OpenAir, DMSE_SeaPlatform, DMSE_SeaPlatform, DMSE_SeaPlatformPillar, DMSE_SeaPlatformPillar, DMSE_SeaPlatformPillarBase, DMSE_SeaPlatformSea, DMSE_SeaPlatformSea, DMSE_SeaPlatformSite
+mixed	4	12	1.7/Defs/Effects/DMSE_LaunchFx.xml	DMSE_LaunchGroundCloud, DMSE_LaunchSmokeDark, DMSE_LaunchSmokeLight, DMSE_LaunchSmokeMid
+mixed	1	14	1.7/Defs/RulePacks/DMSE_Namer_MissileDesign.xml	DMSE_NamerMissileDesign
+mixed	1	4	1.7/Defs/Terrain_OrbitalPlatform_DMS.xml	DMSE_Platform
+mixed	2	4	1.7/Defs/ThingDefs_Buildings/DMSE_BallisticSilo.xml	DMSE_AssembleBallisticSilo, DMSE_AssembleBallisticSilo
+mixed	1	4	1.7/Defs/ThingDefs_Buildings/DMSE_EW_Buildings.xml	DMSE_OperateWarRoom
+mixed	1	3	1.7/Defs/ThingDefs_Misc/Apparel_SamLauncher.xml	DMSE_FireManPortableSAM
+content	0	3	1.7/Defs/Biomes/DMSE_Biomes_Crater.xml	
+content	0	3	1.7/Defs/DMSE_MissileDoctrines.xml	
+content	0	2	1.7/Defs/DMSE_Sound.xml	
+content	0	1	1.7/Defs/Job/Job.xml	
+content	0	11	1.7/Defs/Missile/DMSE_BallisticMissile.xml	
+content	0	14	1.7/Defs/Missile/DMSE_LightMissile.xml	
+content	0	1	1.7/Defs/Missile/DMSE_LoiteringMunition.xml	
+content	0	4	1.7/Defs/Missile/DMSE_Mirv.xml	
+content	0	15	1.7/Defs/Missile/DMSE_MissileAssembly.xml	
+content	0	26	1.7/Defs/Missile/DMSE_MissileGenerationBodies.xml	
+content	0	17	1.7/Defs/Missile/DMSE_MissileLaunchProjectiles.xml	
+content	0	13	1.7/Defs/Missile/DMSE_MissileNamers.xml	
+content	0	14	1.7/Defs/Missile/DMSE_MissileParts_AdvancedCruise.xml	
+content	0	13	1.7/Defs/Missile/DMSE_MissileParts_AdvancedLight.xml	
+content	0	8	1.7/Defs/Missile/DMSE_MissileParts_BallisticGenerations.xml	
+content	0	5	1.7/Defs/Missile/DMSE_Sabre.xml	
+content	0	7	1.7/Defs/Missile/DMSE_Shahed.xml	
+content	0	1	1.7/Defs/Occultech_TerminalCruise.xml	
+content	0	1	1.7/Defs/RecipeDefs/DMSE_Recipe.xml	
+content	0	4	1.7/Defs/RecipeDefs/DMSE_Recipe_CleanRoom.xml	
+content	0	6	1.7/Defs/RecipeDefs/DMSE_Recipe_MicroGrav.xml	
+content	0	6	1.7/Defs/RecipeDefs/DMSE_Recipe_Multiple.xml	
+content	0	2	1.7/Defs/RecipeDefs/DMSE_Recipe_Vacuum.xml	
+content	0	17	1.7/Defs/ResearchProject.xml	
+content	0	2	1.7/Defs/Scenarios.xml	
+content	0	1	1.7/Defs/SongDef.xml	
+content	0	1	1.7/Defs/Structures/LaunchSite_Ballistic.xml	
+content	0	11	1.7/Defs/Structures/LaunchSite_Early.xml	
+content	0	12	1.7/Defs/Structures/LaunchSite_Mid.xml	
+content	0	3	1.7/Defs/Structures/LaunchSite_Ocean.xml	
+content	0	2	1.7/Defs/Structures/Scenario.xml	
+content	0	1	1.7/Defs/ThingDefs_Buildings/DMSE_AcousticEarlyWarningRadar.xml	
+content	0	1	1.7/Defs/ThingDefs_Buildings/DMSE_BVR_Category.xml	
+content	0	1	1.7/Defs/ThingDefs_Buildings/DMSE_BallisticRack.xml	
+content	0	1	1.7/Defs/ThingDefs_Buildings/DMSE_EarlyFireControlRadar.xml	
+content	0	13	1.7/Defs/ThingDefs_Buildings/DMSE_Gen_Decoration.xml	
+content	0	5	1.7/Defs/ThingDefs_Buildings/DMSE_Gen_Lootable.xml	
+content	0	6	1.7/Defs/ThingDefs_Buildings/DMSE_Gen_Portals.xml	
+content	0	7	1.7/Defs/ThingDefs_Buildings/DMSE_GenerationPlatforms.xml	
+content	0	9	1.7/Defs/ThingDefs_Buildings/DMSE_GenerationTurrets.xml	
+content	0	7	1.7/Defs/ThingDefs_Buildings/DMSE_Gravship.xml	
+content	0	3	1.7/Defs/ThingDefs_Buildings/DMSE_HeavyMortar.xml	
+content	0	4	1.7/Defs/ThingDefs_Buildings/DMSE_LightMissileLauncher.xml	
+content	0	3	1.7/Defs/ThingDefs_Buildings/DMSE_LoiteringLauncher.xml	
+content	0	5	1.7/Defs/ThingDefs_Buildings/DMSE_LongRangeArtillery.xml	
+content	0	7	1.7/Defs/ThingDefs_Buildings/DMSE_Misc.xml	
+content	0	1	1.7/Defs/ThingDefs_Buildings/DMSE_MissileAssemblyBench.xml	
+content	0	4	1.7/Defs/ThingDefs_Buildings/DMSE_MissileRack.xml	
+content	0	2	1.7/Defs/ThingDefs_Buildings/DMSE_Power.xml	
+content	0	6	1.7/Defs/ThingDefs_Buildings/DMSE_Production.xml	
+content	0	1	1.7/Defs/ThingDefs_Buildings/DMSE_RotaryMissileLauncher.xml	
+content	0	9	1.7/Defs/ThingDefs_Buildings/DMSE_Security.xml	
+content	0	3	1.7/Defs/ThingDefs_Buildings/DMSE_Security_Missile.xml	
+content	0	2	1.7/Defs/ThingDefs_Buildings/DMSE_StrikeCommandCenter.xml	
+content	0	2	1.7/Defs/ThingDefs_Buildings/DMSE_Structures.xml	
+content	0	5	1.7/Defs/ThingDefs_Buildings/DMSE_TransferFlight.xml	
+content	0	9	1.7/Defs/ThingDefs_Buildings/DMSE_Vacuum.xml	
+content	0	2	1.7/Defs/ThingDefs_Items/DMSE_AdvancedMissiles.xml	
+content	0	8	1.7/Defs/ThingDefs_Items/DMSE_GenerationMissiles.xml	
+content	0	1	1.7/Defs/ThingDefs_Items/DMSE_LoiteringMunition.xml	
+content	0	7	1.7/Defs/ThingDefs_Items/DMSE_Manufactured.xml	
+content	0	2	1.7/Defs/ThingDefs_Misc/Apparel_Uniform.xml	
+content	0	4	1.7/Defs/ThingDefs_Misc/Apparel_Various.xml	
+content	0	3	1.7/Defs/ThingDefs_Misc/Weapons/DMSE_LaserDesignator.xml	
+content	0	2	1.7/Defs/ThingDefs_Misc/Weapons/Modular_AssaultRifle.xml	
+content	0	1	1.7/Defs/ThingDefs_Misc/Weapons/Modular_C95BP_Pistol.xml	
+content	0	1	1.7/Defs/ThingDefs_Misc/Weapons/Modular_C95_Pistol.xml	
+content	0	1	1.7/Defs/ThingDefs_Misc/Weapons/Modular_MG93_LMG.xml	
+content	0	1	1.7/Defs/ThingDefs_Misc/Weapons/Modular_PDW.xml	
+content	0	1	1.7/Defs/TipSets.xml	
+content	0	2	1.7/Defs/WorldObjects.xml	
+content	0	5	1.7/Defs/WorldObjects_BallisticLaunchSite.xml	
+content	0	6	1.7/Defs/WorldObjects_EarlyLaunchSite.xml	
+content	0	8	1.7/Defs/WorldObjects_FieldLaunchSite.xml	
+content	0	8	1.7/Defs/WorldObjects_MissileBase.xml	
+content	0	9	1.7/Defs/WorldObjects_SeaLaunchSite.xml	

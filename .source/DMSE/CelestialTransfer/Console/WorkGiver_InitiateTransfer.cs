@@ -51,7 +51,7 @@ namespace DMSE
             {
                 return null;
             }
-            return JobMaker.MakeJob(DMSE_DefOf.DMSE_InitiateTransfer, t);
+            return JobMaker.MakeJob(DMSE_FrameworkDefOf.DMSE_InitiateTransfer, t);
         }
     }
 }

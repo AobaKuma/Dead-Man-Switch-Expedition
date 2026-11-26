@@ -10,7 +10,7 @@ namespace DMSE
     ///
     /// 工作流程：
     ///   1. <see cref="CompArtilleryStrike"/> 建立本物件，填入目標格、彈藥 def、齊射參數。
-    ///   2. 由 <see cref="ScorerProjectile"/> 離場後帶入世界，並在世界地圖上做 Slerp 飛行。
+    ///   2. 由升空彈（<see cref="Projectile_MissileLaunch"/>）離場後帶入世界，並在世界地圖上做 Slerp 飛行。
     ///   3. 抵達目的地 tile 後呼叫 <see cref="Arrived"/>：
     ///      a. 目標地圖必須已存在（砲擊不生成地圖；選靶時 <see cref="CompArtilleryStrike.CanTargetTile"/> 已擋，
     ///         飛行途中地圖被移除則落空）。

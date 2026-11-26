@@ -156,12 +156,7 @@ namespace DMSE
                         issues.Add(new TransferIssue(TransferIssueSeverity.Error, targetProblem));
                     }
                 }
-                // 防空封鎖（主動攔截）：航線穿越封鎖圈只警告，飛行中會被接戰。
-                string airspace = TransferPlanningUtility.AirspaceProblem(plan);
-                if (airspace != null)
-                {
-                    issues.Add(new TransferIssue(TransferIssueSeverity.Warning, airspace));
-                }
+                // 防空封鎖（主動攔截）的航線警告由 TransferAirDefenseIntegration 經 ExtraChecks 加入，轉移船本身不認識防空。
             }
 
             // ── 同一地圖同時只允許一艘船在起飛程序中 ──

@@ -145,7 +145,7 @@ namespace DMSE
             for (int i = 0; i < 8; i++)
             {
                 IntVec3 cell = c + GenAdj.AdjacentCells[i];
-                if (!cell.InBounds(map) || !cell.Standable(map) || map.designationManager.DesignationAt(cell, DMSE_DefOf.DMSE_RemovePlatform) != null)
+                if (!cell.InBounds(map) || !cell.Standable(map) || map.designationManager.DesignationAt(cell, DMSE_FrameworkDefOf.DMSE_RemovePlatform) != null)
                 {
                     continue;
                 }

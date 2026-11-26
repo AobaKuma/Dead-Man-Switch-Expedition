@@ -9,7 +9,7 @@ namespace DMSE
     /// 導彈 Projectile 的集中生成點（docs/Missile_Skyfaller轉Projectile_計畫.md §3.1）。
     /// 原版 Projectile 必須 Spawn 後再 Launch 才有起訖點；此處固定兩步的順序，
     /// 並保持與舊 Skyfaller 發射相同的設定時機（SpawnSetup 決定時間軸 → 設定朝向與 angle）。
-    /// 發射 def 若仍是舊的 skyfaller（彈體沒有 launchProjectile、退回平台設定），照舊生成 skyfaller。
+    /// 升空一律用 <see cref="Projectile_MissileLaunch"/>：彈體的 launchProjectile 優先，沒有時用平台設定的預設升空 def。
     /// </summary>
     public static class MissileProjectileMaker
     {
@@ -46,13 +46,21 @@ namespace DMSE
                 return missile;
             }
 
-            ScorerProjectile faller = (ScorerProjectile)SkyfallerMaker.SpawnSkyfaller(def, cell, map);
-            faller.Rotation = rotation;
-            faller.angle = launchAngle ?? rotation.AsAngle;
-            if (faller is ScorerProjectile scorer) { scorer.launchOffset = launchOffset ?? Vector3.zero; }
-            faller.worldObject = worldObject;
-            return faller;
+            // 不是發射 Projectile 的 def（舊的 skyfaller 備援已在 2026-11-26 退役；設定錯誤由 ConfigErrors 回報）：
+            // 不畫升空，航跡直接加入世界，打擊照常進行。
+            ReportBadLaunchDef(def);
+            if (worldObject != null && !worldObject.Destroyed) { Find.WorldObjects.Add(worldObject); }
+            return null;
         }
+
+        /// <summary>升空 def 必須是 <see cref="Projectile_MissileLaunch"/>（或子類）；給各發射器 CompProperties 的 ConfigErrors 用。</summary>
+        public static string LaunchDefError(ThingDef def, string field)
+            => def == null || IsMissileProjectile(def) ? null
+                : $"{field} {def.defName} is not a launch projectile (thingClass must be DMSE.Projectile_MissileLaunch); old launch skyfallers are no longer supported";
+
+        private static void ReportBadLaunchDef(ThingDef def)
+            => Log.ErrorOnce($"[DMSE] {LaunchDefError(def, "launch def") ?? "launch def is null"}; the launch is resolved without a visible ascent.",
+                (def?.defName ?? "null").GetHashCode() ^ 0x4C61756E);
 
         private static bool IsIncomingProjectile(ThingDef def)
             => def?.thingClass != null && typeof(Projectile_MissileIncoming).IsAssignableFrom(def.thingClass);
@@ -95,13 +103,10 @@ namespace DMSE
                 return missile;
             }
 
-            InterceptProjectile faller = (InterceptProjectile)SkyfallerMaker.SpawnSkyfaller(def, cell, map);
-            faller.Rotation = rotation;
-            faller.angle = launchAngle ?? rotation.AsAngle;
-            faller.launchOffset = launchOffset ?? Vector3.zero;
-            faller.targetId = targetId;
-            faller.hitChance = hitChance;
-            return faller;
+            // 不是發射 Projectile 的 def：不畫升空，當場結算，免得火力通道一直被占用。
+            ReportBadLaunchDef(def);
+            Projectile_MissileLaunch.ResolveIntercept(map, targetId, hitChance);
+            return null;
         }
 
         /// <summary>

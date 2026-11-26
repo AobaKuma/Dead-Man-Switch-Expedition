@@ -132,7 +132,7 @@
       </li>
       <!-- 發射：受火控雷達指派目標，取出容器中的攔截彈作為彈藥。 -->
       <li Class="DMSE.CompProperties_MissileLauncher">
-        <interceptorSkyfaller>DMSE_SkyFaller_Interceptor</interceptorSkyfaller>
+        <interceptorSkyfaller>DMSE_Launch_LegacyInterceptor</interceptorSkyfaller>
         <!-- 多聯裝旋轉架按排程間隔連續發射；重裝與裝填由彈藥流程另行處理。 -->
         <reloadCooldownTicks>6</reloadCooldownTicks>
         <interceptorTravelTicks>180</interceptorTravelTicks>

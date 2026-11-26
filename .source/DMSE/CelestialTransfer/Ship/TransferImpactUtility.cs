@@ -6,8 +6,8 @@ using Verse;
 namespace DMSE
 {
     /// <summary>
-    /// 撞擊飛行（Hellfire，設計稿 §9）的結局處理，沿用舊 <c>WorldObject_ImpactGravship.Arrive</c> 的流程與文本：
-    /// 摧毀目標據點 → 撞擊坑 → 移除 DMS 軍隊據點 → 全派系敵對 → 銷毀船 → 片尾。
+    /// 撞擊飛行（Hellfire，設計稿 §9）的結局處理，沿用舊 <c>WorldObject_ImpactGravship.Arrive</c> 的流程：
+    /// 摧毀目標據點 → 片尾文字與世界效果（<see cref="TransferImpactWorker"/>；DMSE 是撞擊坑、移除 DMS 軍隊據點、全派系敵對）→ 銷毀船 → 片尾。
     /// 新的 <see cref="WorldObject_TransferShip"/> 與舊存檔遷移共用。
     /// </summary>
     public static class TransferImpactUtility
@@ -49,39 +49,10 @@ namespace DMSE
 
             bool planetkiller = IsPlanetkiller(engineCount);
             string time = GenDate.DateFullStringAt(Find.TickManager.TicksGame, Find.WorldGrid.LongLatOf(target));
-            List<Pawn> aboard = new List<Pawn>();
-            string credits;
-            if (planetkiller)
-            {
-                credits = GameVictoryUtility.MakeEndCredits(
-                    time + "\n" + "DMSE.Impact.Planetkiller.Ending.Intro".Translate(),
-                    "DMSE.Impact.Planetkiller.Ending.Outro".Translate(),
-                    string.Empty,
-                    "DMSE.Impact.Planetkiller.Ending.Aboard".Translate(),
-                    aboard);
-            }
-            else if (Find.FactionManager.FirstFactionOfDef(DMSE_DefOf.DMS_Army) != null)
-            {
-                credits = GameVictoryUtility.MakeEndCredits(
-                    time + "\n" + "DMSE.Impact.Ending.Intro".Translate(),
-                    "DMSE.Impact.Ending.FleetFailed.Outro".Translate(),
-                    string.Empty,
-                    "DMSE.Impact.Ending.Aboard".Translate(),
-                    aboard);
-            }
-            else
-            {
-                credits = GameVictoryUtility.MakeEndCredits(
-                    time + "\n" + "DMSE.Impact.Ending.Intro".Translate(),
-                    "DMSE.Impact.Ending.Outro".Translate(),
-                    string.Empty,
-                    "DMSE.Impact.Ending.Aboard".Translate(),
-                    aboard);
-            }
-
-            ImpactCraterUtility.ApplyImpactCraterAtTile(shipName, engineCount, target);
-            ImpactCraterUtility.RemoveAllDmsArmySettlements();
-            ImpactCraterUtility.MakeAllFactionsHostileToPlayerFromImpact();
+            // 片尾文字先決定（看撞擊前的世界），再套用世界效果；兩者都由調校 Def 指定的 Worker 提供
+            TransferImpactWorker worker = TransferFlightMath.Tuning.ImpactWorker;
+            string credits = worker.MakeCredits(time, planetkiller, target);
+            worker.ApplyWorldEffects(shipName, engineCount, target, planetkiller);
             if (ship != null && !ship.Destroyed)
             {
                 ship.Destroy();

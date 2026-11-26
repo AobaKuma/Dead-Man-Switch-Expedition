@@ -42,7 +42,7 @@ namespace DMSE
             int launchers = 0;
             foreach (CompMissileLauncher_Interceptor l in bvr.launchers)
             {
-                if (l.parent.Faction == defender && l.Props.interceptorSkyfaller != null && l.Active) { launchers++; }
+                if (l.parent.Faction == defender && l.Props.CanIntercept && l.Active) { launchers++; }
             }
             return new AirDefenseAssessment(bvr.Channels.Capacity(defender), launchers);
         }

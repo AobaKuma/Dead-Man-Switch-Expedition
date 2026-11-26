@@ -6,7 +6,7 @@ namespace DMSE
 {
     public class WorkGiver_RemovePlatform : WorkGiver_ConstructAffectFloor
     {
-        protected override DesignationDef DesDef => DMSE_DefOf.DMSE_RemovePlatform;
+        protected override DesignationDef DesDef => DMSE_FrameworkDefOf.DMSE_RemovePlatform;
 
         public override bool HasJobOnCell(Pawn pawn, IntVec3 c, bool forced = false)
         {
@@ -29,7 +29,7 @@ namespace DMSE
             {
                 return null;
             }
-            return JobMaker.MakeJob(DMSE_DefOf.DMSE_RemovePlatformJob, c, stand);
+            return JobMaker.MakeJob(DMSE_FrameworkDefOf.DMSE_RemovePlatformJob, c, stand);
         }
     }
 }

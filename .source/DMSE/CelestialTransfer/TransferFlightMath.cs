@@ -18,7 +18,7 @@ namespace DMSE
     /// </summary>
     public static class TransferFlightMath
     {
-        public static TransferFlightTuningDef Tuning => DMSE_DefOf.DMSE_TransferFlightTuning;
+        public static TransferFlightTuningDef Tuning => DMSE_FrameworkDefOf.DMSE_TransferFlightTuning;
 
         /// <summary>這艘船飛這段距離要收的燃料：所在圖層有 <see cref="TransferEnergyWorker"/> 就問它，否則用下面的公式。</summary>
         public static float FuelRequired(TransferShipSurvey survey, int distance)

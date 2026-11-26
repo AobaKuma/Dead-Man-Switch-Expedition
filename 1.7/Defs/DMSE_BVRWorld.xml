@@ -57,6 +57,18 @@
     <terminalRetargetTicks>900</terminalRetargetTicks>
     <terminalRetargetEnabled>true</terminalRetargetEnabled>
     <terminalRetargetMaxShiftCells>0</terminalRetargetMaxShiftCells>
+    <!-- 內容預設值：框架程式不寫死 defName（docs/轉移船與BVR移植FFF_可行性評估.md §3.3） -->
+    <networkResearch>DMSE_RadarNetwork</networkResearch>
+    <defaultIncomingWorldObject>DMSE_WorldObject_IncomingMissile</defaultIncomingWorldObject>
+    <defaultIncomingMissile>DMSE_Incoming_Moskit</defaultIncomingMissile>
+    <defaultInterceptSound>DMSE_Missile_Shot</defaultInterceptSound>
+    <defaultLaserDesignatorMark>DMSE_LaserDesignatorMark</defaultLaserDesignatorMark>
+    <radarRangeReferences>
+      <li><target>DMSE_Incoming_Loiter</target><labelKey>DMSE.BVR.World.RangeClass.Loitering</labelKey></li>
+      <li><target>DMSE_Incoming_LightMissile</target><labelKey>DMSE.BVR.World.RangeClass.Light</labelKey></li>
+      <li><target>DMSE_Incoming_Moskit</target><labelKey>DMSE.BVR.World.RangeClass.Cruise</labelKey></li>
+      <li><target>DMSE_Incoming_AdvancedBallisticMissile</target><labelKey>DMSE.BVR.World.RangeClass.Ballistic</labelKey></li>
+    </radarRangeReferences>
   </DMSE.BVRWorldTuningDef>
 
   <!-- NPC 防空警戒五階段（docs/NPC防空警戒五階段_執行計畫.md）。數值為首輪測試起點，不是已驗證的平衡值。 -->

@@ -68,7 +68,7 @@ namespace DMSE
         {
             foreach (CompMissileLauncher_Interceptor l in launchers)
             {
-                if (l.parent.Faction == defender && l.Props.interceptorSkyfaller != null && l.Active && l.Engages(domain)) { return true; }
+                if (l.parent.Faction == defender && l.Props.CanIntercept && l.Active && l.Engages(domain)) { return true; }
             }
             return false;
         }
@@ -77,7 +77,7 @@ namespace DMSE
         {
             foreach (CompMissileLauncher_Interceptor l in launchers)
             {
-                if (l.parent.Faction == defender && l.Props.interceptorSkyfaller != null && l.Active) { return true; }
+                if (l.parent.Faction == defender && l.Props.CanIntercept && l.Active) { return true; }
             }
             return false;
         }

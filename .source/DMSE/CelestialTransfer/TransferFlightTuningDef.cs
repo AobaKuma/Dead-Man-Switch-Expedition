@@ -3,7 +3,7 @@ using Verse;
 namespace DMSE
 {
     /// <summary>
-    /// 轉移飛行的平衡常數集中處（設計稿 §5-6）。由 <see cref="DMSE_DefOf.DMSE_TransferFlightTuning"/> 取用。
+    /// 轉移飛行的平衡常數集中處（設計稿 §5-6）。由 <see cref="DMSE_FrameworkDefOf.DMSE_TransferFlightTuning"/> 取用。
     /// </summary>
     public class TransferFlightTuningDef : Def
     {
@@ -45,6 +45,41 @@ namespace DMSE
 
         /// <summary>撞擊前畫面淡出為白色的秒數（實際時間）。</summary>
         public float impactFadeSeconds = 5f;
+
+        /// <summary>規劃撞擊飛行前要完成的研究；null = 不設限。</summary>
+        public ResearchProjectDef impactResearch;
+
+        /// <summary>撞擊抵達時的片尾與世界效果（<see cref="TransferImpactWorker"/> 或子類別）。</summary>
+        public System.Type impactWorkerClass = typeof(TransferImpactWorker);
+
+        [Unsaved]
+        private TransferImpactWorker impactWorker;
+
+        public TransferImpactWorker ImpactWorker
+        {
+            get
+            {
+                if (impactWorker == null)
+                {
+                    impactWorker = impactWorkerClass != null && typeof(TransferImpactWorker).IsAssignableFrom(impactWorkerClass)
+                        ? (TransferImpactWorker)System.Activator.CreateInstance(impactWorkerClass)
+                        : new TransferImpactWorker();
+                }
+                return impactWorker;
+            }
+        }
+
+        public override System.Collections.Generic.IEnumerable<string> ConfigErrors()
+        {
+            foreach (string error in base.ConfigErrors())
+            {
+                yield return error;
+            }
+            if (impactWorkerClass == null || !typeof(TransferImpactWorker).IsAssignableFrom(impactWorkerClass))
+            {
+                yield return $"impactWorkerClass {impactWorkerClass} is not a {nameof(TransferImpactWorker)}";
+            }
+        }
 
         // ── 轉移後安全期（<see cref="TransferGraceUtility"/>） ──
 

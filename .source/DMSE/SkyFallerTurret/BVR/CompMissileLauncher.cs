@@ -11,8 +11,14 @@ namespace DMSE
     /// <summary>階段二：導彈發射裝置。受火控雷達指派，發射中過程攔截彈。</summary>
     public class CompProperties_MissileLauncher : CompProperties
     {
-        /// <summary>攔截彈 skyfaller def（thingClass 應為 DMSE.InterceptProjectile）。</summary>
+        /// <summary>
+        /// 平台預設的攔截彈升空 def（thingClass 應為 <see cref="Projectile_MissileLaunch"/>）：裝填彈體沒有
+        /// <see cref="MissileBodyDef.launchProjectile"/> 時使用。欄位名沿用舊稱（XML 相容），有設定才表示這座發射器能攔截（<see cref="CanIntercept"/>）。
+        /// </summary>
         public ThingDef interceptorSkyfaller;
+
+        /// <summary>這座發射器是否具備攔截能力（設定了攔截彈升空 def）。</summary>
+        public bool CanIntercept => interceptorSkyfaller != null;
 
         /// <summary>兩次發射間的裝填冷卻（ticks）。</summary>
         public int reloadCooldownTicks = 180;
@@ -26,6 +32,13 @@ namespace DMSE
         public CompProperties_MissileLauncher()
         {
             compClass = typeof(CompMissileLauncher_Interceptor);
+        }
+
+        public override System.Collections.Generic.IEnumerable<string> ConfigErrors(ThingDef parentDef)
+        {
+            foreach (string e in base.ConfigErrors(parentDef)) { yield return e; }
+            string launchError = MissileProjectileMaker.LaunchDefError(interceptorSkyfaller, "interceptorSkyfaller");
+            if (launchError != null) { yield return launchError; }
         }
     }
 
@@ -41,7 +54,7 @@ namespace DMSE
         public Thing Source => parent;
         public bool UsesFireControl => true;
         /// <summary>玩家對這座建築的砲塔按了停火：攔截彈同樣不發射（同末端 CIWS，見 <see cref="TurretHoldFireUtility"/>）。</summary>
-        public bool Armed => Props.interceptorSkyfaller != null && Active && !TurretHoldFireUtility.HoldingFire(parent);
+        public bool Armed => Props.CanIntercept && Active && !TurretHoldFireUtility.HoldingFire(parent);
         public int ReadyTick => CooldownUntil;
         public bool CanFire(int now) => ReadyToFire(now);
         /// <summary>只打和裝填中的攔截彈同一領域的目標（<see cref="MissileBodyDef.domain"/>）。</summary>
@@ -97,7 +110,7 @@ namespace DMSE
 
         // 便宜的條件在前；Active 已包含 HasAmmo（找彈要掃容器與打擊保留），不再重算一次。
         public bool ReadyToFire(int now)
-            => Props.interceptorSkyfaller != null && !OnCooldown(now) && Active && !TurretHoldFireUtility.HoldingFire(parent);
+            => Props.CanIntercept && !OnCooldown(now) && Active && !TurretHoldFireUtility.HoldingFire(parent);
 
         /// <summary>
         /// 發射一枚攔截彈。<paramref name="heading"/> 為來襲方位（升空後轉向飛出地圖）；不給時以
@@ -112,7 +125,7 @@ namespace DMSE
             out int lastSpawnTick)
         {
             lastSpawnTick = now;
-            if (Props.interceptorSkyfaller == null || parent.Map == null) { return 0; }
+            if (!Props.CanIntercept || parent.Map == null) { return 0; }
 
             // 初始升空角沿用建築朝向；具旋轉砲頭的發射架採用砲頭角度。heading 留給升空後的攔截航線。
             heading ??= MissileProjectileMaker.IncomingBearing(target, parent.Position);

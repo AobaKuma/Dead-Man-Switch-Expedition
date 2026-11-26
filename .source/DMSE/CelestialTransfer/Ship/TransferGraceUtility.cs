@@ -5,7 +5,7 @@ using Verse;
 namespace DMSE
 {
     /// <summary>
-    /// 轉移後安全期：轉移艦抵達後，在降落的地圖上掛遊戲條件 <see cref="DMSE_DefOf.DMSE_TransferGrace"/>
+    /// 轉移後安全期：轉移艦抵達後，在降落的地圖上掛遊戲條件 <see cref="DMSE_FrameworkDefOf.DMSE_TransferGrace"/>
     /// （<c>preventIncidents</c>）。原版 <c>IncidentWorker.CanFireNow</c> 對有此條件的地圖一律不觸發說書人事件
     /// （襲擊、新的遊戲條件、訪客等）；任務或劇本強制觸發的事件（<c>parms.forced</c>）不受影響。
     ///
@@ -43,7 +43,7 @@ namespace DMSE
         /// <summary>地圖上安全期的剩餘 tick；沒有安全期為 0。</summary>
         public static int GraceTicksLeft(Map map)
         {
-            GameCondition cond = map?.gameConditionManager.GetActiveCondition(DMSE_DefOf.DMSE_TransferGrace);
+            GameCondition cond = map?.gameConditionManager.GetActiveCondition(DMSE_FrameworkDefOf.DMSE_TransferGrace);
             return cond != null && !cond.Permanent ? Mathf.Max(0, cond.TicksLeft) : 0;
         }
 
@@ -54,7 +54,7 @@ namespace DMSE
             {
                 return;
             }
-            GameCondition cond = map.gameConditionManager.GetActiveCondition(DMSE_DefOf.DMSE_TransferGrace);
+            GameCondition cond = map.gameConditionManager.GetActiveCondition(DMSE_FrameworkDefOf.DMSE_TransferGrace);
             if (cond != null)
             {
                 if (!cond.Permanent && cond.TicksLeft < ticks)
@@ -63,7 +63,7 @@ namespace DMSE
                 }
                 return;
             }
-            map.gameConditionManager.RegisterCondition(GameConditionMaker.MakeCondition(DMSE_DefOf.DMSE_TransferGrace, ticks));
+            map.gameConditionManager.RegisterCondition(GameConditionMaker.MakeCondition(DMSE_FrameworkDefOf.DMSE_TransferGrace, ticks));
         }
 
         /// <summary>轉移艦抵達：依船體地圖上的船體格數開始安全期並通知玩家。</summary>

@@ -114,17 +114,15 @@ namespace DMSE
             return ImpactResearched && survey != null && survey.operationalImpactEngines >= TransferFlightMath.Tuning.impactMinEngines;
         }
 
-        private static ResearchProjectDef impactResearch;
-
-        /// <summary>III 級封存檔案「終結巡航」（DMSE_Occultech_TerminalCruise）是否已完成；Def 不存在時不設限。</summary>
+        /// <summary>
+        /// 撞擊飛行的研究前置（<see cref="TransferFlightTuningDef.impactResearch"/>；DMSE 是 III 級封存檔案「終結巡航」）是否已完成；
+        /// 沒設定時不設限。
+        /// </summary>
         public static bool ImpactResearched
         {
             get
             {
-                if (impactResearch == null)
-                {
-                    impactResearch = DefDatabase<ResearchProjectDef>.GetNamedSilentFail("DMSE_Occultech_TerminalCruise");
-                }
+                ResearchProjectDef impactResearch = TransferFlightMath.Tuning.impactResearch;
                 return impactResearch == null || impactResearch.IsFinished;
             }
         }
@@ -217,19 +215,6 @@ namespace DMSE
             return null;
         }
 
-        /// <summary>
-        /// 計畫航線是否穿越防空封鎖圈（會被主動攔截）：轉移檢查太空層航段；撞擊另檢查地表撞擊點。穿越時回傳說明。
-        /// </summary>
-        public static string AirspaceProblem(TransferPlan plan)
-        {
-            if (plan == null || !plan.origin.Valid) { return null; }
-            AirspaceRestriction restriction = AirspaceRestrictionUtility.CheckRoute(Faction.OfPlayer, plan.origin, plan.FlightTarget);
-            if (!restriction.Restricted && plan.isImpact)
-            {
-                restriction = AirspaceRestrictionUtility.CheckPoint(Faction.OfPlayer, plan.destination);
-            }
-            return restriction.Restricted ? restriction.Reason : null;
-        }
 
         /// <summary>不需航程計算的撞擊點檢查（整備檢查每幀呼叫，用來確認計畫制定後撞擊點仍然有效）。</summary>
         public static string ImpactTargetBasicProblem(PlanetTile tile)

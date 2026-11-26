@@ -11,7 +11,7 @@ namespace DMSE
 {
     /// <summary>
     /// 防空封鎖的主動攔截（2026-10-31 取代起飛前拒絕）：每次掃描找出飛進封鎖圈、不被允許通行的載具
-    /// （運輸艙與穿梭機、重力船、飛行中的轉移艦），由封鎖據點發射 <see cref="WorldObject_BlockadeInterceptor"/>。
+    /// （運輸艙與穿梭機、重力船，以及註冊的 <see cref="IBlockadeTargetHandler"/>，例如飛行中的轉移艦），由封鎖據點發射 <see cref="WorldObject_BlockadeInterceptor"/>。
     /// 使用據點自己的攔截彈庫存、火控與火力通道；同一據點對同一載具同時只有一枚在飛。
     /// </summary>
     public class WorldComponent_BlockadeInterception : WorldComponent
@@ -195,15 +195,47 @@ namespace DMSE
         }
     }
 
+    /// <summary>
+    /// 原版以外、會被封鎖攔截的世界物件（例：轉移艦，由 <see cref="TransferAirDefenseIntegration"/> 註冊）。
+    /// 封鎖攔截本身不認識這些型別。
+    /// </summary>
+    public interface IBlockadeTargetHandler
+    {
+        /// <summary>這個世界物件是否是自己負責、而且正在飛行（可被攔截）。</summary>
+        bool InFlight(WorldObject target);
+
+        /// <summary>是自己負責的物件時套用命中效果並回傳 true。</summary>
+        bool TryApplyHit(WorldObject target, Faction by);
+    }
+
     /// <summary>封鎖攔截命中各類載具的效果。</summary>
     public static class BlockadeHitUtility
     {
         private static readonly AccessTools.FieldRef<TravellingTransporters, List<ActiveTransporterInfo>> TransportersOf =
             AccessTools.FieldRefAccess<TravellingTransporters, List<ActiveTransporterInfo>>("transporters");
 
-        /// <summary>會被封鎖攔截的飛行中載具：運輸艙／穿梭機、重力船、飛行中的轉移艦。</summary>
-        public static bool InFlight(WorldObject o) => o != null && !o.Destroyed
-            && (o is TravellingTransporters || o is Gravship || (o is WorldObject_TransferShip ship && ship.InFlight));
+        private static readonly List<IBlockadeTargetHandler> extraTargets = new List<IBlockadeTargetHandler>();
+
+        /// <summary>加入原版以外的攔截對象；同一個處理器只會加一次。</summary>
+        public static void RegisterTarget(IBlockadeTargetHandler handler)
+        {
+            if (handler != null && !extraTargets.Contains(handler))
+            {
+                extraTargets.Add(handler);
+            }
+        }
+
+        /// <summary>會被封鎖攔截的飛行中載具：運輸艙／穿梭機、重力船，以及註冊的其他物件（轉移艦）。</summary>
+        public static bool InFlight(WorldObject o)
+        {
+            if (o == null || o.Destroyed) { return false; }
+            if (o is TravellingTransporters || o is Gravship) { return true; }
+            for (int i = 0; i < extraTargets.Count; i++)
+            {
+                if (extraTargets[i].InFlight(o)) { return true; }
+            }
+            return false;
+        }
 
         public static void ApplyHit(WorldObject target, Faction by)
         {
@@ -211,13 +243,14 @@ namespace DMSE
             {
                 case TravellingTransporters transporters:
                     DownOnePod(transporters, by);
-                    break;
+                    return;
                 case Gravship gravship:
                     DamageGravship(gravship, by);
-                    break;
-                case WorldObject_TransferShip ship:
-                    DamageTransferShip(ship, by);
-                    break;
+                    return;
+            }
+            for (int i = 0; i < extraTargets.Count; i++)
+            {
+                if (extraTargets[i].TryApplyHit(target, by)) { return; }
             }
         }
 
@@ -253,22 +286,6 @@ namespace DMSE
             }
             Messages.Message("DMSE.Blockade.GravshipHit".Translate(gravship.LabelCap, by.NameColored, damaged),
                 new GlobalTargetInfo(gravship), MessageTypeDefOf.NegativeEvent);
-        }
-
-        /// <summary>轉移艦：船體地圖上幾處建築發生爆炸。</summary>
-        private static void DamageTransferShip(WorldObject_TransferShip ship, Faction by)
-        {
-            if (!ship.HasMap) { return; }
-            Map map = ship.Map;
-            List<Building> buildings = map.listerBuildings.allBuildingsColonist.Where(b => !b.Destroyed).ToList();
-            int hits = 0;
-            foreach (Building building in buildings.InRandomOrder().Take(3))
-            {
-                GenExplosion.DoExplosion(building.Position, map, 2.9f, DamageDefOf.Bomb, null, damAmount: 35);
-                hits++;
-            }
-            Find.LetterStack.ReceiveLetter("DMSE.Blockade.TransferHitLabel".Translate(),
-                "DMSE.Blockade.TransferHitText".Translate(ship.LabelCap, by.NameColored, hits), LetterDefOf.NegativeEvent, ship);
         }
     }
 }

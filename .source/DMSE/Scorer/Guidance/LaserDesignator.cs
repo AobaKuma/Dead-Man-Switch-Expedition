@@ -84,7 +84,9 @@ namespace DMSE
     /// <summary>雷射引導標點的生成與查詢。</summary>
     public static class LaserDesignatorUtility
     {
-        public const string DefaultMarkDefName = "DMSE_LaserDesignatorMark";
+        /// <summary>沒有指定標點時用的標點：調校 Def 的 <see cref="BVRWorldTuningDef.defaultLaserDesignatorMark"/>，
+        /// 沒設定就用第一個 thingClass 是 <see cref="LaserDesignatorMark"/> 的 ThingDef。</summary>
+        public static ThingDef DefaultMarkDef => BVRWorldTuningDef.Current.defaultLaserDesignatorMark ?? MarkDefs.FirstOrDefault();
 
         /// <summary>標點預設存在時間（ticks）：2 遊戲小時。</summary>
         public const int DefaultLifespanTicks = 5000;
@@ -108,13 +110,13 @@ namespace DMSE
 
         /// <summary>
         /// 在 <paramref name="cell"/> 生成一個屬於 <paramref name="owner"/> 的標點。
-        /// <paramref name="markDef"/> 為 null 時用 <see cref="DefaultMarkDefName"/>；<paramref name="lifespanTicks"/> ≤ 0 表示永不失效。
+        /// <paramref name="markDef"/> 為 null 時用 <see cref="DefaultMarkDef"/>；<paramref name="lifespanTicks"/> ≤ 0 表示永不失效。
         /// </summary>
         public static LaserDesignatorMark PlaceMark(IntVec3 cell, Map map, Faction owner, ThingDef markDef, int lifespanTicks)
         {
             if (map == null || !cell.InBounds(map)) { return null; }
 
-            markDef = markDef ?? DefDatabase<ThingDef>.GetNamedSilentFail(DefaultMarkDefName);
+            markDef = markDef ?? DefaultMarkDef;
             if (markDef == null || !typeof(LaserDesignatorMark).IsAssignableFrom(markDef.thingClass))
             {
                 Log.ErrorOnce("[DMSE] Laser designator mark def missing or not a DMSE.LaserDesignatorMark.", 0x4C415352);
@@ -163,7 +165,7 @@ namespace DMSE
     /// </summary>
     public class ModExtension_LaserDesignator : DefModExtension
     {
-        /// <summary>生成的標點；null = <see cref="LaserDesignatorUtility.DefaultMarkDefName"/>。</summary>
+        /// <summary>生成的標點；null = <see cref="LaserDesignatorUtility.DefaultMarkDef"/>。</summary>
         public ThingDef markDef;
 
         /// <summary>標點存在時間（ticks）；≤ 0 = 永不失效。</summary>
@@ -200,7 +202,7 @@ namespace DMSE
     /// </summary>
     public class CompProperties_AbilityLaserDesignate : CompProperties_AbilityEffect
     {
-        /// <summary>生成的標點；null = <see cref="LaserDesignatorUtility.DefaultMarkDefName"/>。</summary>
+        /// <summary>生成的標點；null = <see cref="LaserDesignatorUtility.DefaultMarkDef"/>。</summary>
         public ThingDef markDef;
 
         /// <summary>標點存在時間（ticks）；≤ 0 = 永不失效。</summary>

@@ -124,7 +124,7 @@
       </li>
       <!-- 對地：V1／白蟻／小牛等（物品自帶彈體，平台 missileBody 只是後備）。 -->
       <li Class="DMSE.CompProperties_MissileRailLauncher">
-        <skyfaller>DMSE_SkyFaller_Loiter</skyfaller>
+        <skyfaller>DMSE_Launch_Loiter</skyfaller>
         <skyfallerIncoming>DMSE_Incoming_LegacyLoiter</skyfallerIncoming>
         <worldObjectDef>DMSE_WorldObject_Loiter</worldObjectDef>
         <missileBody>DMSE_MissileBody_LegacyLoiter</missileBody>
@@ -133,7 +133,7 @@
       </li>
       <!-- 攔截：萊茵女兒、刺針、SA-19、麻雀、地獄火（攔截／兩用彈）。 -->
       <li Class="DMSE.CompProperties_MissileLauncher">
-        <interceptorSkyfaller>DMSE_SkyFaller_Interceptor</interceptorSkyfaller>
+        <interceptorSkyfaller>DMSE_Launch_LegacyInterceptor</interceptorSkyfaller>
         <reloadCooldownTicks>600</reloadCooldownTicks>
         <interceptorTravelTicks>240</interceptorTravelTicks>
       </li>
@@ -292,7 +292,7 @@
         <lockOnTicks>150</lockOnTicks>
       </li>
       <li Class="DMSE.CompProperties_MissileLauncher">
-        <interceptorSkyfaller>DMSE_SkyFaller_Interceptor</interceptorSkyfaller>
+        <interceptorSkyfaller>DMSE_Launch_LegacyInterceptor</interceptorSkyfaller>
         <reloadCooldownTicks>240</reloadCooldownTicks>
         <interceptorTravelTicks>180</interceptorTravelTicks>
       </li>

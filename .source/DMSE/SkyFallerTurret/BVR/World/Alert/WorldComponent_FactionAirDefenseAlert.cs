@@ -191,8 +191,8 @@ namespace DMSE
             get
             {
                 if (!Tuning.enabled) { return false; }
-                ResearchProjectDef radarNetwork = DefDatabase<ResearchProjectDef>.GetNamedSilentFail("DMSE_RadarNetwork");
-                return radarNetwork != null && radarNetwork.IsFinished;
+                ResearchProjectDef radarNetwork = BVRWorldTuningDef.Current.networkResearch;
+                return radarNetwork == null || radarNetwork.IsFinished;
             }
         }
         private static int Now => Find.TickManager.TicksGame;

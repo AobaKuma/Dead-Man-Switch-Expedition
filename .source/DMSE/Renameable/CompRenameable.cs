@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using RimWorld;
 using Verse;
 
@@ -11,19 +12,20 @@ namespace DMSE
     /// <summary>
     /// 允許玩家為任何建築設定自訂名稱。
     /// <para>
-    ///   實作 <see cref="IRenameable"/>，令 <see cref="Patch_InspectPaneRename"/> 能攔截
-    ///   <c>MainTabWindow_Inspect.DoInspectPaneButtons</c>，在原版筆形按鈕的同一位置插入
-    ///   重命名按鈕，並開啟 <see cref="Dialog_RenameBuilding"/>（繼承原版 <c>Dialog_Rename&lt;T&gt;</c>）。
+    ///   自訂名稱透過原版 <see cref="ThingComp.TransformLabel"/> 套用：<c>ThingWithComps.LabelNoCount</c>
+    ///   與 <c>GetCustomLabelNoCount</c> 會依序呼叫每個元件的 TransformLabel，所以不需要 Harmony，
+    ///   沒有這個元件的物品也不會多付任何成本。留空確認可還原為 def 預設名稱。
     /// </para>
     /// <para>
-    ///   自訂名稱透過 <see cref="Patch_ThingLabelNoCount"/> 覆寫 <see cref="Thing.LabelNoCount"/>，
-    ///   使 UI 各處一律顯示玩家設定的名稱；留空確認可還原為 def 預設名稱。
+    ///   改名按鈕是元件自己的 gizmo（玩家陣營、已生成時才顯示），開啟 <see cref="Dialog_RenameBuilding"/>。
     /// </para>
     /// </summary>
     public class CompRenameable : ThingComp, IRenameable
     {
         /// <summary>玩家設定的自訂名稱；null 表示沿用 def 預設名稱。</summary>
         public string customLabel;
+
+        public bool HasCustomLabel => !customLabel.NullOrEmpty();
 
         // ---- IRenameable ----
 
@@ -33,7 +35,7 @@ namespace DMSE
         /// </summary>
         public string RenamableLabel
         {
-            get => customLabel.NullOrEmpty() ? parent.def.label : customLabel;
+            get => HasCustomLabel ? customLabel : parent.def.label;
             set => customLabel = value.NullOrEmpty() ? null : value;
         }
 
@@ -42,6 +44,35 @@ namespace DMSE
 
         /// <summary>顯示於選取欄標題的名稱（自訂名稱優先）。</summary>
         public string InspectLabel => RenamableLabel;
+
+        // ---- 標籤 ----
+
+        /// <summary>
+        /// 自訂名稱整個取代標籤。其他元件若要在自己的 TransformLabel 加字，
+        /// 先檢查 <see cref="HasCustomLabel"/>，自訂名稱才會蓋過一切、不受 comps 順序影響。
+        /// </summary>
+        public override string TransformLabel(string label) => HasCustomLabel ? customLabel : label;
+
+        // ---- 改名按鈕 ----
+
+        public override IEnumerable<Gizmo> CompGetGizmosExtra()
+        {
+            foreach (Gizmo g in base.CompGetGizmosExtra())
+            {
+                yield return g;
+            }
+            if (!parent.Spawned || parent.Faction != Faction.OfPlayer)
+            {
+                yield break;
+            }
+            yield return new Command_Action
+            {
+                defaultLabel = "Rename".Translate(),
+                icon = TexButton.Rename,
+                alsoClickIfOtherInGroupClicked = false,
+                action = delegate { Find.WindowStack.Add(new Dialog_RenameBuilding(this)); }
+            };
+        }
 
         // ---- 存檔 ----
 
