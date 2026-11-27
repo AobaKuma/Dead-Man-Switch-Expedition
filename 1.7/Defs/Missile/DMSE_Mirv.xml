@@ -32,10 +32,6 @@
     <incomingSkyfaller>DMSE_Incoming_ReentryVehicle</incomingSkyfaller>
   </Fortified.MissileBodyDef>
 
-  <!-- 誘餌（計畫 §7）：雷達特徵、標籤、圖示與進圖外觀都在釋放時取自它模仿的彈頭
-       （跟著 MIRV 像重返載具，跟著單彈頭像整枚導彈），所以這裡的 incomingSkyfaller 只是後備。
-       速度、射程與終端更新次數沿用母彈。沒有殺傷：落地是惰性撞擊。 -->
-
   <!-- 輕型誘餌：充氣反射器，中段很像真彈頭，但重返大氣層時一定燒毀，進不了地圖層。 -->
   <Fortified.MissileBodyDef>
     <defName>DMSE_MissileBody_DecoyLight</defName>

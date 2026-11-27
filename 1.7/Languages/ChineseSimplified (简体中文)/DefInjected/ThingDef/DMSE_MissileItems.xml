@@ -9,7 +9,7 @@
   <DMSE_Missile_Stinger.label>轻型防空导弹</DMSE_Missile_Stinger.label>
   <DMSE_Missile_Stinger.description>一种纤细的便携式红外防空导弹。射程短、弹头小，对付高速或灵活的目标相当吃力，但几乎任何发射器都装得下。</DMSE_Missile_Stinger.description>
   <DMSE_Missile_Maverick.label>对地攻击导弹</DMSE_Missile_Maverick.label>
-  <DMSE_Missile_Maverick.description>一种配备电视与红外导引头的轻型对地攻击导弹。最擅长摧毁单一特定目标，而不是夷平整座基地。</DMSE_Missile_Maverick.description>
+  <DMSE_Missile_Maverick.description>一种配备电视与红外导引头的轻型对地攻击导弹。適合用於摧毁单一特定目标。</DMSE_Missile_Maverick.description>
   <DMSE_Missile_Sparrow.label>先进防空导弹</DMSE_Missile_Sparrow.label>
   <DMSE_Missile_Sparrow.description>一种半主动雷达制导的中程防空导弹。其射程优秀，但火控雷达必须持续照射目标直到命中。</DMSE_Missile_Sparrow.description>
   <DMSE_Missile_Oniks.label>先进反舰巡航导弹</DMSE_Missile_Oniks.label>

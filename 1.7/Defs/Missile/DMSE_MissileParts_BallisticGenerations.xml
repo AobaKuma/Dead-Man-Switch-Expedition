@@ -20,7 +20,7 @@
     <defName>DMSE_AdvBallistic_Warhead_LowYield</defName>
     <label>low-yield warhead</label>
     <designWord>Low Yield</designWord>
-    <description>A smaller strategic warhead scaled down for tactical use. It does less damage than a full thermonuclear warhead, but it is much cheaper.</description>
+    <description>A smaller strategic warhead scaled down for tactical use.</description>
     <category>Warhead</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedBallistic</li>
@@ -129,7 +129,7 @@
     <defName>DMSE_AdvBallistic_Payload_MIRVDecoy</defName>
     <label>MIRV with decoys</label>
     <designWord>MIRV Decoy</designWord>
-    <description>A post-boost bus that releases two re-entry vehicles mixed in with three heavy decoys, in random order. The decoys look exactly like the warheads on radar and fall all the way to the target, so the enemy wastes channels, interceptors and close-in fire on them. Both warheads carry the missile's warhead and guidance and strike the same target.\n\nShooting the bus down before it releases destroys everything at once.</description>
+    <description>A post-boost bus that releases two re-entry vehicles mixed in with three heavy decoys, in random order. The decoys look exactly like the warheads on radar and fall all the way to the target. Both warheads carry the missile's warhead and guidance and strike the same target.\n\nShooting the missile down before release stops it from deploying its terminal payloads.</description>
     <category>Payload</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedBallistic</li>
@@ -176,7 +176,7 @@
     <defName>DMSE_AdvBallistic_Payload_Decoys</defName>
     <label>decoy warheads</label>
     <designWord>Decoy</designWord>
-    <description>Releases four inflatable decoys and one heavy dummy warhead in mid-flight while the real missile flies on. On radar every one of them looks like the missile itself, so the enemy has to split its fire control channels and interceptors between them. The light decoys burn up on re-entry; the heavy one falls to the target without exploding.</description>
+    <description>Releases four reflector decoys and one dummy warhead in mid-flight, each with a radar shape and infrared signature close to the missile's. The light decoys burn up on re-entry, while the heavy one joins the terminal penetration but does no actual damage.</description>
     <category>Payload</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedBallistic</li>

@@ -6,10 +6,7 @@
        - 固定構型（customizeLocation None、無槽位）：以 MissileItemExtension 宣告彈體，無 CompMissileConfig／ITab，不可改造。
        - 單兵防空導彈發射具（DMSE_Apparel_SamLauncher）的額外彈藥（extraAmmoDefs）：裝入後用專屬的對地射擊動詞
          （DMSE_Projectile_Sabre，射程比刺針遠）；用途為 Strike，不能拿來防空。
-       - 也是巡飛彈階（Loitering）：可裝在發射軌／旋轉發射架上作短程世界打擊。
-       - 預設零件（不可更換）：圖像識別導引頭（GuidanceType_Imaging，找屋頂外最危險的敵方生物）＋盤旋飛控
-         （DMSE_Payload_Loiter，找不到目標時在上空盤旋重試）。有槽位只是為了掛預設零件：物品沒有 CompMissileConfig／ITab、
-         customizeLocation 為 None，組裝台與改裝都不會列出它。 -->
+       - 也是巡飛彈階（Loitering）：可裝在發射軌／旋轉發射架上作短程世界打擊。 -->
   <Fortified.MissileBodyDef>
     <defName>DMSE_MissileBody_Sabre</defName>
     <label>light loitering munition</label>

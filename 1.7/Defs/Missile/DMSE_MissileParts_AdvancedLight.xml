@@ -44,7 +44,7 @@
     <defName>DMSE_AdvLight_Warhead_BlastFrag</defName>
     <label>blast-fragmentation warhead</label>
     <designWord>Frag</designWord>
-    <description>A blast-fragmentation warhead with a heavy pre-fragmented casing. It gives up penetration for a wider lethal radius against infantry and light structures.</description>
+    <description>A blast-fragmentation warhead with a heavy pre-fragmented casing. It gives up penetration for a more effective lethal radius against infantry.</description>
     <category>Warhead</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedLight</li>
@@ -66,7 +66,7 @@
     <defName>DMSE_AdvLight_Warhead_Thermobaric</defName>
     <label>thermobaric warhead</label>
     <designWord>Thermobaric</designWord>
-    <description>A thermobaric warhead that burns instead of fragmenting. The blast is small, but its burns and fires are far worse inside a room or bunker than in the open.</description>
+    <description>A thermobaric warhead that burns instead of fragmenting. The blast is small, but it is highly effective against enemies indoors and in bunkers.</description>
     <category>Warhead</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedLight</li>
@@ -93,7 +93,7 @@
     <defName>DMSE_AdvLight_Warhead_Kinetic</defName>
     <label>kinetic blade warhead</label>
     <designWord>Blade</designWord>
-    <description>An inert warhead with pop-out blades and almost no explosive. It kills the creature it hits and leaves the surroundings mostly intact.</description>
+    <description>An inert warhead with pop-out blades and almost no explosive. It is excellent against personnel.</description>
     <category>Warhead</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedLight</li>
@@ -274,7 +274,7 @@
     <defName>DMSE_AdvLight_Payload_Chaff</defName>
     <label>chaff dispenser</label>
     <designWord>Chaff</designWord>
-    <description>A dispenser of chaff and radar-absorbing streamers. Each bundle can break one enemy fire-control lock, but the bundles run out and do nothing to hide the missile before it is locked.</description>
+    <description>A dispenser of chaff and radar-absorbing streamers. Each bundle can break one enemy fire-control lock, but the supply is limited.</description>
     <category>Payload</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedLight</li>

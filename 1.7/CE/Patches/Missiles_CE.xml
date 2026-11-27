@@ -233,8 +233,6 @@
 
 			<!-- ==================== 部件 ==================== -->
 
-			<!-- 鎢芯穿甲戰鬥部：彈體穿甲 ×1.5（彈芯先穿入再引爆）、彈片減半（能量集中在彈芯）。
-			     用倍率而不是絕對值，大型彈體的實際裝藥量才不會被蓋掉。 -->
 			<li Class="PatchOperationAddModExtension">
 				<xpath>Defs/Fortified.MissilePartDef[defName="DMSE_Ballistic_Warhead_TungstenPenetrator"]</xpath>
 				<value>

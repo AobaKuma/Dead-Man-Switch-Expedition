@@ -1,26 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
-  <!-- ==================================================================
-       導彈設計名稱樣板（r_name）
-       Design-name templates.
-       ==================================================================
-       樣板由 MissileDesignNamer 依彈體挑選：每個可裝配彈體在 <Fortified.MissileNamerDef> 的
-       pack 欄位指定自己的包（DMSE_NamerPack_*），沒指定的彈體用通用 DMSE_NamerMissileDesign。
-
-       符號：
-         [body] [warhead] [guidance] [propulsion] [payload]  由程式以 Rule_String 注入（值是 Def 的 designWord）
-         [designator]  型號代字（Namer 的 designator 欄位，可翻譯）
-         [num] [suffix] 型號編號與後綴；抽定樣板時就換成文字寫進規則字串，改部件不會重抽
-
-       本組合沒有的槽位符號會先被剔除，所以同一組樣板能服務有／無酬載的構型；
-       型號類樣板因此不重複列部件組合，而是靠 [designator]-[num] 當骨架。
-       每個彈體一組自己的樣板（語序依彈種：反艦偏戰頭＋導引、巡航偏導引、
-       輕型防空短、彈道以戰頭／酬載為主、巡飛只有導引／酬載）。
-       同一 keyword 多條＝加權候選，用 p= 調權重。check_missile_content.py 第 13／15 條檢查。
-       ================================================================== -->
-
-
   <!-- Light：輕型對地／通用彈體：戰頭＋導引＋酬載，短編號。 -->
   <RulePackDef>
     <defName>DMSE_NamerPack_Light</defName>

@@ -18,7 +18,7 @@
   <DMSE_Propulsion_Standard.label>標準發動機</DMSE_Propulsion_Standard.label>
   <DMSE_Propulsion_Standard.description>標準的固態燃料火箭發動機。</DMSE_Propulsion_Standard.description>
   <DMSE_Propulsion_Booster.label>增推發動機</DMSE_Propulsion_Booster.label>
-  <DMSE_Propulsion_Booster.description>推力更強的發動機，能更快抵達目標、飛得也更遠。</DMSE_Propulsion_Booster.description>
+  <DMSE_Propulsion_Booster.description>推力更強的發動機，能更快抵達目標也飛得更遠。</DMSE_Propulsion_Booster.description>
   <DMSE_Payload_Cluster.label>集束子彈藥</DMSE_Payload_Cluster.label>
   <DMSE_Payload_Cluster.description>釋放子彈藥，在落點周圍造成第二波爆炸。</DMSE_Payload_Cluster.description>
   <DMSE_Payload_EMP.label>EMP 子彈藥</DMSE_Payload_EMP.label>
@@ -117,5 +117,5 @@
   <DMSE_AdvBallistic_Payload_MIRVDecoy.description>彈頭匯流排以隨機順序放出兩枚重返載具與三枚重型誘餌。誘餌在雷達上和彈頭一模一樣，而且會一路落到目標。兩枚彈頭都帶著導彈的戰鬥部與導引，打擊同一目標。\n\n在釋放前擊落彈體將能夠阻止其釋放末端彈藥。</DMSE_AdvBallistic_Payload_MIRVDecoy.description>
   <!-- EN: decoy warheads -->
   <DMSE_AdvBallistic_Payload_Decoys.label>誘餌彈頭</DMSE_AdvBallistic_Payload_Decoys.label>
-  <DMSE_AdvBallistic_Payload_Decoys.description>在導彈飛行中途放出四枚反射器誘餌與一枚假彈頭，在雷達上有近似導彈的外形與紅外特偵。輕型誘餌在重返大氣層時燒毀，而重型誘餌雖然會參與末端突防但沒有實際的殺傷性。</DMSE_AdvBallistic_Payload_Decoys.description>
+  <DMSE_AdvBallistic_Payload_Decoys.description>在導彈飛行中途放出四枚反射器誘餌與一枚假彈頭，在雷達上有近似導彈的外形與紅外特徵。輕型誘餌在重返大氣層時燒毀，而重型誘餌雖然會參與末端突防但沒有實際的殺傷性。</DMSE_AdvBallistic_Payload_Decoys.description>
 </LanguageData>

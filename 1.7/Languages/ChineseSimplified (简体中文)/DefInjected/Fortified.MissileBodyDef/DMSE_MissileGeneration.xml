@@ -8,7 +8,7 @@
   <DMSE_MissileBody_AdvancedLight.description>一种小型多用途导弹弹体。小到能装上便携式与车载发射器，精度与载重却都胜过旧式轻型导弹。\n\n可装配弹头、制导与载荷。</DMSE_MissileBody_AdvancedLight.description>
 
   <DMSE_MissileBody_AdvancedBallistic.label>先进弹道导弹弹体</DMSE_MissileBody_AdvancedBallistic.label>
-  <DMSE_MissileBody_AdvancedBallistic.description>一种现代多级战略导弹。它会爬升到太空边缘，再把弹头投向单一建筑，而不是一整个街区。\n\n直接在战略发射井或发射塔上装配，不会以物品形式存在。</DMSE_MissileBody_AdvancedBallistic.description>
+  <DMSE_MissileBody_AdvancedBallistic.description>一种现代多级战略导弹。它会爬升到太空边缘再把弹头投向单一建筑。\n\n直接在战略发射井或发射塔上装配。</DMSE_MissileBody_AdvancedBallistic.description>
 
   <DMSE_MissileBody_AdvancedCruise.label>先进巡航导弹弹体</DMSE_MissileBody_AdvancedCruise.label>
   <DMSE_MissileBody_AdvancedCruise.description>一种现代隐身巡航导弹弹体。沿地形低空飞行，精度远胜旧式的射门手导弹。\n\n可装配弹头、制导、推进与载荷。</DMSE_MissileBody_AdvancedCruise.description>

@@ -118,7 +118,7 @@
     <defName>DMSE_Guidance_Precision</defName>
     <label>TV guidance</label>
     <designWord>TV</designWord>
-    <description>An operator-guided TV seeker with a datalink to the launch site. When the missile reaches the target map, the game pauses and you choose the impact point. Greatly tightens dispersion. Enemy TV missiles have no operator and use inertial guidance instead.</description>
+    <description>An operator-guided TV seeker linked by datalink. When the missile reaches the target map, the game pauses so you can choose the impact point, and dispersion is greatly tightened.</description>
     <category>Guidance</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_Moskit</li>
@@ -142,7 +142,7 @@
     <defName>DMSE_Guidance_EMSignal</defName>
     <label>electromagnetic-signal seeker</label>
     <designWord>EM</designWord>
-    <description>A passive seeker that homes on electrical activity. It targets the powered enemy building drawing the most electricity, and falls back to inertial guidance if nothing is powered.</description>
+    <description>A passive seeker that homes on electrical activity. It targets the powered enemy building drawing the most electricity, and falls on inertial guidance if there is no valid target.</description>
     <category>Guidance</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_Moskit</li>
@@ -187,7 +187,7 @@
     <defName>DMSE_Guidance_Laser</defName>
     <label>laser seeker</label>
     <designWord>Laser</designWord>
-    <description>A semi-active laser seeker. It homes on the most recent point your colony marked on the target map with a laser target designator, and falls back to inertial guidance if there is none.</description>
+    <description>A semi-active laser seeker. It homes on the point marked on the target map by a laser designator, and falls on inertial guidance if there is no valid target.</description>
     <category>Guidance</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_Moskit</li>
@@ -304,7 +304,7 @@
     <defName>DMSE_Payload_EMP</defName>
     <label>EMP submunitions</label>
     <designWord>Pulse</designWord>
-    <description>A secondary EMP burst that stuns and disables electronics around the impact.</description>
+    <description>Releases a second electromagnetic pulse around the impact point that can disable electronics.</description>
     <category>Payload</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_Moskit</li>

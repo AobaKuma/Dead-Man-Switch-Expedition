@@ -19,7 +19,7 @@
     <defName>DMSE_Ballistic_Warhead_Thermonuclear</defName>
     <label>thermonuclear warhead</label>
     <designWord>Thermonuclear</designWord>
-    <description>A thermonuclear warhead. It has no special effects. It does not need any.</description>
+    <description>A thermonuclear warhead. It has no special effects.</description>
     <category>Warhead</category>
     <compatibleBodies><li>DMSE_MissileBody_AdvancedBallistic</li><li>DMSE_MissileBody_LegacyBallistic</li></compatibleBodies>
     <explosionRadiusOffset>5</explosionRadiusOffset>
@@ -41,7 +41,7 @@
     <defName>DMSE_Ballistic_Warhead_Airburst</defName>
     <label>airburst warhead</label>
     <designWord>Airburst</designWord>
-    <description>A warhead that detonates above the target to spread fragments over a wide area. When used on an interceptor, it gets extra chances to hit in each engagement.</description>
+    <description>A warhead that detonates above the target to spread fragments over a wide area. Fitted to an interceptor, it can affect several targets at once.</description>
     <category>Warhead</category>
     <compatibleBodies><li>DMSE_MissileBody_AdvancedBallistic</li><li>DMSE_MissileBody_LegacyBallistic</li></compatibleBodies>
     <warheadEffect Class="Fortified.WarheadEffect_Airburst">
@@ -54,15 +54,11 @@
     </costList>
   </Fortified.MissilePartDef>
 
-  <!-- 集束子彈戰鬥部：Impact 時在落點四周「spawn 實體破片彈」，而不是只做多點爆炸。
-       與載荷的 DMSE.PayloadEffect_Cluster 差別：破片會飛、會打到路徑上的其他人，
-       並照 CE 的護甲與掩護規則結算。
-       子彈數 = clusterBurstCount + payloadCapacity × countPerCapacity（上限 maxCount）。 -->
   <Fortified.MissilePartDef>
     <defName>DMSE_Ballistic_Warhead_ClusterBomblet</defName>
     <label>cluster bomblet warhead</label>
     <designWord>Bomblet</designWord>
-    <description>A warhead that opens over the target and scatters many small fragmentation bomblets. Each bomblet falls on its own, spreading damage across a whole compound instead of a single point.</description>
+    <description>A warhead that scatters many small fragmentation bomblets. Each bomblet falls on its own, spreading the blasts across the whole area.</description>
     <category>Warhead</category>
     <compatibleBodies><li>DMSE_MissileBody_AdvancedBallistic</li><li>DMSE_MissileBody_LegacyBallistic</li></compatibleBodies>
     <warheadEffect Class="Fortified.WarheadEffect_ClusterBomblets">
@@ -87,7 +83,7 @@
     <defName>DMSE_Ballistic_Warhead_TungstenPenetrator</defName>
     <label>tungsten penetrator</label>
     <designWord>Tungsten</designWord>
-    <description>A dense tungsten rod that punches through thick roofs before detonating inside. Underground shelters offer no protection against it.</description>
+    <description>A dense tungsten rod that punches through thick rock roofs before detonating, ideal against underground bunkers.</description>
     <category>Warhead</category>
     <compatibleBodies><li>DMSE_MissileBody_AdvancedBallistic</li><li>DMSE_MissileBody_LegacyBallistic</li></compatibleBodies>
     <warheadEffect Class="Fortified.WarheadEffect_TungstenPenetrator">
@@ -106,7 +102,7 @@
     <defName>DMSE_Ballistic_Guidance_Inertial</defName>
     <label>inertial guidance</label>
     <designWord>Inertial</designWord>
-    <description>Basic inertial guidance. With a big enough warhead, precision hardly matters. Impacts scatter around the center of the target map. It does not lock onto buildings or creatures.</description>
+    <description>Basic inertial guidance that does little more than make sure the missile lands somewhere in the area. Impacts scatter around the center of the target map.</description>
     <category>Guidance</category>
     <compatibleBodies><li>DMSE_MissileBody_AdvancedBallistic</li><li>DMSE_MissileBody_LegacyBallistic</li></compatibleBodies>
     <guidanceType Class="Fortified.GuidanceType_Inertial" />
@@ -118,7 +114,7 @@
     <defName>DMSE_Ballistic_Guidance_FireControl</defName>
     <label>fire-control guidance</label>
     <designWord>FireControl</designWord>
-    <description>Terminal guidance assisted by the colony's fire-control radar network. It greatly tightens impact dispersion.</description>
+    <description>Terminal guidance that corrects its position with help from fire-control radar. It greatly tightens impact dispersion.</description>
     <category>Guidance</category>
     <compatibleBodies><li>DMSE_MissileBody_AdvancedBallistic</li><li>DMSE_MissileBody_LegacyBallistic</li></compatibleBodies>
     <guidanceType Class="Fortified.GuidanceType_FireControl" />

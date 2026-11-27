@@ -41,7 +41,7 @@
     <defName>DMSE_AdvCruise_Warhead_Penetrator</defName>
     <label>hard-target penetrator</label>
     <designWord>Penetrator</designWord>
-    <description>A dense tungsten penetrator that punches through thick roofs and overhead mountain before detonating inside. Underground shelters offer no protection against it.</description>
+    <description>A dense tungsten penetrator that punches through thick roofs and overhead mountain before detonating inside.</description>
     <category>Warhead</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedCruise</li>
@@ -68,7 +68,7 @@
     <defName>DMSE_AdvCruise_Guidance_TerrainMatch</defName>
     <label>terrain-matching guidance</label>
     <designWord>TERCOM</designWord>
-    <description>Guidance that compares the ground below with a stored map, giving very tight dispersion. It cannot be retargeted in flight and has no terminal guidance, so a moving target is simply missed. Impacts scatter around the center of the target map. It does not lock onto buildings or creatures.</description>
+    <description>Guidance that compares the ground below with a stored map, giving very tight dispersion. It cannot be retargeted in flight and has no terminal guidance, so a moving target is simply missed. Impacts scatter around the center of the target.</description>
     <category>Guidance</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedCruise</li>
@@ -88,7 +88,7 @@
     <defName>DMSE_AdvCruise_Guidance_Datalink</defName>
     <label>two-way datalink</label>
     <designWord>Datalink</designWord>
-    <description>A two-way satellite datalink. The missile can be retargeted in flight, and when it reaches the target map the game pauses so you can pick the impact point. The most accurate option, and the only one that can chase a moving target mid-flight.</description>
+    <description>A two-way satellite datalink. When the missile reaches the target map, you can choose its terminal impact point. Very accurate, but it takes up an extra fire-control channel.</description>
     <category>Guidance</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedCruise</li>
@@ -206,7 +206,7 @@
     <defName>DMSE_AdvCruise_Payload_Submunition</defName>
     <label>submunition dispenser</label>
     <designWord>Cluster</designWord>
-    <description>A dispenser that opens over the target and scatters small bomblets across the area instead of one concentrated blast.</description>
+    <description>A dispenser that opens over the target and scatters small bomblets across the whole area for an effective area attack.</description>
     <category>Payload</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedCruise</li>
@@ -250,7 +250,7 @@
     <defName>DMSE_AdvCruise_Payload_Graphite</defName>
     <label>graphite filament payload</label>
     <designWord>Graphite</designWord>
-    <description>A payload of carbon fibers that shorts out the power grid around the impact instead of exploding. It disables powered buildings and stuns mechanoids over a wide area.</description>
+    <description>An airburst graphite filament payload that causes short circuits on contact, disabling powered buildings and mechanoids over a wide area.</description>
     <category>Payload</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedCruise</li>
