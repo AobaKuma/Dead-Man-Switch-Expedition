@@ -161,7 +161,7 @@
         <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
         <initialAllowAutoRefuel>true</initialAllowAutoRefuel>
         <targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>              <!-- Reload threshold setting -->
-        <initialConfigurableTargetFuelLevel>1000</initialConfigurableTargetFuelLevel>
+        <initialConfigurableTargetFuelLevel>600</initialConfigurableTargetFuelLevel>
         <autoRefuelPercent>0.8</autoRefuelPercent>
         <fuelIconPath>Things/Item/Resource/ReinforcedBarrel/ReinforcedBarrel</fuelIconPath>
       </li>

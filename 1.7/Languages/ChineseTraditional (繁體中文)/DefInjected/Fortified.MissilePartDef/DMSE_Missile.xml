@@ -10,11 +10,11 @@
   <DMSE_Guidance_Inertial.label>慣性導引</DMSE_Guidance_Inertial.label>
   <DMSE_Guidance_Inertial.description>沒有目標辨識、也沒有末端導引的慣性導引。落點散布在目標地圖中央附近，不會鎖定建築或生物。</DMSE_Guidance_Inertial.description>
   <DMSE_Guidance_Precision.label>電視制導</DMSE_Guidance_Precision.label>
-  <DMSE_Guidance_Precision.description>一種透過資料鏈由操作員操控的電視尋標器。導彈抵達目標地圖時遊戲會暫停，由你選擇落點，散布也大幅縮小。敵方發射的電視導引導彈沒有操作員，會改用慣性導引。</DMSE_Guidance_Precision.description>
+  <DMSE_Guidance_Precision.description>一種透過資料鏈由操作員操控的電視尋標器。導彈抵達目標地圖時遊戲會暫停並可選擇落點，散布也大幅縮小。</DMSE_Guidance_Precision.description>
   <DMSE_Guidance_EMSignal.label>電磁訊號導引頭</DMSE_Guidance_EMSignal.label>
-  <DMSE_Guidance_EMSignal.description>一種追蹤電力活動的被動尋標器。會鎖定耗電最多的通電敵方建築；沒有任何通電建築時改用慣性導引。</DMSE_Guidance_EMSignal.description>
+  <DMSE_Guidance_EMSignal.description>一種追蹤電力活動的被動尋標器。會鎖定耗電最多的通電敵方建築；沒有任何有效目標時會按照慣性墜落。</DMSE_Guidance_EMSignal.description>
   <DMSE_Guidance_Laser.label>雷射導引頭</DMSE_Guidance_Laser.label>
-  <DMSE_Guidance_Laser.description>一種半主動雷射尋標器。會追向殖民地最近一次在目標地圖上以雷射目標標定器標記的位置；沒有標記時改用慣性導引。</DMSE_Guidance_Laser.description>
+  <DMSE_Guidance_Laser.description>一種半主動雷射尋標器。會鎖定目標地圖上以雷射標定器標記的位置；沒有任何有效目標時會按照慣性墜落。</DMSE_Guidance_Laser.description>
   <DMSE_Propulsion_Standard.label>標準發動機</DMSE_Propulsion_Standard.label>
   <DMSE_Propulsion_Standard.description>標準的固態燃料火箭發動機。</DMSE_Propulsion_Standard.description>
   <DMSE_Propulsion_Booster.label>增推發動機</DMSE_Propulsion_Booster.label>
@@ -22,43 +22,43 @@
   <DMSE_Payload_Cluster.label>集束子彈藥</DMSE_Payload_Cluster.label>
   <DMSE_Payload_Cluster.description>釋放子彈藥，在落點周圍造成第二波爆炸。</DMSE_Payload_Cluster.description>
   <DMSE_Payload_EMP.label>EMP 子彈藥</DMSE_Payload_EMP.label>
-  <DMSE_Payload_EMP.description>在落點周圍釋放第二波電磁脈衝，癱瘓並擊暈電子設備。</DMSE_Payload_EMP.description>
+  <DMSE_Payload_EMP.description>在落點周圍釋放第二波電磁脈衝，能夠癱瘓電子設備。</DMSE_Payload_EMP.description>
   <DMSE_Light_Warhead_HE.label>輕型高爆彈頭</DMSE_Light_Warhead_HE.label>
   <DMSE_Light_Warhead_HE.description>一枚尺寸配合輕型導彈的小型高爆彈頭。</DMSE_Light_Warhead_HE.description>
   <DMSE_Light_Warhead_Incendiary.label>燃燒彈頭</DMSE_Light_Warhead_Incendiary.label>
-  <DMSE_Light_Warhead_Incendiary.description>命中時灑出燃燒的鋁熱劑，點燃半徑內的一切，連牆後也不例外。</DMSE_Light_Warhead_Incendiary.description>
+  <DMSE_Light_Warhead_Incendiary.description>命中時灑出燃燒的鋁熱劑，點燃半徑內的一切。</DMSE_Light_Warhead_Incendiary.description>
   <DMSE_Light_Warhead_ContinuousRod.label>連續桿彈頭</DMSE_Light_Warhead_ContinuousRod.label>
-  <DMSE_Light_Warhead_ContinuousRod.description>一圈在引爆時向外展開的鋼條，專門撕裂飛行目標。能提高攔截彈的命中率。</DMSE_Light_Warhead_ContinuousRod.description>
+  <DMSE_Light_Warhead_ContinuousRod.description>一圈在引爆時能夠飛射出破片的末端結構，能夠用破片提高攔截彈的命中率。</DMSE_Light_Warhead_ContinuousRod.description>
   <DMSE_Light_Guidance_Inertial.label>慣性導引</DMSE_Light_Guidance_Inertial.label>
   <DMSE_Light_Guidance_Inertial.description>沒有尋標器的基本慣性導引，導彈沿預設航線飛行。落點散布在目標地圖中央附近，不會鎖定建築或生物。</DMSE_Light_Guidance_Inertial.description>
   <DMSE_Light_Guidance_IR.label>熱訊號導引頭</DMSE_Light_Guidance_IR.label>
-  <DMSE_Light_Guidance_IR.description>一種追蹤熱源的被動紅外線尋標器。若有室內房間比室外熱至少 15°C，會鎖定其中最熱的一間；否則鎖定地圖上體型最大的生物。兩者都找不到時改用慣性導引。</DMSE_Light_Guidance_IR.description>
+  <DMSE_Light_Guidance_IR.description>一種追蹤熱源的被動紅外線尋標器。若有室內房間比室外熱至少 15°C，會鎖定其中最熱的一間；沒有任何有效目標時會按照慣性墜落。</DMSE_Light_Guidance_IR.description>
   <DMSE_Light_Guidance_AntiRadiation.label>反輻射導引頭</DMSE_Light_Guidance_AntiRadiation.label>
-  <DMSE_Light_Guidance_AntiRadiation.description>一種追蹤雷達電波的尋標器。會鎖定目標地圖上功率最大、且正在開機的敵方雷達；找不到時改鎖耗電最多的建築，再不行才改用慣性導引。被動聲學反射鏡對它來說是隱形的。</DMSE_Light_Guidance_AntiRadiation.description>
+  <DMSE_Light_Guidance_AntiRadiation.description>一種追蹤雷達電波的尋標器。會鎖定目標地圖上功率最大、且正在開機的敵方雷達；沒有任何有效目標時會按照慣性墜落。</DMSE_Light_Guidance_AntiRadiation.description>
   <DMSE_Light_Guidance_Laser.label>雷射導引頭</DMSE_Light_Guidance_Laser.label>
-  <DMSE_Light_Guidance_Laser.description>一種半主動雷射尋標器。會追向殖民地最近一次在目標地圖上以雷射目標標定器標記的位置；沒有標記時改用慣性導引。</DMSE_Light_Guidance_Laser.description>
+  <DMSE_Light_Guidance_Laser.description>一種半主動雷射尋標器。會鎖定目標地圖上以雷射標定器標記的位置；沒有任何有效目標時會按照慣性墜落。</DMSE_Light_Guidance_Laser.description>
   <DMSE_Light_Payload_None.label>無酬載</DMSE_Light_Payload_None.label>
-  <DMSE_Light_Payload_None.description>沒有二次裝藥，全靠彈頭本身。</DMSE_Light_Payload_None.description>
+  <DMSE_Light_Payload_None.description>無酬載</DMSE_Light_Payload_None.description>
   <DMSE_Light_Payload_HighExplosive.label>高爆酬載</DMSE_Light_Payload_HighExplosive.label>
   <DMSE_Light_Payload_HighExplosive.description>在彈頭之後引爆的第二道高爆裝藥，能擴大傷害半徑。</DMSE_Light_Payload_HighExplosive.description>
   <DMSE_Light_Payload_Decoy.label>誘餌酬載</DMSE_Light_Payload_Decoy.label>
-  <DMSE_Light_Payload_Decoy.description>以雷達反射器與訊號增強器取代二次裝藥。導彈在敵方雷達上看起來大上一倍，會更早被偵測，也會優先吸引依大小排序威脅的防空火力。不增加傷害。</DMSE_Light_Payload_Decoy.description>
+  <DMSE_Light_Payload_Decoy.description>以雷達反射器與訊號增強器取代二次裝藥。使導彈在敵方雷達上看起來大上一倍，會更早被偵測也會優先吸引防空火力。</DMSE_Light_Payload_Decoy.description>
   <DMSE_Light_Payload_ToxicGas.label>毒氣酬載</DMSE_Light_Payload_ToxicGas.label>
-  <DMSE_Light_Payload_ToxicGas.description>釋放一團有毒氣體，爆炸後仍會久久不散，讓沒有防護的人無法靠近。</DMSE_Light_Payload_ToxicGas.description>
+  <DMSE_Light_Payload_ToxicGas.description>在觸地引爆後釋放一團有毒氣體。</DMSE_Light_Payload_ToxicGas.description>
   <DMSE_Ballistic_Warhead_Thermonuclear.label>熱核彈頭</DMSE_Ballistic_Warhead_Thermonuclear.label>
-  <DMSE_Ballistic_Warhead_Thermonuclear.description>一枚熱核彈頭。沒有任何特殊效果，也不需要。</DMSE_Ballistic_Warhead_Thermonuclear.description>
+  <DMSE_Ballistic_Warhead_Thermonuclear.description>一枚熱核彈頭。沒有任何特殊效果。</DMSE_Ballistic_Warhead_Thermonuclear.description>
   <DMSE_Ballistic_Warhead_Airburst.label>空爆彈頭</DMSE_Ballistic_Warhead_Airburst.label>
-  <DMSE_Ballistic_Warhead_Airburst.description>在目標上空引爆、把破片灑向大範圍的彈頭。用於攔截彈時，每次接戰都能多擲幾次命中判定。</DMSE_Ballistic_Warhead_Airburst.description>
+  <DMSE_Ballistic_Warhead_Airburst.description>在目標上空引爆、把破片灑向大範圍的彈頭。裝配在防空攔截彈時，能夠一次對多枚攔截目標生效。</DMSE_Ballistic_Warhead_Airburst.description>
   <DMSE_Ballistic_Warhead_ClusterBomblet.label>子母彈彈頭</DMSE_Ballistic_Warhead_ClusterBomblet.label>
-  <DMSE_Ballistic_Warhead_ClusterBomblet.description>在目標上空開啟、灑出大量小型破片子彈的彈頭。每枚子彈各自落下，把傷害分散到整片區域，而不是集中在一點。</DMSE_Ballistic_Warhead_ClusterBomblet.description>
+  <DMSE_Ballistic_Warhead_ClusterBomblet.description>灑出大量小型破片子彈的彈頭。每枚子彈各自落下將爆炸散佈到整片區域。</DMSE_Ballistic_Warhead_ClusterBomblet.description>
   <DMSE_Ballistic_Warhead_TungstenPenetrator.label>鎢合金穿透彈頭</DMSE_Ballistic_Warhead_TungstenPenetrator.label>
-  <DMSE_Ballistic_Warhead_TungstenPenetrator.description>一根高密度鎢棒，能貫穿厚頂後在內部引爆。地下掩體擋不住它。</DMSE_Ballistic_Warhead_TungstenPenetrator.description>
+  <DMSE_Ballistic_Warhead_TungstenPenetrator.description>一根高密度鎢棒，能夠貫穿厚岩頂後引爆，非常適合對付地下掩體工事。</DMSE_Ballistic_Warhead_TungstenPenetrator.description>
   <DMSE_Ballistic_Guidance_Inertial.label>慣性導引</DMSE_Ballistic_Guidance_Inertial.label>
-  <DMSE_Ballistic_Guidance_Inertial.description>基本的慣性導引。彈頭夠大時，精度幾乎無關緊要。落點散布在目標地圖中央附近，不會鎖定建築或生物。</DMSE_Ballistic_Guidance_Inertial.description>
+  <DMSE_Ballistic_Guidance_Inertial.description>基本的慣性導引，基本上就是只能確保導彈能夠落在這片區域內。落點會散布在目標地圖中央附近。</DMSE_Ballistic_Guidance_Inertial.description>
   <DMSE_Ballistic_Guidance_FireControl.label>火控導引</DMSE_Ballistic_Guidance_FireControl.label>
-  <DMSE_Ballistic_Guidance_FireControl.description>由殖民地火控雷達網協助的末端導引，能大幅縮小落點散布。</DMSE_Ballistic_Guidance_FireControl.description>
+  <DMSE_Ballistic_Guidance_FireControl.description>一種由火控雷達輔助修正位置的末端導引，能大幅縮小落點散布。</DMSE_Ballistic_Guidance_FireControl.description>
   <DMSE_Ballistic_Guidance_Laser.label>雷射末端導引頭</DMSE_Ballistic_Guidance_Laser.label>
-  <DMSE_Ballistic_Guidance_Laser.description>一種半主動雷射尋標器。會追向殖民地最近一次在目標地圖上以雷射目標標定器標記的位置；沒有標記時改用慣性導引。</DMSE_Ballistic_Guidance_Laser.description>
+  <DMSE_Ballistic_Guidance_Laser.description>一種半主動雷射尋標器。會鎖定目標地圖上以雷射標定器標記的位置；沒有標記時改用慣性導引。</DMSE_Ballistic_Guidance_Laser.description>
   <DMSE_Ballistic_Payload_None.label>無酬載</DMSE_Ballistic_Payload_None.label>
   <DMSE_Ballistic_Payload_None.description>沒有二次裝藥，全靠彈頭本身。</DMSE_Ballistic_Payload_None.description>
   <DMSE_Ballistic_Payload_Cluster.label>集束酬載</DMSE_Ballistic_Payload_Cluster.label>
@@ -68,11 +68,11 @@
   <DMSE_AdvLight_Warhead_HEAT.label>串聯成型裝藥彈頭</DMSE_AdvLight_Warhead_HEAT.label>
   <DMSE_AdvLight_Warhead_HEAT.description>一枚串聯聚能彈頭。前置的小裝藥先破除反應裝甲，主裝藥再把傷害送進目標內部。爆炸範圍小，但傷害集中。</DMSE_AdvLight_Warhead_HEAT.description>
   <DMSE_AdvLight_Warhead_BlastFrag.label>破片殺傷彈頭</DMSE_AdvLight_Warhead_BlastFrag.label>
-  <DMSE_AdvLight_Warhead_BlastFrag.description>一枚外殼厚重、預製破片的爆破殺傷彈頭。犧牲穿透力，換取對步兵與輕型建築更大的殺傷半徑。</DMSE_AdvLight_Warhead_BlastFrag.description>
+  <DMSE_AdvLight_Warhead_BlastFrag.description>一枚外殼厚重、預製破片的爆破殺傷彈頭。犧牲穿透力，換取對步兵更有效的殺傷範圍。</DMSE_AdvLight_Warhead_BlastFrag.description>
   <DMSE_AdvLight_Warhead_Thermobaric.label>溫壓彈頭</DMSE_AdvLight_Warhead_Thermobaric.label>
-  <DMSE_AdvLight_Warhead_Thermobaric.description>一枚以燃燒取代破片的溫壓彈頭。爆炸範圍小，但在房間或掩體內造成的燒傷與火災遠比在空曠處嚴重。</DMSE_AdvLight_Warhead_Thermobaric.description>
+  <DMSE_AdvLight_Warhead_Thermobaric.description>一枚以燃燒取代破片的溫壓彈頭。爆炸範圍小，但能有效對室內及掩體內的敵人造成殺傷。</DMSE_AdvLight_Warhead_Thermobaric.description>
   <DMSE_AdvLight_Warhead_Kinetic.label>動能刀刃彈頭</DMSE_AdvLight_Warhead_Kinetic.label>
-  <DMSE_AdvLight_Warhead_Kinetic.description>一枚幾乎不含炸藥、會彈出刀片的惰性彈頭。能殺死被擊中的生物，同時讓周圍幾乎毫髮無傷。</DMSE_AdvLight_Warhead_Kinetic.description>
+  <DMSE_AdvLight_Warhead_Kinetic.description>一枚幾乎不含炸藥、會彈出刀片的惰性彈頭。具有優秀的對人員殺傷能力。</DMSE_AdvLight_Warhead_Kinetic.description>
   <DMSE_AdvLight_Guidance_Inertial.label>慣性導引</DMSE_AdvLight_Guidance_Inertial.label>
   <DMSE_AdvLight_Guidance_Inertial.description>廉價的慣性導引，沒有尋標器也沒有末端導引，無法打擊其他地圖層。落點散布在目標地圖中央附近，不會鎖定建築或生物。</DMSE_AdvLight_Guidance_Inertial.description>
   <DMSE_AdvLight_Guidance_Imaging.label>自動影像尋標器</DMSE_AdvLight_Guidance_Imaging.label>
@@ -80,27 +80,27 @@
   <DMSE_AdvLight_Guidance_IIR.label>影像紅外線導引頭</DMSE_AdvLight_Guidance_IIR.label>
   <DMSE_AdvLight_Guidance_IIR.description>一種紅外線成像尋標器。若有封閉房間比室外熱至少 15°C，會鎖定其中最熱的一間；否則鎖定目標地圖上體型最大的生物。射後不理，不需要操作員、視線或雷射。</DMSE_AdvLight_Guidance_IIR.description>
   <DMSE_AdvLight_Guidance_Laser.label>半主動雷射導引頭</DMSE_AdvLight_Guidance_Laser.label>
-  <DMSE_AdvLight_Guidance_Laser.description>一種半主動雷射尋標器，會追向殖民地最近一次在目標地圖上以雷射目標標定器標記的位置。是這款導彈精度最高的尋標器，但必須有人標定目標。</DMSE_AdvLight_Guidance_Laser.description>
+  <DMSE_AdvLight_Guidance_Laser.description>一種半主動雷射尋標器。會鎖定目標地圖上以雷射標定器標記的位置；沒有標記時改用慣性導引。</DMSE_AdvLight_Guidance_Laser.description>
   <DMSE_AdvLight_Guidance_MMW.label>毫米波雷達導引頭</DMSE_AdvLight_Guidance_MMW.label>
   <DMSE_AdvLight_Guidance_MMW.description>一種射後不理的毫米波雷達尋標器。會鎖定佔地最大的敵方建築；沒有建築時鎖定體型最大的敵方生物。不需要標定器、操作員，也不怕壞天氣。</DMSE_AdvLight_Guidance_MMW.description>
   <DMSE_AdvLight_Payload_None.label>無酬載</DMSE_AdvLight_Payload_None.label>
-  <DMSE_AdvLight_Payload_None.description>沒有二次裝藥，全靠彈頭本身，讓導彈保持輕巧、射程更遠。</DMSE_AdvLight_Payload_None.description>
+  <DMSE_AdvLight_Payload_None.description>無酬載。</DMSE_AdvLight_Payload_None.description>
   <DMSE_AdvLight_Payload_HE.label>次級高爆裝藥</DMSE_AdvLight_Payload_HE.label>
   <DMSE_AdvLight_Payload_HE.description>在彈頭之後引爆的小型第二道裝藥，能稍微擴大傷害半徑。</DMSE_AdvLight_Payload_HE.description>
   <DMSE_AdvLight_Payload_FragSleeve.label>破片套筒</DMSE_AdvLight_Payload_FragSleeve.label>
   <DMSE_AdvLight_Payload_FragSleeve.description>一圈包在彈頭外的預製破片套筒。會在落點灑出密集破片，重創暴露在外的步兵，但重量會讓導彈射程少四分之一。</DMSE_AdvLight_Payload_FragSleeve.description>
   <DMSE_AdvLight_Payload_Chaff.label>箔條投放器</DMSE_AdvLight_Payload_Chaff.label>
-  <DMSE_AdvLight_Payload_Chaff.description>一具箔條與雷達吸收絲帶撒布器。每一束都能擺脫一次敵方火控鎖定，但數量有限，在被鎖定前也無法讓導彈更難被發現。</DMSE_AdvLight_Payload_Chaff.description>
+  <DMSE_AdvLight_Payload_Chaff.description>一具箔條與雷達吸收絲帶撒布器。每一束都能擺脫一次敵方火控鎖定，但數量有限。</DMSE_AdvLight_Payload_Chaff.description>
   <DMSE_AdvCruise_Warhead_Unitary.label>單一穿透彈頭</DMSE_AdvCruise_Warhead_Unitary.label>
   <DMSE_AdvCruise_Warhead_Unitary.description>一枚以輕量堅固外殼包覆的單一大型裝藥。威力勝過舊式射門手彈頭，並能在引爆前貫穿屋頂。</DMSE_AdvCruise_Warhead_Unitary.description>
   <DMSE_AdvCruise_Warhead_Penetrator.label>硬目標穿透彈頭</DMSE_AdvCruise_Warhead_Penetrator.label>
-  <DMSE_AdvCruise_Warhead_Penetrator.description>一種高密度鎢製穿透體，能貫穿厚頂與上方山體後在內部引爆。地下掩體擋不住它。</DMSE_AdvCruise_Warhead_Penetrator.description>
+  <DMSE_AdvCruise_Warhead_Penetrator.description>一種高密度鎢製穿透體，能貫穿厚頂與上方山體後在內部引爆。</DMSE_AdvCruise_Warhead_Penetrator.description>
   <DMSE_AdvCruise_Guidance_TerrainMatch.label>地形比對導引</DMSE_AdvCruise_Guidance_TerrainMatch.label>
-  <DMSE_AdvCruise_Guidance_TerrainMatch.description>把下方地形與預存地圖比對的導引方式，落點散布非常小。飛行中無法更改目標，也沒有末端導引，目標一旦移動就會落空。落點散布在目標地圖中央附近，不會鎖定建築或生物。</DMSE_AdvCruise_Guidance_TerrainMatch.description>
+  <DMSE_AdvCruise_Guidance_TerrainMatch.description>把下方地形與預存地圖比對的導引方式，落點散布非常小。飛行中無法更改目標，也沒有末端導引，目標一旦移動就會落空。落點散布在目標中心附近。</DMSE_AdvCruise_Guidance_TerrainMatch.description>
   <DMSE_AdvCruise_Guidance_Datalink.label>雙向資料鏈</DMSE_AdvCruise_Guidance_Datalink.label>
-  <DMSE_AdvCruise_Guidance_Datalink.description>一套雙向衛星資料鏈。導彈可在飛行中更改目標；抵達目標地圖時遊戲會暫停，讓你選擇落點。是精度最高的選項，也是唯一能在飛行途中追擊移動目標的選項。</DMSE_AdvCruise_Guidance_Datalink.description>
+  <DMSE_AdvCruise_Guidance_Datalink.description>一套雙向衛星資料鏈。抵達目標地圖時能夠讓你選擇末端落點。精度非常高但需要額外的火控通道占用。</DMSE_AdvCruise_Guidance_Datalink.description>
   <DMSE_AdvCruise_Guidance_AntiShip.label>反艦雷達導引頭</DMSE_AdvCruise_Guidance_AntiShip.label>
-  <DMSE_AdvCruise_Guidance_AntiShip.description>一種專為移動目標設計的主動雷達尋標器，對付船艦與世界地圖上其他可移動的據點。修正航向的次數比一般尋標器多，但目標若移出剩餘射程，導彈仍會落空。</DMSE_AdvCruise_Guidance_AntiShip.description>
+  <DMSE_AdvCruise_Guidance_AntiShip.description>一種專為移動目標設計的主動雷達尋標器，能夠有效攻擊水上艦船或軌道太空船等具備移動能力的目標。能夠多次修正航向，但目標的機動性如果超出射程仍會落空。</DMSE_AdvCruise_Guidance_AntiShip.description>
   <DMSE_AdvCruise_Propulsion_Turbofan.label>渦輪扇續航引擎</DMSE_AdvCruise_Propulsion_Turbofan.label>
   <DMSE_AdvCruise_Propulsion_Turbofan.description>一具省油的小型渦輪扇引擎。航程遠勝火箭發動機，也較難被雷達發現，但速度慢。</DMSE_AdvCruise_Propulsion_Turbofan.description>
   <DMSE_AdvCruise_Propulsion_TurbofanER.label>增程渦輪扇</DMSE_AdvCruise_Propulsion_TurbofanER.label>
@@ -116,9 +116,9 @@
   <DMSE_AdvCruise_Payload_Decoy.label>誘餌酬載</DMSE_AdvCruise_Payload_Decoy.label>
   <DMSE_AdvCruise_Payload_Decoy.description>以雷達反射器與訊號增強器取代二次裝藥。導彈在敵方雷達上看起來大上一倍，會更早被偵測，也會優先吸引依大小排序威脅的防空火力。不增加傷害。</DMSE_AdvCruise_Payload_Decoy.description>
   <DMSE_AdvCruise_Payload_Chaff.label>箔條投放器</DMSE_AdvCruise_Payload_Chaff.label>
-  <DMSE_AdvCruise_Payload_Chaff.description>一具較大的箔條與雷達吸收絲帶撒布器。每一束都能擺脫一次敵方火控鎖定；數量比輕型版多，但飛行中無法補充。</DMSE_AdvCruise_Payload_Chaff.description>
+  <DMSE_AdvCruise_Payload_Chaff.description>一具較大的箔條與雷達吸收絲帶撒布器，能夠在飛行中發射來擺脫敵方的火控鎖定。</DMSE_AdvCruise_Payload_Chaff.description>
   <DMSE_AdvBallistic_Warhead_LowYield.label>低當量彈頭</DMSE_AdvBallistic_Warhead_LowYield.label>
-  <DMSE_AdvBallistic_Warhead_LowYield.description>一枚縮小成戰術用途的戰略彈頭。傷害不如完整的熱核彈頭，但便宜得多。</DMSE_AdvBallistic_Warhead_LowYield.description>
+  <DMSE_AdvBallistic_Warhead_LowYield.description>一枚縮小成戰術用途的戰略彈頭。</DMSE_AdvBallistic_Warhead_LowYield.description>
   <DMSE_AdvBallistic_Guidance_Stellar.label>星光慣性導引</DMSE_AdvBallistic_Guidance_Stellar.label>
   <DMSE_AdvBallistic_Guidance_Stellar.description>飛行途中以觀星修正的慣性導引，幾乎沒有落點散布。但沒有末端尋標器，目標一旦移動仍會落空。落點散布在目標地圖中央附近，不會鎖定建築或生物。</DMSE_AdvBallistic_Guidance_Stellar.description>
   <DMSE_AdvBallistic_Payload_Penaids.label>突防誘餌</DMSE_AdvBallistic_Payload_Penaids.label>
@@ -126,11 +126,11 @@
   <DMSE_AdvBallistic_Payload_MIRV.label>多彈頭重返載具</DMSE_AdvBallistic_Payload_MIRV.label>
   <DMSE_AdvBallistic_Payload_MIRV.description>在飛行途中釋放三枚獨立重返載具的彈頭匯流排。每枚都帶著導彈的戰鬥部與導引，沿自己的航跡飛行，必須逐一擊落，敵方每枚彈頭都要用掉一條火控通道與一枚攔截彈。三枚全部打擊同一目標。\n\n在釋放前擊落匯流排，所有彈頭會一次全毀。</DMSE_AdvBallistic_Payload_MIRV.description>
   <DMSE_Payload_None.label>無酬載</DMSE_Payload_None.label>
-  <DMSE_Payload_None.description>沒有二次裝藥，全靠彈頭本身，讓導彈保持輕巧、射程更遠。</DMSE_Payload_None.description>
+  <DMSE_Payload_None.description>無酬載。</DMSE_Payload_None.description>
   <DMSE_Guidance_AntiShip.label>反艦雷達導引頭</DMSE_Guidance_AntiShip.label>
   <DMSE_Guidance_AntiShip.description>一種專為移動目標設計的主動雷達尋標器，對付船艦與世界地圖上其他可移動的據點。修正航向的次數比一般尋標器多，但目標若移出剩餘射程，導彈仍會落空。</DMSE_Guidance_AntiShip.description>
   <DMSE_Light_Payload_Chaff.label>箔條投放器</DMSE_Light_Payload_Chaff.label>
-  <DMSE_Light_Payload_Chaff.description>一束箔條與雷達吸收絲帶。能擺脫一次敵方火控鎖定，之後就用完了。</DMSE_Light_Payload_Chaff.description>
+  <DMSE_Light_Payload_Chaff.description>一束箔條與雷達吸收絲帶，能夠在飛行中發射來擺脫敵方的火控鎖定。</DMSE_Light_Payload_Chaff.description>
 
   <DMSE_Light_Guidance_SemiActive.label>半主動雷達導引頭</DMSE_Light_Guidance_SemiActive.label>
   <DMSE_Light_Guidance_SemiActive.description>一種追蹤火控雷達照射目標反射波的半主動雷達尋標器。專為攔截設計；對地攻擊時改用散布很小的慣性導引。</DMSE_Light_Guidance_SemiActive.description>
@@ -144,8 +144,8 @@
   <DMSE_AdvCruise_Payload_BunkerBuster.description>一種強化外殼、延時引信的穿透裝藥。能鑽穿厚岩頂後在內部引爆，摧毀附近的建築。\n\n沒有它或穿透彈頭時，擊中山體的導彈只會在岩石表面爆炸，尋標器也會忽略厚頂之下的目標。</DMSE_AdvCruise_Payload_BunkerBuster.description>
   <!-- EN: MIRV with decoys -->
   <DMSE_AdvBallistic_Payload_MIRVDecoy.label>分導突防載具</DMSE_AdvBallistic_Payload_MIRVDecoy.label>
-  <DMSE_AdvBallistic_Payload_MIRVDecoy.description>彈頭匯流排以隨機順序放出兩枚重返載具與三枚重型誘餌。誘餌在雷達上和彈頭一模一樣，而且會一路落到目標，敵方會把火控通道、攔截彈與迫近防禦的火力浪費在它們身上。兩枚彈頭都帶著導彈的戰鬥部與導引，打擊同一目標。\n\n在釋放前擊落匯流排，所有東西會一次全毀。</DMSE_AdvBallistic_Payload_MIRVDecoy.description>
+  <DMSE_AdvBallistic_Payload_MIRVDecoy.description>彈頭匯流排以隨機順序放出兩枚重返載具與三枚重型誘餌。誘餌在雷達上和彈頭一模一樣，而且會一路落到目標。兩枚彈頭都帶著導彈的戰鬥部與導引，打擊同一目標。\n\n在釋放前擊落彈體將能夠阻止其釋放末端彈藥。</DMSE_AdvBallistic_Payload_MIRVDecoy.description>
   <!-- EN: decoy warheads -->
   <DMSE_AdvBallistic_Payload_Decoys.label>誘餌彈頭</DMSE_AdvBallistic_Payload_Decoys.label>
-  <DMSE_AdvBallistic_Payload_Decoys.description>真導彈繼續飛行時，途中放出四枚充氣誘餌與一枚重型假彈頭。在雷達上每一枚都像導彈本身，敵方必須把火控通道與攔截彈分給它們。輕型誘餌在重返大氣層時燒毀；重型誘餌會落到目標，但不會爆炸。</DMSE_AdvBallistic_Payload_Decoys.description>
+  <DMSE_AdvBallistic_Payload_Decoys.description>在導彈飛行中途放出四枚反射器誘餌與一枚假彈頭，在雷達上有近似導彈的外形與紅外特偵。輕型誘餌在重返大氣層時燒毀，而重型誘餌雖然會參與末端突防但沒有實際的殺傷性。</DMSE_AdvBallistic_Payload_Decoys.description>
 </LanguageData>

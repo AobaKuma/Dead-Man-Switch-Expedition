@@ -2,8 +2,8 @@
 <LanguageData>
 
   <DMSE_MissileBody_Loiter.label>反艦巡飛彈</DMSE_MissileBody_Loiter.label>
-  <DMSE_MissileBody_Loiter.description>一種折疊翼反艦巡飛彈，以小型渦輪噴射引擎推進。速度慢、容易被發現，末段由彈體末端的雷達選定目標，並能夠修正航跡追擊移動中的船艦。</DMSE_MissileBody_Loiter.description>
+  <DMSE_MissileBody_Loiter.description>一種折疊翼反艦巡飛彈，以小型渦輪噴射引擎推進。末段由彈體末端的雷達選定目標，並能夠修正航跡追擊移動中的船艦。</DMSE_MissileBody_Loiter.description>
   <DMSE_MissileBody_Light.label>輕型導彈彈體</DMSE_MissileBody_Light.label>
-  <DMSE_MissileBody_Light.description>一種小型單節導彈彈體。飛得比巡飛彈快、也更遠，但載重不如巡航導彈。\n\n可裝配彈頭、導引與酬載。</DMSE_MissileBody_Light.description>
+  <DMSE_MissileBody_Light.description>一種小型單節導彈彈體。飛得比巡飛彈快更遠，但載重不如巡航導彈。\n\n可裝配彈頭、導引與酬載。</DMSE_MissileBody_Light.description>
 
 </LanguageData>
