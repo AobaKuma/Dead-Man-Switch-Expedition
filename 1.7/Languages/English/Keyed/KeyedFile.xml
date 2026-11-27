@@ -5,27 +5,8 @@
   <DMSE.MissileBase.NextFireIn>Next missile strike in: {0}</DMSE.MissileBase.NextFireIn>
   <DMSE.MissileBase.LocalMonitoring>Position detected (local map under observation)</DMSE.MissileBase.LocalMonitoring>
   <DMSE.MissileBase.RelocationIn>Position relocating in: {0}</DMSE.MissileBase.RelocationIn>
-  <DMSE.MissileBase.Relocated>Missile position relocated</DMSE.MissileBase.Relocated>
-  <DMSE.MissileBase.RelocatedDesc>An enemy missile launch position has completed its strike mission and relocated to avoid counteraction.</DMSE.MissileBase.RelocatedDesc>
-  <DMSE.MissileBase.Destroyed>Missile position destroyed</DMSE.MissileBase.Destroyed>
-  <DMSE.MissileBase.DestroyedDesc>Your colonists have destroyed every fire-control radar at the enemy missile position. Without fire control it can no longer launch, and the missile threat from this position has been neutralized.\n\nThe position's map stays open until observation ends and no colonists remain there, so you can still send a shuttle to loot it.</DMSE.MissileBase.DestroyedDesc>
   <DMSE.MissileBase.ReentryBlockedIn>Ground access denied: enemy regrouping ({0})</DMSE.MissileBase.ReentryBlockedIn>
-  <DMSE.MissileBase.ReentryBlocked>Access denied: enemy regrouping ({0})</DMSE.MissileBase.ReentryBlocked>
-  <DMSE.MissileBase.ReentryBlockStarted>{0}: its fire-control radars still stand and the enemy is regrouping. Ground access is blocked for {1}; the position will be fully rebuilt.</DMSE.MissileBase.ReentryBlockStarted>
-  <DMSE.MissileBase.ObjectivesAlert>Missile position: {0} fire-control radars left</DMSE.MissileBase.ObjectivesAlert>
-  <DMSE.MissileBase.ObjectivesAlertDesc>Destroy every fire-control radar to neutralize this position ({0} left). Launchers and search radars do not need to be destroyed.
-
-If you withdraw while a fire-control radar still stands, the enemy regroups: the position stays on the world map and keeps firing, your return is blocked for a while, and it is fully rebuilt on your next visit.
-
-Click to cycle through the remaining targets.</DMSE.MissileBase.ObjectivesAlertDesc>
-  <DMSE.MissileBase.ArrivedLetter>Your pawns have arrived at a missile launch position. The enemy has deployed fire control radars and launch vehicles here, continuously striking nearby colonies. Destroy every fire-control radar to neutralize the position; if you withdraw while a fire-control radar still stands, the enemy regroups and blocks your return for a while.</DMSE.MissileBase.ArrivedLetter>
   <DMSE.MissileBase.SiteDesc>A mobile tactical ballistic missile launch position equipped with fire control radar and missile launchers. The position will relocate after completing its mission.</DMSE.MissileBase.SiteDesc>
-  <DMSE.MissileBase.SupplyDrop>Enemy supply drop: {0} ×{1}</DMSE.MissileBase.SupplyDrop>
-  <DMSE.MissileBase.RackResupply>Enemy missile airdrop: {1} missiles</DMSE.MissileBase.RackResupply>
-  <DMSE.MissileBase.TurretAmmoDrop>Enemy ammo airdrop: {1} ×{0}</DMSE.MissileBase.TurretAmmoDrop>
-  <DMSE.FieldLaunchSite.ArrivedLetter>Your pawns have arrived at an enemy field launch position. A search radar sits at its centre, with launch positions, ammunition carriers and crew shelters spread around it. Supply pods keep the garrison fed while any radar is operational. Destroy every fire-control radar to neutralize the position; if you withdraw while a fire-control radar still stands, the enemy regroups and blocks your return for a while.</DMSE.FieldLaunchSite.ArrivedLetter>
-  <DMSE.FieldLaunchSite.SpawnedLetter>{0} has deployed a field missile launch position {3} tiles {2} of {1}. Its launchers can strike your colony; supply pods will keep its garrison fed while its radars run.\n\nDestroy every fire-control radar to neutralize it; knocking out all its radars also cuts off its supplies.</DMSE.FieldLaunchSite.SpawnedLetter>
-  <DMSE.EarlyLaunchSite.ArrivedLetter>Your pawns have arrived at an enemy missile position. Acoustic mirrors listen for aircraft while a hand-aimed fire-control radar and launch rails send out slow pulsejet loitering munitions. Destroy its fire-control radar to neutralize it; the radar stops firing if its crew or its wood-fired generators are lost. If you retreat with a fire-control radar still standing, the enemy will rebuild its defenses and you cannot return for a while.</DMSE.EarlyLaunchSite.ArrivedLetter>
   <DMSE.EarlyLaunchSite.SpawnedLetter>{0} has set up a missile position {3} tiles {2} of {1}. Its slow pulsejet loitering munitions can strike your colony, and it has no interceptors of its own.\n\nDestroy its fire-control radar to neutralize it.</DMSE.EarlyLaunchSite.SpawnedLetter>
 
   <ScorerLaunch>Launch Missile</ScorerLaunch>
@@ -42,34 +23,9 @@ Click to cycle through the remaining targets.</DMSE.MissileBase.ObjectivesAlertD
   <DMSE.Alert.HuntdownThreatCritical>Huntdown approaching</DMSE.Alert.HuntdownThreatCritical>
   <DMSE.Alert.HuntdownThreatCritical.Desc>the position of Stele has been tracked down, hunting squad and possible air strike will arrive in no time, transfer before it's too late.</DMSE.Alert.HuntdownThreatCritical.Desc>
 
-  <DMSE.Alert.Pods>{0} incoming threats, interception window: {1} left</DMSE.Alert.Pods>
-  <DMSE.Alert.Pods.Loitering>{0} missiles loitering overhead, {1} before they dive</DMSE.Alert.Pods.Loitering>
-  <!-- Tooltip detail lines for incoming-threat alert -->
-  <DMSE.Alert.Pods.Window.Midcourse>Midcourse intercept window: {0}</DMSE.Alert.Pods.Window.Midcourse>
-  <DMSE.Alert.Pods.Window.Terminal>Terminal (CIWS) window: {0}</DMSE.Alert.Pods.Window.Terminal>
-  <DMSE.Alert.Pods.Window.Loitering>Loiter time left: {0}</DMSE.Alert.Pods.Window.Loitering>
-  <DMSE.Alert.Pods.Target>  · {0}  [{1}]</DMSE.Alert.Pods.Target>
-  <DMSE.Alert.Pods.Status.InFlight>interceptor in flight</DMSE.Alert.Pods.Status.InFlight>
-  <DMSE.Alert.Pods.Status.Locking>fire control locking</DMSE.Alert.Pods.Status.Locking>
-  <DMSE.Alert.Pods.Status.Unengaged>unengaged</DMSE.Alert.Pods.Status.Unengaged>
-  <DMSE.Alert.Pods.Status.Loitering>loitering, waiting for a target</DMSE.Alert.Pods.Status.Loitering>
-  <!-- BVR system status alert (independent from incoming-threat alert) -->
-  <DMSE.Alert.BVRStatus.Label>BVR System</DMSE.Alert.BVRStatus.Label>
-  <DMSE.Alert.BVRStatus.SearchRadars>Search radars:</DMSE.Alert.BVRStatus.SearchRadars>
-  <DMSE.Alert.BVRStatus.SearchRadar.Line>  · {0}  range {1}, anti-stealth {2}, power {3}  [{4}]</DMSE.Alert.BVRStatus.SearchRadar.Line>
-  <DMSE.Alert.BVRStatus.FireControlRadars>Fire control radars:</DMSE.Alert.BVRStatus.FireControlRadars>
-  <DMSE.Alert.BVRStatus.FireControl.Line>  · {0}  {1} ch, power {2}  [{3}]</DMSE.Alert.BVRStatus.FireControl.Line>
-  <DMSE.Alert.BVRStatus.FireControl.Occupied>  Channels occupied: {0} / {1}</DMSE.Alert.BVRStatus.FireControl.Occupied>
-  <DMSE.Alert.BVRStatus.None>  (none installed)</DMSE.Alert.BVRStatus.None>
 
   <!-- Building rename (button drawn by Patch_InspectPaneRename; uses vanilla Dialog_Rename) -->
 
-  <DMSE.Flight.Select>Select flight mode</DMSE.Flight.Select>
-  <DMSE.Flight.Regular>Regular flight</DMSE.Flight.Regular>
-  <DMSE.Flight.Transfer>Transfer flight</DMSE.Flight.Transfer>
-  <DMSE.Flight.ShowAdvanced>Show advanced options</DMSE.Flight.ShowAdvanced>
-  <DMSE.Flight.Impact>Impact flight</DMSE.Flight.Impact>
-  <DMSE.Flight.ImpactHard>Hard impact flight</DMSE.Flight.ImpactHard>
 
   <DMSE.Cannot.Reason.Null>Cannot transfer: ship state invalid.</DMSE.Cannot.Reason.Null>
   <DMSE.Cannot.Reason.NotInSpace>Cannot transfer: must be in space.</DMSE.Cannot.Reason.NotInSpace>
@@ -80,9 +36,6 @@ Click to cycle through the remaining targets.</DMSE.MissileBase.ObjectivesAlertD
   <DMSE.Disabled.DestinationOccupied>Cannot transfer: destination occupied.</DMSE.Disabled.DestinationOccupied>
   <DMSE.Disabled.TargetedSurface>Cannot transfer: destination must be in space.</DMSE.Disabled.TargetedSurface>
 
-  <DMSE.Flight.Select.Desc>A valid flight module is installed on this ship. Please choose a flight mode:</DMSE.Flight.Select.Desc>
-  <DMSE.Flight.Impact.Header>Your colonists know this is a real option, but not a wise one.</DMSE.Flight.Impact.Header>
-  <DMSE.Flight.Impact.Confirm>Even while the navigation console flashes crimson warnings, it still shows a feasible acceleration profile.\n\nBy activating the hard impact protocol, the fusion core will output full power under overload conditions, allowing the nuclear-thermal engines to accelerate this ship toward the planet at maximum thrust and collide with the surface.\n\nThis will turn both the ship and its momentum into an effective high-yield kinetic weapon, causing irreversible damage to the planet.\n\n\n\nAre you sure you want to proceed?</DMSE.Flight.Impact.Confirm>
 
   <DMSE_ShipWarmUpBegin>Fusion core heating up. Launching procedure in 6...</DMSE_ShipWarmUpBegin>
   <DMSE_ShipWarmUpCountdown>Launching procedure in {0}</DMSE_ShipWarmUpCountdown>
@@ -100,97 +53,13 @@ Click to cycle through the remaining targets.</DMSE.MissileBase.ObjectivesAlertD
   <DMSE_Crater>{0} Crater</DMSE_Crater>
   
   <DMS_Exist>Map visible countdown:{0}</DMS_Exist>
-  <!-- Alerts_Exist tooltip and end-observation dialog -->
-  <DMSE.Alert.Exist.Observing>Observing: {0}</DMSE.Alert.Exist.Observing>
-  <DMSE.Alert.Exist.TimeLeft>Observation ends in: {0}</DMSE.Alert.Exist.TimeLeft>
-  <DMSE.Alert.Exist.EnemiesAlive>Enemy combatants remaining: {0}</DMSE.Alert.Exist.EnemiesAlive>
-  <DMSE.Alert.Exist.IsMissileBase>This is an active missile launch position. Ending observation early will allow the crew to regroup and reset their defenses.</DMSE.Alert.Exist.IsMissileBase>
-  <DMSE.Alert.Exist.MissileBaseDestroyed>This missile position's fire-control radars are destroyed. Its map stays open until observation ends and no colonists remain there; send a shuttle or transport pods before then to loot it.</DMSE.Alert.Exist.MissileBaseDestroyed>
-  <DMSE.Alert.Exist.ClickHint>Click to end observation early.</DMSE.Alert.Exist.ClickHint>
-  <DMSE.Alert.Exist.EndEarly.Confirm>End observation now? The map will no longer be held open and may be cleaned up by the game.</DMSE.Alert.Exist.EndEarly.Confirm>
-  <DMSE.Alert.Exist.EndEarly.Confirm.MissileBase>End observation early?\n\nThe enemy crew will have the opportunity to regroup. The launch position's defenses and timers will reset, as if the observation never happened.\n\nThis cannot be undone.</DMSE.Alert.Exist.EndEarly.Confirm.MissileBase>
-  <DMSE.Alert.Exist.ObservationEnded>Observation ended early. Enemy forces may regroup.</DMSE.Alert.Exist.ObservationEnded>
 
-  <!-- Alerts_PlayerMissiles: player attacking, enemy BVR tracking our missiles -->
-  <DMSE.Alert.PlayerMissiles.Label>{0} missiles outbound: first impact in {1}</DMSE.Alert.PlayerMissiles.Label>
-  <DMSE.Alert.PlayerMissiles.MapHeader>Target: {0}</DMSE.Alert.PlayerMissiles.MapHeader>
-  <DMSE.Alert.PlayerMissiles.WaveImpact>  Impact in {0}:</DMSE.Alert.PlayerMissiles.WaveImpact>
-  <!-- {0}=missile label, {1}=col, {2}=row, {3}=intercept status -->
-  <DMSE.Alert.PlayerMissiles.Target>    · {0}  ({1},{2})  [{3}]</DMSE.Alert.PlayerMissiles.Target>
-  <DMSE.Alert.PlayerMissiles.ClickHint>Left-click to cycle to next impact site. Right-click to cycle back.</DMSE.Alert.PlayerMissiles.ClickHint>
 
-  <DMSE.BVR.Online>online</DMSE.BVR.Online>
-  <DMSE.BVR.Offline>offline</DMSE.BVR.Offline>
-  <DMSE.BVR.SearchRadar>Search radar: range {0}, anti-stealth {1} ({2})</DMSE.BVR.SearchRadar>
-  <DMSE.BVR.FireControl>Fire control: {0} channel(s) ({1})</DMSE.BVR.FireControl>
-  <DMSE.BVR.ArtilleryChannels>Artillery guidance channels: {0} / {1} free</DMSE.BVR.ArtilleryChannels>
 
-  <DMSE.Missile.Tab>Assembly</DMSE.Missile.Tab>
-  <DMSE.Missile.Body>Missile body</DMSE.Missile.Body>
-  <DMSE.Missile.BodyFixed>fixed by the launch platform</DMSE.Missile.BodyFixed>
-  <DMSE.Missile.None>None</DMSE.Missile.None>
-  <DMSE.Missile.Locked>locked</DMSE.Missile.Locked>
-  <DMSE.Missile.GodModeInstant>God mode: changes are assembled at once, free and without research.</DMSE.Missile.GodModeInstant>
-  <DMSE.Missile.Settings.GodModeInstantAssembly>God mode: instant missile assembly</DMSE.Missile.Settings.GodModeInstantAssembly>
-  <DMSE.Missile.Settings.GodModeInstantAssemblyDesc>While god mode is on, missile and ballistic silo refits finish immediately: no confirmation, hauling or assembly work, and no resources are used. Parts are available without research. Removed parts are not refunded.</DMSE.Missile.Settings.GodModeInstantAssemblyDesc>
-  <DMSE.BVR.Settings.InterceptDebrisDamage>Intercept debris causes damage</DMSE.BVR.Settings.InterceptDebrisDamage>
-  <DMSE.BVR.Settings.InterceptDebrisDamageDesc>Large debris from intercepted missiles and drop pods deals light blunt damage where it lands. Roofs stop it. When off, debris only leaves dust, sparks and rubble.</DMSE.BVR.Settings.InterceptDebrisDamageDesc>
-  <DMSE.BVR.Settings.InterceptFxDensity>Intercept effect density</DMSE.BVR.Settings.InterceptFxDensity>
-  <DMSE.BVR.Settings.InterceptFxDensityDesc>How many fragments, smoke puffs and trail puffs an interception makes. Lower it if large salvos slow the game down. Large debris still lands at every setting.</DMSE.BVR.Settings.InterceptFxDensityDesc>
-  <DMSE.BVR.Settings.CiwsInterceptMultiplier>CIWS intercept rate: {0}</DMSE.BVR.Settings.CiwsInterceptMultiplier>
-  <DMSE.BVR.Settings.CiwsInterceptMultiplierDesc>Scales the hit chance of every close-in defense turret (CIWS). 100% keeps each turret's own rate; 0% means they never shoot anything down. Ballistic missiles stay very hard to hit whatever this is set to.</DMSE.BVR.Settings.CiwsInterceptMultiplierDesc>
   <DMSE.BVR.Settings.InterceptFxDensity0>Low</DMSE.BVR.Settings.InterceptFxDensity0>
   <DMSE.BVR.Settings.InterceptFxDensity1>Medium</DMSE.BVR.Settings.InterceptFxDensity1>
   <DMSE.BVR.Settings.InterceptFxDensity2>High</DMSE.BVR.Settings.InterceptFxDensity2>
-  <DMSE.Missile.Stats>Pending stats (after assembly)</DMSE.Missile.Stats>
-  <DMSE.Missile.Stat.Radius>Blast radius: {0}</DMSE.Missile.Stat.Radius>
-  <DMSE.Missile.Stat.Damage>Warhead: {0} ({1})</DMSE.Missile.Stat.Damage>
-  <DMSE.Missile.Stat.Scatter>Impact dispersion: {0}</DMSE.Missile.Stat.Scatter>
-  <DMSE.Missile.Stat.Speed>Travel speed: x{0}</DMSE.Missile.Stat.Speed>
-  <DMSE.Missile.Stat.Fuel>Fuel: {0}</DMSE.Missile.Stat.Fuel>
-  <DMSE.Missile.Stat.Impulse>Specific impulse: {0}</DMSE.Missile.Stat.Impulse>
-  <DMSE.Missile.Stat.Range>Range: {0} tiles</DMSE.Missile.Stat.Range>
-  <DMSE.Missile.Stat.TerminalGuidance>Guided: can update its target position {0} time(s) in flight and strike across orbital layers</DMSE.Missile.Stat.TerminalGuidance>
-  <DMSE.Missile.Stat.NoTerminalGuidance>Unguided: cannot track moving targets or strike across orbital layers</DMSE.Missile.Stat.NoTerminalGuidance>
-  <DMSE.Missile.Stat.Loiter>Loiter flight control: waits up to {0} before falling back</DMSE.Missile.Stat.Loiter>
-  <DMSE.MissileLauncher.OutOfRange>Target is beyond missile range ({0} tiles).</DMSE.MissileLauncher.OutOfRange>
-  <DMSE.MissileLauncher.RangeLabel>{0} / {1} tiles</DMSE.MissileLauncher.RangeLabel>
-  <DMSE.MissileLauncher.NoTargetHere>No target at this location: the missile will be wasted</DMSE.MissileLauncher.NoTargetHere>
-  <DMSE.Missile.CrossLayerNeedsGuidance>Striking across orbital layers requires a guided missile. Inertial guidance and unguided munitions cannot.</DMSE.Missile.CrossLayerNeedsGuidance>
-  <DMSE.Missile.Cat.Warhead>Warhead</DMSE.Missile.Cat.Warhead>
-  <DMSE.Missile.Cat.Guidance>Guidance</DMSE.Missile.Cat.Guidance>
-  <DMSE.Missile.Cat.Propulsion>Propulsion</DMSE.Missile.Cat.Propulsion>
-  <DMSE.Missile.Cat.Payload>Payload</DMSE.Missile.Cat.Payload>
-  <DMSE.Missile.Inspect>Body: {0}\nWarhead: {1}\nBlast: {2} / {3} dmg</DMSE.Missile.Inspect>
-  <DMSE.Missile.NeedResources>Needs (for assembly): {0}</DMSE.Missile.NeedResources>
-  <DMSE.Missile.ReadyToAssemble>Resources ready: confirm to begin assembly</DMSE.Missile.ReadyToAssemble>
-  <DMSE.Missile.NoResources>No resources available to assemble</DMSE.Missile.NoResources>
-  <DMSE.Missile.EditingSlot>Editing missile {0} of {1} in rack</DMSE.Missile.EditingSlot>
-  <DMSE.Missile.ConfirmAssembly>Queue for assembly</DMSE.Missile.ConfirmAssembly>
-  <DMSE.Missile.AssemblyQueued>Assembly queued: colonists will begin shortly</DMSE.Missile.AssemblyQueued>
-  <DMSE.Missile.ResetToCurrent>Reset to assembled config</DMSE.Missile.ResetToCurrent>
-  <DMSE.MissileLauncher.LaunchCooldown>Reloading launch rail: {0}</DMSE.MissileLauncher.LaunchCooldown>
-  <DMSE.MissileLauncher.Rail.NoMissileLoaded>No missile loaded</DMSE.MissileLauncher.Rail.NoMissileLoaded>
-  <DMSE.Missile.NoRackAvailable>No missile rack with compatible missiles found</DMSE.Missile.NoRackAvailable>
-  <DMSE.MissileLauncher.Interceptor.Reloading>Reloading: {0}</DMSE.MissileLauncher.Interceptor.Reloading>
-  <DMSE.MissileLauncher.Interceptor.Ready>Ready to fire</DMSE.MissileLauncher.Interceptor.Ready>
-  <DMSE.Missile.IncomingLetter>Incoming missile</DMSE.Missile.IncomingLetter>
-  <DMSE.Missile.IncomingLetterDesc>A missile launched by {0} is inbound and will strike the colony shortly.</DMSE.Missile.IncomingLetterDesc>
-  <DMSE.Missile.Missed>Our missile found no target and was wasted.</DMSE.Missile.Missed>
-  <DMSE.Missile.IncomingMissed>A missile launched by {0} lost its target and missed.</DMSE.Missile.IncomingMissed>
 
-  <!-- 導引頭選目標 -->
-  <DMSE.Missile.SeekerLocked>{0} locked onto a target. The missile is coming down.</DMSE.Missile.SeekerLocked>
-  <DMSE.Missile.Loitering>The seeker found no target: the missile is loitering overhead and will wait {0} before falling back to inertial guidance.</DMSE.Missile.Loitering>
-  <DMSE.Guidance.Inertial>inertial guidance</DMSE.Guidance.Inertial>
-  <DMSE.Guidance.RadioCommand>radio-command guidance</DMSE.Guidance.RadioCommand>
-  <DMSE.Guidance.ManualTarget>{0}: you choose the impact point on arrival</DMSE.Guidance.ManualTarget>
-  <DMSE.Guidance.AutoTarget>{0}: locks a target automatically on arrival</DMSE.Guidance.AutoTarget>
-  <DMSE.LaserMark.Inspect>Designated by: {0}\nExpires in: {1}</DMSE.LaserMark.Inspect>
-  <DMSE.LaserMark.InspectPermanent>Designated by: {0}</DMSE.LaserMark.InspectPermanent>
-  <DMSE.LaserMark.Placed>Laser designation placed. It expires in {0}.</DMSE.LaserMark.Placed>
-  <DMSE.LaserMark.PlacedPermanent>Laser designation placed.</DMSE.LaserMark.PlacedPermanent>
-  <DMSE.Missile.TerminalUpdatesRemaining>Terminal updates remaining: {0} / {1}</DMSE.Missile.TerminalUpdatesRemaining>
 
   <DMSE_MissileDecayedAway>{0} has degraded beyond use and fallen apart.</DMSE_MissileDecayedAway>
   <DMSE_MissileDecaySheltered>Sheltered: durability stable</DMSE_MissileDecaySheltered>
@@ -198,111 +67,20 @@ Click to cycle through the remaining targets.</DMSE.MissileBase.ObjectivesAlertD
 
   <DMSE_MissileRackStored>Stored missiles: {0} / {1}</DMSE_MissileRackStored>
 
-  <!-- ITab_MissileInventory: building-level missile management tab -->
-  <DMSE.Tab.MissileInventory>Inventory</DMSE.Tab.MissileInventory>
-  <DMSE.MissileInventory.Features>Features</DMSE.MissileInventory.Features>
-  <DMSE.MissileInventory.Stat.BlastRadius>Blast</DMSE.MissileInventory.Stat.BlastRadius>
-  <DMSE.MissileInventory.Stat.Damage>Damage</DMSE.MissileInventory.Stat.Damage>
-  <DMSE.MissileInventory.Unit.Tiles>tiles</DMSE.MissileInventory.Unit.Tiles>
-  <DMSE.MissileInventory.Feature.Mechanics>Active mechanics for this missile</DMSE.MissileInventory.Feature.Mechanics>
-  <DMSE.MissileInventory.Feature.Warhead>Primary warhead damage type: {0}; damage: {1}; blast radius: {2} tiles. Payload capacity N = {3}.</DMSE.MissileInventory.Feature.Warhead>
-  <DMSE.MissileInventory.Feature.InterceptBonus>Intercept hit chance bonus: {0}%</DMSE.MissileInventory.Feature.InterceptBonus>
-  <DMSE.MissileInventory.Feature.ExtraRolls>Additional intercept rolls per engagement: {0}</DMSE.MissileInventory.Feature.ExtraRolls>
-  <DMSE.MissileInventory.Feature.RangeOffset>Warhead range adjustment: {0} tiles</DMSE.MissileInventory.Feature.RangeOffset>
-  <DMSE.MissileInventory.Feature.PenetratesRoof>Can penetrate thick rock roofs and target objects beneath them.</DMSE.MissileInventory.Feature.PenetratesRoof>
-  <DMSE.MissileInventory.Feature.Guidance>Scatter radius: {0} tiles; terminal position updates: {1}; {2}</DMSE.MissileInventory.Feature.Guidance>
-  <DMSE.MissileInventory.Feature.Guided>Terminal guidance can update the target position in flight.</DMSE.MissileInventory.Feature.Guided>
-  <DMSE.MissileInventory.Feature.Unguided>No terminal guidance; uses the default impact point dispersion.</DMSE.MissileInventory.Feature.Unguided>
-  <DMSE.MissileInventory.Feature.Propulsion>Effective range: {0} tiles; world speed factor: {1}; fuel: {2}; specific impulse: {3}.</DMSE.MissileInventory.Feature.Propulsion>
-  <DMSE.MissileInventory.Feature.Payload>Payload effect scales with body capacity N = {0}; effective range: {1} tiles.</DMSE.MissileInventory.Feature.Payload>
-  <DMSE.MissileInventory.Feature.Signature>Radar cross-section factor: {0}.</DMSE.MissileInventory.Feature.Signature>
-  <DMSE.MissileInventory.Feature.Jamming>Jamming strength: {0}%.</DMSE.MissileInventory.Feature.Jamming>
-  <DMSE.MissileInventory.Feature.Chaff>Chaff / streamer charges: {0}.</DMSE.MissileInventory.Feature.Chaff>
-  <DMSE.MissileInventory.Count>Loaded: {0} / {1}</DMSE.MissileInventory.Count>
-  <DMSE.MissileInventory.Empty>No missiles loaded.</DMSE.MissileInventory.Empty>
-  <!-- {0} = blast radius, {1} = damage -->
-  <DMSE.MissileInventory.Stats>Blast {0}  ·  Dmg {1}</DMSE.MissileInventory.Stats>
   <DMSE.MissileInventory.Pending>assembly pending</DMSE.MissileInventory.Pending>
-  <DMSE.MissileInventory.EjectDesc>Eject this missile as an item onto the ground next to the rack. It is dropped forbidden so haulers do not carry it straight back.</DMSE.MissileInventory.EjectDesc>
-  <DMSE.MissileInventory.EjectFailed>No room next to the rack to eject the missile.</DMSE.MissileInventory.EjectFailed>
 
   <!-- ==================== Ballistic silo (CompMissileLauncher_Ballistic) ==================== -->
-  <!-- Gizmo: fire button -->
-  <DMSE.MissileLauncher.Ballistic.Fire>Fire Ballistic Missile</DMSE.MissileLauncher.Ballistic.Fire>
-  <DMSE.MissileLauncher.Ballistic.FireDesc>Launch the assembled ballistic missile at a world-map target. The missile follows a lofted trajectory and is nearly impossible to intercept once launched.</DMSE.MissileLauncher.Ballistic.FireDesc>
-  <!-- Disabled reasons -->
-  <DMSE.MissileLauncher.Ballistic.NotLoaded>Missile not assembled. Set it up in the Assembly tab; colonists will deliver materials and assemble it.</DMSE.MissileLauncher.Ballistic.NotLoaded>
-  <!-- Inspect strings -->
-  <DMSE.MissileLauncher.Ballistic.Loaded>Ballistic missile: assembled and ready</DMSE.MissileLauncher.Ballistic.Loaded>
-  <DMSE.MissileLauncher.Ballistic.LoadedWith>Ballistic missile loaded: {0}</DMSE.MissileLauncher.Ballistic.LoadedWith>
-  <DMSE.MissileLauncher.Ballistic.AwaitingAssembly>Ballistic missile: awaiting assembly by colonists</DMSE.MissileLauncher.Ballistic.AwaitingAssembly>
-  <DMSE.MissileLauncher.Ballistic.Unloaded>Ballistic missile silo: unloaded, configure in Assembly tab</DMSE.MissileLauncher.Ballistic.Unloaded>
 
   <!-- ==================== Artillery strike (CompArtilleryStrike) ==================== -->
-  <!-- Gizmo -->
-  <DMSE.Artillery.Fire>Fire Artillery</DMSE.Artillery.Fire>
-  <DMSE.Artillery.FireDesc>Select a target on the world map. Keeps firing until stopped.</DMSE.Artillery.FireDesc>
-  <DMSE.Artillery.Stop>Stop Firing</DMSE.Artillery.Stop>
-  <DMSE.Artillery.StopDesc>Halt sustained fire. Current status: {0}</DMSE.Artillery.StopDesc>
-  <!-- Fire mode (ranging / fire for effect) -->
-  <DMSE.Artillery.ModeRanging>Fire mode: Ranging</DMSE.Artillery.ModeRanging>
-  <DMSE.Artillery.ModeEffect>Fire mode: Fire for effect</DMSE.Artillery.ModeEffect>
-  <DMSE.Artillery.ModeDesc>Switch fire mode. Ranging: scatter around the centre of the target map; every impact is logged as that map's fire-for-effect point. Fire for effect: scatter around the last logged ranging impact on that map, shared by every gun of the same faction shelling it; each shot tightens the scatter by a quarter of the base scatter (per gun, minimum 1 cell) and radar guidance is not used.</DMSE.Artillery.ModeDesc>
-  <DMSE.Artillery.EffectPoint>Impact point ({0}, {1}), next shot scatters {2} cells</DMSE.Artillery.EffectPoint>
   <!-- Disabled / error reasons -->
   <DMSE.Artillery.TooClose>Target is too close: minimum range is {0} cells.</DMSE.Artillery.TooClose>
   <DMSE.Artillery.NoFireControl>No fire control radar with a free guidance channel available.</DMSE.Artillery.NoFireControl>
-  <DMSE.Artillery.NoAmmo>No shell loaded: sustained fire halted.</DMSE.Artillery.NoAmmo>
-  <DMSE.Artillery.CrossLayer>Artillery shells are unguided and cannot strike across orbital layers.</DMSE.Artillery.CrossLayer>
-  <DMSE.Artillery.Missed>The artillery salvo found no target and was wasted.</DMSE.Artillery.Missed>
-  <DMSE.Artillery.NoBarrel>Barrel worn out: sustained fire halted. Replace the reinforced barrel.</DMSE.Artillery.NoBarrel>
-  <DMSE.Artillery.TargetIsHome>Cannot shell your own map tile.</DMSE.Artillery.TargetIsHome>
-  <DMSE.Artillery.OutOfRange>Target is beyond gun range ({0} tiles).</DMSE.Artillery.OutOfRange>
-  <DMSE.Artillery.MapNotSpawned>The target map is not loaded. Artillery can only shell a map that is currently active.</DMSE.Artillery.MapNotSpawned>
-  <DMSE.Artillery.NoCrew>Needs a gunner: right-click the mortar and order a pawn to man it; the gunner loads shells automatically.</DMSE.Artillery.NoCrew>
-  <DMSE.Artillery.NoLoadedShell>No shell loaded: have a gunner load a mortar shell before firing.</DMSE.Artillery.NoLoadedShell>
-  <DMSE.Artillery.WaitingForShell>Waiting for the gunner to reload: the mission is paused.</DMSE.Artillery.WaitingForShell>
-  <DMSE.Artillery.WaitingForAutoloader>Waiting for the shell autoloader to load a shell: the mission is paused.</DMSE.Artillery.WaitingForAutoloader>
-  <DMSE.Artillery.NoLoadedShellAutoloader>No shell loaded: stock mortar shells on a linked shell autoloader before firing.</DMSE.Artillery.NoLoadedShellAutoloader>
-  <DMSE.Artillery.WaitingForBarrel>Barrel worn out: waiting for a new reinforced barrel. The mission is paused.</DMSE.Artillery.WaitingForBarrel>
-  <DMSE.Artillery.HoldFirePaused>Hold fire: the world fire mission is paused and resumes when hold fire is lifted.</DMSE.Artillery.HoldFirePaused>
-  <DMSE.Artillery.NoRegistration>No ranging impact has been logged on this map: fire a ranging shot first.</DMSE.Artillery.NoRegistration>
-  <DMSE.Artillery.GroupPartial>{0} of {1} selected guns can fire at this target. Others: {2}</DMSE.Artillery.GroupPartial>
-  <DMSE.BVR.DeviceInactive>Device is inactive (no power, broken down, or switched off).</DMSE.BVR.DeviceInactive>
-  <!-- State strings (used in StopDesc) -->
-  <DMSE.Artillery.StateCooldown>reloading, {0} remaining</DMSE.Artillery.StateCooldown>
-  <DMSE.Artillery.StateAiming>aiming ({0}%)</DMSE.Artillery.StateAiming>
-  <DMSE.Artillery.StateReady>ready to fire</DMSE.Artillery.StateReady>
   <!-- Inspect strings -->
   <DMSE.Artillery.Ready>Artillery: ready to fire</DMSE.Artillery.Ready>
-  <DMSE.Artillery.GuidanceOnline>Radar guidance: available (scatter {0} cells)</DMSE.Artillery.GuidanceOnline>
-  <DMSE.Artillery.GuidanceOffline>Radar guidance: no free fire-control channel (unguided, scatter {0} cells)</DMSE.Artillery.GuidanceOffline>
 
   <!-- PlaceWorker -->
   <DMSE.PlaceWorker.TooCloseSameLayer>Too close to {0} (same placement layer).</DMSE.PlaceWorker.TooCloseSameLayer>
 
-  <!-- 裝配分頁：切換導彈、方案載入／保存；彈道發射井井蓋 -->
-  <DMSE.Missile.PreviousMissile>Previous missile in rack</DMSE.Missile.PreviousMissile>
-  <DMSE.Missile.NextMissile>Next missile in rack</DMSE.Missile.NextMissile>
-  <DMSE.Missile.SaveDesignTip>Save the configuration being edited as a design. Designs are shared with the assembly bench and kept across saves.</DMSE.Missile.SaveDesignTip>
-  <DMSE.Missile.LoadDesignTip>Load a saved design into this missile. Only designs for the same airframe can be loaded; the parts still have to be assembled.</DMSE.Missile.LoadDesignTip>
-  <DMSE.Missile.DesignBodyMismatch>Different airframe: {0}</DMSE.Missile.DesignBodyMismatch>
-  <DMSE.Missile.ApplyDesignThis>Apply to this missile</DMSE.Missile.ApplyDesignThis>
-  <DMSE.Missile.ApplyDesignAll>Apply to all {0} matching missiles in this rack</DMSE.Missile.ApplyDesignAll>
-  <DMSE.Missile.DesignApplied>Design "{0}" loaded into {1}.</DMSE.Missile.DesignApplied>
-  <DMSE.SiloHatch.KeepClosed>Keep hatch closed</DMSE.SiloHatch.KeepClosed>
-  <DMSE.SiloHatch.KeepClosedDesc>When on, the silo hatch stays shut except while launching. A fully closed hatch reduces damage to the silo to {0}.\n\nA launch opens the hatch first; the missile leaves only once it is fully open, and the hatch closes again a few seconds later.\n\nMissiles cannot be assembled while the hatch is not fully open.</DMSE.SiloHatch.KeepClosedDesc>
-  <DMSE.SiloHatch.Closed>Hatch: closed (damage taken {0})</DMSE.SiloHatch.Closed>
-  <DMSE.SiloHatch.Open>Hatch: open</DMSE.SiloHatch.Open>
-  <DMSE.SiloHatch.Opening>Hatch: opening</DMSE.SiloHatch.Opening>
-  <DMSE.SiloHatch.Closing>Hatch: closing</DMSE.SiloHatch.Closing>
-  <DMSE.SiloHatch.StatLabel>Damage taken with hatch closed</DMSE.SiloHatch.StatLabel>
-  <DMSE.SiloHatch.StatDesc>Damage the silo takes while its hatch is fully closed, as a share of normal damage. It does not apply while the hatch is opening, closing or open after a launch.</DMSE.SiloHatch.StatDesc>
 
-  <DMSE.SiloHatch.OpeningForLaunch>Hatch: opening for launch</DMSE.SiloHatch.OpeningForLaunch>
-  <DMSE.SiloHatch.AssemblyBlocked>Hatch closed: open the hatch to assemble the missile.</DMSE.SiloHatch.AssemblyBlocked>
-  <DMSE.BVR.Settings.NpcMirv>NPC MIRV and decoy warheads</DMSE.BVR.Settings.NpcMirv>
-  <DMSE.BVR.Settings.NpcMirvDesc>Let NPC sites fire strategic missiles with MIRV or decoy payloads at strong air defenses: ballistic launch sites of any faction, and missile bases of factions whose doctrine allows it (by default only ultra-tech factions). Each one splits into several tracks in flight.</DMSE.BVR.Settings.NpcMirvDesc>
-  <DMSE.BallisticLaunchSite.ArrivedLetter>Your pawns have arrived at an enemy ballistic launch site. Hardened strategic silos are spread around a search radar and its fire-control radars; the garrison reloads each silo a few days after it fires. Destroy every fire-control radar to neutralize the site; if you withdraw while a fire-control radar still stands, the enemy blocks your return for a while.</DMSE.BallisticLaunchSite.ArrivedLetter>
   <DMSE.BallisticLaunchSite.SpawnedLetter>{0} has established a ballistic launch site {3} tiles {2} of {1}. Its strategic missiles can reach your colony from far beyond the range of ordinary launch positions, and it will stay there, firing every few days, until it is destroyed.\n\nDestroy every fire-control radar to neutralize it. Strong air defense will make it mix in penetration aids.</DMSE.BallisticLaunchSite.SpawnedLetter>
 </LanguageData>

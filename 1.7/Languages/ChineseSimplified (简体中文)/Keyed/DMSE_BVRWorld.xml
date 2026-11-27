@@ -1,86 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
-  <DMSE.BVR.World.Undetected>未侦测</DMSE.BVR.World.Undetected>
-  <DMSE.BVR.World.Detected>已侦测</DMSE.BVR.World.Detected>
-  <DMSE.BVR.World.Locking>火控锁定中</DMSE.BVR.World.Locking>
-  <DMSE.BVR.World.InFlight>拦截弹接近中</DMSE.BVR.World.InFlight>
-  <DMSE.BVR.World.TrackInspect>目的地：{0}\n预计抵达：{1}\n状态：{2}\n已尝试拦截：{3} 次</DMSE.BVR.World.TrackInspect>
-  <DMSE.BVR.World.RadarRange>世界搜索半径：{0} 格（目标修正前）</DMSE.BVR.World.RadarRange>
-  <DMSE.BVR.World.EffectiveRanges>有效半径：{0} 格</DMSE.BVR.World.EffectiveRanges>
-  <DMSE.BVR.World.EffectiveRangeEntry>{0} {1}</DMSE.BVR.World.EffectiveRangeEntry>
   <DMSE.BVR.World.RangeClass.Loitering>巡飞弹</DMSE.BVR.World.RangeClass.Loitering>
   <DMSE.BVR.World.RangeClass.Light>轻型</DMSE.BVR.World.RangeClass.Light>
   <DMSE.BVR.World.RangeClass.Cruise>巡航</DMSE.BVR.World.RangeClass.Cruise>
   <DMSE.BVR.World.RangeClass.Ballistic>弹道</DMSE.BVR.World.RangeClass.Ballistic>
-  <DMSE.BVR.World.DetectedLetter>侦测到来袭导弹</DMSE.BVR.World.DetectedLetter>
-  <DMSE.BVR.World.DetectedLetterText>雷达侦测到 {0} 正接近 {1}。\n\n预计于 {2} 后抵达。世界层防空正尝试接战，漏网导弹抵达后将交由当地末端防御处理。</DMSE.BVR.World.DetectedLetterText>
-  <DMSE.BVR.World.Intercepted>{0} 已被 {1} 拦截。</DMSE.BVR.World.Intercepted>
-  <DMSE.BVR.World.Missed>拦截弹未能命中 {0}。</DMSE.BVR.World.Missed>
-  <DMSE.BVR.World.Evaded>{0} 改变航向，避开了拦截弹。</DMSE.BVR.World.Evaded>
-  <DMSE.BVR.World.Chaff>{0} 施放箔条／干扰丝，打断了火控锁定。</DMSE.BVR.World.Chaff>
-  <DMSE.BVR.World.AbstractStrike>{0} 命中 {1} 的防空节点：库存受损、雷达被压制。</DMSE.BVR.World.AbstractStrike>
-  <DMSE.BVR.World.InterceptorInspect>目标：{0}\n预计会合：{1}</DMSE.BVR.World.InterceptorInspect>
-  <DMSE.BVR.World.AbstractInspect>防空库存：{0}/{1} 枚拦截弹\n搜索半径：{2} 格；火控通道：{3}</DMSE.BVR.World.AbstractInspect>
-  <DMSE.BVR.World.IncomingAlert>已侦测来袭导弹</DMSE.BVR.World.IncomingAlert>
-  <DMSE.BVR.World.IncomingLabel>来袭导弹：{0}（{1}）</DMSE.BVR.World.IncomingLabel>
-  <DMSE.BVR.World.ClickHint>左／右键循环检视世界导弹航迹。</DMSE.BVR.World.ClickHint>
   <DMSE.BVR.World.ShowCoverage>显示防空覆盖</DMSE.BVR.World.ShowCoverage>
   <DMSE.BVR.World.ShowCoverageDesc>在世界地图常驻显示所有玩家雷达覆盖圈。选取据点时一律显示该据点的覆盖圈。圈线以隐身 0、尺寸 1 的目标为准。</DMSE.BVR.World.ShowCoverageDesc>
-  <DMSE.BVR.World.ChannelBreakdown>通道：火炮 {0}、地图内 {1}、世界层 {2}、打击引导 {3}；空闲 {4}</DMSE.BVR.World.ChannelBreakdown>
-  <DMSE.BVR.World.MissileType>导弹类型：{0}</DMSE.BVR.World.MissileType>
-  <DMSE.BVR.PawnsMissingLabel>运输舱被击落：人员失踪</DMSE.BVR.PawnsMissingLabel>
-  <DMSE.BVR.PawnsMissingText>一艘载有你的人员的运输舱被防空火力击落。没有找到遗体，以下人员失踪：\n\n{0}</DMSE.BVR.PawnsMissingText>
-  <DMSE.BVR.InterceptRiskRoute>航线穿越{0}在{1}周边的封锁区（{2} 格）。其防空火力会攻击所有飞越的载具。</DMSE.BVR.InterceptRiskRoute>
-  <DMSE.BVR.InterceptRiskDestination>{0}处于{1}的防空雷达覆盖之下。降落到那里的运输舱和穿梭机可能会被击落。</DMSE.BVR.InterceptRiskDestination>
-  <DMSE.BVR.InterceptRiskFooter>被击落的运输舱或穿梭机上的人员将会失踪。重力船和转移舰被击中只会受损，不会被摧毁。\n\n仍要发射吗？</DMSE.BVR.InterceptRiskFooter>
-  <DMSE.Blockade.Engaging>{0}在{1}的防空系统向{2}开火。</DMSE.Blockade.Engaging>
-  <DMSE.Blockade.PodDown>{0}：一艘运输工具被{1}击落，剩余 {2} 艘。</DMSE.Blockade.PodDown>
-  <DMSE.Blockade.GravshipHit>{0}被{1}的防空火力击中，船上 {2} 座建筑受损。</DMSE.Blockade.GravshipHit>
-  <DMSE.Blockade.TransferHitLabel>转移舰被击中</DMSE.Blockade.TransferHitLabel>
-  <DMSE.Blockade.TransferHitText>{0}在飞越{1}的封锁区时被防空火力击中，船上有 {2} 处发生爆炸。</DMSE.Blockade.TransferHitText>
-  <DMSE.BVR.World.TrackAltitude>飞行高度：{0}</DMSE.BVR.World.TrackAltitude>
-  <DMSE.BVR.World.AltitudeDenied>超出拦截高度</DMSE.BVR.World.AltitudeDenied>
-  <DMSE.BVR.FireControlAltitude>拦截高度：{0} – {1}</DMSE.BVR.FireControlAltitude>
-  <!-- EN: MIRV warhead (group #{0}) -->
-  <DMSE.Mirv.Role.Warhead>分导弹头（群组 #{0}）</DMSE.Mirv.Role.Warhead>
-  <!-- EN: MIRV decoy (group #{0}) -->
-  <DMSE.Mirv.Role.Decoy>分导诱饵（群组 #{0}）</DMSE.Mirv.Role.Decoy>
-  <!-- EN: Releases {0} warheads and {1} decoys in {2} -->
-  <DMSE.Mirv.WillRelease>将于 {2} 后释放 {0} 枚弹头、{1} 枚诱饵</DMSE.Mirv.WillRelease>
-  <!-- EN: Releasing: {0}/{1} -->
-  <DMSE.Mirv.Releasing>释放中：{0}/{1}</DMSE.Mirv.Releasing>
-  <!-- EN: Decoy identified: {0} is not a real warhead. Our air defense will ignore it. -->
-  <DMSE.BVR.World.DecoyIdentified>识破诱饵：{0} 不是真弹头，我方防空将不再理会它。</DMSE.BVR.World.DecoyIdentified>
-  <!-- EN: Identified as a decoy -->
-  <DMSE.BVR.World.Status.DecoyIdentified>已识破为诱饵</DMSE.BVR.World.Status.DecoyIdentified>
-  <!-- EN: Decoy recognition: {0} -->
-  <DMSE.BVR.FireControlDecoy>诱饵识别率：{0}</DMSE.BVR.FireControlDecoy>
-  <!-- EN: {0} warheads -->
-  <DMSE.Mirv.Short.Warheads>{0} 枚弹头</DMSE.Mirv.Short.Warheads>
-  <!-- EN: warhead flies on -->
-  <DMSE.Mirv.Short.Continues>弹头续飞</DMSE.Mirv.Short.Continues>
-  <!-- EN: {0} + {1} decoys -->
-  <DMSE.Mirv.Short.WithDecoys>{0}＋{1} 枚诱饵</DMSE.Mirv.Short.WithDecoys>
-  <!-- EN: Releases {0} before arrival, one every {1} ticks in random order. -->
-  <DMSE.Mirv.Detail.WhenTicks>抵达前 {0} 开始释放，每 {1} tick 一枚，顺序随机。</DMSE.Mirv.Detail.WhenTicks>
-  <!-- EN: Releases at {0} of the flight, one every {1} ticks in random order. -->
-  <DMSE.Mirv.Detail.WhenProgress>飞到航程的 {0} 时开始释放，每 {1} tick 一枚，顺序随机。</DMSE.Mirv.Detail.WhenProgress>
-  <!-- EN: {0}× {1} -->
-  <DMSE.Mirv.Detail.Group>{0}× {1}</DMSE.Mirv.Detail.Group>
-  <!-- EN: (carries the missile's {0}) -->
-  <DMSE.Mirv.Detail.Inherits>（带着导弹的{0}）</DMSE.Mirv.Detail.Inherits>
-  <!-- EN: (survives re-entry and falls on the target, inert) -->
-  <DMSE.Mirv.Detail.DecoyReachesMap>（能撑过再入并落到目标，不爆炸）</DMSE.Mirv.Detail.DecoyReachesMap>
-  <!-- EN: (burns up on re-entry) -->
-  <DMSE.Mirv.Detail.DecoyBurnsUp>（再入时烧毁）</DMSE.Mirv.Detail.DecoyBurnsUp>
-  <!-- EN: ({0} chance to survive re-entry) -->
-  <DMSE.Mirv.Detail.DecoySurvives>（{0} 几率撑过再入）</DMSE.Mirv.Detail.DecoySurvives>
-  <!-- EN: The bus is gone once everything is released; shooting it down earlier destroys all warheads at once. -->
-  <DMSE.Mirv.Detail.BusRetires>全部放完后母舱消失；在那之前被击落，所有弹头一次全毁。</DMSE.Mirv.Detail.BusRetires>
-  <!-- EN: The missile itself keeps flying as the real warhead. -->
-  <DMSE.Mirv.Detail.BusContinues>导弹本身继续飞行，是真正的弹头。</DMSE.Mirv.Detail.BusContinues>
-  <!-- EN: All warheads strike the same target. Decoys look like the warhead on radar until a fire control radar recognises them. -->
-  <DMSE.Mirv.Detail.SameTarget>所有弹头打击同一目标。在被火控雷达识破之前，诱饵在雷达上和弹头一模一样。</DMSE.Mirv.Detail.SameTarget>
-  <!-- EN: MIRV group #{0}: {1} tracks ({2} warheads, {3} decoys), arriving in {4}–{5} -->
-  <DMSE.Mirv.AlertLine>分导群组 #{0}：{1} 条航迹（弹头 {2}、诱饵 {3}），{4}–{5} 后抵达</DMSE.Mirv.AlertLine>
 </LanguageData>

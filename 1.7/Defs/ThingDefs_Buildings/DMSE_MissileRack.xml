@@ -12,7 +12,7 @@
     <defName>DMSE_LoiteringRack</defName>
     <label>loitering munition rack</label>
     <description>A rack that holds loitering munitions. Stored munitions do not deteriorate.</description>
-    <thingClass>DMSE.Building_MissileRack</thingClass>
+    <thingClass>Fortified.Building_MissileRack</thingClass>
     <category>Building</category>
     <graphicData>
       <texPath>Things/Building/MissilePlatform/small</texPath>
@@ -69,7 +69,7 @@
       </defaultStorageSettings>
     </building>
     <comps>
-      <li Class="DMSE.CompProperties_MissileRackRenderer">
+      <li Class="Fortified.CompProperties_MissileRackRenderer">
         <maxStored>1</maxStored>
         <useNativeDrawSize>true</useNativeDrawSize>
         <slotOffsets>
@@ -97,7 +97,7 @@
     </comps>
     <inspectorTabs>
       <li>RimWorld.ITab_Storage</li>
-      <li>DMSE.ITab_MissileInventory</li>
+      <li>Fortified.ITab_MissileInventory</li>
     </inspectorTabs>
     <researchPrerequisites>
       <li>DMSE_LoiteringMunitions</li>
@@ -108,7 +108,7 @@
     <defName>DMSE_MissileRack</defName>
     <label>missile rack</label>
     <description>A metal rack that holds up to four light missiles. Stored missiles are protected from the weather and do not deteriorate.</description>
-    <thingClass>DMSE.Building_MissileRack</thingClass>
+    <thingClass>Fortified.Building_MissileRack</thingClass>
     <category>Building</category>
     <graphicData>
       <texPath>Things/Building/MissilePlatform/medium</texPath>
@@ -169,7 +169,7 @@
       </defaultStorageSettings>
     </building>
     <comps>
-      <li Class="DMSE.CompProperties_MissileRackRenderer">
+      <li Class="Fortified.CompProperties_MissileRackRenderer">
         <maxStored>4</maxStored>
         <east>
           <slotOffsets>
@@ -221,7 +221,7 @@
     </comps>
     <!-- 敵方陣地生成時自動填充：Industrial 以上填巡弋，Spacer 以上額外允許攔截彈混填。 -->
     <modExtensions>
-      <li Class="DMSE.MissileRackAutoFillExtension">
+      <li Class="Fortified.MissileRackAutoFillExtension">
         <enemyFactionOnly>true</enemyFactionOnly>
         <fillRules>
           <!-- 規則 1：Spacer+（Ultra、Archotech）→ 巡弋與攔截彈混填（各 50%） -->
@@ -244,7 +244,7 @@
     </modExtensions>
     <inspectorTabs>
       <li>RimWorld.ITab_Storage</li>
-      <li>DMSE.ITab_MissileInventory</li>
+      <li>Fortified.ITab_MissileInventory</li>
     </inspectorTabs>
     <researchPrerequisites>
       <li>DMSE_IntegratedCircuits</li>
@@ -255,7 +255,7 @@
     <defName>DMSE_CruiseMissileRack</defName>
     <label>cruise missile rack</label>
     <description>An armored rack that holds up to two cruise missiles. Stored missiles are protected from the weather and do not deteriorate.</description>
-    <thingClass>DMSE.Building_MissileRack</thingClass>
+    <thingClass>Fortified.Building_MissileRack</thingClass>
     <category>Building</category>
     <graphicData>
       <texPath>Things/Building/MissilePlatform/large2x</texPath>
@@ -313,7 +313,7 @@
       </defaultStorageSettings>
     </building>
     <comps>
-      <li Class="DMSE.CompProperties_MissileRackRenderer">
+      <li Class="Fortified.CompProperties_MissileRackRenderer">
         <maxStored>2</maxStored>
         <east>
           <slotOffsets>
@@ -357,7 +357,7 @@
     </comps>
     <!-- 敵方陣地生成時自動填充：Industrial 以上填巡弋，Spacer 以上額外允許攔截彈混填。 -->
     <modExtensions>
-      <li Class="DMSE.MissileRackAutoFillExtension">
+      <li Class="Fortified.MissileRackAutoFillExtension">
         <enemyFactionOnly>true</enemyFactionOnly>
         <fillRules>
           <!-- 規則 1：Spacer+（Ultra、Archotech）→ 巡弋與攔截彈混填（各 50%） -->
@@ -379,8 +379,8 @@
     </modExtensions>
     <inspectorTabs>
       <li>RimWorld.ITab_Storage</li>
-      <li>DMSE.ITab_MissileInventory</li>
-      <li>DMSE.ITab_MissileAssembly</li>
+      <li>Fortified.ITab_MissileInventory</li>
+      <li>Fortified.ITab_MissileAssembly</li>
     </inspectorTabs>
     <researchPrerequisites>
       <li>DMSE_IntegratedCircuits</li>

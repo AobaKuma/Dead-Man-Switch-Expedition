@@ -10,7 +10,7 @@
        - 預設零件（不可更換）：圖像識別導引頭（GuidanceType_Imaging，找屋頂外最危險的敵方生物）＋盤旋飛控
          （DMSE_Payload_Loiter，找不到目標時在上空盤旋重試）。有槽位只是為了掛預設零件：物品沒有 CompMissileConfig／ITab、
          customizeLocation 為 None，組裝台與改裝都不會列出它。 -->
-  <DMSE.MissileBodyDef>
+  <Fortified.MissileBodyDef>
     <defName>DMSE_MissileBody_Sabre</defName>
     <label>light loitering munition</label>
     <expandingIconPath>UI/DMSE/TravelingMissile_Expanding_V1</expandingIconPath>
@@ -41,11 +41,11 @@
       <li>DMSE_Sabre_Guidance_Imaging</li>
       <li>DMSE_Payload_Loiter</li>
     </defaultParts>
-  </DMSE.MissileBodyDef>
+  </Fortified.MissileBodyDef>
 
   <!-- 軍刀專用圖像識別導引頭：與地獄火的自動影像尋標同一套邏輯（屋頂外的敵方生物，先戰力後體型）；
        找不到目標回報無目標，交給盤旋飛控等待，盤旋時間用完才退化為慣性。出廠內建，不另計成本與研究。 -->
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_Sabre_Guidance_Imaging</defName>
     <label>image-recognition seeker</label>
     <omitFromDesignName>true</omitFromDesignName>
@@ -54,9 +54,9 @@
     <compatibleBodies>
       <li>DMSE_MissileBody_Sabre</li>
     </compatibleBodies>
-    <guidanceType Class="DMSE.GuidanceType_Imaging" />
+    <guidanceType Class="Fortified.GuidanceType_Imaging" />
     <scatterOffset>-1</scatterOffset>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_Missile_Sabre</defName>
@@ -102,15 +102,15 @@
       <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
     </recipeMaker>
     <modExtensions>
-      <li Class="DMSE.MissileItemExtension">
+      <li Class="Fortified.MissileItemExtension">
         <body>DMSE_MissileBody_Sabre</body>
       </li>
-      <li Class="DMSE.MissileRoleExtension">
+      <li Class="Fortified.MissileRoleExtension">
         <role>Strike</role>
       </li>
     </modExtensions>
     <comps>
-      <li Class="DMSE.CompProperties_Renameable" />
+      <li Class="Fortified.CompProperties_Renameable" />
       <li Class="DMSE.CompProperties_DurabilityDecay">
         <hitPointsPerDay>3</hitPointsPerDay>
         <destroyWhenDepleted>true</destroyWhenDepleted>
@@ -127,7 +127,7 @@
   <ThingDef ParentName="DMSE_MissileIncomingProjectileBase">
     <defName>DMSE_Incoming_Sabre</defName>
     <label>light loitering munition (incoming)</label>
-    <thingClass>DMSE.Projectile_MissileIncoming</thingClass>
+    <thingClass>Fortified.Projectile_MissileIncoming</thingClass>
     <graphicData>
       <texPath>Things/Missile/S570/skyFaller</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -135,12 +135,12 @@
     </graphicData>
     <size>(1,1)</size>
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <shadowSize>(1.5, 1.5)</shadowSize>
         <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
         <speed>1</speed>
       </li>
-      <li Class="DMSE.BVRTargetProps">
+      <li Class="Fortified.AirTargetExtension">
         <distanceLevel>0.6</distanceLevel>
         <stealthLevel>0</stealthLevel>
         <speed>9</speed>

@@ -46,7 +46,7 @@
   <!-- ══════════════════════════════════════════════════════════════
        一、老式彈道導彈（V2）— 彈道階，塔式發射架／戰略導彈發射井內直接裝配
        ══════════════════════════════════════════════════════════════ -->
-  <DMSE.MissileBodyDef>
+  <Fortified.MissileBodyDef>
     <defName>DMSE_MissileBody_LegacyBallistic</defName>
     <label>legacy ballistic missile body</label>
     <expandingIconPath>UI/DMSE/TravelingMissile_Expanding_Ballistic</expandingIconPath>
@@ -85,13 +85,13 @@
       <li>Guidance</li>
       <li>Payload</li>
     </slots>
-  </DMSE.MissileBodyDef>
+  </Fortified.MissileBodyDef>
 
 
   <!-- ══════════════════════════════════════════════════════════════
        二、老式巡飛彈（V1）— 巡飛階，傾斜發射軌
        ══════════════════════════════════════════════════════════════ -->
-  <DMSE.MissileBodyDef>
+  <Fortified.MissileBodyDef>
     <defName>DMSE_MissileBody_LegacyLoiter</defName>
     <label>legacy loitering munition</label>
     <expandingIconPath>UI/DMSE/TravelingMissile_Expanding_V1</expandingIconPath>
@@ -115,14 +115,14 @@
     <!-- 無 slots：不可自定義。 -->
     <!-- 無導引部件，但仍由操作員以無線電指令選點（與現役巡飛彈的電視制導同一個流程，
          只影響選目標，不提供跨圖層與終端更新）。 -->
-    <builtInGuidance Class="DMSE.GuidanceType_TV" />
-  </DMSE.MissileBodyDef>
+    <builtInGuidance Class="Fortified.GuidanceType_TV" />
+  </Fortified.MissileBodyDef>
 
 
   <!-- ══════════════════════════════════════════════════════════════
        三、老式攔截巡飛彈（萊茵女兒）— 巡飛階，發射後滯空待敵的攔截彈
        ══════════════════════════════════════════════════════════════ -->
-  <DMSE.MissileBodyDef>
+  <Fortified.MissileBodyDef>
     <defName>DMSE_MissileBody_LegacyInterceptor</defName>
     <label>legacy interceptor loitering munition</label>
     <expandingIconPath>UI/DMSE/TravelingMissile_Expanding_Shahed</expandingIconPath>
@@ -148,14 +148,14 @@
     <!-- 作為攔截彈時命中率 ×0.6：無線電指令導引、靠操作員肉眼，命中率令人沮喪。 -->
     <interceptHitFactor>0.6</interceptHitFactor>
     <!-- 無 slots：固定構型（連續桿／破片戰鬥部），內建無線電指令導引但不具終端更新能力。 -->
-    <builtInGuidance Class="DMSE.GuidanceType_RadioCommand" />
-  </DMSE.MissileBodyDef>
+    <builtInGuidance Class="Fortified.GuidanceType_RadioCommand" />
+  </Fortified.MissileBodyDef>
 
 
   <!-- ══════════════════════════════════════════════════════════════
        四、先進通用導彈（地獄火）— 輕型階
        ══════════════════════════════════════════════════════════════ -->
-  <DMSE.MissileBodyDef>
+  <Fortified.MissileBodyDef>
     <defName>DMSE_MissileBody_AdvancedLight</defName>
     <label>advanced general-purpose missile body</label>
     <expandingIconPath>UI/DMSE/TravelingMissile_Expanding_AGM65</expandingIconPath>
@@ -192,13 +192,13 @@
       <li>DMSE_AdvLight_Guidance_Imaging</li>
       <li>DMSE_AdvLight_Payload_None</li>
     </defaultParts>
-  </DMSE.MissileBodyDef>
+  </Fortified.MissileBodyDef>
 
 
   <!-- ══════════════════════════════════════════════════════════════
        五、先進彈道導彈（民兵三型）— 彈道階，發射井內直接裝配
        ══════════════════════════════════════════════════════════════ -->
-  <DMSE.MissileBodyDef>
+  <Fortified.MissileBodyDef>
     <defName>DMSE_MissileBody_AdvancedBallistic</defName>
     <label>advanced ballistic missile body</label>
     <expandingIconPath>UI/DMSE/TravelingMissile_Expanding_Ballistic</expandingIconPath>
@@ -232,13 +232,13 @@
       <li>Guidance</li>
       <li>Payload</li>
     </slots>
-  </DMSE.MissileBodyDef>
+  </Fortified.MissileBodyDef>
 
 
   <!-- ══════════════════════════════════════════════════════════════
        六、先進巡航導彈（戰斧）— 輕型階（小型導彈）
        ══════════════════════════════════════════════════════════════ -->
-  <DMSE.MissileBodyDef>
+  <Fortified.MissileBodyDef>
     <defName>DMSE_MissileBody_AdvancedCruise</defName>
     <label>advanced cruise missile body</label>
     <designWord>Cruise</designWord>
@@ -276,13 +276,13 @@
       <li>DMSE_AdvCruise_Propulsion_Turbofan</li>
       <li>DMSE_AdvCruise_Payload_None</li>
     </defaultParts>
-  </DMSE.MissileBodyDef>
+  </Fortified.MissileBodyDef>
 
 
   <!-- ══════════════════════════════════════════════════════════════
        七、輕型防空導彈（刺針）— 輕型階，兩槽，攔截彈與單兵發射具彈藥
        ══════════════════════════════════════════════════════════════ -->
-  <DMSE.MissileBodyDef>
+  <Fortified.MissileBodyDef>
     <defName>DMSE_MissileBody_Stinger</defName>
     <label>light surface-to-air missile body</label>
     <expandingIconPath>UI/DMSE/TravelingMissile_Expanding_Ballistic</expandingIconPath>
@@ -317,13 +317,13 @@
       <li>DMSE_Light_Warhead_HE</li>
       <li>DMSE_Light_Guidance_IR</li>
     </defaultParts>
-  </DMSE.MissileBodyDef>
+  </Fortified.MissileBodyDef>
 
 
   <!-- ══════════════════════════════════════════════════════════════
        八、對地攻擊導彈（小牛）— 輕型階，三槽
        ══════════════════════════════════════════════════════════════ -->
-  <DMSE.MissileBodyDef>
+  <Fortified.MissileBodyDef>
     <defName>DMSE_MissileBody_Maverick</defName>
     <label>ground-attack missile body</label>
     <expandingIconPath>UI/DMSE/TravelingMissile_Expanding_AGM65</expandingIconPath>
@@ -359,13 +359,13 @@
       <li>DMSE_AdvLight_Guidance_Imaging</li>
       <li>DMSE_Light_Payload_None</li>
     </defaultParts>
-  </DMSE.MissileBodyDef>
+  </Fortified.MissileBodyDef>
 
 
   <!-- ══════════════════════════════════════════════════════════════
        九、先進防空導彈（麻雀）— 輕型階，三槽，半主動攔截彈
        ══════════════════════════════════════════════════════════════ -->
-  <DMSE.MissileBodyDef>
+  <Fortified.MissileBodyDef>
     <defName>DMSE_MissileBody_Sparrow</defName>
     <label>advanced surface-to-air missile body</label>
     <expandingIconPath>UI/DMSE/TravelingMissile_Expanding_Ballistic</expandingIconPath>
@@ -402,13 +402,13 @@
       <li>DMSE_Light_Guidance_SemiActive</li>
       <li>DMSE_Light_Payload_None</li>
     </defaultParts>
-  </DMSE.MissileBodyDef>
+  </Fortified.MissileBodyDef>
 
 
   <!-- ══════════════════════════════════════════════════════════════
        十、超音速反艦導彈（白蛉）— 中型階，四槽
        ══════════════════════════════════════════════════════════════ -->
-  <DMSE.MissileBodyDef>
+  <Fortified.MissileBodyDef>
     <defName>DMSE_MissileBody_Moskit</defName>
     <label>supersonic anti-ship missile body</label>
     <expandingIconPath>UI/DMSE/TravelingMissile_Expanding_Ballistic</expandingIconPath>
@@ -445,13 +445,13 @@
       <li>DMSE_Propulsion_Standard</li>
       <li>DMSE_Payload_None</li>
     </defaultParts>
-  </DMSE.MissileBodyDef>
+  </Fortified.MissileBodyDef>
 
 
   <!-- ══════════════════════════════════════════════════════════════
        十之二、先進反艦巡航導彈（縞瑪瑙）— 中型階，四槽。以白蛉為底，主要數值為白蛉的 2 倍（鷹擊為 3 倍），可垂直發射
        ══════════════════════════════════════════════════════════════ -->
-  <DMSE.MissileBodyDef>
+  <Fortified.MissileBodyDef>
     <defName>DMSE_MissileBody_Oniks</defName>
     <label>advanced anti-ship cruise missile body</label>
     <expandingIconPath>UI/DMSE/TravelingMissile_Expanding_Ballistic</expandingIconPath>
@@ -488,13 +488,13 @@
       <li>DMSE_Propulsion_Standard</li>
       <li>DMSE_Payload_None</li>
     </defaultParts>
-  </DMSE.MissileBodyDef>
+  </Fortified.MissileBodyDef>
 
 
   <!-- ══════════════════════════════════════════════════════════════
        十一、高超音速反艦導彈（鷹擊）— 中型階，四槽，高隱身高速
        ══════════════════════════════════════════════════════════════ -->
-  <DMSE.MissileBodyDef>
+  <Fortified.MissileBodyDef>
     <defName>DMSE_MissileBody_Yj</defName>
     <label>hypersonic anti-ship missile body</label>
     <expandingIconPath>UI/DMSE/TravelingMissile_Expanding_Ballistic</expandingIconPath>
@@ -531,14 +531,14 @@
       <li>DMSE_Propulsion_Standard</li>
       <li>DMSE_Payload_None</li>
     </defaultParts>
-  </DMSE.MissileBodyDef>
+  </Fortified.MissileBodyDef>
 
 
   <!-- ══════════════════════════════════════════════════════════════
        十二、戰術彈道導彈（圓點U）— 中型階，四槽（2026-10-27 由彈道階改為中型：實物 6.4 m、約 2 t，
              與白蛉同級；物品型態、傾斜發射架與垂直發射井皆可發射，飛行仍是彈道軌跡）
        ══════════════════════════════════════════════════════════════ -->
-  <DMSE.MissileBodyDef>
+  <Fortified.MissileBodyDef>
     <defName>DMSE_MissileBody_Tochka</defName>
     <label>tactical ballistic missile body</label>
     <expandingIconPath>UI/DMSE/TravelingMissile_Expanding_Ballistic</expandingIconPath>
@@ -578,7 +578,7 @@
       <li>DMSE_Propulsion_Standard</li>
       <li>DMSE_Payload_None</li>
     </defaultParts>
-  </DMSE.MissileBodyDef>
+  </Fortified.MissileBodyDef>
 
 
   <!-- ==================================================================
@@ -593,7 +593,7 @@
   <ThingDef ParentName="DMSE_MissileIncomingProjectileBase">
     <defName>DMSE_Incoming_LegacyBallisticMissile</defName>
     <label>legacy ballistic missile (incoming)</label>
-    <thingClass>DMSE.Projectile_MissileIncoming</thingClass>
+    <thingClass>Fortified.Projectile_MissileIncoming</thingClass>
     <graphicData>
       <texPath>Things/Missile/V2/skyFaller_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -601,12 +601,12 @@
     </graphicData>
     <size>(1,1)</size>
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <shadowSize>(3, 3)</shadowSize>
         <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
         <speed>1</speed>
       </li>
-      <li Class="DMSE.BVRTargetProps">
+      <li Class="Fortified.AirTargetExtension">
         <distanceLevel>2.2</distanceLevel>
         <stealthLevel>0</stealthLevel>
         <speed>25</speed>
@@ -621,7 +621,7 @@
   <ThingDef ParentName="DMSE_MissileIncomingProjectileBase">
     <defName>DMSE_Incoming_LegacyLoiter</defName>
     <label>legacy loitering munition (incoming)</label>
-    <thingClass>DMSE.Projectile_MissileIncoming</thingClass>
+    <thingClass>Fortified.Projectile_MissileIncoming</thingClass>
     <graphicData>
       <texPath>Things/Missile/V1/skyFaller_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -629,12 +629,12 @@
     </graphicData>
     <size>(1,1)</size>
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <shadowSize>(2, 2)</shadowSize>
         <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
         <speed>1</speed>
       </li>
-      <li Class="DMSE.BVRTargetProps">
+      <li Class="Fortified.AirTargetExtension">
         <distanceLevel>1.2</distanceLevel>
         <stealthLevel>0</stealthLevel>
         <speed>20</speed>
@@ -647,7 +647,7 @@
   <ThingDef ParentName="DMSE_MissileIncomingProjectileBase">
     <defName>DMSE_Incoming_LegacyInterceptor</defName>
     <label>legacy interceptor (incoming)</label>
-    <thingClass>DMSE.Projectile_MissileIncoming</thingClass>
+    <thingClass>Fortified.Projectile_MissileIncoming</thingClass>
     <graphicData>
       <texPath>Things/Missile/Rheintochter/skyFaller_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -655,12 +655,12 @@
     </graphicData>
     <size>(1,1)</size>
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <shadowSize>(1.5, 1.5)</shadowSize>
         <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
         <speed>1</speed>
       </li>
-      <li Class="DMSE.BVRTargetProps">
+      <li Class="Fortified.AirTargetExtension">
         <distanceLevel>1</distanceLevel>
         <stealthLevel>0</stealthLevel>
         <speed>18</speed>
@@ -673,7 +673,7 @@
   <ThingDef ParentName="DMSE_MissileIncomingProjectileBase">
     <defName>DMSE_Incoming_AdvancedLightMissile</defName>
     <label>advanced light missile (incoming)</label>
-    <thingClass>DMSE.Projectile_MissileIncoming</thingClass>
+    <thingClass>Fortified.Projectile_MissileIncoming</thingClass>
     <graphicData>
       <texPath>Things/Missile/Hellfire/skyFaller_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -681,12 +681,12 @@
     </graphicData>
     <size>(1,1)</size>
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <shadowSize>(2, 2)</shadowSize>
         <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
         <speed>1</speed>
       </li>
-      <li Class="DMSE.BVRTargetProps">
+      <li Class="Fortified.AirTargetExtension">
         <distanceLevel>1.2</distanceLevel>
         <stealthLevel>0</stealthLevel>
         <speed>24</speed>
@@ -699,7 +699,7 @@
   <ThingDef ParentName="DMSE_MissileIncomingProjectileBase">
     <defName>DMSE_Incoming_AdvancedBallisticMissile</defName>
     <label>advanced ballistic missile (incoming)</label>
-    <thingClass>DMSE.Projectile_MissileIncoming</thingClass>
+    <thingClass>Fortified.Projectile_MissileIncoming</thingClass>
     <graphicData>
       <texPath>Things/Missile/Minuteman/skyFaller_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -707,12 +707,12 @@
     </graphicData>
     <size>(1,1)</size>
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <shadowSize>(4, 4)</shadowSize>
         <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
         <speed>1</speed>
       </li>
-      <li Class="DMSE.BVRTargetProps">
+      <li Class="Fortified.AirTargetExtension">
         <distanceLevel>2</distanceLevel>
         <stealthLevel>2</stealthLevel>
         <speed>95</speed>
@@ -727,7 +727,7 @@
   <ThingDef ParentName="DMSE_MissileIncomingProjectileBase">
     <defName>DMSE_Incoming_AdvancedCruiseMissile</defName>
     <label>advanced cruise missile (incoming)</label>
-    <thingClass>DMSE.Projectile_MissileIncoming</thingClass>
+    <thingClass>Fortified.Projectile_MissileIncoming</thingClass>
     <graphicData>
       <texPath>Things/Missile/Tomahawk/skyFaller_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -735,12 +735,12 @@
     </graphicData>
     <size>(1,1)</size>
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <shadowSize>(3, 3)</shadowSize>
         <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
         <speed>1</speed>
       </li>
-      <li Class="DMSE.BVRTargetProps">
+      <li Class="Fortified.AirTargetExtension">
         <distanceLevel>1.8</distanceLevel>
         <stealthLevel>2</stealthLevel>
         <speed>28</speed>
@@ -753,7 +753,7 @@
   <ThingDef ParentName="DMSE_MissileIncomingProjectileBase">
     <defName>DMSE_Incoming_Stinger</defName>
     <label>light surface-to-air missile (incoming)</label>
-    <thingClass>DMSE.Projectile_MissileIncoming</thingClass>
+    <thingClass>Fortified.Projectile_MissileIncoming</thingClass>
     <graphicData>
       <texPath>Things/Weapons/DMSE_Projectile_Stinger</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -761,12 +761,12 @@
     </graphicData>
     <size>(1,1)</size>
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <shadowSize>(1.5, 1.5)</shadowSize>
         <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
         <speed>1</speed>
       </li>
-      <li Class="DMSE.BVRTargetProps">
+      <li Class="Fortified.AirTargetExtension">
         <distanceLevel>1</distanceLevel>
         <stealthLevel>0</stealthLevel>
         <speed>26</speed>
@@ -779,7 +779,7 @@
   <ThingDef ParentName="DMSE_MissileIncomingProjectileBase">
     <defName>DMSE_Incoming_Maverick</defName>
     <label>ground-attack missile (incoming)</label>
-    <thingClass>DMSE.Projectile_MissileIncoming</thingClass>
+    <thingClass>Fortified.Projectile_MissileIncoming</thingClass>
     <graphicData>
       <texPath>Things/Missile/AGM65/skyFaller_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -787,12 +787,12 @@
     </graphicData>
     <size>(1,1)</size>
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <shadowSize>(2, 2)</shadowSize>
         <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
         <speed>1</speed>
       </li>
-      <li Class="DMSE.BVRTargetProps">
+      <li Class="Fortified.AirTargetExtension">
         <distanceLevel>1.1</distanceLevel>
         <stealthLevel>0</stealthLevel>
         <speed>24</speed>
@@ -805,7 +805,7 @@
   <ThingDef ParentName="DMSE_MissileIncomingProjectileBase">
     <defName>DMSE_Incoming_Sparrow</defName>
     <label>advanced surface-to-air missile (incoming)</label>
-    <thingClass>DMSE.Projectile_MissileIncoming</thingClass>
+    <thingClass>Fortified.Projectile_MissileIncoming</thingClass>
     <graphicData>
       <texPath>Things/Missile/Aim120/skyFaller</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -813,12 +813,12 @@
     </graphicData>
     <size>(1,1)</size>
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <shadowSize>(2, 2)</shadowSize>
         <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
         <speed>1</speed>
       </li>
-      <li Class="DMSE.BVRTargetProps">
+      <li Class="Fortified.AirTargetExtension">
         <distanceLevel>1.1</distanceLevel>
         <stealthLevel>0</stealthLevel>
         <speed>32</speed>
@@ -831,7 +831,7 @@
   <ThingDef ParentName="DMSE_MissileIncomingProjectileBase">
     <defName>DMSE_Incoming_Moskit</defName>
     <label>supersonic anti-ship missile (incoming)</label>
-    <thingClass>DMSE.Projectile_MissileIncoming</thingClass>
+    <thingClass>Fortified.Projectile_MissileIncoming</thingClass>
     <graphicData>
       <texPath>Things/Missile/Moskit/skyFaller_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -839,12 +839,12 @@
     </graphicData>
     <size>(1,1)</size>
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <shadowSize>(3, 3)</shadowSize>
         <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
         <speed>1</speed>
       </li>
-      <li Class="DMSE.BVRTargetProps">
+      <li Class="Fortified.AirTargetExtension">
         <distanceLevel>1.5</distanceLevel>
         <stealthLevel>1</stealthLevel>
         <speed>45</speed>
@@ -857,7 +857,7 @@
   <ThingDef ParentName="DMSE_MissileIncomingProjectileBase">
     <defName>DMSE_Incoming_Oniks</defName>
     <label>advanced anti-ship cruise missile (incoming)</label>
-    <thingClass>DMSE.Projectile_MissileIncoming</thingClass>
+    <thingClass>Fortified.Projectile_MissileIncoming</thingClass>
     <graphicData>
       <texPath>Things/Missile/Oniks/skyFaller_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -865,12 +865,12 @@
     </graphicData>
     <size>(1,1)</size>
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <shadowSize>(3, 3)</shadowSize>
         <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
         <speed>1</speed>
       </li>
-      <li Class="DMSE.BVRTargetProps">
+      <li Class="Fortified.AirTargetExtension">
         <distanceLevel>1.55</distanceLevel>
         <stealthLevel>2</stealthLevel>
         <speed>90</speed>
@@ -883,7 +883,7 @@
   <ThingDef ParentName="DMSE_MissileIncomingProjectileBase">
     <defName>DMSE_Incoming_Yj</defName>
     <label>hypersonic anti-ship missile (incoming)</label>
-    <thingClass>DMSE.Projectile_MissileIncoming</thingClass>
+    <thingClass>Fortified.Projectile_MissileIncoming</thingClass>
     <graphicData>
       <texPath>Things/Missile/YJ20/skyFaller_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -891,12 +891,12 @@
     </graphicData>
     <size>(1,1)</size>
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <shadowSize>(3, 3)</shadowSize>
         <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
         <speed>1</speed>
       </li>
-      <li Class="DMSE.BVRTargetProps">
+      <li Class="Fortified.AirTargetExtension">
         <distanceLevel>1.6</distanceLevel>
         <stealthLevel>3</stealthLevel>
         <speed>135</speed>
@@ -909,7 +909,7 @@
   <ThingDef ParentName="DMSE_MissileIncomingProjectileBase">
     <defName>DMSE_Incoming_Tochka</defName>
     <label>tactical ballistic missile (incoming)</label>
-    <thingClass>DMSE.Projectile_MissileIncoming</thingClass>
+    <thingClass>Fortified.Projectile_MissileIncoming</thingClass>
     <graphicData>
       <texPath>Things/Missile/Tochka/skyFaller_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -917,12 +917,12 @@
     </graphicData>
     <size>(1,1)</size>
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <shadowSize>(3.5, 3.5)</shadowSize>
         <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
         <speed>1</speed>
       </li>
-      <li Class="DMSE.BVRTargetProps">
+      <li Class="Fortified.AirTargetExtension">
         <distanceLevel>2</distanceLevel>
         <stealthLevel>1</stealthLevel>
         <speed>60</speed>

@@ -176,7 +176,7 @@
         <basePowerConsumption>500</basePowerConsumption>
       </li>
       <!-- 末端攔截砲塔（CIWS）：在末端窗口內自主攔截，攔截成功時有機率生成殘骸。 -->
-      <li Class="DMSE.CompProperties_TerminalCIWS">
+      <li Class="Fortified.CompProperties_TerminalCIWS">
         <projectile>DMSE_Bullet_Vulcan_WingBack_CIWS</projectile>
         <terminalWindowTicks>1800</terminalWindowTicks>
         <cooldownTicks>20</cooldownTicks>

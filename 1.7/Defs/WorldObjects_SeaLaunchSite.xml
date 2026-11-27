@@ -20,7 +20,7 @@
   <GenStepDef>
     <defName>DMSE_SeaLaunchSite_GS_Ocean</defName>
     <order>200</order>
-    <genStep Class="DMSE.GenStep_SeaPlatform">
+    <genStep Class="Fortified.GenStep_SeaPlatform">
       <platformSize>(0,0)</platformSize>
     </genStep>
   </GenStepDef>
@@ -28,7 +28,7 @@
   <GenStepDef>
     <defName>DMSE_SeaLaunchSite_GS_Structures</defName>
     <order>400</order>
-    <genStep Class="DMSE.GenStep_SeaLaunchSite">
+    <genStep Class="Fortified.GenStep_SeaLaunchSite">
       <!-- 海上沒有自然地形可保留：完整生成結構（地板、屋頂），甲板由 PrepareGround 先鋪好 -->
       <keepNaturalTerrain>false</keepNaturalTerrain>
       <deckMargin>2</deckMargin>
@@ -105,7 +105,7 @@
   <GenStepDef>
     <defName>DMSE_SeaLaunchSite_GS_SpawnCrew</defName>
     <order>450</order>
-    <genStep Class="DMSE.GenStep_FieldLaunchSiteCrew">
+    <genStep Class="Fortified.GenStep_FieldLaunchSiteCrew">
       <pointsPerPawn>110</pointsPerPawn>
       <minCrew>4</minCrew>
       <maxCrew>16</maxCrew>
@@ -125,9 +125,9 @@
   <GenStepDef>
     <defName>DMSE_SeaLaunchSite_GS_Walkways</defName>
     <order>430</order>
-    <genStep Class="DMSE.GenStep_FieldLaunchSiteRoads">
+    <genStep Class="Fortified.GenStep_FieldLaunchSiteRoads">
       <roadTerrain>DMSE_SeaPlatform</roadTerrain>
-      <openTerrain>DMSE_OpenAir</openTerrain>
+      <openTerrain>FFF_OpenAir</openTerrain>
       <roadWidth>3</roadWidth>
       <roadToMapEdge>false</roadToMapEdge>
     </genStep>
@@ -137,7 +137,7 @@
   <GenStepDef>
     <defName>DMSE_SeaLaunchSite_GS_Pillars</defName>
     <order>440</order>
-    <genStep Class="DMSE.GenStep_SeaLaunchSitePillars">
+    <genStep Class="Fortified.GenStep_SeaLaunchSitePillars">
       <pillarDef>DMSE_SeaPlatformPillar</pillarDef>
     </genStep>
   </GenStepDef>
@@ -154,8 +154,8 @@
       <li>DMSE_SeaLaunchSite_GS_Pillars</li>
     </genSteps>
     <modExtensions>
-      <li Class="DMSE.SeaPlatformMapExtension">
-        <voidTerrain>DMSE_OpenAir</voidTerrain>
+      <li Class="Fortified.SeaPlatformMapExtension">
+        <voidTerrain>FFF_OpenAir</voidTerrain>
         <deckTerrain>DMSE_SeaPlatform</deckTerrain>
         <seaDrop>14.1</seaDrop>
       </li>
@@ -175,7 +175,7 @@
     <mapGenerator>DMSE_SeaLaunchSite_MapGen</mapGenerator>
     <comps>
       <!-- 沒有 WorldObjectCompProperties_FormCaravan：水域 tile 上不能組遠行隊，只能空中撤離。 -->
-      <li Class="DMSE.CompProperties_WorldAirDefense">
+      <li Class="Fortified.WorldObjectCompProperties_AirDefense">
         <worldDetectionRange>12</worldDetectionRange>
         <antiStealthLevel>2</antiStealthLevel>
         <fireControlDef>DMSE_FireControlRadar</fireControlDef>
@@ -187,7 +187,7 @@
         <launchCooldownTicks>300</launchCooldownTicks>
         <worldInterceptRange>7</worldInterceptRange>
       </li>
-      <li Class="DMSE.CompProperties_MissileBase">
+      <li Class="Fortified.WorldObjectCompProperties_MissileBase">
         <missileFireIntervalDays>
           <min>2.5</min>
           <max>4</max>
@@ -424,7 +424,7 @@
     <defName>DMSE_SeaLaunchSitePart</defName>
     <label>sea launch station</label>
     <description>An offshore missile station on pillar-supported sea platforms, with radars and launch platforms armed with advanced missiles.</description>
-    <workerClass>DMSE.SitePartWorker_SeaLaunchSite</workerClass>
+    <workerClass>Fortified.SitePartWorker_SeaLaunchSite</workerClass>
     <siteTexture>World/WorldObjects/Sites/Outpost</siteTexture>
     <expandingIconTexture>UI/Icon/icon_Marine_cruiser</expandingIconTexture>
     <applyFactionColorToSiteTexture>true</applyFactionColorToSiteTexture>
@@ -437,7 +437,7 @@
     <forceExitAndRemoveMapCountdownDurationDays>0</forceExitAndRemoveMapCountdownDurationDays>
     <modExtensions>
       <!-- 只有武裝殖民艦隊（DMS 本體）會部署 -->
-      <li Class="DMSE.SeaLaunchSiteFactionExtension">
+      <li Class="Fortified.SeaLaunchSiteFactionExtension">
         <factions>
           <li>DMS_Army</li>
         </factions>
@@ -457,7 +457,7 @@
     <targetTags>
       <li>Map_PlayerHome</li>
     </targetTags>
-    <workerClass>DMSE.IncidentWorker_SeaLaunchSite</workerClass>
+    <workerClass>Fortified.IncidentWorker_SeaLaunchSite</workerClass>
     <baseChance>0.5</baseChance>
     <earliestDay>20</earliestDay>
     <minRefireDays>25</minRefireDays>
@@ -465,7 +465,7 @@
     <letterLabel>Colonial fleet sea launch station</letterLabel>
     <letterDef>ThreatBig</letterDef>
     <modExtensions>
-      <li Class="DMSE.FieldLaunchSiteIncidentExtension">
+      <li Class="Fortified.FieldLaunchSiteIncidentExtension">
         <worldObjectDef>DMSE_SeaLaunchSite</worldObjectDef>
         <sitePartDef>DMSE_SeaLaunchSitePart</sitePartDef>
         <distance>4~14</distance>

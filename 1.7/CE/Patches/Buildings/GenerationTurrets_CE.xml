@@ -12,7 +12,7 @@
 	        本模組的兩座砲塔都繼承它，重複設定只會多一次覆寫。
 	     2) 「砲彈」CompProperties_Refuelable（鋼鐵當砲彈）在 CE 下刪掉（2026-11-23 起）：
 	        末端攔截（DMSE 的 CompProperties_TerminalCIWS）建築上沒有 Refuelable 時，改從 CE 彈匣扣彈
-	        （DMSE_CE.dll 的相容層；每發扣 fuelPerShot 發：老式 1 發 37mm、千禧年 2 發 35mm、野戰防空 1 發 30mm）。
+	        （FortifiedCE.dll 的相容層；每發扣 fuelPerShot 發：老式 1 發 37mm、千禧年 2 發 35mm、野戰防空 1 發 30mm）。
 	        對地射擊與末端攔截共用同一個 CE 彈匣，不再有兩套彈藥；NPC 陣地的補給也改成空投 CE 彈藥、守軍用 CE 的裝填工作。
 	     3) 野戰防空砲（DMSE_Building_FieldAirDefense）已改成真砲塔、維持全自動（無 CompMannable），
 	        機砲接 CE 彈藥；CE 下要持續開火需在旁邊放一台 Building_AutoloaderCE。

@@ -2,13 +2,13 @@
 <Defs>
   <!--
     陣營的飛彈與防空準則（DMSE.MissileDoctrineDef）。陣營用 FactionDef 的
-    <li Class="DMSE.MissileDoctrineExtension"><doctrine>...</doctrine></li> 指定；
+    <li Class="Fortified.MissileDoctrineExtension"><doctrine>...</doctrine></li> 指定；
     沒有指定時依科技等級套用下面 defaultMinTech–defaultMaxTech 涵蓋的那一套。
     數值與加入準則前寫在程式裡的相同。targetWorker 省略 = 只打玩家地圖；
     改成 <targetWorker Class="Fortified.StrikeTargetWorker_Hostile" /> 就會攻擊敵對的 NPC 據點。
   -->
 
-  <DMSE.MissileDoctrineDef>
+  <Fortified.MissileDoctrineDef>
     <defName>DMSE_Doctrine_Industrial</defName>
     <defaultMinTech>Industrial</defaultMinTech>
     <defaultMaxTech>Industrial</defaultMaxTech>
@@ -24,9 +24,9 @@
       <interceptorBody>DMSE_MissileBody_Light</interceptorBody>
       <interceptorWarhead>DMSE_Light_Warhead_ContinuousRod</interceptorWarhead>
     </settlementDefense>
-  </DMSE.MissileDoctrineDef>
+  </Fortified.MissileDoctrineDef>
 
-  <DMSE.MissileDoctrineDef>
+  <Fortified.MissileDoctrineDef>
     <defName>DMSE_Doctrine_Spacer</defName>
     <defaultMinTech>Spacer</defaultMinTech>
     <defaultMaxTech>Spacer</defaultMaxTech>
@@ -42,9 +42,9 @@
       <interceptorBody>DMSE_MissileBody_Light</interceptorBody>
       <interceptorWarhead>DMSE_Light_Warhead_ContinuousRod</interceptorWarhead>
     </settlementDefense>
-  </DMSE.MissileDoctrineDef>
+  </Fortified.MissileDoctrineDef>
 
-  <DMSE.MissileDoctrineDef>
+  <Fortified.MissileDoctrineDef>
     <defName>DMSE_Doctrine_Ultra</defName>
     <defaultMinTech>Ultra</defaultMinTech>
     <!-- 可發射分導彈頭與誘餌（另需 Mod 設定「NPC 分導」開啟；docs/MIRV分導彈頭與誘餌載荷_實作計畫.md §10） -->
@@ -61,5 +61,5 @@
       <interceptorBody>DMSE_MissileBody_Light</interceptorBody>
       <interceptorWarhead>DMSE_Light_Warhead_ContinuousRod</interceptorWarhead>
     </settlementDefense>
-  </DMSE.MissileDoctrineDef>
+  </Fortified.MissileDoctrineDef>
 </Defs>

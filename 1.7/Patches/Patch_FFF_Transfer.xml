@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- 轉移船框架在 FFF（2026-11 從 DMSE 移入）。DMSE 的撞擊飛行內容：研究前置與撞擊結局（撞擊坑、DMS 軍隊、片尾），
+       框架不寫死（docs/轉移船與BVR移植FFF_可行性評估.md §2.1、§3.3）。 -->
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/Fortified.TransferFlightTuningDef[defName="FFF_TransferFlightTuning"]</xpath>
+    <value>
+      <impactResearch>DMSE_Occultech_TerminalCruise</impactResearch>
+      <impactWorkerClass>DMSE.TransferImpactWorker_Hellfire</impactWorkerClass>
+    </value>
+  </Operation>
+</Patch>

@@ -12,57 +12,10 @@
     尾焰（核心、外焰、光暈）不是 fleck，由 LaunchFxEmitter 每幀直接畫（LaunchFxMaterials）。
   -->
 
-  <FleckDef Name="DMSE_LaunchSmokeBase" Abstract="True">
-    <fleckSystemClass>FleckSystemStatic</fleckSystemClass>
-    <altitudeLayer>MetaOverlays</altitudeLayer>
-    <altitudeLayerIncOffset>1.2</altitudeLayerIncOffset>
-    <solidTime>1000</solidTime>
-    <modExtensions>
-      <li Class="DMSE.InterceptFxMaterial"><renderQueueOffset>1</renderQueueOffset></li>
-    </modExtensions>
-  </FleckDef>
 
-  <FleckDef ParentName="DMSE_LaunchSmokeBase">
-    <defName>DMSE_LaunchSmokeLight</defName>
-    <graphicData>
-      <texPath>Things/Effects/InterceptDebris/SmokeLight/SmokeLight_a</texPath>
-      <graphicClass>Graphic_Fleck</graphicClass>
-      <shaderType>Mote</shaderType>
-      <renderInstanced>true</renderInstanced>
-    </graphicData>
-  </FleckDef>
 
-  <FleckDef ParentName="DMSE_LaunchSmokeBase">
-    <defName>DMSE_LaunchSmokeMid</defName>
-    <graphicData>
-      <texPath>Things/Effects/InterceptDebris/SmokeMid/SmokeMid_a</texPath>
-      <graphicClass>Graphic_Fleck</graphicClass>
-      <shaderType>Mote</shaderType>
-      <renderInstanced>true</renderInstanced>
-    </graphicData>
-  </FleckDef>
 
-  <FleckDef ParentName="DMSE_LaunchSmokeBase">
-    <defName>DMSE_LaunchSmokeDark</defName>
-    <graphicData>
-      <texPath>Things/Effects/InterceptDebris/SmokeDark/SmokeDark_a</texPath>
-      <graphicClass>Graphic_Fleck</graphicClass>
-      <shaderType>Mote</shaderType>
-      <renderInstanced>true</renderInstanced>
-    </graphicData>
-  </FleckDef>
 
-  <!-- 地面雲：扁平、底面較暗的塵煙團（熱射點火時沿地面放射）。在煙柱之下。 -->
-  <FleckDef ParentName="DMSE_LaunchSmokeBase">
-    <defName>DMSE_LaunchGroundCloud</defName>
-    <altitudeLayerIncOffset>0.8</altitudeLayerIncOffset>
-    <graphicData>
-      <texPath>Things/Effects/MissileFx/GroundCloud/GroundCloud_a</texPath>
-      <graphicClass>Graphic_Fleck</graphicClass>
-      <shaderType>Mote</shaderType>
-      <renderInstanced>true</renderInstanced>
-    </graphicData>
-  </FleckDef>
 
   <!--
     尾焰尺寸依 2026-10-26 實機截圖（驗收 V1／V4）放大：長 ×1.6、寬 ×1.4。
@@ -71,7 +24,7 @@
   -->
 
   <!-- 固體助推（參考圖 1）：長白熱焰、橙黃外焰、濃密灰褐煙柱、地面大塵雲。 -->
-  <DMSE.LaunchFxProfileDef>
+  <Fortified.LaunchFxProfileDef>
     <defName>DMSE_LaunchFx_SolidBooster</defName>
     <coreLength>4.8</coreLength>
     <plumeWidth>1.4</plumeWidth>
@@ -84,10 +37,10 @@
     <groundCloudCount>16</groundCloudCount>
     <groundCloudColor>(1, 0.92, 0.8, 0.5)</groundCloudColor>
     <groundGlow>12</groundGlow>
-  </DMSE.LaunchFxProfileDef>
+  </Fortified.LaunchFxProfileDef>
 
   <!-- 冷射垂直發射（參考圖 2）：彈射白燃氣 → 空中點火 → 長直白煙柱。 -->
-  <DMSE.LaunchFxProfileDef>
+  <Fortified.LaunchFxProfileDef>
     <defName>DMSE_LaunchFx_ColdVls</defName>
     <coreLength>4.16</coreLength>
     <plumeWidth>1.19</plumeWidth>
@@ -101,7 +54,7 @@
     <ejectionPuffs>10</ejectionPuffs>
     <airIgnitionRing>10</airIgnitionRing>
     <groundGlow>6</groundGlow>
-  </DMSE.LaunchFxProfileDef>
+  </Fortified.LaunchFxProfileDef>
 
   <!--
     戰略導彈發射井冷射（2026-11-23，參考真實井式「迫擊炮式」冷射）：
@@ -113,7 +66,7 @@
       之後   第一級固體燃料：長焰、濃灰白煙柱。
     井蓋的彈開由 CompSiloHatch 處理（偵測到導彈離井就彈開）。
   -->
-  <DMSE.LaunchFxProfileDef>
+  <Fortified.LaunchFxProfileDef>
     <defName>DMSE_LaunchFx_SiloColdLaunch</defName>
     <coreLength>6</coreLength>
     <plumeWidth>1.8</plumeWidth>
@@ -152,10 +105,10 @@
     <groundCloudColor>(1, 0.95, 0.88, 0.5)</groundCloudColor>
     <groundGlow>14</groundGlow>
     <coldGlowFactor>1</coldGlowFactor>
-  </DMSE.LaunchFxProfileDef>
+  </Fortified.LaunchFxProfileDef>
 
   <!-- 液體彈道（V2）：淡藍白焰、煙少而淺、地面雲大。 -->
-  <DMSE.LaunchFxProfileDef>
+  <Fortified.LaunchFxProfileDef>
     <defName>DMSE_LaunchFx_LiquidBallistic</defName>
     <coreLength>5.44</coreLength>
     <plumeWidth>1.54</plumeWidth>
@@ -169,10 +122,10 @@
     <groundCloudCount>20</groundCloudCount>
     <groundCloudColor>(1, 1, 1, 0.5)</groundCloudColor>
     <groundGlow>14</groundGlow>
-  </DMSE.LaunchFxProfileDef>
+  </Fortified.LaunchFxProfileDef>
 
   <!-- 巡航導彈助推：短助推（燒完掉一片助推器殘骸）→ 幾乎無焰、只剩很淡的渦扇尾跡。 -->
-  <DMSE.LaunchFxProfileDef>
+  <Fortified.LaunchFxProfileDef>
     <defName>DMSE_LaunchFx_CruiseBooster</defName>
     <coreLength>3.52</coreLength>
     <plumeWidth>1.12</plumeWidth>
@@ -184,7 +137,7 @@
     <ejectionPuffs>8</ejectionPuffs>
     <boosterDebris>1</boosterDebris>
     <groundGlow>8</groundGlow>
-  </DMSE.LaunchFxProfileDef>
+  </Fortified.LaunchFxProfileDef>
 
   <!--
     Oniks（P-800）：巡航導彈的完整轉向程序（docs/導彈發射特效_重製計畫.md §3.6，參考圖第 4–6 幕）。
@@ -192,7 +145,7 @@
     轉向不是寫死的時間軸：以實際機頭角速度（巡航段為欠阻尼轉向，會過轉再回修）決定側推／反推與拋棄時機，
     所以大角度、小角度、左右轉都自動對得上。
   -->
-  <DMSE.LaunchFxProfileDef>
+  <Fortified.LaunchFxProfileDef>
     <defName>DMSE_LaunchFx_Oniks</defName>
     <coreLength>3.52</coreLength>
     <plumeWidth>1.12</plumeWidth>
@@ -249,10 +202,10 @@
     <jettisonRingPuffs>12</jettisonRingPuffs>
     <turnPodDrift>0.06</turnPodDrift>
     <turnPodBurnTicks>40</turnPodBurnTicks>
-  </DMSE.LaunchFxProfileDef>
+  </Fortified.LaunchFxProfileDef>
 
   <!-- 脈衝噴射（V1 類）：無高亮長焰、斷續的淡煙。 -->
-  <DMSE.LaunchFxProfileDef>
+  <Fortified.LaunchFxProfileDef>
     <defName>DMSE_LaunchFx_Pulsejet</defName>
     <coreLength>1.6</coreLength>
     <plumeWidth>0.7</plumeWidth>
@@ -266,10 +219,10 @@
     <spacingFactor>0.6</spacingFactor>
     <groundCloudCount>6</groundCloudCount>
     <groundGlow>4</groundGlow>
-  </DMSE.LaunchFxProfileDef>
+  </Fortified.LaunchFxProfileDef>
 
   <!-- 肩射：筒口小噴發 → 數公尺外點火 → 細長淺灰煙。 -->
-  <DMSE.LaunchFxProfileDef>
+  <Fortified.LaunchFxProfileDef>
     <defName>DMSE_LaunchFx_Manpads</defName>
     <coreLength>2.24</coreLength>
     <plumeWidth>0.7</plumeWidth>
@@ -282,6 +235,6 @@
     <airIgnitionRing>5</airIgnitionRing>
     <ignitionFlash>2.5</ignitionFlash>
     <groundGlow>3</groundGlow>
-  </DMSE.LaunchFxProfileDef>
+  </Fortified.LaunchFxProfileDef>
 
 </Defs>

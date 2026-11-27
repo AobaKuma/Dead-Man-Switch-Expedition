@@ -18,7 +18,7 @@
   <!-- == Warhead == -->
 
   <!-- 串聯成型裝藥：小半徑、高傷害，對點目標（載具、砲塔、機械體）。 -->
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_AdvLight_Warhead_HEAT</defName>
     <label>tandem shaped-charge warhead</label>
     <designWord>HEAT</designWord>
@@ -37,10 +37,10 @@
     <researchPrerequisites>
       <li>DMSE_IntegratedCircuits</li>
     </researchPrerequisites>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
   <!-- 破片殺傷：大一點的半徑，傷害居中，通用於步兵與輕建築。 -->
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_AdvLight_Warhead_BlastFrag</defName>
     <label>blast-fragmentation warhead</label>
     <designWord>Frag</designWord>
@@ -59,10 +59,10 @@
     <researchPrerequisites>
       <li>DMSE_IntegratedCircuits</li>
     </researchPrerequisites>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
   <!-- 溫壓（MAC）：小半徑、燒傷與點燃，密閉空間特別有效。 -->
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_AdvLight_Warhead_Thermobaric</defName>
     <label>thermobaric warhead</label>
     <designWord>Thermobaric</designWord>
@@ -74,7 +74,7 @@
     <explosionRadiusOffset>0.5</explosionRadiusOffset>
     <damageAmountOffset>80</damageAmountOffset>
     <damageDefOverride>Bomb</damageDefOverride>
-    <warheadEffect Class="DMSE.WarheadEffect_Thermobaric">
+    <warheadEffect Class="Fortified.WarheadEffect_Thermobaric">
       <pawnDamage>90</pawnDamage>
       <igniteChance>0.6</igniteChance>
     </warheadEffect>
@@ -86,10 +86,10 @@
     <researchPrerequisites>
       <li>DMSE_IntegratedCircuits</li>
     </researchPrerequisites>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
   <!-- 動能刀刃（R-9X）：近乎無爆炸，只殺一個目標。 -->
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_AdvLight_Warhead_Kinetic</defName>
     <label>kinetic blade warhead</label>
     <designWord>Blade</designWord>
@@ -101,7 +101,7 @@
     <explosionRadiusOffset>-4</explosionRadiusOffset>
     <damageAmountOffset>-80</damageAmountOffset>
     <damageDefOverride>Bomb</damageDefOverride>
-    <warheadEffect Class="DMSE.WarheadEffect_KineticBlades">
+    <warheadEffect Class="Fortified.WarheadEffect_KineticBlades">
       <damagePerBlade>35</damagePerBlade>
       <maxTargets>3</maxTargets>
     </warheadEffect>
@@ -112,11 +112,11 @@
     <researchPrerequisites>
       <li>DMSE_IntegratedCircuits</li>
     </researchPrerequisites>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
   <!-- == Guidance == -->
 
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_AdvLight_Guidance_Inertial</defName>
     <label>inertial guidance</label>
     <omitFromDesignName>true</omitFromDesignName>
@@ -125,13 +125,13 @@
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedLight</li>
     </compatibleBodies>
-    <guidanceType Class="DMSE.GuidanceType_Inertial" />
+    <guidanceType Class="Fortified.GuidanceType_Inertial" />
     <scatterOffset>1</scatterOffset>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
   <!-- 自動影像尋標：優先攻擊屋頂外具威脅的敵方生物。
        亦供對地攻擊導彈（小牛）使用：其描述的「電視與紅外線尋標器」即此光電影像尋標，並作為小牛的預設導引。 -->
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_AdvLight_Guidance_Imaging</defName>
     <label>automatic imaging seeker</label>
     <designWord>Imaging</designWord>
@@ -141,7 +141,7 @@
       <li>DMSE_MissileBody_AdvancedLight</li>
       <li>DMSE_MissileBody_Maverick</li>
     </compatibleBodies>
-    <guidanceType Class="DMSE.GuidanceType_Imaging" />
+    <guidanceType Class="Fortified.GuidanceType_Imaging" />
     <scatterOffset>-1</scatterOffset>
     <costList>
       <ComponentIndustrial>4</ComponentIndustrial>
@@ -150,10 +150,10 @@
     <researchPrerequisites>
       <li>DMSE_IntegratedCircuits</li>
     </researchPrerequisites>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
   <!-- 影像紅外（IIR）：熱目標優先，散布收斂。 -->
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_AdvLight_Guidance_IIR</defName>
     <label>imaging infra-red seeker</label>
     <designWord>IIR</designWord>
@@ -162,7 +162,7 @@
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedLight</li>
     </compatibleBodies>
-    <guidanceType Class="DMSE.GuidanceType_HeatSource">
+    <guidanceType Class="Fortified.GuidanceType_HeatSource">
       <minRoomTempAboveOutdoor>15</minRoomTempAboveOutdoor>
     </guidanceType>
     <scatterOffset>-1</scatterOffset>
@@ -172,10 +172,10 @@
     <researchPrerequisites>
       <li>DMSE_IntegratedAirDefense</li>
     </researchPrerequisites>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
   <!-- 半主動雷射（SAL）：鎖定我方標定點，散布最緊。 -->
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_AdvLight_Guidance_Laser</defName>
     <label>semi-active laser seeker</label>
     <designWord>Laser</designWord>
@@ -184,7 +184,7 @@
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedLight</li>
     </compatibleBodies>
-    <guidanceType Class="DMSE.GuidanceType_Laser" />
+    <guidanceType Class="Fortified.GuidanceType_Laser" />
     <scatterOffset>-2</scatterOffset>
     <costList>
       <ComponentIndustrial>3</ComponentIndustrial>
@@ -193,10 +193,10 @@
     <researchPrerequisites>
       <li>DMSE_FireControlNetwork</li>
     </researchPrerequisites>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
   <!-- 主動毫米波雷達（MMW）：射後不理，依建築占地／單位體型鎖敵。 -->
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_AdvLight_Guidance_MMW</defName>
     <label>millimetre-wave radar seeker</label>
     <designWord>MMW</designWord>
@@ -205,7 +205,7 @@
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedLight</li>
     </compatibleBodies>
-    <guidanceType Class="DMSE.GuidanceType_ActiveRadar" />
+    <guidanceType Class="Fortified.GuidanceType_ActiveRadar" />
     <scatterOffset>-2</scatterOffset>
     <costList>
       <ComponentIndustrial>4</ComponentIndustrial>
@@ -214,11 +214,11 @@
     <researchPrerequisites>
       <li>DMSE_RadarNetwork</li>
     </researchPrerequisites>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
   <!-- == Payload == -->
 
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_AdvLight_Payload_None</defName>
     <label>no payload</label>
     <omitFromDesignName>true</omitFromDesignName>
@@ -227,10 +227,10 @@
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedLight</li>
     </compatibleBodies>
-    <payloadEffect Class="DMSE.PayloadEffect_None" />
-  </DMSE.MissilePartDef>
+    <payloadEffect Class="Fortified.PayloadEffect_None" />
+  </Fortified.MissilePartDef>
 
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_AdvLight_Payload_HE</defName>
     <label>secondary high-explosive charge</label>
     <designWord>Blast</designWord>
@@ -239,7 +239,7 @@
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedLight</li>
     </compatibleBodies>
-    <payloadEffect Class="DMSE.PayloadEffect_HighExplosive">
+    <payloadEffect Class="Fortified.PayloadEffect_HighExplosive">
       <damageAmount>80</damageAmount>
     </payloadEffect>
     <costList>
@@ -249,10 +249,10 @@
     <researchPrerequisites>
       <li>DMSE_LoiteringMunitions</li>
     </researchPrerequisites>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
   <!-- 破片套筒：以空爆鎢芯表示；代價是整體射程 ×0.75。 -->
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_AdvLight_Payload_FragSleeve</defName>
     <label>fragmentation sleeve</label>
     <designWord>Sleeve</designWord>
@@ -261,7 +261,7 @@
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedLight</li>
     </compatibleBodies>
-    <payloadEffect Class="DMSE.PayloadEffect_AirburstTungsten">
+    <payloadEffect Class="Fortified.PayloadEffect_AirburstTungsten">
       <damagePerHit>9</damagePerHit>
       <armorPenetration>0.4</armorPenetration>
     </payloadEffect>
@@ -271,10 +271,10 @@
     <researchPrerequisites>
       <li>DMSE_IntegratedCircuits</li>
     </researchPrerequisites>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
   <!-- 箔條／干擾絲：有限次的主動干擾，不是傷害型酬載。 -->
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_AdvLight_Payload_Chaff</defName>
     <label>chaff dispenser</label>
     <designWord>Chaff</designWord>
@@ -283,7 +283,7 @@
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedLight</li>
     </compatibleBodies>
-    <payloadEffect Class="DMSE.PayloadEffect_None" />
+    <payloadEffect Class="Fortified.PayloadEffect_None" />
     <jamStrength>0.25</jamStrength>
     <chaffCharges>2</chaffCharges>
     <costList>
@@ -293,6 +293,6 @@
     <researchPrerequisites>
       <li>DMSE_FireControlNetwork</li>
     </researchPrerequisites>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
 </Defs>

@@ -27,11 +27,11 @@ NEW_NAMESPACE = 'Fortified'
 SCOPE = [
     'CelestialTransfer', 'Platform', 'SkyFallerTurret', 'MissileFramework', 'MissileProjectile', 'MissileFx',
     'Scorer', 'EW', 'Artillery', 'MissileBase', 'SeaPlatform', 'Renameable', 'Integration', 'Common',
-    'Utilities/CombatCompat.cs', 'Utilities/DMSE_Concepts.cs',
+    'Utilities/CombatCompat.cs', 'Utilities/DMSE_Concepts.cs', 'Utilities/Patch_ResearchCompleted.cs',
     'Building_MissileRack.cs', 'CompMissileLauncher.cs', 'CompMissileRackRenderer.cs', 'CompMissileBodyRenderer.cs',
 ]
-# Hellfire impact craters are DMSE content (doc §2.1).
-EXCLUDE = ['CelestialTransfer/Hellfire']
+# Hellfire impact craters are DMSE content (doc §2.1); Legacy holds DMSE's own old-save classes.
+EXCLUDE = ['CelestialTransfer/Hellfire', 'CelestialTransfer/Legacy']
 
 # Hand-picked names from doc §7.4. Rules below cover the rest.
 EXPLICIT = {
@@ -71,18 +71,18 @@ EXPLICIT = {
     'BVRWorldDrawer': 'AirDefenseWorldDrawer',
     'BVRDefenseEffector': 'AirDefenseEffector',
     'DMSE_Concepts': 'ConceptTeachUtility',
-    # DefOf classes merge into FFF's existing catch-all FFF_DefOf (it already mixes JobDef, DutyDef, StatCategoryDef).
-    'DMSE_MissileJobDefOf': 'FFF_DefOf',
-    'DMSE_BallisticJobDefOf': 'FFF_DefOf',
-    'DMSE_StrikeDefOf': 'FFF_DefOf',
-    'DMSE_ManPortableSAMDefOf': 'FFF_DefOf',
-    'DMSE_EWJobDefOf': 'FFF_DefOf',
-    'DMSE_MissileCrewDutyDefOf': 'FFF_DefOf',
-    'DMSE_KeyBindingDefOf': 'FFF_DefOf',
-    'MissileStatCategoryDefOf': 'FFF_DefOf',
-    'DMSE_FrameworkDefOf': 'FFF_DefOf',
+    # DefOf classes merge into one FFF_MissileDefOf (not FFF_DefOf: these Defs load only on 1.7, FFF_DefOf also builds for 1.6).
+    'DMSE_MissileJobDefOf': 'FFF_MissileDefOf',
+    'DMSE_BallisticJobDefOf': 'FFF_MissileDefOf',
+    'DMSE_StrikeDefOf': 'FFF_MissileDefOf',
+    'DMSE_ManPortableSAMDefOf': 'FFF_MissileDefOf',
+    'DMSE_EWJobDefOf': 'FFF_MissileDefOf',
+    'DMSE_MissileCrewDutyDefOf': 'FFF_MissileDefOf',
+    'DMSE_KeyBindingDefOf': 'FFF_MissileDefOf',
+    'MissileStatCategoryDefOf': 'FFF_MissileDefOf',
+    'DMSE_FrameworkDefOf': 'FFF_MissileDefOf',
 }
-MERGE_TARGETS = {'FFF_DefOf'}
+MERGE_TARGETS = {'FFF_DefOf', 'FFF_MissileDefOf'}
 
 # Framework Def renames (doc §3.3, §7.3): DMSE_ prefix -> FFF_ prefix.
 DEF_OLD_PREFIX, DEF_NEW_PREFIX = 'DMSE_', 'FFF_'

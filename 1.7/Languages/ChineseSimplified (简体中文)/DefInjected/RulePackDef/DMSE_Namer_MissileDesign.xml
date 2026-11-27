@@ -2,13 +2,13 @@
 <LanguageData>
 
   <!-- 通用樣板（沒有綁 Namer 的彈體）。 -->
-  <DMSE_NamerMissileDesign.rulePack.rulesStrings>
+  <FFF_NamerMissileDesign.rulePack.rulesStrings>
     <li>r_name(p=3)->[body]·[warhead]</li>
     <li>r_name(p=2)->[warhead][guidance][body]</li>
     <li>r_name->[guidance][body]</li>
     <li>r_name->[body]·[warhead][payload]</li>
     <li>r_name->[guidance][propulsion][body]</li>
-  </DMSE_NamerMissileDesign.rulePack.rulesStrings>
+  </FFF_NamerMissileDesign.rulePack.rulesStrings>
 
   <!-- Light -->
   <DMSE_NamerPack_Light.rulePack.rulesStrings>

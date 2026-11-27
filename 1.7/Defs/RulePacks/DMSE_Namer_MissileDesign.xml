@@ -5,7 +5,7 @@
        導彈設計名稱樣板（r_name）
        Design-name templates.
        ==================================================================
-       樣板由 MissileDesignNamer 依彈體挑選：每個可裝配彈體在 <DMSE.MissileNamerDef> 的
+       樣板由 MissileDesignNamer 依彈體挑選：每個可裝配彈體在 <Fortified.MissileNamerDef> 的
        pack 欄位指定自己的包（DMSE_NamerPack_*），沒指定的彈體用通用 DMSE_NamerMissileDesign。
 
        符號：
@@ -20,19 +20,6 @@
        同一 keyword 多條＝加權候選，用 p= 調權重。check_missile_content.py 第 13／15 條檢查。
        ================================================================== -->
 
-  <!-- 通用樣板：沒有綁 Namer 的彈體（只有部件詞、沒有型號代字）。 -->
-  <RulePackDef>
-    <defName>DMSE_NamerMissileDesign</defName>
-    <rulePack>
-      <rulesStrings>
-        <li>r_name(p=3)->[body] [warhead]</li>
-        <li>r_name(p=2)->[body] [warhead] [guidance]</li>
-        <li>r_name->[body]-[guidance]</li>
-        <li>r_name->[warhead] [payload] [body]</li>
-        <li>r_name->[guidance] [propulsion] [body]</li>
-      </rulesStrings>
-    </rulePack>
-  </RulePackDef>
 
   <!-- Light：輕型對地／通用彈體：戰頭＋導引＋酬載，短編號。 -->
   <RulePackDef>

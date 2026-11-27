@@ -235,8 +235,8 @@
     </recipeMaker>
     <comps>
       <!-- 允許玩家為每枚導彈設定自訂名稱；重命名按鈕顯示於 ITab_MissileInventory 各列右側。 -->
-      <li Class="DMSE.CompProperties_Renameable" />
-      <li Class="DMSE.CompProperties_MissileConfig">
+      <li Class="Fortified.CompProperties_Renameable" />
+      <li Class="Fortified.CompProperties_MissileConfig">
         <defaultBody>DMSE_MissileBody_Moskit</defaultBody>
       </li>
       <!-- 未存放於庇護建築內時緩慢扣耐久；歸零後摧毀。5 HP/日 ≒ 20 日（100 HP）。 -->
@@ -253,7 +253,7 @@
       </li>
     </comps>
     <inspectorTabs>
-      <li>DMSE.ITab_MissileAssembly</li>
+      <li>Fortified.ITab_MissileAssembly</li>
     </inspectorTabs>
   </ThingDef>
 
@@ -304,13 +304,13 @@
     </recipeMaker>
     <modExtensions>
       <!-- 只作攔截彈：不列入世界打擊，也不會被對地發射軌以平台彈體補設定射出。 -->
-      <li Class="DMSE.MissileRoleExtension">
+      <li Class="Fortified.MissileRoleExtension">
         <role>Interceptor</role>
       </li>
     </modExtensions>
     <comps>
       <!-- 允許玩家為每枚攔截彈設定自訂名稱；重命名按鈕顯示於 ITab_MissileInventory 各列右側。 -->
-      <li Class="DMSE.CompProperties_Renameable" />
+      <li Class="Fortified.CompProperties_Renameable" />
       <!-- 未存放於庇護建築內時緩慢扣耐久；歸零後摧毀。5 HP/日 ≒ 20 日（100 HP）。
            存入 SAM 發射器或導彈儲存架即視為受庇護、停止劣化。 -->
       <li Class="DMSE.CompProperties_DurabilityDecay">
@@ -375,13 +375,13 @@
     </recipeMaker>
     <modExtensions>
       <!-- 對地與防空兩用：可列入世界打擊，未被打擊任務保留時也可被同容器的 SAM 取用。 -->
-      <li Class="DMSE.MissileRoleExtension">
+      <li Class="Fortified.MissileRoleExtension">
         <role>Dual</role>
       </li>
     </modExtensions>
     <comps>
-      <li Class="DMSE.CompProperties_Renameable" />
-      <li Class="DMSE.CompProperties_MissileConfig">
+      <li Class="Fortified.CompProperties_Renameable" />
+      <li Class="Fortified.CompProperties_MissileConfig">
         <defaultBody>DMSE_MissileBody_Light</defaultBody>
       </li>
       <li Class="DMSE.CompProperties_DurabilityDecay">
@@ -399,7 +399,7 @@
       </li>
     </comps>
     <inspectorTabs>
-      <li>DMSE.ITab_MissileAssembly</li>
+      <li>Fortified.ITab_MissileAssembly</li>
     </inspectorTabs>
   </ThingDef>
 

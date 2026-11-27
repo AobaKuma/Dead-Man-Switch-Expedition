@@ -1,36 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
-  <!-- 只有高空有：海上平台只能鋪在這裡 -->
-  <TerrainAffordanceDef>
-    <defName>DMSE_OpenAir</defName>
-    <label>open air</label>
-    <order>2420</order>
-  </TerrainAffordanceDef>
 
-  <!-- 高空與海上平台都有：支柱可以蓋在兩者上（第一根支柱蓋在起始平台上，之後的往外蓋到高空裡） -->
-  <TerrainAffordanceDef>
-    <defName>DMSE_SeaPlatformPillarBase</defName>
-    <label>sea platform pillar base</label>
-    <order>2425</order>
-  </TerrainAffordanceDef>
 
-  <TerrainDef>
-    <defName>DMSE_OpenAir</defName>
-    <label>open air</label>
-    <description>Empty air high above the sea. Sea platform can be laid here within reach of a platform pillar.</description>
-    <dontRender>true</dontRender>
-    <color>(0.08, 0.22, 0.32)</color>
-    <fertility>0</fertility>
-    <passability>Impassable</passability>
-    <natural>true</natural>
-    <holdSnowOrSand>false</holdSnowOrSand>
-    <avoidWander>true</avoidWander>
-    <affordances>
-      <li>DMSE_OpenAir</li>
-      <li>DMSE_SeaPlatformPillarBase</li>
-    </affordances>
-  </TerrainDef>
 
   <!-- 海上平台：邊框與側面由 DMSE.SectionLayer_SeaPlatformProps 畫。拆除用「拆除平台」，拆完是高空
        （DMSE.TransferEnvironment.VoidTerrain 在海上平台地圖上回傳 SeaPlatformMapExtension.voidTerrain）。 -->
@@ -66,14 +38,14 @@
       <li>Medium</li>
       <li>Heavy</li>
       <li>Walkable</li>
-      <li>DMSE_SeaPlatformPillarBase</li>
+      <li>FFF_SeaPlatformPillarBase</li>
     </affordances>
-    <terrainAffordanceNeeded>DMSE_OpenAir</terrainAffordanceNeeded>
+    <terrainAffordanceNeeded>FFF_OpenAir</terrainAffordanceNeeded>
     <placeWorkers>
-      <li>DMSE.PlaceWorker_SeaPlatformSupported</li>
+      <li>Fortified.PlaceWorker_SeaPlatformSupported</li>
     </placeWorkers>
     <modExtensions>
-      <li Class="DMSE.SeaPlatformPropsExtension">
+      <li Class="Fortified.SeaPlatformPropsExtension">
         <oShapeTexPath>Things/SeaPlatform/Platform/BorderInside_OShape</oShapeTexPath>
         <uShapeTexPath>Things/SeaPlatform/Platform/BorderInside_UShape</uShapeTexPath>
         <cornerInnerTexPath>Things/SeaPlatform/Platform/BorderInside_CornerInner</cornerInnerTexPath>
@@ -86,7 +58,7 @@
           <li>Things/SeaPlatform/Platform/Edge_Loop</li>
         </sideLoopTexPaths>
       </li>
-      <li Class="DMSE.RemovablePlatformExtension">
+      <li Class="Fortified.RemovablePlatformExtension">
         <refundFraction>0.5</refundFraction>
       </li>
     </modExtensions>
@@ -97,7 +69,7 @@
        柱身由 DMSE.SectionLayer_SeaPlatformPillars 往下畫；柱身貼圖的入水處對齊 SeaPlatformMapExtension.seaDrop（14.1 格）。 -->
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_SeaPlatformPillar</defName>
-    <thingClass>DMSE.Building_SeaPlatformPillar</thingClass>
+    <thingClass>Fortified.Building_SeaPlatformPillar</thingClass>
     <label>platform pillar</label>
     <description>A massive steel-and-concrete pillar driven into the seabed, rising high above the waves. When it is finished, a small sea platform opens around its top; the pillar holds up any sea platform within its support radius, and platform left without any pillar in range collapses into the sea.\n\nIt can be built over open air next to any spot a builder can stand on.</description>
     <graphicData>
@@ -115,7 +87,7 @@
     <castEdgeShadows>true</castEdgeShadows>
     <staticSunShadowHeight>0.3</staticSunShadowHeight>
     <canOverlapZones>false</canOverlapZones>
-    <terrainAffordanceNeeded>DMSE_SeaPlatformPillarBase</terrainAffordanceNeeded>
+    <terrainAffordanceNeeded>FFF_SeaPlatformPillarBase</terrainAffordanceNeeded>
     <designationCategory>Odyssey</designationCategory>
     <uiOrder>1021</uiOrder>
     <statBases>
@@ -128,14 +100,14 @@
       <Steel>200</Steel>
     </costList>
     <placeWorkers>
-      <li>DMSE.PlaceWorker_SeaPlatformPillar</li>
+      <li>Fortified.PlaceWorker_SeaPlatformPillar</li>
     </placeWorkers>
     <building>
       <isEdifice>true</isEdifice>
       <ai_chillDestination>false</ai_chillDestination>
     </building>
     <modExtensions>
-      <li Class="DMSE.SeaPlatformPillarExtension">
+      <li Class="Fortified.SeaPlatformPillarExtension">
         <pillarTexPath>Things/SeaPlatform/Pillar</pillarTexPath>
         <pillarDrawSize>(11,18.333)</pillarDrawSize>
         <pillarOffsetZ>-10</pillarOffsetZ>
@@ -145,77 +117,15 @@
       </li>
     </modExtensions>
   </ThingDef>
-
-  <!-- 柱身（往下伸）：海面（1900）之後、甲板（2000）與平台側面之前。柱身依高度自己算平台的影子，要世界座標，所以用 DMSE_WorldPos.vert.glsl。 -->
-  <ShaderDef>
-    <defName>DMSE_SeaPlatformPillar</defName>
-    <shaderProgram>
-      <vertexShaderFileName>DMSE_WorldPos.vert.glsl</vertexShaderFileName>
-      <fragmentShaderFileName>DMSE_SeaPlatformPillar.frag.glsl</fragmentShaderFileName>
-      <transparent>true</transparent>
-      <depthTest>false</depthTest>
-      <depthWrite>false</depthWrite>
-      <renderQueue>1950</renderQueue>
-      <textureWrapOverrides>
-        <li>
-          <key>_MainTex</key>
-          <value>Clamp</value>
-        </li>
-        <li>
-          <key>_MaskTex</key>
-          <value>Clamp</value>
-        </li>
-      </textureWrapOverrides>
-    </shaderProgram>
-  </ShaderDef>
-
-  <ShaderTypeDef>
-    <defName>DMSE_SeaPlatformPillar</defName>
-    <shaderPath>Map/DMSE_SeaPlatformPillar</shaderPath>
-  </ShaderTypeDef>
-
-  <!-- 海面背景：只畫在高空格，最先畫（1900），不做深度測試。原版深海的貼圖要設成重複（引擎預設 Clamp，漣漪會平掉）。 -->
-  <ShaderDef>
-    <defName>DMSE_SeaPlatformSea</defName>
-    <shaderProgram>
-      <vertexShaderFileName>MapWorldUV.vert.glsl</vertexShaderFileName>
-      <fragmentShaderFileName>DMSE_SeaPlatformSea.frag.glsl</fragmentShaderFileName>
-      <flipTextureST>false</flipTextureST>
-      <transparent>false</transparent>
-      <depthTest>false</depthTest>
-      <depthWrite>false</depthWrite>
-      <cullMode>None</cullMode>
-      <renderQueue>1900</renderQueue>
-      <textureWrapOverrides>
-        <li>
-          <key>_MaskTex</key>
-          <value>Clamp</value>
-        </li>
-        <li>
-          <key>_RampTex</key>
-          <value>Repeat</value>
-        </li>
-        <li>
-          <key>_RippleTex</key>
-          <value>Repeat</value>
-        </li>
-        <li>
-          <key>_WaterReflectionTex</key>
-          <value>Repeat</value>
-        </li>
-        <li>
-          <key>_NoiseTex</key>
-          <value>Repeat</value>
-        </li>
-      </textureWrapOverrides>
-    </shaderProgram>
-  </ShaderDef>
-
-  <ShaderTypeDef>
-    <defName>DMSE_SeaPlatformSea</defName>
-    <shaderPath>Map/DMSE_SeaPlatformSea</shaderPath>
-  </ShaderTypeDef>
-
+  <!-- 海上平台的地圖產生器與地點：擴充指到 DMSE 的甲板地形與支柱（內容），所以留在 DMSE；地形承重、高空與著色器在 FFF。 -->
+  <GenStepDef>
+    <defName>DMSE_SeaPlatform</defName>
+    <order>200</order>
+    <genStep Class="Fortified.GenStep_SeaPlatform">
+      <platformSize>(13,13)</platformSize>
+      <pillarDef>DMSE_SeaPlatformPillar</pillarDef>
+    </genStep>
+  </GenStepDef>
   <!-- 海上平台地圖：整張高空，中央一塊 13×13 起始平台與一根支柱。沒有迷霧與玩家起點。 -->
   <MapGeneratorDef>
     <defName>DMSE_SeaPlatform</defName>
@@ -226,29 +136,19 @@
       <li>DMSE_SeaPlatform</li>
     </genSteps>
     <modExtensions>
-      <li Class="DMSE.SeaPlatformMapExtension">
-        <voidTerrain>DMSE_OpenAir</voidTerrain>
+      <li Class="Fortified.SeaPlatformMapExtension">
+        <voidTerrain>FFF_OpenAir</voidTerrain>
         <deckTerrain>DMSE_SeaPlatform</deckTerrain>
         <seaDrop>14.1</seaDrop>
       </li>
     </modExtensions>
   </MapGeneratorDef>
-
-  <GenStepDef>
-    <defName>DMSE_SeaPlatform</defName>
-    <order>200</order>
-    <genStep Class="DMSE.GenStep_SeaPlatform">
-      <platformSize>(13,13)</platformSize>
-      <pillarDef>DMSE_SeaPlatformPillar</pillarDef>
-    </genStep>
-  </GenStepDef>
-
   <!-- 海上平台地點（地表水域格上的地圖父物件）：有玩家建築或 Pawn 時保留地圖。開發者動作「Create sea platform map」用它。 -->
   <WorldObjectDef>
     <defName>DMSE_SeaPlatformSite</defName>
     <label>sea platform</label>
     <description>A platform on the open sea.</description>
-    <worldObjectClass>DMSE.WorldObject_SeaPlatformSite</worldObjectClass>
+    <worldObjectClass>Fortified.WorldObject_SeaPlatformSite</worldObjectClass>
     <mapGenerator>DMSE_SeaPlatform</mapGenerator>
     <canBePlayerHome>true</canBePlayerHome>
     <useDynamicDrawer>true</useDynamicDrawer>
@@ -263,5 +163,4 @@
       <li>WITab_Planet</li>
     </inspectorTabs>
   </WorldObjectDef>
-
 </Defs>

@@ -4,10 +4,10 @@
 	<!-- ==================================================================
 	     皇帝長程砲（DMSE_Turret_Empero）的 CE 補丁（2026-11-23 依本地 CE 1.7 / 17.0 改寫）。
 
-	     原版下它是 DMSE.Building_LongRangeGun（繼承原版 Building_TurretGun）＋可換彈藥＋強化砲管。
+	     原版下它是 Fortified.Building_LongRangeGun（繼承原版 Building_TurretGun）＋可換彈藥＋強化砲管。
 	     CE 的武器 verb 只能掛在 CE 砲塔上（CompAmmoUser 要由 Building_TurretGunCE 交叉連結，
 	     掛在原版砲塔上每發都會報「without a wielder」），所以：
-	       1) thingClass 換成 DMSE_CE.dll 的 DMSE.CE.Building_LongRangeGunCE（CE 砲塔＋同一套 10x4 砲身與轉向預熱）。
+	       1) thingClass 換成 FortifiedCE.dll 的 FortifiedCE.Building_LongRangeGunCE（CE 砲塔＋同一套 10x4 砲身與轉向預熱）。
 	       2) gun 改成 CE 迫擊砲 verb＋155 mm 榴彈砲彈匣（12 發）。世界砲擊（CompArtilleryStrike）透過
 	          DMSE 的 CombatCompat 讀同一個彈匣：彈匣目前那種彈就是世界砲擊打出去的彈，每發扣 1；
 	          落彈由 CE 的 ProjectileCE 從地圖邊緣高空飛入（同 CE 自己的世界砲擊）。
@@ -23,7 +23,7 @@
 			<li Class="PatchOperationReplace">
 				<xpath>Defs/ThingDef[defName="DMSE_Turret_Empero"]/thingClass</xpath>
 				<value>
-					<thingClass>DMSE.CE.Building_LongRangeGunCE</thingClass>
+					<thingClass>FortifiedCE.Building_LongRangeGunCE</thingClass>
 				</value>
 			</li>
 
@@ -107,7 +107,7 @@
 
 			<!-- ==================== 自動裝填架 ====================
 			     CE 下存放 CE 的 155 mm 榴彈砲彈（皇帝長程砲的彈藥組）。
-			     裝填由 DMSE_CE.dll 的相容層處理：連結的砲彈匣空了才整匣裝填，優先砲選定的彈種。 -->
+			     裝填由 FortifiedCE.dll 的相容層處理：連結的砲彈匣空了才整匣裝填，優先砲選定的彈種。 -->
 			<li Class="PatchOperationReplace">
 				<xpath>Defs/ThingDef[defName="DMSE_ShellAutoloader"]/building/fixedStorageSettings</xpath>
 				<value>

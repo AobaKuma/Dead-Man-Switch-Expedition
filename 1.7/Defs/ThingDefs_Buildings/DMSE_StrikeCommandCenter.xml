@@ -65,7 +65,7 @@
         <compClass>CompPowerTrader</compClass>
         <basePowerConsumption>400</basePowerConsumption>
       </li>
-      <li Class="DMSE.CompProperties_StrikeConsole">
+      <li Class="Fortified.CompProperties_StrikeConsole">
         <autoComputeTicks>300</autoComputeTicks>
         <maxWavesPerMission>5</maxWavesPerMission>
         <maxRoundsPerMission>20</maxRoundsPerMission>
@@ -126,7 +126,7 @@
     </thingCategories>
     <comps>
       <li Class="CompProperties_Forbiddable" />
-      <li Class="DMSE.CompProperties_StrikeConsole">
+      <li Class="Fortified.CompProperties_StrikeConsole">
         <requiresComputation>true</requiresComputation>
         <computeWorkBase>1500</computeWorkBase>
         <computeWorkPerRound>400</computeWorkPerRound>

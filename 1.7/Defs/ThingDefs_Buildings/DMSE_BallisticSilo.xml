@@ -10,7 +10,7 @@
     <defName>DMSE_WorldObject_BallisticMissile</defName>
     <label>ballistic missile</label>
     <description>A ballistic missile following a lofted trajectory.</description>
-    <worldObjectClass>DMSE.ScorerProjectile_WorldObject</worldObjectClass>
+    <worldObjectClass>Fortified.WorldObject_OutgoingMissile</worldObjectClass>
     <texture>UI/DMSE/TravelingMissile</texture>
     <rotateGraphicWhenTraveling>true</rotateGraphicWhenTraveling>
     <useDynamicDrawer>true</useDynamicDrawer>
@@ -63,11 +63,11 @@
       <li Class="CompProperties_Flickable" />
       <li Class="CompProperties_Breakdownable" />
       <!-- 彈道導彈的裝配設定（warhead/guidance/payload）直接存於建築本身。 -->
-      <li Class="DMSE.CompProperties_MissileConfig">
+      <li Class="Fortified.CompProperties_MissileConfig">
         <defaultBody>DMSE_MissileBody_AdvancedBallistic</defaultBody>
       </li>
       <!-- 發射控制：在世界地圖選靶並點火。 -->
-      <li Class="DMSE.CompProperties_BallisticLauncher">
+      <li Class="Fortified.CompProperties_BallisticLauncher">
         <skyfaller>DMSE_Launch_AdvancedBallistic</skyfaller>
         <skyfallerIncoming>DMSE_Incoming_AdvancedBallisticMissile</skyfallerIncoming>
         <worldObjectDef>DMSE_WorldObject_BallisticMissile</worldObjectDef>
@@ -75,7 +75,7 @@
         <launchForwardCells>0</launchForwardCells>
       </li>
       <!-- 井蓋：開關動畫、「保持關閉」開關、發射時自動彈開；完全關閉時受到的傷害 ×closedDamageFactor。 -->
-      <li Class="DMSE.CompProperties_SiloHatch">
+      <li Class="Fortified.CompProperties_SiloHatch">
         <closedTexPath>Things/Building/MissileSiloHatch_Closed</closedTexPath>
         <openedTexPath>Things/Building/MissileSiloHatch_Opened</openedTexPath>
         <!-- 鉸鏈在井蓋上緣：打開的蓋子翻到井北側，露出井口。 -->
@@ -89,35 +89,13 @@
     </comps>
     <inspectorTabs>
       <!-- 複用現有裝配 ITab（讀取 CompMissileConfig）來設定彈頭/導引/酬載 -->
-      <li>DMSE.ITab_MissileAssembly</li>
+      <li>Fortified.ITab_MissileAssembly</li>
     </inspectorTabs>
     <researchPrerequisites>
       <li>DMSE_StrategicSystems</li>
     </researchPrerequisites>
   </ThingDef>
 
-  <!-- ==================== Job Defs ====================
-       DMSE_AssembleBallisticSilo：在彈道發射井執行裝配施工。
-       搬運資源仍複用現有 DMSE_DeliverMissileResource（JobDriver 直接讀 CompMissileConfig）。 -->
-  <JobDef>
-    <defName>DMSE_AssembleBallisticSilo</defName>
-    <driverClass>DMSE.JobDriver_AssembleBallisticSilo</driverClass>
-    <reportString>assembling ballistic missile in TargetA.</reportString>
-  </JobDef>
 
-  <WorkGiverDef>
-    <defName>DMSE_AssembleBallisticSilo</defName>
-    <label>assemble ballistic missiles</label>
-    <giverClass>DMSE.WorkGiver_AssembleBallisticSilo</giverClass>
-    <workType>Crafting</workType>
-    <verb>assemble</verb>
-    <gerund>assembling</gerund>
-    <scanThings>true</scanThings>
-    <scanCells>false</scanCells>
-    <priorityInType>48</priorityInType>
-    <requiredCapacities>
-      <li>Manipulation</li>
-    </requiredCapacities>
-  </WorkGiverDef>
 
 </Defs>

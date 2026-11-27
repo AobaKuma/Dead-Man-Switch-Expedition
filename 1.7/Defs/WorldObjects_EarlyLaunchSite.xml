@@ -15,7 +15,7 @@
   <GenStepDef>
     <defName>DMSE_EarlyLaunchSite_GS_Structures</defName>
     <order>400</order>
-    <genStep Class="DMSE.GenStep_FieldLaunchSite">
+    <genStep Class="Fortified.GenStep_FieldLaunchSite">
       <difficultyThresholds>
         <li>0.5</li>
         <li>0.9</li>
@@ -120,7 +120,7 @@
   <GenStepDef>
     <defName>DMSE_EarlyLaunchSite_GS_SpawnCrew</defName>
     <order>450</order>
-    <genStep Class="DMSE.GenStep_FieldLaunchSiteCrew">
+    <genStep Class="Fortified.GenStep_FieldLaunchSiteCrew">
       <pointsPerPawn>100</pointsPerPawn>
       <minCrew>3</minCrew>
       <maxCrew>12</maxCrew>
@@ -165,7 +165,7 @@
       <li Class="WorldObjectCompProperties_FormCaravan" />
       <!-- 抽象防空：萊茵女兒（無線電指令導引、命中 ×0.6）。只在尚未生成地圖時使用；地圖生成後由實際雷達與發射架接手。
            聲學預警＋手動火控：探測近、單通道、庫存少、補給慢，明顯弱於工業野戰陣地。 -->
-      <li Class="DMSE.CompProperties_WorldAirDefense">
+      <li Class="Fortified.WorldObjectCompProperties_AirDefense">
         <worldDetectionRange>6</worldDetectionRange>
         <antiStealthLevel>0</antiStealthLevel>
         <fireControlDef>DMSE_EarlyFireControlRadar</fireControlDef>
@@ -176,7 +176,7 @@
         <launchCooldownTicks>600</launchCooldownTicks>
         <worldInterceptRange>3</worldInterceptRange>
       </li>
-      <li Class="DMSE.CompProperties_MissileBase">
+      <li Class="Fortified.WorldObjectCompProperties_MissileBase">
         <missileBody>DMSE_MissileBody_LegacyLoiter</missileBody>
         <missileFireIntervalDays>
           <min>3</min>
@@ -251,7 +251,7 @@
     <label>crude missile position</label>
     <description>A crude missile position with acoustic mirrors, a hand-aimed fire-control radar and launch rails.</description>
     <!-- FactionCanOwn：工業等級派系，或海盜（原版海盜是太空等級）。 -->
-    <workerClass>DMSE.SitePartWorker_EarlyLaunchSite</workerClass>
+    <workerClass>Fortified.SitePartWorker_EarlyLaunchSite</workerClass>
     <siteTexture>World/WorldObjects/Sites/Outpost</siteTexture>
     <expandingIconTexture>UI/Icon/icon_LaunchSite_Loitering</expandingIconTexture>
     <applyFactionColorToSiteTexture>true</applyFactionColorToSiteTexture>
@@ -275,7 +275,7 @@
     <targetTags>
       <li>Map_PlayerHome</li>
     </targetTags>
-    <workerClass>DMSE.IncidentWorker_EarlyLaunchSite</workerClass>
+    <workerClass>Fortified.IncidentWorker_EarlyLaunchSite</workerClass>
     <baseChance>0.4</baseChance>
     <earliestDay>15</earliestDay>
     <minRefireDays>20</minRefireDays>
@@ -283,7 +283,7 @@
     <letterLabel>Enemy missile position</letterLabel>
     <letterDef>ThreatBig</letterDef>
     <modExtensions>
-      <li Class="DMSE.EarlyLaunchSiteIncidentExtension">
+      <li Class="Fortified.EarlyLaunchSiteIncidentExtension">
         <worldObjectDef>DMSE_EarlyLaunchSite</worldObjectDef>
         <sitePartDef>DMSE_EarlyLaunchSitePart</sitePartDef>
         <distance>6~12</distance>

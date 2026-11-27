@@ -15,7 +15,7 @@
 
   <!-- == Warhead == -->
 
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_AdvCruise_Warhead_Unitary</defName>
     <label>unitary penetrating warhead</label>
     <designWord>Unitary</designWord>
@@ -35,9 +35,9 @@
     <researchPrerequisites>
       <li>DMSE_IntegratedCircuits</li>
     </researchPrerequisites>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_AdvCruise_Warhead_Penetrator</defName>
     <label>hard-target penetrator</label>
     <designWord>Penetrator</designWord>
@@ -49,7 +49,7 @@
     <explosionRadiusOffset>-1</explosionRadiusOffset>
     <damageAmountOffset>60</damageAmountOffset>
     <damageDefOverride>Bomb</damageDefOverride>
-    <warheadEffect Class="DMSE.WarheadEffect_TungstenPenetrator">
+    <warheadEffect Class="Fortified.WarheadEffect_TungstenPenetrator">
       <damageAmount>200</damageAmount>
     </warheadEffect>
     <costList>
@@ -59,12 +59,12 @@
     <researchPrerequisites>
       <li>DMSE_IntegratedCircuits</li>
     </researchPrerequisites>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
   <!-- == Guidance == -->
 
   <!-- TERCOM/DSMAC：貼地飛行、比對地形，散布極小，但沒有終端導引能力。 -->
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_AdvCruise_Guidance_TerrainMatch</defName>
     <label>terrain-matching guidance</label>
     <designWord>TERCOM</designWord>
@@ -73,7 +73,7 @@
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedCruise</li>
     </compatibleBodies>
-    <guidanceType Class="DMSE.GuidanceType_Inertial" />
+    <guidanceType Class="Fortified.GuidanceType_Inertial" />
     <scatterOffset>-2</scatterOffset>
     <costList>
       <ComponentIndustrial>4</ComponentIndustrial>
@@ -81,10 +81,10 @@
     <researchPrerequisites>
       <li>DMSE_StrategicSystems</li>
     </researchPrerequisites>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
   <!-- 雙向資料鏈：飛行中改靶＋終端，玩家選點。 -->
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_AdvCruise_Guidance_Datalink</defName>
     <label>two-way datalink</label>
     <designWord>Datalink</designWord>
@@ -93,7 +93,7 @@
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedCruise</li>
     </compatibleBodies>
-    <guidanceType Class="DMSE.GuidanceType_TV" />
+    <guidanceType Class="Fortified.GuidanceType_TV" />
     <scatterOffset>-2.5</scatterOffset>
     <costList>
       <ComponentIndustrial>3</ComponentIndustrial>
@@ -103,10 +103,10 @@
       <li>DMSE_StrategicSystems</li>
       <li>DMSE_RadarNetwork</li>
     </researchPrerequisites>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
   <!-- 反艦主動雷達：對移動目標的專用導引頭。 -->
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_AdvCruise_Guidance_AntiShip</defName>
     <label>anti-ship radar seeker</label>
     <designWord>Anti-ship</designWord>
@@ -115,7 +115,7 @@
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedCruise</li>
     </compatibleBodies>
-    <guidanceType Class="DMSE.GuidanceType_AntiShip" />
+    <guidanceType Class="Fortified.GuidanceType_AntiShip" />
     <scatterOffset>-2.5</scatterOffset>
     <costList>
       <ComponentIndustrial>5</ComponentIndustrial>
@@ -124,11 +124,11 @@
     <researchPrerequisites>
       <li>DMSE_AntishipMissiles</li>
     </researchPrerequisites>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
   <!-- == Propulsion == -->
 
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_AdvCruise_Propulsion_Turbofan</defName>
     <label>turbofan sustainer</label>
     <omitFromDesignName>true</omitFromDesignName>
@@ -146,9 +146,9 @@
     <researchPrerequisites>
       <li>DMSE_IntegratedCircuits</li>
     </researchPrerequisites>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_AdvCruise_Propulsion_TurbofanER</defName>
     <label>extended-range turbofan</label>
     <designWord>ER</designWord>
@@ -168,9 +168,9 @@
     <researchPrerequisites>
       <li>DMSE_IntegratedCircuits</li>
     </researchPrerequisites>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_AdvCruise_Propulsion_Booster</defName>
     <label>solid rocket booster</label>
     <designWord>Boost</designWord>
@@ -189,11 +189,11 @@
     <researchPrerequisites>
       <li>DMSE_IntegratedCircuits</li>
     </researchPrerequisites>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
   <!-- == Payload == -->
 
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_AdvCruise_Payload_None</defName>
     <label>no payload</label>
     <omitFromDesignName>true</omitFromDesignName>
@@ -202,10 +202,10 @@
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedCruise</li>
     </compatibleBodies>
-    <payloadEffect Class="DMSE.PayloadEffect_None" />
-  </DMSE.MissilePartDef>
+    <payloadEffect Class="Fortified.PayloadEffect_None" />
+  </Fortified.MissilePartDef>
 
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_AdvCruise_Payload_Submunition</defName>
     <label>submunition dispenser</label>
     <designWord>Cluster</designWord>
@@ -214,7 +214,7 @@
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedCruise</li>
     </compatibleBodies>
-    <payloadEffect Class="DMSE.PayloadEffect_Cluster">
+    <payloadEffect Class="Fortified.PayloadEffect_Cluster">
       <subDamageAmount>90</subDamageAmount>
       <countOverride>6</countOverride>
     </payloadEffect>
@@ -225,11 +225,11 @@
     <researchPrerequisites>
       <li>DMSE_StrategicSystems</li>
     </researchPrerequisites>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
   <!-- 反碉堡酬載：穿透厚岩頂後在內部引爆；小半徑高穿甲爆炸，並對爆心附近建築施加額外結構傷害。
        沒有它（或鎢芯穿甲戰鬥部）的導彈打在厚岩頂上只在岩層表面引爆，導引頭也不鎖定岩頂下的目標。 -->
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_AdvCruise_Payload_BunkerBuster</defName>
     <label>bunker buster payload</label>
     <designWord>Bunker</designWord>
@@ -238,7 +238,7 @@
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedCruise</li>
     </compatibleBodies>
-    <payloadEffect Class="DMSE.PayloadEffect_BunkerBuster">
+    <payloadEffect Class="Fortified.PayloadEffect_BunkerBuster">
       <damageAmount>180</damageAmount>
       <structureDamage>400</structureDamage>
     </payloadEffect>
@@ -249,9 +249,9 @@
     <researchPrerequisites>
       <li>DMSE_StrategicSystems</li>
     </researchPrerequisites>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_AdvCruise_Payload_Graphite</defName>
     <label>graphite filament payload</label>
     <designWord>Graphite</designWord>
@@ -260,7 +260,7 @@
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedCruise</li>
     </compatibleBodies>
-    <payloadEffect Class="DMSE.PayloadEffect_EMP">
+    <payloadEffect Class="Fortified.PayloadEffect_EMP">
       <empDamage>150</empDamage>
     </payloadEffect>
     <costList>
@@ -270,9 +270,9 @@
     <researchPrerequisites>
       <li>DMSE_IntegratedAirDefense</li>
     </researchPrerequisites>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_AdvCruise_Payload_Decoy</defName>
     <label>decoy payload</label>
     <designWord>Decoy</designWord>
@@ -281,7 +281,7 @@
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedCruise</li>
     </compatibleBodies>
-    <payloadEffect Class="DMSE.PayloadEffect_None" />
+    <payloadEffect Class="Fortified.PayloadEffect_None" />
     <signatureFactor>2</signatureFactor>
     <costList>
       <Steel>15</Steel>
@@ -290,10 +290,10 @@
     <researchPrerequisites>
       <li>DMSE_RadarNetwork</li>
     </researchPrerequisites>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
   <!-- 箔條／干擾絲（巡航版）：次數較多、強度較高。 -->
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_AdvCruise_Payload_Chaff</defName>
     <label>chaff dispenser</label>
     <designWord>Chaff</designWord>
@@ -302,7 +302,7 @@
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedCruise</li>
     </compatibleBodies>
-    <payloadEffect Class="DMSE.PayloadEffect_None" />
+    <payloadEffect Class="Fortified.PayloadEffect_None" />
     <jamStrength>0.35</jamStrength>
     <chaffCharges>3</chaffCharges>
     <costList>
@@ -312,6 +312,6 @@
     <researchPrerequisites>
       <li>DMSE_FireControlNetwork</li>
     </researchPrerequisites>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
 </Defs>

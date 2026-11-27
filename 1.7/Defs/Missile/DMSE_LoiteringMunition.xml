@@ -6,7 +6,7 @@
        但內建反艦主動雷達導引：自動選點、具導引能力（可跨圖層、可追蹤移動據點）。
        終端修正 = terminalUpdates 1 + GuidanceType_AntiShip 額外 2 = 3 次。
        老式巡飛彈（V1）見 DMSE_MissileGenerationBodies.xml 的 DMSE_MissileBody_LegacyLoiter。 -->
-  <DMSE.MissileBodyDef>
+  <Fortified.MissileBodyDef>
     <defName>DMSE_MissileBody_Loiter</defName>
     <label>anti-ship loitering munition</label>
     <expandingIconPath>UI/DMSE/TravelingMissile_Expanding_Shahed</expandingIconPath>
@@ -29,8 +29,8 @@
     <launchProjectile>DMSE_Launch_Loiter</launchProjectile>
     <!-- 無 slots：不可自定義。 -->
     <!-- 內建反艦導引：自動鎖定最硬的敵對建築（艦上的引擎／艦橋），並提供導引能力。 -->
-    <builtInGuidance Class="DMSE.GuidanceType_AntiShip" />
+    <builtInGuidance Class="Fortified.GuidanceType_AntiShip" />
     <builtInTerminalGuidance>true</builtInTerminalGuidance>
-  </DMSE.MissileBodyDef>
+  </Fortified.MissileBodyDef>
 
 </Defs>

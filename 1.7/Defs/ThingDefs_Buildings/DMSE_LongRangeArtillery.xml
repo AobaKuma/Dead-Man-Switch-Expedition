@@ -22,7 +22,7 @@
     <defName>DMSE_Turret_Empero</defName>
     <label>long-range cannon</label>
     <description>The NK-30 "Empero" is a heavy long-range cannon with an extremely high muzzle velocity. It shells distant targets with precision, suppressing enemy fire and destroying installations. At close range it fires reduced charges at low velocity for plunging fire, still with very high accuracy. When shelling a target on the world map, it keeps firing until stopped or out of power, pausing while it waits for a shell or a new barrel.\n\nThe gun has no crew: it fires whatever mortar shell is loaded, at local targets and on the world map. A linked shell autoloader loads one shell at a time from its own stock; set the allowed shell types on the gun's shells tab. Each shot wears the barrel, which colonists replace with a reinforced barrel when it is worn out.\n\nUnguided shells scatter widely at long range and only land near the middle of the target area. If a fire-control radar that supports artillery guidance has a free channel when the gun fires, the shell is radar-guided onto enemy turrets, powered buildings or people in the area, and lands much closer to them. Each guided shell holds one channel for a while.\n\nFire mode toggle: ranging shells scatter around the middle of the target area and log each impact; fire for effect shells scatter around the last logged impact on that map (every friendly gun shelling it shares that point) and tighten their scatter by a quarter of the base scatter per shot.\n\nCannot strike targets in high orbit across layers.</description>
-    <thingClass>DMSE.Building_LongRangeGun</thingClass>
+    <thingClass>Fortified.Building_LongRangeGun</thingClass>
     <category>Building</category>
     <uiIconPath>Things/Turrets/DMSE_Weapon_Empero_icon</uiIconPath>
     <uiIconScale>0.9</uiIconScale>
@@ -116,7 +116,7 @@
         </linkableFacilities>
       </li>
       <!-- 超視距砲擊：砲彈 def 由裝填的彈種決定（不設 projectileDef），換彈種就換彈頭。 -->
-      <li Class="DMSE.CompProperties_ArtilleryStrike">
+      <li Class="Fortified.CompProperties_ArtilleryStrike">
         <departureProjectileDef>DMSE_ArtilleryDeparture_Empero</departureProjectileDef>
         <worldObjectDef>DMSE_WorldObject_ArtilleryStrike</worldObjectDef>
         <cooldownTicks>1800</cooldownTicks>
@@ -131,7 +131,7 @@
       </li>
       <!-- 砲身：DMSE_Weapon_Empero 1280x512（10x4 格），砲口朝東 → artworkRotation -90。
            沒在射擊時只做緩慢的閒置擺動；射擊中由 CompArtilleryStrike 每 tick 指向世界方位。 -->
-      <li Class="DMSE.CompProperties_TurretFacingRenderer">
+      <li Class="Fortified.CompProperties_TurretFacingRenderer">
         <texPath>Things/Turrets/DMSE_Weapon_Empero</texPath>
         <drawSize>(10,4)</drawSize>
         <altitudeOffset>0.01</altitudeOffset>
@@ -147,7 +147,7 @@
     </placeWorkers>
     <modExtensions>
       <!-- 砲身與目標方位夾角 4° 內才開始預熱；最多等 450 ticks，追不上就放掉目標重新索敵。 -->
-      <li Class="DMSE.ModExtension_TurretTraverse">
+      <li Class="Fortified.TurretTraverseExtension">
         <aimToleranceDeg>4</aimToleranceDeg>
         <maxAimTicks>450</maxAimTicks>
       </li>
@@ -300,7 +300,7 @@
         <maxSimultaneous>1</maxSimultaneous>
         <maxDistance>6.9</maxDistance>
       </li>
-      <li Class="DMSE.CompProperties_ShellAutoloader">
+      <li Class="Fortified.CompProperties_ShellAutoloader">
         <checkIntervalTicks>60</checkIntervalTicks>
       </li>
       <li Class="DMSE.CompProperties_BuildingExtraRenderer">
@@ -325,7 +325,7 @@
     <defName>DMSE_WorldObject_ArtilleryStrike</defName>
     <label>artillery shell</label>
     <description>A long-range artillery shell in flight.</description>
-    <worldObjectClass>DMSE.WorldObject_ArtilleryStrike</worldObjectClass>
+    <worldObjectClass>Fortified.WorldObject_ArtilleryStrike</worldObjectClass>
     <texture>UI/DMSE/TravelingMissile</texture>
     <rotateGraphicWhenTraveling>true</rotateGraphicWhenTraveling>
     <useDynamicDrawer>true</useDynamicDrawer>
@@ -341,7 +341,7 @@
   <ThingDef ParentName="BaseBullet">
     <defName>DMSE_ArtilleryDeparture_Empero</defName>
     <label>departing long-range shell</label>
-    <thingClass>DMSE.Projectile_ArtilleryDeparture</thingClass>
+    <thingClass>Fortified.Projectile_ArtilleryDeparture</thingClass>
     <graphicData>
       <texPath>Things/Projectile/ShellHighExplosive</texPath>
       <graphicClass>Graphic_Single</graphicClass>

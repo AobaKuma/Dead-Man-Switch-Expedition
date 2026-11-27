@@ -106,11 +106,11 @@
          Apparel 動詞不會被 AI 自動使用，只在玩家下令時發射。
          每種彈藥一個動詞（ammoDef），只有下一發彈藥的那個會顯示、可用（DMSE.Verb_LaunchManPortableMissile）。 -->
     <verbs>
-      <li Class="DMSE.VerbProperties_ManPortableMissile">
+      <li Class="Fortified.VerbProperties_ManPortableMissile">
         <ammoDef>DMSE_Missile_Stinger</ammoDef>
         <label>fire missile</label>
         <commandIcon>Things/Weapons/DMSE_Stinger</commandIcon>
-        <verbClass>DMSE.Verb_LaunchManPortableMissile</verbClass>
+        <verbClass>Fortified.Verb_LaunchManPortableMissile</verbClass>
         <hasStandardCommand>true</hasStandardCommand>
         <defaultProjectile>DMSE_Projectile_Stinger</defaultProjectile>
         <warmupTime>2.5</warmupTime>
@@ -134,11 +134,11 @@
         </targetParams>
       </li>
       <!-- 軍刀巡飛彈：光電尋標頭俯衝攻擊，射程遠、落點準，但瞄準較久。 -->
-      <li Class="DMSE.VerbProperties_ManPortableMissile">
+      <li Class="Fortified.VerbProperties_ManPortableMissile">
         <ammoDef>DMSE_Missile_Sabre</ammoDef>
         <label>launch loitering munition</label>
         <commandIcon>Things/Missile/S570/ammo</commandIcon>
-        <verbClass>DMSE.Verb_LaunchManPortableMissile</verbClass>
+        <verbClass>Fortified.Verb_LaunchManPortableMissile</verbClass>
         <hasStandardCommand>true</hasStandardCommand>
         <defaultProjectile>DMSE_Projectile_Sabre</defaultProjectile>
         <warmupTime>3.5</warmupTime>
@@ -164,7 +164,7 @@
       </li>
     </verbs>
     <comps>
-      <li Class="DMSE.CompProperties_ManPortableSAM">
+      <li Class="Fortified.CompProperties_ManPortableSAM">
         <!-- 原版裝填（CompApparelReloadable） -->
         <maxCharges>2</maxCharges>
         <ammoDef>DMSE_Missile_Stinger</ammoDef>
@@ -229,13 +229,5 @@
     </projectile>
   </ThingDef>
 
-  <!-- 防空 Gizmo 派的工作：原地瞄準後發射（目標 id 放在 job.count）。 -->
-  <JobDef>
-    <defName>DMSE_FireManPortableSAM</defName>
-    <driverClass>DMSE.JobDriver_FireManPortableSAM</driverClass>
-    <reportString>aiming a surface-to-air missile.</reportString>
-    <casualInterruptible>false</casualInterruptible>
-    <suspendable>false</suspendable>
-  </JobDef>
 
 </Defs>

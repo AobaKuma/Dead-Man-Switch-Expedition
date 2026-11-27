@@ -1,21 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
-  <!-- EN: Undetected -->
-  <DMSE.BVR.World.Undetected>未偵測</DMSE.BVR.World.Undetected>
-  <!-- EN: Detected -->
-  <DMSE.BVR.World.Detected>已偵測</DMSE.BVR.World.Detected>
-  <!-- EN: Fire-control lock -->
-  <DMSE.BVR.World.Locking>火控鎖定中</DMSE.BVR.World.Locking>
-  <!-- EN: Interceptor inbound -->
-  <DMSE.BVR.World.InFlight>攔截彈接近中</DMSE.BVR.World.InFlight>
-  <!-- EN: Destination: {0}\nETA: {1}\nStatus: {2}\nIntercept attempts: {3} -->
-  <DMSE.BVR.World.TrackInspect>目的地：{0}\n預計抵達：{1}\n狀態：{2}\n已嘗試攔截：{3} 次</DMSE.BVR.World.TrackInspect>
-  <!-- EN: World search radius: {0} tiles (before target modifiers) -->
-  <DMSE.BVR.World.RadarRange>世界搜索半徑：{0} 格（目標修正前）</DMSE.BVR.World.RadarRange>
-  <!-- EN: Effective radius: {0} tiles -->
-  <DMSE.BVR.World.EffectiveRanges>有效半徑：{0} 格</DMSE.BVR.World.EffectiveRanges>
-  <!-- EN: {0} {1} -->
-  <DMSE.BVR.World.EffectiveRangeEntry>{0} {1}</DMSE.BVR.World.EffectiveRangeEntry>
   <!-- EN: loitering -->
   <DMSE.BVR.World.RangeClass.Loitering>巡飛彈</DMSE.BVR.World.RangeClass.Loitering>
   <!-- EN: light -->
@@ -24,104 +8,8 @@
   <DMSE.BVR.World.RangeClass.Cruise>巡航</DMSE.BVR.World.RangeClass.Cruise>
   <!-- EN: ballistic -->
   <DMSE.BVR.World.RangeClass.Ballistic>彈道</DMSE.BVR.World.RangeClass.Ballistic>
-  <!-- EN: Incoming missile detected -->
-  <DMSE.BVR.World.DetectedLetter>偵測到來襲導彈</DMSE.BVR.World.DetectedLetter>
-  <!-- EN: Radar has detected {0} approaching {1}.\n\nEstimated arrival: {2}. World air defense is attempting to engage; any surviving missile will face local terminal defenses. -->
-  <DMSE.BVR.World.DetectedLetterText>雷達偵測到 {0} 正接近 {1}。\n\n預計於 {2} 後抵達。世界層防空正嘗試接戰，漏網導彈抵達後將交由當地末端防禦處理。</DMSE.BVR.World.DetectedLetterText>
-  <!-- EN: {0} was intercepted by {1}. -->
-  <DMSE.BVR.World.Intercepted>{0} 已被 {1} 攔截。</DMSE.BVR.World.Intercepted>
-  <!-- EN: An interceptor missed {0}. -->
-  <DMSE.BVR.World.Missed>攔截彈未能命中 {0}。</DMSE.BVR.World.Missed>
-  <!-- EN: {0} changed course and evaded the interceptor. -->
-  <DMSE.BVR.World.Evaded>{0} 改變航向，避開了攔截彈。</DMSE.BVR.World.Evaded>
-  <!-- EN: {0} dispensed chaff and broke the fire-control lock. -->
-  <DMSE.BVR.World.Chaff>{0} 施放箔條／干擾絲，打斷了火控鎖定。</DMSE.BVR.World.Chaff>
-  <!-- EN: {0} hit the air-defense node at {1}: stocks damaged, radar suppressed. -->
-  <DMSE.BVR.World.AbstractStrike>{0} 命中 {1} 的防空節點：庫存受損、雷達被壓制。</DMSE.BVR.World.AbstractStrike>
-  <!-- EN: Target: {0}\nTime to intercept: {1} -->
-  <DMSE.BVR.World.InterceptorInspect>目標：{0}\n預計會合：{1}</DMSE.BVR.World.InterceptorInspect>
-  <!-- EN: Air defense: {0}/{1} interceptors\nSearch radius: {2} tiles; fire-control channels: {3} -->
-  <DMSE.BVR.World.AbstractInspect>防空庫存：{0}/{1} 枚攔截彈\n搜索半徑：{2} 格；火控通道：{3}</DMSE.BVR.World.AbstractInspect>
-  <!-- EN: Detected incoming missiles -->
-  <DMSE.BVR.World.IncomingAlert>已偵測來襲導彈</DMSE.BVR.World.IncomingAlert>
-  <!-- EN: Incoming missiles: {0} ({1}) -->
-  <DMSE.BVR.World.IncomingLabel>來襲導彈：{0}（{1}）</DMSE.BVR.World.IncomingLabel>
-  <!-- EN: Left/right click to cycle between world missile tracks. -->
-  <DMSE.BVR.World.ClickHint>左／右鍵循環檢視世界導彈航跡。</DMSE.BVR.World.ClickHint>
   <!-- EN: Show air-defense coverage -->
   <DMSE.BVR.World.ShowCoverage>顯示防空覆蓋</DMSE.BVR.World.ShowCoverage>
   <!-- EN: Always display all player radar coverage circles on the world map. Selected sites always show their own coverage. Circles assume an unstealthed target of size 1. -->
   <DMSE.BVR.World.ShowCoverageDesc>在世界地圖常駐顯示所有玩家雷達覆蓋圈。選取據點時一律顯示該據點的覆蓋圈。圈線以隱身 0、尺寸 1 的目標為準。</DMSE.BVR.World.ShowCoverageDesc>
-  <!-- EN: Channels: artillery {0}, local {1}, world {2}, strike {3}; free {4} -->
-  <DMSE.BVR.World.ChannelBreakdown>通道：火砲 {0}、地圖內 {1}、世界層 {2}、打擊導引 {3}；空閒 {4}</DMSE.BVR.World.ChannelBreakdown>
-  <!-- EN: Missile type: {0} -->
-  <DMSE.BVR.World.MissileType>導彈類型：{0}</DMSE.BVR.World.MissileType>
-  <!-- EN: Pod shot down: colonists missing -->
-  <DMSE.BVR.PawnsMissingLabel>運輸艙被擊落：人員失蹤</DMSE.BVR.PawnsMissingLabel>
-  <!-- EN: A transport carrying your people was shot down by air defense. No bodies were recovered; the following are missing:\n\n{0} -->
-  <DMSE.BVR.PawnsMissingText>一艘載有你的人員的運輸艙被防空火力擊落。沒有找到遺體，以下人員失蹤：\n\n{0}</DMSE.BVR.PawnsMissingText>
-  <!-- EN: The route crosses {0}'s blockade around {1} ({2} tiles). Its air defense fires on anything flying through. -->
-  <DMSE.BVR.InterceptRiskRoute>航線穿越{0}在{1}周邊的封鎖區（{2} 格）。其防空火力會攻擊所有飛越的載具。</DMSE.BVR.InterceptRiskRoute>
-  <!-- EN: {0} is covered by {1} air-defense radar. Drop pods and shuttles landing there may be shot down. -->
-  <DMSE.BVR.InterceptRiskDestination>{0}處於{1}的防空雷達覆蓋之下。降落到那裡的運輸艙和穿梭機可能會被擊落。</DMSE.BVR.InterceptRiskDestination>
-  <!-- EN: Anyone aboard a downed drop pod or shuttle goes missing. Gravships and transfer ships are damaged instead of destroyed.\n\nLaunch anyway? -->
-  <DMSE.BVR.InterceptRiskFooter>被擊落的運輸艙或穿梭機上的人員將會失蹤。重力船和轉移艦被擊中只會受損，不會被摧毀。\n\n仍要發射嗎？</DMSE.BVR.InterceptRiskFooter>
-  <!-- EN: {0}'s air defense at {1} fired on {2}. -->
-  <DMSE.Blockade.Engaging>{0}在{1}的防空系統向{2}開火。</DMSE.Blockade.Engaging>
-  <!-- EN: {0}: one transport was shot down by {1}. {2} remaining. -->
-  <DMSE.Blockade.PodDown>{0}：一艘運輸工具被{1}擊落，剩餘 {2} 艘。</DMSE.Blockade.PodDown>
-  <!-- EN: {0} was hit by {1}'s air defense. {2} structures aboard were damaged. -->
-  <DMSE.Blockade.GravshipHit>{0}被{1}的防空火力擊中，船上 {2} 座建築受損。</DMSE.Blockade.GravshipHit>
-  <!-- EN: Transfer ship hit -->
-  <DMSE.Blockade.TransferHitLabel>轉移艦被擊中</DMSE.Blockade.TransferHitLabel>
-  <!-- EN: {0} was hit by {1}'s air defense while flying through its blockade. Explosions tore through {2} spots aboard. -->
-  <DMSE.Blockade.TransferHitText>{0}在飛越{1}的封鎖區時被防空火力擊中，船上有 {2} 處發生爆炸。</DMSE.Blockade.TransferHitText>
-  <!-- EN: Flight altitude: {0} -->
-  <DMSE.BVR.World.TrackAltitude>飛行高度：{0}</DMSE.BVR.World.TrackAltitude>
-  <!-- EN: Outside intercept altitude -->
-  <DMSE.BVR.World.AltitudeDenied>超出攔截高度</DMSE.BVR.World.AltitudeDenied>
-  <!-- EN: Intercept altitude: {0} – {1} -->
-  <DMSE.BVR.FireControlAltitude>攔截高度：{0} – {1}</DMSE.BVR.FireControlAltitude>
-  <!-- EN: MIRV warhead (group #{0}) -->
-  <DMSE.Mirv.Role.Warhead>分導彈頭（群組 #{0}）</DMSE.Mirv.Role.Warhead>
-  <!-- EN: MIRV decoy (group #{0}) -->
-  <DMSE.Mirv.Role.Decoy>分導誘餌（群組 #{0}）</DMSE.Mirv.Role.Decoy>
-  <!-- EN: Releases {0} warheads and {1} decoys in {2} -->
-  <DMSE.Mirv.WillRelease>將於 {2} 後釋放 {0} 枚彈頭、{1} 枚誘餌</DMSE.Mirv.WillRelease>
-  <!-- EN: Releasing: {0}/{1} -->
-  <DMSE.Mirv.Releasing>釋放中：{0}/{1}</DMSE.Mirv.Releasing>
-  <!-- EN: Decoy identified: {0} is not a real warhead. Our air defense will ignore it. -->
-  <DMSE.BVR.World.DecoyIdentified>識破誘餌：{0} 不是真彈頭，我方防空將不再理會它。</DMSE.BVR.World.DecoyIdentified>
-  <!-- EN: Identified as a decoy -->
-  <DMSE.BVR.World.Status.DecoyIdentified>已識破為誘餌</DMSE.BVR.World.Status.DecoyIdentified>
-  <!-- EN: Decoy recognition: {0} -->
-  <DMSE.BVR.FireControlDecoy>誘餌識別率：{0}</DMSE.BVR.FireControlDecoy>
-  <!-- EN: {0} warheads -->
-  <DMSE.Mirv.Short.Warheads>{0} 枚彈頭</DMSE.Mirv.Short.Warheads>
-  <!-- EN: warhead flies on -->
-  <DMSE.Mirv.Short.Continues>彈頭續飛</DMSE.Mirv.Short.Continues>
-  <!-- EN: {0} + {1} decoys -->
-  <DMSE.Mirv.Short.WithDecoys>{0}＋{1} 枚誘餌</DMSE.Mirv.Short.WithDecoys>
-  <!-- EN: Releases {0} before arrival, one every {1} ticks in random order. -->
-  <DMSE.Mirv.Detail.WhenTicks>抵達前 {0} 開始釋放，每 {1} tick 一枚，順序隨機。</DMSE.Mirv.Detail.WhenTicks>
-  <!-- EN: Releases at {0} of the flight, one every {1} ticks in random order. -->
-  <DMSE.Mirv.Detail.WhenProgress>飛到航程的 {0} 時開始釋放，每 {1} tick 一枚，順序隨機。</DMSE.Mirv.Detail.WhenProgress>
-  <!-- EN: {0}× {1} -->
-  <DMSE.Mirv.Detail.Group>{0}× {1}</DMSE.Mirv.Detail.Group>
-  <!-- EN: (carries the missile's {0}) -->
-  <DMSE.Mirv.Detail.Inherits>（帶著導彈的{0}）</DMSE.Mirv.Detail.Inherits>
-  <!-- EN: (survives re-entry and falls on the target, inert) -->
-  <DMSE.Mirv.Detail.DecoyReachesMap>（能撐過再入並落到目標，不爆炸）</DMSE.Mirv.Detail.DecoyReachesMap>
-  <!-- EN: (burns up on re-entry) -->
-  <DMSE.Mirv.Detail.DecoyBurnsUp>（再入時燒毀）</DMSE.Mirv.Detail.DecoyBurnsUp>
-  <!-- EN: ({0} chance to survive re-entry) -->
-  <DMSE.Mirv.Detail.DecoySurvives>（{0} 機率撐過再入）</DMSE.Mirv.Detail.DecoySurvives>
-  <!-- EN: The bus is gone once everything is released; shooting it down earlier destroys all warheads at once. -->
-  <DMSE.Mirv.Detail.BusRetires>全部放完後匯流排消失；在那之前被擊落，所有彈頭一次全毀。</DMSE.Mirv.Detail.BusRetires>
-  <!-- EN: The missile itself keeps flying as the real warhead. -->
-  <DMSE.Mirv.Detail.BusContinues>導彈本身繼續飛行，是真正的彈頭。</DMSE.Mirv.Detail.BusContinues>
-  <!-- EN: All warheads strike the same target. Decoys look like the warhead on radar until a fire control radar recognises them. -->
-  <DMSE.Mirv.Detail.SameTarget>所有彈頭打擊同一目標。在被火控雷達識破之前，誘餌在雷達上和彈頭一模一樣。</DMSE.Mirv.Detail.SameTarget>
-  <!-- EN: MIRV group #{0}: {1} tracks ({2} warheads, {3} decoys), arriving in {4}–{5} -->
-  <DMSE.Mirv.AlertLine>分導群組 #{0}：{1} 條航跡（彈頭 {2}、誘餌 {3}），{4}–{5} 後抵達</DMSE.Mirv.AlertLine>
 </LanguageData>

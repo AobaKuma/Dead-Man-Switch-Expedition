@@ -6,7 +6,7 @@
         <description>A cruise missile launch system used aboard the Colonial Fleet's cruisers and armed landing ships. It is a versatile launcher, most often used against ships.</description>
         <category>Building</category>
         <!-- 容器式裝載：彈藥以實體 Thing 存入內部容器，逐枚保留各自數值與渲染（取代舊 CompRefuelable 抽象燃料）。 -->
-        <thingClass>DMSE.Building_MissileRack</thingClass>
+        <thingClass>Fortified.Building_MissileRack</thingClass>
         <graphicData>
             <texPath>Things/Building/MissileLauncher/building</texPath>
             <graphicClass>Graphic_Multi</graphicClass>
@@ -72,7 +72,7 @@
         <!-- 四階分類：中型階、傾斜發射、彈容 1。作為平台分類架構的具體範本。
              戰斧（DMSE_MissileBody_AdvancedCruise）已改列輕型階，艦載 Scorer 仍收：extraSizeClasses 加 Light。 -->
         <modExtensions>
-            <li Class="DMSE.MissileLauncherExtension">
+            <li Class="Fortified.MissileLauncherExtension">
                 <sizeClass>Medium</sizeClass>
                 <extraSizeClasses>
                     <li>Light</li>
@@ -81,7 +81,7 @@
                 <capacity>1</capacity>
             </li>
             <!-- 敵方陣地生成時自動填充：Industrial 以上派系填入巡弋導彈。 -->
-            <li Class="DMSE.MissileRackAutoFillExtension">
+            <li Class="Fortified.MissileRackAutoFillExtension">
                 <enemyFactionOnly>true</enemyFactionOnly>
                 <fillRules>
                     <li>
@@ -97,7 +97,7 @@
         <comps>
             <!-- 發射：取出容器中的實體飛彈，採用其自身 CompMissileConfig（逐枚數值），以 Scorer 方式打擊地圖外目標。
                  無自身設定時回退 missileBody。已取代舊 CompMissileLauncher_Scorer + CompRefuelable。 -->
-            <li Class="DMSE.CompProperties_MissileRailLauncher">
+            <li Class="Fortified.CompProperties_MissileRailLauncher">
                 <skyfaller>DMSE_Launch_Moskit</skyfaller>
                 <skyfallerIncoming>DMSE_Incoming_Moskit</skyfallerIncoming>
                 <worldObjectDef>DMSE_WorldObject_CruiseMissile</worldObjectDef>
@@ -122,8 +122,8 @@
         </comps>
         <inspectorTabs>
             <li>RimWorld.ITab_Storage</li>
-            <li>DMSE.ITab_MissileInventory</li>
-            <li>DMSE.ITab_MissileAssembly</li>
+            <li>Fortified.ITab_MissileInventory</li>
+            <li>Fortified.ITab_MissileAssembly</li>
         </inspectorTabs>
         <researchPrerequisites>
             <li>DMSE_IntegratedCircuits</li>
@@ -135,7 +135,7 @@
         <defName>DMSE_WorldObject_CruiseMissile</defName>
         <label>cruise missile</label>
         <description>cruise missile in flight.</description>
-        <worldObjectClass>DMSE.ScorerProjectile_WorldObject</worldObjectClass>
+        <worldObjectClass>Fortified.WorldObject_OutgoingMissile</worldObjectClass>
         <texture>UI/DMSE/TravelingMissile</texture>
         <rotateGraphicWhenTraveling>true</rotateGraphicWhenTraveling>
         <useDynamicDrawer>true</useDynamicDrawer>
@@ -153,7 +153,7 @@
         <defName>DMSE_WorldObject_IncomingMissile</defName>
         <label>incoming missile</label>
         <description>A missile inbound to a target.</description>
-        <worldObjectClass>DMSE.WorldObject_IncomingMissile</worldObjectClass>
+        <worldObjectClass>Fortified.WorldObject_IncomingMissile</worldObjectClass>
         <texture>UI/DMSE/TravelingMissile</texture>
         <rotateGraphicWhenTraveling>true</rotateGraphicWhenTraveling>
         <useDynamicDrawer>true</useDynamicDrawer>

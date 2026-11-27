@@ -406,11 +406,11 @@
     </building>
     <!-- 容量 8 發；敵方站點生成時自動裝填（攔截彈），可當 NPC 導彈基地的彈藥庫。 -->
     <modExtensions>
-      <li Class="DMSE.MissileRackExtension">
+      <li Class="Fortified.MissileRackExtension">
         <capacity>8</capacity>
         <renderStoredBody>false</renderStoredBody>
       </li>
-      <li Class="DMSE.MissileRackAutoFillExtension">
+      <li Class="Fortified.MissileRackAutoFillExtension">
         <enemyFactionOnly>true</enemyFactionOnly>
         <fillRules>
           <li>
@@ -426,7 +426,7 @@
     </modExtensions>
     <inspectorTabs>
       <li>RimWorld.ITab_Storage</li>
-      <li>DMSE.ITab_MissileInventory</li>
+      <li>Fortified.ITab_MissileInventory</li>
     </inspectorTabs>
     <comps>
       <li Class="DMSE.CompProperties_BuildingExtraRenderer">
@@ -439,7 +439,7 @@
           </li>
         </extraGraphic>
       </li>
-      <li Class="DMSE.CompProperties_MissileRackStorage" />
+      <li Class="Fortified.CompProperties_MissileRackStorage" />
     </comps>
   </ThingDef>
 

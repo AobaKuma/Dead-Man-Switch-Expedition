@@ -43,33 +43,24 @@
       <li><oldTypeName>DMSE.CompMissileRackStorage</oldTypeName><newType>Fortified.CompMissileRackStorage</newType></li> <!-- MissileBase/CompMissileRackStorage.cs -->
       <li><oldTypeName>DMSE.CompPlaySoundOnSpawn</oldTypeName><newType>Fortified.CompPlaySoundOnSpawn</newType></li> <!-- Scorer/CompPlaySoundOnSpawn.cs -->
       <li><oldTypeName>DMSE.CompPowerThrottle</oldTypeName><newType>Fortified.CompPowerThrottle</newType></li> <!-- EW/CompPowerThrottle.cs -->
-      <li><oldTypeName>DMSE.CompRenameable</oldTypeName><newType>Fortified.CompRenameable</newType></li> <!-- Renameable/CompRenameable.cs -->
       <li><oldTypeName>DMSE.CompSearchRadar</oldTypeName><newType>Fortified.CompSearchRadar</newType></li> <!-- SkyFallerTurret/BVR/CompSearchRadar.cs -->
       <li><oldTypeName>DMSE.CompShellAutoloader</oldTypeName><newType>Fortified.CompShellAutoloader</newType></li> <!-- Artillery/CompShellAutoloader.cs -->
       <li><oldTypeName>DMSE.CompSiloHatch</oldTypeName><newType>Fortified.CompSiloHatch</newType></li> <!-- Scorer/Ballistic/CompSiloHatch.cs -->
       <li><oldTypeName>DMSE.CompStrikeConsole</oldTypeName><newType>Fortified.CompStrikeConsole</newType></li> <!-- Scorer/Strike/CompStrikeConsole.cs -->
-      <li><oldTypeName>DMSE.CompStructuralPile</oldTypeName><newType>Fortified.CompStructuralPile</newType></li> <!-- CelestialTransfer/Piles/CompStructuralPile.cs -->
       <li><oldTypeName>DMSE.CompTerminalCIWS</oldTypeName><newType>Fortified.CompTerminalCIWS</newType></li> <!-- SkyFallerTurret/BVR/CompTerminalCIWS.cs; XML: 1 file(s) -->
-      <li><oldTypeName>DMSE.CompTransferConsole</oldTypeName><newType>Fortified.CompTransferConsole</newType></li> <!-- CelestialTransfer/Console/CompTransferConsole.cs -->
-      <li><oldTypeName>DMSE.CompTransferEngine</oldTypeName><newType>Fortified.CompTransferEngine</newType></li> <!-- CelestialTransfer/Engines/CompTransferEngine.cs -->
-      <li><oldTypeName>DMSE.CompTransferReactor</oldTypeName><newType>Fortified.CompTransferReactor</newType></li> <!-- CelestialTransfer/Engines/CompTransferReactor.cs -->
       <li><oldTypeName>DMSE.CompTurretFacingRenderer</oldTypeName><newType>Fortified.CompTurretFacingRenderer</newType></li> <!-- SkyFallerTurret/BVR/CompTurretFacingRenderer.cs -->
       <li><oldTypeName>DMSE.GameComponent_MissileEngage</oldTypeName><newType>Fortified.GameComponent_StrikeMapTimers</newType></li> <!-- Scorer/GameComponent_MissileEngage.cs; doc §7.4 -->
-      <li><oldTypeName>DMSE.GameComponent_TransferLanding</oldTypeName><newType>Fortified.GameComponent_TransferLanding</newType></li> <!-- CelestialTransfer/Ship/TransferLandingUtility.cs -->
       <li><oldTypeName>DMSE.IMissileRack</oldTypeName><newType>Fortified.IMissileRack</newType></li> <!-- MissileBase/IMissileRack.cs -->
       <li><oldTypeName>DMSE.InterceptDebrisChunk</oldTypeName><newType>Fortified.InterceptDebrisChunk</newType></li> <!-- SkyFallerTurret/BVR/InterceptDebris/InterceptDebrisChunk.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.JobDriver_AssembleBallisticSilo</oldTypeName><newType>Fortified.JobDriver_AssembleBallisticSilo</newType></li> <!-- Scorer/Ballistic/JobDriver_AssembleBallisticSilo.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.JobDriver_AssembleMissile</oldTypeName><newType>Fortified.JobDriver_AssembleMissile</newType></li> <!-- Scorer/Assembly/JobDriver_AssembleMissile.cs; XML: 1 file(s) -->
-      <li><oldTypeName>DMSE.JobDriver_BuildPileBeam</oldTypeName><newType>Fortified.JobDriver_BuildPileBeam</newType></li> <!-- CelestialTransfer/Piles/JobDriver_BuildPileBeam.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.JobDriver_ComputeFiringSolution</oldTypeName><newType>Fortified.JobDriver_ComputeFiringSolution</newType></li> <!-- Scorer/Strike/WorkGiver_ComputeFiringSolution.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.JobDriver_DeliverMissileResource</oldTypeName><newType>Fortified.JobDriver_DeliverMissileResource</newType></li> <!-- Scorer/Assembly/JobDriver_DeliverMissileResource.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.JobDriver_FireManPortableSAM</oldTypeName><newType>Fortified.JobDriver_FireManPortableSAM</newType></li> <!-- SkyFallerTurret/BVR/ManPortableSAM.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.JobDriver_HaulMissileToRack</oldTypeName><newType>Fortified.JobDriver_HaulMissileToRack</newType></li> <!-- MissileBase/JobDriver_HaulMissileToRack.cs; XML: 1 file(s) -->
-      <li><oldTypeName>DMSE.JobDriver_InitiateTransfer</oldTypeName><newType>Fortified.JobDriver_InitiateTransfer</newType></li> <!-- CelestialTransfer/Console/JobDriver_InitiateTransfer.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.JobDriver_LoadMissileLauncher</oldTypeName><newType>Fortified.JobDriver_LoadMissileLauncher</newType></li> <!-- Scorer/Assembly/JobDriver_LoadMissileLauncher.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.JobDriver_ManMissileLauncher</oldTypeName><newType>Fortified.JobDriver_ManMissileLauncher</newType></li> <!-- SkyFallerTurret/BVR/JobDriver_ManMissileLauncher.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.JobDriver_OperateWarRoom</oldTypeName><newType>Fortified.JobDriver_OperateWarRoom</newType></li> <!-- EW/CompWarRoomConsole.cs; XML: 1 file(s) -->
-      <li><oldTypeName>DMSE.JobDriver_RemovePlatform</oldTypeName><newType>Fortified.JobDriver_RemovePlatform</newType></li> <!-- Platform/JobDriver_RemovePlatform.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.JobDriver_UnloadMissileRack</oldTypeName><newType>Fortified.JobDriver_UnloadMissileRack</newType></li> <!-- Scorer/Assembly/JobDriver_UnloadMissileRack.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.LaserDesignatorMark</oldTypeName><newType>Fortified.LaserDesignatorMark</newType></li> <!-- Scorer/Guidance/LaserDesignator.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.LordJob_MissileCrewDuty</oldTypeName><newType>Fortified.LordJob_MissileCrewDuty</newType></li> <!-- MissileBase/LordJob_MissileCrewDuty.cs -->
@@ -85,13 +76,11 @@
       <li><oldTypeName>DMSE.MapComponent_MissileFx</oldTypeName><newType>Fortified.MapComponent_MissileFx</newType></li> <!-- MissileFx/MapComponent_MissileFx.cs -->
       <li><oldTypeName>DMSE.MapComponent_MissileLaunchQueue</oldTypeName><newType>Fortified.MapComponent_MissileLaunchQueue</newType></li> <!-- MissileProjectile/MapComponent_MissileLaunchQueue.cs -->
       <li><oldTypeName>DMSE.MapComponent_MissileRacks</oldTypeName><newType>Fortified.MapComponent_MissileRacks</newType></li> <!-- MissileBase/MapComponent_MissileRacks.cs -->
-      <li><oldTypeName>DMSE.MapComponent_PileNetwork</oldTypeName><newType>Fortified.MapComponent_PileNetwork</newType></li> <!-- CelestialTransfer/Piles/MapComponent_PileNetwork.cs -->
       <li><oldTypeName>DMSE.MapComponent_SeaPlatformSea</oldTypeName><newType>Fortified.MapComponent_SeaPlatformSea</newType></li> <!-- SeaPlatform/SeaPlatformRendering.cs -->
       <li><oldTypeName>DMSE.MapComponent_SeaPlatformSupport</oldTypeName><newType>Fortified.MapComponent_SeaPlatformSupport</newType></li> <!-- SeaPlatform/SeaPlatformSupport.cs -->
       <li><oldTypeName>DMSE.MapComponent_Ship</oldTypeName><newType>Fortified.MapComponent_Ship</newType></li> <!-- CelestialTransfer/Legacy/MapComponent_Ship.cs -->
       <li><oldTypeName>DMSE.MapComponent_StrikePlanner</oldTypeName><newType>Fortified.MapComponent_StrikePlanner</newType></li> <!-- Scorer/Strike/MapComponent_StrikePlanner.cs -->
       <li><oldTypeName>DMSE.MapComponent_TerminalImpactMarkers</oldTypeName><newType>Fortified.MapComponent_TerminalImpactMarkers</newType></li> <!-- SkyFallerTurret/BVR/TerminalImpactMarkers.cs -->
-      <li><oldTypeName>DMSE.MapComponent_TransferBurn</oldTypeName><newType>Fortified.MapComponent_TransferBurn</newType></li> <!-- CelestialTransfer/Ship/MapComponent_TransferBurn.cs -->
       <li><oldTypeName>DMSE.MirvGroup</oldTypeName><newType>Fortified.MirvGroup</newType></li> <!-- Scorer/Mirv/WorldComponent_MirvGroups.cs -->
       <li><oldTypeName>DMSE.MissileBehavior_ReleaseChildren</oldTypeName><newType>Fortified.MissileBehavior_ReleaseChildren</newType></li> <!-- Scorer/Assembly/MissileBehavior_ReleaseChildren.cs -->
       <li><oldTypeName>DMSE.MissileConfig</oldTypeName><newType>Fortified.MissileConfig</newType></li> <!-- Scorer/Assembly/MissileConfig.cs -->
@@ -100,7 +89,6 @@
       <li><oldTypeName>DMSE.PendingMissileLaunch</oldTypeName><newType>Fortified.PendingMissileLaunch</newType></li> <!-- MissileProjectile/MapComponent_MissileLaunchQueue.cs -->
       <li><oldTypeName>DMSE.PendingRackLoad</oldTypeName><newType>Fortified.PendingRackLoad</newType></li> <!-- MissileBase/MissileBaseRackSupply.cs -->
       <li><oldTypeName>DMSE.PendingTurretRefuel</oldTypeName><newType>Fortified.PendingTurretRefuel</newType></li> <!-- MissileBase/MapComponent_MissileBase.cs -->
-      <li><oldTypeName>DMSE.PileBeamOrder</oldTypeName><newType>Fortified.PileBeamOrder</newType></li> <!-- CelestialTransfer/Piles/PileBeamOrder.cs -->
       <li><oldTypeName>DMSE.Projectile_ArtilleryDeparture</oldTypeName><newType>Fortified.Projectile_ArtilleryDeparture</newType></li> <!-- Artillery/Projectile_ArtilleryDeparture.cs; XML: 2 file(s) -->
       <li><oldTypeName>DMSE.Projectile_LaserDesignator</oldTypeName><newType>Fortified.Projectile_LaserDesignator</newType></li> <!-- Scorer/Guidance/LaserDesignator.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.Projectile_MissileBase</oldTypeName><newType>Fortified.Projectile_MissileBase</newType></li> <!-- MissileProjectile/Projectile_MissileBase.cs -->
@@ -114,7 +102,6 @@
       <li><oldTypeName>DMSE.StrikeReport</oldTypeName><newType>Fortified.StrikeReport</newType></li> <!-- Scorer/Strike/WorldComponent_StrikeReports.cs -->
       <li><oldTypeName>DMSE.StrikeSlot</oldTypeName><newType>Fortified.StrikeSlot</newType></li> <!-- Scorer/Strike/StrikeMission.cs -->
       <li><oldTypeName>DMSE.StrikeWave</oldTypeName><newType>Fortified.StrikeWave</newType></li> <!-- Scorer/Strike/StrikeMission.cs -->
-      <li><oldTypeName>DMSE.TransferPlan</oldTypeName><newType>Fortified.TransferPlan</newType></li> <!-- CelestialTransfer/Console/TransferPlan.cs -->
       <li><oldTypeName>DMSE.TravelingObject</oldTypeName><newType>Fortified.TravelingObject</newType></li> <!-- CelestialTransfer/Legacy/WorldObject_Transfer.cs -->
       <li><oldTypeName>DMSE.WorldComponent_BVRNetwork</oldTypeName><newType>Fortified.WorldComponent_AirDefenseNetwork</newType></li> <!-- SkyFallerTurret/BVR/World/WorldComponent_BVRNetwork.cs; doc §7.4 -->
       <li><oldTypeName>DMSE.WorldComponent_BlockadeInterception</oldTypeName><newType>Fortified.WorldComponent_BlockadeInterception</newType></li> <!-- SkyFallerTurret/BVR/World/Alert/BlockadeInterception.cs -->
@@ -138,15 +125,11 @@
       <li><oldTypeName>DMSE.Alert_MissileBaseObjectives</oldTypeName><newType>Fortified.Alert_MissileBaseObjectives</newType></li> <!-- MissileBase/Alert_MissileBaseObjectives.cs -->
       <li><oldTypeName>DMSE.Alert_StrikeComputationPending</oldTypeName><newType>Fortified.Alert_StrikeComputationPending</newType></li> <!-- Scorer/Strike/WorkGiver_ComputeFiringSolution.cs -->
       <li><oldTypeName>DMSE.Alert_StrikeWaveReady</oldTypeName><newType>Fortified.Alert_StrikeWaveReady</newType></li> <!-- Scorer/Strike/WorkGiver_ComputeFiringSolution.cs -->
-      <li><oldTypeName>DMSE.Alert_TransferCountdown</oldTypeName><newType>Fortified.Alert_TransferCountdown</newType></li> <!-- CelestialTransfer/Console/Alerts_Transfer.cs -->
-      <li><oldTypeName>DMSE.Alert_TransferExhaustDanger</oldTypeName><newType>Fortified.Alert_TransferExhaustDanger</newType></li> <!-- CelestialTransfer/Console/Alerts_Transfer.cs -->
-      <li><oldTypeName>DMSE.Alert_TransferPawnsOutside</oldTypeName><newType>Fortified.Alert_TransferPawnsOutside</newType></li> <!-- CelestialTransfer/Console/Alerts_Transfer.cs -->
       <li><oldTypeName>DMSE.Alert_WorldIncoming</oldTypeName><newType>Fortified.Alert_WorldIncoming</newType></li> <!-- SkyFallerTurret/BVR/World/Alert_WorldIncoming.cs -->
       <li><oldTypeName>DMSE.Alerts_BVRStatus</oldTypeName><newType>Fortified.Alert_AirDefenseStatus</newType></li> <!-- SkyFallerTurret/Alerts_BVRStatus.cs; doc §7.4 -->
       <li><oldTypeName>DMSE.Alerts_Exist</oldTypeName><newType>Fortified.Alert_StrikeMapExpiry</newType></li> <!-- Scorer/Alerts_Exist.cs; doc §7.4 -->
       <li><oldTypeName>DMSE.Alerts_PlayerMissiles</oldTypeName><newType>Fortified.Alert_PlayerMissilesInFlight</newType></li> <!-- SkyFallerTurret/Alerts_PlayerMissiles.cs; doc §7.4 -->
       <li><oldTypeName>DMSE.Alerts_Pods</oldTypeName><newType>Fortified.Alert_IncomingAirThreat</newType></li> <!-- SkyFallerTurret/Alerts_Pods.cs; doc §7.4 -->
-      <li><oldTypeName>DMSE.AngledHullExtension</oldTypeName><newType>Fortified.AngledHullExtension</newType></li> <!-- Platform/SectionLayer_PlatformHull.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.BVRTargetProps</oldTypeName><newType>Fortified.AirTargetExtension</newType></li> <!-- SkyFallerTurret/BVR/BVRTargetProps.cs; doc §7.4; XML: 7 file(s) -->
       <li><oldTypeName>DMSE.BVRWorldTuningDef</oldTypeName><newType>Fortified.AirDefenseTuningDef</newType></li> <!-- SkyFallerTurret/BVR/World/BVRWorldTuningDef.cs; doc §7.4; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.CompBuildingTurretGun</oldTypeName><newType>Fortified.CompBuildingTurretGun</newType></li> <!-- SkyFallerTurret/BVR/CompBuildingTurretGun.cs; XML: 1 file(s) -->
@@ -171,21 +154,14 @@
       <li><oldTypeName>DMSE.CompProperties_MissileRailLauncher</oldTypeName><newType>Fortified.CompProperties_MissileRailLauncher</newType></li> <!-- Scorer/CompMissileRailLauncher.cs; XML: 5 file(s) -->
       <li><oldTypeName>DMSE.CompProperties_PlaySoundOnSpawn</oldTypeName><newType>Fortified.CompProperties_PlaySoundOnSpawn</newType></li> <!-- Scorer/CompPlaySoundOnSpawn.cs -->
       <li><oldTypeName>DMSE.CompProperties_PowerThrottle</oldTypeName><newType>Fortified.CompProperties_PowerThrottle</newType></li> <!-- EW/CompPowerThrottle.cs; XML: 4 file(s) -->
-      <li><oldTypeName>DMSE.CompProperties_Renameable</oldTypeName><newType>Fortified.CompProperties_Renameable</newType></li> <!-- Renameable/CompRenameable.cs; XML: 5 file(s) -->
       <li><oldTypeName>DMSE.CompProperties_SearchRadar</oldTypeName><newType>Fortified.CompProperties_SearchRadar</newType></li> <!-- SkyFallerTurret/BVR/CompSearchRadar.cs; XML: 5 file(s) -->
       <li><oldTypeName>DMSE.CompProperties_ShellAutoloader</oldTypeName><newType>Fortified.CompProperties_ShellAutoloader</newType></li> <!-- Artillery/CompShellAutoloader.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.CompProperties_SiloHatch</oldTypeName><newType>Fortified.CompProperties_SiloHatch</newType></li> <!-- Scorer/Ballistic/CompSiloHatch.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.CompProperties_StrikeConsole</oldTypeName><newType>Fortified.CompProperties_StrikeConsole</newType></li> <!-- Scorer/Strike/CompStrikeConsole.cs; XML: 1 file(s) -->
-      <li><oldTypeName>DMSE.CompProperties_StructuralPile</oldTypeName><newType>Fortified.CompProperties_StructuralPile</newType></li> <!-- CelestialTransfer/Piles/CompProperties_StructuralPile.cs; XML: 2 file(s) -->
       <li><oldTypeName>DMSE.CompProperties_TerminalCIWS</oldTypeName><newType>Fortified.CompProperties_TerminalCIWS</newType></li> <!-- SkyFallerTurret/BVR/CompTerminalCIWS.cs; XML: 3 file(s) -->
-      <li><oldTypeName>DMSE.CompProperties_TransferConsole</oldTypeName><newType>Fortified.CompProperties_TransferConsole</newType></li> <!-- CelestialTransfer/Console/CompTransferConsole.cs; XML: 2 file(s) -->
-      <li><oldTypeName>DMSE.CompProperties_TransferEngine</oldTypeName><newType>Fortified.CompProperties_TransferEngine</newType></li> <!-- CelestialTransfer/Engines/CompTransferEngine.cs; XML: 3 file(s) -->
-      <li><oldTypeName>DMSE.CompProperties_TransferReactor</oldTypeName><newType>Fortified.CompProperties_TransferReactor</newType></li> <!-- CelestialTransfer/Engines/CompTransferReactor.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.CompProperties_TurretFacingRenderer</oldTypeName><newType>Fortified.CompProperties_TurretFacingRenderer</newType></li> <!-- SkyFallerTurret/BVR/CompTurretFacingRenderer.cs; XML: 5 file(s) -->
       <li><oldTypeName>DMSE.CompProperties_WarRoomConsole</oldTypeName><newType>Fortified.CompProperties_WarRoomConsole</newType></li> <!-- EW/CompWarRoomConsole.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.CompProperties_WorldAirDefense</oldTypeName><newType>Fortified.WorldObjectCompProperties_AirDefense</newType></li> <!-- SkyFallerTurret/BVR/World/WorldObjectComp_AirDefense.cs; doc §7.4; XML: 6 file(s) -->
-      <li><oldTypeName>DMSE.Designator_LandTransferShip</oldTypeName><newType>Fortified.Designator_LandTransferShip</newType></li> <!-- CelestialTransfer/Ship/TransferLandingUtility.cs -->
-      <li><oldTypeName>DMSE.Designator_RemovePlatform</oldTypeName><newType>Fortified.Designator_RemovePlatform</newType></li> <!-- Platform/Designator_RemovePlatform.cs; XML: 3 file(s) -->
       <li><oldTypeName>DMSE.EarlyLaunchSiteIncidentExtension</oldTypeName><newType>Fortified.EarlyLaunchSiteIncidentExtension</newType></li> <!-- MissileBase/IncidentWorker_FieldLaunchSite.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.FieldLaunchSiteIncidentExtension</oldTypeName><newType>Fortified.FieldLaunchSiteIncidentExtension</newType></li> <!-- MissileBase/IncidentWorker_FieldLaunchSite.cs; XML: 3 file(s) -->
       <li><oldTypeName>DMSE.GenStep_FieldLaunchSite</oldTypeName><newType>Fortified.GenStep_FieldLaunchSite</newType></li> <!-- MissileBase/GenStep_FieldLaunchSite.cs; XML: 3 file(s) -->
@@ -209,7 +185,6 @@
       <li><oldTypeName>DMSE.GuidanceType_TV</oldTypeName><newType>Fortified.GuidanceType_TV</newType></li> <!-- Scorer/Assembly/GuidanceType.cs; XML: 4 file(s) -->
       <li><oldTypeName>DMSE.ITab_MissileAssembly</oldTypeName><newType>Fortified.ITab_MissileAssembly</newType></li> <!-- Scorer/Assembly/ITab_MissileAssembly.cs; XML: 12 file(s) -->
       <li><oldTypeName>DMSE.ITab_MissileInventory</oldTypeName><newType>Fortified.ITab_MissileInventory</newType></li> <!-- Scorer/Assembly/ITab_MissileInventory.cs; XML: 8 file(s) -->
-      <li><oldTypeName>DMSE.ITab_TransferShip</oldTypeName><newType>Fortified.ITab_TransferShip</newType></li> <!-- CelestialTransfer/Console/ITab_TransferShip.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.ITab_WarRoom</oldTypeName><newType>Fortified.ITab_WarRoom</newType></li> <!-- EW/ITab_WarRoom.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.IncidentWorker_EarlyLaunchSite</oldTypeName><newType>Fortified.IncidentWorker_EarlyLaunchSite</newType></li> <!-- MissileBase/IncidentWorker_FieldLaunchSite.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.IncidentWorker_FieldLaunchSite</oldTypeName><newType>Fortified.IncidentWorker_FieldLaunchSite</newType></li> <!-- MissileBase/IncidentWorker_FieldLaunchSite.cs; XML: 2 file(s) -->
@@ -219,7 +194,6 @@
       <li><oldTypeName>DMSE.JobGiver_ManMissileStation</oldTypeName><newType>Fortified.JobGiver_ManMissileStation</newType></li> <!-- MissileBase/LordJob_MissileStationCrew.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.JobGiver_ManWarRoomConsole</oldTypeName><newType>Fortified.JobGiver_ManWarRoomConsole</newType></li> <!-- EW/CompWarRoomConsole.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.LaunchFxProfileDef</oldTypeName><newType>Fortified.LaunchFxProfileDef</newType></li> <!-- MissileFx/LaunchFxProfileDef.cs; XML: 1 file(s) -->
-      <li><oldTypeName>DMSE.MapDrawLayer_StructuralBeams</oldTypeName><newType>Fortified.MapDrawLayer_StructuralBeams</newType></li> <!-- CelestialTransfer/Piles/MapDrawLayer_StructuralBeams.cs -->
       <li><oldTypeName>DMSE.MissileBehaviorProps_ReleaseChildren</oldTypeName><newType>Fortified.MissileBehaviorProps_ReleaseChildren</newType></li> <!-- Scorer/Assembly/MissileBehavior_ReleaseChildren.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.MissileBodyDef</oldTypeName><newType>Fortified.MissileBodyDef</newType></li> <!-- Scorer/Assembly/MissileDefs.cs; XML: 8 file(s) -->
       <li><oldTypeName>DMSE.MissileDoctrineDef</oldTypeName><newType>Fortified.MissileDoctrineDef</newType></li> <!-- MissileBase/MissileDoctrineDef.cs; XML: 1 file(s) -->
@@ -245,14 +219,10 @@
       <li><oldTypeName>DMSE.PayloadEffect_ToxicGas</oldTypeName><newType>Fortified.PayloadEffect_ToxicGas</newType></li> <!-- Scorer/Assembly/PayloadEffect.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.PlaceWorker_SeaPlatformPillar</oldTypeName><newType>Fortified.PlaceWorker_SeaPlatformPillar</newType></li> <!-- SeaPlatform/SeaPlatformSupport.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.PlaceWorker_SeaPlatformSupported</oldTypeName><newType>Fortified.PlaceWorker_SeaPlatformSupported</newType></li> <!-- SeaPlatform/SeaPlatformSupport.cs; XML: 1 file(s) -->
-      <li><oldTypeName>DMSE.PlaceWorker_StructuralPile</oldTypeName><newType>Fortified.PlaceWorker_StructuralPile</newType></li> <!-- CelestialTransfer/Piles/PlaceWorker_StructuralPile.cs; XML: 2 file(s) -->
-      <li><oldTypeName>DMSE.PlaceWorker_TransferEngine</oldTypeName><newType>Fortified.PlaceWorker_TransferEngine</newType></li> <!-- CelestialTransfer/Engines/PlaceWorker_TransferEngine.cs; XML: 2 file(s) -->
-      <li><oldTypeName>DMSE.RemovablePlatformExtension</oldTypeName><newType>Fortified.RemovablePlatformExtension</newType></li> <!-- Platform/PlatformRemoval.cs; XML: 5 file(s) -->
       <li><oldTypeName>DMSE.SeaLaunchSiteFactionExtension</oldTypeName><newType>Fortified.SeaLaunchSiteFactionExtension</newType></li> <!-- SeaPlatform/SeaLaunchSite.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.SeaPlatformMapExtension</oldTypeName><newType>Fortified.SeaPlatformMapExtension</newType></li> <!-- SeaPlatform/SeaPlatformMap.cs; XML: 2 file(s) -->
       <li><oldTypeName>DMSE.SeaPlatformPillarExtension</oldTypeName><newType>Fortified.SeaPlatformPillarExtension</newType></li> <!-- SeaPlatform/SeaPlatformSupport.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.SeaPlatformPropsExtension</oldTypeName><newType>Fortified.SeaPlatformPropsExtension</newType></li> <!-- SeaPlatform/SectionLayer_SeaPlatformProps.cs; XML: 1 file(s) -->
-      <li><oldTypeName>DMSE.SectionLayer_PlatformHull</oldTypeName><newType>Fortified.SectionLayer_PlatformHull</newType></li> <!-- Platform/SectionLayer_PlatformHull.cs -->
       <li><oldTypeName>DMSE.SectionLayer_SeaPlatformPillars</oldTypeName><newType>Fortified.SectionLayer_SeaPlatformPillars</newType></li> <!-- SeaPlatform/SeaPlatformRendering.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.SectionLayer_SeaPlatformProps</oldTypeName><newType>Fortified.SectionLayer_SeaPlatformProps</newType></li> <!-- SeaPlatform/SectionLayer_SeaPlatformProps.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.SectionLayer_SeaPlatformSea</oldTypeName><newType>Fortified.SectionLayer_SeaPlatformSea</newType></li> <!-- SeaPlatform/SeaPlatformRendering.cs -->
@@ -261,9 +231,6 @@
       <li><oldTypeName>DMSE.SitePartWorker_FieldLaunchSite</oldTypeName><newType>Fortified.SitePartWorker_FieldLaunchSite</newType></li> <!-- MissileBase/GenStep_FieldLaunchSite.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.SitePartWorker_MissileBase</oldTypeName><newType>Fortified.SitePartWorker_MissileBase</newType></li> <!-- MissileBase/SitePartWorker_MissileBase.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.SitePartWorker_SeaLaunchSite</oldTypeName><newType>Fortified.SitePartWorker_SeaLaunchSite</newType></li> <!-- SeaPlatform/SeaLaunchSite.cs; XML: 1 file(s) -->
-      <li><oldTypeName>DMSE.TransferEnvironmentExtension</oldTypeName><newType>Fortified.TransferEnvironmentExtension</newType></li> <!-- CelestialTransfer/TransferEnvironmentExtension.cs; XML: 1 file(s) -->
-      <li><oldTypeName>DMSE.TransferFlightTuningDef</oldTypeName><newType>Fortified.TransferFlightTuningDef</newType></li> <!-- CelestialTransfer/TransferFlightTuningDef.cs; XML: 1 file(s) -->
-      <li><oldTypeName>DMSE.TransferFuelSourceExtension</oldTypeName><newType>Fortified.TransferFuelSourceExtension</newType></li> <!-- CelestialTransfer/Fuel/TransferFuelSources.cs -->
       <li><oldTypeName>DMSE.VerbProperties_ManPortableMissile</oldTypeName><newType>Fortified.VerbProperties_ManPortableMissile</newType></li> <!-- SkyFallerTurret/BVR/ManPortableSAM.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.Verb_LaunchManPortableMissile</oldTypeName><newType>Fortified.Verb_LaunchManPortableMissile</newType></li> <!-- SkyFallerTurret/BVR/ManPortableSAM.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.WarheadEffect_Airburst</oldTypeName><newType>Fortified.WarheadEffect_Airburst</newType></li> <!-- Scorer/Assembly/WarheadEffect.cs; XML: 1 file(s) -->
@@ -275,16 +242,10 @@
       <li><oldTypeName>DMSE.WarheadEffect_TungstenPenetrator</oldTypeName><newType>Fortified.WarheadEffect_TungstenPenetrator</newType></li> <!-- Scorer/Assembly/WarheadEffect.cs; XML: 2 file(s) -->
       <li><oldTypeName>DMSE.WorkGiver_AssembleBallisticSilo</oldTypeName><newType>Fortified.WorkGiver_AssembleBallisticSilo</newType></li> <!-- Scorer/Ballistic/WorkGiver_AssembleBallisticSilo.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.WorkGiver_AssembleMissile</oldTypeName><newType>Fortified.WorkGiver_AssembleMissile</newType></li> <!-- Scorer/Assembly/WorkGiver_AssembleMissile.cs; XML: 1 file(s) -->
-      <li><oldTypeName>DMSE.WorkGiver_BuildPileBeam</oldTypeName><newType>Fortified.WorkGiver_BuildPileBeam</newType></li> <!-- CelestialTransfer/Piles/WorkGiver_BuildPileBeam.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.WorkGiver_ComputeFiringSolution</oldTypeName><newType>Fortified.WorkGiver_ComputeFiringSolution</newType></li> <!-- Scorer/Strike/WorkGiver_ComputeFiringSolution.cs; XML: 1 file(s) -->
-      <li><oldTypeName>DMSE.WorkGiver_DeliverPileBeamMaterials</oldTypeName><newType>Fortified.WorkGiver_DeliverPileBeamMaterials</newType></li> <!-- CelestialTransfer/Piles/WorkGiver_DeliverPileBeamMaterials.cs; XML: 1 file(s) -->
-      <li><oldTypeName>DMSE.WorkGiver_InitiateTransfer</oldTypeName><newType>Fortified.WorkGiver_InitiateTransfer</newType></li> <!-- CelestialTransfer/Console/WorkGiver_InitiateTransfer.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.WorkGiver_LoadMissileLauncher</oldTypeName><newType>Fortified.WorkGiver_LoadMissileLauncher</newType></li> <!-- Scorer/Assembly/WorkGiver_LoadMissileLauncher.cs; XML: 1 file(s) -->
-      <li><oldTypeName>DMSE.WorkGiver_RemovePlatform</oldTypeName><newType>Fortified.WorkGiver_RemovePlatform</newType></li> <!-- Platform/WorkGiver_RemovePlatform.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.WorkGiver_UnloadMissileRack</oldTypeName><newType>Fortified.WorkGiver_UnloadMissileRack</newType></li> <!-- Scorer/Assembly/WorkGiver_UnloadMissileRack.cs; XML: 1 file(s) -->
       <li><oldTypeName>DMSE.WorkTableStatsExtension</oldTypeName><newType>Fortified.WorkTableStatsExtension</newType></li> <!-- Scorer/Assembly/WorkTableStatsExtension.cs; XML: 1 file(s) -->
-      <li><oldTypeName>DMSE.WorldDrawLayer_SpaceTiles</oldTypeName><newType>Fortified.WorldDrawLayer_SpaceTiles</newType></li> <!-- CelestialTransfer/WorldDrawLayer_SpaceTiles.cs; XML: 1 file(s) -->
-      <li><oldTypeName>DMSE.WorldObject_TransferShip</oldTypeName><newType>Fortified.WorldObject_TransferShip</newType></li> <!-- CelestialTransfer/Ship/WorldObject_TransferShip.cs; XML: 2 file(s) -->
       <!-- ===== csharp ===== -->
       <li><oldTypeName>DMSE.BVRChannelLedger</oldTypeName><newType>Fortified.FireChannelLedger</newType></li> <!-- SkyFallerTurret/BVR/World/BVRChannelLedger.cs; doc §7.4 -->
       <li><oldTypeName>DMSE.BVRDefenseEffector</oldTypeName><newType>Fortified.AirDefenseEffector</newType></li> <!-- SkyFallerTurret/BVR/World/IBVRDefense.cs; doc §7.4 -->
@@ -296,22 +257,22 @@
       <li><oldTypeName>DMSE.BVRWorldDrawer+Ring</oldTypeName><newType>Fortified.AirDefenseWorldDrawer+Ring</newType></li> <!-- SkyFallerTurret/BVR/World/BVRWorldDrawer.cs -->
       <li><oldTypeName>DMSE.BVRWorldDrawer+RingKind</oldTypeName><newType>Fortified.AirDefenseWorldDrawer+RingKind</newType></li> <!-- SkyFallerTurret/BVR/World/BVRWorldDrawer.cs -->
       <li><oldTypeName>DMSE.BVRWorldDrawer+ZoneFill</oldTypeName><newType>Fortified.AirDefenseWorldDrawer+ZoneFill</newType></li> <!-- SkyFallerTurret/BVR/World/BVRWorldDrawer.cs -->
-      <li><oldTypeName>DMSE.DMSE_BallisticJobDefOf</oldTypeName><newType>Fortified.FFF_DefOf</newType></li> <!-- Scorer/Ballistic/JobDriver_AssembleBallisticSilo.cs; doc §7.4 -->
+      <li><oldTypeName>DMSE.DMSE_BallisticJobDefOf</oldTypeName><newType>Fortified.FFF_MissileDefOf</newType></li> <!-- Scorer/Ballistic/JobDriver_AssembleBallisticSilo.cs; doc §7.4 -->
       <li><oldTypeName>DMSE.DMSE_Concepts</oldTypeName><newType>Fortified.ConceptTeachUtility</newType></li> <!-- Utilities/DMSE_Concepts.cs; doc §7.4 -->
-      <li><oldTypeName>DMSE.DMSE_EWJobDefOf</oldTypeName><newType>Fortified.FFF_DefOf</newType></li> <!-- EW/CompWarRoomConsole.cs; doc §7.4 -->
-      <li><oldTypeName>DMSE.DMSE_FrameworkDefOf</oldTypeName><newType>Fortified.FFF_DefOf</newType></li> <!-- Common/FrameworkDefOf.cs; doc §7.4 -->
-      <li><oldTypeName>DMSE.DMSE_KeyBindingDefOf</oldTypeName><newType>Fortified.FFF_DefOf</newType></li> <!-- Scorer/Assembly/DMSE_KeyBindingDefOf.cs; doc §7.4 -->
-      <li><oldTypeName>DMSE.DMSE_ManPortableSAMDefOf</oldTypeName><newType>Fortified.FFF_DefOf</newType></li> <!-- SkyFallerTurret/BVR/ManPortableSAM.cs; doc §7.4 -->
-      <li><oldTypeName>DMSE.DMSE_MissileCrewDutyDefOf</oldTypeName><newType>Fortified.FFF_DefOf</newType></li> <!-- MissileBase/LordJob_MissileStationCrew.cs; doc §7.4 -->
-      <li><oldTypeName>DMSE.DMSE_MissileJobDefOf</oldTypeName><newType>Fortified.FFF_DefOf</newType></li> <!-- Scorer/Assembly/MissileAssemblyUtility.cs; doc §7.4 -->
-      <li><oldTypeName>DMSE.DMSE_StrikeDefOf</oldTypeName><newType>Fortified.FFF_DefOf</newType></li> <!-- Scorer/Strike/WorkGiver_ComputeFiringSolution.cs; doc §7.4 -->
+      <li><oldTypeName>DMSE.DMSE_EWJobDefOf</oldTypeName><newType>Fortified.FFF_MissileDefOf</newType></li> <!-- EW/CompWarRoomConsole.cs; doc §7.4 -->
+      <li><oldTypeName>DMSE.DMSE_FrameworkDefOf</oldTypeName><newType>Fortified.FFF_MissileDefOf</newType></li> <!-- Common/FrameworkDefOf.cs; doc §7.4 -->
+      <li><oldTypeName>DMSE.DMSE_KeyBindingDefOf</oldTypeName><newType>Fortified.FFF_MissileDefOf</newType></li> <!-- Scorer/Assembly/DMSE_KeyBindingDefOf.cs; doc §7.4 -->
+      <li><oldTypeName>DMSE.DMSE_ManPortableSAMDefOf</oldTypeName><newType>Fortified.FFF_MissileDefOf</newType></li> <!-- SkyFallerTurret/BVR/ManPortableSAM.cs; doc §7.4 -->
+      <li><oldTypeName>DMSE.DMSE_MissileCrewDutyDefOf</oldTypeName><newType>Fortified.FFF_MissileDefOf</newType></li> <!-- MissileBase/LordJob_MissileStationCrew.cs; doc §7.4 -->
+      <li><oldTypeName>DMSE.DMSE_MissileJobDefOf</oldTypeName><newType>Fortified.FFF_MissileDefOf</newType></li> <!-- Scorer/Assembly/MissileAssemblyUtility.cs; doc §7.4 -->
+      <li><oldTypeName>DMSE.DMSE_StrikeDefOf</oldTypeName><newType>Fortified.FFF_MissileDefOf</newType></li> <!-- Scorer/Strike/WorkGiver_ComputeFiringSolution.cs; doc §7.4 -->
       <li><oldTypeName>DMSE.IBVRContactLabel</oldTypeName><newType>Fortified.IAirContactLabel</newType></li> <!-- SkyFallerTurret/Patch_MakeDropPodAt.cs; doc §7.4 -->
       <li><oldTypeName>DMSE.IBVRDefense</oldTypeName><newType>Fortified.IAirDefense</newType></li> <!-- SkyFallerTurret/BVR/World/IBVRDefense.cs; doc §7.4 -->
       <li><oldTypeName>DMSE.IBVRPayloadHolder</oldTypeName><newType>Fortified.IAirPayloadHolder</newType></li> <!-- SkyFallerTurret/Patch_MakeDropPodAt.cs; doc §7.4 -->
       <li><oldTypeName>DMSE.IBVRTrack</oldTypeName><newType>Fortified.IAirDefenseTrack</newType></li> <!-- SkyFallerTurret/BVR/World/IBVRTrack.cs; doc §7.4 -->
       <li><oldTypeName>DMSE.MissileBVRUtility</oldTypeName><newType>Fortified.MissileAirDefenseUtility</newType></li> <!-- Scorer/Assembly/MissileBVRUtility.cs; doc §7.4 -->
       <li><oldTypeName>DMSE.MissileRackUtil</oldTypeName><newType>Fortified.MissileRackUtility</newType></li> <!-- MissileBase/IMissileRack.cs; doc §7.4 -->
-      <li><oldTypeName>DMSE.MissileStatCategoryDefOf</oldTypeName><newType>Fortified.FFF_DefOf</newType></li> <!-- Scorer/Assembly/MissileInfoCardUtility.cs; doc §7.4 -->
+      <li><oldTypeName>DMSE.MissileStatCategoryDefOf</oldTypeName><newType>Fortified.FFF_MissileDefOf</newType></li> <!-- Scorer/Assembly/MissileInfoCardUtility.cs; doc §7.4 -->
       <li><oldTypeName>DMSE.WorldComponent_BVRNetwork+EvaluatedRoute</oldTypeName><newType>Fortified.WorldComponent_AirDefenseNetwork+EvaluatedRoute</newType></li> <!-- SkyFallerTurret/BVR/World/WorldComponent_BVRNetwork.cs -->
       <li><oldTypeName>DMSE.WorldComponent_BVRNetwork+MotionSample</oldTypeName><newType>Fortified.WorldComponent_AirDefenseNetwork+MotionSample</newType></li> <!-- SkyFallerTurret/BVR/World/WorldComponent_BVRNetwork.cs -->
     </typeRenames>
@@ -324,7 +285,6 @@
       <li><defType>ConceptDef</defType><oldDefName>DMSE_NPCAirDefenseCircles</oldDefName><newDefName>FFF_NPCAirDefenseCircles</newDefName></li> <!-- 1.7/Defs/Concepts.xml; used by DMSE_Concepts.cs -->
       <li><defType>ConceptDef</defType><oldDefName>DMSE_SeekerTargeting</oldDefName><newDefName>FFF_SeekerTargeting</newDefName></li> <!-- 1.7/Defs/Concepts.xml; used by DMSE_Concepts.cs -->
       <li><defType>ConceptDef</defType><oldDefName>DMSE_StrikePlanning</oldDefName><newDefName>FFF_StrikePlanning</newDefName></li> <!-- 1.7/Defs/Concepts.xml; used by DMSE_Concepts.cs -->
-      <li><defType>DesignationDef</defType><oldDefName>DMSE_RemovePlatform</oldDefName><newDefName>FFF_RemovePlatform</newDefName></li> <!-- 1.7/Defs/DMSE_PlatformRemoval.xml; used by FrameworkDefOf.cs -->
       <li><defType>DutyDef</defType><oldDefName>DMSE_ManMissileStations</oldDefName><newDefName>FFF_ManMissileStations</newDefName></li> <!-- 1.7/Defs/Job/DMSE_MissileCrewDuties.xml; used by LordJob_MissileStationCrew.cs -->
       <li><defType>DutyDef</defType><oldDefName>DMSE_MissileCrewDefend</oldDefName><newDefName>FFF_MissileCrewDefend</newDefName></li> <!-- 1.7/Defs/Job/DMSE_MissileCrewDuties.xml; used by LordJob_MissileStationCrew.cs -->
       <li><defType>FleckDef</defType><oldDefName>DMSE_DebrisTrailPuff</oldDefName><newDefName>FFF_DebrisTrailPuff</newDefName></li> <!-- 1.7/Defs/Effects/DMSE_InterceptFx.xml; used by FrameworkDefOf.cs -->
@@ -342,26 +302,20 @@
       <li><defType>Fortified.AirDefenseTuningDef</defType><oldDefName>DMSE_BVRWorldTuning</oldDefName><newDefName>FFF_BVRWorldTuning</newDefName></li> <!-- 1.7/Defs/DMSE_BVRWorld.xml; used by BVRWorldTuningDef.cs -->
       <li><defType>Fortified.InterceptDebrisProfileDef</defType><oldDefName>DMSE_InterceptDebris_DropPod</oldDefName><newDefName>FFF_InterceptDebris_DropPod</newDefName></li> <!-- 1.7/Defs/Effects/DMSE_InterceptFx.xml; used by InterceptDebrisProfileDef.cs -->
       <li><defType>Fortified.InterceptDebrisProfileDef</defType><oldDefName>DMSE_InterceptDebris_Missile</oldDefName><newDefName>FFF_InterceptDebris_Missile</newDefName></li> <!-- 1.7/Defs/Effects/DMSE_InterceptFx.xml; used by InterceptDebrisProfileDef.cs -->
-      <li><defType>Fortified.TransferFlightTuningDef</defType><oldDefName>DMSE_TransferFlightTuning</oldDefName><newDefName>FFF_TransferFlightTuning</newDefName></li> <!-- 1.7/Defs/DMSE_TransferFlightTuning.xml; used by FrameworkDefOf.cs -->
-      <li><defType>GameConditionDef</defType><oldDefName>DMSE_TransferGrace</oldDefName><newDefName>FFF_TransferGrace</newDefName></li> <!-- 1.7/Defs/DMSE_TransferGrace.xml; used by FrameworkDefOf.cs -->
       <li><defType>GenStepDef</defType><oldDefName>DMSE_SeaPlatform</oldDefName><newDefName>FFF_SeaPlatform</newDefName></li> <!-- 1.7/Defs/DMSE_SeaPlatform.xml; used by framework XML (doc §4.4) -->
       <li><defType>JobDef</defType><oldDefName>DMSE_AssembleBallisticSilo</oldDefName><newDefName>FFF_AssembleBallisticSilo</newDefName></li> <!-- 1.7/Defs/ThingDefs_Buildings/DMSE_BallisticSilo.xml; used by JobDriver_AssembleBallisticSilo.cs -->
       <li><defType>JobDef</defType><oldDefName>DMSE_AssembleMissile</oldDefName><newDefName>FFF_AssembleMissile</newDefName></li> <!-- 1.7/Defs/Missile/DMSE_MissileAssembly_Jobs.xml; used by MissileAssemblyUtility.cs -->
-      <li><defType>JobDef</defType><oldDefName>DMSE_BuildPileBeam</oldDefName><newDefName>FFF_BuildPileBeam</newDefName></li> <!-- 1.7/Defs/Job/DMSE_TransferFlight_Jobs.xml; used by FrameworkDefOf.cs -->
       <li><defType>JobDef</defType><oldDefName>DMSE_ComputeFiringSolution</oldDefName><newDefName>FFF_ComputeFiringSolution</newDefName></li> <!-- 1.7/Defs/Job/DMSE_Strike_Jobs.xml; used by WorkGiver_ComputeFiringSolution.cs -->
       <li><defType>JobDef</defType><oldDefName>DMSE_DeliverMissileResource</oldDefName><newDefName>FFF_DeliverMissileResource</newDefName></li> <!-- 1.7/Defs/Missile/DMSE_MissileAssembly_Jobs.xml; used by MissileAssemblyUtility.cs -->
       <li><defType>JobDef</defType><oldDefName>DMSE_FireManPortableSAM</oldDefName><newDefName>FFF_FireManPortableSAM</newDefName></li> <!-- 1.7/Defs/ThingDefs_Misc/Apparel_SamLauncher.xml; used by ManPortableSAM.cs -->
       <li><defType>JobDef</defType><oldDefName>DMSE_HaulMissileToRack</oldDefName><newDefName>FFF_HaulMissileToRack</newDefName></li> <!-- 1.7/Defs/Missile/DMSE_MissileAssembly_Jobs.xml; used by MissileAssemblyUtility.cs -->
-      <li><defType>JobDef</defType><oldDefName>DMSE_InitiateTransfer</oldDefName><newDefName>FFF_InitiateTransfer</newDefName></li> <!-- 1.7/Defs/Job/DMSE_TransferFlight_Jobs.xml; used by FrameworkDefOf.cs -->
       <li><defType>JobDef</defType><oldDefName>DMSE_LoadMissileLauncher</oldDefName><newDefName>FFF_LoadMissileLauncher</newDefName></li> <!-- 1.7/Defs/Missile/DMSE_MissileAssembly_Jobs.xml; used by MissileAssemblyUtility.cs -->
       <li><defType>JobDef</defType><oldDefName>DMSE_ManMissileLauncher</oldDefName><newDefName>FFF_ManMissileLauncher</newDefName></li> <!-- 1.7/Defs/Missile/DMSE_MissileAssembly_Jobs.xml; used by MissileAssemblyUtility.cs -->
       <li><defType>JobDef</defType><oldDefName>DMSE_OperateWarRoom</oldDefName><newDefName>FFF_OperateWarRoom</newDefName></li> <!-- 1.7/Defs/ThingDefs_Buildings/DMSE_EW_Buildings.xml; used by CompWarRoomConsole.cs -->
-      <li><defType>JobDef</defType><oldDefName>DMSE_RemovePlatformJob</oldDefName><newDefName>FFF_RemovePlatformJob</newDefName></li> <!-- 1.7/Defs/DMSE_PlatformRemoval.xml; used by FrameworkDefOf.cs -->
       <li><defType>JobDef</defType><oldDefName>DMSE_UnloadMissileRack</oldDefName><newDefName>FFF_UnloadMissileRack</newDefName></li> <!-- 1.7/Defs/Missile/DMSE_MissileAssembly_Jobs.xml; used by MissileAssemblyUtility.cs -->
       <li><defType>KeyBindingDef</defType><oldDefName>DMSE_MissileAssemblyNext</oldDefName><newDefName>FFF_MissileAssemblyNext</newDefName></li> <!-- 1.7/Defs/DMSE_KeyBindings.xml; used by DMSE_KeyBindingDefOf.cs -->
       <li><defType>KeyBindingDef</defType><oldDefName>DMSE_MissileAssemblyPrevious</oldDefName><newDefName>FFF_MissileAssemblyPrevious</newDefName></li> <!-- 1.7/Defs/DMSE_KeyBindings.xml; used by DMSE_KeyBindingDefOf.cs -->
       <li><defType>MapGeneratorDef</defType><oldDefName>DMSE_SeaPlatform</oldDefName><newDefName>FFF_SeaPlatform</newDefName></li> <!-- 1.7/Defs/DMSE_SeaPlatform.xml; used by framework XML (doc §4.4) -->
-      <li><defType>MapGeneratorDef</defType><oldDefName>DMSE_ShipVoid</oldDefName><newDefName>FFF_ShipVoid</newDefName></li> <!-- 1.7/Defs/DMSE_TransferShip.xml; used by FrameworkDefOf.cs -->
       <li><defType>RulePackDef</defType><oldDefName>DMSE_NamerMissileDesign</oldDefName><newDefName>FFF_NamerMissileDesign</newDefName></li> <!-- 1.7/Defs/RulePacks/DMSE_Namer_MissileDesign.xml; used by MissileDesignNamer.cs -->
       <li><defType>RulePackDef</defType><oldDefName>DMSE_NamerStrikeMission</oldDefName><newDefName>FFF_NamerStrikeMission</newDefName></li> <!-- 1.7/Defs/RulePacks/DMSE_Namer_StrikeMission.xml; used by WorkGiver_ComputeFiringSolution.cs -->
       <li><defType>ShaderDef</defType><oldDefName>DMSE_SeaPlatformPillar</oldDefName><newDefName>FFF_SeaPlatformPillar</newDefName></li> <!-- 1.7/Defs/DMSE_SeaPlatform.xml; used by framework XML (doc §4.4) -->
@@ -372,25 +326,19 @@
       <li><defType>StatCategoryDef</defType><oldDefName>DMSE_MissilePart</oldDefName><newDefName>FFF_MissilePart</newDefName></li> <!-- 1.7/Defs/Missile/DMSE_MissileStatCategories.xml; used by MissileInfoCardUtility.cs -->
       <li><defType>StatCategoryDef</defType><oldDefName>DMSE_MissileProfile</oldDefName><newDefName>FFF_MissileProfile</newDefName></li> <!-- 1.7/Defs/Missile/DMSE_MissileStatCategories.xml; used by MissileInfoCardUtility.cs -->
       <li><defType>TerrainAffordanceDef</defType><oldDefName>DMSE_OpenAir</oldDefName><newDefName>FFF_OpenAir</newDefName></li> <!-- 1.7/Defs/DMSE_SeaPlatform.xml; used by framework XML (doc §4.4) -->
-      <li><defType>TerrainAffordanceDef</defType><oldDefName>DMSE_Platform</oldDefName><newDefName>FFF_Platform</newDefName></li> <!-- 1.7/Defs/Terrain_OrbitalPlatform_DMS.xml; used by FrameworkDefOf.cs -->
       <li><defType>TerrainAffordanceDef</defType><oldDefName>DMSE_SeaPlatformPillarBase</oldDefName><newDefName>FFF_SeaPlatformPillarBase</newDefName></li> <!-- 1.7/Defs/DMSE_SeaPlatform.xml; used by framework XML (doc §4.4) -->
       <li><defType>TerrainDef</defType><oldDefName>DMSE_OpenAir</oldDefName><newDefName>FFF_OpenAir</newDefName></li> <!-- 1.7/Defs/DMSE_SeaPlatform.xml; used by framework XML (doc §4.4) -->
       <li><defType>ThingDef</defType><oldDefName>DMSE_Filth_MetalScrap</oldDefName><newDefName>FFF_Filth_MetalScrap</newDefName></li> <!-- 1.7/Defs/Effects/DMSE_InterceptFx.xml; used by FrameworkDefOf.cs -->
       <li><defType>ThingDef</defType><oldDefName>DMSE_InterceptDebrisChunk</oldDefName><newDefName>FFF_InterceptDebrisChunk</newDefName></li> <!-- 1.7/Defs/Effects/DMSE_InterceptFx.xml; used by FrameworkDefOf.cs -->
       <li><defType>WorkGiverDef</defType><oldDefName>DMSE_AssembleBallisticSilo</oldDefName><newDefName>FFF_AssembleBallisticSilo</newDefName></li> <!-- 1.7/Defs/ThingDefs_Buildings/DMSE_BallisticSilo.xml; used by giverClass WorkGiver_AssembleBallisticSilo -->
       <li><defType>WorkGiverDef</defType><oldDefName>DMSE_AssembleMissile</oldDefName><newDefName>FFF_AssembleMissile</newDefName></li> <!-- 1.7/Defs/Missile/DMSE_MissileAssembly_Jobs.xml; used by giverClass WorkGiver_AssembleMissile -->
-      <li><defType>WorkGiverDef</defType><oldDefName>DMSE_BuildPileBeam</oldDefName><newDefName>FFF_BuildPileBeam</newDefName></li> <!-- 1.7/Defs/Job/DMSE_TransferFlight_Jobs.xml; used by giverClass WorkGiver_BuildPileBeam -->
       <li><defType>WorkGiverDef</defType><oldDefName>DMSE_ComputeFiringSolution</oldDefName><newDefName>FFF_ComputeFiringSolution</newDefName></li> <!-- 1.7/Defs/Job/DMSE_Strike_Jobs.xml; used by giverClass WorkGiver_ComputeFiringSolution -->
-      <li><defType>WorkGiverDef</defType><oldDefName>DMSE_ConstructRemovePlatform</oldDefName><newDefName>FFF_ConstructRemovePlatform</newDefName></li> <!-- 1.7/Defs/DMSE_PlatformRemoval.xml; used by giverClass WorkGiver_RemovePlatform -->
-      <li><defType>WorkGiverDef</defType><oldDefName>DMSE_DeliverPileBeamMaterials</oldDefName><newDefName>FFF_DeliverPileBeamMaterials</newDefName></li> <!-- 1.7/Defs/Job/DMSE_TransferFlight_Jobs.xml; used by giverClass WorkGiver_DeliverPileBeamMaterials -->
-      <li><defType>WorkGiverDef</defType><oldDefName>DMSE_InitiateTransfer</oldDefName><newDefName>FFF_InitiateTransfer</newDefName></li> <!-- 1.7/Defs/Job/DMSE_TransferFlight_Jobs.xml; used by giverClass WorkGiver_InitiateTransfer -->
       <li><defType>WorkGiverDef</defType><oldDefName>DMSE_LoadMissileLauncher</oldDefName><newDefName>FFF_LoadMissileLauncher</newDefName></li> <!-- 1.7/Defs/Missile/DMSE_MissileAssembly_Jobs.xml; used by giverClass WorkGiver_LoadMissileLauncher -->
       <li><defType>WorkGiverDef</defType><oldDefName>DMSE_UnloadMissileRack</oldDefName><newDefName>FFF_UnloadMissileRack</newDefName></li> <!-- 1.7/Defs/Missile/DMSE_MissileAssembly_Jobs.xml; used by giverClass WorkGiver_UnloadMissileRack -->
       <li><defType>WorldObjectDef</defType><oldDefName>DMSE_BlockadeInterceptor</oldDefName><newDefName>FFF_BlockadeInterceptor</newDefName></li> <!-- 1.7/Defs/DMSE_BVRWorld.xml; used by BlockadeInterception.cs -->
       <li><defType>WorldObjectDef</defType><oldDefName>DMSE_DropPodTrack</oldDefName><newDefName>FFF_DropPodTrack</newDefName></li> <!-- 1.7/Defs/DMSE_BVRWorld.xml; used by WorldComponent_BVRNetwork.cs -->
       <li><defType>WorldObjectDef</defType><oldDefName>DMSE_Interceptor</oldDefName><newDefName>FFF_Interceptor</newDefName></li> <!-- 1.7/Defs/DMSE_BVRWorld.xml; used by WorldComponent_BVRNetwork.cs -->
       <li><defType>WorldObjectDef</defType><oldDefName>DMSE_SeaPlatformSite</oldDefName><newDefName>FFF_SeaPlatformSite</newDefName></li> <!-- 1.7/Defs/DMSE_SeaPlatform.xml; used by SeaPlatformMap.cs -->
-      <li><defType>WorldObjectDef</defType><oldDefName>DMSE_TransferShip</oldDefName><newDefName>FFF_TransferShip</newDefName></li> <!-- 1.7/Defs/DMSE_TransferShip.xml; used by FrameworkDefOf.cs -->
     </renames>
   </Fortified.DefRenameDef>
 </Defs>

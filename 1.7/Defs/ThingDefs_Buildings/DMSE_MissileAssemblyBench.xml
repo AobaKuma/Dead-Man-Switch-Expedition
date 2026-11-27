@@ -89,8 +89,8 @@
     </building>
     <comps>
       <!-- 出廠暫存：容量取 renderer 的 maxStored（不掛 MissileRackExtension，台不是某量級的平台）。 -->
-      <li Class="DMSE.CompProperties_MissileRackStorage" />
-      <li Class="DMSE.CompProperties_MissileRackRenderer">
+      <li Class="Fortified.CompProperties_MissileRackStorage" />
+      <li Class="Fortified.CompProperties_MissileRackRenderer">
         <maxStored>2</maxStored>
         <!-- 台上只顯示第一枚成品：渲染數量＝min(存放數, 槽位數, maxStored)，槽位只給一個＝置中，
              第二枚（容量仍為 maxStored＝2）不畫。 -->
@@ -105,7 +105,7 @@
         <south><rotation>-90</rotation></south>
         <west><rotation>0</rotation></west>
       </li>
-      <li Class="DMSE.CompProperties_MissileAssemblyBench">
+      <li Class="Fortified.CompProperties_MissileAssemblyBench">
         <maxBatch>99</maxBatch>
       </li>
       <!-- 工作台設施：與 DMS 列印台（DMS_BenchBase）同一組工作速度設施；漏斗是帳單取料用的，組裝台不需要。 -->
@@ -129,7 +129,7 @@
     <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
     <modExtensions>
       <!-- 資訊卡照工作台規則顯示工作速度係數（設施、戶外、溫度逐條列出）。 -->
-      <li Class="DMSE.WorkTableStatsExtension" />
+      <li Class="Fortified.WorkTableStatsExtension" />
     </modExtensions>
   </ThingDef>
 

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- 飛彈與防空框架在 FFF（2026-11 從 DMSE 移入）。DMSE 的內容預設值：框架程式不寫死 defName
+       （docs/轉移船與BVR移植FFF_可行性評估.md §3.3）。 -->
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/Fortified.AirDefenseTuningDef[defName="FFF_BVRWorldTuning"]</xpath>
+    <value>
+      <networkResearch>DMSE_RadarNetwork</networkResearch>
+      <defaultIncomingWorldObject>DMSE_WorldObject_IncomingMissile</defaultIncomingWorldObject>
+      <defaultIncomingMissile>DMSE_Incoming_Moskit</defaultIncomingMissile>
+      <defaultInterceptSound>DMSE_Missile_Shot</defaultInterceptSound>
+      <defaultLaserDesignatorMark>DMSE_LaserDesignatorMark</defaultLaserDesignatorMark>
+      <radarRangeReferences>
+        <li><target>DMSE_Incoming_Loiter</target><labelKey>DMSE.BVR.World.RangeClass.Loitering</labelKey></li>
+        <li><target>DMSE_Incoming_LightMissile</target><labelKey>DMSE.BVR.World.RangeClass.Light</labelKey></li>
+        <li><target>DMSE_Incoming_Moskit</target><labelKey>DMSE.BVR.World.RangeClass.Cruise</labelKey></li>
+        <li><target>DMSE_Incoming_AdvancedBallisticMissile</target><labelKey>DMSE.BVR.World.RangeClass.Ballistic</labelKey></li>
+      </radarRangeReferences>
+    </value>
+  </Operation>
+</Patch>

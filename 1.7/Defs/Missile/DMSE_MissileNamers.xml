@@ -20,52 +20,52 @@
        ================================================================== -->
 
   <!-- 輕型導彈：通用小彈體，短編號。 -->
-  <DMSE.MissileNamerDef>
+  <Fortified.MissileNamerDef>
     <defName>DMSE_Namer_Light</defName>
     <designator>Lancer</designator>
     <pack>DMSE_NamerPack_Light</pack>
     <numberMin>1</numberMin>
     <numberMax>99</numberMax>
-  </DMSE.MissileNamerDef>
+  </Fortified.MissileNamerDef>
 
   <!-- 先進通用彈體（地獄火級）：三位數編號。 -->
-  <DMSE.MissileNamerDef>
+  <Fortified.MissileNamerDef>
     <defName>DMSE_Namer_AdvancedLight</defName>
     <designator>Hellfire</designator>
     <pack>DMSE_NamerPack_AdvancedLight</pack>
     <numberMin>100</numberMin>
     <numberMax>199</numberMax>
-  </DMSE.MissileNamerDef>
+  </Fortified.MissileNamerDef>
 
   <!-- 先進巡航彈體（戰斧級）。 -->
-  <DMSE.MissileNamerDef>
+  <Fortified.MissileNamerDef>
     <defName>DMSE_Namer_AdvancedCruise</defName>
     <designator>Tomahawk</designator>
     <pack>DMSE_NamerPack_AdvancedCruise</pack>
     <numberMin>1</numberMin>
     <numberMax>99</numberMax>
-  </DMSE.MissileNamerDef>
+  </Fortified.MissileNamerDef>
 
   <!-- 輕型防空彈體（刺針級）。 -->
-  <DMSE.MissileNamerDef>
+  <Fortified.MissileNamerDef>
     <defName>DMSE_Namer_Stinger</defName>
     <designator>Stinger</designator>
     <pack>DMSE_NamerPack_Stinger</pack>
     <numberMin>1</numberMin>
     <numberMax>99</numberMax>
-  </DMSE.MissileNamerDef>
+  </Fortified.MissileNamerDef>
 
   <!-- 對地攻擊彈體（小牛級）。 -->
-  <DMSE.MissileNamerDef>
+  <Fortified.MissileNamerDef>
     <defName>DMSE_Namer_Maverick</defName>
     <designator>Maverick</designator>
     <pack>DMSE_NamerPack_Maverick</pack>
     <numberMin>1</numberMin>
     <numberMax>99</numberMax>
-  </DMSE.MissileNamerDef>
+  </Fortified.MissileNamerDef>
 
   <!-- 先進防空彈體（麻雀級）：半主動族有 C／D／E／M／P 等後綴。 -->
-  <DMSE.MissileNamerDef>
+  <Fortified.MissileNamerDef>
     <defName>DMSE_Namer_Sparrow</defName>
     <designator>Sparrow</designator>
     <pack>DMSE_NamerPack_Sparrow</pack>
@@ -78,10 +78,10 @@
       <li>M</li>
       <li>P</li>
     </suffixes>
-  </DMSE.MissileNamerDef>
+  </Fortified.MissileNamerDef>
 
   <!-- 中型反艦彈體（白蛉級）：P-270 的 2xx 編號帶。 -->
-  <DMSE.MissileNamerDef>
+  <Fortified.MissileNamerDef>
     <defName>DMSE_Namer_Moskit</defName>
     <designator>Moskit</designator>
     <pack>DMSE_NamerPack_Moskit</pack>
@@ -90,10 +90,10 @@
     <suffixes>
       <li>M</li>
     </suffixes>
-  </DMSE.MissileNamerDef>
+  </Fortified.MissileNamerDef>
 
   <!-- 中型先進反艦巡航彈體（縞瑪瑙級）：P-800 的 8xx 編號帶。 -->
-  <DMSE.MissileNamerDef>
+  <Fortified.MissileNamerDef>
     <defName>DMSE_Namer_Oniks</defName>
     <designator>Oniks</designator>
     <pack>DMSE_NamerPack_Oniks</pack>
@@ -103,10 +103,10 @@
       <li>K</li>
       <li>M</li>
     </suffixes>
-  </DMSE.MissileNamerDef>
+  </Fortified.MissileNamerDef>
 
   <!-- 中型高超音速反艦彈體（鷹擊級）：A／B／D 後綴。 -->
-  <DMSE.MissileNamerDef>
+  <Fortified.MissileNamerDef>
     <defName>DMSE_Namer_Yj</defName>
     <designator>YJ</designator>
     <pack>DMSE_NamerPack_Yj</pack>
@@ -117,10 +117,10 @@
       <li>B</li>
       <li>D</li>
     </suffixes>
-  </DMSE.MissileNamerDef>
+  </Fortified.MissileNamerDef>
 
   <!-- 中型戰術彈道彈體（圓點U 級）：U 後綴。 -->
-  <DMSE.MissileNamerDef>
+  <Fortified.MissileNamerDef>
     <defName>DMSE_Namer_Tochka</defName>
     <designator>Tochka</designator>
     <pack>DMSE_NamerPack_Tochka</pack>
@@ -129,33 +129,33 @@
     <suffixes>
       <li>U</li>
     </suffixes>
-  </DMSE.MissileNamerDef>
+  </Fortified.MissileNamerDef>
 
   <!-- 長程巡飛彈（見證者級）：三位數編號；只有導引／酬載兩槽。 -->
-  <DMSE.MissileNamerDef>
+  <Fortified.MissileNamerDef>
     <defName>DMSE_Namer_Shahed</defName>
     <designator>Shahed</designator>
     <pack>DMSE_NamerPack_Shahed</pack>
     <numberMin>100</numberMin>
     <numberMax>199</numberMax>
-  </DMSE.MissileNamerDef>
+  </Fortified.MissileNamerDef>
 
   <!-- 老式彈道彈體（V2／A4）：編號 1–20，代表二戰式量產批次。 -->
-  <DMSE.MissileNamerDef>
+  <Fortified.MissileNamerDef>
     <defName>DMSE_Namer_LegacyBallistic</defName>
     <designator>V2</designator>
     <pack>DMSE_NamerPack_LegacyBallistic</pack>
     <numberMin>1</numberMin>
     <numberMax>20</numberMax>
-  </DMSE.MissileNamerDef>
+  </Fortified.MissileNamerDef>
 
   <!-- 先進彈道彈體（民兵三型）。 -->
-  <DMSE.MissileNamerDef>
+  <Fortified.MissileNamerDef>
     <defName>DMSE_Namer_AdvancedBallistic</defName>
     <designator>Minuteman</designator>
     <pack>DMSE_NamerPack_AdvancedBallistic</pack>
     <numberMin>1</numberMin>
     <numberMax>50</numberMax>
-  </DMSE.MissileNamerDef>
+  </Fortified.MissileNamerDef>
 
 </Defs>

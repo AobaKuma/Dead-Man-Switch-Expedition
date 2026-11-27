@@ -50,11 +50,11 @@
       <li Class="CompProperties_Flickable" />
       <li Class="CompProperties_Breakdownable" />
       <!-- 彈道導彈的裝配設定（彈體 + 彈頭/導引/酬載）直接存於建築本身；預設老式彈道（V2）。 -->
-      <li Class="DMSE.CompProperties_MissileConfig">
+      <li Class="Fortified.CompProperties_MissileConfig">
         <defaultBody>DMSE_MissileBody_LegacyBallistic</defaultBody>
       </li>
       <!-- 發射控制：在世界地圖選靶並點火；離場/落點 skyfaller 與發射井共用。 -->
-      <li Class="DMSE.CompProperties_BallisticLauncher">
+      <li Class="Fortified.CompProperties_BallisticLauncher">
         <skyfaller>DMSE_Launch_AdvancedBallistic</skyfaller>
         <skyfallerIncoming>DMSE_Incoming_AdvancedBallisticMissile</skyfallerIncoming>
         <worldObjectDef>DMSE_WorldObject_BallisticMissile</worldObjectDef>
@@ -62,7 +62,7 @@
         <launchForwardCells>0</launchForwardCells>
       </li>
       <!-- 發射時的尾焰與衝擊波：燒傷、震懾、點火；不傷建築。 -->
-      <li Class="DMSE.CompProperties_LaunchBackblast">
+      <li Class="Fortified.CompProperties_LaunchBackblast">
         <radius>9</radius>
         <damageAmount>18</damageAmount>
         <igniteChance>0.8</igniteChance>
@@ -71,7 +71,7 @@
         <effecter>DMS_LaunchDust_Recoilless</effecter>
       </li>
       <!-- 架上彈體渲染：桁架（overlay）永遠畫在底座之上；已裝配完成時，直立彈體疊在桁架中央 -->
-      <li Class="DMSE.CompProperties_MissileBodyRenderer">
+      <li Class="Fortified.CompProperties_MissileBodyRenderer">
         <drawSize>(8,8)</drawSize>
         <drawOffset>(0, 0, 4.0)</drawOffset>
         <overlay>
@@ -83,7 +83,7 @@
       </li>
     </comps>
     <inspectorTabs>
-      <li>DMSE.ITab_MissileAssembly</li>
+      <li>Fortified.ITab_MissileAssembly</li>
     </inspectorTabs>
     <researchPrerequisites>
       <li>DMSE_LoiteringMunitions</li>

@@ -19,7 +19,7 @@
     <label>SAM launcher</label>
     <!-- 中登：四聯裝防空導彈發射架，手動瞄準與發射，沒有自己的雷達、靠火控雷達指派目標。 -->
     <description>A four-round surface-to-air launcher on a rotating base. It has no radar of its own and fires only at targets handed to it by a fire-control radar.\n\nRequires an operator.</description>
-    <thingClass>DMSE.Building_MissileRack</thingClass>
+    <thingClass>Fortified.Building_MissileRack</thingClass>
     <category>Building</category>
     <uiIconPath>Things/Building/QuadLauncher_icon</uiIconPath>
     <uiIconScale>1.2</uiIconScale>
@@ -97,14 +97,14 @@
     </thingCategories>
     <!-- 四階分類：輕量級、傾斜發射（旋轉發射架不佔用 Vertical 語意）、彈容 4（四聯裝，對應下方 ammoSlotOffsets 四槽）。 -->
     <modExtensions>
-      <li Class="DMSE.MissileLauncherExtension">
+      <li Class="Fortified.MissileLauncherExtension">
         <sizeClass>Light</sizeClass>
         <launchMode>Tilt</launchMode>
         <capacity>4</capacity>
         <renderStoredBody>false</renderStoredBody>
       </li>
       <!-- 敵方陣地生成時自動填充：Industrial 以上派系填入攔截彈。 -->
-      <li Class="DMSE.MissileRackAutoFillExtension">
+      <li Class="Fortified.MissileRackAutoFillExtension">
         <enemyFactionOnly>true</enemyFactionOnly>
         <fillRules>
           <li>
@@ -124,14 +124,14 @@
            使操作者會自行前往鄰近儲存架尋找相容彈藥並裝填（裝滿彈槽才開始操作），而非 vanilla
            JobDriver_ManTurret（只認得 Building_TurretGun 的裝填邏輯，對本建築不會生效）。 -->
       <li Class="CompProperties_Mannable">
-        <compClass>DMSE.CompMannableMissileLauncher</compClass>
+        <compClass>Fortified.CompMannableMissileLauncher</compClass>
         <planetLayerWhitelist>
           <li>Surface</li>
           <li>Orbit</li>
         </planetLayerWhitelist>
       </li>
       <!-- 發射：受火控雷達指派目標，取出容器中的攔截彈作為彈藥。 -->
-      <li Class="DMSE.CompProperties_MissileLauncher">
+      <li Class="Fortified.CompProperties_MissileLauncher">
         <interceptorSkyfaller>DMSE_Launch_LegacyInterceptor</interceptorSkyfaller>
         <!-- 多聯裝旋轉架按排程間隔連續發射；重裝與裝填由彈藥流程另行處理。 -->
         <reloadCooldownTicks>6</reloadCooldownTicks>
@@ -139,7 +139,7 @@
         <!-- 四枚滿載時同一目標連射四發；實際不足四枚時依剩餘彈藥數發射。 -->
         <interceptorSalvoSize>4</interceptorSalvoSize>
       </li>
-      <li Class="DMSE.CompProperties_TurretFacingRenderer">
+      <li Class="Fortified.CompProperties_TurretFacingRenderer">
         <texPath>Things/Building/QuadLauncher</texPath>
         <drawSize>(5,5)</drawSize>
         <altitudeOffset>0.01</altitudeOffset>
@@ -156,8 +156,8 @@
     </comps>
     <inspectorTabs>
       <li>RimWorld.ITab_Storage</li>
-      <li>DMSE.ITab_MissileInventory</li>
-      <li>DMSE.ITab_MissileAssembly</li>
+      <li>Fortified.ITab_MissileInventory</li>
+      <li>Fortified.ITab_MissileAssembly</li>
     </inspectorTabs>
     <placeWorkers>
       <li>DMSE.PlaceWorker_NoAdjacentSameLayer</li>

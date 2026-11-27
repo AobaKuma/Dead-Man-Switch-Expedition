@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
-  <DMSE_NamerStrikeMission.rulePack.rulesStrings>
+  <FFF_NamerStrikeMission.rulePack.rulesStrings>
     <li>r_name->「[first][second]」行動</li>
     <li>first->鐵</li>
     <li>first->赤</li>
@@ -39,6 +39,6 @@
     <li>second->火</li>
     <li>second->穹</li>
     <li>second->判</li>
-  </DMSE_NamerStrikeMission.rulePack.rulesStrings>
+  </FFF_NamerStrikeMission.rulePack.rulesStrings>
 
 </LanguageData>

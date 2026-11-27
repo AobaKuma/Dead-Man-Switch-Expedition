@@ -16,7 +16,7 @@
        ══════════════════════════════════════════════════════════════ -->
 
   <!-- 低當量彈頭：W78／W87 級戰略彈頭的戰術縮小版；爆炸半徑與傷害小於全當量，但便宜、安全性高。 -->
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_AdvBallistic_Warhead_LowYield</defName>
     <label>low-yield warhead</label>
     <designWord>Low Yield</designWord>
@@ -36,10 +36,10 @@
     <researchPrerequisites>
       <li>DMSE_Ballistics</li>
     </researchPrerequisites>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
   <!-- 星光慣性導航：以星象追蹤修正陀螺漂移，散布 -4；仍是純彈道路徑，目標移動就會落空。 -->
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_AdvBallistic_Guidance_Stellar</defName>
     <label>stellar-inertial guidance</label>
     <designWord>Stellar</designWord>
@@ -48,7 +48,7 @@
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedBallistic</li>
     </compatibleBodies>
-    <guidanceType Class="DMSE.GuidanceType_Inertial" />
+    <guidanceType Class="Fortified.GuidanceType_Inertial" />
     <scatterOffset>-4</scatterOffset>
     <costList>
       <ComponentSpacer>2</ComponentSpacer>
@@ -57,10 +57,10 @@
     <researchPrerequisites>
       <li>DMSE_Ballistics</li>
     </researchPrerequisites>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
   <!-- 突防誘餌：釋放箔條、雷達誘餌與低可觀測外罩，訊號係數 0.75（更晚被偵測）。 -->
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_AdvBallistic_Payload_Penaids</defName>
     <label>penetration aids</label>
     <designWord>PenAids</designWord>
@@ -69,7 +69,7 @@
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedBallistic</li>
     </compatibleBodies>
-    <payloadEffect Class="DMSE.PayloadEffect_None" />
+    <payloadEffect Class="Fortified.PayloadEffect_None" />
     <signatureFactor>0.75</signatureFactor>
     <costList>
       <Steel>30</Steel>
@@ -78,13 +78,13 @@
     <researchPrerequisites>
       <li>DMSE_Ballistics</li>
     </researchPrerequisites>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
   <!-- 多彈頭（MIRV）：彈頭匯流排在抵達前 2400 ticks 放出 3 枚重返載具（DMSE_MissileBody_ReentryVehicle），
        每枚是獨立的世界航跡，各自被偵測、鎖定、攔截；全部瞄準同一目標。
        重返載具繼承母彈的戰鬥部與導引部件，效果強度以重返載具的 N=4 計。
        見 docs/MIRV分導彈頭與誘餌載荷_實作計畫.md §5、§9。 -->
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_AdvBallistic_Payload_MIRV</defName>
     <label>multiple re-entry vehicles</label>
     <designWord>MIRV</designWord>
@@ -93,9 +93,9 @@
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedBallistic</li>
     </compatibleBodies>
-    <payloadEffect Class="DMSE.PayloadEffect_None" />
+    <payloadEffect Class="Fortified.PayloadEffect_None" />
     <behaviors>
-      <li Class="DMSE.MissileBehaviorProps_ReleaseChildren">
+      <li Class="Fortified.MissileBehaviorProps_ReleaseChildren">
         <ticksBeforeArrival>2400</ticksBeforeArrival>
         <minProgress>0.25</minProgress>
         <releaseIntervalTicks>20</releaseIntervalTicks>
@@ -121,11 +121,11 @@
     <researchPrerequisites>
       <li>DMSE_MIRV</li>
     </researchPrerequisites>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
   <!-- 分導突防（MIRV＋誘餌）：2 枚重返載具＋3 枚重型誘餌，釋放順序打亂。誘餌模仿重返載具。
        見 docs/MIRV分導彈頭與誘餌載荷_實作計畫.md §9.3。 -->
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_AdvBallistic_Payload_MIRVDecoy</defName>
     <label>MIRV with decoys</label>
     <designWord>MIRV Decoy</designWord>
@@ -134,9 +134,9 @@
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedBallistic</li>
     </compatibleBodies>
-    <payloadEffect Class="DMSE.PayloadEffect_None" />
+    <payloadEffect Class="Fortified.PayloadEffect_None" />
     <behaviors>
-      <li Class="DMSE.MissileBehaviorProps_ReleaseChildren">
+      <li Class="Fortified.MissileBehaviorProps_ReleaseChildren">
         <ticksBeforeArrival>2400</ticksBeforeArrival>
         <minProgress>0.25</minProgress>
         <releaseIntervalTicks>20</releaseIntervalTicks>
@@ -168,11 +168,11 @@
     <researchPrerequisites>
       <li>DMSE_MIRV</li>
     </researchPrerequisites>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
   <!-- 誘餌彈頭（特殊載荷）：主彈頭照常飛向目標，途中放出 4 枚輕型誘餌＋1 枚重型誘餌，外觀模仿整枚導彈。
        輕型誘餌只在中段有用（再入時燒毀），重型誘餌會一路落到目標。 -->
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_AdvBallistic_Payload_Decoys</defName>
     <label>decoy warheads</label>
     <designWord>Decoy</designWord>
@@ -181,9 +181,9 @@
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedBallistic</li>
     </compatibleBodies>
-    <payloadEffect Class="DMSE.PayloadEffect_None" />
+    <payloadEffect Class="Fortified.PayloadEffect_None" />
     <behaviors>
-      <li Class="DMSE.MissileBehaviorProps_ReleaseChildren">
+      <li Class="Fortified.MissileBehaviorProps_ReleaseChildren">
         <ticksBeforeArrival>2400</ticksBeforeArrival>
         <minProgress>0.25</minProgress>
         <releaseIntervalTicks>20</releaseIntervalTicks>
@@ -209,14 +209,14 @@
     <researchPrerequisites>
       <li>DMSE_Ballistics</li>
     </researchPrerequisites>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
   <!-- ══════════════════════════════════════════════════════════════
        二、老式彈道（V2）專屬部件
        ══════════════════════════════════════════════════════════════ -->
 
   <!-- 阿馬托炸藥：二戰式 850 公斤填充物，簡單、穩定、爆破效果好，工業材料即可便宜量產。 -->
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_LegacyBallistic_Warhead_Amatol</defName>
     <label>Amatol warhead</label>
     <designWord>Amatol</designWord>
@@ -235,10 +235,10 @@
     <researchPrerequisites>
       <li>DMSE_LoiteringMunitions</li>
     </researchPrerequisites>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
   <!-- 特里亞倫炸藥：阿馬托供應不足時的替代品，加入燃燒成分，落點周圍會起火；略貴，但沒有更準。 -->
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_LegacyBallistic_Warhead_Trialen</defName>
     <label>Trialen warhead</label>
     <designWord>Trialen</designWord>
@@ -250,7 +250,7 @@
     <explosionRadiusOffset>1.5</explosionRadiusOffset>
     <damageAmountOffset>130</damageAmountOffset>
     <damageDefOverride>Bomb</damageDefOverride>
-    <warheadEffect Class="DMSE.WarheadEffect_Incendiary" />
+    <warheadEffect Class="Fortified.WarheadEffect_Incendiary" />
     <costList>
       <Steel>25</Steel>
       <Chemfuel>45</Chemfuel>
@@ -258,6 +258,6 @@
     <researchPrerequisites>
       <li>DMSE_LoiteringMunitions</li>
     </researchPrerequisites>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
 </Defs>

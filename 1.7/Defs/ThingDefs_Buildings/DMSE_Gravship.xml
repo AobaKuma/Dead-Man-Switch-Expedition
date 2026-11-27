@@ -58,7 +58,7 @@
         <transmitsPower>true</transmitsPower>
         <soundAmbientProducingPower>ScannerLongRangeMineral_Ambience</soundAmbientProducingPower>
       </li>
-      <li Class="DMSE.CompProperties_TransferReactor">
+      <li Class="Fortified.CompProperties_TransferReactor">
         <supportedEngines>2</supportedEngines>
       </li>
       <li Class="CompProperties_GravshipFacility">
@@ -220,11 +220,11 @@
     <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
     <!-- 轉移飛行的尾焰區顯示（與逆重船推進器的尾焰區相同） -->
     <placeWorkers Inherit="False">
-      <li>DMSE.PlaceWorker_TransferEngine</li>
+      <li>Fortified.PlaceWorker_TransferEngine</li>
     </placeWorkers>
     <comps>
       <!-- 轉移飛行：一次性助推器，只在離軌點火提供推力（提高起飛推重比），離軌點火結束後燒毀 -->
-      <li Class="DMSE.CompProperties_TransferEngine">
+      <li Class="Fortified.CompProperties_TransferEngine">
         <thrust>4</thrust>
         <expendable>true</expendable>
         <exclusionAreaSize>(1, 0, 5)</exclusionAreaSize>
@@ -324,7 +324,7 @@
       <li>DMSE_Aerospace</li>
     </researchPrerequisites>
     <comps>
-      <li Class="DMSE.CompProperties_TransferEngine">
+      <li Class="Fortified.CompProperties_TransferEngine">
         <thrust>12</thrust>
         <fuelFactor>0.35</fuelFactor>
         <requiresReactorSupport>true</requiresReactorSupport>

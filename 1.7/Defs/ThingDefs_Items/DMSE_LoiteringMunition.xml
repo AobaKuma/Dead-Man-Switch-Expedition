@@ -49,7 +49,7 @@
       <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
     </recipeMaker>
     <modExtensions>
-      <li Class="DMSE.MissileItemExtension">
+      <li Class="Fortified.MissileItemExtension">
         <body>DMSE_MissileBody_Loiter</body>
       </li>
     </modExtensions>

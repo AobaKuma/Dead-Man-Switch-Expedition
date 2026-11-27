@@ -57,13 +57,13 @@
     </recipeMaker>
     <modExtensions>
       <!-- 對地與防空兩用：可列入世界打擊，未被打擊任務保留時也可被同容器的 SAM 取用。 -->
-      <li Class="DMSE.MissileRoleExtension">
+      <li Class="Fortified.MissileRoleExtension">
         <role>Dual</role>
       </li>
     </modExtensions>
     <comps>
-      <li Class="DMSE.CompProperties_Renameable" />
-      <li Class="DMSE.CompProperties_MissileConfig">
+      <li Class="Fortified.CompProperties_Renameable" />
+      <li Class="Fortified.CompProperties_MissileConfig">
         <defaultBody>DMSE_MissileBody_AdvancedLight</defaultBody>
       </li>
       <li Class="DMSE.CompProperties_DurabilityDecay">
@@ -79,7 +79,7 @@
       </li>
     </comps>
     <inspectorTabs>
-      <li>DMSE.ITab_MissileAssembly</li>
+      <li>Fortified.ITab_MissileAssembly</li>
     </inspectorTabs>
   </ThingDef>
 
@@ -128,13 +128,13 @@
       <unfinishedThingDef>UnfinishedGun</unfinishedThingDef>
     </recipeMaker>
     <modExtensions>
-      <li Class="DMSE.MissileRoleExtension">
+      <li Class="Fortified.MissileRoleExtension">
         <role>Strike</role>
       </li>
     </modExtensions>
     <comps>
-      <li Class="DMSE.CompProperties_Renameable" />
-      <li Class="DMSE.CompProperties_MissileConfig">
+      <li Class="Fortified.CompProperties_Renameable" />
+      <li Class="Fortified.CompProperties_MissileConfig">
         <defaultBody>DMSE_MissileBody_AdvancedCruise</defaultBody>
       </li>
       <li Class="DMSE.CompProperties_DurabilityDecay">
@@ -151,7 +151,7 @@
       </li>
     </comps>
     <inspectorTabs>
-      <li>DMSE.ITab_MissileAssembly</li>
+      <li>Fortified.ITab_MissileAssembly</li>
     </inspectorTabs>
   </ThingDef>
 

@@ -4,8 +4,7 @@ using Verse;
 namespace DMSE
 {
     /// <summary>
-    /// DMSE 內容的 Def。框架（轉移船、平台拆除、攔截與發射特效）用的 Def 在 <see cref="DMSE_FrameworkDefOf"/>，
-    /// 搬進 FFF 時整個併進 FFF_DefOf（docs/轉移船與BVR移植FFF_可行性評估.md §7.4）。
+    /// DMSE 內容的 Def。框架用的 Def 已在 2026-11 隨轉移船與飛彈體系搬進 FFF（Fortified.FFF_AerospaceDefOf、Fortified.FFF_MissileDefOf）。
     /// </summary>
     [StaticConstructorOnStartup]
     [DefOf]

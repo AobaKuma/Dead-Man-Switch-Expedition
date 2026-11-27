@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
-  <DMSE.MissileBodyDef>
+  <Fortified.MissileBodyDef>
     <defName>DMSE_MissileBody_Shahed</defName>
     <label>long-range loitering munition</label>
     <expandingIconPath>UI/DMSE/TravelingMissile_Expanding_Shahed</expandingIconPath>
@@ -22,7 +22,7 @@
     <rangePerFuelImpulse>0.325</rangePerFuelImpulse>
     <incomingSkyfaller>DMSE_Incoming_Shahed</incomingSkyfaller>
     <launchProjectile>DMSE_Launch_Shahed</launchProjectile>
-    <builtInGuidance Class="DMSE.GuidanceType_Inertial" />
+    <builtInGuidance Class="Fortified.GuidanceType_Inertial" />
     <terminalUpdates>0</terminalUpdates>
     <builtInTerminalGuidance>false</builtInTerminalGuidance>
     <slots>
@@ -33,7 +33,7 @@
       <li>DMSE_Shahed_Guidance_Inertial</li>
       <li>DMSE_Payload_None</li>
     </defaultParts>
-  </DMSE.MissileBodyDef>
+  </Fortified.MissileBodyDef>
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_Missile_Shahed</defName>
     <label>long-range loitering munition</label>
@@ -80,10 +80,10 @@
       </researchPrerequisites>
     </recipeMaker>
     <modExtensions>
-      <li Class="DMSE.MissileItemExtension">
+      <li Class="Fortified.MissileItemExtension">
         <body>DMSE_MissileBody_Shahed</body>
       </li>
-      <li Class="DMSE.MissileRoleExtension">
+      <li Class="Fortified.MissileRoleExtension">
         <role>Strike</role>
       </li>
     </modExtensions>
@@ -98,18 +98,18 @@
           <li>DMSE_Building_RotaryLauncher</li>
         </shelterBuildings>
       </li>
-      <li Class="DMSE.CompProperties_MissileConfig">
+      <li Class="Fortified.CompProperties_MissileConfig">
         <defaultBody>DMSE_MissileBody_Shahed</defaultBody>
       </li>
     </comps>
     <inspectorTabs>
-      <li>DMSE.ITab_MissileAssembly</li>
+      <li>Fortified.ITab_MissileAssembly</li>
     </inspectorTabs>
   </ThingDef>
   <ThingDef ParentName="DMSE_MissileIncomingProjectileBase">
     <defName>DMSE_Incoming_Shahed</defName>
     <label>long-range loitering munition (incoming)</label>
-    <thingClass>DMSE.Projectile_MissileIncoming</thingClass>
+    <thingClass>Fortified.Projectile_MissileIncoming</thingClass>
     <graphicData>
       <texPath>Things/Missile/Shahed/skyFaller_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -117,12 +117,12 @@
     </graphicData>
     <size>(1,1)</size>
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <shadowSize>(2, 2)</shadowSize>
         <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
         <speed>1</speed>
       </li>
-      <li Class="DMSE.BVRTargetProps">
+      <li Class="Fortified.AirTargetExtension">
         <distanceLevel>0.8</distanceLevel>
         <stealthLevel>0</stealthLevel>
         <speed>7</speed>
@@ -130,7 +130,7 @@
       </li>
     </modExtensions>
   </ThingDef>
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_Shahed_Guidance_Inertial</defName>
     <label>inertial guidance</label>
     <omitFromDesignName>true</omitFromDesignName>
@@ -139,9 +139,9 @@
     <compatibleBodies>
       <li>DMSE_MissileBody_Shahed</li>
     </compatibleBodies>
-    <guidanceType Class="DMSE.GuidanceType_Inertial" />
-  </DMSE.MissilePartDef>
-  <DMSE.MissilePartDef>
+    <guidanceType Class="Fortified.GuidanceType_Inertial" />
+  </Fortified.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_Shahed_Guidance_TV</defName>
     <label>TV guidance</label>
     <designWord>TV</designWord>
@@ -150,15 +150,15 @@
     <compatibleBodies>
       <li>DMSE_MissileBody_Shahed</li>
     </compatibleBodies>
-    <guidanceType Class="DMSE.GuidanceType_TV" />
+    <guidanceType Class="Fortified.GuidanceType_TV" />
     <costList>
       <ComponentSpacer>1</ComponentSpacer>
     </costList>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
   <!-- 反輻射尋標頭（巡飛彈專用）：只鎖開機中的敵方雷達，沒有雷達就回報「沒有目標」，
        交給盤旋飛控在上空等待（不退化為打電網）。 -->
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_Shahed_Guidance_RadarHoming</defName>
     <label>radar-homing seeker</label>
     <designWord>Radar</designWord>
@@ -167,17 +167,17 @@
     <compatibleBodies>
       <li>DMSE_MissileBody_Shahed</li>
     </compatibleBodies>
-    <guidanceType Class="DMSE.GuidanceType_AntiRadiation">
+    <guidanceType Class="Fortified.GuidanceType_AntiRadiation">
       <fallBackToEmissions>false</fallBackToEmissions>
     </guidanceType>
     <costList>
       <ComponentIndustrial>3</ComponentIndustrial>
     </costList>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
   <!-- 盤旋飛控（巡飛彈專用酬載）：導引頭找不到目標時不直接回退慣性，而是在目標上空盤旋等待；
        盤旋期間仍留在攔截波次中，末端防禦（CIWS）照常接戰。 -->
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_Payload_Loiter</defName>
     <label>loiter flight control</label>
     <designWord>Loiter</designWord>
@@ -190,5 +190,5 @@
       <ComponentIndustrial>2</ComponentIndustrial>
       <Chemfuel>15</Chemfuel>
     </costList>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 </Defs>

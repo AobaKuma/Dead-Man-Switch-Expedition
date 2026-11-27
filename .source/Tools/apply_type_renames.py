@@ -99,7 +99,34 @@ def rewrite_xml(text, types, def_names):
             return f'defName={m.group(1)}{def_names[value]}{m.group(1)}'
         return m.group(0)
     text = sub(r'defName\s*=\s*(["\'])([^"\']+)\1', xpath, text)
+
+    # Def element tags that are type names: <DMSE.MissileBodyDef> ... </DMSE.MissileBodyDef>
+    def tag(m):
+        value = m.group(2)
+        if value in types:
+            changes.append(f'<{value}> tag -> {types[value]}')
+            return m.group(1) + types[value]
+        return m.group(0)
+    text = sub(r'(</?)([A-Za-z_]\w*(?:\.\w+)+)(?=[\s/>])', tag, text)
+
+    # Type names inside XPath expressions: Defs/DMSE.MissileBodyDef[defName="..."]
+    def xpath_types(m):
+        body = m.group(2)
+        new_body = re.sub(r'(?<![\w.])([A-Za-z_]\w*(?:\.\w+)+)(?![\w.])',
+                          lambda t: types.get(t.group(1), t.group(1)), body)
+        if new_body != body:
+            changes.append('xpath type name')
+        return m.group(1) + new_body + m.group(3)
+    text = sub(r'(<xpath>)(.*?)(</xpath>)', xpath_types, text)
     return text, changes
+
+
+def renamed_injected_folder(rel, types):
+    """Languages/<lang>/DefInjected/<Old.Type>/file.xml -> folder named after the new type, or None."""
+    m = re.search(r'(/DefInjected/)([^/]+)(/)', '/' + rel)
+    if m and m.group(2) in types:
+        return ('/' + rel).replace(m.group(0), m.group(1) + types[m.group(2)] + m.group(3), 1)[1:]
+    return None
 
 
 def rewrite_defs_injected(text, def_names):
@@ -175,11 +202,19 @@ def main():
                 except UnicodeDecodeError:
                     print(f'skip (not UTF-8): {rel}', file=sys.stderr)
                     continue
+                if 'DefRenameDef' in text:
+                    continue  # the rename tables themselves list the old names on purpose
                 new_text, changes = rewrite_xml(text, types, all_def_names)
                 injected = re.search(r'/Languages/[^/]+/DefInjected/([^/]+)/', '/' + rel)
-                if injected and injected.group(1) in defs:
-                    new_text, more = rewrite_defs_injected(new_text, defs[injected.group(1)])
-                    changes += more
+                if injected:
+                    folder_type = types.get(injected.group(1), injected.group(1))
+                    for def_type, mapping in defs.items():
+                        if def_type == folder_type or def_type.split('.')[-1] == folder_type.split('.')[-1]:
+                            new_text, more = rewrite_defs_injected(new_text, mapping)
+                            changes += more
+                moved_to = renamed_injected_folder(rel, types)
+                if moved_to:
+                    changes.append(f'move to {moved_to}')
                 if not changes:
                     continue
                 total_files += 1
@@ -191,7 +226,11 @@ def main():
                     print(f'    ... {len(changes) - 8} more')
                 if args.write:
                     out = new_text.encode('utf-8')
-                    path.write_bytes((b'\xef\xbb\xbf' if bom else b'') + out)
+                    target = mod / moved_to if moved_to else path
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    target.write_bytes((b'\xef\xbb\xbf' if bom else b'') + out)
+                    if moved_to:
+                        path.unlink()
 
     mode = 'wrote' if args.write else 'would change'
     print(f'{mode} {total_changes} references in {total_files} XML files')

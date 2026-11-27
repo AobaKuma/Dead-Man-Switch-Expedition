@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
-  <!-- 末端落點標記（docs/末端落點顯示與導引頭重新鎖定_實作計畫.md）。{0} = 導彈枚數，{1} = 剩餘時間。 -->
-  <DMSE.BVR.Marker.Hostile>敵方 {0} 枚 · {1}</DMSE.BVR.Marker.Hostile>
-  <DMSE.BVR.Marker.Friendly>我方 {0} 枚 · {1}</DMSE.BVR.Marker.Friendly>
-  <DMSE.BVR.Marker.Loitering>盤旋中 {0} 枚 · {1}</DMSE.BVR.Marker.Loitering>
-  <DMSE.BVR.Settings.TerminalImpactMarkers>末端落點標記</DMSE.BVR.Settings.TerminalImpactMarkers>
-  <DMSE.BVR.Settings.TerminalImpactMarkersDesc>在 BVR 末端（近迫防禦）窗口內，導彈本體看不見時，於敵我雙方導彈的預測落點畫標記。</DMSE.BVR.Settings.TerminalImpactMarkersDesc>
   <DMSE.BVR.Settings.TerminalImpactMarkers0>關閉</DMSE.BVR.Settings.TerminalImpactMarkers0>
   <DMSE.BVR.Settings.TerminalImpactMarkers1>只顯示敵方</DMSE.BVR.Settings.TerminalImpactMarkers1>
   <DMSE.BVR.Settings.TerminalImpactMarkers2>敵我雙方</DMSE.BVR.Settings.TerminalImpactMarkers2>

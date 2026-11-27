@@ -18,7 +18,7 @@
   <GenStepDef>
     <defName>DMSE_FieldLaunchSite_GS_Structures</defName>
     <order>400</order>
-    <genStep Class="DMSE.GenStep_FieldLaunchSite">
+    <genStep Class="Fortified.GenStep_FieldLaunchSite">
       <difficultyThresholds>
         <li>0.5</li>
         <li>0.9</li>
@@ -141,7 +141,7 @@
   <GenStepDef>
     <defName>DMSE_FieldLaunchSite_GS_Roads</defName>
     <order>800</order>
-    <genStep Class="DMSE.GenStep_FieldLaunchSiteRoads">
+    <genStep Class="Fortified.GenStep_FieldLaunchSiteRoads">
       <roadTerrain>PackedDirt</roadTerrain>
       <roadWidth>2</roadWidth>
       <roadToMapEdge>true</roadToMapEdge>
@@ -152,13 +152,13 @@
   <GenStepDef>
     <defName>DMSE_FieldLaunchSite_GS_RackFill</defName>
     <order>420</order>
-    <genStep Class="DMSE.GenStep_MissileBaseRackFill" />
+    <genStep Class="Fortified.GenStep_MissileBaseRackFill" />
   </GenStepDef>
 
   <GenStepDef>
     <defName>DMSE_FieldLaunchSite_GS_SpawnCrew</defName>
     <order>450</order>
-    <genStep Class="DMSE.GenStep_FieldLaunchSiteCrew">
+    <genStep Class="Fortified.GenStep_FieldLaunchSiteCrew">
       <pointsPerPawn>100</pointsPerPawn>
       <minCrew>3</minCrew>
       <maxCrew>14</maxCrew>
@@ -205,7 +205,7 @@
       <!-- 原版 Site 的整隊元件：沒有它，世界地圖上不會出現「重組遠行隊」。 -->
       <li Class="WorldObjectCompProperties_FormCaravan" />
       <!-- 只在尚未生成地圖時使用；地圖生成後由實際雷達與發射架接手。 -->
-      <li Class="DMSE.CompProperties_WorldAirDefense">
+      <li Class="Fortified.WorldObjectCompProperties_AirDefense">
         <worldDetectionRange>10</worldDetectionRange>
         <antiStealthLevel>1</antiStealthLevel>
         <fireControlDef>DMSE_FireControlRadar</fireControlDef>
@@ -217,7 +217,7 @@
         <launchCooldownTicks>360</launchCooldownTicks>
         <worldInterceptRange>6</worldInterceptRange>
       </li>
-      <li Class="DMSE.CompProperties_MissileBase">
+      <li Class="Fortified.WorldObjectCompProperties_MissileBase">
         <missileFireIntervalDays>
           <min>3</min>
           <max>4</max>
@@ -357,7 +357,7 @@
     <label>field launch position</label>
     <description>A field missile position with a search radar, launch positions, ammunition carriers and crew shelters.</description>
     <!-- FactionCanOwn 只接受 TechLevel = Industrial 的派系 -->
-    <workerClass>DMSE.SitePartWorker_FieldLaunchSite</workerClass>
+    <workerClass>Fortified.SitePartWorker_FieldLaunchSite</workerClass>
     <siteTexture>World/WorldObjects/Sites/Outpost</siteTexture>
     <expandingIconTexture>UI/Icon/icon_LaunchSite_Loitering</expandingIconTexture>
     <applyFactionColorToSiteTexture>true</applyFactionColorToSiteTexture>
@@ -380,7 +380,7 @@
     <targetTags>
       <li>Map_PlayerHome</li>
     </targetTags>
-    <workerClass>DMSE.IncidentWorker_FieldLaunchSite</workerClass>
+    <workerClass>Fortified.IncidentWorker_FieldLaunchSite</workerClass>
     <baseChance>0.6</baseChance>
     <earliestDay>15</earliestDay>
     <minRefireDays>20</minRefireDays>
@@ -388,7 +388,7 @@
     <letterLabel>Enemy field launch position</letterLabel>
     <letterDef>ThreatBig</letterDef>
     <modExtensions>
-      <li Class="DMSE.FieldLaunchSiteIncidentExtension">
+      <li Class="Fortified.FieldLaunchSiteIncidentExtension">
         <worldObjectDef>DMSE_FieldLaunchSite</worldObjectDef>
         <sitePartDef>DMSE_FieldLaunchSitePart</sitePartDef>
         <distance>6~12</distance>

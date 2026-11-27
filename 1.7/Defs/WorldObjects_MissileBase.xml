@@ -114,7 +114,7 @@
   <GenStepDef>
     <defName>DMSE_MissileBase_GS_SpawnCrew</defName>
     <order>450</order>
-    <genStep Class="DMSE.GenStep_MissileBaseCrew">
+    <genStep Class="Fortified.GenStep_MissileBaseCrew">
       <!-- crewCount=-1：依 SitePartParams.threatPoints / pointsPerPawn 換算 -->
       <crewCount>-1</crewCount>
       <pointsPerPawn>100</pointsPerPawn>
@@ -180,7 +180,7 @@
       <!-- 原版 Site 的整隊元件：沒有它，世界地圖上不會出現「重組遠行隊」。 -->
       <li Class="WorldObjectCompProperties_FormCaravan" />
       <!-- Used only while no local map exists. A generated map uses its real radars and missile racks. -->
-      <li Class="DMSE.CompProperties_WorldAirDefense">
+      <li Class="Fortified.WorldObjectCompProperties_AirDefense">
         <worldDetectionRange>12</worldDetectionRange>
         <antiStealthLevel>2</antiStealthLevel>
         <fireControlDef>DMSE_PhaseArrayRadar</fireControlDef>
@@ -194,7 +194,7 @@
         <!-- NPC 防空警戒第五階段的世界攔截（封鎖）半徑，與探測半徑分開。 -->
         <worldInterceptRange>8</worldInterceptRange>
       </li>
-      <li Class="DMSE.CompProperties_MissileBase">
+      <li Class="Fortified.WorldObjectCompProperties_MissileBase">
         <!-- 波次打擊 P4：地圖未生成時每次齊射 2–3 枚，間隔拉長到 2–4 天（平均每日枚數約與舊設定相當）。 -->
         <missileFireIntervalDays>
           <min>2</min>
@@ -313,7 +313,7 @@
     <defName>DMSE_MissileBaseSitePart</defName>
     <label>missile launch facility</label>
     <description>A concealed missile launch facility with fire control radar, launch vehicles, and support structures.</description>
-    <workerClass>DMSE.SitePartWorker_MissileBase</workerClass>
+    <workerClass>Fortified.SitePartWorker_MissileBase</workerClass>
     <!-- Site.Material 讀取 siteTexture（非 WorldObjectDef.texture），缺少此欄位 MatFrom 收到 null → ArgumentNullException -->
     <siteTexture>World/WorldObjects/Sites/Outpost</siteTexture>
     <applyFactionColorToSiteTexture>true</applyFactionColorToSiteTexture>

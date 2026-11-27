@@ -61,7 +61,7 @@
         <initialAllowAutoRefuel>true</initialAllowAutoRefuel>
         <autoRefuelPercent>0.5</autoRefuelPercent>
       </li>
-      <li Class="DMSE.CompProperties_TerminalCIWS">
+      <li Class="Fortified.CompProperties_TerminalCIWS">
         <projectile>DMSE_Bullet_LegacyFlak_CIWS</projectile>
         <terminalWindowTicks>1800</terminalWindowTicks>
         <cooldownTicks>90</cooldownTicks>
@@ -227,7 +227,7 @@
         <basePowerConsumption>3000</basePowerConsumption>
       </li>
       <li Class="CompProperties_Breakdownable" />
-      <li Class="DMSE.CompProperties_TerminalCIWS">
+      <li Class="Fortified.CompProperties_TerminalCIWS">
         <projectile>DMSE_Bullet_Vulcan_WingBack_CIWS</projectile>
         <terminalWindowTicks>1800</terminalWindowTicks>
         <cooldownTicks>30</cooldownTicks>

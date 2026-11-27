@@ -29,7 +29,7 @@
 	<Operation Class="PatchOperationAdd">
 		<xpath>/Defs/DesignationCategoryDef[defName="Odyssey"]/specialDesignatorClasses</xpath>
 		<value>
-			<li>DMSE.Designator_RemovePlatform</li>
+			<li>Fortified.Designator_RemovePlatform</li>
 		</value>
 	</Operation>
 
@@ -38,7 +38,7 @@
 		<xpath>/Defs/TerrainDef[defName="OrbitalPlatform"]</xpath>
 		<success>Always</success>
 		<value>
-			<li Class="DMSE.RemovablePlatformExtension">
+			<li Class="Fortified.RemovablePlatformExtension">
 				<leavings>
 					<Steel>15</Steel>
 				</leavings>
@@ -51,7 +51,7 @@
 		<xpath>/Defs/TerrainDef[defName="MechanoidPlatform"]</xpath>
 		<success>Always</success>
 		<value>
-			<li Class="DMSE.RemovablePlatformExtension">
+			<li Class="Fortified.RemovablePlatformExtension">
 				<leavings>
 					<Steel>10</Steel>
 					<Plasteel>3</Plasteel>

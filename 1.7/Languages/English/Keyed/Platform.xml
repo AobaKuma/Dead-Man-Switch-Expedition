@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
-  <DMSE.Platform.Remove>Remove platform</DMSE.Platform.Remove>
-  <DMSE.Platform.RemoveDesc>Remove space platforms or vacstone ground, leaving open space and recovering some materials.</DMSE.Platform.RemoveDesc>
-  <DMSE.Platform.FloorOnTop>Remove the floor first.</DMSE.Platform.FloorOnTop>
-  <DMSE.Platform.Blocked>{0} is built here.</DMSE.Platform.Blocked>
 
   <DMSE.Platform.Settings.SpaceTraversal>Allow walking on open space (restart required)</DMSE.Platform.Settings.SpaceTraversal>
   <DMSE.Platform.Settings.SpaceTraversalDesc>Enable the patch that makes vanilla open space passable. Disabled by default. Changes take effect after restarting the game. Other mods may also change space passability.</DMSE.Platform.Settings.SpaceTraversalDesc>

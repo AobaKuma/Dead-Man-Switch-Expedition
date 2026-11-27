@@ -21,7 +21,7 @@
     <defName>DMSE_Building_RotaryLauncher</defName>
     <label>rotary launch rail</label>
     <description>An old launch rail that turns a full circle by hand crank. It fires early loitering munitions and light missiles, and reloads one round at a time.\n\nNeeds no power, but requires an operator at all times.</description>
-    <thingClass>DMSE.Building_MissileRack</thingClass>
+    <thingClass>Fortified.Building_MissileRack</thingClass>
     <category>Building</category>
     <uiIconPath>Things/Building/icon_slideLauncher</uiIconPath>
     <graphicData>
@@ -103,7 +103,7 @@
       <li>BuildingsMisc</li>
     </thingCategories>
     <modExtensions>
-      <li Class="DMSE.MissileLauncherExtension">
+      <li Class="Fortified.MissileLauncherExtension">
         <sizeClass>Loitering</sizeClass>
         <extraSizeClasses>
           <li>Light</li>
@@ -116,14 +116,14 @@
     <comps>
       <li Class="CompProperties_Forbiddable" />
       <li Class="CompProperties_Mannable">
-        <compClass>DMSE.CompMannableMissileLauncher</compClass>
+        <compClass>Fortified.CompMannableMissileLauncher</compClass>
         <planetLayerWhitelist>
           <li>Surface</li>
           <li>Orbit</li>
         </planetLayerWhitelist>
       </li>
       <!-- 對地：V1／白蟻／小牛等（物品自帶彈體，平台 missileBody 只是後備）。 -->
-      <li Class="DMSE.CompProperties_MissileRailLauncher">
+      <li Class="Fortified.CompProperties_MissileRailLauncher">
         <skyfaller>DMSE_Launch_Loiter</skyfaller>
         <skyfallerIncoming>DMSE_Incoming_LegacyLoiter</skyfallerIncoming>
         <worldObjectDef>DMSE_WorldObject_Loiter</worldObjectDef>
@@ -132,12 +132,12 @@
         <launchForwardCells>0</launchForwardCells>
       </li>
       <!-- 攔截：萊茵女兒、刺針、SA-19、麻雀、地獄火（攔截／兩用彈）。 -->
-      <li Class="DMSE.CompProperties_MissileLauncher">
+      <li Class="Fortified.CompProperties_MissileLauncher">
         <interceptorSkyfaller>DMSE_Launch_LegacyInterceptor</interceptorSkyfaller>
         <reloadCooldownTicks>600</reloadCooldownTicks>
         <interceptorTravelTicks>240</interceptorTravelTicks>
       </li>
-      <li Class="DMSE.CompProperties_TurretFacingRenderer">
+      <li Class="Fortified.CompProperties_TurretFacingRenderer">
         <texPath>Things/Building/slideLauncher</texPath>
         <drawSize>(4,4)</drawSize>
         <altitudeOffset>0.01</altitudeOffset>
@@ -151,8 +151,8 @@
     </comps>
     <inspectorTabs>
       <li>RimWorld.ITab_Storage</li>
-      <li>DMSE.ITab_MissileInventory</li>
-      <li>DMSE.ITab_MissileAssembly</li>
+      <li>Fortified.ITab_MissileInventory</li>
+      <li>Fortified.ITab_MissileAssembly</li>
     </inspectorTabs>
     <placeWorkers>
       <li>DMSE.PlaceWorker_NoAdjacentSameLayer</li>
@@ -249,7 +249,7 @@
     <designatorDropdown>DMS_Turrets</designatorDropdown>
     <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
     <modExtensions>
-      <li Class="DMSE.MissileLauncherExtension">
+      <li Class="Fortified.MissileLauncherExtension">
         <sizeClass>Light</sizeClass>
         <launchMode>Tilt</launchMode>
         <capacity>4</capacity>
@@ -270,7 +270,7 @@
            Building_AutoloaderCE 一條路（Building_TurretGunCE.TryOrderReload 的 manning 條件
            不成立），所以 CE 環境要讓它持續開火，得在旁邊放一台自動裝彈機。 -->
       <!-- 搜索／追蹤雷達：短程、低功率，主要給自己的防空網提供航跡。 -->
-      <li Class="DMSE.CompProperties_SearchRadar">
+      <li Class="Fortified.CompProperties_SearchRadar">
         <worldDetectionRange>4</worldDetectionRange>
         <searchDistance>100</searchDistance>
         <powerLevel>1</powerLevel>
@@ -278,7 +278,7 @@
         <ticksPerDistance>8</ticksPerDistance>
       </li>
       <!-- 2 個火力通道，加入全陣營共用帳本。 -->
-      <li Class="DMSE.CompProperties_FireControlRadar">
+      <li Class="Fortified.CompProperties_FireControlRadar">
         <maxTargets>2</maxTargets>
         <powerLevel>1</powerLevel>
         <!-- 誘餌識別率（docs/MIRV分導彈頭與誘餌載荷_實作計畫.md §7.3） -->
@@ -291,7 +291,7 @@
         <stealthMissFactor>0.6</stealthMissFactor>
         <lockOnTicks>150</lockOnTicks>
       </li>
-      <li Class="DMSE.CompProperties_MissileLauncher">
+      <li Class="Fortified.CompProperties_MissileLauncher">
         <interceptorSkyfaller>DMSE_Launch_LegacyInterceptor</interceptorSkyfaller>
         <reloadCooldownTicks>240</reloadCooldownTicks>
         <interceptorTravelTicks>180</interceptorTravelTicks>
@@ -314,7 +314,7 @@
         <initialAllowAutoRefuel>true</initialAllowAutoRefuel>
         <autoRefuelPercent>0.5</autoRefuelPercent>
       </li>
-      <li Class="DMSE.CompProperties_TerminalCIWS">
+      <li Class="Fortified.CompProperties_TerminalCIWS">
         <projectile>DMSE_Bullet_Vulcan_WingBack_CIWS</projectile>
         <terminalWindowTicks>1800</terminalWindowTicks>
         <cooldownTicks>60</cooldownTicks>
@@ -330,11 +330,11 @@
            所以不再需要 CompBuildingTurretGun 代持，也不再需要 CompTurretFacingRenderer
            自繪砲塔頭——TurretTop 會自己畫 DMSE_Gun_FieldAirDefense 的貼圖（同一張通古斯卡砲塔圖）。
            飛彈儲存改掛 comp：容器不再寫在建築類別上，CE 換掉 thingClass 也不會消失。 -->
-      <li Class="DMSE.CompProperties_MissileRackStorage" />
+      <li Class="Fortified.CompProperties_MissileRackStorage" />
     </comps>
     <inspectorTabs>
       <li>RimWorld.ITab_Storage</li>
-      <li>DMSE.ITab_MissileInventory</li>
+      <li>Fortified.ITab_MissileInventory</li>
     </inspectorTabs>
     <placeWorkers>
       <li>DMSE.PlaceWorker_NoAdjacentSameLayer</li>
@@ -456,8 +456,8 @@
         <basePowerConsumption>2500</basePowerConsumption>
         <transmitsPower>true</transmitsPower>
       </li>
-      <li Class="DMSE.CompProperties_PowerThrottle" />
-      <li Class="DMSE.CompProperties_SearchRadar">
+      <li Class="Fortified.CompProperties_PowerThrottle" />
+      <li Class="Fortified.CompProperties_SearchRadar">
         <worldDetectionRange>12</worldDetectionRange>
         <searchDistance>200</searchDistance>
         <powerLevel>1</powerLevel>
@@ -465,7 +465,7 @@
         <ticksPerDistance>8</ticksPerDistance>
       </li>
       <!-- 純視覺：旋轉雷達頂部（閒置擺動調成近乎連續轉動）。 -->
-      <li Class="DMSE.CompProperties_TurretFacingRenderer">
+      <li Class="Fortified.CompProperties_TurretFacingRenderer">
         <texPath>Things/Building/Radar_EW</texPath>
         <drawSize>(13,13)</drawSize>
         <altitudeOffset>0.01</altitudeOffset>
@@ -544,8 +544,8 @@
         <basePowerConsumption>1500</basePowerConsumption>
         <transmitsPower>true</transmitsPower>
       </li>
-      <li Class="DMSE.CompProperties_PowerThrottle" />
-      <li Class="DMSE.CompProperties_FireControlRadar">
+      <li Class="Fortified.CompProperties_PowerThrottle" />
+      <li Class="Fortified.CompProperties_FireControlRadar">
         <maxTargets>4</maxTargets>
         <powerLevel>1</powerLevel>
         <!-- 誘餌識別率（docs/MIRV分導彈頭與誘餌載荷_實作計畫.md §7.3） -->
@@ -559,7 +559,7 @@
         <lockOnTicks>150</lockOnTicks>
         <supportsArtilleryGuidance>true</supportsArtilleryGuidance>
       </li>
-      <li Class="DMSE.CompProperties_TurretFacingRenderer">
+      <li Class="Fortified.CompProperties_TurretFacingRenderer">
         <texPath>Things/Building/Radar_FC</texPath>
         <drawSize>(4,4)</drawSize>
         <altitudeOffset>0.01</altitudeOffset>
@@ -574,7 +574,7 @@
     <defName>DMSE_Building_MediumVLS</defName>
     <label>vertical launch silo</label>
     <description>A vertical launcher with four cells for medium missiles. Each missile is pushed out of its tube before igniting, and a built-in flame trench allows repeated launches. It is costly to build.\n\nCannot be built on a gravship.</description>
-    <thingClass>DMSE.Building_MissileRack</thingClass>
+    <thingClass>Fortified.Building_MissileRack</thingClass>
     <uiIconPath>Things/Building/MissileSilo_Medium/icon</uiIconPath>
     <graphicData>
       <texPath>Things/Building/MissileSilo_Medium/building</texPath>
@@ -621,7 +621,7 @@
       </defaultStorageSettings>
     </building>
     <modExtensions>
-      <li Class="DMSE.MissileLauncherExtension">
+      <li Class="Fortified.MissileLauncherExtension">
         <sizeClass>Medium</sizeClass>
         <launchMode>Vertical</launchMode>
         <capacity>4</capacity>
@@ -635,7 +635,7 @@
       </li>
       <li Class="CompProperties_Flickable" />
       <li Class="CompProperties_Breakdownable" />
-      <li Class="DMSE.CompProperties_MissileRackRenderer">
+      <li Class="Fortified.CompProperties_MissileRackRenderer">
         <maxStored>4</maxStored>
         <loadedHatchTexPaths>
           <li>Things/Building/MissileSilo_Medium/hatch_a</li>
@@ -644,7 +644,7 @@
           <li>Things/Building/MissileSilo_Medium/hatch_d</li>
         </loadedHatchTexPaths>
       </li>
-      <li Class="DMSE.CompProperties_MissileRailLauncher">
+      <li Class="Fortified.CompProperties_MissileRailLauncher">
         <skyfaller>DMSE_Launch_Yj</skyfaller>
         <skyfallerIncoming>DMSE_Incoming_Yj</skyfallerIncoming>
         <worldObjectDef>DMSE_WorldObject_CruiseMissile</worldObjectDef>
@@ -655,8 +655,8 @@
     </comps>
     <inspectorTabs>
       <li>RimWorld.ITab_Storage</li>
-      <li>DMSE.ITab_MissileInventory</li>
-      <li>DMSE.ITab_MissileAssembly</li>
+      <li>Fortified.ITab_MissileInventory</li>
+      <li>Fortified.ITab_MissileAssembly</li>
     </inspectorTabs>
     <researchPrerequisites>
       <li>DMSE_StrategicSystems</li>

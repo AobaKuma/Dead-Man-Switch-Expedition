@@ -9,7 +9,7 @@
     <defName>DMSE_LaserDesignatorMark</defName>
     <label>laser designation</label>
     <description>A target point painted by a laser designator. Laser-guided missiles fired by the same faction home on the most recent designation on the target map. It cannot be damaged and fades on its own after a while.</description>
-    <thingClass>DMSE.LaserDesignatorMark</thingClass>
+    <thingClass>Fortified.LaserDesignatorMark</thingClass>
     <category>Ethereal</category>
     <altitudeLayer>MoteOverhead</altitudeLayer>
     <drawerType>RealtimeOnly</drawerType>
@@ -31,7 +31,7 @@
   <ThingDef ParentName="BaseBullet">
     <defName>DMSE_Bullet_LaserDesignator</defName>
     <label>designation beam</label>
-    <thingClass>DMSE.Projectile_LaserDesignator</thingClass>
+    <thingClass>Fortified.Projectile_LaserDesignator</thingClass>
     <graphicData>
       <texPath>Things/Projectile/Bullet_Big</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -44,7 +44,7 @@
       <speed>300</speed>
     </projectile>
     <modExtensions>
-      <li Class="DMSE.ModExtension_LaserDesignator">
+      <li Class="Fortified.LaserDesignatorExtension">
         <markDef>DMSE_LaserDesignatorMark</markDef>
         <!-- 標點存在時間：5000 ticks = 2 遊戲小時 -->
         <lifespanTicks>5000</lifespanTicks>

@@ -51,7 +51,7 @@
     <designationCategory>DMSE_BVRCategory</designationCategory>
     <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
     <inspectorTabs>
-      <li>DMSE.ITab_WarRoom</li>
+      <li>Fortified.ITab_WarRoom</li>
     </inspectorTabs>
     <comps>
       <li Class="CompProperties_Forbiddable" />
@@ -60,7 +60,7 @@
         <compClass>CompPowerTrader</compClass>
         <basePowerConsumption>300</basePowerConsumption>
       </li>
-      <li Class="DMSE.CompProperties_WarRoomConsole" />
+      <li Class="Fortified.CompProperties_WarRoomConsole" />
     </comps>
   </ThingDef>
 
@@ -117,7 +117,7 @@
         <basePowerConsumption>6000</basePowerConsumption>
         <transmitsPower>true</transmitsPower>
       </li>
-      <li Class="DMSE.CompProperties_PowerThrottle">
+      <li Class="Fortified.CompProperties_PowerThrottle">
         <drawAtFull>6000</drawAtFull>
         <idleFraction>0.1</idleFraction>
       </li>
@@ -127,7 +127,7 @@
           <li>EMP</li>
         </affectedDamageDefs>
       </li>
-      <li Class="DMSE.CompProperties_Jammer">
+      <li Class="Fortified.CompProperties_Jammer">
         <jamPower>0.6</jamPower>
         <jamLevel>2</jamLevel>
         <worldRange>8</worldRange>
@@ -135,7 +135,7 @@
         <jamGuidanceBreakFactor>1</jamGuidanceBreakFactor>
         <offMapChance>0.5</offMapChance>
       </li>
-      <li Class="DMSE.CompProperties_TurretFacingRenderer">
+      <li Class="Fortified.CompProperties_TurretFacingRenderer">
         <texPath>Things/Building/Radar_FC</texPath>
         <drawSize>(4,4)</drawSize>
         <altitudeOffset>0.01</altitudeOffset>
@@ -196,14 +196,14 @@
         <basePowerConsumption>12000</basePowerConsumption>
         <transmitsPower>true</transmitsPower>
       </li>
-      <li Class="DMSE.CompProperties_PowerThrottle" />
+      <li Class="Fortified.CompProperties_PowerThrottle" />
       <li Class="CompProperties_Stunnable">
         <useLargeEMPEffecter>true</useLargeEMPEffecter>
         <affectedDamageDefs>
           <li>EMP</li>
         </affectedDamageDefs>
       </li>
-      <li Class="DMSE.CompProperties_SearchRadar">
+      <li Class="Fortified.CompProperties_SearchRadar">
         <worldDetectionRange>40</worldDetectionRange>
         <searchDistance>360</searchDistance>
         <ticksPerDistance>12</ticksPerDistance>
@@ -211,7 +211,7 @@
         <antiStealthLevel>0</antiStealthLevel>
         <resolutionLevel>1.6</resolutionLevel>
       </li>
-      <li Class="DMSE.CompProperties_TurretFacingRenderer">
+      <li Class="Fortified.CompProperties_TurretFacingRenderer">
         <texPath>Things/Building/Radar_EW</texPath>
         <drawSize>(13,13)</drawSize>
         <altitudeOffset>0.01</altitudeOffset>
@@ -227,12 +227,5 @@
     </placeWorkers>
   </ThingDef>
 
-  <JobDef>
-    <defName>DMSE_OperateWarRoom</defName>
-    <driverClass>DMSE.JobDriver_OperateWarRoom</driverClass>
-    <reportString>operating war room console.</reportString>
-    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
-    <casualInterruptible>false</casualInterruptible>
-  </JobDef>
 
 </Defs>

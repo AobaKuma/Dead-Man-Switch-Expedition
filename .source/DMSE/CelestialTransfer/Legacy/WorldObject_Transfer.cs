@@ -1,6 +1,7 @@
 using RimWorld.Planet;
 using UnityEngine;
 using Verse;
+using Fortified;
 
 namespace DMSE
 {

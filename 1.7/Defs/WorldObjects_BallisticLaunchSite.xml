@@ -15,7 +15,7 @@
   <GenStepDef>
     <defName>DMSE_BallisticLaunchSite_GS_Structures</defName>
     <order>400</order>
-    <genStep Class="DMSE.GenStep_FieldLaunchSite">
+    <genStep Class="Fortified.GenStep_FieldLaunchSite">
       <difficultyThresholds>
         <li>0.5</li>
         <li>0.9</li>
@@ -132,7 +132,7 @@
     <comps>
       <li Class="WorldObjectCompProperties_FormCaravan" />
       <!-- 只在尚未生成地圖時使用；地圖生成後由實際雷達接手。比野戰陣地強一級。 -->
-      <li Class="DMSE.CompProperties_WorldAirDefense">
+      <li Class="Fortified.WorldObjectCompProperties_AirDefense">
         <worldDetectionRange>14</worldDetectionRange>
         <antiStealthLevel>2</antiStealthLevel>
         <fireControlDef>DMSE_FireControlRadar</fireControlDef>
@@ -144,7 +144,7 @@
         <launchCooldownTicks>360</launchCooldownTicks>
         <worldInterceptRange>8</worldInterceptRange>
       </li>
-      <li Class="DMSE.CompProperties_MissileBase">
+      <li Class="Fortified.WorldObjectCompProperties_MissileBase">
         <missileFireIntervalDays>
           <min>5</min>
           <max>8</max>
@@ -310,7 +310,7 @@
     <label>ballistic launch site</label>
     <description>A strategic missile site with hardened silos, fire control radars and a garrison.</description>
     <!-- FactionCanOwn：至少工業等級的人類派系（含海盜）。 -->
-    <workerClass>DMSE.SitePartWorker_BallisticLaunchSite</workerClass>
+    <workerClass>Fortified.SitePartWorker_BallisticLaunchSite</workerClass>
     <siteTexture>World/WorldObjects/Sites/Outpost</siteTexture>
     <!-- 暫用強化陣地的巡航圖示，待專屬圖示。 -->
     <expandingIconTexture>UI/Icon/icon_FortifiedLaunchSite_Cruise</expandingIconTexture>
@@ -333,7 +333,7 @@
     <targetTags>
       <li>Map_PlayerHome</li>
     </targetTags>
-    <workerClass>DMSE.IncidentWorker_FieldLaunchSite</workerClass>
+    <workerClass>Fortified.IncidentWorker_FieldLaunchSite</workerClass>
     <baseChance>0.4</baseChance>
     <earliestDay>30</earliestDay>
     <minRefireDays>45</minRefireDays>
@@ -341,7 +341,7 @@
     <letterLabel>Enemy ballistic launch site</letterLabel>
     <letterDef>ThreatBig</letterDef>
     <modExtensions>
-      <li Class="DMSE.FieldLaunchSiteIncidentExtension">
+      <li Class="Fortified.FieldLaunchSiteIncidentExtension">
         <worldObjectDef>DMSE_BallisticLaunchSite</worldObjectDef>
         <sitePartDef>DMSE_BallisticLaunchSitePart</sitePartDef>
         <distance>25~45</distance>

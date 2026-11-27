@@ -71,7 +71,7 @@
         <basePowerConsumption>1200</basePowerConsumption>
         <transmitsPower>true</transmitsPower>
       </li>
-      <li Class="DMSE.CompProperties_PowerThrottle" />
+      <li Class="Fortified.CompProperties_PowerThrottle" />
       <!-- 需要操作員手動操作方能運作；無人操作時雷達不會運轉。 -->
       <li Class="CompProperties_Mannable">
         <planetLayerWhitelist>
@@ -80,7 +80,7 @@
         </planetLayerWhitelist>
       </li>
       <!-- 只提供一個火力通道（三代裝備體系：老式火控 1、火控雷達 4、相控陣 24），鎖定與精準時間皆遜於後期雷達。 -->
-      <li Class="DMSE.CompProperties_FireControlRadar">
+      <li Class="Fortified.CompProperties_FireControlRadar">
         <maxTargets>1</maxTargets>
         <powerLevel>1</powerLevel>
         <!-- 誘餌識別率（docs/MIRV分導彈頭與誘餌載荷_實作計畫.md §7.3）：早期火控無法分辨誘餌 -->
@@ -97,7 +97,7 @@
         <supportsArtilleryGuidance>true</supportsArtilleryGuidance>
       </li>
       <!-- 額外渲染一個朝目標方向轉動的砲塔頭，純視覺表現，不影響戰鬥判定；貼圖路徑請自行替換為實際美術資源。 -->
-      <li Class="DMSE.CompProperties_TurretFacingRenderer">
+      <li Class="Fortified.CompProperties_TurretFacingRenderer">
         <texPath>Things/Building/Radar_EarlyFC</texPath>
         <drawSize>(5,5)</drawSize>
         <altitudeOffset>0.01</altitudeOffset>

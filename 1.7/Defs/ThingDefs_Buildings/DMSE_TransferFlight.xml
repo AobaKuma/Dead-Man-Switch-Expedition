@@ -42,11 +42,11 @@
       <li>DMSE_OrbitalDynamics</li>
     </researchPrerequisites>
     <placeWorkers>
-      <li>DMSE.PlaceWorker_StructuralPile</li>
+      <li>Fortified.PlaceWorker_StructuralPile</li>
     </placeWorkers>
     <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
     <comps>
-      <li Class="DMSE.CompProperties_StructuralPile">
+      <li Class="Fortified.CompProperties_StructuralPile">
         <coverageRadius>11</coverageRadius>
         <linkRange>23</linkRange>
         <circularRange>true</circularRange>
@@ -105,11 +105,11 @@
       <li>DMSE_OrbitalDynamics</li>
     </researchPrerequisites>
     <placeWorkers>
-      <li>DMSE.PlaceWorker_StructuralPile</li>
+      <li>Fortified.PlaceWorker_StructuralPile</li>
     </placeWorkers>
     <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
     <comps>
-      <li Class="DMSE.CompProperties_StructuralPile">
+      <li Class="Fortified.CompProperties_StructuralPile">
         <coverageRadius>7</coverageRadius>
         <!-- 不提供連結範圍：只能建在大樁的連結範圍內，也只能連到大樁 -->
         <linkRange>0</linkRange>
@@ -170,11 +170,11 @@
       <li>DMSE_OrbitalDynamics</li>
     </researchPrerequisites>
     <placeWorkers>
-      <li>DMSE.PlaceWorker_StructuralPile</li>
+      <li>Fortified.PlaceWorker_StructuralPile</li>
     </placeWorkers>
     <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
     <comps>
-      <li Class="DMSE.CompProperties_StructuralPile">
+      <li Class="Fortified.CompProperties_StructuralPile">
         <coverageRadius>23</coverageRadius>
         <linkRange>49</linkRange>
         <circularRange>true</circularRange>
@@ -219,7 +219,7 @@
     </thingCategories>
     <genericMarketSellable>false</genericMarketSellable>
     <placeWorkers>
-      <li>DMSE.PlaceWorker_TransferEngine</li>
+      <li>Fortified.PlaceWorker_TransferEngine</li>
     </placeWorkers>
     <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
     <drawPlaceWorkersWhileInstallBlueprintSelected>true</drawPlaceWorkersWhileInstallBlueprintSelected>
@@ -262,7 +262,7 @@
       <li>DMSE_OrbitalDynamics</li>
     </researchPrerequisites>
     <comps>
-      <li Class="DMSE.CompProperties_TransferEngine">
+      <li Class="Fortified.CompProperties_TransferEngine">
         <thrust>3</thrust>
         <fuelFactor>1</fuelFactor>
         <!-- 2×3 佔地 z = -1..1，尾焰區從 -2 開始，四個方向皆對齊 -->
@@ -331,7 +331,7 @@
       <li>DMSE_OrbitalDynamics</li>
     </researchPrerequisites>
     <inspectorTabs>
-      <li>DMSE.ITab_TransferShip</li>
+      <li>Fortified.ITab_TransferShip</li>
     </inspectorTabs>
     <comps>
       <li Class="CompProperties_Power">
@@ -339,7 +339,7 @@
         <basePowerConsumption>300</basePowerConsumption>
       </li>
       <li Class="CompProperties_Flickable" />
-      <li Class="DMSE.CompProperties_TransferConsole">
+      <li Class="Fortified.CompProperties_TransferConsole">
         <operateTicks>1250</operateTicks>
         <countdownTicks>600</countdownTicks>   <!-- 10 秒：引擎暖機（火焰、排氣、震動、音效逐漸增強） -->
       </li>

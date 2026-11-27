@@ -4,7 +4,7 @@
   <!-- ==================== 彈體 ==================== -->
 
   <!-- ==================== 彈頭 Warhead ==================== -->
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_Warhead_HE</defName>
     <label>high-explosive warhead</label>
     <designWord>HE</designWord>
@@ -23,9 +23,9 @@
       <Steel>30</Steel>
       <Chemfuel>20</Chemfuel>
     </costList>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_Warhead_AP</defName>
     <label>armor-piercing warhead</label>
     <designWord>AP</designWord>
@@ -44,9 +44,9 @@
       <Steel>40</Steel>
       <DMSE_TantastenAlloy>5</DMSE_TantastenAlloy>
     </costList>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_Warhead_EMP</defName>
     <label>EMP warhead</label>
     <designWord>EMP</designWord>
@@ -64,10 +64,10 @@
       <Steel>20</Steel>
       <ComponentIndustrial>2</ComponentIndustrial>
     </costList>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
   <!-- ==================== 導引 Guidance ==================== -->
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_Guidance_Inertial</defName>
     <label>inertial guidance</label>
     <omitFromDesignName>true</omitFromDesignName>
@@ -79,11 +79,11 @@
       <li>DMSE_MissileBody_Yj</li>
       <li>DMSE_MissileBody_Tochka</li>
     </compatibleBodies>
-    <guidanceType Class="DMSE.GuidanceType_Inertial" />
+    <guidanceType Class="Fortified.GuidanceType_Inertial" />
     <scatterOffset>0</scatterOffset>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_Guidance_ActiveRadar</defName>
     <label>active radar seeker</label>
     <designWord>ARH</designWord>
@@ -103,7 +103,7 @@
       <li>DMSE_MissileBody_Yj</li>
       <li>DMSE_MissileBody_Tochka</li>
     </compatibleBodies>
-    <guidanceType Class="DMSE.GuidanceType_ActiveRadar" />
+    <guidanceType Class="Fortified.GuidanceType_ActiveRadar" />
     <scatterOffset>-1.5</scatterOffset>
     <researchPrerequisites>
       <li>DMSE_RadarNetwork</li>
@@ -112,9 +112,9 @@
       <ComponentIndustrial>4</ComponentIndustrial>
       <ComponentSpacer>1</ComponentSpacer>
     </costList>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_Guidance_Precision</defName>
     <label>TV guidance</label>
     <designWord>TV</designWord>
@@ -127,7 +127,7 @@
       <li>DMSE_MissileBody_Tochka</li>
     </compatibleBodies>
     <!-- 電視制導：玩家發射時抵達後手動選點；具導引能力（可跨圖層、可追蹤移動目標） -->
-    <guidanceType Class="DMSE.GuidanceType_TV" />
+    <guidanceType Class="Fortified.GuidanceType_TV" />
     <scatterOffset>-2.5</scatterOffset>
     <researchPrerequisites>
       <li>DMSE_IntegratedCircuits</li>
@@ -136,9 +136,9 @@
       <ComponentIndustrial>3</ComponentIndustrial>
       <ComponentSpacer>1</ComponentSpacer>
     </costList>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_Guidance_EMSignal</defName>
     <label>electromagnetic-signal seeker</label>
     <designWord>EM</designWord>
@@ -150,7 +150,7 @@
       <li>DMSE_MissileBody_Yj</li>
       <li>DMSE_MissileBody_Tochka</li>
     </compatibleBodies>
-    <guidanceType Class="DMSE.GuidanceType_ElectromagneticSignal" />
+    <guidanceType Class="Fortified.GuidanceType_ElectromagneticSignal" />
     <scatterOffset>-1.5</scatterOffset>
     <researchPrerequisites>
       <li>DMSE_IntegratedAirDefense</li>
@@ -158,9 +158,9 @@
     <costList>
       <ComponentIndustrial>3</ComponentIndustrial>
     </costList>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_Guidance_AntiShip</defName>
     <label>anti-ship radar seeker</label>
     <designWord>Anti-ship</designWord>
@@ -172,7 +172,7 @@
       <li>DMSE_MissileBody_Yj</li>
       <li>DMSE_MissileBody_Tochka</li>
     </compatibleBodies>
-    <guidanceType Class="DMSE.GuidanceType_AntiShip" />
+    <guidanceType Class="Fortified.GuidanceType_AntiShip" />
     <scatterOffset>-2</scatterOffset>
     <researchPrerequisites>
       <li>DMSE_AntishipMissiles</li>
@@ -181,9 +181,9 @@
       <ComponentIndustrial>5</ComponentIndustrial>
       <ComponentSpacer>1</ComponentSpacer>
     </costList>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_Guidance_Laser</defName>
     <label>laser seeker</label>
     <designWord>Laser</designWord>
@@ -195,7 +195,7 @@
       <li>DMSE_MissileBody_Yj</li>
       <li>DMSE_MissileBody_Tochka</li>
     </compatibleBodies>
-    <guidanceType Class="DMSE.GuidanceType_Laser" />
+    <guidanceType Class="Fortified.GuidanceType_Laser" />
     <scatterOffset>-2.5</scatterOffset>
     <researchPrerequisites>
       <li>DMSE_FireControlNetwork</li>
@@ -204,10 +204,10 @@
       <ComponentIndustrial>3</ComponentIndustrial>
       <ComponentSpacer>1</ComponentSpacer>
     </costList>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
   <!-- ==================== 推進／射程 Propulsion ==================== -->
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_Propulsion_Standard</defName>
     <label>standard motor</label>
     <omitFromDesignName>true</omitFromDesignName>
@@ -219,9 +219,9 @@
       <li>DMSE_MissileBody_Yj</li>
       <li>DMSE_MissileBody_Tochka</li>
     </compatibleBodies>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_Propulsion_Booster</defName>
     <label>boosted motor</label>
     <designWord>Boost</designWord>
@@ -239,10 +239,10 @@
       <Chemfuel>40</Chemfuel>
       <Steel>20</Steel>
     </costList>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
   <!-- ==================== 特殊酬載 Payload ==================== -->
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_Payload_Cluster</defName>
     <label>cluster submunitions</label>
     <designWord>Cluster</designWord>
@@ -261,9 +261,9 @@
       <Steel>25</Steel>
       <Chemfuel>15</Chemfuel>
     </costList>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_Payload_None</defName>
     <label>no payload</label>
     <omitFromDesignName>true</omitFromDesignName>
@@ -276,12 +276,12 @@
       <li>DMSE_MissileBody_Tochka</li>
       <li>DMSE_MissileBody_Shahed</li>
     </compatibleBodies>
-    <payloadEffect Class="DMSE.PayloadEffect_None" />
-  </DMSE.MissilePartDef>
+    <payloadEffect Class="Fortified.PayloadEffect_None" />
+  </Fortified.MissilePartDef>
 
   <!-- 反碉堡酬載：穿透厚岩頂後在內部引爆；小半徑高穿甲爆炸，並對爆心附近建築施加額外結構傷害。
        沒有它（或鎢芯穿甲戰鬥部）的導彈打在厚岩頂上只在岩層表面引爆，導引頭也不鎖定岩頂下的目標。 -->
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_Payload_BunkerBuster</defName>
     <label>bunker buster payload</label>
     <designWord>Bunker</designWord>
@@ -293,7 +293,7 @@
       <li>DMSE_MissileBody_Yj</li>
       <li>DMSE_MissileBody_Tochka</li>
     </compatibleBodies>
-    <payloadEffect Class="DMSE.PayloadEffect_BunkerBuster">
+    <payloadEffect Class="Fortified.PayloadEffect_BunkerBuster">
       <damageAmount>150</damageAmount>
       <structureDamage>300</structureDamage>
     </payloadEffect>
@@ -301,9 +301,9 @@
       <Steel>30</Steel>
       <Plasteel>15</Plasteel>
     </costList>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
-  <DMSE.MissilePartDef>
+  <Fortified.MissilePartDef>
     <defName>DMSE_Payload_EMP</defName>
     <label>EMP submunitions</label>
     <designWord>Pulse</designWord>
@@ -321,6 +321,6 @@
       <Steel>15</Steel>
       <ComponentIndustrial>2</ComponentIndustrial>
     </costList>
-  </DMSE.MissilePartDef>
+  </Fortified.MissilePartDef>
 
 </Defs>

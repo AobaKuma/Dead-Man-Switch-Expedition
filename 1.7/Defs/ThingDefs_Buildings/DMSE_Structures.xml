@@ -104,14 +104,14 @@
     <building>
       <isAirtight>true</isAirtight>
     </building>
-    <terrainAffordanceNeeded>DMSE_Platform</terrainAffordanceNeeded>
+    <terrainAffordanceNeeded>FFF_Platform</terrainAffordanceNeeded>
     <useStuffTerrainAffordance>false</useStuffTerrainAffordance>
     <stuffCategories Inherit="False">
       <li>Metallic</li>
     </stuffCategories>
     <comps Inherit="False"/>
     <modExtensions>
-      <li Class="DMSE.AngledHullExtension"/>
+      <li Class="Fortified.AngledHullExtension"/>
     </modExtensions>
   </ThingDef>
 

@@ -6,12 +6,6 @@
     <order>2400</order>
   </TerrainAffordanceDef>
 
-  <!-- 只有本模組的平台地形具備；平台船體（DMSE_PlatformHull）以此限定只能蓋在平台上 -->
-  <TerrainAffordanceDef>
-    <defName>DMSE_Platform</defName>
-    <label>platform</label>
-    <order>2410</order>
-  </TerrainAffordanceDef>
 
   <!-- 不依賴 Orbital Platforms 模組也能建造：太空虛空的 VoidSpace 地形承載力由 Patches/Patch_OrbitalPlatform.xml 補上。
        平台是基底地形（非 foundation、非 layerable），這樣 spaceEdgeGraphicData 的邊緣貼圖才會繪製
@@ -43,7 +37,7 @@
   <designationCategory>Odyssey</designationCategory>
     <!-- 可用「拆除平台」指令拆回虛空，返還 costList 的一半 -->
     <modExtensions>
-      <li Class="DMSE.RemovablePlatformExtension">
+      <li Class="Fortified.RemovablePlatformExtension">
         <refundFraction>0.5</refundFraction>
       </li>
     </modExtensions>
@@ -89,7 +83,7 @@
       <li>Heavy</li>
       <li>Walkable</li>
       <li>VoidSpace</li>
-      <li>DMSE_Platform</li>
+      <li>FFF_Platform</li>
       <!-- Orbital Platforms 模組的「太空」地形需要 Platform 承載力，才能蓋在平台上把它拆掉 -->
       <li MayRequire="rashomcree.odyssey.orbitalplatforms">Platform</li>
     </affordances>
@@ -136,7 +130,7 @@
       <li>Medium</li>
       <li>Walkable</li>
       <li>VoidSpace</li>
-      <li>DMSE_Platform</li>
+      <li>FFF_Platform</li>
       <li MayRequire="rashomcree.odyssey.orbitalplatforms">Platform</li>
     </affordances>
     <terrainAffordanceNeeded>VoidSpace</terrainAffordanceNeeded>

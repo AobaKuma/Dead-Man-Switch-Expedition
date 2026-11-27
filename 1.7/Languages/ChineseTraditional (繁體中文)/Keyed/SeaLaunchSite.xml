@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
-  <!-- Sea launch station (DMSE.SeaLaunchSite) -->
-  <DMSE.SeaLaunchSite.ArrivedLetter>你們抵達了殖民艦隊的海上發射站。雷達、發射陣位、彈藥車與人員艙蓋在以甲板走道相連的海上平台上，由鋼鐵支柱撐在浪頭之上。摧毀所有火控雷達即可瓦解此站；打掉支柱，只靠它撐住的甲板會連同上面的一切塌進海裡。這裡沒有陸路可退，只能搭穿梭機或運輸艙離開。</DMSE.SeaLaunchSite.ArrivedLetter>
   <DMSE.SeaLaunchSite.SpawnedLetter>{0}在{1}的{2}方 {3} 格處的海面上部署了一座海上發射站。其發射架能打擊你的殖民地；只要雷達仍在運作，補給艙就會持續為守軍送來食物。\n\n只能從空中抵達此站。摧毀所有火控雷達即可瓦解它，也可以打掉把甲板撐在海面上的支柱。</DMSE.SeaLaunchSite.SpawnedLetter>
 </LanguageData>

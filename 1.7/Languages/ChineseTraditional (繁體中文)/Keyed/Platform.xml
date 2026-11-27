@@ -1,14 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
 
-  <!-- EN: Remove platform -->
-  <DMSE.Platform.Remove>拆除平台</DMSE.Platform.Remove>
-  <!-- EN: Remove space platforms or vacstone ground, leaving open space and recovering some materials. -->
-  <DMSE.Platform.RemoveDesc>拆除太空平台或真空岩地面，使其變回太空並回收部分材料。</DMSE.Platform.RemoveDesc>
-  <!-- EN: Remove the floor first. -->
-  <DMSE.Platform.FloorOnTop>請先拆除地板。</DMSE.Platform.FloorOnTop>
-  <!-- EN: {0} is built here. -->
-  <DMSE.Platform.Blocked>這裡有{0}。</DMSE.Platform.Blocked>
 
   <!-- EN: Allow walking on open space (restart required) -->
   <DMSE.Platform.Settings.SpaceTraversal>允許通行真空地板（需重新啟動）</DMSE.Platform.Settings.SpaceTraversal>

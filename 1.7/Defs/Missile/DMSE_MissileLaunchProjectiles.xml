@@ -5,7 +5,7 @@
   <!-- Launch Projectile shared by every missile body (docs/Missile_Skyfaller轉Projectile_計畫.md):
        same draw layer and offscreen drawing as the launch skyfallers it replaces. -->
   <ThingDef Name="DMSE_MissileLaunchProjectileBase" Abstract="True">
-    <thingClass>DMSE.Projectile_MissileLaunch</thingClass>
+    <thingClass>Fortified.Projectile_MissileLaunch</thingClass>
     <category>Projectile</category>
     <tickerType>Normal</tickerType>
     <altitudeLayer>Skyfaller</altitudeLayer>
@@ -24,7 +24,7 @@
   <!-- Incoming missile Projectile (plan §8.4): converted in place from the old SkyfallerBase incoming defs
        by convert_incoming_defs(); flies in from the map edge along the world track's last leg. -->
   <ThingDef Name="DMSE_MissileIncomingProjectileBase" Abstract="True">
-    <thingClass>DMSE.Projectile_MissileIncoming</thingClass>
+    <thingClass>Fortified.Projectile_MissileIncoming</thingClass>
     <category>Projectile</category>
     <tickerType>Normal</tickerType>
     <altitudeLayer>Skyfaller</altitudeLayer>
@@ -50,7 +50,7 @@
       <drawSize>1.49</drawSize>
     </graphicData>
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <movementType>Accelerate</movementType>
         <reversed>true</reversed>
         <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
@@ -86,7 +86,7 @@
       </li>
     </modExtensions>
     <comps>
-      <li Class="DMSE.CompProperties_EffecterHotLaunch">
+      <li Class="Fortified.CompProperties_EffecterHotLaunch">
         <launchBlastScale>0.85</launchBlastScale>
         <ignitionSound>DMSE_Missile_Flight</ignitionSound>
         <ExhaustFleck>DMS_Fleck_RocketFlame</ExhaustFleck>
@@ -122,7 +122,7 @@
       <drawSize>2.67</drawSize>
     </graphicData>
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <movementType>Accelerate</movementType>
         <reversed>true</reversed>
         <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
@@ -158,7 +158,7 @@
       </li>
     </modExtensions>
     <comps>
-      <li Class="DMSE.CompProperties_EffecterHotLaunch">
+      <li Class="Fortified.CompProperties_EffecterHotLaunch">
         <launchBlastScale>0.7</launchBlastScale>
         <ignitionSound>DMSE_Missile_Flight</ignitionSound>
         <ExhaustFleck>DMS_Fleck_RocketFlame</ExhaustFleck>
@@ -194,7 +194,7 @@
       <drawSize>6.8</drawSize>
     </graphicData>
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <movementType>Accelerate</movementType>
         <reversed>true</reversed>
         <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
@@ -231,7 +231,7 @@
       </li>
     </modExtensions>
     <comps>
-      <li Class="DMSE.CompProperties_EffecterHotLaunch">
+      <li Class="Fortified.CompProperties_EffecterHotLaunch">
         <launchBlastScale>1.2</launchBlastScale>
         <ignitionSound>DMSE_Missile_Flight</ignitionSound>
         <ExhaustFleck>DMS_Fleck_RocketFlame</ExhaustFleck>
@@ -267,7 +267,7 @@
       <drawSize>4.65</drawSize>
     </graphicData>
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <movementType>Accelerate</movementType>
         <reversed>true</reversed>
         <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
@@ -303,7 +303,7 @@
       </li>
     </modExtensions>
     <comps>
-      <li Class="DMSE.CompProperties_EffecterHotLaunch">
+      <li Class="Fortified.CompProperties_EffecterHotLaunch">
         <launchBlastScale>0.7</launchBlastScale>
         <ignitionSound>DMSE_Missile_Flight</ignitionSound>
         <ExhaustFleck>DMS_Fleck_RocketFlame</ExhaustFleck>
@@ -339,7 +339,7 @@
       <drawSize>2.08</drawSize>
     </graphicData>
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <movementType>Accelerate</movementType>
         <reversed>true</reversed>
         <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
@@ -375,7 +375,7 @@
       </li>
     </modExtensions>
     <comps>
-      <li Class="DMSE.CompProperties_EffecterHotLaunch">
+      <li Class="Fortified.CompProperties_EffecterHotLaunch">
         <launchBlastScale>0.5</launchBlastScale>
         <ignitionSound>DMSE_Missile_Flight</ignitionSound>
         <ExhaustFleck>DMS_Fleck_RocketFlame</ExhaustFleck>
@@ -413,7 +413,7 @@
       <drawSize>1.33</drawSize>
     </graphicData>
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <movementType>Accelerate</movementType>
         <reversed>true</reversed>
         <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
@@ -449,7 +449,7 @@
       </li>
     </modExtensions>
     <comps>
-      <li Class="DMSE.CompProperties_EffecterColdLaunch">
+      <li Class="Fortified.CompProperties_EffecterColdLaunch">
         <delayTicks>6</delayTicks>
         <ignitionSound>DMSE_Missile_Flight</ignitionSound>
         <ExhaustFleck>DMS_Fleck_RocketFlame</ExhaustFleck>
@@ -485,7 +485,7 @@
       <drawSize>3.25</drawSize>
     </graphicData>
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <movementType>Accelerate</movementType>
         <reversed>true</reversed>
         <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
@@ -521,7 +521,7 @@
       </li>
     </modExtensions>
     <comps>
-      <li Class="DMSE.CompProperties_EffecterHotLaunch">
+      <li Class="Fortified.CompProperties_EffecterHotLaunch">
         <launchBlastScale>1.0</launchBlastScale>
         <ignitionSound>DMSE_Missile_Flight</ignitionSound>
         <ExhaustFleck>DMS_Fleck_RocketFlame</ExhaustFleck>
@@ -557,7 +557,7 @@
       <drawSize>2.21</drawSize>
     </graphicData>
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <movementType>Accelerate</movementType>
         <reversed>true</reversed>
         <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
@@ -593,7 +593,7 @@
       </li>
     </modExtensions>
     <comps>
-      <li Class="DMSE.CompProperties_EffecterHotLaunch">
+      <li Class="Fortified.CompProperties_EffecterHotLaunch">
         <launchBlastScale>0.75</launchBlastScale>
         <ignitionSound>DMSE_Missile_Flight</ignitionSound>
         <ExhaustFleck>DMS_Fleck_RocketFlame</ExhaustFleck>
@@ -629,7 +629,7 @@
       <drawSize>6.43</drawSize>
     </graphicData>
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <movementType>Accelerate</movementType>
         <reversed>true</reversed>
         <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
@@ -671,7 +671,7 @@
       </li>
     </modExtensions>
     <comps>
-      <li Class="DMSE.CompProperties_EffecterColdLaunch">
+      <li Class="Fortified.CompProperties_EffecterColdLaunch">
         <delayTicks>75</delayTicks>
         <!-- 噴口在彈尾（貼圖中心後 3.05 格）。 -->
         <offsetY>-3.05</offsetY>
@@ -709,7 +709,7 @@
       <drawSize>2.83</drawSize>
     </graphicData>
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <movementType>Accelerate</movementType>
         <reversed>true</reversed>
         <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
@@ -745,7 +745,7 @@
       </li>
     </modExtensions>
     <comps>
-      <li Class="DMSE.CompProperties_EffecterColdLaunch">
+      <li Class="Fortified.CompProperties_EffecterColdLaunch">
         <delayTicks>40</delayTicks>
         <ignitionSound>DMSE_Missile_Flight</ignitionSound>
         <ExhaustFleck>DMS_Fleck_RocketFlame</ExhaustFleck>
@@ -781,7 +781,7 @@
       <drawSize>1.33</drawSize>
     </graphicData>
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <movementType>Accelerate</movementType>
         <reversed>true</reversed>
         <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
@@ -817,7 +817,7 @@
       </li>
     </modExtensions>
     <comps>
-      <li Class="DMSE.CompProperties_EffecterColdLaunch">
+      <li Class="Fortified.CompProperties_EffecterColdLaunch">
         <delayTicks>8</delayTicks>
         <ignitionSound>DMSE_Missile_Flight</ignitionSound>
         <ExhaustFleck>DMS_Fleck_RocketFlame</ExhaustFleck>
@@ -853,7 +853,7 @@
       <drawSize>1.91</drawSize>
     </graphicData>
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <movementType>Accelerate</movementType>
         <reversed>true</reversed>
         <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
@@ -889,7 +889,7 @@
       </li>
     </modExtensions>
     <comps>
-      <li Class="DMSE.CompProperties_EffecterHotLaunch">
+      <li Class="Fortified.CompProperties_EffecterHotLaunch">
         <launchBlastScale>0.85</launchBlastScale>
         <ignitionSound>DMSE_Missile_Flight</ignitionSound>
         <ExhaustFleck>DMS_Fleck_RocketFlame</ExhaustFleck>
@@ -925,7 +925,7 @@
       <drawSize>1.88</drawSize>
     </graphicData>
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <movementType>Accelerate</movementType>
         <reversed>true</reversed>
         <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
@@ -961,7 +961,7 @@
       </li>
     </modExtensions>
     <comps>
-      <li Class="DMSE.CompProperties_EffecterHotLaunch">
+      <li Class="Fortified.CompProperties_EffecterHotLaunch">
         <launchBlastScale>1.0</launchBlastScale>
         <ignitionSound>DMSE_Missile_Flight</ignitionSound>
         <ExhaustFleck>DMS_Fleck_RocketFlame</ExhaustFleck>
@@ -997,7 +997,7 @@
       <drawSize>3.97</drawSize>
     </graphicData>
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <movementType>Accelerate</movementType>
         <reversed>true</reversed>
         <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
@@ -1033,7 +1033,7 @@
       </li>
     </modExtensions>
     <comps>
-      <li Class="DMSE.CompProperties_EffecterHotLaunch">
+      <li Class="Fortified.CompProperties_EffecterHotLaunch">
         <launchBlastScale>1.0</launchBlastScale>
         <ignitionSound>DMSE_Missile_Flight</ignitionSound>
         <ExhaustFleck>DMS_Fleck_RocketFlame</ExhaustFleck>
@@ -1069,7 +1069,7 @@
       <drawSize>3.71</drawSize>
     </graphicData>
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <movementType>Accelerate</movementType>
         <reversed>true</reversed>
         <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
@@ -1112,7 +1112,7 @@
       </li>
     </modExtensions>
     <comps>
-      <li Class="DMSE.CompProperties_EffecterHotLaunch">
+      <li Class="Fortified.CompProperties_EffecterHotLaunch">
         <launchBlastScale>1.05</launchBlastScale>
         <ignitionSound>DMSE_Missile_Flight</ignitionSound>
         <ExhaustFleck>DMS_Fleck_RocketFlame</ExhaustFleck>
@@ -1151,7 +1151,7 @@
       <drawSize>4.46</drawSize>
     </graphicData>
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <movementType>Accelerate</movementType>
         <reversed>true</reversed>
         <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
@@ -1187,7 +1187,7 @@
       </li>
     </modExtensions>
     <comps>
-      <li Class="DMSE.CompProperties_EffecterHotLaunch">
+      <li Class="Fortified.CompProperties_EffecterHotLaunch">
         <launchBlastScale>1.1</launchBlastScale>
         <ignitionSound>DMSE_Missile_Flight</ignitionSound>
         <ExhaustFleck>DMS_Fleck_RocketFlame</ExhaustFleck>
@@ -1223,7 +1223,7 @@
       <drawSize>3.3</drawSize>
     </graphicData>
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <movementType>Accelerate</movementType>
         <reversed>true</reversed>
         <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
@@ -1260,7 +1260,7 @@
       </li>
     </modExtensions>
     <comps>
-      <li Class="DMSE.CompProperties_EffecterHotLaunch">
+      <li Class="Fortified.CompProperties_EffecterHotLaunch">
         <launchBlastScale>1.1</launchBlastScale>
         <ignitionSound>DMSE_Missile_Flight</ignitionSound>
         <ExhaustFleck>DMS_Fleck_RocketFlame</ExhaustFleck>

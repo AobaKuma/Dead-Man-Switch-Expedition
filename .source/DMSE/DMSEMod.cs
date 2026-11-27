@@ -13,43 +13,13 @@ namespace DMSE
             ImpactCraterUtility.Initialize(Settings);
         }
 
+        // 飛彈、防空與打擊的設定在 FFF 的設定頁（2026-11 隨飛彈體系移入 FFF，FFF_AerospaceSettings）
         public override void DoSettingsWindowContents(Rect inRect)
         {
             var listing = new Listing_Standard();
             listing.Begin(inRect);
             listing.CheckboxLabeled("DMSE.Platform.Settings.SpaceTraversal".Translate(), ref Settings.allowSpaceTraversal,
                 "DMSE.Platform.Settings.SpaceTraversalDesc".Translate());
-            listing.CheckboxLabeled("DMSE.BVR.World.ShowCoverage".Translate(), ref Settings.showBVRWorldCoverage,
-                "DMSE.BVR.World.ShowCoverageDesc".Translate());
-            listing.CheckboxLabeled("DMSE.Strike.Settings.WaveReadyAlert".Translate(), ref Settings.strikeWaveReadyAlert,
-                "DMSE.Strike.Settings.WaveReadyAlertDesc".Translate());
-            listing.CheckboxLabeled("DMSE.Missile.Settings.GodModeInstantAssembly".Translate(), ref Settings.godModeInstantAssembly,
-                "DMSE.Missile.Settings.GodModeInstantAssemblyDesc".Translate());
-            listing.CheckboxLabeled("DMSE.BVR.Settings.InterceptDebrisDamage".Translate(), ref Settings.interceptDebrisDamage,
-                "DMSE.BVR.Settings.InterceptDebrisDamageDesc".Translate());
-            listing.Label("DMSE.BVR.Settings.InterceptFxDensity".Translate(), tooltip: "DMSE.BVR.Settings.InterceptFxDensityDesc".Translate());
-            for (int level = 0; level <= 2; level++)
-            {
-                if (listing.RadioButton(("DMSE.BVR.Settings.InterceptFxDensity" + level).Translate(), Settings.interceptFxDensity == level, 12f))
-                {
-                    Settings.interceptFxDensity = level;
-                }
-            }
-            listing.Gap(6f);
-            listing.Label("DMSE.BVR.Settings.CiwsInterceptMultiplier".Translate(Settings.ciwsInterceptMultiplier.ToStringPercent()),
-                tooltip: "DMSE.BVR.Settings.CiwsInterceptMultiplierDesc".Translate());
-            Settings.ciwsInterceptMultiplier = Mathf.Round(listing.Slider(Settings.ciwsInterceptMultiplier, 0f, 2f) * 20f) / 20f;
-            listing.Gap(6f);
-            listing.Label("DMSE.BVR.Settings.TerminalImpactMarkers".Translate(), tooltip: "DMSE.BVR.Settings.TerminalImpactMarkersDesc".Translate());
-            for (int mode = 0; mode <= 2; mode++)
-            {
-                if (listing.RadioButton(("DMSE.BVR.Settings.TerminalImpactMarkers" + mode).Translate(), Settings.terminalImpactMarkerMode == mode, 12f))
-                {
-                    Settings.terminalImpactMarkerMode = mode;
-                }
-            }
-            listing.Gap(6f);
-            listing.CheckboxLabeled("DMSE.BVR.Settings.NpcMirv".Translate(), ref Settings.npcMirvEnabled, "DMSE.BVR.Settings.NpcMirvDesc".Translate());
             listing.End();
         }
 

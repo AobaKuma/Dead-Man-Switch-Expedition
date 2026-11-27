@@ -5,7 +5,7 @@
   <ThingDef ParentName="DMSE_MissileIncomingProjectileBase">
     <defName>DMSE_Incoming_Loiter</defName>
     <label>loitering munition (incoming)</label>
-    <thingClass>DMSE.Projectile_MissileIncoming</thingClass>
+    <thingClass>Fortified.Projectile_MissileIncoming</thingClass>
     <graphicData>
       <texPath>Things/Missile/Termite/missile_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -15,12 +15,12 @@
     <!-- 爆炸效果由 MissileConfig 於落點動態套用，故此處不設固定 explosionRadius/explosionDamage。 -->
     <!-- BVR 攔截特性：巡飛彈速度慢、隱身差 → 容易被偵測（高 distanceLevel、低 stealthLevel）。 -->
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <shadowSize>(2, 2)</shadowSize>
         <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
         <speed>1</speed>
       </li>
-      <li Class="DMSE.BVRTargetProps">
+      <li Class="Fortified.AirTargetExtension">
         <distanceLevel>1</distanceLevel>
         <stealthLevel>0</stealthLevel>
         <speed>15</speed>
@@ -35,7 +35,7 @@
     <defName>DMSE_WorldObject_Loiter</defName>
     <label>loitering munition</label>
     <description>A loitering munition in flight.</description>
-    <worldObjectClass>DMSE.ScorerProjectile_WorldObject</worldObjectClass>
+    <worldObjectClass>Fortified.WorldObject_OutgoingMissile</worldObjectClass>
     <texture>UI/DMSE/TravelingMissile</texture>
     <rotateGraphicWhenTraveling>true</rotateGraphicWhenTraveling>
     <useDynamicDrawer>true</useDynamicDrawer>
@@ -58,7 +58,7 @@
     <defName>DMSE_Building_LoiteringLauncher</defName>
     <label>launch rail</label>
     <description>A simple tilted rail that holds one loitering munition. It needs no power and is cheap enough to line a perimeter with, but a single hit can destroy it.\n\nStrike munitions are launched at targets beyond the map. Interceptor munitions are fired automatically by the fire-control network.</description>
-    <thingClass>DMSE.Building_MissileRack</thingClass>
+    <thingClass>Fortified.Building_MissileRack</thingClass>
     <graphicData>
       <texPath>Things/Building/MissileLaunchRail/building</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
@@ -107,7 +107,7 @@
       </defaultStorageSettings>
     </building>
     <modExtensions>
-      <li Class="DMSE.MissileLauncherExtension">
+      <li Class="Fortified.MissileLauncherExtension">
         <sizeClass>Loitering</sizeClass>
         <launchMode>Tilt</launchMode>
         <capacity>1</capacity>
@@ -115,7 +115,7 @@
     </modExtensions>
     <comps>
       <!-- 容量 1：發射軌上單枚；依建築朝向渲染（slotOffsets 留空 → 自動沿長軸置中）。 -->
-      <li Class="DMSE.CompProperties_MissileRackRenderer">
+      <li Class="Fortified.CompProperties_MissileRackRenderer">
         <maxStored>1</maxStored>
         <useNativeDrawSize>true</useNativeDrawSize>
         <slotOffsets>
@@ -146,7 +146,7 @@
           <rotation>285</rotation>
         </west>
       </li>
-      <li Class="DMSE.CompProperties_MissileRailLauncher">
+      <li Class="Fortified.CompProperties_MissileRailLauncher">
         <skyfaller>DMSE_Launch_Loiter</skyfaller>
         <skyfallerIncoming>DMSE_Incoming_Loiter</skyfallerIncoming>
         <worldObjectDef>DMSE_WorldObject_Loiter</worldObjectDef>
@@ -155,7 +155,7 @@
         <launchForwardCells>2</launchForwardCells>
       </li>
       <!-- 攔截：只取攔截用途的彈（萊茵女兒），由火控雷達指派。 -->
-      <li Class="DMSE.CompProperties_MissileLauncher">
+      <li Class="Fortified.CompProperties_MissileLauncher">
         <interceptorSkyfaller>DMSE_Launch_LegacyInterceptor</interceptorSkyfaller>
         <reloadCooldownTicks>600</reloadCooldownTicks>
         <interceptorTravelTicks>240</interceptorTravelTicks>
@@ -173,7 +173,7 @@
     </comps>
     <inspectorTabs>
       <li>RimWorld.ITab_Storage</li>
-      <li>DMSE.ITab_MissileInventory</li>
+      <li>Fortified.ITab_MissileInventory</li>
     </inspectorTabs>
     <researchPrerequisites>
       <li>DMSE_LoiteringMunitions</li>

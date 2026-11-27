@@ -64,9 +64,9 @@
         <basePowerConsumption>9000</basePowerConsumption>
         <transmitsPower>true</transmitsPower>
       </li>
-      <li Class="DMSE.CompProperties_PowerThrottle" />
+      <li Class="Fortified.CompProperties_PowerThrottle" />
       <!-- 複合功能示範：同一棟雷達同時搭載「搜索雷達」與「火控雷達」兩個 ThingComp。 -->
-      <li Class="DMSE.CompProperties_SearchRadar">
+      <li Class="Fortified.CompProperties_SearchRadar">
         <worldDetectionRange>12</worldDetectionRange>
         <searchDistance>200</searchDistance>
         <powerLevel>2</powerLevel>
@@ -74,7 +74,7 @@
         <ticksPerDistance>4</ticksPerDistance>
       </li>
       <!-- 24 個火力通道：與砲擊引導、地圖波次、世界航跡、打擊導引共用同一本帳（BVRChannelLedger）。 -->
-      <li Class="DMSE.CompProperties_FireControlRadar">
+      <li Class="Fortified.CompProperties_FireControlRadar">
         <maxTargets>24</maxTargets>
         <powerLevel>2</powerLevel>
         <!-- 誘餌識別率（docs/MIRV分導彈頭與誘餌載荷_實作計畫.md §7.3） -->

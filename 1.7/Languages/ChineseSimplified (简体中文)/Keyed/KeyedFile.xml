@@ -5,27 +5,8 @@
   <DMSE.MissileBase.NextFireIn>下次导弹打击：{0}</DMSE.MissileBase.NextFireIn>
   <DMSE.MissileBase.LocalMonitoring>阵地已被侦测（本地地图观察中）</DMSE.MissileBase.LocalMonitoring>
   <DMSE.MissileBase.RelocationIn>阵地转移倒计时：{0}</DMSE.MissileBase.RelocationIn>
-  <DMSE.MissileBase.Relocated>导弹阵地转移</DMSE.MissileBase.Relocated>
-  <DMSE.MissileBase.RelocatedDesc>一处敌方导弹阵地在部署后完成射击任务并转移，防止殖民地反制。</DMSE.MissileBase.RelocatedDesc>
-  <DMSE.MissileBase.Destroyed>导弹阵地已摧毁</DMSE.MissileBase.Destroyed>
-  <DMSE.MissileBase.DestroyedDesc>殖民者已摧毁敌方导弹阵地的所有火控雷达。失去火控后阵地无法再发射，来自该阵地的导弹威胁已解除。\n\n阵地地图会保留到观察结束、且当地没有殖民者为止，仍可派穿梭机前往搜刮。</DMSE.MissileBase.DestroyedDesc>
   <DMSE.MissileBase.ReentryBlockedIn>地面通道封锁中，敌方整备防线（{0}）</DMSE.MissileBase.ReentryBlockedIn>
-  <DMSE.MissileBase.ReentryBlocked>通道封锁，敌方整备防线（{0}）</DMSE.MissileBase.ReentryBlocked>
-  <DMSE.MissileBase.ReentryBlockStarted>{0}：火控雷达仍在，敌方正重新整备防线。{1}内无法再次进入，阵地将完整重建。</DMSE.MissileBase.ReentryBlockStarted>
-  <DMSE.MissileBase.ObjectivesAlert>导弹阵地：剩余火控雷达 {0}</DMSE.MissileBase.ObjectivesAlert>
-  <DMSE.MissileBase.ObjectivesAlertDesc>摧毁所有火控雷达即可瓦解此阵地（剩余 {0}），发射架与搜索雷达不必摧毁。
-
-若在火控雷达尚存时撤退，敌方将重新整备：阵地留在世界地图上继续发射，一段时间内无法再次进入，下次进入时阵地完整重建。
-
-点击依序检视剩余目标。</DMSE.MissileBase.ObjectivesAlertDesc>
-  <DMSE.MissileBase.ArrivedLetter>你们抵达了一处导弹阵地。敌方已在此部署火控雷达与导弹发射架，不断向周围殖民地发射打击。摧毁所有火控雷达即可瓦解此阵地；若在火控雷达尚存时撤退，敌方将重新整备防线，一段时间内无法再次进入。</DMSE.MissileBase.ArrivedLetter>
   <DMSE.MissileBase.SiteDesc>一处配备火控雷达与导弹发射架的机动战术弹道导弹阵地。阵地会在完成任务后转移，以躲避反制。</DMSE.MissileBase.SiteDesc>
-  <DMSE.MissileBase.SupplyDrop>敌方补给空投：{0} ×{1}</DMSE.MissileBase.SupplyDrop>
-  <DMSE.MissileBase.RackResupply>敌方空投导弹：{1} 枚</DMSE.MissileBase.RackResupply>
-  <DMSE.MissileBase.TurretAmmoDrop>敌方空投弹药：{1} ×{0}</DMSE.MissileBase.TurretAmmoDrop>
-  <DMSE.FieldLaunchSite.ArrivedLetter>你们抵达了一处敌方野战发射阵地。阵地以搜索雷达为中心，四周散布发射阵位、弹药车与人员休息区。只要仍有雷达运作，敌方就会定时空投生存食品包维持守军。摧毁所有火控雷达即可瓦解此阵地；若在火控雷达尚存时撤退，敌方将重新整备防线，一段时间内无法再次进入。</DMSE.FieldLaunchSite.ArrivedLetter>
-  <DMSE.FieldLaunchSite.SpawnedLetter>{0}在{1}的{2}方 {3} 格处部署了一处野战导弹发射阵地。其发射架能打击你的殖民地；只要雷达仍在运作，补给舱就会持续为守军送来食物。\n\n摧毁所有火控雷达即可瓦解此阵地；瘫痪所有雷达也能切断其补给。</DMSE.FieldLaunchSite.SpawnedLetter>
-  <DMSE.EarlyLaunchSite.ArrivedLetter>你们抵达了一处敌方旧式导弹阵地。声学反射镜负责监听，手动火控雷达与发射轨负责射出缓慢的脉冲喷射巡飞弹。摧毁火控雷达即可瓦解此阵地；守军或烧木发电机没了，火控雷达也会停摆。若在雷达尚存时撤退，敌方将重新整备防线，一段时间内无法再次进入。</DMSE.EarlyLaunchSite.ArrivedLetter>
   <DMSE.EarlyLaunchSite.SpawnedLetter>{0}在{1}的{2}方 {3} 格处架设了一处旧式导弹阵地。它缓慢的脉冲喷射巡飞弹能打击你的殖民地，阵地本身没有拦截弹。\n\n摧毁火控雷达即可瓦解此阵地。</DMSE.EarlyLaunchSite.SpawnedLetter>
 
   <!-- EN: Launch Missile -->
@@ -50,40 +31,9 @@
   <!-- EN: the position of Stele has been tracked down, hunting squad and possible air strike will arrive in no time, transfer before it's too late. -->
   <DMSE.Alert.HuntdownThreatCritical.Desc>石碑的位置已被追踪，追捕小队和可能的空袭将很快到达，请在为时已晚之前转移。</DMSE.Alert.HuntdownThreatCritical.Desc>
 
-  <!-- EN: {0} drop pods will breach in {1} -->
-  <DMSE.Alert.Pods>{0} 个来袭目标，拦截窗口剩余 {1}</DMSE.Alert.Pods>
-  <DMSE.Alert.Pods.Loitering>{0} 枚导弹在上空盘旋，剩余盘旋 {1}</DMSE.Alert.Pods.Loitering>
-  <DMSE.Alert.Pods.Window.Midcourse>中过程拦截窗口：{0}</DMSE.Alert.Pods.Window.Midcourse>
-  <DMSE.Alert.Pods.Window.Terminal>末端拦截窗口（CIWS）：{0}</DMSE.Alert.Pods.Window.Terminal>
-  <DMSE.Alert.Pods.Window.Loitering>盘旋剩余：{0}</DMSE.Alert.Pods.Window.Loitering>
-  <DMSE.Alert.Pods.Target>  · {0}  【{1}】</DMSE.Alert.Pods.Target>
-  <DMSE.Alert.Pods.Status.InFlight>拦截弹飞行中</DMSE.Alert.Pods.Status.InFlight>
-  <DMSE.Alert.Pods.Status.Locking>火控锁定中</DMSE.Alert.Pods.Status.Locking>
-  <DMSE.Alert.Pods.Status.Unengaged>未接战</DMSE.Alert.Pods.Status.Unengaged>
-  <DMSE.Alert.Pods.Status.Loitering>盘旋等待目标</DMSE.Alert.Pods.Status.Loitering>
-  <!-- BVR 系统状态提示（独立于来袭威胁提示） -->
-  <DMSE.Alert.BVRStatus.Label>BVR 系统</DMSE.Alert.BVRStatus.Label>
-  <DMSE.Alert.BVRStatus.SearchRadars>搜索雷达：</DMSE.Alert.BVRStatus.SearchRadars>
-  <DMSE.Alert.BVRStatus.SearchRadar.Line>  · {0}  搜索距离 {1}，反隐身 {2}，功率 {3}  [{4}]</DMSE.Alert.BVRStatus.SearchRadar.Line>
-  <DMSE.Alert.BVRStatus.FireControlRadars>火控雷达：</DMSE.Alert.BVRStatus.FireControlRadars>
-  <DMSE.Alert.BVRStatus.FireControl.Line>  · {0}  {1} 条通道，功率 {2}  [{3}]</DMSE.Alert.BVRStatus.FireControl.Line>
-  <DMSE.Alert.BVRStatus.FireControl.Occupied>  已占用通道：{0} / {1}</DMSE.Alert.BVRStatus.FireControl.Occupied>
-  <DMSE.Alert.BVRStatus.None>  （未安装）</DMSE.Alert.BVRStatus.None>
 
   <!-- 建筑重新命名：按钮由 Patch_InspectPaneRename 绘制，对话框沿用原版 Dialog_Rename -->
 
-  <!-- EN: Select flight mode -->
-  <DMSE.Flight.Select>选择巡航模式</DMSE.Flight.Select>
-  <!-- EN: Regular flight -->
-  <DMSE.Flight.Regular>常规巡航</DMSE.Flight.Regular>
-  <!-- EN: Transfer flight -->
-  <DMSE.Flight.Transfer>转移巡航</DMSE.Flight.Transfer>
-  <!-- EN: Show advanced options -->
-  <DMSE.Flight.ShowAdvanced>高级选项</DMSE.Flight.ShowAdvanced>
-  <!-- EN: Impact flight -->
-  <DMSE.Flight.Impact>终结巡航</DMSE.Flight.Impact>
-  <!-- EN: Hard impact flight -->
-  <DMSE.Flight.ImpactHard>终结巡航</DMSE.Flight.ImpactHard>
 
   <!-- EN: Cannot transfer: ship state invalid. -->
   <DMSE.Cannot.Reason.Null>无法转移：船舰状态无效。</DMSE.Cannot.Reason.Null>
@@ -101,12 +51,6 @@
   <!-- EN: Cannot transfer: destination must be in space. -->
   <DMSE.Disabled.TargetedSurface>无法转移：目的地必须位于太空。</DMSE.Disabled.TargetedSurface>
 
-  <!-- EN: A valid flight module is installed on this ship. Please choose a flight mode: -->
-  <DMSE.Flight.Select.Desc>由于舰船上存在有效装置，因此请选择此次巡航的模式:</DMSE.Flight.Select.Desc>
-  <!-- EN: Your colonists know this is a real option, but not a wise one. -->
-  <DMSE.Flight.Impact.Header>你的殖民者知道这是一个切实存在但不明智的选择。</DMSE.Flight.Impact.Header>
-  <!-- EN: Even while the navigation console flashes crimson warnings, it still shows a feasible acceleration profile.\n\nBy activating the hard impact protocol, the fusion core will output full power under overload conditions, allowing the nuclear-thermal engines to accelerate this ship toward the planet at maximum thrust and collide with the surface.\n\nThis will turn both the ship and its momentum into an effective high-yield kinetic weapon, causing irreversible damage to the planet.\n\n\n\nAre you sure you want to proceed? -->
-  <DMSE.Flight.Impact.Confirm>即使航路主机显示着鲜红的警告，但它仍然显示了一条可行的加速方案。\n\n透过启动终结巡航协议，聚变核心将在超载功率下输出完整的动力，使得核热引擎能够以最大功率推动向着这颗星球加速并撞击地表。\n\n这将使得整艘船以及推动的天体成为有效且威力十足的质量武器，并对于星球造成无法复原的破坏。\n\n\n\n你确定要这么做吗?</DMSE.Flight.Impact.Confirm>
 
   <!-- EN: Fusion core heating up. Launching procedure in 6... -->
   <DMSE_ShipWarmUpBegin>聚变核心正在提升功率. 推进器点火倒数: 6</DMSE_ShipWarmUpBegin>
@@ -135,93 +79,12 @@
   <DMSE_Crater>{0}撞击坑</DMSE_Crater>
   
   <DMS_Exist>地图可见计时:{0}</DMS_Exist>
-  <DMSE.Alert.Exist.Observing>观察中：{0}</DMSE.Alert.Exist.Observing>
-  <DMSE.Alert.Exist.TimeLeft>观察结束倒数：{0}</DMSE.Alert.Exist.TimeLeft>
-  <DMSE.Alert.Exist.EnemiesAlive>剩余敌方战斗人员：{0}</DMSE.Alert.Exist.EnemiesAlive>
-  <DMSE.Alert.Exist.IsMissileBase>这是一处运作中的导弹阵地。提前结束观察将让敌方人员得以重整并重置其防御。</DMSE.Alert.Exist.IsMissileBase>
-  <DMSE.Alert.Exist.MissileBaseDestroyed>此导弹阵地的火控雷达已全数摧毁。地图会保留到观察结束、且当地没有殖民者为止；在此之前可派穿梭机或运输舱前往搜刮。</DMSE.Alert.Exist.MissileBaseDestroyed>
-  <DMSE.Alert.Exist.ClickHint>点击以提前结束观察。</DMSE.Alert.Exist.ClickHint>
-  <DMSE.Alert.Exist.EndEarly.Confirm>现在就结束观察？地图将不再被保留，可能会被游戏清理。</DMSE.Alert.Exist.EndEarly.Confirm>
-  <DMSE.Alert.Exist.EndEarly.Confirm.MissileBase>提前结束观察？\n\n敌方人员将有机会重整，该导弹阵地的防御与计时器都会重置，如同观察从未发生。\n\n此操作无法复原。</DMSE.Alert.Exist.EndEarly.Confirm.MissileBase>
-  <DMSE.Alert.Exist.ObservationEnded>观察已提前结束。敌军可能会重整。</DMSE.Alert.Exist.ObservationEnded>
-  <DMSE.Alert.PlayerMissiles.Label>{0} 枚导弹飞行中，首波落地倒数 {1}</DMSE.Alert.PlayerMissiles.Label>
-  <DMSE.Alert.PlayerMissiles.MapHeader>目标：{0}</DMSE.Alert.PlayerMissiles.MapHeader>
-  <DMSE.Alert.PlayerMissiles.WaveImpact>  落地倒数 {0}：</DMSE.Alert.PlayerMissiles.WaveImpact>
-  <DMSE.Alert.PlayerMissiles.Target>    · {0}  ({1},{2})  【{3}】</DMSE.Alert.PlayerMissiles.Target>
-  <DMSE.Alert.PlayerMissiles.ClickHint>左键切换至下一个落点，右键切换回上一个。</DMSE.Alert.PlayerMissiles.ClickHint>
 
-  <DMSE.BVR.Online>运作中</DMSE.BVR.Online>
-  <DMSE.BVR.Offline>离线</DMSE.BVR.Offline>
-  <DMSE.BVR.SearchRadar>搜索雷达：搜索距离 {0}，反隐身 {1}（{2}）</DMSE.BVR.SearchRadar>
-  <DMSE.BVR.FireControl>火控雷达：{0} 条火力通道（{1}）</DMSE.BVR.FireControl>
-  <DMSE.BVR.ArtilleryChannels>火炮引导通道：{0} / {1} 空闲</DMSE.BVR.ArtilleryChannels>
 
-  <DMSE.Missile.Tab>装配</DMSE.Missile.Tab>
-  <DMSE.Missile.Body>导弹弹体</DMSE.Missile.Body>
-  <DMSE.Missile.BodyFixed>由发射平台固定</DMSE.Missile.BodyFixed>
-  <DMSE.Missile.None>无</DMSE.Missile.None>
-  <DMSE.Missile.Locked>未解锁</DMSE.Missile.Locked>
-  <DMSE.Missile.GodModeInstant>上帝模式：变更立即装配完成，不耗资源、不需研究。</DMSE.Missile.GodModeInstant>
-  <DMSE.Missile.Settings.GodModeInstantAssembly>上帝模式：导弹即时装配</DMSE.Missile.Settings.GodModeInstantAssembly>
-  <DMSE.Missile.Settings.GodModeInstantAssemblyDesc>开启上帝模式时，导弹与弹道导弹发射井的装配立即完成：不需确认、搬运或装配工作，也不消耗资源；部件不需研究即可选用。移除的部件不退还资源。</DMSE.Missile.Settings.GodModeInstantAssemblyDesc>
-  <DMSE.BVR.Settings.InterceptDebrisDamage>拦截残骸造成伤害</DMSE.BVR.Settings.InterceptDebrisDamage>
-  <DMSE.BVR.Settings.InterceptDebrisDamageDesc>被拦截的导弹与空投舱所掉落的大块残骸，落地时对该格造成轻微钝伤，屋顶可以挡下。关闭时残骸只留下扬尘、火花与碎屑。</DMSE.BVR.Settings.InterceptDebrisDamageDesc>
-  <DMSE.BVR.Settings.InterceptFxDensity>拦截特效密度</DMSE.BVR.Settings.InterceptFxDensity>
-  <DMSE.BVR.Settings.InterceptFxDensityDesc>拦截时产生的碎片、烟团与烟迹数量。大规模齐射造成卡顿时可调低；任何设定下大块残骸都仍会落地。</DMSE.BVR.Settings.InterceptFxDensityDesc>
-  <DMSE.BVR.Settings.CiwsInterceptMultiplier>近防炮塔拦截率：{0}</DMSE.BVR.Settings.CiwsInterceptMultiplier>
-  <DMSE.BVR.Settings.CiwsInterceptMultiplierDesc>调整所有近防炮塔（CIWS）的命中率。100% 为各炮塔原本的数值；0% 则永远无法击落目标。不论设定为何，弹道导弹都极难被近防拦截。</DMSE.BVR.Settings.CiwsInterceptMultiplierDesc>
   <DMSE.BVR.Settings.InterceptFxDensity0>低</DMSE.BVR.Settings.InterceptFxDensity0>
   <DMSE.BVR.Settings.InterceptFxDensity1>中</DMSE.BVR.Settings.InterceptFxDensity1>
   <DMSE.BVR.Settings.InterceptFxDensity2>高</DMSE.BVR.Settings.InterceptFxDensity2>
-  <DMSE.Missile.Stats>待装配数值（装配后生效）</DMSE.Missile.Stats>
-  <DMSE.Missile.Stat.Radius>爆炸半径：{0}</DMSE.Missile.Stat.Radius>
-  <DMSE.Missile.Stat.Damage>弹头：{0}（{1}）</DMSE.Missile.Stat.Damage>
-  <DMSE.Missile.Stat.Scatter>命中偏移：{0}</DMSE.Missile.Stat.Scatter>
-  <DMSE.Missile.Stat.Speed>飞行速度：x{0}</DMSE.Missile.Stat.Speed>
-  <DMSE.Missile.Stat.Fuel>燃料量：{0}</DMSE.Missile.Stat.Fuel>
-  <DMSE.Missile.Stat.Impulse>比冲（推进效率）：{0}</DMSE.Missile.Stat.Impulse>
-  <DMSE.Missile.Stat.Range>射程：{0} 格</DMSE.Missile.Stat.Range>
-  <DMSE.Missile.Stat.TerminalGuidance>具备制导能力：飞行中可更新目标位置 {0} 次，可跨图层打击</DMSE.Missile.Stat.TerminalGuidance>
-  <DMSE.Missile.Stat.NoTerminalGuidance>无制导能力：无法追踪移动目标，也无法跨图层打击</DMSE.Missile.Stat.NoTerminalGuidance>
-  <DMSE.Missile.Stat.Loiter>盘旋飞控：找不到目标时可盘旋等待 {0}，之后才回退惯性落点</DMSE.Missile.Stat.Loiter>
-  <DMSE.MissileLauncher.OutOfRange>目标超出导弹射程（{0} 格）。</DMSE.MissileLauncher.OutOfRange>
-  <DMSE.MissileLauncher.RangeLabel>{0} / {1} 格</DMSE.MissileLauncher.RangeLabel>
-  <DMSE.MissileLauncher.NoTargetHere>此处没有目标，导弹将会落空</DMSE.MissileLauncher.NoTargetHere>
-  <DMSE.Missile.CrossLayerNeedsGuidance>跨图层打击需要具备制导能力的导弹；惯性制导与无制导弹药无法做到。</DMSE.Missile.CrossLayerNeedsGuidance>
-  <DMSE.Missile.Cat.Warhead>弹头</DMSE.Missile.Cat.Warhead>
-  <DMSE.Missile.Cat.Guidance>导引</DMSE.Missile.Cat.Guidance>
-  <DMSE.Missile.Cat.Propulsion>推进／射程</DMSE.Missile.Cat.Propulsion>
-  <DMSE.Missile.Cat.Payload>特殊酬载</DMSE.Missile.Cat.Payload>
-  <DMSE.Missile.Inspect>弹体：{0}\n弹头：{1}\n爆炸：半径 {2} / 伤害 {3}</DMSE.Missile.Inspect>
-  <DMSE.Missile.NeedResources>装配所需：{0}</DMSE.Missile.NeedResources>
-  <DMSE.Missile.ReadyToAssemble>资源已备齐，确认后开始装配</DMSE.Missile.ReadyToAssemble>
-  <DMSE.Missile.NoResources>没有可用于装配的资源</DMSE.Missile.NoResources>
-  <DMSE.Missile.EditingSlot>正在编辑架上第 {0} 枚（共 {1} 枚）</DMSE.Missile.EditingSlot>
-  <DMSE.Missile.ConfirmAssembly>加入装配队列</DMSE.Missile.ConfirmAssembly>
-  <DMSE.Missile.AssemblyQueued>已加入队列，殖民者即将开始装配</DMSE.Missile.AssemblyQueued>
-  <DMSE.Missile.ResetToCurrent>还原为已装配设定</DMSE.Missile.ResetToCurrent>
-  <DMSE.MissileLauncher.LaunchCooldown>发射轨重新装填中：{0}</DMSE.MissileLauncher.LaunchCooldown>
-  <DMSE.MissileLauncher.Rail.NoMissileLoaded>未装填导弹</DMSE.MissileLauncher.Rail.NoMissileLoaded>
-  <DMSE.Missile.NoRackAvailable>找不到含兼容导弹的储存架</DMSE.Missile.NoRackAvailable>
-  <DMSE.MissileLauncher.Interceptor.Reloading>装填中：{0}</DMSE.MissileLauncher.Interceptor.Reloading>
-  <DMSE.MissileLauncher.Interceptor.Ready>可发射</DMSE.MissileLauncher.Interceptor.Ready>
-  <DMSE.Missile.IncomingLetter>导弹来袭</DMSE.Missile.IncomingLetter>
-  <DMSE.Missile.IncomingLetterDesc>{0} 发射的导弹正在接近，即将打击殖民地。</DMSE.Missile.IncomingLetterDesc>
-  <DMSE.Missile.Missed>我方导弹找不到目标，已落空。</DMSE.Missile.Missed>
-  <DMSE.Missile.IncomingMissed>{0} 发射的导弹失去目标，已落空。</DMSE.Missile.IncomingMissed>
 
-  <!-- 导引头选目标 -->
-  <DMSE.Missile.SeekerLocked>{0}已锁定目标，导弹正在落下。</DMSE.Missile.SeekerLocked>
-  <DMSE.Missile.Loitering>导引头没有找到目标：导弹在上空盘旋等待，最多 {0} 后才回退惯性制导。</DMSE.Missile.Loitering>
-  <DMSE.Guidance.Inertial>惯性导引</DMSE.Guidance.Inertial>
-  <DMSE.Guidance.RadioCommand>无线电指令制导</DMSE.Guidance.RadioCommand>
-  <DMSE.Guidance.ManualTarget>{0}：抵达后由你选择落点</DMSE.Guidance.ManualTarget>
-  <DMSE.Guidance.AutoTarget>{0}：抵达后自动锁定目标</DMSE.Guidance.AutoTarget>
-  <DMSE.LaserMark.Inspect>标定方：{0}\n剩余时间：{1}</DMSE.LaserMark.Inspect>
-  <DMSE.LaserMark.InspectPermanent>标定方：{0}</DMSE.LaserMark.InspectPermanent>
-  <DMSE.LaserMark.Placed>已标定激光引导点，{0}后失效。</DMSE.LaserMark.Placed>
-  <DMSE.LaserMark.PlacedPermanent>已标定激光引导点。</DMSE.LaserMark.PlacedPermanent>
-  <DMSE.Missile.TerminalUpdatesRemaining>剩余终端更新：{0} / {1}</DMSE.Missile.TerminalUpdatesRemaining>
 
   <DMSE_MissileDecayedAway>{0} 已劣化至无法使用而解体。</DMSE_MissileDecayedAway>
   <DMSE_MissileDecaySheltered>已庇护：耐久稳定</DMSE_MissileDecaySheltered>
@@ -229,109 +92,17 @@
 
   <DMSE_MissileRackStored>已存放导弹：{0} / {1}</DMSE_MissileRackStored>
 
-  <!-- ITab_MissileInventory（建筑库存分页） -->
-  <DMSE.Tab.MissileInventory>库存</DMSE.Tab.MissileInventory>
-  <DMSE.MissileInventory.Features>特性</DMSE.MissileInventory.Features>
-  <DMSE.MissileInventory.Stat.BlastRadius>爆炸半径</DMSE.MissileInventory.Stat.BlastRadius>
-  <DMSE.MissileInventory.Stat.Damage>伤害</DMSE.MissileInventory.Stat.Damage>
-  <DMSE.MissileInventory.Unit.Tiles>格</DMSE.MissileInventory.Unit.Tiles>
-  <DMSE.MissileInventory.Feature.Mechanics>本枚导弹的生效机制</DMSE.MissileInventory.Feature.Mechanics>
-  <DMSE.MissileInventory.Feature.Warhead>主弹头伤害类型：{0}；伤害值：{1}；爆炸半径：{2} 格。载荷容量系数 N = {3}。</DMSE.MissileInventory.Feature.Warhead>
-  <DMSE.MissileInventory.Feature.InterceptBonus>拦截命中率加成：{0}%</DMSE.MissileInventory.Feature.InterceptBonus>
-  <DMSE.MissileInventory.Feature.ExtraRolls>每次拦截额外掷骰：{0} 次</DMSE.MissileInventory.Feature.ExtraRolls>
-  <DMSE.MissileInventory.Feature.RangeOffset>战斗部射程修正：{0} 格</DMSE.MissileInventory.Feature.RangeOffset>
-  <DMSE.MissileInventory.Feature.PenetratesRoof>可穿透厚岩顶，命中岩顶下目标。</DMSE.MissileInventory.Feature.PenetratesRoof>
-  <DMSE.MissileInventory.Feature.Guidance>散布半径：{0} 格；终端位置更新：{1} 次；{2}</DMSE.MissileInventory.Feature.Guidance>
-  <DMSE.MissileInventory.Feature.Guided>具终端制导，可追踪目标位置。</DMSE.MissileInventory.Feature.Guided>
-  <DMSE.MissileInventory.Feature.Unguided>不具终端制导，依默认落点散布。</DMSE.MissileInventory.Feature.Unguided>
-  <DMSE.MissileInventory.Feature.Propulsion>有效射程：{0} 格；世界移动速度倍率：{1}；燃料：{2}；比冲：{3}。</DMSE.MissileInventory.Feature.Propulsion>
-  <DMSE.MissileInventory.Feature.Payload>载荷效果依弹体容量 N = {0} 缩放；有效射程：{1} 格。</DMSE.MissileInventory.Feature.Payload>
-  <DMSE.MissileInventory.Feature.Signature>雷达截面倍率：{0}。</DMSE.MissileInventory.Feature.Signature>
-  <DMSE.MissileInventory.Feature.Jamming>干扰强度：{0}%。</DMSE.MissileInventory.Feature.Jamming>
-  <DMSE.MissileInventory.Feature.Chaff>携带箔条／干扰丝：{0} 次。</DMSE.MissileInventory.Feature.Chaff>
-  <DMSE.MissileInventory.Count>已装填：{0} / {1}</DMSE.MissileInventory.Count>
-  <DMSE.MissileInventory.Empty>未装填任何导弹。</DMSE.MissileInventory.Empty>
-  <!-- {0} = 爆炸半径, {1} = 伤害 -->
-  <DMSE.MissileInventory.Stats>爆炸 {0}  ·  伤害 {1}</DMSE.MissileInventory.Stats>
   <DMSE.MissileInventory.Pending>装配待定</DMSE.MissileInventory.Pending>
-  <DMSE.MissileInventory.EjectDesc>将这枚导弹弹出为物品，放在储存架旁的地上。弹出后为禁用状态，避免搬运工立刻搬回原架。</DMSE.MissileInventory.EjectDesc>
-  <DMSE.MissileInventory.EjectFailed>储存架旁没有空位，无法弹出导弹。</DMSE.MissileInventory.EjectFailed>
 
-  <!-- 弹道发射井（CompMissileLauncher_Ballistic） -->
-  <DMSE.MissileLauncher.Ballistic.Fire>发射弹道导弹</DMSE.MissileLauncher.Ballistic.Fire>
-  <DMSE.MissileLauncher.Ballistic.FireDesc>向世界地图目标发射已装配的弹道导弹。导弹以抛物线弹道飞行，一旦发射几乎无法被拦截。</DMSE.MissileLauncher.Ballistic.FireDesc>
-  <DMSE.MissileLauncher.Ballistic.NotLoaded>导弹尚未装配。请在「装配」分页设定，殖民者会搬运材料完成装配。</DMSE.MissileLauncher.Ballistic.NotLoaded>
-  <DMSE.MissileLauncher.Ballistic.Loaded>弹道导弹：已装配，可发射</DMSE.MissileLauncher.Ballistic.Loaded>
-  <DMSE.MissileLauncher.Ballistic.LoadedWith>弹道导弹已装填：{0}</DMSE.MissileLauncher.Ballistic.LoadedWith>
-  <DMSE.MissileLauncher.Ballistic.AwaitingAssembly>弹道导弹：等待殖民者完成装配</DMSE.MissileLauncher.Ballistic.AwaitingAssembly>
-  <DMSE.MissileLauncher.Ballistic.Unloaded>弹道发射井：未装填，请在装配分页设定</DMSE.MissileLauncher.Ballistic.Unloaded>
 
-  <!-- 火炮打击（CompArtilleryStrike） -->
-  <DMSE.Artillery.Fire>火炮射击</DMSE.Artillery.Fire>
-  <DMSE.Artillery.FireDesc>选择世界地图上的目标持续炮击，直到下令停止。</DMSE.Artillery.FireDesc>
-  <DMSE.Artillery.Stop>停止射击</DMSE.Artillery.Stop>
-  <DMSE.Artillery.StopDesc>停止持续射击。当前状态：{0}</DMSE.Artillery.StopDesc>
-  <!-- 射击模式（校射／效力射） -->
-  <DMSE.Artillery.ModeRanging>射击模式：校射</DMSE.Artillery.ModeRanging>
-  <DMSE.Artillery.ModeEffect>射击模式：效力射</DMSE.Artillery.ModeEffect>
-  <DMSE.Artillery.ModeDesc>切换射击模式。校射：以目标地图中心为散布中心，每个落点都会登录成该地图的效力射落点。效力射：以该地图最后一次校射的落点为散布中心，同阵营对同一地图的火炮共用这个落点；每发再收束基础散布的 25%（每门炮各自累计，最低 1 格），且不使用雷达导引。</DMSE.Artillery.ModeDesc>
-  <DMSE.Artillery.EffectPoint>落点 ({0}, {1})，下一发散布 {2} 格</DMSE.Artillery.EffectPoint>
   <DMSE.Artillery.TooClose>目标距离太近，最小射程为 {0} 格。</DMSE.Artillery.TooClose>
   <DMSE.Artillery.NoFireControl>没有具备空闲引导通道的火控雷达。</DMSE.Artillery.NoFireControl>
-  <DMSE.Artillery.NoAmmo>未装填炮弹，持续射击已停止。</DMSE.Artillery.NoAmmo>
-  <DMSE.Artillery.CrossLayer>炮弹没有制导能力，无法跨图层打击。</DMSE.Artillery.CrossLayer>
-  <DMSE.Artillery.Missed>炮击找不到目标，已落空。</DMSE.Artillery.Missed>
-  <DMSE.Artillery.NoBarrel>炮管已磨损，持续射击已停止，请更换强化炮管。</DMSE.Artillery.NoBarrel>
-  <DMSE.Artillery.TargetIsHome>不能炮击自己所在的地块。</DMSE.Artillery.TargetIsHome>
-  <DMSE.Artillery.OutOfRange>目标超出火炮射程（{0} 格）。</DMSE.Artillery.OutOfRange>
-  <DMSE.Artillery.MapNotSpawned>目标地图尚未加载，只能炮击已生成的地图。</DMSE.Artillery.MapNotSpawned>
-  <DMSE.Artillery.NoCrew>需要炮手操作：右键选择“操作”指派人员，炮手会自动装填炮弹。</DMSE.Artillery.NoCrew>
-  <DMSE.Artillery.NoLoadedShell>尚未装填炮弹：先让炮手装填迫击炮弹再开火。</DMSE.Artillery.NoLoadedShell>
-  <DMSE.Artillery.WaitingForShell>等待炮手补弹，射击任务暂停中。</DMSE.Artillery.WaitingForShell>
-  <DMSE.Artillery.WaitingForAutoloader>等待自动装填架补弹，射击任务暂停中。</DMSE.Artillery.WaitingForAutoloader>
-  <DMSE.Artillery.NoLoadedShellAutoloader>尚未装填炮弹：先在连接的自动装填架上存放迫击炮弹再开火。</DMSE.Artillery.NoLoadedShellAutoloader>
-  <DMSE.Artillery.WaitingForBarrel>炮管已耗损，等待更换强化炮管，射击任务暂停中。</DMSE.Artillery.WaitingForBarrel>
-  <DMSE.Artillery.HoldFirePaused>停火中：世界炮击任务暂停，解除停火后继续。</DMSE.Artillery.HoldFirePaused>
-  <DMSE.Artillery.NoRegistration>这张地图还没有校射落点，无法效力射；请先以校射模式打一发。</DMSE.Artillery.NoRegistration>
-  <DMSE.Artillery.GroupPartial>选中的 {1} 门炮中，{0} 门可以射击此目标；其余：{2}</DMSE.Artillery.GroupPartial>
-  <DMSE.BVR.DeviceInactive>装置不可用（无电、损坏或已关闭）。</DMSE.BVR.DeviceInactive>
-  <!-- 状态字符串（用于 StopDesc） -->
-  <DMSE.Artillery.StateCooldown>装填冷却中，剩余 {0}</DMSE.Artillery.StateCooldown>
-  <DMSE.Artillery.StateAiming>瞄准中（{0}%）</DMSE.Artillery.StateAiming>
-  <DMSE.Artillery.StateReady>可发射</DMSE.Artillery.StateReady>
   <DMSE.Artillery.Ready>火炮：可发射</DMSE.Artillery.Ready>
-  <DMSE.Artillery.GuidanceOnline>雷达制导：可用（散布 {0} 格）</DMSE.Artillery.GuidanceOnline>
-  <DMSE.Artillery.GuidanceOffline>雷达制导：没有空闲火控通道（无制导，散布 {0} 格）</DMSE.Artillery.GuidanceOffline>
 
   <!-- PlaceWorker -->
   <DMSE.PlaceWorker.TooCloseSameLayer>与 {0} 太近（同一放置图层）。</DMSE.PlaceWorker.TooCloseSameLayer>
 
-  <!-- 裝配分頁：切換導彈、方案載入／保存；彈道發射井井蓋 -->
-  <DMSE.Missile.PreviousMissile>架上上一枚</DMSE.Missile.PreviousMissile>
-  <DMSE.Missile.NextMissile>架上下一枚</DMSE.Missile.NextMissile>
-  <DMSE.Missile.SaveDesignTip>把正在编辑的构型存成装配方案。方案与组装台共用，跨存档保留。</DMSE.Missile.SaveDesignTip>
-  <DMSE.Missile.LoadDesignTip>把已存的方案载入这枚导弹。只能载入相同弹体的方案；部件仍需小人装配。</DMSE.Missile.LoadDesignTip>
-  <DMSE.Missile.DesignBodyMismatch>弹体不同：{0}</DMSE.Missile.DesignBodyMismatch>
-  <DMSE.Missile.ApplyDesignThis>应用到这一枚</DMSE.Missile.ApplyDesignThis>
-  <DMSE.Missile.ApplyDesignAll>应用到架上全部 {0} 枚同型导弹</DMSE.Missile.ApplyDesignAll>
-  <DMSE.Missile.DesignApplied>已将方案「{0}」载入{1}。</DMSE.Missile.DesignApplied>
-  <DMSE.SiloHatch.KeepClosed>保持井盖关闭</DMSE.SiloHatch.KeepClosed>
-  <DMSE.SiloHatch.KeepClosedDesc>开启时，除了发射期间，井盖一律关闭。井盖完全关闭时，发射井受到的伤害降为 {0}。\n\n发射时会先开盖，井盖全开后导弹才升空，几秒后再关回。\n\n井盖没有完全打开时无法装配导弹。</DMSE.SiloHatch.KeepClosedDesc>
-  <DMSE.SiloHatch.Closed>井盖：关闭（受到伤害 {0}）</DMSE.SiloHatch.Closed>
-  <DMSE.SiloHatch.Open>井盖：开启</DMSE.SiloHatch.Open>
-  <DMSE.SiloHatch.Opening>井盖：开启中</DMSE.SiloHatch.Opening>
-  <DMSE.SiloHatch.Closing>井盖：关闭中</DMSE.SiloHatch.Closing>
-  <DMSE.SiloHatch.StatLabel>井盖关闭时受到的伤害</DMSE.SiloHatch.StatLabel>
-  <DMSE.SiloHatch.StatDesc>井盖完全关闭时，发射井受到的伤害占正常伤害的比例。井盖开关途中或发射后开启期间不生效。</DMSE.SiloHatch.StatDesc>
 
-  <DMSE.SiloHatch.OpeningForLaunch>井盖：发射前开盖中</DMSE.SiloHatch.OpeningForLaunch>
-  <DMSE.SiloHatch.AssemblyBlocked>井盖关闭中：打开井盖才能装配导弹。</DMSE.SiloHatch.AssemblyBlocked>
-  <!-- EN: NPC MIRV and decoy warheads -->
-  <DMSE.BVR.Settings.NpcMirv>NPC 分导弹头与诱饵</DMSE.BVR.Settings.NpcMirv>
-  <!-- EN: Let NPC sites fire strategic missiles with MIRV or decoy payloads at strong air defenses: ballistic launch sites of any faction, and missile bases of factions whose doctrine allows it (by default only ultra-tech factions). Each one splits into several tracks in flight. -->
-  <DMSE.BVR.Settings.NpcMirvDesc>让 NPC 站点面对强大防空时发射带分导或诱饵载荷的战略导弹：任何阵营的弹道发射场，以及准则允许的阵营（默认只有超凡科技阵营）的导弹阵地。每枚会在飞行途中分成数条航迹。</DMSE.BVR.Settings.NpcMirvDesc>
-  <!-- EN: Your pawns have arrived at an enemy ballistic launch site. Hardened strategic silos are spread around a search radar and its fire-control radars; the garrison reloads each silo a few days after it fires. Destroy every fire-control radar to neutralize the site; if you withdraw while a fire-control radar still stands, the enemy blocks your return for a while. -->
-  <DMSE.BallisticLaunchSite.ArrivedLetter>你们抵达了一处敌方弹道发射场。加固的战略发射井散布在搜索雷达与火控雷达周围；每座发射井发射后，守军会在几天内重新装填。摧毁所有火控雷达即可瘫痪发射场；若在火控雷达尚存时撤退，敌方会在一段时间内封锁你们再次进入。</DMSE.BallisticLaunchSite.ArrivedLetter>
   <!-- EN: {0} has established a ballistic launch site {3} tiles {2} of {1}. Its strategic missiles can reach your colony from far beyond the range of ordinary launch positions, and it will stay there, firing every few days, until it is destroyed.\n\nDestroy every fire-control radar to neutralize it. Strong air defense will make it mix in penetration aids. -->
   <DMSE.BallisticLaunchSite.SpawnedLetter>{0}在{1}的{2}方 {3} 格处建立了一座弹道发射场。它的战略导弹射程远超一般发射阵地，能从远处打到你的殖民地，而且会一直留在那里、每隔几天发射一次，直到被摧毁。\n\n摧毁所有火控雷达即可瘫痪它。你的防空越强，它越会混入突防载荷。</DMSE.BallisticLaunchSite.SpawnedLetter>
 </LanguageData>

@@ -5,7 +5,7 @@
   <ThingDef ParentName="DMSE_MissileIncomingProjectileBase">
     <defName>DMSE_Incoming_LightMissile</defName>
     <label>light missile (incoming)</label>
-    <thingClass>DMSE.Projectile_MissileIncoming</thingClass>
+    <thingClass>Fortified.Projectile_MissileIncoming</thingClass>
     <graphicData>
       <texPath>Things/Missile/Grison/skyFaller</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -14,12 +14,12 @@
     <size>(1,1)</size>
     <!-- BVR 特性：輕型導彈比巡航快，但比彈道慢；隱身適中。 -->
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <shadowSize>(2, 2)</shadowSize>
         <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
         <speed>1</speed>
       </li>
-      <li Class="DMSE.BVRTargetProps">
+      <li Class="Fortified.AirTargetExtension">
         <distanceLevel>1.2</distanceLevel>
         <stealthLevel>0</stealthLevel>
         <speed>22</speed>
@@ -34,7 +34,7 @@
     <defName>DMSE_WorldObject_LightMissile</defName>
     <label>light missile</label>
     <description>A light missile in flight.</description>
-    <worldObjectClass>DMSE.ScorerProjectile_WorldObject</worldObjectClass>
+    <worldObjectClass>Fortified.WorldObject_OutgoingMissile</worldObjectClass>
     <texture>UI/DMSE/TravelingMissile</texture>
     <rotateGraphicWhenTraveling>true</rotateGraphicWhenTraveling>
     <useDynamicDrawer>true</useDynamicDrawer>
@@ -55,7 +55,7 @@
     <defName>DMSE_Building_LightMissileLauncher</defName>
     <label>tilt-launch container</label>
     <description>An angled launch box that holds four light missiles. It loads and fires on its own, giving a solid salvo from a small footprint.\n\nRequires power. Strike missiles are launched at targets beyond the map. Surface-to-air and dual-role missiles are also fired by the fire-control network as interceptors.</description>
-    <thingClass>DMSE.Building_MissileRack</thingClass>
+    <thingClass>Fortified.Building_MissileRack</thingClass>
     <graphicData>
       <texPath>Things/Building/MissileLauncher4X/building</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
@@ -105,13 +105,13 @@
       </defaultStorageSettings>
     </building>
     <modExtensions>
-      <li Class="DMSE.MissileLauncherExtension">
+      <li Class="Fortified.MissileLauncherExtension">
         <sizeClass>Light</sizeClass>
         <launchMode>Tilt</launchMode>
         <capacity>4</capacity>
       </li>
       <!-- 敵方陣地生成時自動填充：Industrial 以上派系填入攔截彈。 -->
-      <li Class="DMSE.MissileRackAutoFillExtension">
+      <li Class="Fortified.MissileRackAutoFillExtension">
         <enemyFactionOnly>true</enemyFactionOnly>
         <fillRules>
           <li>
@@ -133,7 +133,7 @@
       </li> -->
       <li Class="CompProperties_Flickable" />
       <li Class="CompProperties_Breakdownable" />
-      <li Class="DMSE.CompProperties_MissileRailLauncher">
+      <li Class="Fortified.CompProperties_MissileRailLauncher">
         <skyfaller>DMSE_Launch_Light</skyfaller>
         <skyfallerIncoming>DMSE_Incoming_LightMissile</skyfallerIncoming>
         <worldObjectDef>DMSE_WorldObject_LightMissile</worldObjectDef>
@@ -141,7 +141,7 @@
         <launchCooldownTicks>450</launchCooldownTicks>
         <launchForwardCells>2</launchForwardCells>
       </li>
-      <li Class="DMSE.CompProperties_MissileLauncher">
+      <li Class="Fortified.CompProperties_MissileLauncher">
         <interceptorSkyfaller>DMSE_Launch_LegacyInterceptor</interceptorSkyfaller>
         <reloadCooldownTicks>240</reloadCooldownTicks>
         <interceptorTravelTicks>300</interceptorTravelTicks>
@@ -159,8 +159,8 @@
     </comps>
     <inspectorTabs>
       <li>RimWorld.ITab_Storage</li>
-      <li>DMSE.ITab_MissileInventory</li>
-      <li>DMSE.ITab_MissileAssembly</li>
+      <li>Fortified.ITab_MissileInventory</li>
+      <li>Fortified.ITab_MissileAssembly</li>
     </inspectorTabs>
     <researchPrerequisites>
       <li>DMSE_IntegratedCircuits</li>
@@ -174,7 +174,7 @@
     <defName>DMSE_Building_LightMissileVLS</defName>
     <label>light vertical launch cell</label>
     <description>A ground-level vertical launcher with four cells for light missiles. It fits on a single tile, so it is easy to place along a perimeter, but each cell must be loaded separately.\n\nCannot be built on a gravship.</description>
-    <thingClass>DMSE.Building_MissileRack</thingClass>
+    <thingClass>Fortified.Building_MissileRack</thingClass>
     <uiIconPath>Things/Building/MissileSilo_Small/icon</uiIconPath>
     <graphicData>
       <texPath>Things/Building/MissileSilo_Small/building</texPath>
@@ -225,7 +225,7 @@
       </defaultStorageSettings>
     </building>
     <modExtensions>
-      <li Class="DMSE.MissileLauncherExtension">
+      <li Class="Fortified.MissileLauncherExtension">
         <sizeClass>Light</sizeClass>
         <launchMode>Vertical</launchMode>
         <capacity>4</capacity>
@@ -239,7 +239,7 @@
         <basePowerConsumption>200</basePowerConsumption>
       </li>
       <li Class="CompProperties_Flickable" />
-      <li Class="DMSE.CompProperties_MissileRackRenderer">
+      <li Class="Fortified.CompProperties_MissileRackRenderer">
         <maxStored>4</maxStored>
         <loadedHatchTexPaths>
           <li>Things/Building/MissileSilo_Small/hatch_a</li>
@@ -248,7 +248,7 @@
           <li>Things/Building/MissileSilo_Small/hatch_d</li>
         </loadedHatchTexPaths>
       </li>
-      <li Class="DMSE.CompProperties_MissileRailLauncher">
+      <li Class="Fortified.CompProperties_MissileRailLauncher">
         <skyfaller>DMSE_Launch_Light</skyfaller>
         <skyfallerIncoming>DMSE_Incoming_LightMissile</skyfallerIncoming>
         <worldObjectDef>DMSE_WorldObject_LightMissile</worldObjectDef>
@@ -257,7 +257,7 @@
         <launchForwardCells>1</launchForwardCells>
       </li>
       <!-- 垂直發射的攔截彈：攔截／兩用彈由火控雷達指派。 -->
-      <li Class="DMSE.CompProperties_MissileLauncher">
+      <li Class="Fortified.CompProperties_MissileLauncher">
         <interceptorSkyfaller>DMSE_Launch_LegacyInterceptor</interceptorSkyfaller>
         <reloadCooldownTicks>240</reloadCooldownTicks>
         <interceptorTravelTicks>300</interceptorTravelTicks>
@@ -265,8 +265,8 @@
     </comps>
     <inspectorTabs>
       <li>RimWorld.ITab_Storage</li>
-      <li>DMSE.ITab_MissileInventory</li>
-      <li>DMSE.ITab_MissileAssembly</li>
+      <li>Fortified.ITab_MissileInventory</li>
+      <li>Fortified.ITab_MissileAssembly</li>
     </inspectorTabs>
     <researchPrerequisites>
       <li>DMSE_IntegratedCircuits</li>

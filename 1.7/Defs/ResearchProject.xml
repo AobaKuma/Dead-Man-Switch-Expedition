@@ -144,7 +144,7 @@
     <prerequisites>
       <li>DMSE_LoiteringMunitions</li>
     </prerequisites>
-    <teachConcept>DMSE_NPCAirDefenseCircles</teachConcept>
+    <teachConcept>FFF_NPCAirDefenseCircles</teachConcept>
     <researchViewX>4.00</researchViewX>
     <researchViewY>0.40</researchViewY>
   </ResearchProjectDef>

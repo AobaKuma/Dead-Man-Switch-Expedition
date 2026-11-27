@@ -7,6 +7,7 @@ using LudeonTK;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Fortified;
 
 namespace DMSE
 {
@@ -100,7 +101,7 @@ namespace DMSE
                 foreach (Thing t in map.listerThings.ThingsOfDef(def)) { t.Notify_ColorChanged(); }
                 foreach (Thing b in map.listerThings.ThingsInGroup(ThingRequestGroup.BuildingArtificial))
                 {
-                    IReadOnlyList<Thing> held = MissileRackUtil.Of(b)?.HeldThings;
+                    IReadOnlyList<Thing> held = MissileRackUtility.Of(b)?.HeldThings;
                     if (held == null) { continue; }
                     foreach (Thing t in held) { if (t.def == def) { t.Notify_ColorChanged(); } }
                 }
@@ -282,7 +283,7 @@ namespace DMSE
         [DebugAction(Category, "Load missiles into rack...", actionType = DebugActionType.ToolMap, allowedGameStates = AllowedGameStates.PlayingOnMap)]
         private static void LoadRack()
         {
-            IMissileRack rack = UI.MouseCell().GetThingList(Find.CurrentMap).Select(MissileRackUtil.Of).FirstOrDefault(r => r != null);
+            IMissileRack rack = UI.MouseCell().GetThingList(Find.CurrentMap).Select(MissileRackUtility.Of).FirstOrDefault(r => r != null);
             if (rack == null)
             {
                 Messages.Message("DMSE: no missile rack under the cursor.", MessageTypeDefOf.RejectInput, false);

@@ -15,7 +15,7 @@
     <defName>DMSE_Turret_HeavyMortar</defName>
     <label>heavy mortar</label>
     <description>A towed heavy mortar on a wheeled carriage. A gunner loads any mortar shell from the stockpile and the crew can also shell targets on the world map: whatever shell is loaded becomes the long-range round. Switch the stockpile filter to change shell types. While a world mission is running the tube stays on the world bearing and the crew does not engage local targets.</description>
-    <thingClass>DMSE.Building_HeavyMortar</thingClass>
+    <thingClass>Fortified.Building_HeavyMortar</thingClass>
     <graphicData>
       <texPath>Things/Turrets/WheeledTripod</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
@@ -75,7 +75,7 @@
         <fuelIconPath>Things/Item/Resource/ReinforcedBarrel/ReinforcedBarrel</fuelIconPath>
       </li>
       <!-- 超視距砲擊：砲彈 def 由砲手載入的彈種決定（不設 projectileDef），換彈種就換彈頭。 -->
-      <li Class="DMSE.CompProperties_ArtilleryStrike">
+      <li Class="Fortified.CompProperties_ArtilleryStrike">
         <departureProjectileDef>DMSE_ArtilleryDeparture_HeavyMortar</departureProjectileDef>
         <worldObjectDef>DMSE_WorldObject_ArtilleryStrike</worldObjectDef>
         <cooldownTicks>1680</cooldownTicks>
@@ -152,7 +152,7 @@
   <ThingDef ParentName="BaseBullet">
     <defName>DMSE_ArtilleryDeparture_HeavyMortar</defName>
     <label>departing mortar shell</label>
-    <thingClass>DMSE.Projectile_ArtilleryDeparture</thingClass>
+    <thingClass>Fortified.Projectile_ArtilleryDeparture</thingClass>
     <graphicData>
       <texPath>Things/Projectile/ShellHighExplosive</texPath>
       <graphicClass>Graphic_Single</graphicClass>

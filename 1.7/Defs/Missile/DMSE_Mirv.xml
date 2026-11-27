@@ -10,7 +10,7 @@
 
   <!-- 重返載具（RV）：民兵三型的單枚分導彈頭。繼承母彈的戰鬥部與導引；
        3 RV ×（半徑 6、傷害 140、N 4）的總殺傷面積約為整彈（9／240／N 9）的 1.3 倍，但每枚都要突破防空。 -->
-  <DMSE.MissileBodyDef>
+  <Fortified.MissileBodyDef>
     <defName>DMSE_MissileBody_ReentryVehicle</defName>
     <label>re-entry vehicle</label>
     <description>A single warhead released from a strategic missile's post-boost bus. It falls on a ballistic path with the warhead and guidance of the missile that carried it.</description>
@@ -30,14 +30,14 @@
     <baseSpecificImpulse>3.2</baseSpecificImpulse>
     <rangePerFuelImpulse>0.8681</rangePerFuelImpulse>
     <incomingSkyfaller>DMSE_Incoming_ReentryVehicle</incomingSkyfaller>
-  </DMSE.MissileBodyDef>
+  </Fortified.MissileBodyDef>
 
   <!-- 誘餌（計畫 §7）：雷達特徵、標籤、圖示與進圖外觀都在釋放時取自它模仿的彈頭
        （跟著 MIRV 像重返載具，跟著單彈頭像整枚導彈），所以這裡的 incomingSkyfaller 只是後備。
        速度、射程與終端更新次數沿用母彈。沒有殺傷：落地是惰性撞擊。 -->
 
   <!-- 輕型誘餌：充氣反射器，中段很像真彈頭，但重返大氣層時一定燒毀，進不了地圖層。 -->
-  <DMSE.MissileBodyDef>
+  <Fortified.MissileBodyDef>
     <defName>DMSE_MissileBody_DecoyLight</defName>
     <label>light decoy</label>
     <description>An inflatable radar reflector shaped like a warhead. In space it looks just like the real thing to enemy radars, but it is far too light to survive re-entry and burns up before it reaches the target.</description>
@@ -57,10 +57,10 @@
       <fidelity>1</fidelity>
       <reentrySurvivalChance>0</reentrySurvivalChance>
     </decoy>
-  </DMSE.MissileBodyDef>
+  </Fortified.MissileBodyDef>
 
   <!-- 重型誘餌：配重的仿真再入體，能撐過再入、以惰性彈進入地圖層，迫近防禦（CIWS）也會對它開火。 -->
-  <DMSE.MissileBodyDef>
+  <Fortified.MissileBodyDef>
     <defName>DMSE_MissileBody_DecoyHeavy</defName>
     <label>heavy decoy</label>
     <description>A ballasted dummy re-entry vehicle with the same shape and weight as a warhead. It survives re-entry and falls all the way to the target, drawing fire from close-in defenses, but carries no explosive.</description>
@@ -80,14 +80,14 @@
       <fidelity>2</fidelity>
       <reentrySurvivalChance>1</reentrySurvivalChance>
     </decoy>
-  </DMSE.MissileBodyDef>
+  </Fortified.MissileBodyDef>
 
   <!-- 重返載具落地彈：比整彈小（distanceLevel 0.8），其餘同民兵三型的高超音速再入。
        貼圖是 .source/Tools/gen_reentry_vehicle_texture.py 產生的暫位圖（機頭朝北），待正式美術。 -->
   <ThingDef ParentName="DMSE_MissileIncomingProjectileBase">
     <defName>DMSE_Incoming_ReentryVehicle</defName>
     <label>re-entry vehicle (incoming)</label>
-    <thingClass>DMSE.Projectile_MissileIncoming</thingClass>
+    <thingClass>Fortified.Projectile_MissileIncoming</thingClass>
     <graphicData>
       <texPath>Things/Missile/ReentryVehicle/skyFaller_incoming</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -95,12 +95,12 @@
     </graphicData>
     <size>(1,1)</size>
     <modExtensions>
-      <li Class="DMSE.MissileFlightExtension">
+      <li Class="Fortified.MissileFlightExtension">
         <shadowSize>(1.5, 1.5)</shadowSize>
         <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
         <speed>1</speed>
       </li>
-      <li Class="DMSE.BVRTargetProps">
+      <li Class="Fortified.AirTargetExtension">
         <distanceLevel>0.8</distanceLevel>
         <stealthLevel>2</stealthLevel>
         <speed>95</speed>
