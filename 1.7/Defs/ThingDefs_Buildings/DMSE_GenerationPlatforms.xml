@@ -21,7 +21,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_Building_FieldAirDefense</defName>
     <label>field air-defence system</label>
-    <description>A self-contained air-defense turret with twin autocannons, four short-range missiles and its own search and tracking radar. It engages targets with missiles first, then finishes them off with its guns.\n\nFully automatic. The cannons also fire on ground enemies and use steel as ammunition. The radar uses a lot of power, and its emissions can be tracked by anti-radiation missiles.</description>
+    <description>An air-defense turret with twin autocannons, four short-range missiles and a fire-control radar. It engages with missiles first, then uses its cannons for terminal interception.\n\nFully automatic. The cannons can also be used for ground defense. The radar's emissions can be tracked by anti-radiation missiles while it operates.</description>
     <thingClass>Building_TurretGun</thingClass>
     <category>Building</category>
     <uiIconPath>Things/Turrets/DMS_Tunguska</uiIconPath>
@@ -251,7 +251,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_SearchRadar</defName>
     <label>search radar</label>
-    <description>An active search radar with a rotating antenna. It finds and tracks incoming threats for the whole air-defense network, but cannot guide interceptors by itself.\n\nUses a lot of power. Its emissions can be tracked by anti-radiation missiles.</description>
+    <description>A search radar that sweeps for air targets with a mechanically scanned antenna. It gives early warning and tracks incoming threats for the whole air-defense network, but cannot guide interceptors.\n\nThe radar's emissions can be tracked by anti-radiation missiles while it operates.</description>
     <uiIconPath>Things/Building/Icon_Radar_EW</uiIconPath>
     <graphicData>
       <texPath>Things/Building/FacilityBase_Green</texPath>
@@ -335,7 +335,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_FireControlRadar</defName>
     <label>fire control radar</label>
-    <description>A dedicated fire-control radar. It turns search radar tracks into firing solutions and guides several interceptors at once, much faster and more accurately than early sets.\n\nNeeds a steady power supply. Its emissions can be tracked by anti-radiation missiles.</description>
+    <description>A fire-control radar for locking onto targets. It guides surface-to-air missiles up to intercept them.\n\nThe radar's emissions can be tracked by anti-radiation missiles while it operates.</description>
     <uiIconPath>Things/Building/icon_Radar_FC</uiIconPath>
     <graphicData>
       <texPath>Things/Building/FacilityBase_Green</texPath>
@@ -425,7 +425,7 @@
   <ThingDef ParentName="DMSE_VerticalLauncherBase">
     <defName>DMSE_Building_MediumVLS</defName>
     <label>vertical launch silo</label>
-    <description>A vertical launcher with four cells for medium missiles. Each missile is pushed out of its tube before igniting, and a built-in flame trench allows repeated launches. It is costly to build.\n\nCannot be built on a gravship.</description>
+    <description>A vertical launch unit that holds four medium missiles. Each missile is pushed out of its tube by high-pressure gas before igniting, and a built-in flame trench allows repeated launches.\n\nCannot be built on a gravship.</description>
     <thingClass>Fortified.Building_MissileRack</thingClass>
     <uiIconPath>Things/Building/MissileSilo_Medium/icon</uiIconPath>
     <graphicData>
@@ -525,7 +525,7 @@
     <defName>DMSE_Building_MediumSurfaceVLS</defName>
     <rotatable>true</rotatable>
     <label>surface vertical launcher</label>
-    <description>A four-cell launcher for medium missiles, standing upright on a ground frame instead of sitting in a dug silo. It needs less research and fewer advanced materials than a vertical launch silo, but takes up far more room and is easier to damage.\n\nCannot be built on a gravship.</description>
+    <description>A vertical launch unit that holds four medium missiles. Because it stands above ground, it takes up more room and is easier to damage. It needs less research and fewer advanced materials than a vertical launch silo.\n\nCannot be built on a gravship.</description>
     <thingClass>Fortified.Building_MissileRack</thingClass>
     <uiIconPath>Things/Building/MissileSilo_Medium_Surface/icon</uiIconPath>
     <graphicData>

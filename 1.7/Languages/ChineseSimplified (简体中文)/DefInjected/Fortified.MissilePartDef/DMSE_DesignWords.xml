@@ -15,7 +15,6 @@
   <DMSE_AdvLight_Warhead_Kinetic.designWord>动能刃</DMSE_AdvLight_Warhead_Kinetic.designWord>
   <DMSE_Light_Guidance_IR.designWord>红外</DMSE_Light_Guidance_IR.designWord>
   <DMSE_Light_Guidance_AntiRadiation.designWord>反辐射</DMSE_Light_Guidance_AntiRadiation.designWord>
-  <DMSE_Light_Guidance_Laser.designWord>激光</DMSE_Light_Guidance_Laser.designWord>
   <DMSE_Light_Guidance_SemiActive.designWord>半主动</DMSE_Light_Guidance_SemiActive.designWord>
   <DMSE_Guidance_ActiveRadar.designWord>主动雷达</DMSE_Guidance_ActiveRadar.designWord>
   <DMSE_Guidance_Precision.designWord>电视</DMSE_Guidance_Precision.designWord>
@@ -24,10 +23,8 @@
   <DMSE_Guidance_Laser.designWord>激光</DMSE_Guidance_Laser.designWord>
   <DMSE_AdvCruise_Guidance_TerrainMatch.designWord>地形匹配</DMSE_AdvCruise_Guidance_TerrainMatch.designWord>
   <DMSE_AdvCruise_Guidance_Datalink.designWord>数据链</DMSE_AdvCruise_Guidance_Datalink.designWord>
-  <DMSE_AdvCruise_Guidance_AntiShip.designWord>反舰</DMSE_AdvCruise_Guidance_AntiShip.designWord>
   <DMSE_AdvLight_Guidance_Imaging.designWord>影像</DMSE_AdvLight_Guidance_Imaging.designWord>
   <DMSE_AdvLight_Guidance_IIR.designWord>红外成像</DMSE_AdvLight_Guidance_IIR.designWord>
-  <DMSE_AdvLight_Guidance_Laser.designWord>激光</DMSE_AdvLight_Guidance_Laser.designWord>
   <DMSE_AdvLight_Guidance_MMW.designWord>毫米波</DMSE_AdvLight_Guidance_MMW.designWord>
   <DMSE_Shahed_Guidance_TV.designWord>电视</DMSE_Shahed_Guidance_TV.designWord>
   <DMSE_Shahed_Guidance_RadarHoming.designWord>雷达</DMSE_Shahed_Guidance_RadarHoming.designWord>
@@ -37,15 +34,10 @@
   <DMSE_Light_Payload_HighExplosive.designWord>加强爆破</DMSE_Light_Payload_HighExplosive.designWord>
   <DMSE_Light_Payload_Decoy.designWord>诱饵</DMSE_Light_Payload_Decoy.designWord>
   <DMSE_Light_Payload_ToxicGas.designWord>毒气</DMSE_Light_Payload_ToxicGas.designWord>
-  <DMSE_Light_Payload_Chaff.designWord>干扰</DMSE_Light_Payload_Chaff.designWord>
   <DMSE_Payload_Cluster.designWord>集束</DMSE_Payload_Cluster.designWord>
-  <DMSE_Payload_BunkerBuster.designWord>反碉堡</DMSE_Payload_BunkerBuster.designWord>
   <DMSE_Payload_EMP.designWord>脉冲子弹</DMSE_Payload_EMP.designWord>
   <DMSE_AdvCruise_Payload_Submunition.designWord>子弹</DMSE_AdvCruise_Payload_Submunition.designWord>
-  <DMSE_AdvCruise_Payload_BunkerBuster.designWord>反碉堡</DMSE_AdvCruise_Payload_BunkerBuster.designWord>
   <DMSE_AdvCruise_Payload_Graphite.designWord>石墨</DMSE_AdvCruise_Payload_Graphite.designWord>
-  <DMSE_AdvCruise_Payload_Decoy.designWord>诱饵</DMSE_AdvCruise_Payload_Decoy.designWord>
-  <DMSE_AdvCruise_Payload_Chaff.designWord>干扰</DMSE_AdvCruise_Payload_Chaff.designWord>
   <DMSE_AdvLight_Payload_HE.designWord>加强爆破</DMSE_AdvLight_Payload_HE.designWord>
   <DMSE_AdvLight_Payload_FragSleeve.designWord>破片套</DMSE_AdvLight_Payload_FragSleeve.designWord>
   <DMSE_AdvLight_Payload_Chaff.designWord>干扰</DMSE_AdvLight_Payload_Chaff.designWord>
@@ -56,7 +48,6 @@
   <DMSE_Ballistic_Warhead_TungstenPenetrator.designWord>钨芯</DMSE_Ballistic_Warhead_TungstenPenetrator.designWord>
   <DMSE_Ballistic_Guidance_Inertial.designWord>惯性</DMSE_Ballistic_Guidance_Inertial.designWord>
   <DMSE_Ballistic_Guidance_FireControl.designWord>火控</DMSE_Ballistic_Guidance_FireControl.designWord>
-  <DMSE_Ballistic_Guidance_Laser.designWord>激光</DMSE_Ballistic_Guidance_Laser.designWord>
   <DMSE_Ballistic_Payload_Cluster.designWord>集束</DMSE_Ballistic_Payload_Cluster.designWord>
   <DMSE_Ballistic_Payload_BunkerBuster.designWord>反碉堡</DMSE_Ballistic_Payload_BunkerBuster.designWord>
   <DMSE_Ballistic_Payload_Antiparticle.designWord>反物质</DMSE_Ballistic_Payload_Antiparticle.designWord>

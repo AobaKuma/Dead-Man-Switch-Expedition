@@ -11,5 +11,5 @@
   <!-- EN: Show air-defense coverage -->
   <DMSE.BVR.World.ShowCoverage>顯示防空覆蓋</DMSE.BVR.World.ShowCoverage>
   <!-- EN: Always display all player radar coverage circles on the world map. Selected sites always show their own coverage. Circles assume an unstealthed target of size 1. -->
-  <DMSE.BVR.World.ShowCoverageDesc>在世界地圖常駐顯示所有玩家雷達覆蓋圈。選取據點時一律顯示該據點的覆蓋圈。圈線以隱身 0、尺寸 1 的目標為準。</DMSE.BVR.World.ShowCoverageDesc>
+  <DMSE.BVR.World.ShowCoverageDesc>在世界地圖常駐顯示玩家雷達覆蓋圈。圈線以隱身 0、尺寸 1 的目標為準。</DMSE.BVR.World.ShowCoverageDesc>
 </LanguageData>

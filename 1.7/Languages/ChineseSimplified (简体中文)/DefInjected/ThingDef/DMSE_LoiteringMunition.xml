@@ -2,6 +2,6 @@
 <LanguageData>
 
   <DMSE_Missile_Termite.label>反舰巡飞弹</DMSE_Missile_Termite.label>
-  <DMSE_Missile_Termite.description>一种以小型涡轮喷气发动机推进的折叠翼反舰巡飞弹。速度慢、火力弱，但便宜，可从地面发射轨发射，并以弹上导引头追击移动中的船舰。</DMSE_Missile_Termite.description>
+  <DMSE_Missile_Termite.description>一种以小型涡轮喷气发动机推进的折叠翼反舰巡飞弹。可从地面发射轨发射，并且具备导引头，能够追击移动中的舰船。</DMSE_Missile_Termite.description>
 
 </LanguageData>

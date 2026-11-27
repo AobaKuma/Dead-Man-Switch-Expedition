@@ -81,7 +81,7 @@
         <li>terrain/DMS_LightPlatform/loop/OrbitalPlatformEdge_Loop5</li>
       </LoopTexPaths>
     </spaceEdgeGraphicData>
-    <description>A lightweight lattice deck for open space. Cheap and quick to lay, but only supports light and medium structures.</description>
+    <description>A lightweight lattice deck for open space. Only supports light and medium structures.</description>
     <researchPrerequisites>
       <li>DMSE_OrbitalDynamics</li>
     </researchPrerequisites>

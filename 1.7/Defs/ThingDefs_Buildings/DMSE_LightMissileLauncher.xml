@@ -173,7 +173,7 @@
   <ThingDef ParentName="DMSE_VerticalLauncherBase">
     <defName>DMSE_Building_LightMissileVLS</defName>
     <label>light vertical launch cell</label>
-    <description>A ground-level vertical launcher with four cells for light missiles. It fits on a single tile, so it is easy to place along a perimeter, but each cell must be loaded separately.\n\nCannot be built on a gravship.</description>
+    <description>A semi-buried vertical launch unit set flush with the ground, holding four light missiles.\n\nCannot be built on a gravship.</description>
     <thingClass>Fortified.Building_MissileRack</thingClass>
     <uiIconPath>Things/Building/MissileSilo_Small/icon</uiIconPath>
     <graphicData>
@@ -280,7 +280,7 @@
   <ThingDef ParentName="DMSE_VerticalLauncherBase">
     <defName>DMSE_Building_NLOSLauncher</defName>
     <label>NLOS launch box</label>
-    <description>A boxed vertical launcher packing fifteen light missiles into a small footprint, with one cell given over to its fire-control unit. It can empty a large salvo at targets far beyond line of sight, but takes a long time to reload by hand.\n\nCannot be built on a gravship.</description>
+    <description>A boxed vertical launcher packing fifteen light missiles into a small footprint, with one cell given over to its independent fire-control unit. Its own battery allows flexible use in special situations.\n\nCannot be built on a gravship.</description>
     <thingClass>Fortified.Building_MissileRack</thingClass>
     <uiIconPath>Things/Building/MissileSilo_NLOS/icon</uiIconPath>
     <graphicData>

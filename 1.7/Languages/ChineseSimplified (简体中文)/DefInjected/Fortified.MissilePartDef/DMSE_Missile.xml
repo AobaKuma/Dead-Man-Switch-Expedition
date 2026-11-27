@@ -29,16 +29,10 @@
   <DMSE_Light_Warhead_Incendiary.description>命中时洒出燃烧的铝热剂，点燃半径内的一切，连墙后也不例外。</DMSE_Light_Warhead_Incendiary.description>
   <DMSE_Light_Warhead_ContinuousRod.label>连续杆弹头</DMSE_Light_Warhead_ContinuousRod.label>
   <DMSE_Light_Warhead_ContinuousRod.description>一圈在引爆时向外展开的钢条，专门撕裂飞行目标。能提高拦截弹的命中率。</DMSE_Light_Warhead_ContinuousRod.description>
-  <DMSE_Light_Guidance_Inertial.label>惯性导引</DMSE_Light_Guidance_Inertial.label>
-  <DMSE_Light_Guidance_Inertial.description>没有导引头的基本惯性制导，导弹沿预设航线飞行。落点散布在目标地图中央附近，不会锁定建筑或生物。</DMSE_Light_Guidance_Inertial.description>
   <DMSE_Light_Guidance_IR.label>热信号导引头</DMSE_Light_Guidance_IR.label>
   <DMSE_Light_Guidance_IR.description>一种追踪热源的被动红外导引头。若有室内房间比室外热至少 15°C，会锁定其中最热的一间；否则锁定地图上体型最大的生物。两者都找不到时改用惯性制导。</DMSE_Light_Guidance_IR.description>
   <DMSE_Light_Guidance_AntiRadiation.label>反辐射导引头</DMSE_Light_Guidance_AntiRadiation.label>
   <DMSE_Light_Guidance_AntiRadiation.description>一种追踪雷达电波的导引头。会锁定目标地图上功率最大、且正在开机的敌方雷达；找不到时改锁耗电最多的建筑，再不行才改用惯性制导。被动声学反射镜对它来说是隐形的。</DMSE_Light_Guidance_AntiRadiation.description>
-  <DMSE_Light_Guidance_Laser.label>激光导引头</DMSE_Light_Guidance_Laser.label>
-  <DMSE_Light_Guidance_Laser.description>一种半主动激光导引头。会追向殖民地最近一次在目标地图上以激光目标标定器标记的位置；没有标记时改用惯性制导。</DMSE_Light_Guidance_Laser.description>
-  <DMSE_Light_Payload_None.label>无酬载</DMSE_Light_Payload_None.label>
-  <DMSE_Light_Payload_None.description>没有二次装药，全靠弹头本身。</DMSE_Light_Payload_None.description>
   <DMSE_Light_Payload_HighExplosive.label>高爆酬载</DMSE_Light_Payload_HighExplosive.label>
   <DMSE_Light_Payload_HighExplosive.description>在弹头之后引爆的第二道高爆装药，能扩大伤害半径。</DMSE_Light_Payload_HighExplosive.description>
   <DMSE_Light_Payload_Decoy.label>诱饵酬载</DMSE_Light_Payload_Decoy.label>
@@ -57,8 +51,6 @@
   <DMSE_Ballistic_Guidance_Inertial.description>基本的惯性制导。弹头够大时，精度几乎无关紧要。落点散布在目标地图中央附近，不会锁定建筑或生物。</DMSE_Ballistic_Guidance_Inertial.description>
   <DMSE_Ballistic_Guidance_FireControl.label>火控导引</DMSE_Ballistic_Guidance_FireControl.label>
   <DMSE_Ballistic_Guidance_FireControl.description>由殖民地火控雷达网协助的末端制导，能大幅缩小落点散布。</DMSE_Ballistic_Guidance_FireControl.description>
-  <DMSE_Ballistic_Guidance_Laser.label>激光末端导引头</DMSE_Ballistic_Guidance_Laser.label>
-  <DMSE_Ballistic_Guidance_Laser.description>一种半主动激光导引头。会追向殖民地最近一次在目标地图上以激光目标标定器标记的位置；没有标记时改用惯性制导。</DMSE_Ballistic_Guidance_Laser.description>
   <DMSE_Ballistic_Payload_None.label>无酬载</DMSE_Ballistic_Payload_None.label>
   <DMSE_Ballistic_Payload_None.description>没有二次装药，全靠弹头本身。</DMSE_Ballistic_Payload_None.description>
   <DMSE_Ballistic_Payload_Cluster.label>集束酬载</DMSE_Ballistic_Payload_Cluster.label>
@@ -73,18 +65,12 @@
   <DMSE_AdvLight_Warhead_Thermobaric.description>一枚以燃烧取代破片的温压弹头。爆炸范围小，但在房间或掩体内造成的烧伤与火灾远比在空旷处严重。</DMSE_AdvLight_Warhead_Thermobaric.description>
   <DMSE_AdvLight_Warhead_Kinetic.label>动能刀刃弹头</DMSE_AdvLight_Warhead_Kinetic.label>
   <DMSE_AdvLight_Warhead_Kinetic.description>一枚几乎不含炸药、会弹出刀片的惰性弹头。能杀死被击中的生物，同时让周围几乎毫发无伤。</DMSE_AdvLight_Warhead_Kinetic.description>
-  <DMSE_AdvLight_Guidance_Inertial.label>惯性导引</DMSE_AdvLight_Guidance_Inertial.label>
-  <DMSE_AdvLight_Guidance_Inertial.description>廉价的惯性制导，没有导引头也没有末端制导，无法打击其他地图层。落点散布在目标地图中央附近，不会锁定建筑或生物。</DMSE_AdvLight_Guidance_Inertial.description>
   <DMSE_AdvLight_Guidance_Imaging.label>自动影像寻标器</DMSE_AdvLight_Guidance_Imaging.label>
   <DMSE_AdvLight_Guidance_Imaging.description>一种自动影像导引头，会锁定露天的敌方生物，优先选择威胁最大者，其次是体型最大者。会忽略屋顶下的目标；找不到目标时改用惯性制导。</DMSE_AdvLight_Guidance_Imaging.description>
   <DMSE_AdvLight_Guidance_IIR.label>成像红外导引头</DMSE_AdvLight_Guidance_IIR.label>
   <DMSE_AdvLight_Guidance_IIR.description>一种红外成像导引头。若有封闭房间比室外热至少 15°C，会锁定其中最热的一间；否则锁定目标地图上体型最大的生物。射后不理，不需要操作员、视线或激光。</DMSE_AdvLight_Guidance_IIR.description>
-  <DMSE_AdvLight_Guidance_Laser.label>半主动激光导引头</DMSE_AdvLight_Guidance_Laser.label>
-  <DMSE_AdvLight_Guidance_Laser.description>一种半主动激光导引头，会追向殖民地最近一次在目标地图上以激光目标标定器标记的位置。是这款导弹精度最高的导引头，但必须有人标定目标。</DMSE_AdvLight_Guidance_Laser.description>
   <DMSE_AdvLight_Guidance_MMW.label>毫米波雷达导引头</DMSE_AdvLight_Guidance_MMW.label>
   <DMSE_AdvLight_Guidance_MMW.description>一种射后不理的毫米波雷达导引头。会锁定占地最大的敌方建筑；没有建筑时锁定体型最大的敌方生物。不需要标定器、操作员，也不怕坏天气。</DMSE_AdvLight_Guidance_MMW.description>
-  <DMSE_AdvLight_Payload_None.label>无酬载</DMSE_AdvLight_Payload_None.label>
-  <DMSE_AdvLight_Payload_None.description>没有二次装药，全靠弹头本身，让导弹保持轻巧、射程更远。</DMSE_AdvLight_Payload_None.description>
   <DMSE_AdvLight_Payload_HE.label>次级高爆装药</DMSE_AdvLight_Payload_HE.label>
   <DMSE_AdvLight_Payload_HE.description>在弹头之后引爆的小型第二道装药，能稍微扩大伤害半径。</DMSE_AdvLight_Payload_HE.description>
   <DMSE_AdvLight_Payload_FragSleeve.label>破片套筒</DMSE_AdvLight_Payload_FragSleeve.label>
@@ -99,24 +85,16 @@
   <DMSE_AdvCruise_Guidance_TerrainMatch.description>把下方地形与预存地图比对的制导方式，落点散布非常小。飞行中无法更改目标，也没有末端制导，目标一旦移动就会落空。落点散布在目标地图中央附近，不会锁定建筑或生物。</DMSE_AdvCruise_Guidance_TerrainMatch.description>
   <DMSE_AdvCruise_Guidance_Datalink.label>双向数据链</DMSE_AdvCruise_Guidance_Datalink.label>
   <DMSE_AdvCruise_Guidance_Datalink.description>一套双向卫星数据链。导弹可在飞行中更改目标；抵达目标地图时游戏会暂停，让你选择落点。是精度最高的选项，也是唯一能在飞行途中追击移动目标的选项。</DMSE_AdvCruise_Guidance_Datalink.description>
-  <DMSE_AdvCruise_Guidance_AntiShip.label>反舰雷达导引头</DMSE_AdvCruise_Guidance_AntiShip.label>
-  <DMSE_AdvCruise_Guidance_AntiShip.description>一种专为移动目标设计的主动雷达导引头，对付船舰与世界地图上其他可移动的据点。修正航向的次数比一般导引头多，但目标若移出剩余射程，导弹仍会落空。</DMSE_AdvCruise_Guidance_AntiShip.description>
   <DMSE_AdvCruise_Propulsion_Turbofan.label>涡轮扇续航引擎</DMSE_AdvCruise_Propulsion_Turbofan.label>
   <DMSE_AdvCruise_Propulsion_Turbofan.description>一具省油的小型涡轮风扇发动机。航程远胜火箭发动机，也较难被雷达发现，但速度慢。</DMSE_AdvCruise_Propulsion_Turbofan.description>
   <DMSE_AdvCruise_Propulsion_TurbofanER.label>增程涡轮扇</DMSE_AdvCruise_Propulsion_TurbofanER.label>
   <DMSE_AdvCruise_Propulsion_TurbofanER.description>一具配有加大油箱的省油涡轮风扇发动机。是所有巡航配置中射程最远的，但抵达最慢、造价也最高。</DMSE_AdvCruise_Propulsion_TurbofanER.description>
   <DMSE_AdvCruise_Propulsion_Booster.label>固态火箭助推器</DMSE_AdvCruise_Propulsion_Booster.label>
   <DMSE_AdvCruise_Propulsion_Booster.description>一具把导弹推到高速后烧尽的固态火箭助推器。速度极快、也极容易被发现，而且它的重量会缩短导弹射程。</DMSE_AdvCruise_Propulsion_Booster.description>
-  <DMSE_AdvCruise_Payload_None.label>无酬载</DMSE_AdvCruise_Payload_None.label>
-  <DMSE_AdvCruise_Payload_None.description>没有二次装药，弹体空间全部留给弹头与油箱。</DMSE_AdvCruise_Payload_None.description>
   <DMSE_AdvCruise_Payload_Submunition.label>子弹药投放器</DMSE_AdvCruise_Payload_Submunition.label>
   <DMSE_AdvCruise_Payload_Submunition.description>一具在目标上空开启的子母弹撒布器，把小型子弹洒向整片区域，而不是集中在一点爆炸。</DMSE_AdvCruise_Payload_Submunition.description>
   <DMSE_AdvCruise_Payload_Graphite.label>石墨纤维酬载</DMSE_AdvCruise_Payload_Graphite.label>
   <DMSE_AdvCruise_Payload_Graphite.description>一种碳纤维载荷，透过让落点周围的电网短路能在大范围内瘫痪通电建筑并击晕机械体。</DMSE_AdvCruise_Payload_Graphite.description>
-  <DMSE_AdvCruise_Payload_Decoy.label>诱饵酬载</DMSE_AdvCruise_Payload_Decoy.label>
-  <DMSE_AdvCruise_Payload_Decoy.description>以雷达反射器与信号增强器取代二次装药。导弹在敌方雷达上看起来大上一倍，会更早被侦测，也会优先吸引依大小排序威胁的防空火力。不增加伤害。</DMSE_AdvCruise_Payload_Decoy.description>
-  <DMSE_AdvCruise_Payload_Chaff.label>箔条投放器</DMSE_AdvCruise_Payload_Chaff.label>
-  <DMSE_AdvCruise_Payload_Chaff.description>一具较大的箔条与雷达吸收丝带撒布器。每一束都能摆脱一次敌方火控锁定；数量比轻型版多，但飞行中无法补充。</DMSE_AdvCruise_Payload_Chaff.description>
   <DMSE_AdvBallistic_Warhead_LowYield.label>低当量弹头</DMSE_AdvBallistic_Warhead_LowYield.label>
   <DMSE_AdvBallistic_Warhead_LowYield.description>一枚缩小成战术用途的战略弹头。伤害不如完整的热核弹头，但便宜得多。</DMSE_AdvBallistic_Warhead_LowYield.description>
   <DMSE_AdvBallistic_Guidance_Stellar.label>星光惯性导引</DMSE_AdvBallistic_Guidance_Stellar.label>
@@ -125,23 +103,15 @@
   <DMSE_AdvBallistic_Payload_Penaids.description>随弹头一起释放的箔条、雷达诱饵与隐身罩。导弹在来袭途中看起来小得多，敌方雷达发现得更晚，反应时间也更短。</DMSE_AdvBallistic_Payload_Penaids.description>
   <DMSE_AdvBallistic_Payload_MIRV.label>多弹头重返载具</DMSE_AdvBallistic_Payload_MIRV.label>
   <DMSE_AdvBallistic_Payload_MIRV.description>在飞行途中释放三枚独立重返载具的弹头母舱。每枚都带着导弹的战斗部与制导，沿自己的航迹飞行，必须逐一击落，敌方每枚弹头都要用掉一条火控通道与一枚拦截弹。三枚全部打击同一目标。\n\n在释放前击落母舱，所有弹头会一次全毁。</DMSE_AdvBallistic_Payload_MIRV.description>
-  <DMSE_Payload_None.label>无酬载</DMSE_Payload_None.label>
-  <DMSE_Payload_None.description>没有二次装药，全靠弹头本身，让导弹保持轻巧、射程更远。</DMSE_Payload_None.description>
   <DMSE_Guidance_AntiShip.label>反舰雷达导引头</DMSE_Guidance_AntiShip.label>
   <DMSE_Guidance_AntiShip.description>一种专为移动目标设计的主动雷达导引头，对付船舰与世界地图上其他可移动的据点。修正航向的次数比一般导引头多，但目标若移出剩余射程，导弹仍会落空。</DMSE_Guidance_AntiShip.description>
-  <DMSE_Light_Payload_Chaff.label>箔条投放器</DMSE_Light_Payload_Chaff.label>
-  <DMSE_Light_Payload_Chaff.description>一束箔条与雷达吸收丝带。能摆脱一次敌方火控锁定，之后就用完了。</DMSE_Light_Payload_Chaff.description>
 
   <DMSE_Light_Guidance_SemiActive.label>半主动雷达导引头</DMSE_Light_Guidance_SemiActive.label>
   <DMSE_Light_Guidance_SemiActive.description>一种追踪火控雷达照射目标反射波的半主动雷达导引头。专为拦截设计；对地攻击时改用散布很小的惯性制导。</DMSE_Light_Guidance_SemiActive.description>
   <DMSE_Guidance_ActiveRadar.label>主动雷达寻标器</DMSE_Guidance_ActiveRadar.label>
   <DMSE_Guidance_ActiveRadar.description>一种射后不理的主动雷达导引头。会锁定占地最大的敌方建筑；没有建筑时锁定体型最大的敌方生物，都找不到则改用惯性制导。具备末端制导能力。</DMSE_Guidance_ActiveRadar.description>
-  <DMSE_Payload_BunkerBuster.label>反碉堡酬载</DMSE_Payload_BunkerBuster.label>
-  <DMSE_Payload_BunkerBuster.description>一种强化外壳、延时引信的穿透装药。能钻穿厚岩顶后在内部引爆，摧毁附近的建筑。\n\n没有它或穿透弹头时，击中山体的导弹只会在岩石表面爆炸，导引头也会忽略厚顶之下的目标。</DMSE_Payload_BunkerBuster.description>
   <DMSE_Ballistic_Payload_BunkerBuster.label>反碉堡酬载</DMSE_Ballistic_Payload_BunkerBuster.label>
   <DMSE_Ballistic_Payload_BunkerBuster.description>一种强化外壳、延时引信的穿透装药。能钻穿厚岩顶后在内部引爆，摧毁附近的建筑。\n\n没有它或穿透弹头时，击中山体的导弹只会在岩石表面爆炸，导引头也会忽略厚顶之下的目标。</DMSE_Ballistic_Payload_BunkerBuster.description>
-  <DMSE_AdvCruise_Payload_BunkerBuster.label>反碉堡酬载</DMSE_AdvCruise_Payload_BunkerBuster.label>
-  <DMSE_AdvCruise_Payload_BunkerBuster.description>一种强化外壳、延时引信的穿透装药。能钻穿厚岩顶后在内部引爆，摧毁附近的建筑。\n\n没有它或穿透弹头时，击中山体的导弹只会在岩石表面爆炸，导引头也会忽略厚顶之下的目标。</DMSE_AdvCruise_Payload_BunkerBuster.description>
   <!-- EN: MIRV with decoys -->
   <DMSE_AdvBallistic_Payload_MIRVDecoy.label>分导突防载具</DMSE_AdvBallistic_Payload_MIRVDecoy.label>
   <DMSE_AdvBallistic_Payload_MIRVDecoy.description>弹头母舱以随机顺序放出两枚重返载具与三枚重型诱饵。诱饵在雷达上和弹头一模一样，而且会一路落到目标，敌方会把火控通道、拦截弹与近防火力浪费在它们身上。两枚弹头都带着导弹的战斗部与制导，打击同一目标。\n\n在释放前击落母舱，所有东西会一次全毁。</DMSE_AdvBallistic_Payload_MIRVDecoy.description>

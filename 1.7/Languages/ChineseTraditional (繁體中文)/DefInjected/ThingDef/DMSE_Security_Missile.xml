@@ -4,7 +4,7 @@
   <!-- EN: cruise missile launcher -->
   <DMSE_Building_Scorer.label>巡弋飛彈發射器</DMSE_Building_Scorer.label>
   <!-- EN: The S1120 "Scorer" is a cruise missile launch system. It is a highly versatile anti-ship missile launcher used on cruisers and armed landing ships of the Colonial Fleet. -->
-  <DMSE_Building_Scorer.description>一套用於殖民艦隊巡洋艦與武裝登陸艦上的巡弋飛彈發射系統。用途廣泛，最常用來攻擊船艦。</DMSE_Building_Scorer.description>
+  <DMSE_Building_Scorer.description>一套用於殖民艦隊巡洋艦與武裝登陸艦上的巡弋飛彈發射系統。用途廣泛。</DMSE_Building_Scorer.description>
   <!-- EN: Loaded missile -->
   <DMSE_Building_Scorer.comps.CompRefuelable.fuelGizmoLabel>戰術巡弋飛彈</DMSE_Building_Scorer.comps.CompRefuelable.fuelGizmoLabel>
   

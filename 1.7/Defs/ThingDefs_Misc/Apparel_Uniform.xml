@@ -36,8 +36,8 @@
 
 	<ThingDef ParentName="ApparelMakeableBase">
 		<defName>DMS_Apparel_Uniform</defName>
-		<label>Uniform</label>
-		<description>A typical coat for an enlisted man, designed to keep one warm in chilly weather.</description>
+		<label>dress uniform</label>
+		<description>A coat for formal occasions, designed to keep one warm in chilly weather.</description>
 		<possessionCount>1</possessionCount>
 		<recipeMaker>
 			<researchPrerequisite>DMS_EquipmentBasis</researchPrerequisite>

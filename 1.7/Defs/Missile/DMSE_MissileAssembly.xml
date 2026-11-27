@@ -265,9 +265,8 @@
 
   <Fortified.MissilePartDef>
     <defName>DMSE_Payload_None</defName>
-    <label>no payload</label>
+    <sharedTextFrom>DMSE_Ballistic_Payload_None</sharedTextFrom>
     <omitFromDesignName>true</omitFromDesignName>
-    <description>No secondary charge. The warhead does all the work, keeping the missile light and its range long.</description>
     <category>Payload</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_Moskit</li>
@@ -283,9 +282,7 @@
        沒有它（或鎢芯穿甲戰鬥部）的導彈打在厚岩頂上只在岩層表面引爆，導引頭也不鎖定岩頂下的目標。 -->
   <Fortified.MissilePartDef>
     <defName>DMSE_Payload_BunkerBuster</defName>
-    <label>bunker buster payload</label>
-    <designWord>Bunker</designWord>
-    <description>A hardened penetrator charge with a delayed fuze. It bores through thick rock roofs and detonates inside, wrecking nearby structures.\n\nWithout this or a penetrator warhead, a missile that hits a mountain detonates on the rock surface, and its seeker ignores targets under thick roofs.</description>
+    <sharedTextFrom>DMSE_Ballistic_Payload_BunkerBuster</sharedTextFrom>
     <category>Payload</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_Moskit</li>

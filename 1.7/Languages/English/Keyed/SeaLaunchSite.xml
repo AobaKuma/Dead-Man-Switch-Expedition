@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
-  <DMSE.SeaLaunchSite.SpawnedLetter>{0} has deployed a sea launch station on the water {3} tiles {2} of {1}. Its launchers can strike your colony; supply pods will keep its garrison fed while its radars run.\n\nThe station can only be reached by air. Destroy every fire-control radar to neutralize it, or bring down the pillars that hold its decks above the sea.</DMSE.SeaLaunchSite.SpawnedLetter>
+  <DMSE.SeaLaunchSite.SpawnedLetter>{0} has deployed a sea launch platform on the water {3} tiles {2} of {1}. Its missiles can strike your colony; supply pods will keep its garrison supplied while its radars run.\n\nAn assault on a sea platform can only arrive by air, so wear down its air-defense interception capacity as much as possible before attacking. Destroy every fire-control radar to neutralize it.</DMSE.SeaLaunchSite.SpawnedLetter>
 </LanguageData>

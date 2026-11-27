@@ -5,7 +5,7 @@
   <!-- EN: Next missile strike in: {0} -->
   <DMSE.MissileBase.NextFireIn>下次導彈打擊：{0}</DMSE.MissileBase.NextFireIn>
   <!-- EN: Position detected (local map under observation) -->
-  <DMSE.MissileBase.LocalMonitoring>陣地已被偵測（本地地圖觀察中）</DMSE.MissileBase.LocalMonitoring>
+  <DMSE.MissileBase.LocalMonitoring>陣地已被偵測（觀察中）</DMSE.MissileBase.LocalMonitoring>
   <!-- EN: Position relocating in: {0} -->
   <DMSE.MissileBase.RelocationIn>陣地轉移倒計時：{0}</DMSE.MissileBase.RelocationIn>
   <!-- EN: Ground access denied: enemy regrouping ({0}) -->
@@ -128,5 +128,5 @@ Click to cycle through the remaining targets. -->
 
 
   <!-- EN: {0} has established a ballistic launch site {3} tiles {2} of {1}. Its strategic missiles can reach your colony from far beyond the range of ordinary launch positions, and it will stay there, firing every few days, until it is destroyed.\n\nDestroy every fire-control radar to neutralize it. Strong air defense will make it mix in penetration aids. -->
-  <DMSE.BallisticLaunchSite.SpawnedLetter>{0}在{1}的{2}方 {3} 格處建立了一座彈道發射場。它的戰略導彈射程遠超一般發射陣地，能從遠處打到你的殖民地，而且會一直留在那裡、每隔幾天發射一次，直到被摧毀。\n\n摧毀所有火控雷達即可癱瘓它。你的防空越強，它越會混入突防載荷。</DMSE.BallisticLaunchSite.SpawnedLetter>
+  <DMSE.BallisticLaunchSite.SpawnedLetter>{0}在{1}的{2}方 {3} 格處建立了一座彈道發射場。它的戰略導彈射程遠超一般發射陣地，能從遠處打到你的殖民地，而且會一直留在那裡、每隔幾天發射一次，直到被摧毀。\n\n摧毀所有火控雷達即可癱瘓它。你的防空越強它就越會在打擊的導彈中混入突防載荷。</DMSE.BallisticLaunchSite.SpawnedLetter>
 </LanguageData>

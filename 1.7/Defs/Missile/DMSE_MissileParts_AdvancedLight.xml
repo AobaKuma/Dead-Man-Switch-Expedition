@@ -118,9 +118,8 @@
 
   <Fortified.MissilePartDef>
     <defName>DMSE_AdvLight_Guidance_Inertial</defName>
-    <label>inertial guidance</label>
+    <sharedTextFrom>DMSE_Guidance_Inertial</sharedTextFrom>
     <omitFromDesignName>true</omitFromDesignName>
-    <description>Cheap inertial guidance with no seeker and no terminal guidance. Cannot strike other map layers. Impacts scatter around the center of the target map. It does not lock onto buildings or creatures.</description>
     <category>Guidance</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedLight</li>
@@ -177,9 +176,7 @@
   <!-- 半主動雷射（SAL）：鎖定我方標定點，散布最緊。 -->
   <Fortified.MissilePartDef>
     <defName>DMSE_AdvLight_Guidance_Laser</defName>
-    <label>semi-active laser seeker</label>
-    <designWord>Laser</designWord>
-    <description>A semi-active laser seeker that homes on the most recent point your colony marked on the target map with a laser target designator. The most accurate seeker for this missile, but someone has to mark the target.</description>
+    <sharedTextFrom>DMSE_Guidance_Laser</sharedTextFrom>
     <category>Guidance</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedLight</li>
@@ -220,9 +217,8 @@
 
   <Fortified.MissilePartDef>
     <defName>DMSE_AdvLight_Payload_None</defName>
-    <label>no payload</label>
+    <sharedTextFrom>DMSE_Ballistic_Payload_None</sharedTextFrom>
     <omitFromDesignName>true</omitFromDesignName>
-    <description>No secondary charge. The warhead does all the work, keeping the missile light and its range long.</description>
     <category>Payload</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedLight</li>

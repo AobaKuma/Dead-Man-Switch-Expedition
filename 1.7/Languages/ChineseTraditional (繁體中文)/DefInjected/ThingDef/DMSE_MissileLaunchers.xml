@@ -3,17 +3,17 @@
 
   <DMSE_Incoming_Loiter.label>遊蕩彈藥（來襲）</DMSE_Incoming_Loiter.label>
   <DMSE_Building_LoiteringLauncher.label>軌道發射架</DMSE_Building_LoiteringLauncher.label>
-  <DMSE_Building_LoiteringLauncher.description>一條只放得下一枚巡飛彈的簡易傾斜發射軌。不需要電力，便宜到可以沿著防線排滿，但挨一發就可能整座報銷。\n\n打擊用巡飛彈會射向地圖以外的目標；攔截用巡飛彈則由火控網自動發射。</DMSE_Building_LoiteringLauncher.description>
+  <DMSE_Building_LoiteringLauncher.description>一條簡易傾斜發射軌，不需要電力但本身也並不堅固。\n\n打擊用巡飛彈能夠超視距攻擊本地圖以外的目標；攔截用巡飛彈則由火控網自動發射。</DMSE_Building_LoiteringLauncher.description>
   <DMSE_Incoming_LightMissile.label>輕型導彈（來襲）</DMSE_Incoming_LightMissile.label>
   <DMSE_Building_LightMissileLauncher.label>傾斜發射箱</DMSE_Building_LightMissileLauncher.label>
   <DMSE_Building_LightMissileLauncher.description>一座傾斜的發射箱，可容納四枚輕型導彈。能自動裝填與發射，以很小的占地提供可觀的齊射火力。\n\n需要電力。打擊用導彈會射向地圖以外的目標；防空與兩用導彈也會由火控網當作攔截彈發射。</DMSE_Building_LightMissileLauncher.description>
   <DMSE_Building_LightMissileVLS.label>小型垂直發射井</DMSE_Building_LightMissileVLS.label>
-  <DMSE_Building_LightMissileVLS.description>一座與地面齊平的垂直發射器，有四個輕型導彈發射格。只占一格，很容易沿防線布置，但每個發射格都得分別裝填。\n\n無法建造在重力船上。</DMSE_Building_LightMissileVLS.description>
+  <DMSE_Building_LightMissileVLS.description>一座與地面齊平的半埋式垂直發射單元，能夠裝填四枚輕型導彈。\n\n無法建造在重力船上。</DMSE_Building_LightMissileVLS.description>
   <DMSE_Building_RotaryMissileLauncher.label>防空導彈發射架</DMSE_Building_RotaryMissileLauncher.label>
-  <DMSE_Building_RotaryMissileLauncher.description>一座裝在旋轉底座上的四聯裝防空導彈發射架。本身沒有雷達，只會射擊火控雷達交給它的目標。\n\n需要操作員。</DMSE_Building_RotaryMissileLauncher.description>
+  <DMSE_Building_RotaryMissileLauncher.description>一座裝在旋轉底座上的四聯裝防空導彈發射架。本身沒有雷達，因此需要由本地圖中存在的火控雷達來提供目標參數。\n\n需要操作員。</DMSE_Building_RotaryMissileLauncher.description>
   <DMSE_Building_BallisticSilo.label>戰略導彈發射井</DMSE_Building_BallisticSilo.label>
-  <DMSE_Building_BallisticSilo.description>一座半埋入地下的戰略導彈發射井，配有厚重的混凝土艙蓋與爆震抑制結構，發射時不會波及周圍。造價極高、非常堅固，只能容納一枚導彈。\n\n導彈直接在發射井內以原料裝配，再對世界地圖上的目標發射。\n\n無法建造在重力船上。</DMSE_Building_BallisticSilo.description>
+  <DMSE_Building_BallisticSilo.description>一座半埋的戰略導彈發射井，配有厚重的裝甲艙蓋與爆震抑制結構，發射時不會波及周圍。造價極高、非常堅固但也只能容納一枚大型導彈。\n\n導彈直接在發射井內裝配，再對世界地圖上的目標發射。\n\n無法建造在重力船上。</DMSE_Building_BallisticSilo.description>
 
   <DMSE_Building_NLOSLauncher.label>非直視發射箱</DMSE_Building_NLOSLauncher.label>
-  <DMSE_Building_NLOSLauncher.description>一座箱式垂直發射器，在很小的佔地內塞進十五枚輕型導彈，另一格留給火控單元。能對視線以外的目標一次傾瀉大量齊射，但要靠人力重新裝填滿，得花上很長時間。\n\n無法建造在重力船上。</DMSE_Building_NLOSLauncher.description>
+  <DMSE_Building_NLOSLauncher.description>一座箱式垂直發射器，在很小的佔地內塞進十五枚輕型導彈，另一格留給獨立的火控單元。具備獨立電池來在特殊狀況下靈活使用。\n\n無法建造在重力船上。</DMSE_Building_NLOSLauncher.description>
 </LanguageData>

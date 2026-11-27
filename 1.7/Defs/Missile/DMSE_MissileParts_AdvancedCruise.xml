@@ -108,9 +108,7 @@
   <!-- 反艦主動雷達：對移動目標的專用導引頭。 -->
   <Fortified.MissilePartDef>
     <defName>DMSE_AdvCruise_Guidance_AntiShip</defName>
-    <label>anti-ship radar seeker</label>
-    <designWord>Anti-ship</designWord>
-    <description>An active radar seeker built for moving targets, such as ships and other mobile bases on the world map. It updates its aim more often than a normal seeker, but the missile still misses if the target moves out of its remaining range.</description>
+    <sharedTextFrom>DMSE_Guidance_AntiShip</sharedTextFrom>
     <category>Guidance</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedCruise</li>
@@ -195,9 +193,8 @@
 
   <Fortified.MissilePartDef>
     <defName>DMSE_AdvCruise_Payload_None</defName>
-    <label>no payload</label>
+    <sharedTextFrom>DMSE_Ballistic_Payload_None</sharedTextFrom>
     <omitFromDesignName>true</omitFromDesignName>
-    <description>No secondary charge. The warhead and fuel tank get all the space.</description>
     <category>Payload</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedCruise</li>
@@ -231,9 +228,7 @@
        沒有它（或鎢芯穿甲戰鬥部）的導彈打在厚岩頂上只在岩層表面引爆，導引頭也不鎖定岩頂下的目標。 -->
   <Fortified.MissilePartDef>
     <defName>DMSE_AdvCruise_Payload_BunkerBuster</defName>
-    <label>bunker buster payload</label>
-    <designWord>Bunker</designWord>
-    <description>A hardened penetrator charge with a delayed fuze. It bores through thick rock roofs and detonates inside, wrecking nearby structures.\n\nWithout this or a penetrator warhead, a missile that hits a mountain detonates on the rock surface, and its seeker ignores targets under thick roofs.</description>
+    <sharedTextFrom>DMSE_Ballistic_Payload_BunkerBuster</sharedTextFrom>
     <category>Payload</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedCruise</li>
@@ -274,9 +269,7 @@
 
   <Fortified.MissilePartDef>
     <defName>DMSE_AdvCruise_Payload_Decoy</defName>
-    <label>decoy payload</label>
-    <designWord>Decoy</designWord>
-    <description>Radar reflectors and a signal booster in place of a secondary charge. The missile looks twice as large on enemy radar, so it is detected earlier and drawn fire from air defenses that rank threats by size. Adds no damage.</description>
+    <sharedTextFrom>DMSE_Light_Payload_Decoy</sharedTextFrom>
     <category>Payload</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedCruise</li>
@@ -295,9 +288,7 @@
   <!-- 箔條／干擾絲（巡航版）：次數較多、強度較高。 -->
   <Fortified.MissilePartDef>
     <defName>DMSE_AdvCruise_Payload_Chaff</defName>
-    <label>chaff dispenser</label>
-    <designWord>Chaff</designWord>
-    <description>A larger dispenser of chaff and radar-absorbing streamers. Each bundle can break one enemy fire-control lock. It holds more bundles than the light version, but they cannot be reloaded in flight.</description>
+    <sharedTextFrom>DMSE_AdvLight_Payload_Chaff</sharedTextFrom>
     <category>Payload</category>
     <compatibleBodies>
       <li>DMSE_MissileBody_AdvancedCruise</li>

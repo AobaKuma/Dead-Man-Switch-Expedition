@@ -107,7 +107,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_MissileRack</defName>
     <label>missile rack</label>
-    <description>A metal rack that holds up to four light missiles. Stored missiles are protected from the weather and do not deteriorate.</description>
+    <description>A rack that holds up to four light missiles. Stored missiles do not deteriorate.</description>
     <thingClass>Fortified.Building_MissileRack</thingClass>
     <category>Building</category>
     <graphicData>
@@ -254,7 +254,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_CruiseMissileRack</defName>
     <label>cruise missile rack</label>
-    <description>An armored rack that holds up to two cruise missiles. Stored missiles are protected from the weather and do not deteriorate.</description>
+    <description>A rack that holds up to two medium missiles. Stored missiles do not deteriorate.</description>
     <thingClass>Fortified.Building_MissileRack</thingClass>
     <category>Building</category>
     <graphicData>

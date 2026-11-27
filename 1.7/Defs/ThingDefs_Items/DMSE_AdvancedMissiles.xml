@@ -14,7 +14,7 @@
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_Missile_AdvancedLight</defName>
     <label>advanced general-purpose missile</label>
-    <description>A compact multi-role missile, accurate and able to carry more than older light missiles.\n\nComes with a tandem shaped-charge warhead and an automatic imaging seeker. The parts can be changed in the assembly tab.</description>
+    <description>A compact multi-role missile with excellent accuracy and payload.\n\nComes with a tandem shaped-charge warhead and an automatic imaging seeker. The parts can be changed in the assembly tab.</description>
     <descriptionHyperlinks>
       <ThingDef>DMSE_Building_LightMissileLauncher</ThingDef>
       <ThingDef>DMSE_Building_LightMissileVLS</ThingDef>
@@ -88,7 +88,7 @@
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_Missile_AdvancedCruise</defName>
     <label>advanced cruise missile</label>
-    <description>A stealthy cruise missile that hugs the terrain on the way in. It is far more accurate than the older Scorer missile.\n\nComes with a penetrating warhead, terrain-matching guidance and a turbofan engine. The parts can be changed in the assembly tab.</description>
+    <description>A stealthy cruise missile that hugs the terrain at low altitude.\n\nComes with a penetrating warhead, terrain-matching guidance and a turbofan engine. The parts can be changed in the assembly tab.</description>
     <descriptionHyperlinks>
       <ThingDef>DMSE_Building_Scorer</ThingDef>
       <ThingDef>DMSE_CruiseMissileRack</ThingDef>

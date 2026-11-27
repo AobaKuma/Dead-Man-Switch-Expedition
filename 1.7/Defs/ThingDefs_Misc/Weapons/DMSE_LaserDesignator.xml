@@ -8,7 +8,7 @@
   <ThingDef>
     <defName>DMSE_LaserDesignatorMark</defName>
     <label>laser designation</label>
-    <description>A target point painted by a laser designator. Laser-guided missiles fired by the same faction home on the most recent designation on the target map. It cannot be damaged and fades on its own after a while.</description>
+    <description>A target point painted by a laser designator. Laser-guided missiles fired by the same faction home on the most recent designation on the target map. It fades on its own after a while.</description>
     <thingClass>Fortified.LaserDesignatorMark</thingClass>
     <category>Ethereal</category>
     <altitudeLayer>MoteOverhead</altitudeLayer>
@@ -58,7 +58,7 @@
   <ThingDef ParentName="BaseHumanMakeableGun">
     <defName>DMSE_Gun_LaserDesignator</defName>
     <label>laser target designator</label>
-    <description>A handheld laser designator. Painting a spot on the ground or a target leaves a laser designation there for a couple of hours; laser-guided missiles fired by your colony lock onto the most recent designation on the target map. It deals no damage.</description>
+    <description>A handheld laser designator. Painting a spot on the ground or a target leaves a laser designation there for a couple of hours; missiles with laser guidance lock onto the most recent designation on the target map.</description>
     <graphicData>
       <texPath>Things/Weapons/DMSE_Gun_LaserDesignator</texPath>
       <graphicClass>Graphic_Single</graphicClass>

@@ -134,9 +134,7 @@
 
   <Fortified.MissilePartDef>
     <defName>DMSE_Ballistic_Guidance_Laser</defName>
-    <label>laser terminal seeker</label>
-    <designWord>Laser</designWord>
-    <description>A semi-active laser seeker. It homes on the most recent point your colony marked on the target map with a laser target designator, and falls back to inertial guidance if there is none.</description>
+    <sharedTextFrom>DMSE_Guidance_Laser</sharedTextFrom>
     <category>Guidance</category>
     <compatibleBodies><li>DMSE_MissileBody_AdvancedBallistic</li><li>DMSE_MissileBody_LegacyBallistic</li></compatibleBodies>
     <guidanceType Class="Fortified.GuidanceType_Laser" />

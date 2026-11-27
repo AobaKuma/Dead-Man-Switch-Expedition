@@ -100,9 +100,8 @@
   <!-- 慣性制導：預設，無額外費用。 -->
   <Fortified.MissilePartDef>
     <defName>DMSE_Light_Guidance_Inertial</defName>
-    <label>inertial guidance</label>
+    <sharedTextFrom>DMSE_Guidance_Inertial</sharedTextFrom>
     <omitFromDesignName>true</omitFromDesignName>
-    <description>Basic inertial guidance with no seeker. The missile follows a preset path. Impacts scatter around the center of the target map. It does not lock onto buildings or creatures.</description>
     <category>Guidance</category>
     <compatibleBodies><li>DMSE_MissileBody_Light</li><li>DMSE_MissileBody_Stinger</li><li>DMSE_MissileBody_Maverick</li><li>DMSE_MissileBody_Sparrow</li></compatibleBodies>
     <guidanceType Class="Fortified.GuidanceType_Inertial" />
@@ -143,9 +142,7 @@
 
   <Fortified.MissilePartDef>
     <defName>DMSE_Light_Guidance_Laser</defName>
-    <label>laser seeker</label>
-    <designWord>Laser</designWord>
-    <description>A semi-active laser seeker. It homes on the most recent point your colony marked on the target map with a laser target designator, and falls back to inertial guidance if there is none.</description>
+    <sharedTextFrom>DMSE_Guidance_Laser</sharedTextFrom>
     <category>Guidance</category>
     <compatibleBodies><li>DMSE_MissileBody_Light</li><li>DMSE_MissileBody_Stinger</li><li>DMSE_MissileBody_Maverick</li><li>DMSE_MissileBody_Sparrow</li></compatibleBodies>
     <guidanceType Class="Fortified.GuidanceType_Laser" />
@@ -184,9 +181,8 @@
   <!-- 空酬載：僅依靠主彈頭爆炸。 -->
   <Fortified.MissilePartDef>
     <defName>DMSE_Light_Payload_None</defName>
-    <label>no payload</label>
+    <sharedTextFrom>DMSE_Ballistic_Payload_None</sharedTextFrom>
     <omitFromDesignName>true</omitFromDesignName>
-    <description>No secondary charge. The warhead does all the work.</description>
     <category>Payload</category>
     <compatibleBodies><li>DMSE_MissileBody_Light</li><li>DMSE_MissileBody_Maverick</li><li>DMSE_MissileBody_Sparrow</li></compatibleBodies>
     <payloadEffect Class="Fortified.PayloadEffect_None" />
@@ -242,9 +238,7 @@
   <!-- 箔條／干擾絲：只有一發，最便宜的斷鎖手段。 -->
   <Fortified.MissilePartDef>
     <defName>DMSE_Light_Payload_Chaff</defName>
-    <label>chaff dispenser</label>
-    <designWord>Chaff</designWord>
-    <description>A single bundle of chaff and radar-absorbing streamers. It can break one enemy fire-control lock, then it is spent.</description>
+    <sharedTextFrom>DMSE_AdvLight_Payload_Chaff</sharedTextFrom>
     <category>Payload</category>
     <compatibleBodies><li>DMSE_MissileBody_Light</li><li>DMSE_MissileBody_Maverick</li><li>DMSE_MissileBody_Sparrow</li></compatibleBodies>
     <payloadEffect Class="Fortified.PayloadEffect_None" />

@@ -9,9 +9,9 @@
   <!-- EN: Locate -->
   <DMSE.UI.Locate>定位</DMSE.UI.Locate>
   <!-- EN: ▸ Engineering and equipment details -->
-  <DMSE.UI.ShowDetails>▸ 展開工程與設備明細</DMSE.UI.ShowDetails>
+  <DMSE.UI.ShowDetails>▸ 展開結構細節</DMSE.UI.ShowDetails>
   <!-- EN: ▾ Hide engineering and equipment details -->
-  <DMSE.UI.HideDetails>▾ 收合工程與設備明細</DMSE.UI.HideDetails>
+  <DMSE.UI.HideDetails>▾ 收合結構細節</DMSE.UI.HideDetails>
   <!-- EN: Engineering details -->
-  <DMSE.UI.EngineeringDetails>工程明細</DMSE.UI.EngineeringDetails>
+  <DMSE.UI.EngineeringDetails>結構細節</DMSE.UI.EngineeringDetails>
 </LanguageData>

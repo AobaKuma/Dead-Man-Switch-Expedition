@@ -8,7 +8,7 @@
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_Missile_Termite</defName>
     <label>anti-ship loitering munition</label>
-    <description>A folding-wing anti-ship loitering munition powered by a small turbojet. It is slow and lightly armed, but cheap, fires from a ground rail and chases moving ships with its own seeker.</description>
+    <description>A folding-wing anti-ship loitering munition powered by a small turbojet. It fires from a ground rail and carries a seeker that can chase moving ships.</description>
     <descriptionHyperlinks>
       <ThingDef>DMSE_Building_LoiteringLauncher</ThingDef>
       <ThingDef>DMSE_Building_RotaryLauncher</ThingDef>

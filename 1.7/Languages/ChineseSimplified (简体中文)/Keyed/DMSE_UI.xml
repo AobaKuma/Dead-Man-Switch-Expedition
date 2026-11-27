@@ -4,7 +4,7 @@
   <DMSE.UI.TransferReady>整备检查通过 · {1} 项警告</DMSE.UI.TransferReady>
   <DMSE.UI.FuelRequiredAvailable>燃料：需求／可用</DMSE.UI.FuelRequiredAvailable>
   <DMSE.UI.Locate>定位</DMSE.UI.Locate>
-  <DMSE.UI.ShowDetails>▸ 展开工程与设备明细</DMSE.UI.ShowDetails>
-  <DMSE.UI.HideDetails>▾ 收起工程与设备明细</DMSE.UI.HideDetails>
-  <DMSE.UI.EngineeringDetails>工程明细</DMSE.UI.EngineeringDetails>
+  <DMSE.UI.ShowDetails>▸ 展开结构细节</DMSE.UI.ShowDetails>
+  <DMSE.UI.HideDetails>▾ 收起结构细节</DMSE.UI.HideDetails>
+  <DMSE.UI.EngineeringDetails>结构细节</DMSE.UI.EngineeringDetails>
 </LanguageData>

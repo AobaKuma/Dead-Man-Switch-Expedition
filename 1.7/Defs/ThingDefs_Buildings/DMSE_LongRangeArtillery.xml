@@ -21,7 +21,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_Turret_Empero</defName>
     <label>long-range cannon</label>
-    <description>The NK-30 "Empero" is a heavy long-range cannon with an extremely high muzzle velocity. It shells distant targets with precision, suppressing enemy fire and destroying installations. At close range it fires reduced charges at low velocity for plunging fire, still with very high accuracy. When shelling a target on the world map, it keeps firing until stopped or out of power, pausing while it waits for a shell or a new barrel.\n\nThe gun has no crew: it fires whatever mortar shell is loaded, at local targets and on the world map. A linked shell autoloader loads one shell at a time from its own stock; set the allowed shell types on the gun's shells tab. Each shot wears the barrel, which colonists replace with a reinforced barrel when it is worn out.\n\nUnguided shells scatter widely at long range and only land near the middle of the target area. If a fire-control radar that supports artillery guidance has a free channel when the gun fires, the shell is radar-guided onto enemy turrets, powered buildings or people in the area, and lands much closer to them. Each guided shell holds one channel for a while.\n\nFire mode toggle: ranging shells scatter around the middle of the target area and log each impact; fire for effect shells scatter around the last logged impact on that map (every friendly gun shelling it shares that point) and tighten their scatter by a quarter of the base scatter per shot.\n\nCannot strike targets in high orbit across layers.</description>
+    <description>The NK-30 "Empero" is a heavy long-range cannon with an extremely high muzzle velocity. It shells distant targets with precision, heavily suppressing enemy fire and destroying installations. At close range it fires reduced charges at low velocity for plunging fire, still with very high accuracy.</description>
     <thingClass>Fortified.Building_LongRangeGun</thingClass>
     <category>Building</category>
     <uiIconPath>Things/Turrets/DMSE_Weapon_Empero_icon</uiIconPath>
@@ -226,7 +226,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_ShellAutoloader</defName>
     <label>shell autoloader</label>
-    <description>A powered ammunition rack that feeds mortar shells into linked guns that have no crew, such as the long-range cannon. Colonists stock it like a shelf; whenever a linked gun is empty, it loads one shell of a type the gun's shells tab allows. It stops loading without power.</description>
+    <description>A powered autoloader that loads mortar shells automatically. Whenever a linked gun is empty, it loads one shell of a type that gun allows from its rack. It stops loading without power.</description>
     <thingClass>Building_Storage</thingClass>
     <graphicData>
       <texPath>Things/Building/FieldStructures/ammoStorage</texPath>

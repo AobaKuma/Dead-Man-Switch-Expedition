@@ -30,9 +30,9 @@
   
 
   <DMSE_Missile_Moskit.label>超音速反舰导弹</DMSE_Missile_Moskit.label>
-  <DMSE_Missile_Moskit.description>一种冲压发动机推进的大型超音速反舰导弹。末段贴著海面飞行，近防系统只剩几秒钟能反应。造价昂贵，但一发命中就能让一艘战舰退出战斗。</DMSE_Missile_Moskit.description>
+  <DMSE_Missile_Moskit.description>一种冲压发动机推进的大型超音速反舰导弹。末段贴着海面飞行进行低空突防。造价昂贵，但一发命中就能让一艘战舰退出战斗。</DMSE_Missile_Moskit.description>
   <DMSE_InterceptorMissile.label>拦截弹</DMSE_InterceptorMissile.label>
-  <DMSE_InterceptorMissile.description>一枚可立即发射的地对空拦截弹。装填至防空导弹发射架的内部弹舱后，每次接战消耗一枚，用于在超视距作战的中段飞行阶段摧毁来袭威胁。</DMSE_InterceptorMissile.description>
+  <DMSE_InterceptorMissile.description>一枚地对空拦截导弹。装填至防空导弹发射架后在接战中消耗，用于在超视距作战的中段飞行阶段摧毁来袭威胁。</DMSE_InterceptorMissile.description>
   <DMSE_Missile_Grison.label>野战防空导弹</DMSE_Missile_Grison.label>
   <DMSE_Missile_Grison.description>一种供野战防空炮塔使用的短程防空导弹，以无线电指令导向目标。</DMSE_Missile_Grison.description>
 

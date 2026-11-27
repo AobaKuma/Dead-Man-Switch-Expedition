@@ -7,7 +7,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_StructuralPile</defName>
     <label>large structural pile</label>
-    <description>A heavy load-bearing pile that marks out a section of ground. Piles joined by steel beams can be detached and moved together as one ship. Small structural piles can be built within its link range. It cannot be built on prebuilt orbital platform and its hull never includes it; use a structural anchor pile for that.</description>
+    <description>A large reinforced metal structure that keeps the platform structure within its range, together with its linked structural piles, moving as one ship when pushed by thrusters. Small structural piles can be built within its link range.</description>
     <graphicData>
       <texPath>Things/Building/StructuralPile/building</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -70,7 +70,7 @@
  <ThingDef ParentName="BuildingBase">
     <defName>DMSE_StructuralPileSmall</defName>
     <label>small structural pile</label>
-    <description>A load-bearing pile that marks out a smaller section of ground. It has no link range of its own: it must be built within the link range of a large structural pile or a structural anchor pile, and cannot be joined to other small structural piles. It cannot be built on prebuilt orbital platform and its hull never includes it.</description>
+    <description>A load-bearing pile that marks out a smaller section. It has no link range of its own: it must be built within the link range of a large structural pile or a structural anchor pile.</description>
     <graphicData>
       <texPath>Things/Building/StructuralPile/building_Small</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -135,7 +135,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_StructuralPileVacuum</defName>
     <label>structural anchor pile</label>
-    <description>A large reinforced metal structure that keeps celestial structures such as asteroids and orbital platforms from collapsing on a massive scale under shifting loads while they are being moved. Each anchor pile secures the floor structure within its radius, and can be joined to anchor piles in neighboring ranges by steel framework to form a structural network that large thrusters can move. This allows asteroids and orbital platforms to be redeployed to new positions effectively and safely, or even used as a mobile base in orbit.\n\nCan only be built in space. It secures all solid ground there, such as asteroid vacstone, terraformed soil and prebuilt orbital platforms, but not constructed orbital or light platforms; those must be secured by large or small structural piles. Small structural piles can also be built within its link range.</description>
+    <description>A large reinforced metal structure that keeps celestial structures such as asteroids and orbital platforms from collapsing on a massive scale under shifting loads while they are being moved. Each anchor pile secures the floor structure within its radius, and can be joined to anchor piles in neighboring ranges by steel framework to form a structural network that large thrusters can move. This allows asteroids and orbital platforms to be redeployed to new positions effectively and safely, or even used as a mobile base in orbit.\n\nCan only be built in space.</description>
     <graphicData>
       <texPath>Things/Building/StructuralPile/building</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -266,7 +266,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_TransferConsole</defName>
     <label>transfer flight console</label>
-    <description>Controls transfer flights for the ship it stands on. Plan a destination, check fuel and readiness, and begin the launch.</description>
+    <description>A flight control terminal that controls transfer flights for the ship it stands on: plan a destination and check fuel and readiness.</description>
     <graphicData>
       <texPath>Things/Building/TransferConsole/building</texPath>
       <graphicClass>Graphic_Multi</graphicClass>

@@ -4,8 +4,8 @@
   <DMSE_LoiteringRack.label>遊蕩彈藥儲存架</DMSE_LoiteringRack.label>
   <DMSE_LoiteringRack.description>一座存放巡飛彈的架子。存放其中的巡飛彈不會劣化。</DMSE_LoiteringRack.description>
   <DMSE_MissileRack.label>導彈儲存架</DMSE_MissileRack.label>
-  <DMSE_MissileRack.description>一座最多可存放四枚輕型導彈的金屬架。存放其中的導彈不受天候影響，也不會劣化。</DMSE_MissileRack.description>
+  <DMSE_MissileRack.description>一座最多可存放四枚輕型導彈的架子。存放其中的導彈不會劣化。</DMSE_MissileRack.description>
   <DMSE_CruiseMissileRack.label>巡弋導彈儲存架</DMSE_CruiseMissileRack.label>
-  <DMSE_CruiseMissileRack.description>一座最多可存放兩枚巡航導彈的裝甲架。存放其中的導彈不受天候影響，也不會劣化。</DMSE_CruiseMissileRack.description>
+  <DMSE_CruiseMissileRack.description>一座最多可存放兩枚中型導彈的架子。存放其中的導彈不會劣化。</DMSE_CruiseMissileRack.description>
 
 </LanguageData>

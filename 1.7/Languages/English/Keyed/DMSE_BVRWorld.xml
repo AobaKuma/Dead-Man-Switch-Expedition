@@ -5,5 +5,5 @@
   <DMSE.BVR.World.RangeClass.Cruise>cruise</DMSE.BVR.World.RangeClass.Cruise>
   <DMSE.BVR.World.RangeClass.Ballistic>ballistic</DMSE.BVR.World.RangeClass.Ballistic>
   <DMSE.BVR.World.ShowCoverage>Show air-defense coverage</DMSE.BVR.World.ShowCoverage>
-  <DMSE.BVR.World.ShowCoverageDesc>Always display all player radar coverage circles on the world map. Selected sites always show their own coverage. Circles assume an unstealthed target of size 1.</DMSE.BVR.World.ShowCoverageDesc>
+  <DMSE.BVR.World.ShowCoverageDesc>Always display player radar coverage circles on the world map. Circles assume an unstealthed target of size 1.</DMSE.BVR.World.ShowCoverageDesc>
 </LanguageData>

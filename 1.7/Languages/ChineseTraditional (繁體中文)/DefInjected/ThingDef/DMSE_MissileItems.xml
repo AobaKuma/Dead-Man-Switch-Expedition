@@ -2,22 +2,22 @@
 <LanguageData>
 
   <DMSE_Missile_AdvancedLight.label>先進通用導彈</DMSE_Missile_AdvancedLight.label>
-  <DMSE_Missile_AdvancedLight.description>一種小型多用途導彈，精度與載重都勝過舊式輕型導彈。\n\n出廠配備串聯聚能彈頭與自動影像尋標器，可在裝配分頁更換部件。</DMSE_Missile_AdvancedLight.description>
+  <DMSE_Missile_AdvancedLight.description>一種小型多用途導彈，精度與載重都十分優秀。\n\n出廠配備串聯聚能彈頭與自動影像尋標器，可在裝配分頁更換部件。</DMSE_Missile_AdvancedLight.description>
   <DMSE_Missile_AdvancedCruise.label>先進巡航導彈</DMSE_Missile_AdvancedCruise.label>
-  <DMSE_Missile_AdvancedCruise.description>一種沿地形低空飛行的匿蹤巡航導彈，精度遠勝舊式的射門手導彈。\n\n出廠配備穿透彈頭、地形匹配導引與渦輪扇引擎，可在裝配分頁更換部件。</DMSE_Missile_AdvancedCruise.description>
+  <DMSE_Missile_AdvancedCruise.description>一種沿地形低空飛行的匿蹤巡航導彈。\n\n出廠配備穿透彈頭、地形匹配導引與渦輪扇引擎，可在裝配分頁更換部件。</DMSE_Missile_AdvancedCruise.description>
 
   <DMSE_Missile_Stinger.label>輕型防空導彈</DMSE_Missile_Stinger.label>
   <DMSE_Missile_Stinger.description>一種纖細的攜行式紅外線防空導彈。射程短、彈頭小，對付高速或靈活的目標相當吃力，但幾乎任何發射器都裝得下。</DMSE_Missile_Stinger.description>
   <DMSE_Missile_Maverick.label>對地攻擊導彈</DMSE_Missile_Maverick.label>
   <DMSE_Missile_Maverick.description>一種配備電視與紅外線尋標器的輕型對地攻擊導彈。適合用於摧毀單一特定目標。</DMSE_Missile_Maverick.description>
   <DMSE_Missile_Sparrow.label>先進防空導彈</DMSE_Missile_Sparrow.label>
-  <DMSE_Missile_Sparrow.description>一種半主動雷達導引的中程防空導彈。比輕型防空導彈更快、射程更遠、也更準，但火控雷達必須持續照射目標直到命中。</DMSE_Missile_Sparrow.description>
+  <DMSE_Missile_Sparrow.description>一種半主動雷達導引的中程防空導彈。其射程優秀但火控雷達必須持續照射目標直到命中。</DMSE_Missile_Sparrow.description>
   <DMSE_Missile_Oniks.label>先進反艦巡航導彈</DMSE_Missile_Oniks.label>
-  <DMSE_Missile_Oniks.description>一種衝壓引擎推進的先進反艦巡航導彈。比舊式超音速導彈更快、更難偵測、射程也更遠，威力約為兩倍，傾斜發射架與垂直發射井都能發射。造價昂貴，但遠比高超音速導彈便宜。</DMSE_Missile_Oniks.description>
+  <DMSE_Missile_Oniks.description>一種衝壓引擎推進的先進反艦巡航導彈。射程更遠的同時更快、更難偵測。傾斜發射架與垂直發射井都能發射。造價昂貴，但遠比高超音速導彈便宜。</DMSE_Missile_Oniks.description>
   <DMSE_Missile_Yj.label>高超音速反艦導彈</DMSE_Missile_Yj.label>
   <DMSE_Missile_Yj.description>一種以火箭助推、衝壓引擎巡航的高超音速反艦導彈。末段飛行速度極快，防禦方幾乎沒有反應時間。造價極高。</DMSE_Missile_Yj.description>
 
   <!-- 戰術彈道導彈「圓點U」（2026-10-27 起為中型物品） -->
   <DMSE_Missile_Tochka.label>戰術彈道導彈</DMSE_Missile_Tochka.label>
-  <DMSE_Missile_Tochka.description>一種固態燃料戰術彈道導彈，可從傾斜發射器或垂直發射格發射。先爬升到高空，再陡直俯衝打擊遠方目標，其當量足夠有效摧毀大型碉堡及工事。</DMSE_Missile_Tochka.description>
+  <DMSE_Missile_Tochka.description>一種固態燃料戰術彈道導彈，可從傾斜發射器或垂直發射單元發射。先爬升到高空，再陡直俯衝打擊遠方目標，其當量足夠有效摧毀大型碉堡及工事。</DMSE_Missile_Tochka.description>
 </LanguageData>

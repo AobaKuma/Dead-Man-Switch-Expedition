@@ -4,7 +4,7 @@
   <DMSE.UI.TransferReady>Readiness checks passed · {1} warnings</DMSE.UI.TransferReady>
   <DMSE.UI.FuelRequiredAvailable>Fuel: required / available</DMSE.UI.FuelRequiredAvailable>
   <DMSE.UI.Locate>Locate</DMSE.UI.Locate>
-  <DMSE.UI.ShowDetails>▸ Engineering and equipment details</DMSE.UI.ShowDetails>
-  <DMSE.UI.HideDetails>▾ Hide engineering and equipment details</DMSE.UI.HideDetails>
-  <DMSE.UI.EngineeringDetails>Engineering details</DMSE.UI.EngineeringDetails>
+  <DMSE.UI.ShowDetails>▸ Show structure details</DMSE.UI.ShowDetails>
+  <DMSE.UI.HideDetails>▾ Hide structure details</DMSE.UI.HideDetails>
+  <DMSE.UI.EngineeringDetails>Structure details</DMSE.UI.EngineeringDetails>
 </LanguageData>

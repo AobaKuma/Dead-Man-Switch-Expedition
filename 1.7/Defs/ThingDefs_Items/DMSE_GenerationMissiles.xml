@@ -163,7 +163,7 @@
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_Missile_Sparrow</defName>
     <label>advanced surface-to-air missile</label>
-    <description>A medium-range anti-air missile with semi-active radar homing. It is faster, longer-ranged and more accurate than light anti-air missiles, but a fire-control radar must keep the target illuminated until impact.</description>
+    <description>A medium-range anti-air missile with semi-active radar homing. Its range is excellent, but a fire-control radar must keep the target illuminated until impact.</description>
     <descriptionHyperlinks>
       <ThingDef>DMSE_Building_RotaryMissileLauncher</ThingDef>
       <ThingDef>DMSE_Building_LightMissileLauncher</ThingDef>
@@ -238,7 +238,7 @@
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_Missile_Oniks</defName>
     <label>advanced anti-ship cruise missile</label>
-    <description>An advanced ramjet-powered anti-ship cruise missile. It is faster, harder to detect and longer-ranged than older supersonic designs, hits about twice as hard, and fires from inclined launchers and vertical launch silos alike. It is expensive, though far cheaper than a hypersonic missile.</description>
+    <description>An advanced ramjet-powered anti-ship cruise missile. It is longer-ranged, faster and harder to detect, and fires from inclined launchers and vertical launch silos alike. It is expensive, though far cheaper than a hypersonic missile.</description>
     <descriptionHyperlinks>
       <ThingDef>DMSE_Building_MediumVLS</ThingDef>
       <ThingDef>DMSE_Building_MediumSurfaceVLS</ThingDef>
@@ -391,7 +391,7 @@
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_Missile_Tochka</defName>
     <label>tactical ballistic missile</label>
-    <description>A solid-fuel tactical ballistic missile, fired from a tilted launcher or a vertical launch cell. It climbs high, then dives steeply onto targets far away, accurate enough to hit a depot or command post.</description>
+    <description>A solid-fuel tactical ballistic missile, fired from a tilted launcher or a vertical launch unit. It climbs high, then dives steeply onto distant targets, with a yield large enough to destroy large bunkers and fortifications.</description>
     <descriptionHyperlinks>
       <ThingDef>DMSE_Building_Scorer</ThingDef>
       <ThingDef>DMSE_Building_MediumVLS</ThingDef>

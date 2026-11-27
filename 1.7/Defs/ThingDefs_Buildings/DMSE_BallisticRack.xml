@@ -18,7 +18,7 @@
   <ThingDef ParentName="DMSE_VerticalLauncherBase">
     <defName>DMSE_Building_BallisticRack</defName>
     <label>ballistic launch tower</label>
-    <description>An old open truss tower that holds a ballistic missile upright. It is cheap, but has no flame trench: at launch, the blast sets nearby grass on fire and injures anyone standing too close.\n\nMissiles are assembled on the tower from raw materials and never exist as items. Switch airframes in the assembly tab; newer airframes require research.\n\nCannot be built on a gravship.</description>
+    <description>An open truss tower that holds a ballistic missile upright. It is cheap, but has no flame trench, so a launch sets nearby flammables on fire.\n\nMissiles are assembled directly on the tower.\n\nCannot be built on a gravship.</description>
     <graphicData>
       <texPath>Things/Building/BallisticRack/building</texPath>
       <graphicClass>Graphic_Single</graphicClass>

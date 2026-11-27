@@ -37,7 +37,7 @@
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_Missile_Shahed</defName>
     <label>long-range loitering munition</label>
-    <description>A cheap delta-wing attack drone with a pusher propeller, launched from a rail. It flies a long way with a small warhead, but it is slow and easy to shoot down.\n\nComes with inertial guidance, which scatters impacts around the center of the target map. An optional TV guidance module lets you pick the impact point, but uses an extra fire-control channel.</description>
+    <description>A cheap delta-wing attack drone driven by a pusher propeller. It can fly a long way, but is easy to shoot down.</description>
     <descriptionHyperlinks>
       <ThingDef>DMSE_Building_LoiteringLauncher</ThingDef>
       <ThingDef>DMSE_Building_RotaryLauncher</ThingDef>

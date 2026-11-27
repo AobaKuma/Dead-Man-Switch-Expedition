@@ -4,9 +4,10 @@
   <ScenarioDef ParentName="ScenarioBase">
     <defName>DMSE_Deviant</defName>
     <label>(WIP) The Deviant</label>
-    <description>todo</description>
+    <description>You are a deserter from the Colonial Fleet, fleeing pursuit in a stolen warship and fighting to survive as a fugitive on the rim.</description>
     <scenario>
-      <summary>A traitor of the Colonial fleet, with a stolen gravship.</summary>
+      <summary>A traitor of the Colonial Fleet, with a stolen warship.</summary>
+      <description>A deserter wanted by the Colonial Fleet. With a stolen warship and limited supplies, you must find a way off this planet, or a way to settle things with the fleet for good, while they hunt you down.</description>
       
       <!-- TODO: create a dedicated faction -->
       <playerFaction>

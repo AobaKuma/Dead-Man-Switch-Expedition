@@ -2,6 +2,6 @@
 <LanguageData>
 
   <DMSE_Building_BallisticRack.label>塔式發射架</DMSE_Building_BallisticRack.label>
-  <DMSE_Building_BallisticRack.description>一座以桁架撐起彈道導彈的老式開放發射塔。造價便宜，但沒有導焰槽：發射時的尾焰會點燃附近的可燃物，並傷到站得太近的人。\n\n導彈直接在發射塔上以原料裝配，可在裝配分頁切換彈體；較新的彈體需要研究。\n\n無法建造在重力船上。</DMSE_Building_BallisticRack.description>
+  <DMSE_Building_BallisticRack.description>一座以桁架撐起彈道導彈的開放式發射塔，造價便宜但沒有導焰槽，因此發射時會點燃附近的可燃物。\n\n導彈直接在發射塔上裝配。\n\n無法建造在重力船上。</DMSE_Building_BallisticRack.description>
 
 </LanguageData>

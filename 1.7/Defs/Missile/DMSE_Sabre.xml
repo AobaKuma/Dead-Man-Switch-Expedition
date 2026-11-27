@@ -59,7 +59,7 @@
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_Missile_Sabre</defName>
     <label>Sabre light loitering munition</label>
-    <description>A tube-launched loitering munition with folding wings and an image-recognition seeker. It fits a man-portable SAM launcher, which fires it at ground targets well beyond the reach of a surface-to-air missile. It can also be fired from a launch rail for a short-range strike: its seeker hunts the most dangerous enemy creature in the open, and its loiter flight control keeps it circling until one shows up.\n\nCannot intercept incoming threats. Comes in a fixed configuration and cannot be modified.</description>
+    <description>A tube-launched loitering munition with folding wings and an image-recognition seeker. It can be fired from a man-portable SAM launcher, and can loiter briefly in the air until a target appears.</description>
     <descriptionHyperlinks>
       <ThingDef>DMSE_Apparel_SamLauncher</ThingDef>
       <ThingDef>DMSE_Building_LoiteringLauncher</ThingDef>

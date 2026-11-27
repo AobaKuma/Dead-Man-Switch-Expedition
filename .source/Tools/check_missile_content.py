@@ -272,7 +272,14 @@ for language in languages:
     translated[language] = keys
 
 expected_keys = set()
-for name in parts:
+for name, node in parts.items():
+    # sharedTextFrom: label/description come from the source part (checked under the source's name)
+    if node.findtext('sharedTextFrom'):
+        source = node.findtext('sharedTextFrom')
+        require(source in parts, f'{name}: sharedTextFrom {source} is not a missile part')
+        require(not (source in parts and parts[source].findtext('sharedTextFrom')),
+                f'{name}: sharedTextFrom {source} itself uses sharedTextFrom')
+        continue
     expected_keys.add(f'{name}.label')
     expected_keys.add(f'{name}.description')
 for name in bodies:

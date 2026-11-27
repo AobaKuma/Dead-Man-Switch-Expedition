@@ -2,13 +2,13 @@
 <LanguageData>
   
   <!-- EN: impact gravship -->
-  <DMSE_ImpactGravship.label>重力船</DMSE_ImpactGravship.label>
+  <DMSE_ImpactGravship.label>转移飞船</DMSE_ImpactGravship.label>
   <!-- EN: A gravship on a collision trajectory. -->
-  <DMSE_ImpactGravship.description>一艘即将撞击大地的重力船。</DMSE_ImpactGravship.description>
+  <DMSE_ImpactGravship.description>一艘即将撞击大地的转移飞船。</DMSE_ImpactGravship.description>
   
   <!-- EN: transfering gravship -->
-  <DMSE_TransferGravShip.label>重力船</DMSE_TransferGravShip.label>
+  <DMSE_TransferGravShip.label>转移飞船</DMSE_TransferGravShip.label>
   <!-- EN: A gravship in flight. -->
-  <DMSE_TransferGravShip.description>一艘正在飞行中的重力船。</DMSE_TransferGravShip.description>
+  <DMSE_TransferGravShip.description>一艘正在飞行中的转移飞船。</DMSE_TransferGravShip.description>
   
 </LanguageData>

@@ -11,7 +11,7 @@
   <ResearchProjectDef>
     <defName>DMSE_Occultech_TerminalCruise</defName>
     <label>terminal cruise</label>
-    <description>A flight protocol that strips every safety interlock from a transfer ship's route computer. The fusion core is driven past its rated output so that the nuclear thermal engines accelerate at full power toward the planet below. The ship and whatever body it is pushing become a kinetic weapon that strikes the planet's surface, leaving damage no terraforming program can ever heal.\nIn the conflict between colonial world ██ and ████, another colonial world in the same star system, ██, a heavily fortified asteroid, was towed onto an impact trajectory by a transfer ship and erased every sign of life on ████.\n\nApproved by ████, ████ and ███, the terminal cruise protocol is designated class III sealed technology, and the spread of nuclear thermal engines to developing worlds is restricted to a degree. Any vessel attempting to activate the protocol is to be completely destroyed before it enters an impact trajectory.</description>
+    <description>A set of override commands that overwrites the safety protocols of a transfer ship's control system. The fusion core is driven past its rated output so that the nuclear thermal engines can accelerate toward the planet at full power. The ship and whatever body it is pushing become a kinetic weapon that slams into the planet's surface, leaving a permanent artificial landform.\nIn the conflict between colonial world ██ and ████, another colonial world in the same star system, ██, a heavily fortified asteroid, was towed onto an impact trajectory by a transfer ship and erased every sign of life on ████.\n\nApproved by ████, ████ and ███, the terminal cruise protocol is designated class III sealed technology, and the spread of nuclear thermal engines to developing worlds is restricted to a degree. Any vessel attempting to activate the protocol is to be completely destroyed before it enters an impact trajectory.</description>
     <tab>DMS_ExpeditionalKnowledge</tab>
     <knowledgeCategory>DMS_Occulted</knowledgeCategory>
     <knowledgeCost>1500</knowledgeCost>
@@ -23,7 +23,7 @@
       <li>DMSE_Aerospace</li>
     </prerequisites>
     <discoveredLetterTitle>Sealed file III: terminal cruise</discoveredLetterTitle>
-    <discoveredLetterText>Using the data they have gathered, researchers have finished decoding the sealed technology. It is an emergency protocol hidden inside the route computer, one that lets a transfer ship's route computer plot a terminal course into the planet.\n\nOnce this research is complete, the transfer console of a ship with enough working nuclear thermal thrusters can plan a terminal cruise and drive the entire ship into the surface.\n\nThe fleets sealed it because it lets one crew decide whether an entire world survives. Of course, the world will not simply wait for its end.</discoveredLetterText>
+    <discoveredLetterText>Using the data they have gathered, researchers have finished decoding the sealed technology. It is an emergency protocol hidden inside the route computer, one that lets a transfer ship's route computer plot a terminal course into the planet.\n\nOnce this research is complete, a ship with nuclear thermal thrusters can plan a terminal cruise and turn itself into a kinetic weapon against a planet.\n\nThe fleets sealed the technology away for the sake of the colonial worlds' survival. Of course, the colonial worlds will not simply wait for their end either.</discoveredLetterText>
   </ResearchProjectDef>
 
 </Defs>

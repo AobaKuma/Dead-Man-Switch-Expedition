@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
   <DMSE_SeaLaunchSite.label>海上发射站</DMSE_SeaLaunchSite.label>
-  <DMSE_SeaLaunchSite.description>武装殖民舰队的近海导弹站，盖在由钢铁支柱撑出海面的海上平台上：雷达、发射阵位、弹药车与人员舱之间以甲板走道相连。只能从空中抵达。打掉支柱，它撑住的甲板就会塌进海里。</DMSE_SeaLaunchSite.description>
+  <DMSE_SeaLaunchSite.description>一处由武装殖民舰队控制的近海导弹平台群，平台之间通过甲板走道相连。</DMSE_SeaLaunchSite.description>
 </LanguageData>

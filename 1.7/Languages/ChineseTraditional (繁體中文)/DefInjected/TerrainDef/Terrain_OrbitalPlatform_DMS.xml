@@ -9,6 +9,6 @@
   <!-- EN: light platform -->
   <DMS_LightPlatform.label>輕型平台</DMS_LightPlatform.label>
   <!-- EN: A lightweight lattice deck for walking in outer space. Quick and cheap to lay down, but it can only support light and medium structures. -->
-  <DMS_LightPlatform.description>可在太空中行走的輕量桁架甲板。便宜又快，但只能承載輕型與中型結構。</DMS_LightPlatform.description>
+  <DMS_LightPlatform.description>可在太空中行走的輕量桁架甲板。只能承載輕型與中型結構。</DMS_LightPlatform.description>
   
 </LanguageData>

@@ -9,7 +9,7 @@
   <TerrainDef>
     <defName>DMSE_SeaPlatform</defName>
     <label>sea platform</label>
-    <description>A steel deck raised high above the waves on pillars. Anything can be built on it. It can only be laid within the support radius of a platform pillar, and collapses into the sea if it loses that support.\n\nIt can be taken apart with the 'remove platform' command, leaving open air.</description>
+    <description>A steel deck raised on pillars to keep it clear of the harsh sea. Anything can be built on it. It collapses into the sea if it loses the support of its platform pillars.</description>
     <texturePath>Things/SeaPlatform/Platform/Platform</texturePath>
     <renderPrecedence>241</renderPrecedence>
     <preventCraters>true</preventCraters>
@@ -71,7 +71,7 @@
     <defName>DMSE_SeaPlatformPillar</defName>
     <thingClass>Fortified.Building_SeaPlatformPillar</thingClass>
     <label>platform pillar</label>
-    <description>A massive steel-and-concrete pillar driven into the seabed, rising high above the waves. When it is finished, a small sea platform opens around its top; the pillar holds up any sea platform within its support radius, and platform left without any pillar in range collapses into the sea.\n\nIt can be built over open air next to any spot a builder can stand on.</description>
+    <description>A steel-and-concrete pillar that supports sea platforms. It holds up the sea platforms within its radius; if it is destroyed, any platform in range left without support collapses into the sea.</description>
     <graphicData>
       <texPath>Things/SeaPlatform/PillarBase</texPath>
       <graphicClass>Graphic_Single</graphicClass>

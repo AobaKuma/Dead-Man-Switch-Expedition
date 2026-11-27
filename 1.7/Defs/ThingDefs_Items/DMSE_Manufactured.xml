@@ -191,7 +191,7 @@
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_Missile_Moskit</defName>
     <label>supersonic anti-ship missile</label>
-    <description>A large ramjet-powered supersonic anti-ship missile. It skims the sea on its final approach, leaving close-in defenses only seconds to react. It is expensive, but one hit can take a warship out of the fight.</description>
+    <description>A large ramjet-powered supersonic anti-ship missile. It skims the sea on its final approach to penetrate defenses at low altitude. It is expensive, but one hit can take a warship out of the fight.</description>
     <descriptionHyperlinks>
       <ThingDef>DMSE_Building_Scorer</ThingDef>
     </descriptionHyperlinks>
@@ -263,7 +263,7 @@
   <ThingDef ParentName="DMSE_ResourceBase">
     <defName>DMSE_InterceptorMissile</defName>
     <label>interceptor missile</label>
-    <description>A ready-to-fire surface-to-air interceptor round. Loaded into a SAM launcher's internal container, it is expended one per engagement to destroy incoming threats during the midcourse phase of beyond-visual-range combat.</description>
+    <description>A surface-to-air interceptor missile. Loaded into a SAM launcher and expended in engagements, it destroys incoming threats during the midcourse phase of beyond-visual-range combat.</description>
     <descriptionHyperlinks>
       <ThingDef>DMSE_Building_RotaryMissileLauncher</ThingDef>
       <ThingDef>DMSE_Building_FieldAirDefense</ThingDef>

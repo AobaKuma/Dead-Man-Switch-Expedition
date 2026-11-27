@@ -3,8 +3,8 @@
   <!-- Legacy pilot-console transfer/impact flight: kept only so old saves load; such flights finish on the first tick after loading (see CelestialTransfer/Legacy). -->
   <WorldObjectDef>
     <defName>DMSE_ImpactGravship</defName>
-    <label>impact gravship</label>
-    <description>A gravship on a collision trajectory.</description>
+    <label>transfer ship</label>
+    <description>A transfer ship about to strike the ground.</description>
     <worldObjectClass>DMSE.WorldObject_ImpactGravship</worldObjectClass>
     <canHaveFaction>true</canHaveFaction>
     <saved>true</saved>
@@ -19,8 +19,8 @@
 
   <WorldObjectDef>
     <defName>DMSE_TransferGravShip</defName>
-    <label>transfering gravship</label>
-    <description>A gravship in flight.</description>
+    <label>transfer ship</label>
+    <description>A transfer ship in flight.</description>
     <worldObjectClass>DMSE.WorldObject_Transfer</worldObjectClass>
     <texture>World/WorldObjects/Caravan</texture>
     <useDynamicDrawer>true</useDynamicDrawer>

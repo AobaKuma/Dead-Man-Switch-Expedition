@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
   <DMSE_SeaPlatformPillar.label>平台支柱</DMSE_SeaPlatformPillar.label>
-  <DMSE_SeaPlatformPillar.description>打進海床、高高伸出海面的巨大鋼筋混凝土支柱。完工時頂端四周會開出一小塊海上平台；支撐半徑內的海上平台都靠它撐住，範圍內沒有任何支柱的平台會塌進海裡</DMSE_SeaPlatformPillar.description>
+  <DMSE_SeaPlatformPillar.description>一種用於支撐海上平台的鋼筋混凝土支柱。能夠支撐半徑內的海上平台；如果被破壞的話範圍內沒有支撐的平台會崩塌並落入海中。</DMSE_SeaPlatformPillar.description>
 </LanguageData>

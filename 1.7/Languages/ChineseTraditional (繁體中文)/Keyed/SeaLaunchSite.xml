@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
-  <DMSE.SeaLaunchSite.SpawnedLetter>{0}在{1}的{2}方 {3} 格處的海面上部署了一座海上發射站。其發射架能打擊你的殖民地；只要雷達仍在運作，補給艙就會持續為守軍送來食物。\n\n只能從空中抵達此站。摧毀所有火控雷達即可瓦解它，也可以打掉把甲板撐在海面上的支柱。</DMSE.SeaLaunchSite.SpawnedLetter>
+  <DMSE.SeaLaunchSite.SpawnedLetter>{0}在{1}的{2}方 {3} 格處的海面上部署了一座海上發射平台。其裝備的導彈能夠打擊你的殖民地；只要雷達仍在運作，補給艙就會持續為守軍送來補給。\n\n針對海上平台的突擊只能透過空中路徑抵達，因此在進行突擊前都應該盡可能地消耗其防空攔截能力。摧毀所有火控雷達即可瓦解它。</DMSE.SeaLaunchSite.SpawnedLetter>
 </LanguageData>

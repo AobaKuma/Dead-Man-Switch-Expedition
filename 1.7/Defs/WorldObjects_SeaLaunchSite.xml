@@ -144,7 +144,7 @@
 
   <MapGeneratorDef>
     <defName>DMSE_SeaLaunchSite_MapGen</defName>
-    <label>sea launch station</label>
+    <label>sea launch platform</label>
     <genSteps>
       <li>DMSE_SeaLaunchSite_GS_Ocean</li>
       <li>DMSE_SeaLaunchSite_GS_Structures</li>
@@ -165,7 +165,7 @@
   <WorldObjectDef>
     <defName>DMSE_SeaLaunchSite</defName>
     <label>sea launch station</label>
-    <description>An offshore missile station of the armed colonial fleet, built on sea platforms raised above the waves on steel pillars: radars and launch platforms armed with advanced missiles, joined by deck walkways. It can only be reached by air. Knocking out its pillars sends the decks they hold up into the sea.</description>
+    <description>A cluster of offshore missile platforms held by the armed colonial fleet, joined by deck walkways.</description>
     <worldObjectClass>RimWorld.Planet.Site</worldObjectClass>
     <canHaveFaction>true</canHaveFaction>
     <saved>true</saved>
@@ -422,8 +422,8 @@
 
   <SitePartDef>
     <defName>DMSE_SeaLaunchSitePart</defName>
-    <label>sea launch station</label>
-    <description>An offshore missile station on pillar-supported sea platforms, with radars and launch platforms armed with advanced missiles.</description>
+    <label>sea launch platform</label>
+    <description>Several pillar-supported sea-based launch platforms, equipped with radars, launch positions, an ammunition magazine and crew quarters.</description>
     <workerClass>Fortified.SitePartWorker_SeaLaunchSite</workerClass>
     <siteTexture>World/WorldObjects/Sites/Outpost</siteTexture>
     <expandingIconTexture>UI/Icon/icon_Marine_cruiser</expandingIconTexture>
@@ -449,7 +449,7 @@
        需要雷達網研究、殖民艦隊與玩家敵對、附近有空的水域 tile；世界上已有 NPC 導彈陣地（任何種類）時不觸發。 -->
   <IncidentDef>
     <defName>DMSE_SeaLaunchSiteDeployed</defName>
-    <label>sea launch station deployed</label>
+    <label>sea launch platform</label>
     <category>ThreatBig</category>
     <!-- 只認家園地圖（同 DMSE_FieldLaunchSiteDeployed）。原本另列 World 給開發者在世界地圖上強制觸發，
          但 1.7 的設定檢查不允許 World 與其他目標並列（Config error：World targeting incidents should only target the world）；
@@ -462,7 +462,7 @@
     <earliestDay>20</earliestDay>
     <minRefireDays>25</minRefireDays>
     <minThreatPoints>500</minThreatPoints>
-    <letterLabel>Colonial fleet sea launch station</letterLabel>
+    <letterLabel>Sea-based missile launch platform</letterLabel>
     <letterDef>ThreatBig</letterDef>
     <modExtensions>
       <li Class="Fortified.FieldLaunchSiteIncidentExtension">

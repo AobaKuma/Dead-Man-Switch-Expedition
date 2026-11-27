@@ -3,7 +3,7 @@
 
   <!-- NPC 导弹阵地 -->
   <DMSE.MissileBase.NextFireIn>下次导弹打击：{0}</DMSE.MissileBase.NextFireIn>
-  <DMSE.MissileBase.LocalMonitoring>阵地已被侦测（本地地图观察中）</DMSE.MissileBase.LocalMonitoring>
+  <DMSE.MissileBase.LocalMonitoring>阵地已被侦测（观察中）</DMSE.MissileBase.LocalMonitoring>
   <DMSE.MissileBase.RelocationIn>阵地转移倒计时：{0}</DMSE.MissileBase.RelocationIn>
   <DMSE.MissileBase.ReentryBlockedIn>地面通道封锁中，敌方整备防线（{0}）</DMSE.MissileBase.ReentryBlockedIn>
   <DMSE.MissileBase.SiteDesc>一处配备火控雷达与导弹发射架的机动战术弹道导弹阵地。阵地会在完成任务后转移，以躲避反制。</DMSE.MissileBase.SiteDesc>
@@ -92,5 +92,5 @@
 
 
   <!-- EN: {0} has established a ballistic launch site {3} tiles {2} of {1}. Its strategic missiles can reach your colony from far beyond the range of ordinary launch positions, and it will stay there, firing every few days, until it is destroyed.\n\nDestroy every fire-control radar to neutralize it. Strong air defense will make it mix in penetration aids. -->
-  <DMSE.BallisticLaunchSite.SpawnedLetter>{0}在{1}的{2}方 {3} 格处建立了一座弹道发射场。它的战略导弹射程远超一般发射阵地，能从远处打到你的殖民地，而且会一直留在那里、每隔几天发射一次，直到被摧毁。\n\n摧毁所有火控雷达即可瘫痪它。你的防空越强，它越会混入突防载荷。</DMSE.BallisticLaunchSite.SpawnedLetter>
+  <DMSE.BallisticLaunchSite.SpawnedLetter>{0}在{1}的{2}方 {3} 格处建立了一座弹道发射场。它的战略导弹射程远超一般发射阵地，能从远处打到你的殖民地，而且会一直留在那里、每隔几天发射一次，直到被摧毁。\n\n摧毁所有火控雷达即可瘫痪它。你的防空越强，它就越会在打击的导弹中混入突防载荷。</DMSE.BallisticLaunchSite.SpawnedLetter>
 </LanguageData>

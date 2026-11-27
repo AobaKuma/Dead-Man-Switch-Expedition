@@ -8,7 +8,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_StrikeCommandCenter</defName>
     <label>strike command center</label>
-    <description>An automated fire-direction center for coordinated missile strikes. Pick a world target, assign the strike missiles loaded on this map's launchers to waves, and fire them wave by wave so cheap missiles can draw enemy interceptors away from the valuable ones. Each wave is limited by the free guidance channels of this map's fire-control radars; every launched missile holds a channel for a short guidance period. Confirming a plan reserves its missiles and starts a short automatic firing-solution computation.</description>
+    <description>An automated fire-direction center for coordinated missile strikes. Once a world target is picked, it assigns the strike missiles on this map to waves and fires them wave by wave, up to the free guidance channels of this map's fire-control radars; every launched missile holds a channel for a short guidance period. Confirming a plan reserves its missiles and starts the automatic firing-solution computation.</description>
     <graphicData>
       <texPath>Things/Building/Misc/CommsConsole</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
@@ -79,7 +79,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_StrikePlanningTable</defName>
     <label>strike planning table</label>
-    <description>A plotting table with ballistic tables and slide rules for planning coordinated missile strikes by hand. It plans waves like the strike command center, but once a plan is confirmed a colonist must compute the firing solutions here as research work. Solutions are worked out missile by missile in wave order, so the first wave can be fired while later waves are still being computed. Needs no power, but each wave is still limited by the free guidance channels of this map's fire-control radars.</description>
+    <description>A plotting table with ballistic tables and slide rules for planning coordinated missile strikes by hand. Once the waves are planned, a colonist must compute the firing solutions here as research work. Needs no power, but strike waves are still limited by the free guidance channels of this map's fire-control radars.</description>
     <graphicData>
       <texPath>Things/Building/FireMissionTable/building</texPath>
       <graphicClass>Graphic_Multi</graphicClass>

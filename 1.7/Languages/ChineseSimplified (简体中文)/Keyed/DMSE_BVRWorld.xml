@@ -5,5 +5,5 @@
   <DMSE.BVR.World.RangeClass.Cruise>巡航</DMSE.BVR.World.RangeClass.Cruise>
   <DMSE.BVR.World.RangeClass.Ballistic>弹道</DMSE.BVR.World.RangeClass.Ballistic>
   <DMSE.BVR.World.ShowCoverage>显示防空覆盖</DMSE.BVR.World.ShowCoverage>
-  <DMSE.BVR.World.ShowCoverageDesc>在世界地图常驻显示所有玩家雷达覆盖圈。选取据点时一律显示该据点的覆盖圈。圈线以隐身 0、尺寸 1 的目标为准。</DMSE.BVR.World.ShowCoverageDesc>
+  <DMSE.BVR.World.ShowCoverageDesc>在世界地图常驻显示玩家雷达覆盖圈。圈线以隐身 0、尺寸 1 的目标为准。</DMSE.BVR.World.ShowCoverageDesc>
 </LanguageData>

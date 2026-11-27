@@ -27,7 +27,7 @@
   <ThingDef ParentName="DMSE_VerticalLauncherBase">
     <defName>DMSE_Building_BallisticSilo</defName>
     <label>strategic missile silo</label>
-    <description>A semi-buried strategic missile silo with heavy concrete hatches and blast suppression, so a launch does not harm its surroundings. It is very expensive and very tough, and holds a single missile.\n\nMissiles are assembled in the silo from raw materials, then launched at a target on the world map.\n\nCannot be built on a gravship.</description>
+    <description>A semi-buried strategic missile silo with heavy armored hatches and blast suppression, so a launch does not harm its surroundings. It is very expensive and very tough, but holds only a single large missile.\n\nMissiles are assembled directly in the silo, then launched at a target on the world map.\n\nCannot be built on a gravship.</description>
     <uiIconPath>Things/Building/MissileSilo_icon</uiIconPath>
     <graphicData>
       <texPath>Things/Building/MissileSilo</texPath>

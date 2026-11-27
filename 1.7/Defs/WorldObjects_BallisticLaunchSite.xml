@@ -121,7 +121,7 @@
   <WorldObjectDef>
     <defName>DMSE_BallisticLaunchSite</defName>
     <label>ballistic launch site</label>
-    <description>A permanent strategic missile site: hardened silos, fire control radars and a garrison that reloads each silo a few days after it fires. It stays until its fire control radars are destroyed.</description>
+    <description>A permanently garrisoned, fortified strategic missile launch site.</description>
     <worldObjectClass>RimWorld.Planet.Site</worldObjectClass>
     <canHaveFaction>true</canHaveFaction>
     <saved>true</saved>
@@ -307,7 +307,7 @@
 
   <SitePartDef>
     <defName>DMSE_BallisticLaunchSitePart</defName>
-    <label>ballistic launch site</label>
+    <label>ballistic missile launch facility</label>
     <description>A strategic missile site with hardened silos, fire control radars and a garrison.</description>
     <!-- FactionCanOwn：至少工業等級的人類派系（含海盜）。 -->
     <workerClass>Fortified.SitePartWorker_BallisticLaunchSite</workerClass>
@@ -328,7 +328,7 @@
   <!-- 說書人的大型威脅：玩家完成彈道平台研究後，敵對派系在遠處建立長期彈道發射場。世界上同時只有一座。 -->
   <IncidentDef>
     <defName>DMSE_BallisticLaunchSiteDeployed</defName>
-    <label>ballistic launch site established</label>
+    <label>ballistic missile launch site</label>
     <category>ThreatBig</category>
     <targetTags>
       <li>Map_PlayerHome</li>
@@ -338,7 +338,7 @@
     <earliestDay>30</earliestDay>
     <minRefireDays>45</minRefireDays>
     <minThreatPoints>1000</minThreatPoints>
-    <letterLabel>Enemy ballistic launch site</letterLabel>
+    <letterLabel>Enemy ballistic missile launch site</letterLabel>
     <letterDef>ThreatBig</letterDef>
     <modExtensions>
       <li Class="Fortified.FieldLaunchSiteIncidentExtension">

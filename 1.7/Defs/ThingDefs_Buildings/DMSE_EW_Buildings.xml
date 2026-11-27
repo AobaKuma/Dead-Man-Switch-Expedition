@@ -8,7 +8,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_WarRoomConsole</defName>
     <label>war room console</label>
-    <description>A command console for this map's air defense. It sets rules of engagement for both local and world-map interception, and remotely switches and throttles every radar and jammer on the map, including one-touch emissions silence. None of that needs a crew.\n\nAn operator adds a skill bonus while seated: Intellectual extends radar search range, Shooting shortens missile launcher cooldown. Operators at several consoles add their skill levels together, up to a total of 40.\n\nThe rules only apply while a console stands on the map.</description>
+    <description>A command console for air-defense identification and radar control. It sets rules of engagement and remotely switches and throttles the radars and jammers on the map.\n\nA seated operator grants extra skill bonuses, such as longer radar search range and shorter missile launch cooldowns. Operators at several consoles add their skill levels together.</description>
     <graphicData>
       <texPath>Things/Building/FireControlConsole/building</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
@@ -68,7 +68,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_JammerStation</defName>
     <label>electronic jammer station</label>
-    <description>A high-power ground jammer. While transmitting it projects a red ring on the world map, 8 tiles around this colony's tile. A hostile missile entering the ring is rolled once: its seeker may be knocked out, and it then either vanishes off-map or falls on inertial guidance alone. Anti-radiation and inertial missiles are immune. Enemy radars inside the ring also lose range and lock speed.\n\nComms consoles on this map stop working while it transmits, with no exceptions. It draws 6000 W at full power and 600 W on standby, fails at once when the power fails, and anti-radiation missiles home on it.</description>
+    <description>A high-power ground jamming station. While active, it can make missiles across a wide area lose their targets. Anti-radiation and inertially guided missiles are immune to this jamming.\n\nIt interferes with the comms consoles on this map while transmitting.</description>
     <!-- 碟型天線純視覺、不影響場形。 -->
     <graphicData>
       <texPath>Things/Building/DMSE_Jammer</texPath>
@@ -148,7 +148,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_OTHWarningRadar</defName>
     <label>long-range warning radar</label>
-    <description>A huge over-the-horizon array that bounces signals off the ionosphere to spot incoming threats up to 40 world tiles away. Its resolution is poor: small targets shrink out of its range, and it has no fire-control channels at all. It buys decision time, not interceptions.\n\nDraws 12000 W at full power.</description>
+    <description>An over-the-horizon radar array that bounces signals off the ionosphere to spot incoming threats at long range. Its scan resolution is poor: it has limited ability to detect small targets and cannot serve as a fire-control radar.</description>
     <!-- 固定式超視距陣列：512px 貼圖中底座約 323px 寬 = 5 格 → drawSize 8；天線向北伸出底座。
          陣列不旋轉，故不掛 CompTurretFacingRenderer。不掛 CompProperties_FireControlRadar：不產生火力通道。 -->
     <graphicData>

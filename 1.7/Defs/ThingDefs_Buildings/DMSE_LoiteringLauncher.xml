@@ -57,7 +57,7 @@
   <ThingDef ParentName="DMSE_TiltLauncherBase">
     <defName>DMSE_Building_LoiteringLauncher</defName>
     <label>launch rail</label>
-    <description>A simple tilted rail that holds one loitering munition. It needs no power and is cheap enough to line a perimeter with, but a single hit can destroy it.\n\nStrike munitions are launched at targets beyond the map. Interceptor munitions are fired automatically by the fire-control network.</description>
+    <description>A simple tilted launch rail. It needs no power, but is not sturdy either.\n\nStrike munitions can attack targets beyond this map, past the horizon. Interceptor munitions are fired automatically by the fire-control network.</description>
     <thingClass>Fortified.Building_MissileRack</thingClass>
     <graphicData>
       <texPath>Things/Building/MissileLaunchRail/building</texPath>

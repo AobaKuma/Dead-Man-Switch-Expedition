@@ -2,7 +2,7 @@
 <LanguageData>
 
   <DMSE_Turret_Millennium.label>先进防空炮</DMSE_Turret_Millennium.label>
-  <DMSE_Turret_Millennium.description>一门 35 毫米的现代化防空炮，配备可编程空爆弹、雷达与光电追踪以及一套能同时接战多目标的火控系统，拦截率高得惊人，代价是惊人的耗电与弹药消耗，每一次接战都像把一整箱白银倒进天空。\n\n以钢材制作的空爆弹开火；每一轮末端防御连射都会烧掉数十发。</DMSE_Turret_Millennium.description>
+  <DMSE_Turret_Millennium.description>一门 35 毫米的现代化防空炮，配备可编程空爆弹、雷达与光电追踪以及一套能同时接战多目标的火控系统，拦截率高得惊人，代价是惊人的耗电与弹药消耗。</DMSE_Turret_Millennium.description>
   <DMSE_Turret_Millennium.comps.CompRefuelable.fuelLabel>35毫米空爆弹</DMSE_Turret_Millennium.comps.CompRefuelable.fuelLabel>
   <DMSE_Turret_Millennium.comps.CompRefuelable.fuelGizmoLabel>35毫米弹药</DMSE_Turret_Millennium.comps.CompRefuelable.fuelGizmoLabel>
   <DMSE_Turret_Millennium.comps.CompRefuelable.outOfFuelMessage>无法开火：没有弹药。</DMSE_Turret_Millennium.comps.CompRefuelable.outOfFuelMessage>

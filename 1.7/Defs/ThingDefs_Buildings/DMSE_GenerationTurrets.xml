@@ -15,7 +15,7 @@
     <label>advanced air-defence gun</label>
     <designationCategory>DMSE_BVRCategory</designationCategory>
     <designatorDropdown>DMS_Turrets</designatorDropdown>
-    <description>A modern 35 mm anti-aircraft gun with programmable airburst ammunition, radar and electro-optical tracking and a fire-control system that engages several targets at once, its interception rate startling and so is its draw on power and ammunition, every engagement a crate of silver poured into the sky.\n\nFires airburst rounds made from steel; each terminal-defence burst burns through dozens of them.</description>
+    <description>A modern 35 mm anti-aircraft gun with programmable airburst ammunition, radar and electro-optical tracking and a fire-control system that engages several targets at once. Its interception rate is startling, and so is its draw on power and ammunition.</description>
     <techLevel>Industrial</techLevel>
     <uiIconPath>Things/Turrets/DMS_Oerlikon_icon</uiIconPath>
     <uiIconScale>1.8</uiIconScale>

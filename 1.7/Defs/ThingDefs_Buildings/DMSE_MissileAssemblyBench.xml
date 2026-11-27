@@ -10,7 +10,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>DMSE_MissileAssemblyBench</defName>
     <label>missile assembly bench</label>
-    <description>A two-by-four gantry where missiles are built from a bare airframe and the parts you choose. Finished missiles can wait on the bench for a launcher, or be sent to storage.\n\nTool cabinets and machine cabinets nearby speed up the work. Working outdoors or in uncomfortable temperatures slows it down.</description>
+    <description>A large assembly bench for designing and building small and medium missiles from scratch.\n\nLinked tool cabinets and machine cabinets speed up assembly.</description>
     <thingClass>Building</thingClass>
     <graphicData>
       <!-- 貼圖：64px = 1 格；畫布 = 佔地 + 四周各 0.5 格，故 drawSize = 畫布像素 / 64。

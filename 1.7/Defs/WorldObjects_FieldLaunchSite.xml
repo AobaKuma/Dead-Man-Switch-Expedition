@@ -190,7 +190,7 @@
   <WorldObjectDef>
     <defName>DMSE_FieldLaunchSite</defName>
     <label>field launch position</label>
-    <description>A rapidly deployed field missile position fielded by an industrial-era faction: a search radar, scattered launch positions, ammunition carriers and crew shelters. Supply pods keep the garrison fed for as long as its radars stay operational.</description>
+    <description>A mobile field missile position with a search radar, scattered launch positions, ammunition carriers and crew shelters. Supply pods keep the garrison supplied for as long as its radars stay operational.</description>
     <worldObjectClass>RimWorld.Planet.Site</worldObjectClass>
     <canHaveFaction>true</canHaveFaction>
     <saved>true</saved>
@@ -377,7 +377,7 @@
        玩家完成雷達網（DMSE_RadarNetwork）研究前不觸發；世界上已有 NPC 導彈陣地（任何種類）時不觸發。 -->
   <IncidentDef>
     <defName>DMSE_FieldLaunchSiteDeployed</defName>
-    <label>field launch position deployed</label>
+    <label>field launch position</label>
     <category>ThreatBig</category>
     <targetTags>
       <li>Map_PlayerHome</li>

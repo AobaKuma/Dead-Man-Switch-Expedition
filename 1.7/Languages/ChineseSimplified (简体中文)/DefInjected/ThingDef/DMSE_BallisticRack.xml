@@ -2,6 +2,6 @@
 <LanguageData>
 
   <DMSE_Building_BallisticRack.label>塔式发射架</DMSE_Building_BallisticRack.label>
-  <DMSE_Building_BallisticRack.description>一座以桁架撑起弹道导弹的老式开放发射塔。造价便宜，但没有导焰槽：发射时的尾焰会点燃附近的草，并伤到站得太近的人。\n\n导弹直接在发射塔上以原料装配，不会以物品形式存在。可在装配分页切换弹体；较新的弹体需要研究。\n\n无法建造在重力船上。</DMSE_Building_BallisticRack.description>
+  <DMSE_Building_BallisticRack.description>一座以桁架撑起弹道导弹的开放式发射塔，造价便宜但没有导焰槽，因此发射时会点燃附近的可燃物。\n\n导弹直接在发射塔上装配。\n\n无法建造在重力船上。</DMSE_Building_BallisticRack.description>
 
 </LanguageData>
