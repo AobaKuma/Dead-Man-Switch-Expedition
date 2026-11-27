@@ -8,11 +8,7 @@
   <DMSE.MissileBase.ReentryBlockedIn>地面通道封锁中，敌方整备防线（{0}）</DMSE.MissileBase.ReentryBlockedIn>
   <DMSE.MissileBase.SiteDesc>一处配备火控雷达与导弹发射架的机动战术弹道导弹阵地。阵地会在完成任务后转移，以躲避反制。</DMSE.MissileBase.SiteDesc>
 
-  <!-- EN: Launch Missile -->
-  <ScorerLaunch>发射导弹</ScorerLaunch>
 
-  <!-- EN: Launches the loaded tactical missile. The missile will be able to strike targets outside the large map at long range and retain map visibility for 3 days to assess the strike's effectiveness. Re-launching resets this time. -->
-  <ScorerLaunchDesc>发射已装填的战术导弹，可远程打击地图外的目标；目标地图保留 2 天视野以评估战果，再次发射会重置计时。</ScorerLaunchDesc>
 
   <!-- EN: Huntdown -->
   <DMSE.Letter.HuntdownThreat.Label>追捕</DMSE.Letter.HuntdownThreat.Label>
@@ -53,8 +49,6 @@
 
   <!-- EN: Fusion core heating up. Launching procedure in 6... -->
   <DMSE_ShipWarmUpBegin>聚变核心正在提升功率. 推进器点火倒数: 6</DMSE_ShipWarmUpBegin>
-  <!-- EN: Launching procedure in {0} -->
-  <DMSE_ShipWarmUpCountdown>推进器点火倒数: {0}</DMSE_ShipWarmUpCountdown>
 
   <!-- EN: The gravship streaked across the sky with a blazing trail, carrying immense mass into the ground. The horizon turned to light, and violent shockwaves followed, becoming storms and earthquakes that swept across the planet's surface. In a short span, countless lives and landscapes were erased in this world-shattering impact. -->
   <DMSE.Impact.Ending.Intro>重力船拖着长长的轨迹划过天际，携带着巨大的质量没入大地，地平线上的一切都变成了光，随之而来的是剧烈的冲击波化作风暴与地震席卷了整颗星球的地表，在短时间内无数的生灵与景观在这场惊天动地的碰撞之中烟飞灰灭。</DMSE.Impact.Ending.Intro>
@@ -85,11 +79,7 @@
   <DMSE.BVR.Settings.InterceptFxDensity2>高</DMSE.BVR.Settings.InterceptFxDensity2>
 
 
-  <DMSE_MissileDecayedAway>{0} 已劣化至无法使用而解体。</DMSE_MissileDecayedAway>
-  <DMSE_MissileDecaySheltered>已庇护：耐久稳定</DMSE_MissileDecaySheltered>
-  <DMSE_MissileDecayUnsheltered>未庇护：每日损失 {0} 点耐久</DMSE_MissileDecayUnsheltered>
 
-  <DMSE_MissileRackStored>已存放导弹：{0} / {1}</DMSE_MissileRackStored>
 
   <DMSE.MissileInventory.Pending>装配待定</DMSE.MissileInventory.Pending>
 
@@ -99,7 +89,6 @@
   <DMSE.Artillery.Ready>火炮：可发射</DMSE.Artillery.Ready>
 
   <!-- PlaceWorker -->
-  <DMSE.PlaceWorker.TooCloseSameLayer>与 {0} 太近（同一放置图层）。</DMSE.PlaceWorker.TooCloseSameLayer>
 
 
   <!-- EN: {0} has established a ballistic launch site {3} tiles {2} of {1}. Its strategic missiles can reach your colony from far beyond the range of ordinary launch positions, and it will stay there, firing every few days, until it is destroyed.\n\nDestroy every fire-control radar to neutralize it. Strong air defense will make it mix in penetration aids. -->

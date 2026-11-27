@@ -125,10 +125,6 @@
   <DMSE_AdvBallistic_Payload_Penaids.description>隨彈頭一起釋放的箔條、雷達誘餌與匿蹤罩。導彈在來襲途中看起來小得多，敵方雷達發現得更晚，反應時間也更短。</DMSE_AdvBallistic_Payload_Penaids.description>
   <DMSE_AdvBallistic_Payload_MIRV.label>多彈頭重返載具</DMSE_AdvBallistic_Payload_MIRV.label>
   <DMSE_AdvBallistic_Payload_MIRV.description>在飛行途中釋放三枚獨立重返載具的彈頭匯流排。每枚都帶著導彈的戰鬥部與導引，沿自己的航跡飛行，必須逐一擊落，敵方每枚彈頭都要用掉一條火控通道與一枚攔截彈。三枚全部打擊同一目標。\n\n在釋放前擊落匯流排，所有彈頭會一次全毀。</DMSE_AdvBallistic_Payload_MIRV.description>
-  <DMSE_LegacyBallistic_Warhead_Amatol.label>阿馬托炸藥彈頭</DMSE_LegacyBallistic_Warhead_Amatol.label>
-  <DMSE_LegacyBallistic_Warhead_Amatol.description>一枚裝填阿瑪托炸藥的大型簡易彈頭，穩定又便宜，用工業材料就能製造。除了炸出一個大洞，沒有別的效果。</DMSE_LegacyBallistic_Warhead_Amatol.description>
-  <DMSE_LegacyBallistic_Warhead_Trialen.label>特里亞倫炸藥彈頭</DMSE_LegacyBallistic_Warhead_Trialen.label>
-  <DMSE_LegacyBallistic_Warhead_Trialen.description>一枚裝填特里亞倫炸藥的彈頭，帶有燃燒成分，爆炸會在彈坑周圍引發火災。比阿瑪托彈頭稍貴。</DMSE_LegacyBallistic_Warhead_Trialen.description>
   <DMSE_Payload_None.label>無酬載</DMSE_Payload_None.label>
   <DMSE_Payload_None.description>沒有二次裝藥，全靠彈頭本身，讓導彈保持輕巧、射程更遠。</DMSE_Payload_None.description>
   <DMSE_Guidance_AntiShip.label>反艦雷達導引頭</DMSE_Guidance_AntiShip.label>

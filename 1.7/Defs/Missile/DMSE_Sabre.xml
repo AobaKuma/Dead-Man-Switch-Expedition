@@ -109,7 +109,7 @@
     </modExtensions>
     <comps>
       <li Class="Fortified.CompProperties_Renameable" />
-      <li Class="DMSE.CompProperties_DurabilityDecay">
+      <li Class="Fortified.CompProperties_DurabilityDecay">
         <hitPointsPerDay>3</hitPointsPerDay>
         <destroyWhenDepleted>true</destroyWhenDepleted>
         <shelterBuildings>

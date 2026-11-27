@@ -476,7 +476,7 @@ for name in design_packs:
 
 # ---- 14. bench shelters its output ------------------------------------------
 for name in producible:
-    shelters = {li.text for li in things[name].findall("comps/li[@Class='DMSE.CompProperties_DurabilityDecay']/shelterBuildings/li")}
+    shelters = {li.text for li in things[name].findall("comps/li[@Class='Fortified.CompProperties_DurabilityDecay']/shelterBuildings/li")}
     require(BENCH in shelters, f'{name}: {BENCH} missing from shelterBuildings (finished missiles would decay on the bench)')
 
 # ---- 15. every customizable body has its own namer --------------------------

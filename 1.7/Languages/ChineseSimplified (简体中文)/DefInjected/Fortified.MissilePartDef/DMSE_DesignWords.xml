@@ -64,8 +64,6 @@
   <DMSE_AdvBallistic_Guidance_Stellar.designWord>星光</DMSE_AdvBallistic_Guidance_Stellar.designWord>
   <DMSE_AdvBallistic_Payload_Penaids.designWord>突防</DMSE_AdvBallistic_Payload_Penaids.designWord>
   <DMSE_AdvBallistic_Payload_MIRV.designWord>多弹头</DMSE_AdvBallistic_Payload_MIRV.designWord>
-  <DMSE_LegacyBallistic_Warhead_Amatol.designWord>阿马托</DMSE_LegacyBallistic_Warhead_Amatol.designWord>
-  <DMSE_LegacyBallistic_Warhead_Trialen.designWord>特里亚伦</DMSE_LegacyBallistic_Warhead_Trialen.designWord>
   <DMSE_AdvBallistic_Payload_MIRVDecoy.designWord>分导突防</DMSE_AdvBallistic_Payload_MIRVDecoy.designWord>
   <DMSE_AdvBallistic_Payload_Decoys.designWord>诱饵</DMSE_AdvBallistic_Payload_Decoys.designWord>
 </LanguageData>

@@ -91,12 +91,6 @@
   </DMSE_NamerPack_Tochka.rulePack.rulesStrings>
 
   <!-- LegacyBallistic -->
-  <DMSE_NamerPack_LegacyBallistic.rulePack.rulesStrings>
-    <li>r_name(p=3)->[designator]-[num]·[warhead]</li>
-    <li>r_name(p=2)->[designator]-[num]·[warhead][payload]</li>
-    <li>r_name(p=1)->[body]·[designator]-[num]</li>
-    <li>r_name(p=1)->[designator]-[num]</li>
-  </DMSE_NamerPack_LegacyBallistic.rulePack.rulesStrings>
 
   <!-- AdvancedBallistic -->
   <DMSE_NamerPack_AdvancedBallistic.rulePack.rulesStrings>

@@ -240,7 +240,7 @@
         <defaultBody>DMSE_MissileBody_Moskit</defaultBody>
       </li>
       <!-- 未存放於庇護建築內時緩慢扣耐久；歸零後摧毀。5 HP/日 ≒ 20 日（100 HP）。 -->
-      <li Class="DMSE.CompProperties_DurabilityDecay">
+      <li Class="Fortified.CompProperties_DurabilityDecay">
         <hitPointsPerDay>5</hitPointsPerDay>
         <destroyWhenDepleted>true</destroyWhenDepleted>
         <!-- 存入導彈儲存架或發射平台容器即視為受庇護、停止劣化。 -->
@@ -313,7 +313,7 @@
       <li Class="Fortified.CompProperties_Renameable" />
       <!-- 未存放於庇護建築內時緩慢扣耐久；歸零後摧毀。5 HP/日 ≒ 20 日（100 HP）。
            存入 SAM 發射器或導彈儲存架即視為受庇護、停止劣化。 -->
-      <li Class="DMSE.CompProperties_DurabilityDecay">
+      <li Class="Fortified.CompProperties_DurabilityDecay">
         <hitPointsPerDay>5</hitPointsPerDay>
         <destroyWhenDepleted>true</destroyWhenDepleted>
         <shelterBuildings>
@@ -385,7 +385,7 @@
       <li Class="Fortified.CompProperties_MissileConfig">
         <defaultBody>DMSE_MissileBody_Light</defaultBody>
       </li>
-      <li Class="DMSE.CompProperties_DurabilityDecay">
+      <li Class="Fortified.CompProperties_DurabilityDecay">
         <hitPointsPerDay>5</hitPointsPerDay>
         <destroyWhenDepleted>true</destroyWhenDepleted>
         <shelterBuildings>

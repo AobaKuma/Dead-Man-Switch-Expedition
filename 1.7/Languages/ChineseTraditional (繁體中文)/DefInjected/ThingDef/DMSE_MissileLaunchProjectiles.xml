@@ -3,7 +3,6 @@
 <LanguageData>
   <DMSE_Launch_Light.label>輕型導彈（升空）</DMSE_Launch_Light.label>
   <DMSE_Launch_Loiter.label>遊蕩彈藥（升空）</DMSE_Launch_Loiter.label>
-  <DMSE_Launch_LegacyBallistic.label>老式彈道導彈（升空）</DMSE_Launch_LegacyBallistic.label>
   <DMSE_Launch_Shahed.label>長程巡飛彈（升空）</DMSE_Launch_Shahed.label>
   <DMSE_Launch_Sabre.label>輕型巡飛彈（升空）</DMSE_Launch_Sabre.label>
   <DMSE_Launch_LegacyInterceptor.label>老式攔截巡飛彈（升空）</DMSE_Launch_LegacyInterceptor.label>

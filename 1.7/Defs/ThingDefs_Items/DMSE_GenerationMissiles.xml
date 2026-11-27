@@ -65,7 +65,7 @@
       <li Class="Fortified.CompProperties_MissileConfig">
         <defaultBody>DMSE_MissileBody_Stinger</defaultBody>
       </li>
-      <li Class="DMSE.CompProperties_DurabilityDecay">
+      <li Class="Fortified.CompProperties_DurabilityDecay">
         <hitPointsPerDay>5</hitPointsPerDay>
         <destroyWhenDepleted>true</destroyWhenDepleted>
         <shelterBuildings>
@@ -141,7 +141,7 @@
       <li Class="Fortified.CompProperties_MissileConfig">
         <defaultBody>DMSE_MissileBody_Maverick</defaultBody>
       </li>
-      <li Class="DMSE.CompProperties_DurabilityDecay">
+      <li Class="Fortified.CompProperties_DurabilityDecay">
         <hitPointsPerDay>5</hitPointsPerDay>
         <destroyWhenDepleted>true</destroyWhenDepleted>
         <shelterBuildings>
@@ -214,7 +214,7 @@
       <li Class="Fortified.CompProperties_MissileConfig">
         <defaultBody>DMSE_MissileBody_Sparrow</defaultBody>
       </li>
-      <li Class="DMSE.CompProperties_DurabilityDecay">
+      <li Class="Fortified.CompProperties_DurabilityDecay">
         <hitPointsPerDay>5</hitPointsPerDay>
         <destroyWhenDepleted>true</destroyWhenDepleted>
         <shelterBuildings>
@@ -292,7 +292,7 @@
       <li Class="Fortified.CompProperties_MissileConfig">
         <defaultBody>DMSE_MissileBody_Oniks</defaultBody>
       </li>
-      <li Class="DMSE.CompProperties_DurabilityDecay">
+      <li Class="Fortified.CompProperties_DurabilityDecay">
         <hitPointsPerDay>5</hitPointsPerDay>
         <destroyWhenDepleted>true</destroyWhenDepleted>
         <shelterBuildings>
@@ -367,7 +367,7 @@
       <li Class="Fortified.CompProperties_MissileConfig">
         <defaultBody>DMSE_MissileBody_Yj</defaultBody>
       </li>
-      <li Class="DMSE.CompProperties_DurabilityDecay">
+      <li Class="Fortified.CompProperties_DurabilityDecay">
         <hitPointsPerDay>5</hitPointsPerDay>
         <destroyWhenDepleted>true</destroyWhenDepleted>
         <shelterBuildings>
@@ -442,7 +442,7 @@
       <li Class="Fortified.CompProperties_MissileConfig">
         <defaultBody>DMSE_MissileBody_Tochka</defaultBody>
       </li>
-      <li Class="DMSE.CompProperties_DurabilityDecay">
+      <li Class="Fortified.CompProperties_DurabilityDecay">
         <hitPointsPerDay>5</hitPointsPerDay>
         <destroyWhenDepleted>true</destroyWhenDepleted>
         <shelterBuildings>

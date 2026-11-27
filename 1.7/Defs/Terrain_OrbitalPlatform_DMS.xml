@@ -7,41 +7,8 @@
   </TerrainAffordanceDef>
 
 
-  <!-- 不依賴 Orbital Platforms 模組也能建造：太空虛空的 VoidSpace 地形承載力由 Patches/Patch_OrbitalPlatform.xml 補上。
-       平台是基底地形（非 foundation、非 layerable），這樣 spaceEdgeGraphicData 的邊緣貼圖才會繪製
-       （原版 SectionLayer_TerrainEdges 以 BaseTerrainAt 判斷）。 -->
-  <TerrainDef Name="DMSE_PlatformBase" Abstract="True">
-    <renderPrecedence>240</renderPrecedence>
-    <preventCraters>true</preventCraters>
-    <layerable>false</layerable>
-    <fertility>0</fertility>
-    <canEverTerraform>false</canEverTerraform>
-    <pollutionOverlayTexturePath>Terrain/Surfaces/PollutionSoil</pollutionOverlayTexturePath>
-    <pollutionColor>(1, 1, 1, 0.43)</pollutionColor>
-    <pollutionOverlayScale>(0.66, 0.66)</pollutionOverlayScale>
-    <natural>true</natural>
-    <statBases>
-      <Beauty>-3</Beauty>
-    </statBases>
-    <filthAcceptanceMask>
-      <li>Unnatural</li>
-    </filthAcceptanceMask>
-    <affordances>
-      <li>Light</li>
-      <li>Medium</li>
-      <li>Heavy</li>
-      <li>Walkable</li>
-    </affordances>
-
-  <!--Adicional tags-->
-  <designationCategory>Odyssey</designationCategory>
-    <!-- 可用「拆除平台」指令拆回虛空，返還 costList 的一半 -->
-    <modExtensions>
-      <li Class="Fortified.RemovablePlatformExtension">
-        <refundFraction>0.5</refundFraction>
-      </li>
-    </modExtensions>
-  </TerrainDef>
+  <!-- DMSE_PlatformBase：移到 FFF（2026-11-27），這裡只留別名讓既有子 Def 與其他模組的引用不用改。 -->
+  <TerrainDef Name="DMSE_PlatformBase" ParentName="FFF_PlatformBase" Abstract="True" />
   
   <TerrainDef ParentName="DMSE_PlatformBase">
     <defName>DMS_OrbitalPlatform</defName>

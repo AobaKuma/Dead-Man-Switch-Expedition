@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <DMSE_Incoming_LegacyBallisticMissile.label>老式弹道导弹（来袭）</DMSE_Incoming_LegacyBallisticMissile.label>
+  <DMSE_Launch_LegacyBallistic.label>老式弹道导弹（升空）</DMSE_Launch_LegacyBallistic.label>
+  <DMSE_StrikePlanningTable.label>打击规划桌</DMSE_StrikePlanningTable.label>
+  <DMSE_StrikePlanningTable.description>以标图桌、弹道表与计算尺人工规划协同导弹打击。波次规划方式与打击指挥中心相同，但确认计划后必须由殖民者在此以研究工作完成弹道计算。弹道按波次顺序逐枚解出，后面的波次还在计算时就能先发射第 1 波。不需电力，但每波仍受本地图火控雷达的空闲引导通道限制。</DMSE_StrikePlanningTable.description>
+
+</LanguageData>

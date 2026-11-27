@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <DMSE_Incoming_LegacyBallisticMissile.label>老式彈道導彈（來襲）</DMSE_Incoming_LegacyBallisticMissile.label>
+  <DMSE_Launch_LegacyBallistic.label>老式彈道導彈（升空）</DMSE_Launch_LegacyBallistic.label>
+  <DMSE_StrikePlanningTable.label>打擊規劃桌</DMSE_StrikePlanningTable.label>
+  <DMSE_StrikePlanningTable.description>以標圖桌、彈道表與計算尺人工規劃協同導彈打擊。波次規劃方式與打擊指揮中心相同，但確認計畫後必須由殖民者在此以研究工作完成彈道計算。彈道依波次順序逐枚解出，後面的波次還在計算時就能先發射第 1 波。不需電力，但每波仍受本地圖火控雷達的空閒導引通道限制。</DMSE_StrikePlanningTable.description>
+
+</LanguageData>

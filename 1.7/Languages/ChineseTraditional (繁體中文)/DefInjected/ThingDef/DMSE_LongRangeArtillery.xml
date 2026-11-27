@@ -18,14 +18,6 @@
   <DMSE_ShellAutoloader.label>自動裝填架</DMSE_ShellAutoloader.label>
   <DMSE_ShellAutoloader.description>通電的彈藥架，替連結且不需砲手的火砲（例如遠程加農砲）裝填迫擊砲彈。殖民者會像存放到貨架一樣把砲彈搬到這裡；連結的砲空膛時，就從架上裝填一發該砲「砲彈」頁允許的砲彈。斷電時停止裝填。</DMSE_ShellAutoloader.description>
 
-  <DMSE_Turret_HeavyMortar.label>重型迫擊砲</DMSE_Turret_HeavyMortar.label>
-  <DMSE_Turret_HeavyMortar.description>裝在輪式砲架上的重型迫擊砲。砲手會從附近庫存搬來迫擊砲彈並裝填，這一發也能當超視距砲彈打向世界地圖目標：裝填哪一種彈，長程打出去就是哪一種，改「砲彈」儲存設定就能換彈種。世界砲擊進行中砲管固定朝向世界目標方位，砲手不會接戰本地目標。</DMSE_Turret_HeavyMortar.description>
-  <DMSE_Turret_HeavyMortar.comps.CompRefuelable.fuelLabel>換管前可射擊次數</DMSE_Turret_HeavyMortar.comps.CompRefuelable.fuelLabel>
-  <DMSE_Turret_HeavyMortar.comps.CompRefuelable.fuelGizmoLabel>砲管耐久</DMSE_Turret_HeavyMortar.comps.CompRefuelable.fuelGizmoLabel>
-  <DMSE_Turret_HeavyMortar.comps.CompRefuelable.outOfFuelMessage>需要新的強化砲管</DMSE_Turret_HeavyMortar.comps.CompRefuelable.outOfFuelMessage>
-  <DMSE_Gun_HeavyMortar.label>重型迫擊砲砲管</DMSE_Gun_HeavyMortar.label>
-  <DMSE_Gun_HeavyMortar.description>重型迫擊砲的砲管，發射砲手裝填的砲彈，也能透過火控組打擊世界地圖目標。</DMSE_Gun_HeavyMortar.description>
-  <DMSE_ArtilleryDeparture_HeavyMortar.label>離場的迫擊砲彈</DMSE_ArtilleryDeparture_HeavyMortar.label>
 
   <!-- EN: NK-30 cannon (reduced charge) -->
   <DMSE_Gun_Empero.verbs.Verb_Shoot.label>NK-30 加農砲（減裝藥）</DMSE_Gun_Empero.verbs.Verb_Shoot.label>

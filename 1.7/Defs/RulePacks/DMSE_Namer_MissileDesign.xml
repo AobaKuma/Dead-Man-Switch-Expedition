@@ -101,14 +101,6 @@
     </rulePack>
   </RulePackDef>
 
-  <!-- LegacyBallistic：老式彈道彈體（V2 級）：沒有精密導引，戰頭就是型號。 -->
-  <RulePackDef>
-    <defName>DMSE_NamerPack_LegacyBallistic</defName>
-    <rulePack>
-      <rulesStrings>        <li>r_name(p=3)->[designator]-[num] [warhead]</li>        <li>r_name(p=2)->[designator]-[num] [warhead] [payload]</li>        <li>r_name(p=1)->[body] [designator]-[num]</li>        <li>r_name(p=1)->[designator]-[num]</li>      </rulesStrings>
-    </rulePack>
-  </RulePackDef>
-
   <!-- AdvancedBallistic：先進彈道彈體（民兵級）：戰頭＋酬載（多彈頭／突防）為主。 -->
   <RulePackDef>
     <defName>DMSE_NamerPack_AdvancedBallistic</defName>
@@ -122,6 +114,14 @@
     <defName>DMSE_NamerPack_Shahed</defName>
     <rulePack>
       <rulesStrings>        <li>r_name(p=3)->[designator]-[num] [guidance]</li>        <li>r_name(p=2)->[designator]-[num] [payload]</li>        <li>r_name(p=2)->[body] [designator]-[num]</li>        <li>r_name(p=1)->[designator]-[num]</li>      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+  <!-- LegacyBallistic：老式彈道彈體（V2 級）：沒有精密導引，戰頭就是型號。 -->
+  <RulePackDef>
+    <defName>DMSE_NamerPack_LegacyBallistic</defName>
+    <rulePack>
+      <rulesStrings>        <li>r_name(p=3)->[designator]-[num] [warhead]</li>        <li>r_name(p=2)->[designator]-[num] [warhead] [payload]</li>        <li>r_name(p=1)->[body] [designator]-[num]</li>        <li>r_name(p=1)->[designator]-[num]</li>      </rulesStrings>
     </rulePack>
   </RulePackDef>
 

@@ -55,7 +55,7 @@
     </modExtensions>
     <comps>
       <!-- 未存放於庇護建築（儲存架/發射架）內時緩慢扣耐久；歸零後摧毀。5 HP/日 ≒ 12 日（60 HP）。 -->
-      <li Class="DMSE.CompProperties_DurabilityDecay">
+      <li Class="Fortified.CompProperties_DurabilityDecay">
         <hitPointsPerDay>5</hitPointsPerDay>
         <destroyWhenDepleted>true</destroyWhenDepleted>
         <shelterBuildings>

@@ -2,10 +2,10 @@
 <Defs>
 
   <!--
-    四階導彈發射平台的共用抽象母 Def（架構腳手架）。
+    四階導彈發射平台的共用抽象母 Def。本體在 FFF（FFF_TiltLauncherBase / FFF_VerticalLauncherBase，
+    1.7/Missiles/Defs/Missile/FFF_MissileBases.xml）；這裡的 DMSE_* 只是別名，多加 DMSE 的建造分頁。
     各階導彈的實際發射架請以 ParentName 繼承下列其一，並各自補上 graphicData / size /
-    costList / statBases / comps（CompProperties_Refuelable + DMSE.CompProperties...）以及
-    一份 DMSE.MissileLauncherExtension（宣告 sizeClass / launchMode / capacity）。
+    costList / statBases / comps 以及一份 Fortified.MissileLauncherExtension（宣告 sizeClass / launchMode / capacity）。
 
     發射方式（傾斜 vs 垂直）為「純建造限制＋視覺」：
       - 垂直發射：rotatable=false（單一朝向）＋ PlaceWorker_InvalidOverSubstructure
@@ -14,40 +14,14 @@
     兩者皆不影響彈道數值。
   -->
 
-  <!-- 傾斜發射平台母 Def（可旋轉、可上重力船） -->
-  <ThingDef Name="DMSE_TiltLauncherBase" ParentName="BuildingBase" Abstract="True">
-    <category>Building</category>
-    <rotatable>true</rotatable>
-    <altitudeLayer>Building</altitudeLayer>
-    <passability>PassThroughOnly</passability>
-    <tickerType>Normal</tickerType>
-    <drawerType>RealtimeOnly</drawerType>
+  <!-- DMSE_TiltLauncherBase：移到 FFF（2026-11-27），這裡只留別名讓既有子 Def 與其他模組的引用不用改。 -->
+  <ThingDef Name="DMSE_TiltLauncherBase" ParentName="FFF_TiltLauncherBase" Abstract="True">
     <designationCategory>DMSE_BVRCategory</designationCategory>
-    <selectable>true</selectable>
-    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
-    <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
-    <placeWorkers>
-      <!-- 傾斜發射時排焰/後座範圍較大，禁止同層建築在1格範圍內貼靠。 -->
-      <li>DMSE.PlaceWorker_NoAdjacentSameLayer</li>
-    </placeWorkers>
   </ThingDef>
 
-  <!-- 垂直發射平台母 Def（單一朝向、禁止建於重力船 substructure） -->
-  <ThingDef Name="DMSE_VerticalLauncherBase" ParentName="BuildingBase" Abstract="True">
-    <category>Building</category>
-    <rotatable>false</rotatable>
-    <altitudeLayer>Building</altitudeLayer>
-    <passability>PassThroughOnly</passability>
-    <tickerType>Normal</tickerType>
-    <drawerType>RealtimeOnly</drawerType>
+  <!-- DMSE_VerticalLauncherBase：移到 FFF（2026-11-27），這裡只留別名讓既有子 Def 與其他模組的引用不用改。 -->
+  <ThingDef Name="DMSE_VerticalLauncherBase" ParentName="FFF_VerticalLauncherBase" Abstract="True">
     <designationCategory>DMSE_BVRCategory</designationCategory>
-    <selectable>true</selectable>
-    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
-    <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
-    <placeWorkers>
-      <!-- 原版：落在 substructure（重力船地板）時禁止放置。 -->
-      <li>PlaceWorker_InvalidOverSubstructure</li>
-    </placeWorkers>
   </ThingDef>
 
 </Defs>

@@ -198,42 +198,8 @@
     <uiOrder>2205</uiOrder>
   </ThingDef>
 
-  <!-- 轉移引擎基底（§5-5）：Heavy 地形即可（不需逆重船底板），可旋轉，尾焰朝背面 -->
-  <ThingDef ParentName="BuildingBase" Name="DMSE_TransferEngineBase" Abstract="True">
-    <rotatable>true</rotatable>
-    <passability>Impassable</passability>
-    <fillPercent>1</fillPercent>
-    <holdsRoof>true</holdsRoof>
-    <blockWind>true</blockWind>
-    <blockLight>true</blockLight>
-    <canOverlapZones>false</canOverlapZones>
-    <castEdgeShadows>true</castEdgeShadows>
-    <staticSunShadowHeight>0.5</staticSunShadowHeight>
-    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
-    <designationCategory>Odyssey</designationCategory>
-    <tickerType>Rare</tickerType>
-    <!-- 與原版推進器（GravshipComponentBase）相同：可打包搬運，舊存檔中已打包的熱核推進器也能重新安裝 -->
-    <minifiedDef>MinifiedThing</minifiedDef>
-    <thingCategories>
-      <li>BuildingsMisc</li>
-    </thingCategories>
-    <genericMarketSellable>false</genericMarketSellable>
-    <placeWorkers>
-      <li>Fortified.PlaceWorker_TransferEngine</li>
-    </placeWorkers>
-    <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
-    <drawPlaceWorkersWhileInstallBlueprintSelected>true</drawPlaceWorkersWhileInstallBlueprintSelected>
-    <statBases>
-      <Flammability>0</Flammability>
-      <Beauty>-10</Beauty>
-    </statBases>
-    <building>
-      <isAirtight>true</isAirtight>
-      <isInert>true</isInert>
-      <destroySound>BuildingDestroyed_Metal_Big</destroySound>
-    </building>
-    <uiOrder>2200</uiOrder>
-  </ThingDef>
+  <!-- DMSE_TransferEngineBase：移到 FFF（2026-11-27），這裡只留別名讓既有子 Def 與其他模組的引用不用改。 -->
+  <ThingDef Name="DMSE_TransferEngineBase" ParentName="FFF_TransferEngineBase" Abstract="True" />
 
   <!-- 化學轉移引擎（需求 5）：前期研究即可建造，中推力、燃耗基準 1.0 -->
   <ThingDef ParentName="DMSE_TransferEngineBase">

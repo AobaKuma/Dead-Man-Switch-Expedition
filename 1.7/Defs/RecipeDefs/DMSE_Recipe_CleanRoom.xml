@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
-  <RecipeDef Name="DMSE_CleanRoom_Recipe" Abstract="True">
-    <modExtensions>
-      <li Class="Fortified.ModExt_EnvironmentalBill">
-        <OnlyInCleanliness>true</OnlyInCleanliness>
-      </li>
-    </modExtensions>
-  </RecipeDef>
+  <!-- DMSE_CleanRoom_Recipe：移到 FFF（2026-11-27），這裡只留別名讓既有子 Def 與其他模組的引用不用改。 -->
+  <RecipeDef Name="DMSE_CleanRoom_Recipe" ParentName="FFF_CleanRoomRecipeBase" Abstract="True" />
    
   <!-- Artificial starch preparation -->
   <RecipeDef ParentName="DMSE_CleanRoom_Recipe">

@@ -102,6 +102,8 @@
         <launchMode>Tilt</launchMode>
         <capacity>4</capacity>
         <renderStoredBody>false</renderStoredBody>
+        <!-- 人工瞄準：攔截對準目標後再追蹤 3 秒才發射（FFF MissileLauncherExtension.aimTicks）。 -->
+        <aimTicks>180</aimTicks>
       </li>
       <!-- 敵方陣地生成時自動填充：Industrial 以上派系填入攔截彈。 -->
       <li Class="Fortified.MissileRackAutoFillExtension">
@@ -160,7 +162,7 @@
       <li>Fortified.ITab_MissileAssembly</li>
     </inspectorTabs>
     <placeWorkers>
-      <li>DMSE.PlaceWorker_NoAdjacentSameLayer</li>
+      <li>Fortified.PlaceWorker_NoAdjacentSameLayer</li>
     </placeWorkers>
   </ThingDef>
 

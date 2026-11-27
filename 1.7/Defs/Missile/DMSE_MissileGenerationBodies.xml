@@ -43,50 +43,6 @@
        ================================================================== -->
 
 
-  <!-- ══════════════════════════════════════════════════════════════
-       一、老式彈道導彈（V2）— 彈道階，塔式發射架／戰略導彈發射井內直接裝配
-       ══════════════════════════════════════════════════════════════ -->
-  <Fortified.MissileBodyDef>
-    <defName>DMSE_MissileBody_LegacyBallistic</defName>
-    <label>legacy ballistic missile body</label>
-    <expandingIconPath>UI/DMSE/TravelingMissile_Expanding_Ballistic</expandingIconPath>
-    <designWord>Legacy</designWord>
-    <namer>DMSE_Namer_LegacyBallistic</namer>
-    <description>An early liquid-fueled ballistic rocket. It is slow to prepare and wildly inaccurate, but it can be built from industrial materials long before modern guidance exists.\n\nAssembled directly on a launch tower or in a silo.</description>
-    <sizeClass>Ballistic</sizeClass>
-    <!-- 與現役彈道彈體相同：只能垂直發射、在發射架上直接裝配（無物品型態） -->
-    <launchMode>Vertical</launchMode>
-    <customizeLocation>Launcher</customizeLocation>
-    <!-- N = 5：老式裝藥效率差，效果強度低於現役彈道（N=8）與先進彈道（N=9） -->
-    <payloadCapacity>5</payloadCapacity>
-    <baseExplosionRadius>6</baseExplosionRadius>
-    <baseDamageDef>Bomb</baseDamageDef>
-    <baseDamageAmount>150</baseDamageAmount>
-    <!-- 散布極大：純慣性、無終端修正，本來就是面殺傷武器 -->
-    <baseScatter>7</baseScatter>
-    <baseWorldSpeedFactor>0.9</baseWorldSpeedFactor>
-    <!-- 射程：120 * 1.8 * 0.4398 ≈ 95 格（以洲際彈道導彈＝民兵三型 500 格為錨點分級） -->
-    <baseRange>0</baseRange>
-    <!-- 無導引能力：飛行中不做任何終端位置更新 -->
-    <terminalUpdates>0</terminalUpdates>
-    <baseFuel>120</baseFuel>
-    <baseSpecificImpulse>1.8</baseSpecificImpulse>
-    <rangePerFuelImpulse>0.4398</rangePerFuelImpulse>
-    <!-- 裝配工作量：零件少、工藝粗，遠低於現役（3600） -->
-    <assembleWorkAmount>1800</assembleWorkAmount>
-    <!-- 基本導彈工程解鎖的塔式發射架預設彈體（V2） -->
-    <researchPrerequisites>
-      <li>DMSE_LoiteringMunitions</li>
-    </researchPrerequisites>
-    <incomingSkyfaller>DMSE_Incoming_LegacyBallisticMissile</incomingSkyfaller>
-    <launchProjectile>DMSE_Launch_LegacyBallistic</launchProjectile>
-    <slots>
-      <li>Warhead</li>
-      <li>Guidance</li>
-      <li>Payload</li>
-    </slots>
-  </Fortified.MissileBodyDef>
-
 
 
 
@@ -527,34 +483,6 @@
        BVRTargetProps 描述世界層雷達特性（世代越新＝越快、越難偵測）。
        ================================================================== -->
 
-  <!-- V2：高空再入、雷達截面大、無隱身 → 很早就被偵測，終端速度快 -->
-  <ThingDef ParentName="DMSE_MissileIncomingProjectileBase">
-    <defName>DMSE_Incoming_LegacyBallisticMissile</defName>
-    <label>legacy ballistic missile (incoming)</label>
-    <thingClass>Fortified.Projectile_MissileIncoming</thingClass>
-    <graphicData>
-      <texPath>Things/Missile/V2/skyFaller_incoming</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>6.8</drawSize>
-    </graphicData>
-    <size>(1,1)</size>
-    <modExtensions>
-      <li Class="Fortified.MissileFlightExtension">
-        <shadowSize>(3, 3)</shadowSize>
-        <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
-        <speed>1</speed>
-      </li>
-      <li Class="Fortified.AirTargetExtension">
-        <distanceLevel>2.2</distanceLevel>
-        <stealthLevel>0</stealthLevel>
-        <speed>25</speed>
-        <altitude>30000</altitude>
-        <!-- 彈道再入：迫近防禦（CIWS）幾乎來不及反應，命中率只剩 15%。 -->
-        <terminalInterceptFactor>0.15</terminalInterceptFactor>
-      </li>
-    </modExtensions>
-  </ThingDef>
-
   <!-- 地獄火：小、快、無隱身 -->
   <ThingDef ParentName="DMSE_MissileIncomingProjectileBase">
     <defName>DMSE_Incoming_AdvancedLightMissile</defName>
@@ -815,6 +743,78 @@
         <altitude>50000</altitude>
         <!-- 戰術彈道導彈：迫近防禦（CIWS）命中率只剩 10%。 -->
         <terminalInterceptFactor>0.1</terminalInterceptFactor>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       一、老式彈道導彈（V2）— 彈道階，塔式發射架／戰略導彈發射井內直接裝配
+       ══════════════════════════════════════════════════════════════ -->
+  <Fortified.MissileBodyDef>
+    <defName>DMSE_MissileBody_LegacyBallistic</defName>
+    <label>legacy ballistic missile body</label>
+    <expandingIconPath>UI/DMSE/TravelingMissile_Expanding_Ballistic</expandingIconPath>
+    <designWord>Legacy</designWord>
+    <namer>DMSE_Namer_LegacyBallistic</namer>
+    <description>An early liquid-fueled ballistic rocket. It is slow to prepare and wildly inaccurate, but it can be built from industrial materials long before modern guidance exists.\n\nAssembled directly on a launch tower or in a silo.</description>
+    <sizeClass>Ballistic</sizeClass>
+    <!-- 與現役彈道彈體相同：只能垂直發射、在發射架上直接裝配（無物品型態） -->
+    <launchMode>Vertical</launchMode>
+    <customizeLocation>Launcher</customizeLocation>
+    <!-- N = 5：老式裝藥效率差，效果強度低於現役彈道（N=8）與先進彈道（N=9） -->
+    <payloadCapacity>5</payloadCapacity>
+    <baseExplosionRadius>6</baseExplosionRadius>
+    <baseDamageDef>Bomb</baseDamageDef>
+    <baseDamageAmount>150</baseDamageAmount>
+    <!-- 散布極大：純慣性、無終端修正，本來就是面殺傷武器 -->
+    <baseScatter>7</baseScatter>
+    <baseWorldSpeedFactor>0.9</baseWorldSpeedFactor>
+    <!-- 射程：120 * 1.8 * 0.4398 ≈ 95 格（以洲際彈道導彈＝民兵三型 500 格為錨點分級） -->
+    <baseRange>0</baseRange>
+    <!-- 無導引能力：飛行中不做任何終端位置更新 -->
+    <terminalUpdates>0</terminalUpdates>
+    <baseFuel>120</baseFuel>
+    <baseSpecificImpulse>1.8</baseSpecificImpulse>
+    <rangePerFuelImpulse>0.4398</rangePerFuelImpulse>
+    <!-- 裝配工作量：零件少、工藝粗，遠低於現役（3600） -->
+    <assembleWorkAmount>1800</assembleWorkAmount>
+    <!-- 基本導彈工程解鎖的塔式發射架預設彈體（V2） -->
+    <researchPrerequisites>
+      <li>DMSE_LoiteringMunitions</li>
+    </researchPrerequisites>
+    <incomingSkyfaller>DMSE_Incoming_LegacyBallisticMissile</incomingSkyfaller>
+    <launchProjectile>DMSE_Launch_LegacyBallistic</launchProjectile>
+    <slots>
+      <li>Warhead</li>
+      <li>Guidance</li>
+      <li>Payload</li>
+    </slots>
+  </Fortified.MissileBodyDef>
+
+  <!-- V2：高空再入、雷達截面大、無隱身 → 很早就被偵測，終端速度快 -->
+  <ThingDef ParentName="DMSE_MissileIncomingProjectileBase">
+    <defName>DMSE_Incoming_LegacyBallisticMissile</defName>
+    <label>legacy ballistic missile (incoming)</label>
+    <thingClass>Fortified.Projectile_MissileIncoming</thingClass>
+    <graphicData>
+      <texPath>Things/Missile/V2/skyFaller_incoming</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>6.8</drawSize>
+    </graphicData>
+    <size>(1,1)</size>
+    <modExtensions>
+      <li Class="Fortified.MissileFlightExtension">
+        <shadowSize>(3, 3)</shadowSize>
+        <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
+        <speed>1</speed>
+      </li>
+      <li Class="Fortified.AirTargetExtension">
+        <distanceLevel>2.2</distanceLevel>
+        <stealthLevel>0</stealthLevel>
+        <speed>25</speed>
+        <altitude>30000</altitude>
+        <!-- 彈道再入：迫近防禦（CIWS）幾乎來不及反應，命中率只剩 15%。 -->
+        <terminalInterceptFactor>0.15</terminalInterceptFactor>
       </li>
     </modExtensions>
   </ThingDef>

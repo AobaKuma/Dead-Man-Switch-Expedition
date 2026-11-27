@@ -140,15 +140,6 @@
     <numberMax>199</numberMax>
   </Fortified.MissileNamerDef>
 
-  <!-- 老式彈道彈體（V2／A4）：編號 1–20，代表二戰式量產批次。 -->
-  <Fortified.MissileNamerDef>
-    <defName>DMSE_Namer_LegacyBallistic</defName>
-    <designator>V2</designator>
-    <pack>DMSE_NamerPack_LegacyBallistic</pack>
-    <numberMin>1</numberMin>
-    <numberMax>20</numberMax>
-  </Fortified.MissileNamerDef>
-
   <!-- 先進彈道彈體（民兵三型）。 -->
   <Fortified.MissileNamerDef>
     <defName>DMSE_Namer_AdvancedBallistic</defName>
@@ -156,6 +147,15 @@
     <pack>DMSE_NamerPack_AdvancedBallistic</pack>
     <numberMin>1</numberMin>
     <numberMax>50</numberMax>
+  </Fortified.MissileNamerDef>
+
+  <!-- 老式彈道彈體（V2／A4）：編號 1–20，代表二戰式量產批次。 -->
+  <Fortified.MissileNamerDef>
+    <defName>DMSE_Namer_LegacyBallistic</defName>
+    <designator>V2</designator>
+    <pack>DMSE_NamerPack_LegacyBallistic</pack>
+    <numberMin>1</numberMin>
+    <numberMax>20</numberMax>
   </Fortified.MissileNamerDef>
 
 </Defs>

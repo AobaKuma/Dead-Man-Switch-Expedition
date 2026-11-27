@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <DMSE_LegacyBallistic_Warhead_Amatol.designWord>阿马托</DMSE_LegacyBallistic_Warhead_Amatol.designWord>
+  <DMSE_LegacyBallistic_Warhead_Trialen.designWord>特里亚伦</DMSE_LegacyBallistic_Warhead_Trialen.designWord>
+  <DMSE_LegacyBallistic_Warhead_Amatol.label>阿马托炸药弹头</DMSE_LegacyBallistic_Warhead_Amatol.label>
+  <DMSE_LegacyBallistic_Warhead_Amatol.description>一枚装填阿玛托炸药的大型简易弹头，稳定又便宜，用工业材料就能制造。除了炸出一个大洞，没有别的效果。</DMSE_LegacyBallistic_Warhead_Amatol.description>
+  <DMSE_LegacyBallistic_Warhead_Trialen.label>特里亚伦炸药弹头</DMSE_LegacyBallistic_Warhead_Trialen.label>
+  <DMSE_LegacyBallistic_Warhead_Trialen.description>一枚装填特里亚伦炸药的弹头，带有燃烧成分，爆炸会在弹坑周围引发火灾。比阿玛托弹头稍贵。</DMSE_LegacyBallistic_Warhead_Trialen.description>
+
+</LanguageData>

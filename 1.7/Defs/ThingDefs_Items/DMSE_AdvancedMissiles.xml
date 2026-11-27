@@ -67,7 +67,7 @@
       <li Class="Fortified.CompProperties_MissileConfig">
         <defaultBody>DMSE_MissileBody_AdvancedLight</defaultBody>
       </li>
-      <li Class="DMSE.CompProperties_DurabilityDecay">
+      <li Class="Fortified.CompProperties_DurabilityDecay">
         <hitPointsPerDay>5</hitPointsPerDay>
         <destroyWhenDepleted>true</destroyWhenDepleted>
         <shelterBuildings>
@@ -140,7 +140,7 @@
       <li Class="Fortified.CompProperties_MissileConfig">
         <defaultBody>DMSE_MissileBody_AdvancedCruise</defaultBody>
       </li>
-      <li Class="DMSE.CompProperties_DurabilityDecay">
+      <li Class="Fortified.CompProperties_DurabilityDecay">
         <hitPointsPerDay>5</hitPointsPerDay>
         <destroyWhenDepleted>true</destroyWhenDepleted>
         <shelterBuildings>

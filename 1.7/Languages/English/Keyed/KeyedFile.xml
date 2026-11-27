@@ -8,9 +8,7 @@
   <DMSE.MissileBase.ReentryBlockedIn>Ground access denied: enemy regrouping ({0})</DMSE.MissileBase.ReentryBlockedIn>
   <DMSE.MissileBase.SiteDesc>A mobile tactical ballistic missile launch position equipped with fire control radar and missile launchers. The position will relocate after completing its mission.</DMSE.MissileBase.SiteDesc>
 
-  <ScorerLaunch>Launch Missile</ScorerLaunch>
 
-  <ScorerLaunchDesc>Launch the loaded tactical missile at a target beyond this map. The target map stays visible for 2 days to assess damage; launching again resets the timer.</ScorerLaunchDesc>
 
   <DMSE.Letter.HuntdownThreat.Label>Huntdown</DMSE.Letter.HuntdownThreat.Label>
   <DMSE.Letter.HuntdownThreat.Text>(TODO) blablabla, anyway {0} need you dead.</DMSE.Letter.HuntdownThreat.Text>
@@ -37,7 +35,6 @@
 
 
   <DMSE_ShipWarmUpBegin>Fusion core heating up. Launching procedure in 6...</DMSE_ShipWarmUpBegin>
-  <DMSE_ShipWarmUpCountdown>Launching procedure in {0}</DMSE_ShipWarmUpCountdown>
 
   <DMSE.Impact.Ending.Intro>The gravship streaked across the sky with a blazing trail, carrying immense mass into the ground. The horizon turned to light, and violent shockwaves followed, becoming storms and earthquakes that swept across the planet's surface. In a short span, countless lives and landscapes were erased in this world-shattering impact.</DMSE.Impact.Ending.Intro>
   <DMSE.Impact.Ending.Outro>Fortunately, this was not the maximum output the nuclear-thermal engines could produce. After the disaster subsided, most people on the surface survived. Whatever the purpose behind it, this impact will be remembered forever in the history of this world.</DMSE.Impact.Ending.Outro>
@@ -60,11 +57,7 @@
   <DMSE.BVR.Settings.InterceptFxDensity2>High</DMSE.BVR.Settings.InterceptFxDensity2>
 
 
-  <DMSE_MissileDecayedAway>{0} has degraded beyond use and fallen apart.</DMSE_MissileDecayedAway>
-  <DMSE_MissileDecaySheltered>Sheltered: durability stable</DMSE_MissileDecaySheltered>
-  <DMSE_MissileDecayUnsheltered>Unsheltered: losing {0} durability/day</DMSE_MissileDecayUnsheltered>
 
-  <DMSE_MissileRackStored>Stored missiles: {0} / {1}</DMSE_MissileRackStored>
 
   <DMSE.MissileInventory.Pending>assembly pending</DMSE.MissileInventory.Pending>
 
@@ -78,7 +71,6 @@
   <DMSE.Artillery.Ready>Artillery: ready to fire</DMSE.Artillery.Ready>
 
   <!-- PlaceWorker -->
-  <DMSE.PlaceWorker.TooCloseSameLayer>Too close to {0} (same placement layer).</DMSE.PlaceWorker.TooCloseSameLayer>
 
 
   <DMSE.BallisticLaunchSite.SpawnedLetter>{0} has established a ballistic launch site {3} tiles {2} of {1}. Its strategic missiles can reach your colony from far beyond the range of ordinary launch positions, and it will stay there, firing every few days, until it is destroyed.\n\nDestroy every fire-control radar to neutralize it. Strong air defense will make it mix in penetration aids.</DMSE.BallisticLaunchSite.SpawnedLetter>

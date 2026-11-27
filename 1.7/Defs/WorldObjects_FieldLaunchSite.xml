@@ -347,6 +347,8 @@
           <refillToPercent>1</refillToPercent>
           <haulDelayTicks>300</haulDelayTicks>
           <maxHaulers>1</maxHaulers>
+          <!-- CE 彈匣：一次空投補滿彈匣再加兩匣備彈，備彈留在砲塔旁由守軍再裝（Flak 43 一匣 40 發）。 -->
+          <magazineStock>3</magazineStock>
         </turretAmmo>
       </li>
     </comps>

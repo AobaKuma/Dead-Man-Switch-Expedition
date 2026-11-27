@@ -18,11 +18,7 @@ Click to cycle through the remaining targets. -->
   <!-- EN: A mobile tactical ballistic missile launch position equipped with fire control radar and missile launchers. The position will relocate after completing its mission. -->
   <DMSE.MissileBase.SiteDesc>一處配備火控雷達與導彈發射架的機動戰術彈道導彈陣地。陣地會在完成任務後轉移，以躲避反制。</DMSE.MissileBase.SiteDesc>
 
-  <!-- EN: Launch Missile -->
-  <ScorerLaunch>發射導彈</ScorerLaunch>
 
-  <!-- EN: Launch the loaded tactical missile at a target beyond this map. The target map stays visible for 2 days to assess damage; launching again resets the timer. -->
-  <ScorerLaunchDesc>發射已裝填的戰術導彈，可遠程打擊地圖外的目標；目標地圖保留 2 天視野以評估戰果，再次發射會重置計時。</ScorerLaunchDesc>
 
   <!-- EN: Huntdown -->
   <DMSE.Letter.HuntdownThreat.Label>追捕</DMSE.Letter.HuntdownThreat.Label>
@@ -65,8 +61,6 @@ Click to cycle through the remaining targets. -->
 
   <!-- EN: Fusion core heating up. Launching procedure in 6... -->
   <DMSE_ShipWarmUpBegin>聚變核心正在提升功率. 推進器點火倒數: 6</DMSE_ShipWarmUpBegin>
-  <!-- EN: Launching procedure in {0} -->
-  <DMSE_ShipWarmUpCountdown>推進器點火倒數: {0}</DMSE_ShipWarmUpCountdown>
 
   <!-- EN: The gravship streaked across the sky with a blazing trail, carrying immense mass into the ground. The horizon turned to light, and violent shockwaves followed, becoming storms and earthquakes that swept across the planet's surface. In a short span, countless lives and landscapes were erased in this world-shattering impact. -->
   <DMSE.Impact.Ending.Intro>重力船拖著長長的軌跡劃過天際，攜帶著巨大的質量沒入大地，地平線上的一切都變成了光，隨之而來的是劇烈的衝擊波化作風暴與地震席捲了整顆星球的地表，在短時間內無數的生靈與景觀在這場驚天動地的碰撞之中煙飛灰滅。</DMSE.Impact.Ending.Intro>
@@ -105,15 +99,7 @@ Click to cycle through the remaining targets. -->
 
   <!-- 導引頭選目標 -->
 
-  <!-- EN: {0} has degraded beyond use and fallen apart. -->
-  <DMSE_MissileDecayedAway>{0} 已劣化至無法使用而解體。</DMSE_MissileDecayedAway>
-  <!-- EN: Sheltered: durability stable -->
-  <DMSE_MissileDecaySheltered>已庇護：耐久穩定</DMSE_MissileDecaySheltered>
-  <!-- EN: Unsheltered: losing {0} durability/day -->
-  <DMSE_MissileDecayUnsheltered>未庇護：每日損失 {0} 點耐久</DMSE_MissileDecayUnsheltered>
 
-  <!-- EN: Stored missiles: {0} / {1} -->
-  <DMSE_MissileRackStored>已存放導彈：{0} / {1}</DMSE_MissileRackStored>
 
   <!-- ITab_MissileInventory: building-level missile management tab -->
   <!-- {0} = blast radius, {1} = damage -->
@@ -139,8 +125,6 @@ Click to cycle through the remaining targets. -->
   <DMSE.Artillery.Ready>火砲：可發射</DMSE.Artillery.Ready>
 
   <!-- PlaceWorker -->
-  <!-- EN: Too close to {0} (same placement layer). -->
-  <DMSE.PlaceWorker.TooCloseSameLayer>與 {0} 太近。</DMSE.PlaceWorker.TooCloseSameLayer>
 
 
   <!-- EN: {0} has established a ballistic launch site {3} tiles {2} of {1}. Its strategic missiles can reach your colony from far beyond the range of ordinary launch positions, and it will stay there, firing every few days, until it is destroyed.\n\nDestroy every fire-control radar to neutralize it. Strong air defense will make it mix in penetration aids. -->

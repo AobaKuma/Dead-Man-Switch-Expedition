@@ -63,4 +63,5 @@
 		<xpath>Defs/ThingDef/descriptionHyperlinks/ThingDef[.="DMSE_Building_RotaryLauncher" or .="DMSE_EarlyFireControlRadar"]</xpath>
 	</Operation>
 
+
 </Patch>

@@ -125,10 +125,6 @@
   <DMSE_AdvBallistic_Payload_Penaids.description>随弹头一起释放的箔条、雷达诱饵与隐身罩。导弹在来袭途中看起来小得多，敌方雷达发现得更晚，反应时间也更短。</DMSE_AdvBallistic_Payload_Penaids.description>
   <DMSE_AdvBallistic_Payload_MIRV.label>多弹头重返载具</DMSE_AdvBallistic_Payload_MIRV.label>
   <DMSE_AdvBallistic_Payload_MIRV.description>在飞行途中释放三枚独立重返载具的弹头母舱。每枚都带着导弹的战斗部与制导，沿自己的航迹飞行，必须逐一击落，敌方每枚弹头都要用掉一条火控通道与一枚拦截弹。三枚全部打击同一目标。\n\n在释放前击落母舱，所有弹头会一次全毁。</DMSE_AdvBallistic_Payload_MIRV.description>
-  <DMSE_LegacyBallistic_Warhead_Amatol.label>阿马托炸药弹头</DMSE_LegacyBallistic_Warhead_Amatol.label>
-  <DMSE_LegacyBallistic_Warhead_Amatol.description>一枚装填阿玛托炸药的大型简易弹头，稳定又便宜，用工业材料就能制造。除了炸出一个大洞，没有别的效果。</DMSE_LegacyBallistic_Warhead_Amatol.description>
-  <DMSE_LegacyBallistic_Warhead_Trialen.label>特里亚伦炸药弹头</DMSE_LegacyBallistic_Warhead_Trialen.label>
-  <DMSE_LegacyBallistic_Warhead_Trialen.description>一枚装填特里亚伦炸药的弹头，带有燃烧成分，爆炸会在弹坑周围引发火灾。比阿玛托弹头稍贵。</DMSE_LegacyBallistic_Warhead_Trialen.description>
   <DMSE_Payload_None.label>无酬载</DMSE_Payload_None.label>
   <DMSE_Payload_None.description>没有二次装药，全靠弹头本身，让导弹保持轻巧、射程更远。</DMSE_Payload_None.description>
   <DMSE_Guidance_AntiShip.label>反舰雷达导引头</DMSE_Guidance_AntiShip.label>

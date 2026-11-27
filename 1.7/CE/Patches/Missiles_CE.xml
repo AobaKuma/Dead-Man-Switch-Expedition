@@ -216,6 +216,7 @@
 					</li>
 				</value>
 			</li>
+
 			<!-- 早期液體彈道火箭（V-2）：1000 kg 戰鬥部，910 kg 阿馬托炸藥，薄鋼殼以爆震為主。穿甲 48×√820=1375→上限 320；彈片 20×√40≈126 -->
 			<li Class="PatchOperationAddModExtension">
 				<xpath>Defs/Fortified.MissileBodyDef[defName="DMSE_MissileBody_LegacyBallistic"]</xpath>
@@ -235,7 +236,17 @@
 			<!-- 鎢芯穿甲戰鬥部：彈體穿甲 ×1.5（彈芯先穿入再引爆）、彈片減半（能量集中在彈芯）。
 			     用倍率而不是絕對值，大型彈體的實際裝藥量才不會被蓋掉。 -->
 			<li Class="PatchOperationAddModExtension">
-				<xpath>Defs/Fortified.MissilePartDef[defName="DMSE_Ballistic_Warhead_TungstenPenetrator" or defName="DMSE_AdvCruise_Warhead_Penetrator"]</xpath>
+				<xpath>Defs/Fortified.MissilePartDef[defName="DMSE_Ballistic_Warhead_TungstenPenetrator"]</xpath>
+				<value>
+					<li Class="FortifiedCE.ModExtension_CEExplosion">
+						<armorPenetrationFactor>1.5</armorPenetrationFactor>
+						<fragmentScale>0.5</fragmentScale>
+					</li>
+				</value>
+			</li>
+			<!-- 分開寫：彈道版會被 Early Warfare 單獨載入時的複本（sync_early_standalone.py）帶走。 -->
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/Fortified.MissilePartDef[defName="DMSE_AdvCruise_Warhead_Penetrator"]</xpath>
 				<value>
 					<li Class="FortifiedCE.ModExtension_CEExplosion">
 						<armorPenetrationFactor>1.5</armorPenetrationFactor>
@@ -246,7 +257,17 @@
 
 			<!-- 反碉堡酬載：原版設定 100% 穿甲，CE 下給接近重型爆破彈的穿甲。 -->
 			<li Class="PatchOperationAddModExtension">
-				<xpath>Defs/Fortified.MissilePartDef[defName="DMSE_Payload_BunkerBuster" or defName="DMSE_Ballistic_Payload_BunkerBuster" or defName="DMSE_AdvCruise_Payload_BunkerBuster"]</xpath>
+				<xpath>Defs/Fortified.MissilePartDef[defName="DMSE_Ballistic_Payload_BunkerBuster"]</xpath>
+				<value>
+					<li Class="FortifiedCE.ModExtension_CEExplosion">
+						<armorPenetration>120</armorPenetration>
+						<fragmentScale>0.75</fragmentScale>
+					</li>
+				</value>
+			</li>
+			<!-- 分開寫：上面這筆的 def 會被 Early Warfare 單獨載入時的複本（sync_early_standalone.py）帶走。 -->
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/Fortified.MissilePartDef[defName="DMSE_Payload_BunkerBuster" or defName="DMSE_AdvCruise_Payload_BunkerBuster"]</xpath>
 				<value>
 					<li Class="FortifiedCE.ModExtension_CEExplosion">
 						<armorPenetration>120</armorPenetration>
@@ -257,7 +278,16 @@
 
 			<!-- 子母酬載：一次打出很多次小爆炸，每次的彈片減半，避免投射物數量爆量。 -->
 			<li Class="PatchOperationAddModExtension">
-				<xpath>Defs/Fortified.MissilePartDef[defName="DMSE_Ballistic_Payload_Cluster" or defName="DMSE_AdvCruise_Payload_Submunition"]</xpath>
+				<xpath>Defs/Fortified.MissilePartDef[defName="DMSE_Ballistic_Payload_Cluster"]</xpath>
+				<value>
+					<li Class="FortifiedCE.ModExtension_CEExplosion">
+						<fragmentScale>0.5</fragmentScale>
+					</li>
+				</value>
+			</li>
+			<!-- 分開寫：上面這筆的 def 會被 Early Warfare 單獨載入時的複本（sync_early_standalone.py）帶走。 -->
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/Fortified.MissilePartDef[defName="DMSE_AdvCruise_Payload_Submunition"]</xpath>
 				<value>
 					<li Class="FortifiedCE.ModExtension_CEExplosion">
 						<fragmentScale>0.5</fragmentScale>
@@ -277,7 +307,16 @@
 
 			<!-- 燃燒戰鬥部：殼體薄，彈片少。 -->
 			<li Class="PatchOperationAddModExtension">
-				<xpath>Defs/Fortified.MissilePartDef[defName="DMSE_Light_Warhead_Incendiary" or defName="DMSE_LegacyBallistic_Warhead_Trialen"]</xpath>
+				<xpath>Defs/Fortified.MissilePartDef[defName="DMSE_Light_Warhead_Incendiary"]</xpath>
+				<value>
+					<li Class="FortifiedCE.ModExtension_CEExplosion">
+						<fragmentScale>0.5</fragmentScale>
+					</li>
+				</value>
+			</li>
+			<!-- V2 的特里亞倫戰鬥部：同上（分開寫：彈道零件會被 Early Warfare 單獨載入時的複本帶走）。 -->
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/Fortified.MissilePartDef[defName="DMSE_LegacyBallistic_Warhead_Trialen"]</xpath>
 				<value>
 					<li Class="FortifiedCE.ModExtension_CEExplosion">
 						<fragmentScale>0.5</fragmentScale>
@@ -320,7 +359,14 @@
 			     這三種由 DMSE 直接生成（子母戰鬥部的子彈、肩射防空飛彈的兩種彈），爆炸走原版／FFF 的 Projectile，
 			     穿甲讀 def 的 armorPenetrationBase：給 CE Bomb 的預設 62 MPa。不丟 CE 彈片。 -->
 			<li Class="PatchOperationAdd">
-				<xpath>Defs/ThingDef[defName="DMSE_Bullet_AirburstFrag" or defName="DMSE_Projectile_Stinger" or defName="DMSE_Projectile_Sabre"]/projectile</xpath>
+				<xpath>Defs/ThingDef[defName="DMSE_Bullet_AirburstFrag"]/projectile</xpath>
+				<value>
+					<armorPenetrationBase>62</armorPenetrationBase>
+				</value>
+			</li>
+			<!-- 分開寫：上面這筆的 def 會被 Early Warfare 單獨載入時的複本（sync_early_standalone.py）帶走。 -->
+			<li Class="PatchOperationAdd">
+				<xpath>Defs/ThingDef[defName="DMSE_Projectile_Stinger" or defName="DMSE_Projectile_Sabre"]/projectile</xpath>
 				<value>
 					<armorPenetrationBase>62</armorPenetrationBase>
 				</value>

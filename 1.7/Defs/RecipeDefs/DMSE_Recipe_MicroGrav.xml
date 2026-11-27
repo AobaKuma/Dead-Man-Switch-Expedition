@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-  <RecipeDef Name="DMSE_MicroGrav_Recipe" Abstract="True">
-    <modExtensions>
-      <li Class="Fortified.ModExt_EnvironmentalBill">
-        <OnlyInMicroGravity>true</OnlyInMicroGravity>
-      </li>
-    </modExtensions>
-  </RecipeDef>
+  <!-- DMSE_MicroGrav_Recipe：移到 FFF（2026-11-27），這裡只留別名讓既有子 Def 與其他模組的引用不用改。 -->
+  <RecipeDef Name="DMSE_MicroGrav_Recipe" ParentName="FFF_MicroGravRecipeBase" Abstract="True" />
 
 <!-- Reactor vessel -->
   <!-- Produce graphene from chemfuel -->

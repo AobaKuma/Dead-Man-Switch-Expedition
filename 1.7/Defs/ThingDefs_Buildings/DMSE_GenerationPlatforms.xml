@@ -189,7 +189,7 @@
       <li>Fortified.ITab_MissileInventory</li>
     </inspectorTabs>
     <placeWorkers>
-      <li>DMSE.PlaceWorker_NoAdjacentSameLayer</li>
+      <li>Fortified.PlaceWorker_NoAdjacentSameLayer</li>
     </placeWorkers>
   </ThingDef>
 

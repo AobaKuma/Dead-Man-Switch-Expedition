@@ -18,12 +18,4 @@
   <DMSE_ShellAutoloader.label>自动装填架</DMSE_ShellAutoloader.label>
   <DMSE_ShellAutoloader.description>通电的弹药架，为连接且不需要炮手的火炮（例如远程加农炮）装填迫击炮弹。殖民者会像存放到货架一样把炮弹搬到这里；连接的炮空膛时，就从架上装填一发该炮“炮弹”页允许的炮弹。断电时停止装填。</DMSE_ShellAutoloader.description>
 
-  <DMSE_Turret_HeavyMortar.label>重型迫击炮</DMSE_Turret_HeavyMortar.label>
-  <DMSE_Turret_HeavyMortar.description>装在轮式炮架上的重型迫击炮。炮手会从附近库存搬来迫击炮弹并装填，这一发也能当作超视距炮弹打向世界地图目标：装填哪一种弹，远程打出去就是哪一种，改“炮弹”存储设置就能换弹种。世界炮击进行中炮管固定朝向世界目标方位，炮手不会接战本地目标。</DMSE_Turret_HeavyMortar.description>
-  <DMSE_Turret_HeavyMortar.comps.CompRefuelable.fuelLabel>换管前可射击次数</DMSE_Turret_HeavyMortar.comps.CompRefuelable.fuelLabel>
-  <DMSE_Turret_HeavyMortar.comps.CompRefuelable.fuelGizmoLabel>炮管耐久</DMSE_Turret_HeavyMortar.comps.CompRefuelable.fuelGizmoLabel>
-  <DMSE_Turret_HeavyMortar.comps.CompRefuelable.outOfFuelMessage>需要新的强化炮管</DMSE_Turret_HeavyMortar.comps.CompRefuelable.outOfFuelMessage>
-  <DMSE_Gun_HeavyMortar.label>重型迫击炮炮管</DMSE_Gun_HeavyMortar.label>
-  <DMSE_Gun_HeavyMortar.description>重型迫击炮的炮管，发射炮手装填的炮弹，也能通过火控组打击世界地图目标。</DMSE_Gun_HeavyMortar.description>
-  <DMSE_ArtilleryDeparture_HeavyMortar.label>离场的迫击炮弹</DMSE_ArtilleryDeparture_HeavyMortar.label>
 </LanguageData>
