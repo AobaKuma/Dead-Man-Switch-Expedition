@@ -17,8 +17,6 @@ If you withdraw while a fire-control radar still stands, the enemy regroups: the
 Click to cycle through the remaining targets. -->
   <!-- EN: A mobile tactical ballistic missile launch position equipped with fire control radar and missile launchers. The position will relocate after completing its mission. -->
   <DMSE.MissileBase.SiteDesc>一處配備火控雷達與導彈發射架的機動戰術彈道導彈陣地。陣地會在完成任務後轉移，以躲避反制。</DMSE.MissileBase.SiteDesc>
-  <!-- EN: {0} has set up a missile position {3} tiles {2} of {1}. Its slow pulsejet loitering munitions can strike your colony, and it has no interceptors of its own.\n\nDestroy its fire-control radar to neutralize it. -->
-  <DMSE.EarlyLaunchSite.SpawnedLetter>{0}在{1}的{2}方 {3} 格處架設了一處舊式導彈陣地。它緩慢的脈衝噴射巡飛彈能打擊你的殖民地，陣地本身沒有攔截彈。\n\n摧毀火控雷達即可瓦解此陣地。</DMSE.EarlyLaunchSite.SpawnedLetter>
 
   <!-- EN: Launch Missile -->
   <ScorerLaunch>發射導彈</ScorerLaunch>
@@ -73,7 +71,7 @@ Click to cycle through the remaining targets. -->
   <!-- EN: The gravship streaked across the sky with a blazing trail, carrying immense mass into the ground. The horizon turned to light, and violent shockwaves followed, becoming storms and earthquakes that swept across the planet's surface. In a short span, countless lives and landscapes were erased in this world-shattering impact. -->
   <DMSE.Impact.Ending.Intro>重力船拖著長長的軌跡劃過天際，攜帶著巨大的質量沒入大地，地平線上的一切都變成了光，隨之而來的是劇烈的衝擊波化作風暴與地震席捲了整顆星球的地表，在短時間內無數的生靈與景觀在這場驚天動地的碰撞之中煙飛灰滅。</DMSE.Impact.Ending.Intro>
   <!-- EN: Fortunately, this was not the maximum output the nuclear-thermal engines could produce. After the disaster subsided, most people on the surface survived. Whatever the purpose behind it, this impact will be remembered forever in the history of this world. -->
-  <DMSE.Impact.Ending.Outro>所幸這並非核熱引擎所能發揮得最大功率，在災害平息後地表上的大部分人類都得以倖存。無論其背後的目的如何，這顆星球的歷史都將永遠記住這一場撞擊。</DMSE.Impact.Ending.Outro>
+  <DMSE.Impact.Ending.Outro>所幸這並不是核熱引擎所能發揮得最大功率，在災害平息後地表上的大部分人類都得以倖存。無論其背後的目的如何，這顆星球的歷史都將永遠記住這一場撞擊。</DMSE.Impact.Ending.Outro>
   <!-- EN: We may never know whether the crew aboard the gravship escaped at the last moment, or vanished entirely in the impact. -->
   <DMSE.Impact.Ending.Aboard>我們無法得知重力船上的船員們是否在最後一刻逃出生天，又或者徹底地隨著撞擊煙飛灰滅。</DMSE.Impact.Ending.Aboard>
 

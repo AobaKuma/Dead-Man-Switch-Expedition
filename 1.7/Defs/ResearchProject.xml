@@ -15,20 +15,6 @@
     <researchViewY>2.50</researchViewY>
   </ResearchProjectDef>
 
-  <!-- 早期預警與人工火控：低功率、低通道的類比防空路徑。 -->
-  <ResearchProjectDef ParentName="DMS_BaseTech">
-    <defName>DMSE_RadarBasis</defName>
-    <label>early warning and manual fire control</label>
-    <description>Unlocks the passive acoustic warning mirror, the manually operated one-channel fire-control radar, the early rotary rail, and legacy flak gun. These low-power systems provide short-range warning and limited interception before an active radar network is available.</description>
-    <baseCost>1000</baseCost>
-    <requiredResearchBuilding Inherit="False" />
-    <prerequisites>
-      <li>DMS_UAVBasis</li>
-    </prerequisites>
-    <researchViewX>1.00</researchViewX>
-    <researchViewY>0.40</researchViewY>
-  </ResearchProjectDef>
-
   <!-- 基本導彈工程：第一代導彈、V2 與早期彈道投送平台。 -->
   <ResearchProjectDef ParentName="DMS_BaseTech">
     <defName>DMSE_LoiteringMunitions</defName>

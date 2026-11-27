@@ -43,8 +43,6 @@
     </defaultParts>
   </Fortified.MissileBodyDef>
 
-  <!-- 軍刀專用圖像識別導引頭：與地獄火的自動影像尋標同一套邏輯（屋頂外的敵方生物，先戰力後體型）；
-       找不到目標回報無目標，交給盤旋飛控等待，盤旋時間用完才退化為慣性。出廠內建，不另計成本與研究。 -->
   <Fortified.MissilePartDef>
     <defName>DMSE_Sabre_Guidance_Imaging</defName>
     <label>image-recognition seeker</label>

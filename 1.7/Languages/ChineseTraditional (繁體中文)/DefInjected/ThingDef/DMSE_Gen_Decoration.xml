@@ -65,5 +65,8 @@
   <DMSE_FieldStructure_AmmoStorage.label>野戰彈藥庫</DMSE_FieldStructure_AmmoStorage.label>
   <!-- EN: A sealed ammunition locker for field structures. Holds up to eight missiles. -->
   <DMSE_FieldStructure_AmmoStorage.description>為野戰結構儲存導彈的密封彈藥庫，可存放 8 枚導彈。</DMSE_FieldStructure_AmmoStorage.description>
-  
+
+  <!-- EN: Trigger {0_label} -->
+  <DMSE_FieldStructure_ExtinguisherUnit.comps.CompUsable.useLabel>觸發{0_label}</DMSE_FieldStructure_ExtinguisherUnit.comps.CompUsable.useLabel>
+
 </LanguageData>

@@ -149,12 +149,15 @@
     <defName>DMSE_OTHWarningRadar</defName>
     <label>long-range warning radar</label>
     <description>A huge over-the-horizon array that bounces signals off the ionosphere to spot incoming threats up to 40 world tiles away. Its resolution is poor: small targets shrink out of its range, and it has no fire-control channels at all. It buys decision time, not interceptions.\n\nDraws 12000 W at full power.</description>
-    <!-- 佔位貼圖：待換 5×5 大型陣列美術。不掛 CompProperties_FireControlRadar：不產生火力通道。 -->
+    <!-- 固定式超視距陣列：512px 貼圖中底座約 323px 寬 = 5 格 → drawSize 8；天線向北伸出底座。
+         陣列不旋轉，故不掛 CompTurretFacingRenderer。不掛 CompProperties_FireControlRadar：不產生火力通道。 -->
     <graphicData>
-      <texPath>Things/Building/FacilityBase_Green</texPath>
+      <texPath>Things/Building/DMSE_OTHWarningRadar</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(5,5)</drawSize>
+      <drawSize>(8,8)</drawSize>
       <damageData>
+        <!-- 損傷角落貼在底座上（UV，左下原點），而非整張 8×8 畫布。 -->
+        <rect>(0.186,0.176,0.63,0.638)</rect>
         <cornerTL>Damage/Corner</cornerTL>
         <cornerTR>Damage/Corner</cornerTR>
         <cornerBL>Damage/Corner</cornerBL>
@@ -210,16 +213,6 @@
         <powerLevel>1</powerLevel>
         <antiStealthLevel>0</antiStealthLevel>
         <resolutionLevel>1.6</resolutionLevel>
-      </li>
-      <li Class="Fortified.CompProperties_TurretFacingRenderer">
-        <texPath>Things/Building/Radar_EW</texPath>
-        <drawSize>(13,13)</drawSize>
-        <altitudeOffset>0.01</altitudeOffset>
-        <rotationSpeedDegPerTick>1</rotationSpeedDegPerTick>
-        <idleTurnDegreesPerTick>0.5</idleTurnDegreesPerTick>
-        <idleTurnDuration>600</idleTurnDuration>
-        <idleTurnIntervalMin>1</idleTurnIntervalMin>
-        <idleTurnIntervalMax>2</idleTurnIntervalMax>
       </li>
     </comps>
     <placeWorkers>

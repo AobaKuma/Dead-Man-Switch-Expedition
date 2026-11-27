@@ -14,4 +14,6 @@
   <DMSE_Building_BallisticSilo.label>战略导弹发射井</DMSE_Building_BallisticSilo.label>
   <DMSE_Building_BallisticSilo.description>一座半埋入地下的战略导弹发射井，配有厚重的混凝土舱盖与爆震抑制结构，发射时不会波及周围。造价极高、非常坚固，只能容纳一枚导弹。\n\n导弹直接在发射井内以原料装配，再对世界地图上的目标发射。\n\n无法建造在重力船上。</DMSE_Building_BallisticSilo.description>
 
+  <DMSE_Building_NLOSLauncher.label>非直视发射箱</DMSE_Building_NLOSLauncher.label>
+  <DMSE_Building_NLOSLauncher.description>一座箱式垂直发射器，在很小的占地内塞进十五枚轻型导弹，另一格留给火控单元。能对视线以外的目标一次倾泻大量齐射，但要靠人力重新装填满，得花上很长时间。\n\n无法建造在重力船上。</DMSE_Building_NLOSLauncher.description>
 </LanguageData>

@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<LanguageData>
-
-  <DMSE_AcousticEarlyWarningRadar.label>被动声学雷达</DMSE_AcousticEarlyWarningRadar.label>
-  <DMSE_AcousticEarlyWarningRadar.description>一座用来收集远方发动机声音的混凝土声学反射镜。不需要电力、也不发出任何信号，反辐射导弹找不到它。预警来得早但很模糊，也很难听见高速或隐身目标。\n\n只能侦测来袭目标，无法制导拦截弹。</DMSE_AcousticEarlyWarningRadar.description>
-  <DMSE_EarlyFireControlRadar.label>老式火控雷达</DMSE_EarlyFireControlRadar.label>
-  <DMSE_EarlyFireControlRadar.description>一座以手轮与光学瞄准具人工瞄准的早期火控雷达。一次只能制导一枚拦截弹，锁定慢、精度也不高。\n\n需要操作员。</DMSE_EarlyFireControlRadar.description>
-
-</LanguageData>

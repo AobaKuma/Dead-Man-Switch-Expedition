@@ -16,7 +16,7 @@
 
        只有可裝配（customizeLocation = Item／Launcher）的彈體需要 Namer；
        巡飛彈（Loiter／LegacyLoiter／LegacyInterceptor／Sabre）不可自定義、也不會被命名。
-       沒綁 Namer 的彈體沿用通用樣板 DMSE_NamerMissileDesign（只有部件詞）。
+       沒綁 Namer 的彈體沿用 FFF 的通用樣板 FFF_NamerMissileDesign（只有部件詞）。
        ================================================================== -->
 
   <!-- 輕型導彈：通用小彈體，短編號。 -->

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+	<!-- ==================================================================
+	     沒有「Expedition: Early Warfare」（Aoba.DeadManSwitch.Expedition.EarlyWarfare）時的獨立載入補丁。
+	     LoadFolders.xml 只在該模組未啟用時載入 1.7/Standalone。
+
+	     2026-11-27 起，聲學預警鏡、老式火控雷達、旋轉發射架、老式防空砲（Flak 43）、V1、萊茵女兒、
+	     研究「早期預警與人工火控」（DMSE_RadarBasis）與舊式導彈陣地都移到那個模組（defName 不變）。
+	     DMSE 自己的 Defs 仍照常引用它們，這裡在交叉引用解析前把引用換掉或刪掉：
+	       1) 研究：基本導彈工程改接 DMS_UAVBasis；BVR 分頁改由基本導彈工程解鎖。
+	       2) 工業準則的聚落防空：火控雷達改用 DMSE_FireControlRadar（老式火控雷達不存在）。
+	       3) 中型陣地 C 的 Flak 43 拿掉（無替代：千禧年是 3x3 又要 3000 W）。
+	       4) 清單型引用（彈架過濾器、shelterBuildings、說明超連結）：整批刪掉，
+	          success=Always，DMSE 之後不再引用某個早期 def 時不會報錯。
+	     1)～3) 用預設 success：DMSE 的對應 def 改名或改結構時要在這裡跟著改，載入時會報錯提醒。
+
+	     Standalone patches for running DMSE without "Expedition: Early Warfare". DMSE's Defs still reference the
+	     early defs; these patches replace or remove those references before cross-references are resolved.
+	     ================================================================== -->
+
+	<!-- 1) 研究樹 -->
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ResearchProjectDef[defName="DMSE_LoiteringMunitions"]/prerequisites/li[.="DMSE_RadarBasis"]</xpath>
+		<value>
+			<li>DMS_UAVBasis</li>
+		</value>
+	</Operation>
+
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/DesignationCategoryDef[defName="DMSE_BVRCategory"]/researchPrerequisites/li[.="DMSE_RadarBasis"]</xpath>
+		<value>
+			<li>DMSE_LoiteringMunitions</li>
+		</value>
+	</Operation>
+
+	<!-- 2) 工業準則 -->
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/Fortified.MissileDoctrineDef[defName="DMSE_Doctrine_Industrial"]/settlementDefense/fireControlDef</xpath>
+		<value>
+			<fireControlDef>DMSE_FireControlRadar</fireControlDef>
+		</value>
+	</Operation>
+
+	<!-- 3) 中型陣地 C 的老式防空砲 -->
+	<Operation Class="PatchOperationRemove">
+		<xpath>Defs/Fortified.Structures.FFF_StructureDef[defName="DMSE_Mid_LaunchSite_C"]//li[def="DMSE_Turret_LegacyFlak"]</xpath>
+	</Operation>
+
+	<!-- 4) 清單型引用 -->
+	<Operation Class="PatchOperationRemove">
+		<success>Always</success>
+		<xpath>Defs/ThingDef/building/*/filter/thingDefs/li[.="DMSE_Missile_LegacyLoiter" or .="DMSE_Missile_Rheintochter"]</xpath>
+	</Operation>
+
+	<Operation Class="PatchOperationRemove">
+		<success>Always</success>
+		<xpath>Defs/ThingDef/comps/li/shelterBuildings/li[.="DMSE_Building_RotaryLauncher"]</xpath>
+	</Operation>
+
+	<Operation Class="PatchOperationRemove">
+		<success>Always</success>
+		<xpath>Defs/ThingDef/descriptionHyperlinks/ThingDef[.="DMSE_Building_RotaryLauncher" or .="DMSE_EarlyFireControlRadar"]</xpath>
+	</Operation>
+
+</Patch>

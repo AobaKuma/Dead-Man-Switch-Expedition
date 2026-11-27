@@ -18,6 +18,7 @@
     <descriptionHyperlinks>
       <ThingDef>DMSE_Building_LightMissileLauncher</ThingDef>
       <ThingDef>DMSE_Building_LightMissileVLS</ThingDef>
+      <ThingDef>DMSE_Building_NLOSLauncher</ThingDef>
       <ThingDef>DMSE_Building_RotaryLauncher</ThingDef>
     </descriptionHyperlinks>
     <graphicData>
@@ -73,6 +74,7 @@
           <li>DMSE_MissileAssemblyBench</li>
           <li>DMSE_Building_LightMissileLauncher</li>
           <li>DMSE_Building_LightMissileVLS</li>
+          <li>DMSE_Building_NLOSLauncher</li>
           <li>DMSE_Building_RotaryLauncher</li>
           <li>DMSE_MissileRack</li>
         </shelterBuildings>
@@ -92,6 +94,7 @@
       <ThingDef>DMSE_CruiseMissileRack</ThingDef>
       <ThingDef>DMSE_Building_LightMissileLauncher</ThingDef>
       <ThingDef>DMSE_Building_LightMissileVLS</ThingDef>
+      <ThingDef>DMSE_Building_NLOSLauncher</ThingDef>
     </descriptionHyperlinks>
     <graphicData>
       <texPath>Things/Missile/Tomahawk/ammo</texPath>
@@ -147,6 +150,7 @@
           <li>DMSE_MissileRack</li>
           <li>DMSE_Building_LightMissileLauncher</li>
           <li>DMSE_Building_LightMissileVLS</li>
+          <li>DMSE_Building_NLOSLauncher</li>
         </shelterBuildings>
       </li>
     </comps>

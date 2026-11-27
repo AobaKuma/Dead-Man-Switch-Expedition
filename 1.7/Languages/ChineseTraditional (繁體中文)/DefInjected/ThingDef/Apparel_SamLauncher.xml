@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!-- EN: on cooldown -->
+  <DMSE_Apparel_SamLauncher.comps.CompManPortableSAM.cooldownGerund>冷卻中</DMSE_Apparel_SamLauncher.comps.CompManPortableSAM.cooldownGerund>
+  <!-- EN: fire missile -->
+  <DMSE_Apparel_SamLauncher.verbs.fire_missile.label>發射導彈</DMSE_Apparel_SamLauncher.verbs.fire_missile.label>
+  <!-- EN: launch loitering munition -->
+  <DMSE_Apparel_SamLauncher.verbs.launch_loitering_munition.label>發射巡飛彈</DMSE_Apparel_SamLauncher.verbs.launch_loitering_munition.label>
+
+</LanguageData>

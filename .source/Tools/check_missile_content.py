@@ -8,13 +8,13 @@ Checks:
      (materials follow the equipment tier since 2026-10-27, so the parts' own materials need not appear);
   4. every missile item can be stored somewhere (storage filter or NPC autofill candidate);
   5. every BVR target extension declares a sane altitude;
-  6. every "Class=DMSE.*" reference exists in .source;
+  6. every "DMSE.*" / "Fortified.*" class reference exists in DMSE / FFF source;
   7. zh-TW and zh-CN DefInjected files have a label for every new part and item;
   8. every missile in a launch platform's fixed storage filter has a body the platform's
      sizeClass / extraSizeClasses and launchMode accept (MissileTaxonomy.PlatformAccepts);
   9. every body and item reference (defaultBody, MissileItemExtension.body, defaultParts,
      incomingSkyfaller, researchPrerequisites) resolves;
- 10. every body has its own launchProjectile (DMSE.Projectile_MissileLaunch, reversed MissileFlightExtension,
+ 10. every body has its own launchProjectile (Fortified.Projectile_MissileLaunch, reversed MissileFlightExtension,
      existing texture, hot/cold launch effect, translated label); bodies with releasedInFlight have none
      and use customizeLocation None.
  11. the missile assembly bench's fixed and default storage filters both equal the set of producible missiles
@@ -22,16 +22,55 @@ Checks:
  12. every designWord and every namer designator has zh-TW and zh-CN translations;
  13. every design-name template (English and translations) uses only the known symbols and has [body] or [designator];
  14. every producible missile lists the assembly bench in its durability-decay shelterBuildings;
- 15. every customizable body has its own DMSE.MissileNamerDef (existing pack, translated, slots it opens),
+ 15. every customizable body has its own Fortified.MissileNamerDef (existing pack, translated, slots it opens),
      every namer is referenced by a body, and no fixed body declares one.
 """
+import os
 import re
 import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
+try:
+    sys.stdout.reconfigure(errors='replace')
+except AttributeError:
+    pass
+
+# Since 2026-11 the missile framework (classes, the generic namer pack, framework defs and their translations)
+# lives in FFF (Fortified-Framework, 1.7/Odyssey), so DMSE content is checked together with it.
+# Usage: check_missile_content.py [DMSE root] [FFF root]; FFF defaults to $FFF_ROOT, then ../_Fortified-Framework.
 root = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else Path(__file__).resolve().parents[2]
+if len(sys.argv) > 2:
+    fff = Path(sys.argv[2]).resolve()
+elif os.environ.get('FFF_ROOT'):
+    fff = Path(os.environ['FFF_ROOT']).resolve()
+else:
+    fff = root.parent / '_Fortified-Framework'
+if not (fff / 'About/About.xml').is_file():
+    print(f'ERROR: FFF not found at {fff} (pass it as the second argument or set FFF_ROOT)')
+    sys.exit(2)
+
+# 1.7 load folders with Odyssey active (CE folders excluded).
+# Early-era content (V1, Rheintochter, rotary rail...) lives in the sibling Early Warfare mod since 2026-11-27.
+early = root.parent / '_Dead-Man-Switch-Expedition-EarlyWarfare'
+def_dirs = [root / '1.7/Defs', early / '1.7/Defs', fff / '1.6/Defs', fff / '1.7/Defs', fff / '1.7/Odyssey/Defs']
+language_dirs = [root / '1.7/Languages', fff / '1.7/Languages', fff / '1.7/Odyssey/Languages']
 errors = []
+
+
+def def_files():
+    for folder in def_dirs:
+        if folder.is_dir():
+            yield from folder.rglob('*.xml')
+
+
+def rel(path):
+    for base in (root, fff):
+        try:
+            return f'{base.name}/{path.relative_to(base)}'
+        except ValueError:
+            pass
+    return str(path)
 
 
 # Market values of recipe materials (vanilla Core, Dead Man Switch, this mod); used by check 3.
@@ -50,14 +89,14 @@ def parse(path):
 
 
 defs = {}
-for path in (root / '1.7/Defs').rglob('*.xml'):
+for path in def_files():
     try:
         for node in parse(path):
             name = node.findtext('defName')
             if name:
                 defs.setdefault(name, []).append((node, path))
     except ET.ParseError as exc:
-        errors.append(f'{path.relative_to(root)}: {exc}')
+        errors.append(f'{rel(path)}: {exc}')
 
 
 def get(name):
@@ -85,19 +124,19 @@ def body_slots(body):
 
 
 bodies = {name: node for name, entries in defs.items()
-          for node, _ in entries if tag(node) == 'DMSE.MissileBodyDef'}
+          for node, _ in entries if tag(node) == 'Fortified.MissileBodyDef'}
 parts = {name: node for name, entries in defs.items()
-         for node, _ in entries if tag(node) == 'DMSE.MissilePartDef'}
+         for node, _ in entries if tag(node) == 'Fortified.MissilePartDef'}
 things = {name: node for name, entries in defs.items()
-          for node, _ in entries if tag(node) in ('ThingDef', 'DMSE.ThingDef')}
+          for node, _ in entries if tag(node) in ('ThingDef',)}
 
 
 def item_body(node):
     """Body a missile item declares: CompMissileConfig.defaultBody, else MissileItemExtension.body."""
-    body = node.findtext("comps/li[@Class='DMSE.CompProperties_MissileConfig']/defaultBody")
+    body = node.findtext("comps/li[@Class='Fortified.CompProperties_MissileConfig']/defaultBody")
     if body:
         return body
-    return node.findtext("modExtensions/li[@Class='DMSE.MissileItemExtension']/body")
+    return node.findtext("modExtensions/li[@Class='Fortified.MissileItemExtension']/body")
 
 # ---- 1. slot coverage -------------------------------------------------------
 for name, body in bodies.items():
@@ -144,9 +183,9 @@ for name, body in bodies.items():
 # ---- 3. build cost includes default parts -----------------------------------
 for name, entries in defs.items():
     for node, path in entries:
-        if tag(node) not in ('ThingDef', 'DMSE.ThingDef'):
+        if tag(node) not in ('ThingDef',):
             continue
-        config = node.find("comps/li[@Class='DMSE.CompProperties_MissileConfig']")
+        config = node.find("comps/li[@Class='Fortified.CompProperties_MissileConfig']")
         if config is None:
             continue
         body = bodies.get(config.findtext('defaultBody'))
@@ -174,7 +213,7 @@ for name, entries in defs.items():
 
 # ---- 4. storage reachability ------------------------------------------------
 storable = set()
-for path in (root / '1.7/Defs').rglob('*.xml'):
+for path in def_files():
     text = path.read_text(encoding='utf-8-sig')
     for block in re.findall(r'<thingDefs>(.*?)</thingDefs>', text, re.S):
         storable.update(re.findall(r'<li>([\w.]+)</li>', block))
@@ -193,37 +232,43 @@ for name, node in things.items():
 altitude_defs = 0
 for name, entries in defs.items():
     for node, path in entries:
-        ext = node.find("modExtensions/li[@Class='DMSE.BVRTargetProps']")
+        ext = node.find("modExtensions/li[@Class='Fortified.AirTargetExtension']")
         if ext is None:
             continue
         altitude_defs += 1
         raw = ext.findtext('altitude')
-        require(raw is not None, f'{name}: BVRTargetProps lacks altitude')
+        require(raw is not None, f'{name}: AirTargetExtension lacks altitude')
         if raw is not None:
             value = float(raw)
             require(50 <= value <= 200000, f'{name}: altitude {value} out of range')
 
 # ---- 6. class references ----------------------------------------------------
-classes = set()
-for path in (root / '.source/DMSE').rglob('*.cs'):
-    if 'obj' in path.parts or 'bin' in path.parts:
-        continue
-    classes.update(re.findall(r'\bclass\s+(\w+)', path.read_text(encoding='utf-8-sig')))
-for path in (root / '1.7/Defs').rglob('*.xml'):
-    for cls in re.findall(r'Class="DMSE\.(\w+)"', path.read_text(encoding='utf-8-sig')):
-        require(cls in classes, f'{path.relative_to(root)}: DMSE.{cls} has no class in .source')
+def source_classes(folder):
+    found = set()
+    for path in folder.rglob('*.cs'):
+        if 'obj' in path.parts or 'bin' in path.parts:
+            continue
+        found.update(re.findall(r'\bclass\s+(\w+)', path.read_text(encoding='utf-8-sig', errors='replace')))
+    return found
+
+
+namespaces = {'DMSE': source_classes(root / '.source/DMSE'), 'Fortified': source_classes(fff / '_Sources/Fortified')}
+for path in def_files():
+    text = path.read_text(encoding='utf-8-sig')
+    for ns, cls in re.findall(r'Class="(DMSE|Fortified)\.(\w+)"', text) + re.findall(r'<(DMSE|Fortified)\.(\w+)[\s>]', text):
+        require(cls in namespaces[ns], f'{rel(path)}: {ns}.{cls} has no class in its source')
 
 # ---- 7. translations --------------------------------------------------------
 languages = ['ChineseTraditional (繁體中文)', 'ChineseSimplified (简体中文)']
 translated = {}
 for language in languages:
-    folder = root / '1.7/Languages' / language / 'DefInjected'
     keys = set()
-    for path in folder.rglob('*.xml'):
-        try:
-            keys.update(node.tag for node in parse(path))
-        except ET.ParseError as exc:
-            errors.append(f'{path.relative_to(root)}: {exc}')
+    for folder in (base / language / 'DefInjected' for base in language_dirs):
+        for path in folder.rglob('*.xml'):
+            try:
+                keys.update(node.tag for node in parse(path))
+            except ET.ParseError as exc:
+                errors.append(f'{rel(path)}: {exc}')
     translated[language] = keys
 
 expected_keys = set()
@@ -234,7 +279,7 @@ for name in bodies:
     expected_keys.add(f'{name}.label')
     expected_keys.add(f'{name}.description')
 for name, node in things.items():
-    is_platform = node.find("modExtensions/li[@Class='DMSE.MissileLauncherExtension']") is not None
+    is_platform = node.find("modExtensions/li[@Class='Fortified.MissileLauncherExtension']") is not None
     if item_body(node) is not None or is_platform:
         expected_keys.add(f'{name}.label')
         expected_keys.add(f'{name}.description')
@@ -246,7 +291,7 @@ for language, keys in translated.items():
 # ---- 8. platform filters vs size class --------------------------------------
 SIZE_ORDER = ['Loitering', 'Light', 'Medium', 'Ballistic']
 for name, node in things.items():
-    ext = node.find("modExtensions/li[@Class='DMSE.MissileLauncherExtension']")
+    ext = node.find("modExtensions/li[@Class='Fortified.MissileLauncherExtension']")
     if ext is None:
         continue
     accepted = {ext.findtext('sizeClass') or 'Medium'}
@@ -287,10 +332,10 @@ for name, body in bodies.items():
     require(incoming in things, f'{name}: incomingSkyfaller {incoming} does not exist')
     if incoming in things:
         # docs/Missile_Skyfaller轉Projectile_計畫.md §8.4: incoming missiles are Projectiles that fall (not reversed).
-        require(things[incoming].findtext('thingClass') == 'DMSE.Projectile_MissileIncoming',
-                f'{incoming}: thingClass must be DMSE.Projectile_MissileIncoming')
-        fall = things[incoming].find("modExtensions/li[@Class='DMSE.MissileFlightExtension']")
-        require(fall is not None, f'{incoming}: DMSE.MissileFlightExtension missing (run .source/Tools/gen_missile_launch_defs.py)')
+        require(things[incoming].findtext('thingClass') == 'Fortified.Projectile_MissileIncoming',
+                f'{incoming}: thingClass must be Fortified.Projectile_MissileIncoming')
+        fall = things[incoming].find("modExtensions/li[@Class='Fortified.MissileFlightExtension']")
+        require(fall is not None, f'{incoming}: Fortified.MissileFlightExtension missing (run .source/Tools/gen_missile_launch_defs.py)')
         if fall is not None:
             require((fall.findtext('reversed') or 'false').strip().lower() != 'true', f'{incoming}: flight must not be reversed')
         require(things[incoming].find('skyfaller') is None, f'{incoming}: leftover <skyfaller> block')
@@ -305,7 +350,7 @@ for name, part in parts.items():
 # ---- 10. every body launches its own Projectile ------------------------------
 # docs/Missile_Skyfaller轉Projectile_計畫.md: launch look and exhaust follow the body, not the platform.
 abstract_things = {}
-for path in (root / '1.7/Defs').rglob('*.xml'):
+for path in def_files():
     try:
         for node in parse(path):
             if node.tag == 'ThingDef' and node.get('Name'):
@@ -329,8 +374,9 @@ def inherited(node, path):
     return None
 
 
-texture_roots = [root / '1.7/Textures', root / 'Textures']
-launch_classes = ('DMSE.CompProperties_EffecterHotLaunch', 'DMSE.CompProperties_EffecterColdLaunch')
+texture_roots = [root / '1.7/Textures', early / '1.7/Textures', root / 'Textures', fff / 'Textures', fff / '1.6/Textures',
+                 fff / '1.7/Textures', fff / '1.7/Odyssey/Textures']
+launch_classes = ('Fortified.CompProperties_EffecterHotLaunch', 'Fortified.CompProperties_EffecterColdLaunch')
 for name, body in bodies.items():
     icon = body.findtext('expandingIconPath')
     require(icon is None or any((r / (icon + '.png')).exists() for r in texture_roots),
@@ -348,11 +394,11 @@ for name, body in bodies.items():
     require(node is not None, f'{name}: launchProjectile {launch} does not exist')
     if node is None:
         continue
-    require(inherited(node, 'thingClass') == 'DMSE.Projectile_MissileLaunch',
-            f'{launch}: thingClass must be DMSE.Projectile_MissileLaunch')
+    require(inherited(node, 'thingClass') == 'Fortified.Projectile_MissileLaunch',
+            f'{launch}: thingClass must be Fortified.Projectile_MissileLaunch')
     require(inherited(node, 'category') == 'Projectile', f'{launch}: category must be Projectile')
-    flight = node.find("modExtensions/li[@Class='DMSE.MissileFlightExtension']")
-    require(flight is not None, f'{launch}: DMSE.MissileFlightExtension missing')
+    flight = node.find("modExtensions/li[@Class='Fortified.MissileFlightExtension']")
+    require(flight is not None, f'{launch}: Fortified.MissileFlightExtension missing')
     if flight is not None:
         require((flight.findtext('reversed') or '').strip().lower() == 'true', f'{launch}: flight must be reversed (ascent)')
         discard = (flight.findtext('ticksToDiscardInReverse') or '0').split('~')[0].strip()
@@ -370,7 +416,7 @@ for name, body in bodies.items():
 BENCH = 'DMSE_MissileAssemblyBench'
 producible = set()
 for name, node in things.items():
-    body_name = node.findtext("comps/li[@Class='DMSE.CompProperties_MissileConfig']/defaultBody")
+    body_name = node.findtext("comps/li[@Class='Fortified.CompProperties_MissileConfig']/defaultBody")
     body = bodies.get(body_name) if body_name else None
     if body is not None and (body.findtext('customizeLocation') or 'Item') == 'Item':
         producible.add(name)
@@ -389,10 +435,10 @@ for name, node in list(parts.items()) + list(bodies.items()):
             require(f'{name}.designWord' in translated[language], f'{language}: missing {name}.designWord')
 
 namers = {name: node for name, entries in defs.items()
-          for node, _ in entries if tag(node) == 'DMSE.MissileNamerDef'}
+          for node, _ in entries if tag(node) == 'Fortified.MissileNamerDef'}
 packs = {name: node for name, entries in defs.items()
          for node, _ in entries if tag(node) == 'RulePackDef'}
-require('DMSE_NamerMissileDesign' in packs, 'DMSE_NamerMissileDesign rule pack is missing')
+require('FFF_NamerMissileDesign' in packs, 'FFF_NamerMissileDesign rule pack is missing')
 
 for name in namers:
     for language in languages:
@@ -406,12 +452,12 @@ for name, node in namers.items():
 
 # ---- 13. design-name templates use known symbols ----------------------------
 DESIGN_SYMBOLS = {'body', 'warhead', 'guidance', 'propulsion', 'payload', 'designator', 'num', 'suffix'}
-design_packs = {name for name in packs if name.startswith('DMSE_NamerPack_')} | {'DMSE_NamerMissileDesign'}
+design_packs = {name for name in packs if name.startswith(('DMSE_NamerPack_', 'FFF_NamerPack_'))} | {'FFF_NamerMissileDesign'}
 templates = []
 for name in design_packs:
     templates += [('Defs', name, li.text or '') for li in packs[name].findall('rulePack/rulesStrings/li')]
 for language in languages:
-    for path in (root / '1.7/Languages' / language / 'DefInjected/RulePackDef').glob('*.xml'):
+    for path in (p for base in language_dirs for p in (base / language / 'DefInjected/RulePackDef').glob('*.xml')):
         for node in parse(path):
             pack = node.tag.split('.')[0]
             if node.tag.endswith('.rulePack.rulesStrings') and pack in design_packs:
@@ -443,7 +489,7 @@ for name, body in bodies.items():
     require(namer_name is not None, f'{name}: customizable body has no <namer> (names would fall back to the generic pack)')
     if namer_name is None:
         continue
-    require(namer_name in namers, f'{name}: namer {namer_name} is not a DMSE.MissileNamerDef')
+    require(namer_name in namers, f'{name}: namer {namer_name} is not a Fortified.MissileNamerDef')
     if namer_name not in namers:
         continue
     pack = namers[namer_name].findtext('pack')

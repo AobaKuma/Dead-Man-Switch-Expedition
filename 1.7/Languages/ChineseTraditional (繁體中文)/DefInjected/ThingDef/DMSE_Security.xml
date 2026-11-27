@@ -59,4 +59,7 @@
 
   <DMSE_Bullet_Vulcan_WingBack_CIWS.label>APT砲彈</DMSE_Bullet_Vulcan_WingBack_CIWS.label>
 
+  <!-- EN: Squall -->
+  <DMSE_Gun_Squall.verbs.Verb_Shoot.label>暴雨</DMSE_Gun_Squall.verbs.Verb_Shoot.label>
+
 </LanguageData>

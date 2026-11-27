@@ -175,8 +175,6 @@
     </costList>
   </Fortified.MissilePartDef>
 
-  <!-- 盤旋飛控（巡飛彈專用酬載）：導引頭找不到目標時不直接回退慣性，而是在目標上空盤旋等待；
-       盤旋期間仍留在攔截波次中，末端防禦（CIWS）照常接戰。 -->
   <Fortified.MissilePartDef>
     <defName>DMSE_Payload_Loiter</defName>
     <label>loiter flight control</label>

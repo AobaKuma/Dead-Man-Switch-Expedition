@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<LanguageData>
-  
-  <!-- EN: loitering munition -->
-  <DMSE_WorldObject_Loiter.label>遊蕩彈藥</DMSE_WorldObject_Loiter.label>
-  <!-- EN: A loitering munition in flight. -->
-  <DMSE_WorldObject_Loiter.description>一枚飛行中的遊蕩彈藥。</DMSE_WorldObject_Loiter.description>
-  
-</LanguageData>

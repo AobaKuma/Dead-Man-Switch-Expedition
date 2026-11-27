@@ -273,4 +273,125 @@
     </researchPrerequisites>
   </ThingDef>
 
+  <!-- ==================== 非直視發射箱（2x2，十五單元，大登）====================
+       4x4 發射格陣列，其中一格是控制單元，實際裝 15 枚輕型導彈。容量由
+       MissileLauncherExtension.capacity 決定（容器制，與格數 maxItemsInCell 無關）。
+       井蓋疊圖 hatch_a..o 依裝填順序逐格顯示。需積體電路 + 火控網路。 -->
+  <ThingDef ParentName="DMSE_VerticalLauncherBase">
+    <defName>DMSE_Building_NLOSLauncher</defName>
+    <label>NLOS launch box</label>
+    <description>A boxed vertical launcher packing fifteen light missiles into a small footprint, with one cell given over to its fire-control unit. It can empty a large salvo at targets far beyond line of sight, but takes a long time to reload by hand.\n\nCannot be built on a gravship.</description>
+    <thingClass>Fortified.Building_MissileRack</thingClass>
+    <uiIconPath>Things/Building/MissileSilo_NLOS/icon</uiIconPath>
+    <graphicData>
+      <texPath>Things/Building/MissileSilo_NLOS/building</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(4,4)</drawSize>
+    </graphicData>
+    <size>(2,2)</size>
+    <pathCost>70</pathCost>
+    <fillPercent>0.7</fillPercent>
+    <staticSunShadowHeight>0.2</staticSunShadowHeight>
+    <constructEffect>ConstructMetal</constructEffect>
+    <statBases>
+      <MaxHitPoints>350</MaxHitPoints>
+      <WorkToBuild>14000</WorkToBuild>
+      <Flammability>0.05</Flammability>
+    </statBases>
+    <costList>
+      <Steel>300</Steel>
+      <DMSE_TantastenAlloy>20</DMSE_TantastenAlloy>
+      <ComponentIndustrial>14</ComponentIndustrial>
+      <ComponentSpacer>4</ComponentSpacer>
+    </costList>
+    <building>
+      <maxItemsInCell>1</maxItemsInCell>
+      <ignoreStoredThingsBeauty>true</ignoreStoredThingsBeauty>
+      <fixedStorageSettings>
+        <filter>
+          <thingDefs>
+            <li>DMSE_Missile_Grison</li>
+            <li>DMSE_Missile_AdvancedLight</li>
+            <li>DMSE_Missile_AdvancedCruise</li>
+            <li>DMSE_Missile_Stinger</li>
+            <li>DMSE_Missile_Maverick</li>
+            <li>DMSE_Missile_Sparrow</li>
+          </thingDefs>
+        </filter>
+      </fixedStorageSettings>
+      <defaultStorageSettings>
+        <priority>Important</priority>
+        <filter>
+          <thingDefs>
+            <li>DMSE_Missile_Grison</li>
+            <li>DMSE_Missile_AdvancedLight</li>
+            <li>DMSE_Missile_AdvancedCruise</li>
+            <li>DMSE_Missile_Stinger</li>
+            <li>DMSE_Missile_Maverick</li>
+            <li>DMSE_Missile_Sparrow</li>
+          </thingDefs>
+        </filter>
+      </defaultStorageSettings>
+    </building>
+    <modExtensions>
+      <li Class="Fortified.MissileLauncherExtension">
+        <sizeClass>Light</sizeClass>
+        <launchMode>Vertical</launchMode>
+        <capacity>15</capacity>
+        <renderStoredBody>false</renderStoredBody>
+      </li>
+    </modExtensions>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>500</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Breakdownable" />
+      <li Class="Fortified.CompProperties_MissileRackRenderer">
+        <maxStored>15</maxStored>
+        <loadedHatchTexPaths>
+          <li>Things/Building/MissileSilo_NLOS/hatch_a</li>
+          <li>Things/Building/MissileSilo_NLOS/hatch_b</li>
+          <li>Things/Building/MissileSilo_NLOS/hatch_c</li>
+          <li>Things/Building/MissileSilo_NLOS/hatch_d</li>
+          <li>Things/Building/MissileSilo_NLOS/hatch_e</li>
+          <li>Things/Building/MissileSilo_NLOS/hatch_f</li>
+          <li>Things/Building/MissileSilo_NLOS/hatch_g</li>
+          <li>Things/Building/MissileSilo_NLOS/hatch_h</li>
+          <li>Things/Building/MissileSilo_NLOS/hatch_i</li>
+          <li>Things/Building/MissileSilo_NLOS/hatch_j</li>
+          <li>Things/Building/MissileSilo_NLOS/hatch_k</li>
+          <li>Things/Building/MissileSilo_NLOS/hatch_l</li>
+          <li>Things/Building/MissileSilo_NLOS/hatch_m</li>
+          <li>Things/Building/MissileSilo_NLOS/hatch_n</li>
+          <li>Things/Building/MissileSilo_NLOS/hatch_o</li>
+        </loadedHatchTexPaths>
+      </li>
+      <li Class="Fortified.CompProperties_MissileRailLauncher">
+        <skyfaller>DMSE_Launch_Light</skyfaller>
+        <skyfallerIncoming>DMSE_Incoming_LightMissile</skyfallerIncoming>
+        <worldObjectDef>DMSE_WorldObject_LightMissile</worldObjectDef>
+        <missileBody>DMSE_MissileBody_Light</missileBody>
+        <launchCooldownTicks>300</launchCooldownTicks>
+        <launchForwardCells>1</launchForwardCells>
+      </li>
+      <!-- 垂直發射的攔截彈：攔截／兩用彈由火控雷達指派。 -->
+      <li Class="Fortified.CompProperties_MissileLauncher">
+        <interceptorSkyfaller>DMSE_Launch_LegacyInterceptor</interceptorSkyfaller>
+        <reloadCooldownTicks>180</reloadCooldownTicks>
+        <interceptorTravelTicks>300</interceptorTravelTicks>
+      </li>
+    </comps>
+    <inspectorTabs>
+      <li>RimWorld.ITab_Storage</li>
+      <li>Fortified.ITab_MissileInventory</li>
+      <li>Fortified.ITab_MissileAssembly</li>
+    </inspectorTabs>
+    <researchPrerequisites>
+      <li>DMSE_IntegratedCircuits</li>
+      <li>DMSE_FireControlNetwork</li>
+    </researchPrerequisites>
+  </ThingDef>
+
 </Defs>

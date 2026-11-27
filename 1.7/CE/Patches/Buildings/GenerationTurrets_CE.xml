@@ -24,63 +24,7 @@
 
 			<!-- 三座有末端 CIWS 的砲：刪掉鋼鐵「砲彈」，CIWS 改吃 CE 彈匣（見檔頭第 2 點）。 -->
 			<li Class="PatchOperationRemove">
-				<xpath>Defs/ThingDef[defName="DMSE_Turret_LegacyFlak" or defName="DMSE_Turret_Millennium" or defName="DMSE_Building_FieldAirDefense"]/comps/li[@Class="CompProperties_Refuelable"]</xpath>
-			</li>
-
-			<!-- ==================== 老式防空砲「Flak 43」==================== -->
-
-			<!-- 射速：8 發彈夾（史實 Flak 43 就是 8 發橋夾）＋3.2 秒循環。
-			     原版路線是 8×12 傷害／5.33 秒 ≈ 18 DPS，與原版自動加農炮塔（81 傷／4.57 秒 ≈
-			     17.7 DPS）同級。CE 的 37mm 彈藥傷害另計（見 DMSE_37x250mmFlak.xml）。 -->
-			<li Class="CombatExtended.PatchOperationMakeGunCECompatible">
-				<defName>DMSE_Gun_LegacyFlak</defName>
-				<statBases>
-					<Mass>180</Mass>
-					<Bulk>120</Bulk>
-					<SwayFactor>1.35</SwayFactor>
-					<ShotSpread>0.06</ShotSpread>
-					<SightsEfficiency>1.1</SightsEfficiency>
-					<RangedWeapon_Cooldown>3.2</RangedWeapon_Cooldown>
-				</statBases>
-				<Properties>
-					<recoilAmount>1.15</recoilAmount>
-					<verbClass>CombatExtended.Verb_ShootCE</verbClass>
-					<hasStandardCommand>true</hasStandardCommand>
-					<defaultProjectile>DMSE_Bullet_37x250mmFlak_AP</defaultProjectile>
-					<warmupTime>0.5</warmupTime>
-					<range>58</range>
-					<minRange>6</minRange>
-					<ticksBetweenBurstShots>14</ticksBetweenBurstShots>
-					<burstShotCount>8</burstShotCount>
-					<soundCast>Shot_Autocannon</soundCast>
-					<soundCastTail>GunTail_Heavy</soundCastTail>
-					<muzzleFlashScale>6</muzzleFlashScale>
-					<targetParams>
-						<canTargetLocations>true</canTargetLocations>
-					</targetParams>
-					<recoilPattern>Mounted</recoilPattern>
-				</Properties>
-				<AmmoUser>
-					<magazineSize>8</magazineSize>
-					<reloadTime>2.6</reloadTime>
-					<ammoSet>DMSE_AmmoSet_37x250mmFlak</ammoSet>
-				</AmmoUser>
-				<FireModes>
-					<noSingleShot>true</noSingleShot>
-					<aiUseBurstMode>FALSE</aiUseBurstMode>
-					<aiAimMode>AimedShot</aiAimMode>
-				</FireModes>
-				<weaponTags />
-			</li>
-
-			<!-- DMS 核心把 DMS_BaseCannonBuilding 的 AimingAccuracy 拉到 1.5（給雷達砲用），
-			     手操光學瞄準的老砲要壓回來。子 Def 的同名節點會蓋掉父 Def（見
-			     XmlInheritance.RecursiveNodeCopyOverwriteElements），所以直接加即可。 -->
-			<li Class="PatchOperationAdd">
-				<xpath>Defs/ThingDef[defName="DMSE_Turret_LegacyFlak"]/statBases</xpath>
-				<value>
-					<AimingAccuracy>0.7</AimingAccuracy>
-				</value>
+				<xpath>Defs/ThingDef[defName="DMSE_Turret_Millennium" or defName="DMSE_Building_FieldAirDefense"]/comps/li[@Class="CompProperties_Refuelable"]</xpath>
 			</li>
 
 			<!-- ==================== 先進防空砲「千禧年」==================== -->

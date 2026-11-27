@@ -26,4 +26,8 @@
   <DMSE_Gun_HeavyMortar.label>重型迫擊砲砲管</DMSE_Gun_HeavyMortar.label>
   <DMSE_Gun_HeavyMortar.description>重型迫擊砲的砲管，發射砲手裝填的砲彈，也能透過火控組打擊世界地圖目標。</DMSE_Gun_HeavyMortar.description>
   <DMSE_ArtilleryDeparture_HeavyMortar.label>離場的迫擊砲彈</DMSE_ArtilleryDeparture_HeavyMortar.label>
+
+  <!-- EN: NK-30 cannon (reduced charge) -->
+  <DMSE_Gun_Empero.verbs.Verb_Shoot.label>NK-30 加農砲（減裝藥）</DMSE_Gun_Empero.verbs.Verb_Shoot.label>
+
 </LanguageData>

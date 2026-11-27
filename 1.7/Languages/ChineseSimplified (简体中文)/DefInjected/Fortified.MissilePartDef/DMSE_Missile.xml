@@ -112,7 +112,7 @@
   <DMSE_AdvCruise_Payload_Submunition.label>子弹药投放器</DMSE_AdvCruise_Payload_Submunition.label>
   <DMSE_AdvCruise_Payload_Submunition.description>一具在目标上空开启的子母弹撒布器，把小型子弹洒向整片区域，而不是集中在一点爆炸。</DMSE_AdvCruise_Payload_Submunition.description>
   <DMSE_AdvCruise_Payload_Graphite.label>石墨纤维酬载</DMSE_AdvCruise_Payload_Graphite.label>
-  <DMSE_AdvCruise_Payload_Graphite.description>一种碳纤维载荷，不靠爆炸，而是让落点周围的电网短路。能在大范围内瘫痪通电建筑并击晕机械体。</DMSE_AdvCruise_Payload_Graphite.description>
+  <DMSE_AdvCruise_Payload_Graphite.description>一种碳纤维载荷，透过让落点周围的电网短路能在大范围内瘫痪通电建筑并击晕机械体。</DMSE_AdvCruise_Payload_Graphite.description>
   <DMSE_AdvCruise_Payload_Decoy.label>诱饵酬载</DMSE_AdvCruise_Payload_Decoy.label>
   <DMSE_AdvCruise_Payload_Decoy.description>以雷达反射器与信号增强器取代二次装药。导弹在敌方雷达上看起来大上一倍，会更早被侦测，也会优先吸引依大小排序威胁的防空火力。不增加伤害。</DMSE_AdvCruise_Payload_Decoy.description>
   <DMSE_AdvCruise_Payload_Chaff.label>箔条投放器</DMSE_AdvCruise_Payload_Chaff.label>

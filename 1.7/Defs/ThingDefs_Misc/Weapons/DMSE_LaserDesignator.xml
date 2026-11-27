@@ -54,16 +54,15 @@
 
   <!-- ==================== 雷射標定器（裝備） ====================
        可對地面或目標射出標定光束；不傷人，AI 不會拿它當武器（ai_IsWeapon=false）。
-       不掛 weaponTags，不會出現在任何陣營的生成武器池。
-       貼圖暫用 C95 手槍（Things/Weapons/DMS_C95Caseless）。 -->
+       不掛 weaponTags，不會出現在任何陣營的生成武器池。 -->
   <ThingDef ParentName="BaseHumanMakeableGun">
     <defName>DMSE_Gun_LaserDesignator</defName>
     <label>laser target designator</label>
     <description>A handheld laser designator. Painting a spot on the ground or a target leaves a laser designation there for a couple of hours; laser-guided missiles fired by your colony lock onto the most recent designation on the target map. It deals no damage.</description>
     <graphicData>
-      <texPath>Things/Weapons/DMS_C95Caseless</texPath>
+      <texPath>Things/Weapons/DMSE_Gun_LaserDesignator</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>1.2</drawSize>
+      <drawSize>1</drawSize>
     </graphicData>
     <soundInteract>Interact_Autopistol</soundInteract>
     <!-- BaseHumanMakeableGun 會帶 weaponTags「Gun」，使用該標籤的敵人會拿標定器當武器；清空它。 -->

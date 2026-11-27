@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<LanguageData>
-  
-  <!-- EN: ballistic launch tower -->
-  <DMSE_Building_BallisticRack.label>塔式發射架</DMSE_Building_BallisticRack.label>
-  <!-- EN: An old open truss tower that holds a ballistic missile upright. It is cheap, but has no flame trench: at launch, the blast sets nearby grass on fire and injures anyone standing too close.\n\nMissiles are assembled on the tower from raw materials and never exist as items. Switch airframes in the assembly tab; newer airframes require research.\n\nCannot be built on a gravship. -->
-  <DMSE_Building_BallisticRack.description>一座以桁架撐起彈道導彈的老式開放發射塔。造價便宜，但沒有導焰槽：發射時的尾焰會點燃附近的草，並傷到站得太近的人。\n\n導彈直接在發射塔上以原料裝配，不會以物品形式存在。可在裝配分頁切換彈體；較新的彈體需要研究。\n\n無法建造在重力船上。</DMSE_Building_BallisticRack.description>
-  
-</LanguageData>

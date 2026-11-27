@@ -14,4 +14,6 @@
   <DMSE_Building_BallisticSilo.label>戰略導彈發射井</DMSE_Building_BallisticSilo.label>
   <DMSE_Building_BallisticSilo.description>一座半埋入地下的戰略導彈發射井，配有厚重的混凝土艙蓋與爆震抑制結構，發射時不會波及周圍。造價極高、非常堅固，只能容納一枚導彈。\n\n導彈直接在發射井內以原料裝配，再對世界地圖上的目標發射。\n\n無法建造在重力船上。</DMSE_Building_BallisticSilo.description>
 
+  <DMSE_Building_NLOSLauncher.label>非直視發射箱</DMSE_Building_NLOSLauncher.label>
+  <DMSE_Building_NLOSLauncher.description>一座箱式垂直發射器，在很小的佔地內塞進十五枚輕型導彈，另一格留給火控單元。能對視線以外的目標一次傾瀉大量齊射，但要靠人力重新裝填滿，得花上很長時間。\n\n無法建造在重力船上。</DMSE_Building_NLOSLauncher.description>
 </LanguageData>

@@ -5,160 +5,12 @@
        三代裝備體系的新平台（docs/三代裝備體系_實作計畫.md §5、§10 P2）
        New platforms of the three-generation equipment plan. 全部由既有 Comp 組成，不需新 C#：
          - 旋轉發射架（老資歷）：手操、Loitering＋Light、對地軌＋攔截兩種發射 Comp 共用一枚彈；
-         - 中型傾斜發射統一使用 Scorer MLS；
+         - 中型傾斜發射統一使用巡弋飛彈發射器（DMSE_Building_Scorer）；
          - 野戰防空砲（中登）：全自動、彈砲一體——搜索＋2 通道火控＋4 枚攔截彈＋機砲 CIWS；
          - 搜索雷達、火控雷達（中登）；
          - 垂直發射井 2x2（小登）。
        貼圖暫借既有建築（計畫 §13-4）。
        ================================================================== -->
-
-  <!-- ==================== 旋轉發射架（2x2，老資歷）====================
-       需要操作員：CompMannableMissileLauncher 讓操作者自己搬彈上軌（DMSE_ManMissileLauncher），
-       無人時 CompBVRDevice.Active = false → 不能對地發射、也不能攔截。
-       能裝的彈由 storage filter 決定（巡飛階 V1／白蟻／萊茵女兒＋輕型階）；用途決定誰射它：
-       對地彈走 CompMissileLauncher_Rail，攔截／兩用彈走 CompMissileLauncher_Interceptor。 -->
-  <ThingDef ParentName="BuildingBase">
-    <defName>DMSE_Building_RotaryLauncher</defName>
-    <label>rotary launch rail</label>
-    <description>An old launch rail that turns a full circle by hand crank. It fires early loitering munitions and light missiles, and reloads one round at a time.\n\nNeeds no power, but requires an operator at all times.</description>
-    <thingClass>Fortified.Building_MissileRack</thingClass>
-    <category>Building</category>
-    <uiIconPath>Things/Building/icon_slideLauncher</uiIconPath>
-    <graphicData>
-      <texPath>Things/Building/turretBase</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(4,4)</drawSize>
-      <drawRotated>false</drawRotated>
-    </graphicData>
-    <altitudeLayer>Building</altitudeLayer>
-    <drawerType>MapMeshAndRealTime</drawerType>
-    <rotatable>true</rotatable>
-    <passability>PassThroughOnly</passability>
-    <castEdgeShadows>false</castEdgeShadows>
-    <fillPercent>0.36</fillPercent>
-    <canOverlapZones>false</canOverlapZones>
-    <pathCost>50</pathCost>
-    <tickerType>Normal</tickerType>
-    <hasInteractionCell>true</hasInteractionCell>
-    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
-    <selectable>true</selectable>
-    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
-    <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
-    <statBases>
-      <MaxHitPoints>180</MaxHitPoints>
-      <WorkToBuild>4000</WorkToBuild>
-      <Mass>120</Mass>
-      <Flammability>0.25</Flammability>
-    </statBases>
-    <size>(3,3)</size>
-    <costList>
-      <Steel>90</Steel>
-      <ComponentIndustrial>4</ComponentIndustrial>
-    </costList>
-    <building>
-      <destroySound>BuildingDestroyed_Metal_Small</destroySound>
-      <maxItemsInCell>1</maxItemsInCell>
-      <ignoreStoredThingsBeauty>true</ignoreStoredThingsBeauty>
-      <fixedStorageSettings>
-        <filter>
-          <thingDefs>
-            <li>DMSE_Missile_LegacyLoiter</li>
-            <li>DMSE_Missile_Shahed</li>
-            <li>DMSE_Missile_Sabre</li>
-            <li>DMSE_Missile_Termite</li>
-            <li>DMSE_Missile_Rheintochter</li>
-            <li>DMSE_Missile_Grison</li>
-            <li>DMSE_Missile_Stinger</li>
-            <li>DMSE_Missile_Maverick</li>
-            <li>DMSE_Missile_Sparrow</li>
-            <li>DMSE_Missile_AdvancedLight</li>
-          </thingDefs>
-        </filter>
-      </fixedStorageSettings>
-      <defaultStorageSettings>
-        <priority>Important</priority>
-        <filter>
-          <thingDefs>
-            <li>DMSE_Missile_LegacyLoiter</li>
-            <li>DMSE_Missile_Shahed</li>
-            <li>DMSE_Missile_Sabre</li>
-            <li>DMSE_Missile_Termite</li>
-            <li>DMSE_Missile_Rheintochter</li>
-            <li>DMSE_Missile_Grison</li>
-            <li>DMSE_Missile_Stinger</li>
-            <li>DMSE_Missile_Maverick</li>
-            <li>DMSE_Missile_Sparrow</li>
-            <li>DMSE_Missile_AdvancedLight</li>
-          </thingDefs>
-        </filter>
-      </defaultStorageSettings>
-    </building>
-    <researchPrerequisites>
-      <li>DMSE_RadarBasis</li>
-    </researchPrerequisites>
-    <designationCategory>DMSE_BVRCategory</designationCategory>
-    <minifiedDef>MinifiedThing</minifiedDef>
-    <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
-    <thingCategories>
-      <li>BuildingsMisc</li>
-    </thingCategories>
-    <modExtensions>
-      <li Class="Fortified.MissileLauncherExtension">
-        <sizeClass>Loitering</sizeClass>
-        <extraSizeClasses>
-          <li>Light</li>
-        </extraSizeClasses>
-        <launchMode>Tilt</launchMode>
-        <capacity>1</capacity>
-        <renderStoredBody>false</renderStoredBody>
-      </li>
-    </modExtensions>
-    <comps>
-      <li Class="CompProperties_Forbiddable" />
-      <li Class="CompProperties_Mannable">
-        <compClass>Fortified.CompMannableMissileLauncher</compClass>
-        <planetLayerWhitelist>
-          <li>Surface</li>
-          <li>Orbit</li>
-        </planetLayerWhitelist>
-      </li>
-      <!-- 對地：V1／白蟻／小牛等（物品自帶彈體，平台 missileBody 只是後備）。 -->
-      <li Class="Fortified.CompProperties_MissileRailLauncher">
-        <skyfaller>DMSE_Launch_Loiter</skyfaller>
-        <skyfallerIncoming>DMSE_Incoming_LegacyLoiter</skyfallerIncoming>
-        <worldObjectDef>DMSE_WorldObject_Loiter</worldObjectDef>
-        <missileBody>DMSE_MissileBody_LegacyLoiter</missileBody>
-        <launchCooldownTicks>600</launchCooldownTicks>
-        <launchForwardCells>0</launchForwardCells>
-      </li>
-      <!-- 攔截：萊茵女兒、刺針、SA-19、麻雀、地獄火（攔截／兩用彈）。 -->
-      <li Class="Fortified.CompProperties_MissileLauncher">
-        <interceptorSkyfaller>DMSE_Launch_LegacyInterceptor</interceptorSkyfaller>
-        <reloadCooldownTicks>600</reloadCooldownTicks>
-        <interceptorTravelTicks>240</interceptorTravelTicks>
-      </li>
-      <li Class="Fortified.CompProperties_TurretFacingRenderer">
-        <texPath>Things/Building/slideLauncher</texPath>
-        <drawSize>(4,4)</drawSize>
-        <altitudeOffset>0.01</altitudeOffset>
-        <rotationSpeedDegPerTick>1</rotationSpeedDegPerTick>
-        <drawLoadedAmmo>true</drawLoadedAmmo>
-        <ammoSlotOffsets>
-          <li>(0,0,0.3)</li>
-        </ammoSlotOffsets>
-        <ammoAltitudeOffset>0.005</ammoAltitudeOffset>
-      </li>
-    </comps>
-    <inspectorTabs>
-      <li>RimWorld.ITab_Storage</li>
-      <li>Fortified.ITab_MissileInventory</li>
-      <li>Fortified.ITab_MissileAssembly</li>
-    </inspectorTabs>
-    <placeWorkers>
-      <li>DMSE.PlaceWorker_NoAdjacentSameLayer</li>
-    </placeWorkers>
-  </ThingDef>
-
 
 
   <!-- ==================== 野戰防空砲（3x3，中登，彈砲一體）====================
@@ -660,6 +512,111 @@
     </inspectorTabs>
     <researchPrerequisites>
       <li>DMSE_StrategicSystems</li>
+    </researchPrerequisites>
+  </ThingDef>
+
+  <!-- ==================== 地面垂直發射架（4x4，四單元，大登）====================
+       中型導彈（白蛉、鷹擊、圓點）四聯裝豎立發射箱，裝在地面的豎立架上：不必挖井，
+       研究與材料門檻比垂直發射井低，但佔地大、較不耐打。
+       唯一可旋轉的垂直發射器（覆寫母 Def 的 rotatable=false）：Graphic_Multi，西向由東向鏡像。
+       需要 FFF 2026-11-27 之後的版本——井蓋疊圖跟建築貼圖同步（方向貼圖不旋轉），
+       垂直發射一律朝北升空（MissileRackUtility.LaunchRotationOf）；舊版 FFF 旋轉後井蓋會錯位、導彈橫向升空。 -->
+  <ThingDef ParentName="DMSE_VerticalLauncherBase">
+    <defName>DMSE_Building_MediumSurfaceVLS</defName>
+    <rotatable>true</rotatable>
+    <label>surface vertical launcher</label>
+    <description>A four-cell launcher for medium missiles, standing upright on a ground frame instead of sitting in a dug silo. It needs less research and fewer advanced materials than a vertical launch silo, but takes up far more room and is easier to damage.\n\nCannot be built on a gravship.</description>
+    <thingClass>Fortified.Building_MissileRack</thingClass>
+    <uiIconPath>Things/Building/MissileSilo_Medium_Surface/icon</uiIconPath>
+    <graphicData>
+      <texPath>Things/Building/MissileSilo_Medium_Surface/building</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(7,7)</drawSize>
+      <drawOffset>(0,0,1)</drawOffset>
+    </graphicData>
+    <size>(4,4)</size>
+    <pathCost>80</pathCost>
+    <fillPercent>0.75</fillPercent>
+    <staticSunShadowHeight>0.3</staticSunShadowHeight>
+    <constructEffect>ConstructMetal</constructEffect>
+    <statBases>
+      <MaxHitPoints>400</MaxHitPoints>
+      <WorkToBuild>9000</WorkToBuild>
+      <Flammability>0.0</Flammability>
+    </statBases>
+    <costList>
+      <Steel>320</Steel>
+      <ComponentIndustrial>10</ComponentIndustrial>
+    </costList>
+    <building>
+      <maxItemsInCell>1</maxItemsInCell>
+      <ignoreStoredThingsBeauty>true</ignoreStoredThingsBeauty>
+      <fixedStorageSettings>
+        <filter>
+          <thingDefs>
+            <li>DMSE_Missile_Oniks</li>
+            <li>DMSE_Missile_Yj</li>
+            <li>DMSE_Missile_Tochka</li>
+          </thingDefs>
+        </filter>
+      </fixedStorageSettings>
+      <defaultStorageSettings>
+        <priority>Important</priority>
+        <filter>
+          <thingDefs>
+            <li>DMSE_Missile_Oniks</li>
+            <li>DMSE_Missile_Yj</li>
+            <li>DMSE_Missile_Tochka</li>
+          </thingDefs>
+        </filter>
+      </defaultStorageSettings>
+    </building>
+    <modExtensions>
+      <li Class="Fortified.MissileLauncherExtension">
+        <sizeClass>Medium</sizeClass>
+        <launchMode>Vertical</launchMode>
+        <capacity>4</capacity>
+        <renderStoredBody>false</renderStoredBody>
+      </li>
+    </modExtensions>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>450</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Breakdownable" />
+      <li Class="Fortified.CompProperties_MissileRackRenderer">
+        <maxStored>4</maxStored>
+        <slotOffsets>
+          <li>(0, 0, 1)</li>
+          <li>(0, 0, 1)</li>
+          <li>(0, 0, 1)</li>
+          <li>(0, 0, 1)</li>
+        </slotOffsets>
+        <loadedHatchTexPaths>
+          <li>Things/Building/MissileSilo_Medium_Surface/hatch_a</li>
+          <li>Things/Building/MissileSilo_Medium_Surface/hatch_b</li>
+          <li>Things/Building/MissileSilo_Medium_Surface/hatch_c</li>
+          <li>Things/Building/MissileSilo_Medium_Surface/hatch_d</li>
+        </loadedHatchTexPaths>
+      </li>
+      <li Class="Fortified.CompProperties_MissileRailLauncher">
+        <skyfaller>DMSE_Launch_Yj</skyfaller>
+        <skyfallerIncoming>DMSE_Incoming_Yj</skyfallerIncoming>
+        <worldObjectDef>DMSE_WorldObject_CruiseMissile</worldObjectDef>
+        <missileBody>DMSE_MissileBody_Yj</missileBody>
+        <launchCooldownTicks>600</launchCooldownTicks>
+        <launchForwardCells>0</launchForwardCells>
+      </li>
+    </comps>
+    <inspectorTabs>
+      <li>RimWorld.ITab_Storage</li>
+      <li>Fortified.ITab_MissileInventory</li>
+      <li>Fortified.ITab_MissileAssembly</li>
+    </inspectorTabs>
+    <researchPrerequisites>
+      <li>DMSE_AntishipMissiles</li>
     </researchPrerequisites>
   </ThingDef>
 

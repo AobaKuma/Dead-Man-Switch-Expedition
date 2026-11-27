@@ -4,11 +4,7 @@
   <DMSE_MissileBody_LegacyBallistic.label>老式弹道导弹弹体</DMSE_MissileBody_LegacyBallistic.label>
   <DMSE_MissileBody_LegacyBallistic.description>一种早期的液态燃料弹道火箭。准备时间长、精度极差，但在现代制导技术出现之前，就能用工业材料造出来。\n\n直接在发射塔或发射井上装配。</DMSE_MissileBody_LegacyBallistic.description>
 
-  <DMSE_MissileBody_LegacyLoiter.label>老式巡飞弹弹体</DMSE_MissileBody_LegacyLoiter.label>
-  <DMSE_MissileBody_LegacyLoiter.description>一种早期的脉冲喷气巡飞弹，由发条式自动驾驶仪沿预设航向飞行。速度慢、噪音大、精度差，但结构简单，几乎只靠钢材与燃料就能造出来。\n\n固定构型，无法改装。</DMSE_MissileBody_LegacyLoiter.description>
 
-  <DMSE_MissileBody_LegacyInterceptor.label>老式拦截巡飞弹弹体</DMSE_MissileBody_LegacyInterceptor.label>
-  <DMSE_MissileBody_LegacyInterceptor.description>一种早期的制导拦截弹，配有四片超大尾翼与无线电指令链路。发射后会在目标空域盘旋，直到操作员把它引向来袭目标。速度慢、射程短、命中率低，但确实是一种制导拦截武器。\n\n固定构型，无法改装。</DMSE_MissileBody_LegacyInterceptor.description>
 
   <DMSE_MissileBody_AdvancedLight.label>先进通用导弹弹体</DMSE_MissileBody_AdvancedLight.label>
   <DMSE_MissileBody_AdvancedLight.description>一种小型多用途导弹弹体。小到能装上便携式与车载发射器，精度与载重却都胜过旧式轻型导弹。\n\n可装配弹头、制导与载荷。</DMSE_MissileBody_AdvancedLight.description>

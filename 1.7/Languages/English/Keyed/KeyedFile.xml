@@ -7,7 +7,6 @@
   <DMSE.MissileBase.RelocationIn>Position relocating in: {0}</DMSE.MissileBase.RelocationIn>
   <DMSE.MissileBase.ReentryBlockedIn>Ground access denied: enemy regrouping ({0})</DMSE.MissileBase.ReentryBlockedIn>
   <DMSE.MissileBase.SiteDesc>A mobile tactical ballistic missile launch position equipped with fire control radar and missile launchers. The position will relocate after completing its mission.</DMSE.MissileBase.SiteDesc>
-  <DMSE.EarlyLaunchSite.SpawnedLetter>{0} has set up a missile position {3} tiles {2} of {1}. Its slow pulsejet loitering munitions can strike your colony, and it has no interceptors of its own.\n\nDestroy its fire-control radar to neutralize it.</DMSE.EarlyLaunchSite.SpawnedLetter>
 
   <ScorerLaunch>Launch Missile</ScorerLaunch>
 

@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<LanguageData>
-  
-  <!-- EN: crude missile position -->
-  <DMSE_EarlyLaunchSitePart.label>舊式發射設施</DMSE_EarlyLaunchSitePart.label>
-  <!-- EN: A crude missile position with acoustic mirrors, a hand-aimed fire-control radar and launch rails. -->
-  <DMSE_EarlyLaunchSitePart.description>一處配備聲學反射鏡、手動火控雷達與發射軌的簡陋導彈陣地。</DMSE_EarlyLaunchSitePart.description>
-  
-</LanguageData>

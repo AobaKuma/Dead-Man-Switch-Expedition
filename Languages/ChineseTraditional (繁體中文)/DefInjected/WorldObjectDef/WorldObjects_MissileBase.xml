@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<LanguageData>
-  
-  <!-- EN: missile launch position -->
-  <DMSE_MissileBase.label>導彈陣地</DMSE_MissileBase.label>
-  <!-- EN: A mobile tactical ballistic missile launch position. The enemy crew continuously fires missiles at your colony and replenishes their stocks via supply drops. The position will relocate after some time. -->
-  <DMSE_MissileBase.description>一處機動戰術彈道導彈陣地。敵方人員會持續向你的殖民地發射導彈，並透過補給空投補充存量。陣地會在一段時間後轉移。</DMSE_MissileBase.description>
-  
-</LanguageData>

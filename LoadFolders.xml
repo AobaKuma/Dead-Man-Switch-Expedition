@@ -22,10 +22,14 @@
 		1.7 = development version: everything (including Textures/, Languages/ and the .NET 10 assemblies) lives in 1.7/ and 1.6 is not read;
 		/ only provides Sounds/. With Combat Extended active, 1.7/CE loads (XML patches written against CE 1.7 / 17.0; the missile and
 		artillery CE code moved to FFF's FortifiedCE.dll in 2026-11); 1.7/Cinders holds CE ammo for the Cinders mod.
+		1.7/Standalone 只在「Expedition: Early Warfare」未啟用時載入：早期內容（聲學鏡、老式火控雷達、旋轉發射架、Flak 43、V1、萊茵女兒、
+		DMSE_RadarBasis、舊式導彈陣地）在 2026-11-27 移到該模組，這裡的補丁把 DMSE 對它們的引用換掉或刪掉。
+		1.7/Standalone loads only without "Expedition: Early Warfare" and strips DMSE's references to the early-era defs moved there.
 	-->
 	<v1.7>
 		<li>/</li>
 		<li>1.7</li>
+		<li IfModNotActive="Aoba.DeadManSwitch.Expedition.EarlyWarfare,Aoba.DeadManSwitch.Expedition.EarlyWarfare_steam">1.7/Standalone</li>
 		<li IfModActive="CETeam.CombatExtended,CETeam.CombatExtended_steam">1.7/CE</li>
 		<li IfModActive="BreadMo.Cinders">1.7/Cinders</li>
 		<li IfModActive="vanillaexpanded.gravship,vanillaexpanded.gravship_steam">1.7/GravshipExpanded</li>

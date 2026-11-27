@@ -6,10 +6,6 @@
   <DMSE_Missile_AdvancedCruise.label>先进巡航导弹</DMSE_Missile_AdvancedCruise.label>
   <DMSE_Missile_AdvancedCruise.description>一种沿地形低空飞行的隐身巡航导弹，精度远胜旧式的射门手导弹。\n\n出厂配备穿透弹头、地形匹配制导与涡轮风扇发动机，可在装配分页更换部件。</DMSE_Missile_AdvancedCruise.description>
 
-  <DMSE_Missile_LegacyLoiter.label>老式巡飞弹</DMSE_Missile_LegacyLoiter.label>
-  <DMSE_Missile_LegacyLoiter.description>一种早期的脉冲喷气巡飞弹，由发条式自动驾驶仪沿预设航向飞行。速度慢、噪音大、精度差，但结构简单，几乎只靠钢材与燃料就能造出来。\n\n以发射轨发射，固定构型。</DMSE_Missile_LegacyLoiter.description>
-  <DMSE_Missile_Rheintochter.label>老式拦截巡飞弹</DMSE_Missile_Rheintochter.label>
-  <DMSE_Missile_Rheintochter.description>一种早期的制导拦截弹，配有四片超大尾翼与无线电指令链路。发射后会在目标空域盘旋，直到操作员把它引向来袭目标。速度慢、很少命中，但确实是一种制导拦截武器。\n\n由火控网发射，固定构型。</DMSE_Missile_Rheintochter.description>
   <DMSE_Missile_Stinger.label>轻型防空导弹</DMSE_Missile_Stinger.label>
   <DMSE_Missile_Stinger.description>一种纤细的便携式红外防空导弹。射程短、弹头小，对付高速或灵活的目标相当吃力，但几乎任何发射器都装得下。</DMSE_Missile_Stinger.description>
   <DMSE_Missile_Maverick.label>对地攻击导弹</DMSE_Missile_Maverick.label>

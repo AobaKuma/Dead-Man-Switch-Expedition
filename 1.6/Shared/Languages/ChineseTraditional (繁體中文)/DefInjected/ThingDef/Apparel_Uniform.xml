@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!-- EN: Uniform -->
+  <DMS_Apparel_Uniform.label>軍服</DMS_Apparel_Uniform.label>
+  <!-- EN: A typical coat for an enlisted man, designed to keep one warm in chilly weather. -->
+  <DMS_Apparel_Uniform.description>一件士兵的常規外套，設計用於在寒冷天氣中保暖。</DMS_Apparel_Uniform.description>
+
+</LanguageData>

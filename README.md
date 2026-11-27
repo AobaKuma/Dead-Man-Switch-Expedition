@@ -31,7 +31,7 @@ _Dead-Man-Switch-Expedition/
 ├── LoadFolders.xml         各版本的載入資料夾與條件式載入（CE / Cinders / Gravship Expanded）
 ├── Sounds/                 音效（1.6、1.7 共用，兩版內容相同）
 ├── 1.6/                    凍結：Steam 創意工坊版 0.35 的 1.6 內容，與 Steam 版逐位元組相同（含 .NET Framework 的 DMSE.dll）
-│   └── Shared/             該版根目錄的 Textures/、Languages/，只有 1.6 載入
+│   └── Shared/             該版根目錄的 Textures/、Languages/，只有 1.6 載入（2026-11-27 起繁中多 16 條翻譯，是唯一與 Steam 版不同處）
 ├── 1.7/                    開發版的全部內容
 │   ├── Assemblies/         DMSE.dll（net10.0）
 │   ├── Defs/               所有 Def（見下方「內容一覽」）
@@ -105,7 +105,7 @@ _Dead-Man-Switch-Expedition/
 | 輕型防空導彈（Stinger，刺針） | 同 SA-19 | 同 SA-19 | — | — | HE＋紅外 | 同上＋單兵發射具（背包） |
 | 對地攻擊導彈（Maverick，小牛） | 同 SA-19 | 同 SA-19 | — | 同 SA-19 | HE＋紅外＋無 | 傾斜發射箱、小型垂直發射井、旋轉發射架 |
 | 先進防空導彈（Sparrow，麻雀） | 同 SA-19 | 同 SA-19＋半主動 | — | 同 SA-19 | 連續桿＋半主動＋無 | 傾斜發射箱、小型垂直發射井、旋轉發射架、防空架 |
-| 巡航導彈（Cruise） | HE / AP / EMP | 慣性 / 電視 / 電磁 / 雷射 / 反艦 | 標準 / 增程 | 無 / 集束 / EMP | HE＋慣性＋標準＋無 | Scorer MLS、巡航導彈架（舊存檔的白蛉） |
+| 巡航導彈（Cruise） | HE / AP / EMP | 慣性 / 電視 / 電磁 / 雷射 / 反艦 | 標準 / 增程 | 無 / 集束 / EMP | HE＋慣性＋標準＋無 | 巡弋飛彈發射器、巡航導彈架（舊存檔的白蛉） |
 | 超音速反艦（Moskit，白蛉） | 同巡航 | 同巡航 | 同巡航 | 同巡航 | HE＋反艦＋標準＋無 | 傾斜發射管、垂直發射井、Scorer |
 | 先進反艦巡航（Oniks，縞瑪瑙） | 同巡航 | 同巡航 | 同巡航 | 同巡航 | HE＋反艦＋標準＋無 | 傾斜發射管、垂直發射井、Scorer |
 | 高超音速反艦（Yj，鷹擊） | 同巡航 | 同巡航 | 同巡航 | 同巡航 | HE＋反艦＋標準＋無 | 傾斜發射管、垂直發射井、Scorer |

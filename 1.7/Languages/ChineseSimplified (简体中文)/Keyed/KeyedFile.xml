@@ -7,7 +7,6 @@
   <DMSE.MissileBase.RelocationIn>阵地转移倒计时：{0}</DMSE.MissileBase.RelocationIn>
   <DMSE.MissileBase.ReentryBlockedIn>地面通道封锁中，敌方整备防线（{0}）</DMSE.MissileBase.ReentryBlockedIn>
   <DMSE.MissileBase.SiteDesc>一处配备火控雷达与导弹发射架的机动战术弹道导弹阵地。阵地会在完成任务后转移，以躲避反制。</DMSE.MissileBase.SiteDesc>
-  <DMSE.EarlyLaunchSite.SpawnedLetter>{0}在{1}的{2}方 {3} 格处架设了一处旧式导弹阵地。它缓慢的脉冲喷射巡飞弹能打击你的殖民地，阵地本身没有拦截弹。\n\n摧毁火控雷达即可瓦解此阵地。</DMSE.EarlyLaunchSite.SpawnedLetter>
 
   <!-- EN: Launch Missile -->
   <ScorerLaunch>发射导弹</ScorerLaunch>

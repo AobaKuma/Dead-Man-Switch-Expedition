@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
   
-  <!-- EN: Scorer MLS -->
-  <DMSE_Building_Scorer.label>射门手巡弋飞弹发射系统</DMSE_Building_Scorer.label>
+  <!-- EN: cruise missile launcher -->
+  <DMSE_Building_Scorer.label>巡航导弹发射器</DMSE_Building_Scorer.label>
   <!-- EN: The S1120 "Scorer" is a cruise missile launch system. It is a highly versatile anti-ship missile launcher used on cruisers and armed landing ships of the Colonial Fleet. -->
   <DMSE_Building_Scorer.description>一套用于殖民舰队巡洋舰与武装登陆舰上的巡航导弹发射系统。用途广泛，最常用来攻击舰船。</DMSE_Building_Scorer.description>
   <!-- EN: Loaded missile -->

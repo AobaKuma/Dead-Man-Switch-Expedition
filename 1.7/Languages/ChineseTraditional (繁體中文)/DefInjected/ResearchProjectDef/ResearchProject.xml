@@ -22,8 +22,6 @@
   <DMSE_VacuumMaterial.description>在真空環境的材料生產能夠有效的避免材料在化學反應中受到氮氣與氧氣等常見氣體的影響，透過在大氣層外的材料學研究，這對於應用像鉭鎢合金這樣會在大氣內環境的加工過程中受氧化影響的特殊材料而言具有非常大的價值。\n\n透過該研究能夠在真空環境下的箱型爐與燒結爐中生產鉭鎢合金。</DMSE_VacuumMaterial.description>
   
 
-  <DMSE_RadarBasis.label>早期預警與人工火控</DMSE_RadarBasis.label>
-  <DMSE_RadarBasis.description>利用最先抵達的聲音來為來臨的攻擊與空降提前預警。解鎖被動聲學預警雷達、早期火控雷達、旋轉發射架與防空砲。這項技術經常被殖民艦隊半買半送的推銷給殖民星球上的本土勢力，讓當權者們不得不關注起平民的基本教育以及保持溫飽的重要性。\n\n因為一群看不懂說明書的文盲顯然是無法操作這些技術裝備的。</DMSE_RadarBasis.description>
 
   <DMSE_LoiteringMunitions.label>基礎導彈工程</DMSE_LoiteringMunitions.label>
   <DMSE_LoiteringMunitions.description>超視距戰鬥的雛型，解鎖人類最早使用的老式巡飛彈、彈道導彈，以及配套使用的發射軌、塔式發射架、導彈儲存架等。輕型導彈的基礎高爆載荷也由此解鎖。多個導彈發射平台能夠密集發射來實現飽和打擊，但需要使用打擊規劃桌來解算發射時機與彈道軌跡。\n\n是的，計算員至少要接受過國中基本教育才可能具備彈道導彈發射軌跡的計算能力。</DMSE_LoiteringMunitions.description>

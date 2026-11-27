@@ -88,68 +88,6 @@
   </Fortified.MissileBodyDef>
 
 
-  <!-- ══════════════════════════════════════════════════════════════
-       二、老式巡飛彈（V1）— 巡飛階，傾斜發射軌
-       ══════════════════════════════════════════════════════════════ -->
-  <Fortified.MissileBodyDef>
-    <defName>DMSE_MissileBody_LegacyLoiter</defName>
-    <label>legacy loitering munition</label>
-    <expandingIconPath>UI/DMSE/TravelingMissile_Expanding_V1</expandingIconPath>
-    <description>An early pulsejet loitering munition flown along a preset heading by a clockwork autopilot. It is slow, loud and inaccurate, but simple enough to build from little more than steel and fuel.\n\nComes in a fixed configuration and cannot be customized.</description>
-    <sizeClass>Loitering</sizeClass>
-    <launchMode>Tilt</launchMode>
-    <!-- 與現役巡飛彈相同：無裝配槽，固定構型 -->
-    <customizeLocation>None</customizeLocation>
-    <baseExplosionRadius>4</baseExplosionRadius>
-    <baseDamageDef>Bomb</baseDamageDef>
-    <baseDamageAmount>90</baseDamageAmount>
-    <baseScatter>6</baseScatter>
-    <baseWorldSpeedFactor>0.75</baseWorldSpeedFactor>
-    <!-- 射程：55 * 2.2 * 0.1983 ≈ 24 格（以洲際彈道導彈＝民兵三型 500 格為錨點分級） -->
-    <baseRange>0</baseRange>
-    <baseFuel>55</baseFuel>
-    <baseSpecificImpulse>2.2</baseSpecificImpulse>
-    <rangePerFuelImpulse>0.1983</rangePerFuelImpulse>
-    <incomingSkyfaller>DMSE_Incoming_LegacyLoiter</incomingSkyfaller>
-    <launchProjectile>DMSE_Launch_LegacyLoiter</launchProjectile>
-    <!-- 無 slots：不可自定義。 -->
-    <!-- 無導引部件，但仍由操作員以無線電指令選點（與現役巡飛彈的電視制導同一個流程，
-         只影響選目標，不提供跨圖層與終端更新）。 -->
-    <builtInGuidance Class="Fortified.GuidanceType_TV" />
-  </Fortified.MissileBodyDef>
-
-
-  <!-- ══════════════════════════════════════════════════════════════
-       三、老式攔截巡飛彈（萊茵女兒）— 巡飛階，發射後滯空待敵的攔截彈
-       ══════════════════════════════════════════════════════════════ -->
-  <Fortified.MissileBodyDef>
-    <defName>DMSE_MissileBody_LegacyInterceptor</defName>
-    <label>legacy interceptor loitering munition</label>
-    <expandingIconPath>UI/DMSE/TravelingMissile_Expanding_Shahed</expandingIconPath>
-    <description>An early guided interceptor with four oversized fins and a radio command link. After launch it circles over the target area until an operator steers it onto an incoming threat. It is slow, short-ranged and inaccurate, but it is a true guided interceptor.\n\nComes in a fixed configuration and cannot be customized.</description>
-    <!-- 巡飛階：與巡飛彈發射軌／旋轉架的 sizeClass 相容；它不是輕型防空彈，而是滯空攔截彈 -->
-    <sizeClass>Loitering</sizeClass>
-    <!-- 巡飛平台是傾斜發射軌，沒有垂直發射單元 -->
-    <launchMode>Tilt</launchMode>
-    <!-- 戰備彈：不裝配、不逐目標配置（與 DMSE_InterceptorMissile 相同） -->
-    <customizeLocation>None</customizeLocation>
-    <baseExplosionRadius>3</baseExplosionRadius>
-    <baseDamageDef>Bomb</baseDamageDef>
-    <baseDamageAmount>55</baseDamageAmount>
-    <baseScatter>5</baseScatter>
-    <baseWorldSpeedFactor>0.7</baseWorldSpeedFactor>
-    <!-- 射程：50 * 2 * 0.2 ≈ 20 格（以洲際彈道導彈＝民兵三型 500 格為錨點分級） -->
-    <baseRange>0</baseRange>
-    <baseFuel>50</baseFuel>
-    <baseSpecificImpulse>2</baseSpecificImpulse>
-    <rangePerFuelImpulse>0.2</rangePerFuelImpulse>
-    <incomingSkyfaller>DMSE_Incoming_LegacyInterceptor</incomingSkyfaller>
-    <launchProjectile>DMSE_Launch_LegacyInterceptor</launchProjectile>
-    <!-- 作為攔截彈時命中率 ×0.6：無線電指令導引、靠操作員肉眼，命中率令人沮喪。 -->
-    <interceptHitFactor>0.6</interceptHitFactor>
-    <!-- 無 slots：固定構型（連續桿／破片戰鬥部），內建無線電指令導引但不具終端更新能力。 -->
-    <builtInGuidance Class="Fortified.GuidanceType_RadioCommand" />
-  </Fortified.MissileBodyDef>
 
 
   <!-- ══════════════════════════════════════════════════════════════
@@ -613,58 +551,6 @@
         <altitude>30000</altitude>
         <!-- 彈道再入：迫近防禦（CIWS）幾乎來不及反應，命中率只剩 15%。 -->
         <terminalInterceptFactor>0.15</terminalInterceptFactor>
-      </li>
-    </modExtensions>
-  </ThingDef>
-
-  <!-- V1：低空、慢、無隱身 → 較晚被偵測，但飛行速度低 -->
-  <ThingDef ParentName="DMSE_MissileIncomingProjectileBase">
-    <defName>DMSE_Incoming_LegacyLoiter</defName>
-    <label>legacy loitering munition (incoming)</label>
-    <thingClass>Fortified.Projectile_MissileIncoming</thingClass>
-    <graphicData>
-      <texPath>Things/Missile/V1/skyFaller_incoming</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>4.65</drawSize>
-    </graphicData>
-    <size>(1,1)</size>
-    <modExtensions>
-      <li Class="Fortified.MissileFlightExtension">
-        <shadowSize>(2, 2)</shadowSize>
-        <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
-        <speed>1</speed>
-      </li>
-      <li Class="Fortified.AirTargetExtension">
-        <distanceLevel>1.2</distanceLevel>
-        <stealthLevel>0</stealthLevel>
-        <speed>20</speed>
-        <altitude>800</altitude>
-      </li>
-    </modExtensions>
-  </ThingDef>
-
-  <!-- 萊茵女兒：小彈體、無隱身、中速 -->
-  <ThingDef ParentName="DMSE_MissileIncomingProjectileBase">
-    <defName>DMSE_Incoming_LegacyInterceptor</defName>
-    <label>legacy interceptor (incoming)</label>
-    <thingClass>Fortified.Projectile_MissileIncoming</thingClass>
-    <graphicData>
-      <texPath>Things/Missile/Rheintochter/skyFaller_incoming</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>3.25</drawSize>
-    </graphicData>
-    <size>(1,1)</size>
-    <modExtensions>
-      <li Class="Fortified.MissileFlightExtension">
-        <shadowSize>(1.5, 1.5)</shadowSize>
-        <rotateGraphicTowardsDirection>true</rotateGraphicTowardsDirection>
-        <speed>1</speed>
-      </li>
-      <li Class="Fortified.AirTargetExtension">
-        <distanceLevel>1</distanceLevel>
-        <stealthLevel>0</stealthLevel>
-        <speed>18</speed>
-        <altitude>5000</altitude>
       </li>
     </modExtensions>
   </ThingDef>

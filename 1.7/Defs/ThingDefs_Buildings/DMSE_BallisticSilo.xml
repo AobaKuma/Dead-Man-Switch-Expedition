@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
-  <!-- ==================== 彈道導彈 離場 skyfaller ==================== -->
-
-  <!-- ==================== 彈道導彈 落點 incoming skyfaller ==================== -->
-
   <!-- ==================== 彈道導彈 世界旅行物件 ==================== -->
   <WorldObjectDef>
     <defName>DMSE_WorldObject_BallisticMissile</defName>
@@ -32,6 +28,7 @@
     <defName>DMSE_Building_BallisticSilo</defName>
     <label>strategic missile silo</label>
     <description>A semi-buried strategic missile silo with heavy concrete hatches and blast suppression, so a launch does not harm its surroundings. It is very expensive and very tough, and holds a single missile.\n\nMissiles are assembled in the silo from raw materials, then launched at a target on the world map.\n\nCannot be built on a gravship.</description>
+    <uiIconPath>Things/Building/MissileSilo_icon</uiIconPath>
     <graphicData>
       <texPath>Things/Building/MissileSilo</texPath>
       <graphicClass>Graphic_Single</graphicClass>

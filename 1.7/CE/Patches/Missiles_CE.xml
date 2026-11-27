@@ -229,32 +229,6 @@
 					</li>
 				</value>
 			</li>
-			<!-- 早期脈衝噴射巡飛彈（V-1）：850 kg 阿馬托炸藥，薄鋼板彈頭，破片少。穿甲 48×√770=1332→上限 320；彈片 20×√25≈100 -->
-			<li Class="PatchOperationAddModExtension">
-				<xpath>Defs/Fortified.MissileBodyDef[defName="DMSE_MissileBody_LegacyLoiter"]</xpath>
-				<value>
-					<li Class="FortifiedCE.ModExtension_CEExplosion">
-						<armorPenetration>320</armorPenetration>
-						<fragments>
-							<Fragment_Large>30</Fragment_Large>
-							<Fragment_Small>70</Fragment_Small>
-						</fragments>
-					</li>
-				</value>
-			</li>
-			<!-- 早期無線電指令攔截彈（Wasserfall）：235～306 kg 液體炸藥爆震戰鬥部。穿甲 48×√200=679→上限 320；彈片 20×√50≈141 -->
-			<li Class="PatchOperationAddModExtension">
-				<xpath>Defs/Fortified.MissileBodyDef[defName="DMSE_MissileBody_LegacyInterceptor"]</xpath>
-				<value>
-					<li Class="FortifiedCE.ModExtension_CEExplosion">
-						<armorPenetration>320</armorPenetration>
-						<fragments>
-							<Fragment_Large>47</Fragment_Large>
-							<Fragment_Small>95</Fragment_Small>
-						</fragments>
-					</li>
-				</value>
-			</li>
 
 			<!-- ==================== 部件 ==================== -->
 

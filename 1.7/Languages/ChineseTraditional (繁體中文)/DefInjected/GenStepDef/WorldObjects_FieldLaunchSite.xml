@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!-- EN: search radar -->
+  <DMSE_FieldLaunchSite_GS_Structures.genStep.groups.0.label>搜索雷達</DMSE_FieldLaunchSite_GS_Structures.genStep.groups.0.label>
+  <!-- EN: fire control radar -->
+  <DMSE_FieldLaunchSite_GS_Structures.genStep.groups.1.label>火控雷達</DMSE_FieldLaunchSite_GS_Structures.genStep.groups.1.label>
+  <!-- EN: launch position -->
+  <DMSE_FieldLaunchSite_GS_Structures.genStep.groups.2.label>發射陣地</DMSE_FieldLaunchSite_GS_Structures.genStep.groups.2.label>
+  <!-- EN: ammo carrier -->
+  <DMSE_FieldLaunchSite_GS_Structures.genStep.groups.3.label>彈藥車</DMSE_FieldLaunchSite_GS_Structures.genStep.groups.3.label>
+  <!-- EN: rest room -->
+  <DMSE_FieldLaunchSite_GS_Structures.genStep.groups.5.label>休息室</DMSE_FieldLaunchSite_GS_Structures.genStep.groups.5.label>
+  <!-- EN: war room -->
+  <DMSE_FieldLaunchSite_GS_Structures.genStep.groups.6.label>作戰室</DMSE_FieldLaunchSite_GS_Structures.genStep.groups.6.label>
+
+</LanguageData>

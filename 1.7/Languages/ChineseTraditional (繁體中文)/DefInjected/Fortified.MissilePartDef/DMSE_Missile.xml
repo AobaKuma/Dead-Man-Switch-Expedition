@@ -110,9 +110,9 @@
   <DMSE_AdvCruise_Payload_None.label>無酬載</DMSE_AdvCruise_Payload_None.label>
   <DMSE_AdvCruise_Payload_None.description>沒有二次裝藥，彈體空間全部留給彈頭與油箱。</DMSE_AdvCruise_Payload_None.description>
   <DMSE_AdvCruise_Payload_Submunition.label>子彈藥投放器</DMSE_AdvCruise_Payload_Submunition.label>
-  <DMSE_AdvCruise_Payload_Submunition.description>一具在目標上空開啟的子母彈撒布器，把小型子彈灑向整片區域，而不是集中在一點爆炸。</DMSE_AdvCruise_Payload_Submunition.description>
+  <DMSE_AdvCruise_Payload_Submunition.description>一具在目標上空開啟的子母彈撒布器，把小型子彈灑向整片區域來進行有效的面殺傷攻擊。</DMSE_AdvCruise_Payload_Submunition.description>
   <DMSE_AdvCruise_Payload_Graphite.label>石墨纖維酬載</DMSE_AdvCruise_Payload_Graphite.label>
-  <DMSE_AdvCruise_Payload_Graphite.description>一種碳纖維酬載，不靠爆炸，而是讓落點周圍的電網短路。能在大範圍內癱瘓通電建築並擊暈機械體。</DMSE_AdvCruise_Payload_Graphite.description>
+  <DMSE_AdvCruise_Payload_Graphite.description>一種空爆石墨纖維酬載，透過接觸短路來讓大範圍的通電建築與機械體發生癱瘓。</DMSE_AdvCruise_Payload_Graphite.description>
   <DMSE_AdvCruise_Payload_Decoy.label>誘餌酬載</DMSE_AdvCruise_Payload_Decoy.label>
   <DMSE_AdvCruise_Payload_Decoy.description>以雷達反射器與訊號增強器取代二次裝藥。導彈在敵方雷達上看起來大上一倍，會更早被偵測，也會優先吸引依大小排序威脅的防空火力。不增加傷害。</DMSE_AdvCruise_Payload_Decoy.description>
   <DMSE_AdvCruise_Payload_Chaff.label>箔條投放器</DMSE_AdvCruise_Payload_Chaff.label>

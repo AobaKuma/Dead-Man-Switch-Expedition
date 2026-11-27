@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<LanguageData>
-  
-  <!-- EN: missile launch facility -->
-  <DMSE_MissileBaseSitePart.label>導彈發射設施</DMSE_MissileBaseSitePart.label>
-  <!-- EN: A concealed missile launch facility with fire control radar, launch vehicles, and support structures. -->
-  <DMSE_MissileBaseSitePart.description>一處隱蔽的導彈發射設施，配備火控雷達、發射車與支援建築。</DMSE_MissileBaseSitePart.description>
-  
-</LanguageData>

@@ -339,6 +339,7 @@
       <ThingDef>DMSE_Building_RotaryMissileLauncher</ThingDef>
       <ThingDef>DMSE_Building_LightMissileLauncher</ThingDef>
       <ThingDef>DMSE_Building_LightMissileVLS</ThingDef>
+      <ThingDef>DMSE_Building_NLOSLauncher</ThingDef>
     </descriptionHyperlinks>
     <graphicData>
       <texPath>Things/Missile/Grison/skyFaller</texPath>
@@ -392,6 +393,7 @@
           <li>DMSE_MissileRack</li>
           <li>DMSE_Building_LightMissileLauncher</li>
           <li>DMSE_Building_LightMissileVLS</li>
+          <li>DMSE_Building_NLOSLauncher</li>
           <li>DMSE_Building_RotaryLauncher</li>
           <li>DMSE_Building_RotaryMissileLauncher</li>
           <li>DMSE_Building_FieldAirDefense</li>
