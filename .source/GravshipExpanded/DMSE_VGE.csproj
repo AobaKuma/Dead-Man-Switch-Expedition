@@ -8,8 +8,8 @@
     裝在別處時以 -p:VGEAssemblies=<VGE 的 1.6\Assemblies 資料夾>\ 覆寫。
     Like DMSE.csproj, builds RimWorld 1.7 only → 1.7/GravshipExpanded/Assemblies (references 1.7/Assemblies/DMSE.dll).
     1.6 is frozen at the Steam Workshop release; 1.6/GravshipExpanded/Assemblies/DMSE_VGE_Patch.dll is no longer produced here.
-    VGE / VEF only ship 1.6 (.NET Framework) builds so far, which 1.7 loads through its compatibility layer.
-    VGE is looked up in <RimWorld>/Mods/VanillaGravshipExpanded, then in the Steam Workshop folder (3609835606);
+    VGE is looked up in <RimWorld>/Mods/VanillaGravshipExpanded, then in the Steam Workshop folder (3609835606, 1.7 then 1.6);
+    Fortified (3498575851) and PipeSystem (VEF, 2023507013) fall back to the Workshop 1.7 folders the same way;
     override with -p:VGEAssemblies=<VGE's 1.6\Assemblies folder>\ when it lives elsewhere.
   -->
   <PropertyGroup>
@@ -31,7 +31,13 @@
     <GenerateDependencyFile>false</GenerateDependencyFile>
     <RimWorldDir Condition="'$(RimWorldDir)' == ''">$(MSBuildThisFileDirectory)..\..\..\..\</RimWorldDir>
     <VGEAssemblies Condition="'$(VGEAssemblies)' == '' And Exists('$(RimWorldDir)Mods\VanillaGravshipExpanded\1.6\Assemblies\VanillaGravshipExpanded.dll')">$(RimWorldDir)Mods\VanillaGravshipExpanded\1.6\Assemblies\</VGEAssemblies>
+    <VGEAssemblies Condition="'$(VGEAssemblies)' == '' And Exists('$(RimWorldDir)..\..\workshop\content\294100\3609835606\1.7\Assemblies\VanillaGravshipExpanded.dll')">$(RimWorldDir)..\..\workshop\content\294100\3609835606\1.7\Assemblies\</VGEAssemblies>
     <VGEAssemblies Condition="'$(VGEAssemblies)' == ''">$(RimWorldDir)..\..\workshop\content\294100\3609835606\1.6\Assemblies\</VGEAssemblies>
+    <!-- 轉移燃料型別已移到 Fortified。Transfer fuel types now live in Fortified (AOBA.Framework, Workshop 3498575851). -->
+    <FortifiedAssemblies Condition="'$(FortifiedAssemblies)' == '' And Exists('$(MSBuildThisFileDirectory)..\..\..\Fortified-Framework\1.7\Assemblies\Fortified.dll')">$(MSBuildThisFileDirectory)..\..\..\Fortified-Framework\1.7\Assemblies\</FortifiedAssemblies>
+    <FortifiedAssemblies Condition="'$(FortifiedAssemblies)' == ''">$(RimWorldDir)..\..\workshop\content\294100\3498575851\1.7\Assemblies\</FortifiedAssemblies>
+    <PipeSystemAssemblies Condition="'$(PipeSystemAssemblies)' == '' And Exists('$(MSBuildThisFileDirectory)..\..\..\VanillaExpandedFramework\1.6\Assemblies\PipeSystem.dll')">$(MSBuildThisFileDirectory)..\..\..\VanillaExpandedFramework\1.6\Assemblies\</PipeSystemAssemblies>
+    <PipeSystemAssemblies Condition="'$(PipeSystemAssemblies)' == ''">$(RimWorldDir)..\..\workshop\content\294100\2023507013\1.7\Assemblies\</PipeSystemAssemblies>
   </PropertyGroup>
 
   <ItemGroup>
@@ -57,7 +63,11 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="PipeSystem">
-      <HintPath>$(MSBuildThisFileDirectory)..\..\..\VanillaExpandedFramework\1.6\Assemblies\PipeSystem.dll</HintPath>
+      <HintPath>$(PipeSystemAssemblies)PipeSystem.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Fortified">
+      <HintPath>$(FortifiedAssemblies)Fortified.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
